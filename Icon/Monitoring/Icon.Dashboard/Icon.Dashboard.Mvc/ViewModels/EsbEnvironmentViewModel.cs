@@ -1,4 +1,7 @@
-﻿using Icon.Dashboard.Mvc.Models;
+﻿using Icon.Dashboard.Mvc.Enums;
+using Icon.Dashboard.Mvc.Helpers;
+using Icon.Dashboard.Mvc.Models;
+using Icon.Dashboard.Mvc.Models.CustomConfigElements;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,12 +16,13 @@ namespace Icon.Dashboard.Mvc.ViewModels
     {
         public EsbEnvironmentViewModel()
         {
-            this.AppsInEnvironment = new List<IconApplicationViewModel>();
+            this.AppsInEnvironment = new List<ServiceViewModel>();
         }
 
         public EsbEnvironmentViewModel(EsbEnvironmentElement configElement) : this()
         {
             this.Name = configElement.Name;
+            this.EsbEnvironment = Utils.ParseEsbEnvironment(configElement.Name);
             this.ServerUrl = configElement.ServerUrl;
             this.TargetHostName = configElement.TargetHostName;
             this.JmsUsernameIcon = configElement.JmsUsernameIcon;
@@ -35,7 +39,7 @@ namespace Icon.Dashboard.Mvc.ViewModels
             this.JndiPasswordEwic = configElement.JndiPasswordEwic;
         }
 
-        public virtual IList<IconApplicationViewModel> AppsInEnvironment { get; set; }
+        public virtual IList<ServiceViewModel> AppsInEnvironment { get; set; }
 
         public string Name { get; set; }
 
@@ -69,6 +73,15 @@ namespace Icon.Dashboard.Mvc.ViewModels
 
         [DisplayName("Target Host Name")]
         public string TargetHostName { get; set; }
+
+        [DisplayName("Certificate  Name")]
+        public string CertificateName { get; set; }
+
+        [DisplayName("Certificate Store Name")]
+        public string CertificateStoreName { get; set; }
+
+        [DisplayName("Certificate Store Location")]
+        public string CertificateStoreLocation { get; set; }
 
         [DisplayName("JMS Username for Icon Apps")]
         public string JmsUsernameIcon { get; set; }

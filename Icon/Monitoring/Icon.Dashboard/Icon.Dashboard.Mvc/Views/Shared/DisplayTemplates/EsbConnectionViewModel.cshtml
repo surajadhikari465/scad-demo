@@ -1,0 +1,157 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.EsbConnectionViewModel
+
+@if (Model != null && Model.EnvironmentEnum != Icon.Dashboard.Mvc.Enums.EsbEnvironmentEnum.None)
+{
+    <div class="form-group col-xs-12 col-sm-6 col-md-4">
+        @Html.LabelFor(model => model.EnvironmentEnum, htmlAttributes: new { @class = "control-label col-xs-3" })
+        <div class="col-xs-9">
+            @Html.DisplayFor(model => model.EnvironmentEnum)
+        </div>
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-6 col-md-4">
+        @Html.LabelFor(model => model.ServerUrl, htmlAttributes: new { @class = "control-label col-xs-3" })
+        <div class="col-xs-9">
+            @Html.DisplayFor(model => model.ServerUrl)
+        </div>
+    </div>
+    <div class="form-group col-xs-12 col-sm-6 col-md-4">
+        @Html.LabelFor(model => model.TargetHostName, htmlAttributes: new { @class = "control-label col-xs-3" })
+        <div class="col-xs-9">
+            @Html.DisplayFor(model => model.TargetHostName)
+        </div>
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-6 col-md-4">
+        @Html.LabelFor(model => model.CertificateName, htmlAttributes: new { @class = "control-label col-xs-3" })
+        <div class="col-xs-9">
+            @Html.DisplayFor(model => model.CertificateName)
+        </div>
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-6 col-md-4">
+        @Html.LabelFor(model => model.JmsUsername, htmlAttributes: new { @class = "control-label col-xs-3" })
+        <div class="col-xs-9">
+            @Html.DisplayFor(model => model.JmsUsername)
+        </div>
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-6 col-md-4">
+        @Html.LabelFor(model => model.JmsPassword, htmlAttributes: new { @class = "control-label col-xs-3" })
+        <div class="col-xs-9">
+            @Html.DisplayFor(model => model.JmsPassword)
+        </div>
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-6 col-md-4">
+        @Html.LabelFor(model => model.JndiUsername, htmlAttributes: new { @class = "control-label col-xs-3" })
+        <div class="col-xs-9">
+            @Html.DisplayFor(model => model.JndiUsername)
+        </div>
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-6 col-md-4">
+        @Html.LabelFor(model => model.JndiPassword, htmlAttributes: new { @class = "control-label col-xs-3" })
+        <div class="col-xs-9">
+            @Html.DisplayFor(model => model.JndiPassword)
+        </div>
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-6 col-md-4">
+        @Html.LabelFor(model => model.CertificateStoreName, htmlAttributes: new { @class = "control-label col-xs-3" })
+        <div class="col-xs-9">
+            @Html.DisplayFor(model => model.CertificateStoreName)
+        </div>
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-6 col-md-4">
+        @Html.LabelFor(model => model.CertificateStoreLocation, htmlAttributes: new { @class = "control-label col-xs-3" })
+        <div class="col-xs-9">
+            @Html.DisplayFor(model => model.CertificateStoreLocation)
+        </div>
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-6 col-md-4">
+        @Html.LabelFor(model => model.ConnectionFactoryName, htmlAttributes: new { @class = "control-label col-xs-3" })
+        <div class="col-xs-9">
+            @Html.DisplayFor(model => model.ConnectionFactoryName)
+        </div>
+    </div>
+
+    <div class="form-group col-xs-12 col-sm-6 col-md-4">
+        @Html.LabelFor(model => model.SslPassword, htmlAttributes: new { @class = "control-label col-xs-3" })
+        <div class="col-xs-9">
+            @Html.DisplayFor(model => model.SslPassword)
+        </div>
+    </div>
+
+    if (!string.IsNullOrWhiteSpace(Model.ReconnectDelay))
+    {
+        <div class="form-group col-xs-12 col-sm-6 col-md-4">
+            @Html.LabelFor(model => model.ReconnectDelay, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                @Html.DisplayFor(model => model.ReconnectDelay)
+            </div>
+        </div>
+    }
+
+    if (!string.IsNullOrWhiteSpace(Model.ProductSelectionGroupQueueName))
+    {
+        <div class="form-group col-xs-12 col-sm-6 col-md-4">
+            @Html.LabelFor(model => model.SessionMode, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                @Html.DisplayFor(model => model.SessionMode)
+            </div>
+        </div>
+    }
+
+    if (!string.IsNullOrWhiteSpace(Model.QueueName))
+    {
+        <div class="form-group col-xs-12 col-sm-6 col-md-4">
+            @Html.LabelFor(model => model.QueueName, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                @Html.DisplayFor(model => model.QueueName)
+            </div>
+        </div>
+    }
+
+    if (!string.IsNullOrWhiteSpace(Model.LocaleQueueName))
+    {
+        <div class="form-group col-xs-12 col-sm-6 col-md-4">
+            @Html.LabelFor(model => model.LocaleQueueName, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                @Html.DisplayFor(model => model.LocaleQueueName)
+            </div>
+        </div>
+    }
+
+    if (!string.IsNullOrWhiteSpace(Model.HierarchyQueueName))
+    {
+        <div class="form-group col-xs-12 col-sm-6 col-md-4">
+            @Html.LabelFor(model => model.HierarchyQueueName, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                @Html.DisplayFor(model => model.HierarchyQueueName)
+            </div>
+        </div>
+    }
+
+    if (!string.IsNullOrWhiteSpace(Model.ItemQueueName))
+    {
+        <div class="form-group col-xs-12 col-sm-6 col-md-4">
+            @Html.LabelFor(model => model.ItemQueueName, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                @Html.DisplayFor(model => model.ItemQueueName)
+            </div>
+        </div>
+    }
+
+    if (!string.IsNullOrWhiteSpace(Model.ProductSelectionGroupQueueName))
+    {
+        <div class="form-group col-xs-12 col-sm-6 col-md-4">
+            @Html.LabelFor(model => model.ProductSelectionGroupQueueName, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                @Html.DisplayFor(model => model.ProductSelectionGroupQueueName)
+            </div>
+        </div>
+    }
+}

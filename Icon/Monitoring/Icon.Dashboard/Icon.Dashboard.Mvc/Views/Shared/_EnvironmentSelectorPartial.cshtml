@@ -1,18 +1,29 @@
-﻿<li class="dropdown">
+﻿@*@model Icon.Dashboard.Mvc.ViewModels.SubMenuViewModel
+
+@if (Model != null)
+{
+<li class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-        Environment
+        @Model.Header
     </a>
     <ul class="dropdown-menu">
-        @foreach (var environmentEnum in Enum.GetValues(typeof(Icon.Dashboard.Mvc.Models.EnvironmentEnum)).Cast<Icon.Dashboard.Mvc.Models.EnvironmentEnum>())
-        {
-            if (environmentEnum != Icon.Dashboard.Mvc.Models.EnvironmentEnum.Undefined)
-            {
-        <li class="btn-link">
-            <a class="dropdown-item" href="@Url.Action("Index", "Home", new { environment = environmentEnum.ToString() })"><span class="text-@Icon.Dashboard.Mvc.Helpers.Utils.GetBootstrapClassForEnvironment(environmentEnum.ToString())">@environmentEnum.ToString()</span></a>
+        <li class="@(Model.RootItemIsActive ? "active" : string.Empty)">
+            <a class="dropdown-item" href="@Url.Action(Model.ActionForRootItem, Model.ControllerForRootItem)">
+                @Model.TextForRootItem
+            </a>
         </li>
+
+
+        @foreach (var environmentEnum in Enum.GetValues(typeof(Icon.Dashboard.Mvc.Enums.EnvironmentEnum)).Cast<Icon.Dashboard.Mvc.Enums.EnvironmentEnum>())
+        {
+            if (environmentEnum != Icon.Dashboard.Mvc.Enums.EnvironmentEnum.Undefined)
+            {
+                <li class="btn-link">
+                    <a class="dropdown-item" href="@Url.Action("Index", "Home", new { environment = environmentEnum.ToString() })"><span class="text-@Icon.Dashboard.Mvc.Helpers.Utils.GetBootstrapClassForEnvironment(environmentEnum.ToString())">@environmentEnum.ToString()</span></a>
+                </li>
             }
         }
         <li class="btn-link btn-success"><a class="dropdown-item" href="@Url.Action("Custom", "Home")"><span class="text-success">Define Custom</span></a></li>
     </ul>
-
 </li>
+}*@

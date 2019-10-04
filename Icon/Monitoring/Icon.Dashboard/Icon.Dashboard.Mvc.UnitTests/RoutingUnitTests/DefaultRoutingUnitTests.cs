@@ -17,10 +17,23 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
     public class DefaultRoutingUnitTests : _MvcRoutingUnitTestBase
     {
         [TestMethod]
-        public void MvcRouting_UrlWithoutAction_GetsDefaultActionRoute()
+        public void RegisterRoutes_BlankUrl_ShouldRouteToDefaultHome()
         {
             // Arrange
-            SetupRequestUrl($"~/");
+            var routes = base.SetMockPathAndRegisterRoutes($"~/");
+            // Act
+            RouteData routeData = routes.GetRouteData(moqContext.Object);
+            // Assert
+            AssertExpectedRouteControllerAndAction(routeData, "Home", "Index");
+        }
+
+        [TestMethod]
+        public void MvcRouting_UnknownControllerUnknownActionNoId_GetsDefaultHomeRoute()
+        {
+            // Arrange
+            string controller = "aaaa";
+            string action = "bbbb";
+            SetupRequestUrl($"~/{controller}/{action}");
             var routes = RegisterRoutesForTest();
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
@@ -29,44 +42,40 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_UnknownControllerUnknownActionNoId_GetsHomeAndCustomActionRoute()
+        public void RegisterRoutes_UnknownControllerAndAction_ShouldRouteToDefaultHome()
         {
             // Arrange
             string controller = "aaaa";
             string action = "bbbb";
-            SetupRequestUrl($"~/{controller}/{action}");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
-            AssertExpectedRouteControllerAndAction(routeData, "Home", action);
+            AssertExpectedRouteControllerAndAction(routeData, "Home", "Index");
         }
 
         [TestMethod]
-        public void MvcRouting_UnknownControllerActionWithId_GetsHomeAndCustomActionRoute()
+        public void RegisterRoutes_UnknownControllerAndActionWithParam_ShouldRouteToDefaultHome()
         {
             // Arrange
             string controller = "aaaa";
             string action = "bbbb";
             string id = "cccc";
-            SetupRequestUrl($"~/{controller}/{action}/{id}");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{id}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
-            AssertExpectedRouteControllerAndAction(routeData, "Home", action);
+            AssertExpectedRouteControllerAndAction(routeData, "Home", "Index");
         }
 
         [TestMethod]
-        public void MvcRouting_UnknownControllerActionWithId_ShouldIgnoreId()
+        public void RegisterRoutes_UnknownControllerAndActionWithParam_ShouldRouteToDefaultHomeWithoutParam()
         {
-            //TODO should this work?
             // Arrange
             string controller = "aaaa";
             string action = "bbbb";
             string id = "cccc";
-            SetupRequestUrl($"~/{controller}/{action}/{id}");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{id}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
@@ -75,13 +84,12 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_UnknownControllerUnknownActionNoId_IdShouldNotBeTHere()
+        public void RegisterRoutes_UnknownControllerAndAction_ShouldRouteToDefaultHomeWithoutParam()
         {
             // Arrange
             string controller = "aaaa";
             string action = "bbbb";
-            SetupRequestUrl($"~/{controller}/{action}");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
@@ -90,34 +98,31 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_UnknownControllerNoActionNoId_GetsExpectedDefaultAction()
+        public void RegisterRoutes_UnknownControllerNoActionNoParam_ShouldRouteToDefaultHome()
         {
             // Arrange
             string controller = "abcdef";
             string action = "";
-            SetupRequestUrl($"~/{controller}/{action}");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
-            AssertExpectedRouteControllerAndAction(routeData, controller, "Index");
+            AssertExpectedRouteControllerAndAction(routeData, "Home", "Index");
         }
 
         [TestMethod]
-        public void MvcRouting_TooManySegments_ReturnsNull()
+        public void RegisterRoutes_TooManySegments_ShouldRouteToDefaultHome()
         {
             // Arrange
-            SetupRequestUrl($"~/a/b/c/d/e/f");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/a/b/c/d/e/f");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
-            Assert.IsNull(routeData);
+            AssertExpectedRouteControllerAndAction(routeData, "Home", "Index");
         }
 
-
         [TestMethod]
-        public void MvcRouting_Sample_FormsTest()
+        public void RegisterRoutes_Sample_FormsTest()
         {
             // Arrange            
             var formValues = new NameValueCollection
@@ -135,7 +140,7 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_Sample_QueryStringTest()
+        public void RegisterRoutes_Sample_QueryStringTest()
         {
             // Arrange            
             var queryStringValues = new NameValueCollection

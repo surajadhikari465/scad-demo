@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    var globalViewData = ViewBag.GlobalViewData as Icon.Dashboard.Mvc.ViewModels.GlobalViewData;
+}
+
+<!DOCTYPE html>
 <html lang="en" xml:lang="en" xmlns= "http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
@@ -6,7 +10,7 @@
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="shortcut icon" type="image/ico" href="~/Content/Images/favicon.ico">
-    <title>@ViewBag.Title</title>
+    <title>@globalViewData.ViewTitle</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
@@ -25,47 +29,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand pull left" href="@Url.Action("Index", "Home")">Icon Dashboard @ViewBag.Environment</a>
+                <a class="navbar-brand pull left" href="@Url.Action(Icon.Dashboard.Mvc.Models.Constants.MvcNames.HomeIndexActionName, Icon.Dashboard.Mvc.Models.Constants.MvcNames.HomeControllerName)">Icon Dashboard @globalViewData.ActiveEnvironmentName</a>
             </div>
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <a href="@Url.Action(Icon.Dashboard.Mvc.Models.Constants.MvcNames.HomeIndexActionName, Icon.Dashboard.Mvc.Models.Constants.MvcNames.HomeControllerName)">Home</a>
                 </li>
 
-                @if (ViewBag.MenuOptionsForIconAppLogs != null && ViewBag.MenuOptionsForIconAppLogs is IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>)
-                {
-                    Html.RenderPartial("_SubMenuForIconAppLogs", ViewBag.MenuOptionsForIconAppLogs as IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>);
-                }
-                else
-                {
-                    <li>
-                        <a href="@Url.Action("Index", "IconLogs")">Icon App Logs</a>
-                    </li>
-                }
+                @{Html.RenderPartial("_StandardSubMenu", globalViewData.SubMenuForIconLogs);}
 
-                @if (ViewBag.MenuOptionsForMammothAppLogs != null && ViewBag.MenuOptionsForMammothAppLogs is IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>)
-                {
-                    Html.RenderPartial("_SubMenuForMammothAppLogs", ViewBag.MenuOptionsForMammothAppLogs as IDictionary<Icon.Dashboard.Mvc.ViewModels.IconLoggedAppViewModel, bool>);
-                }
+                @{Html.RenderPartial("_StandardSubMenu", globalViewData.SubMenuForMammothLogs);}
 
-                @if (ViewBag.MenuOptionsForApiJobs != null && ViewBag.MenuOptionsForApiJobs is IDictionary<string, bool>)
-                {
-                    Html.RenderPartial("_SubMenuForApiJobs", ViewBag.MenuOptionsForApiJobs as IDictionary<string, bool>);
-                }
-                else
-                {
-                    <li>
-                        <a href="@Url.Action("Index", "ApiJobs")">API Job Monitor</a>
-                    </li>
-                }
+                @{Html.RenderPartial("_StandardSubMenu", globalViewData.SubMenuForIconApiJobs); } 
 
                 <li>
-                    <a href="@Url.Action("Index", "Esb")">ESB Connections</a>
+                    <a href="@Url.Action(Icon.Dashboard.Mvc.Models.Constants.MvcNames.EsbControllerIndexActionName, Icon.Dashboard.Mvc.Models.Constants.MvcNames.EsbControllerName)">ESB Connections</a>
                 </li>
 
-                @{Html.RenderPartial("_SupportAppsPartial");}
+                @{Html.RenderPartial("_SupportAppsPartial", globalViewData.SubMenuForSupportApps);}
 
-                @{Html.RenderPartial("_EnvironmentSelectorPartial"); }
+                @{Html.RenderPartial("_StandardSubMenu", globalViewData.SubMenuForEnvironments);}
             </ul>
         </div>
     </nav>

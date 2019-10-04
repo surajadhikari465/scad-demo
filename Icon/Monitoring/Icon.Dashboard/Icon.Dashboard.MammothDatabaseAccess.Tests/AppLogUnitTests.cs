@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FluentAssertions;
 using Icon.Dashboard.CommonDatabaseAccess;
 using Icon.Dashboard.MammothDatabaseAccess;
 
@@ -41,10 +40,10 @@ namespace Icon.Dashboard.MammothnDatabaseAccess.Tests
         {
             //Arrange
             string appName =  "mammoth.somekind.OFAPP";
-            var appLog = CreateAppLogEntityForTest(appName);
             //Act
+            var appLog = CreateAppLogEntityForTest(appName);
             //Assert
-            appLog.AppName.Should().BeEquivalentTo(appName);
+            Assert.AreEqual(appName, appLog.AppName);
         }
 
         [TestMethod]
@@ -53,10 +52,10 @@ namespace Icon.Dashboard.MammothnDatabaseAccess.Tests
             //Arrange
             DateTime expectedDate = new DateTime(2016, 6, 26, 14, 14, 14);
             var appLog = CreateAppLogEntityForTest();
-            appLog.LogDate = expectedDate;
             //Act
+            appLog.LogDate = expectedDate;
             //Assert
-            appLog.LoggingTimestamp.Should().Be(expectedDate);
+            Assert.AreEqual(expectedDate, appLog.LoggingTimestamp);
         }
 
         [TestMethod]
@@ -64,11 +63,10 @@ namespace Icon.Dashboard.MammothnDatabaseAccess.Tests
         {
             //Arrange
             var appLog = CreateAppLogEntityForTest();
-            appLog.LogDate = null;
             //Act
+            appLog.LogDate = null;
             //Assert
-            appLog.LoggingTimestamp.Should().Be(default(DateTime));
+            Assert.AreEqual(default(DateTime), appLog.LoggingTimestamp);
         }
-
     }
 }

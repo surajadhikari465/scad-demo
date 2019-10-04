@@ -1,0 +1,19 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.ApiMessageJobReportViewModel
+@{
+    string caption = ViewBag.Title ?? "API Controller Message Jobs Summary";
+    string currentPage = "Page " + Model.PaginationModel.CurrentPage.ToString() + ")";
+}
+
+<div id="pagingDataTable" 
+         data-page="@(Model.PaginationModel.CurrentPage)" 
+         data-pageSize="@(Model.PaginationModel.PageSize)" 
+         data-appName="@(Model.PaginationModel.AppName)">
+    <table class="table table-bordered table-condensed no-bottom-margin">
+        <caption class="text-center"><h3>@caption @currentPage)</h3></caption>
+        @* thead and tbody in partial view *@
+        @{
+            Html.RenderPartial("_ApiJobsSummariesTablePartial", Model.JobSummaries);
+        }
+    </table>
+</div>
+    

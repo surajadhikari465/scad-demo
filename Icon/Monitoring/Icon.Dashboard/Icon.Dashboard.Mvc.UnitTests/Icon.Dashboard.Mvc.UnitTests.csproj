@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.3.1.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.3.1.1\build\Microsoft.Net.Compilers.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -81,29 +81,56 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev1|AnyCPU'">
+    <OutputPath>bin\Dev1\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA1|AnyCPU'">
+    <OutputPath>bin\QA1\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.4.3.1\lib\net45\Castle.Core.dll</HintPath>
+      <HintPath>..\packages\Castle.Core.4.4.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="FluentAssertions, Version=5.5.3.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentAssertions.5.5.3\lib\net45\FluentAssertions.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Moq, Version=4.10.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.10.1\lib\net45\Moq.dll</HintPath>
+    <Reference Include="Moq, Version=4.12.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.12.0\lib\net45\Moq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.1\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.3\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -142,34 +169,70 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ControllerTests\ApiJobsControllerUnitTests\ApiJobsControllerIndexUnitTests.cs" />
-    <Compile Include="ControllerTests\HomeControllerUnitTests\HomeControllerEditUnitTests.cs" />
-    <Compile Include="ControllerTests\HomeControllerUnitTests\_HomeControllerUnitTestBase.cs" />
-    <Compile Include="ControllerTests\IconLogsControllerUnitTests\IconLogsControllerIndexUnitTests.cs" />
+    <Compile Include="ControllerTests\ApiJobsControllerIndexUnitTests.cs" />
+    <Compile Include="ControllerTests\EsbControllerDetailsActionUnitTests.cs" />
+    <Compile Include="ControllerTests\EsbControllerIndexActionUnitTests.cs" />
+    <Compile Include="ControllerTests\HomeControllerEditUnitTests.cs" />
+    <Compile Include="ControllerTests\BaseControllerIndexUnitTests.cs" />
+    <Compile Include="ControllerTests\HomeControllerCustomActionUnitTests.cs" />
+    <Compile Include="ControllerTests\HomeControllerSetEnvironmentActionUnitTests.cs" />
+    <Compile Include="ControllerTests\MammothLogsControllerIndexUnitTests.cs" />
+    <Compile Include="ControllerTests\_EsbControllerUnitTestBase.cs" />
+    <Compile Include="ControllerTests\_HomeControllerUnitTestBase.cs" />
+    <Compile Include="ControllerTests\IconLogsControllerIndexUnitTests.cs" />
     <Compile Include="ControllerTests\_MvcControllerUnitTestBase.cs" />
-    <Compile Include="ControllerTests\HomeControllerUnitTests\HomeControllerIndexUnitTests.cs" />
+    <Compile Include="ControllerTests\HomeControllerIndexUnitTests.cs" />
+    <Compile Include="CustomAsserts.cs" />
     <Compile Include="FilterTests\IsAuthorizedUnitTests.cs" />
     <Compile Include="FilterTests\GetUserRoleUnitTests.cs" />
     <Compile Include="FilterTests\_DashboardAuthorizationFilterTestBase.cs" />
-    <Compile Include="HelperTests\DashboardEnvironmentManagerUnitTests.cs" />
+    <Compile Include="HelperTests\ConfigurationAccessUnitTests.cs" />
+    <Compile Include="HelperTests\GlobalDataConfigUnitTests.cs" />
+    <Compile Include="HelperTests\UtilsUnitTests.cs" />
+    <Compile Include="ModelTests\DashboardConfigDataModelIntegrationTests.cs" />
+    <Compile Include="ModelTests\DashboardConfigDataModelUnitTests.cs" />
+    <Compile Include="ModelTests\EnvironmentModelUnitTests.cs" />
+    <Compile Include="ModelTests\RemoteServiceConfigDataModelUnitTests.cs" />
     <Compile Include="ModelTests\UserRoleEnumTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoutingUnitTests\EsbSwitchRoutingUnitTests.cs" />
+    <Compile Include="RoutingUnitTests\EsbRoutingUnitTests.cs" />
     <Compile Include="RoutingUnitTests\ApiJobsRoutingUnitTests.cs" />
     <Compile Include="RoutingUnitTests\DefaultRoutingUnitTests.cs" />
     <Compile Include="RoutingUnitTests\MammothLogsRoutingUnitTests.cs" />
     <Compile Include="RoutingUnitTests\IconLogsRoutingUnitTests.cs" />
     <Compile Include="RoutingUnitTests\HomeRoutingUnitTests.cs" />
     <Compile Include="RoutingUnitTests\_MvcRoutingUnitTestBase.cs" />
-    <Compile Include="ServiceTests\AppConfigAssistantUnitTests.cs" />
+    <Compile Include="ServiceTests\ExternalConfigXmlManagerUnitTests.cs" />
+    <Compile Include="ServiceTests\ConfigReaderIntegrationTests.cs" />
+    <Compile Include="ServiceTests\ConfigDataLoaderUnitTests.cs" />
+    <Compile Include="ServiceTests\DashboardDataManagerIntegrationTests.cs" />
+    <Compile Include="ServiceTests\DashboardDataManagerUnitTests.cs" />
+    <Compile Include="ServiceTests\CookieManagerUnitTests.cs" />
+    <Compile Include="ServiceTests\IconDbServiceWrapperUnitTests.cs" />
+    <Compile Include="ServiceTests\MammothDbServiceWrapperUnitTests.cs" />
+    <Compile Include="ServiceTests\ExternalConfigXmlManagerIntegrationTests.cs" />
     <Compile Include="ServiceTests\RemoteWmiServiceWrapperUnitTests.cs" />
-    <Compile Include="ServiceTests\TestData.cs" />
-    <Compile Include="ModelTests\ApplicationDatabaseConfigurationModelUnitTests.cs" />
+    <Compile Include="TestData\DbServiceTestData.cs" />
+    <Compile Include="TestData\DbWrapperTestData.cs" />
+    <Compile Include="ModelTests\DbConfigurationModelUnitTests.cs" />
+    <Compile Include="TestData\ConfigTestData.cs" />
+    <Compile Include="TestData\RemoteServiceTestData.cs" />
+    <Compile Include="ViewModelTests\EsbEnvironmentViewModelUnitTests.cs" />
+    <Compile Include="ViewModelTests\ServiceViewModelUnitTests.cs" />
+    <Compile Include="ViewModelTests\SubMenuViewModelUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Icon.Dashboard.CommonDatabaseAccess\Icon.Dashboard.CommonDatabaseAccess.csproj">
       <Project>{c31dceae-c79b-4466-b592-f1c58c7c1e2c}</Project>
       <Name>Icon.Dashboard.CommonDatabaseAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Icon.Dashboard.IconDatabaseAccess\Icon.Dashboard.IconDatabaseAccess.csproj">
+      <Project>{4B5102CE-6F3A-4C31-81DA-483F3DFF988F}</Project>
+      <Name>Icon.Dashboard.IconDatabaseAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Icon.Dashboard.MammothDatabaseAccess\Icon.Dashboard.MammothDatabaseAccess.csproj">
+      <Project>{EB1C6C33-8EE5-4777-A7F9-85D2D3BEBA85}</Project>
+      <Name>Icon.Dashboard.MammothDatabaseAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Icon.Dashboard.Mvc\Icon.Dashboard.Mvc.csproj">
       <Project>{05b111c4-587a-42a1-964f-472ccef00196}</Project>
@@ -180,51 +243,67 @@
       <Name>Icon.Dashboard.RemoteServicesAccess</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModelTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MvcDashboardUnitTestData.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="SampleDbConfig_IconEfAndIrmaEfWithIconLoggingSql16Tst.config">
+    <None Include="TestData\SampleAppConfig_EsbTst_MammothApiController.exe.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SampleDbConfig_EncryptedDatabaseConnection.config">
+    <None Include="TestData\SampleAppConfig_MultiEsbPerf_MammothProductListener.exe.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SampleDbConfig_IconSqlAndIrmaSqlAndMammothSqlWithIconLogging.config">
+    <None Include="TestData\SampleAppConfig_MultiEsbDup_IconInforListener.exe.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SampleDbConfig_IconSqlAndIconEfAndMammothSqlWithIconLogging.config">
+    <None Include="TestData\SampleAppConfig_MultiEsbTst_EwicAplListener.exe.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SampleDbConfig_IconEfAndIrmaEfWithIconLogging.config">
+    <None Include="TestData\SampleWebConfigWithNoValues.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SampleDbConfig_IconEfWithIconLogging.config">
+    <None Include="TestData\SampleWebConfigWithStandardValues.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SampleDbConfig_VimSqlWithFileLogging.config">
+    <None Include="TestData\SampleAppConfig_NoEsb_MammothItemLocale.exe.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SampleDbConfig_IconEfAndIrmaSqlWithIconLogging.config">
+    <None Include="TestData\SampleDbConfig_IconEfAndIrmaEfWithIconLoggingDev1.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SampleDbConfig_IrmaSqlWithMammothLogging.config">
+    <None Include="TestData\SampleDbConfig_EncryptedDatabaseConnection.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SampleDbConfig_IconSqlWithIconLogging.config">
+    <None Include="TestData\SampleDbConfig_IconSqlAndIrmaSqlAndMammothSqlWithIconLogging.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SampleDbConfig_MammothSqlWithMammothLogging.config">
+    <None Include="TestData\SampleDbConfig_IconSqlAndIconEfAndMammothSqlWithIconLogging.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SampleAppConfig_A.exe.config">
+    <None Include="TestData\SampleDbConfig_IconEfAndIrmaEfWithIconLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\SampleDbConfig_IconEfWithIconLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\SampleDbConfig_VimSqlWithFileLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\SampleDbConfig_IconEfAndIrmaSqlWithIconLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\SampleDbConfig_IrmaSqlWithMammothLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\SampleDbConfig_IconSqlWithIconLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\SampleDbConfig_MammothSqlWithMammothLogging.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\SampleAppConfig_NoEsb_GloCon.exe.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -252,7 +331,7 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.3.1.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.3.1.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

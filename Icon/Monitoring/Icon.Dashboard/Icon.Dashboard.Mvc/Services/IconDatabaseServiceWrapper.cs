@@ -1,6 +1,6 @@
 ﻿using Icon.Dashboard.CommonDatabaseAccess;
 using Icon.Dashboard.IconDatabaseAccess;
-using Icon.Dashboard.Mvc.Models;
+using Icon.Dashboard.Mvc.Enums;
 using Icon.Dashboard.Mvc.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -20,127 +20,164 @@ namespace Icon.Dashboard.Mvc.Services
 
         public IApp GetApp(string appName)
         {
+            if (string.IsNullOrWhiteSpace(appName))
+            {
+                return null;
+            }
             return DatabaseService.GetApp(appName);
         }
 
         public IApp GetApp(int appID)
         {
+            if (appID<=0)
+            {
+                return null;
+            }
             return DatabaseService.GetApp(appID);
         }
 
-        public List<IconLoggedAppViewModel> GetApps()
+        public int GetAppID(string appName)
+        {
+            if (!string.IsNullOrWhiteSpace(appName))
+            {
+                var app = GetApp(appName);
+                if (app != null)
+                {
+                    return app.AppID;
+                }
+            }
+            return -1;
+        } 
+
+        public List<LoggedAppViewModel> GetApps()
         {
             var apps = DatabaseService.GetApps();
-            var appViewModels = new List<IconLoggedAppViewModel>(apps.Count());
-            foreach (var app in apps)
-            {
-                appViewModels.Add(new IconLoggedAppViewModel(app));
-            }
-            return appViewModels;
+            return (apps == null)
+                ? new List<LoggedAppViewModel>()
+                : apps.Select(a => new LoggedAppViewModel(a)).ToList();
         }
 
-        public List<IconLogEntryViewModel> GetPagedAppLogsByApp(
+        public List<AppLogEntryViewModel> GetPagedAppLogsByApp(
             string appName,
             int page = PagingConstants.DefaultPage,
             int pageSize = PagingConstants.DefaultPageSize,
             LogErrorLevelEnum errorLevelEnum = LogErrorLevelEnum.Error)
         {
-            if (errorLevelEnum == LogErrorLevelEnum.Any)
+            if (!string.IsNullOrWhiteSpace(appName))
             {
-                var appLogs = DatabaseService.GetPagedAppLogsByApp(appName, page, pageSize);
-                var logViewModels = AppLogViewModelsFromEntities(appLogs);
-                return logViewModels;
+                switch (errorLevelEnum)
+                {
+                    case LogErrorLevelEnum.Any:
+                        var appLogs = DatabaseService.GetPagedAppLogsByApp(appName, page, pageSize);
+                        if (appLogs != null)
+                        {
+                            return BuildAppLogViewModels(appLogs);
+                        }
+                        break;
+                    case LogErrorLevelEnum.Info:
+                    case LogErrorLevelEnum.Warn:
+                    case LogErrorLevelEnum.Error:
+                    default:
+                        var appID = GetAppID(appName);
+                        if (appID > 0)
+                        {
+                            var filter = GenerateAppLogFilter(appID, errorLevelEnum);
+                            return GetPagedFilteredAppLogs(filter, page, pageSize, QuerySortOrder.Descending);
+                        }
+                        break;
+                }
             }
-            else
-            {
-                var appId = GetAppIdForAppName(appName);
-                Expression<Func<IAppLog, bool>> filter = appLog => appLog.AppID == appId && appLog.Level == errorLevelEnum.ToString(); 
-                return GetPagedFilteredAppLogs(filter, page, pageSize, QuerySortOrder.Descending);
-            }
+            return new List<AppLogEntryViewModel>();
         }
 
-        public List<IconLogEntryViewModel> GetPagedAppLogs(int page = PagingConstants.DefaultPage,
+        public List<AppLogEntryViewModel> GetPagedAppLogs(
+            int page = PagingConstants.DefaultPage,
             int pageSize = PagingConstants.DefaultPageSize,
             LogErrorLevelEnum errorLevelEnum = LogErrorLevelEnum.Error)
         {
-            if (errorLevelEnum == LogErrorLevelEnum.Any)
+            switch (errorLevelEnum)
             {
-                var appLogs = DatabaseService.GetPagedAppLogs(page, pageSize);
-                var logViewModels = AppLogViewModelsFromEntities(appLogs);
-                return logViewModels;
+                case LogErrorLevelEnum.Any:
+                    var appLogs = DatabaseService.GetPagedAppLogs(page, pageSize);
+                    if (appLogs != null)
+                    {
+                        return BuildAppLogViewModels(appLogs);
+                    }
+                    break;
+                case LogErrorLevelEnum.Info:
+                case LogErrorLevelEnum.Warn:
+                case LogErrorLevelEnum.Error:
+                    var filter = GenerateAppLogFilter(errorLevelEnum);
+                    return GetPagedFilteredAppLogs(filter, page, pageSize, QuerySortOrder.Descending);
+                default:
+                    break;
             }
-            else
-            {
-                Expression<Func<IAppLog, bool>> filter = appLog => appLog.Level == errorLevelEnum.ToString(); 
-                return GetPagedFilteredAppLogs(filter, page, pageSize, QuerySortOrder.Descending);
-            }
-        }
+            return new List<AppLogEntryViewModel>();
+        } 
 
-        public List<IconLogEntryViewModel> GetPagedFilteredAppLogs(
+        public List<AppLogEntryViewModel> GetPagedFilteredAppLogs(
            Expression<Func<IAppLog, bool>> filter,
            int page = PagingConstants.DefaultPage,
            int pageSize = PagingConstants.DefaultPageSize,
            QuerySortOrder sortOrder = QuerySortOrder.Unspecified)
         {
             var appLogs = DatabaseService.GetPagedAppLogsWithFilter(filter, page, pageSize, sortOrder);
-            var logViewModels = AppLogViewModelsFromEntities(appLogs);
-            return logViewModels;
+            if (appLogs != null)
+            {
+                return BuildAppLogViewModels(appLogs);
+            }
+            return new List<AppLogEntryViewModel>();
         }
 
-        private List<IconLogEntryViewModel> AppLogViewModelsFromEntities(IEnumerable<IAppLog> appLogs)
+        private List<AppLogEntryViewModel> BuildAppLogViewModels(IEnumerable<IAppLog> appLogs)
         {
-            var logViewModels = new List<IconLogEntryViewModel>(appLogs.Count());
+            var logViewModels = new List<AppLogEntryViewModel>(appLogs.Count());
             foreach (var appLog in appLogs)
             {
-                logViewModels.Add(new IconLogEntryViewModel(appLog));
+                logViewModels.Add(new AppLogEntryViewModel(appLog));
             }
             return logViewModels;
         }
 
-        public IconLogEntryViewModel GetSingleAppLog(int appLogId)
+        public AppLogEntryViewModel GetSingleAppLog(int appLogId)
         {
             var appLog = DatabaseService.GetSingleAppLog(appLogId);
-            var logViewModel = new IconLogEntryViewModel(appLog);
+            var logViewModel = new AppLogEntryViewModel(appLog);
             return logViewModel;
         }
 
-        public RecentLogEntriesReportViewModel GetRecentLogEntriesReportForApp(string appName, TimeSpan timePeriod, LoggingLevel logLevel)
+        public AppRecentErrorsReportViewModel GetRecentLogEntriesReportForApp(string appName, TimeSpan timePeriod, LoggingLevel logLevel)
         {
             var logEntryReport = DatabaseService.GetRecentLogEntriesReport(appName, timePeriod, logLevel);
             return LogEntryReportViewModelFromEntity(logEntryReport);
         }
 
-        public RecentLogEntriesReportViewModel GetRecentLogEntriesReportForApp(int appID, TimeSpan timePeriod, LoggingLevel logLevel)
+        public AppRecentErrorsReportViewModel GetRecentLogEntriesReportForApp(int appID, TimeSpan timePeriod, LoggingLevel logLevel)
         {
             var logEntryReport = DatabaseService.GetRecentLogEntriesReport(appID, timePeriod, logLevel);
             return LogEntryReportViewModelFromEntity(logEntryReport);
         }
 
-        public RecentLogEntriesReportViewModel LogEntryReportViewModelFromEntity(IAppLogSummary logEntryReport)
+        internal AppRecentErrorsReportViewModel LogEntryReportViewModelFromEntity(IAppLogSummary logEntryReport)
         {
-            var logEntryReportViewModel = new RecentLogEntriesReportViewModel(logEntryReport);
+            var logEntryReportViewModel = new AppRecentErrorsReportViewModel(IconOrMammothEnum.Icon, logEntryReport);
             return logEntryReportViewModel;
         }
 
-        public IEnumerable<RecentLogEntriesReportViewModel> GetEmptyLogEntriesReportList(IEnumerable<IconLoggedAppViewModel> iconAppDefinitions)
+        public List<AppRecentErrorsReportViewModel> BuildEmptyRecentLogReport()
         {
+            var iconAppDefinitions = GetApps();
             if (iconAppDefinitions != null)
             {
                 var emptyLogEntryReports = iconAppDefinitions
                     .Where(appDef => appDef.AppID > 0)
                     .GroupBy(appDef => appDef.AppID)
-                    .Select(appDefWithId => new RecentLogEntriesReportViewModel(appDefWithId.First()))
+                    .Select(appDefWithId => new AppRecentErrorsReportViewModel(appDefWithId.First()))
                     .ToList();
 
                 return emptyLogEntryReports;
             }
             return null;
-        }
-
-        public int GetAppIdForAppName(string appName)
-        {
-            var app = DatabaseService.GetApp(appName);
-            return app.AppID;
         }
 
         public List<ApiMessageJobSummaryViewModel> GetPagedApiJobSummaries(
@@ -162,7 +199,7 @@ namespace Icon.Dashboard.Mvc.Services
             return jobSummaryViewModels;
         }
 
-        public List<ApiMessageJobSummaryViewModel> JobSummaryViewModelsFromEntities(IEnumerable<IAPIMessageMonitorLog> jobSummaries)
+        internal List<ApiMessageJobSummaryViewModel> JobSummaryViewModelsFromEntities(IEnumerable<IAPIMessageMonitorLog> jobSummaries)
         {
             var jobSummaryViewModels = new List<ApiMessageJobSummaryViewModel>(jobSummaries.Count());
             foreach (var entity in jobSummaries)
@@ -179,7 +216,7 @@ namespace Icon.Dashboard.Mvc.Services
             return jobSummaryReportViewModel;
         }
 
-        public ApiMessageJobTimedReportViewModel JobSummaryReportViewModelFromEntity(IApiJobSummary jobSummaryReport)
+        internal ApiMessageJobTimedReportViewModel JobSummaryReportViewModelFromEntity(IApiJobSummary jobSummaryReport)
         {
             var jobSummaryReportViewModel = new ApiMessageJobTimedReportViewModel(jobSummaryReport);
             return jobSummaryReportViewModel;
@@ -189,6 +226,18 @@ namespace Icon.Dashboard.Mvc.Services
         {
             var pendingMessages = DatabaseService.GetPendingMessageCountByMessageType();
             return new PendingMessagesViewModel(pendingMessages);            
+        }
+
+        private Expression<Func<IAppLog, bool>> GenerateAppLogFilter(int appID, LogErrorLevelEnum errorLevelEnum)
+        {
+            return (appLog) =>
+                appLog.AppID == appID && appLog.Level == errorLevelEnum.ToString();
+        }
+
+        private Expression<Func<IAppLog, bool>> GenerateAppLogFilter(LogErrorLevelEnum errorLevelEnum)
+        {
+            return (appLog) =>
+                appLog.Level == errorLevelEnum.ToString();
         }
     }
 }

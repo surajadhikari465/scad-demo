@@ -19,12 +19,11 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         string controller = "MammothLogs";
 
         [TestMethod]
-        public void MvcRouting_MammothLogsIndexNoId_GetsLogsIndexRoute()
+        public void RegisterRoutes_MammothLogs_Index_NoParam_GetsLogsIndexRoute()
         {
             // Arrange
             string action = "Index";
-            SetupRequestUrl($"~/{controller}/{action}");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
@@ -32,12 +31,11 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_MammothLogsIndexNoId_IdIsOptional()
+        public void RegisterRoutes_MammothLogs_Index_NoParam_ParamIsOptional()
         {
             // Arrange
             string action = "Index";
-            SetupRequestUrl($"~/{controller}/{action}");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
@@ -49,11 +47,10 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_MammothLogsNoActionNoId_DefaultsToIndexRoute()
+        public void RegisterRoutes_MammothLogs_NoAction_NoParam_DefaultsToIndexRoute()
         {
             // Arrange
-            SetupRequestUrl($"~/{controller}");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
@@ -61,11 +58,10 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_MammothLogsNoActionNoId_IdIsOptional()
+        public void RegisterRoutes_MammothLogs_NoAction_NoParam_IdIsOptional()
         {
             // Arrange
-            SetupRequestUrl($"~/{controller}");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
@@ -77,13 +73,12 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_MammothLogsIndexWithId_GetsExpectedRoute()
+        public void RegisterRoutes_MammothLogs_Index_WithParam_GetsExpectedRoute()
         {
             // Arrange
             string action = "Index";
             string appName = "Mammoth Price Controller";
-            SetupRequestUrl($"~/{controller}/{action}/{appName}");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{appName}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
@@ -91,13 +86,12 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_MammothLogsIndexWithId_UsesIdValue()
+        public void RegisterRoutes_MammothLogs_Index_WithParam_UsesParamValue()
         {
             // Arrange
             string action = "Index";
             string appName = "Mammoth Price Controller";
-            SetupRequestUrl($"~/{controller}/{action}/{appName}");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{appName}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert

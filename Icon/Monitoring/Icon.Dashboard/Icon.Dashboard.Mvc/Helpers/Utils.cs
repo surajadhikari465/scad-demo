@@ -1,6 +1,8 @@
-﻿using Icon.Dashboard.Mvc.Models;
+﻿using Icon.Dashboard.Mvc.Enums;
+using Icon.Dashboard.Mvc.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -28,10 +30,12 @@ namespace Icon.Dashboard.Mvc.Helpers
             string environmentClass = "default";
             switch (environment)
             {
-                case EnvironmentEnum.Dev:
+                case EnvironmentEnum.Dev0:
+                case EnvironmentEnum.Dev1:
                     environmentClass = "default";
                     break;
-                case EnvironmentEnum.Test:
+                case EnvironmentEnum.Tst0:
+                case EnvironmentEnum.Tst1:
                     environmentClass = "primary";
                     break;
                 case EnvironmentEnum.QA:
@@ -42,6 +46,9 @@ namespace Icon.Dashboard.Mvc.Helpers
                     break;
                 case EnvironmentEnum.Prd:
                     environmentClass = "danger";
+                    break;
+                case EnvironmentEnum.Custom:
+                    environmentClass = "success";
                     break;
                 case EnvironmentEnum.Undefined:
                 default:
@@ -74,62 +81,12 @@ namespace Icon.Dashboard.Mvc.Helpers
             return levelClass;
         }
 
-        public static string GetIdParameterFronUrl(Uri currentUri)
-        {
-            string requestIdParameter = String.Empty;
-            const string parameterName = "id";
-            // look for an id parameter in the query string
-            var requestQueryDictionary = HttpUtility.ParseQueryString(currentUri.Query);
-            if (requestQueryDictionary != null && requestQueryDictionary.Count > 0 && requestQueryDictionary[parameterName] != null)
-            {
-                requestIdParameter = requestQueryDictionary[parameterName].ToString();
-            }
-            // did we not find a value in the query?
-            if (!String.IsNullOrWhiteSpace(requestIdParameter))
-            {
-                // look in the url itself
-                requestIdParameter = currentUri.Segments.Last();
-            }
-            return requestIdParameter;
-        }
-
         public static string Environment
         {
             get
             {
                 return ConfigurationManager.AppSettings["activeEnvironment"] ?? "localhost";
             }
-        }
-
-        public static string DataFileName
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["pathToXmlDataFile"] ?? DefaultDataFileName;
-            }
-        }
-
-        private const string DefaultDataFileName = "SampleDataFile.xml";
-
-        public static string GetPathForDataFile(HttpServerUtilityBase serverUtility, string dataFileName)
-        //string pathToXsdSchema = "Applications.xsd", bool validateXml = true)
-        {
-            if (serverUtility == null) throw new ArgumentNullException(nameof(serverUtility));
-            if (String.IsNullOrWhiteSpace(dataFileName)) throw new ArgumentNullException(nameof(dataFileName));
-
-            // only map path on the server if it is not already mapped!
-            var mappedDataFilePath = dataFileName.Contains("App_Data")
-                    ? dataFileName
-                    : serverUtility.MapPath("~/App_Data/" + dataFileName);
-
-            if (!File.Exists(mappedDataFilePath))
-            {
-                throw new FileNotFoundException(
-                    String.Format("Unable to find or read application data file for dashboard ('{0}')", mappedDataFilePath)
-                    , mappedDataFilePath);
-            }
-
-            return mappedDataFilePath;
         }
 
         public const StringComparison StrcmpOption = StringComparison.InvariantCultureIgnoreCase;
@@ -144,10 +101,163 @@ namespace Icon.Dashboard.Mvc.Helpers
             }
         }
         
-        public static bool GetMammothDbEnabledFlag()
+        public static List<string> SplitCommaSeparatedValuesToList(string commaSeparatedString)
         {
-            bool.TryParse(ConfigurationManager.AppSettings["mammothDatabaseEnabled"], out bool isEnabled);
-            return isEnabled;
+            var separator = new char[] { ',' };
+            var splitValues = new List<string>();
+            if (!String.IsNullOrWhiteSpace(commaSeparatedString))
+            {
+                splitValues.AddRange(
+                    commaSeparatedString.Split(separator, StringSplitOptions.RemoveEmptyEntries));
+            }
+            return splitValues;
+        }
+
+        public static string[] SplitCommaSeparatedValuesToArray(string commaSeparatedString)
+        {
+            var separator = new char[] { ',' };
+            var splitValues = new string[] { commaSeparatedString };
+            if (!String.IsNullOrWhiteSpace(commaSeparatedString))
+            {
+                splitValues = commaSeparatedString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            }
+            return splitValues;
+        }
+
+        public static Dictionary<T, U> CombineDictionariesIgnoreDuplicates<T, U>(params Dictionary<T, U>[] dictionaries)
+        {
+            if (dictionaries == null)
+            {
+                return new Dictionary<T, U>();
+            }
+            for (int i=0; i<dictionaries.Length; i++)
+            {
+                if (dictionaries[i]==null)
+                {
+                    dictionaries[i] = new Dictionary<T, U>();
+                }
+            }
+            // In case there are any duplicates between the two dictionaries, convert the 
+            // combined dictionary to a lookup (which handles multiple values per key) and 
+            // then re -convert back to a dictionary using only the first value per key
+            var combinedDictionaryWithDuplicatesIgnored = dictionaries.SelectMany(dict => dict)
+                       .ToLookup(pair => pair.Key, pair => pair.Value)
+                       .ToDictionary(group => group.Key, group => group.First());
+            return combinedDictionaryWithDuplicatesIgnored;
+        }
+
+        public static List<string> SplitHostsFromServerUrlSetting(string serverUrlAppSettingValue)
+        {
+            if (String.IsNullOrWhiteSpace(serverUrlAppSettingValue)) return null;
+            var hosts = new List<string>();
+            // server url app setting could contain a single url or two urls separated by a comma
+            var serverUrls = serverUrlAppSettingValue.Split(',');
+            foreach (var serverUrl in serverUrls)
+            {
+                var systemUri = new Uri(serverUrl);
+                if (systemUri.Host.Contains("."))
+                {
+                    //we only want the first element of the domain host (e.g. "myMachine" out of "myMachine.wfm.pvt")
+                    hosts.Add(systemUri.Host.Split('.')[0].ToUpper());
+                }
+                else
+                {
+                    hosts.Add(systemUri.Host.ToUpper());
+                }
+            }
+            return hosts;
+        }
+
+        public static EsbEnvironmentEnum ParseEsbEnvironment(string esbEnvironmentName)
+        {
+            // the name should match the enum
+            Enum.TryParse(esbEnvironmentName, out EsbEnvironmentEnum esbEnum);
+            // ... but in case it doesn't
+            if (esbEnum == EsbEnvironmentEnum.None)
+            {
+                // let's do this the hard way
+                if (esbEnvironmentName.ContainsCaseInsensitve("Dev"))
+                {
+                    if (esbEnvironmentName.ContainsCaseInsensitve("Dup"))
+                    {
+                        esbEnum = EsbEnvironmentEnum.DEV_DUP;
+                    }
+                    else
+                    {
+                        esbEnum = EsbEnvironmentEnum.DEV;
+                    }
+                }
+                else if (esbEnvironmentName.ContainsCaseInsensitve("Test")
+                    || esbEnvironmentName.ContainsCaseInsensitve("Tst"))
+                {
+                    if (esbEnvironmentName.ContainsCaseInsensitve("Dup"))
+                    {
+                        esbEnum = EsbEnvironmentEnum.TEST_DUP;
+                    }
+                    else
+                    {
+                        esbEnum = EsbEnvironmentEnum.TEST;
+                    }
+                }
+                else if (esbEnvironmentName.ContainsCaseInsensitve("QA"))
+                {
+                    if (esbEnvironmentName.ContainsCaseInsensitve("Dup"))
+                    {
+                        esbEnum = EsbEnvironmentEnum.QA_DUP;
+                    }
+                    else if (esbEnvironmentName.ContainsCaseInsensitve("Perf"))
+                    {
+                        esbEnum = EsbEnvironmentEnum.QA_PERF;
+                    }
+                    else
+                    {
+                        esbEnum = EsbEnvironmentEnum.QA_FUNC;
+                    }
+                }
+                else if (esbEnvironmentName.ContainsCaseInsensitve("Prd")
+                    || esbEnvironmentName.ContainsCaseInsensitve("Prod"))
+                {
+                    esbEnum = EsbEnvironmentEnum.PRD;
+                }
+            }
+            return esbEnum;
+        }
+
+        public static void ThrowIfFileNotFound(string externalConfigFilePath, string activityForErrorMessage )
+        {
+            VerifyExternalFilePath(externalConfigFilePath, activityForErrorMessage, true);
+        }
+
+        public static bool VerifyExternalFilePath(string externalConfigFilePath, string activityForErrorMessage, bool shouldThrowException = true)
+        {
+            if (string.IsNullOrEmpty(externalConfigFilePath))
+            {
+                if (shouldThrowException)
+                {
+                    throw new ArgumentNullException(nameof(externalConfigFilePath),
+                        $"Error attempting to {activityForErrorMessage}. File path parameter must be provided but was null/empty.");
+                }
+                return false;
+            }
+            if (!File.Exists(externalConfigFilePath))
+            {
+                if (shouldThrowException)
+                {
+                    throw new FileNotFoundException
+                        ($"Error attempting to {activityForErrorMessage}. File not found- path provided: \"", $"{externalConfigFilePath}\"");
+                }
+                return false;
+            }
+            return true;
+        }
+    }
+
+    public static class StringExtensions
+    {
+        public static bool ContainsCaseInsensitve(this string source, string toCheck)
+        {
+            var caseInsensitiveComparisonType = StringComparison.CurrentCultureIgnoreCase;
+            return source?.IndexOf(toCheck, caseInsensitiveComparisonType) >= 0;
         }
     }
 }

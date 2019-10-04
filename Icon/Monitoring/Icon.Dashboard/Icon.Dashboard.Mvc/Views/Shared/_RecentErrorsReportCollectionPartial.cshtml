@@ -1,0 +1,35 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.RecentErrorsReportCollectionViewModel
+
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapsible">Model.PartialViewTitle</a>
+        </h4>
+    </div>
+    <div id="collapsible" class="panel-collapse">
+        <div class="panel-body">
+            <div class="panel-group">
+                @foreach (var recentErrorReport in Model.Reports)
+                {
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="panel panel-default panel-horizontal">
+                            <div class="panel-body" id="logEntryReport@(recentErrorReport.AppID)">
+                                @{Html.RenderPartial("_RecentErrorsReportPartial", recentErrorReport);}
+                            </div>
+                            <div class="panel-footer">
+                                @using (Ajax.BeginForm(Model.ActionForRecentErrors, Model.ControllerName, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "logEntryReport" + recentErrorReport.AppID.ToString(), OnFailure = "getRecentErrorsFailed" }))
+                                {
+                                    <input class="hidden" id="appID" name="appID" value="@recentErrorReport.AppID" />
+                                    <input class="hidden" id="hours" name="hours" value="@Model.HoursConsideredRecent" />
+                                    <input type="submit" class="btn btn-info btn-sm" value="↻" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+

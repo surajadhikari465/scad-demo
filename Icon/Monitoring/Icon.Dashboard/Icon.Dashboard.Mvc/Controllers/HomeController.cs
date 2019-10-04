@@ -8,206 +8,208 @@ using Icon.Dashboard.Mvc.Services;
 using Icon.Dashboard.Mvc.Helpers;
 using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.Filters;
-using System.Security.Principal;
-using System.IO;
-using System.Configuration;
-using System.Xml.Linq;
+using Icon.Dashboard.Mvc.Enums;
 
 namespace Icon.Dashboard.Mvc.Controllers
 {
     public class HomeController : BaseDashboardController
     {
-        protected IEsbEnvironmentManager esbEnvironmentManager { get; private set; }
-        protected IRemoteWmiServiceWrapper remoteServicesService { get; private set; }
-
-        public HomeController() : this(null, null, null, null, null ) { }
+        public HomeController() : this(null, null, null, null, null, null) { }
 
         public HomeController(
-            IDashboardEnvironmentManager environmentManager = null,
+            IDashboardAuthorizer dashboardAuthorizer = null,
+            IDashboardDataManager dashboardConfigManager = null,
             IIconDatabaseServiceWrapper iconDbService = null,
             IMammothDatabaseServiceWrapper mammothDbService = null,
-            IEsbEnvironmentManager esbEnvironmentManager = null,
+            IEnvironmentCookieManager cookieManager = null,
             IRemoteWmiServiceWrapper remoteServicesService = null)
-            : base (environmentManager, iconDbService, mammothDbService)
+            : base (dashboardAuthorizer, dashboardConfigManager, iconDbService, mammothDbService)
         {
-            EnvironmentCookieName = "environmentCookie";
-            EnvironmentAppServersCookieName = "environmentAppServersCookie";
-            EnvironmentCookieDurationHours = GetEnvironmentCookieDurationValue();
-            this.esbEnvironmentManager = esbEnvironmentManager ?? new EsbEnvironmentManager();
-            this.remoteServicesService = remoteServicesService ?? new RemoteWmiServiceWrapper(Utils.GetMammothDbEnabledFlag(), iconDbService, mammothDbService, esbEnvironmentManager);
+            this.CookieManager = cookieManager ??
+                new EnvironmentCookieManager(
+                    DashboardGlobals.ConfigData.EnvironmentCookieDurationHours,
+                    DashboardGlobals.ConfigData.EnvironmentCookieName,
+                    DashboardGlobals.ConfigData.EnvironmentAppServersCookieName);
+            this.RemoteServicesService = remoteServicesService ??  new RemoteWmiServiceWrapper();
         }
 
-        #region GET
-      
+        protected IEnvironmentCookieManager CookieManager { get; private set; }
+        protected IRemoteWmiServiceWrapper RemoteServicesService { get; private set; }
+
         [HttpGet]
-        [MenuOptionsFilter]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
-        public ActionResult Index(string environment = null)
+        [DashboardAuthorizer(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
+        public ActionResult Index()
         {
-            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
-            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
+            var altEnvironment = CookieManager.GetEnvironmentCookieIfPresent(Request);
+            DashboardDataService.SetPermissionsForActiveEnvironment(base.UserMayEdit(), altEnvironment);
 
-            var chosenEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host, environment);
-            SetEnvironmentCookies(chosenEnvironment, Response);
-            ViewBag.Environment = chosenEnvironment.Name;
+            var iconApps = base.IconDatabaseService.GetApps();
+            var mammothApps = base.MammothDatabaseService.GetApps();
 
-            var commandsEnabled = !EnvironmentManager.EnvironmentIsProduction(chosenEnvironment) &&
-                DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
-            ViewBag.CommandsEnabled = commandsEnabled;
+            var serviceViewModels = RemoteServicesService.LoadRemoteServices(
+                DashboardDataService.ActiveEnvironment.AppServers,
+                DashboardDataService.AreChangesAllowed,
+                iconApps,
+                mammothApps,
+                DashboardDataService.ConfigData.EnvironmentDefinitions,
+                DashboardDataService.ConfigData.EsbEnvironmentDefinitions);
 
-            var appViewModels = remoteServicesService.LoadRemoteServices(chosenEnvironment, commandsEnabled);
-            return View(appViewModels);
+            var globalViewModel = base.BuildGlobalViewModel();
+            globalViewModel.ViewTitle = "Icon Dashboard";
+            ViewBag.GlobalViewData = globalViewModel;
+
+            //TODO change in views to use GlobalViewData
+            ViewBag.CommandsEnabled = DashboardDataService.AreChangesAllowed;
+            ViewBag.Environment = DashboardDataService.ActiveEnvironment.Name;
+
+            return View(serviceViewModels);
         }
 
         [HttpGet]
-        [MenuOptionsFilter]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
+        [DashboardAuthorizer(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
+        public ActionResult SetAlternateEnvironment(string environment)
+        {
+            //environment parameter is used to allow selecting an alternate environment (other than the native hosting one)
+            if (!string.IsNullOrWhiteSpace(environment)
+                && Enum.TryParse(environment, out EnvironmentEnum altEnvironmentEnum))
+            {
+                if (altEnvironmentEnum == DashboardDataService.ConfigData.HostingEnvironmentSetting)
+                {
+                    CookieManager.ClearEnvironmentCookies(Request, Response);
+                }
+                else if (altEnvironmentEnum != EnvironmentEnum.Undefined
+                    && altEnvironmentEnum != EnvironmentEnum.Custom )
+                {
+                    var altEnvironmentCookieModel = DashboardDataService.GetEnvironmentCookieModelFromEnum(altEnvironmentEnum);
+
+                    // set the environment cookie with the selected alternate environment
+                    CookieManager.SetEnvironmentCookies(Request, Response, altEnvironmentCookieModel);
+                }
+            }
+            
+            return RedirectToAction(Constants.MvcNames.HomeIndexActionName, Constants.MvcNames.HomeControllerName);
+        }
+
+        [HttpGet]
+        [DashboardAuthorizer(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Custom()
         {
-            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
-            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
+            var altEnvironment = CookieManager.GetEnvironmentCookieIfPresent(Request);
+            DashboardDataService.SetPermissionsForActiveEnvironment(base.UserMayEdit(), altEnvironment);
 
-            var chosenEnvironment = GetEnvironmentFromCookiesIfPresentOrDefault(Request, EnvironmentManager);
-            ViewBag.Environment = chosenEnvironment.Name;
-            var environmentCollection = EnvironmentManager.BuildEnvironmentCollection(chosenEnvironment);
+            var environmentCollection = DashboardDataService.GetEnvironmentViewModels();
 
+            //var globalViewModel = base.BuildGlobalViewModel();
+            var globalViewModel = base.BuildGlobalViewModel();
+            //TODO change in views to use GlobalViewData
+            ViewBag.GlobalViewData = globalViewModel;
             return View(environmentCollection);
         }
 
         [HttpGet]
-        [MenuOptionsFilter]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
-        public ActionResult Edit(string server, string application)
+        [DashboardAuthorizer(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
+        public ActionResult Edit(string appServer, string serviceName)
         {
-            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
-            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
-
-            var chosenEnvironment = GetEnvironmentFromCookiesIfPresentOrDefault(Request, EnvironmentManager);
-            ViewBag.Environment = chosenEnvironment.Name;
-            SetEnvironmentCookies(chosenEnvironment, Response);
-
-            var commandsEnabled =  !EnvironmentManager.EnvironmentIsProduction(chosenEnvironment) &&
-                DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
-            ViewBag.CommandsEnabled = commandsEnabled;
-
-            var appViewModel = remoteServicesService.LoadRemoteService(server, application, commandsEnabled);
-
-            return View(appViewModel);
-        }
-        #endregion
-
-        #region POST
-        [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
-        public ActionResult Index(string server, string application, string command)
-        {
-            var envrionmentForApp = EnvironmentManager.GetEnvironmentEnumFromAppserver(server);
-            if (envrionmentForApp != EnvironmentEnum.Prd)
+            if (string.IsNullOrWhiteSpace(appServer) || string.IsNullOrWhiteSpace(serviceName))
             {
-                remoteServicesService.ExecuteServiceCommand(server, application, command);
+                return RedirectToAction("Index");
+            }
+            // get the environment for the server running the service
+            DashboardDataService.SetPermissionsForRemoteEnvironment(base.UserMayEdit(), appServer);
+
+            var iconApps = base.IconDatabaseService.GetApps();
+            var mammothApps = base.MammothDatabaseService.GetApps();
+
+            // load the remote service information
+            var serviceViewModel = RemoteServicesService.LoadRemoteService(
+                appServer,
+                serviceName,
+                DashboardDataService.AreChangesAllowed,
+                iconApps,
+                mammothApps,
+                DashboardDataService.ConfigData.EnvironmentDefinitions,
+                DashboardDataService.ConfigData.EsbEnvironmentDefinitions);
+
+            //do not pass query params here
+            var globalViewModel = base.BuildGlobalViewModel();
+            //TODO set title her or in view?
+            globalViewModel.ViewTitle = $"View\\Edit Configuration for \"{serviceViewModel.DisplayName}\"";
+
+            ViewBag.CommandsEnabled = DashboardDataService.AreChangesAllowed;
+            ViewBag.GlobalViewData = globalViewModel;
+            return View(serviceViewModel);
+        }
+
+        [HttpPost]
+        [DashboardAuthorizer(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
+        public ActionResult Index(string appServer, string serviceName, string command)
+        {
+            // get the environment for the server running the service
+            DashboardDataService.SetPermissionsForRemoteEnvironment(base.UserMayEdit(), appServer);
+  
+            if (DashboardDataService.AreChangesAllowed)
+            {
+                RemoteServicesService.ExecuteServiceCommand(appServer, serviceName, command);
             }
             return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
-        public ActionResult Edit(IconApplicationViewModel appViewModel)
+        [DashboardAuthorizer(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
+        public ActionResult Edit(ServiceViewModel appViewModel)
         {
-            var environmentForApp = EnvironmentManager.GetEnvironmentEnumFromAppserver(appViewModel.Server);
-            if (environmentForApp != EnvironmentEnum.Prd)
+            // get the environment for the server running the service
+            DashboardDataService.SetPermissionsForRemoteEnvironment(base.UserMayEdit(), appViewModel.Server);
+
+            if (DashboardDataService.AreChangesAllowed)
             {
-                remoteServicesService.SaveRemoteServiceAppSettings(appViewModel);
+                RemoteServicesService.UpdateRemoteServiceConfig(appViewModel);
             }
-            return RedirectToAction("Edit", "Home", new { server = appViewModel.Server, application = appViewModel.Name });
+            return RedirectToAction("Edit", "Home", new { appServer = appViewModel.Server, serviceName = appViewModel.Name });
         }
 
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
+        [DashboardAuthorizer(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Custom(DashboardEnvironmentCollectionViewModel customEnvironment)
         {
-            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
-            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
-
             var chosenEnvironment = customEnvironment.Environments[customEnvironment.SelectedEnvIndex];
-            ViewBag.Environment = chosenEnvironment.Name;
-            SetEnvironmentCookies(chosenEnvironment, Response);
-           
-            var commandsEnabled = !EnvironmentManager.EnvironmentIsProduction(chosenEnvironment) && 
-                DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
-            ViewBag.CommandsEnabled = commandsEnabled;
-
-            var appViewModels = remoteServicesService.LoadRemoteServices(chosenEnvironment, commandsEnabled);
-
-            return View("Index", appViewModels);
-        }
-
-        #endregion
-        protected string EnvironmentCookieName { get; set; }
-        protected string EnvironmentAppServersCookieName { get; set; }
-        protected int EnvironmentCookieDurationHours { get; set; }
-
-        protected void SetEnvironmentCookies(DashboardEnvironmentViewModel selectedEnvironment, HttpResponseBase response)
-        {
-            // store the chosen environment in a cookie
-            var environmentCookie = new HttpCookie(EnvironmentCookieName, selectedEnvironment.Name);
-            environmentCookie.Expires = DateTime.Now.AddHours(EnvironmentCookieDurationHours);
-            response.Cookies.Add(environmentCookie);
-
-            var commaSeparatedListOfAppServers = string.Join(",", selectedEnvironment.AppServers.Select(s => s.ServerName));
-            var appServersCookie = new HttpCookie(EnvironmentAppServersCookieName, commaSeparatedListOfAppServers);
-            appServersCookie.Expires = DateTime.Now.AddHours(EnvironmentCookieDurationHours);
-            response.Cookies.Add(appServersCookie);
-        }
-
-        protected DashboardEnvironmentViewModel GetEnvironmentFromCookiesIfPresentOrDefault(HttpRequestBase request, IDashboardEnvironmentManager environmentManager)
-        {
-            // has the client already chosen a particular environment and set a cookie to store the value?
-            var environmentNameCookie = request.Cookies[EnvironmentCookieName];
-            if (environmentNameCookie == null)
+            // only set environment cookie if non-hosting environment selected; otherwise clear cookie
+            if (chosenEnvironment.EnvironmentEnum == DashboardDataService.ActiveEnvironment.EnvironmentEnum)
             {
-                // if not set by cookie or unexpected environment name, determine the default environment based on the hosting web server
-                var defaultEnvironmentForWebhost = environmentManager.BuildEnvironmentViewModelFromWebhost(request.Url.Host);
-                return defaultEnvironmentForWebhost;
+                CookieManager.ClearEnvironmentCookies(Request, Response);
+                DashboardDataService.SetPermissionsForActiveEnvironment(base.UserMayEdit());
             }
             else
             {
-                // cookie was set previously, so client established environment definition to use & we should get that value
-                // get the current environment from the cookie value
-                var environmentName = environmentNameCookie.Value;
-                var environmentAppServers = new List<string>();
-
-                // were specific app servers for the environment set?
-                var appServersCookie = request.Cookies[EnvironmentAppServersCookieName];
-                if (appServersCookie == null)
+                var selectedEnvironment = new EnvironmentCookieModel(chosenEnvironment.Name, chosenEnvironment.EnvironmentEnum);
+                if (chosenEnvironment.AppServers!=null && chosenEnvironment.AppServers.Count>0)
                 {
-                    // try to get default app servers for environment 
-                    if (Enum.TryParse(environmentName, out EnvironmentEnum chosenEnvironmentEnum))
+                    foreach(var appServer in chosenEnvironment.AppServers)
                     {
-                        environmentAppServers = environmentManager.GetDefaultAppServersForEnvironment(chosenEnvironmentEnum);
+                        selectedEnvironment.AppServers.Add(appServer.ServerName);
                     }
                 }
-                else
-                {
-                    environmentAppServers = appServersCookie.Value.Split(',').ToList();
-                }
-                var customEnvironmentViewModel = new DashboardEnvironmentViewModel
-                {
-                    Name = environmentName,
-                    AppServers = environmentAppServers
-                        .Select(s => new AppServerViewModel { ServerName = s })
-                        .ToList()
-                };
-                return customEnvironmentViewModel;
+                CookieManager.SetEnvironmentCookies(Request, Response, selectedEnvironment);
+                DashboardDataService.SetPermissionsForActiveEnvironment(base.UserMayEdit(), selectedEnvironment);
             }
-        }
 
-        private int GetEnvironmentCookieDurationValue()
-        {
-            const int defaultHours = 1;
-            var appSettingForCookieDuration = ConfigurationManager.AppSettings["environmentCookieDurationHours"];
-            return int.TryParse(appSettingForCookieDuration ?? string.Empty, out int hours)
-                ? hours
-                : defaultHours;
+            var iconApps = base.IconDatabaseService.GetApps();
+            var mammothApps = base.MammothDatabaseService.GetApps();
+
+            var appViewModels = RemoteServicesService.LoadRemoteServices(
+                DashboardDataService.ActiveEnvironment.AppServers,
+                DashboardDataService.AreChangesAllowed,
+                iconApps,
+                mammothApps,
+                DashboardDataService.ConfigData.EnvironmentDefinitions,
+                DashboardDataService.ConfigData.EsbEnvironmentDefinitions);
+
+            var globalViewModel = base.BuildGlobalViewModel();
+            globalViewModel.ViewTitle = $"Icon Dashboard ({DashboardDataService.ActiveEnvironment.Name} Services)";
+            //ViewBag.Environment = chosenEnvironment.Name;
+            ViewBag.CommandsEnabled = DashboardDataService.AreChangesAllowed;
+            ViewBag.GlobalViewData = globalViewModel;
+            return View("Index", appViewModels);
         }
     }
 }

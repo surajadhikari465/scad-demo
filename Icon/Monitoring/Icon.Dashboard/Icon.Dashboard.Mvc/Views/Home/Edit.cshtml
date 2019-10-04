@@ -1,6 +1,7 @@
-﻿@model Icon.Dashboard.Mvc.ViewModels.IconApplicationViewModel
+﻿@model Icon.Dashboard.Mvc.ViewModels.ServiceViewModel
 
 @{
+    var globalViewData = ViewBag.GlobalViewData as Icon.Dashboard.Mvc.ViewModels.GlobalViewData;
     string title = String.Format("View\\Edit Configuration for \"{0}\"", Model.DisplayName);
     ViewBag.Title =title;
 }

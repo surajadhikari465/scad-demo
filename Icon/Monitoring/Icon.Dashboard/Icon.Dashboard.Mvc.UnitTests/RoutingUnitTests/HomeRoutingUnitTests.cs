@@ -19,12 +19,11 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         string controller = "Home";
 
         [TestMethod]
-        public void MvcRouting_HomeIndexNoId_GetsHomeIndexRoute()
+        public void RegisterRoutes_Home_Index_NoParam_GetsHomeIndexRoute()
         {
             // Arrange
             string action = "Index";
-            SetupRequestUrl($"~/{controller}/{action}");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
@@ -32,11 +31,10 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_HomeNoActionNoId_GetsHomeIndexRoute()
+        public void RegisterRoutes_Home_NoAction_NoParam_ShouldRouteToDefaultHome()
         {
             // Arrange
-            SetupRequestUrl($"~/{controller}");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
@@ -44,13 +42,12 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_HomeIndexWithId_GetsHomeIndexRoute()
+        public void RegisterRoutes_Home_Index_WithParam_GetsHomeIndexRoute()
         {
             // Arrange
             string action = "Index";
-            string id = "555";
-            SetupRequestUrl($"~/{controller}/{action}/{id}");
-            var routes = RegisterRoutesForTest();
+            string environment = "Tst0";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{environment}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
@@ -58,126 +55,27 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_HomeIndexWithId_GetsHomeIndexRoute_IgnoresId()
+        public void RegisterRoutes_Home_Index_WithParam_GetsHomeIndexRoute_IgnoresParam()
         {
             // Arrange
             string action = "Index";
-            string id = "555";
-            SetupRequestUrl($"~/{controller}/{action}/{id}");
-            var routes = RegisterRoutesForTest();
+            string environment = "Perf";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{environment}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
-            AssertUndesirableRouteDataIsAbsent(routeData, new List<string>() { "id" });
-        }
-
-        [TestMethod]
-        public void MvcRouting_HomeEditWithQueryParameters_GetsHomeEditRoute()
-        {
-            // Arrange
-            string action = "Edit";
-            string param1 = "aServer";
-            string param2 = "myApplication";
-            SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
-            var routes = RegisterRoutesForTest();
-            // Act
-            RouteData routeData = routes.GetRouteData(moqContext.Object);
-            // Assert
-            AssertExpectedRouteControllerAndAction(routeData: routeData, controller: "Home", action: action);
-        }
-
-        [TestMethod]
-        public void MvcRouting_EditWithQueryParameters_HasExectedQueryValues()
-        {
-            // Arrange
-            string action = "Edit";
-            string param1 = "aServer";
-            string param2 = "myApplication";
-            SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
-            var routes = RegisterRoutesForTest();
-            // Act
-            RouteData routeData = routes.GetRouteData(moqContext.Object);
-            // Assert
-            var expectedValues = new Dictionary<string, object>()
-            {
-                {"server", param1 },
-                {"application", param2 } 
-            };
-            AssertDesiredRouteDataIsPresent(routeData, expectedValues);
-        }
-
-        [TestMethod]
-        public void MvcRouting_HomeCreateNoId_GetsHomeCreateRoute()
-        {
-            // Arrange
-            string action = "Create";
-            SetupRequestUrl($"~/{controller}/{action}");
-            var routes = RegisterRoutesForTest();
-            // Act
-            RouteData routeData = routes.GetRouteData(moqContext.Object);
-            // Assert
-            AssertExpectedRouteControllerAndAction(routeData: routeData, controller: "Home", action: "Create");
-        }
-
-        [TestMethod]
-        public void MvcRouting_HomeCreateWithId_GetsHomeCreateRoute_ShouldIgnoreId()
-        {
-            // Arrange
-            string action = "Create";
-            string id = "235";
-            SetupRequestUrl($"~/{controller}/{action}/{id}");
-            var routes = RegisterRoutesForTest();
-            // Act
-            RouteData routeData = routes.GetRouteData(moqContext.Object);
-            // Assert
-            var routingDataThatShouldNotBeThere = new List<string>() { "id" };
+            var routingDataThatShouldNotBeThere = new List<string>() { environment };
             AssertUndesirableRouteDataIsAbsent(routeData, routingDataThatShouldNotBeThere);
         }
 
         [TestMethod]
-        public void MvcRouting_HomeTaskPartialWithQueryParameters_GetsHomeTaskPartialRoute()
+        public void RegisterRoutes_Home_Edit_WithParams_GetsHomeEditRoute()
         {
             // Arrange
-            string action = "TaskPartial";
-            string param1 = "aServer";
-            string param2 = "myApplication";
-            SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
-            var routes = RegisterRoutesForTest();
-            // Act
-            RouteData routeData = routes.GetRouteData(moqContext.Object);
-            // Assert
-            AssertExpectedRouteControllerAndAction(routeData: routeData, controller: "Home", action: action );
-        }
-
-        [TestMethod]
-        public void MvcRouting_HomeTaskPartialWithQueryParameters_HasExectedQueryValues()
-        {
-            // Arrange
-            string action = "TaskPartial";
-            string param1 = "aServer";
-            string param2 = "myApplication";
-            SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
-            var routes = RegisterRoutesForTest();
-            // Act
-            RouteData routeData = routes.GetRouteData(moqContext.Object);
-            // Assert
-            var expectedValues = new Dictionary<string, object>()
-            {
-                {"server", param1 },
-                {"application", param2 } 
-            };
-            AssertDesiredRouteDataIsPresent(routeData, expectedValues);
-        }
-
-        [TestMethod]
-        public void MvcRouting_HomeIconApiServicePartialWithQueryParameters_GetsHomeTaskPartialRoute()
-        {
-            // Arrange
-            string action = "IconApiServicePartial";
-            string param1 = "aServer";
-            string param2 = "myApplication";
-            SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
-            var routes = RegisterRoutesForTest();
+            string action = "Edit";
+            string appServerParam = "aServer";
+            string serviceNameParam = "myApplication";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{appServerParam}/{serviceNameParam}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
@@ -185,23 +83,117 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_HomeIconApiServicePartialWithQueryParameters_HasExectedQueryValues()
+        public void RegisterRoutes_Home_Edit_WithParams_HasExectedQueryValues()
         {
             // Arrange
-            string action = "IconApiServicePartial";
-            string param1 = "aServer";
-            string param2 = "myApplication";
-            SetupRequestUrl($"~/{controller}/{action}/{param1}/{param2}");
-            var routes = RegisterRoutesForTest();
+            string action = "Edit";
+            string appServerParam = "aServer";
+            string serviceNameParam = "myApplication";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{appServerParam}/{serviceNameParam}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
             var expectedValues = new Dictionary<string, object>()
             {
-                {"server", param1 },
-                {"application", param2 } 
+                {"appServer", appServerParam },
+                {"serviceName", serviceNameParam } 
             };
             AssertDesiredRouteDataIsPresent(routeData, expectedValues);
+        }
+
+        [TestMethod]
+        public void RegisterRoutes_Home_Edit_NoParams_ShouldRouteToHomeEdit()
+        {
+            // Arrange
+            // will route to Home/Edit then Redirect to Home/Index
+            string action = "Edit";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}");
+            // Act
+            RouteData routeData = routes.GetRouteData(moqContext.Object);
+            // Assert
+            AssertExpectedRouteControllerAndAction(routeData: routeData, controller: "Home", action: "Edit");
+        }
+
+        [TestMethod]
+        public void RegisterRoutes_Home_SetAlternateEnvironment_NoParam_ShouldRouteToDefaultHome()
+        {
+            // Arrange
+            string action = "SetAlternateEnvironment";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}");
+            // Act
+            RouteData routeData = routes.GetRouteData(moqContext.Object);
+            // Assert
+            AssertExpectedRouteControllerAndAction(routeData: routeData, controller: "Home", action: "Index");
+        }
+
+        [TestMethod]
+        public void RegisterRoutes_Home_SetAlternateEnvironment_WithParam_GetsExpectedRoute()
+        {
+            // Arrange
+            string action = "SetAlternateEnvironment";
+            string environment = "Perf";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{environment}");
+            // Act
+            RouteData routeData = routes.GetRouteData(moqContext.Object);
+            // Assert
+            AssertExpectedRouteControllerAndAction(
+                routeData: routeData, controller: "Home", action: "SetAlternateEnvironment");
+        }
+
+        [TestMethod]
+        public void RegisterRoutes_Home_SetAlternateEnvironment_WithParam_GetsExpectedRoute_WithParamValue()
+        {
+            // Arrange
+            string action = "SetAlternateEnvironment";
+            string environment = "Perf";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{environment}");
+            // Act
+            RouteData routeData = routes.GetRouteData(moqContext.Object);
+            // Assert
+            var expectedValues = new Dictionary<string, object>()
+            {
+                {"environment", environment }
+            };
+            AssertDesiredRouteDataIsPresent(routeData, expectedValues);
+        }
+
+        [TestMethod]
+        public void RegisterRoutes_Home_Custom_NoParam_ShouldRouteToDefaultHome()
+        {
+            // Arrange
+            string action = "Custom";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}");
+            // Act
+            RouteData routeData = routes.GetRouteData(moqContext.Object);
+            // Assert
+            AssertExpectedRouteControllerAndAction(routeData: routeData, controller: "Home", action: "Custom");
+        }
+
+        [TestMethod]
+        public void RegisterRoutes_Home_Custom_WithParam_ShouldRouteToDefaultHome()
+        {
+            // Arrange
+            string action = "Custom";
+            string environment = "Tst1";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{environment}");
+            // Act
+            RouteData routeData = routes.GetRouteData(moqContext.Object);
+            // Assert
+            AssertExpectedRouteControllerAndAction(routeData:routeData, controller:"Home", action: "Index");
+        }
+
+        [TestMethod]
+        public void RegisterRoutes_Home_Custom_WithParam_GetsHomeCustomRoute_IgnoresParam()
+        {
+            // Arrange
+            string action = "Custom";
+            string environment = "Tst1";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{environment}");
+            // Act
+            RouteData routeData = routes.GetRouteData(moqContext.Object);
+            // Assert
+            var routingDataThatShouldNotBeThere = new List<string>() { environment };
+            AssertUndesirableRouteDataIsAbsent(routeData, routingDataThatShouldNotBeThere);
         }
     }
 }

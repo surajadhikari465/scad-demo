@@ -1,18 +1,11 @@
-﻿using Icon.Dashboard.Mvc.Models;
+﻿using Icon.Dashboard.Mvc.Enums;
+using Icon.Dashboard.Mvc.Helpers;
+using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.ViewModels;
 using Icon.Dashboard.RemoteServicesAccess;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Web;
-using System.Xml.Linq;
-using System.Data.Common;
-using System.Data.EntityClient;
-using System.Data.SqlClient;
 
 namespace Icon.Dashboard.Mvc.Services
 {
@@ -20,56 +13,81 @@ namespace Icon.Dashboard.Mvc.Services
     {
         public IRemoteWmiAccessService WmiService { get;  set; }
 
-        public IIconDatabaseServiceWrapper IconDbService { get; set; }
-        public IMammothDatabaseServiceWrapper MammothDbService { get; set; }
-        public IEsbEnvironmentManager EsbEnvironmentManager { get; set; }
-
-        public bool MammothDbEnabled { get; set; }
-
         public RemoteWmiServiceWrapper(
-            bool useMammothDb = false,
-            IIconDatabaseServiceWrapper iconDbService = null,
-            IMammothDatabaseServiceWrapper mammothDbService = null,
-            IEsbEnvironmentManager esbEnvironmentManager = null)
-       : this(useMammothDb, null, iconDbService, mammothDbService, esbEnvironmentManager) { }
-
-        public RemoteWmiServiceWrapper(
-            bool useMammothDb = false,
-            IRemoteWmiAccessService dataService = null,
-            IIconDatabaseServiceWrapper iconDbService = null,
-            IMammothDatabaseServiceWrapper mammothDbService = null,
-            IEsbEnvironmentManager esbEnvironmentManager = null)
+            IRemoteWmiAccessService dataService = null)
         {
-            this.MammothDbEnabled = useMammothDb;
             this.WmiService = dataService ?? new RemoteWmiAccessService();
-            this.IconDbService = iconDbService ?? new IconDatabaseServiceWrapper();
-            this.MammothDbService = this.MammothDbEnabled ? mammothDbService ?? new MammothDatabaseServiceWrapper() : null;
-            this.EsbEnvironmentManager = esbEnvironmentManager ?? new EsbEnvironmentManager();
         }
 
-        public IconApplicationViewModel LoadRemoteService(string server, string application, bool commandsEnabled)
+        public ServiceViewModel LoadRemoteService(
+            string server,
+            string application,
+            bool commandsEnabled,
+            List<LoggedAppViewModel> iconLoggedApps,
+            List<LoggedAppViewModel> mammothLoggedApps,
+            List<EnvironmentModel> environments,
+            List<EsbEnvironmentModel> esbEnvironments,
+            IExternalConfigXmlManager serviceConfigDataReader = null)
         {
             var remoteServiceModel = WmiService.LoadRemoteService(server, application);
 
-            return CreateViewModel(server, remoteServiceModel, commandsEnabled);
+            return CreateServiceViewModel(
+                server,
+                remoteServiceModel,
+                commandsEnabled,
+                iconLoggedApps,
+                mammothLoggedApps,
+                environments,
+                esbEnvironments,
+                serviceConfigDataReader);
         }
 
-        public IconApplicationViewModel CreateViewModel(string serverName,
-           RemoteServiceModel remoteService,
-           bool commandsEnabled)
+        public List<ServiceViewModel> LoadRemoteServices(
+            List<string> appServerNames,
+            bool commandsEnabled,
+            List<LoggedAppViewModel> iconLoggedApps,
+            List<LoggedAppViewModel> mammothLoggedApps,
+            List<EnvironmentModel> environments,
+            List<EsbEnvironmentModel> esbEnvironments)
         {
-            var iconApps = IconDbService.GetApps();
-            var mammothApps = this.MammothDbEnabled ? MammothDbService.GetApps() : new List<IconLoggedAppViewModel>();
-            var esbEnvironments = EsbEnvironmentManager.GetEsbEnvironmentDefinitions();
+            var appViewModels = new List<ServiceViewModel>();
 
-            var appViewModel = new IconApplicationViewModel()
+            foreach (var serverName in appServerNames)
+            {
+                var remoteServiceModels = WmiService.LoadRemoteServices(serverName);
+
+                appViewModels.AddRange(remoteServiceModels.Select(svc =>
+                    CreateServiceViewModel(
+                        serverName,
+                        svc,
+                        commandsEnabled,
+                        iconLoggedApps,
+                        mammothLoggedApps,
+                        environments,
+                        esbEnvironments,
+                        null)));
+            }
+
+            return appViewModels;
+        }
+
+        public ServiceViewModel CreateServiceViewModel(
+            string serverName,
+            RemoteServiceModel remoteService,
+            bool commandsEnabled,
+            List<LoggedAppViewModel> iconLoggedApps,
+            List<LoggedAppViewModel> mammothLoggedApps,
+            List<EnvironmentModel> environments,
+            List<EsbEnvironmentModel> esbEnvironments,
+            IExternalConfigXmlManager serviceConfigDataReader = null)
+        {
+            var appViewModel = new ServiceViewModel()
             {
                 Name = remoteService.FullName,
                 DisplayName = remoteService.DisplayName,
                 Server = serverName,
                 Description = remoteService.Description,
                 Family = remoteService.FullName.Contains("Mammoth") ? "Mammoth" : "Icon",
-                ConfigFilePath = remoteService.ConfigFilePath,
                 CommandsEnabled = commandsEnabled,
                 Status = remoteService.State,
                 ValidCommands = SetValidCommands(remoteService.State),
@@ -77,81 +95,52 @@ namespace Icon.Dashboard.Mvc.Services
                 LoggingID = 0,
                 LoggingName = "",
                 AppSettings = new Dictionary<string, string>(),
-                EsbConnectionSettings = new Dictionary<string, string>(),
+                EsbConnections = new List<EsbConnectionViewModel>(),
                 HostName = remoteService.SystemName,
                 AccountName = remoteService.RunningAs.Replace(@"wfm\", "").Replace(@"@wfm.pvt", "")
             };
 
-            try
+            // when testing or using service on local machine, use config filename as is
+            //var serviceConfigFilePath = Path.GetFileName(remoteService.ConfigFilePath);
+            var serviceConfigFilePath = remoteService.ConfigFilePath;
+            if (!IsRunningAsUnitTest())
             {
-                ;
-                if (IsRunningAsUnitTest())
-                {
-                    // testing or loading service from local machine, just use filename without path
-                    appViewModel.ConfigFilePath = Path.GetFileName(appViewModel.ConfigFilePath);
-                }
-                else
-                {
-                    appViewModel.ConfigFilePath = GetConfigUncPath(appViewModel.Server, remoteService.ConfigFilePath);
-                }
-
-                if (System.IO.File.Exists(appViewModel.ConfigFilePath))
-                {
-                    appViewModel.ConfigFilePathIsValid = true;
-                    // load the application's config file
-                    var appConfig = XDocument.Load(appViewModel.ConfigFilePath);
-
-                    //populate app and esb settings from config file
-                    var allAppSettings = appConfig.Root.Element("appSettings").Elements()
-                        .Select(e => new
-                        {
-                            Key = e.Attribute("key").Value,
-                            Value = e.Attribute("value").Value
-                        });
-
-                    var nonEsbSettings = allAppSettings
-                        .Where(s => !EsbAppSettings.EsbAppSettingsNames.Contains(s.Key))
-                        .ToList();
-                    nonEsbSettings.ForEach(e => appViewModel.AppSettings.Add(e.Key, e.Value));
-
-                    var esbEnvironmentSettings = allAppSettings
-                        .Where(s => EsbAppSettings.EsbAppSettingsNames.Contains(s.Key))
-                        .ToList();
-                    esbEnvironmentSettings.ForEach(e => appViewModel.EsbConnectionSettings.Add(e.Key, e.Value));
-
-                    appViewModel.CurrentEsbEnvironment = FindEsbEnvironmentForApp(esbEnvironments, appViewModel.EsbConnectionSettings);
-
-                    // populate logging id and name from config file and database App data 
-                    if (appViewModel.Family.Contains("Mammoth"))
-                    {
-                        appViewModel.LoggingID = GetLoggingIdFromConfig(appConfig);
-                        if (appViewModel.LoggingID.GetValueOrDefault(0) > 0)
-                        {
-                            appViewModel.LoggingName = GetLoggingNameFromId(mammothApps, appViewModel.LoggingID.Value);
-                        }
-                    }
-                    else
-                    {
-                        appViewModel.LoggingID = GetLoggingIdFromConfig(appConfig);
-                        if (appViewModel.LoggingID.GetValueOrDefault(0) > 0)
-                        {
-                            appViewModel.LoggingName = GetLoggingNameFromId(iconApps, appViewModel.LoggingID.Value);
-                        }
-                    }
-
-                    // load database configuration
-                    var dbInfo = ReadDatabaseConfiguration(appViewModel.ConfigFilePath);
-                    appViewModel.DatabaseConfiguration = new AppDatabaseConfigurationViewModel(dbInfo);
-                }
-                else
-                {
-                    appViewModel.ConfigFilePathIsValid = false;
-                }
+                // pre-pend the UNC path/share "\\SERVER\E$" to the local config path returned from WMI
+                serviceConfigFilePath = PrependConfigUncPath(appViewModel.Server, remoteService.ConfigFilePath);
             }
-            catch (Exception ex)
+            // open and read the service's config file
+            if (serviceConfigDataReader == null)
             {
-                // eat error for now
-                string errMsg = ex.Message;
+                serviceConfigDataReader = new ExternalConfigXmlManager(serviceConfigFilePath);
+            }
+            var serviceConfigData = serviceConfigDataReader.ReadConfigData(serviceConfigFilePath, environments, esbEnvironments);
+
+            // set service model properties from config data
+            appViewModel.ConfigFilePath = serviceConfigData.ConfigFilePath;
+            appViewModel.ConfigFilePathIsValid = serviceConfigData.IsConfigFilePathValid;
+            if (appViewModel.ConfigFilePathIsValid)
+            {
+                // populate app settings dictionary for service
+                foreach (var kvp in serviceConfigData.NonEsbAppSettings)
+                {
+                    appViewModel.AppSettings.Add(kvp.Key, kvp.Value);
+                }
+                // determine the service's ESB settings (if any)
+                appViewModel.EsbConnections = serviceConfigData.EsbConnections.ToList();
+                appViewModel.HasEsbSettingsInCustomConfigSection = serviceConfigData.HasEsbSettingsInCustomConfigSection;
+                appViewModel.EsbEnvironmentEnum = DetermineEsbEnvironment(esbEnvironments, serviceConfigData.EsbConnections);
+                // populate logging id and name from config file and database App data 
+                appViewModel.LoggingID = serviceConfigData.LoggingID;
+                var appFamily = remoteService.FullName.Contains("Mammoth")
+                    ? IconOrMammothEnum.Mammoth
+                    : IconOrMammothEnum.Icon;
+                appViewModel.LoggingName = GetLoggingNameFromId(
+                    serviceConfigData.LoggingID.GetValueOrDefault(0),
+                    appFamily,
+                    iconLoggedApps,
+                    mammothLoggedApps);
+                // load database configuration
+                appViewModel.DatabaseConfiguration = new AppDatabaseConfigurationViewModel(serviceConfigData.DatabaseConfiguration);
             }
             return appViewModel;
         }
@@ -164,7 +153,7 @@ namespace Icon.Dashboard.Mvc.Services
         ///     "E:\Icon\API Controller Phase 2\Hierarchy\Icon.ApiController.Controller.exe"  -displayname "Icon API Controller - Hierarchy" -servicename "IconAPIController-Hierarchy"</param>
         /// <returns>UNC path to the config file, for example
         ///     "\\vm-icon-test1\E$\Icon\API Controller Phase 2\Hierarchy\Icon.ApiController.Controller.exe.config" </returns>
-        public string GetConfigUncPath(string serverName, string pathName)
+        public string PrependConfigUncPath(string serverName, string pathName)
         {
             // remove quotation marks
             string configPathOnHost = pathName.Replace("\"", "");
@@ -185,25 +174,28 @@ namespace Icon.Dashboard.Mvc.Services
             return configPathOnHost;
         }
 
+        public EsbEnvironmentEnum DetermineEsbEnvironment(
+            List<EsbEnvironmentModel> possibleEsbEnvironments,
+            List<EsbConnectionViewModel> serviceEsbSettings)
+        {
+            if (possibleEsbEnvironments != null 
+                && possibleEsbEnvironments.Count > 0
+                && serviceEsbSettings != null
+                && serviceEsbSettings.Count> 0)
+            {
+                // assume for now that in the case of multiple ESB connections, they are all set for the same environment
+                var settingForEsbServer = serviceEsbSettings[0].ServerUrl;
+                return ExternalConfigXmlManager.DetermineEsbEnvironmentFromServerUrlSetting(
+                    possibleEsbEnvironments, settingForEsbServer);
+            }
+
+            return EsbEnvironmentEnum.None;
+        }
+
         public bool IsRunningAsUnitTest()
         {
             return AppDomain.CurrentDomain.GetAssemblies()
                 .Any(a => a.FullName.StartsWith("Microsoft.VisualStudio.QualityTools.UnitTestFramework"));
-        }
-
-        public List<IconApplicationViewModel> LoadRemoteServices(DashboardEnvironmentViewModel customEnvironment, bool commandsEnabled)
-        {
-            var appViewModels = new List<IconApplicationViewModel>();
-
-            foreach (var serverName in customEnvironment.AppServers.Select(s => s.ServerName))
-            {
-                var remoteServiceModels = WmiService.LoadRemoteServices(serverName);
-
-                appViewModels.AddRange(remoteServiceModels.Select(s =>
-                    CreateViewModel(serverName, s, commandsEnabled)));
-            }
-
-            return appViewModels;
         }
 
         public bool IsStatusGreen(string state)
@@ -250,7 +242,7 @@ namespace Icon.Dashboard.Mvc.Services
             return validCommands;
         }
 
-        public string GetLoggingNameFromId(IEnumerable<IconLoggedAppViewModel> apps, int loggingId)
+        public string GetLoggingNameFromId(IEnumerable<LoggedAppViewModel> apps, int loggingId)
         {
             var loggingName = string.Empty;
             var matchingApp = apps.FirstOrDefault(a => a.AppID == loggingId);
@@ -261,29 +253,27 @@ namespace Icon.Dashboard.Mvc.Services
             return loggingName;
         }
 
-        public int GetLoggingIdFromConfig(XDocument appConfig)
+        public string GetLoggingNameFromId(int appLoggingId,
+            IconOrMammothEnum appFamily,
+            IEnumerable<LoggedAppViewModel> iconLoggedApps,
+            IEnumerable<LoggedAppViewModel> mammothLoggedApps)
         {
-            int loggingId = 0;
-
-            try
+            LoggedAppViewModel matchingApp = null;
+            if (appLoggingId > 0)
             {
-                var nlogElement = appConfig.Root.Elements()
-                        .FirstOrDefault(rootEl => rootEl.Name.ToString().Contains("nlog"));
-                if (nlogElement != null)
+                switch (appFamily)
                 {
-                    var appIdParameter = nlogElement.Descendants()
-                        .FirstOrDefault(d => d.Name.ToString().Contains("parameter") && d.Attribute("name").Value == "@AppId");
-                    if (appIdParameter != null)
-                    {
-                        int.TryParse(appIdParameter.Attribute("layout").Value, out loggingId);
-                    }
+                    case IconOrMammothEnum.Icon:
+                        matchingApp = iconLoggedApps.FirstOrDefault(a => a.AppID == appLoggingId);
+                        break;
+                    case IconOrMammothEnum.Mammoth:
+                        matchingApp = mammothLoggedApps.FirstOrDefault(a => a.AppID == appLoggingId);
+                        break;
+                    default:
+                        break;
                 }
             }
-            catch (Exception)
-            {
-                loggingId = -1;
-            }
-            return loggingId;
+            return matchingApp?.AppName ?? string.Empty;
         }
 
         public void ExecuteServiceCommand(string server, string application, string command)
@@ -311,7 +301,7 @@ namespace Icon.Dashboard.Mvc.Services
             }
         }
 
-        public void RestartServices(IEnumerable<IconApplicationViewModel> applications)
+        public void RestartServices(IEnumerable<ServiceViewModel> applications)
         {
             foreach (var appToRestart in applications)
             {
@@ -321,296 +311,137 @@ namespace Icon.Dashboard.Mvc.Services
             }
         }
 
-        public string FindEsbEnvironmentForApp(IEnumerable<EsbEnvironmentViewModel> allEsbEnvironments, Dictionary<string,string> esbConnectionSettings)
+        /// <summary>
+        /// Re-writes external config files for services so that their ESB settings match
+        ///  the provided ESB environment/service groupings
+        /// </summary>
+        /// <param name="esbEnvironmentsWithServices">View Model from Esb re-configuration action
+        ///   containing ESB environment definitions with lists of remote services: the list of
+        ///   services for each esb environment will have their config files updated in line with 
+        ///   the ESB environment they are grouped under</param>
+        /// <param name="services">list of services</param>
+        public void ReconfigureServiceEsbEnvironmentSettings(
+            List<EsbEnvironmentViewModel> esbEnvironmentsWithServices,
+            List<ServiceViewModel> services,
+            IExternalConfigXmlManager serviceConfigDataWriter = null)
         {
-            var serverUrlKey = nameof(EsbEnvironmentViewModel.ServerUrl);
-            if (allEsbEnvironments == null) throw new ArgumentNullException(nameof(allEsbEnvironments));
-
-            if (esbConnectionSettings.Any() && esbConnectionSettings.ContainsKey(serverUrlKey))
+            if (esbEnvironmentsWithServices == null || services == null)
             {
-                var hostsForApp = Services.EsbEnvironmentManager.GetHostsFromServerUrl(esbConnectionSettings[serverUrlKey]);
-                if (hostsForApp != null)
+                return;
+            }
+            if (serviceConfigDataWriter == null)
+            {
+                serviceConfigDataWriter = new ExternalConfigXmlManager();
+            }
+            foreach (var esbEnvironment in esbEnvironmentsWithServices)
+            {
+                foreach (var serviceMiniModelFromEsbModel in esbEnvironment.AppsInEnvironment)
                 {
-                    foreach (var env in allEsbEnvironments)
+                    var serviceToUpdate = services
+                        .FirstOrDefault(svc =>
+                            svc.Server.Equals(serviceMiniModelFromEsbModel.Server, Utils.StrcmpOption)
+                            && svc.Name.Equals(serviceMiniModelFromEsbModel.Name, Utils.StrcmpOption)
+                            && svc.HasEsbConnections
+                            && svc.EsbEnvironmentEnum != EsbEnvironmentEnum.None
+                            && svc.EsbConnections.Count > 0
+                            && svc.ConfigFilePathIsValid);
+                    if (serviceToUpdate != null)
                     {
-                        var hostsInEsbEnvironment = Services.EsbEnvironmentManager.GetHostsFromServerUrl(env.ServerUrl);
-                        if (hostsInEsbEnvironment != null)
+                        foreach (var esbConnection in serviceToUpdate.EsbConnections)
                         {
-                            foreach (var appHost in hostsForApp)
+                            var esbConnectionType = EsbConnectionViewModel.DetermineEsbConnectionTypeByJmsUsername(esbConnection.JmsUsername);
+                            var updatedEsbSettingsDictionary = BuildEsbAppSettingsForUpdate(esbEnvironment, esbConnectionType);
+
+                            // which type of esb settings are used (app config key/value pairs or esbEnvironments sectio?)
+                            if (serviceToUpdate.HasEsbSettingsInCustomConfigSection)
                             {
-                                if (hostsInEsbEnvironment.Contains(appHost))
-                                {
-                                    return env.Name;
-                                }
+                                serviceConfigDataWriter.ReconfigureEsbEnvironmentCustomConfigSection(
+                                    serviceToUpdate.ConfigFilePath,
+                                    esbConnection.ConnectionName,
+                                    updatedEsbSettingsDictionary);
                             }
-                        }
+                            else
+                            {
+                                serviceConfigDataWriter.UpdateExternalAppSettings(
+                                    serviceToUpdate.ConfigFilePath,
+                                    updatedEsbSettingsDictionary);
+                            }
+                        } 
+                        //update the application model with the ESB environment
+                        serviceToUpdate.EsbEnvironmentEnum = esbEnvironment.EsbEnvironment;
                     }
                 }
             }
-            return string.Empty;
         }
 
-        public void SaveRemoteServiceAppSettings(IconApplicationViewModel appViewModel)
+        public void UpdateRemoteServiceConfig(ServiceViewModel serviceViewModel,
+            IExternalConfigXmlManager serviceConfigDataWriter = null)
         {
-            try
+            if (serviceViewModel != null && serviceViewModel.ConfigFilePathIsValid)
             {
-                var appConfig = XDocument.Load(appViewModel.ConfigFilePath);
-
-                // combine the AppSettings and the ESB-related subset of AppSettings into 1 collection
-                var combinedDictionary = AppConfigAssistant.CombineDictionariesIgnoreDuplicates(
-                    appViewModel.AppSettings, appViewModel.EsbConnectionSettings);
-
-                // create XML elements for each setting
-                var updatedElements = combinedDictionary.Select(i =>
-                        new XElement("add",
-                            new XAttribute("key", i.Key),
-                            new XAttribute("value", i.Value ?? String.Empty)));
-
-                //replace the existing appSettings node in the XML file with the new element collection
-                var configAppSettingsElement = appConfig.Root.Element("appSettings");
-                configAppSettingsElement.ReplaceNodes(updatedElements);
-                appConfig.Save(appViewModel.ConfigFilePath);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public DatabaseDefinition CreateDatabaseDefinitionFromConfigElement(ConnectionStringConfigElement csElement)
-        {
-            var db = new DatabaseDefinition();
-
-            var sqlStringBuilder = new SqlConnectionStringBuilder();
-            if ( !string.IsNullOrWhiteSpace(csElement.ProviderName) && csElement.ProviderName.Contains("EntityClient"))
-            {
-                db.IsEntityFramework = true;
-                var efStringBuilder = new EntityConnectionStringBuilder();
+                if (serviceConfigDataWriter == null)
+                {
+                    serviceConfigDataWriter = new ExternalConfigXmlManager(serviceViewModel.ConfigFilePath);
+                }
                 try
                 {
-                    efStringBuilder.ConnectionString = csElement.ConnectionString;
-                    sqlStringBuilder.ConnectionString = efStringBuilder.ProviderConnectionString;
-                }
-                catch (ArgumentException argEx)
-                {
-                    // the connection string may say it is using EntityClient but not have a valid EF connection string,
-                    //  in which case just use the conection string as-is
-                    sqlStringBuilder.ConnectionString = csElement.ConnectionString;
-                }
-            }
-            else
-            {
-                db.IsEntityFramework = false;
-                sqlStringBuilder.ConnectionString = csElement.ConnectionString;
-            }
+                    var configFilePath = serviceViewModel.ConfigFilePath;
+                    var appSettings = serviceViewModel.AppSettings;
 
-            db.ServerName = sqlStringBuilder.DataSource;
-            db.DatabaseName = sqlStringBuilder.InitialCatalog;
-            db.ConnectionStringName = csElement.Name;
+                    // does the service have ESB connection settings in its app settings?
+                    if (serviceViewModel.HasEsbConnections &&
+                        !serviceViewModel.HasEsbSettingsInCustomConfigSection)
+                    {
+                        // combine the AppSettings and the ESB-related subset of AppSettings into 1 collection
+                        appSettings = Utils.CombineDictionariesIgnoreDuplicates(
+                            serviceViewModel.AppSettings,
+                            serviceViewModel.EsbConnections[0].SettingsAsDictionary());
+                    }
+                    serviceConfigDataWriter.UpdateExternalAppSettings(configFilePath, appSettings);
+                }
+                catch
+                {
 
-            if (csElement.Name.IndexOf("Icon", StringComparison.InvariantCultureIgnoreCase) > -1)
-            {
-                db.Category = DatabaseCategoryEnum.Icon;
-            }
-            else if (csElement.Name.IndexOf("Mammoth", StringComparison.InvariantCultureIgnoreCase) > -1)
-            {
-                db.Category = DatabaseCategoryEnum.Mammoth;
-            }
-            else if (csElement.Name.IndexOf("ItemCatalog", StringComparison.InvariantCultureIgnoreCase) > -1)
-            {
-                db.Category = DatabaseCategoryEnum.IRMA;
-            }
-            else if (csElement.Name.Equals("Vim", StringComparison.InvariantCultureIgnoreCase))
-            {
-                db.Category = DatabaseCategoryEnum.Vim;
-            }
-            else if (csElement.Name.StartsWith("dbLog"))
-            {
-                if (db.DatabaseName.IndexOf("Icon", StringComparison.InvariantCultureIgnoreCase) > -1)
-                {
-                    db.Category = DatabaseCategoryEnum.Icon;
-                }
-                else if (db.DatabaseName.IndexOf("Mammoth", StringComparison.InvariantCultureIgnoreCase) > -1)
-                {
-                    db.Category = DatabaseCategoryEnum.Mammoth;
-                }
-                else if (db.DatabaseName.IndexOf("ItemCatalog", StringComparison.InvariantCultureIgnoreCase) > -1)
-                {
-                    db.Category = DatabaseCategoryEnum.IRMA;
+                    //for now just eat the exception...
                 }
             }
-            else
-            {
-                db.Category = DatabaseCategoryEnum.Other;
-            }
-
-            db.Environment = DetermineDatabaseEnvironment(db.Category, db.ServerName, db.DatabaseName);
-
-            return db;
         }
 
-        public ApplicationDatabaseConfiguration ReadDatabaseConfiguration(string appConfigPath)
+        internal Dictionary<string, string> BuildEsbAppSettingsForUpdate(
+            EsbEnvironmentViewModel esbEnvironment,
+            EsbConnectionTypeEnum esbConnectionType)
         {
-            var dbConfig = new ApplicationDatabaseConfiguration();
+            var updatedSettings = new Dictionary<string, string>();
 
-            if (System.IO.File.Exists(appConfigPath))
+            if (esbEnvironment != null
+                && esbConnectionType != EsbConnectionTypeEnum.None)
             {
-                var appConfig = XDocument.Load(appConfigPath);
-                if (appConfig.Root.Element("connectionStrings").Elements()
-                    .FirstOrDefault(e=>e.Name.ToString().EndsWith("EncryptedData")) != null)
-                {
-                    // encrypted connection string
-                    var encryptedDb = new DatabaseDefinition
-                    {
-                        ServerName = "{Encrypted}",
-                        DatabaseName = "{Encrypted}",
-                        ConnectionStringName = "{Encrypted}",
-                        Environment = EnvironmentEnum.Undefined,
-                        Category = DatabaseCategoryEnum.Encrypted
-                    };
-                    dbConfig.Connections.Add(encryptedDb);
-                }
-                else
-                {
-                    var connectionStringElements = appConfig.Root.Element("connectionStrings").Elements()
-                            .Select(e => new ConnectionStringConfigElement(
-                                name: e.Attribute("name")?.Value,
-                                providerName: e.Attribute("providerName")?.Value,
-                                connectionString: e.Attribute("connectionString")?.Value))
-                            .ToList();
+                updatedSettings.Add(Constants.EsbSettingKeys.ServerUrlKey, esbEnvironment.ServerUrl);
+                updatedSettings.Add(Constants.EsbSettingKeys.TargetHostNameKey, esbEnvironment.TargetHostName);
+                updatedSettings.Add(Constants.EsbSettingKeys.CertificateNameKey, esbEnvironment.CertificateName);
+                //  settings that are the same across environments - no need to update:
+                // CertificateStoreName CertificateStoreLocation SslPassword SessionMode /JmsUsernameIcon /JndiUsernameIcon
 
-                    foreach (var csElement in connectionStringElements)
-                    {
-                        var db = CreateDatabaseDefinitionFromConfigElement(csElement);
-                        dbConfig.Connections.Add(db);
-                    }
-                }
-
-                var nlogElement = appConfig.Root.Elements()
-                    .FirstOrDefault(rootEl => rootEl.Name.ToString().Contains("nlog"));
-                if (nlogElement != null)
+                switch (esbConnectionType)
                 {
-                    // element name may have namespace preceding like "xsi:type" or "{{http://www.w3.org/2001/04/xmlenc#}Name}"
-                    var targetElement = nlogElement.Descendants().FirstOrDefault(e => e.Name.ToString().EndsWith("target"));
-                    if (targetElement != null)
-                    {
-                        if (targetElement.Attributes().Any(a => a.Name.ToString().EndsWith("type"))
-                            && targetElement.Attributes().FirstOrDefault(a => a.Name.ToString().EndsWith("type")).Value == "Database"
-                            && targetElement.Attributes().Any(a => a.Name == "name")
-                            && targetElement.Attributes().Any(a => a.Name == "connectionString"))
-                        {
-                            var loggingCsElement = new ConnectionStringConfigElement(
-                                name: targetElement.Attribute("name").Value,
-                                providerName: "SqlClient",
-                                connectionString: targetElement.Attribute("connectionString").Value
-                            );
-                            var loggingDb = CreateDatabaseDefinitionFromConfigElement(loggingCsElement);
-                            loggingDb.IsUsedForLogging = true;
-                            dbConfig.Connections.Add(loggingDb);
-                        }
-                    }
+                    case EsbConnectionTypeEnum.Icon:
+                        updatedSettings.Add(Constants.EsbSettingKeys.JmsPasswordKey, esbEnvironment.JmsPasswordIcon);
+                        updatedSettings.Add(Constants.EsbSettingKeys.JndiPasswordKey, esbEnvironment.JndiPasswordIcon);
+                        break;
+                    case EsbConnectionTypeEnum.Mammoth:
+                        updatedSettings.Add(Constants.EsbSettingKeys.JmsPasswordKey, esbEnvironment.JmsPasswordMammoth);
+                        updatedSettings.Add(Constants.EsbSettingKeys.JndiPasswordKey, esbEnvironment.JndiPasswordMammoth);
+                        break;
+                    case EsbConnectionTypeEnum.Ewic:
+                        updatedSettings.Add(Constants.EsbSettingKeys.JmsPasswordKey, esbEnvironment.JmsPasswordEwic);
+                        updatedSettings.Add(Constants.EsbSettingKeys.JndiPasswordKey, esbEnvironment.JndiPasswordEwic);
+                        break;
+                    case EsbConnectionTypeEnum.None:
+                    default:
+                        break;
                 }
             }
-            return dbConfig;
-        }
-
-        public EnvironmentEnum DetermineDatabaseEnvironment(DatabaseCategoryEnum category, string serverName, string databaseName)
-        {
-            var env = EnvironmentEnum.Undefined;
-
-            switch (category)
-            {
-                case DatabaseCategoryEnum.Icon:
-                    switch (serverName.ToUpper())
-                    {
-                        case @"CEWD1815\SQLSHARED2012D":
-                        case @"SQL-ICON16-TST":
-                            if (databaseName.ToUpper() == "ICON")
-                            {
-                                env = EnvironmentEnum.Test;
-                            }
-                            else if (databaseName.ToUpper() == "ICONDEV" || databaseName.ToUpper() == "ICON2016")
-                            {
-                                env = EnvironmentEnum.Dev;
-                            }
-                            else if (databaseName.ToUpper() == "ICONLOADTEST")
-                            {
-                                env = EnvironmentEnum.Perf;
-                            }
-                            break;
-                        case @"ICON-DB01-TST01":
-                            env = EnvironmentEnum.Tst1;
-                            break;
-                        case @"IDQ-ICON\SQLSHARED3Q":
-                            env = EnvironmentEnum.QA;
-                            break;
-                        case @"IDP-ICON\SHARED3P":
-                            env = EnvironmentEnum.Prd;
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case DatabaseCategoryEnum.Mammoth:
-                    switch (serverName.ToUpper())
-                    {
-                        case @"MAMMOTH-DB01-DEV\MAMMOTH":
-                            if (databaseName.ToUpper() == "MAMMOTH")
-                            {
-                                env = EnvironmentEnum.Test;
-                            }
-                            else if (databaseName.ToUpper() == "MAMMOTH_DEV")
-                            {
-                                env = EnvironmentEnum.Dev;
-                            }
-                            break;
-                        case @"MAMMOTH-DB01-TST01":
-                            env = EnvironmentEnum.Tst1;
-                            break;
-                        case @"MAMMOTH-DB01-QA\MAMMOTH":
-                            env = EnvironmentEnum.QA;
-                            break;
-                        case @"QA-01-MAMMOTH02\MAMMOTH02":
-                            env = EnvironmentEnum.Perf;
-                            break;
-                        case @"MAMMOTH-DB01-PRD\MAMMOTH":
-                            env = EnvironmentEnum.Prd;
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case DatabaseCategoryEnum.IRMA:
-                    if (serverName.ToUpper().Contains("IDD"))
-                    {
-                        env = EnvironmentEnum.Dev;
-                    }
-                    else if (serverName.ToUpper().Contains("IDT"))
-                    {
-                        env = EnvironmentEnum.Test;
-                    }
-                    else if (serverName.ToUpper().Contains("TST01"))
-                    {
-                        env = EnvironmentEnum.Tst1;
-                    }
-                    else if (serverName.ToUpper().Contains("IDQ"))
-                    {
-                        env = EnvironmentEnum.QA;
-                    }
-                    else if (serverName.ToUpper().Contains("IDP"))
-                    {
-                        env = EnvironmentEnum.Prd;
-                    }
-                    break;
-                case DatabaseCategoryEnum.Vim:
-                case DatabaseCategoryEnum.Other:
-                case DatabaseCategoryEnum.Unknown:
-                default:
-                    env = EnvironmentEnum.Undefined;
-                    break;
-            }
-
-            return env;
+            return updatedSettings;
         }
     }
 }

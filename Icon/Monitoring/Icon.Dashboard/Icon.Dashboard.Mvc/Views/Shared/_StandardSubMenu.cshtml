@@ -1,0 +1,29 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.SubMenuViewModel
+
+@if (Model != null)
+{
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            @Model.Header
+        </a>
+        <ul class="dropdown-menu">
+            <li class="@(Model.RootItemIsActive ? "active" : string.Empty)">
+                <a class="dropdown-item" href="@Url.Action(Model.ActionForRootItem, Model.ControllerForRootItem
+                   , Model.RootItemRouteValues)">
+                    @Model.TextForRootItem
+                </a>
+            </li>
+
+            @foreach (var itemForAppLog in Model.Items)
+            {
+                <li class="@(itemForAppLog.IsActiveListItem ? "active" : string.Empty)">
+                <a class="dropdown-item" href="@Url.Action(itemForAppLog.ActionForItemLink, itemForAppLog.ControllerForItemLink, itemForAppLog.RouteValuesForItemLink)">
+                    <span class="">
+                        @itemForAppLog.VisibleText
+                    </span>
+                </a>
+            </li>
+        }
+        </ul>
+    </li>
+}

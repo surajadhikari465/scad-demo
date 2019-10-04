@@ -1,5 +1,6 @@
-﻿@model IEnumerable<Icon.Dashboard.Mvc.ViewModels.IconApplicationViewModel>
+﻿@model IEnumerable<Icon.Dashboard.Mvc.ViewModels.ServiceViewModel>
 @{
+    var globalViewData = ViewBag.GlobalViewData as Icon.Dashboard.Mvc.ViewModels.GlobalViewData;
     ViewBag.Title = "ICON Dashboard";
     var btnClass = Icon.Dashboard.Mvc.Helpers.Utils.GetBootstrapClassForEnvironment() ?? "primary";
 }
@@ -30,7 +31,7 @@
                     @Html.DisplayNameFor(model => model.ConfigFilePath)
                 </th>
                 <th class="text-center hidden-xs hidden-sm">
-                    @Html.DisplayNameFor(model => model.CurrentEsbEnvironment)
+                    @Html.DisplayNameFor(model => model.EsbEnvironmentEnum)
                 </th>
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.Status)

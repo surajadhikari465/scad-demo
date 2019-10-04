@@ -16,12 +16,12 @@ namespace Icon.Dashboard.Mvc
 
             routes.MapRoute(
                 name: "ApiJobsWithId",
-                url: "ApiJobs/{action}/{id}",
+                url: "ApiJobs/{action}/{jobType}",
                 defaults: new
                 {
                     controller = "ApiJobs",
                     action = "Index",
-                    id = UrlParameter.Optional
+                    jobType = UrlParameter.Optional
                 }
             );
 
@@ -59,19 +59,50 @@ namespace Icon.Dashboard.Mvc
             );
 
             routes.MapRoute(
-                name: "HomeActionWithParameters",
-                url: "{Home}/{action}/{server}/{application}",
+                 name: "HomeSetAltEnvironmentWithParameter",
+                 url: "Home/SetAlternateEnvironment/{environment}",
+                 defaults: new
+                 {
+                     controller = "Home",
+                     action = "SetAlternateEnvironment"
+                 }
+             );
+
+            routes.MapRoute(
+                 name: "HomeEditWithParameters",
+                 url: "Home/Edit/{appServer}/{serviceName}",
+                 defaults: new
+                 {
+                     controller = "Home",
+                     action = "Edit",
+                     appServer = UrlParameter.Optional,
+                     serviceName = UrlParameter.Optional
+                 }
+             );
+
+            routes.MapRoute(
+                name: "HomeCustom",
+                url: "Home/Custom",
                 defaults: new
                 {
                     controller = "Home",
-                    server = UrlParameter.Optional,
-                    application = UrlParameter.Optional
+                    action = "Custom"
                 }
             );
 
             routes.MapRoute(
-                name: "DefaultToHomeIndex",
-                url: "{controller}/{action}",
+                name: "HomeIndex",
+                url: "Home/Index",
+                defaults: new
+                {
+                    controller = "Home",
+                    action = "Index"
+                }
+            );
+
+            routes.MapRoute(
+                name: "CatchUnexpected",
+                url: "{*.*}",
                 defaults: new
                 {
                     controller = "Home",

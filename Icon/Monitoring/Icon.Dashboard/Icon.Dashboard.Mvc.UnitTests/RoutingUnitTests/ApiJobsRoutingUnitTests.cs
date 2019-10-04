@@ -19,12 +19,11 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         string controller = "ApiJobs";
 
         [TestMethod]
-        public void MvcRouting_ApiJobsIndexNoId_GetsExpectedRoute()
+        public void RegisterRoutes_ApiJobs_Index_NoParam_GetsExpectedRoute()
         {
             // Arrange
             string action = "Index";
-            SetupRequestUrl($"~/{controller}/{action}");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
@@ -35,12 +34,11 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_ApiJobsNoActionNoId_GetsExpectedDefaultRoute()
+        public void RegisterRoutes_ApiJobs_NoAction_NoParam_GetsExpectedDefaultRoute()
         {
             // Arrange
             string action = "";
-            SetupRequestUrl($"~/{controller}/{action}");
-            var routes = RegisterRoutesForTest();
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
@@ -48,13 +46,12 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_ApiJobsIndexWithId_GetsExpectedRoute()
+        public void RegisterRoutes_ApiJobs_Index_WithJobType_GetsExpectedRoute()
         {
             // Arrange
             string action = "Index";
-            string id = "hey";
-            SetupRequestUrl($"~/{controller}/{action}/{id}");
-            var routes = RegisterRoutesForTest();
+            string jobType = "hey";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{jobType}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
@@ -62,21 +59,115 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
         }
 
         [TestMethod]
-        public void MvcRouting_ApiJobsIndexWithId_UsesIdValue()
+        public void RegisterRoutes_ApiJobs_Index_WithJobType_UsesJobTypeValue()
         {
             // Arrange
             string action = "Index";
-            string id = "hey";
-            SetupRequestUrl($"~/{controller}/{action}/{id}");
-            var routes = RegisterRoutesForTest();
+            string jobType = "hey";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{jobType}");
             // Act
             RouteData routeData = routes.GetRouteData(moqContext.Object);
             // Assert
             var expectedValues = new Dictionary<string, object>()
             {
-                {"id", id }
+                {"jobType", jobType }
             };
             AssertDesiredRouteDataIsPresent(routeData, expectedValues);
         }
+
+
+        [TestMethod]
+        public void RegisterRoutes_ApiJobs_RedrawPagingPartial_NoParams_GetsExpectedRoute()
+        {
+            // Arrange
+            string action = "RedrawPaging";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}");
+            // Act
+            RouteData routeData = routes.GetRouteData(moqContext.Object);
+            // Assert
+            AssertExpectedRouteControllerAndAction(routeData: routeData, controller: "ApiJobs", action: action);
+        }
+
+        [TestMethod]
+        public void RegisterRoutes_ApiJobs_RedrawPagingPartial_WithJobType_GetsExpectedRoute()
+        {
+            // Arrange
+            string action = "RedrawPaging";
+            string jobTypeParam = "Locale";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{jobTypeParam}");
+            // Act
+            RouteData routeData = routes.GetRouteData(moqContext.Object);
+            // Assert
+            AssertExpectedRouteControllerAndAction(routeData: routeData, controller: "ApiJobs", action: action);
+        }
+
+        [TestMethod]
+        public void RegisterRoutes_ApiJobs_RedrawPagingPartial_WithJobType_HasParamValue()
+        {
+            // Arrange
+            string action = "RedrawPaging";
+            string jobTypeParam = "Locale";
+            var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{jobTypeParam}");
+            // Act
+            RouteData routeData = routes.GetRouteData(moqContext.Object);
+            // Assert
+            var expectedValues = new Dictionary<string, object>()
+            {
+                {"jobType", jobTypeParam }
+            };
+            AssertDesiredRouteDataIsPresent(routeData, expectedValues);
+        }
+
+        //[TestMethod]
+        //public void RegisterRoutes_HomeTaskPartialWithQueryParameters_HasExectedQueryValues()
+        //{
+        //    // Arrange
+        //    string action = "TaskPartial";
+        //    string param1 = "aServer";
+        //    string param2 = "myApplication";
+        //    var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{param1}/{param2}");
+        //    // Act
+        //    RouteData routeData = routes.GetRouteData(moqContext.Object);
+        //    // Assert
+        //    var expectedValues = new Dictionary<string, object>()
+        //    {
+        //        {"appServer", param1 },
+        //        {"servicename", param2 }
+        //    };
+        //    AssertDesiredRouteDataIsPresent(routeData, expectedValues);
+        //}
+
+        //[TestMethod]
+        //public void RegisterRoutes_HomeIconApiServicePartialWithQueryParameters_GetsHomeTaskPartialRoute()
+        //{
+        //    // Arrange
+        //    string action = "IconApiServicePartial";
+        //    string param1 = "aServer";
+        //    string param2 = "myApplication";
+        //    var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{param1}/{param2}");
+        //    // Act
+        //    RouteData routeData = routes.GetRouteData(moqContext.Object);
+        //    // Assert
+        //    AssertExpectedRouteControllerAndAction(routeData: routeData, controller: "Home", action: action);
+        //}
+
+        //[TestMethod]
+        //public void RegisterRoutes_HomeIconApiServicePartialWithQueryParameters_HasExectedQueryValues()
+        //{
+        //    // Arrange
+        //    string action = "IconApiServicePartial";
+        //    string param1 = "aServer";
+        //    string param2 = "myApplication";
+        //    var routes = base.SetMockPathAndRegisterRoutes($"~/{controller}/{action}/{param1}/{param2}");
+        //    // Act
+        //    RouteData routeData = routes.GetRouteData(moqContext.Object);
+        //    // Assert
+        //    var expectedValues = new Dictionary<string, object>()
+        //    {
+        //        {"appServer", param1 },
+        //        {"serviceName", param2 }
+        //    };
+        //    AssertDesiredRouteDataIsPresent(routeData, expectedValues);
+        //}
     }    
 }

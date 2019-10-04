@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FluentAssertions;
 
 namespace Icon.Dashboard.IconDatabaseAccess.Tests
 {
@@ -17,9 +16,9 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //Act
             var report = new ApiJobSummaryReport(messageType, startTime, endTime);
             //Assert
-            report.MessageType.Should().BeEquivalentTo(messageType);
-            report.StartTime.Should().Be(startTime);
-            report.EndTime.Should().Be(endTime);
+            Assert.AreEqual(messageType, report.MessageType);
+            Assert.AreEqual(startTime, report.StartTime);
+            Assert.AreEqual(endTime, report.EndTime);
         }
     }
 }

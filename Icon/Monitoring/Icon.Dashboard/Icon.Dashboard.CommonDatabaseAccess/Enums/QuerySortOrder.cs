@@ -9,13 +9,9 @@ namespace Icon.Dashboard.CommonDatabaseAccess
     public enum QuerySortOrder
     {
         Unspecified = -1,
-        //
-        // Summary:
-        //     Rows are sorted in ascending order.
+        // Rows are sorted in ascending order.
         Ascending = 0,
-        //
-        // Summary:
-        //     Rows are sorted in descending order.
+        // Rows are sorted in descending order.
         Descending = 1
     }
 }

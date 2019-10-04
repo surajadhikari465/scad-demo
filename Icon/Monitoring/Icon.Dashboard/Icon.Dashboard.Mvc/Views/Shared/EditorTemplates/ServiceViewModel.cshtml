@@ -1,0 +1,283 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.ServiceViewModel
+
+@{
+    var action = ViewContext.RouteData.Values["action"].ToString();
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+
+    ViewBag.Title = String.Format("\"{0}: {1}\" Application Details", Model.Server, Model.DisplayName);
+
+    bool isMultiline = false;
+    const int tooManyCharsForSingleLine = 33;
+    int rowsForTextArea = 2;
+}
+
+    <div class="row">
+        <hr />
+        @using (Html.BeginForm(action, controller, new { server = Model.Server, application = Model.Name }, FormMethod.Post, null))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                @Html.LabelFor(model => model.Server, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @Html.DisplayFor(model => model.Server)
+                    @Html.HiddenFor(model => model.Server)
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @Html.DisplayFor(model => model.Name)
+                    @Html.HiddenFor(model => model.Name)
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                @Html.LabelFor(model => model.DisplayName, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @Html.DisplayFor(model => model.DisplayName)
+                    @Html.HiddenFor(model => model.DisplayName)
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-xs-2 col-md-1" })
+                <div class="col-xs-10 col-md-11">
+                    @Html.DisplayFor(model => model.Description)
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                @Html.LabelFor(model => model.Family, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @Html.DisplayFor(model => model.Family)
+                    @Html.HiddenFor(model => model.Family)
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                @Html.LabelFor(model => model.LoggingName, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @Html.DisplayFor(model => model.LoggingName)
+                    @Html.HiddenFor(model => model.LoggingName)
+                    @if (!string.IsNullOrWhiteSpace(Model.LoggingName))
+                    {
+                        @Html.ActionLink("(Log Viewer)", "Index", Model.Family.Equals("Mammoth", Icon.Dashboard.Mvc.Helpers.Utils.StrcmpOption) ? "MammothLogs" : "IconLogs", new { appName = Model.LoggingName }, null)
+                    }
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                @Html.LabelFor(model => model.LoggingID, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @Html.DisplayFor(model => model.LoggingID)
+                    @Html.HiddenFor(model => model.LoggingID)
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                @Html.LabelFor(model => model.ConfigFilePathIsValid, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @Html.DisplayFor(model => model.ConfigFilePathIsValid)
+                    @Html.HiddenFor(model => model.ConfigFilePathIsValid)
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                @Html.LabelFor(model => model.AccountName, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @Html.DisplayFor(model => model.AccountName)
+                    @Html.HiddenFor(model => model.AccountName)
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @{string statusColor = Model.StatusIsGreen ? "btn-success" : "btn-danger"; }
+                    <button class="btn @statusColor btn-sm btn-block disabled" type="button">Currently @Model.Status</button>
+                    @Html.HiddenFor(model => model.Status)
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12">
+                @Html.LabelFor(model => model.ConfigFilePath, htmlAttributes: new { @class = "control-label col-xs-2 col-md-1" })
+                <div class="col-xs-10 col-md-11">
+                    <span class="@(Model.ConfigFilePathIsValid ? "" : "text-danger")">@Html.DisplayFor(model => model.ConfigFilePath)</span>
+                    @Html.HiddenFor(model => model.ConfigFilePath)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-offset-1 col-xs-10">
+                    <div class="row">
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#collapsibleAppSettings">
+                                        General App Settings
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapsibleAppSettings" class="panel-collapse collapse in">
+                                <div class="panel-body">
+
+                                    @foreach (var entry in Model.AppSettings ?? new Dictionary<string, string>())
+                                    {
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            @Html.Label(entry.Key, htmlAttributes: new { @class = "control-label col-xs-12" })
+                                            <div class="col-xs-12">
+                                                @{
+                                                    if (Model.AppSettings[entry.Key] != null)
+                                                    {
+                                                        int valueStringLength = Model.AppSettings[entry.Key].ToString().Length;
+                                                        isMultiline = valueStringLength > tooManyCharsForSingleLine;
+                                                        if (isMultiline && tooManyCharsForSingleLine > 0)
+                                                        {
+                                                            rowsForTextArea = ((valueStringLength - 1) / tooManyCharsForSingleLine) + 1;
+                                                        }
+                                                    }
+                                                    isMultiline = ((Model.AppSettings[entry.Key] != null) && (Model.AppSettings[entry.Key].ToString().Length > tooManyCharsForSingleLine));
+                                                    if (isMultiline)
+                                                    {
+                                                        @Html.TextAreaFor(m => m.AppSettings[entry.Key], rowsForTextArea, 0, new { @class = "form-control full-width" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.EditorFor(m => m.AppSettings[entry.Key], new { htmlAttributes = new { @class = "form-control full-width" } })
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p></p>
+
+            if (Model.EsbConnections != null && Model.EsbConnections.Count>0 )
+            {
+                <div class="row">
+                    <div class="col-xs-offset-1 col-xs-10">
+                        <div class="row">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" href="#collapsibleEsbEnv">
+                                            ESB Connection Settings (@Model.EsbEnvironmentEnum)
+                                        </a>
+                                    </h4>
+                                </div>
+
+                                <div id="collapsibleEsbEnv" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <div class="panel-group">
+                                            @foreach (var esbConnection in Model.EsbConnections)
+                                            {
+                                            <div class="panel panel-succes">
+                                                <div class="panel-heading">
+                                                    Connection to: @esbConnection.ConnectionName
+                                                </div>
+                                                <div class="panel-body">
+                                                    @if (Model.CommandsEnabled)
+                                                    {
+                                                        @Html.EditorFor(m => esbConnection)
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.DisplayFor(m => esbConnection)
+                                                    }
+                                                </div>
+                                            </div>
+                                            }
+                                        </div>
+
+                                        @*@foreach (var keyValuePair in Model.EsbConnectionSettings.Where(kvp => kvp.Key != null))
+                                        {
+                                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                                @Html.Label(keyValuePair.Key, htmlAttributes: new { @class = "control-label col-xs-12" })
+                                                <div class="col-xs-12">
+                                                    @if ((Model.EsbConnectionSettings[keyValuePair.Key].ToString().Length > tooManyCharsForSingleLine) && (tooManyCharsForSingleLine > 0))
+                                                    {
+                                                        rowsForTextArea = ((Model.EsbConnectionSettings[keyValuePair.Key].ToString().Length - 1) / tooManyCharsForSingleLine) + 1;
+                                                    }
+                                                    @if (Model.EsbConnectionSettings[keyValuePair.Key].ToString().Length > tooManyCharsForSingleLine)
+                                                    {
+                                                        @Html.TextAreaFor(m => m.EsbConnectionSettings[keyValuePair.Key], rowsForTextArea, 0, new { @class = "form-control full-width" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.EditorFor(m => m.EsbConnectionSettings[keyValuePair.Key], new { htmlAttributes = new { @class = "form-control full-width" } })
+                                                    }
+                                                </div>
+                                            </div>
+                                        }*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            }
+
+            if (Model.DatabaseConfiguration != null && Model.DatabaseConfiguration.Databases.Count > 0)
+            {
+                <div class="row">
+                    <div class="col-xs-offset-1 col-xs-10">
+                        <div class="row">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" href="#collapsibleDbConfig">
+                                            @Html.LabelFor(model => model.DatabaseConfiguration)
+                                        </a>
+                                    </h4>
+                                </div>
+
+                                <div id="collapsibleDbConfig" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+
+                                        <table class="table table-bordered table-condensed no-bottom-margin table-striped"> 
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">
+                                                        @Html.DisplayNameFor(model => model.DatabaseConfiguration.Databases[0].Summary)
+                                                    </th>
+                                                    <th class="text-center hidden-xs">
+                                                        @Html.DisplayNameFor(model => model.DatabaseConfiguration.Databases[0].ConnectionStringName)
+                                                    </th>
+                                                    <th class="text-center">
+                                                        @Html.DisplayNameFor(model => model.DatabaseConfiguration.Databases[0].ServerName)
+                                                    </th>
+                                                    <th class="text-center">
+                                                        @Html.DisplayNameFor(model => model.DatabaseConfiguration.Databases[0].DatabaseName)
+                                                    </th>
+                                                    <th class="text-center hidden-xs">
+                                                        @Html.DisplayNameFor(model => model.DatabaseConfiguration.Databases[0].IsEntityFramework)
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-center">
+                                                @foreach (var db in Model.DatabaseConfiguration.Databases)
+                                                {
+                                                    @Html.DisplayFor(m => db)
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="col-xs-offset-2 col-xs-8">
+                <button type="submit" value="Save" class="btn btn-warning btn-block margin-top-10">Save Config Changes</button>
+            </div>
+        }
+    </div>

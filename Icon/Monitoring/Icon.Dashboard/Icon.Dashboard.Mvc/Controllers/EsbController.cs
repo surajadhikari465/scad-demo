@@ -1,4 +1,5 @@
-﻿using Icon.Dashboard.Mvc.Filters;
+﻿using Icon.Dashboard.Mvc.Enums;
+using Icon.Dashboard.Mvc.Filters;
 using Icon.Dashboard.Mvc.Helpers;
 using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.Services;
@@ -13,173 +14,107 @@ namespace Icon.Dashboard.Mvc.Controllers
 {
     public class EsbController : BaseDashboardController
     {
-        protected IEsbEnvironmentManager esbEnvironmentManager { get; private set; } 
-        protected IRemoteWmiServiceWrapper remoteServicesService { get; private set; } 
-
-        public EsbController() : this(null, null, null, null, null) { }
+        public EsbController() : this(null, null, null, null, null, null) { }
 
         public EsbController(
-            IDashboardEnvironmentManager environmentManager = null,
+            IDashboardAuthorizer dashboardAuthorizer = null,
+            IDashboardDataManager dashboardConfigManager = null,
             IIconDatabaseServiceWrapper iconDbService = null,
             IMammothDatabaseServiceWrapper mammothDbService = null,
-            IEsbEnvironmentManager esbEnvironmentMgmtSvc = null,
+            IEnvironmentCookieManager cookieManager = null,
             IRemoteWmiServiceWrapper remoteServicesService = null)
-            : base (environmentManager, iconDbService, mammothDbService)
+            : base (dashboardAuthorizer, dashboardConfigManager, iconDbService, mammothDbService)
         {
-            this.esbEnvironmentManager = esbEnvironmentMgmtSvc ?? new EsbEnvironmentManager();
-            this.remoteServicesService = remoteServicesService ?? new RemoteWmiServiceWrapper(Utils.GetMammothDbEnabledFlag(), iconDbService, mammothDbService, esbEnvironmentManager);
+            this.CookieManager = cookieManager ??
+                new EnvironmentCookieManager(
+                    DashboardGlobals.ConfigData.EnvironmentCookieDurationHours,
+                    DashboardGlobals.ConfigData.EnvironmentCookieName,
+                    DashboardGlobals.ConfigData.EnvironmentAppServersCookieName);
+            this.RemoteServicesService = remoteServicesService ?? new RemoteWmiServiceWrapper();
         }
 
-        #region GET
+        protected IEnvironmentCookieManager CookieManager { get; private set; } 
+        protected IRemoteWmiServiceWrapper RemoteServicesService { get; private set; } 
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
+        [DashboardAuthorizer(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Index()
         {
-            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
-            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
+            var altEnvironment = CookieManager.GetEnvironmentCookieIfPresent(Request);
+            DashboardDataService.SetPermissionsForActiveEnvironment(base.UserMayEdit(), altEnvironment);
 
-            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
-            ViewBag.Environment = currentEnvironment.Name;
+            var iconApps = base.IconDatabaseService.GetApps();
+            var mammothApps = base.MammothDatabaseService.GetApps();
             
-            var commandsEnabled = !EnvironmentManager.EnvironmentIsProduction(currentEnvironment) &&
-                DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);
-            
-            var appViewModels = remoteServicesService.LoadRemoteServices(currentEnvironment, commandsEnabled);
+            var serviceViewModels = RemoteServicesService.LoadRemoteServices(
+                            DashboardDataService.ActiveEnvironment.AppServers,
+                            DashboardDataService.AreChangesAllowed,
+                            iconApps,
+                            mammothApps,
+                            DashboardDataService.ConfigData.EnvironmentDefinitions,
+                            DashboardDataService.ConfigData.EsbEnvironmentDefinitions);
+            var esbEnvironmentViewModels = DashboardDataService.
+                GetEsbEnvironmentViewModelsWithAssignedServices(serviceViewModels);
 
-            ViewBag.CommandsEnabled = commandsEnabled;
-
+            var globalViewModel = base.BuildGlobalViewModel();
+            ViewBag.GlobalViewData = globalViewModel;
+            //TODO change in views to use GlobalViewData
             ViewBag.Action = nameof(Index);
             ViewBag.Title = "Configure ESB Apps";
-
-            var viewData = esbEnvironmentManager.GetEsbEnvironmentDefinitionsWithAppsPopulated(appViewModels);
-            return View(viewData);
+            ViewBag.CommandsEnabled = DashboardDataService.AreChangesAllowed;
+            ViewBag.Environment = DashboardDataService.ActiveEnvironment.Name;
+            return View(esbEnvironmentViewModels);
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
+        [DashboardAuthorizer(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Details(string name)
         {
-            //enable filter to use the logging service for building menus
-            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
-            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
+            var altEnvironment = CookieManager.GetEnvironmentCookieIfPresent(Request);
+            DashboardDataService.SetPermissionsForActiveEnvironment(base.UserMayEdit(), altEnvironment);
 
-            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
-            ViewBag.Environment = currentEnvironment.Name;
-
-            if (String.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name) 
+                || !Enum.TryParse<EsbEnvironmentEnum>(name, out EsbEnvironmentEnum esbEnum))
             {
                 return RedirectToAction("Index");
             }
-            var esbEnvironment = esbEnvironmentManager.GetEsbEnvironment(name);
+            var esbEnvironment = DashboardDataService.GetEsbEnvironmentViewModel(name);
+
+            var globalViewModel = base.BuildGlobalViewModel(name);
+            ViewBag.GlobalViewData = globalViewModel;
+            ViewBag.Environment = DashboardDataService.ActiveEnvironment.Name;
             ViewBag.Action = "Details";
-            ViewBag.Title = String.Format("{0} Dashboard: View ESB Environment \"{1}\" Configuration", currentEnvironment.Name, esbEnvironment.Name);
+            ViewBag.Title = $"{0} Dashboard: View ESB Environment \"{DashboardDataService.ActiveEnvironment.Name}\" Configuration";
             return View(esbEnvironment);
         }
-
-        [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
-        public ActionResult Edit(string name)
-        {
-            //enable filter to use the logging service for building menus
-            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
-            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
-
-            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
-            ViewBag.Environment = currentEnvironment.Name;
-
-            if (String.IsNullOrWhiteSpace(name))
-            {
-                return RedirectToAction("Index");
-            }
-            var esbEnvironment = esbEnvironmentManager.GetEsbEnvironment(name);;
-
-            ViewBag.Title = String.Format("{0} Dashoard: Edit ESB Environment \"{1}\" Configuration", currentEnvironment.Name, esbEnvironment.Name);
-            return View(esbEnvironment);
-        }
-
-        [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
-        public ActionResult Create()
-        {
-            //enable filter to use the logging service for building menus
-            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
-            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
-
-            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
-            ViewBag.Environment = currentEnvironment.Name;
-
-            var viewModel = new EsbEnvironmentViewModel();
-            ViewBag.Title = String.Format("{0} Dashboard: Create New ESB Environment Configuration", currentEnvironment.Name);
-            return View(viewModel);
-        }
-
-        #endregion
 
         #region POST
         [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
-        public ActionResult Index(IEnumerable<EsbEnvironmentViewModel> esbEnvironments, string environment = null)
+        [DashboardAuthorizer(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
+        public ActionResult Index(IEnumerable<EsbEnvironmentViewModel> esbEnvironments)
         {
-            var environmentManager = new DashboardEnvironmentManager();
+            var altEnvironment = CookieManager.GetEnvironmentCookieIfPresent(Request);
+            DashboardDataService.SetPermissionsForActiveEnvironment(base.UserMayEdit(), altEnvironment);
 
-            var chosenEnvironmentEnum = EnvironmentEnum.Undefined;
-            if (string.IsNullOrWhiteSpace(environment) || !Enum.TryParse(environment, out chosenEnvironmentEnum))
+            var iconApps = base.IconDatabaseService.GetApps();
+            var mammothApps = base.MammothDatabaseService.GetApps();
+
+            if (DashboardDataService.AreChangesAllowed)
             {
-                // determine the default environment based on the hosting web server
-                chosenEnvironmentEnum = environmentManager.GetDefaultEnvironmentEnumFromWebhost(Request.Url.Host);
+                var serviceViewModels = RemoteServicesService.LoadRemoteServices(
+                    DashboardDataService.ActiveEnvironment.AppServers,
+                    DashboardDataService.AreChangesAllowed,
+                    iconApps,
+                    mammothApps,
+                    DashboardDataService.ConfigData.EnvironmentDefinitions,
+                    DashboardDataService.ConfigData.EsbEnvironmentDefinitions);
+
+                RemoteServicesService.ReconfigureServiceEsbEnvironmentSettings(
+                    esbEnvironments.ToList(),
+                    serviceViewModels);
             }
-            var chosenEnvironmentViewModel = environmentManager.BuildEnvironmentViewModel(chosenEnvironmentEnum);
-
-            var commandsEnabled = chosenEnvironmentEnum != EnvironmentEnum.Prd &&
-                DashboardAuthorization.IsAuthorized(HttpContext.User, UserAuthorizationLevelEnum.EditingPrivileges);;
-
-            var existingServiceDefinitions = remoteServicesService.LoadRemoteServices(chosenEnvironmentViewModel, commandsEnabled);
-            
-            esbEnvironmentManager.ReconfigureEsbApps(esbEnvironments, existingServiceDefinitions);
-
-            //TODO figure out if we have to restart _all_ services or not...
-            //RemoteServicesService.RestartServices(esbEnvironments);
 
             return RedirectToAction(nameof(Index), "Esb");
-        }
-
-        [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
-        public ActionResult Edit(EsbEnvironmentViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                esbEnvironmentManager.UpdateEsbEnvironmenDefinition( model);
-                return RedirectToAction("Details", "Esb", new { name = model.Name });
-            }
-
-            return View("Edit", model);
-        }
-
-        [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
-        public ActionResult Create(EsbEnvironmentViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                esbEnvironmentManager.AddEsbEnvironmentDefinition( model);
-                return RedirectToAction("Index");
-            }
-
-            return View("Create", model);
-        }
-
-        [HttpPost]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.EditingPrivileges)]
-        public ActionResult Delete(string name)
-        {
-            var esbEnvironment = esbEnvironmentManager.GetEsbEnvironment(name);
-            if (esbEnvironment != null)
-            {
-                esbEnvironmentManager.DeleteEsbEnvironmentDefinition(esbEnvironment);
-            }
-            return RedirectToAction("Index");
         }
         #endregion
     }

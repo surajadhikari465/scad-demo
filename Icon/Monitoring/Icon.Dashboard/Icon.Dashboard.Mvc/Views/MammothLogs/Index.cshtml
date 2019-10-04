@@ -1,12 +1,13 @@
-﻿@model Icon.Dashboard.Mvc.ViewModels.IconLogEntryCollectionViewModel
+﻿@model Icon.Dashboard.Mvc.ViewModels.AppLogReportViewModel
+@{
+    var globalViewData = ViewBag.GlobalViewData as Icon.Dashboard.Mvc.ViewModels.GlobalViewData;
+}
 
-@using Icon.Dashboard.Mvc.Helpers
-
-@if (Model.RecentLogEntriesReport != null && Model.RecentLogEntriesReport.Reports.Any())
+@if (Model.RecentErrorsReportCollection != null && Model.RecentErrorsReportCollection.Reports.Any())
 {
     <div class="container-wide">
         <div class="row">
-            @{Html.RenderPartial("_RecentLogEntriesReportCollectionPartial", Model.RecentLogEntriesReport.Reports);}
+            @{Html.RenderPartial("_RecentErrorsReportCollectionPartial", Model.RecentErrorsReportCollection);}
         </div>
     </div>
 }
@@ -29,7 +30,7 @@
 </div>
 
 <div class="container-wide">
-    @{ Html.RenderPartial("_AppLogTablePartial", Model); }
+    @{ Html.RenderPartial("_AppLogReportTablePartial", Model); }
 </div>
 
 <div id="pagingDiv">
@@ -38,33 +39,22 @@
 
 @section scripts {
     <script type="text/javascript">
-    @{
-        int millisecondsForRecentErrorsPolling = Model.RecentLogEntriesReport.PollingRefreshIntervalMilliseconds;
-        int hoursConsideredRecent = Model.RecentLogEntriesReport.HoursConsideredRecent;
-        List<int> appIDs = new List<int>();
-
-        foreach(var appID in Model.RecentLogEntriesReport.Reports.Where(e => e.AppID > 0).Select(e => e.AppID))
-        {
-            appIDs.Add(appID);
-        }
-    }
-
-    @* javascript variables set from server-side Razor code for appLogs.js*@
-    var urlForTableRefresh = "@Url.Action("TableRefresh", "MammothLogs")";
-    var urlForGetRecentErrorsAction = '@(Url.Action("RecentErrors", "MammothLogs"))';
-    var intervalMilliseconds = @millisecondsForRecentErrorsPolling;
+    @* javascript variables set from server-side Razor code for appLogs.js  *@
+    var urlForTableRefresh = "@Url.Action(Model.ActionForTableRefresh, Model.ControllerName)";
+    var urlForGetRecentErrorsAction = '@(Url.Action(Model.ActionForRecentErrors, Model.ControllerName))';
+    var intervalMilliseconds = @globalViewData.MillisecondsForRecentErrorsPolling;
     var arrayOfFunctions = [];
 
     function buildArrayOfFunctions() {
-        @foreach (var appID in appIDs)
+        @foreach (var appID in Model.RecentErrorsReportCollection.ReportAppIDs)
         {
-            @: var func@(appID) = function(){ getRecentErrors(@(appID), @(hoursConsideredRecent));}
+            @: var func@(appID) = function(){ getRecentErrors(@(appID), @(Model.HoursConsideredRecent));}
             @: arrayOfFunctions.push( func@(appID) );
         }
     }
 
-    @* javascript variable set from server-side Razor code for readrawPaging.js*@
-    var urlForRedrawPagingAction = "@(Url.Action("RedrawPaging", "MammothLogs"))";
+    @* javascript variable set from server-side Razor code for redrawPaging.js*@
+    var urlForRedrawPagingAction = "@(Url.Action(Model.ActionForRedrawPaging, Model.ControllerName)))";
 
     </script>
 

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using Icon.Dashboard.Mvc.Enums;
 using Icon.Dashboard.Mvc.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

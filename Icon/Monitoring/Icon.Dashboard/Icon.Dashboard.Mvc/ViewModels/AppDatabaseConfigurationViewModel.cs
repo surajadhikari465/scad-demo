@@ -16,7 +16,7 @@ namespace Icon.Dashboard.Mvc.ViewModels
             this.Databases = new List<AppDatabaseViewModel>();
         }
 
-        public AppDatabaseConfigurationViewModel(ApplicationDatabaseConfiguration dbConfig) : this()
+        public AppDatabaseConfigurationViewModel(DbConfigurationModel dbConfig) : this()
         {
             foreach( var db in dbConfig.Connections)
             {

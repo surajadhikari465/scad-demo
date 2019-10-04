@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.3.1.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.3.1.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -49,19 +49,29 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -110,13 +120,17 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\GlobalDataConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BaseDashboardController.cs" />
     <Compile Include="Controllers\MammothLogsController.cs" />
-    <Compile Include="Filters\DashboardAuthorization.cs" />
+    <Compile Include="Enums\ApiJobMessageTypeEnum.cs" />
+    <Compile Include="Enums\IconOrMammothEnum.cs" />
+    <Compile Include="Filters\DashboardAuthorizer.cs" />
+    <Compile Include="Filters\IDashboardAuthorizer.cs" />
     <Compile Include="Helpers\BeginCollectionItemHelper.cs" />
+    <Compile Include="Helpers\ConfigAccess.cs" />
     <Compile Include="Helpers\DashboardExtensions.cs" />
-    <Compile Include="Infrastructure\TempDataKeys.cs" />
     <Compile Include="Controllers\ApiJobsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\EsbController.cs" />
@@ -124,55 +138,71 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ApplicationDatabaseConfiguration.cs" />
-    <Compile Include="Models\ApplicationTypeEnum.cs" />
-    <Compile Include="Models\ConnectionStringConfigElement.cs" />
-    <Compile Include="Models\DatabaseCategoryEnum.cs" />
-    <Compile Include="Models\DatabaseDefinition.cs" />
-    <Compile Include="Models\LogErrorLevelEnum.cs" />
-    <Compile Include="Services\DashboardEnvironmentManager.cs" />
-    <Compile Include="Filters\MenuOptionsFilter.cs" />
+    <Compile Include="DashboardGlobals.cs" />
+    <Compile Include="Models\DbConfigurationModel.cs" />
+    <Compile Include="Enums\ApplicationTypeEnum.cs" />
+    <Compile Include="Models\EnvironmentCookieModel.cs" />
+    <Compile Include="Models\EnvironmentModel.cs" />
+    <Compile Include="Models\EsbEnvironmentModel.cs" />
+    <Compile Include="Models\DashboardConfigDataModel.cs" />
+    <Compile Include="Models\ConnectionStringModel.cs" />
+    <Compile Include="Enums\DatabaseCategoryEnum.cs" />
+    <Compile Include="Models\CustomConfigElements\EnvironmentCollection.cs" />
+    <Compile Include="Models\CustomConfigElements\EnvironmentElement.cs" />
+    <Compile Include="Models\DatabaseModel.cs" />
+    <Compile Include="Enums\LogErrorLevelEnum.cs" />
+    <Compile Include="Models\CustomConfigElements\EnvironmentsSection.cs" />
+    <Compile Include="Models\RemoteServiceConfigDataModel.cs" />
+    <Compile Include="Services\ExternalConfigXmlManager.cs" />
+    <Compile Include="Services\DashboardConfigDataLoader.cs" />
+    <Compile Include="Services\EnvironmentCookieManager.cs" />
     <Compile Include="Helpers\Utils.cs" />
-    <Compile Include="Models\DashboardCustomConfigSectionGroup.cs" />
-    <Compile Include="Models\EnvironmentEnum.cs" />
-    <Compile Include="Models\EsbConnectionTypeEnum.cs" />
-    <Compile Include="Models\EsbEnvironmentCollection.cs" />
-    <Compile Include="Models\EsbEnvironmentElement.cs" />
-    <Compile Include="Models\EsbEnvironmentEnum.cs" />
-    <Compile Include="Models\EsbEnvironmentsSection.cs" />
-    <Compile Include="Models\EsbSettings.cs" />
-    <Compile Include="Models\InforEsbEnvironmentEnum.cs" />
-    <Compile Include="Models\UserAuthorizationLevelEnum.cs" />
+    <Compile Include="Models\CustomConfigElements\DashboardCustomConfigSection.cs" />
+    <Compile Include="Enums\EnvironmentEnum.cs" />
+    <Compile Include="Enums\EsbConnectionTypeEnum.cs" />
+    <Compile Include="Models\CustomConfigElements\EsbEnvironmentCollection.cs" />
+    <Compile Include="Models\CustomConfigElements\EsbEnvironmentElement.cs" />
+    <Compile Include="Enums\EsbEnvironmentEnum.cs" />
+    <Compile Include="Models\CustomConfigElements\EsbEnvironmentsSection.cs" />
+    <Compile Include="Models\Constants.cs" />
+    <Compile Include="Enums\UserAuthorizationLevelEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AppConfigAssistant.cs" />
-    <Compile Include="Services\EsbEnvironmentManager.cs" />
-    <Compile Include="Services\IDashboardEnvironmentManager.cs" />
-    <Compile Include="Services\IEsbEnvironmentManager.cs" />
-    <Compile Include="Services\IMammothDatabaseServiceWrapper.cs" />
-    <Compile Include="Services\IRemoteWmiServiceWrapper.cs" />
+    <Compile Include="Services\DashboardDataManager.cs" />
+    <Compile Include="Services\Interfaces\IDashboardConfigDataLoader.cs" />
+    <Compile Include="Services\Interfaces\IEnvironmentCookieManager.cs" />
+    <Compile Include="Services\Interfaces\IDashboardDataManager.cs" />
+    <Compile Include="Services\Interfaces\IExternalConfigXmlManager.cs" />
+    <Compile Include="Services\Interfaces\IMammothDatabaseServiceWrapper.cs" />
+    <Compile Include="Services\Interfaces\IRemoteWmiServiceWrapper.cs" />
     <Compile Include="Services\MammothDatabaseServiceWrapper.cs" />
     <Compile Include="Services\IconDatabaseServiceWrapper.cs" />
-    <Compile Include="Services\IIconDatabaseServiceWrapper.cs" />
+    <Compile Include="Services\Interfaces\IIconDatabaseServiceWrapper.cs" />
     <Compile Include="Services\RemoteWmiServiceWrapper.cs" />
+    <Compile Include="ViewModels\ApiMessageJobReportViewModel.cs" />
     <Compile Include="ViewModels\ApiMessageJobSummaryViewModel.cs" />
     <Compile Include="ViewModels\ApiMessageJobTimedReportViewModel.cs" />
     <Compile Include="ViewModels\AppDatabaseConfigurationViewModel.cs" />
     <Compile Include="ViewModels\DashboardEnvironmentCollectionViewModel.cs" />
     <Compile Include="ViewModels\AppDatabaseViewModel.cs" />
+    <Compile Include="ViewModels\EsbConnectionViewModel.cs" />
     <Compile Include="ViewModels\EsbEnvironmentViewModel.cs" />
-    <Compile Include="ViewModels\IconLogEntryCollectionViewModel.cs" />
-    <Compile Include="ViewModels\RecentLogEntriesReportCollectionViewModel.cs" />
-    <Compile Include="ViewModels\RecentLogEntriesReportViewModel.cs" />
-    <Compile Include="ViewModels\IconLogEntryViewModel.cs" />
-    <Compile Include="ViewModels\IconLoggedAppViewModel.cs" />
+    <Compile Include="ViewModels\GlobalViewData.cs" />
+    <Compile Include="ViewModels\AppLogReportViewModel.cs" />
+    <Compile Include="ViewModels\SubSubMenuForSupportAppsViewModel.cs" />
+    <Compile Include="ViewModels\SubMenuForSupportAppsViewModel.cs" />
+    <Compile Include="ViewModels\SubSubMenuItemForSupportAppsViewModel.cs" />
+    <Compile Include="ViewModels\SubMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\RecentErrorsReportCollectionViewModel.cs" />
+    <Compile Include="ViewModels\AppRecentErrorsReportViewModel.cs" />
+    <Compile Include="ViewModels\AppLogEntryViewModel.cs" />
+    <Compile Include="ViewModels\LoggedAppViewModel.cs" />
     <Compile Include="ViewModels\PaginationPageSetViewModel.cs" />
     <Compile Include="ViewModels\PaginationPageViewModel.cs" />
     <Compile Include="ViewModels\PendingMessagesViewModel.cs" />
-    <Compile Include="ViewModels\IconApplicationViewModel.cs" />
+    <Compile Include="ViewModels\ServiceViewModel.cs" />
     <Compile Include="ViewModels\AppServerViewModel.cs" />
-    <Compile Include="ViewModels\UserViewModel.cs" />
-    <Compile Include="ViewModels\MovieViewModel.cs" />
-    <Compile Include="ViewModels\DashboardEnvironmentViewModel.cs" />
+    <Compile Include="ViewModels\EnvironmentViewModel.cs" />
+    <Compile Include="ViewModels\SubMenuViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CodeAssassin.ConfigTransform.Readme.txt" />
@@ -210,14 +240,16 @@
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.3.1.js" />
-    <Content Include="Scripts\jquery-3.3.1.min.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -258,55 +290,59 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\IconApplicationViewModel.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\IconApplicationViewModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ServiceViewModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ServiceViewModel.cshtml" />
     <Content Include="Views\Home\Edit.cshtml" />
     <Content Include="Views\Shared\_CommandsPartial.cshtml" />
     <Content Include="Views\Shared\_BackToListPartial.cshtml" />
     <Content Include="Views\Shared\_EnvironmentSelectorPartial.cshtml" />
     <Content Include="Views\IconLogs\Index.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\IconLogEntryViewModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\AppLogEntryViewModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ApplicationTypeEnum.cshtml" />
     <Content Include="Views\Shared\_PaginationPartial.cshtml" />
-    <Content Include="Views\Shared\_SubMenuForIconAppLogs.cshtml" />
+    <Content Include="Views\Shared\_StandardSubMenu.cshtml" />
     <Content Include="Views\ApiJobs\Index.cshtml" />
     <Content Include="Views\Shared\_SubMenuForApiJobs.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ApiMessageJobSummaryViewModel.cshtml" />
     <Content Include="Views\ApiJobs\_ApiMessageJobTimedReportPartial.cshtml" />
     <Content Include="Views\ApiJobs\Pending.cshtml" />
     <Content Include="Views\ApiJobs\_ApiMessageJobTimedReportResultPartial.cshtml" />
-    <Content Include="Views\Shared\_RecentLogEntriesReportCollectionPartial.cshtml" />
-    <Content Include="Views\Shared\_RecentLogEntriesReportPartial.cshtml" />
-    <Content Include="Views\ApiJobs\_ApiJobsTablePartial.cshtml" />
-    <Content Include="Views\Shared\_AppLogTablePartial.cshtml" />
+    <Content Include="Views\Shared\_RecentErrorsReportCollectionPartial.cshtml" />
+    <Content Include="Views\Shared\_RecentErrorsReportPartial.cshtml" />
+    <Content Include="Views\ApiJobs\_ApiJobsReportPartial.cshtml" />
+    <Content Include="Views\Shared\_AppLogReportTablePartial.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Esb\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\EsbEnvironmentViewModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\EsbEnvironmentViewModel.cshtml" />
     <Content Include="Views\Esb\Details.cshtml" />
-    <Content Include="Views\Esb\Edit.cshtml" />
-    <Content Include="Views\Esb\Create.cshtml" />
     <Content Include="Views\Shared\NotAuthorized.cshtml" />
     <Content Include="Views\Shared\ReadOnlyAuthorized.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\IconEsbAppSummaryViewModel.cshtml" />
     <Content Include="Views\Shared\_SupportAppsPartial.cshtml" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.3.1.min.map" />
-    <Content Include="Views\Shared\MovieViewModel.cshtml" />
     <Content Include="Views\Shared\AppServerViewModel.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\DashboardEnvironmentViewModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\EnvironmentViewModel.cshtml" />
     <Content Include="Views\Home\Custom.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\AppServerViewModel.cshtml" />
     <Content Include="Views\Shared\_SubMenuForMammothAppLogs.cshtml" />
     <Content Include="Views\MammothLogs\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\AppDatabaseViewModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\EsbConnectionViewModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\EsbConnectionViewModel.cshtml" />
+    <Content Include="Views\ApiJobs\_ApiJobsSummariesTablePartial.cshtml" />
     <None Include="Web.Dev.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Dev1.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Perf.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.QA.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.QA1.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Test.config">
@@ -384,6 +420,24 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev1|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA1|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
@@ -417,7 +471,7 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.3.1.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.3.1.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

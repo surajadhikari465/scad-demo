@@ -1,11 +1,14 @@
-﻿using Icon.Dashboard.Mvc.Models;
+﻿using Icon.Dashboard.Mvc.Enums;
+using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.Services;
+using Icon.Dashboard.Mvc.UnitTests.TestData;
 using Icon.Dashboard.Mvc.ViewModels;
 using Icon.Dashboard.RemoteServicesAccess;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,75 +18,110 @@ namespace Icon.Dashboard.Mvc.UnitTests.ServiceTests
     [TestClass]
     public class RemoteWmiServiceWrapperUnitTests
     {
-        TestData testData = new TestData();
-
+        RemoteServiceTestData serviceTestData = new RemoteServiceTestData();
+        DbWrapperTestData dbWrapperTestData = new DbWrapperTestData();
+        ConfigTestData configTestData = new ConfigTestData();
         Mock<IRemoteWmiAccessService> mockWMiSvc = new Mock<IRemoteWmiAccessService>();
-        Mock<IIconDatabaseServiceWrapper> mockIconDbService = new Mock<IIconDatabaseServiceWrapper>();
-        Mock<IMammothDatabaseServiceWrapper> mockMammothDbService = new Mock<IMammothDatabaseServiceWrapper>();
-        Mock<IEsbEnvironmentManager> mockEsbEnvironmentManager = new Mock<IEsbEnvironmentManager>();
-
+        string testDataFolder = @"TestData";
 
         [TestMethod]
-        public void CreateViewModel_WhenReturnsGloconServiceObject_PopulatesViewModelWithExpectedProperties()
+        public void LoadRemoteService_WhenReturnsGloconServiceObject_PopulatesExpectedProperties()
         {
             // Arrange
             string server = "vm-test1";
             string application = "GlobalEventControllerService";
             bool commandsEnabled = true;
+            var configTestData = new ConfigTestData();
+            var iconApps = dbWrapperTestData.IconApps;
+            var mammothApps = dbWrapperTestData.MammothApps;
+            var environments = configTestData.Models.EnvironmentsList;
+            var esbEnvironments = configTestData.Models.EsbEnvironmentsList;
+            var fakeService = dbWrapperTestData.SampleGloconService;
+            mockWMiSvc.Setup(s => s.LoadRemoteService(server, application)).Returns(fakeService);
+            var serviceConfigReader = new ExternalConfigXmlManager(fakeService.ConfigFilePath);
 
-            mockIconDbService.Setup(s => s.GetApps()).Returns(testData.IconApps);
-            mockMammothDbService.Setup(s => s.GetApps()).Returns(testData.MammothApps);
-            mockEsbEnvironmentManager.Setup(s => s.GetEsbEnvironmentDefinitions()).Returns(testData.EsbEnvironments);
-            mockWMiSvc.Setup(s => s.LoadRemoteService(server, application)) .Returns(testData.SampleGloconService);
-
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
 
             // Act
-            var actualViewModel = wmiServiceWrapper.CreateViewModel(server, testData.SampleGloconService, commandsEnabled);
+            var actualViewModel = wmiServiceWrapper.LoadRemoteService(
+                server,
+                application,
+                commandsEnabled,
+                iconApps,
+                mammothApps,
+                environments,
+                esbEnvironments,
+                serviceConfigReader);
 
             // Assert
-            Assert.AreEqual(testData.SampleGloconService.FullName, actualViewModel.Name);
-            Assert.AreEqual(testData.SampleGloconService.DisplayName, actualViewModel.DisplayName);
+            Assert.AreEqual(dbWrapperTestData.SampleGloconService.FullName, actualViewModel.Name);
+            Assert.AreEqual(dbWrapperTestData.SampleGloconService.DisplayName, actualViewModel.DisplayName);
             Assert.AreEqual(server, actualViewModel.Server);
-            Assert.AreEqual(@"SampleAppConfig_A.exe.config", actualViewModel.ConfigFilePath);
+            Assert.AreEqual($"{testDataFolder}\\SampleAppConfig_NoEsb_GloCon.exe.config", actualViewModel.ConfigFilePath);
             Assert.AreEqual(commandsEnabled, actualViewModel.CommandsEnabled);
-            Assert.AreEqual(testData.SampleGloconService.State, actualViewModel.Status);
+            Assert.AreEqual(dbWrapperTestData.SampleGloconService.State, actualViewModel.Status);
             Assert.AreEqual(1, actualViewModel.ValidCommands.Count);
             Assert.AreEqual("Stop", actualViewModel.ValidCommands[0]);
             Assert.AreEqual(true, actualViewModel.StatusIsGreen);
-            Assert.AreEqual(testData.SampleGloconService.SystemName, actualViewModel.HostName);
+            Assert.AreEqual(dbWrapperTestData.SampleGloconService.SystemName, actualViewModel.HostName);
             Assert.AreEqual("IconTestUserDev", actualViewModel.AccountName);
             //from sample config file
             Assert.AreEqual(true, actualViewModel.ConfigFilePathIsValid);
             Assert.AreEqual(48, actualViewModel.AppSettings.Count);
-            Assert.AreEqual(0, actualViewModel.EsbConnectionSettings.Count);
+            Assert.AreEqual(0, actualViewModel.EsbConnections.Count);
             Assert.AreEqual(7, actualViewModel.LoggingID);
             Assert.AreEqual("Global Controller", actualViewModel.LoggingName);
         }
 
         [TestMethod]
-        public void CreateViewModel_WhenMammothDatabaseDisabled_ReturnsBlankLoggingName()
+        public void CreateServiceViewModel_WhenReturnsMammothServiceObject_PopulatesExpectedProperties()
         {
             // Arrange
             string server = "vm-test1";
-            string application = "Mammoth.ItemLocale.Controller$MA";
             bool commandsEnabled = true;
-
-            mockIconDbService.Setup(s => s.GetApps()).Returns(testData.IconApps);
-            mockEsbEnvironmentManager.Setup(s => s.GetEsbEnvironmentDefinitions())
-                .Returns(testData.EsbEnvironments);
-            mockWMiSvc.Setup(s => s.LoadRemoteService(server, application))
-                .Returns(testData.SampleMammothItemLocaleControllerMAService);
-
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(false, mockWMiSvc.Object,
-                mockIconDbService.Object, null, mockEsbEnvironmentManager.Object);
+            var configTestData = new ConfigTestData();
+            var iconApps = dbWrapperTestData.IconApps;
+            var mammothApps = dbWrapperTestData.MammothApps;
+            var environments = configTestData.Models.EnvironmentsList;
+            var esbEnvironments = configTestData.Models.EsbEnvironmentsList;
+            var fakeService = dbWrapperTestData.SampleMammothItemLocaleControllerMAService;
+            string appConfigPath = $"TestData\\SampleAppConfig_NoEsb_MammothItemLocale.exe.config";
+            Assert.IsTrue(File.Exists(appConfigPath));
+            fakeService.ConfigFilePath = appConfigPath;
+            //mockWMiSvc.Setup(s => s.LoadRemoteService(server, application)).Returns(fakeService);
+            //var serviceConfigReader = new ExternalConfigXmlManager(fakeService.ConfigFilePath);
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
 
             // Act
-            var actualViewModel = wmiServiceWrapper.CreateViewModel(server, testData.SampleMammothItemLocaleControllerMAService, commandsEnabled);
+            var actualViewModel = wmiServiceWrapper.CreateServiceViewModel(
+                server,
+                fakeService,
+                commandsEnabled,
+                iconApps,
+                mammothApps,
+                environments,
+                esbEnvironments);
+                //serviceConfigReader);
 
-            // Assert
-            Assert.AreEqual("", actualViewModel.LoggingName);
+            // Assert 
+            Assert.AreEqual(fakeService.FullName, actualViewModel.Name);
+            Assert.AreEqual(fakeService.DisplayName, actualViewModel.DisplayName);
+            Assert.AreEqual(server, actualViewModel.Server);
+            Assert.AreEqual(appConfigPath, actualViewModel.ConfigFilePath);
+            Assert.AreEqual(commandsEnabled, actualViewModel.CommandsEnabled);
+            Assert.AreEqual(fakeService.State, actualViewModel.Status);
+            Assert.AreEqual(1, actualViewModel.ValidCommands.Count);
+            Assert.AreEqual("Stop", actualViewModel.ValidCommands[0]);
+            Assert.AreEqual(true, actualViewModel.StatusIsGreen);
+            Assert.AreEqual(fakeService.SystemName, actualViewModel.HostName);
+            Assert.AreEqual("MammothTest", actualViewModel.AccountName);
+            //from sample config file
+            Assert.AreEqual(true, actualViewModel.ConfigFilePathIsValid);
+            Assert.AreEqual(14, actualViewModel.AppSettings.Count);
+            Assert.AreEqual(0, actualViewModel.EsbConnections.Count);
+            Assert.AreEqual(2, actualViewModel.LoggingID);
+            Assert.AreEqual("ItemLocale Controller", actualViewModel.LoggingName);
+
         }
 
         [TestMethod]
@@ -94,762 +132,529 @@ namespace Icon.Dashboard.Mvc.UnitTests.ServiceTests
             string pathName = @"""E:\Icon\API Controller Phase 2\Hierarchy\Icon.ApiController.Controller.exe""  -displayname ""Icon API Controller - Hierarchy"" -servicename ""IconAPIController-Hierarchy""";
             string expectedUncPath = @"\\vm-test1\E$\Icon\API Controller Phase 2\Hierarchy\Icon.ApiController.Controller.exe.config";
             
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
 
             // Act
-            var uncPath = wmiServiceWrapper.GetConfigUncPath(server, pathName);
+            var uncPath = wmiServiceWrapper.PrependConfigUncPath(server, pathName);
 
             // Assert
             Assert.AreEqual(expectedUncPath, uncPath);
         }
 
-        [TestMethod]
-        public void DetermineDatabaseEnvironment_WhenIconDev_ReturnDevEnvironment()
-        {
-            // Arrange
-            var expectedEnvironment = EnvironmentEnum.Dev;
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-            // Act 
-            var actualEnvironment = wmiServiceWrapper.DetermineDatabaseEnvironment(
-                DatabaseCategoryEnum.Icon, @"cewd1815\SqlSHARED2012D", "IconDev");
-
-            // Assert
-            Assert.AreEqual(expectedEnvironment, actualEnvironment);
-        }
 
         [TestMethod]
-        public void DetermineDatabaseEnvironment_WhenIconDev_ReturnDevEnvironment_IgnoresCase()
+        public void DetermineEsbEnvironment_WhenNoEsbSettings_ShouldReturnNone()
         {
             // Arrange
-            var expectedEnvironment = EnvironmentEnum.Dev;
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-            // Act 
-            var actualEnvironment = wmiServiceWrapper.DetermineDatabaseEnvironment(
-                DatabaseCategoryEnum.Icon, @"cewd1815\sqlshared2012d", "icondev");
-
-            // Assert
-            Assert.AreEqual(expectedEnvironment, actualEnvironment);
-        }
-
-        [TestMethod]
-        public void DetermineDatabaseEnvironment_WhenIconPerf_ReturnPerfEnvironment()
-        {
-            // Arrange
-            var expectedEnvironment = EnvironmentEnum.Perf;
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-            // Act 
-            var actualEnvironment = wmiServiceWrapper.DetermineDatabaseEnvironment(
-                DatabaseCategoryEnum.Icon, @"CEWD1815\SQLSHARED2012D", "iCONLoadTest");
-
-            // Assert
-            Assert.AreEqual(expectedEnvironment, actualEnvironment);
-        }
-
-
-        [TestMethod]
-        public void DetermineDatabaseEnvironment_WhenMammothDev_ReturnsDevEnvironment()
-        {
-            // Arrange
-            var expectedEnvironment = EnvironmentEnum.Dev;
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-            // Act 
-            var actualEnvironment = wmiServiceWrapper.DetermineDatabaseEnvironment(
-                DatabaseCategoryEnum.Mammoth, @"mammoth-db01-dev\mammoth", "Mammoth_Dev");
-
-            // Assert
-            Assert.AreEqual(expectedEnvironment, actualEnvironment);
-        }
-
-        [TestMethod]
-        public void DetermineDatabaseEnvironment_WhenMammothTest_ReturnsTestEnvironment()
-        {
-            // Arrange
-            var expectedEnvironment = EnvironmentEnum.Test;
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-            // Act 
-            var actualEnvironment = wmiServiceWrapper.DetermineDatabaseEnvironment(
-                DatabaseCategoryEnum.Mammoth, @"MAMMOTH-DB01-DEV\MAMMOTH", "Mammoth");
-
-            // Assert
-            Assert.AreEqual(expectedEnvironment, actualEnvironment);
-        }
-
-        [TestMethod]
-        public void DetermineDatabaseEnvironment_WhenMammothTst1_ReturnsTst1Environment()
-        {
-            // Arrange
-            var expectedEnvironment = EnvironmentEnum.Tst1;
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-            // Act 
-            var actualEnvironment = wmiServiceWrapper.DetermineDatabaseEnvironment(
-                DatabaseCategoryEnum.Mammoth, @"mammoth-db01-tst01", "Mammoth");
-
-            // Assert
-            Assert.AreEqual(expectedEnvironment, actualEnvironment);
-        }
-
-        [TestMethod]
-        public void DetermineDatabaseEnvironment_WhenIrmaDev_ReturnsDevEnvironment()
-        {
-            // Arrange
-            var expectedEnvironment = EnvironmentEnum.Dev;
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-            // Act 
-            var actualEnvironment = wmiServiceWrapper.DetermineDatabaseEnvironment(
-                DatabaseCategoryEnum.IRMA, @"idd-ma\mad", "ItemCatalog_Test");
-
-            // Assert
-            Assert.AreEqual(expectedEnvironment, actualEnvironment);
-        }
-
-        [TestMethod]
-        public void DetermineDatabaseEnvironment_WhenIrmaTest_ReturnsTestEnvironment()
-        {
-            // Arrange
-            var expectedEnvironment = EnvironmentEnum.Test;
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-            // Act 
-            var actualEnvironment = wmiServiceWrapper.DetermineDatabaseEnvironment(
-                DatabaseCategoryEnum.IRMA, @"idt-pn\pnt", "ItemCatalog_Test");
-
-            // Assert
-            Assert.AreEqual(expectedEnvironment, actualEnvironment);
-        }
-
-        [TestMethod]
-        public void DetermineDatabaseEnvironment_WhenIrmaTst1_ReturnsTst1Environment()
-        {
-            // Arrange
-            var expectedEnvironment = EnvironmentEnum.Tst1;
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-            // Act 
-            var actualEnvironment = wmiServiceWrapper.DetermineDatabaseEnvironment(
-                DatabaseCategoryEnum.IRMA, @"ma-db01-tst01", "ItemCatalog");
-
-            // Assert
-            Assert.AreEqual(expectedEnvironment, actualEnvironment);
-        }
-
-        [TestMethod]
-        public void DetermineDatabaseEnvironment_WhenIrmaQA_ReturnsQAEnvironment()
-        {
-            // Arrange
-            var expectedEnvironment = EnvironmentEnum.QA;
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-            // Act 
-            var actualEnvironment = wmiServiceWrapper.DetermineDatabaseEnvironment(
-                DatabaseCategoryEnum.IRMA, @"idq-fl\flq", "ItemCatalog");
-
-            // Assert
-            Assert.AreEqual(expectedEnvironment, actualEnvironment);
-        }
-
-        [TestMethod]
-        public void DetermineDatabaseEnvironment_WhenVim_ReturnsUndefinedEnvironment()
-        {
-            // Arrange
-            var expectedEnvironment = EnvironmentEnum.Undefined;
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-            // Act 
-            var actualEnvironment = wmiServiceWrapper.DetermineDatabaseEnvironment(
-                DatabaseCategoryEnum.Vim, @"((anyWeirdVimdb_string)(port5930))", "vim_vim_vim");
-
-            // Assert
-            Assert.AreEqual(expectedEnvironment, actualEnvironment);
-        }
-
-        [TestMethod]
-        public void DetermineDatabaseEnvironment_WhenIcon2016_ReturnsDevEnvironment()
-        {
-            // Arrange
-            var expectedEnvironment = EnvironmentEnum.Dev;
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-            // Act 
-            var actualEnvironment = wmiServiceWrapper.DetermineDatabaseEnvironment(
-                DatabaseCategoryEnum.Icon, @"sql-icon16-tst", "Icon2016");
-            // Assert
-            Assert.AreEqual(expectedEnvironment, actualEnvironment);
-        }
-
-        [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasIconSqlWithIconLogging_ReadsDbConnection()
-        {
-            // Arrange
-            var configPath = "SampleDbConfig_IconSqlWithIconLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnvironments = configTestData.Models.EsbEnvironmentsList;
+            var esbConnectionSettings = new List<EsbConnectionViewModel>();
+            var expectedEsbEnvironmentEnum = EsbEnvironmentEnum.None;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
+            var actualEsbEnvironmentEnum = wmiServiceWrapper
+                .DetermineEsbEnvironment(esbEnvironments, esbConnectionSettings);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Icon));
-            var iconConnection = dbConfig.GetSingleNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Icon);
-            Assert.IsNotNull(iconConnection);
-            Assert.AreEqual("Icon", iconConnection.DatabaseName);
-            Assert.AreEqual(@"cewd1815\SQLSHARED2012D", iconConnection.ServerName);
-            Assert.AreEqual("Icon", iconConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, iconConnection.Environment);
-            Assert.IsFalse(iconConnection.IsEntityFramework);
+            Assert.AreEqual(expectedEsbEnvironmentEnum, actualEsbEnvironmentEnum);
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasIconSqlWithIconLogging_ReadsLoggingConnection()
+        public void DetermineEsbEnvironment_WhenSettingsForEsbTest_ShouldReturnTEST()
         {
             // Arrange
-            var configPath = "SampleDbConfig_IconSqlWithIconLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnvironments = configTestData.Models.EsbEnvironmentsList;
+            var esbConnectionSettings = serviceTestData.Services.EsbConnections.TST_Icon_Single;
+            var expectedEsbEnvironmentEnum = EsbEnvironmentEnum.TEST;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
+            var actualEsbEnvironmentEnum = wmiServiceWrapper
+                .DetermineEsbEnvironment(esbEnvironments, esbConnectionSettings);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsNotNull(dbConfig.LoggingConnection);
-            Assert.AreSame(dbConfig.LoggingConnection, dbConfig.Connections.Single(c=>c.IsUsedForLogging));
-            Assert.AreEqual("Icon", dbConfig.LoggingConnection.DatabaseName);
-            Assert.AreEqual(@"cewd1815\SQLSHARED2012D", dbConfig.LoggingConnection.ServerName);
-            Assert.AreEqual("dbLogVimLocaleController", dbConfig.LoggingConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, dbConfig.LoggingConnection.Environment);
-            Assert.IsFalse(dbConfig.LoggingConnection.IsEntityFramework);
+            Assert.AreEqual(expectedEsbEnvironmentEnum, actualEsbEnvironmentEnum);
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasIconEfWithIconLogging_ReadsDbConnection()
+        public void DetermineEsbEnvironment_WhenSettingsForEsbPrd_ShouldReturnPROD()
         {
             // Arrange
-            var configPath = "SampleDbConfig_IconEfWithIconLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnvironments = configTestData.Models.EsbEnvironmentsList;
+            esbEnvironments.Add(configTestData.Models.EsbProd);
+            var esbConnectionSettings = serviceTestData.Services.EsbConnections.TST_Icon_Single;
+            esbConnectionSettings[0].ServerUrl = "ssl://PROD-ESB-EMS-1.wfm.pvt:37293,ssl://PROD-ESB-EMS-2.wfm.pvt:37293,ssl://PROD-ESB-EMS-3.wfm.pvt:37293,ssl://PROD-ESB-EMS-4.wfm.pvt:37293";
+            var expectedEsbEnvironmentEnum = EsbEnvironmentEnum.PRD;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
+            var actualEsbEnvironmentEnum = wmiServiceWrapper
+                .DetermineEsbEnvironment(esbEnvironments, esbConnectionSettings);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Icon));
-            var iconConnection = dbConfig.GetSingleNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Icon);
-            Assert.IsNotNull(iconConnection);
-            Assert.AreEqual("Icon", iconConnection.DatabaseName);
-            Assert.AreEqual(@"cewd1815\SQLSHARED2012D", iconConnection.ServerName);
-            Assert.AreEqual("IconContext", iconConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, iconConnection.Environment);
-            Assert.IsTrue(iconConnection.IsEntityFramework);
+            Assert.AreEqual(expectedEsbEnvironmentEnum, actualEsbEnvironmentEnum);
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasIconEfWithIconLogging_ReadsLoggingConnection()
+        public void DetermineEsbEnvironment_WhenUnexpectedEsbServer_ShouldReturnNone()
         {
             // Arrange
-            var configPath = "SampleDbConfig_IconEfWithIconLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnvironments = configTestData.Models.EsbEnvironmentsList;
+            var esbConnectionSettings = serviceTestData.Services.EsbConnections.TST_Icon_Single;
+            esbConnectionSettings[0].ServerUrl = "ssl://POOP-1.wfm.pvt:17293,ssl://POOP-2.wfm.pvt:17293";
+            var expectedEsbEnvironmentEnum = EsbEnvironmentEnum.None;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
+            var actualEsbEnvironmentEnum = wmiServiceWrapper
+                .DetermineEsbEnvironment(esbEnvironments, esbConnectionSettings);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsNotNull(dbConfig.LoggingConnection);
-            Assert.AreSame(dbConfig.LoggingConnection, dbConfig.Connections.Single(c=>c.IsUsedForLogging));
-            Assert.AreEqual("Icon", dbConfig.LoggingConnection.DatabaseName);
-            Assert.AreEqual(@"cewd1815\SQLSHARED2012D", dbConfig.LoggingConnection.ServerName);
-            Assert.AreEqual("dbLogIconEsb", dbConfig.LoggingConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, dbConfig.LoggingConnection.Environment);
-            Assert.IsFalse(dbConfig.LoggingConnection.IsEntityFramework);
+            Assert.AreEqual(expectedEsbEnvironmentEnum, actualEsbEnvironmentEnum);
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasIconSqlAndIconEfAndMammothSqlWithIconLogging_ReadsDbConnections()
+        public void DetermineEsbEnvironment_WhenNoEsbDefinitionsInConfig_ShouldNotThrow()
         {
             // Arrange
-            var configPath = "SampleDbConfig_IconSqlAndIconEfAndMammothSqlWithIconLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            List<EsbEnvironmentModel> esbEnvironments = null;
+            var esbConnectionSettings = serviceTestData.Services.EsbConnections.TST_Icon_Single;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var actualEsbEnvironmentEnum = wmiServiceWrapper
+                .DetermineEsbEnvironment(esbEnvironments, esbConnectionSettings);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Icon));
-
-            var iconConnection = dbConfig.GetSingleNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Icon);
-            Assert.IsNotNull(iconConnection);
-            Assert.AreEqual("Icon", iconConnection.DatabaseName);
-            Assert.AreEqual(@"cewd1815\SQLSHARED2012D", iconConnection.ServerName);
-            Assert.AreEqual("IconContext", iconConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, iconConnection.Environment);
-            Assert.IsTrue(iconConnection.IsEntityFramework);
-
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Mammoth));
-            var mammothConnection = dbConfig.GetSingleNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Mammoth);
-            Assert.IsNotNull(mammothConnection);
-            Assert.AreEqual("Mammoth", mammothConnection.DatabaseName);
-            Assert.AreEqual(@"MAMMOTH-DB01-DEV\MAMMOTH", mammothConnection.ServerName);
-            Assert.AreEqual("Mammoth", mammothConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, mammothConnection.Environment);
-            Assert.IsFalse(mammothConnection.IsEntityFramework);
+            // (...no exception=good
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasIconSqlAndIconEfAndMammothSqlWithIconLogging_ReadsLoggingConnections()
+        public void BuildEsbAppSettingsForUpdate_WhenEsbEnvironmentNull_ShouldReturnEmptyList()
         {
             // Arrange
-            var configPath = "SampleDbConfig_IconSqlAndIconEfAndMammothSqlWithIconLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            EsbEnvironmentViewModel esbEnv = null;
+            var esbConnectionType = EsbConnectionTypeEnum.Icon;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var settingsToUpdate = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsNotNull(dbConfig.LoggingConnection);
-            Assert.AreSame(dbConfig.LoggingConnection, dbConfig.Connections.Single(c=>c.IsUsedForLogging));
-            Assert.AreEqual("Icon", dbConfig.LoggingConnection.DatabaseName);
-            Assert.AreEqual(@"cewd1815\SQLSHARED2012D", dbConfig.LoggingConnection.ServerName);
-            Assert.AreEqual("dbLogIconEsb", dbConfig.LoggingConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, dbConfig.LoggingConnection.Environment);
-            Assert.IsFalse(dbConfig.LoggingConnection.IsEntityFramework);
+            Assert.IsNotNull(settingsToUpdate);
+            Assert.AreEqual(0, settingsToUpdate.Count);
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasMammothSqlWithMammothLogging_ReadsDbConnection()
+        public void BuildEsbAppSettingsForUpdate_WhenEsbConnectionTypeNone_ShouldReturnEmptyList()
         {
             // Arrange
-            var configPath = "SampleDbConfig_MammothSqlWithMammothLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaPerf;
+            var esbConnectionType = EsbConnectionTypeEnum.None;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var settingsToUpdate = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Mammoth));
-            var mammothConnection = dbConfig.GetSingleNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Mammoth);
-            Assert.IsNotNull(mammothConnection);
-            Assert.AreEqual("Mammoth", mammothConnection.DatabaseName);
-            Assert.AreEqual(@"MAMMOTH-DB01-DEV\MAMMOTH", mammothConnection.ServerName);
-            Assert.AreEqual("MammothContext", mammothConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, mammothConnection.Environment);
-            Assert.IsFalse(mammothConnection.IsEntityFramework);
+            Assert.IsNotNull(settingsToUpdate);
+            Assert.AreEqual(0, settingsToUpdate.Count);
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasMammothSqlWithMammothLogging_ReadsLoggingConnection()
+        public void BuildEsbAppSettingsForUpdate_WhenUpdatingIconServiceWithAllSettingsToPerf_ShouldNotIncludeNonEsbSettings()
         {
             // Arrange
-            var configPath = "SampleDbConfig_MammothSqlWithMammothLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaPerf;
+            var esbAppSettings = serviceTestData.Services.EsbConnections.TST_Icon_Single.First();
+            var esbConnectionType = esbAppSettings.ConnectionType;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var updatedEsbSettings = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsNotNull(dbConfig.LoggingConnection);
-            Assert.AreSame(dbConfig.LoggingConnection, dbConfig.Connections.Single(c=>c.IsUsedForLogging));
-            Assert.AreEqual("Mammoth", dbConfig.LoggingConnection.DatabaseName);
-            Assert.AreEqual(@"MAMMOTH-DB01-DEV\MAMMOTH", dbConfig.LoggingConnection.ServerName);
-            Assert.AreEqual("dbLogMammoth", dbConfig.LoggingConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, dbConfig.LoggingConnection.Environment);
-            Assert.IsFalse(dbConfig.LoggingConnection.IsEntityFramework);
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("ReconnectDelay"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("SendEmails"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("EmailHost"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("EmailPort"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("EmailUsername"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("EmailPassword"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("Sender"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("Recipients"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("NumberOfListenerThreads"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("ResendMessageCount"));
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasIrmaSqlWithMammothLogging_ReadsDbConnections()
+        public void BuildEsbAppSettingsForUpdate_WhenUpdatingIconServiceWithAllSettingsToPerf_ShouldNotIncludeFixedEsbSettings()
         {
             // Arrange
-            var configPath = "SampleDbConfig_IrmaSqlWithMammothLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaPerf;
+            var esbAppSettings = serviceTestData.Services.EsbConnections.TST_Icon_Single.First();
+            var esbConnectionType = esbAppSettings.ConnectionType;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var updatedEsbSettings = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.IRMA));
-            var irmaConnections = dbConfig.GetAllNonLoggingConnectionsOfCategory(DatabaseCategoryEnum.IRMA);
-            Assert.AreEqual(12, irmaConnections.Count);
-
-            var irmaFlConnection = dbConfig.Connections
-                .Single(c => c.Category == DatabaseCategoryEnum.IRMA && c.ServerName.Contains("fl"));
-            Assert.IsNotNull(irmaFlConnection);
-            Assert.AreEqual("ItemCatalog_Test", irmaFlConnection.DatabaseName);
-            Assert.AreEqual(@"idd-fl\fld", irmaFlConnection.ServerName);
-            Assert.AreEqual("ItemCatalog_FL", irmaFlConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Dev, irmaFlConnection.Environment);
-            Assert.IsFalse(irmaFlConnection.IsEntityFramework);
-
-            var irmaPnConnection = dbConfig.Connections
-                .Single(c => c.Category == DatabaseCategoryEnum.IRMA && c.ServerName.Contains("pn"));
-            Assert.IsNotNull(irmaPnConnection);
-            Assert.AreEqual("ItemCatalog_Test", irmaPnConnection.DatabaseName);
-            Assert.AreEqual(@"idt-pn\pnt", irmaPnConnection.ServerName);
-            Assert.AreEqual("ItemCatalog_PN", irmaPnConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, irmaPnConnection.Environment);
-            Assert.IsFalse(irmaPnConnection.IsEntityFramework);
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("ConnectionFactoryName"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("SslPassword"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("QueueName"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("CertificateStoreName"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("CertificateStoreLocation"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("SslPassword"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("JmsUsername"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("JndiUsername"));
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasIrmaSqlWithMammothLogging_ReadsLoggingConnection()
+        public void BuildEsbAppSettingsForUpdate_WhenUpdatingIconServiceWithAllSettingsToPerf_ShouldUpdateEsbServerSettings()
         {
             // Arrange
-            var configPath = "SampleDbConfig_IrmaSqlWithMammothLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaPerf;
+            var esbAppSettings = serviceTestData.Services.EsbConnections.TST_Icon_Single.First();
+            var esbConnectionType = esbAppSettings.ConnectionType;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var updatedEsbSettings = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsNotNull(dbConfig.LoggingConnection);
-            Assert.AreSame(dbConfig.LoggingConnection, dbConfig.Connections.Single(c=>c.IsUsedForLogging));
-            Assert.AreEqual("Mammoth", dbConfig.LoggingConnection.DatabaseName);
-            Assert.AreEqual(@"MAMMOTH-DB01-DEV\MAMMOTH", dbConfig.LoggingConnection.ServerName);
-            Assert.AreEqual("dbLogMammoth", dbConfig.LoggingConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, dbConfig.LoggingConnection.Environment);
-            Assert.IsFalse(dbConfig.LoggingConnection.IsEntityFramework);
+            Assert.AreEqual("ssl://PERF-ESB-EMS-1.wfm.pvt:27293,ssl://PERF-ESB-EMS-2.wfm.pvt:27293", updatedEsbSettings["ServerUrl"]);
+            Assert.AreEqual("PERF-ESB-EMS-1.wfm.pvt", updatedEsbSettings["TargetHostName"]);
+            Assert.AreEqual("E=uday.bhaskar@wholefoods.com, CN=uday.bhaskar, OU=InfraESBAdmins@wholefoods.com, O=Whole Foods Market, L=Austin, S=TX, C=US", updatedEsbSettings["CertificateName"]);
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasIconEfAndIrmaSqlWithIconLogging_ReadsDbConnections()
+        public void BuildEsbAppSettingsForUpdate_WhenUpdatingIconServiceWithAllSettingsToPerf_ShouldUpdateEsbUserSettings()
         {
             // Arrange
-            var configPath = "SampleDbConfig_IconEfAndIrmaSqlWithIconLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaPerf;
+            var esbAppSettings = serviceTestData.Services.EsbConnections.TST_Icon_Single.First();
+            var esbConnectionType = esbAppSettings.ConnectionType;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var updatedEsbSettings = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Icon));
-            var iconConnection = dbConfig.GetSingleNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Icon);
-            Assert.IsNotNull(iconConnection);
-            Assert.AreEqual("Icon", iconConnection.DatabaseName);
-            Assert.AreEqual(@"cewd1815\SQLSHARED2012D", iconConnection.ServerName);
-            Assert.AreEqual("IconContext", iconConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, iconConnection.Environment);
-            Assert.IsTrue(iconConnection.IsEntityFramework);
-
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.IRMA));
-            var irmaConnections = dbConfig.GetAllNonLoggingConnectionsOfCategory(DatabaseCategoryEnum.IRMA);
-            Assert.AreEqual(12, irmaConnections.Count);
-
-            var irmaFlConnection = dbConfig.Connections
-                .Single(c => c.Category == DatabaseCategoryEnum.IRMA && c.ServerName.Contains("fl"));
-            Assert.IsNotNull(irmaFlConnection);
-            Assert.AreEqual("ItemCatalog_Test", irmaFlConnection.DatabaseName);
-            Assert.AreEqual(@"idd-fl\fld", irmaFlConnection.ServerName);
-            Assert.AreEqual("ItemCatalog_FL", irmaFlConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Dev, irmaFlConnection.Environment);
-            Assert.IsFalse(irmaFlConnection.IsEntityFramework);
-
-            var irmaPnConnection = dbConfig.Connections
-                .Single(c => c.Category == DatabaseCategoryEnum.IRMA && c.ServerName.Contains("pn"));
-            Assert.IsNotNull(irmaPnConnection);
-            Assert.AreEqual("ItemCatalog_Test", irmaPnConnection.DatabaseName);
-            Assert.AreEqual(@"idt-pn\pnt", irmaPnConnection.ServerName);
-            Assert.AreEqual("ItemCatalog_PN", irmaPnConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, irmaPnConnection.Environment);
-            Assert.IsFalse(irmaPnConnection.IsEntityFramework);
+            Assert.AreEqual("jms!C0nPERF", updatedEsbSettings["JmsPassword"]);
+            Assert.AreEqual("jndiIconUserPERF", updatedEsbSettings["JndiPassword"]);
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasIconEfAndIrmaSqlWithIconLogging_ReadsLoggingConnection()
+        public void BuildEsbAppSettingsForUpdate_WhenUpdatingIconServiceToPerf_ShouldNotUpdateNonEsbSettings()
         {
             // Arrange
-            var configPath = "SampleDbConfig_IconEfAndIrmaSqlWithIconLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
-            // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaPerf;
+            var esbAppSettings = serviceTestData.Services.EsbConnections.TST_Icon_Single.First();
+            var esbConnectionType = esbAppSettings.ConnectionType;
+             // Act
+            var updatedEsbSettings = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsNotNull(dbConfig.LoggingConnection);
-            Assert.AreSame(dbConfig.LoggingConnection, dbConfig.Connections.Single(c=>c.IsUsedForLogging));
-            Assert.AreEqual("Icon", dbConfig.LoggingConnection.DatabaseName);
-            Assert.AreEqual("dbLogIconGlobalController", dbConfig.LoggingConnection.ConnectionStringName);
-            Assert.AreEqual(@"cewd1815\SQLSHARED2012D", dbConfig.LoggingConnection.ServerName);
-            Assert.AreEqual(EnvironmentEnum.Test, dbConfig.LoggingConnection.Environment);
-            Assert.IsFalse(dbConfig.LoggingConnection.IsEntityFramework);
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("ReconnectDelay"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("SendEmails"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("EmailHost"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("EmailPort"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("EmailUsername"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("EmailPassword"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("Sender"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("Recipients"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("NumberOfListenerThreads"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("ResendMessageCount"));
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasIconEfAndIrmaEfWithIconLogging_ReadsDbConnections()
+        public void BuildEsbAppSettingsForUpdate_WhenUpdatingIconServiceToPerf_ShouldNotIncludeFixedEsbSettings()
         {
             // Arrange
-            var configPath = "SampleDbConfig_IconEfAndIrmaEfWithIconLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaPerf;
+            var esbAppSettings = serviceTestData.Services.EsbConnections.TST_Icon_Single.First();
+            var esbConnectionType = esbAppSettings.ConnectionType;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var updatedEsbSettings = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Icon));
-            var iconConnection = dbConfig.GetSingleNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Icon);
-            Assert.IsNotNull(iconConnection);
-            Assert.AreEqual("Icon", iconConnection.DatabaseName);
-            Assert.AreEqual(@"cewd1815\SQLSHARED2012D", iconConnection.ServerName);
-            Assert.AreEqual("IconContext", iconConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, iconConnection.Environment);
-            Assert.IsTrue(iconConnection.IsEntityFramework);
-
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.IRMA));
-            var irmaConnections = dbConfig.GetAllNonLoggingConnectionsOfCategory(DatabaseCategoryEnum.IRMA);
-            Assert.AreEqual(12, irmaConnections.Count);
-
-            var irmaFlConnection = dbConfig.Connections
-                .Single(c => c.Category == DatabaseCategoryEnum.IRMA && c.ServerName.Contains("fl"));
-            Assert.IsNotNull(irmaFlConnection);
-            Assert.AreEqual("ItemCatalog_Test", irmaFlConnection.DatabaseName);
-            Assert.AreEqual(@"idd-fl\fld", irmaFlConnection.ServerName);
-            Assert.AreEqual("ItemCatalog_FL", irmaFlConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Dev, irmaFlConnection.Environment);
-            Assert.IsTrue(irmaFlConnection.IsEntityFramework);
-
-            var irmaPnConnection = dbConfig.Connections
-                .Single(c => c.Category == DatabaseCategoryEnum.IRMA && c.ServerName.Contains("pn"));
-            Assert.IsNotNull(irmaPnConnection);
-            Assert.AreEqual("ItemCatalog_Test", irmaPnConnection.DatabaseName);
-            Assert.AreEqual(@"idt-pn\pnt", irmaPnConnection.ServerName);
-            Assert.AreEqual("ItemCatalog_PN", irmaPnConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, irmaPnConnection.Environment);
-            Assert.IsTrue(irmaPnConnection.IsEntityFramework);
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("ConnectionFactoryName"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("SslPassword"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("QueueName"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("CertificateStoreName"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("CertificateStoreLocation"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("SslPassword"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("JmsUsername"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("JndiUsername"));
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasIconEfAndIrmaEfWithIconLogging_ReadsLoggingConnection()
+        public void BuildEsbAppSettingsForUpdate_WhenUpdatingIconServiceToPerf_ShouldUpdateEsbServerSettings()
         {
             // Arrange
-            var configPath = "SampleDbConfig_IconEfAndIrmaEfWithIconLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaPerf;
+            var esbAppSettings = serviceTestData.Services.EsbConnections.TST_Icon_Single.First();
+            var esbConnectionType = esbAppSettings.ConnectionType;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var updatedEsbSettings = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsNotNull(dbConfig.LoggingConnection);
-            Assert.AreSame(dbConfig.LoggingConnection, dbConfig.Connections.Single(c=>c.IsUsedForLogging));
-            Assert.AreEqual("Icon", dbConfig.LoggingConnection.DatabaseName);
-            Assert.AreEqual(@"cewd1815\SQLSHARED2012D", dbConfig.LoggingConnection.ServerName);
-            Assert.AreEqual("dbLogIconRegionalController", dbConfig.LoggingConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, dbConfig.LoggingConnection.Environment);
-            Assert.IsFalse(dbConfig.LoggingConnection.IsEntityFramework);
+            Assert.AreEqual("ssl://PERF-ESB-EMS-1.wfm.pvt:27293,ssl://PERF-ESB-EMS-2.wfm.pvt:27293", updatedEsbSettings["ServerUrl"]);
+            Assert.AreEqual("PERF-ESB-EMS-1.wfm.pvt", updatedEsbSettings["TargetHostName"]);
+            Assert.AreEqual("E=uday.bhaskar@wholefoods.com, CN=uday.bhaskar, OU=InfraESBAdmins@wholefoods.com, O=Whole Foods Market, L=Austin, S=TX, C=US", updatedEsbSettings["CertificateName"]);
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasIconSqlAndIrmaSqlAndMammothSqlWithIconLogging_ReadsDbConnections()
+        public void BuildEsbAppSettingsForUpdate_WhenUpdatingIconServiceToPerf_ShouldUpdateEsbUserSettings()
         {
             // Arrange
-            var configPath = "SampleDbConfig_IconSqlAndIrmaSqlAndMammothSqlWithIconLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaPerf;
+            var esbAppSettings = serviceTestData.Services.EsbConnections.TST_Icon_Single.First();
+            var esbConnectionType = esbAppSettings.ConnectionType;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var updatedEsbSettings = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Icon));
-            var iconConnection = dbConfig.GetSingleNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Icon);
-            Assert.IsNotNull(iconConnection);
-            Assert.AreEqual("Icon", iconConnection.DatabaseName);
-            Assert.AreEqual(@"CEWD1815\SQLSHARED2012D", iconConnection.ServerName);
-            Assert.AreEqual("Icon", iconConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, iconConnection.Environment);
-            Assert.IsFalse(iconConnection.IsEntityFramework);
-
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Mammoth));
-            var mammothConnection = dbConfig.GetSingleNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Mammoth);
-            Assert.IsNotNull(mammothConnection);
-            Assert.AreEqual("Mammoth", mammothConnection.DatabaseName);
-            Assert.AreEqual(@"MAMMOTH-DB01-DEV\MAMMOTH", mammothConnection.ServerName);
-            Assert.AreEqual("Mammoth", mammothConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, mammothConnection.Environment);
-            Assert.IsFalse(mammothConnection.IsEntityFramework);
-
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.IRMA));
-            var irmaConnections = dbConfig.GetAllNonLoggingConnectionsOfCategory(DatabaseCategoryEnum.IRMA);
-            Assert.AreEqual(12, irmaConnections.Count);
-
-            var irmaFlConnection = dbConfig.Connections
-                .Single(c => c.Category == DatabaseCategoryEnum.IRMA && c.ServerName.Contains("fl"));
-            Assert.IsNotNull(irmaFlConnection);
-            Assert.AreEqual("ItemCatalog_Test", irmaFlConnection.DatabaseName);
-            Assert.AreEqual(@"idd-fl\fld", irmaFlConnection.ServerName);
-            Assert.AreEqual("ItemCatalog_FL", irmaFlConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Dev, irmaFlConnection.Environment);
-            Assert.IsFalse(irmaFlConnection.IsEntityFramework);
-
-            var irmaPnConnection = dbConfig.Connections
-                .Single(c => c.Category == DatabaseCategoryEnum.IRMA && c.ServerName.Contains("pn"));
-            Assert.IsNotNull(irmaPnConnection);
-            Assert.AreEqual("ItemCatalog_Test", irmaPnConnection.DatabaseName);
-            Assert.AreEqual(@"idt-pn\pnt", irmaPnConnection.ServerName);
-            Assert.AreEqual("ItemCatalog_PN", irmaPnConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, irmaPnConnection.Environment);
-            Assert.IsFalse(irmaPnConnection.IsEntityFramework);
+            Assert.AreEqual("jms!C0nPERF", updatedEsbSettings["JmsPassword"]);
+            Assert.AreEqual("jndiIconUserPERF", updatedEsbSettings["JndiPassword"]);
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasIconSqlAndIrmaSqlAndMammothSqlWithIconLogging_ReadsLoggingConnection()
+        public void BuildEsbAppSettingsForUpdate_WhenUpdatingMammothServiceToQA_ShouldNotUpdateNonEsbSettings()
         {
             // Arrange
-            var configPath = "SampleDbConfig_IconSqlAndIrmaSqlAndMammothSqlWithIconLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaFunc;
+            var esbAppSettings = serviceTestData.Services.EsbConnections.TST_Icon_Single.First();
+            var esbConnectionType = esbAppSettings.ConnectionType;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var updatedEsbSettings = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsNotNull(dbConfig.LoggingConnection);
-            Assert.AreSame(dbConfig.LoggingConnection, dbConfig.Connections.Single(c=>c.IsUsedForLogging));
-            Assert.AreEqual("Icon", dbConfig.LoggingConnection.DatabaseName);
-            Assert.AreEqual(@"cewd1815\SQLSHARED2012D", dbConfig.LoggingConnection.ServerName);
-            Assert.AreEqual("dbLogMonitor", dbConfig.LoggingConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, dbConfig.LoggingConnection.Environment);
-            Assert.IsFalse(dbConfig.LoggingConnection.IsEntityFramework);
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("SendEmails"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("EmailHost"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("EmailPort"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("EmailUsername"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("EmailPassword"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("Sender"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("Recipients"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("EnablePrimeAffinityMessages"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("ExcludedPSNumbers"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("EligiblePriceTypes"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("NonReceivingSystems"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("PrimeAffinityPsgName"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("PrimeAffinityPsgType"));
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasVimSqlWithFileLogging_ReadsDbConnections()
+        public void BuildEsbAppSettingsForUpdate_WhenUpdatingMammothServiceToQA_ShouldNotIncludeFixedEsbSettings()
         {
             // Arrange
-            var configPath = "SampleDbConfig_VimSqlWithFileLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaFunc;
+            var esbAppSettings = serviceTestData.Services.EsbConnections.TST_Mammoth;
+            var esbConnectionType = esbAppSettings.ConnectionType;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var updatedEsbSettings = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
             // Assert
-            Assert.IsNotNull(dbConfig);
-
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Vim));
-            var vimConnection = dbConfig.GetSingleNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Vim);
-            Assert.IsNotNull(vimConnection);
-            Assert.AreEqual("", vimConnection.DatabaseName);
-            Assert.AreEqual(@"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=vim_dt.wfm.pvt)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=vim_dt)))", vimConnection.ServerName);
-            Assert.AreEqual("VIM", vimConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Undefined, vimConnection.Environment);
-            Assert.IsFalse(vimConnection.IsEntityFramework);
-
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Other));
-            var promoConnection = dbConfig.GetSingleNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Other);
-            Assert.IsNotNull(promoConnection);
-            Assert.AreEqual("wfmpromotions", promoConnection.DatabaseName);
-            Assert.AreEqual(@"promodb-dev", promoConnection.ServerName);
-            Assert.AreEqual("PROMO", promoConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Undefined, promoConnection.Environment);
-            Assert.IsFalse(promoConnection.IsEntityFramework);
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("ConnectionFactoryName"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("SslPassword"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("QueueName"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("CertificateStoreName"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("CertificateStoreLocation"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("SslPassword"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("JmsUsername"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("JndiUsername"));
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenAppHasVimSqlWithFileLogging_LoggingConnectionIsNull()
+        public void BuildEsbAppSettingsForUpdate_WhenUpdatingMammothServiceToQA_ShouldUpdateEsbServerSettings()
         {
             // Arrange
-            var configPath = "SampleDbConfig_VimSqlWithFileLogging.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaFunc;
+            var esbAppSettings = serviceTestData.Services.EsbConnections.TST_Mammoth;
+            var esbConnectionType = esbAppSettings.ConnectionType;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var updatedEsbSettings = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsNull(dbConfig.LoggingConnection);
-            Assert.AreEqual("None", dbConfig.LoggingSummary);
+            Assert.AreEqual("ssl://QA-ESB-EMS-1.wfm.pvt:27293,ssl://QA-ESB-EMS-2.wfm.pvt:27293", updatedEsbSettings["ServerUrl"]);
+            Assert.AreEqual("QA-ESB-EMS-1.wfm.pvt", updatedEsbSettings["TargetHostName"]);
+            Assert.AreEqual("E=uday.bhaskar@wholefoods.com, CN=Uday Bhaskar, OU=InfraESBAdmins@wholefoods.com, O=Whole Foods Market, L=\"Austin \", S=TX, C=US", updatedEsbSettings["CertificateName"]);
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenEncryptedConnection_ReadsDbConnection()
+        public void BuildEsbAppSettingsForUpdate_WhenUpdatingMammothServiceToQA_ShouldUpdateEsbUserSettings()
         {
             // Arrange
-            var configPath = "SampleDbConfig_EncryptedDatabaseConnection.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaFunc;
+            var esbAppSettings = serviceTestData.Services.EsbConnections.TST_Mammoth;
+            var esbConnectionType = esbAppSettings.ConnectionType;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var updatedEsbSettings = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Encrypted));
-            var encryptedConnection = dbConfig.GetSingleNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Encrypted);
-            Assert.IsNotNull(encryptedConnection);
-            Assert.AreEqual("{Encrypted}", encryptedConnection.DatabaseName);
-            Assert.AreEqual("{Encrypted}", encryptedConnection.ServerName);
-            Assert.AreEqual("{Encrypted}", encryptedConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Undefined, encryptedConnection.Environment);
-            Assert.IsFalse(encryptedConnection.IsEntityFramework);
+            Assert.AreEqual("jmsM@mm#!QA", updatedEsbSettings["JmsPassword"]);
+            Assert.AreEqual("jndiM@mm$$$QA", updatedEsbSettings["JndiPassword"]);
         }
 
         [TestMethod]
-        public void ReadDatabaseConfiguration_WhenIconAndIrmaEfWithNewSql16Db_ReadsDbConnection()
+        public void BuildEsbAppSettingsForUpdate_WhenUpdatingEwicServiceToQADup_ShouldNotIncludeFixedEsbSettings()
         {
             // Arrange
-            var configPath = "SampleDbConfig_IconEfAndIrmaEfWithIconLoggingSql16Tst.config";
-            var wmiServiceWrapper = new RemoteWmiServiceWrapper(true, mockWMiSvc.Object,
-                mockIconDbService.Object, mockMammothDbService.Object, mockEsbEnvironmentManager.Object);
-
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaDup;
+            var esbAppSettings = serviceTestData.Services.EsbConnections.TST_Ewic_Listener;
+            var esbConnectionType = esbAppSettings.ConnectionType;
             // Act
-            var dbConfig = wmiServiceWrapper.ReadDatabaseConfiguration(configPath);
-
+            var updatedEsbSettings = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
             // Assert
-            Assert.IsNotNull(dbConfig);
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Icon));
-            var iconConnection = dbConfig.GetSingleNonLoggingConnectionOfCategory(DatabaseCategoryEnum.Icon);
-            Assert.IsNotNull(iconConnection);
-            Assert.AreEqual("Icon2016", iconConnection.DatabaseName);
-            Assert.AreEqual(@"sql-icon16-tst", iconConnection.ServerName);
-            Assert.AreEqual("IconContext", iconConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Dev, iconConnection.Environment);
-            Assert.IsTrue(iconConnection.IsEntityFramework);
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("ConnectionFactoryName"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("SslPassword"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("QueueName"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("CertificateStoreName"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("CertificateStoreLocation"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("SslPassword"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("JmsUsername"));
+            Assert.IsFalse(updatedEsbSettings.ContainsKey("JndiUsername"));
+        }
 
-            Assert.IsTrue(dbConfig.HasNonLoggingConnectionOfCategory(DatabaseCategoryEnum.IRMA));
-            var irmaConnections = dbConfig.GetAllNonLoggingConnectionsOfCategory(DatabaseCategoryEnum.IRMA);
-            Assert.AreEqual(12, irmaConnections.Count);
+        [TestMethod]
+        public void BuildEsbAppSettingsForUpdate_WhenUpdatingEwicServiceToQADup_ShouldUpdateEsbServerSettings()
+        {
+            // Arrange
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaDup;
+            var esbAppSettings = serviceTestData.Services.EsbConnections.TST_Ewic_Listener;
+            var esbConnectionType = esbAppSettings.ConnectionType;
+            // Act
+            var updatedEsbSettings = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
+            // Assert
+            Assert.AreEqual("ssl://DUP-ESB-EMS-1.wfm.pvt:27293,ssl://DUP-ESB-EMS-2.wfm.pvt:27293", updatedEsbSettings["ServerUrl"]);
+            Assert.AreEqual("DUP-ESB-EMS-1.wfm.pvt", updatedEsbSettings["TargetHostName"]);
+            Assert.AreEqual("E=uday.bhaskar@wholefoods.com, CN=Uday Bhaskar, OU=InfraESBAdmins@wholefoods.com, O=Whole Foods Market, L=\"Austin \", S=TX, C=US", updatedEsbSettings["CertificateName"]);
+        }
 
-            var irmaFlConnection = dbConfig.Connections
-                .Single(c => c.Category == DatabaseCategoryEnum.IRMA && c.ServerName.Contains("fl"));
-            Assert.IsNotNull(irmaFlConnection);
-            Assert.AreEqual("ItemCatalog_Test", irmaFlConnection.DatabaseName);
-            Assert.AreEqual(@"idd-fl\fld", irmaFlConnection.ServerName);
-            Assert.AreEqual("ItemCatalog_FL", irmaFlConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Dev, irmaFlConnection.Environment);
-            Assert.IsTrue(irmaFlConnection.IsEntityFramework);
+        [TestMethod]
+        public void BuildEsbAppSettingsForUpdate_WhenUpdatingEwicServiceToQADup_ShouldUpdateEsbUserSettings()
+        {
+            // Arrange
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnv = configTestData.ViewModels.EsbQaDup;
+            var esbAppSettings = serviceTestData.Services.EsbConnections.TST_Ewic_Producer;
+            var esbConnectionType = esbAppSettings.ConnectionType;
+            // Act
+            var updatedEsbSettings = wmiServiceWrapper.BuildEsbAppSettingsForUpdate(esbEnv, esbConnectionType);
+            // Assert
+            Assert.AreEqual("ewic\"#*8DUP", updatedEsbSettings["JmsPassword"]);
+            Assert.AreEqual("jndiEw!cUserDUP", updatedEsbSettings["JndiPassword"]);
+        }
 
-            var irmaPnConnection = dbConfig.Connections
-                .Single(c => c.Category == DatabaseCategoryEnum.IRMA && c.ServerName.Contains("pn"));
-            Assert.IsNotNull(irmaPnConnection);
-            Assert.AreEqual("ItemCatalog_Test", irmaPnConnection.DatabaseName);
-            Assert.AreEqual(@"idt-pn\pnt", irmaPnConnection.ServerName);
-            Assert.AreEqual("ItemCatalog_PN", irmaPnConnection.ConnectionStringName);
-            Assert.AreEqual(EnvironmentEnum.Test, irmaPnConnection.Environment);
-            Assert.IsTrue(irmaPnConnection.IsEntityFramework);
+        [TestMethod]
+        public void ReconfigureServicesEsbEnvironmentSettings_WhenEsbModelsNull_ShouldDoNothing()
+        {
+            // Arrange
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var apps = new List<ServiceViewModel>();
+            List<EsbEnvironmentViewModel> esbEnvironments = null;
+            var mockUpdaterService = new Mock<IExternalConfigXmlManager>();
+            // Act
+            wmiServiceWrapper.ReconfigureServiceEsbEnvironmentSettings(esbEnvironments, apps, mockUpdaterService.Object);
+            // Assert
+            // (... no exception = good)
+        }
+
+        [TestMethod]
+        public void ReconfigureServicesEsbEnvironmentSettings_WhenServiceModelsNull_ShouldDoNothing()
+        {
+            // Arrange
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var esbEnvironments = configTestData.ViewModels.EsbEnvironmentsList;
+            List<ServiceViewModel> apps = null;
+            var mockUpdaterService = new Mock<IExternalConfigXmlManager>();
+            // Act
+            wmiServiceWrapper.ReconfigureServiceEsbEnvironmentSettings(esbEnvironments, apps, mockUpdaterService.Object);
+            // Assert
+            // (... no exception = good)
+        }
+
+        [TestMethod]
+        public void ReconfigureServicesEsbEnvironmentSettings_WhenValidParameters_ShouldCallUpdateExternalAppSettingsOnlyForEsbServices()
+        {
+            // Arrange
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var mockUpdaterService = new Mock<IExternalConfigXmlManager>();
+            var esbEnvironments = configTestData.ViewModels.EsbEnvironmentsList;
+            var apps = serviceTestData.Services.ServiceViewModelList;
+            // update the services with esb connections to use a new environment
+            esbEnvironments.Single(e => e.EsbEnvironment == EsbEnvironmentEnum.QA_PERF)
+                .AppsInEnvironment = apps.ToList();
+            // Act
+            wmiServiceWrapper.ReconfigureServiceEsbEnvironmentSettings(esbEnvironments, apps, mockUpdaterService.Object);
+            // Assert
+            mockUpdaterService.Verify(a =>
+                a.UpdateExternalAppSettings(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()),
+                Times.Exactly(2));
+            mockUpdaterService.Verify(a =>
+                a.ReconfigureEsbEnvironmentCustomConfigSection(
+                    It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()),
+                Times.Exactly(2));
+        }
+
+        [TestMethod]
+        public void ReconfigureServicesEsbEnvironmentSettings_WhenValidParameters_ShouldCallUpdateExternalAppSettingsForEsbServices_WithExpectedUpdates()
+        {
+            // Arrange
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var mockUpdaterService = new Mock<IExternalConfigXmlManager>();
+            var esbEnvironments = configTestData.ViewModels.EsbEnvironmentsList;
+            var apps = serviceTestData.Services.ServiceViewModelList;
+            // update the services with esb connections to use a new environment
+            esbEnvironments.Single(e => e.EsbEnvironment == EsbEnvironmentEnum.QA_PERF)
+                .AppsInEnvironment = apps.ToList();
+            var expectedEsbSettingsToUpdate_Icon = new Dictionary<string, string>
+            {
+                {"ServerUrl", "ssl://PERF-ESB-EMS-1.wfm.pvt:27293,ssl://PERF-ESB-EMS-2.wfm.pvt:27293"},
+                {"TargetHostName", "PERF-ESB-EMS-1.wfm.pvt"},
+                {"CertificateName", "E=uday.bhaskar@wholefoods.com, CN=uday.bhaskar, OU=InfraESBAdmins@wholefoods.com, O=Whole Foods Market, L=Austin, S=TX, C=US"},
+                {"JmsPassword", "jms!C0nPERF"},
+                {"JndiPassword", "jndiIconUserPERF"},
+            };
+            var expectedEsbSettingsToUpdate_Mammoth = new Dictionary<string, string>
+            {
+                {"ServerUrl", "ssl://PERF-ESB-EMS-1.wfm.pvt:27293,ssl://PERF-ESB-EMS-2.wfm.pvt:27293"},
+                {"TargetHostName", "PERF-ESB-EMS-1.wfm.pvt"},
+                {"CertificateName", "E=uday.bhaskar@wholefoods.com, CN=uday.bhaskar, OU=InfraESBAdmins@wholefoods.com, O=Whole Foods Market, L=Austin, S=TX, C=US"},
+                {"JmsPassword", "jmsM@mm24;PERF"},
+                {"JndiPassword", "jndiM@mm$$$PERF"},
+            };
+            // Act
+            wmiServiceWrapper.ReconfigureServiceEsbEnvironmentSettings(esbEnvironments, apps, mockUpdaterService.Object);
+            // Assert
+            mockUpdaterService.Verify(a =>
+                a.UpdateExternalAppSettings(
+                    serviceTestData.Services.IconR10ListenerViewModel.ConfigFilePath, 
+                    It.Is<Dictionary<string, string>>(
+                        d => CustomAsserts.AllExpectedEntriesInDictionary(expectedEsbSettingsToUpdate_Icon, d))),
+                Times.Once());
+            mockUpdaterService.Verify(a =>
+                a.UpdateExternalAppSettings(
+                    serviceTestData.Services.MammothItemLocaleControllerViewModel.ConfigFilePath,
+                    It.Is<Dictionary<string, string>>(
+                        d => CustomAsserts.AllExpectedEntriesInDictionary(expectedEsbSettingsToUpdate_Mammoth, d))),
+                Times.Once());
+            mockUpdaterService.Verify(a =>
+                a.ReconfigureEsbEnvironmentCustomConfigSection(
+                    serviceTestData.Services.MammothProductListenerViewModel.ConfigFilePath,
+                    "ESB",
+                    It.Is<Dictionary<string, string>>(
+                        d => CustomAsserts.AllExpectedEntriesInDictionary(expectedEsbSettingsToUpdate_Mammoth, d))),
+                Times.Once());
+            mockUpdaterService.Verify(a =>
+                a.ReconfigureEsbEnvironmentCustomConfigSection(
+                    serviceTestData.Services.MammothProductListenerViewModel.ConfigFilePath,
+                    "R10",
+                    It.Is<Dictionary<string, string>>(
+                        d => CustomAsserts.AllExpectedEntriesInDictionary(expectedEsbSettingsToUpdate_Icon, d))),
+                Times.Once());
+        }
+
+        [TestMethod]
+        public void ReconfigureServiceEsbEnvironmentSettings_WhenValidParameters_ShouldNotAttemptToUpdateServicesWithInvalidConfigPaths()
+        {
+            // Arrange
+            var wmiServiceWrapper = new RemoteWmiServiceWrapper(mockWMiSvc.Object);
+            var mockUpdaterService = new Mock<IExternalConfigXmlManager>();
+            var esbEnvironments = configTestData.ViewModels.EsbEnvironmentsList;
+            var apps = serviceTestData.Services.ServiceViewModelList;
+            // update the services with esb connections to use a new environment
+            esbEnvironments.Single(e => e.EsbEnvironment == EsbEnvironmentEnum.QA_PERF)
+                .AppsInEnvironment = apps.ToList();
+            apps.Single(a => a.Name == "Mammoth.ItemLocale.Controller")
+                .ConfigFilePathIsValid = false;
+            // Act
+            wmiServiceWrapper.ReconfigureServiceEsbEnvironmentSettings(esbEnvironments, apps, mockUpdaterService.Object);
+            // Assert
+            mockUpdaterService.Verify(a =>
+                a.UpdateExternalAppSettings(It.IsAny<Dictionary<string, string>>()),
+                Times.Never());
         }
     }
 }

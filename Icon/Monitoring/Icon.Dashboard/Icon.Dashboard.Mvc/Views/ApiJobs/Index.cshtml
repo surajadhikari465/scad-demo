@@ -1,10 +1,11 @@
-﻿@model IEnumerable<Icon.Dashboard.Mvc.ViewModels.ApiMessageJobSummaryViewModel>
+﻿@model Icon.Dashboard.Mvc.ViewModels.ApiMessageJobReportViewModel
 
-@{ 
+@{
+    var globalViewData = ViewBag.GlobalViewData as Icon.Dashboard.Mvc.ViewModels.GlobalViewData;
     Icon.Dashboard.Mvc.ViewModels.ApiMessageJobTimedReportViewModel jobReportModel = null;
-    if (ViewBag.JobType != null)
+    if (Model.JobType != null)
     {
-        jobReportModel = new Icon.Dashboard.Mvc.ViewModels.ApiMessageJobTimedReportViewModel(ViewBag.JobType.ToString());
+        jobReportModel = new Icon.Dashboard.Mvc.ViewModels.ApiMessageJobTimedReportViewModel(Model.JobType);
     }
     var jobStart = (jobReportModel == null) ? String.Empty : jobReportModel.StartTime.Value.ToString("YYYY-MM-DD HH:mm:ss");
     var jobEnd = (jobReportModel == null) ? String.Empty : jobReportModel.EndTime.Value.ToString("YYYY-MM-DD HH:mm:ss");
@@ -12,14 +13,14 @@
 <p></p>
 
 <div class="container-wide">
-    @{ Html.RenderPartial("_ApiJobsTablePartial", Model); }
+    @{ Html.RenderPartial("_ApiJobsReportPartial", Model); }
 </div>
 
 <div id="pagingDiv">
-    @if (ViewBag.PaginationPageSetViewModel != null && ViewBag.PaginationPageSetViewModel is Icon.Dashboard.Mvc.ViewModels.PaginationPageSetViewModel)
+    @if (ViewBag.PaginationPageSetViewModel != null && Model.PaginationModel is Icon.Dashboard.Mvc.ViewModels.PaginationPageSetViewModel)
     {
         <div>
-            @{Html.RenderPartial("_PaginationPartial", ViewBag.PaginationPageSetViewModel as Icon.Dashboard.Mvc.ViewModels.PaginationPageSetViewModel);}
+            @{Html.RenderPartial("_PaginationPartial", Model.PaginationModel as Icon.Dashboard.Mvc.ViewModels.PaginationPageSetViewModel);}
         </div>
     }
 </div>

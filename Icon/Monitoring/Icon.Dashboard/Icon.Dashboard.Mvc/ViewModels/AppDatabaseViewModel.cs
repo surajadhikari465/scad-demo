@@ -1,4 +1,5 @@
-﻿using Icon.Dashboard.Mvc.Models;
+﻿using Icon.Dashboard.Mvc.Enums;
+using Icon.Dashboard.Mvc.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +11,7 @@ namespace Icon.Dashboard.Mvc.ViewModels
     {
         public AppDatabaseViewModel() { }
 
-        public AppDatabaseViewModel(DatabaseDefinition dbModel) : this()
+        public AppDatabaseViewModel(DatabaseModel dbModel) : this()
         {
             ServerName = dbModel.ServerName;
             DatabaseName = dbModel.DatabaseName;

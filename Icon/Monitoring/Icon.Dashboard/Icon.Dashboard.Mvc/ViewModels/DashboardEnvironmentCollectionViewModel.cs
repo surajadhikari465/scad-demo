@@ -9,11 +9,11 @@ namespace Icon.Dashboard.Mvc.ViewModels
     {
         public DashboardEnvironmentCollectionViewModel()
         {
-            Environments = new List<DashboardEnvironmentViewModel>();
+            Environments = new List<EnvironmentViewModel>();
         }
 
         public int SelectedEnvIndex { get; set; }
 
-        public List<DashboardEnvironmentViewModel> Environments { get; set; }
+        public List<EnvironmentViewModel> Environments { get; set; }
     }
 }

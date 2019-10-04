@@ -1,0 +1,36 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.AppRecentErrorsReportViewModel
+       
+<a id="logEntryReport@(Model.AppID)"
+   href="@Model.LinkForIndividualAppLogger" class="btn btn-link btn-block">
+    @Model.ReportName
+    @if (Model.AppID > 0)
+    {
+        if (Model.LogEntryCount.HasValue)
+        {
+            if (Model.LogEntryCount.Value > 0)
+            {
+                <span class="label label-danger">
+                    @Model.LogEntryCount
+                </span>
+            }
+            else
+            {
+                <span class="label label-success">
+                    @Model.LogEntryCount
+                </span>
+            }
+        }
+        else
+        {
+            <span class="label label-warning">
+                ?
+            </span>
+        }
+    }
+    else
+    {
+        <span class="label label-default">
+            ???
+        </span>
+    }
+</a>

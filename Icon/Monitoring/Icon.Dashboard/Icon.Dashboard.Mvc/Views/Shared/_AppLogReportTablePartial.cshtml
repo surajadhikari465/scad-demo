@@ -1,0 +1,48 @@
+﻿@model Icon.Dashboard.Mvc.ViewModels.AppLogReportViewModel
+
+<div id="pagingDataTable" 
+         data-page="@(Model.PaginationModel.CurrentPage)" 
+         data-pageSize="@(Model.PaginationModel.PageSize)" 
+         data-appName="@(Model.AppName)"
+         data-errorLevel="@(Model.ErrorLevel)">
+    <table class="table table-bordered table-condensed table-striped no-bottom-margin">
+        <caption class="text-center"><h3>@Model.PartialViewTitle (Page @Model.PaginationModel.CurrentPage)</h3></caption>
+        <thead>
+            <tr>
+                <th class="text-center hidden-xs hidden-sm hidden-md">
+                    @Html.DisplayNameFor(model => model.LogEntries.FirstOrDefault().AppLogID)
+                </th>
+                <th class="text-center hidden-xs hidden-sm hidden-md">
+                    @Html.DisplayNameFor(model => model.LogEntries.FirstOrDefault().AppID)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.LogEntries.FirstOrDefault().AppName)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.LogEntries.FirstOrDefault().LogDate)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.LogEntries.FirstOrDefault().Level)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.LogEntries.FirstOrDefault().Message)
+                </th>
+                <th class="text-center hidden-xs">
+                    @Html.DisplayNameFor(model => model.LogEntries.FirstOrDefault().MachineName)
+                </th>
+                <th class="text-center hidden-xs hidden-sm hidden-md">
+                    @Html.DisplayNameFor(model => model.LogEntries.FirstOrDefault().UserName)
+                </th>
+                <th class="text-center hidden-xs hidden-sm hidden-md">
+                    @Html.DisplayNameFor(model => model.LogEntries.FirstOrDefault().Logger)
+                </th>
+            </tr>
+        </thead>
+        <tbody id="logTableBody" class="text-center">
+            @foreach (var logEntry in Model.LogEntries)
+            {
+                @Html.DisplayFor(model => logEntry)
+            }
+        </tbody>
+    </table>
+</div>

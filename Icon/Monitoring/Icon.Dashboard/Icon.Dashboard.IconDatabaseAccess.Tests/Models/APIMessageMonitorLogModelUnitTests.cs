@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FluentAssertions;
 
 namespace Icon.Dashboard.IconDatabaseAccess.Tests
 {
@@ -31,7 +30,7 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //When
             var actualMessageTypeName = logEntry.MessageTypeName;
             //Then
-            actualMessageTypeName.Should().BeEquivalentTo(expectedMessageTypeName);
+            Assert.AreEqual(expectedMessageTypeName, actualMessageTypeName);
         }
 
         [TestMethod]
@@ -54,7 +53,7 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //When
             var actualMessageTypeName = logEntry.MessageTypeName;
             //Then
-            actualMessageTypeName.Should().BeEquivalentTo(expectedMessageTypeName);
+            Assert.AreEqual(expectedMessageTypeName, actualMessageTypeName);
         }
     }
 }

@@ -70,9 +70,20 @@ namespace Icon.Dashboard.Mvc.UnitTests.RoutingUnitTests
 
         public void SetupRequestUrl(string relativePath)
         {
-            var routes = new RouteCollection();
-            RouteConfig.RegisterRoutes(routes);
+            //var routes = new RouteCollection();
+            //RouteConfig.RegisterRoutes(routes);
             moqRequest.Setup(r => r.AppRelativeCurrentExecutionFilePath).Returns(relativePath);
+        }
+
+        public RouteCollection SetMockPathAndRegisterRoutes(string relativePath)
+        {
+            var routeCollection = new RouteCollection();
+            // call the static RegisterRoutes method in MVC App_Start\RouteConfig.cs
+            RouteConfig.RegisterRoutes(routeCollection);
+            // set up the url for the test in the mock request
+            moqRequest.Setup(r => r.AppRelativeCurrentExecutionFilePath)
+                .Returns(relativePath);
+            return routeCollection;
         }
     }
 }

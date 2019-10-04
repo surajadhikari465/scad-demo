@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FluentAssertions;
 using Icon.Dashboard.CommonDatabaseAccess;
 
 namespace Icon.Dashboard.IconDatabaseAccess.Tests
@@ -18,9 +17,9 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //Act
             var queryResult = new AppLogSummaryQueryResult(appName, appId, timeSpan);
             //Assert
-            queryResult.AppName.Should().BeEquivalentTo(appName);
-            queryResult.AppID.Should().Be(appId);
-            queryResult.DefinitionOfRecent.Should().Be(timeSpan);
+            Assert.AreEqual(appName, queryResult.AppName);
+            Assert.AreEqual(appId, queryResult.AppID);
+            Assert.AreEqual(timeSpan, queryResult.DefinitionOfRecent);
         }
 
         [TestMethod]
@@ -34,10 +33,10 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //Act
             var queryResult = new AppLogSummaryQueryResult(appName, appId, timeSpan, level);
             //Assert
-            queryResult.AppName.Should().BeEquivalentTo(appName);
-            queryResult.AppID.Should().Be(appId);
-            queryResult.DefinitionOfRecent.Should().Be(timeSpan);
-            queryResult.LogLevel.Should().BeEquivalentTo(level);
+            Assert.AreEqual(appName, queryResult.AppName);
+            Assert.AreEqual(appId, queryResult.AppID);
+            Assert.AreEqual(timeSpan, queryResult.DefinitionOfRecent);
+            Assert.AreEqual(level, queryResult.LogLevel);
         }
     }
 }

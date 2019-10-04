@@ -18,9 +18,8 @@ namespace Icon.Dashboard.Mvc.ViewModels
         public ApiMessageJobTimedReportViewModel(string messageType) : this()
         {
             MessageType = messageType;
-            StartTime = DateTime.Now.AddDays(-7);
-            EndTime = DateTime.Now;
         }
+
         public ApiMessageJobTimedReportViewModel(IApiJobSummary dataQueryResult) : this()
         {
             MessageType = dataQueryResult.MessageType;

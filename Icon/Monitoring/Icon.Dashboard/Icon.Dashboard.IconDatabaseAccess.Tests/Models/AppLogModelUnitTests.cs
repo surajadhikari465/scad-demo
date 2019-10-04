@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FluentAssertions;
 
 namespace Icon.Dashboard.IconDatabaseAccess.Tests
 {
@@ -33,7 +32,7 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //When
             var actualAppName = log.AppName;
             //Then
-            actualAppName.Should().BeEquivalentTo(expectedAppName);
+            Assert.AreEqual(expectedAppName, actualAppName);
         }
 
         [TestMethod]
@@ -58,7 +57,7 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //When
             var actualAppName = log.AppName;
             //Then
-            actualAppName.Should().BeEquivalentTo(expectedAppName);
+            Assert.AreEqual(expectedAppName, actualAppName);
         }
 
         [TestMethod]
@@ -88,7 +87,7 @@ namespace Icon.Dashboard.IconDatabaseAccess.Tests
             //When
             var actualLogDate = log.LoggingTimestamp;
             //Then
-            actualLogDate.Should().Be(expectedLogDate);
+            Assert.AreEqual(expectedLogDate, actualLogDate);
         }
     }
 }

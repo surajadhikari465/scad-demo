@@ -1,4 +1,5 @@
 ﻿using Icon.Dashboard.CommonDatabaseAccess;
+using Icon.Dashboard.Mvc.Enums;
 using Icon.Dashboard.Mvc.Filters;
 using Icon.Dashboard.Mvc.Models;
 using Icon.Dashboard.Mvc.Services;
@@ -13,67 +14,51 @@ namespace Icon.Dashboard.Mvc.Controllers
 {
     public class ApiJobsController : BaseDashboardController
     {
-        public ApiJobsController() : this(null, null, null) { }
+        public ApiJobsController() : this(null, null, null, null) { }
 
         public ApiJobsController(
-            IDashboardEnvironmentManager environmentManager = null,
+            IDashboardAuthorizer dashboardAuthorizer = null,
+            IDashboardDataManager dashboardConfigManager = null,
             IIconDatabaseServiceWrapper iconDbService = null,
             IMammothDatabaseServiceWrapper mammothDbService = null)
-            : base(environmentManager, iconDbService, mammothDbService) { }
-
-        #region GET
+            : base(dashboardAuthorizer, dashboardConfigManager, iconDbService, mammothDbService) { }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
-        public ActionResult Index(string id = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize)
+        [DashboardAuthorizer(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
+        public ActionResult Index(string jobType = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize)
         {
-            //enable filter to use the data service
-            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
-            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
+            var jobSummaries = GetJobSummariesAndSetRelatedViewData(page, pageSize, jobType);
+            //TODO clean up
+            ViewBag.Title = jobSummaries.ViewTitle;
+            ViewBag.PaginationPageSetViewModel = jobSummaries.PaginationModel;
 
-            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
-            ViewBag.Environment = currentEnvironment.Name;
-
-            var jobSummaries = GetJobSummariesAndSetRelatedViewData(currentEnvironment.Name, id, page, pageSize);
-
+            ViewBag.GlobalViewData = base.BuildGlobalViewModel();
             return View(jobSummaries);
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
+        [DashboardAuthorizer(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Pending()
         {
-            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
-            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
-
-            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
-            ViewBag.Environment = currentEnvironment.Name;
-
             var pendingMessages = IconDatabaseService.GetPendingMessages();
+
+            ViewBag.GlobalViewData = base.BuildGlobalViewModel();
             return View(pendingMessages);
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
-        public ActionResult RedrawPaging(string appName = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize)
+        [DashboardAuthorizer(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
+        public ActionResult RedrawPaging(string jobType = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize)
         {
-            HttpContext.Items["iconLoggingDataService"] = IconDatabaseService;
-            HttpContext.Items["mammothLoggingDataService"] = MammothDatabaseService;
-
-            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
-            ViewBag.Environment = currentEnvironment.Name;
-
-            var pagingData = GetPaginationViewModel(appName, page, pageSize);
+            var pagingData = GetPaginationViewModel(page, pageSize, jobType);
+            //ViewBag.GlobalViewData = base.BuildGlobalViewModel(base.UserPrincipal);
             return PartialView("_PaginationPartial", pagingData);
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
+        [DashboardAuthorizer(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
         public ActionResult Summarize(ApiMessageJobTimedReportViewModel viewModel)
         {
-            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
-            ViewBag.Environment = currentEnvironment.Name;
-
             if (!viewModel.StartTime.HasValue)
             {
                 ModelState.AddModelError(nameof(viewModel.StartTime), "Start time for query must be set");
@@ -88,7 +73,8 @@ namespace Icon.Dashboard.Mvc.Controllers
                 ModelState.Clear();
                 try
                 {
-                    viewModel = IconDatabaseService.GetApiJobSummaryReport(viewModel.MessageType, viewModel.StartTime.Value, viewModel.EndTime.Value);
+                    viewModel = IconDatabaseService.GetApiJobSummaryReport(
+                        viewModel.MessageType, viewModel.StartTime.Value, viewModel.EndTime.Value);
                 }
                 catch (Exception ex)
                 {
@@ -98,61 +84,53 @@ namespace Icon.Dashboard.Mvc.Controllers
             }
             else
             {
-                var modelErrors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                var modelErrors = ModelState.Values.SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage).ToList();
                 viewModel.Errors = string.Join(System.Environment.NewLine, modelErrors);
             }
+            //ViewBag.GlobalViewData = base.BuildGlobalViewModel(base.UserPrincipal);
             return PartialView("_ApiMessageJobTimedReportResultPartial", viewModel);
         }
 
         [HttpGet]
-        [DashboardAuthorization(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
-        public ActionResult TableRefresh(string appName = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize, string errorLevel = "Any")
+        [DashboardAuthorizer(RequiredRole = UserAuthorizationLevelEnum.ReadOnly)]
+        public ActionResult TableRefresh(string jobType = null, int page = 1, int pageSize = PagingConstants.DefaultPageSize, string errorLevel = "Any")
         {
-            var currentEnvironment = EnvironmentManager.GetEnvironment(Request.Url.Host);
-            ViewBag.Environment = currentEnvironment.Name;
+            var jobSummaries = GetJobSummariesAndSetRelatedViewData(page, pageSize, jobType);
 
-            var jobSummaries = GetJobSummariesAndSetRelatedViewData(currentEnvironment.Name, appName, page, pageSize);
-            return PartialView("_ApiJobsTablePartial", jobSummaries);
-        }
-        #endregion
-
-        protected PaginationPageSetViewModel GetPaginationViewModel(int page, int pageSize)
-        {
-            var pagingData = new PaginationPageSetViewModel("TableRefresh", "ApiJobs", page, pageSize);
-            return pagingData;
+            //ViewBag.GlobalViewData = base.BuildGlobalViewModel(base.UserPrincipal);
+            return PartialView("_ApiJobsReportPartial", jobSummaries);
         }
 
-        protected PaginationPageSetViewModel GetPaginationViewModel(string jobType, int page, int pageSize)
+        protected PaginationPageSetViewModel GetPaginationViewModel(int page, int pageSize, string jobType = null)
         {
-            var pagingData = String.IsNullOrWhiteSpace(jobType)
-               ? GetPaginationViewModel(page, pageSize)
-               : new PaginationPageSetViewModel("TableRefresh", "ApiJobs",  page, pageSize, jobType);
-            return pagingData;
+            var pagingViewModel = String.IsNullOrWhiteSpace(jobType)
+               ? new PaginationPageSetViewModel(Constants.MvcNames.ApiJobsTableRefreshActionName, Constants.MvcNames.ApiJobControllerName, page, pageSize)
+               : new PaginationPageSetViewModel(Constants.MvcNames.ApiJobsTableRefreshActionName, Constants.MvcNames.ApiJobControllerName, page, pageSize, jobType);
+            return pagingViewModel;
         }
 
-        private IEnumerable<ApiMessageJobSummaryViewModel> GetJobSummariesAndSetRelatedViewData(string environment, string jobType, int page, int pageSize)
+        private ApiMessageJobReportViewModel GetJobSummariesAndSetRelatedViewData(
+            int page, int pageSize, string jobType = null)
         {
+            var viewModel = new ApiMessageJobReportViewModel(jobType);
+
+            //var jobSummaries = new List<ApiMessageJobSummaryViewModel>();
             if (String.IsNullOrWhiteSpace(jobType))
             {
-                return GetJobSummariesAndSetRelatedViewData(environment, page, pageSize);
+                viewModel.JobSummaries = IconDatabaseService.GetPagedApiJobSummaries(page, pageSize);
+                viewModel.ViewTitle = $"{DashboardDataService.ActiveEnvironment.Name} DB API Controller Message Jobs Summary";
+                viewModel.PaginationModel = GetPaginationViewModel(page, pageSize);
             }
-            List<ApiMessageJobSummaryViewModel> jobSummaries = IconDatabaseService.GetPagedApiJobSummariesByMessageType(jobType, page, pageSize);
+            else
+            {
+                viewModel.JobSummaries = IconDatabaseService.GetPagedApiJobSummariesByMessageType(jobType, page, pageSize);
+                viewModel.JobType = jobType;
+                viewModel.ViewTitle = $"{DashboardDataService.ActiveEnvironment.Name} DB API Controller {jobType} Message Jobs";
+                viewModel.PaginationModel = GetPaginationViewModel(page, pageSize, jobType);
+            }
 
-            ViewBag.JobType = jobType;
-            ViewBag.Title = String.Format("{0} DB API Controller {1} Message Jobs", environment, jobType);
-            ViewBag.PaginationPageSetViewModel = GetPaginationViewModel(jobType, page, pageSize);
-
-            return jobSummaries;
-        }
-
-        private IEnumerable<ApiMessageJobSummaryViewModel> GetJobSummariesAndSetRelatedViewData(string environment, int page, int pageSize)
-        {
-            List<ApiMessageJobSummaryViewModel> jobSummaries = IconDatabaseService.GetPagedApiJobSummaries(page, pageSize);
-            
-            ViewBag.Title = environment + " DB API Controller Message Jobs Summary";
-            ViewBag.PaginationPageSetViewModel = GetPaginationViewModel(page, pageSize);
-
-            return jobSummaries;
+            return viewModel;
         }
     }
 }

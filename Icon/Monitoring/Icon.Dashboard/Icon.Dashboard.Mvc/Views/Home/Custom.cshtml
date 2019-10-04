@@ -1,5 +1,6 @@
 ﻿@model Icon.Dashboard.Mvc.ViewModels.DashboardEnvironmentCollectionViewModel
 @{
+    var globalViewData = ViewBag.GlobalViewData as Icon.Dashboard.Mvc.ViewModels.GlobalViewData;
     ViewBag.Title = "Dashboard Environments";
 }
 
@@ -74,6 +75,7 @@
         {
             id: @envCounter,
             Name: '@eachEnvironment.Name',
+            EnvironmentEnum: '@eachEnvironment.EnvironmentEnum',
             AppServers:
             [
         </text>
