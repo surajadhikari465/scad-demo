@@ -358,7 +358,7 @@ Public Class SubTeamEdit
 			item.SubTeamTypeId = CInt(ComboBox_SubTeamTypeId.SelectedValue)
 			item.Distribution = CheckBox_Distribution.Checked
 			item.InventoryCountByCase = CheckBox_InventoryCountByCase.Checked
-			item.IsDisabled = Not isDisabled
+			item.IsDisabled = chkDisable.Checked AndAlso Not CheckBox_AlignedSubTeam.Checked
 		Catch ex As Exception
 			Dim msg As String = "SubTeam Object could not be created. Check the form data."
 			Throw New Exception(msg, ex)
