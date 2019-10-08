@@ -164,10 +164,6 @@
     <None Include="Server Objects\LinkedServers.sql" />
     <None Include="Security\SecurityGrants.QA.sql" />
     <None Include="Security\SecurityGrants.TEST.sql" />
-    <Build Include="gpm\Tables\Price_FL_Audit.sql" />
-    <Build Include="dbo\Tables\ItemAttributes_Locale_FL_Audit.sql" />
-    <Build Include="dbo\Tables\Locales_FL_Audit.sql" />
-    <Build Include="dbo\Tables\ItemTypes_Audit.sql" />
     <Build Include="Schemas\gpm.sql" />
   </ItemGroup>
   <ItemGroup>
@@ -176,7 +172,6 @@
     <None Include="MammothStaging.Db.publish.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Build Include="dbo\Tables\Items_Audit.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">
@@ -187,11 +182,5 @@
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MammothStaging.Db.refactorlog" />
-  </ItemGroup>
-  <ItemGroup>
-    <Build Include="dbo\Tables\R10PriceAudit.sql" />
-    <Build Include="dbo\Tables\ItemAttributes_Nutrition_Audit.sql" />
-    <Build Include="dbo\Tables\ItemAttributes_Locale_FL_Ext_Audit.sql" />
-    <Build Include="dbo\Tables\Attributes_Audit.sql" />
   </ItemGroup>
 </Project>

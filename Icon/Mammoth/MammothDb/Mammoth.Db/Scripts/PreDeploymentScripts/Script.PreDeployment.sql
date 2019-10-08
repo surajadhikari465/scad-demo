@@ -13,3 +13,4 @@
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 
 -- EXAMPLE :r .\TruncateItemLocaleStagingTable.sql -- 2018.02.27
+:r .\23389_Delete_Job_CopyGpmDataForAudit.sql -- 2019.10.08
