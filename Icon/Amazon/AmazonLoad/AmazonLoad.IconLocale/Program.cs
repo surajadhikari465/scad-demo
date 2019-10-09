@@ -174,6 +174,11 @@ namespace AmazonLoad.IconLocale
                                                 ActionSpecified = true,
                                                 id = model.BusinessUnit,
                                                 name = model.StoreName,
+                                                openDateSpecified = model.OpenDate.HasValue, 
+                                                openDate = model.OpenDate.GetValueOrDefault(),
+                                                closeDateSpecified = model.CloseDate.HasValue,
+                                                closeDate = model.CloseDate.GetValueOrDefault(),
+
                                                 type = new Contracts.LocaleTypeType
                                                 {
                                                     code = Contracts.LocaleCodeType.STR,
@@ -183,7 +188,12 @@ namespace AmazonLoad.IconLocale
                                                 {
                                                     CreateLocaleAddress(model)
                                                 },
-                                                traits = CreateLocaleTraits(model)
+                                                traits = CreateLocaleTraits(model), 
+                                                store = new Contracts.StoreType
+                                                {
+                                                    id = model.StoreId.ToString()
+                                                }
+                                                
                                             }
                                         }
                                     }
@@ -199,6 +209,9 @@ namespace AmazonLoad.IconLocale
 
         private static Contracts.TraitType[] CreateLocaleTraits(LocaleModel model)
         {
+
+            var validTrue = new[] {"true", "1"};
+
             return new Contracts.TraitType[]
             {
                 new Contracts.TraitType
@@ -256,13 +269,15 @@ namespace AmazonLoad.IconLocale
                         {
                             new Contracts.TraitValueType
                             {
-                                value = model.SodiumWarningRequired,
+                                value =  model.SodiumWarningRequired.ToBoolString(string.Empty,"1", string.Empty)
                             }
                         }
                     }
                 }
             };
         }
+
+       
 
         private static Contracts.AddressType CreateLocaleAddress(LocaleModel model)
         {
@@ -330,6 +345,18 @@ namespace AmazonLoad.IconLocale
                 default:
                     return Contracts.TimezoneNameType.USCentral;
             }
+        }
+    }
+
+    public static class Extensions
+    {
+        public static string ToBoolString(this string input, string defaultValue, string trueValue, string falseValue)
+        {
+            bool convertedValue;
+            if (input == null) return defaultValue;
+            var validBool = bool.TryParse(input, out convertedValue);
+            if (!validBool) return defaultValue;
+            return convertedValue ? trueValue : falseValue;
         }
     }
 }

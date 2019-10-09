@@ -486,6 +486,8 @@ select {top query}
 	metro.localeName 'MetroName',
 	store.localeID 'StoreId',
 	store.localeName 'StoreName',
+    store.localeOpenDate 'OpenDate',
+    store.localeCloseDate 'CloseDate',
 	bult.traitValue 'BusinessUnit',
 	abrlt.traitValue 'StoreAbbreviation',
 	phlt.traitValue 'PhoneNumber',

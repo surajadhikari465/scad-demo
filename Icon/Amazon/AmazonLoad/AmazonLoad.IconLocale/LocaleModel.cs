@@ -1,4 +1,6 @@
-﻿namespace AmazonLoad.IconLocale
+﻿using System;
+
+namespace AmazonLoad.IconLocale
 {
     internal class LocaleModel
     {
@@ -26,5 +28,7 @@
         public string Timezone { get; set; }
         public string CurrencyCode { get; set; }
         public string SodiumWarningRequired { get; set; }
+        public DateTime? OpenDate { get; set; }
+        public DateTime? CloseDate { get; set; }
     }
 }
