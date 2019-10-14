@@ -174,9 +174,7 @@
     <Compile Include="Queries\GetGpmStatusQuery.cs" />
     <Compile Include="Queries\GetItemIdsToScanCodesParameters.cs" />
     <Compile Include="Queries\GetItemPsgDataForGpmRegionParameters.cs" />
-    <Compile Include="Queries\GetItemPsgDataParameters.cs" />
     <Compile Include="Queries\GetItemPsgDataForGpmRegionQuery.cs" />
-    <Compile Include="Queries\GetItemPsgDataQuery.cs" />
     <Compile Include="Queries\GetJobScheduleParameters.cs" />
     <Compile Include="Queries\GetJobScheduleQuery.cs" />
     <Compile Include="Queries\GetJobSchedulesParameters.cs" />

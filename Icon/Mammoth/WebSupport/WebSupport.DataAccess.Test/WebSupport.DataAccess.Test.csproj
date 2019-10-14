@@ -159,7 +159,6 @@
     <Compile Include="Queries\GetGpmStatusQueryTests.cs" />
     <Compile Include="Queries\GetGpmPricesQueryTests.cs" />
     <Compile Include="Queries\GetItemPsgDataQueryForGpmRegionsTests.cs" />
-    <Compile Include="Queries\GetItemPsgDataQueryTests.cs" />
     <Compile Include="Queries\GetPriceResetPricesQueryTests.cs" />
     <Compile Include="Queries\GetStoresForRegionQueryTests.cs" />
     <Compile Include="Queries\DoesScanCodeExistQueryTests.cs" />
