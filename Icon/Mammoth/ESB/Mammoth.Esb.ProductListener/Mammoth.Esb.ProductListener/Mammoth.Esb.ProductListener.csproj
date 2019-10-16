@@ -130,9 +130,6 @@
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.Common.DataAccess.2019.3.20.1\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
     </Reference>
-    <Reference Include="Mammoth.PrimeAffinity.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.PrimeAffinity.Library.2018.9.25.1\lib\net46\Mammoth.PrimeAffinity.Library.dll</HintPath>
-    </Reference>
     <Reference Include="Moq, Version=4.10.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.10.0\lib\net45\Moq.dll</HintPath>
     </Reference>
@@ -195,8 +192,6 @@
     <Compile Include="Cache\IHierarchyClassCache.cs" />
     <Compile Include="Commands\AddOrUpdateProductsCommand.cs" />
     <Compile Include="Commands\AddOrUpdateProductsCommandHandler.cs" />
-    <Compile Include="Managers\IPrimeAffinityManager.cs" />
-    <Compile Include="Managers\PrimeAffinityManager.cs" />
     <Compile Include="Mappers\HierarchyClassIdMapper.cs" />
     <Compile Include="Mappers\IHierarchyClassIdMapper.cs" />
     <Compile Include="Models\ExtendedAttributesModel.cs" />
@@ -207,21 +202,15 @@
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\KitItemAttributesModel.cs" />
     <Compile Include="Models\NutritionAttributesModel.cs" />
-    <Compile Include="Models\PrimeAffinityItemStoreModel.cs" />
     <Compile Include="Models\SignAttributesModel.cs" />
     <Compile Include="ProductListener.cs" />
     <Compile Include="MessageParsers\ProductMessageParser.cs" />
     <Compile Include="Models\GlobalAttributesModel.cs" />
-    <Compile Include="ProductListenerSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetHierarchyClassesParameters.cs" />
     <Compile Include="Queries\GetHierarchyClassesQueryHandler.cs" />
     <Compile Include="Queries\GetItemsParameters.cs" />
     <Compile Include="Queries\GetItemsQueryHandler.cs" />
-    <Compile Include="Queries\GetPrimeAffinityItemStoreModelsForActiveSalesParameters.cs" />
-    <Compile Include="Queries\GetPrimeAffinityItemStoreModelsParameters.cs" />
-    <Compile Include="Queries\GetPrimeAffinityItemStoreModelsForActiveSalesQuery.cs" />
-    <Compile Include="Queries\GetPrimeAffinityItemStoreModelsQuery.cs" />
     <Compile Include="SimpleInjectorInitializer.cs" />
   </ItemGroup>
   <ItemGroup>

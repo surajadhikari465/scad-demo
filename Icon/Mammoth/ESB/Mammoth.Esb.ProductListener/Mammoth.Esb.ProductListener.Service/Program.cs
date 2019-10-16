@@ -1,7 +1,4 @@
-﻿using Icon.Esb;
-using Icon.Logging;
-using Mammoth.PrimeAffinity.Library.Esb;
-using System.ServiceProcess;
+﻿using System.ServiceProcess;
 using System.Threading;
 
 namespace Mammoth.Esb.ProductListener.Service

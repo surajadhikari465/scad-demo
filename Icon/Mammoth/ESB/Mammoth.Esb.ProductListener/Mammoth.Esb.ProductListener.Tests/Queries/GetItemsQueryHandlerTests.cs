@@ -151,7 +151,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Queries
                            ,[FoodStampEligible]
                            ,[Desc_CustomerFriendly]
                            ,[ModifiedDate])
-                        SELECT @ItemId, 
+                        SELECT TOP 1 @ItemId, 
                             itemTypeID,
                             @ScanCode, 
                             12345,

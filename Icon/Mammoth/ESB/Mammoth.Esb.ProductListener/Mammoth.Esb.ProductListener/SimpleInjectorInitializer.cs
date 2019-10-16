@@ -1,11 +1,7 @@
-﻿using Esb.Core.MessageBuilders;
-using Esb.Core.Serializer;
-using Icon.Common.Email;
+﻿using Icon.Common.Email;
 using Icon.Esb;
-using Icon.Esb.Factory;
 using Icon.Esb.ListenerApplication;
 using Icon.Esb.MessageParsers;
-using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Esb.Subscriber;
 using Icon.Logging;
 using Mammoth.Common.DataAccess.CommandQuery;
@@ -13,14 +9,10 @@ using Mammoth.Common.DataAccess.ConnectionBuilders;
 using Mammoth.Common.DataAccess.DbProviders;
 using Mammoth.Common.DataAccess.Decorators;
 using Mammoth.Esb.ProductListener.Cache;
-using Mammoth.Esb.ProductListener.Managers;
 using Mammoth.Esb.ProductListener.Mappers;
 using Mammoth.Esb.ProductListener.MessageParsers;
 using Mammoth.Esb.ProductListener.Models;
-using Mammoth.PrimeAffinity.Library.Commands;
-using Mammoth.PrimeAffinity.Library.Esb;
-using Mammoth.PrimeAffinity.Library.MessageBuilders;
-using Mammoth.PrimeAffinity.Library.Processors;
+using Mammoth.Esb.ProductListener.Commands;
 using SimpleInjector;
 using SimpleInjector.Diagnostics;
 using System.Collections.Generic;
@@ -38,7 +30,6 @@ namespace Mammoth.Esb.ProductListener
             var container = new Container();
 
             container.Register<ProductListener>();
-            container.Register(() => ProductListenerSettings.Load());
             container.Register<ListenerApplicationSettings>(() => ListenerApplicationSettings.CreateDefaultSettings("Mammoth Product Listener"));
             container.Register<EsbConnectionSettings>(() => EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("ESB"));
             container.Register<IEsbSubscriber>(() => new EsbSubscriber(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("ESB")));
@@ -48,20 +39,9 @@ namespace Mammoth.Esb.ProductListener
             container.Register<IHierarchyClassIdMapper, HierarchyClassIdMapper>();
             container.Register<IHierarchyClassCache, HierarchyClassCache>();
 
-            //PrimeAffinity
-            container.Register<IPrimeAffinityManager, PrimeAffinityManager>();
-            container.Register<IMessageBuilder<PrimeAffinityMessageBuilderParameters>, PrimeAffinityMessageBuilder>();
-            container.Register<IPrimeAffinityPsgProcessor<PrimeAffinityPsgProcessorParameters>, PrimeAffinityPsgProcessor>();
-            container.Register<IEsbConnectionFactory>(() => new EsbConnectionFactory { Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("R10") });
-            container.Register<ISerializer<items>, Serializer<items>>();
-            container.Register<ILogger<PrimeAffinityPsgProcessor>, NLogLogger<PrimeAffinityPsgProcessor>>();
-            container.Register(() => PrimeAffinityMessageBuilderSettings.Load());
-            container.Register(() => PrimeAffinityPsgProcessorSettings.Load());
-			container.Register<IEsbConnectionCacheFactory, EsbConnectionCacheFactory>();
-
             //Data Access
             container.RegisterSingleton<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString));
-            container.Register(typeof(ICommandHandler<>), new[] { Assembly.GetExecutingAssembly(), Assembly.GetAssembly(typeof(ArchivePrimeAffinityMessageCommandHandler)) }, Lifestyle.Singleton);
+			container.Register(typeof(ICommandHandler<>), new[] { Assembly.GetExecutingAssembly(), Assembly.GetAssembly(typeof(AddOrUpdateProductsCommandHandler)) }, Lifestyle.Singleton);
             container.Register(typeof(IQueryHandler<,>), new[] { Assembly.GetExecutingAssembly() }, Lifestyle.Singleton);
             container.RegisterSingleton<IConnectionBuilder>(() => new ConnectionBuilder("Mammoth"));
             container.RegisterSingleton<IDbProvider, SqlDbProvider>();
@@ -72,9 +52,6 @@ namespace Mammoth.Esb.ProductListener
             subscriberRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the subscriber is taken care of by the application.");
             Registration dbConnectionRegistration = container.GetRegistration(typeof(IDbConnection)).Registration;
             dbConnectionRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing IDbConnection is taken care of by the application.");
-
-			EsbConnectionCache.EsbConnectionSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("R10");
-			EsbConnectionCache.InitializeConnectionFactoryAndConnection();
 
 			container.Verify();
             return container;
