@@ -46,7 +46,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                 HierarchyClassId = 55,
                 HierarchyClassName = "Test Family",
                 HierarchyClassParentId = 0,
-                HierarchyLevelName = "Family",
+                HierarchyLevelName = "National Family",
                 HierarchyId = Hierarchies.National
             });
 
