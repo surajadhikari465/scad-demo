@@ -2,12 +2,16 @@
 CREATE PROCEDURE [amz].[ResetQueueMessages]
   @action NVARCHAR(25),
   @queue NVARCHAR(25),
-  @maxRecords int = 10000,
+  @maxRecords int = 50001,
   @userName NVARCHAR(200) = NULL,
+  @messageType NVARCHAR(50) = NULL,
+  @eventType NVARCHAR(25) = NULL,
   @status NVARCHAR(1) = NULL,
+  @storeBU INT = NULL,
   @keyID INT = NULL,
   @secondaryKeyID INT = NULL, 
-  @insertDate DATE = NULL,
+  @startDatetime DATETIME = NULL,
+  @endDatetime DATETIME = NULL,
   @IDs dbo.IntType READONLY
 AS
 BEGIN
@@ -17,37 +21,39 @@ BEGIN
 
   IF(@action = 'Get') --Get queue list
     BEGIN
-      IF(@queue = 'Archive')
+      IF(@queue = 'ArchivedMessage')
        BEGIN
-           SELECT TOP(@maxRecords) MessageArchiveID ArchiveID,  EventType [Event], KeyID, SecondaryKeyID,
+           SELECT TOP(@maxRecords) MessageArchiveID ArchiveID, BusinessUnitID StoreBU, EventType [Event], KeyID, SecondaryKeyID,
                 CASE Status WHEN 'F' THEN 'Failed' WHEN 'P' THEN 'Processed' ELSE 'Unprocessed' END Status, 
 				CONVERT(VARCHAR, InsertDate, 120) Insert_Date, ResetBy Reset_By
            FROM amz.MessageArchive
           WHERE (@keyID IS NULL OR KeyID = @keyID) 
-		    AND CAST(InsertDate AS DATE) = IsNull(@insertDate, CAST(InsertDate AS DATE))
+		    AND BusinessUnitID = ISNULL(@storeBU, BusinessUnitID)
+			AND EventType = ISNULL(@eventType, EventType)
+			AND EventType LIKE (CASE @messageType
+								WHEN 'Inventory' THEN 'INV_%'
+								WHEN 'PurchaseOrder' THEN 'PO_%'
+								WHEN 'Receipt' THEN 'RCPT_%'
+								WHEN 'TransferOrder' THEN 'TSF_%'
+								ELSE EventType
+								END)
+		    AND (@startDatetime IS NULL OR InsertDate >= @startDatetime)
+			AND (@endDatetime IS NULL OR  InsertDate <= @endDatetime)
 			AND Status = IsNull(@status, Status)
        END
 
-      ELSE IF(@queue IN('Inventory', 'Order', 'Receipt', 'Transfer'))
+      ELSE IF(RIGHT(@queue, 6) = 'Events')
        BEGIN
          SELECT TOP(@maxRecords) MessageArchiveEventID ArchiveID, EventTypeCode [Event], KeyID, SecondaryKeyID, 
               '' Status, CONVERT(VARCHAR, InsertDate, 120) Insert_Date, '' Reset_By
            FROM amz.MessageArchiveEvent
 		  WHERE (@keyID IS NULL OR KeyID = @keyID)  
 			AND (@secondaryKeyID IS NULL OR SecondaryKeyID = @secondaryKeyID) 
-			AND (@insertdate IS NULL OR CAST(InsertDate AS DATE) = @insertdate)
-			AND EventTypeCode LIKE CASE @queue
-										WHEN 'Inventory'
-											THEN 'INV_%'
-										WHEN 'Order'
-											THEN 'PO_%'
-										WHEN 'Receipt'
-											THEN 'RCPT_%'
-										ELSE
-											'TSF_%'
-								    END
-      END
-
+			AND (@startDatetime IS NULL OR InsertDate >= @startDatetime)
+			AND (@endDatetime IS NULL OR  InsertDate <= @endDatetime)
+			AND EventTypeCode = ISNULL(@eventType, EventTypeCode)
+		    AND MessageType like (LEFT(@queue, 5) +'%')
+	   END
       SET NOCOUNT OFF;
       RETURN;
     END
@@ -60,14 +66,14 @@ BEGIN
       IF(OBJECT_ID('tempdb..#tempIDs') is not null) DROP TABLE #tempIDs; --Needed for dynamic SQL below
       SELECT [Key] AS ID INTO #tempIDs FROM @IDs GROUP BY [Key];
   
-      IF(@queue = 'Archive')
+      IF(@queue = 'ArchivedMessage')
        BEGIN
          UPDATE A SET ProcessTimes = 0, Status = 'U', LastReprocessID = NULL, LastReprocess = NULL, ResetBy = @userName
          FROM amz.MessageArchive A
          INNER JOIN #tempIDs B ON B.ID = A.MessageArchiveID;
        END
 
-      ELSE IF(@queue IN('Inventory', 'Order', 'Receipt', 'Transfer'))
+      ELSE IF(RIGHT(@queue, 6) = 'Events')
        BEGIN
 		 
 		 SELECT @sql = CASE @queue

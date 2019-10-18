@@ -8,7 +8,7 @@ using WebSupport.DataAccess;
 
 namespace WebSupport.ViewModels
 {
-    public class RequeueEventViewModel
+    public class RegenerateEventViewModel
     {
         public string Error { get; set; }
         public bool IsSuccess { get { return String.IsNullOrEmpty(Error); } }
@@ -32,7 +32,7 @@ namespace WebSupport.ViewModels
 		[Display(Name = "Region")]
 		public string Region { get; set; }
 
-        public RequeueEventViewModel()
+        public RegenerateEventViewModel()
 		{
             DateFrom = DateTo = DateTime.Now;
             Regions = DataConstants.WholeFoodsRegions.Distinct(StringComparer.InvariantCultureIgnoreCase).OrderBy(x => x)

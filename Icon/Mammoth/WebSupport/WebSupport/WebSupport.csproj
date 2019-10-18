@@ -217,7 +217,7 @@
     <Compile Include="Controllers\EventCreatorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageExportController.cs" />
-    <Compile Include="Controllers\RequeueEventsController.cs" />
+    <Compile Include="Controllers\RegenerateEventsController.cs" />
     <Compile Include="EsbProducerFactory\IPriceRefreshEsbProducerFactory.cs" />
     <Compile Include="EsbProducerFactory\NonJndiEsbProducer.cs" />
     <Compile Include="EsbProducerFactory\PriceRefreshEsbProducerFactory.cs" />
@@ -257,7 +257,7 @@
     <Compile Include="ViewModels\RefreshPsgViewModel.cs" />
     <Compile Include="ViewModels\RegionGpmStatusViewModel.cs" />
     <Compile Include="ViewModels\MessageExportViewModel.cs" />
-    <Compile Include="ViewModels\RequeueEventViewModel.cs" />
+    <Compile Include="ViewModels\RegenerateEventViewModel.cs" />
     <Compile Include="ViewModels\StoreViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -362,7 +362,7 @@
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
     <Content Include="Views\MessageExport\Index.cshtml" />
-    <Content Include="Views\RequeueEvents\index.cshtml" />
+    <Content Include="Views\RegenerateEvents\index.cshtml" />
     <None Include="Web.Dev.Config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

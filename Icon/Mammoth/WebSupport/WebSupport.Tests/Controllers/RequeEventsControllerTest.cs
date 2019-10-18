@@ -17,14 +17,14 @@ namespace WebSupport.Tests.Controllers
     public class RequeEventsControllerTest
     {
         Mock<ILogger> logger;
-        RequeueEventsController controller;
+        RegenerateEventsController controller;
         
 
         [TestInitialize]
         public void Initialize()
         {
             logger = new Mock<ILogger>();
-            controller = new RequeueEventsController(logger.Object);
+            controller = new RegenerateEventsController(logger.Object);
         }
 
         [TestMethod]
@@ -47,7 +47,7 @@ namespace WebSupport.Tests.Controllers
             var result = controller.Index();
 
             // Assert
-            var viewModelResult = (RequeueEventViewModel)((ViewResult)result).Model;
+            var viewModelResult = (RegenerateEventViewModel)((ViewResult)result).Model;
             Assert.AreEqual(expectedRegions.Length, viewModelResult.Regions.Length);
         }
 
@@ -61,7 +61,7 @@ namespace WebSupport.Tests.Controllers
             var result = controller.Index();
 
             // Assert
-            var viewModelResult = (RequeueEventViewModel)((ViewResult)result).Model;
+            var viewModelResult = (RegenerateEventViewModel)((ViewResult)result).Model;
             Assert.AreEqual(expectedEvents.Length, viewModelResult.Events.Length);
         }
 
@@ -142,9 +142,9 @@ namespace WebSupport.Tests.Controllers
             Assert.AreEqual(this.controller.ViewData["FYI"], $"Event code {view.EventType}: 1 events have been submitted.");
         }
 
-        RequeueEventViewModel GetViewModel()
+        RegenerateEventViewModel GetViewModel()
         {
-            return new RequeueEventViewModel()
+            return new RegenerateEventViewModel()
             {
                 Region = "FL",
                 EventType = "INV_ADJ",

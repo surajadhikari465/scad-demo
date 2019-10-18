@@ -10,12 +10,12 @@ using WebSupport.ViewModels;
 
 namespace WebSupport.Controllers
 {
-    public class RequeueEventsController : Controller
+    public class RegenerateEventsController : Controller
     {
         ILogger logger = null;
         const string UNEXPECTED_ERROR = "Unexpected error occurred";
 
-        public RequeueEventsController(ILogger argLogger)
+        public RegenerateEventsController(ILogger argLogger)
         {
             logger = argLogger;
         }
@@ -23,11 +23,11 @@ namespace WebSupport.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            return View(new RequeueEventViewModel());
+            return View(new RegenerateEventViewModel());
         }
 
         [HttpPost]
-        public ActionResult Index(RequeueEventViewModel ViewModel)
+        public ActionResult Index(RegenerateEventViewModel ViewModel)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace WebSupport.Controllers
             return View(ViewModel);
         }
 
-        void Get(RequeueEventViewModel view)
+        void Get(RegenerateEventViewModel view)
         {
             using(var db = new DBAdapter(view.Region))
             {
@@ -71,7 +71,7 @@ namespace WebSupport.Controllers
             }
         }
 
-        void Submit(RequeueEventViewModel view)
+        void Submit(RegenerateEventViewModel view)
         {
             int id = 0;
             var tvp = Icon.Common.Extensions.ToTvp((Request.Form["cbIsSelected"] ?? String.Empty).Split(',')

@@ -10,7 +10,7 @@
     public const string ErrorMsgForInvalidScanCode = "Invalid scan code format.";
 
 
-    public const string PromptToSelectRegion = "- Please Select a Region";
+    public const string PromptToSelectRegion = "- Select a Region";
 
 
     public const string XmlDateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'";
