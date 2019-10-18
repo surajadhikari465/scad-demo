@@ -58,7 +58,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Queries
             queryParameters.BrandIds = new List<int> { this.brand.HierarchyClassID };
 
             // When
-            var actual = this.getItemsByBrandQueryHandler.Search(queryParameters).ToList();
+            var actual = this.getItemsByBrandQueryHandler.Search(queryParameters).OrderBy(x => x.ItemID).ToList();
 
             // Then
             Assert.AreEqual(expectedItems.Count, actual.Count, "Correct Number of items were not returned by query");

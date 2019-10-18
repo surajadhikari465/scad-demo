@@ -336,7 +336,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                 HierarchyClassId = testNationalHierarchy.SubcategoryHcid.Value,
                 HierarchyClassName = "Test Class",
                 HierarchyClassParentId = testNationalHierarchy.CategoryHcid.Value,
-                HierarchyLevelName = Constants.National.HierarchyLevels.Class,
+                HierarchyLevelName = Constants.National.HierarchyLevels.NationalClass,
                 HierarchyId = Hierarchies.National
             });
 
@@ -371,7 +371,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                 HierarchyClassId = testNationalHierarchy.ClassHcid.Value,
                 HierarchyClassName = "Test Class",
                 HierarchyClassParentId = testNationalHierarchy.SubcategoryHcid.Value,
-                HierarchyLevelName = Constants.National.HierarchyLevels.Class,
+                HierarchyLevelName = Constants.National.HierarchyLevels.NationalClass,
                 HierarchyId = Hierarchies.National
             });
 
@@ -406,7 +406,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                 HierarchyClassId = testNationalHierarchy.ClassHcid.Value,
                 HierarchyClassName = "Test Class",
                 HierarchyClassParentId = testNationalHierarchy.SubcategoryHcid.Value,
-                HierarchyLevelName = Constants.National.HierarchyLevels.Class,
+                HierarchyLevelName = Constants.National.HierarchyLevels.NationalClass,
                 HierarchyId = Hierarchies.National
             });
 
@@ -454,7 +454,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                 HierarchyClassId = testNationalHierarchy.ClassHcid.Value,
                 HierarchyClassName = "Test Class",
                 HierarchyClassParentId = testNationalHierarchy.SubcategoryHcid.Value,
-                HierarchyLevelName = Constants.National.HierarchyLevels.Class,
+                HierarchyLevelName = Constants.National.HierarchyLevels.NationalClass,
                 HierarchyId = Hierarchies.National
             });
 
@@ -502,7 +502,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                     HierarchyClassId = 55,
                     HierarchyClassName = "Test Class 1",
                     HierarchyClassParentId = testNationalHierarchy.SubcategoryHcid.Value,
-                    HierarchyLevelName = Constants.National.HierarchyLevels.Class,
+                    HierarchyLevelName = Constants.National.HierarchyLevels.NationalClass,
                     HierarchyId = Hierarchies.National
                 },
                 new HierarchyClassModel
@@ -510,7 +510,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                     HierarchyClassId = 56,
                     HierarchyClassName = "Test Class 2",
                     HierarchyClassParentId = testNationalHierarchy.SubcategoryHcid.Value,
-                    HierarchyLevelName = Constants.National.HierarchyLevels.Class,
+                    HierarchyLevelName = Constants.National.HierarchyLevels.NationalClass,
                     HierarchyId = Hierarchies.National
                 },
                 new HierarchyClassModel
@@ -518,7 +518,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                     HierarchyClassId = 57,
                     HierarchyClassName = "Test Class 3",
                     HierarchyClassParentId = testNationalHierarchy.SubcategoryHcid.Value,
-                    HierarchyLevelName = Constants.National.HierarchyLevels.Class,
+                    HierarchyLevelName = Constants.National.HierarchyLevels.NationalClass,
                     HierarchyId = Hierarchies.National
                 },
                 new HierarchyClassModel
@@ -526,7 +526,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                     HierarchyClassId = 58,
                     HierarchyClassName = "Test Class 4",
                     HierarchyClassParentId = testNationalHierarchy.SubcategoryHcid.Value,
-                    HierarchyLevelName = Constants.National.HierarchyLevels.Class,
+                    HierarchyLevelName = Constants.National.HierarchyLevels.NationalClass,
                     HierarchyId = Hierarchies.National
                 },
                 new HierarchyClassModel
@@ -534,7 +534,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                     HierarchyClassId = 59,
                     HierarchyClassName = "Test Class 5",
                     HierarchyClassParentId = testNationalHierarchy.SubcategoryHcid.Value,
-                    HierarchyLevelName = Constants.National.HierarchyLevels.Class,
+                    HierarchyLevelName = Constants.National.HierarchyLevels.NationalClass,
                     HierarchyId = Hierarchies.National
                 },
             });

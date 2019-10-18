@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Mammoth.Esb.HierarchyClassListener
+﻿namespace Mammoth.Esb.HierarchyClassListener
 {
     public static class Constants 
     {
@@ -33,7 +27,7 @@ namespace Mammoth.Esb.HierarchyClassListener
                 public const string Family = "Family";
                 public const string Category = "Category";
                 public const string SubCategory = "SubCategory";
-                public const string Class = "Class";
+				public const string NationalClass = "National Class";
             }
         }
     }

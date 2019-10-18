@@ -30,12 +30,11 @@ namespace Mammoth.Esb.HierarchyClassListener.Commands
                 case Constants.National.HierarchyLevels.SubCategory:
                     UpdateSubCategories(data);
                     break;
-                case Constants.National.HierarchyLevels.Class:
+                case Constants.National.HierarchyLevels.NationalClass:
                     UpdateClasses(data);
                     break;
             }
         }
-
 
         private void UpdateFamilies(AddOrUpdateNationalHierarchyLineageCommand data)
         {
@@ -160,20 +159,12 @@ namespace Mammoth.Esb.HierarchyClassListener.Commands
                       CategoryHCID int null,
                       SubcategoryHCID int null,
                       ClassHCID int null
-                  )", null, dbProvider.Transaction);
+                  );
 
-            dbProvider.Connection.Execute(
-                @"INSERT INTO #TempNationalHierarchy 
-                  VALUES (@FamilyHcid, @CategoryHcid, @SubcategoryHcid, @ClassHcid)",
-                data.HierarchyClasses.Select(hc => new NationalHierarchyModel
-                {
-                    SubcategoryHcid = hc.HierarchyClassParentId,
-                    ClassHcid = hc.HierarchyClassId
-                }),
-                dbProvider.Transaction);
-
-            dbProvider.Connection.Execute(
-                @"UPDATE temp
+				  INSERT INTO #TempNationalHierarchy 
+                  VALUES (@FamilyHcid, @CategoryHcid, @SubcategoryHcid, @ClassHcid);
+				  
+				  UPDATE temp
                       SET FamilyHCID = hm.FamilyHCID,
                           CategoryHCID = hm.CategoryHCID
                   FROM #TempNationalHierarchy temp
@@ -189,9 +180,15 @@ namespace Mammoth.Esb.HierarchyClassListener.Commands
                   SELECT temp.*
                   FROM #TempNationalHierarchy temp
                   LEFT JOIN dbo.Hierarchy_NationalClass hm on temp.ClassHCID = hm.ClassHCID
-                  WHERE hm.ClassHCID IS NULL", null, dbProvider.Transaction);
-            dbProvider.Connection.Execute(
-                @"DROP TABLE #TempNationalHierarchy", null, dbProvider.Transaction);
+                  WHERE hm.ClassHCID IS NULL;
+
+				  DROP TABLE #TempNationalHierarchy;",
+                data.HierarchyClasses.Select(hc => new NationalHierarchyModel
+                {
+                    SubcategoryHcid = hc.HierarchyClassParentId,
+                    ClassHcid = hc.HierarchyClassId
+                }),
+                dbProvider.Transaction);
         }
     }
 }
