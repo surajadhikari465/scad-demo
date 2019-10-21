@@ -115,3 +115,9 @@ GRANT SELECT ON PostalCode								TO [IconPDXExtractRole];
 GRANT EXECUTE ON [app].[PDX_ItemHierarchyFile]			TO [IconPDXExtractRole];
 GRANT EXECUTE ON [app].[PDX_LocationHierarchyFile]		TO [IconPDXExtractRole];
 GRANT EXECUTE ON [app].[PDX_MerchHierarchyFile]			TO [IconPDXExtractRole];
+
+--Audit Service
+if (SELECT DATABASE_PRINCIPAL_ID('MammothRole')) IS NULL
+	CREATE ROLE MammothRole;
+
+GRANT EXECUTE ON [app].[AuditLocationHierarchy]	TO [MammothRole];
