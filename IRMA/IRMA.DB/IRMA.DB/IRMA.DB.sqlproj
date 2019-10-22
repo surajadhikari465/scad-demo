@@ -1937,14 +1937,6 @@
     <Build Include="schema\dbo\Stored Procedures\Procs3\OrdersReceivedNotClosedReport.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\OutOfPeriodInvoiceReport.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\OutOfStockReport.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs3\PDX_CalendarHierarchyFile.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs3\PDX_DeletedOrdersFile.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs3\PDX_InventoryDataSpoilageFile.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs3\PDX_ItemSubscriptionFile.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs3\PDX_ItemVendorLaneFile.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs3\PDX_PurchaseOrdersFile.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs3\PDX_ReceiptOrdersFile.sql" />
-    <Build Include="schema\dbo\Stored Procedures\Procs3\PDX_TransferOrdersFile.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\PendingRegularPriceChange.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\PerpetualMovementReport.sql" />
     <Build Include="schema\dbo\Stored Procedures\Procs3\pivot_example.sql" />
@@ -3156,7 +3148,6 @@
     <Build Include="schema\mammoth\Tables\ItemChangeEventType.sql" />
     <Build Include="schema\mammoth\Tables\ItemLocaleChangeQueue.sql" />
     <Build Include="schema\mammoth\Tables\PriceChangeQueue.sql" />
-    <Build Include="Schema\infor\Stored Procedures\PriceExtractQuery.sql" />
     <Build Include="Schema\dbo\Tables\Tables1\Scale_Storage.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_GetStorageDataByItem.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs4\Scale_AddStorageDataToItem.sql" />
@@ -3176,7 +3167,6 @@
     <None Include="SQL Agent Job\VIM - Infor Data Feeds - Future Cost %28NC).sql" />
     <Build Include="Schema\dbo\Tables\Tables1\StoreItemExtended.sql" />
     <Build Include="Schema\infor\Tables\OrderExpectedDateChangeQueue.sql" />
-    <None Include="SQL Agent Job\VIM - Infor Data Feeds - IRMA Extract.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs3\PurgeOrders.sql" />
     <None Include="SQL Agent Job\ItemCatalog - Order Purge.sql" />
     <None Include="SQL Agent Job\ItemCatalog - ItemHistory Purge.sql" />
@@ -3357,6 +3347,7 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs4\SubTeams_GetAllSubteams_1.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs1\AuditAuthorizedItems.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI23075_UpdateShrinkReasonCode_PrimeNowReturns.sql" />
+    <None Include="Scripts\PostDeploy\PBI25271-RemoveInforOrdering.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

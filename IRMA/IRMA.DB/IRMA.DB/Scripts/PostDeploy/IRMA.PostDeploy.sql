@@ -15,3 +15,4 @@ Post-Deployment Script Template
 -- Example: :r Cool_Script_Stuff.sql -- 2018.01.01
 -- This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28
+:r PBI25271-RemoveInforOrdering.sql -- 2019.10.22
