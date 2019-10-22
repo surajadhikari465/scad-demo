@@ -14,6 +14,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using Icon.Esb.Producer;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 
@@ -72,7 +73,7 @@ namespace AmazonLoad.IconItem
                 {
                     formattedSql = formattedSql.Replace("{top query}", "");
                 }
-                var models = sqlConnection.Query<ItemModel>(formattedSql, buffered: false, commandTimeout: 60);
+                var models = sqlConnection.Query<ItemModel>(formattedSql, buffered: false, commandTimeout: 600);
 
              
                
@@ -84,36 +85,78 @@ namespace AmazonLoad.IconItem
 
                 int numberOfRecordsSent = 0;
                 int numberOfMessagesSent = 0;
+                IGrouping<string, ItemModel> current = null;
                 foreach (var modelSubSet in models.Batch(10000))
                 {
-                    foreach (var modelBatch in modelSubSet.Batch(100))
-                    {
-                        foreach (var modelGroup in modelBatch.GroupBy(i => i.ItemTypeCode))
-                        {
-                            string message = BuildMessage(modelGroup);
-                            string messageId = Guid.NewGuid().ToString();
-                            var headers = new Dictionary<string, string>
-                            {
-                                { "IconMessageID", messageId },
-                                { "Source", "Icon"},
-                                { "nonReceivingSysName", AppSettingsAccessor.GetStringSetting("NonReceivingSysName") },
-                                { "TransactionType", AppSettingsAccessor.GetStringSetting("TransactionType", "Global Item") }
-                            };
+                    try {
 
-                            if (sendToEsb)
+                        foreach (var modelBatch in modelSubSet.Batch(100))
+                        {
+
+                            foreach (var modelGroup in modelBatch.GroupBy(i => i.ItemTypeCode))
                             {
-                                producer.Send(
-                                    message,
-                                    messageId,
-                                    headers);
+                                try
+                                {
+                                    current = modelGroup;
+
+                                    var message = BuildMessage(modelGroup);
+
+                                    string messageId = Guid.NewGuid().ToString();
+                                    var headers = new Dictionary<string, string>
+                                    {
+                                        {"IconMessageID", messageId},
+                                        {"Source", "Icon"},
+                                        {
+                                            "nonReceivingSysName",
+                                            AppSettingsAccessor.GetStringSetting("NonReceivingSysName")
+                                        },
+                                        {
+                                            "TransactionType",
+                                            AppSettingsAccessor.GetStringSetting("TransactionType", "Global Item")
+                                        }
+                                    };
+
+                                    if (sendToEsb)
+                                    {
+
+
+                                        producer.Send(
+                                            message,
+                                            messageId,
+                                            headers);
+                                    }
+
+                                    numberOfRecordsSent += modelGroup.Count();
+                                    numberOfMessagesSent += 1;
+                                    if (saveMessages)
+                                    {
+                                        File.WriteAllText(
+                                            $"{saveMessagesDirectory}/{numberOfMessagesSent:D6}-{messageId}.xml",
+                                            JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
+                                    }
+
+                                }
+                                catch (Exception ex)
+                                {
+
+                                    var scanCodes = string.Empty;
+                                    if (current != null)
+                                        scanCodes = string.Join(",", current.Select(s => s.ScanCode));
+
+                                    File.WriteAllText(
+                                        $"{saveMessagesDirectory}/FailedGrouping-{numberOfMessagesSent:D6}.txt",
+                                        scanCodes
+                                    );
+                                }
                             }
-                            numberOfRecordsSent += modelGroup.Count();
-                            numberOfMessagesSent += 1;
-                            if (saveMessages)
-                            {
-                                File.WriteAllText($"{saveMessagesDirectory}/{numberOfMessagesSent:D6}-{messageId}.xml", JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
-                            }
+
+
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("A huge chunk failed. this is bad.");
+                        Console.WriteLine(ex.Message);
                     }
                 }
                 Console.WriteLine($"Number of records sent: {numberOfRecordsSent}.");
