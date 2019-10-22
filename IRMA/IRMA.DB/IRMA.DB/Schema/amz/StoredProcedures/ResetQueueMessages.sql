@@ -77,11 +77,11 @@ BEGIN
        BEGIN
 		 
 		 SELECT @sql = CASE @queue
-					WHEN 'Inventory'
+					WHEN 'InventoryEvents'
 						THEN 'InventoryQueue '
-					WHEN 'Order'
+					WHEN 'PurchaseOrderEvents'
 						THEN 'OrderQueue '
-					WHEN 'Receipt'
+					WHEN 'ReceiptEvents'
 						THEN 'ReceiptQueue '
 					ELSE
 						'TransferQueue '
