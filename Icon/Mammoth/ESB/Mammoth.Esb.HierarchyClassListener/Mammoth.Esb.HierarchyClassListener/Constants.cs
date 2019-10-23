@@ -26,7 +26,7 @@
             {
                 public const string Family = "National Family";
                 public const string Category = "National Category";
-                public const string SubCategory = "SubCategory";
+                public const string SubCategory = "National Sub Category";
 				public const string NationalClass = "National Class";
             }
         }

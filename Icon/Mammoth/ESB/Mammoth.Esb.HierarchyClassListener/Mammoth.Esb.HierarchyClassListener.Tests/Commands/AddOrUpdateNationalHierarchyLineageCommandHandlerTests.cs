@@ -222,8 +222,8 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
             //Given
             const int Family_ID = 54;
             const int existingCategory_ID = 57;
-            const int newCategory_ID1 = 56;
-            const int newCategory_ID2 = 55;
+            const int newCategory_ID1 = 55;
+            const int newCategory_ID2 = 56;
             var existingMerchHierarchyA = new NationalHierarchyModel
             {
                 FamilyHcid = Family_ID,
@@ -562,6 +562,24 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                 .ToList();
             Assert.IsTrue(expectedClassIds.SequenceEqual(actualClassIds));
         }
+
+		[TestMethod]
+		[ExpectedException(typeof(System.Exception),"Invalid Hierarchy Level: Class")]
+        public void AddOrUpdateNationalHierarchyLineage_WithInvalidHierarchyLevel_ShouldThrowException()
+		{
+			//Given
+			command.HierarchyClasses.Add(new HierarchyClassModel
+            {
+                HierarchyClassId = 2,
+                HierarchyClassName = "Test Class",
+                HierarchyClassParentId = 1,
+                HierarchyLevelName = "Class",
+                HierarchyId = Hierarchies.National
+            });
+
+			//Then
+			 commandHandler.Execute(command);
+		}
 
         private void InsertTestNationalHierarchy(NationalHierarchyModel NationalHierarchy)
         {

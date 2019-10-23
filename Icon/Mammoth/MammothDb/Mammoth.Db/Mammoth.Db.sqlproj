@@ -817,6 +817,11 @@
     <Build Include="dbo\Stored Procedures\AuditGPMMessageSequence.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\Reset5NutritionValues_23879.sql" />
     <None Include="Scripts\PreDeploymentScripts\23389_Delete_Job_CopyGpmDataForAudit.sql" />
+    <Build Include="dbo\User Defined Types\HierarchyNationalClassType.sql" />
+    <Build Include="dbo\Stored Procedures\AddOrUpdateHierarchyNationalFamily.sql" />
+    <Build Include="dbo\Stored Procedures\AddOrUpdateHierarchyNationalCategory.sql" />
+    <Build Include="dbo\Stored Procedures\AddOrUpdateHierarchyNationalSubCategory.sql" />
+    <Build Include="dbo\Stored Procedures\AddOrUpdateHierarchyNationalClass.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
