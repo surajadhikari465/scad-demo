@@ -80,6 +80,7 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Commands
                     CustomerFriendlyDesc = i.CustomerFriendlyDescription,
                     KitchenDesc = i.KitchenDescription,
                     BrandName = i.BrandsHierarchyName,
+					PosDesc = i.PosDescription,
                     ImageUrl = i.ImageUrl,
 					FlexibleText = i.FlexibleText
 				}).ToTvp("items", "dbo.ItemAddOrUpdateType");

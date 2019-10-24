@@ -130,7 +130,8 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
                     MerchandiseHierarchyClassId = "84305",
                     CustomerFriendlyDescription = "Test Customer Friendly Description",
                     BrandsHierarchyName = "365",
-					FlexibleText = "Test Item FlexibleText 1"
+					FlexibleText = "Test Item FlexibleText 1",
+					PosDescription = "365 OG UNSWT ALMD MLK"
 				},
                 new ItemModel
                 {
@@ -139,7 +140,8 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
                     MerchandiseHierarchyClassId = "83876",
                     CustomerFriendlyDescription = "Test Customer Friendly Description",
                     BrandsHierarchyName = "365",
-					FlexibleText = "Test Item FlexibleText 2"
+					FlexibleText = "Test Item FlexibleText 2",
+					PosDescription = "365 VAN ALMD MLK"
 				},
                 new ItemModel
                 {
@@ -148,7 +150,8 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
                     MerchandiseHierarchyClassId = "83871",
                     CustomerFriendlyDescription = "",
                     BrandsHierarchyName = "Test",
-					FlexibleText = "Test Item FlexibleText 3"
+					FlexibleText = "Test Item FlexibleText 3",
+					PosDescription = "365 UNSWT ALMD MLK"
 				}
             };
             var listItems = items.OrderBy(i => i.ItemId).ToList();
@@ -160,7 +163,8 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
                 Assert.AreEqual(messageItems[i].MerchandiseHierarchyClassId, listItems[i].MerchandiseHierarchyClassId);
                 Assert.AreEqual(messageItems[i].CustomerFriendlyDescription, listItems[i].CustomerFriendlyDescription);
                 Assert.AreEqual(messageItems[i].BrandsHierarchyName, listItems[i].BrandsHierarchyName);
-            }
+				Assert.AreEqual(messageItems[i].PosDescription, listItems[i].PosDescription);
+			}
         }
 
     }

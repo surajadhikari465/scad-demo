@@ -549,7 +549,7 @@
             <tra:type>
               <trt:description>POS Description</trt:description>
               <trt:value>
-                <trv:value>365 OG VAN ALMD MLK</trv:value>
+                <trv:value>365 VAN ALMD MLK</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -1001,7 +1001,7 @@
             <tra:type>
               <trt:description>POS Description</trt:description>
               <trt:value>
-                <trv:value>365 OG UNSWT ALMD MLK</trv:value>
+                <trv:value>365 UNSWT ALMD MLK</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>

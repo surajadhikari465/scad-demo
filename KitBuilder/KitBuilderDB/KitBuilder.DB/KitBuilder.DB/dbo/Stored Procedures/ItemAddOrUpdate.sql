@@ -14,7 +14,8 @@ BEGIN
 		KitchenDesc,       
 		BrandName,           
 		ImageUrl,
-		FlexibleText
+		FlexibleText,
+        PosDesc
 	INTO #allItems
 	FROM @itemsTable
 
@@ -31,7 +32,8 @@ BEGIN
 		KitchenDesc,       
 		BrandName,           
 		ImageUrl,
-		FlexibleText  
+		FlexibleText,
+        PosDesc  
 	INTO #insertItems
 	FROM #allItems ai
 	WHERE NOT EXISTS (
@@ -57,8 +59,9 @@ BEGIN
 					,i.ImageUrl = ai.ImageUrl
 					,i.LastUpdatedDateUtc = GETUTCDATE()
 					,i.FlexibleText = ai.FlexibleText
+					,i.PosDesc = ai.PosDesc
 			FROM dbo.Items i
-				INNER JOIN #allItems AI ON i.ItemId = AI.ItemId
+				INNER JOIN #allItems ai ON i.ItemId = ai.ItemId
 
 		IF @insertCount > 0
 			INSERT INTO dbo.Items
@@ -71,17 +74,19 @@ BEGIN
 				,BrandName
 				,ImageUrl
 				,FlexibleText
+				,PosDesc
 			)
 			SELECT 
-				II.ItemId
-				,II.ScanCode
-				,II.ProductDesc
-				,II.CustomerFriendlyDesc
-				,II.KitchenDesc
-				,II.BrandName
-				,II.ImageUrl
-				,II.FlexibleText
-			FROM #insertItems II
+				ii.ItemId
+				,ii.ScanCode
+				,ii.ProductDesc
+				,ii.CustomerFriendlyDesc
+				,ii.KitchenDesc
+				,ii.BrandName
+				,ii.ImageUrl
+				,ii.FlexibleText
+				,ii.PosDesc
+			FROM #insertItems ii
 		
 		COMMIT TRANSACTION
 	END TRY
