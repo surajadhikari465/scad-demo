@@ -21,7 +21,9 @@ namespace KitBuilder.DataAccess.Dto
         public string CustomerFriendlyDesc { get; set; }
         [StringLength(255, ErrorMessage = "Kitchen Description can have maximum length of 255.")]
         public string KitchenDesc { get; set; }
-        [StringLength(255, ErrorMessage = "Brand Name can have maximum length of 255.")]
+		[StringLength(255, ErrorMessage = "POS Description can have maximum length of 255.")]
+		public string PosDesc { get; set; }
+		[StringLength(255, ErrorMessage = "Brand Name can have maximum length of 255.")]
         public string BrandName { get; set; }
         public string ImageUrl { get; set; }
         public DateTime InsertDateUtc { get; set; }

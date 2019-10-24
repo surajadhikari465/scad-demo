@@ -9,5 +9,6 @@
     [InsertDateUtc]        DATETIME2 (7)  CONSTRAINT [DF_Items_InsertDateUtc] DEFAULT (sysutcdatetime()) NOT NULL,
     [LastUpdatedDateUtc]   DATETIME2 (7)  NULL,
 	[FlexibleText]         NVARCHAR (255) NULL,
+    [PosDesc]              NVARCHAR (255) NULL,
     CONSTRAINT [PK_Items] PRIMARY KEY CLUSTERED ([ItemId] ASC)
 );
