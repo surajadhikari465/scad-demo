@@ -339,10 +339,10 @@
 	oi.package_desc1,
 	oi.package_desc2
 FROM OrderHeader oh WITH (NOLOCK)
-JOIN Vendor v WITH (NOLOCK) on oh.Vendor_ID = v.Vendor_ID
-JOIN Store fs WITH (NOLOCK) on fs.Store_No = v.Store_no
-JOIN Vendor psl WITH (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
-JOIN Store ts WITH (NOLOCK) on ts.Store_No = psl.Store_no
+JOIN Vendor rl WITH (NOLOCK) on oh.ReceiveLocation_ID = rl.Vendor_ID
+JOIN Store ts WITH (NOLOCK) on ts.Store_No = rl.Store_no
+JOIN Vendor psl WITH (NOLOCK) on oh.Vendor_ID = psl.Vendor_ID
+JOIN Store fs WITH (NOLOCK) on fs.Store_No = psl.Store_no
 JOIN SubTeam tst WITH (NOLOCK) on tst.SubTeam_No = oh.Transfer_To_SubTeam
 JOIN SubTeam fst WITH (NOLOCK) on fst.SubTeam_No = oh.Transfer_SubTeam
 JOIN Users uc WITH (NOLOCK) on uc.User_ID = oh.CreatedBy 
@@ -491,7 +491,7 @@ WHERE oh.OrderHeader_ID = ?
         <pd:activity name="GetLineDeleteEvent">
             <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-            <pd:x>404</pd:x>
+            <pd:x>403</pd:x>
             <pd:y>205</pd:y>
             <config>
                 <timeout>120</timeout>
@@ -528,8 +528,8 @@ WHERE oh.OrderHeader_ID = ?
 	NULL as package_desc1,
 	NULL as package_desc2
 FROM OrderHeader oh (NOLOCK)
-JOIN Vendor psl (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
-JOIN Store ts (NOLOCK) on ts.Store_No = psl.Store_no
+JOIN Vendor rl WITH (NOLOCK) on oh.ReceiveLocation_ID = rl.Vendor_ID
+JOIN Store ts WITH (NOLOCK) on ts.Store_No = rl.Store_no
 JOIN amz.DeletedOrderItem oi (NOLOCK) on oh.OrderHeader_ID = oi.OrderHeader_ID and oi.OrderItem_ID = ?
 JOIN Item i (NOLOCK) on i.Item_Key = oi.Item_Key
 JOIN ItemIdentifier ii (NOLOCK) on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
@@ -715,8 +715,8 @@ WHERE oh.OrderHeader_ID = ?
 	NULL as package_desc1,
 	NULL as package_desc2
 FROM DeletedOrder oh (NOLOCK)
-JOIN Vendor psl (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
-JOIN Store ts (NOLOCK) on ts.Store_No = psl.Store_no
+JOIN Vendor rl WITH (NOLOCK) on oh.ReceiveLocation_ID = rl.Vendor_ID
+JOIN Store ts WITH (NOLOCK) on ts.Store_No = rl.Store_no
 JOIN Users uc (NOLOCK) on uc.User_ID = oh.User_ID 
 WHERE oh.OrderHeader_ID = ?</statement>
                 <wizardData/>
