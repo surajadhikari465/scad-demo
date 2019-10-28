@@ -19,5 +19,7 @@
     <IgnorePartitionSchemes>True</IgnorePartitionSchemes>
     <IgnoreUserSettingsObjects>True</IgnoreUserSettingsObjects>
     <BlockOnPossibleDataLoss>True</BlockOnPossibleDataLoss>
+    <DisableAndReenableDdlTriggers>False</DisableAndReenableDdlTriggers>
+    <ScriptDatabaseOptions>False</ScriptDatabaseOptions>
   </PropertyGroup>
 </Project>

@@ -55,10 +55,7 @@ GRANT VIEW CHANGE TRACKING
     AS [dbo];
 
 
-GO
-GRANT VIEW CHANGE TRACKING
-    ON OBJECT::[dbo].[ReasonCodeMappings] TO [BizTalk]
-    AS [dbo];
+
 
 
 GO

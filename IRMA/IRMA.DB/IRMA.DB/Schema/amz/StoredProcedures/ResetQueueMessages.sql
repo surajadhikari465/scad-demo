@@ -102,7 +102,6 @@ BEGIN
   SET NOCOUNT OFF;
 END
 GO
-
-GRANT EXECUTE ON OBJECT::amz.ResetQueueMessages to MammothRole
-
-GO
+GRANT EXECUTE
+    ON OBJECT::[amz].[ResetQueueMessages] TO [MammothRole]
+    AS [dbo];

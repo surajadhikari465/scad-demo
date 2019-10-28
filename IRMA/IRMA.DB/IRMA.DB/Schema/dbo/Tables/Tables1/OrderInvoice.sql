@@ -77,10 +77,7 @@ GRANT VIEW CHANGE TRACKING
     AS [dbo];
 
 
-GO
-GRANT VIEW CHANGE TRACKING
-    ON OBJECT::[dbo].[OrderInvoice] TO [BizTalk]
-    AS [dbo];
+
 
 
 GO

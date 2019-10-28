@@ -140,11 +140,6 @@ CREATE NONCLUSTERED INDEX [_dta_IX_OrderItem_OrderHeader_ID_Item_Key_OrderItem_I
 
 
 GO
-CREATE NONCLUSTERED INDEX [idxVendorCostHistoryID]
-    ON [dbo].[OrderItem]([VendorCostHistoryID] ASC) WITH (FILLFACTOR = 80);
-
-
-GO
 CREATE NONCLUSTERED INDEX [idxDiscountType]
     ON [dbo].[OrderItem]([OrderHeader_ID] ASC)
     INCLUDE([Item_Key], [DiscountType]) WITH (FILLFACTOR = 90);
@@ -603,10 +598,7 @@ GRANT VIEW CHANGE TRACKING
     AS [dbo];
 
 
-GO
-GRANT VIEW CHANGE TRACKING
-    ON OBJECT::[dbo].[OrderItem] TO [BizTalk]
-    AS [dbo];
+
 
 
 GO

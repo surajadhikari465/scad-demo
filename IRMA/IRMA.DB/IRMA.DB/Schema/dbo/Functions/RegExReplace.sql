@@ -5,11 +5,6 @@ AS
  EXTERNAL NAME [RegexProject].[RegexProject.UserDefinedFunctions].[RegExReplace]
 
 
-GO
-GRANT EXECUTE
-    ON OBJECT::[dbo].[RegExReplace] TO [IRMA_Refresh]
-    AS [dbo];
-
 
 GO
 EXECUTE sp_addextendedproperty @name = N'AutoDeployed', @value = N'yes', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'FUNCTION', @level1name = N'RegExReplace';

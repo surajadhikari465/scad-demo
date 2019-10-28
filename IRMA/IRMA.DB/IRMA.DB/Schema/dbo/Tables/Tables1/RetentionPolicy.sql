@@ -14,7 +14,7 @@
 );
 GO
 
-GRANT SELECT ON OBJECT::dbo.RetentionPolicy TO [IRSUser];
+GRANT SELECT ON OBJECT::dbo.RetentionPolicy TO [IRSUser] AS [dbo];
 GO
-GRANT UPDATE ON OBJECT::dbo.RetentionPolicy TO [IRSUser];
+GRANT UPDATE ON OBJECT::dbo.RetentionPolicy TO [IRSUser] AS [dbo];
 GO

@@ -20,5 +20,5 @@ GRANT SELECT, INSERT
 
 GO
 
-GRANT SELECT ON [amz].[ReceiptQueue] TO [IRMAReports];
+GRANT SELECT ON [amz].[ReceiptQueue] TO [IRMAReports] AS [dbo];
 GO

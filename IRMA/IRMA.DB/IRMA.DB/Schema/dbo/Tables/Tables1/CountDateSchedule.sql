@@ -15,12 +15,6 @@ ALTER TABLE [dbo].[CountDateSchedule] ENABLE CHANGE_TRACKING WITH (TRACK_COLUMNS
 
 
 GO
-CREATE NONCLUSTERED INDEX [idx_CountDateSchedule_FY_FP]
-    ON [dbo].[CountDateSchedule]([FiscalYear] ASC, [FiscalPeriod] ASC)
-    INCLUDE([BusinessUnitID], [SubTeamSID], [Date_Key]) WITH (FILLFACTOR = 80);
-
-
-GO
 GRANT VIEW CHANGE TRACKING
     ON OBJECT::[dbo].[CountDateSchedule] TO [IRMAAdminRole]
     AS [dbo];

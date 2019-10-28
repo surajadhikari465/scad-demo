@@ -15,5 +15,5 @@ CREATE INDEX [IX_tmpGpmLatestPbd_StoreNoItemKey] ON [infor].[tmpGpmLatestPbd]
 	)
 GO
 
-GRANT INSERT, UPDATE, SELECT, ALTER on [infor].[tmpGpmLatestPbd] to [MammothRole]
+GRANT INSERT, UPDATE, SELECT, ALTER on [infor].[tmpGpmLatestPbd] to [MammothRole] AS [dbo];
 GO

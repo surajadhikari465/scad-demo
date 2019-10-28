@@ -71,7 +71,7 @@ END
 
 GO
 
-GRANT EXECUTE ON OBJECT::dbo.UpdateRetentionPolicy TO [IRSUser];
+GRANT EXECUTE ON OBJECT::dbo.UpdateRetentionPolicy TO [IRSUser] AS [dbo];
 GO
-GRANT EXECUTE ON OBJECT::dbo.UpdateRetentionPolicy TO [IRMAClientRole];
+GRANT EXECUTE ON OBJECT::dbo.UpdateRetentionPolicy TO [IRMAClientRole] AS [dbo];
 GO

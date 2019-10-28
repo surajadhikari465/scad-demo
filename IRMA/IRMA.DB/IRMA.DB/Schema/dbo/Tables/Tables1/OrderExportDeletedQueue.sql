@@ -71,10 +71,7 @@ GRANT VIEW CHANGE TRACKING
     AS [dbo];
 
 
-GO
-GRANT VIEW CHANGE TRACKING
-    ON OBJECT::[dbo].[OrderExportDeletedQueue] TO [BizTalk]
-    AS [dbo];
+
 
 
 GO

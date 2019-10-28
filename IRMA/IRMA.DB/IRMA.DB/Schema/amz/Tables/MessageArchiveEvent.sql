@@ -17,8 +17,8 @@
 )
 GO
 
-GRANT INSERT ON [amz].[MessageArchiveEvent] TO [TibcoDataWriter]
+GRANT INSERT ON [amz].[MessageArchiveEvent] TO [TibcoDataWriter] AS [dbo];
 GO
 
-GRANT SELECT ON [amz].[MessageArchiveEvent] TO [MammothRole]
+GRANT SELECT ON [amz].[MessageArchiveEvent] TO [MammothRole] AS [dbo];
 GO

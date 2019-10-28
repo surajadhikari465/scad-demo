@@ -10,7 +10,7 @@ BEGIN
 END
 GO
 
-GRANT EXECUTE ON OBJECT::dbo.GetColumnNamesBySchemaTable TO [IRSUser];
+GRANT EXECUTE ON OBJECT::dbo.GetColumnNamesBySchemaTable TO [IRSUser] AS [dbo];
 GO
-GRANT EXECUTE ON OBJECT::dbo.GetColumnNamesBySchemaTable TO [IRMAClientRole];
+GRANT EXECUTE ON OBJECT::dbo.GetColumnNamesBySchemaTable TO [IRMAClientRole] AS [dbo];
 GO

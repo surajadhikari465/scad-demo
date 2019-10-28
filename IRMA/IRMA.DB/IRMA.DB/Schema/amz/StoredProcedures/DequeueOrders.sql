@@ -36,6 +36,6 @@ BEGIN
 	SET NOCOUNT OFF
 END
 GO
-
-GRANT EXEC on [amz].[DequeueOrders] to [TibcoDataWriter]
-GO
+GRANT EXECUTE
+    ON OBJECT::[amz].[DequeueOrders] TO [TibcoDataWriter]
+    AS [dbo];

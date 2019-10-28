@@ -346,10 +346,7 @@ GRANT VIEW CHANGE TRACKING
     AS [dbo];
 
 
-GO
-GRANT VIEW CHANGE TRACKING
-    ON OBJECT::[dbo].[Price] TO [BizTalk]
-    AS [dbo];
+
 
 
 GO

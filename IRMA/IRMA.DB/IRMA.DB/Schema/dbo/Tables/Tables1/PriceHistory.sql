@@ -54,11 +54,6 @@
 
 
 GO
-CREATE NONCLUSTERED INDEX [idxPriceHistoryKey]
-    ON [dbo].[PriceHistory]([Item_Key] ASC, [Store_No] ASC) WITH (FILLFACTOR = 80);
-
-
-GO
 CREATE NONCLUSTERED INDEX [idxPriceHistoryDate]
     ON [dbo].[PriceHistory]([Effective_Date] ASC) WITH (FILLFACTOR = 80);
 

@@ -38,18 +38,8 @@ CREATE NONCLUSTERED INDEX [idxItemHistory]
 
 
 GO
-CREATE NONCLUSTERED INDEX [idxItemHistoryItemID]
-    ON [dbo].[ItemHistory]([Item_Key] ASC, [SubTeam_No] ASC, [Store_No] ASC, [DateStamp] ASC, [Adjustment_ID] ASC) WITH (FILLFACTOR = 80);
-
-
-GO
 CREATE NONCLUSTERED INDEX [idxItemHistoryAdjID]
     ON [dbo].[ItemHistory]([Adjustment_ID] ASC, [Item_Key] ASC, [SubTeam_No] ASC, [Store_No] ASC, [DateStamp] ASC) WITH (FILLFACTOR = 80);
-
-
-GO
-CREATE NONCLUSTERED INDEX [idxItemHistory_Store_SubTeam_Store_Id]
-    ON [dbo].[ItemHistory]([Store_No] ASC, [SubTeam_No] ASC, [Item_Key] ASC, [ItemHistoryID] ASC) WITH (FILLFACTOR = 80);
 
 
 GO
@@ -351,10 +341,7 @@ GRANT VIEW CHANGE TRACKING
     AS [dbo];
 
 
-GO
-GRANT VIEW CHANGE TRACKING
-    ON OBJECT::[dbo].[ItemHistory] TO [BizTalk]
-    AS [dbo];
+
 
 
 GO

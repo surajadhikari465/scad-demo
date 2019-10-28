@@ -130,6 +130,6 @@ BEGIN
   RETURN
 END
 GO
-
-GRANT EXECUTE ON OBJECT::amz.ReQueueMessages to MammothRole
-GO
+GRANT EXECUTE
+    ON OBJECT::[amz].[ReQueueMessages] TO [MammothRole]
+    AS [dbo];

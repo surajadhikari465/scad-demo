@@ -135,6 +135,6 @@ BEGIN
   RAISERROR(@msg, 16, 1);
 END
 GO
-
-GRANT EXECUTE ON OBJECT::amz.GetInStockEventsByType to MammothRole
-GO
+GRANT EXECUTE
+    ON OBJECT::[amz].[GetInStockEventsByType] TO [MammothRole]
+    AS [dbo];

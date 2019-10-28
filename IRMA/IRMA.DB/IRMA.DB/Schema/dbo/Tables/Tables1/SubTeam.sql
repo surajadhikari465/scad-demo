@@ -168,10 +168,7 @@ GRANT VIEW CHANGE TRACKING
     AS [dbo];
 
 
-GO
-GRANT VIEW CHANGE TRACKING
-    ON OBJECT::[dbo].[SubTeam] TO [BizTalk]
-    AS [dbo];
+
 
 
 GO

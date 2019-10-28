@@ -275,10 +275,7 @@ GRANT VIEW CHANGE TRACKING
     AS [dbo];
 
 
-GO
-GRANT VIEW CHANGE TRACKING
-    ON OBJECT::[dbo].[VendorCostHistory] TO [BizTalk]
-    AS [dbo];
+
 
 
 GO

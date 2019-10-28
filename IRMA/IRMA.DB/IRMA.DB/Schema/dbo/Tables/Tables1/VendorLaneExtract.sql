@@ -16,5 +16,5 @@
 
 GO
 
-GRANT ALTER, DELETE, INSERT, SELECT ON [dbo].[VendorLaneExtract] TO [IRMAPDXExtractRole]
+GRANT ALTER, DELETE, INSERT, SELECT ON [dbo].[VendorLaneExtract] TO [IRMAPDXExtractRole] AS [dbo];
 Go

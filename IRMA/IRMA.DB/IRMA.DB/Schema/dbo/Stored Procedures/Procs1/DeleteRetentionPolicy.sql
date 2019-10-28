@@ -7,7 +7,7 @@ BEGIN
 END
 GO
 
-GRANT EXECUTE ON OBJECT::dbo.DeleteRetentionPolicy TO [IRSUser];
+GRANT EXECUTE ON OBJECT::dbo.DeleteRetentionPolicy TO [IRSUser] AS [dbo];
 GO
-GRANT EXECUTE ON OBJECT::dbo.DeleteRetentionPolicy TO [IRMAClientRole];
+GRANT EXECUTE ON OBJECT::dbo.DeleteRetentionPolicy TO [IRMAClientRole] AS [dbo];
 GO

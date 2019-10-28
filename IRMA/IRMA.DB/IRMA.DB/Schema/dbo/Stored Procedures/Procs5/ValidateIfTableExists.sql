@@ -12,7 +12,7 @@ END
 
 GO
 
-GRANT EXECUTE ON OBJECT::dbo.ValidateIfTableExists TO [IRSUser];
+GRANT EXECUTE ON OBJECT::dbo.ValidateIfTableExists TO [IRSUser] AS [dbo];
 GO
-GRANT EXECUTE ON OBJECT::dbo.ValidateIfTableExists TO [IRMAClientRole];
+GRANT EXECUTE ON OBJECT::dbo.ValidateIfTableExists TO [IRMAClientRole] AS [dbo];
 GO

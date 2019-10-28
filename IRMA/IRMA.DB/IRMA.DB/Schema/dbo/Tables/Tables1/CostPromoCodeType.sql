@@ -52,10 +52,7 @@ GRANT VIEW CHANGE TRACKING
     AS [dbo];
 
 
-GO
-GRANT VIEW CHANGE TRACKING
-    ON OBJECT::[dbo].[CostPromoCodeType] TO [BizTalk]
-    AS [dbo];
+
 
 
 GO

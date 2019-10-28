@@ -126,21 +126,6 @@ CREATE NONCLUSTERED INDEX [IX_PriceBatchDetail_ItemKey_INC_10_POISPMPSPP]
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_PriceBatchDetail_ItemChgType]
-    ON [dbo].[PriceBatchDetail]([ItemChgTypeID] ASC) WITH (FILLFACTOR = 80);
-
-
-GO
-CREATE NONCLUSTERED INDEX [IX_PriceBatchDetail_PriceChgType]
-    ON [dbo].[PriceBatchDetail]([PriceChgTypeID] ASC) WITH (FILLFACTOR = 80);
-
-
-GO
-CREATE NONCLUSTERED INDEX [IX_PriceBatchDetail_StartDate]
-    ON [dbo].[PriceBatchDetail]([StartDate] ASC) WITH (FILLFACTOR = 80);
-
-
-GO
 CREATE NONCLUSTERED INDEX [IX_PriceBatchDetail_Store]
     ON [dbo].[PriceBatchDetail]([Store_No] ASC) WITH (FILLFACTOR = 80);
 
@@ -148,11 +133,6 @@ CREATE NONCLUSTERED INDEX [IX_PriceBatchDetail_Store]
 GO
 CREATE NONCLUSTERED INDEX [idxPriceBatchHeader]
     ON [dbo].[PriceBatchDetail]([PriceBatchHeaderID] ASC) WITH (FILLFACTOR = 80);
-
-
-GO
-CREATE NONCLUSTERED INDEX [idxSubTeam_No]
-    ON [dbo].[PriceBatchDetail]([SubTeam_No] ASC) WITH (FILLFACTOR = 80);
 
 
 GO

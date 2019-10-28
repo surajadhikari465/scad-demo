@@ -6,8 +6,8 @@
 )
 GO
 
-GRANT SELECT ON OBJECT::[amz].[EventType] TO [MammothRole];
+GRANT SELECT ON OBJECT::[amz].[EventType] TO [MammothRole] AS [dbo];
 GO
 
-GRANT SELECT ON [amz].[EventType] TO [IRMAReports];
+GRANT SELECT ON [amz].[EventType] TO [IRMAReports] AS [dbo];
 GO

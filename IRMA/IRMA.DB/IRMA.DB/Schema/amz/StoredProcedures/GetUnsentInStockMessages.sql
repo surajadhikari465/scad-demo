@@ -13,7 +13,6 @@ BEGIN
 	SET NOCOUNT OFF
 END
 GO
-
-GRANT EXECUTE ON OBJECT::amz.GetUnsentInStockMessages to TibcoDataWriter
-
-GO
+GRANT EXECUTE
+    ON OBJECT::[amz].[GetUnsentInStockMessages] TO [TibcoDataWriter]
+    AS [dbo];

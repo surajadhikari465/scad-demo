@@ -35,5 +35,5 @@ GRANT SELECT, UPDATE
 
 GO
 
-GRANT SELECT ON [amz].[MessageArchive] TO [IRMAReports];
+GRANT SELECT ON [amz].[MessageArchive] TO [IRMAReports] AS [dbo];
 GO

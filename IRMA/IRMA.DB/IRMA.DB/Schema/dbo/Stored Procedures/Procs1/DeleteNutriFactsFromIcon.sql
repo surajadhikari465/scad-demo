@@ -77,5 +77,5 @@ BEGIN
 END
 GO
 
-GRANT EXECUTE ON OBJECT::[dbo].[DeleteNutriFactsFromIcon] TO [IConInterface];
+GRANT EXECUTE ON OBJECT::[dbo].[DeleteNutriFactsFromIcon] TO [IConInterface] AS [dbo];
 GO

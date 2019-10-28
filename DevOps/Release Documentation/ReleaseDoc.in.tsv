@@ -1,11 +1,11 @@
-ChangeTicketNum	Change ticket number	CHG0040169
-ReleaseOwner	Change owner	Arturo Rivas
-SprintsIncluded	Sprint numbers covered	149 - 150 (July 17 - August 14)
+ChangeTicketNum	Change ticket number	CHG0041301
+ReleaseOwner	Change owner	Tom Lux
+SprintsIncluded	Sprint numbers covered	153 - 154 (September 11 - October 9)
 TargetEnv	Target environment	Production
 TargetEnvShort		PRD
-DeployDate	Deploy date	Thursday, September 5, 2019
+DeployDate	Deploy date	Thursday, October 24, 2019
 ReleaseYear		2019
-ReleaseSeqNum		09
+ReleaseSeqNum		11
 ReleaseId		__ReleaseYear__.__ReleaseSeqNum__
 IrmaClientUpdated		y
 IrmaDbUpdated		y
@@ -18,14 +18,14 @@ TibcoUpdated		y
 FullSvrList	Servers receiving updates	.
 ReleaseNotesURL	Link to release notes	.
 MammothDbTarget		Mammoth-DB01-Prd\Mammoth
-IconReleaseBranchName	Icon release branch name	RELEASE_2019_09
-IconBuildNum	Icon release build number	20190818*
+IconReleaseBranchName	Icon release branch name	RELEASE_2019_11
+IconBuildNum	Icon release build number	builds
 IconBuildId	Icon release build ID	
 IrmaReleaseBranchName	IRMA release branch name	.
 IrmaBuildNum	IRMA release build number	n/a
 IrmaBuildId	IRMA release build ID	
-IrmaVer	IRMA version number	11.5
-IrmaLongVer		11.5.0
+IrmaVer	IRMA version number	11.7
+IrmaLongVer		11.7.0
 IconVer	Icon version number	__ReleaseYear__.__ReleaseSeqNum__
 MammothVer	Mammoth version number	__ReleaseYear__.__ReleaseSeqNum__
 TibcoVer	TIBCO version number	__ReleaseYear__.__ReleaseSeqNum__
@@ -42,18 +42,18 @@ IrmaServersAffected	This should be dynamic	IRMAPrdApp[1-8]
 IconServersAffected	This should be dynamic	VM-Icon-Prd[1-6]
 MammothServersAffected	This should be dynamic	Mammoth-App01-Prd, IRMAPrdApp[9-10]
 TibcoServersAffected	This should be dynamic	Prod: cerp1643, cerp1644, odrp1634, odrp1635
-TibcoAppsUpdated		EmergencyPriceService,ErrorMessagesMonitor,JobSchedulerService
+TibcoAppsUpdated		*NONE*
 HcTibcoRegions	List of regions for which tibco deploy links should be generated for HoneyCrisp apps	FL,PN,SO,SW
 HcGenerateQafLinks	Flag 0 or 1 to indicate if QAF links should be generated for HoneyCrisp tibco apps	0
 IrmaClientRollbackSteps		If limited or no user downloads, deploy previous version of IRMA Client via VSTS (anyone who downloaded new client, must remove 'apps\2.0\' folder).  If many users downloaded client update, the version should be incremented in Git, then client rebuilt and deployed.
-IrmaSuitePreviousVersion		11.4.0
+IrmaSuitePreviousVersion		11.6.0
 MammothManualDeploy		*NONE*
 IrmaReleaseLauncherVersionRef		.
 AdditionalIrmaDeployImplementerRef		IRM
 AdditionalIrmaComponentDeploySection	Usually a link to a component-deploy script, such as "IRMA Release Launcher" powershell	**NONE**
 AdditionalIrmaComponentList		IRM
 SpecialIrmaReleaseDetails		<hr>
-AzureReleaseList		<hr>IRMA Client<br>Icon API Controller<br>Icon Global Event Controller<br>Icon Web<br>Mammoth Audit Service<br>Mammoth Product Listener<br>Mammoth Web API<br>Mammoth Web Support
+AzureReleaseList		<hr>IRMA Client<br>Icon API Controller<br>Mammoth Product Listener<br>Mammoth Web API
 IrmaPostDbUpdateTask		None, continue
 DbBeforeRelScripts	Full section for DB updates before the core/base release scripts run by DBA.	**NONE**
 DbAfterRelScripts	Full section for DB updates after the core/base release scripts run by DBA.	**NONE**

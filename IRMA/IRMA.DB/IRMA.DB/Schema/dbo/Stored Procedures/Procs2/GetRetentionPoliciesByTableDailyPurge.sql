@@ -21,7 +21,7 @@ SELECT [RetentionPolicyId]
 END 
 GO
 
-GRANT EXECUTE ON OBJECT::dbo.GetRetentionPoliciesByTableDailyPurge TO [IRSUser];
+GRANT EXECUTE ON OBJECT::dbo.GetRetentionPoliciesByTableDailyPurge TO [IRSUser] AS [dbo];
 GO
-GRANT EXECUTE ON OBJECT::dbo.GetRetentionPoliciesByTableDailyPurge TO [IRMAClientRole];
+GRANT EXECUTE ON OBJECT::dbo.GetRetentionPoliciesByTableDailyPurge TO [IRMAClientRole] AS [dbo];
 GO

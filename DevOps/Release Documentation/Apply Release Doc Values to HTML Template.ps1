@@ -1,4 +1,13 @@
-﻿########################################################################################################################################
+﻿#######################################################################################
+
+$scriptFullPath = $MyInvocation.MyCommand.Definition
+$scriptFileObj = new-object system.io.fileinfo $MyInvocation.MyCommand.Definition
+$scriptFolder = $scriptFileObj.directoryname
+$outputBreak = "---------------------------------------------------------------------"
+
+########################################################################################################################################
+
+########################################################################################################################################
 ########################################################################################################################################
 # Functions
 ########################################################################################################################################
@@ -62,11 +71,9 @@ Param($rel_doc)
 ########################################################################################################################################
 
 
-$gitRootFolder = "C:\Users\arturo.rivas\source\repos\SCAD"
-
 ########################################################################################################################################
 
-$relDocInValuesFile = "$gitRootFolder\DevOps\Release Documentation\ReleaseDoc.in.tsv"
+$relDocInValuesFile = "$scriptFolder\ReleaseDoc.in.tsv"
 if(!(Test-Path $relDocInValuesFile)){
     Write-Host -ForegroundColor Magenta "**ERROR** -- Doc template not found: [$relDocInValuesFile]"
     Read-Host "Press <ENTER> to exit..."
@@ -77,7 +84,7 @@ $relDocInValues = $relDocInValuesTxt.split("`n") # Each line in rel-doc input fi
 
 ########################################################################################################################################
 
-$relTmpl = "$gitRootFolder\DevOps\Release Documentation\IRMA Apps Release Template.htm"
+$relTmpl = "$scriptFolder\IRMA Apps Release Template.htm"
 if(!(Test-Path $relTmpl)){
     Write-Host -ForegroundColor Magenta "**ERROR** -- Doc template not found: [$relTmpl]"
     Read-Host "Press <ENTER> to exit..."
