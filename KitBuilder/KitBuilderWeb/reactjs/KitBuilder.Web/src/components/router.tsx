@@ -16,6 +16,7 @@ import KitLinkGroupPage from './KitLinkGroups/KitLinkGroupsPage';
 import withSnackbar from './PageStyle/withSnackbar';
 import CreateKitPage from './Kits/CreateKitPage';
 import ViewKit from './Kits/ViewKits/ViewKit';
+import KitsByStoreView from './Kits/KitsByStore/KitsByStoreView';
 //import EnsureLoggedInContainer from './RouterComponents/EnsureLoggedInContainer';
 
 const generateClassName = createGenerateClassName({
@@ -87,6 +88,7 @@ class AppRouter extends React.Component {
                 />
                 <Route path="/KitLinkGroups" component={KitLinkGroupPage} />
                 <Route path="/ViewKit" component={ViewKit} />
+                <Route path="/KitsByStore" component={KitsByStoreView} />
               </Switch>
               <Footer />
             </div>
