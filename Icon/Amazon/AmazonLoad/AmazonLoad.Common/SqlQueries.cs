@@ -43,12 +43,13 @@
             }
         }
 
-        public static string ItemSql
-        {
-            get
-            {
-                return @"
-                    DECLARE
+        public static string ItemSql =>
+            @"
+
+                           set transaction isolation level read uncommitted
+
+
+                  		 DECLARE
 		                    @localeID int,
 		                    @productDescriptionTraitID int,
 		                    @posTraitID int,
@@ -97,7 +98,39 @@
 		                    @wfeTraitId int,
 		                    @oteTraitId int, 
                             @modTraitId int,
-                            @insTraitId int
+                            @insTraitId int,
+							@AppellationTraitId int,
+							@BeerStyleTraitId int,
+							@CountryofOriginTraitId int,
+							@LabelingTraitId int,
+							@LocalLoanProducerTraitId int,
+							@OrganicPersonalCareTraitId int,
+							@PaleoTraitId int,
+							@PrivateLabelTraitId int,
+							@ProductFlavororTypeTraitId int,
+							@VarietalTraitId int,
+							@CaseinFreeTraitId int,
+							@DeliverySystemTraitId int,
+							@HempTraitId int,
+							@GlutenFreeClaimTraitId int,
+							@ItemDepthTraitId int,
+							@ItemHeightTraitId int,
+							@ItemWidthTraitId int,
+							@NonGMOClaimTraitId int,
+							@OrganicClaimTraitId int,
+							@PackageGroupTraitId int,
+							@PackageGroupTypeTraitId int,
+							@TrayDepthTraitId int,
+							@TrayHeightTraitId int,
+							@TrayWidthTraitId int,
+							@ItemWeightTraitId int,
+							@CubeTraitId int,
+							@DataSourceTraitId int,
+							@FairTradeClaimTraitId int,
+							@GMOTransparencyTraitId int,
+							@LineExtensionTraitId int,
+                            @ExlusiveTraitId int
+                
 
 	                    SET @localeID					= (SELECT l.localeID FROM Locale l WHERE l.localeName = 'Whole Foods')
 	                    SET @productDescriptionTraitID	= (SELECT t.traitID FROM Trait t WHERE t.traitCode = 'PRD')
@@ -148,6 +181,38 @@
 	                    SET @oteTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'OTE')
                         SET @modTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'MOD')
                         SET @insTraitId					= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'INS')
+						set @AppellationTraitId			= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'APL')
+						set @BeerStyleTraitId           = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'BES')
+						set @CountryofOriginTraitId     = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'COO')
+						set @LabelingTraitId            = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'LBL')
+						set @LocalLoanProducerTraitId   = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'LLP')
+						set @OrganicPersonalCareTraitId = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'OPC')
+						set @PaleoTraitId               = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'PLO')
+						set @PrivateLabelTraitId        = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'PRL')
+						set @ProductFlavororTypeTraitId = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'PFT')
+						set @VarietalTraitId            = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'VAR')
+						set @CaseinFreeTraitId          = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'CF' )
+						set @DeliverySystemTraitId      = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'DS' )
+						set @HempTraitId                = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'HEM')
+						set @GlutenFreeClaimTraitId     = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'GFC')
+						set @ItemDepthTraitId           = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'IDP')
+						set @ItemHeightTraitId          = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'IHT')
+						set @ItemWidthTraitId           = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'IWD')
+						set @NonGMOClaimTraitId         = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'NGC')
+						set @OrganicClaimTraitId        = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'OC' )
+						set @PackageGroupTraitId        = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'PG' )
+						set @PackageGroupTypeTraitId    = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'PGT')
+						set @TrayDepthTraitId           = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'TDP')
+						set @TrayHeightTraitId          = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'THT')
+						set @TrayWidthTraitId           = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'TWD')
+						set @ItemWeightTraitId          = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'IWT')
+						set @CubeTraitId                = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'CUB')
+						set @DataSourceTraitId          = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'DAT')
+						set @FairTradeClaimTraitId      = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'FT' )
+						set @GMOTransparencyTraitId     = (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'NGT')
+						set @LineExtensionTraitId 		= (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'LEX')
+                        set @ExlusiveTraitId            =  (SELECT t.TraitID FROM Trait t WHERE t.traitCode = 'EX')
+
 
 	                    SELECT {top query}
 		                    i.itemID							as ItemId,
@@ -165,7 +230,7 @@
 		                    rum.traitValue						as RetailUom,
 		                    fse.traitValue						as FoodStampEligible,
 		                    CAST(isnull(prh.traitValue, 0) AS BIT)			as ProhibitDiscount,	
-		                    isnull(ds.traitValue, '0')			as DepartmentSale,
+		                    isnull(ds1.traitValue, '0')			as DepartmentSale,
 		                    brandhc.hierarchyClassID			as BrandId,
 		                    brandhc.hierarchyClassName			as BrandName,
 		                    brandhc.hierarchyLevel				as BrandLevel,
@@ -353,6 +418,38 @@
                             ,CalciumWeight
                             ,IronWeight
                             ,VitaminDWeight
+							,BES.traitValue as [Appellation]
+							,APL.traitValue as [BeerStyle]
+							,COO.traitValue as [CountryofOrigin]
+							,LBL.traitValue as [Labeling]
+							,cast ( case when llp.traitvalue is not null then case when lower(llp.traitvalue)IN ('yes','1', 'true') then 1 else 0 end else null end as bit ) as [LocalLoanProducer]
+                            ,cast ( case when opc.traitvalue is not null then case when lower(opc.traitvalue) IN ('yes','1', 'true') then 1 else 0 end else null end as bit ) as [OrganicPersonalCare]
+                            ,cast ( case when PLO.traitvalue is not null then case when lower(PLO.traitvalue) IN ('yes','1', 'true') then 1 else 0 end else null end as bit ) as [Paleo]
+							,PRL.traitValue as [PrivateLabel]
+							,PFT.traitValue as [ProductFlavororType]
+							,VAR.traitValue as [Varietal]
+                            ,cast ( case when cf.traitvalue is not null then case when lower(cf.traitvalue) IN ('yes','1', 'true') then 1 else 0 end else null end as bit ) as [CaseinFree]
+							,DS.traitValue as [DeliverySystem]
+                            ,cast ( case when HEM.traitvalue is not null then case when lower(HEM.traitvalue) IN ('yes','1', 'true') then 1 else 0 end else null end as bit ) as [Hemp]
+							,IDP.traitValue as [ItemDepth]
+							,IHT.traitValue as [ItemHeight]
+							,IWD.traitValue as [ItemWidth]
+                            ,cast( case when GFC.traitValue is not null then case when lower(GFC.traitvalue) IN ('yes','1', 'true') then 1 else 0 end else null end as bit) as [GlutenFreeClaim]
+							,cast(case when NGC.traitValue is not null then case when lower(NGC.traitvalue) IN ('yes','1', 'true') then 1 else 0 end else null end as bit) as [NonGMOClaim]
+							,cast(case when OC.traitValue is not null then case when lower(oc.traitvalue) IN ('yes','1', 'true') then 1 else 0 end else null end as bit) as [OrganicClaim]
+							,cast(case when FT.traitValue is not null then case when lower(FT.traitvalue) IN ('yes','1', 'true') then 1 else 0 end else null end as bit) as [FairTradeClaim]
+                            ,cast(case when EX.traitValue is not null then case when lower(EX.traitvalue) IN ('yes','1', 'true') then 1 else 0 end else null end as bit) as [Exclusive]                            
+							,PG.traitValue as [PackageGroup]
+							,PGT.traitValue as [PackageGroupType]
+							,TDP.traitValue as [TrayDepth]
+							,THT.traitValue as [TrayHeight]
+							,TWD.traitValue as [TrayWidth]
+							,IWT.traitValue as [ItemWeight]
+							,CUB.traitValue as [Cube]
+							,DAT.traitValue as [DataSource]
+							,NGT.traitValue as [NonGMOTransparency]
+							,LEX.traitValue as [LineExtension]
+                            
 	                    FROM 
 		                    Item    						i
 		                    JOIN ItemType					it			ON	i.itemTypeID				= it.itemTypeID
@@ -406,9 +503,9 @@
 		                    JOIN ItemHierarchyClass			natihc		ON	i.itemID					= natihc.itemID
 		                    JOIN HierarchyClass				nathc		ON	natihc.hierarchyClassID		= nathc.hierarchyClassID
 															                    AND nathc.hierarchyID	= @nationalClassID
-		                    LEFT JOIN ItemTrait				ds			ON	i.itemID					= ds.itemID
-														                    AND ds.traitID				= @departmentSaleTraitID
-														                    AND ds.localeID				= @localeID
+		                    LEFT JOIN ItemTrait				ds1			ON	i.itemID					= ds1.itemID
+														                    AND ds1.traitID				= @departmentSaleTraitID
+														                    AND ds1.localeID				= @localeID
 		                    LEFT JOIN ItemSignAttribute		ia			ON	i.itemID					= ia.itemID
 		                    LEFT JOIN AnimalWelfareRating	aw			ON ia.AnimalWelfareRatingId		= aw.AnimalWelfareRatingId
 		                    LEFT JOIN MilkType				cm			ON ia.CheeseMilkTypeId			= cm.MilkTypeId
@@ -441,12 +538,41 @@
 		                    LEFT JOIN ItemTrait				ote			ON	ote.traitID					= @oteTraitId AND ote.itemID = i.itemID AND ote.localeID = @localeID
                             LEFT JOIN ItemTrait				mod			ON	mod.traitID					= @modTraitId AND mod.itemID = i.itemID AND mod.localeID = @localeID
                             LEFT JOIN ItemTrait				ins			ON	ins.traitID					= @insTraitId AND ins.itemID = i.itemID AND ins.localeID = @localeID
+							LEFT JOIN ItemTrait				BES			ON  BES.traitID					= @AppellationTraitId		  AND  BES.itemID = i.itemID  AND BES.localeID = @localeID
+							LEFT JOIN ItemTrait				APL			ON  APL.traitID					= @BeerStyleTraitId           AND  APL.itemID = i.itemID  AND APL.localeID = @localeID
+							LEFT JOIN ItemTrait				COO			ON  COO.traitID					= @CountryofOriginTraitId     AND  COO.itemID = i.itemID  AND COO.localeID = @localeID
+							LEFT JOIN ItemTrait				LBL			ON  LBL.traitID					= @LabelingTraitId            AND  LBL.itemID = i.itemID  AND LBL.localeID = @localeID
+							LEFT JOIN ItemTrait				LLP			ON  LLP.traitID					= @LocalLoanProducerTraitId   AND  LLP.itemID = i.itemID  AND LLP.localeID = @localeID
+							LEFT JOIN ItemTrait				OPC			ON  OPC.traitID					= @OrganicPersonalCareTraitId AND  OPC.itemID = i.itemID  AND OPC.localeID = @localeID
+							LEFT JOIN ItemTrait				PLO			ON  PLO.traitID					= @PaleoTraitId               AND  PLO.itemID = i.itemID  AND PLO.localeID = @localeID
+							LEFT JOIN ItemTrait				PRL			ON  PRL.traitID					= @PrivateLabelTraitId        AND  PRL.itemID = i.itemID  AND PRL.localeID = @localeID
+							LEFT JOIN ItemTrait				PFT			ON  PFT.traitID					= @ProductFlavororTypeTraitId AND  PFT.itemID = i.itemID  AND PFT.localeID = @localeID
+							LEFT JOIN ItemTrait				VAR			ON  VAR.traitID					= @VarietalTraitId            AND  VAR.itemID = i.itemID  AND VAR.localeID = @localeID
+							LEFT JOIN ItemTrait				CF			ON  CF.traitID					= @CaseinFreeTraitId          AND  CF.itemID = i.itemID  AND  CF.localeID = @localeID
+							LEFT JOIN ItemTrait				DS			ON  DS.traitID					= @DeliverySystemTraitId      AND  DS.itemID = i.itemID  AND  DS.localeID = @localeID
+							LEFT JOIN ItemTrait				HEM			ON  HEM.traitID					= @HempTraitId                AND  HEM.itemID = i.itemID  AND HEM.localeID = @localeID
+							LEFT JOIN ItemTrait				GFC			ON  GFC.traitID					= @GlutenFreeClaimTraitId     AND  GFC.itemID = i.itemID  AND GFC.localeID = @localeID
+							LEFT JOIN ItemTrait				IDP			ON  IDP.traitID					= @ItemDepthTraitId           AND  IDP.itemID = i.itemID  AND IDP.localeID = @localeID
+							LEFT JOIN ItemTrait				IHT			ON  IHT.traitID					= @ItemHeightTraitId          AND  IHT.itemID = i.itemID  AND IHT.localeID = @localeID
+							LEFT JOIN ItemTrait				IWD			ON  IWD.traitID					= @ItemWidthTraitId           AND  IWD.itemID = i.itemID  AND IWD.localeID = @localeID
+							LEFT JOIN ItemTrait				NGC			ON  NGC.traitID					= @NonGMOClaimTraitId         AND  NGC.itemID = i.itemID  AND NGC.localeID = @localeID
+							LEFT JOIN ItemTrait				OC			ON  OC.traitID					= @OrganicClaimTraitId        AND  OC.itemID = i.itemID  AND  OC.localeID = @localeID
+							LEFT JOIN ItemTrait				PG			ON  PG.traitID					= @PackageGroupTraitId        AND  PG.itemID = i.itemID  AND  PG.localeID = @localeID
+							LEFT JOIN ItemTrait				PGT			ON  PGT.traitID					= @PackageGroupTypeTraitId    AND  PGT.itemID = i.itemID  AND PGT.localeID = @localeID
+							LEFT JOIN ItemTrait				TDP			ON  TDP.traitID					= @TrayDepthTraitId           AND  TDP.itemID = i.itemID  AND TDP.localeID = @localeID
+							LEFT JOIN ItemTrait				THT			ON  THT.traitID					= @TrayHeightTraitId          AND  THT.itemID = i.itemID  AND THT.localeID = @localeID
+							LEFT JOIN ItemTrait				TWD			ON  TWD.traitID					= @TrayWidthTraitId           AND  TWD.itemID = i.itemID  AND TWD.localeID = @localeID
+							LEFT JOIN ItemTrait				IWT			ON  IWT.traitID					= @ItemWeightTraitId          AND  IWT.itemID = i.itemID  AND IWT.localeID = @localeID
+							LEFT JOIN ItemTrait				CUB			ON  CUB.traitID					= @CubeTraitId                AND  CUB.itemID = i.itemID  AND CUB.localeID = @localeID
+							LEFT JOIN ItemTrait				DAT			ON  DAT.traitID					= @DataSourceTraitId          AND  DAT.itemID = i.itemID  AND DAT.localeID = @localeID
+							LEFT JOIN ItemTrait				FT			ON  FT.traitID					= @FairTradeClaimTraitId      AND  FT.itemID = i.itemID  AND  FT.localeID = @localeID
+							LEFT JOIN ItemTrait				NGT			ON  NGT.traitID					= @GMOTransparencyTraitId     AND  NGT.itemID = i.itemID  AND NGT.localeID = @localeID
+							LEFT JOIN ItemTrait				LEX			ON  LEX.traitID					= @LineExtensionTraitId 	  AND  LEX.itemID = i.itemID  AND LEX.localeID = @localeID
+                            LEFT JOIN ItemTrait				EX			ON  EX.traitID					= @ExlusiveTraitId 			  AND	EX.itemID = i.itemID  AND EX.localeID = @localeID
                             LEFT JOIN nutrition.ItemNutrition inn       on sc.scancode = inn.Plu	
 	                    WHERE
 		                    it.itemTypeID <> @couponItemTypeId
                         ORDER BY it.itemTypeID";
-            }
-        }
 
         public static string LocaleSql
         {

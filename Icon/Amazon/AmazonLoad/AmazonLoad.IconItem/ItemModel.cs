@@ -65,6 +65,7 @@ namespace AmazonLoad.IconItem
         public bool? AirChilled { get; set; }
         public bool? MadeInHouse { get; set; }
         public string CustomerFriendlyDescription { get; set; }
+        
         public string NutritionRequired { get; set; }
         public string GlobalPricingProgram { get; set; }
         public string SelfCheckoutItemTareGroup { get; set; }
@@ -156,7 +157,7 @@ namespace AmazonLoad.IconItem
         public string SKU { get; set; }
         public string PriceLine { get; set; }
         public string VariantSize { get; set; }
-        public bool EStoreNutritionRequired { get; set; }
+        public bool? EStoreNutritionRequired { get; set; }
         public bool? PrimeNowEligible { get; set; }
         public bool EstoreEligible { get; set; }
         public bool? TSFEligible { get; set; }
@@ -174,21 +175,21 @@ namespace AmazonLoad.IconItem
 
         public string NonGMOTransparency { get; set; }
 
-        public Decimal? ItemDepth { get; set; }
+        public decimal? ItemDepth { get; set; }
 
-        public Decimal? ItemHeight { get; set; }
+        public decimal? ItemHeight { get; set; }
 
-        public Decimal? ItemWidth { get; set; }
+        public decimal? ItemWidth { get; set; }
 
-        public Decimal? Cube { get; set; }
+        public decimal? Cube { get; set; }
 
-        public Decimal? ItemWeight { get; set; }
+        public decimal? ItemWeight { get; set; }
 
-        public Decimal? TrayDepth { get; set; }
+        public decimal? TrayDepth { get; set; }
 
-        public Decimal? TrayHeight { get; set; }
+        public decimal? TrayHeight { get; set; }
 
-        public Decimal? TrayWidth { get; set; }
+        public decimal? TrayWidth { get; set; }
 
         public string Labeling { get; set; }
 
@@ -213,6 +214,8 @@ namespace AmazonLoad.IconItem
         public string Varietal { get; set; }
 
         public string BeerStyle { get; set; }
+
+        public bool? Exclusive { get; set; }
 
         public string LineExtension { get; set; }
 

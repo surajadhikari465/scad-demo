@@ -86,13 +86,16 @@ namespace AmazonLoad.IconItem
                 int numberOfRecordsSent = 0;
                 int numberOfMessagesSent = 0;
                 IGrouping<string, ItemModel> current = null;
-                foreach (var modelSubSet in models.Batch(10000))
-                {
-                    try {
+                decimal batches = 0m;
 
+
+                try
+                {
+
+                    foreach (var modelSubSet in models.Batch(10000))
+                    {
                         foreach (var modelBatch in modelSubSet.Batch(100))
                         {
-
                             foreach (var modelGroup in modelBatch.GroupBy(i => i.ItemTypeCode))
                             {
                                 try
@@ -118,8 +121,6 @@ namespace AmazonLoad.IconItem
 
                                     if (sendToEsb)
                                     {
-
-
                                         producer.Send(
                                             message,
                                             messageId,
@@ -134,11 +135,9 @@ namespace AmazonLoad.IconItem
                                             $"{saveMessagesDirectory}/{numberOfMessagesSent:D6}-{messageId}.xml",
                                             JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
                                     }
-
                                 }
                                 catch (Exception ex)
                                 {
-
                                     var scanCodes = string.Empty;
                                     if (current != null)
                                         scanCodes = string.Join(",", current.Select(s => s.ScanCode));
@@ -149,16 +148,15 @@ namespace AmazonLoad.IconItem
                                     );
                                 }
                             }
-
-
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("A huge chunk failed. this is bad.");
-                        Console.WriteLine(ex.Message);
-                    }
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("A huge chunk failed. this is bad.");
+                    Console.WriteLine(ex.Message);
+                }
+
                 Console.WriteLine($"Number of records sent: {numberOfRecordsSent}.");
                 Console.WriteLine($"Number of messages sent: {numberOfMessagesSent}.");
                 var endTime = DateTime.Now;
@@ -175,6 +173,7 @@ namespace AmazonLoad.IconItem
                 item = itemGroup.Select(i => ConvertToContractsItemType(i)).ToArray()
             };
 
+            
             return serializer.Serialize(items);
         }
 
@@ -374,6 +373,7 @@ namespace AmazonLoad.IconItem
                 BuildTraitBlankIfNull(TraitCodes.FairTradeClaim, TraitDescriptions.FairTradeClaim, item.FairTradeClaim),
                 BuildTrait(TraitCodes.NonGmoTransparency, TraitDescriptions.NonGmoTransparency, item.NonGMOTransparency),
                 BuildTrait(TraitCodes.LineExtension, TraitDescriptions.LineExtension, item.LineExtension),
+                BuildTraitBlankIfNull(TraitCodes.Exclusive, TraitDescriptions.Exclusive, item.Exclusive),
                 BuildTrait(TraitCodes.ModifiedDate, TraitDescriptions.ModifiedDate, item.ModifiedDate)
             };           
 
@@ -610,6 +610,11 @@ namespace AmazonLoad.IconItem
                 }
             };
             return trait;
+        }
+
+        private static Contracts.TraitType BuildTrait(string traitCode, string traitDescription, object value)
+        {
+            return BuildTrait(traitCode, traitDescription, value.ToString());
         }
 
         private static Contracts.TraitType BuildTrait(string traitCode, string traitDescription, bool value)
