@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Configuration;
 using System.Reflection;
+using System.Linq;
 
 namespace Audit
 {
@@ -37,12 +38,28 @@ namespace Audit
 						cnfg.Save(ConfigurationSaveMode.Modified);
 					}
 				}
+
+				ResetConfigManager();
 			}
 		}
 
 		public static Hashtable GetVariables()
 		{
 			return ConfigurationManager.GetSection(Utility.VARIABLES) as Hashtable;
+		}
+
+		static void ResetConfigManager()
+		{
+			var T = typeof(ConfigurationManager);
+
+			T.GetField("s_initState", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, 0);
+			T.GetField("s_configSystem", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, null);
+			T.Assembly.GetTypes()
+				.Where(x => x.FullName == "System.Configuration.ClientConfigPaths")
+				.First()
+				.GetField("s_current", BindingFlags.NonPublic | BindingFlags.Static)
+				.SetValue(null, null);
+			
 		}
 	}
 }

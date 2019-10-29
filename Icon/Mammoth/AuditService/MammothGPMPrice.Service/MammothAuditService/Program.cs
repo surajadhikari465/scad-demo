@@ -8,8 +8,8 @@ namespace Audit
         static void Main(string[] args)
         {
             //Grant FULL access permission to account the service is running under to this folder:  \Users\All Users\Microsoft\Crypto\RSA\MachineKeys
-            Utility.EncryptAppSettings(Utility.VARIABLES, Utility.SQL_CONNECTIONS);
-
+            Utility.EncryptAppSettings(Utility.VARIABLES);
+            
             HostFactory.Run(configure =>
             {
                 var container = SimpleInjectorInitializer.InitializeContainer();
