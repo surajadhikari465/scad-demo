@@ -181,8 +181,8 @@ export class KitsByStoreView extends React.Component<
 
   onSelected = (row: any) => {
     var kitId = row.kitId;
-    const editUrl = `/EditKit/${kitId}`
-    this.props.history.push(editUrl);
+    const editUrl = `#/EditKit/${kitId}`
+      window.open(editUrl, '_blank');
   }
 
   viewKitsByStore = () => {

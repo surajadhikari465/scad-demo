@@ -83,8 +83,9 @@ function KitByStoreResults(props: any) {
           }
 
         ]}
-        defaultPageSize={5}
+        defaultPageSize={50}
         className="-striped -highlight"
+        minRows = {0}
       />
     </React.Fragment>
   )
