@@ -41,6 +41,8 @@ interface IKitsByStoreViewPageState {
   stores: Array<any>;
   regionValue: string;
   storeValue: string;
+  storeId:number;
+  storeName: string;
   metroValue: string;
   kitsByStoreData: Array<any>;
   disableViewKitButton: boolean;
@@ -67,6 +69,8 @@ export class KitsByStoreView extends React.Component<
       stores: [],
       regionValue: "",
       storeValue: "",
+      storeId:0,
+      storeName:"",
       metroValue: "",
       kitsByStoreData: [],
       disableViewKitButton: false,
@@ -104,8 +108,15 @@ export class KitsByStoreView extends React.Component<
   }
 
   onStoreChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let store=event.target.value.split('-');
+    var storeId=Number(store[0]); 
+    var storeName=store[store.length-1]; 
+    var storeValue= event.target.value
+
     this.setState({
-      storeValue: event.target.value,
+      storeValue:storeValue,
+      storeId:storeId,
+      storeName:storeName,
       kitsByStoreData: [],
       disableExportbutton: true
     });
@@ -136,7 +147,9 @@ export class KitsByStoreView extends React.Component<
       metros: [],
       metroValue: "",
       stores: [],
-      storeValue: ""
+      storeValue: "",
+      storeId:0,
+      storeName:""
     });
   };
 
@@ -157,7 +170,7 @@ export class KitsByStoreView extends React.Component<
       .catch(error => {
         this.props.showAlert("Error loading metros.", "error");
       });
-    this.setState({ metroValue: "", stores: [], storeValue: "" });
+    this.setState({ metroValue: "", stores: [], storeValue: "", storeName:"", storeId:0 });
   };
 
   populateStores = () => {
@@ -176,7 +189,7 @@ export class KitsByStoreView extends React.Component<
       .catch(error => {
         this.props.showAlert("Error loading stores.");
       });
-    this.setState({ storeValue: "" });
+    this.setState({ storeValue: "" , storeName:"", storeId:0});
   };
 
   onSelected = (row: any) => {
@@ -187,8 +200,8 @@ export class KitsByStoreView extends React.Component<
 
   viewKitsByStore = () => {
     this.setState({ disableViewKitButton: true });
-    let selectedStoreId = this.state.storeValue;
-    if (selectedStoreId === "") {
+    let selectedStoreId = this.state.storeId;
+    if (selectedStoreId ===0) {
       this.props.showAlert("Please select store.");
       this.setState({ disableViewKitButton: false });
       return;
@@ -233,13 +246,14 @@ export class KitsByStoreView extends React.Component<
 
   render() {
     var worksheetColumnsWidth = [
-      { wch: 10 },
       { wch: 25 },
       { wch: 20 },
-      { wch: 35 }
+      { wch: 35 },
+      { wch: 20 }
     ];
     const { kitsByStoreData, disableExportbutton } = this.state;
-    var excludeColumnsInExport = ['excluded']
+    const fileName= "KitsByStore-" + this.state.storeName;
+    var excludeColumnsInExport = ['excluded', 'kitId']
 
     return (
       <>
@@ -271,7 +285,7 @@ export class KitsByStoreView extends React.Component<
           )}
           <Grid container justify="flex-end" spacing={16}>
             <Grid item xs={12} sm={12} md={2}>
-              <ExportCSV csvData={kitsByStoreData} fileName='KitsByStore' disableExportbutton={disableExportbutton} worksheetColumnsWidth={worksheetColumnsWidth} excludeColumnsInExport = {excludeColumnsInExport} />
+              <ExportCSV csvData={kitsByStoreData} fileName={fileName} disableExportbutton={disableExportbutton} worksheetColumnsWidth={worksheetColumnsWidth} excludeColumnsInExport = {excludeColumnsInExport} />
             </Grid>
           </Grid>
 

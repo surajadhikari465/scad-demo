@@ -71,6 +71,16 @@ function KitByStoreResults(props: any) {
             accessor: "productDescription"
           },
           {
+            Header: () => (
+              <div style={{ textAlign: "center" }}> Status</div>
+            ),
+            Cell: row => (
+              <div style={{ textAlign: "center" }}>{row.value}</div>
+            ),
+
+            accessor: "status"
+          },
+          {
             Header: "View",
             id: "View",
             Cell: row => (

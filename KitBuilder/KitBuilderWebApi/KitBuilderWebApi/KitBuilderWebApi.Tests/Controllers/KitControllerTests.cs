@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
+using Status = KitBuilder.DataAccess.DatabaseModels.Status;
 
 namespace KitBuilderWebApi.Tests.Controllers
 {
@@ -44,6 +45,7 @@ namespace KitBuilderWebApi.Tests.Controllers
         private Mock<IRepository<LocaleType>> mockLocaleTypeRepository;
         private Mock<IRepository<KitLinkGroupItemLocale>> mockKitLinkGroupItemLocaleRepository;
         private Mock<IRepository<KitQueue>> mockkitQueueRepository;
+        private Mock<IRepository<Status>> mockStatusRepository;
         //private Mock<IQueryHandler<GetKitByKitLocaleIdParameters, KitLocale>> mockGetKitLocaleQuery;
         private Mock<IServiceProvider> mockServices;
         private Mock<IUnitOfWork> mockUnitWork;
@@ -82,7 +84,7 @@ namespace KitBuilderWebApi.Tests.Controllers
             mockCalorieCalculator = new Mock<IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>>>();
             mockUnitWork = new Mock<IUnitOfWork>();
             mockkitQueueRepository = new Mock<IRepository<KitQueue>>();
-
+            mockStatusRepository = new Mock<IRepository<Status>>();
 
             string locationUrl = "http://localhost:55873/api/Kits/";
             var mockUrlHelper = new Mock<IUrlHelper>();
@@ -107,7 +109,8 @@ namespace KitBuilderWebApi.Tests.Controllers
                 mockKitHelper.Object,
                 mockServices.Object,
                 mockCalorieCalculator.Object,
-                mockkitQueueRepository.Object
+                mockkitQueueRepository.Object,
+                mockStatusRepository.Object
                 );
 
             MappingHelper.InitializeMapper();

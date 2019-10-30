@@ -44,7 +44,7 @@ regions.map((item: any) =>
 
     const getStores = (stores: Array<any>) => 
     stores.map((item: any) => 
-        <MenuItem key={item.localeId} value={item.localeId}> {item.localeName} </MenuItem>
+        <MenuItem key={item.localeId} value={item.localeId + '-'+ item.localeName}> {item.localeName} </MenuItem>
     );
 
 

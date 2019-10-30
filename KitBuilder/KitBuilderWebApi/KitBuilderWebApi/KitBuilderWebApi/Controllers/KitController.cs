@@ -23,6 +23,7 @@ using Newtonsoft.Json.Linq;
 using System.Text;
 using KitBuilderWebApi.Models;
 using LocaleStatus = KitBuilder.DataAccess.Enums.Status;
+using Status = KitBuilder.DataAccess.DatabaseModels.Status;
 
 namespace KitBuilderWebApi.Controllers
 {
@@ -39,6 +40,7 @@ namespace KitBuilderWebApi.Controllers
         private IRepository<LinkGroupItem> linkGroupItemRepository;
         private IRepository<Items> itemsRepository;
         private IRepository<KitLinkGroup> kitLinkGroupRepository;
+        private IRepository<KitBuilder.DataAccess.DatabaseModels.Status> statusRepository;
         private IRepository<KitLinkGroupLocale> kitLinkGroupLocaleRepository;
         private ILogger<KitController> logger;
         private IRepository<KitLinkGroupItem> kitLinkGroupItemRepository;
@@ -75,7 +77,8 @@ namespace KitBuilderWebApi.Controllers
                             IHelper<KitDtoWithStatus, KitSearchParameters> kitHelper,
                              IServiceProvider services,
                              IService<GetKitLocaleByStoreParameters, Task<KitLocaleDto>> calorieCalculator,
-                             IRepository<KitQueue> kitQueueRepository
+                             IRepository<KitQueue> kitQueueRepository,
+                             IRepository<Status> statusRepository
 
                             )
         {
@@ -97,6 +100,7 @@ namespace KitBuilderWebApi.Controllers
             this.services = services;
             this.calorieCalculator = calorieCalculator;
             this.kitQueueRepository = kitQueueRepository;
+            this.statusRepository = statusRepository;
         }
 
         [HttpGet("{kitLocaleId}/GetKitCalories/{storeLocaleId}", Name = "ViewKitByStore")]
@@ -478,14 +482,16 @@ namespace KitBuilderWebApi.Controllers
                            join s in kitRepository.GetAll() on kl.KitId equals s.KitId
                            join i in itemsRepository.GetAll() on s.ItemId equals i.ItemId
                            join l in localeRepository.GetAll() on kl.LocaleId equals l.LocaleId
-                           where l.LocaleId == lr.MetroId || l.LocaleId == lr.RegionId || l.LocaleId == lr.ChainId || l.StoreId == lr.LocaleId
+                           join st in statusRepository.GetAll() on kl.StatusId equals st.StatusId
+                            where l.LocaleId == lr.MetroId || l.LocaleId == lr.RegionId || l.LocaleId == lr.ChainId || l.StoreId == lr.LocaleId
                            select new
                            {
                                kitId = s.KitId,
                                kitDescription = s.Description,
                                scanCode = i.ScanCode,
                                productDescription  = i.ProductDesc,
-                               excluded = kl.Exclude
+                               excluded = kl.Exclude,
+                               status = st.StatusDescription
                            }).ToList();
 
                 if (kits == null)
