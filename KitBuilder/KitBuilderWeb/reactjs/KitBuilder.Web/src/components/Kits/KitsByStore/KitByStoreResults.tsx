@@ -20,11 +20,12 @@ const styles = (theme: any) => ({
 });
 
 function KitByStoreResults(props: any) {
+  const NullComponent = () => null;
   return (
     <React.Fragment>
       <ReactTable
         data={props.kitsByStoreData}
-        noDataText="No Kit Found."
+        NoDataComponent={NullComponent}
         columns={[
           {
             Header: () => (

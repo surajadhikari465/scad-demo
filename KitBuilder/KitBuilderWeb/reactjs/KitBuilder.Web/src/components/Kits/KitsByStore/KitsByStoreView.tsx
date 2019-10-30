@@ -215,7 +215,7 @@ export class KitsByStoreView extends React.Component<
       })
       .then(data => {
         if (typeof data == undefined || data == null || data.length == 0) {
-          this.props.showAlert("No data found.");
+          this.props.showAlert("No kit has been assigned to selected store.");
           this.setState({
             showDisplay: true,
             kitsByStoreData: []
