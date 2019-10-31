@@ -12,7 +12,6 @@ namespace WebSupport.ViewModels
 {
 	public class MessageExportViewModel
 	{
-		public const int MaxNumberOfItems = 1000;
 		public enum QueueName { ArchivedMessage, InventoryEvents, PurchaseOrderEvents, ReceiptEvents, TransferOrderEvents }
 		public enum MessageTypeName { Inventory, PurchaseOrder, Receipt, TransferOrder }
 		public enum StatusName { Failed, Processed, Unprocessed }
@@ -62,7 +61,6 @@ namespace WebSupport.ViewModels
 		[DataType(DataType.Date)]
 		[Display(Name = "End Datetime")]
 		public DateTime? EndDatetime { get; set; }
-		public List<string> Errors { get; set; }
 		public bool? RequeueSuccess { get; set; }
 
 		public MessageExportViewModel()

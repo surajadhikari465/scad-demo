@@ -6,141 +6,228 @@
 @model WebSupport.ViewModels.RegenerateEventViewModel
 @{ ViewBag.Title = "Regenerate Events"; }
 
-<h2>Requeue InStock Events</h2>
+<h2>Regenerate InStock Events</h2>
 <br />
 
 <div class="row container-fluid">
-  @using(Html.BeginForm("Index", "RequeueEvents", null, FormMethod.Post, new { @class = "" }))
-  {
-    @Html.AntiForgeryToken()
+	@using (Html.BeginForm("Index", "RegenerateEvents", null, FormMethod.Post, new { @class = "" }))
+	{
+		@Html.AntiForgeryToken()
+		<table class="table-borderless">
+			<tr>
+				<td class="col-sm-offset-0 col-sm-3" style="font-size:small; color:gray" align="left">
+					@Html.LabelFor(x => x.RegionIndex, new { @class = "control-label" })
 
-    <div class="form-group">
-      <div class="col-sm-offset-0 col-sm-1" style="font-size:small; color:gray; width:inherit">
-        @Html.LabelFor(x => x.Region, new { @class = "control-label" })
-        @Html.DropDownListFor(x => x.Region, Model.Regions, new { @class = "form-control", id = "Region", onchange = "HideElement()" })
-      </div>
+					@Html.DropDownListFor(x => x.RegionIndex, Model.OptionsForRegion, new { @class = "form-control", id = "Region", onchange = "HideElement()" })
+					@Html.ValidationMessageFor(x => x.RegionIndex, "", new { @class = "text-danger" })
+				</td>
 
-      <div class="col-sm-offset-0 col-sm-1" style="font-size:small; color:gray; width:inherit">
-        @Html.LabelFor(x => x.EventType, new { @class = "control-label" })
-        @Html.DropDownListFor(x => x.EventType, Model.Events, new { @class = "form-control", id = "Event", onchange = "HideElement()" })
-      </div>
+				<td class="col-sm-offset-0 col-sm-3" style="font-size:small; color:gray" align="left">
+					@Html.LabelFor(x => x.StoreIndex, new { @class = "control-label" })
 
-      <div class="col-sm-offset-0 col-sm-1" style="font-size:small; color:gray;width:inherit;">
-        @Html.LabelFor(x => x.DateFrom, new { @class = "control-label" })
-        <div class="input-group bootstrap-datetimepicker-widget">
-          <div class="input-group date" id="dtpDateFrom" style="width:150px">
-            @Html.TextBoxFor(model => Model.DateFrom, new { @class = "form-control" })
-            <span class="input-group-addon">
-              <span class="glyphicon glyphicon-th"></span>
-            </span>
-          </div>
-        </div>
-      </div>
+					@Html.DropDownListFor(x => x.StoreIndex, Model.OptionsForStores, new { @class = "form-control", id = "Store", onchange = "HideElement()" })
+					@Html.ValidationMessageFor(x => x.StoreIndex, "", new { @class = "text-danger" })
+				</td>
+				<td class="col-sm-3" style="width:auto" colspan="2" align="left">
+					<input type="submit" value="Search" class="btn btn-primary form-submit col-md-offset-3" name="ActionGet" id="btnSearch" />
+				</td>
+			</tr>
+			<tr>
+				<td class="col-sm-offset-0 col-sm-3" style="font-size:small; color:gray;" align="left">
+					@Html.LabelFor(x => x.EventType, new { @class = "control-label" })
+					@Html.DropDownListFor(x => x.EventType, Model.Events, new { @class = "form-control", id = "eventType", onchange = "HideElement()" })
+				</td>
+				<td class="col-sm-3" style="font-size:small; color:gray; width:80px;" align="left">
+					@Html.LabelFor(x => x.StartDatetime, new { @class = "control-label" })<br />
 
-      <div class="col-sm-offset-0 col-sm-1" style="font-size:small; color:gray; width:inherit;">
-        @Html.LabelFor(x => x.DateTo, new { @class = "control-label" })
-        <div class="input-group bootstrap-datetimepicker-widget">
-          <div class="input-group date" id="dtpDateTo" style="width:150px">
-            @Html.TextBoxFor(model => Model.DateTo, new { @class = "form-control" })
-            <span class="input-group-addon">
-              <span class="glyphicon glyphicon-th"></span>
-            </span>
-          </div>
-        </div>
-      </div>
+					<div class="input-group date" id="dtpStartDatetime" style="width:180px" align="left">
+						@Html.TextBoxFor(model => Model.StartDatetime, new { @class = "form-control" })
+					</div>
 
-      <div class=" col-sm-offset-0 col-sm-2" style="height:57px; padding-top:22px;">
-        <input type="submit" name="ActionGet" value="Search" class="btn btn-primary form-submit col-md-offset-3" />
-      </div>
-    </div>
+					<script type="text/javascript">
+						$(function () {
+							$('#dtpStartDatetime').datetimepicker();
+						});
+					</script>
+				</td>
 
-    <br />
-    <br />
-    <br />
-    <hr />
+				<td class="col-sm-3" style="font-size:small; color:gray; width:80px;" align="left">
+					@Html.LabelFor(x => x.EndDatetime, new { @class = "control-label" })
 
-	<div id="divView" class="col-sm-12" style="overflow-x:auto;">
-		@{if (!Model.IsSuccess)
-			{
-				<div style="background-color:lightyellow; border:2px solid; padding:15px">
-					<h2 style="text-align:center; color:darkred">Processing error</h2>
-					<p>@Model.Error</p>
-					<hr />
-					<p style="font-style:italic; font-weight:600">Please contact your System Administrator if the issue persists.</p>
-				</div>
-			}
-			else if (ViewData["FYI"] != null)
-			{
-				<div class="alert alert-success alert-dismissable" style="background-color:lightyellow; padding:5px">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-					<strong>@ViewData["FYI"].ToString()</strong>
-				</div>
-			}
-			else
-			{
-				if (!String.IsNullOrWhiteSpace(Model.EventType))
+					<div class="input-group date" id="dtpEndDatetime" style="width:180px">
+						@Html.TextBoxFor(model => Model.EndDatetime, new { @class = "form-control" })
+					</div>
+
+					<script type="text/javascript">
+						$(function () {
+							$('#dtpEndDatetime').datetimepicker();
+						});
+					</script>
+				</td>
+			</tr>
+		</table>
+		<br />
+		<br />
+		<br />
+		<hr />
+
+		<div id="divView" class="col-sm-12" style="overflow-x:auto;">
+			@{if (!Model.IsSuccess)
 				{
-					@Html.Label("Event Code:", new { @style = "font-size:small; color:gray; margin-right: 10px;" })
-					@Html.Label(Model.EventType, new { @style = "color:darkgreen;" })
+					<div style="background-color:lightyellow; border:2px solid; padding:15px">
+						<h2 style="text-align:center; color:darkred">Processing error</h2>
+						<p>@Model.Error</p>
+						<hr />
+						<p style="font-style:italic; font-weight:600">Please contact your System Administrator if the issue persists.</p>
+					</div>
 				}
-
-				if (Model.ResultTable == null || Model.ResultTable.Rows.Count == 0)
+				else if (ViewData["FYI"] != null)
 				{
-					<p style="color:lightgray; text-align:center; font-size:xx-large">No records found...</p>
+					<div class="alert alert-success alert-dismissable" style="background-color:lightyellow; padding:5px">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<strong>@ViewData["FYI"].ToString()</strong>
+					</div>
 				}
 				else
 				{
-					<div class="form-group col-sm-offset-2">
-						<input type="submit" name="ActionSubmit" value="Queue Message(s)" class="btn btn-primary form-submit col-md-offset-3" style="background-color:#4CAF50" />
-					</div>
-					<br />
-					<table>
-						<tr>
-							<th style="align-items:center; height:30px; width:40px; background:rgb(220, 218, 218)" />
+					if (!String.IsNullOrWhiteSpace(Model.EventType))
+					{
+						@Html.Label("Event Code:", new { @style = "font-size:small; color:gray; margin-right: 10px;" })
+						@Html.Label(Model.EventType, new { @style = "color:darkgreen;" })
+					}
 
-							@foreach (DataColumn column in Model.ResultTable.Columns)
+					if (Model.ResultTable == null || Model.ResultTable.Rows.Count == 0)
+					{
+						<p style="color:lightgray; text-align:center; font-size:xx-large">No records found...</p>
+					}
+					else if (Model.ResultTable.Rows.Count > int.Parse(System.Configuration.ConfigurationManager.AppSettings["MaxEntriesForInStockReq"]))
+					{
+						<div style="background-color:lightyellow; border:1px solid; padding:2px">
+							<p style="font-style:italic; font-weight:600">Search result returns more than @System.Configuration.ConfigurationManager.AppSettings["MaxEntriesForInStockReq"] rows. Please refine your search criteria.</p>
+						</div>
+						<br />
+					}
+					else
+					{
+						<div style="background-color:lightyellow; border:1px solid; padding:2px">
+							@if (Model.EventsGenerationSuccess ?? false)
 							{
-								<th style="text-align:left; height:30px; background:rgb(220, 218, 218)">&nbsp&nbsp&nbsp @column.Caption.Replace("_", " ")</th>
+								<p style="font-style:italic; font-weight:600">Events generated successfully.</p>
 							}
-						</tr>
-
-						@foreach (DataRow row in Model.ResultTable.Rows)
-						{
+							else
+							{
+								<p style="font-style:italic; font-weight:600">@Model.ResultTable.Rows.Count rows returned.</p>
+							}
+						</div>
+						<br />
+						<div class="form-group col-sm-offset-2">
+							<input type="button" value="Select All" class="btn btn-primary form-submit col-md-offset-0" id="btnSelect" name="btnSelectAll" style="background-color:#4CAF50" />
+							<input type="submit" name="ActionSubmit" id="ActionSubmit" value="Generate Event(s)" class="btn btn-primary form-submit col-md-offset-0" style="background-color:#4CAF50" />
+						</div>
+						<br />
+						<table>
 							<tr>
-								<td align="left" style="padding-left:5px">
-									@*<input type="checkbox" name="cbIsSelected" value="@row["ArchiveID"]" onclick="" />*@
-									<input type="checkbox" name="cbIsSelected" value="@row[0]" onclick="" />
-								</td>
+								<th style="align-items:center; height:30px; width:40px; background:rgb(220, 218, 218)" />
 
-								@foreach (var val in row.ItemArray)
+								@foreach (DataColumn column in Model.ResultTable.Columns)
 								{
-									if (val.GetType() != typeof(String))
-									{
-										<td align="right" style="padding-right:5px; padding-right:5px;">@val</td> }
-									else
-									{
-										<td align="left" style="padding-left:15px; padding-right:15px">@val</td>}
+									<th style="text-align:left; height:30px; background:rgb(220, 218, 218)">&nbsp&nbsp&nbsp @column.Caption.Replace("_", " ")</th>
 								}
 							</tr>
-						}
-					</table>
+
+							@foreach (DataRow row in Model.ResultTable.Rows)
+							{
+								<tr>
+									<td align="left" style="padding-left:5px">
+										<input type="checkbox" name="cbIsSelected" id="cbIsSelected" value="@row[0]" onclick="" />
+									</td>
+
+									@foreach (var val in row.ItemArray)
+									{
+										if (val.GetType() != typeof(String))
+										{
+											<td align="right" style="padding-right:5px; padding-right:5px;">@val</td> }
+										else
+										{
+											<td align="left" style="padding-left:15px; padding-right:15px">@val</td>}
+									}
+								</tr>
+							}
+						</table>
+					}
 				}
 			}
-		}
-	</div>
-  }
+		</div>
+	}
 </div>
 
-<script type="text/javascript">
-  $(function () {
-    var i;
-    var names = ["#dtpDateFrom", "#dtpDateTo"];
-    for (i = 0; i < names.length; i++)
-      $(names[i]).datetimepicker({ format: 'MM/DD/YYYY' });
-  });
-
+@section Scripts
+{
+  <script type="text/javascript">
   $(document).on('change', '#Region, #Event', function () {
     var e = document.getElementById("divView");
     if (e != null) e.style.display = "none";
-  });
-</script>
+	});
+
+   var getStoresSuccessCallback = function (data, textStatus, xhr) {
+        var storesControl = $("#Store");
+		storesControl.empty();
+		storesControl.append(
+			$("<option />",
+				{
+					value: 0,
+					text: '0: -- All Stores --'
+				}))
+        $.each(data,
+            function (index, store) {
+                storesControl.append(
+                    $("<option />",
+                        {
+                            value: store.BusinessUnit,
+                            text: store.BusinessUnit + ": " + store.Name
+                        }))
+            });
+    }
+
+    var getStoresErrorCallback = function (xhr, textStatus, errorThrown) {
+        responseHTML = $.parseHTML(xhr.responseText);
+
+        var errorInfo = "Error attempting to load store data for region.\n"
+            + "url: \"@(Url.Action("Stores", "RegenerateEvents"))\"\n"
+            + "data: \"" + $("#RegionIndex :selected").text() + "\" (" + $("#RegionIndex").val() + ")\n"
+            + "call state: \"" + xhr.state() + "\".\n"
+            + "response: \"" + errorThrown + "\" (" + xhr.status + ")\n"
+            + "server error: \"" + $(responseHTML).find('h2').text() + "\"\n";
+        console.log(errorInfo);
+        console.log(xhr.responseText);
+        alert(errorInfo)
+
+        $("#Stores").empty();
+		}
+
+	$("#btnSelect").click(function () {
+		var btnSelectControl = document.getElementById("btnSelect");
+		var chk = $('[id^=cbIsSelected]');
+
+		if (btnSelectControl.value == "Select All"){
+			for (i = 0; i < chk.length; i++)
+				chk[i].checked = true;
+			btnSelectControl.value = "Deselect All";
+		}else {
+			for (i = 0; i < chk.length; i++)
+				chk[i].checked = false;
+				btnSelectControl.value  = "Select All";
+			}
+		})
+
+	$("#Region").change(function () {
+		var url = "@(Url.Action("Stores", "RegenerateEvents"))";
+		var data = { regionCode: $(this).val() };
+
+		var storesControl = $("#Stores");
+
+		$.getJSON(url, data, getStoresSuccessCallback)
+			.fail(getStoresErrorCallback);
+		});
+	</script>
+}

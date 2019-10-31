@@ -10,21 +10,27 @@ using WebSupport.ViewModels;
 using WebSupport.DataAccess;
 using System.Configuration;
 using System.Collections.Specialized;
+using Icon.Common.DataAccess;
+using System.Collections.Generic;
+using WebSupport.DataAccess.Queries;
+using WebSupport.DataAccess.TransferObjects;
+using WebSupport.Models;
 
 namespace WebSupport.Tests.Controllers
 {
     [TestClass]
-    public class RequeEventsControllerTest
+    public class RegenerateEventsControllerTest
     {
-        Mock<ILogger> logger;
-        RegenerateEventsController controller;
-        
+		private Mock<ILogger> mockLogger;
+		private RegenerateEventsController controller;
+		private Mock<IQueryHandler<GetStoresForRegionParameters, IList<StoreTransferObject>>> mockQueryForStores;
 
-        [TestInitialize]
+		[TestInitialize]
         public void Initialize()
         {
-            logger = new Mock<ILogger>();
-            controller = new RegenerateEventsController(logger.Object);
+			mockLogger = new Mock<ILogger>();
+			mockQueryForStores = new Mock<IQueryHandler<GetStoresForRegionParameters, IList<StoreTransferObject>>>();
+			controller = new RegenerateEventsController(mockLogger.Object, mockQueryForStores.Object);
         }
 
         [TestMethod]
@@ -48,7 +54,7 @@ namespace WebSupport.Tests.Controllers
 
             // Assert
             var viewModelResult = (RegenerateEventViewModel)((ViewResult)result).Model;
-            Assert.AreEqual(expectedRegions.Length, viewModelResult.Regions.Length);
+            Assert.AreEqual(expectedRegions.Length + 1, viewModelResult.OptionsForRegion.Count());
         }
 
         [TestMethod]
@@ -69,18 +75,20 @@ namespace WebSupport.Tests.Controllers
         public void RequeueEventsController_Index_Get_ShouldGetOneRecord()
         {
             //Given
-            var view = GetViewModel();
+            var view = Get2000ViewModel();
 
-            var context = new Mock<ControllerContext>();
+			var region = StaticData.WholeFoodsRegions.ElementAt(view.RegionIndex);
+
+			var context = new Mock<ControllerContext>();
             var value = new NameValueCollection { ["ActionGet"] = String.Empty };
             context.Setup(x => x.HttpContext.Request.Form).Returns(value);
             this.controller.ControllerContext = context.Object;
 
             //Act
             SqlTransaction trans;
-            var sql = "INSERT into dbo.ItemHistory(Store_No, Item_Key, DateStamp, CreatedBy, SubTeam_No, Adjustment_ID) VALUES(809,33516,'2000-01-01',160,905,1)";
+            var sql = "INSERT into dbo.ItemHistory(Store_No, Item_Key, DateStamp, CreatedBy, SubTeam_No, Adjustment_ID) VALUES(809,33516,'2000-01-01 11:10:23',160,905,1)";
 
-            using(var con = new SqlConnection(ConfigurationManager.ConnectionStrings[$"IRMA_{view.Region}"].ConnectionString))
+            using(var con = new SqlConnection(ConfigurationManager.ConnectionStrings[$"IRMA_{region}"].ConnectionString))
             {
                 con.Open();
                 trans = con.BeginTransaction();
@@ -102,7 +110,7 @@ namespace WebSupport.Tests.Controllers
             }
 
             //Assert
-            Assert.AreEqual(view.ResultTable.Rows.Count, 1);
+            Assert.AreEqual(1, view.ResultTable.Rows.Count);
         }
 
         [TestMethod]
@@ -110,13 +118,14 @@ namespace WebSupport.Tests.Controllers
         {
             //Given
             int id = 0;
-            var view = GetViewModel();
+            var view = Get1990ViewModel();
+			var region = StaticData.WholeFoodsRegions.ElementAt(view.RegionIndex);
 
-            //Act
-            var sql = @"INSERT INTO dbo.ItemHistory(Store_No, Item_Key, DateStamp, CreatedBy, SubTeam_No, Adjustment_ID) VALUES(809,33516,'2000-01-01',160,905,1);
+			//Act
+			var sql = @"INSERT INTO dbo.ItemHistory(Store_No, Item_Key, DateStamp, CreatedBy, SubTeam_No, Adjustment_ID) VALUES(809,33516,'1990-01-01 15:11:23',160,905,1);
                         SELECT SCOPE_IDENTITY()";
 
-            using(var con = new SqlConnection(ConfigurationManager.ConnectionStrings[$"IRMA_{view.Region}"].ConnectionString))
+            using(var con = new SqlConnection(ConfigurationManager.ConnectionStrings[$"IRMA_{region}"].ConnectionString))
             {
                 con.Open();
 
@@ -134,7 +143,7 @@ namespace WebSupport.Tests.Controllers
                 this.controller.ControllerContext = context.Object;
                 controller.Index(view);
 
-                cmd.CommandText = $"DELETE FROM dbo.ItemHistory WHERE ItemHistoryID = {id.ToString()} and DateStamp = '{view.DateFrom}'; DELETE FROM amz.InventoryQueue WHERE KeyID = '{id.ToString()}' AND EventTypeCode = '{view.EventType}';";
+                cmd.CommandText = $"DELETE FROM dbo.ItemHistory WHERE ItemHistoryID = {id.ToString()} and DateStamp = '{view.StartDatetime}'; DELETE FROM amz.InventoryQueue WHERE KeyID = '{id.ToString()}' AND EventTypeCode = '{view.EventType}';";
                 cmd.ExecuteNonQuery();
             }
 
@@ -142,15 +151,28 @@ namespace WebSupport.Tests.Controllers
             Assert.AreEqual(this.controller.ViewData["FYI"], $"Event code {view.EventType}: 1 events have been submitted.");
         }
 
-        RegenerateEventViewModel GetViewModel()
+        RegenerateEventViewModel Get2000ViewModel()
         {
             return new RegenerateEventViewModel()
             {
-                Region = "FL",
+                RegionIndex = 1,
                 EventType = "INV_ADJ",
-                DateFrom = new DateTime(2000, 1, 1),
-                DateTo = new DateTime(2000, 1, 1)
+				StoreIndex = 0,
+				StartDatetime = new DateTime(2000, 1, 1),
+				EndDatetime = new DateTime(2000, 1, 2)
             };
         }
-    }
+
+		RegenerateEventViewModel Get1990ViewModel()
+		{
+			return new RegenerateEventViewModel()
+			{
+				RegionIndex = 1,
+				EventType = "INV_ADJ",
+				StoreIndex = 0,
+				StartDatetime = new DateTime(1990, 1, 1),
+				EndDatetime = new DateTime(1990, 1, 2)
+			};
+		}
+	}
 }

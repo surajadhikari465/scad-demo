@@ -43,6 +43,7 @@ namespace WebSupport.DataAccess
         using(var cmd = new SqlCommand(spName, connection) { CommandType = cmdType })
         using(var adapter = new SqlDataAdapter(cmd))
         {
+		  cmd.CommandTimeout = 60000;
           if(parameters != null && parameters.Where(x => x != null).Any())
             cmd.Parameters.AddRange(parameters.Where(x => x != null).ToArray());
          

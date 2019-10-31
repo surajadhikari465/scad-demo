@@ -217,7 +217,7 @@
     var getStoresErrorCallback = function (xhr, textStatus, errorThrown) {
         responseHTML = $.parseHTML(xhr.responseText);
 
-        var errorInfo = "Error attempting to load store data for region.\n"
+    var errorInfo = "Error attempting to load store data for region.\n"
             + "url: \"@(Url.Action("Stores", "MessageExport"))\"\n"
             + "data: \"" + $("#RegionIndex :selected").text() + "\" (" + $("#RegionIndex").val() + ")\n"
             + "call state: \"" + xhr.state() + "\".\n"
