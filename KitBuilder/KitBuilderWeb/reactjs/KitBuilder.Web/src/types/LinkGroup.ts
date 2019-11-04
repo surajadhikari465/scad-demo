@@ -4,6 +4,7 @@ export interface Item {
     itemId: number,
     scanCode: string,
     productDesc: string,
+    posDesc: string,
     brandName: string,
 }
 
@@ -21,6 +22,7 @@ export interface LinkGroup {
     groupDescription: string,
     itemScanCode: number | void,
     itemDescription: string | void,
+    itemPosDesc: string | void,
     insertDateUtc: string,
     linkGroupItemDto: Array<LinkGroupItem>,
 }

@@ -424,6 +424,7 @@ namespace KitBuilderWebApi.Controllers
                                        {
                                            ScanCode = i.ScanCode,
                                            ProductDesc = i.ProductDesc,
+										   PosDesc = i.PosDesc,
                                            CustomerFriendlyDesc = i.CustomerFriendlyDesc
                                        }
                                    };

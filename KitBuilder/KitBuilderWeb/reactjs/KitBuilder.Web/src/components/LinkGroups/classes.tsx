@@ -4,6 +4,7 @@ export class linkGroupItem {
     itemId: number
     scanCode: string
     productDesc: string
+    posDesc: string
 }
 
 export class linkGroupItemDto {

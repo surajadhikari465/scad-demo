@@ -39,6 +39,7 @@ namespace KitBuilderWebApi.Controllers
                                             ProductDesc = l.ProductDesc,
                                             CustomerFriendlyDesc = l.CustomerFriendlyDesc,
                                             KitchenDesc = l.KitchenDesc,
+											PosDesc = l.PosDesc,
                                             BrandName = l.BrandName,
                                             ImageUrl = l.ImageUrl,
                                             InsertDateUtc = l.InsertDateUtc

@@ -107,12 +107,12 @@ class AddMainItemDialog extends React.PureComponent<IKitItemAddModelProps, IKitI
             </Grid>
 
             <Grid container justify="center" style={ModalStyle}>
-              <Grid item md={10}>
+              <Grid item md={12}>
                 <KitItemAddModalLabelSearchBox
                   onSearch={this.handleSearch}
                 />
               </Grid>
-                <Grid item md={10}>
+                <Grid item md={12}>
                   <KitItemAddModalDisplay
                     data={this.state.searchResults}
                     onSelected={this.props.onMainItemSelected}

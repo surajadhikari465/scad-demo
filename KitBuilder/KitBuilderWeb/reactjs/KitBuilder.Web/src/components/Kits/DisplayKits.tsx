@@ -53,6 +53,15 @@ function DisplayKits(props: any) {
                     },
                     {
                         Header: () => (
+                            <div style={{ textAlign: "center" }}>POS Description</div>
+                          ),
+                        accessor: "item.posDesc",
+                        Cell: row => (
+                            <div style={{ textAlign: "center" }}>{row.value}</div>
+                          )
+                    },
+                    {
+                        Header: () => (
                             <div style={{
                                 textAlign: "center"
                             }}>

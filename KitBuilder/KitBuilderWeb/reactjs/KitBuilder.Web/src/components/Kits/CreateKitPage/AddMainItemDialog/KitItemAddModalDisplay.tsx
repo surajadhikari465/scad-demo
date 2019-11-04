@@ -28,6 +28,13 @@ function KitItemAddModalDisplay(props: any) {
                       ),
                 },
                 {
+                    Header: "POS Description",
+                    accessor: "posDesc",
+                    Cell: row => (
+                        <div style={{ textAlign: "center" }}>{row.value}</div>
+                      ),
+                },
+                {
                     Header: "Scan Code",
                     accessor: "scanCode",
                     Cell: row => (
