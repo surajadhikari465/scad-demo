@@ -21,5 +21,6 @@
     <BlockOnPossibleDataLoss>True</BlockOnPossibleDataLoss>
     <DisableAndReenableDdlTriggers>False</DisableAndReenableDdlTriggers>
     <ScriptDatabaseOptions>False</ScriptDatabaseOptions>
+    <ExcludeLogins>True</ExcludeLogins>
   </PropertyGroup>
 </Project>
