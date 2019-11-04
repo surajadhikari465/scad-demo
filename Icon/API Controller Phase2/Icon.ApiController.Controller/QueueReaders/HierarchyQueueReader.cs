@@ -136,7 +136,8 @@ namespace Icon.ApiController.Controller.QueueReaders
                         parentId = new Contracts.hierarchyParentClassType { Value = message.HierarchyParentClassId ?? 0 }
                     };
 
-                    miniBulkEntry.traits = BuildTraits(message);
+                    var traits = BuildTraits(message);
+                    miniBulkEntry.traits = traits.Any() ? traits : null;
 
                     miniBulk.@class[currentMiniBulkIndex++] = miniBulkEntry;
                 }

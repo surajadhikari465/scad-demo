@@ -1,10 +1,8 @@
 ﻿using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.DataAccess.Commands;
-
 using Icon.ApiController.DataAccess.Queries;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
-using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Framework;
 using Icon.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -239,7 +237,7 @@ namespace Icon.ApiController.Tests.QueueReaders
             var miniBulk = queueReader.BuildMiniBulk(new List<MessageQueueHierarchy> { fakeMessageQueueHierarchies });
 
             // Then.
-            Assert.AreEqual(0, miniBulk.@class[0].traits.Length);
+            Assert.IsNull(miniBulk.@class[0].traits);
         }
     }
 }
