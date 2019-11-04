@@ -127,6 +127,7 @@
     <Build Include="dbo\Stored Procedures\GetUnprocessedKitEvents.sql" />
     <Build Include="app\Tables\AppLog.sql" />
     <Build Include="app\Tables\App.sql" />
+    <None Include="Scripts\DeleteDataFromTables.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="KitBuilder.DB.refactorlog" />
