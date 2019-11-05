@@ -23,10 +23,8 @@ BEGIN
           @po_cre VARCHAR(12) = 'PO_CRE',             --Purchase Order Creation
           @po_del VARCHAR(12) = 'PO_DEL',             --Purchase Order Deletion
           @po_mod varchar(12) = 'PO_MOD',             --Purchase Order Modification
-          @po_line_del VARCHAR(12) = 'PO_LINE_DEL',   --Purchase Order Line Item Deletion
           @tsf_cre VARCHAR(12) = 'TSF_CRE',           --Transfer Order Creation
-          @tsf_del VARCHAR(12) = 'TSF_DEL',           --Transfer Order Deletion
-          @tsf_line_del varchar(12) = 'TSF_LINE_DEL'; --Transfer Line Item Deletion
+          @tsf_del VARCHAR(12) = 'TSF_DEL';           --Transfer Order Deletion
          
   IF(@eventCode = @inv_adj) --Inventory Adjustment
   BEGIN
@@ -110,40 +108,9 @@ BEGIN
     RETURN;
   END
   
-  
-  IF(@eventCode = @po_line_del) --Purchase Order Line Item Deletion
-  BEGIN
-    SELECT TOP(@maxRecords) B.OrderHeader_ID ID, A.DeletedOrderItem_ID LineItem_ID, C.BusinessUnit_ID Store_BU, C.Store_Name, A.InsertDate [Delete_Date], A.Item_Key
-    FROM amz.DeletedOrderItem A
-    JOIN OrderHeader B on A.OrderHeader_ID = B.OrderHeader_ID
-    JOIN Vendor V on B.ReceiveLocation_ID = V.Vendor_ID
-	JOIN Store C on V.Store_no = C.Store_No
-    WHERE A.OrderType_ID <> 3
-      AND (@dateFrom IS NULL OR A.InsertDate >= @dateFrom) 
-      AND (@dateTo IS NULL OR A.InsertDate <= @dateTo)
-      AND C.BusinessUnit_ID = ISNULL(@StoreBU, C.BusinessUnit_ID)
-    RETURN;
-  END
-  
-  
-  IF(@eventCode = @tsf_line_del) --Transfer Line Item Deletion
-  BEGIN
-    SELECT TOP(@maxRecords) B.OrderHeader_ID ID, A.DeletedOrderItem_ID LineItem_ID, C.BusinessUnit_ID Store_BU, C.Store_Name, A.InsertDate [Delete_Date], A.Item_Key
-    FROM amz.DeletedOrderItem A
-    JOIN OrderHeader B on A.OrderHeader_ID = B.OrderHeader_ID
-    JOIN Vendor V on B.ReceiveLocation_ID = V.Vendor_ID
-	JOIN Store C on V.Store_no = C.Store_No
-    WHERE A.OrderType_ID = 3
-      AND (@dateFrom IS NULL OR A.InsertDate >= @dateFrom) 
-      AND (@dateTo IS NULL OR A.InsertDate <= @dateTo)
-      AND C.BusinessUnit_ID = ISNULL(@StoreBU, C.BusinessUnit_ID)
-    RETURN;
-  END
-  
-  
   IF(@eventCode = @po_del) --Purchase Order Deletion
   BEGIN
-    SELECT TOP(@maxRecords) A.DeletedOrder_ID ID,  A.DeleteDate
+    SELECT TOP(@maxRecords) A.OrderHeader_ID ID,  A.DeleteDate
     FROM dbo.DeletedOrder A
 	JOIN Vendor V on A.ReceiveLocation_ID = V.Vendor_ID
 	JOIN Store C on V.Store_no = C.Store_No
@@ -158,7 +125,7 @@ BEGIN
   
   IF(@eventCode = @tsf_del) --Transfer Order Deletion
   BEGIN
-    SELECT TOP(@maxRecords) DeletedOrder_ID ID, DeleteDate
+    SELECT TOP(@maxRecords) A.OrderHeader_ID ID, DeleteDate
     FROM dbo.DeletedOrder A
 	JOIN Vendor V on A.ReceiveLocation_ID = V.Vendor_ID
 	JOIN Store C on V.Store_no = C.Store_No

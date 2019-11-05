@@ -12,10 +12,8 @@ BEGIN
           @po_cre VARCHAR(12) = 'PO_CRE',             --Purchase Order Creation
           @po_del VARCHAR(12) = 'PO_DEL',             --Purchase Order Deletion
           @po_mod varchar(12) = 'PO_MOD',             --Purchase Order Modification
-          @po_line_del VARCHAR(12) = 'PO_LINE_DEL',   --Purchase Order Line Item Deletion
           @tsf_cre VARCHAR(12) = 'TSF_CRE',           --Transfer Order Creation
-          @tsf_del VARCHAR(12) = 'TSF_DEL',           --Transfer Order Deletion
-          @tsf_line_del varchar(12) = 'TSF_LINE_DEL'; --Transfer Line Item Deletion
+          @tsf_del VARCHAR(12) = 'TSF_DEL';           --Transfer Order Deletion
          
   IF(Not Exists(select 1 from @IDs)) RETURN;
   
@@ -71,33 +69,6 @@ BEGIN
     INSERT INTO amz.ReceiptQueue(EventTypeCode, MessageType, KeyID)
       SELECT @eventCode, 'ReceiptMessage', ID AS OrderHeader_ID
       FROM #IDs 
-  
-    SELECT @@ROWCOUNT;
-    RETURN;
-  END
-  
-  
-  IF(@eventCode = @po_line_del) --Purchase Order Line Item Deletion
-  BEGIN
-    INSERT INTO amz.OrderQueue (EventTypeCode, MessageType, KeyID, SecondaryKeyID)
-  		SELECT @eventCode,'PurchaseLineDelete', A.OrderHeader_ID, A.OrderItem_ID
-  		FROM amz.DeletedOrderItem A
-  		INNER JOIN #IDs B ON B.ID = A.DeletedOrderItem_ID
-      WHERE A.OrderType_ID <> 3;
-  
-    SELECT @@ROWCOUNT;
-    RETURN;
-  END
-  
-  
-  IF(@eventCode = @tsf_line_del) ----Transfer Line Item Deletion
-  BEGIN
-    INSERT INTO amz.TransferQueue(EventTypeCode, MessageType, KeyID, SecondaryKeyID)
-  		SELECT @eventCode, 'TransferLineDelete', A.OrderHeader_ID, A.OrderItem_ID
-  		FROM amz.DeletedOrderItem A
-  		INNER JOIN #IDs B ON B.ID = A.DeletedOrderItem_ID
-  		WHERE A.OrderType_ID = 3
-      ORDER BY A.DeletedOrderItem_ID;
   
     SELECT @@ROWCOUNT;
     RETURN;

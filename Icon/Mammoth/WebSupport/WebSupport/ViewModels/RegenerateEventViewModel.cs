@@ -56,7 +56,8 @@ namespace WebSupport.ViewModels
 			}
 
             Events = QueueEventTypes.Events.OrderBy(x => x.Value)
-                .Select((x, i) => new SelectListItem { Text = x.Value, Value = x.Key .ToString(), Selected = (i == 0) })
+				.Where(x => !x.Value.Contains("Line Item Deletion"))
+				.Select((x, i) => new SelectListItem { Text = x.Value, Value = x.Key .ToString(), Selected = (i == 0) })
                 .OrderBy(x => x.Text).ToArray();
         }
 

@@ -88,8 +88,8 @@ namespace WebSupport.Controllers
 													new SqlParameter[]{ new SqlParameter("@eventCode", view.EventType),
 																	new SqlParameter("@maxRecords", maxRecords),
 																	storeBusinessUnit <= 0 ? null : new SqlParameter("@storeBU", storeBusinessUnit),
-																	new SqlParameter("@dateFrom", SqlDbType.Date) { Value = view.StartDatetime },
-																	new SqlParameter("@dateTo", SqlDbType.Date) { Value = view.EndDatetime }});
+																	new SqlParameter("@dateFrom", SqlDbType.DateTime) { Value = view.StartDatetime },
+																	new SqlParameter("@dateTo", SqlDbType.DateTime) { Value = view.EndDatetime }});
 
 					view.ResultTable = dataSet.Tables.Count == 0 ? null : dataSet.Tables[0];
 				}
