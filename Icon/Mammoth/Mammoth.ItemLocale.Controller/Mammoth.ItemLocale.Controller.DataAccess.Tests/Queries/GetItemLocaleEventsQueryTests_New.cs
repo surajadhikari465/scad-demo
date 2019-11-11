@@ -68,7 +68,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             dbProvider.Transaction.Rollback();
             dbProvider.Transaction.Dispose();
             dbProvider.Connection.Dispose();
-        }  
+        }
 
         public ItemLocaleEventQueryTestParameters BuildTestParameters(
             DbDataCollectionForItemLocaleEventTesting existingDbData,
@@ -96,7 +96,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             {
                 // create expected store params from existing store
                 expectedStoreData = new ItemLocaleEventQueryTestParameters_Store(region, store);
-              }
+            }
 
             return BuildTestParametersSpecifyStore(
                 expectedStoreData,
@@ -186,7 +186,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 testParameters.ScaleParams = scaleParameters ?? BuildScaleParameters();
             }
 
-            if (useAltJurisdiction && itemOverrideParams !=  null)
+            if (useAltJurisdiction && itemOverrideParams != null)
             {
                 testParameters.ItemOverrideParams = itemOverrideParams;
             }
@@ -437,9 +437,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var actual = query.Search(parameters).First();
 
             //Then
-            Assert.AreEqual(testParameters.RetailUnitName, actual.RetailUnit, UnequalMsg(nameof(actual.RetailUnit)));
             Assert.AreEqual(expectedExtraTextOverride, actual.ScaleExtraText, UnequalMsg(nameof(actual.ScaleExtraText)));
-            AssertQueryResultsMatchExpected_All(testParameters, actual);
         }
 
         [TestMethod]
@@ -478,9 +476,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var actual = query.Search(parameters).First();
 
             //Then
-            Assert.AreEqual(testParameters.RetailUnitName, actual.RetailUnit, UnequalMsg(nameof(actual.RetailUnit)));
             Assert.AreEqual(expectedExtraTextOverride, actual.ScaleExtraText, UnequalMsg(nameof(actual.ScaleExtraText)));
-            AssertQueryResultsMatchExpected_All(testParameters, actual);
         }
 
         [TestMethod]
@@ -738,7 +734,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 expectedEventType);
             // update expected data with inserted ids
             testParameters.SetExpectedDbValues_ForItemKeyAndQueueIdAndEventType(insertedItemKey, insertedQueueId, expectedEventType);
-            
+
             //When
             var actual = query.Search(parameters).First();
 
@@ -1208,7 +1204,9 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var itemOverrideParams = BuildItemOverrideParameters(
                 testSupportData.AltJurisdictionId,
                 expectedAltRetailUOM,
-                expectedAltRetailSize);
+                expectedAltRetailSize,
+                altOrigin: "Sweden",
+                altCountryOfProcessing: "Canada");
             // gather some item-locale values including the specified overrides to use as test parameters
             var testParameters = BuildTestParameters(
                 existingDbData: testSupportData,
@@ -1237,44 +1235,6 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
 
             //Then
             AssertQueryResultsMatchExpected_ForItemOverrides(testParameters, actual);
-        }
-
-        [TestMethod]
-        public void GetItemLocaleEvents_AddUpdate_NonScaleItem_WithRetailUnitStoreOverride_ShouldReturnExpectedRetailUnit()
-        {
-            // Given
-            var expectedEventType = IrmaEventTypes.ItemLocaleAddOrUpdate;
-            // load some data from the db to assist with testing
-            var testSupportData = testDataManager.LoadExistingDataForTest();
-            // set parameters
-            var expectedIdentifier = "22222242";
-            var expectedStoreRetailUnitOverride = testSupportData.Unit_Oz_Name;
-            // gather some item-locale values including the specified overrides to use as test parameters
-            var testParameters = BuildTestParameters(
-                existingDbData: testSupportData,
-                identifier: expectedIdentifier,
-                isScaleItem: false,
-                isRetailItem: true,
-                useAltJurisdiction: true);
-            testParameters.RetailUnitStoreOverride = expectedStoreRetailUnitOverride;
-
-            // insert item-locale data to match the test parameters
-            var insertedItemKey = testDataManager.InsertTestData(testSupportData, testParameters.StoreParams.Store_No, testParameters);
-            // put a message on the queue 
-            var insertedQueueId = testDataManager.InsertToItemLocaleChangeQueue(
-                insertedItemKey,
-                testParameters.StoreParams.Store_No,
-                expectedIdentifier,
-                this.parameters.Instance,
-                expectedEventType);
-            // update expected data with inserted ids
-            testParameters.SetExpectedDbValues_ForItemKeyAndQueueIdAndEventType(insertedItemKey, insertedQueueId, expectedEventType);
-
-            //When
-            var actual = query.Search(parameters).First();
-
-            //Then
-            Assert.AreEqual(expectedStoreRetailUnitOverride, actual.RetailUnit, UnequalMsg(nameof(actual.RetailUnit)));
         }
 
         [TestMethod]
@@ -1394,7 +1354,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
         }
 
         [TestMethod]
-        public void GetItemLocaleEvents_AddUpdate_ScaleItem_WithRetailUnitStoreOverride_ShouldReturnExpectedRetailUnit()
+        public void GetItemLocaleEvents_AddUpdate_ScaleItem_WithRetailUnitStoreOverride_ShoulRetundNull()
         {
             // Given 
             var expectedEventType = IrmaEventTypes.ItemLocaleAddOrUpdate;
@@ -1428,7 +1388,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var actual = query.Search(parameters).First();
 
             //Then
-            Assert.AreEqual(expectedStoreRetailUnitOverride, actual.RetailUnit, UnequalMsg(nameof(actual.RetailUnit)));
+            Assert.IsNull(actual.RetailUnit, $"{nameof(actual.RetailUnit)} should be null");
         }
 
         [TestMethod]
@@ -1445,7 +1405,9 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             var itemOverrideParams = BuildItemOverrideParameters(
                 testSupportData.AltJurisdictionId,
                 expectedAltRetailUOM,
-                expectedAltRetailSize);
+                expectedAltRetailSize,
+                altOrigin: "United States",
+                altCountryOfProcessing: "Canada");
             // gather some item-locale values including the specified overrides to use as test parameters
             var testParameters = BuildTestParameters(
                 existingDbData: testSupportData,
@@ -2024,11 +1986,16 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                 expected.StoreParams.BusinessUnit,
                 actual);
             AssertQueryResultsMatchExpected_AllExceptStore(expected, actual);
-        } 
+        }
 
         public string UnequalMsg(string propertyName)
         {
-            return $"The expected \"{propertyName}\" value did not match the actual .";
+            return $"The expected \"{propertyName}\" value did not match the actual.";
+        }
+
+        public string EqualMsg(string propertyName)
+        {
+            return $"The expected \"{propertyName}\" value match actual.";
         }
 
         public string ExpectedNullMsg(string propertyName, object value)

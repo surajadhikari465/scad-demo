@@ -86,7 +86,7 @@
                 + " FROM " + table
                 + " WHERE " + descriptionColumn + " = " + "@Value";
 
-            var id = dbProvider.Connection.Query<TResult>(sql, new { Value = value }, dbProvider.Transaction).First();
+            var id = dbProvider.Connection.Query<TResult>(sql, new { Value = value }, dbProvider.Transaction).FirstOrDefault();
 
             return id;
         }

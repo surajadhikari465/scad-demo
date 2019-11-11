@@ -19,11 +19,20 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Queries
         public List<ItemLocaleEventModel> Search(GetItemLocaleDataParameters parameters)
         {
             // This query will get all events regardless of whether the Store_No IS NULL or not.
+
+            /* PBI 24859
+             Default Jurisdiction data is not sent to Alternate Jurisdiction Stores
+             Alternate Jurisdiction data is not sent to Default Jurisdiction stores
+
+             If passing item locale data for an alt jurisdiction store and the item has override data then pass the override data. If it does not have override data then pass null.
+             If passing item locale data for a default jurisdiction store only send the default jurisdiction data. Do not send the override data for default jurisdiction stores.
+            */
             List<ItemLocaleEventModel> itemLocaleData = new List<ItemLocaleEventModel>();
             DateTime today = DateTime.Today;
             string sql = $@" SET TRANSACTION ISOLATION LEVEL SNAPSHOT;
 
-DECLARE @ExcludedStoreNo VARCHAR(250);
+DECLARE @ExcludedStoreNo VARCHAR(250),
+        @defaultJuristictionId INT = (SELECT StoreJurisdictionID from StoreJurisdiction WHERE StoreJurisdictionDesc = 'US');
 
 SET @ExcludedStoreNo = (
 		SELECT dbo.fn_GetAppConfigValue('LabAndClosedStoreNo', 'IRMA Client')
@@ -50,7 +59,10 @@ SELECT q.QueueID AS QueueId
 	,p.IBM_Discount AS CaseDiscount
 	,sa.UomRegulationChicagoBaby AS ChicagoBaby
 	,sa.ColorAdded AS ColorAdded
-	,COALESCE(ivc.Origin_Name, co.Origin_Name) AS CountryOfProcessing
+  ,CASE WHEN IsNull(s.StoreJurisdictionID, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN ivc.Origin_Name --Alternate
+    ELSE co.Origin_Name  --Default 
+    END AS CountryOfProcessing
 	,siv.DiscontinueItem AS Discontinued
 	,p.ElectronicShelfTag AS ElectronicShelfTag
 	,sa.Exclusive AS Exclusive
@@ -59,23 +71,47 @@ SELECT q.QueueID AS QueueId
 	,p.LocalItem AS LocalItem
 	,sa.Locality AS Locality
 	,CASE WHEN s.Mega_Store = 1 AND IsNull(icf.SendToScale, 0) = 1 THEN LEN(ii.identifier) ELSE ii.NumPluDigitsSentToScale END AS NumberOfDigitsSentToScale
-	,COALESCE(ovo.Origin_Name, oo.Origin_Name) AS Origin
+  ,CASE WHEN IsNull(s.StoreJurisdictionID, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN ovo.Origin_Name --Alternate only.
+    ELSE oo.Origin_Name  --Default. Do not send the override data for default jurisdiction stores
+    END AS Origin
 	,i.Product_Code AS ProductCode
 	,p.Restricted_Hours AS RestrictedHours
-	,COALESCE(uiu.Unit_Name, ovu.Unit_Name, iu.Unit_Name) AS RetailUnit
-	,CASE WHEN IsNull(ii.Scale_Identifier, 0) = 1 
-        THEN COALESCE(soe.ExtraText, sce.ExtraText) 
-        ELSE COALESCE(ieto.ExtraText, iet.ExtraText) END AS ScaleExtraText
-	,COALESCE(iov.SignRomanceTextLong, sa.SignRomanceTextLong) AS SignRomanceLong
-	,COALESCE(iov.SignRomanceTextShort, sa.SignRomanceTextShort) AS SignRomanceShort
-	,COALESCE(iov.Sign_Description, i.Sign_Description) AS SignDescription
+  ,CASE WHEN IsNull(s.StoreJurisdictionID, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN ovu.Unit_Name --Alternate only.
+    ELSE iu.Unit_Name  --Default. Do not send the override data (ovu.Unit_Name) for default jurisdiction stores.
+    END AS RetailUnit
+  ,CASE WHEN IsNull(ii.Scale_Identifier, 0) = 1
+    THEN CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
+         THEN soe.ExtraText --Alternate only.
+         ELSE sce.ExtraText --Default. Do not send the override data for default jurisdiction stores
+         END
+    ELSE COALESCE(ieto.ExtraText, iet.ExtraText) END AS ScaleExtraText
+  ,CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN iov.SignRomanceTextLong --Alternate. Override data only.
+    ELSE sa.SignRomanceTextLong  --Default. Do not send the override data for default jurisdiction stores.
+    END AS SignRomanceLong
+  ,CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN iov.SignRomanceTextShort --Alternate. Override data only.
+    ELSE sa.SignRomanceTextShort  --Default. Do not send the override data for default jurisdiction stores.
+    END AS SignRomanceShort
+  ,CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN iov.Sign_Description --Alternate. Override data only.
+    ELSE i.Sign_Description   --Default. Do not send the override data for default jurisdiction stores.
+    END AS SignDescription
 	,sa.UomRegulationTagUom AS TagUom
 	,p.Discountable AS TmDiscount
 	,p.MSRPPrice AS Msrp
 	,sie.OrderedByInfor AS OrderedByInfor
-    ,iov.Package_Desc2 AS AltRetailSize
-    ,ovu2.Unit_Abbreviation AS AltRetailUOM
-    ,CAST(ii.Default_Identifier AS BIT) AS DefaultScanCode
+  ,CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN iov.Package_Desc2 --Alternate. Override data only.
+    ELSE NULL              --Default. Do not send the override data for default jurisdiction stores.
+    END AS AltRetailSize
+  ,CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN ovu2.Unit_Abbreviation --Alternate. Override data only.
+    ELSE NULL                   --Default. Do not send the override data for default jurisdiction stores.
+    END AS AltRetailUOM
+  ,CAST(ii.Default_Identifier AS BIT) AS DefaultScanCode
 	,iv.Item_ID AS VendorItemId
 	,vch.Package_Desc1 AS VendorCaseSize
 	,v.Vendor_Key AS VendorKey
@@ -174,7 +210,10 @@ SELECT q.QueueID AS QueueId
 	,p.IBM_Discount AS CaseDiscount
 	,sa.UomRegulationChicagoBaby AS ChicagoBaby
 	,sa.ColorAdded AS ColorAdded
-	,COALESCE(ivc.Origin_Name, co.Origin_Name) AS CountryOfProcessing
+  ,CASE WHEN IsNull(s.StoreJurisdictionID, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN ivc.Origin_Name --Alternate
+    ELSE co.Origin_Name  --Default
+    END AS CountryOfProcessing
 	,siv.DiscontinueItem AS Discontinued
 	,p.ElectronicShelfTag AS ElectronicShelfTag
 	,sa.Exclusive AS Exclusive
@@ -183,23 +222,47 @@ SELECT q.QueueID AS QueueId
 	,p.LocalItem AS LocalItem
 	,sa.Locality AS Locality
 	,CASE WHEN s.Mega_Store = 1 AND IsNull(icf.SendToScale, -1) = 1 THEN LEN(ii.identifier) ELSE ii.NumPluDigitsSentToScale END AS NumberOfDigitsSentToScale
-	,COALESCE(ovo.Origin_Name, oo.Origin_Name) AS Origin
+  ,CASE WHEN IsNull(s.StoreJurisdictionID, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN ovo.Origin_Name --Alternate
+    ELSE oo.Origin_Name  --Default
+    END AS Origin
 	,i.Product_Code AS ProductCode
 	,p.Restricted_Hours AS RestrictedHours
-	,COALESCE(uiu.Unit_Name, ovu.Unit_Name, iu.Unit_Name) AS RetailUnit
-	,CASE WHEN IsNull(ii.Scale_Identifier, 0) = 1 
-        THEN COALESCE(soe.ExtraText, sce.ExtraText) 
-        ELSE COALESCE(ieto.ExtraText, iet.ExtraText) END AS ScaleExtraText
-	,COALESCE(iov.SignRomanceTextLong, sa.SignRomanceTextLong) AS SignRomanceLong
-	,COALESCE(iov.SignRomanceTextShort, sa.SignRomanceTextShort) AS SignRomanceShort
-	,COALESCE(iov.Sign_Description, i.Sign_Description) AS SignDescription
+  ,CASE WHEN IsNull(s.StoreJurisdictionID, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN ovu.Unit_Name --Alternate
+    ELSE iu.Unit_Name --Default. Do not send the override data for default (ovu.Unit_Name) jurisdiction stores.
+    END AS RetailUnit
+  ,CASE WHEN IsNull(ii.Scale_Identifier, 0) = 1
+    THEN CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
+         THEN soe.ExtraText --Alternate
+         ELSE sce.ExtraText --Default
+         END
+    ELSE COALESCE(ieto.ExtraText, iet.ExtraText) END AS ScaleExtraText
+  ,CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN iov.SignRomanceTextLong --Alternate. Override data only.
+    ELSE sa.SignRomanceTextLong  --Default. Do not send the override data for default jurisdiction stores.
+    END AS SignRomanceLong
+  ,CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN iov.SignRomanceTextShort --Alternate. Override data only.
+    ELSE sa.SignRomanceTextShort  --Default. Do not send the override data for default jurisdiction stores.
+    END AS SignRomanceShort
+  ,CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN iov.Sign_Description --Alternate. Override data only.
+    ELSE i.Sign_Description   --Default. Do not send the override data for default jurisdiction stores.
+    END AS SignDescription
 	,sa.UomRegulationTagUom AS TagUom
 	,p.Discountable AS TmDiscount
 	,p.MSRPPrice AS Msrp
 	,sie.OrderedByInfor AS OrderedByInfor
-    ,iov.Package_Desc2 AS AltRetailSize
-    ,ovu2.Unit_Abbreviation AS AltRetailUOM
-    ,CAST(ii.Default_Identifier AS BIT) AS DefaultScanCode
+  ,CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN iov.Package_Desc2 --Alternate. Override data only.
+    ELSE NULL              --Default. Do not send the override data for default jurisdiction stores.
+    END AS AltRetailSize
+  ,CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
+    THEN ovu2.Unit_Abbreviation --Alternate. Override data only.
+    ELSE NULL                   --Default. Do not send the override data for default jurisdiction stores.
+    END AS AltRetailUOM
+  ,CAST(ii.Default_Identifier AS BIT) AS DefaultScanCode
 	,iv.Item_ID AS VendorItemId
 	,vch.Package_Desc1 AS VendorCaseSize
 	,v.Vendor_Key AS VendorKey
@@ -217,7 +280,6 @@ SELECT q.QueueID AS QueueId
         THEN NULL 
         ELSE i.Item_Key 
     END as IrmaItemKey
-
 FROM [mammoth].[ItemLocaleChangeQueue] q
 INNER JOIN mammoth.ItemChangeEventType t ON q.EventTypeID = t.EventTypeID
 INNER JOIN Item i ON q.Item_Key = i.Item_Key

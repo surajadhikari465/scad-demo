@@ -1,16 +1,12 @@
 ﻿using Dapper;
 using Irma.Framework;
 using Irma.Testing;
-using Mammoth.Common.DataAccess;
 using Mammoth.Common.DataAccess.DbProviders;
-using Mammoth.ItemLocale.Controller.DataAccess.Queries;
 using Mammoth.ItemLocale.Controller.DataAccess.Tests.TestInfrastructure;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
 {
@@ -342,6 +338,11 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     altCountryOfProcessingId = GetOriginIdByName(overrideParams.AltCountryOfProcessingName);
                 }
 
+                if(!String.IsNullOrWhiteSpace(testParameters.RetailUnitStoreOverride))
+                {
+                   altRetailUnitId = this.dbProvider.GetLookupId<int>("Unit_ID", "ItemUnit", "Unit_Name", testParameters.RetailUnitStoreOverride); 
+                }
+
                 InsertItemOverride(insertedItemKey,
                     overrideParams.JurisdictionId.Value,
                     altItemDescription,
@@ -353,7 +354,9 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
                     altVendorUnitId,
                     altDistroUnitId,
                     altOriginId,
-                    altCountryOfProcessingId);
+                    altCountryOfProcessingId,
+                    testParameters.SignRomanceLong,
+                    testParameters.SignRomanceShort);
             }
 
             return insertedItemKey;
@@ -625,13 +628,19 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
 
         public int InsertNewStoreJurisdiction(string description = "Test", int currencyId = 1)
         {
-            var jurisdiction = IrmaTestObjectFactory.Build<StoreJurisdiction>()
-                .With(x => x.CurrencyID, currencyId)
-                .With(x => x.StoreJurisdictionDesc, description)
-                .ToObject();
-            var storeJurisdictionId = this.dbProvider.Insert(
-                new IrmaQueryParams<StoreJurisdiction, int>( jurisdiction, x => x.StoreJurisdictionID));
-            return storeJurisdictionId;
+            var storeJurisdictionId = this.dbProvider.GetLookupId<int?>("StoreJurisdictionID", "StoreJurisdiction", "StoreJurisdictionDesc", description);
+
+            if(storeJurisdictionId == null)
+            {
+                var jurisdiction = IrmaTestObjectFactory.Build<StoreJurisdiction>()
+                    .With(x => x.CurrencyID, currencyId)
+                    .With(x => x.StoreJurisdictionDesc, description)
+                    .ToObject();
+            
+                storeJurisdictionId = this.dbProvider.Insert(
+                    new IrmaQueryParams<StoreJurisdiction, int>( jurisdiction, x => x.StoreJurisdictionID));
+            }
+            return storeJurisdictionId ?? -1;
         }
 
         public void InsertNewStore(int storeNo, int? businessUnitId, int? jurisdictionID = 1,
@@ -833,38 +842,59 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
         /// <summary>
         /// ItemOverride has many non-nullable fields, so required params are required
         /// </summary>
-        public void InsertItemOverride(
-            int itemKey,
-            int altJurisdictionId,
-            string altItemDescription,
-            string altSignDescription,
-            decimal altPackageDesc1,
-            decimal altPackageDesc2,
-            int altPackageUnitId,
-            int altRetailUnitId,
-            int altVendorUnitId,
-            int altDistroUnitId,
-            int? altOriginId = null,
-            int? altCountryOfProcessingId = null)
+        public void InsertItemOverride(int itemKey,
+            int jurisdictionId,
+            string itemDesc,
+            string signDesc,
+            decimal packageDesc1,
+            decimal packageDesc2,
+            int packageUnitId,
+            int retailUnitId,
+            int vendorUnitId,
+            int distribUnitId,
+            int? originId = null,
+            int? countryProcId = null,
+            string signRomanceLong = null,
+            string signRomanceShort = null)
         {
-            var itemOverrideObj = IrmaTestObjectFactory.BuildItemOverride()
-                  .With(x => x.Item_Key, itemKey)
-                  .With(x => x.StoreJurisdictionID, altJurisdictionId)
-                  .With(x => x.Item_Description, altItemDescription)
-                  .With(x => x.Sign_Description, altSignDescription)
-                  .With(x => x.Package_Desc1, altPackageDesc1)
-                  .With(x => x.Package_Desc2, altPackageDesc2)
-                  .With(x => x.Package_Unit_ID, altPackageUnitId)
-                  .With(x => x.Retail_Unit_ID, altRetailUnitId)
-                  .With(x => x.Vendor_Unit_ID, altVendorUnitId)
-                  .With(x => x.Distribution_Unit_ID, altDistroUnitId)
-                  .With(x => x.Origin_ID, altOriginId)
-                  .With(x => x.CountryProc_ID, altCountryOfProcessingId)
-                  //.With(x => x.SignRomanceTextLong, altSignRomanceLong)
-                  //.With(x => x.SignRomanceTextShort, altSignRomanceShort)
-              .ToObject();
+            var idOrigin = originId == null ? "null" : originId.Value.ToString();
+            var idCountryProc = countryProcId == null ? "null" : countryProcId.Value.ToString();
+            var sql = $@"INSERT dbo.ItemOverride(
+                                Item_Key,
+                                StoreJurisdictionID,
+                                Item_Description,
+                                Sign_Description,
+                                Package_Desc1,
+                                Package_Desc2,
+                                Package_Unit_ID,
+                                Retail_Unit_ID,
+                                Vendor_Unit_ID,
+                                Distribution_Unit_ID,
+                                Origin_ID,
+                                CountryProc_ID,
+                                SignRomanceTextLong,
+                                SignRomanceTextShort,
+                                POS_Description,
+                                Average_Unit_Weight)
+                        VALUES(
+                                {itemKey},
+                                {jurisdictionId},
+                                '{itemDesc}',
+                                '{signDesc}',
+                                {packageDesc1},
+                                {packageDesc2},
+                                {packageUnitId},
+                                {retailUnitId},
+                                {vendorUnitId},
+                                {distribUnitId},
+                                {idOrigin},
+                                {idCountryProc},
+                                '{signRomanceLong}',
+                                '{signRomanceShort}',
+                                'Test Override POS_Des',
+                                1);";
 
-            this.dbProvider.Insert(itemOverrideObj);
+            this.dbProvider.Connection.Execute(@sql, null, dbProvider.Transaction);
         }
 
         public void InsertItemUomOverride(int storeNo, int itemKey, string altStoreRetailUnitName)
@@ -1122,92 +1152,6 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Tests.Queries
             )";
 
             this.dbProvider.Connection.Execute(@sql, queueList, dbProvider.Transaction);
-        }
-
-        public string GetSqlForExpectedData()
-        {
-            string sql = @" DECLARE @ExcludedStoreNo varchar(250);
-                            SET @ExcludedStoreNo = (SELECT dbo.fn_GetAppConfigValue('LabAndClosedStoreNo','IRMA Client'));
-
-                            SELECT
-	                            q.QueueID					as QueueId,
-                                q.EventTypeID				as EventTypeId,
-                                @Region                     as Region,
-	                            q.Identifier				as ScanCode,
-	                            s.BusinessUnit_ID			as BusinessUnitId,
-                                CASE
-		                            WHEN p.AgeCode = 1 THEN 18
-		                            WHEN p.AgeCode = 2 THEN 21
-		                            ELSE NULL
-	                            END							as AgeRestriction,
-                                CASE 
-                                    WHEN t.EventTypeName = 'ItemDelete' THEN 0
-		                            ELSE si.Authorized
-	                            END							as Authorized,
-	                            p.IBM_Discount				as CaseDiscount,
-	                            sa.UomRegulationChicagoBaby as ChicagoBaby,
-	                            sa.ColorAdded				as ColorAdded,
-	                            COALESCE(ivc.Origin_Name, co.Origin_Name)	as CountryOfProcessing,
-	                            siv.DiscontinueItem			as Discontinued,
-	                            p.ElectronicShelfTag		as ElectronicShelfTag,
-	                            sa.Exclusive				as Exclusive,
-	                            lt.LabelTypeDesc			as LabelTypeDescription,
-	                            p.LinkedItem				as LinkedItem,
-	                            p.LocalItem					as LocalItem,
-	                            sa.Locality					as Locality,
-                                ii.NumPluDigitsSentToScale  as NumberOfDigitsSentToScale,
-	                            COALESCE(ovo.Origin_Name, oo.Origin_Name)	as Origin,
-	                            i.Product_Code				as ProductCode,
-	                            p.Restricted_Hours			as RestrictedHours,
-	                            COALESCE(ovu.Unit_Name, iu.Unit_Name)		as RetailUnit,
-                                COALESCE(soe.ExtraText,sce.ExtraText)		as ScaleExtraText,
-	                            sa.SignRomanceTextLong		as SignRomanceLong,
-	                            sa.SignRomanceTextShort		as SignRomanceShort,
-	                            COALESCE(iov.Sign_Description, i.Sign_Description) as SignDescription,
-	                            sa.UomRegulationTagUom		as TagUom,
-	                            p.Discountable				as TmDiscount,
-                                p.MSRPPrice                 as Msrp
-                            FROM
-	                            [mammoth].[ItemLocaleChangeQueue]	q
-	                            INNER JOIN mammoth.ItemChangeEventType t on q.EventTypeID = t.EventTypeID
-	                            INNER JOIN Item						i	on	q.Item_Key	= i.Item_Key
-                                LEFT JOIN ItemIdentifier           ii  on  i.Item_Key  = ii.Item_Key
-                                                                        AND q.Identifier = ii.Identifier
-                                                                        AND ii.Deleted_Identifier = 0
-                                LEFT JOIN Store						s	on	((q.Store_No = s.Store_No)
-												                            OR (q.Store_No IS NULL))
-	                            LEFT JOIN StoreItemVendor			siv	on	i.Item_Key	= siv.Item_Key
-											                            AND s.Store_No = siv.Store_No
-											                            AND siv.PrimaryVendor = 1
-											                            AND siv.DeleteDate IS NULL
-	                            LEFT JOIN Price                     p   on  i.Item_Key = p.Item_Key
-                                                                        AND s.Store_No = p.Store_No
-	                            LEFT JOIN StoreItem				    si	on	s.Store_No	= si.Store_No
-											                            AND i.Item_Key	= si.Item_Key
-	                            LEFT JOIN ItemSignAttribute			sa	on	i.Item_Key	= sa.Item_Key
-	                            LEFT JOIN ItemOrigin				co	on	i.CountryProc_ID = co.Origin_ID                     -- country of processing
-	                            LEFT JOIN ItemOrigin				oo	on	i.Origin_ID = oo.Origin_ID		                    -- origin
-	                            LEFT JOIN LabelType					lt	on	i.LabelType_ID = lt.LabelType_ID
-	                            LEFT JOIN ItemScale					sc	on	i.Item_Key	= sc.Item_Key
-	                            LEFT JOIN Scale_ExtraText			sce	on	sc.Scale_ExtraText_ID = sce.Scale_ExtraText_ID      -- scale extra text
-	                            LEFT JOIN ItemOverride				iov	on	i.Item_Key	= iov.Item_Key
-											                            AND iov.StoreJurisdictionID = s.StoreJurisdictionID
-	                            LEFT JOIN ItemOrigin				ivc	on	iov.CountryProc_ID = ivc.Origin_ID	                -- alternate country of processing
-	                            LEFT JOIN ItemOrigin				ovo	on	iov.Origin_ID = ovo.Origin_ID		                -- alternate origin
-	                            LEFT JOIN ItemScaleOverride			iso	on	i.Item_Key	= iso.Item_Key
-											                            AND s.StoreJurisdictionID = iso.StoreJurisdictionID
-	                            LEFT JOIN Scale_ExtraText			soe	on	iso.Scale_ExtraText_ID = soe.Scale_ExtraText_ID     -- alternate scale extra text
-	                            LEFT JOIN ItemUnit					iu	on	i.Retail_Unit_ID	= iu.Unit_ID                    -- retail unit
-	                            LEFT JOIN ItemUnit					ovu	on	iov.Retail_Unit_ID	= ovu.Unit_ID                   -- alternate retail unit
-                            WHERE
-	                            q.InProcessBy = @JobInstance
-                                AND (s.WFM_Store = 1 OR s.Mega_Store = 1 )
-                                AND (Internal = 1 AND BusinessUnit_ID IS NOT NULL)
-                                AND s.Store_No NOT IN (SELECT Key_Value FROM dbo.fn_Parse_List(@ExcludedStoreNo, '|'))
-                            ORDER BY
-                                q.QueueID;";
-
-            return sql;
         }
     }
 }
