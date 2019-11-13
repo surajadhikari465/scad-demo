@@ -5280,33 +5280,38 @@ me_err:
 		Return returnVal
 	End Function
 
-	Public Sub RefreshSubteamCombo(ByVal cmbSubteam As ComboBox, ByRef unRestricted() As Boolean, ByVal isIncludeAllTeams As Boolean)
-		Dim index As Integer
-		Dim subTeams As List(Of SubTeamBO) = CType(cmbSubteam.Tag, List(Of SubTeamBO)) ' To avoid multiple DB calls LoadSubTeamByType() sets full data source in Tag when combo box is populated.
+    Public Sub RefreshSubteamCombo(ByVal cmbSubteam As ComboBox, ByRef unRestricted() As Boolean, ByVal isIncludeAllTeams As Boolean)
+        Dim index As Integer
+        Dim subTeams As List(Of SubTeamBO) = CType(cmbSubteam.Tag, List(Of SubTeamBO)) ' To avoid multiple DB calls LoadSubTeamByType() sets full data source in Tag when combo box is populated.
 
-		Dim selectedIndex = -1
-		Dim subTeamName As String = cmbSubteam.Text
-		cmbSubteam.DataSource = Nothing
-		cmbSubteam.Items.Clear()
-		If subTeams Is Nothing Then Exit Sub
+        Dim selectedIndex = -1
+        Dim subTeamName As String = cmbSubteam.Text
+        cmbSubteam.DataSource = Nothing
+        cmbSubteam.Items.Clear()
+        If subTeams Is Nothing Then Exit Sub
 
-		If Not isIncludeAllTeams Then
-			subTeams = subTeams.Where(Function(x) x.AlignedSubTeam OrElse Not x.IsDisabled).ToList()
-		End If
+        If Not isIncludeAllTeams Then
+            subTeams = subTeams.Where(Function(x) x.AlignedSubTeam OrElse Not x.IsDisabled).ToList()
+        End If
 
-		unRestricted = New Boolean(subTeams.Count) {}
+        unRestricted = New Boolean(subTeams.Count) {}
 
-		For Each item As SubTeamBO In subTeams
-			index = cmbSubteam.Items.Add(item.SubTeamName)
-			VB6.SetItemData(cmbSubteam, index, item.SubTeamNo)
-			unRestricted(index) = item.AlignedSubTeam
-			If (selectedIndex = -1 AndAlso String.Compare(subTeamName, item.SubTeamName, True) = 0) Then selectedIndex = index
-		Next
+        For Each item As SubTeamBO In subTeams
+            index = cmbSubteam.Items.Add(item.SubTeamName)
+            VB6.SetItemData(cmbSubteam, index, item.SubTeamNo)
+            unRestricted(index) = item.AlignedSubTeam
+            If (selectedIndex = -1 AndAlso String.Compare(subTeamName, item.SubTeamName, True) = 0) Then selectedIndex = index
+        Next
 
-		Try
-			cmbSubteam.SelectedIndex = selectedIndex
-		Catch ex As Exception
-			cmbSubteam.SelectedIndex = -1
-		End Try
-	End Sub
+        Try
+            cmbSubteam.SelectedIndex = selectedIndex
+        Catch ex As Exception
+            cmbSubteam.SelectedIndex = -1
+        End Try
+    End Sub
+
+    Public Sub SetUltraGridSelectionStyle(ByVal gridControl As UltraGrid)
+        gridControl.DisplayLayout.Override.ActiveRowAppearance.BackColor = Color.RoyalBlue
+        gridControl.DisplayLayout.Override.ActiveRowAppearance.ForeColor = Color.White
+    End Sub
 End Module

@@ -157,6 +157,7 @@ Friend Class frmOrdersSearch
             Me.AutoSearch_OrderHeaderId = Nothing
         End If
 
+        Global.SetUltraGridSelectionStyle(ugrdSearchResults)
         logger.Debug("frmOrdersSearch_Load Exit")
     End Sub
 

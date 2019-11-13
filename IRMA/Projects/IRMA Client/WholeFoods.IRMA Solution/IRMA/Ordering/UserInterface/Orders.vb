@@ -1630,6 +1630,7 @@ me_exit:
             RefreshDataSource(-1)
         End If
 
+        Global.SetUltraGridSelectionStyle(ugrdItems)
         logger.Debug("frmOrders_Load Exit")
     End Sub
 
