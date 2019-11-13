@@ -425,7 +425,7 @@ BEGIN
 							FROM   PMExcludedItem
 							WHERE  Item_Key = INSERTED.Item_Key
 						)
-	    
+
 				SELECT @error_no = @@ERROR
 			END
 	
@@ -887,61 +887,75 @@ BEGIN
 			END
 	
 		IF @error_no = 0
-			BEGIN -- insert to PLUMCorpChgQueue if needed
-				INSERT INTO PLUMCorpChgQueue
-				(
-					Item_Key,
-					ActionCode,
-					Store_No
-				)
-				SELECT 
-					INSERTED.Item_Key,
-					'C',
-					s.Store_No
-				FROM   
-					INSERTED
-					INNER JOIN DELETED ON  DELETED.Item_Key = INSERTED.Item_Key
-					CROSS JOIN Store s
-					JOIN StoreItem si ON si.Item_Key = Inserted.Item_Key AND si.Store_No = s.Store_No
-				WHERE  
-					INSERTED.Remove_Item = 0
-					AND INSERTED.Deleted_Item = 0
-					AND (
-							-- Don't allow maintenance to be created if Icon is doing the update, unless it's a subteam update.
-							(ISNULL(inserted.LastModifiedUser_ID, 0) <> ISNULL(@IconControllerUserId, 0)) 
-							OR (ISNULL(inserted.LastModifiedUser_ID, 0) = ISNULL(@IconControllerUserId, 0) AND inserted.SubTeam_No <> deleted.SubTeam_No)
-						)
-					AND (
-							ISNULL(INSERTED.Ingredients, '') <> ISNULL(DELETED.Ingredients, '')
-							OR ISNULL(INSERTED.ScaleDesc1, '') <> ISNULL(DELETED.ScaleDesc1, '')
-							OR ISNULL(INSERTED.ScaleDesc2, '') <> ISNULL(DELETED.ScaleDesc2, '')
-							OR ISNULL(INSERTED.ScaleDesc3, '') <> ISNULL(DELETED.ScaleDesc3, '')
-							OR ISNULL(INSERTED.ScaleDesc4, '') <> ISNULL(DELETED.ScaleDesc4, '')
-							OR ISNULL(INSERTED.Retail_Unit_ID, 0) <> ISNULL(DELETED.Retail_Unit_ID, 0)
-							OR INSERTED.SubTeam_No <> DELETED.SubTeam_No
-							OR INSERTED.Package_Desc1 <> DELETED.Package_Desc1
-							OR INSERTED.Package_Desc2 <> DELETED.Package_Desc2
-							OR ISNULL(INSERTED.Package_Unit_ID, 0) <> ISNULL(DELETED.Package_Unit_ID, 0)
-							OR ISNULL(INSERTED.ShelfLife_Length, 0) <> ISNULL(DELETED.ShelfLife_Length, 0)
-							OR ISNULL(INSERTED.ScaleTare, 0) <> ISNULL(DELETED.ScaleTare, 0)
-							OR ISNULL(INSERTED.ScaleUseBy, 0) <> ISNULL(DELETED.ScaleUseBy, 0)
-							OR ISNULL(INSERTED.ScaleForcedTare, 0) <> ISNULL(DELETED.ScaleForcedTare, 0)
-						)
-					AND EXISTS (
-							SELECT *
-							FROM   ItemIdentifier II
-							WHERE  II.Item_Key = INSERTED.Item_Key
-									AND dbo.fn_IsScaleItem(II.Identifier) = 1
-									AND II.Scale_Identifier = 1
-						) --ONLY INSERT SCALE IDENTIFIERS THAT ARE MEANT TO BE SENT TO SCALES
-	               
-					AND s.WFM_Store = 1 AND si.Authorized = 1 AND
-					NOT EXISTS (SELECT * FROM PlumCorpChgQueue WHERE Item_Key = Inserted.Item_Key AND ActionCode = 'C') AND
-					NOT EXISTS (SELECT * FROM PlumCorpChgQueueTmp WHERE Item_Key = Inserted.Item_Key AND ActionCode = 'C')
-	    
+			BEGIN -- insert to PLUMCorpChgQueue if needed. Only Stores setup with FileWriterType = 'SCALE'
+				--PBI 27221: As IRMA I need to stop queuing non-batchable scale maintenance for stores that don't have scale writers/ftp configs set up so that the table does not keep growing.
+				DECLARE @store TABLE(Store_No INT, WFM_Store BIT, Mega_Store BIT);
+				INSERT INTO @store(Store_No, WFM_Store, Mega_Store)
+				SELECT DISTINCT s.Store_No, s.WFM_Store, s.Mega_Store
+				FROM Store s
+				JOIN StoreFTPConfig sc ON sc.Store_No = s.Store_No
+				WHERE sc.FileWriterType = 'SCALE'
+				  AND Len(LTrim(RTrim(IsNull(sc.IP_Address, '')))) > 6
+				  AND Len(LTrim(RTrim(IsNull(sc.FTP_User, '')))) > 0
+				  AND Len(LTrim(RTrim(IsNull(sc.FTP_Password, '')))) > 0;
+
+				IF(Exists(SELECT 1 FROM @store))
+				BEGIN
+					INSERT INTO PLUMCorpChgQueue
+					(
+						Item_Key,
+						ActionCode,
+						Store_No
+					)
+					SELECT 
+						INSERTED.Item_Key,
+						'C',
+						s.Store_No
+					FROM   
+						INSERTED
+						INNER JOIN DELETED ON  DELETED.Item_Key = INSERTED.Item_Key
+						CROSS JOIN @store s
+						JOIN StoreItem si ON si.Item_Key = Inserted.Item_Key AND si.Store_No = s.Store_No
+					WHERE  
+						INSERTED.Remove_Item = 0
+						AND INSERTED.Deleted_Item = 0
+						AND (
+								-- Don't allow maintenance to be created if Icon is doing the update, unless it's a subteam update.
+								(ISNULL(inserted.LastModifiedUser_ID, 0) <> ISNULL(@IconControllerUserId, 0)) 
+								OR (ISNULL(inserted.LastModifiedUser_ID, 0) = ISNULL(@IconControllerUserId, 0) AND inserted.SubTeam_No <> deleted.SubTeam_No)
+							)
+						AND (
+								ISNULL(INSERTED.Ingredients, '') <> ISNULL(DELETED.Ingredients, '')
+								OR ISNULL(INSERTED.ScaleDesc1, '') <> ISNULL(DELETED.ScaleDesc1, '')
+								OR ISNULL(INSERTED.ScaleDesc2, '') <> ISNULL(DELETED.ScaleDesc2, '')
+								OR ISNULL(INSERTED.ScaleDesc3, '') <> ISNULL(DELETED.ScaleDesc3, '')
+								OR ISNULL(INSERTED.ScaleDesc4, '') <> ISNULL(DELETED.ScaleDesc4, '')
+								OR ISNULL(INSERTED.Retail_Unit_ID, 0) <> ISNULL(DELETED.Retail_Unit_ID, 0)
+								OR INSERTED.SubTeam_No <> DELETED.SubTeam_No
+								OR INSERTED.Package_Desc1 <> DELETED.Package_Desc1
+								OR INSERTED.Package_Desc2 <> DELETED.Package_Desc2
+								OR ISNULL(INSERTED.Package_Unit_ID, 0) <> ISNULL(DELETED.Package_Unit_ID, 0)
+								OR ISNULL(INSERTED.ShelfLife_Length, 0) <> ISNULL(DELETED.ShelfLife_Length, 0)
+								OR ISNULL(INSERTED.ScaleTare, 0) <> ISNULL(DELETED.ScaleTare, 0)
+								OR ISNULL(INSERTED.ScaleUseBy, 0) <> ISNULL(DELETED.ScaleUseBy, 0)
+								OR ISNULL(INSERTED.ScaleForcedTare, 0) <> ISNULL(DELETED.ScaleForcedTare, 0)
+							)
+						AND EXISTS (
+								SELECT *
+								FROM   ItemIdentifier II
+								WHERE  II.Item_Key = INSERTED.Item_Key
+										AND dbo.fn_IsScaleItem(II.Identifier) = 1
+										AND II.Scale_Identifier = 1
+							) --ONLY INSERT SCALE IDENTIFIERS THAT ARE MEANT TO BE SENT TO SCALES
+
+						AND s.WFM_Store = 1 AND si.Authorized = 1 AND
+						NOT EXISTS (SELECT * FROM PlumCorpChgQueue WHERE Item_Key = Inserted.Item_Key AND ActionCode = 'C') AND
+						NOT EXISTS (SELECT * FROM PlumCorpChgQueueTmp WHERE Item_Key = Inserted.Item_Key AND ActionCode = 'C')
+				END
+
 				SELECT @error_no = @@ERROR
 			END
-	
+
 		IF @error_no = 0
 			BEGIN -- Insert non-batchable changes when GloCon makes changes to Items
 

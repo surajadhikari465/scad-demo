@@ -88,37 +88,51 @@ BEGIN
 			Inserted.Scale_Identifier = 1
 			OR @Is365NonScalePlu = 1
 
-		INSERT INTO 
-			PLUMCorpChgQueue (Item_Key, ActionCode, Store_No)
-		SELECT 
-			Inserted.Item_Key, 'A', s.Store_No
-		FROM 
-			Inserted
-			CROSS JOIN Store s
-			JOIN StoreItem si ON si.Item_Key = Inserted.Item_Key AND si.Store_No = s.Store_No
-		WHERE 
-			Inserted.Scale_Identifier = 1 
-			AND (s.WFM_Store = 1 OR s.Mega_Store = 1)
-			AND si.Authorized = 1 
-			AND NOT EXISTS (SELECT pq.item_key FROM PlumCorpChgQueue pq (NOLOCK) WHERE pq.Item_Key = Inserted.Item_Key AND pq.store_no = si.store_no AND pq.ActionCode = 'A') 
-			AND NOT EXISTS (SELECT pqt.item_key FROM PlumCorpChgQueueTmp pqt (NOLOCK) WHERE pqt.Item_Key = Inserted.Item_Key AND pqt.store_no = si.store_no AND pqt.ActionCode = 'A')
-		
-		if @Is365NonScalePlu = 1
-			begin
-				INSERT INTO 
-					PLUMCorpChgQueue (Item_Key, ActionCode, Store_No)
-				SELECT 
-					Inserted.Item_Key, 'A', s.Store_No
-				FROM 
-					Inserted
-					CROSS JOIN Store s
-					INNER JOIN StoreItem si ON si.Item_Key = Inserted.Item_Key AND si.Store_No = s.Store_No
-				WHERE 
-					(s.WFM_Store = 0 AND s.Mega_Store = 1)
-					AND si.Authorized = 1 
-					AND NOT EXISTS (SELECT pq.item_key FROM PlumCorpChgQueue pq (NOLOCK) WHERE pq.Item_Key = Inserted.Item_Key AND pq.store_no = si.store_no AND pq.ActionCode = 'A') 
-					AND NOT EXISTS (SELECT pqt.item_key FROM PlumCorpChgQueueTmp pqt (NOLOCK) WHERE pqt.Item_Key = Inserted.Item_Key AND pqt.store_no = si.store_no AND pqt.ActionCode = 'A')
-			end
+		--PBI 27221: As IRMA I need to stop queuing non-batchable scale maintenance for stores that don't have scale writers/ftp configs set up so that the table does not keep growing.
+		DECLARE @store TABLE(Store_No INT, WFM_Store BIT, Mega_Store BIT);
+		INSERT INTO @store(Store_No, WFM_Store, Mega_Store)
+		SELECT DISTINCT s.Store_No, s.WFM_Store, s.Mega_Store
+		FROM Store s
+		JOIN StoreFTPConfig sc ON sc.Store_No = s.Store_No
+		WHERE sc.FileWriterType = 'SCALE'
+				  AND Len(LTrim(RTrim(IsNull(sc.IP_Address, '')))) > 6
+				  AND Len(LTrim(RTrim(IsNull(sc.FTP_User, '')))) > 0
+				  AND Len(LTrim(RTrim(IsNull(sc.FTP_Password, '')))) > 0;
+
+		IF(Exists(SELECT 1 FROM @store))
+		BEGIN
+			INSERT INTO 
+				PLUMCorpChgQueue (Item_Key, ActionCode, Store_No)
+			SELECT 
+				Inserted.Item_Key, 'A', s.Store_No
+			FROM 
+				Inserted
+				CROSS JOIN @store s
+				JOIN StoreItem si ON si.Item_Key = Inserted.Item_Key AND si.Store_No = s.Store_No
+			WHERE 
+				Inserted.Scale_Identifier = 1 
+				AND (s.WFM_Store = 1 OR s.Mega_Store = 1)
+				AND si.Authorized = 1 
+				AND NOT EXISTS (SELECT pq.item_key FROM PlumCorpChgQueue pq (NOLOCK) WHERE pq.Item_Key = Inserted.Item_Key AND pq.store_no = si.store_no AND pq.ActionCode = 'A') 
+				AND NOT EXISTS (SELECT pqt.item_key FROM PlumCorpChgQueueTmp pqt (NOLOCK) WHERE pqt.Item_Key = Inserted.Item_Key AND pqt.store_no = si.store_no AND pqt.ActionCode = 'A')
+			
+			if @Is365NonScalePlu = 1
+				begin
+					INSERT INTO 
+						PLUMCorpChgQueue (Item_Key, ActionCode, Store_No)
+					SELECT 
+						Inserted.Item_Key, 'A', s.Store_No
+					FROM 
+						Inserted
+						CROSS JOIN @store s
+						INNER JOIN StoreItem si ON si.Item_Key = Inserted.Item_Key AND si.Store_No = s.Store_No
+					WHERE 
+						(s.WFM_Store = 0 AND s.Mega_Store = 1)
+						AND si.Authorized = 1 
+						AND NOT EXISTS (SELECT pq.item_key FROM PlumCorpChgQueue pq (NOLOCK) WHERE pq.Item_Key = Inserted.Item_Key AND pq.store_no = si.store_no AND pq.ActionCode = 'A') 
+						AND NOT EXISTS (SELECT pqt.item_key FROM PlumCorpChgQueueTmp pqt (NOLOCK) WHERE pqt.Item_Key = Inserted.Item_Key AND pqt.store_no = si.store_no AND pqt.ActionCode = 'A')
+				end
+		END
 	END TRY
 	BEGIN CATCH
 		IF @@TRANCOUNT <> 0 ROLLBACK TRAN
@@ -131,8 +145,8 @@ BEGIN
 		RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState)
 	END CATCH
 END
-
 GO
+
 CREATE Trigger ItemIdentifierUpdate 
 ON [dbo].[ItemIdentifier]
 FOR UPDATE
@@ -172,7 +186,6 @@ BEGIN
 				WHERE aca.Name = 'IRMA Client' AND
 				ack.Name = 'EnablePLUIRMAIConFlow' and
 				SUBSTRING(ace.Name,1,1) = SUBSTRING((SELECT Environment FROM Version WHERE ApplicationName = 'IRMA CLIENT'),1,1)
-    
 
 		SELECT @Error_No = 0
 
@@ -239,7 +252,7 @@ BEGIN
 			WHERE 
 				(Inserted.Default_Identifier = 1 AND Deleted.Default_Identifier = 0)
 			AND dbo.fn_HasPendingItemChangePriceBatchDetailRecord(Inserted.Item_Key, Store.Store_No) = 0
-        
+
 			SELECT @Error_No = @@ERROR
 		END
 
@@ -256,11 +269,22 @@ BEGIN
 				ON Deleted.Identifier_ID = Inserted.Identifier_ID
 			WHERE Deleted.Scale_Identifier = 1 AND Deleted.Deleted_Identifier = 0
 				AND (Inserted.Deleted_Identifier = 1 OR Inserted.Scale_Identifier = 0)
-    
+
 			SELECT @Error_No = @@ERROR
 		END
 
-		IF @Error_No = 0
+		--PBI 27221: As IRMA I need to stop queuing non-batchable scale maintenance for stores that don't have scale writers/ftp configs set up so that the table does not keep growing.
+		DECLARE @store TABLE(Store_No INT, WFM_Store BIT, Mega_Store BIT);
+		INSERT INTO @store(Store_No, WFM_Store, Mega_Store)
+		SELECT DISTINCT s.Store_No, s.WFM_Store, s.Mega_Store
+		FROM Store s
+		JOIN StoreFTPConfig sc ON sc.Store_No = s.Store_No
+		WHERE sc.FileWriterType = 'SCALE'
+				  AND Len(LTrim(RTrim(IsNull(sc.IP_Address, '')))) > 6
+				  AND Len(LTrim(RTrim(IsNull(sc.FTP_User, '')))) > 0
+				  AND Len(LTrim(RTrim(IsNull(sc.FTP_Password, '')))) > 0;
+
+		IF @Error_No = 0 AND Exists(SELECT 1 FROM @store)
 		BEGIN
 			--INSERT SCALE PUSH QUEUE DATA FOR ANY IDENTIFIERS THAT ARE DELETED OR MARKED AS NON-SCALE
 			INSERT INTO PLUMCorpChgQueue (Item_Key, ActionCode, Store_No)
@@ -270,7 +294,7 @@ BEGIN
 			INNER JOIN
 				Deleted ON Deleted.Identifier_ID = Inserted.Identifier_ID
 			CROSS JOIN 
-				Store s
+				@store s
 			JOIN 
 				StoreItem si ON si.Item_Key = Inserted.Item_Key AND si.Store_No = s.Store_No
 			WHERE Deleted.Scale_Identifier = 1 AND Deleted.Deleted_Identifier = 0
@@ -279,10 +303,9 @@ BEGIN
 				  NOT EXISTS (SELECT * FROM PlumCorpChgQueue WHERE Item_Key = Inserted.Item_Key AND ActionCode = 'D') AND
 				  NOT EXISTS (SELECT * FROM PlumCorpChgQueueTmp WHERE Item_Key = Inserted.Item_Key AND ActionCode = 'D')
 
-    
 			SELECT @Error_No = @@ERROR
 		END
-    
+
 		IF @Error_No = 0
 		BEGIN
 			--UPDATE SCALE PUSH QUEUE DATA FOR ANY IDENTIFIERS THAT ARE UNDELETED OR MARKED AS SCALE
@@ -294,11 +317,11 @@ BEGIN
 				Deleted ON Deleted.Identifier_ID = Inserted.Identifier_ID
 			WHERE Inserted.Scale_Identifier = 1 AND Inserted.Deleted_Identifier = 0
 				AND (Deleted.Deleted_Identifier = 1 OR Deleted.Scale_Identifier = 0)
-    
+
 			SELECT @Error_No = @@ERROR
 		END
 
-		IF @Error_No = 0
+		IF @Error_No = 0 AND Exists(SELECT 1 FROM @store)
 		BEGIN
 			--INSERT SCALE PUSH QUEUE DATA FOR ANY IDENTIFIERS THAT ARE DELETED OR MARKED AS NON-SCALE
 			INSERT INTO PLUMCorpChgQueue (Item_Key, ActionCode, Store_No)
@@ -307,7 +330,7 @@ BEGIN
 			INNER JOIN
 				Deleted ON Deleted.Identifier_ID = Inserted.Identifier_ID
 			CROSS JOIN
-				Store s
+				@store s
 			JOIN 
 				StoreItem si ON si.Item_Key = Inserted.Item_Key AND si.Store_No = s.Store_No
 			WHERE Inserted.Scale_Identifier = 1 AND Inserted.Deleted_Identifier = 0
@@ -316,7 +339,6 @@ BEGIN
 				NOT EXISTS (SELECT pq.item_key FROM PlumCorpChgQueue pq (NOLOCK) WHERE pq.Item_Key = Inserted.Item_Key AND pq.store_no = si.store_no AND pq.ActionCode = 'A') AND
 				NOT EXISTS (SELECT pqt.item_key FROM PlumCorpChgQueueTmp pqt (NOLOCK) WHERE pqt.Item_Key = Inserted.Item_Key AND pqt.store_no = si.store_no AND pqt.ActionCode = 'A')
 
-    
 			SELECT @Error_No = @@ERROR
 		END
 
@@ -335,7 +357,6 @@ BEGIN
 				(Inserted.Scale_Identifier = 1  AND Deleted.Scale_Identifier = 0) AND
 				(SUBSTRING(Inserted.Identifier,1,1) <> '2')
 		
-        
 			SELECT @Error_No = @@ERROR
 		END
 
@@ -354,7 +375,6 @@ BEGIN
 				(Inserted.Deleted_Identifier = 1  AND Deleted.Deleted_Identifier = 0) AND
 				(SUBSTRING(Inserted.Identifier,1,1) <> '2')
 		
-        
 			SELECT @Error_No = @@ERROR
 		END
 
@@ -367,8 +387,6 @@ BEGIN
 					(@EnableUPCIRMAToIConFlow = 1 AND NOT (LEN(@Identifier) < 7 OR @Identifier LIKE '2%00000')) OR
 					(@EnablePLUIRMAIConFlow = 1 AND (LEN(@Identifier) < 7 OR @Identifier LIKE '2%00000'))
 				BEGIN
-			
-
 					insert into iConItemChangeQueue (
 						Item_Key, 
 						Identifier, 
@@ -382,12 +400,11 @@ BEGIN
 						ON Inserted.Identifier_ID = Deleted.Identifier_ID
 						WHERE Inserted.Default_Identifier <> Deleted.Default_Identifier
 						AND Inserted.Default_Identifier = 1 
-
 				END
 				SELECT @Error_No = @@ERROR
 			END
 
-		IF @error_no = 0
+		IF @error_no = 0 AND Exists(SELECT 1 FROM @store)
 		BEGIN
 			--INSERT A SCALE "CHANGE" (C) IF THE ItemIdentifier.NumPluDigitsSentToScale CHANGES
 			--CURRENTLY NO OTHER FIELDS IN ItemIdentifier TRIGGERS A SCALE/POS BATCH
@@ -398,7 +415,7 @@ BEGIN
 			INNER JOIN
 				Deleted ON Deleted.Identifier_ID = Inserted.Identifier_ID
 			CROSS JOIN
-				Store s
+				@store s
 			JOIN StoreItem si ON si.Item_Key = Inserted.Item_Key AND si.Store_No = s.Store_No
 			WHERE Inserted.Remove_Identifier = 0 AND Inserted.Deleted_Identifier = 0 
 				AND ISNULL(Inserted.NumPluDigitsSentToScale, '') <> ISNULL(Deleted.NumPluDigitsSentToScale, '')
@@ -407,7 +424,6 @@ BEGIN
 				AND NOT EXISTS (SELECT * FROM PlumCorpChgQueue WHERE Item_Key = Inserted.Item_Key AND ActionCode = 'C')
 				AND NOT EXISTS (SELECT * FROM PlumCorpChgQueueTmp WHERE Item_Key = Inserted.Item_Key AND ActionCode = 'C')
 
-            
 			SELECT @error_no = @@ERROR
 		END
 
@@ -420,8 +436,8 @@ BEGIN
 		END
 	END
 END
-
 GO
+
 GRANT SELECT
     ON OBJECT::[dbo].[ItemIdentifier] TO [IRMAAdminRole]
     AS [dbo];

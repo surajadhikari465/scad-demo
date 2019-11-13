@@ -108,50 +108,64 @@ BEGIN
 				AND StoreItem.Store_No = Inserted.Store_No
 
 		-- And add it to PLUMCorpChgQueue.  Using distinct will prevent duplicate entries caused by an item with multiple identifiers.
-		INSERT INTO PLUMCorpChgQueue (Item_Key, ActionCode, Store_No)
-			SELECT distinct
-				Inserted.Item_Key, 'A', Inserted.Store_No
-			FROM 
-				Inserted
-			INNER JOIN Deleted ON
-				Deleted.Item_Key = Inserted.Item_Key 
-				AND Deleted.Store_No = Inserted.Store_No
-			INNER JOIN ItemIdentifier ON
-				ItemIdentifier.Item_Key = Inserted.Item_Key
-				AND ItemIdentifier.Scale_Identifier = 1		-- this is a scale item
-			INNER JOIN Store S ON
-				Inserted.Store_No = S.Store_No
-			WHERE 
-				(S.WFM_Store = 1 OR S.Mega_Store = 1)
-				AND Inserted.Authorized <> Deleted.Authorized	-- the authorization changed
-				AND Inserted.Authorized = 1						-- the item is now authorized
-				AND Deleted.ScaleDeAuth = 0						
-				AND NOT EXISTS (SELECT * FROM PlumCorpChgQueue WHERE Item_Key = Inserted.Item_Key AND Store_No = Inserted.Store_No AND ActionCode = 'A')
-				AND NOT EXISTS (SELECT * FROM PlumCorpChgQueueTmp WHERE Item_Key = Inserted.Item_Key AND Store_No = Inserted.Store_No AND ActionCode = 'A')
+		--PBI 27221: As IRMA I need to stop queuing non-batchable scale maintenance for stores that don't have scale writers/ftp configs set up so that the table does not keep growing.
+		DECLARE @store TABLE(Store_No INT, WFM_Store BIT, Mega_Store BIT);
+		INSERT INTO @store(Store_No, WFM_Store, Mega_Store)
+		SELECT DISTINCT s.Store_No, s.WFM_Store, s.Mega_Store
+		FROM Store s
+		JOIN StoreFTPConfig sc ON sc.Store_No = s.Store_No
+		WHERE sc.FileWriterType = 'SCALE'
+		  AND Len(LTrim(RTrim(IsNull(sc.IP_Address, '')))) > 6
+		  AND Len(LTrim(RTrim(IsNull(sc.FTP_User, '')))) > 0
+		  AND Len(LTrim(RTrim(IsNull(sc.FTP_Password, '')))) > 0;
 
-		-- 365 non-scale PLUs which are marked Send to Scale should generate Add maintenance for 365 stores only.
-		declare @Is365NonScalePlu bit =		case 
-												when exists (select icfs.Item_Key from ItemCustomerFacingScale icfs join inserted on icfs.Item_Key = inserted.Item_Key where icfs.SendToScale = 1) then 1
-												else 0
+		IF(Exists(SELECT 1 FROM @store))
+		BEGIN
+			INSERT INTO PLUMCorpChgQueue (Item_Key, ActionCode, Store_No)
+				SELECT distinct
+					Inserted.Item_Key, 'A', Inserted.Store_No
+				FROM 
+					Inserted
+				INNER JOIN Deleted ON
+					Deleted.Item_Key = Inserted.Item_Key 
+					AND Deleted.Store_No = Inserted.Store_No
+				INNER JOIN ItemIdentifier ON
+					ItemIdentifier.Item_Key = Inserted.Item_Key
+					AND ItemIdentifier.Scale_Identifier = 1		-- this is a scale item
+				INNER JOIN @store S ON
+					Inserted.Store_No = S.Store_No
+				WHERE 
+					(S.WFM_Store = 1 OR S.Mega_Store = 1)
+					AND Inserted.Authorized <> Deleted.Authorized	-- the authorization changed
+					AND Inserted.Authorized = 1						-- the item is now authorized
+					AND Deleted.ScaleDeAuth = 0						
+					AND NOT EXISTS (SELECT * FROM PlumCorpChgQueue WHERE Item_Key = Inserted.Item_Key AND Store_No = Inserted.Store_No AND ActionCode = 'A')
+					AND NOT EXISTS (SELECT * FROM PlumCorpChgQueueTmp WHERE Item_Key = Inserted.Item_Key AND Store_No = Inserted.Store_No AND ActionCode = 'A')
+
+			-- 365 non-scale PLUs which are marked Send to Scale should generate Add maintenance for 365 stores only.
+			declare @Is365NonScalePlu bit = case 
+											when exists (select icfs.Item_Key from ItemCustomerFacingScale icfs join inserted on icfs.Item_Key = inserted.Item_Key where icfs.SendToScale = 1) then 1
+											else 0
 											end
 
-		if @Is365NonScalePlu = 1
-			begin
-				INSERT INTO PLUMCorpChgQueue (Item_Key, ActionCode, Store_No)
-					SELECT 
-						inserted.Item_Key, 'A', Inserted.Store_No
-					FROM 
-						Inserted
-						INNER JOIN Deleted ON Deleted.Item_Key = Inserted.Item_Key AND Deleted.Store_No = Inserted.Store_No
-						INNER JOIN Store S ON Inserted.Store_No = S.Store_No
-					WHERE 
-						(S.WFM_Store = 0 AND S.Mega_Store = 1)
-						AND Inserted.Authorized <> Deleted.Authorized	-- the authorization changed
-						AND Inserted.Authorized = 1						-- the item is now authorized
-						AND Deleted.ScaleDeAuth = 0						
-						AND NOT EXISTS (SELECT * FROM PlumCorpChgQueue WHERE Item_Key = Inserted.Item_Key AND Store_No = Inserted.Store_No AND ActionCode = 'A')
-						AND NOT EXISTS (SELECT * FROM PlumCorpChgQueueTmp WHERE Item_Key = Inserted.Item_Key AND Store_No = Inserted.Store_No AND ActionCode = 'A')
-			end
+			if @Is365NonScalePlu = 1
+				begin
+					INSERT INTO PLUMCorpChgQueue (Item_Key, ActionCode, Store_No)
+						SELECT 
+							inserted.Item_Key, 'A', Inserted.Store_No
+						FROM 
+							Inserted
+							INNER JOIN Deleted ON Deleted.Item_Key = Inserted.Item_Key AND Deleted.Store_No = Inserted.Store_No
+							INNER JOIN @store S ON Inserted.Store_No = S.Store_No
+						WHERE 
+							(S.WFM_Store = 0 AND S.Mega_Store = 1)
+							AND Inserted.Authorized <> Deleted.Authorized	-- the authorization changed
+							AND Inserted.Authorized = 1						-- the item is now authorized
+							AND Deleted.ScaleDeAuth = 0						
+							AND NOT EXISTS (SELECT * FROM PlumCorpChgQueue WHERE Item_Key = Inserted.Item_Key AND Store_No = Inserted.Store_No AND ActionCode = 'A')
+							AND NOT EXISTS (SELECT * FROM PlumCorpChgQueueTmp WHERE Item_Key = Inserted.Item_Key AND Store_No = Inserted.Store_No AND ActionCode = 'A')
+				end
+		END
 
 		-- Clean up the de-auth flags (#3)
 		UPDATE StoreItem SET
