@@ -35,7 +35,6 @@ Friend Class frmOrders
     Private m_bOrderUploaded As Boolean
     Private m_bMultipleSubTeams As Boolean
     Private m_dtOriginalCloseDate As Date
-    Private m_bSeafoodMissingCountryInfo As Boolean
     Private m_bGridCtrlKey As Boolean
     Private m_bEXEWarehouseDistOrder As Boolean
     Private m_dtOrderEnd As Date
@@ -1130,13 +1129,6 @@ me_exit:
             Exit Sub
         End If
 
-        If m_bSeafoodMissingCountryInfo Then
-            MsgBox("A seafood item is missing country of origin/processing information." & vbCrLf & "The order cannot be sent without this information", MsgBoxStyle.Information, Me.Text)
-            logger.Info("cmdSendOrder_Click " & " Seafood item missing country of origin/processing info." & vbCrLf & " Send not allowed without this information")
-            logger.Debug("cmdSendOrder_Click Exit")
-            Exit Sub
-        End If
-
         If m_lTransferFromSubTeam = -1 Then
 
             Dim frmOrderSend As New frmOrderSend()
@@ -1849,7 +1841,6 @@ me_exit:
         m_bItemsReceived = False 'Set this again in this routine because it is called separately after the initial call during loading
         m_bItemsOrdered = False
         m_bMultipleSubTeams = False
-        m_bSeafoodMissingCountryInfo = False
         m_bPre_Order = False
         m_bIsEXEDistributed = False
         m_IsEinvoice = IsEInvoice()
@@ -1903,8 +1894,6 @@ me_exit:
 
                 If (m_rsOrderItems.Fields("QuantityReceived").Value > 0) Or (m_rsOrderItems.Fields("Total_Weight").Value > 0) Then m_bItemsReceived = True
             End If
-
-            If m_rsOrderItems.Fields("SeafoodMissingCountryInfo").Value Then m_bSeafoodMissingCountryInfo = True
 
             If m_rsOrderItems.Fields("Pre_Order").Value Then m_bPre_Order = True
 

@@ -63,11 +63,8 @@ BEGIN
 		Category_Name,       
 		Brand_Name,       
 		ir.Origin_Name,      
-		irp.Origin_Name Proc_Name,      
-		SeafoodMissingCountryInfo	= CAST(	CASE 
-												WHEN i.SubTeam_No = 2800 AND ((oi.Origin_ID IS NULL) OR (oi.CountryProc_ID IS NULL)) THEN 1      
-												ELSE 0      
-											END AS bit),      
+		irp.Origin_Name Proc_Name,
+		SeafoodMissingCountryInfo	= Cast(0 as BIT), --The field is absoleted in IRMA. Return default in case if there's a reference to this field somewhere.
 		Pre_Order,      
 		i.EXEDistributed,                  
 		oi.Lot_No,      

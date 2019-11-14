@@ -56,10 +56,7 @@ BEGIN
 		ig.Origin_Name,
 		iop.Origin_Name Proc_Name,
 		SustainabilityRankingAbbr	=	sr.RankingAbbr,
-		SeafoodMissingCountryInfo	=	CAST(	CASE 
-													WHEN i.SubTeam_No = 2800 AND ((oi.Origin_ID IS NULL) OR (oi.CountryProc_ID IS NULL)) THEN 1
-													ELSE 0
-												END AS bit),
+		SeafoodMissingCountryInfo	=	Cast(0 as BIT), --The field is absoleted in IRMA but used by PurchaseOrderRepot.rdl and PurchaseOrderReportBarcodes.rdl
 		Pre_Order,
 		i.EXEDistributed,
 		oi.Lot_No,

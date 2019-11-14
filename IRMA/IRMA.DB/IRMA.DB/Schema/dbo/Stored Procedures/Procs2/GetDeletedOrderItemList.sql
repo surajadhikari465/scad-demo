@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[GetDeletedOrderItemList] 
-	@OrderHeader_ID int,  
-    @Item_ID		bit,  
-	@SortType		tinyint = NULL  
+	@OrderHeader_ID int,
+	@Item_ID		bit,
+	@SortType		tinyint = NULL
 
 AS
 
@@ -33,13 +33,13 @@ BEGIN
 										END,
            
 		Item_Description			= ISNULL(ior.Item_Description, i.Item_Description),      
-		oi.QuantityOrdered,       
-		oi.QuantityReceived,      
-		oi.Total_Weight,       
-		oi.QuantityDiscount,       
-		oi.DiscountType,      
-		oi.UnitCost,      
-		oi.UnitExtCost,      
+		oi.QuantityOrdered,
+		oi.QuantityReceived,
+		oi.Total_Weight,
+		oi.QuantityDiscount,
+		oi.DiscountType,
+		oi.UnitCost,
+		oi.UnitExtCost,
 		[LineItemCost]				=	CASE i.CatchWeightRequired
 											WHEN 1 THEN
 												oi.LineItemCost
@@ -48,30 +48,27 @@ BEGIN
 										END,
 		oi.LineItemFreight,       
 		oi.LineItemHandling,  
-		HandlingCharge				= ISNULL(oi.HandlingCharge, 0),  
-		iuq.Unit_Name,      
-		oi.Package_Desc1,      
-		oi.Package_Desc2,      
-		Package_Unit				= ISNULL(iup.Unit_Name, 'Unit'),      
-		st.SubTeam_Name,      
-		i.SubTeam_No,      
-		Category_Name,       
-		Brand_Name					= ISNULL(ibo.Brand_Name, ib.Brand_Name),       
-		ir.Origin_Name,      
-		irp.Origin_Name Proc_Name,      
-		SeafoodMissingCountryInfo	= CAST(	CASE 
-												WHEN i.SubTeam_No = 2800 AND ((oi.Origin_ID IS NULL) OR (oi.CountryProc_ID IS NULL)) THEN 1      
-												ELSE 0      
-											END AS bit),      
-		Pre_Order,      
-		i.EXEDistributed,                  
-		oi.Lot_No,      
-		oi.eInvoiceQuantity,    
-		ActualCost					=	CASE       
+		HandlingCharge				= ISNULL(oi.HandlingCharge, 0),
+		iuq.Unit_Name,
+		oi.Package_Desc1,
+		oi.Package_Desc2,
+		Package_Unit				= ISNULL(iup.Unit_Name, 'Unit'),
+		st.SubTeam_Name,
+		i.SubTeam_No,
+		Category_Name, 
+		Brand_Name					= ISNULL(ibo.Brand_Name, ib.Brand_Name),
+		ir.Origin_Name,
+		irp.Origin_Name Proc_Name,
+		SeafoodMissingCountryInfo	= Cast(0 as BIT), --The field is absoleted in IRMA. Return default in case if there's a reference to this field somewhere.
+		Pre_Order,
+		i.EXEDistributed,
+		oi.Lot_No,
+		oi.eInvoiceQuantity,
+		ActualCost					=	CASE
 											WHEN oi.AdjustedCost > 0 THEN 
 												ROUND(oi.AdjustedCost, 2)
 											ELSE 
-												oi.MarkUpCost      
+												oi.MarkUpCost
 										END,  
 		iv.VendorItemDescription,
 		[CurrentVendorCost]			=	CASE 
@@ -120,9 +117,9 @@ BEGIN
 								ELSE Identifier 
 							END      
 			ELSE oi.OrderItem_ID 
-		END      
-          
-    SET NOCOUNT OFF      
+		END
+
+	SET NOCOUNT OFF
 END
 GO
 GRANT EXECUTE
