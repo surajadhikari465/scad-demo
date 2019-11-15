@@ -77,6 +77,7 @@ Friend Class frmOrderCost
         CenterForm(Me)
         SetupDataTable()
         RefreshGrid()
+        Global.SetUltraGridSelectionStyle(ugrdItemList)
         logger.Debug("frmOrderCost_Load Exit")
 
     End Sub

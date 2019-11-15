@@ -371,7 +371,7 @@ me_err:
 		End If
 		
         Call EnableControls(False)
-
+        Global.SetUltraGridSelectionStyle(ugrdOrderList)
         logger.Debug("frmOrderItemQueueView_Load Exit")
 		
 	End Sub

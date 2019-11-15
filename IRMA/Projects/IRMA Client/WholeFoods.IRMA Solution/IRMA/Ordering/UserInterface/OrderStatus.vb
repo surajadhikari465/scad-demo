@@ -440,6 +440,7 @@ Friend Class frmOrderStatus
             _optType_2.Checked = True
         End If
 
+        Global.SetUltraGridSelectionStyle(UltraGrid_Charges)
     End Sub
 
     ''' <summary>

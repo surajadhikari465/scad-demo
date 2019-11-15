@@ -96,99 +96,99 @@ Friend Class frmReceivingList
 
 	End Sub
 
-	Private Sub frmReceivingList_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
-		'20090709 - Dave Stacey - TFS 10387
-		Me.WindowState = FormWindowState.Maximized
-		logger.Debug("frmReceivingList_Load Entry")
+    Private Sub frmReceivingList_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+        '20090709 - Dave Stacey - TFS 10387
+        Me.WindowState = FormWindowState.Maximized
+        logger.Debug("frmReceivingList_Load Entry")
 
-		'DN instantiate our Private ReceivingListDAO > RListDAO
-		RListDAO = New ReceivingListDAO
+        'DN instantiate our Private ReceivingListDAO > RListDAO
+        RListDAO = New ReceivingListDAO
 
-		'Show invoice method in window title.
-		Me.Text += " " & frmOrders.GetInvoiceMethodDisplayText(glOrderHeaderID, frmOrders.IsOrderPayAgreedCost, EInvoicingId)
-		SetActive(cmdReceive, gbDistributor)
+        'Show invoice method in window title.
+        Me.Text += " " & frmOrders.GetInvoiceMethodDisplayText(glOrderHeaderID, frmOrders.IsOrderPayAgreedCost, EInvoicingId)
+        SetActive(cmdReceive, gbDistributor)
 
-		CenterForm(Me)
+        CenterForm(Me)
 
-		cmdSelectAll.Image = imgIcons.Images.Item(iALL)
-		ToolTip1.SetToolTip(cmdSelectAll, "Select All")
+        cmdSelectAll.Image = imgIcons.Images.Item(iALL)
+        ToolTip1.SetToolTip(cmdSelectAll, "Select All")
 
-		bTransferOrder = False
-		bReturnOrder = False
+        bTransferOrder = False
+        bReturnOrder = False
 
-		dtInfo = RListDAO.GetOrderReceivingDisplayInfo(glOrderHeaderID)
-		If dtInfo.Rows.Count > 0 Then
-			txtOrderHeader_ID.Text = dtInfo.Rows(0).Item("OrderHeader_ID")
-			txtStoreName.Text = dtInfo.Rows(0).Item("Store_Name")
-			txtTotalOrderCost.Text = Format(CDec(dtInfo.Rows(0).Item("OrderedCost")), "##,###0.00##")
+        dtInfo = RListDAO.GetOrderReceivingDisplayInfo(glOrderHeaderID)
+        If dtInfo.Rows.Count > 0 Then
+            txtOrderHeader_ID.Text = dtInfo.Rows(0).Item("OrderHeader_ID")
+            txtStoreName.Text = dtInfo.Rows(0).Item("Store_Name")
+            txtTotalOrderCost.Text = Format(CDec(dtInfo.Rows(0).Item("OrderedCost")), "##,###0.00##")
 
-			'MD 1/25/2010: Bug 13770: Effective date was null for Distribution Credit PO's added a check for null there
-			If dtInfo.Rows(0).Item("Expected_Date") IsNot DBNull.Value Then
-				txtExpectedDate.Text = dtInfo.Rows(0).Item("Expected_Date")
-			Else
-				txtExpectedDate.Text = System.DateTime.Today
-			End If
-			txtSubteamName.Text = dtInfo.Rows(0).Item("Subteam_Name")
-			If dtInfo.Rows(0).Item("QtyShippedProvided") IsNot DBNull.Value AndAlso dtInfo.Rows(0).Item("QtyShippedProvided") = True Then
-				bHideShipped = False
-			End If
-			If dtInfo.Rows(0).Item("EInvoice_Id") IsNot DBNull.Value AndAlso dtInfo.Rows(0).Item("OpenPO") = 1 And (gbSuperUser = True Or gbDistributor = True Or gbEInvoicing = True) Then
-				EInvoice_Id = dtInfo.Rows(0).Item("EInvoice_Id")
-				Me.cmdReparseEInvoice.Enabled = True
-			Else
-				EInvoice_Id = -1
-				Me.cmdReparseEInvoice.Enabled = False
-			End If
+            'MD 1/25/2010: Bug 13770: Effective date was null for Distribution Credit PO's added a check for null there
+            If dtInfo.Rows(0).Item("Expected_Date") IsNot DBNull.Value Then
+                txtExpectedDate.Text = dtInfo.Rows(0).Item("Expected_Date")
+            Else
+                txtExpectedDate.Text = System.DateTime.Today
+            End If
+            txtSubteamName.Text = dtInfo.Rows(0).Item("Subteam_Name")
+            If dtInfo.Rows(0).Item("QtyShippedProvided") IsNot DBNull.Value AndAlso dtInfo.Rows(0).Item("QtyShippedProvided") = True Then
+                bHideShipped = False
+            End If
+            If dtInfo.Rows(0).Item("EInvoice_Id") IsNot DBNull.Value AndAlso dtInfo.Rows(0).Item("OpenPO") = 1 And (gbSuperUser = True Or gbDistributor = True Or gbEInvoicing = True) Then
+                EInvoice_Id = dtInfo.Rows(0).Item("EInvoice_Id")
+                Me.cmdReparseEInvoice.Enabled = True
+            Else
+                EInvoice_Id = -1
+                Me.cmdReparseEInvoice.Enabled = False
+            End If
 
-			'Hide the NOID/NORD grid if EInvoice information is not avilable. 
-			grdNOIDNORD.Visible = (dtInfo.Rows(0).Item("EInvoice_Id") IsNot DBNull.Value)
+            'Hide the NOID/NORD grid if EInvoice information is not avilable. 
+            grdNOIDNORD.Visible = (dtInfo.Rows(0).Item("EInvoice_Id") IsNot DBNull.Value)
 
-			'If PastReceiptDate is ever entered into the DB, it cannot be changed
-			If dtInfo.Rows(0).Item("PastReceiptDate") IsNot DBNull.Value Then
-				chkPastReceipt.Checked = True
-			End If
-			dtpPastReceiptDate.Value = dtInfo.Rows(0).Item("PastReceiptDate")
-			chkPastReceipt.Enabled = False
-			dtpPastReceiptDate.Enabled = False
+            'If PastReceiptDate is ever entered into the DB, it cannot be changed
+            If dtInfo.Rows(0).Item("PastReceiptDate") IsNot DBNull.Value Then
+                chkPastReceipt.Checked = True
+            End If
+            dtpPastReceiptDate.Value = dtInfo.Rows(0).Item("PastReceiptDate")
+            chkPastReceipt.Enabled = False
+            dtpPastReceiptDate.Enabled = False
 
-			If dtInfo.Rows(0).Item("OrderType_ID") = 3 Then
-				bTransferOrder = True
-			End If
+            If dtInfo.Rows(0).Item("OrderType_ID") = 3 Then
+                bTransferOrder = True
+            End If
 
-			bReturnOrder = dtInfo.Rows(0).Item("Return_Order")
-			Me.optExceptions.Enabled = grdNOIDNORD.Visible
-		End If
+            bReturnOrder = dtInfo.Rows(0).Item("Return_Order")
+            Me.optExceptions.Enabled = grdNOIDNORD.Visible
+        End If
 
-		initGrid(Me.grdRL)
-		initGrid(Me.grdNOIDNORD, True)
-
-
-		Call PopGrid()
-
-		If dtOrderItemsNOIDNORD.Rows.Count > 0 Then
-			Me.cmdNOIDNORDReport.Enabled = True
-		Else
-			Me.cmdNOIDNORDReport.Enabled = False
-		End If
-
-		LoadReceivingDiscrepanyReasonCodes()
-		InitializeCacheDataTable()
-
-		'Check receiving rules to enable or disable Select All/Receive All functionality
-		'   >> Receive All will be disabled for non-credit Purchase orders only 
-		If geOrderType = enumOrderType.Purchase And frmOrders.IsCredit = False And frmOrders.AllowReceiveAll = False Then
-			m_bAllowReceiveAll = False
-		Else
-			m_bAllowReceiveAll = True
-		End If
+        initGrid(Me.grdRL)
+        initGrid(Me.grdNOIDNORD, True)
 
 
+        Call PopGrid()
 
-		logger.Debug("frmReceivingList_Load Exit")
+        If dtOrderItemsNOIDNORD.Rows.Count > 0 Then
+            Me.cmdNOIDNORDReport.Enabled = True
+        Else
+            Me.cmdNOIDNORDReport.Enabled = False
+        End If
 
-	End Sub
+        LoadReceivingDiscrepanyReasonCodes()
+        InitializeCacheDataTable()
 
-	Private Sub cmdSelectAll_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdSelectAll.Click
+        'Check receiving rules to enable or disable Select All/Receive All functionality
+        '   >> Receive All will be disabled for non-credit Purchase orders only 
+        If geOrderType = enumOrderType.Purchase And frmOrders.IsCredit = False And frmOrders.AllowReceiveAll = False Then
+            m_bAllowReceiveAll = False
+        Else
+            m_bAllowReceiveAll = True
+        End If
+
+        Global.SetUltraGridSelectionStyle(grdNOIDNORD)
+        Global.SetUltraGridSelectionStyle(grdRL)
+
+        logger.Debug("frmReceivingList_Load Exit")
+    End Sub
+
+    Private Sub cmdSelectAll_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdSelectAll.Click
 
 		logger.Debug("cmdSelectAll_Click Entry")
 		Dim gridRow As UltraGridRow

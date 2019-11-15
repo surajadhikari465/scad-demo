@@ -22,6 +22,7 @@ Public Class frmBatchReceiveClose
         dtpStartDate.Value = Today()
         dtpEndDate.Value = Today()
         cmdSelectAll.Image = imgIcons.Images.Item(iALL)
+        Global.SetUltraGridSelectionStyle(ugOrderList)
     End Sub
 
     Private Sub cmdEditItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)

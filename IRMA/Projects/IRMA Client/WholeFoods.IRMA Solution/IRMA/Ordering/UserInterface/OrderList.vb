@@ -66,21 +66,21 @@ Friend Class frmOrderList
 
         logger.Debug("frmOrderList_FormClosing Exit")
     End Sub
-	
-	Private Sub frmOrderList_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+
+    Private Sub frmOrderList_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
         logger.Debug("frmOrderList_Load Entry")
 
         CenterForm(Me)
 
         btnConversionCalculator.Visible = OrderSearchDAO.IsMultipleJurisdiction()
 
-		' Set the caption to reflect the order type
-		Select Case Global_Renamed.geOrderType
-			Case Global_Renamed.enumOrderType.Distribution
-				Text = "Distribution Order - List View"
-			Case Global_Renamed.enumOrderType.Purchase
-				Text = "Purchase Order - List View"
-			Case Global_Renamed.enumOrderType.Transfer
+        ' Set the caption to reflect the order type
+        Select Case Global_Renamed.geOrderType
+            Case Global_Renamed.enumOrderType.Distribution
+                Text = "Distribution Order - List View"
+            Case Global_Renamed.enumOrderType.Purchase
+                Text = "Purchase Order - List View"
+            Case Global_Renamed.enumOrderType.Transfer
                 Text = "Transfer Order - List View"
             Case Global_Renamed.enumOrderType.Flowthru
                 Text = "Flowthrough Order - List View"
@@ -88,11 +88,10 @@ Friend Class frmOrderList
 
         SetOptions()
         FilterGrid()
-
+        Global.SetUltraGridSelectionStyle(ugrdOrderList)
         logger.Debug("frmOrderList_Load Exit")
-		
-	End Sub
-	
+    End Sub
+
     Public Sub InitializeForm()
         logger.Debug("InitializeForm Entry")
 

@@ -52,7 +52,7 @@ Friend Class frmOrdersAllocateOrderList
         mdt = New DataTable("OrdersAllocOrderList")
         mdt.Columns.Add(New DataColumn("OrderHeader_ID", GetType(Integer)))
         mdt.Columns.Add(New DataColumn("CompanyName", GetType(String)))
-
+        Global.SetUltraGridSelectionStyle(ugrdOrders)
         logger.Debug("frmOrdersAllocateOrderList_Load Exit")
     End Sub
 	

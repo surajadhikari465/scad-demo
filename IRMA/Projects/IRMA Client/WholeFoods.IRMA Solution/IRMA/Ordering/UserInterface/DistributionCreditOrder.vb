@@ -336,7 +336,7 @@ Friend Class frmDistributionCreditOrder
         '        SQLExecute("EXEC GetReturnOrderList " & glInstance & ", " & giUserID & ", " & glOrderHeaderID, DAO.RecordsetOptionEnum.dbSQLPassThrough)
 
         RefreshGrid()
-
+        Global.SetUltraGridSelectionStyle(ugrdReturn)
         logger.Debug("frmDistributionCreditOrder_Load Exit")
 
     End Sub

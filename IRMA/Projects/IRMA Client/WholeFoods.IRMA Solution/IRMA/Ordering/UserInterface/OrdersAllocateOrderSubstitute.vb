@@ -58,7 +58,7 @@ Public Class OrdersAllocateOrderSubstitute
         If gridOrderList.Rows.Count > 0 Then
             cmdExport.Enabled = True
         End If
-
+        Global.SetUltraGridSelectionStyle(gridOrderList)
     End Sub
 
     Private Sub cmdExport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdExport.Click

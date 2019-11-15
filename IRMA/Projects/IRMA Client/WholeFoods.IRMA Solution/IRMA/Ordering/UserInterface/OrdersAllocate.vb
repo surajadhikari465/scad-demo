@@ -153,6 +153,8 @@ Friend Class frmOrdersAllocate
         Me.dtWOOStart.Value = Date.Today.ToShortDateString
         Me.dtWOOStart.Value = Date.Today.ToShortDateString
 
+        Global.SetUltraGridSelectionStyle(ugrdAlloc)
+        Global.SetUltraGridSelectionStyle(ugrdItem)
         logger.Debug("frmOrdersAllocate_Load Exit")
 
     End Sub

@@ -100,7 +100,7 @@ Friend Class frmOrderItemsRefused
         PopGrid()
 
         LoadReceivingDiscrepanyReasonCodes()
-
+        Global.SetUltraGridSelectionStyle(gridRefused)
         logger.Debug("frmOrderRefused_Load Entry")
     End Sub
 

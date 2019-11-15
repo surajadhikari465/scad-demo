@@ -146,7 +146,7 @@ Friend Class frmOrderItemSearch
         End If
 
         m_blnIsLoading = False
-
+        Global.SetUltraGridSelectionStyle(ugrdSearchResults)
         logger.Debug("frmOrderItemSearch_Load Exit")
 
     End Sub

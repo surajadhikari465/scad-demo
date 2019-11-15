@@ -850,7 +850,7 @@ Public Class SuspendedPOTool
         UltraPanel_SavingChanges.SendToBack()
 
         CType(UltraToolbarsManager1.Tools("ComboBox_GridFilter"), Infragistics.Win.UltraWinToolbars.ComboBoxTool).SelectedIndex = 0
-
+        Global.SetUltraGridSelectionStyle(UltraGrid_AllSuspended)
     End Sub
 
     Private Sub LoadComboData()

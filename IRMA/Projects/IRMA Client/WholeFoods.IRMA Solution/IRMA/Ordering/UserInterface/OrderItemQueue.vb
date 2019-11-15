@@ -52,8 +52,8 @@ Friend Class frmOrderItemQueue
 		Call InitializeGrid()
 		Call PopulateProductType(cmbProductType)
 		Call DefaultControls()
-
-		logger.Debug("frmOrderItemQueue_Load Exit")
+        Global.SetUltraGridSelectionStyle(grdList)
+        logger.Debug("frmOrderItemQueue_Load Exit")
 	End Sub
 
 	Private Sub InitializeGrid()

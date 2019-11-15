@@ -717,6 +717,9 @@ Friend Class frmLineItems
             UltraToolbarsManager1.Tools("Pay By Invoice").SharedProps.Enabled = True
             UltraToolbarsManager1.Tools("Pay By PO").SharedProps.Enabled = False
         End If
+
+        Global.SetUltraGridSelectionStyle(grdLineItems)
+        Global.SetUltraGridSelectionStyle(grdEInvoiceExceptions)
     End Sub
 
     Private Sub DisplayPO()

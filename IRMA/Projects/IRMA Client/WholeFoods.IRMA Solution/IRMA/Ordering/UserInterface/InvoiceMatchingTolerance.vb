@@ -114,10 +114,11 @@ Public Class frm_InvoiceMatchingTolerance
         ' *************************************************
         ' Bind Data to DataGrids and Controls
         BindControls()
+        Global.SetUltraGridSelectionStyle(StoreOverrideGrid)
+        Global.SetUltraGridSelectionStyle(VendorOverrideGrid)
 
         ' Print Original Values from Dataset ******* FOR DEBUG PURPOSES *********
         'bo.PrintValues(ToleranceData, "OriginalData")
-
     End Sub
 
 

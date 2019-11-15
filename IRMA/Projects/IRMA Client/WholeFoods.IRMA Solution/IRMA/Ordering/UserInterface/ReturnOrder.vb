@@ -361,7 +361,7 @@ Friend Class frmReturnOrder
 '        rsOrderList.Close()
 
         RefreshGrid()
-
+        Global.SetUltraGridSelectionStyle(ugrdReturn)
         logger.Debug("frmReturnOrder_Load Exit")
 
     End Sub
