@@ -128,7 +128,6 @@ export class KitsByStoreView extends React.Component<
 
   populateRegions = () => {
     var urlRegions = urlLocalesSearch + "/GetLocaleByTypeId?localeType=Region";
-    console.log("Test2");
     fetch(urlRegions)
       .then(response => {
         return response.json();

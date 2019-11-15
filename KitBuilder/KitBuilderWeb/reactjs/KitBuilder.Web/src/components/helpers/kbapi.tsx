@@ -9,6 +9,7 @@ const ApiMethods  = {
      LinkGroupItemSearch:"/api/LinkGroups/LinkGroupItemSearch",
      LocalesByType: "/api/Locales/GetLocaleByType",
      Locales:"api/Locales", 
+     LocalesSearch: "api/Locales/GetLocales",
      Login: "api/Authentication/Login"
 }
 

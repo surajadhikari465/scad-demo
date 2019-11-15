@@ -8,11 +8,15 @@ import ConfirmDialog from '../ConfirmDialog';
 var urlStart = KbApiMethod("AssignKit");
 var urlKit = KbApiMethod("Kits");
 import KitSearchDialog from '../Kits/ViewKits/SelectKit/KitSearchDialog';
+import LocaleSearchDialog from '../Locales/SearchLocale/LocaleSearchDialog';
 import TextField from '@material-ui/core/TextField';
 import StyledPanel from "src/components/PageStyle/StyledPanel";
 import { withStyles } from '@material-ui/core/styles';
 import PageTitle from "../PageTitle";
 import FormControl from '@material-ui/core/FormControl';
+import { connect } from 'react-redux';
+import { KitTreeState } from 'src/redux/reducers/kitTreeReducer';
+import { Dispatch } from 'redux';
 
 const styles = (theme: any) => ({
      root: {
@@ -50,14 +54,24 @@ interface IAssignKitsToLocaleState {
      showPublishConfirm: boolean;
      showSaveConfirm: boolean;
      isReadyToPublish: boolean;
-     open: boolean;
+     kitSearchDialogOpen: boolean;
+     localeSearchDialogOpen: boolean;
+     localeId: number;
+     localeName: string;
+     chainId: number;
+     regionId: number;
+     metroId: number;
+     storeId: number;
+     localeSelected: boolean;
+     kitTree: KitTreeState;
 }
 
 interface IAssignKitsToLocaleProps {
 
      showAlert: any,
      classes: any,
-     history: any
+     history: any,
+     updateRedux(kitId: number, localeId: number, data:[], resetLocale: boolean, chainId: number, regionId: number, metroId: number, storeId: number): void;
 }
 
 class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssignKitsToLocaleState>
@@ -76,9 +90,19 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                showPublishConfirm: false,
                showSaveConfirm: false,
                isReadyToPublish: true,
-               open: false
+               kitSearchDialogOpen: false,
+               localeSearchDialogOpen: false,
+               localeId: 0,
+               localeName: "",
+               chainId: 0,
+               regionId: 0,
+               metroId: 0,
+               storeId: 0,
+               localeSelected: false,
+               kitTree: { resetLocale: false }
           }
           this.onkitSelected = this.onkitSelected.bind(this);
+          this.onlocaleSelected = this.onlocaleSelected.bind(this);
      }
 
      componentDidMount() {
@@ -100,15 +124,30 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
           this.setState({
                kitId: row.kitId,
                kitName: row.description,
-               open: false,
+               kitSearchDialogOpen: false,
+               localeSelected: false,
           }, this.loadDataAfterKitSelected);
 
      }
 
-     loadDataAfterKitSelected() {
+     onlocaleSelected(row: any) {
+          this.setState({
+               localeId: row.localeId,
+               localeName: row.localeName,
+               chainId: row.chainId,
+               regionId: row.regionId,
+               metroId: row.metroId,
+               storeId: row.storeId,
+               localeSearchDialogOpen: false,
+               localeSelected: true,
+          }, this.loadDataAfterKitSelected);
+
+     }
+     loadDataAfterKitSelected() {  
           let path = `/AssignKits/` + this.state.kitId.toString();
           this.props.history.push(path);
           this.loadData();
+          this.props.updateRedux(this.state.kitId, this.state.localeId, this.state.data, this.state.localeSelected, this.state.chainId, this.state.regionId, this.state.metroId, this.state.storeId); 
           this.loadKit();
      }
 
@@ -183,16 +222,44 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
      }
 
      selectKit = () => {
-          this.setState({ open: true });
+          this.setState({ kitSearchDialogOpen: true });
      }
-     onClose = () => {
-          this.setState({ open: false });
+     onKitClose = () => {
+          this.setState({ kitSearchDialogOpen: false });
+     }
+     onLocaleClose = () => {
+          this.setState({ localeSearchDialogOpen: false });
      }
      loadData = () => {
           const { kitId } = this.state;
           let url = urlStart;
 
           url = url + '/' + kitId;
+          fetch(url)
+               .then(response => {
+                    return response.json();
+                    if (response.status === 404) {
+                         console.log("Not found");
+                         this.props.showAlert("Data not found.", "error")
+                    }
+               }).then(data => {
+                    this.parseData(data);
+               }).catch((error) => {
+                    this.props.showAlert("Error in displaying data.", "error")
+               });
+     }
+
+     selectLocale = () => {
+          this.setState({ localeSearchDialogOpen: true });
+     }
+     onLocaleSearchClose = () => {
+          this.setState({ localeSearchDialogOpen: false });
+     }
+     loadLocaleData = () => {
+          const { localeId } = this.state;
+          let url = urlStart;
+
+          url = url + '/' + localeId;
           fetch(url)
                .then(response => {
                     return response.json();
@@ -353,19 +420,17 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                     <React.Fragment>
                          <Grid xs={12} md={6} item>
                          </Grid>
-                         <Grid xs={12} md={6} item>
-                         </Grid>
                          <KitSearchDialog
-                              openPopUp={this.state.open}
-                              closePopUp={this.onClose}
+                              openPopUp={this.state.kitSearchDialogOpen}
+                              closePopUp={this.onKitClose}
                               onkitSelect={this.onkitSelected}
                          />
 
                          <Grid container spacing={16}>
                               <Grid xs={12} md={12} item>
                               </Grid>
-                              <Grid xs={12} md={1} item></Grid>
-                              <Grid xs={12} md={2} item>
+                              <Grid xs={12} md={"auto"} item></Grid>
+                              <Grid xs={12} md={3} item>
                               <FormControl className={this.props.classes.formControl}>
                                    <TextField
                                         disabled
@@ -385,7 +450,35 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                                         Select Kit
                                     </Button>
                               </Grid>
-                              <Grid xs={12} md={3} item></Grid>
+                              <Grid xs={2} md={1} item>
+                              </Grid>
+                              <LocaleSearchDialog
+                              openPopUp={this.state.localeSearchDialogOpen}
+                              closePopUp={this.onLocaleClose}
+                              onlocaleSelect={this.onlocaleSelected}
+                              />
+                              <Grid xs={12} md={3} item>
+                              <FormControl className={this.props.classes.formControl}>
+                                   <TextField
+                                        disabled
+                                        variant='outlined'
+                                        label='Selected Locale'
+                                        className='search-textfield'
+                                        InputLabelProps={{ shrink: true,
+                                             FormLabelClasses: {
+                                                 root: this.props.classes.labelRoot
+                                               } }}
+                                        value={this.state.localeName}>
+                                   </TextField>
+                                   </FormControl>
+                              </Grid>
+                              <Grid xs={12} md={2} item>
+                                   <Button variant="contained" color="primary" disabled={this.state.kitName ==""} className={this.props.classes.button} onClick={() => this.selectLocale()} >
+                                        Select Locale
+                                    </Button>
+                              </Grid>   
+                              <Grid xs={2} md={7} item>
+                              </Grid>    
                               <Grid xs={12} md={2} item>
                                    <Button disabled={!isReadyToPublish} className={this.props.classes.button} variant="contained" color="primary" onClick={this.toggleShowPublishConfirm} >
                                         Publish
@@ -397,10 +490,12 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                                    </Button>
                               </Grid>
                          </Grid>
+                         
                          <Grid container spacing={16}>
                               <Grid xs={12} md={12} item>
                               </Grid>
                          </Grid>
+
                          <AssignKitsTreeTable
                               toggleLocaleAssigned={this.toggleLocaleAssigned}
                               toggleLocaleExcluded={this.toggleLocaleExcluded}
@@ -430,5 +525,13 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
           );
      }
 }
-
-export default withStyles(styles, { withTheme: true })(withSnackbar(AssignKitsToLocale));
+     
+const mapStateToProps = (state: any) => ({
+     kitTree: state.kitTree,
+ });
+ 
+ const mapDispatchToProps = (dispatch: Dispatch) => ({
+     updateRedux: (selectedKitId: number, resetlocaleId: number, localeTreedata:[], resetLocale: boolean, chainId: number, regionId: number, metroId: number, storeId: number) => dispatch({ type: "RESET_LOCALE", payload: {selectedKitId, resetlocaleId, localeTreedata, resetLocale, chainId, regionId, metroId, storeId}}),
+ })
+ 
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(withSnackbar(AssignKitsToLocale)));
