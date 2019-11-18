@@ -86,7 +86,12 @@ SELECT q.QueueID AS QueueId
          THEN soe.ExtraText --Alternate only.
          ELSE sce.ExtraText --Default. Do not send the override data for default jurisdiction stores
          END
-    ELSE COALESCE(ieto.ExtraText, iet.ExtraText) END AS ScaleExtraText
+    ELSE
+    CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
+        THEN ieto.ExtraText --Alternate only.
+        ELSE iet.ExtraText  --Default. Do not send the override data for default jurisdiction stores
+        END
+    END AS ScaleExtraText
   ,CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
     THEN iov.SignRomanceTextLong --Alternate. Override data only.
     ELSE sa.SignRomanceTextLong  --Default. Do not send the override data for default jurisdiction stores.
@@ -237,7 +242,12 @@ SELECT q.QueueID AS QueueId
          THEN soe.ExtraText --Alternate
          ELSE sce.ExtraText --Default
          END
-    ELSE COALESCE(ieto.ExtraText, iet.ExtraText) END AS ScaleExtraText
+    ELSE
+    CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
+        THEN ieto.ExtraText --Alternate only.
+        ELSE iet.ExtraText  --Default. Do not send the override data for default jurisdiction stores
+        END
+    END AS ScaleExtraText
   ,CASE WHEN IsNull(s.StoreJurisdictionId, @defaultJuristictionId) <> @defaultJuristictionId
     THEN iov.SignRomanceTextLong --Alternate. Override data only.
     ELSE sa.SignRomanceTextLong  --Default. Do not send the override data for default jurisdiction stores.
