@@ -132,7 +132,14 @@ namespace Icon.Esb.ListenerApplication
         protected virtual void LogAndNotifyError(string errorMessage)
         {
             logger.Error(errorMessage);
-            emailClient.Send(errorMessage, listenerApplicationSettings.EmailSubjectError);
+            try
+            {
+                emailClient.Send(errorMessage, listenerApplicationSettings.EmailSubjectError);
+            }
+            catch(Exception ex)
+            {
+                logger.Error($"Email alert fail: {ex.Message}");
+            }
         }
 
         /// <summary>
@@ -154,7 +161,14 @@ namespace Icon.Esb.ListenerApplication
         protected virtual void LogAndNotifyError(List<string> errorMessageSections)
         {
             logger.Error(string.Join(" ", errorMessageSections));
-            emailClient.Send(string.Join("<br /><br />", errorMessageSections), listenerApplicationSettings.EmailSubjectError);
+            try
+            {
+                emailClient.Send(string.Join("<br /><br />", errorMessageSections), listenerApplicationSettings.EmailSubjectError);
+            }
+            catch(Exception ex)
+            {
+                logger.Error($"Email alert fail: {ex.Message}");
+            }
         }
 
         protected virtual void LogAndNotifyErrorWithMessage(Exception exception, EsbMessageEventArgs args)
