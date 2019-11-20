@@ -208,12 +208,14 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                }).then(data => {
                     if (data.length > 0)
                          this.setState({ kitName: data[0].description, kitType: data[0].kitType }
-
                          );
                     ;
                     if (data[0].kitType == 1) {
-
                          this.setState({ isSimplekitType: true });
+                    }
+                    else
+                    {
+                         this.setState({ isSimplekitType: false });
                     }
                }).catch((error) => {
 
