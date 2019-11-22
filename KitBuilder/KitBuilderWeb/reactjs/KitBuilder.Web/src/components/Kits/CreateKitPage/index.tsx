@@ -32,7 +32,6 @@ interface ICreateKitPageState {
   selectedLinkGroupItems: Array<LinkGroupItem>;
   item: Item | null;
   Instructions: Array<any>;
-  showRecipe: boolean;
   isDisplayMandatory: boolean;
   disabledLinkGroups:Array<any>;
 }
@@ -71,7 +70,6 @@ class CreateKitPage extends React.PureComponent<
       selectedLinkGroupItems: [],
       item: null,
       Instructions: [],
-      showRecipe: false,
       isDisplayMandatory: false,
       disabledLinkGroups:[]
     };
@@ -106,7 +104,6 @@ class CreateKitPage extends React.PureComponent<
           const {
             kitType,
             isDisplayMandatory,
-            showRecipe,
             description,
             item
           } = response;
@@ -116,7 +113,6 @@ class CreateKitPage extends React.PureComponent<
             Instructions,
             kitType,
             isDisplayMandatory,
-            showRecipe,
             description,
             item
           });
@@ -212,7 +208,6 @@ class CreateKitPage extends React.PureComponent<
       description,
       item,
       kitType,
-      showRecipe,
       isDisplayMandatory,
       kitId,
       selectedLinkGroupItems,
@@ -242,7 +237,6 @@ class CreateKitPage extends React.PureComponent<
       KitLinkGroup: reformatedKitLinkGroup,
       KitInstructionList: Instructions,
       KitType: kitType,
-      showRecipe,
       isDisplayMandatory
     };
   };
@@ -354,7 +348,7 @@ class CreateKitPage extends React.PureComponent<
                     </Button>
                   </Grid>
                 )}
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={5}>
                   <Grid
                     container
                     alignItems="center"
@@ -368,7 +362,7 @@ class CreateKitPage extends React.PureComponent<
                   </Grid>
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={4}>
                   <Grid
                     container
                     alignItems="center"
@@ -383,25 +377,7 @@ class CreateKitPage extends React.PureComponent<
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item xs={12} md={6}>
-                  <Grid
-                    container
-                    alignItems="center"
-                    className="create-kit-inner-row-container"
-                  >
-                    <Grid item>Show Recipe:</Grid>
-                    <Grid item>
-                      <Switch
-                        checked={this.state.showRecipe}
-                        onChange={e =>
-                          this.setState({ showRecipe: e.target.checked })
-                        }
-                        color="primary"
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={3}>
                   <Grid
                     container
                     alignItems="center"
