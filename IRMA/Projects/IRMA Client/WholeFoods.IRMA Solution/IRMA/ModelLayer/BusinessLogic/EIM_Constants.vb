@@ -74,10 +74,12 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
         Public Const ITEM_KEY_ATTRIBUTE_NAME As String = "item key"
 
         Public Const IS_IDENTICAL_ITEM_ROW_COLUMN_NAME As String = "identical_item_row"
-        Public Const IS_HIDDEN_COLUMN_NAME As String = "is_hidden_row"
+		Public Const IS_HIDDEN_COLUMN_NAME As String = "is_hidden_row"
 
-        ' scale data attribute keys
-        Public Const ITEM_SCALEDESC1_ATTR_KEY As String = "itemscale_scale_description1"
+		Public Const ITEM_EXTRATEXT_EXTRATEXT As String = "item_extratext_extratext"
+
+		' scale data attribute keys
+		Public Const ITEM_SCALEDESC1_ATTR_KEY As String = "itemscale_scale_description1"
         Public Const ITEM_SCALEDESC2_ATTR_KEY As String = "itemscale_scale_description2"
         Public Const ITEM_SCALEDESC3_ATTR_KEY As String = "itemscale_scale_description3"
         Public Const ITEM_SCALEDESC4_ATTR_KEY As String = "itemscale_scale_description4"
@@ -106,58 +108,59 @@ Namespace WholeFoods.IRMA.ModelLayer.BusinessLogic
         Public Const SCALE_ALLERGEN_ALLERGENS As String = "scale_allergen_allergens"
         Public Const SCALE_INGREDIENT_INGREDIENTS As String = "scale_ingredient_ingredients"
 
-        ' These are the item and item scale attributes with jurisdictional overrides.
-        ' Updated to include new 4.8 override values.
-        Public Shared JURISDICTION_ATTR_KEY_ARRAY As String() = New String() {EIM_Constants.ITEM_IS_DEFAULT_JURISDICTION_ATTR_KEY,
-                            EIM_Constants.ITEM_JURISDICTION_ID_ATTR_KEY,
-                            EIM_Constants.ITEM_ITEM_DESCRIPTION_ATTR_KEY,
-                            EIM_Constants.ITEM_POS_DESCRIPTION_ATTR_KEY,
-                            EIM_Constants.ITEM_SIGN_DESCRIPTION_ATTR_KEY,
-                            EIM_Constants.ITEM_PACKAGE_DESC1_ATTR_KEY,
-                            EIM_Constants.ITEM_PACKAGE_DESC2_ATTR_KEY,
-                            EIM_Constants.ITEM_PACKAGE_UNIT_ID_ATTR_KEY,
-                            EIM_Constants.ITEM_RETAIL_UNIT_ID_ATTR_KEY,
-                            EIM_Constants.ITEM_DISTRIBUTION_UNIT_ID_ATTR_KEY,
-                            EIM_Constants.ITEM_VENDOR_UNIT_ID_ATTR_KEY,
-                            EIM_Constants.ITEM_FOOD_STAMPS_ATTR_KEY,
-                            EIM_Constants.ITEM_DISCOUNTABLE_ATTR_KEY,
-                            EIM_Constants.ITEM_PRICE_REQUIRED_ATTR_KEY,
-                            EIM_Constants.ITEM_QUANTITY_REQUIRED_ATTR_KEY,
-                            EIM_Constants.ITEM_MANUFACTURING_UNIT_ID_ATTR_KEY,
-                            EIM_Constants.ITEM_QTYPROHIBIT_ATTR_KEY,
-                            EIM_Constants.ITEM_CASE_DISCOUNT_ATTR_KEY,
-                            EIM_Constants.ITEM_COUPON_MULTIPLIER_ATTR_KEY,
-                            EIM_Constants.ITEM_MISC_TRANSACTION_SALE_ATTR_KEY,
-                            EIM_Constants.ITEM_ICE_TARE_ATTR_KEY,
-                            EIM_Constants.ITEM_SCALEDESC1_ATTR_KEY,
-                            EIM_Constants.ITEM_SCALEDESC2_ATTR_KEY,
-                            EIM_Constants.ITEM_SCALEDESC3_ATTR_KEY,
-                            EIM_Constants.ITEM_SCALEDESC4_ATTR_KEY,
-                            EIM_Constants.ITEMSCALE_SCALE_EXTRATEXT_LABEL_TYPE_ATTR_KEY,
-                            EIM_Constants.SCALE_EXTRATEXT_EXTRATEXT,
-                            EIM_Constants.ITEMSCALE_SCALE_TARE_ID_ATTR_KEY,
-                            EIM_Constants.ITEMSCALE_SCALE_SCALEUOMUNIT_ID_ATTR_KEY,
-                            EIM_Constants.ITEMSCALE_SCALE_RANDOMWEIGHTTYPE_ID_ATTR_KEY,
-                            EIM_Constants.ITEMSCALE_SCALE_FIXEDWEIGHT_ATTR_KEY,
-                            EIM_Constants.ITEMSCALE_SCALE_BYCOUNT_ATTR_KEY,
-                            EIM_Constants.ITEMSCALE_SHELFLIFE_LENGTH_ATTR_KEY,
-                            EIM_Constants.ITEM_BRAND_ID_ATTR_KEY,
-                            EIM_Constants.ITEM_COSTEDBYWEIGHT,
-                            EIM_Constants.ITEM_COUNTRYOFPROC_ATTR_KEY,
-                            EIM_Constants.ITEM_FSAELIGIBLE_ATTR_KEY,
-                            EIM_Constants.ITEM_INGREDIENT_ATTR_KEY,
-                            EIM_Constants.ITEM_LABELTYPE_ID_ATTR_KEY,
-                            EIM_Constants.ITEM_LOCKAUTH_ATTR_KEY,
-                            EIM_Constants.ITEM_NOTAVAILABLE_ATTR_KEY,
-                            EIM_Constants.ITEM_NOTAVAILABLENOTE_ATTR_KEY,
-                            EIM_Constants.ITEM_ORIGIN_ATTR_KEY,
-                            EIM_Constants.ITEM_PRODUCTCODE_ATTR_KEY,
-                            EIM_Constants.ITEM_SUSTAINABILITYRANKING_ATTR_KEY,
-                            EIM_Constants.ITEM_SUSTAINABILITYRANKINGREQUIRED_ATTR_KEY,
-                            EIM_Constants.ITEM_UNITPRICECATEGORY_ATTR_KEY}
+		' These are the item and item scale attributes with jurisdictional overrides.
+		' Updated to include new 4.8 override values.
+		Public Shared JURISDICTION_ATTR_KEY_ARRAY As String() = New String() {EIM_Constants.ITEM_IS_DEFAULT_JURISDICTION_ATTR_KEY,
+							EIM_Constants.ITEM_JURISDICTION_ID_ATTR_KEY,
+							EIM_Constants.ITEM_ITEM_DESCRIPTION_ATTR_KEY,
+							EIM_Constants.ITEM_POS_DESCRIPTION_ATTR_KEY,
+							EIM_Constants.ITEM_SIGN_DESCRIPTION_ATTR_KEY,
+							EIM_Constants.ITEM_PACKAGE_DESC1_ATTR_KEY,
+							EIM_Constants.ITEM_PACKAGE_DESC2_ATTR_KEY,
+							EIM_Constants.ITEM_PACKAGE_UNIT_ID_ATTR_KEY,
+							EIM_Constants.ITEM_RETAIL_UNIT_ID_ATTR_KEY,
+							EIM_Constants.ITEM_DISTRIBUTION_UNIT_ID_ATTR_KEY,
+							EIM_Constants.ITEM_VENDOR_UNIT_ID_ATTR_KEY,
+							EIM_Constants.ITEM_FOOD_STAMPS_ATTR_KEY,
+							EIM_Constants.ITEM_DISCOUNTABLE_ATTR_KEY,
+							EIM_Constants.ITEM_PRICE_REQUIRED_ATTR_KEY,
+							EIM_Constants.ITEM_QUANTITY_REQUIRED_ATTR_KEY,
+							EIM_Constants.ITEM_MANUFACTURING_UNIT_ID_ATTR_KEY,
+							EIM_Constants.ITEM_QTYPROHIBIT_ATTR_KEY,
+							EIM_Constants.ITEM_CASE_DISCOUNT_ATTR_KEY,
+							EIM_Constants.ITEM_COUPON_MULTIPLIER_ATTR_KEY,
+							EIM_Constants.ITEM_MISC_TRANSACTION_SALE_ATTR_KEY,
+							EIM_Constants.ITEM_ICE_TARE_ATTR_KEY,
+							EIM_Constants.ITEM_SCALEDESC1_ATTR_KEY,
+							EIM_Constants.ITEM_SCALEDESC2_ATTR_KEY,
+							EIM_Constants.ITEM_SCALEDESC3_ATTR_KEY,
+							EIM_Constants.ITEM_SCALEDESC4_ATTR_KEY,
+							EIM_Constants.ITEMSCALE_SCALE_EXTRATEXT_LABEL_TYPE_ATTR_KEY,
+							EIM_Constants.SCALE_EXTRATEXT_EXTRATEXT,
+							EIM_Constants.ITEMSCALE_SCALE_TARE_ID_ATTR_KEY,
+							EIM_Constants.ITEMSCALE_SCALE_SCALEUOMUNIT_ID_ATTR_KEY,
+							EIM_Constants.ITEMSCALE_SCALE_RANDOMWEIGHTTYPE_ID_ATTR_KEY,
+							EIM_Constants.ITEMSCALE_SCALE_FIXEDWEIGHT_ATTR_KEY,
+							EIM_Constants.ITEMSCALE_SCALE_BYCOUNT_ATTR_KEY,
+							EIM_Constants.ITEMSCALE_SHELFLIFE_LENGTH_ATTR_KEY,
+							EIM_Constants.ITEM_BRAND_ID_ATTR_KEY,
+							EIM_Constants.ITEM_COSTEDBYWEIGHT,
+							EIM_Constants.ITEM_COUNTRYOFPROC_ATTR_KEY,
+							EIM_Constants.ITEM_FSAELIGIBLE_ATTR_KEY,
+							EIM_Constants.ITEM_INGREDIENT_ATTR_KEY,
+							EIM_Constants.ITEM_LABELTYPE_ID_ATTR_KEY,
+							EIM_Constants.ITEM_LOCKAUTH_ATTR_KEY,
+							EIM_Constants.ITEM_NOTAVAILABLE_ATTR_KEY,
+							EIM_Constants.ITEM_NOTAVAILABLENOTE_ATTR_KEY,
+							EIM_Constants.ITEM_ORIGIN_ATTR_KEY,
+							EIM_Constants.ITEM_PRODUCTCODE_ATTR_KEY,
+							EIM_Constants.ITEM_SUSTAINABILITYRANKING_ATTR_KEY,
+							EIM_Constants.ITEM_SUSTAINABILITYRANKINGREQUIRED_ATTR_KEY,
+							EIM_Constants.ITEM_UNITPRICECATEGORY_ATTR_KEY,
+							EIM_Constants.ITEM_EXTRATEXT_EXTRATEXT}
 
 
-        Public Const PROMO_PLANNER_IS_FOR_PROMO_PLANNER_ATTR_KEY As String = "calculated_isforpromoplanner"
+		Public Const PROMO_PLANNER_IS_FOR_PROMO_PLANNER_ATTR_KEY As String = "calculated_isforpromoplanner"
         Public Const PROMO_PLANNER_PROJUNITS As String = "calculated_projunits"
         Public Const PROMO_PLANNER_COMMENT1 As String = "calculated_comment1"
         Public Const PROMO_PLANNER_COMMENT2 As String = "calculated_comment2"

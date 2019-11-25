@@ -16,3 +16,4 @@ Post-Deployment Script Template
 -- This is a permanent entry (keep at bottom).
 :r VersionUpdates.sql -- 2018.02.28
 :r PBI25271-RemoveInforOrdering.sql -- 2019.10.22
+:r "23903 - AddNonScaleExtraTextToEIM/AddNonScaleExtraTextToEIM.sql" --2019.11.20

@@ -12,6 +12,7 @@ MZ      2017-07-21  22360   Added two alternate jurisdiction fields Sign Romance
                             to EIM
 EM      2018-11-01  28101   Disregard non-1 Average_Unit_Weight values (Average_Unit_Weight
                             value should always be 1.0000 and any other values can be ignored)
+MZ      2019-11-21  23903   Added NonScale Extra Text to EIM
 ***********************************************************************************************/
 
 SELECT
@@ -109,10 +110,12 @@ SELECT
 				,itm.UseLastReceivedCost
 				,itmo.SignRomanceTextLong
 				,itmo.SignRomanceTextShort
+				,ino.Item_ExtraText_ID
         
 		FROM 
 			dbo.Item itm (NOLOCK)
             INNER JOIN dbo.ItemOverride itmo (NOLOCK) ON itmo.Item_Key = itm.Item_Key
+			 LEFT JOIN dbo.ItemNutritionOverride ino (NOLOCK) ON itm.Item_Key = ino.ItemKey
 
         UNION
 
@@ -211,10 +214,12 @@ SELECT
 				,itm.UseLastReceivedCost
 				,isa.SignRomanceTextLong
 				,isa.SignRomanceTextShort
+				,inn.Item_ExtraText_ID
         
 		FROM 
 			dbo.Item itm (NOLOCK)
 			LEFT JOIN itemsignattribute isa (NOLOCK) on itm.Item_Key = isa.Item_Key
+			LEFT JOIN dbo.ItemNutrition inn (NOLOCK) ON itm.Item_Key = inn.ItemKey
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[EIM_Jurisdiction_ItemView] TO [IRMAClientRole]

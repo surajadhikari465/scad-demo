@@ -53,6 +53,7 @@ MZ      2017-12-18  PBI22360        Added logic to only allow Retail Size and Re
 EM      2018-08-16  PBI28634        Added logic to disallow Sign Caption updates if the validated Customer Friendly Description is in use
 MZ      2019-02-19  11003           IsDefaultJurisdiction column is not required for regions except for MW and PN. Therefore, default the 
                                     @IsDefaultJurisdiction value to 1 (true) if it's not specified on the uploaded item maintenance sheet. 
+MZ      2019-11-21  PBI23903        Added NonScale Extra Text to EIM
 ***********************************************************************************************/
 	
 	SET NOCOUNT ON
@@ -174,11 +175,17 @@ MZ      2019-02-19  11003           IsDefaultJurisdiction column is not required
 		@PrintBlankUnitPrice bit,
 		@PrintBlankTotalPrice bit,
 		@ShelfLife_Length smallint,
-		
+
 		-- extra text data
 		@Scale_LabelType_ID int,
 		@ExtraTextDescription varchar(50),
 		@ExtraText varchar(4200),
+		
+		-- Item Nutrition data
+		@Item_ExtraText_ID int,
+		@Item_ExtraText varchar(4200),
+		@NonScaleExtraTextDescription varchar(50),
+        @NonScale_LabelType_ID INT,
 
 		-- Storage data
 		@StorageDescription varchar(50),
@@ -320,6 +327,26 @@ MZ      2019-02-19  11003           IsDefaultJurisdiction column is not required
 			
 			WHERE 
 				Item_Key = @Item_Key AND StoreJurisdictionID = @StoreJurisdictionID
+			
+			-- prepopulate item nutrition data			
+			SELECT
+				@Item_ExtraText_ID = Item_ExtraText_ID
+			FROM 
+				ItemNutritionOverride (NOLOCK)
+			WHERE 
+				ItemKey = @Item_Key
+              AND
+                StoreJurisdictionID = @StoreJurisdictionID  
+			
+			IF @Item_ExtraText_ID IS NOT NULL
+			BEGIN
+				
+				SELECT @Item_ExtraText = ExtraText,
+                       @NonScaleExtraTextDescription = [Description],
+					   @NonScale_LabelType_ID = Scale_LabelType_ID
+				FROM dbo.Item_ExtraText (NOLOCK)
+				WHERE Item_ExtraText_ID = @Item_ExtraText_ID	
+			END
 
 			-- prepopulate scale data			
 			SELECT
@@ -476,6 +503,24 @@ MZ      2019-02-19  11003           IsDefaultJurisdiction column is not required
 				SubTeam st (NOLOCK) ON i.SubTeam_No = st.SubTeam_No
 			WHERE 
 				Item_Key = @Item_Key
+			
+			-- prepopulate item nutrition data			
+			SELECT
+				@Item_ExtraText_ID = Item_ExtraText_ID
+			FROM 
+				ItemNutrition (NOLOCK)
+			WHERE 
+				ItemKey = @Item_Key
+			
+			IF @Item_ExtraText_ID IS NOT NULL
+			BEGIN
+				
+				SELECT @Item_ExtraText = ExtraText,
+                       @NonScaleExtraTextDescription = [Description],
+					   @NonScale_LabelType_ID = Scale_LabelType_ID
+				FROM dbo.Item_ExtraText (NOLOCK)
+				WHERE Item_ExtraText_ID = @Item_ExtraText_ID	
+			END
 
 			-- prepopulate scale data			
 			SELECT
@@ -981,6 +1026,15 @@ MZ      2019-02-19  11003           IsDefaultJurisdiction column is not required
 					SELECT  @ItemChainIDs = CAST(@ColumnValue AS varchar(1000))
 			
 			END
+            ELSE
+			IF @TableName = 'item_extratext'
+			BEGIN
+
+				-- *new* item scale extra text data
+				IF @ColumnName = LOWER('ExtraText')
+					SELECT  @Item_ExtraText = CAST(@ColumnValue AS varchar(4200))
+
+			END
 			ELSE
 			IF @TableName = 'itemscale'
 			BEGIN
@@ -1342,7 +1396,7 @@ MZ      2019-02-19  11003           IsDefaultJurisdiction column is not required
 						SET @Scale_Ingredient_ID = @New_Scale_Ingredient_ID
 			END
 		END
-				
+			
 		-- only insert/update the override item and scale tables if
 		-- the region is using store jurisdictions
 		-- and the upload row is not for the item's
@@ -1443,7 +1497,28 @@ MZ      2019-02-19  11003           IsDefaultJurisdiction column is not required
 				END CATCH
 
 			END
-		
+			ELSE
+			BEGIN
+				BEGIN TRY
+					SET @Item_ExtraText_ID = IsNull(@Item_ExtraText_ID, 0)
+					SET @NonScale_LabelType_ID = IsNull(@NonScale_LabelType_ID, 0)
+ 
+					EXEC dbo.InsertOrUpdateItemExtraTextOverride
+						@Item_ExtraText_ID,
+						@Item_Key,
+						@NonScaleExtraTextDescription,
+						@NonScale_LabelType_ID,
+						@Item_ExtraText,
+						@StoreJurisdictionID			
+	
+					EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.3 Update Existing Item - [InsertOrUpdateItemExtraTextOverride]'
+
+				END TRY
+				BEGIN CATCH
+
+						EXEC dbo.EIM_LogAndRethrowException @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.3 Update Existing Item - [InsertOrUpdateItemExtraTextOverride]'
+				END CATCH
+            END
 		END
 		ELSE
 		BEGIN
@@ -1635,7 +1710,31 @@ MZ      2019-02-19  11003           IsDefaultJurisdiction column is not required
 				END CATCH
 
 			END
+            ELSE
+			BEGIN
+				IF @Item_ExtraText IS NOT NULL
+				BEGIN
+					SET @Item_ExtraText_ID = IsNull(@Item_ExtraText_ID, 0)
+					SET @NonScale_LabelType_ID = IsNull(@NonScale_LabelType_ID, 0)
 
+					BEGIN TRY
+
+						EXEC dbo.InsertOrUpdateItemExtraText
+								@Item_ExtraText_ID,
+								@Item_Key,
+								@NonScaleExtraTextDescription,
+								@NonScale_LabelType_ID,
+								@Item_ExtraText
+						
+						EXEC dbo.EIM_Log @LoggingLevel, 'TRACE', @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.7 Update Existing Item - [InsertOrUpdateItemExtraText]'
+						
+					END TRY
+					BEGIN CATCH
+
+						EXEC dbo.EIM_LogAndRethrowException @UploadSession_ID, @UploadRow_ID, @RetryCount, @Item_key, NULL, '3.7 Update Existing Item - [InsertOrUpdateItemExtraText]'
+					END CATCH
+				END
+			END
 			-- Update sign attributes (the "exists" logic is there because EIM runs this stored procedure after running the new item upload stored procedure, and I didn't want
 			-- a record to be created in ItemSignAttribute if there was no actual data in the upload).
 			BEGIN TRY

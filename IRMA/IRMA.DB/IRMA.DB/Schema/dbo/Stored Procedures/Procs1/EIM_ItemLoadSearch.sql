@@ -241,7 +241,7 @@ BEGIN
 						ON ProdHierarchyLevel4.ProdHierarchyLevel3_ID = ProdHierarchyLevel3.ProdHierarchyLevel3_ID
 					LEFT JOIN
 						ItemBrand (nolock)
-						ON Item_TableName.Brand_ID = itembrand.Brand_ID
+						ON Item_TableName.Brand_ID = itembrand.Brand_ID                      
 					LEFT JOIN
 						ItemScale_TableName (nolock)
 						ON Item_TableName.Item_Key = ItemScale_TableName.Item_Key '
@@ -256,7 +256,9 @@ BEGIN
 
 		SELECT @SQL = @SQL + ' 
 						LEFT JOIN ItemSignAttribute (nolock)
-						ON Item_TableName.Item_Key = ItemSignAttribute.Item_Key '
+						ON Item_TableName.Item_Key = ItemSignAttribute.Item_Key 
+						LEFT JOIN Item_ExtraText_TableName  (nolock)
+						ON Item_TableName.Item_ExtraText_ID = Item_ExtraText_TableName.Item_ExtraText_ID'
 					
 		SELECT @SQL = @SQL + '
 					LEFT JOIN
@@ -460,6 +462,7 @@ BEGIN
 		SELECT @SQL = REPLACE(@SQL, 'ItemVendor_TableName', 'SLIM_ItemVendorView')
 		SELECT @SQL = REPLACE(@SQL, 'StoreItem_TableName', 'SLIM_StoreItemView')
 		SELECT @SQL = REPLACE(@SQL, 'Item_TableName', 'SLIM_ItemView')
+        SELECT @SQL = REPLACE(@SQL, 'Item_ExtraText_TableName', 'Item_ExtraText')
 	END
 	ELSE
 	BEGIN
@@ -474,6 +477,7 @@ BEGIN
 		SELECT @SQL = REPLACE(@SQL, 'StoreItemVendor_TableName', 'StoreItemVendor')
 		SELECT @SQL = REPLACE(@SQL, 'ItemVendor_TableName', 'ItemVendor')
 		SELECT @SQL = REPLACE(@SQL, 'StoreItem_TableName', 'StoreItem')
+		SELECT @SQL = REPLACE(@SQL, 'Item_ExtraText_TableName', 'Item_ExtraText')
 
 		IF @UseStoreJurisdictions = 1
 		BEGIN
