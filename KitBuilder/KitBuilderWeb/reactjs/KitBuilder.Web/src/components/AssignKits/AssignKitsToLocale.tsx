@@ -51,8 +51,11 @@ interface IAssignKitsToLocaleState {
      isSimplekitType: boolean;
      assignedLocales: number[];
      excludedLocales: number[];
+     copyFromLocale: number;
+     copyToLocales: number[];
      showPublishConfirm: boolean;
      showSaveConfirm: boolean;
+     showCopyConfirm: boolean;
      isReadyToPublish: boolean;
      kitSearchDialogOpen: boolean;
      localeSearchDialogOpen: boolean;
@@ -87,8 +90,11 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                isSimplekitType: false,
                assignedLocales: [],
                excludedLocales: [],
+               copyFromLocale: 0,
+               copyToLocales: [],
                showPublishConfirm: false,
                showSaveConfirm: false,
+               showCopyConfirm: false,
                isReadyToPublish: true,
                kitSearchDialogOpen: false,
                localeSearchDialogOpen: false,
@@ -159,6 +165,11 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
           this.setState({ showSaveConfirm: !this.state.showSaveConfirm })
      }
 
+     toggleShowCopyConfirm = () => {
+          this.setState({ showCopyConfirm: !this.state.showCopyConfirm })
+     }
+
+
      toggleLocaleExcluded = (localeId: number) => {
           const oldExcludedLocales = this.state.excludedLocales;
           const { assignedLocales } = this.state;
@@ -191,6 +202,28 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                }
           }
           this.setState({ assignedLocales });
+     }
+
+     toggleCopyToLocales = (localeId: number) => {
+          const oldCopyToLocales = this.state.copyToLocales;
+          let copyToLocales;
+
+          if (oldCopyToLocales.includes(localeId)) {
+               copyToLocales = oldCopyToLocales.filter((id) => id !== localeId);
+          }
+          else {
+               copyToLocales = [...oldCopyToLocales, localeId];
+          }
+          this.setState({ copyToLocales });
+     }
+
+     toggleCopyFromLocale = (localeId: number) => {
+          if (this.state.copyFromLocale == localeId)
+               this.setState({copyFromLocale: 0})
+          else if (this.state.copyFromLocale == 0)
+               this.setState({copyFromLocale: localeId})
+          else
+               this.props.showAlert("Only one Copy From location can be selected.", "error")
      }
 
      loadKit = () => {
@@ -409,6 +442,35 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                });
      }
 
+     copyData = () => {
+          var { kitId } = this.state;
+          //var dest: Array<any>;
+
+          this.state.copyFromLocale
+          this.state.copyToLocales
+          let toLocalesdest = JSON.stringify(this.state.copyToLocales);
+          let urlKitCopy = urlKit + "/" + kitId + "/" + "CopyKitProperties/" + this.state.copyFromLocale
+         
+          var headers = {
+               'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*"
+          }
+
+          axios.post(urlKitCopy, toLocalesdest,
+               {
+                    headers: headers
+               }).then(response => {
+
+                    this.props.showAlert("Kit properties copied succesfully.", "success")
+                    this.setState({ copyFromLocale: 0, copyToLocales: [] })
+                    this.loadData();
+                    this.toggleShowCopyConfirm();
+               }).catch(error => {
+
+                    this.props.showAlert("Error in saving data.", "error");
+                    this.toggleShowCopyConfirm();
+               });
+     }
+
      render() {
           const { data } = this.state;
           const { isReadyToPublish } = this.state;
@@ -479,7 +541,7 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                                         Select Locale
                                     </Button>
                               </Grid>   
-                              <Grid xs={2} md={7} item>
+                              <Grid xs={2} md={5} item>
                               </Grid>    
                               <Grid xs={12} md={2} item>
                                    <Button disabled={!isReadyToPublish} className={this.props.classes.button} variant="contained" color="primary" onClick={this.toggleShowPublishConfirm} >
@@ -487,8 +549,13 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                                    </Button>
                               </Grid>
                               <Grid xs={12} md={2} item>
+                                   <Button disabled={!(this.state.copyFromLocale > 0 && this.state.copyToLocales.length > 0)} className={this.props.classes.button} variant="contained" color="primary" onClick={this.toggleShowCopyConfirm} >
+                                        Copy
+                                   </Button>
+                              </Grid>
+                              <Grid xs={12} md={2} item>
                                    <Button variant="contained" color="primary" className={this.props.classes.button} onClick={this.toggleShowSaveConfirm} >
-                                        Save Changes
+                                        Save Assignments
                                    </Button>
                               </Grid>
                          </Grid>
@@ -503,6 +570,10 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                               toggleLocaleExcluded={this.toggleLocaleExcluded}
                               assignedLocales={this.state.assignedLocales}
                               excludedLocales={this.state.excludedLocales}
+                              toggleCopyFromLocale={this.toggleCopyFromLocale}
+                              toggleCopyToLocales={this.toggleCopyToLocales}
+                              copyFromLocale={this.state.copyFromLocale}
+                              copyToLocales={this.state.copyToLocales}
                               kitId={this.state.kitId}
                               isSimplekitType={this.state.isSimplekitType}
                               disabled={false}
@@ -521,6 +592,13 @@ class AssignKitsToLocale extends React.Component<IAssignKitsToLocaleProps, IAssi
                               open={this.state.showPublishConfirm}
                               onConfirm={this.publishChanges}
                               onClose={this.toggleShowPublishConfirm}
+                         />
+
+                         <ConfirmDialog
+                              message="Are you sure you want to copy kit properties?"
+                              open={this.state.showCopyConfirm}
+                              onConfirm={this.copyData}
+                              onClose={this.toggleShowCopyConfirm}
                          />
                     </React.Fragment>
                </StyledPanel>

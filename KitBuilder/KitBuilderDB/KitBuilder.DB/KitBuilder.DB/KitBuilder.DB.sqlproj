@@ -128,6 +128,8 @@
     <Build Include="app\Tables\AppLog.sql" />
     <Build Include="app\Tables\App.sql" />
     <None Include="Scripts\DeleteDataFromTables.sql" />
+    <Build Include="dbo\User Defined Types\CopyToLocalesType.sql" />
+    <Build Include="dbo\Stored Procedures\CopyKitLocaleProperties.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="KitBuilder.DB.refactorlog" />

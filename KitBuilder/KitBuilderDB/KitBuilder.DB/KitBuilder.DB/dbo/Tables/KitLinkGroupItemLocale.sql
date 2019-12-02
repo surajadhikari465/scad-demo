@@ -7,7 +7,7 @@
     [Exclude]                  BIT            NULL,
     [InsertDateUtc]            DATETIME2 (7)  CONSTRAINT [DF_KitLinkGroupItemLocale_InsertDateUtc] DEFAULT (sysutcdatetime()) NOT NULL,
     [LastUpdatedDateUtc]       DATETIME2 (7)  NULL,
-    [LastModifiedBy]           NVARCHAR (100) NOT NULL,
+    [LastModifiedBy]           NVARCHAR (100) NULL,
     CONSTRAINT [PK_KitLinkGroupItemLocale] PRIMARY KEY CLUSTERED ([KitLinkGroupItemLocaleId] ASC),
     CONSTRAINT [FK_KitLinkGroupItemLocale_KitLinkGroupItem] FOREIGN KEY ([KitLinkGroupItemId]) REFERENCES [dbo].[KitLinkGroupItem] ([KitLinkGroupItemId]),
     CONSTRAINT [FK_KitLinkGroupItemLocale_KitLocale] FOREIGN KEY ([KitLinkGroupLocaleId]) REFERENCES [dbo].[KitLinkGroupLocale] ([KitLinkGroupLocaleId]) ON DELETE CASCADE

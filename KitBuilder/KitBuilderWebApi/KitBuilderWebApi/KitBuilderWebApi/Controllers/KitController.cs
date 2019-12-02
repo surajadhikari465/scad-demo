@@ -330,7 +330,42 @@ namespace KitBuilderWebApi.Controllers
 
             return Ok(kitProperties);
         }
-        private IEnumerable<Object> GetKits(int kitId, bool loadChildObjects)
+
+		//// GET api/kits/1/ViewKit/1 GetKitByLocationID
+		[HttpPost("{kitId}/CopyKitProperties/{fromLocaleId}", Name = "CopyKitProperties")]
+		public IActionResult CopyKitProperties(int kitId, int fromLocaleId, [FromBody] List<int> toLocaleIds)
+		{
+			try
+			{
+				var paramKitId = new SqlParameter("kitId", SqlDbType.BigInt) { Value = kitId };
+				var paramFromLocaleId = new SqlParameter("fromLocaleId", SqlDbType.Int) { Value = fromLocaleId };
+
+				var table = new DataTable();
+				table.Columns.Add("LocaleId");
+				toLocaleIds.ForEach(i => table.Rows.Add(i));
+
+				var paramToLocaleIds = new SqlParameter
+				{
+					ParameterName = "toLocaleIds",
+					Value = table,
+					TypeName = "dbo.CopyToLocalesType"
+				};
+
+				var sql = "exec CopyKitLocaleProperties @kitId, @fromLocaleId, @toLocaleIds";
+
+				kitLocaleRepository.UnitOfWork.Context.Database.ExecuteSqlCommand(sql, paramKitId, paramFromLocaleId, paramToLocaleIds);
+
+				return Ok();
+			}
+			catch (Exception ex)
+			{
+				logger.LogError(ex.Message);
+				return StatusCode(500, "A problem happened while KitLocale properties.");
+			}
+
+		}
+
+		private IEnumerable<Object> GetKits(int kitId, bool loadChildObjects)
         {
             if (loadChildObjects)
             {
