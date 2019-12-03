@@ -1503,6 +1503,7 @@ MZ      2019-11-21  PBI23903        Added NonScale Extra Text to EIM
 					SET @Item_ExtraText_ID = IsNull(@Item_ExtraText_ID, 0)
 					SET @NonScale_LabelType_ID = IsNull(@NonScale_LabelType_ID, 0)
 					SET @NonScaleExtraTextDescription = ISNULL(@NonScaleExtraTextDescription, '')
+					SET @Item_ExtraText = ISNULL(@Item_ExtraText, '')
  
 					EXEC dbo.InsertOrUpdateItemExtraTextOverride
 						@Item_ExtraText_ID,
@@ -1718,6 +1719,7 @@ MZ      2019-11-21  PBI23903        Added NonScale Extra Text to EIM
 					SET @Item_ExtraText_ID = IsNull(@Item_ExtraText_ID, 0)
 					SET @NonScale_LabelType_ID = IsNull(@NonScale_LabelType_ID, 0)
 					SET @NonScaleExtraTextDescription = ISNULL(@NonScaleExtraTextDescription, '')
+					SET @Item_ExtraText = ISNULL(@Item_ExtraText, '')
 
 					BEGIN TRY
 
