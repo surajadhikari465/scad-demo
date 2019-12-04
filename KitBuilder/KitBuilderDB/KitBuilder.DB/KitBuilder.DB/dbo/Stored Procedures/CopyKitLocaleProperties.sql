@@ -31,7 +31,7 @@ BEGIN
            ,[Exclude]
            ,[StatusId]
            ,[InsertDateUtc]
-           )
+           ,[LastUpdatedDateUtc])
 	OUTPUT @fromKitLocaleId,INSERTED.KitLocaleId
 	  INTO @KitLocaletable(CopyFromKitLocaleId, CopyToKitLocaleId)
 	SELECT  kl.[KitId]
@@ -41,6 +41,7 @@ BEGIN
            ,kl.[Exclude]
            ,@statusId
            ,GETUTCDATE()
+		   ,GETUTCDATE()
 	  FROM KitLocale kl
 CROSS JOIN @toLocaleIds tl
      WHERE kl.KitId = @kitId
@@ -54,7 +55,8 @@ CROSS JOIN @toLocaleIds tl
            ,[MinimumCalories]
            ,[MaximumCalories]
            ,[Exclude]
-           ,[InsertDateUtc])
+           ,[InsertDateUtc]
+		   ,[LastUpdatedDateUtc])
 	OUTPUT INSERTED.KitLinkGroupLocaleId
 	  INTO @KitLinkGroupLocaletable(CopyToKitLinkGroupLocaleId)
 	SELECT klgl.[KitLinkGroupId]
@@ -64,6 +66,7 @@ CROSS JOIN @toLocaleIds tl
 		  ,klgl.[MinimumCalories]
 		  ,klgl.[MaximumCalories]
 		  ,klgl.[Exclude]
+		  ,GETUTCDATE()
 		  ,GETUTCDATE()
 	  FROM KitLinkGroupLocale klgl
 	  JOIN @KitLocaletable kl on klgl.KitLocaleId = kl.CopyFromKitLocaleId 
