@@ -29,8 +29,9 @@ namespace KitBuilder.DataAccess.DatabaseModels
         public DateTime InsertDateUtc { get; set; }
 		public DateTime? LastUpdatedDateUtc { get; set; }
         public string FlexibleText { get; set; }
-
-        public ICollection<Kit> Kit { get; set; }
+		public string RetailSize { get; set; }
+		public string RetailUOM { get; set; }
+		public ICollection<Kit> Kit { get; set; }
 
         public ICollection<LinkGroupItem> LinkGroupItem { get; set; }
     }

@@ -10,5 +10,7 @@
     [LastUpdatedDateUtc]   DATETIME2 (7)  NULL,
 	[FlexibleText]         NVARCHAR (255) NULL,
     [PosDesc]              NVARCHAR (255) NULL,
+    [RetailSize]           NVARCHAR(255) NULL, 
+    [RetailUOM]            NVARCHAR(255) NULL, 
     CONSTRAINT [PK_Items] PRIMARY KEY CLUSTERED ([ItemId] ASC)
 );
