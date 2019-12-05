@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[GetPriceBatchSearch]
+﻿CREATE PROCEDURE [dbo].[GetPriceBatchSearch]
     @StoreList varchar(MAX),
     @StoreListSeparator char(1),
     @ItemChgTypeID tinyint,
@@ -14,35 +13,12 @@ CREATE PROCEDURE [dbo].[GetPriceBatchSearch]
 	@AutoApplyFlag bit,
 	@ApplyDate datetime,
 	@MaxRowsToReturn int = 0
-
 AS
 
 BEGIN
     SET NOCOUNT ON
 
-	DECLARE @MaxRows int
-
---------------------------------------------------------------------------------------------------------
--- TEMPORARY!!! (2007-09-19)
--- hardcode to 1001 until the VB code is changed to add the parameter @MaxRowsToReturn
--- reason: currently the VB code limits the displayed rows to 1000 in the loop processing the result set
-	IF @MaxRowsToReturn = 0
-		SELECT @MaxRowsToReturn = 1001	-- use 1001 instead of 1000 so code knows if more rows exist
---------------------------------------------------------------------------------------------------------
-
-	-----------------------------------
-	-- Limit the number of rows returned
-	-----------------------------------
-	IF ISNULL(@MaxRowsToReturn, 0) > 0
-		SELECT @MaxRows = @MaxRowsToReturn
-	ELSE
-		-- no limit specified; set to max int value (2,147,483,647)
-		SELECT @MaxRows = 2147483647
-    
-	-----------------------------------
-	-- Return the search data
-	-----------------------------------
-	SELECT TOP(@MaxRows)
+	SELECT
 		[PriceBatchHeaderID] = PBH.PriceBatchHeaderID, 
 		[Store_No] = PBD.Store_No,
 		[Store_Name] = RTRIM(MAX(S.Store_Name)),
@@ -115,28 +91,23 @@ BEGIN
     
     SET NOCOUNT OFF
 END
-
-
 GO
+
 GRANT EXECUTE
     ON OBJECT::[dbo].[GetPriceBatchSearch] TO [IRMASupportRole]
     AS [dbo];
-
 
 GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[GetPriceBatchSearch] TO [IRMAClientRole]
     AS [dbo];
 
-
 GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[GetPriceBatchSearch] TO [IRMASchedJobsRole]
     AS [dbo];
 
-
 GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[GetPriceBatchSearch] TO [IRMAReportsRole]
     AS [dbo];
-
