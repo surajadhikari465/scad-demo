@@ -254,7 +254,7 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
                 ErrorHandler.ProcessError(ErrorType.ScheduledJob_DidNotRun, args, SeverityLevel.Warning)
 
                 If (Not StopAlerts And (Me.Classname = "POSPushJob" Or Me.Classname = "ScalePushJob" Or Me.Classname = "PeopleSoftUploadJob" Or Me.Classname = "PeopleSoftTransferUploadJob")) Then
-                    OpsGenieUtility.TriggerOpsgenieAlert(Me.Classname, Me.Classname + " Failure", msg)
+                    OpsGenieUtility.SendMail( Me.Classname + " Failure", msg)
                 End If
 
             End If

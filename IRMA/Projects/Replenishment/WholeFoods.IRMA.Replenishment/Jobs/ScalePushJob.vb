@@ -375,7 +375,7 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
                 _jobExecutionMessage = msg.ToString()
 
                 If (Not _hasTriggeredAlert And Not StopAlerts) Then
-                    OpsGenieUtility.TriggerOpsgenieAlert("IRMA Scale Push", "Scale Push Failure", ex.ToString())
+                    OpsGenieUtility.SendMail("IRMA Scale Push Failure", ex.ToString())
                     _hasTriggeredAlert = True
                 End If
             End Try

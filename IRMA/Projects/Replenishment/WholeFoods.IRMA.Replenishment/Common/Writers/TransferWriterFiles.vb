@@ -274,7 +274,7 @@ Namespace WholeFoods.IRMA.Replenishment.Common.Writers
                                                                      currentStore.StoreNum, currentStore.StoreName, currentStore.FTPInfo.IPAddress, currentStore.FTPInfo.FTPUser, ex.ToString())
 
                             If (Not _hasTriggeredAlert And Not StopAlerts) Then
-                                OpsGenieUtility.TriggerOpsgenieAlert("IRMA Push Job", "IRMA Push FTP Failure", alertError)
+                                OpsGenieUtility.SendMail("IRMA Push Job FTP Failure", alertError)
                                 _hasTriggeredAlert = True
                             End If
                         End Try

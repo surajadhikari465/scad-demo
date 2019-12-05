@@ -187,29 +187,11 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
                 _jobExecutionMessage = ScheduledJobBO.GetJobCompletionStatusForUI(CType(scalePush, ScheduledJob))
             End If
 
-            Try
-                sSMTP = ConfigurationServices.AppSettings("SMTPHost").ToString
-            Catch ex As Exception
-                sSMTP = "smtp.wholefoods.com"
-            End Try
-
-            Try
-                sEnvironment = ConfigurationServices.AppSettings("environment").ToString
-            Catch ex As Exception
-                sEnvironment = "NOENVIRONMENT"
-            End Try
-
-            If sRegion = String.Empty Then
-                sFromEmailAddress = "POSPush." & sEnvironment & "@wholefoods.com"
-            Else
-                sFromEmailAddress = sRegion & ".POSPush." & sEnvironment & "@wholefoods.com"
-            End If
-
             If sToEmailAddress <> String.Empty Then
                 If posSuccess Then
-                    SendMail(sToEmailAddress, sFromEmailAddress, "POS Push Success!", "The POS Push completed successfully!", sSMTP)
+                    OpsGenieUtility.SendMail("POS Push Success!", "The POS Push completed successfully!")
                 Else
-                    SendMail(sToEmailAddress, sFromEmailAddress, "POS Push Failure", _jobExecutionMessage, sSMTP)
+                    OpsGenieUtility.SendMail("POS Push Failure", _jobExecutionMessage)
                 End If
             End If
 
@@ -701,7 +683,7 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
                 _jobExecutionMessage = _jobExecutionMessage + Environment.NewLine + ex.Message + Environment.NewLine + ex.StackTrace
                 'pbI 19620 --if push alert is false do not trigger Opsgenie alert
                 If (Not _hasTriggeredAlert And Not StopAlerts) Then
-                    OpsGenieUtility.TriggerOpsgenieAlert("IRMA POS Push", "POS Push Failure", ex.ToString())
+                   OpsGenieUtility.SendMail("IRMA POS Push Failure", ex.ToString())
                     _hasTriggeredAlert = True
                 End If
 
@@ -744,7 +726,7 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
                 Logger.LogError(errorMessage, Me.GetType())
 
                 If (Not _hasTriggeredAlert And Not StopAlerts) Then
-                    OpsGenieUtility.TriggerOpsgenieAlert("IRMA POS Push", "POS Push Failure", errorMessage)
+                    OpsGenieUtility.SendMail("IRMA POS Push Failure", errorMessage)
                     _hasTriggeredAlert = True
                 End If
             End If
@@ -759,20 +741,10 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
                 Logger.LogError(errorMessage, Me.GetType())
 
                 If (Not _hasTriggeredAlert And Not StopAlerts) Then
-                    OpsGenieUtility.TriggerOpsgenieAlert("IRMA POS Push", "POS Push Failure", errorMessage)
+                    OpsGenieUtility.SendMail("IRMA POS Push Failure", errorMessage)
                     _hasTriggeredAlert = True
                 End If
             End If
-        End Sub
-
-        Public Sub SendMail(ByVal sRecipient As String, ByVal sFromAddress As String, ByVal sSubject As String, ByVal sMessage As String, ByVal sSMTP As String)
-            Dim smtp As New SMTP(sSMTP)
-
-            Try
-                smtp.send(sMessage, sRecipient, Nothing, sFromAddress, sSubject)
-            Catch ex As Exception
-                Logger.LogDebug("SendMail failed:  " & ex.ToString(), Me.GetType())
-            End Try
         End Sub
 
         Private Sub scalePush_ScaleCompleteError() Handles scalePush.ScaleCompleteError
@@ -819,6 +791,4 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
             RaiseEvent ScaleTransferFiles(FileStatus)
         End Sub
     End Class
-
 End Namespace
-

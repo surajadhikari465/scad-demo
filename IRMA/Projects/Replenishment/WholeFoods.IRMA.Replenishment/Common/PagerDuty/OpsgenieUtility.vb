@@ -2,6 +2,7 @@
 Imports OpsgenieLib
 Imports WholeFoods.Utility
 Imports WholeFoods.Utility.DataAccess
+Imports WholeFoods.Utility.SMTP
 
 Public Class OpsGenieUtility
 
@@ -57,4 +58,18 @@ Public Class OpsGenieUtility
 
         Return regionCode
     End Function
+
+    Public Shared Sub SendMail(ByVal sSubject As String, ByVal sMessage As String)
+        Dim sSMTPHost As String = ConfigurationServices.AppSettings("SMTPHost")
+        Dim sFromEmailAddress As String = ConfigurationServices.AppSettings("PosPush_FromEmailAddress").ToString()
+        Dim sEnvironMent As String = ConfigurationServices.AppSettings("environment").ToString()
+        Dim sErrorToAddress As String = ConfigurationServices.AppSettings("PosPush_ToEmailAddress").ToString()
+        Dim sErrorCCAddress As String = ConfigurationServices.AppSettings("PosPush_CcEmailAddress").ToString()
+        Dim smtp As New SMTP(sSMTPHost)
+    Try 
+        smtp.send(sMessage, sErrorToAddress, sErrorCCAddress, sFromEmailAddress, sSubject)
+        Catch ex As Exception
+            Logger.LogDebug("SendMail failed:  " & ex.ToString(), GetType(OpsGenieUtility))
+    End Try
+    End sub
 End Class

@@ -158,7 +158,7 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
                 End While
             Catch ex As Exception
                 bhasErrors = True
-                OpsGenieUtility.TriggerOpsgenieAlert("IRMA PeopleSoft Transfer Upload Job", "PeopleSoft Transfer Upload Failure", ex.ToString())
+                OpsGenieUtility.SendMail("IRMA PeopleSoft Transfer Upload Job Failure", ex.ToString())
                 Throw New Exception(Classname & " failed at " & IIf(ex.Message.Contains("Step"), ex.Message, "Step: PeopleSoftUploadDAO.GetRegionList() " & Environment.NewLine & ex.InnerException.Message))
             End Try
 
