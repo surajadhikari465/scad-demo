@@ -77,3 +77,7 @@ GRANT VIEW CHANGE TRACKING
     ON OBJECT::[dbo].[ItemNutrition] TO [iCONReportingRole]
     AS [dbo];
 
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[ItemNutrition] TO [IRMAClientRole]
+    AS [dbo];

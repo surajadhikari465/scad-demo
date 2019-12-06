@@ -256,9 +256,7 @@ BEGIN
 
 		SELECT @SQL = @SQL + ' 
 						LEFT JOIN ItemSignAttribute (nolock)
-						ON Item_TableName.Item_Key = ItemSignAttribute.Item_Key 
-						LEFT JOIN Item_ExtraText_TableName  (nolock)
-						ON Item_TableName.Item_ExtraText_ID = Item_ExtraText_TableName.Item_ExtraText_ID'
+						ON Item_TableName.Item_Key = ItemSignAttribute.Item_Key '
 					
 		SELECT @SQL = @SQL + '
 					LEFT JOIN
@@ -282,6 +280,22 @@ BEGIN
 					LEFT JOIN
 						ItemAttribute_TableName  (nolock)
 						on Item_TableName.item_key = ItemAttribute_TableName.item_key '
+
+		IF @LoadFromSLIM = 0 AND @UseStoreJurisdictions = 1
+		BEGIN
+			SELECT @SQL = @SQL + ' 
+						LEFT JOIN Item_ExtraText_TableName  (nolock)
+						ON Item_TableName.Item_ExtraText_ID = Item_ExtraText_TableName.Item_ExtraText_ID'
+		END
+		ELSE
+		BEGIN
+			SELECT @SQL = @SQL + ' 
+			            LEFT JOIN ItemNutrition  (nolock)
+						ON Item_TableName.Item_Key = ItemNutrition.ItemKey
+						LEFT JOIN Item_ExtraText_TableName  (nolock)
+						ON ItemNutrition.Item_ExtraText_ID = Item_ExtraText_TableName.Item_ExtraText_ID'
+		END
+
 	
 	IF (Len(@StoreNos) <> 0)
 	BEGIN
