@@ -50,6 +50,7 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
                 itemModel.GlobalAttributes.MessageTaxClassHCID = GetHierarchyClassStringId(HierarchyNames.Tax, hierarchyClasses);
                 itemModel.GlobalAttributes.PSNumber = GetHierarchyClassIntId(HierarchyNames.Financial, hierarchyClasses);
                 itemModel.GlobalAttributes.Desc_CustomerFriendly = GetTraitValue(Attributes.Codes.CustomerFriendlyDescription, traits);
+                itemModel.GlobalAttributes.ProhibitDiscount = GetBoolTraitValue(TraitCodes.ProhibitDiscount, traits);
 
                 // Global Sign Attributes
                 itemModel.SignAttributes = ParseSignAttributes(item, traits);

@@ -108,6 +108,7 @@ BEGIN
 			,RetailUOM VARCHAR(255) NULL
 			,FoodStampEligible BIT NULL
 			,CustomerFriendlyDesc VARCHAR(255) NULL
+			,ProhibitDiscount BIT NULL
 			,FairTradeCertifed VARCHAR(300) NULL
 			,FlexibleText VARCHAR(300) NULL
 			,GlobalPricingProgram VARCHAR(300) NULL
@@ -132,6 +133,7 @@ BEGIN
 			,RetailUOM
 			,FoodStampEligible
 			,CustomerFriendlyDesc
+			,ProhibitDiscount
 			,SubTeamName
 			,TaxClass
 			)
@@ -145,6 +147,7 @@ BEGIN
 			,A.RetailUOM
 			,A.FoodStampEligible
 			,A.Desc_CustomerFriendly
+			,A.ProhibitDiscount
 			,D.Name
 			,E.HierarchyClassName
 		FROM dbo.items A
@@ -348,7 +351,32 @@ BEGIN
 			,B.CalciumWeight
 			,B.IronWeight
 			,B.VitaminDWeight
+			,IAS.IsAirChilled AS AirChilled
+			,IAS.Rating_AnimalWelfare AS AnimalWelfareRating
+			,IAS.IsBiodynamic AS Biodynamic
+			,IAS.CheeseMilkType AS CheeseMilkType
+			,IAS.IsCheeseRaw AS CheeseRaw
+			,IAS.IsDryAged AS DryAged
+			,IAS.Rating_EcoScale AS ECOScaleRating
+			,IAS.IsFreeRange AS FreeRange
+			,IAS.Agency_GlutenFree AS GlutenFree
+			,IAS.IsGrassFed AS GrassFed
+			,IAS.Rating_HealthyEating AS HealthyEatingRating
+			,IAS.Agency_Kosher AS Kosher
+			,IAS.IsMadeInHouse AS MadeInHouse
+			,IAS.IsMsc AS MSC
+			,IAS.Agency_NonGMO AS NonGMO
+			,IAS.Agency_Organic AS Organic
+			,IAS.IsPastureRaised AS PastureRaised
+			,IAS.IsPremiumBodyCare AS PremiumBodyCare
+			,A.ProhibitDiscount
+			,IAS.Seafood_FreshOrFrozen AS FreshOrFrozen
+			,IAS.Seafood_CatchType AS SeafoodCatchType
+			,IAS.IsVegetarian AS Vegetarian
+			,IAS.Agency_Vegan AS Vegan
+			,IAS.IsWholeTrade AS WholeTrade
 		FROM #items A
+		INNER JOIN dbo.ItemAttributes_Sign IAS ON A.ItemID = IAS.ItemID
 		LEFT JOIN dbo.ItemAttributes_Nutrition B ON B.ItemID = A.ItemID;
 
 		IF (object_id('tempdb..#group') IS NOT NULL)

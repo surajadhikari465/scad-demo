@@ -50,7 +50,8 @@ namespace Mammoth.Esb.ProductListener.Commands
                             RetailUOM = i.GlobalAttributes.RetailUOM,
                             PSNumber = i.GlobalAttributes.PSNumber,
                             FoodStampEligible = i.GlobalAttributes.FoodStampEligible,
-                            CustomerFriendlyDescription = i.GlobalAttributes.Desc_CustomerFriendly
+                            CustomerFriendlyDescription = i.GlobalAttributes.Desc_CustomerFriendly,
+                            ProhibitDiscount = i.GlobalAttributes.ProhibitDiscount
                         })
                     .ToList()
                     .ToDataTable()

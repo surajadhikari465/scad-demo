@@ -486,6 +486,75 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             //No Error means the test passes
         }
 
+        [TestMethod]
+        public void AddOrUpdateProducts_ItemWithProhibitDiscountAsTrue_ItemAddedWithProhibitDiscountAsTrue()
+        {
+            //Given
+            var itemModel1 = CreateItemModelForAttributeTest(999999999);
+            itemModel1.GlobalAttributes.ProhibitDiscount = true;
+
+            var commandData = new AddOrUpdateProductsCommand
+            {
+                Items = new List<ItemModel>
+                    {
+                        itemModel1,
+                    }
+            };
+
+            //When
+            commandHandler.Execute(commandData);
+
+            //Then
+            var globalAttributes = ReadItemAttributesDynamic(itemModel1.GlobalAttributes.ItemID);
+            AssertGlobalAttributesAsExpected(itemModel1.GlobalAttributes, globalAttributes);
+        }
+
+        [TestMethod]
+        public void AddOrUpdateProducts_ItemWithProhibitDiscountAsFalse_ItemAddedWithProhibitDiscountAsFalse()
+        {
+            //Given
+            var itemModel1 = CreateItemModelForAttributeTest(999999999);
+            itemModel1.GlobalAttributes.ProhibitDiscount = false;
+
+            var commandData = new AddOrUpdateProductsCommand
+            {
+                Items = new List<ItemModel>
+                    {
+                        itemModel1,
+                    }
+            };
+
+            //When
+            commandHandler.Execute(commandData);
+
+            //Then
+            var globalAttributes = ReadItemAttributesDynamic(itemModel1.GlobalAttributes.ItemID);
+            AssertGlobalAttributesAsExpected(itemModel1.GlobalAttributes, globalAttributes);
+        }
+
+        [TestMethod]
+        public void AddOrUpdateProducts_ItemWithProhibitDiscountAsNull_ItemAddedWithProhibitDiscountAsNull()
+        {
+            //Given
+            var itemModel1 = CreateItemModelForAttributeTest(999999999);
+            itemModel1.GlobalAttributes.ProhibitDiscount = null;
+
+            var commandData = new AddOrUpdateProductsCommand
+            {
+                Items = new List<ItemModel>
+                    {
+                        itemModel1,
+                    }
+            };
+
+            //When
+            commandHandler.Execute(commandData);
+
+            //Then
+            var globalAttributes = ReadItemAttributesDynamic(itemModel1.GlobalAttributes.ItemID);
+            AssertGlobalAttributesAsExpected(itemModel1.GlobalAttributes, globalAttributes);
+        }
+
         private ItemModel CreateItemModelForAttributeTest(int itemId, bool includeHospitalityData = true)
         {
             return new ItemModel
@@ -506,7 +575,8 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                     RetailSize = "2",
                     RetailUOM = "OZ",
                     FoodStampEligible = true,
-                    Desc_CustomerFriendly = "Test CustomerFriendlyDescription Updated"
+                    Desc_CustomerFriendly = "Test CustomerFriendlyDescription Updated",
+                    ProhibitDiscount = false
                 },
                 SignAttributes = new SignAttributesModel
                 {
@@ -948,6 +1018,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             Assert.AreEqual(expectedGlobalAttributes.RetailUOM, actualItemsRow.RetailUOM);
             Assert.AreEqual(expectedGlobalAttributes.Desc_CustomerFriendly, actualItemsRow.Desc_CustomerFriendly);
             Assert.IsNotNull(actualItemsRow.AddedDate);
+            Assert.AreEqual(expectedGlobalAttributes.ProhibitDiscount, actualItemsRow.ProhibitDiscount);
         }
 
         private void AssertNutritionAttributesAsExpected(

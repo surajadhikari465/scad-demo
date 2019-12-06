@@ -18,5 +18,6 @@
         public bool? FoodStampEligible { get; set; }
         public string Desc_CustomerFriendly { get; set; }
         public string MessageTaxClassHCID { get; set; }
+        public bool? ProhibitDiscount { get; set; }
     }
 }

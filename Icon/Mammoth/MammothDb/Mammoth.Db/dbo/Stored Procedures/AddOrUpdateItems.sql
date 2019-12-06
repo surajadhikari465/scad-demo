@@ -30,7 +30,8 @@ BEGIN
 		i.ScanCode,
 		m.HierarchyMerchandiseID,
 		i.TaxClassHCID,
-		i.Desc_CustomerFriendly 
+		i.Desc_CustomerFriendly,
+		i.ProhibitDiscount
 	INTO #insertItems
 	FROM #items i
 	LEFT JOIN dbo.Hierarchy_Merchandise		m on i.SubBrickID = m.SubBrickHCID
@@ -57,7 +58,8 @@ BEGIN
 				i.RetailUOM = i2.RetailUOM,
 				i.TaxClassHCID = i2.TaxClassHCID,
 				i.Desc_CustomerFriendly = i2.Desc_CustomerFriendly,
-				i.ModifiedDate = @today
+				i.ModifiedDate = @today,
+				i.ProhibitDiscount = i2.ProhibitDiscount
 			FROM dbo.Items i
 			INNER JOIN #items i2 on i2.ItemID = i.ItemID
 			LEFT JOIN dbo.Hierarchy_Merchandise		m on i2.SubBrickID = m.SubBrickHCID
@@ -81,7 +83,8 @@ BEGIN
 				RetailUOM,
 				FoodStampEligible,
 				Desc_CustomerFriendly,
-				AddedDate		
+				AddedDate,
+				ProhibitDiscount
 			)
 			SELECT
 				i.ItemID,
@@ -99,7 +102,8 @@ BEGIN
 				i.RetailUOM,
 				i.FoodStampEligible,
 				i.Desc_CustomerFriendly,
-				@today
+				@today,
+				i.ProhibitDiscount
 			FROM #insertItems i
 
 		COMMIT TRAN

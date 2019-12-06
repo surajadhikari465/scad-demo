@@ -15,12 +15,11 @@
     [FoodStampEligible]				BIT            NULL,
 	[Desc_CustomerFriendly]			NVARCHAR(255)  NULL,
     [AddedDate]						DATETIME       DEFAULT (getdate()) NOT NULL,
-    [ModifiedDate]					DATETIME       NULL
+    [ModifiedDate]					DATETIME       NULL,
+	[ProhibitDiscount]				BIT			   NULL,
     CONSTRAINT [PK_Items] PRIMARY KEY CLUSTERED ([ItemID] ASC) WITH (FILLFACTOR = 100),
     UNIQUE NONCLUSTERED ([ItemID] ASC) WITH (FILLFACTOR = 100)
 );
-
-
 GO
 
 CREATE NONCLUSTERED INDEX IX_Items_ScanCode
@@ -30,9 +29,7 @@ CREATE NONCLUSTERED INDEX IX_Items_ScanCode
 GO
 
 CREATE NONCLUSTERED INDEX IX_Items_DescProduct
-ON dbo.[Items]
-(   [Desc_Product] ASC
-)
+ON dbo.[Items] ([Desc_Product] ASC)
 
 GO
 

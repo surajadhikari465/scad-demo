@@ -69,6 +69,7 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
 			Assert.AreEqual("1.3", globalAttributes.RetailSize);
 			Assert.AreEqual("LB", globalAttributes.RetailUOM);
 			Assert.AreEqual("CHICKEN TANDOORI HB CFD", globalAttributes.Desc_CustomerFriendly);
+            Assert.AreEqual(false, globalAttributes.ProhibitDiscount);
 
 			var signAttributes = item.SignAttributes;
 			Assert.IsNull(signAttributes.Rating_AnimalWelfare);
@@ -199,8 +200,10 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
 			Assert.AreEqual("1", globalAttributes.PackageUnit);
 			Assert.AreEqual("1", globalAttributes.RetailSize);
 			Assert.AreEqual("EA", globalAttributes.RetailUOM);
+            Assert.AreEqual("MUG RED WHITE", globalAttributes.Desc_CustomerFriendly);
+            Assert.AreEqual(false, globalAttributes.ProhibitDiscount);
 
-			var signAttributes = item.SignAttributes;
+            var signAttributes = item.SignAttributes;
 			Assert.IsNull(signAttributes.Rating_AnimalWelfare);
 			Assert.AreEqual(false, signAttributes.IsBiodynamic);
 			Assert.IsNull(signAttributes.CheeseMilkType);
@@ -265,8 +268,9 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
 			Assert.AreEqual("1.3", globalAttributes.RetailSize);
 			Assert.AreEqual("LB", globalAttributes.RetailUOM);
 			Assert.AreEqual("CHICKEN TANDOORI HB CFD", globalAttributes.Desc_CustomerFriendly);
+            Assert.AreEqual(false, globalAttributes.ProhibitDiscount);
 
-			var signAttributes = item.SignAttributes;
+            var signAttributes = item.SignAttributes;
 			Assert.IsNull(signAttributes.Rating_AnimalWelfare);
 			Assert.AreEqual(false, signAttributes.IsBiodynamic);
 			Assert.IsNull(signAttributes.CheeseMilkType);
