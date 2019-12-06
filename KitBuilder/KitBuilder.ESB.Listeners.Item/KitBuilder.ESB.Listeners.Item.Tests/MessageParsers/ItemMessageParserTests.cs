@@ -131,7 +131,9 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
                     CustomerFriendlyDescription = "Test Customer Friendly Description",
                     BrandsHierarchyName = "365",
 					FlexibleText = "Test Item FlexibleText 1",
-					PosDescription = "365 OG UNSWT ALMD MLK"
+					PosDescription = "365 OG UNSWT ALMD MLK",
+					RetailSize = "32",
+					RetailUom = "OZ"
 				},
                 new ItemModel
                 {
@@ -141,7 +143,9 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
                     CustomerFriendlyDescription = "Test Customer Friendly Description",
                     BrandsHierarchyName = "365",
 					FlexibleText = "Test Item FlexibleText 2",
-					PosDescription = "365 VAN ALMD MLK"
+					PosDescription = "365 VAN ALMD MLK",
+					RetailSize = "64",
+					RetailUom = "OZ"
 				},
                 new ItemModel
                 {
@@ -151,7 +155,9 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
                     CustomerFriendlyDescription = "",
                     BrandsHierarchyName = "Test",
 					FlexibleText = "Test Item FlexibleText 3",
-					PosDescription = "365 UNSWT ALMD MLK"
+					PosDescription = "365 UNSWT ALMD MLK",
+					RetailSize = "8",
+					RetailUom = "LB"
 				}
             };
             var listItems = items.OrderBy(i => i.ItemId).ToList();
@@ -159,11 +165,13 @@ namespace KitBuilder.ESB.Listeners.Item.Tests.MessageParsers
             for (int i = 0; i < listItems.Count(); i++)
             {
                 Assert.AreEqual(messageItems[i].ItemId, listItems[i].ItemId);
-               Assert.AreEqual(messageItems[i].ScanCode, listItems[i].ScanCode);
+                Assert.AreEqual(messageItems[i].ScanCode, listItems[i].ScanCode);
                 Assert.AreEqual(messageItems[i].MerchandiseHierarchyClassId, listItems[i].MerchandiseHierarchyClassId);
                 Assert.AreEqual(messageItems[i].CustomerFriendlyDescription, listItems[i].CustomerFriendlyDescription);
                 Assert.AreEqual(messageItems[i].BrandsHierarchyName, listItems[i].BrandsHierarchyName);
 				Assert.AreEqual(messageItems[i].PosDescription, listItems[i].PosDescription);
+				Assert.AreEqual(messageItems[i].RetailSize, listItems[i].RetailSize);
+				Assert.AreEqual(messageItems[i].RetailUom, listItems[i].RetailUom);
 			}
         }
 

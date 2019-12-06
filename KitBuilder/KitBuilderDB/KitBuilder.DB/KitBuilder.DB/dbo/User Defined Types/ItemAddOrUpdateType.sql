@@ -8,7 +8,9 @@
     [BrandName]            NVARCHAR (255) NULL,
     [ImageUrl]			   NVARCHAR (255) NULL,
 	[FlexibleText]         NVARCHAR (255) NULL,
-    [PosDesc]              NVARCHAR (255) NULL
+    [PosDesc]              NVARCHAR (255) NULL,
+    [RetailSize]           NVARCHAR (255) NULL,
+    [RetailUOM]            NVARCHAR (255) NULL
 )
 GO
 

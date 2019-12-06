@@ -1046,7 +1046,7 @@
             <tra:type>
               <trt:description>Retail Size</trt:description>
               <trt:value>
-                <trv:value>64</trv:value>
+                <trv:value>8</trv:value>
               </trt:value>
             </tra:type>
           </crf:trait>
@@ -1055,7 +1055,7 @@
             <tra:type>
               <trt:description>Retail UOM</trt:description>
               <trt:value>
-                <trv:value>OZ</trv:value>
+                <trv:value>LB</trv:value>
                 <trv:uom>
                   <uom:code>OZ</uom:code>
                   <uom:name>OUNCE</uom:name>

@@ -35,7 +35,9 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Extensions
                 ImageUrl = enterpriseAttributes.imageUrl,
                 KitchenItem = enterpriseAttributes.isKitchenItemSpecified  ? enterpriseAttributes.isKitchenItem : (bool?) null,
                 HospitalityItem = enterpriseAttributes.isHospitalityItemSpecified ?  enterpriseAttributes.isHospitalityItem : (bool?) null,
-				PosDescription = GetTraitValue(enterpriseAttributes, TraitCodes.PosDescription)
+				PosDescription = GetTraitValue(enterpriseAttributes, TraitCodes.PosDescription),
+				RetailSize = GetTraitValue(enterpriseAttributes, TraitCodes.RetailSize),
+				RetailUom = GetTraitValue(enterpriseAttributes, TraitCodes.RetailUom)
 			};
 
             return itemModel;

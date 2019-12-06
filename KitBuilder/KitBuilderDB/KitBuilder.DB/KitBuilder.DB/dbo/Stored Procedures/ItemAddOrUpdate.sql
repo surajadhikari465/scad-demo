@@ -15,7 +15,9 @@ BEGIN
 		BrandName,           
 		ImageUrl,
 		FlexibleText,
-        PosDesc
+        PosDesc,
+		RetailSize,
+		RetailUOM
 	INTO #allItems
 	FROM @itemsTable
 
@@ -33,7 +35,9 @@ BEGIN
 		BrandName,           
 		ImageUrl,
 		FlexibleText,
-        PosDesc  
+        PosDesc,
+		RetailSize,
+		RetailUOM  
 	INTO #insertItems
 	FROM #allItems ai
 	WHERE NOT EXISTS (
@@ -60,6 +64,8 @@ BEGIN
 					,i.LastUpdatedDateUtc = GETUTCDATE()
 					,i.FlexibleText = ai.FlexibleText
 					,i.PosDesc = ai.PosDesc
+					,i.RetailSize = ai.RetailSize
+					,i.RetailUOM = ai.RetailUOM
 			FROM dbo.Items i
 				INNER JOIN #allItems ai ON i.ItemId = ai.ItemId
 
@@ -75,6 +81,8 @@ BEGIN
 				,ImageUrl
 				,FlexibleText
 				,PosDesc
+				,RetailSize
+				,RetailUOM
 			)
 			SELECT 
 				ii.ItemId
@@ -86,6 +94,8 @@ BEGIN
 				,ii.ImageUrl
 				,ii.FlexibleText
 				,ii.PosDesc
+				,ii.RetailSize
+				,ii.RetailUOM
 			FROM #insertItems ii
 		
 		COMMIT TRANSACTION

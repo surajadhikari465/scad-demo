@@ -82,7 +82,9 @@ namespace KitBuilder.ESB.Listeners.Item.Service.Commands
                     BrandName = i.BrandsHierarchyName,
                     ImageUrl = i.ImageUrl,
 					FlexibleText = i.FlexibleText,
-					PosDesc = i.PosDescription
+					PosDesc = i.PosDescription,
+					RetailSize = i.RetailSize,
+					RetailUOM = i.RetailUom
 				}).ToTvp("items", "dbo.ItemAddOrUpdateType");
 
             repo.UnitOfWork.Context.Database.ExecuteSqlCommand("exec dbo.ItemAddOrUpdate @items", items);
