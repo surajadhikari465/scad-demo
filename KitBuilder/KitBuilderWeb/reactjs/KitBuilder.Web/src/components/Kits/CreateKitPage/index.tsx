@@ -33,7 +33,9 @@ interface ICreateKitPageState {
   item: Item | null;
   Instructions: Array<any>;
   isDisplayMandatory: boolean;
-  disabledLinkGroups:Array<any>;
+  disabledLinkGroups: Array<any>,
+  isMounted: boolean;
+  disableSaveButton:boolean;
 }
 
 interface ICreateKitPageProps {
@@ -50,14 +52,14 @@ const newErrorsObject = () => ({
 class CreateKitPage extends React.PureComponent<
   ICreateKitPageProps,
   ICreateKitPageState
-> {
+  > {
+
   constructor(props: ICreateKitPageProps) {
     super(props);
     this.state = {
       editMode: false,
       loading: false,
       errors: { description: null, linkGroup: [] },
-
       confirmCreatKitIsOpen: false,
       error: "",
       message: "",
@@ -71,20 +73,26 @@ class CreateKitPage extends React.PureComponent<
       item: null,
       Instructions: [],
       isDisplayMandatory: false,
-      disabledLinkGroups:[]
+      disabledLinkGroups: [],
+      isMounted: false,
+      disableSaveButton:false
     };
   }
 
+  componentWillUnmount() {
+    this.setState({ isMounted: false });
+  }
   componentDidMount() {
     const editKitId = this.props.match.params.kitId;
-
+    this.setState({ isMounted: true });
     if (editKitId) {
-      const kitsUrl = KbApiMethod("Kits") + "/" + editKitId + "/true";
+
       this.setState({
         kitId: parseInt(editKitId),
-        editMode: true,
-        loading: true
+        editMode: true
       });
+
+      const kitsUrl = KbApiMethod("Kits") + "/" + editKitId + "/true";
       fetch(kitsUrl)
         .then(response => response.json())
         .then(response => response[0])
@@ -107,15 +115,17 @@ class CreateKitPage extends React.PureComponent<
             description,
             item
           } = response;
-
-          this.setState({
-            selectedLinkGroupItems: selectedLinkGroupItems,
-            Instructions,
-            kitType,
-            isDisplayMandatory,
-            description,
-            item
-          });
+          console.log(this.state.isMounted);
+          if (this.state.isMounted) {
+            this.setState({
+              selectedLinkGroupItems: selectedLinkGroupItems,
+              Instructions,
+              kitType,
+              isDisplayMandatory,
+              description,
+              item
+            });
+          }
           return response.kitLinkGroup;
         })
         .then(kitLinkGroups => {
@@ -128,11 +138,14 @@ class CreateKitPage extends React.PureComponent<
           );
 
           Promise.all(linkGroupPromises).then((LinkGroups: LinkGroup[]) => {
-            this.setState({ LinkGroups, loading: false });
+            if (this.state.isMounted) {
+              this.setState({ LinkGroups, loading: false });
+            }
           });
         });
     }
   }
+
   validateForm = () => {
     const { description, LinkGroups, selectedLinkGroupItems } = this.state;
     const errors = newErrorsObject();
@@ -142,10 +155,10 @@ class CreateKitPage extends React.PureComponent<
       errors.description = "Must provide a kit description.";
       errorSet = true;
     }
-    
+
     const { disabledLinkGroups } = this.state;
-    var includedLinkGroups =  LinkGroups.filter(
-      linkGroup => disabledLinkGroups.indexOf(linkGroup.linkGroupId)==-1
+    var includedLinkGroups = LinkGroups.filter(
+      linkGroup => disabledLinkGroups.indexOf(linkGroup.linkGroupId) == -1
     );
 
     includedLinkGroups.forEach((lg: LinkGroup) => {
@@ -168,7 +181,7 @@ class CreateKitPage extends React.PureComponent<
   };
 
   handleAddKit = () => {
-    this.setState({ message: "", error: "" });
+    this.setState({ message: "", error: "",disableSaveButton:true });
 
     if (this.validateForm()) {
       Axios.post(KbApiMethod("Kits"), this.buildAddKitPayload())
@@ -177,27 +190,30 @@ class CreateKitPage extends React.PureComponent<
             const { LinkGroups } = this.state;
             const { disabledLinkGroups } = this.state;
             const linkGroupsLeft = LinkGroups.filter(
-              linkGroup => disabledLinkGroups.indexOf(linkGroup.linkGroupId)==-1
+              linkGroup => disabledLinkGroups.indexOf(linkGroup.linkGroupId) == -1
             );
-            this.setState({ LinkGroups: linkGroupsLeft });
+            this.setState({ LinkGroups: linkGroupsLeft, disableSaveButton:false });
             const message = this.state.editMode
               ? "Kit saved succesfully."
               : "Kit created succesfully.";
             this.props.showAlert(message, "success");
-            if(!this.state.editMode) {
+            if (!this.state.editMode) {
               const editUrl = `/EditKit/${r.data.kitId}`
               this.props.history.push(editUrl);
             }
           }
         })
         .catch(e => {
-          this.setState({ disabledLinkGroups: [] });
-          if (e.response.status === 409)
-          {
+          this.setState({ disabledLinkGroups: [] ,disableSaveButton:false});
+          if (e.response.status === 409) {
             this.props.showAlert("Cannot delete link group while in use.", "error");
           }
-         else if (e.response) this.props.showAlert(e.response.data, "error");
+          else if (e.response) this.props.showAlert(e.response.data, "error");
         });
+    }
+    else
+    {
+      this.setState({disableSaveButton:false});
     }
   };
 
@@ -214,14 +230,15 @@ class CreateKitPage extends React.PureComponent<
       disabledLinkGroups
     } = this.state;
 
-    var includedLinkGroups =  LinkGroups.filter(
-      linkGroup => disabledLinkGroups.indexOf(linkGroup.linkGroupId)==-1
+    var includedLinkGroups = LinkGroups.filter(
+      linkGroup => disabledLinkGroups.indexOf(linkGroup.linkGroupId) == -1
     );
     const reformatedKitLinkGroup = includedLinkGroups.map(linkGroup => {
       // @ts-ignore
       const results = selectedLinkGroupItems.filter(
         item => item.linkGroupId === linkGroup.linkGroupId
       );
+
       return {
         ...linkGroup,
         KitLinkGroupItem: results
@@ -262,8 +279,15 @@ class CreateKitPage extends React.PureComponent<
 
   handleRemoveLinkGroup = (linkGroupToRemove: LinkGroup) => {
     const { disabledLinkGroups } = this.state;
+    const { LinkGroups } = this.state;
     disabledLinkGroups.push(linkGroupToRemove.linkGroupId);
+    var objIndex = LinkGroups.findIndex((obj => obj.linkGroupId == linkGroupToRemove.linkGroupId));
+    LinkGroups[objIndex].IsRemoved = true;
+    LinkGroups[objIndex].linkGroupItemDto.forEach(element => {
+      element.IsRemoved = true;
+    })
     this.setState({ disabledLinkGroups: [...disabledLinkGroups] });
+    this.setState({ LinkGroups: [...LinkGroups] });
   };
 
   handleSelectMainItem = (item: Item) => {
@@ -282,9 +306,17 @@ class CreateKitPage extends React.PureComponent<
 
   handleLinkGroupItemSelected = (itemToAdd: LinkGroupItem) => {
     const { selectedLinkGroupItems } = this.state;
-    if (!selectedLinkGroupItems.includes(itemToAdd)) {
+
+    if (selectedLinkGroupItems.filter(s => s.linkGroupItemId == itemToAdd.linkGroupItemId).length <= 0) {
       this.setState({
         selectedLinkGroupItems: [...selectedLinkGroupItems, itemToAdd]
+      });
+    }
+    else {
+      var index = selectedLinkGroupItems.findIndex(s => s.linkGroupItemId == itemToAdd.linkGroupItemId);
+      selectedLinkGroupItems[index] = itemToAdd;
+      this.setState({
+        selectedLinkGroupItems: [...selectedLinkGroupItems]
       });
     }
   };
@@ -293,10 +325,10 @@ class CreateKitPage extends React.PureComponent<
     const { LinkGroups } = this.state;
     const mappedItems = LinkGroups[index].linkGroupItemDto;
     if (isChecked) {
-      this.setState({selectedLinkGroupItems: [...this.state.selectedLinkGroupItems,  ...mappedItems]})
+      this.setState({ selectedLinkGroupItems: [...this.state.selectedLinkGroupItems, ...mappedItems] })
     } else {
       const itemsToChecked = this.state.selectedLinkGroupItems.filter(l => mappedItems.some(x => x.linkGroupId !== l.linkGroupId));
-      this.setState({selectedLinkGroupItems: [...itemsToChecked]})
+      this.setState({ selectedLinkGroupItems: [...itemsToChecked] })
     }
   }
 
@@ -320,214 +352,214 @@ class CreateKitPage extends React.PureComponent<
         {loading ? (
           "Loading..."
         ) : (
-          <>
-            {error && <div className="create-kit-error">{error}</div>}
-            {message && <div className="create-kit-message">{message}</div>}
-            <StyledPanel
-              padding={24}
-              header={
-                <PageTitle icon="build">
-                  {editMode ? "Edit" : "Create"} Kit
+            <>
+              {error && <div className="create-kit-error">{error}</div>}
+              {message && <div className="create-kit-message">{message}</div>}
+              <StyledPanel
+                padding={24}
+                header={
+                  <PageTitle icon="build">
+                    {editMode ? "Edit" : "Create"} Kit
                 </PageTitle>
-              }
-            >
-              <Grid
-                container
-                spacing={16}
-                alignItems="center"
-                className="create-kit-inner-container"
+                }
               >
-                {!editMode && (
-                  <Grid item xs={12}>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      onClick={() => this.setState({ addItemIsOpen: true })}
-                    >
-                      SELECT MAIN ITEM
-                    </Button>
-                  </Grid>
-                )}
-                <Grid item xs={12} md={5}>
-                  <Grid
-                    container
-                    alignItems="center"
-                    className="create-kit-inner-row-container"
-                    spacing={16}
-                  >
-                    <Grid item>Main Item:</Grid>
-                    <Grid item xs={8}>
-                      <MainItemDisplay item={this.state.item} />
-                    </Grid>
-                  </Grid>
-                </Grid>
-
-                <Grid item xs={12} md={4}>
-                  <Grid
-                    container
-                    alignItems="center"
-                    className="create-kit-inner-row-container"
-                  >
-                    <Grid item>Kit Type:</Grid>
-                    <Grid item xs={10}>
-                      <KitTypeSelector
-                        onKitTypeChange={this.handleKitTypeChange}
-                        kitType={this.state.kitType}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} md={3}>
-                  <Grid
-                    container
-                    alignItems="center"
-                    className="create-kit-inner-row-container"
-                  >
-                    <Grid item>Mandatory Display:</Grid>
-                    <Grid item>
-                      <Switch
-                        color="primary"
-                        checked={this.state.isDisplayMandatory}
-                        onChange={e =>
-                          this.setState({
-                            isDisplayMandatory: e.target.checked
-                          })
-                        }
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Grid
-                    container
-                    justify="space-between"
-                    alignItems="center"
-                    alignContent="center"
-                    className="create-kit-inner-row-container"
-                  >
-                    <Grid item>Description:</Grid>
-                    <Grid item xs={10}>
-                      <TextField
-                        variant="outlined"
-                        label="Kit Description"
-                        value={description}
-                        error={!!this.state.errors.description}
-                        helperText={this.state.errors.description}
-                        InputLabelProps={{ shrink: true }}
-                        onChange={this.handleKitDescriptionChange}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Grid
-                    container
-                    justify="space-between"
-                    alignItems="center"
-                    className="create-kit-inner-row-container"
-                  >
-                    <Grid item>Instructions:</Grid>
-                    <Grid item xs={10}>
-                      <SelectInstructions
-                        selectedInstructionLists={this.state.Instructions}
-                        onSelectInstructionList={
-                          this.handleSelectInstructionList
-                        }
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                      <Grid container spacing={16} justify="flex-end">
-                        <Grid item>
-                          <Button
-                            disabled={this.state.kitType < 2}
-                            onClick={() =>
-                              this.setState({ addLinkGroupIsOpen: true })
-                            }
-                          >
-                          <Add/>
-                            Add Link Group
-                          </Button>
-                        </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container justify="center" className="my-5">
+                <Grid
+                  container
+                  spacing={16}
+                  alignItems="center"
+                  className="create-kit-inner-container"
+                >
+                  {!editMode && (
                     <Grid item xs={12}>
-                      <LinkGroupTable
-                        // @ts-ignore
-                        errors={this.state.errors.linkGroup}
-                        linkGroups={this.state.LinkGroups}
-                        onLinkGroupRemoved={this.handleRemoveLinkGroup}
-                        selectedLinkGroupItems={
-                          this.state.selectedLinkGroupItems
-                        }
-                        onItemSelected={this.handleLinkGroupItemSelected}
-                        onItemUnselected={this.handleLinkGroupItemDeselected}
-                        disabledLinkGroups = {this.state.disabledLinkGroups}
-                        onBulkSelectChange = {this.handleBulkSelectChange}
-                      />
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => this.setState({ addItemIsOpen: true })}
+                      >
+                        SELECT MAIN ITEM
+                    </Button>
+                    </Grid>
+                  )}
+                  <Grid item xs={12} md={5}>
+                    <Grid
+                      container
+                      alignItems="center"
+                      className="create-kit-inner-row-container"
+                      spacing={16}
+                    >
+                      <Grid item>Main Item:</Grid>
+                      <Grid item xs={8}>
+                        <MainItemDisplay item={this.state.item} />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+                  <Grid item xs={12} md={4}>
+                    <Grid
+                      container
+                      alignItems="center"
+                      className="create-kit-inner-row-container"
+                    >
+                      <Grid item>Kit Type:</Grid>
+                      <Grid item xs={10}>
+                        <KitTypeSelector
+                          onKitTypeChange={this.handleKitTypeChange}
+                          kitType={this.state.kitType}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} md={3}>
+                    <Grid
+                      container
+                      alignItems="center"
+                      className="create-kit-inner-row-container"
+                    >
+                      <Grid item>Mandatory Display:</Grid>
+                      <Grid item>
+                        <Switch
+                          color="primary"
+                          checked={this.state.isDisplayMandatory}
+                          onChange={e =>
+                            this.setState({
+                              isDisplayMandatory: e.target.checked
+                            })
+                          }
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Grid
+                      container
+                      justify="space-between"
+                      alignItems="center"
+                      alignContent="center"
+                      className="create-kit-inner-row-container"
+                    >
+                      <Grid item>Description:</Grid>
+                      <Grid item xs={10}>
+                        <TextField
+                          variant="outlined"
+                          label="Kit Description"
+                          value={description}
+                          error={!!this.state.errors.description}
+                          helperText={this.state.errors.description}
+                          InputLabelProps={{ shrink: true }}
+                          onChange={this.handleKitDescriptionChange}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Grid
+                      container
+                      justify="space-between"
+                      alignItems="center"
+                      className="create-kit-inner-row-container"
+                    >
+                      <Grid item>Instructions:</Grid>
+                      <Grid item xs={10}>
+                        <SelectInstructions
+                          selectedInstructionLists={this.state.Instructions}
+                          onSelectInstructionList={
+                            this.handleSelectInstructionList
+                          }
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Grid container spacing={16} justify="flex-end">
+                      <Grid item>
+                        <Button
+                          disabled={this.state.kitType < 2}
+                          onClick={() =>
+                            this.setState({ addLinkGroupIsOpen: true })
+                          }
+                        >
+                          <Add />
+                          Add Link Group
+                          </Button>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Grid container justify="center" className="my-5">
+                      <Grid item xs={12}>
+                        <LinkGroupTable
+                          // @ts-ignore
+                          errors={this.state.errors.linkGroup}
+                          linkGroups={this.state.LinkGroups}
+                          onLinkGroupRemoved={this.handleRemoveLinkGroup}
+                          selectedLinkGroupItems={
+                            this.state.selectedLinkGroupItems
+                          }
+                          onItemSelected={this.handleLinkGroupItemSelected}
+                          onItemUnselected={this.handleLinkGroupItemDeselected}
+                          disabledLinkGroups={this.state.disabledLinkGroups}
+                          onBulkSelectChange={this.handleBulkSelectChange}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+                </Grid>
+              </StyledPanel>
+              <Paper square style={{ position: "fixed", bottom: 0, width: "100%", padding: 8 }}>
+                <Grid container justify="center">
+                  <Grid item xs={10}>
+
+                    <Grid container justify="space-between">
+                      <Grid item>
+                        {editMode && (
+                          <Link to={"/AssignKits/" + this.state.kitId}>
+                            <Button variant="outlined">Assign Kit</Button>
+                          </Link>
+                        )}
+                      </Grid>
+                      <Grid item>
+                        <Button
+                          disabled={!item || this.state.disableSaveButton}
+                          onClick={() =>
+                            this.setState({ confirmCreatKitIsOpen: true })
+                          }
+                          variant="outlined"
+                        >
+                          {editMode ? "Save" : "Create"} Kit
+                  </Button>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Grid>
-               
-              </Grid>
-            </StyledPanel>
-            <Paper square style={{ position: "fixed", bottom: 0, width: "100%", padding: 8}}>
-            <Grid container justify="center">
-            <Grid item xs={10}>
-
-              <Grid container justify="space-between">
-                <Grid item>
-                  {editMode && (
-                    <Link to={"/AssignKits/" + this.state.kitId}>
-                      <Button variant="outlined">Assign Kit</Button>
-                    </Link>
-                  )}
-                </Grid>
-                <Grid item>
-                  <Button
-                    disabled={!item}
-                    onClick={() =>
-                      this.setState({ confirmCreatKitIsOpen: true })
-                    }
-                    variant="outlined"
-                  >
-                    {editMode ? "Save" : "Create"} Kit
-                  </Button>
-                </Grid>
-              </Grid>
-              </Grid>
-            </Grid>
-            </Paper>
-            <LinkgroupKitAddModal
-              onAddToKit={this.handleAddLinkGroup}
-              kitLinkGroup={this.state.LinkGroups}
-              isOpen={this.state.addLinkGroupIsOpen}
-              onCancel={() => this.setState({ addLinkGroupIsOpen: false })}
-            />
-            <AddMainItemDialog
-              onMainItemSelected={this.handleSelectMainItem}
-              open={this.state.addItemIsOpen}
-              onClose={() => {
-                this.setState({ addItemIsOpen: false });
-              }}
-            />
-            <ConfirmDialog
-              message = {
-                this.state.editMode ? 
-                "Are you sure you want to save this kit?" : 
-                "Are you sure you want to create a new kit?"}
-              open={this.state.confirmCreatKitIsOpen}
-              onClose={() => this.setState({ confirmCreatKitIsOpen: false })}
-              onConfirm={() => {
-                this.setState({ confirmCreatKitIsOpen: false });
-                this.handleAddKit();
-              }}
-            />
-          </>
-        )}
+              </Paper>
+              <LinkgroupKitAddModal
+                onAddToKit={this.handleAddLinkGroup}
+                kitLinkGroup={this.state.LinkGroups}
+                isOpen={this.state.addLinkGroupIsOpen}
+                onCancel={() => this.setState({ addLinkGroupIsOpen: false })}
+              />
+              <AddMainItemDialog
+                onMainItemSelected={this.handleSelectMainItem}
+                open={this.state.addItemIsOpen}
+                onClose={() => {
+                  this.setState({ addItemIsOpen: false });
+                }}
+              />
+              <ConfirmDialog
+                message={
+                  this.state.editMode ?
+                    "Are you sure you want to save this kit?" :
+                    "Are you sure you want to create a new kit?"}
+                open={this.state.confirmCreatKitIsOpen}
+                onClose={() => this.setState({ confirmCreatKitIsOpen: false })}
+                onConfirm={() => {
+                  this.setState({ confirmCreatKitIsOpen: false });
+                  this.handleAddKit();
+                }}
+              />
+            </>
+          )}
       </>
     );
   }

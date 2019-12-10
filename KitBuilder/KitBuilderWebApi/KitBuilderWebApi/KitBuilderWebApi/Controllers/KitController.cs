@@ -998,13 +998,15 @@ namespace KitBuilderWebApi.Controllers
 
                     var KitLinkGroupsToRemove = existingKitLinkGroups.Where(i => !kitToSave.KitLinkGroup.Select(k => k.LinkGroupId).Contains(i.LinkGroupId));
 
-                    var localeRecordExists = kitLinkGroupLocaleRepository.GetAll().Where(klgl => klgl.Exclude == false && KitLinkGroupsToRemove.Select(k => k.KitLinkGroupId).Contains(klgl.KitLinkGroupId)).Any();
-
-                    if (localeRecordExists)
+                    if (KitLinkGroupsToRemove.Count() > 0)
                     {
-                        return StatusCode(StatusCodes.Status409Conflict);
-                    }
+                        var localeRecordExists = kitLinkGroupLocaleRepository.GetAll().Where(klgl => klgl.Exclude == false && KitLinkGroupsToRemove.Select(k => k.KitLinkGroupId).Contains(klgl.KitLinkGroupId)).Any();
 
+                        if (localeRecordExists)
+                        {
+                            return StatusCode(StatusCodes.Status409Conflict);
+                        }
+                    }
                     var kitLinkGroupItemsThatHaveExistingKitLinkGroupParent = kitToSave.KitLinkGroup.SelectMany(klg => klg.KitLinkGroupItem.Select(klgi => new KitLinkGroupItem()
                     {
                         InsertDateUtc = DateTime.UtcNow,
@@ -1053,14 +1055,14 @@ namespace KitBuilderWebApi.Controllers
             {
                 logger.LogError($"SaveKit: Concurrency Error Saving Kit. [id: {kitToSave.KitId}]");
                 logger.LogError(DbConcurrencyEx.Message);
-                return BadRequest();
+                return BadRequest($"SaveKit: Concurrency Error Saving Kit. [id: {kitToSave.KitId}]");
 
             }
             catch (DbUpdateException DbUpdateException)
             {
                 logger.LogError($"SaveKit: Database Update Error Saving Kit. [id: {kitToSave.KitId}]");
                 logger.LogError(DbUpdateException.Message);
-                return BadRequest();
+                return BadRequest("Error in Saving Kit. Make sure you are not removing modifier in use.");
             }
             catch (Exception Ex)
             {

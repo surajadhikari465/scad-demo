@@ -9,6 +9,7 @@ export interface Item {
 }
 
 export interface LinkGroupItem {
+    IsRemoved:Boolean,
     linkGroupId: number,
     linkGroupItemId: number,
     item: Item,
@@ -20,6 +21,7 @@ export interface LinkGroup {
     linkGroupId: number,
     groupName: string,
     groupDescription: string,
+    IsRemoved:Boolean,
     itemScanCode: number | void,
     itemDescription: string | void,
     itemPosDesc: string | void,
