@@ -63,11 +63,11 @@ Public Class OpsGenieUtility
         Dim sSMTPHost As String = ConfigurationServices.AppSettings("SMTPHost")
         Dim sFromEmailAddress As String = ConfigurationServices.AppSettings("PosPush_FromEmailAddress").ToString()
         Dim sEnvironMent As String = ConfigurationServices.AppSettings("environment").ToString()
-        Dim sErrorToAddress As String = ConfigurationServices.AppSettings("PosPush_ToEmailAddress").ToString()
-        Dim sErrorCCAddress As String = ConfigurationServices.AppSettings("PosPush_CcEmailAddress").ToString()
+        Dim sToEmailAddress As String = ConfigurationServices.AppSettings("PosPush_ToEmailAddress").ToString()
+        Dim sCCEmailAddress As String = ConfigurationServices.AppSettings("PosPush_CcEmailAddress").ToString()
         Dim smtp As New SMTP(sSMTPHost)
     Try 
-        smtp.send(sMessage, sErrorToAddress, sErrorCCAddress, sFromEmailAddress, sSubject)
+        smtp.send(sMessage, sToEmailAddress, sCCEmailAddress, sFromEmailAddress, sSubject)
         Catch ex As Exception
             Logger.LogDebug("SendMail failed:  " & ex.ToString(), GetType(OpsGenieUtility))
     End Try

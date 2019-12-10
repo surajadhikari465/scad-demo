@@ -187,10 +187,28 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
                 _jobExecutionMessage = ScheduledJobBO.GetJobCompletionStatusForUI(CType(scalePush, ScheduledJob))
             End If
 
+            Try
+                sSMTP = ConfigurationServices.AppSettings("SMTPHost").ToString
+            Catch ex As Exception
+                sSMTP = "smtp.wholefoods.com"
+            End Try
+
+            Try
+                sEnvironment = ConfigurationServices.AppSettings("environment").ToString
+            Catch ex As Exception
+                sEnvironment = "NOENVIRONMENT"
+            End Try
+
+            If sRegion = String.Empty Then
+                sFromEmailAddress = "POSPush." & sEnvironment & "@wholefoods.com"
+            Else
+                sFromEmailAddress = sRegion & ".POSPush." & sEnvironment & "@wholefoods.com"
+            End If
+
             If sToEmailAddress <> String.Empty Then
                 If posSuccess Then
-                    OpsGenieUtility.SendMail("POS Push Success!", "The POS Push completed successfully!")
-                Else
+                    SendMail(sToEmailAddress, sFromEmailAddress, "POS Push Success!", "The POS Push completed successfully!", sSMTP)
+                Else 
                     OpsGenieUtility.SendMail("POS Push Failure", _jobExecutionMessage)
                 End If
             End If
@@ -745,6 +763,16 @@ Namespace WholeFoods.IRMA.Replenishment.Jobs
                     _hasTriggeredAlert = True
                 End If
             End If
+        End Sub
+
+        Public Sub SendMail(ByVal sRecipient As String, ByVal sFromAddress As String, ByVal sSubject As String, ByVal sMessage As String, ByVal sSMTP As String)
+            Dim smtp As New SMTP(sSMTP)
+
+            Try
+                smtp.send(sMessage, sRecipient, Nothing, sFromAddress, sSubject)
+            Catch ex As Exception
+                Logger.LogDebug("SendMail failed:  " & ex.ToString(), Me.GetType())
+            End Try
         End Sub
 
         Private Sub scalePush_ScaleCompleteError() Handles scalePush.ScaleCompleteError
