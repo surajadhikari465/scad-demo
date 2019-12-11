@@ -3371,4 +3371,7 @@
       <SqlPermissionSet>EXTERNAL_ACCESS</SqlPermissionSet>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\PostDeploy\PBI27833-GenerateEmailWhenPosPushJobFails.sql" />
+  </ItemGroup>
 </Project>

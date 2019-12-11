@@ -1,4 +1,4 @@
---PBI27833-Generate email when POS PUSH Job fails
+﻿--PBI27833-Generate email when POS PUSH Job fails
 --PosPush_FromEmailAddress
 BEGIN
     DECLARE @Result					INT
@@ -76,13 +76,13 @@ BEGIN
 
     SELECT @EnvironmentID = (SELECT EnvironmentID FROM AppConfigEnv WHERE Name = 'TEST')	
     SELECT @ApplicationID = (SELECT ApplicationID FROM AppConfigApp WHERE Name = @ApplicationName AND EnvironmentID = @EnvironmentID)
-	SET @Value = 'SCMS-L2@wholefoods.com, SCM-L3@wholefoods.com'
+	SET @Value = 'IRMA.developers@wholefoods.com'
     IF NOT EXISTS(SELECT * FROM AppConfigValue WHERE KeyID = @KeyID AND EnvironmentID = @EnvironmentID AND ApplicationID = @ApplicationID)
         EXEC AppConfig_AddKeyValue @ApplicationID,@EnvironmentID,@UpdateExistingKeyValue,@KeyID,@Value,@User_ID
 
     SELECT @EnvironmentID = (SELECT EnvironmentID FROM AppConfigEnv WHERE Name = 'QUALITY ASSURANCE')	
     SELECT @ApplicationID = (SELECT ApplicationID FROM AppConfigApp WHERE Name = @ApplicationName AND EnvironmentID = @EnvironmentID)
-	SET @Value = 'SCMS-L2@wholefoods.com, SCM-L3@wholefoods.com'
+	SET @Value = 'IRMA.developers@wholefoods.com'
     IF NOT EXISTS(SELECT * FROM AppConfigValue WHERE KeyID = @KeyID AND EnvironmentID = @EnvironmentID AND ApplicationID = @ApplicationID)
         EXEC AppConfig_AddKeyValue @ApplicationID,@EnvironmentID,@UpdateExistingKeyValue,@KeyID,@Value,@User_ID
 
