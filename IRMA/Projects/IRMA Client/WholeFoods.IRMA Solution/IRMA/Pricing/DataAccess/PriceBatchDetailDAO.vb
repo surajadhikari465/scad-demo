@@ -47,7 +47,7 @@ Namespace WholeFoods.IRMA.Pricing.DataAccess
                 table.Columns.Add(New DataColumn("PriceBatchDetailID", GetType(Integer)))
                 table.Columns.Add(New DataColumn("PrintSign", GetType(Boolean)))
 
-                While results.Read And (iLoop < maxLoop)
+                While results.Read 'And (iLoop < maxLoop)
                     iLoop = iLoop + 1
 
                     row = table.NewRow
