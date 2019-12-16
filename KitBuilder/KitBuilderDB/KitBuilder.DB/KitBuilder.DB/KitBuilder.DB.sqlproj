@@ -143,6 +143,8 @@
     <None Include="Scripts\PostDeploymentScripts\PopulateLocaleKitAndInstructionTypes.sql" />
     <None Include="Scripts\PostDeploymentScripts\PopulateAppTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\CleanUpAvailablePluNumberTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\PopulatePurgeTableInfoRecords.sql" />
+    <None Include="Scripts\PostDeploymentScripts\AddDataPurgeServiceToApp.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\PreDeplolymentScripts\PreDeploymentScript.sql" />

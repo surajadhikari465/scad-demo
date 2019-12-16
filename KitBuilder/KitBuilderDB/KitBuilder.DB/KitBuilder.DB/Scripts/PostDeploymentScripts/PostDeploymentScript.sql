@@ -19,3 +19,5 @@ Post-Deployment Script Template
 :r PopulateLocaleKitAndInstructionTypes.sql -- 05.27.2019
 :r PopulateInstructionMemberPluNumbers.sql -- 05.29.2019
 :r PopulateAppTable.sql -- 07.11.2019
+:r AddDataPurgeServiceToApp.sql  -- 12.12.2019
+:r PopulatePurgeTableInfoRecords.sql  -- 12.12.2019
