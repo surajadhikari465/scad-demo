@@ -504,9 +504,15 @@ namespace KitBuilderWebApi.Controllers
         public IActionResult GetAllKitsForStore(int storeId)
         {
             var store = localeRepository.GetAll().Where(k => k.LocaleId == storeId && k.LocaleTypeId == LocaleTypes.Store).FirstOrDefault();
+            var venueCount = localeRepository.GetAll().Where(k => k.StoreId == storeId && k.LocaleTypeId == LocaleTypes.Venue && k.Hospitality==true).Count();
 
             try
             {
+                if(venueCount == 0)
+                {
+                    return BadRequest("No venue exists for selected store.");
+                }
+
                 if (store == null)
                 {
                     logger.LogWarning("The store does not exist");
@@ -519,15 +525,16 @@ namespace KitBuilderWebApi.Controllers
                            join i in itemsRepository.GetAll() on s.ItemId equals i.ItemId
                            join l in localeRepository.GetAll() on kl.LocaleId equals l.LocaleId
                            join st in statusRepository.GetAll() on kl.StatusId equals st.StatusId
-                            where l.LocaleId == lr.MetroId || l.LocaleId == lr.RegionId || l.LocaleId == lr.ChainId || l.StoreId == lr.LocaleId
-                           select new
+                            where l.LocaleId == lr.MetroId || l.LocaleId == lr.RegionId || l.LocaleId == lr.ChainId || l.StoreId == lr.LocaleId || l.LocaleId == lr.LocaleId
+                            select new
                            {
                                kitId = s.KitId,
                                kitDescription = s.Description,
                                scanCode = i.ScanCode,
                                productDescription  = i.ProductDesc,
                                excluded = kl.Exclude,
-                               status = st.StatusDescription
+                               status = st.StatusDescription,
+                               localeTypeId = l.LocaleTypeId 
                            }).ToList();
 
                 if (kits == null)
@@ -535,10 +542,11 @@ namespace KitBuilderWebApi.Controllers
                     return NotFound();
                 }
 
-                var excludedkitIds = kits.Where(k => k.excluded == true).Select(s => s.kitId).ToList();
+                var excludedkitIds = kits.Where(k => k.excluded == true && k.localeTypeId != LocaleTypes.Venue).Select(s => s.kitId).ToList();
+                var kitsWithNoVenueIncluded = (kits.Where(k => k.excluded == true && k.localeTypeId == LocaleTypes.Venue).GroupBy(k => k.kitId).Where(grp => grp.Count() == venueCount)).Select(s=>s.Key);
 
                 var kitsAssignedToStore = (kits
-                         .Where(x => !excludedkitIds.Contains(x.kitId))
+                         .Where(x => !excludedkitIds.Contains(x.kitId) && !kitsWithNoVenueIncluded.Contains(x.kitId))
                          .ToList()).GroupBy(s => s.kitId).Select(s => s.First());
 
                 return Ok(kitsAssignedToStore);

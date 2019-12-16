@@ -210,11 +210,17 @@ export class KitsByStoreView extends React.Component<
       urlStart + "/" + selectedStoreId + "/GetAllKitsForStore";
     fetch(url)
       .then(response => {
+        if (response.status == 400) {
+          return null;
+        }
+        if (response.status == 500) {
+          throw Error(response.statusText);
+        }
         return response.json();
       })
       .then(data => {
         if (typeof data == undefined || data == null || data.length == 0) {
-          this.props.showAlert("No kits have been assigned to the selected store.");
+          this.props.showAlert("No kits have been assigned to the selected store.", "error");
           this.setState({
             showDisplay: true,
             kitsByStoreData: []
@@ -236,7 +242,7 @@ export class KitsByStoreView extends React.Component<
         });
       })
       .catch(error => {
-        this.props.showAlert(error.response.data, "error");
+        this.props.showAlert("A problem happened while handling your request.", "error");
         this.setState({
           disableViewKitButton: false
         });
