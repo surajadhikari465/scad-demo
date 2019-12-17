@@ -15,6 +15,8 @@ HISTORY:
 2019.07.02:
 - Tom Lux - Added region and username to end of log-file name.
 - Tom Lux - New var $diffRestoreRuntimeScript is unique to region, so concurrent refreshes should not accidentially use diff-restore cmd for other regions.
+
+2019.11.27: Tom - Added date-time stamp to step output and notes about the dynamic script for setup-testing-access.
 #>
 
 
@@ -90,6 +92,17 @@ $diffRestoreTemplateFile = "Refresh.Dynamic Diff Restore.ItemCatalog--TEMPLATE--
 $diffRestoreRuntimeScript = "Refresh.Dynamic Diff Restore.ItemCatalog.$region.sql"
 $diffRestoreCmdPlaceholder = "%DiffRestoreCommandSql%"
 
+
+<#
+#################################################################
+#################################################################
+
+
+WARNING -- this script assumes folder structure we setup on IRMADevETL01
+
+#################################################################
+#################################################################
+#>
 e:
 cd E:\devops\refresh\ItemCatalog_Test
 
@@ -127,7 +140,11 @@ $diffRestoreRuntimeScript,
 "Refresh.Clear Closed-Store Push Config.ItemCatalog.sql",
 
 ######################## TO-DO: the testing-access sql can be generated from input file, so get that PS code in here...
+## NOTE: Until this PS refresh script is updated so that the setup-testing-access script below is built dynamically, YOU MUST get this script from Tom,
+## as he has been manually maintaining it with updates for our team and IRMA-access requests from other teams.
 "Refresh.Setup Testing-Access Users.Dynamic.ItemCatalog.sql",
+########################
+
 "Refresh.Set DB MultiUser Access.ItemCatalog.sql"
 )
 
@@ -139,7 +156,7 @@ Read-Host "Press ENTER to continue..."
 
 foreach($sqlScript in $sqlScriptList){
     $outputBreak
-    "Step :: $sqlScript"
+    "[" + (Get-Date) + "] Step :: $sqlScript"
 
     if($sqlScript -like "ExportTablesToPreserve"){
         -split $orderedTablesToPreserveData | foreach { Export-SqlTable -Server $dbServer -Database $dbName -Table $_ -CharType -TrustedAuth }
