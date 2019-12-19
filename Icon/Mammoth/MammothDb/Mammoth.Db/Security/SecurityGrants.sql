@@ -15,7 +15,8 @@ so access is controlled and more difficult to "abuse" (start reading/using other
 GRANT EXECUTE, SELECT, UPDATE, INSERT on SCHEMA::[app]			to [MammothRole];
 GRANT EXECUTE, SELECT, UPDATE, INSERT on SCHEMA::[esb]			to [MammothRole];
 GRANT EXECUTE, SELECT, UPDATE, INSERT, DELETE on SCHEMA::[dbo]	to [MammothRole];
-GRANT EXECUTE, SELECT, UPDATE, INSERT, DELETE on SCHEMA::[stage] to [MammothRole];
+GRANT EXECUTE, SELECT, UPDATE, INSERT, DELETE, ALTER on SCHEMA::[stage] to [MammothRole];
+GRANT CREATE TABLE TO [MammothRole]
 
 -- Stored Procedures
 GRANT EXECUTE on [dbo].[AddOrUpdateHierarchyClass_FromStaging]			to [MammothRole];
