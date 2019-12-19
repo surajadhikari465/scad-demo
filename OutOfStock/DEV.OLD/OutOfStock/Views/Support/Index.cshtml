@@ -1,0 +1,570 @@
+﻿@model OutOfStock.Models.ViewModelContactUs
+
+@{
+    ViewBag.Title = "Support";
+}
+
+
+
+<style type="text/css">
+    .question {
+    }
+
+    .answer {
+    }
+
+    .terminology {
+    }
+
+    .contactSection {
+    }
+</style>
+
+<div class="col-lg-12">
+
+    <br />
+    <br />
+
+    <div class="hero-unit">
+        <h1 style="display: inline">Support Page</h1>
+        <input type="button" value="Contact Us" class="btn btn-info pull-right" id="showContactDiv" />
+    </div>
+
+
+    <div id="contactform" class="contactSection" style="display: none">
+        <div class=" span2">&nbsp;</div>
+        <div class="span8">
+            <h4>Contact Global Scanbacks Support</h4>
+            <form id="userinput">
+                <div class="form-group">
+                    <label for="name">Name &nbsp;&nbsp;</label>
+                    <input type="text" class="form-control" value="@Model.userName" id="name" disabled="disabled">
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="details">Details&nbsp;</label>
+                    <textarea class="form-control" rows="3" style="width: 300px;" name=" details" id="details" placeholder="Description" required></textarea>
+                </div>
+                <p>
+                    <button type="submit" class="btn btn-success" id="sendEmail">Send</button>
+                    <button type="reset" class="btn btn-danger" id="cancelEmail">Cancel</button>
+                </p>
+            </form>
+        </div>
+    </div>
+
+
+
+
+    <br />
+    <h2 class="lead" id="showGlossaryDiv">About Out of Stock</h2>
+
+    <div id="glossarycontent" class="terminology">
+        The Out of Stock (OOS) Tool was developed to help detect out of stock trends, improve ordering and quicken response rates to
+        out of stock situations.  Out of Stock items result in lost sales opportunities.  Tracking and monitoring out of stock items
+        can help store/regional managers anticipate out of stock events, and take corrective measures to ensure sufficient supply in
+        order to meet demand.  This project provides a tool to track and monitor out of stock events and help reduce out of stock
+        rates, thereby regaining lost sales.
+    </div>
+
+
+    <br />
+    <h3 class="lead" id="showGlossaryDiv">Summary Report</h3>
+
+    The Summary Report will show the out of stock counts/percentages for all stores in your region and the regional averages (located
+    at the bottom).  You region will be selected automatically based on your location.
+    <br />
+    <br />
+    You will see all stores in your region listed in the Store Name column.  Store out of stock counts and percentages are displayed
+    for Grocery and Whole Body (only for the selected date range).  The number of completed scan sessions during the date range will
+    be displayed in the Times Scanned column.
+    <br />
+    <br />
+    At the bottom of the report you will see the regional averages.  When all stores count their out of stocks everyone will be able
+    to compare values.  This is a way to view what stores have achieved and know out of stock averages for the entire region.  You can
+    use this average by trying to keep your store’s average below the regional average.
+
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer1" onclick="toggleAnswer('answer1');">How to adjust the date range?</a>
+        </p>
+
+        <div class="answer" id="answer1" style="display: none">
+            <ul class="answer">
+                <li>
+                    To adjust the date range of the report manually select the FROM and TO dates.  The dates can be from a single day
+                    up to one year span.
+                </li>
+                <br />
+                <img src="/Content/images/Support/Select Date Summary Report.JPG" />
+                <li>Click Run Report.</li>
+                <br />
+                <img src="/Content/images/Support/Run Report Summary Report.JPG" />
+            </ul>
+        </div>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer2" onclick="toggleAnswer('answer2');">Why is my Grocery/Whole Body percentage 0 (zero)?</a>
+        </p>
+
+        <p class="answer" id="answer2" style="display: none">
+            If your percentages are 0 (zero) on the Summary Report, this means that the SKU Count information is not entered for your
+            store.  Only Regional Users have access to this tab. Contact OOS GLobal Support or your Regional contact to get SKU
+            information added for your store.
+        </p>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer3" onclick="toggleAnswer('answer3');">I don't see my store listed, where is it?</a>
+        </p>
+
+        <p class="answer" id="answer3" style="display: none">
+            If your store is not listed, please contact OOS Global Support.
+        </p>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer4" onclick="toggleAnswer('answer4');">I scanned items but I don't see them, where are they?</a>
+        </p>
+
+        <div class="answer" id="answer4" style="display: none">
+            If you scanned items and they are not reflected for on the Summary Report for your store, please check the
+            following.  If all information is correct, please reach out to OOS Global Support.
+            <ul class="answer">
+                <li>
+                    Make sure your store is set correctly on the scan-gun.  Open OOS on the scan-gun and click Menu, then confirm that the store
+                    is correct.
+                </li>
+                <li>Verify the correct date range is selected on the Summary Report page.</li>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+    <br />
+    <h3 class="lead" id="showGlossaryDiv">Custom Report</h3>
+
+    Custom Reports present detailed information about each out of stock item scanned along with status information where available.
+    There are two different levels of the Custom Report.  There is a single-store and a multi-store Custom Report.
+    <br />
+    <br />
+    As a suggested business rule, Custom Reports are helpful if they are pulled consistently.  Some regions have suggested they be
+    pulled weekly after their Sunday scans.
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer5" onclick="toggleAnswer('answer5')">How to adjust the date range?</a>
+        </p>
+
+        <div class="answer" id="answer5" style="display: none">
+            <ul class="answer">
+                <li>
+                    To adjust the date range of the report manually select the FROM and TO dates.  The dates can be from a single day
+                    up to one year span.
+                </li>
+            </ul>
+            <br />
+            <img src="/Content/images/Support/Select Date Custom Report.JPG" />
+        </div>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer6" onclick="toggleAnswer('answer6')">What are the formulas for the calculated columns?</a>
+        </p>
+
+        <div class="answer" id="answer6" style="display: none">
+            <ul class="answer">
+                <li>Average Daily Units - Average unit sold per day, over the last 12 weeks, from the last day item sold.</li>
+                <li>
+                    Cumulative Sales Opportunity - Sales opportunity that is lost due to an out of stock.
+                    <br />
+                    Single Store Report: Single Day = Movement * Price, Multi-day = Summation of (Movement * Price) per day.
+                    <br />
+                    Multi- Store Report: Single Day = Summation of (Movement * Price) per store, Multi-day = Summation of (Movement * Price) per store, per day.
+                </li>
+                <li>Last Date Sold - Last date the item sold.</li>
+                <li>Days with Sales - Number of days with sales, over the last 12 weeks, from the last day item sold.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer7" onclick="toggleAnswer('answer7')">How do I run the report?</a>
+        </p>
+
+        <div class="answer" id="answer7" style="display: none">
+            <ul class="answer">
+                <li>Select the Custom Report tab.</li>
+                <br />
+                <img src="/Content/images/Support/Custom Report.JPG" />
+                <li>Manually enter or select you dates using the calendar selector.</li>
+                <br />
+                <img src="/Content/images/Support/Select Date Custom Report.JPG" />
+                <li>Regional users step – select one store from the store selection list.</li>
+                <br />
+                <img src="/Content/images/Support/Select Store Custom Report.JPG" />
+                <li>Select one or multiple Teams (hold down the CTRL key for multiple selections).</li>
+                <br />
+                <img src="/Content/images/Support/Select Team Custom Report.JPG" />
+                <li>Select one or multiple Sub Teams.</li>
+                <br />
+                <img src="/Content/images/Support/Select Subteam Custom Report.JPG" />
+                <li>Select the Generate Report button.</li>
+                <br />
+                <img src="/Content/images/Support/Generate Report Custom Report.JPG" />
+                <li>Select Open from the prompt (this will open the report in Excel).</li>
+                <br />
+                <img src="/Content/images/Support/Open File.JPG" />
+            </ul>
+        </div>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer8" onclick="toggleAnswer('answer8')">What are the data sources of the Custom Report?</a>
+        </p>
+
+        <p class="answer" id="answer8" style="display: none">
+            We get our information from the VIM.  Any information that contains movement is pulled from Stella.
+        </p>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer9" onclick="toggleAnswer('answer9')">How can the Custom Report help me?</a>
+        </p>
+
+        <div class="answer" id="answer9" style="display: none">
+            <ul class="answer">
+                <li>
+                    Custom Reports can help you identify:
+                    <ul>
+                        <li>Fast-mover out of stocks.</li>
+                        <li>Discontinued items that are still tagged.</li>
+                        <li>Long term out of stocks that require temporary replacement.</li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="answer" >
+                <li>
+                    Check the Custom Report Product Status Column for Updates on items that your store scanned as out of stock.
+                    <ul>
+                        <li>Replace discontinued items.</li>
+                        <li>Update tags for UPC changes.</li>
+                        <li>Temporarily replace known long term out of stock items if an alternative SKU is available.</li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="answer" >
+                <li>
+                    If you are regularly running out of a product, you may need to:
+                    <ul>
+                        <li>Adjust ordering.</li>
+                        <li>Holding power.</li>
+                        <li>Restocking attention in the afternoon/evening.</li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="answer" >
+                <li>
+                    Focus your attention on the OOS items that are worth the most money by looking at the Cumulative Sales field.
+                    <ul>
+                        <li>The Cumulative Sales field is already sorted for you to view highest to lowest potential sales loss.</li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="answer" >
+                <li>
+                    Determine average daily movement in the Average Daily Sales column.
+                    <ul>
+                        <li>If you’re struggling to keep an item in stock and you cannot adjust holding power, this can help you determine appropriate daily pars.</li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="answer">
+                <li>Identify recurring out of stocks by generating a multi-week report and sorting by the Number of Times Scanned field.</li>
+            </ul>
+        </div>
+    </div>
+
+
+
+    <br />
+    <h3 class="lead" id="showGlossaryDiv">Product Status</h3>
+    The OOS Tool allows Regional Users to manage (add, update, remove) an individual status or a group of item statues by using the
+    Product Status tab.  Status information will appear in the store’s Custom Reports when the item is scanned as out of stock by
+    that store.
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer10" onclick="toggleAnswer('answer10')">What is a Product Status?</a>
+        </p>
+
+        <p class="answer" id="answer10" style="display: none">
+            A Product Status contains information for the scanned out of stock item.  This is a message the Regional Users want
+            to communicate to the Store Users.  This information can come from vendors or someone with knowledge of the product
+            and the status of that product.  Items with Status Information will be displayed with the most recent at the top.
+            After adding a new item, the new item will appear at the top of the page.  If that item is scanned as out of stock,
+            it will appear in that store’s Custom Reports if scanned before the expiration date occurs.
+        </p>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer11" onclick="toggleAnswer('answer11')">Where do I see the Product Status?</a>
+        </p>
+
+        <p class="answer" id="answer11" style="display: none">
+            You can see the Product Status on the Custom Report.
+        </p>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer12" onclick="toggleAnswer('answer12')">How do I enter a single Product Status?</a>
+        </p>
+
+        <div class="answer" id="answer12" style="display: none">
+            <ul class="answer">
+                <li>Select the Product Status tab.</li>
+                <li>Select the Add New Item button.</li>
+                <br />
+                <img src="/Content/images/Support/Single Add Product Status.JPG" />
+                <li>Enter a UPC in the UPC field.</li>
+                <li>Enter status information in the Status field.</li>
+                <li>Enter an expiration date.</li>
+                <li>Select the Enter icon.</li>
+                <br />
+                <img src="/Content/images/Support/Enter Product Status.JPG" />
+            </ul>
+        </div>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer13" onclick="toggleAnswer('answer13')">How do I edit a single Product Status?</a>
+        </p>
+
+        <div class="answer" id="answer13" style="display: none">
+            <ul class="answer" >
+                <li>From the Product Status tab, select the green Search button.</li>
+                <br />
+                <img src="/Content/images/Support/Search Product Status.JPG" />
+                <li>You may search by entering a Status, UPC, Expiration Date, or all.</li>
+                <li>Select the Search button to begin your search.</li>
+                <br />
+                <img src="/Content/images/Support/Click Search Product Status.JPG" />
+                <li>To edit the item, select the Edit icon.</li>
+                <br />
+                <img src="/Content/images/Support/Single Edit Product Status.JPG" />
+                <li>Update the status and/or expiration date.</li>
+                <br />
+                <img src="/Content/images/Support/Edit Prompt Product Status.JPG" />
+                <li>Select the Enter button.</li>
+                <br />
+                <img src="/Content/images/Support/Enter Product Status.JPG" />
+            </ul>
+        </div>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer14" onclick="toggleAnswer('answer14')">How do I edit multiple Product Status?</a>
+        </p>
+
+        <div class="answer" id="answer14" style="display: none">
+            <ul class="answer">
+                <li>Perform a search to display the items you want to edit.</li>
+                <br />
+                <img src="/Content/images/Support/Search Product Status.JPG" />
+                <li>Select the check box next to the items you want to edit.</li>
+                <br />
+                <img src="/Content/images/Support/Edit Mutiples Product Status.JPG" />
+                <li>Select the Bulk Edit Tab.</li>
+                <br />
+                <img src="/Content/images/Support/Bulk Edit Product Status 01.JPG" />
+                <li>Update the Status and/or Expiration Date.</li>
+                <br />
+                <img src="/Content/images/Support/Edit Prompt Product Status.JPG" />
+                <li>Select the Enter icon.</li>
+                <br />
+                <img src="/Content/images/Support/Enter Product Status.JPG" />
+            </ul>
+        </div>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer15" onclick="toggleAnswer('answer15')">How do I remove a single Product Status?</a>
+        </p>
+
+        <div class="answer" id="answer15" style="display: none">
+            <ul class="answer" >
+                <li>From the Product Status tab, select the green Search button.</li>
+                <br />
+                <img src="/Content/images/Support/Search Product Status.JPG" />
+                <li>You may search by entering a Status, UPC, Expiration Date, or all.</li>
+                <li>Select the Search button to begin your search.</li>
+                <br />
+                <img src="/Content/images/Support/Click Search Product Status.JPG" />
+                <li>To delete an item, select the Remove icon.</li>
+                <br />
+                <img src="/Content/images/Support/Single Remove Status Product Status.JPG" />
+            </ul>
+        </div>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer16" onclick="toggleAnswer('answer16')">How do I add a multiple Product Status?</a>
+        </p>
+
+        <div class="answer" id="answer16" style="display: none">
+            The Out of Stock Tool allows regional users to upload bulk product status information that they receive
+            from distributors about existing or potential out of stocks.  This status information appears on the
+            Custom Reports when an item with status information is scanned as out of stock.  The Bulk Upload tab allows
+            regional users to upload a spreadsheet of status information for multiple out of stocks.  A template is
+            provided for you, though you can use your own spreadsheet.
+            <br />
+            <br />
+            The Status information entered can be viewed in the Custom Reports when an item is scanned as out of stock.
+            If an Expiration Date is not entered it will default to 14 days out from upload date.  You will receive a
+            successful confirmation message when the data is uploaded.  You will receive an error message if a missing
+            required field is empty or not included in the spreadsheet or if a UPC cannot be identified as a known product.
+
+            <ul class="answer">
+                <li>Select the Bulk Upload tab.</li>
+                <br />
+                <img src="/Content/images/Support/Bulk Upload Template.JPG" />
+                <li>Select the link Template.</li>
+                <li>This link will open an Excel Spreadsheet.</li>
+                <li>Enter UPCs in column A (required field).</li>
+                <li>Enter Status information in column B (required field).</li>
+                <li>Enter Expiration Date in column C (optional field).</li>
+                <li>Save the template to your desktop.</li>
+                <li>Select the Browse button in the OOS Tool.</li>
+                <li>Select the document you saved to your desktop to upload.</li>
+                <li>A confirmation message will be shown.</li>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+    <br />
+    <h3 class="lead" id="showGlossaryDiv">Admin</h3>
+
+    The OOS Tool allows Regional Users the ability to manange SKU counts for their departments.  This number is part of the percentage formula
+    displayed on the Summary Report.
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer17" onclick="toggleAnswer('answer17')">Who updates the SKU Counts?</a>
+        </p>
+
+        <p class="answer" id="answer17" style="display: none">
+            All Regional Users have access to this tab. Regions must decide who will update this page and keep it current.
+            It could be one person or many people; the main is that the methodology is consistent.
+        </p>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer18" onclick="toggleAnswer('answer18')">How often should the SKUs be updated?</a>
+        </p>
+
+        <p class="answer" id="answer18" style="display: none">
+            Totals SKU counts should be changed on a quarterly or bi-annual basis to capture impacts due to remodels.
+        </p>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer19" onclick="toggleAnswer('answer19')">How do you get an accurate SKU Count for each store?</a>
+        </p>
+
+        <p class="answer" id="answer19" style="display: none">
+            Use a 12 week movement report as a generally accurate means of estimating SKU counts by store.  Pull out
+            non-retail SKUs (like special order PLUs or coupon PLUs) that should not count towards the total number
+            of items store offers for sale at the shelf.
+        </p>
+    </div>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer20" onclick="toggleAnswer('answer20')">How do I enter a department SKU count?</a>
+        </p>
+
+        <div class="answer" id="answer20" style="display: none">
+            <ul class="answer" >
+                <li>Select the Administration tab.</li>
+                <li>Enter the SKU count in the field associated with the store and department.</li>
+                <li>Select Save Changes button.</li>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+    <br />
+    <h3 class="lead" id="showGlossaryDiv">Handheld Scan Guns</h3>
+
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer21" onclick="toggleAnswer('answer21')">How do I scan out of stock?</a>
+        </p>
+
+        <div class="answer" id="answer21" style="display: none">
+            <ul class="answer">
+                <li>Run WFM Mobile.</li>
+                <br />
+                <img src="/Content/images/Support/WFM Mobile.jpg" />
+                <li>Run OOS (Out of Stock).</li>
+                <br />
+                <img src="/Content/images/Support/OOS on WFM Mobile.jpg" />
+                <li>Scan all out of stock items in the store.</li>
+                <br />
+                <img src="/Content/images/Support/Scan Item.jpg" />
+                <li>Click Upload.</li>
+                <br />
+                <img src="/Content/images/Support/Upload.jpg" />
+            </ul>
+        </div>
+    </div>
+    
+    
+    <div class="question" id="question">
+        <p class="lead">
+            <a href="#answer22" onclick="toggleAnswer('answer22')">I received an error when uploading, what should I do?</a>
+        </p>
+
+        <div class="answer" id="answer22" style="display: none">
+            <ul class="answer">
+                <li>Attempt to upload the list again.</li>
+                <li>
+                    Check how many items you are trying to upload.  If more than 300+ they should be uploaded in
+                    smaller batches.
+                </li>
+                <li>Contact OOS Global Support.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+@section HeadContent
+{
+    <script src="/Scripts/Support/SupportPage.js"></script>
+}

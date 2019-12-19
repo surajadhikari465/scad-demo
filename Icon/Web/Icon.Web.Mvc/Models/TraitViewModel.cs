@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Icon.Framework;
-using System.Web.Mvc;
+﻿using Icon.Framework;
 using System.ComponentModel.DataAnnotations;
 
 namespace Icon.Web.Mvc.Models

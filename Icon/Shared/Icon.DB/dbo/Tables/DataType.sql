@@ -1,0 +1,6 @@
+﻿CREATE TABLE dbo.DataType
+(
+	DataTypeId INT IDENTITY (1, 1) NOT NULL,
+	DataType NVARCHAR(25),
+	CONSTRAINT [PK_DataType] PRIMARY KEY CLUSTERED ([DataTypeId] ASC)
+)

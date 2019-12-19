@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using static Icon.Web.Mvc.Excel.ExcelHelper;
+﻿using static Icon.Web.Mvc.Excel.ExcelHelper;
 
 namespace Icon.Web.Mvc.Excel.Models
 {

@@ -1,14 +1,5 @@
 ﻿@using Infragistics.Web.Mvc
-@using Icon.Framework
-@using Icon.Web.Common
 @model Icon.Web.Mvc.Models.PluRequestEditViewModel
-
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Resources("igCombo")
-    .Render()
-)
 
 <h3>Request Details</h3>
 <table class="table table-striped table-bordered">

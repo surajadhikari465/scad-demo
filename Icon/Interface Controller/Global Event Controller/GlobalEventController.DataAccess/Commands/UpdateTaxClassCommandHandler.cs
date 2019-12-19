@@ -31,9 +31,14 @@ namespace GlobalEventController.DataAccess.Commands
 
                 if (taxClassToUpdate.TaxClassDesc != command.TaxClassDescription || taxClassToUpdate.ExternalTaxGroupCode != command.TaxCode)
                 {
+                    if (command.TaxClassDescription.Length > 50)
+                    {
+                        command.TaxClassDescription = command.TaxClassDescription.Substring(0, 50);
+                    }
                     taxClassToUpdate.TaxClassDesc = command.TaxClassDescription;
                     taxClassToUpdate.ExternalTaxGroupCode = command.TaxCode;
                 }
+                context.SaveChanges();
             }
         }
     }

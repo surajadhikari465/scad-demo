@@ -32,7 +32,6 @@ namespace Icon.Web.DataAccess.Commands
 
             this.hierarchyClassTraits = this.context.HierarchyClassTrait.Where(hct => hct.hierarchyClassID == data.UpdatedHierarchyClass.hierarchyClassID).ToList();
             UpdateHierarchyClassTrait(hierarchyClass, Traits.TaxAbbreviation, data.TaxAbbreviation);
-            UpdateHierarchyClassTrait(hierarchyClass, Traits.GlAccount, data.GlAccount);
             UpdateHierarchyClassTrait(hierarchyClass, Traits.NonMerchandise, data.NonMerchandiseTrait);
             UpdateHierarchyClassTrait(hierarchyClass, Traits.ProhibitDiscount, data.ProhibitDiscount);
             UpdateHierarchyClassTrait(hierarchyClass, Traits.PosDepartmentNumber, data.PosDeptNumber);
@@ -45,11 +44,11 @@ namespace Icon.Web.DataAccess.Commands
             
             this.context.SaveChanges();
 
-            UpdateAssociatedItemTypes(data.UpdatedHierarchyClass, data.NonMerchandiseTrait, data.UserName);
-            AddProductMessages(data.UpdatedHierarchyClass);
             AddItemSubTeamEvents(data.UpdatedHierarchyClass);
 
             data.SubteamChanged = subTeamChange;
+            data.NonMerchandiseTraitChanged = nonMerchandiseTraitChange;
+            data.ProhibitDiscountChanged = prohibitDiscountChange;
         }
 
         /// <summary>
@@ -192,17 +191,16 @@ namespace Icon.Web.DataAccess.Commands
             }
             else
             {
-                // Get subteam name from Financial hierarchy based on subTeamId
                 HierarchyClassTrait hierarchyClassTrait = context.HierarchyClassTrait
-                    .Single(hct => hct.traitID == Traits.MerchFinMapping && hct.hierarchyClassID == hierarchyClass.hierarchyClassID);
-
+                    .Single(hct => hct.traitID == Traits.MerchFinMapping 
+                        && hct.hierarchyClassID == hierarchyClass.hierarchyClassID);
                 HierarchyClass subTeam = context.HierarchyClass.Single(hc => hc.hierarchyClassID == subTeamId);
 
                 // Only update if the sub-team is changing
                 string originalValue = hierarchyClassTrait.traitValue;
-                if (originalValue != subTeam.hierarchyClassName)
+                if (originalValue != subTeamId.ToString())
                 {
-                    hierarchyClassTrait.traitValue = subTeam.hierarchyClassName;
+                    hierarchyClassTrait.traitValue = subTeamId.ToString();
                     subTeamChange = true;
 
                     if (subTeam.HierarchyClassTrait.Any(hct => hct.traitID == Traits.NonAlignedSubteam))
@@ -214,83 +212,6 @@ namespace Icon.Web.DataAccess.Commands
                         AddOrRemoveHierarchyClassTrait(hierarchyClass, Traits.NonAlignedSubteam, false, "1");
                     }
                 }
-            }
-        }
-
-        /// <summary>
-        /// Updates the ItemType of each item associated to the subBrick that is being edited.
-        /// Nothing happens if the HierarchyClass being edited is not a SubBrick or if the Non-merchandise Trait did not change
-        /// </summary>
-        /// <param name="hierarchyClass">HierarchyClass being updated</param>
-        /// <param name="nonMerchandiseTraitValue">The Non-Merchandise trait value</param>
-        private void UpdateAssociatedItemTypes(HierarchyClass hierarchyClass, string nonMerchandiseTraitValue, string userName)
-        {
-            // Don't do anything if the HierarchyClass is not a sub-brick or if the non-merchandise trait did not change.
-            if (!nonMerchandiseTraitChange || !(hierarchyClass.hierarchyID == Hierarchies.Merchandise && hierarchyClass.hierarchyLevel == HierarchyLevels.SubBrick))
-            {
-                return;
-            }
-
-            string itemTypeCode = String.Empty;
-            switch (nonMerchandiseTraitValue)
-            {
-                case NonMerchandiseTraits.BottleDeposit:
-                case NonMerchandiseTraits.Crv:
-                    itemTypeCode = ItemTypeCodes.Deposit;
-                    break;
-                case NonMerchandiseTraits.BottleReturn:
-                case NonMerchandiseTraits.CrvCredit:
-                    itemTypeCode = ItemTypeCodes.Return;
-                    break;
-                case NonMerchandiseTraits.Coupon:
-                    itemTypeCode = ItemTypeCodes.Coupon;
-                    break;
-                case NonMerchandiseTraits.LegacyPosOnly:
-                case NonMerchandiseTraits.NonRetail:
-                    itemTypeCode = ItemTypeCodes.NonRetail;
-                    break;
-                case NonMerchandiseTraits.BlackhawkFee:
-                    itemTypeCode = ItemTypeCodes.Fee;
-                    break;
-                default:
-                    itemTypeCode = ItemTypeCodes.RetailSale;
-                    break;
-            }
-
-            this.context.UpdateItemTypeByHierarchyClass(hierarchyClass.hierarchyClassID, itemTypeCode, userName);
-        }
-
-        /// <summary>
-        /// Adds a Product Message for each item associated with the sub-brick.
-        /// Messages will only be created for validated items.
-        /// </summary>
-        /// <param name="hierarchyClass">HierarchyClass object</param>
-        private void AddProductMessages(HierarchyClass hierarchyClass)
-        {
-            // Don't do anything if the HierarchyClass is not a brick or sub-brick.
-            if (hierarchyClass.hierarchyID != Hierarchies.Merchandise && (hierarchyClass.hierarchyLevel != HierarchyLevels.Gs1Brick || hierarchyClass.hierarchyLevel != HierarchyLevels.SubBrick))
-            {
-                return;
-            }
-
-            // Don't do anything if neither the non-merchandise trait nor the sub-team changed.
-            if (!(nonMerchandiseTraitChange || subTeamChange || prohibitDiscountChange))
-            {
-                return;
-            }
-
-            if (hierarchyClass.hierarchyLevel == HierarchyLevels.Gs1Brick)
-            {
-                var subBrickNodes = this.context.HierarchyClass.Where(hc => hc.hierarchyParentClassID == hierarchyClass.hierarchyClassID).ToList();
-
-                foreach (var subBrick in subBrickNodes)
-                {
-                    this.context.GenerateItemUpdateMessagesByHierarchyClass(subBrick.hierarchyClassID);
-                }
-            }
-            else if (hierarchyClass.hierarchyLevel == HierarchyLevels.SubBrick)
-            {
-                this.context.GenerateItemUpdateMessagesByHierarchyClass(hierarchyClass.hierarchyClassID);
             }
         }
 

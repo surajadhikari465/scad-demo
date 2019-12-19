@@ -96,7 +96,7 @@
           </Key>
           <Property Name="IRMAItemSubscriptionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="regioncode" Type="varchar" MaxLength="2" Nullable="false" />
-          <Property Name="identifier" Type="varchar" MaxLength="13" Nullable="false" />
+          <Property Name="identifier" Type="nvarchar" MaxLength="13" Nullable="false" />
           <Property Name="insertDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="deleteDate" Type="datetime2" Precision="7" />
         </EntityType>
@@ -228,6 +228,8 @@
           <Property Name="ZipCode" Type="nvarchar" MaxLength="255" />
           <Property Name="Designation" Type="nvarchar" MaxLength="255" />
           <Property Name="Locality" Type="nvarchar" MaxLength="255" />
+		  <Property Name="ParentCompany" Type="nvarchar" MaxLength="255" />
+		  <Property Name="ArCustomerId" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="MessageQueueItemLocale">
           <Key>
@@ -702,6 +704,8 @@
           <Property Name="TraitId" Type="int" />
           <Property Name="TraitValue" Type="nvarchar" MaxLength="255" />
           <Property Name="MerchandiseHierarchyClassId" Type="int" />
+          <Property Name="AttributeId" Type="int" />
+          <Property Name="AttributeValue" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="ProductSelectionGroupType">
           <Key>
@@ -767,6 +771,53 @@
           <Property Name="addressUsageCode" Type="nvarchar" MaxLength="3" Nullable="false" />
           <Property Name="addressUsageDesc" Type="nvarchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="AttributeCharacterSets">
+          <Key>
+            <PropertyRef Name="AttributeCharacterSetID" />
+          </Key>
+          <Property Name="AttributeCharacterSetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AttributeId" Type="int" Nullable="false" />
+          <Property Name="CharacterSetId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AttributeGroup">
+          <Key>
+            <PropertyRef Name="AttributeGroupId" />
+          </Key>
+          <Property Name="AttributeGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AttributeGroupName" Type="nvarchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="Attributes">
+          <Key>
+            <PropertyRef Name="AttributeId" />
+          </Key>
+          <Property Name="AttributeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="255" />
+          <Property Name="AttributeName" Type="nvarchar" MaxLength="255" />
+          <Property Name="AttributeGroupId" Type="int" />
+          <Property Name="HasUniqueValues" Type="bit" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="DefaultValue" Type="nvarchar" MaxLength="255" />
+          <Property Name="RequiredForPublishing" Type="bit" />
+          <Property Name="SpecialCharactersAllowed" Type="nvarchar" MaxLength="255" />
+          <Property Name="TraitCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="DataTypeId" Type="int" />
+          <Property Name="DisplayOrder" Type="int" />
+          <Property Name="InitialValue" Type="int" />
+          <Property Name="IncrementBy" Type="int" />
+          <Property Name="InitialMax" Type="int" />
+          <Property Name="DisplayType" Type="varchar" MaxLength="255" />
+          <Property Name="MaxLengthAllowed" Type="int" />
+          <Property Name="NumberValidationRule" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsPickList" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CharacterSets">
+          <Key>
+            <PropertyRef Name="CharacterSetId" />
+          </Key>
+          <Property Name="CharacterSetId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="RegEx" Type="nvarchar" MaxLength="200" />
+        </EntityType>
         <EntityType Name="City">
           <Key>
             <PropertyRef Name="cityID" />
@@ -803,6 +854,13 @@
           <Property Name="numericCode" Type="int" />
           <Property Name="minorUnit" Type="int" />
           <Property Name="symbol" Type="nvarchar" MaxLength="3" />
+        </EntityType>
+        <EntityType Name="DataType">
+          <Key>
+            <PropertyRef Name="DataTypeId" />
+          </Key>
+          <Property Name="DataTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DataType" Type="nvarchar" MaxLength="25" />
         </EntityType>
         <EntityType Name="Hierarchy">
           <Key>
@@ -843,15 +901,11 @@
         </EntityType>
         <EntityType Name="Item">
           <Key>
-            <PropertyRef Name="itemID" />
+            <PropertyRef Name="ItemId" />
           </Key>
-          <Property Name="itemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="itemTypeID" Type="int" Nullable="false" />
-          <Property Name="productKey" Type="int" Nullable="false" />
-          <Property Name="hospitalityItem" Type="bit" Nullable="false" />
-          <Property Name="kitchenItem" Type="bit" Nullable="false" />
-          <Property Name="kitchenDescription" Type="varchar" MaxLength="15" />
-          <Property Name="imageURL" Type="varchar" MaxLength="255" />
+          <Property Name="ItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemTypeId" Type="int" />
+          <Property Name="ItemAttributesJson" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="ItemHierarchyClass">
           <Key>
@@ -1019,6 +1073,14 @@
           <Property Name="addressLine3" Type="nvarchar" MaxLength="255" />
           <Property Name="timezoneID" Type="int" />
         </EntityType>
+        <EntityType Name="PickListData">
+          <Key>
+            <PropertyRef Name="PickListId" />
+          </Key>
+          <Property Name="PickListId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AttributeId" Type="int" />
+          <Property Name="PickListValue" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="PostalCode">
           <Key>
             <PropertyRef Name="postalCodeID" />
@@ -1092,6 +1154,15 @@
           <Property Name="uomCode" Type="nvarchar" MaxLength="4" Nullable="false" />
           <Property Name="uomName" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="MessageQueueItem">
+          <Key>
+            <PropertyRef Name="MessageQueueItemId" />
+          </Key>
+          <Property Name="MessageQueueItemId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EsbReadyDateTimeUtc" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="ItemId" Type="int" Nullable="false" />
+          <Property Name="InsertDateUtc" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
         <EntityType Name="Agency">
           <Key>
             <PropertyRef Name="AgencyId" />
@@ -1140,20 +1211,6 @@
           <Property Name="AgencyId" Type="nvarchar" MaxLength="2" Nullable="false" />
           <Property Name="AplScanCode" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="ScanCodeId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="MessageArchiveHierarchy">
-          <Key>
-            <PropertyRef Name="MessageArchiveId" />
-          </Key>
-          <Property Name="MessageArchiveId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="HierarchyClassId" Type="int" Nullable="false" />
-          <Property Name="HierarchyClassName" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="HierarchyName" Type="nvarchar" MaxLength="255" />
-          <Property Name="InforMessageId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Context" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="ErrorCode" Type="nvarchar" MaxLength="100" />
-          <Property Name="ErrorDetails" Type="nvarchar(max)" />
-          <Property Name="InsertDate" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="MessageArchiveProduct">
           <Key>
@@ -1301,6 +1358,20 @@
           <Property Name="EventTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <EntityType Name="MessageArchiveHierarchy">
+          <Key>
+            <PropertyRef Name="MessageArchiveId" />
+          </Key>
+          <Property Name="MessageArchiveId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HierarchyClassId" Type="int" Nullable="false" />
+          <Property Name="HierarchyClassName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="HierarchyName" Type="nvarchar" MaxLength="255" />
+          <Property Name="EsbMessageId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Context" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ErrorCode" Type="nvarchar" MaxLength="100" />
+          <Property Name="ErrorDetails" Type="nvarchar(max)" />
+          <Property Name="InsertDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
         <Association Name="Address_LocaleAddress_FK1">
           <End Role="Address" Type="Self.Address" Multiplicity="1" />
           <End Role="LocaleAddress" Type="Self.LocaleAddress" Multiplicity="*" />
@@ -1433,6 +1504,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__ProductSelectionGroup_Attributes">
+          <End Role="Attributes" Type="Self.Attributes" Multiplicity="0..1" />
+          <End Role="ProductSelectionGroup" Type="Self.ProductSelectionGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attributes">
+              <PropertyRef Name="AttributeId" />
+            </Principal>
+            <Dependent Role="ProductSelectionGroup">
+              <PropertyRef Name="AttributeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__ProductSelectionGroup_MerchandiseHierarchyClass">
           <End Role="HierarchyClass" Type="Self.HierarchyClass" Multiplicity="0..1" />
           <End Role="ProductSelectionGroup" Type="Self.ProductSelectionGroup" Multiplicity="*" />
@@ -1442,18 +1525,6 @@
             </Principal>
             <Dependent Role="ProductSelectionGroup">
               <PropertyRef Name="MerchandiseHierarchyClassId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ProductSelectionGroup_Trait">
-          <End Role="Trait" Type="Self.Trait" Multiplicity="0..1" />
-          <End Role="ProductSelectionGroup" Type="Self.ProductSelectionGroup" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Trait">
-              <PropertyRef Name="traitID" />
-            </Principal>
-            <Dependent Role="ProductSelectionGroup">
-              <PropertyRef Name="TraitId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1554,6 +1625,54 @@
             </Principal>
             <Dependent Role="MessageQueueLocale">
               <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttributeCharacterSets_Attributes_AttributeId">
+          <End Role="Attributes" Type="Self.Attributes" Multiplicity="1" />
+          <End Role="AttributeCharacterSets" Type="Self.AttributeCharacterSets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attributes">
+              <PropertyRef Name="AttributeId" />
+            </Principal>
+            <Dependent Role="AttributeCharacterSets">
+              <PropertyRef Name="AttributeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttributeCharacterSets_CharacterSets_CharacterSetId">
+          <End Role="CharacterSets" Type="Self.CharacterSets" Multiplicity="1" />
+          <End Role="AttributeCharacterSets" Type="Self.AttributeCharacterSets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CharacterSets">
+              <PropertyRef Name="CharacterSetId" />
+            </Principal>
+            <Dependent Role="AttributeCharacterSets">
+              <PropertyRef Name="CharacterSetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attributes_AttributeType_AttributeGroupId">
+          <End Role="AttributeGroup" Type="Self.AttributeGroup" Multiplicity="0..1" />
+          <End Role="Attributes" Type="Self.Attributes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AttributeGroup">
+              <PropertyRef Name="AttributeGroupId" />
+            </Principal>
+            <Dependent Role="Attributes">
+              <PropertyRef Name="AttributeGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attributes_DataType_DataTypeId">
+          <End Role="DataType" Type="Self.DataType" Multiplicity="0..1" />
+          <End Role="Attributes" Type="Self.Attributes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DataType">
+              <PropertyRef Name="DataTypeId" />
+            </Principal>
+            <Dependent Role="Attributes">
+              <PropertyRef Name="DataTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1696,7 +1815,7 @@
           <End Role="ItemSignAttribute" Type="Self.ItemSignAttribute" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
-              <PropertyRef Name="itemID" />
+              <PropertyRef Name="ItemId" />
             </Principal>
             <Dependent Role="ItemSignAttribute">
               <PropertyRef Name="ItemID" />
@@ -2022,6 +2141,18 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PickListData_Attributes_AttributeId">
+          <End Role="Attributes" Type="Self.Attributes" Multiplicity="0..1" />
+          <End Role="PickListData" Type="Self.PickListData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attributes">
+              <PropertyRef Name="AttributeId" />
+            </Principal>
+            <Dependent Role="PickListData">
+              <PropertyRef Name="AttributeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_pluRequestChange_pluRequestChangeTypeID">
           <End Role="PLURequestChangeType" Type="Self.PLURequestChangeType" Multiplicity="1" />
           <End Role="PLURequestChangeHistory" Type="Self.PLURequestChangeHistory" Multiplicity="*" />
@@ -2137,7 +2268,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <End Role="ItemHierarchyClass" Type="Self.ItemHierarchyClass" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
-              <PropertyRef Name="itemID" />
+              <PropertyRef Name="ItemId" />
             </Principal>
             <Dependent Role="ItemHierarchyClass">
               <PropertyRef Name="itemID" />
@@ -2149,7 +2280,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <End Role="ItemLink" Type="Self.ItemLink" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
-              <PropertyRef Name="itemID" />
+              <PropertyRef Name="ItemId" />
             </Principal>
             <Dependent Role="ItemLink">
               <PropertyRef Name="parentItemID" />
@@ -2161,7 +2292,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <End Role="ItemLink" Type="Self.ItemLink" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
-              <PropertyRef Name="itemID" />
+              <PropertyRef Name="ItemId" />
             </Principal>
             <Dependent Role="ItemLink">
               <PropertyRef Name="childItemID" />
@@ -2173,7 +2304,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <End Role="ItemPrice" Type="Self.ItemPrice" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
-              <PropertyRef Name="itemID" />
+              <PropertyRef Name="ItemId" />
             </Principal>
             <Dependent Role="ItemPrice">
               <PropertyRef Name="itemID" />
@@ -2185,7 +2316,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <End Role="ItemTrait" Type="Self.ItemTrait" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
-              <PropertyRef Name="itemID" />
+              <PropertyRef Name="ItemId" />
             </Principal>
             <Dependent Role="ItemTrait">
               <PropertyRef Name="itemID" />
@@ -2197,7 +2328,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <End Role="PLUMap" Type="Self.PLUMap" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Item">
-              <PropertyRef Name="itemID" />
+              <PropertyRef Name="ItemId" />
             </Principal>
             <Dependent Role="PLUMap">
               <PropertyRef Name="itemID" />
@@ -2209,7 +2340,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <End Role="ScanCode" Type="Self.ScanCode" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
-              <PropertyRef Name="itemID" />
+              <PropertyRef Name="ItemId" />
             </Principal>
             <Dependent Role="ScanCode">
               <PropertyRef Name="itemID" />
@@ -2229,14 +2360,14 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           </ReferentialConstraint>
         </Association>
         <Association Name="ItemType_Item_FK1">
-          <End Role="ItemType" Type="Self.ItemType" Multiplicity="1" />
+          <End Role="ItemType" Type="Self.ItemType" Multiplicity="0..1" />
           <End Role="Item" Type="Self.Item" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ItemType">
               <PropertyRef Name="itemTypeID" />
             </Principal>
             <Dependent Role="Item">
-              <PropertyRef Name="itemTypeID" />
+              <PropertyRef Name="ItemTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2615,10 +2746,15 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AddressType" EntityType="Self.AddressType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AddressUsage" EntityType="Self.AddressUsage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AttributeCharacterSets" EntityType="Self.AttributeCharacterSets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AttributeGroup" EntityType="Self.AttributeGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Attributes" EntityType="Self.Attributes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CharacterSets" EntityType="Self.CharacterSets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="County" EntityType="Self.County" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CurrencyType" EntityType="Self.CurrencyType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DataType" EntityType="Self.DataType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Hierarchy" EntityType="Self.Hierarchy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HierarchyClass" EntityType="Self.HierarchyClass" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HierarchyClassTrait" EntityType="Self.HierarchyClassTrait" Schema="dbo" store:Type="Tables" />
@@ -2637,6 +2773,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySet Name="LocaleTrait" EntityType="Self.LocaleTrait" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocaleType" EntityType="Self.LocaleType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PhysicalAddress" EntityType="Self.PhysicalAddress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PickListData" EntityType="Self.PickListData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PostalCode" EntityType="Self.PostalCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScanCode" EntityType="Self.ScanCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScanCodeType" EntityType="Self.ScanCodeType" Schema="dbo" store:Type="Tables" />
@@ -2645,12 +2782,12 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySet Name="Trait" EntityType="Self.Trait" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TraitGroup" EntityType="Self.TraitGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UOM" EntityType="Self.UOM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MessageQueueItem" EntityType="Self.MessageQueueItem" Schema="esb" store:Type="Tables" />
           <EntitySet Name="Agency" EntityType="Self.Agency" Schema="ewic" store:Type="Tables" />
           <EntitySet Name="AgencyLocale" EntityType="Self.AgencyLocale" Schema="ewic" store:Type="Tables" />
           <EntitySet Name="AuthorizedProductList" EntityType="Self.AuthorizedProductList" Schema="ewic" store:Type="Tables" />
           <EntitySet Name="Exclusion" EntityType="Self.Exclusion" Schema="ewic" store:Type="Tables" />
           <EntitySet Name="Mapping" EntityType="Self.Mapping" Schema="ewic" store:Type="Tables" />
-          <EntitySet Name="MessageArchiveHierarchy" EntityType="Self.MessageArchiveHierarchy" Schema="infor" store:Type="Tables" />
           <EntitySet Name="MessageArchiveProduct" EntityType="Self.MessageArchiveProduct" Schema="infor" store:Type="Tables" />
           <EntitySet Name="MessageHistory1" EntityType="Self.MessageHistory1" Schema="infor" Table="MessageHistory" store:Type="Tables" />
           <EntitySet Name="EventQueue1" EntityType="Self.EventQueue1" Schema="mammoth" Table="EventQueue" store:Type="Tables" />
@@ -2658,6 +2795,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySet Name="ItemNutrition" EntityType="Self.ItemNutrition" Schema="nutrition" store:Type="Tables" />
           <EntitySet Name="EventQueue2" EntityType="Self.EventQueue2" Schema="vim" Table="EventQueue" store:Type="Tables" />
           <EntitySet Name="EventType2" EntityType="Self.EventType2" Schema="vim" Table="EventType" store:Type="Tables" />
+          <EntitySet Name="MessageArchiveHierarchy" EntityType="Self.MessageArchiveHierarchy" Schema="vim" store:Type="Tables" />
           <AssociationSet Name="Address_LocaleAddress_FK1" Association="Self.Address_LocaleAddress_FK1">
             <End Role="Address" EntitySet="Address" />
             <End Role="LocaleAddress" EntitySet="LocaleAddress" />
@@ -2702,12 +2840,12 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="CurrencyType" EntitySet="CurrencyType" />
             <End Role="ItemPrice" EntitySet="ItemPrice" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProductSelectionGroup_MerchandiseHierarchyClass" Association="Self.FK__ProductSelectionGroup_MerchandiseHierarchyClass">
-            <End Role="HierarchyClass" EntitySet="HierarchyClass" />
+          <AssociationSet Name="FK__ProductSelectionGroup_Attributes" Association="Self.FK__ProductSelectionGroup_Attributes">
+            <End Role="Attributes" EntitySet="Attributes" />
             <End Role="ProductSelectionGroup" EntitySet="ProductSelectionGroup" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProductSelectionGroup_Trait" Association="Self.FK__ProductSelectionGroup_Trait">
-            <End Role="Trait" EntitySet="Trait" />
+          <AssociationSet Name="FK__ProductSelectionGroup_MerchandiseHierarchyClass" Association="Self.FK__ProductSelectionGroup_MerchandiseHierarchyClass">
+            <End Role="HierarchyClass" EntitySet="HierarchyClass" />
             <End Role="ProductSelectionGroup" EntitySet="ProductSelectionGroup" />
           </AssociationSet>
           <AssociationSet Name="FK__RegionalS__Regio__16B953FD" Association="Self.FK__RegionalS__Regio__16B953FD">
@@ -2741,6 +2879,22 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <AssociationSet Name="FK_app_MessageQueueLocale_MessageType" Association="Self.FK_app_MessageQueueLocale_MessageType">
             <End Role="MessageType" EntitySet="MessageType" />
             <End Role="MessageQueueLocale" EntitySet="MessageQueueLocale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttributeCharacterSets_Attributes_AttributeId" Association="Self.FK_AttributeCharacterSets_Attributes_AttributeId">
+            <End Role="Attributes" EntitySet="Attributes" />
+            <End Role="AttributeCharacterSets" EntitySet="AttributeCharacterSets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttributeCharacterSets_CharacterSets_CharacterSetId" Association="Self.FK_AttributeCharacterSets_CharacterSets_CharacterSetId">
+            <End Role="CharacterSets" EntitySet="CharacterSets" />
+            <End Role="AttributeCharacterSets" EntitySet="AttributeCharacterSets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attributes_AttributeType_AttributeGroupId" Association="Self.FK_Attributes_AttributeType_AttributeGroupId">
+            <End Role="AttributeGroup" EntitySet="AttributeGroup" />
+            <End Role="Attributes" EntitySet="Attributes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attributes_DataType_DataTypeId" Association="Self.FK_Attributes_DataType_DataTypeId">
+            <End Role="DataType" EntitySet="DataType" />
+            <End Role="Attributes" EntitySet="Attributes" />
           </AssociationSet>
           <AssociationSet Name="FK_EventQueue_EventType" Association="Self.FK_EventQueue_EventType">
             <End Role="EventType" EntitySet="EventType" />
@@ -2889,6 +3043,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <AssociationSet Name="FK_MessageRetryStatus_MessageHistory" Association="Self.FK_MessageRetryStatus_MessageHistory">
             <End Role="MessageHistory" EntitySet="MessageHistory" />
             <End Role="MessageResendStatus" EntitySet="MessageResendStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PickListData_Attributes_AttributeId" Association="Self.FK_PickListData_Attributes_AttributeId">
+            <End Role="Attributes" EntitySet="Attributes" />
+            <End Role="PickListData" EntitySet="PickListData" />
           </AssociationSet>
           <AssociationSet Name="FK_pluRequestChange_pluRequestChangeTypeID" Association="Self.FK_pluRequestChange_pluRequestChangeTypeID">
             <End Role="PLURequestChangeType" EntitySet="PLURequestChangeType" />
@@ -3064,23 +3222,9 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
     <edmx:ConceptualModels>
       <Schema Namespace="Icon.Framework.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="IconContext" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Item" EntityType="Icon.Framework.Model.Item" />
           <EntitySet Name="ItemType" EntityType="Icon.Framework.Model.ItemType" />
-          <EntitySet Name="ScanCode" EntityType="Icon.Framework.Model.ScanCode" />
           <EntitySet Name="ScanCodeType" EntityType="Icon.Framework.Model.ScanCodeType" />
           <EntitySet Name="Trait" EntityType="Icon.Framework.Model.Trait" />
-          <AssociationSet Name="Item_ScanCode_FK1" Association="Icon.Framework.Model.Item_ScanCode_FK1">
-            <End Role="Item" EntitySet="Item" />
-            <End Role="ScanCode" EntitySet="ScanCode" />
-          </AssociationSet>
-          <AssociationSet Name="ItemType_Item_FK1" Association="Icon.Framework.Model.ItemType_Item_FK1">
-            <End Role="ItemType" EntitySet="ItemType" />
-            <End Role="Item" EntitySet="Item" />
-          </AssociationSet>
-          <AssociationSet Name="ScanCodeType_ScanCode_FK1" Association="Icon.Framework.Model.ScanCodeType_ScanCode_FK1">
-            <End Role="ScanCodeType" EntitySet="ScanCodeType" />
-            <End Role="ScanCode" EntitySet="ScanCode" />
-          </AssociationSet>
           <EntitySet Name="Hierarchy" EntityType="Icon.Framework.Model.Hierarchy" />
           <EntitySet Name="HierarchyClass" EntityType="Icon.Framework.Model.HierarchyClass" />
           <EntitySet Name="HierarchyPrototype" EntityType="Icon.Framework.Model.HierarchyPrototype" />
@@ -3108,10 +3252,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="HierarchyPrototype" EntitySet="HierarchyPrototype" />
             <End Role="HierarchyClass" EntitySet="HierarchyClass" />
           </AssociationSet>
-          <AssociationSet Name="Item_ItemHierarchyClass_FK1" Association="Icon.Framework.Model.Item_ItemHierarchyClass_FK1">
-            <End Role="Item" EntitySet="Item" />
-            <End Role="ItemHierarchyClass" EntitySet="ItemHierarchyClass" />
-          </AssociationSet>
           <AssociationSet Name="Trait_LocaleTrait_FK1" Association="Icon.Framework.Model.Trait_LocaleTrait_FK1">
             <End Role="Trait" EntitySet="Trait" />
             <End Role="LocaleTrait" EntitySet="LocaleTrait" />
@@ -3122,37 +3262,16 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           </AssociationSet>
           <EntitySet Name="IRMAItemSubscription" EntityType="Icon.Framework.Model.IRMAItemSubscription" />
           <EntitySet Name="PLUMap" EntityType="Icon.Framework.Model.PLUMap" />
-          <AssociationSet Name="Item_PLUMap_ItemID_FK" Association="Icon.Framework.Model.Item_PLUMap_ItemID_FK">
-            <End Role="Item" EntitySet="Item" />
-            <End Role="PLUMap" EntitySet="PLUMap" />
-          </AssociationSet>
           <EntitySet Name="MessageType" EntityType="Icon.Framework.Model.MessageType" />
           <EntitySet Name="MessageStatus" EntityType="Icon.Framework.Model.MessageStatus" />
           <EntitySet Name="ItemTrait" EntityType="Icon.Framework.Model.ItemTrait" />
-          <AssociationSet Name="Item_ItemTrait_FK1" Association="Icon.Framework.Model.Item_ItemTrait_FK1">
-            <End Role="Item" EntitySet="Item" />
-            <End Role="ItemTrait" EntitySet="ItemTrait" />
-          </AssociationSet>
           <AssociationSet Name="Trait_ItemTrait_FK1" Association="Icon.Framework.Model.Trait_ItemTrait_FK1">
             <End Role="Trait" EntitySet="Trait" />
             <End Role="ItemTrait" EntitySet="ItemTrait" />
           </AssociationSet>
-          <EntitySet Name="ItemPrice" EntityType="Icon.Framework.Model.ItemPrice" />
           <EntitySet Name="ItemPriceType" EntityType="Icon.Framework.Model.ItemPriceType" />
-          <AssociationSet Name="Item_ItemPrice_FK1" Association="Icon.Framework.Model.Item_ItemPrice_FK1">
-            <End Role="Item" EntitySet="Item" />
-            <End Role="ItemPrice" EntitySet="ItemPrice" />
-          </AssociationSet>
-          <AssociationSet Name="ItemPriceType_ItemPrice_FK1" Association="Icon.Framework.Model.ItemPriceType_ItemPrice_FK1">
-            <End Role="ItemPriceType" EntitySet="ItemPriceType" />
-            <End Role="ItemPrice" EntitySet="ItemPrice" />
-          </AssociationSet>
           <EntitySet Name="MessageAction" EntityType="Icon.Framework.Model.MessageAction" />
           <EntitySet Name="UOM" EntityType="Icon.Framework.Model.UOM" />
-          <AssociationSet Name="UOM_ItemPrice_FK1" Association="Icon.Framework.Model.UOM_ItemPrice_FK1">
-            <End Role="UOM" EntitySet="UOM" />
-            <End Role="ItemPrice" EntitySet="ItemPrice" />
-          </AssociationSet>
           <AssociationSet Name="UOM_LocaleTrait_FK1" Association="Icon.Framework.Model.UOM_LocaleTrait_FK1">
             <End Role="UOM" EntitySet="UOM" />
             <End Role="LocaleTrait" EntitySet="LocaleTrait" />
@@ -3252,10 +3371,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="Locale" EntitySet="Locale" />
             <End Role="ItemHierarchyClass" EntitySet="ItemHierarchyClass" />
           </AssociationSet>
-          <AssociationSet Name="Locale_ItemPrice_FK1" Association="Icon.Framework.Model.Locale_ItemPrice_FK1">
-            <End Role="Locale" EntitySet="Locale" />
-            <End Role="ItemPrice" EntitySet="ItemPrice" />
-          </AssociationSet>
           <AssociationSet Name="Locale_ItemTrait_FK1" Association="Icon.Framework.Model.Locale_ItemTrait_FK1">
             <End Role="Locale" EntitySet="Locale" />
             <End Role="ItemTrait" EntitySet="ItemTrait" />
@@ -3272,28 +3387,11 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="Locale" EntitySet="Locale" />
             <End Role="LocaleTrait" EntitySet="LocaleTrait" />
           </AssociationSet>
-          <AssociationSet Name="Locale_ScanCode_FK1" Association="Icon.Framework.Model.Locale_ScanCode_FK1">
-            <End Role="Locale" EntitySet="Locale" />
-            <End Role="ScanCode" EntitySet="ScanCode" />
-          </AssociationSet>
           <AssociationSet Name="LocaleType_Locale_FK1" Association="Icon.Framework.Model.LocaleType_Locale_FK1">
             <End Role="LocaleType" EntitySet="LocaleType" />
             <End Role="Locale" EntitySet="Locale" />
           </AssociationSet>
-          <EntitySet Name="MessageQueueItemLocale" EntityType="Icon.Framework.Model.MessageQueueItemLocale" />
           <EntitySet Name="MessageQueuePrice" EntityType="Icon.Framework.Model.MessageQueuePrice" />
-          <AssociationSet Name="FK_MessageQueueItemLocale_MessageActionId" Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageActionId">
-            <End Role="MessageAction" EntitySet="MessageAction" />
-            <End Role="MessageQueueItemLocale" EntitySet="MessageQueueItemLocale" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MessageQueueItemLocale_MessageStatusId" Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageStatusId">
-            <End Role="MessageStatus" EntitySet="MessageStatus" />
-            <End Role="MessageQueueItemLocale" EntitySet="MessageQueueItemLocale" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MessageQueueItemLocale_MessageTypeId" Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageTypeId">
-            <End Role="MessageType" EntitySet="MessageType" />
-            <End Role="MessageQueueItemLocale" EntitySet="MessageQueueItemLocale" />
-          </AssociationSet>
           <AssociationSet Name="FK_MessageQueuePrice_MessageStatusId" Association="Icon.Framework.Model.FK_MessageQueuePrice_MessageStatusId">
             <End Role="MessageStatus" EntitySet="MessageStatus" />
             <End Role="MessageQueuePrice" EntitySet="MessageQueuePrice" />
@@ -3312,6 +3410,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <Parameter Name="JobInstance" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="ProductSelectionGroup" EntityType="Icon.Framework.Model.ProductSelectionGroup" />
+          <AssociationSet Name="FK__ProductSelectionGroup_Attributes" Association="Icon.Framework.Model.FK__ProductSelectionGroup_Attributes">
+            <End Role="Attributes" EntitySet="Attributes" />
+            <End Role="ProductSelectionGroup" EntitySet="ProductSelectionGroup" />
+          </AssociationSet>
           <AssociationSet Name="FK__ProductSelectionGroup_MerchandiseHierarchyClass" Association="Icon.Framework.Model.FK__ProductSelectionGroup_MerchandiseHierarchyClass">
             <End Role="HierarchyClass" EntitySet="HierarchyClass" />
             <End Role="ProductSelectionGroup" EntitySet="ProductSelectionGroup" />
@@ -3380,20 +3482,12 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <Parameter Name="JobInstance" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="IRMAPush" EntityType="Icon.Framework.Model.IRMAPush" />
-          <AssociationSet Name="FK_MessageQueueItemLocale_IRMAPushID" Association="Icon.Framework.Model.FK_MessageQueueItemLocale_IRMAPushID">
-            <End Role="IRMAPush" EntitySet="IRMAPush" />
-            <End Role="MessageQueueItemLocale" EntitySet="MessageQueueItemLocale" />
-          </AssociationSet>
           <AssociationSet Name="FK_MessageQueuePrice_IRMAPushID" Association="Icon.Framework.Model.FK_MessageQueuePrice_IRMAPushID">
             <End Role="IRMAPush" EntitySet="IRMAPush" />
             <End Role="MessageQueuePrice" EntitySet="MessageQueuePrice" />
           </AssociationSet>
           <EntitySet Name="Agency" EntityType="Icon.Framework.Model.Agency" />
           <EntitySet Name="Mapping" EntityType="Icon.Framework.Model.Mapping" />
-          <AssociationSet Name="FK_ewic_Mapping_ScanCode" Association="Icon.Framework.Model.FK_ewic_Mapping_ScanCode">
-            <End Role="ScanCode" EntitySet="ScanCode" />
-            <End Role="Mapping" EntitySet="Mapping" />
-          </AssociationSet>
           <AssociationSet Name="FK_ewic_Mapping_Agency" Association="Icon.Framework.Model.FK_ewic_Mapping_Agency">
             <End Role="Agency" EntitySet="Agency" />
             <End Role="Mapping" EntitySet="Mapping" />
@@ -3401,10 +3495,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <AssociationSet Name="AgencyLocale" Association="Icon.Framework.Model.AgencyLocale">
             <End Role="Agency" EntitySet="Agency" />
             <End Role="Locale" EntitySet="Locale" />
-          </AssociationSet>
-          <AssociationSet Name="Exclusion" Association="Icon.Framework.Model.Exclusion">
-            <End Role="Agency" EntitySet="Agency" />
-            <End Role="ScanCode" EntitySet="ScanCode" />
           </AssociationSet>
           <EntitySet Name="PLURequest" EntityType="Icon.Framework.Model.PLURequest" />
           <EntitySet Name="PLURequestChangeHistory" EntityType="Icon.Framework.Model.PLURequestChangeHistory" />
@@ -3464,14 +3554,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           </AssociationSet>
           <EntitySet Name="PerformanceLog" EntityType="Icon.Framework.Model.PerformanceLog" />
           <EntitySet Name="ItemLink" EntityType="Icon.Framework.Model.ItemLink" />
-          <AssociationSet Name="Item_ItemLink_FK1" Association="Icon.Framework.Model.Item_ItemLink_FK1">
-            <End Role="Item" EntitySet="Item" />
-            <End Role="ItemLink" EntitySet="ItemLink" />
-          </AssociationSet>
-          <AssociationSet Name="Item_ItemLink_FK2" Association="Icon.Framework.Model.Item_ItemLink_FK2">
-            <End Role="Item" EntitySet="Item" />
-            <End Role="ItemLink" EntitySet="ItemLink" />
-          </AssociationSet>
           <AssociationSet Name="Locale_ItemLink_FK1" Association="Icon.Framework.Model.Locale_ItemLink_FK1">
             <End Role="Locale" EntitySet="Locale" />
             <End Role="ItemLink" EntitySet="ItemLink" />
@@ -3483,18 +3565,8 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           </AssociationSet>
           <EntitySet Name="MessageArchiveProduct" EntityType="Icon.Framework.Model.MessageArchiveProduct" />
           <EntitySet Name="InforMessageHistory" EntityType="Icon.Framework.Model.InforMessageHistory" />
-          <EntitySet Name="MessageArchiveHierarchy" EntityType="Icon.Framework.Model.MessageArchiveHierarchy" />
-          <EntitySet Name="ItemSignAttribute" EntityType="Icon.Framework.Model.ItemSignAttribute" />
-          <AssociationSet Name="FK_ItemSignAttribute_ItemId" Association="Icon.Framework.Model.FK_ItemSignAttribute_ItemId">
-            <End Role="Item" EntitySet="Item" />
-            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
-          </AssociationSet>
           <EntitySet Name="IRMAItem" EntityType="Icon.Framework.Model.IRMAItem" />
           <EntitySet Name="Currencies" EntityType="Icon.Framework.Model.Currency" />
-          <AssociationSet Name="CurrencyType_ItemPrice_FK1" Association="Icon.Framework.Model.CurrencyType_ItemPrice_FK1">
-            <End Role="CurrencyType" EntitySet="Currencies" />
-            <End Role="ItemPrice" EntitySet="ItemPrice" />
-          </AssociationSet>
           <EntitySet Name="LocaleSubTypes" EntityType="Icon.Framework.Model.LocaleSubType" />
           <AssociationSet Name="LocaleType_LocaleSubType_FK1" Association="Icon.Framework.Model.LocaleType_LocaleSubType_FK1">
             <End Role="LocaleType" EntitySet="LocaleType" />
@@ -3509,9 +3581,9 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="MessageType" EntitySet="MessageType" />
             <End Role="MessageHistory" EntitySet="MessageHistory" />
           </AssociationSet>
-          <AssociationSet Name="FK_MessageQueueItemLocale_MessageHistoryId" Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageHistoryId">
+          <AssociationSet Name="FK_MessageQueueHierarchy_MessageHistoryId" Association="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageHistoryId">
             <End Role="MessageHistory" EntitySet="MessageHistory" />
-            <End Role="MessageQueueItemLocale" EntitySet="MessageQueueItemLocale" />
+            <End Role="MessageQueueHierarchy" EntitySet="MessageQueueHierarchy" />
           </AssociationSet>
           <AssociationSet Name="FK_MessageQueuePrice_MessageHistoryId" Association="Icon.Framework.Model.FK_MessageQueuePrice_MessageHistoryId">
             <End Role="MessageHistory" EntitySet="MessageHistory" />
@@ -3556,15 +3628,133 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="MessageType" EntitySet="MessageType" />
             <End Role="MessageQueueProduct" EntitySet="MessageQueueProduct" />
           </AssociationSet>
+          <EntitySet Name="AttributeGroup" EntityType="Icon.Framework.Model.AttributeGroup" />
+          <EntitySet Name="CharacterSets" EntityType="Icon.Framework.Model.CharacterSets" />
+          <EntitySet Name="DataType" EntityType="Icon.Framework.Model.DataType" />
+          <EntitySet Name="MessageQueueItem" EntityType="Icon.Framework.Model.MessageQueueItem" />
+          <EntitySet Name="Attributes" EntityType="Icon.Framework.Model.Attributes" />
+          <AssociationSet Name="FK_Attributes_AttributeType_AttributeGroupId" Association="Icon.Framework.Model.FK_Attributes_AttributeType_AttributeGroupId">
+            <End Role="AttributeGroup" EntitySet="AttributeGroup" />
+            <End Role="Attributes" EntitySet="Attributes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attributes_DataType_DataTypeId" Association="Icon.Framework.Model.FK_Attributes_DataType_DataTypeId">
+            <End Role="DataType" EntitySet="DataType" />
+            <End Role="Attributes" EntitySet="Attributes" />
+          </AssociationSet>
+          <EntitySet Name="PickListData" EntityType="Icon.Framework.Model.PickListData" />
+          <AssociationSet Name="FK_PickListData_Attributes_AttributeId" Association="Icon.Framework.Model.FK_PickListData_Attributes_AttributeId">
+            <End Role="Attributes" EntitySet="Attributes" />
+            <End Role="PickListData" EntitySet="PickListData" />
+          </AssociationSet>
+          <EntitySet Name="AttributeCharacterSets" EntityType="Icon.Framework.Model.AttributeCharacterSets" />
+          <AssociationSet Name="FK_AttributeCharacterSets_Attributes_AttributeId" Association="Icon.Framework.Model.FK_AttributeCharacterSets_Attributes_AttributeId">
+            <End Role="Attributes" EntitySet="Attributes" />
+            <End Role="AttributeCharacterSets" EntitySet="AttributeCharacterSets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttributeCharacterSets_CharacterSets_CharacterSetId" Association="Icon.Framework.Model.FK_AttributeCharacterSets_CharacterSets_CharacterSetId">
+            <End Role="CharacterSets" EntitySet="CharacterSets" />
+            <End Role="AttributeCharacterSets" EntitySet="AttributeCharacterSets" />
+          </AssociationSet>
+          <EntitySet Name="MessageQueueItemLocale" EntityType="Icon.Framework.Model.MessageQueueItemLocale" />
+          <AssociationSet Name="FK_MessageQueueItemLocale_IRMAPushID" Association="Icon.Framework.Model.FK_MessageQueueItemLocale_IRMAPushID">
+            <End Role="IRMAPush" EntitySet="IRMAPush" />
+            <End Role="MessageQueueItemLocale" EntitySet="MessageQueueItemLocale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueItemLocale_MessageActionId" Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageActionId">
+            <End Role="MessageAction" EntitySet="MessageAction" />
+            <End Role="MessageQueueItemLocale" EntitySet="MessageQueueItemLocale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueItemLocale_MessageHistoryId" Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageHistoryId">
+            <End Role="MessageHistory" EntitySet="MessageHistory" />
+            <End Role="MessageQueueItemLocale" EntitySet="MessageQueueItemLocale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueItemLocale_MessageStatusId" Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageStatusId">
+            <End Role="MessageStatus" EntitySet="MessageStatus" />
+            <End Role="MessageQueueItemLocale" EntitySet="MessageQueueItemLocale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageQueueItemLocale_MessageTypeId" Association="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageTypeId">
+            <End Role="MessageType" EntitySet="MessageType" />
+            <End Role="MessageQueueItemLocale" EntitySet="MessageQueueItemLocale" />
+          </AssociationSet>
+          <EntitySet Name="ScanCode" EntityType="Icon.Framework.Model.ScanCode" />
+          <AssociationSet Name="Locale_ScanCode_FK1" Association="Icon.Framework.Model.Locale_ScanCode_FK1">
+            <End Role="Locale" EntitySet="Locale" />
+            <End Role="ScanCode" EntitySet="ScanCode" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ewic_Mapping_ScanCode" Association="Icon.Framework.Model.FK_ewic_Mapping_ScanCode">
+            <End Role="ScanCode" EntitySet="ScanCode" />
+            <End Role="Mapping" EntitySet="Mapping" />
+          </AssociationSet>
+          <AssociationSet Name="ScanCodeType_ScanCode_FK1" Association="Icon.Framework.Model.ScanCodeType_ScanCode_FK1">
+            <End Role="ScanCodeType" EntitySet="ScanCodeType" />
+            <End Role="ScanCode" EntitySet="ScanCode" />
+          </AssociationSet>
+          <AssociationSet Name="Exclusion" Association="Icon.Framework.Model.Exclusion">
+            <End Role="Agency" EntitySet="Agency" />
+            <End Role="ScanCode" EntitySet="ScanCode" />
+          </AssociationSet>
+          <EntitySet Name="ItemPrice" EntityType="Icon.Framework.Model.ItemPrice" />
+          <AssociationSet Name="CurrencyType_ItemPrice_FK1" Association="Icon.Framework.Model.CurrencyType_ItemPrice_FK1">
+            <End Role="Currency" EntitySet="Currencies" />
+            <End Role="ItemPrice" EntitySet="ItemPrice" />
+          </AssociationSet>
+          <AssociationSet Name="ItemPriceType_ItemPrice_FK1" Association="Icon.Framework.Model.ItemPriceType_ItemPrice_FK1">
+            <End Role="ItemPriceType" EntitySet="ItemPriceType" />
+            <End Role="ItemPrice" EntitySet="ItemPrice" />
+          </AssociationSet>
+          <AssociationSet Name="Locale_ItemPrice_FK1" Association="Icon.Framework.Model.Locale_ItemPrice_FK1">
+            <End Role="Locale" EntitySet="Locale" />
+            <End Role="ItemPrice" EntitySet="ItemPrice" />
+          </AssociationSet>
+          <AssociationSet Name="UOM_ItemPrice_FK1" Association="Icon.Framework.Model.UOM_ItemPrice_FK1">
+            <End Role="UOM" EntitySet="UOM" />
+            <End Role="ItemPrice" EntitySet="ItemPrice" />
+          </AssociationSet>
+          <EntitySet Name="MessageArchiveHierarchy" EntityType="Icon.Framework.Model.MessageArchiveHierarchy" />
+          <EntitySet Name="ItemSignAttribute" EntityType="Icon.Framework.Model.ItemSignAttribute" />
+          <EntitySet Name="Item" EntityType="Icon.Framework.Model.Item" />
+          <AssociationSet Name="Item_PLUMap_ItemID_FK" Association="Icon.Framework.Model.Item_PLUMap_ItemID_FK">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="PLUMap" EntitySet="PLUMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemSignAttribute_ItemId" Association="Icon.Framework.Model.FK_ItemSignAttribute_ItemId">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemSignAttribute" EntitySet="ItemSignAttribute" />
+          </AssociationSet>
+          <AssociationSet Name="Item_ItemHierarchyClass_FK1" Association="Icon.Framework.Model.Item_ItemHierarchyClass_FK1">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemHierarchyClass" EntitySet="ItemHierarchyClass" />
+          </AssociationSet>
+          <AssociationSet Name="Item_ItemLink_FK1" Association="Icon.Framework.Model.Item_ItemLink_FK1">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemLink" EntitySet="ItemLink" />
+          </AssociationSet>
+          <AssociationSet Name="Item_ItemLink_FK2" Association="Icon.Framework.Model.Item_ItemLink_FK2">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemLink" EntitySet="ItemLink" />
+          </AssociationSet>
+          <AssociationSet Name="Item_ItemPrice_FK1" Association="Icon.Framework.Model.Item_ItemPrice_FK1">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemPrice" EntitySet="ItemPrice" />
+          </AssociationSet>
+          <AssociationSet Name="Item_ItemTrait_FK1" Association="Icon.Framework.Model.Item_ItemTrait_FK1">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemTrait" EntitySet="ItemTrait" />
+          </AssociationSet>
+          <AssociationSet Name="Item_ScanCode_FK1" Association="Icon.Framework.Model.Item_ScanCode_FK1">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ScanCode" EntitySet="ScanCode" />
+          </AssociationSet>
+          <AssociationSet Name="ItemType_Item_FK1" Association="Icon.Framework.Model.ItemType_Item_FK1">
+            <End Role="ItemType" EntitySet="ItemType" />
+            <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
           <EntitySet Name="MessageQueueHierarchy" EntityType="Icon.Framework.Model.MessageQueueHierarchy" />
           <AssociationSet Name="FK_MessageQueueHierarchy_MessageActionId" Association="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageActionId">
             <End Role="MessageAction" EntitySet="MessageAction" />
             <End Role="MessageQueueHierarchy" EntitySet="MessageQueueHierarchy" />
           </AssociationSet>
-          <AssociationSet Name="FK_MessageQueueHierarchy_MessageHistoryId" Association="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageHistoryId">
-            <End Role="MessageHistory" EntitySet="MessageHistory" />
-            <End Role="MessageQueueHierarchy" EntitySet="MessageQueueHierarchy" />
-          </AssociationSet>
+
           <AssociationSet Name="FK_MessageQueueHierarchy_MessageStatusId" Association="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageStatusId">
             <End Role="MessageStatus" EntitySet="MessageStatus" />
             <End Role="MessageQueueHierarchy" EntitySet="MessageQueueHierarchy" />
@@ -3576,27 +3766,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           </EntityContainer>
         <EnumType Name="HierarchyName" a:ExternalTypeName="Icon.Framework.Enums.HierarchyName" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         <EnumType Name="TraitDescription" a:ExternalTypeName="Icon.Framework.Enums.TraitDescription" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-        <EntityType Name="Item">
-          <Key>
-            <PropertyRef Name="itemID" />
-          </Key>
-          <Property Name="itemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="itemTypeID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ScanCode" Relationship="Icon.Framework.Model.Item_ScanCode_FK1" FromRole="Item" ToRole="ScanCode" />
-          <NavigationProperty Name="ItemType" Relationship="Icon.Framework.Model.ItemType_Item_FK1" FromRole="Item" ToRole="ItemType" />
-          <NavigationProperty Name="ItemHierarchyClass" Relationship="Icon.Framework.Model.Item_ItemHierarchyClass_FK1" FromRole="Item" ToRole="ItemHierarchyClass" />
-          <NavigationProperty Name="PLUMap" Relationship="Icon.Framework.Model.Item_PLUMap_ItemID_FK" FromRole="Item" ToRole="PLUMap" />
-          <NavigationProperty Name="ItemTrait" Relationship="Icon.Framework.Model.Item_ItemTrait_FK1" FromRole="Item" ToRole="ItemTrait" />
-          <NavigationProperty Name="ItemPrice" Relationship="Icon.Framework.Model.Item_ItemPrice_FK1" FromRole="Item" ToRole="ItemPrice" />
-          <Property Name="productKey" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ItemLink" Relationship="Icon.Framework.Model.Item_ItemLink_FK1" FromRole="Item" ToRole="ItemLink" />
-          <NavigationProperty Name="ItemLink1" Relationship="Icon.Framework.Model.Item_ItemLink_FK2" FromRole="Item" ToRole="ItemLink" />
-          <NavigationProperty Name="ItemSignAttribute" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_ItemId" FromRole="Item" ToRole="ItemSignAttribute" />
-          <Property Name="hospitalityItem" Type="Boolean" Nullable="false" />
-          <Property Name="kitchenItem" Type="Boolean" Nullable="false" />
-          <Property Name="kitchenDescription" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="imageURL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="ItemType">
           <Key>
             <PropertyRef Name="itemTypeID" />
@@ -3606,29 +3775,14 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="itemTypeDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.ItemType_Item_FK1" FromRole="ItemType" ToRole="Item" />
         </EntityType>
-        <EntityType Name="ScanCode">
-          <Key>
-            <PropertyRef Name="scanCodeID" />
-          </Key>
-          <Property Name="scanCodeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="itemID" Type="Int32" Nullable="false" />
-          <Property Name="scanCode" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="true" />
-          <Property Name="scanCodeTypeID" Type="Int32" Nullable="false" />
-          <Property Name="localeID" Type="Int32" />
-          <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.Item_ScanCode_FK1" FromRole="ScanCode" ToRole="Item" />
-          <NavigationProperty Name="ScanCodeType" Relationship="Icon.Framework.Model.ScanCodeType_ScanCode_FK1" FromRole="ScanCode" ToRole="ScanCodeType" />
-          <NavigationProperty Name="Locale" Relationship="Icon.Framework.Model.Locale_ScanCode_FK1" FromRole="ScanCode" ToRole="Locale" />
-          <NavigationProperty Name="Mapping" Relationship="Icon.Framework.Model.FK_ewic_Mapping_ScanCode" FromRole="ScanCode" ToRole="Mapping" />
-          <NavigationProperty Name="Agency" Relationship="Icon.Framework.Model.Exclusion" FromRole="ScanCode" ToRole="Agency" />
-        </EntityType>
         <EntityType Name="ScanCodeType">
           <Key>
             <PropertyRef Name="scanCodeTypeID" />
           </Key>
           <Property Name="scanCodeTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="scanCodeTypeDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ScanCode" Relationship="Icon.Framework.Model.ScanCodeType_ScanCode_FK1" FromRole="ScanCodeType" ToRole="ScanCode" />
           <NavigationProperty Name="PLURequest" Relationship="Icon.Framework.Model.ScanCodeType_PLURequest_FK1" FromRole="ScanCodeType" ToRole="PLURequest" />
+          <NavigationProperty Name="ScanCode" Relationship="Icon.Framework.Model.ScanCodeType_ScanCode_FK1" FromRole="ScanCodeType" ToRole="ScanCode" />
         </EntityType>
         <EntityType Name="Trait">
           <Key>
@@ -3645,42 +3799,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <NavigationProperty Name="HierarchyClassTrait" Relationship="Icon.Framework.Model.Trait_HierarchyClassTrait_FK1" FromRole="Trait" ToRole="HierarchyClassTrait" />
           <NavigationProperty Name="ProductSelectionGroup" Relationship="Icon.Framework.Model.FK__ProductSelectionGroup_Trait" FromRole="Trait" ToRole="ProductSelectionGroup" />
         </EntityType>
-        <Association Name="Item_ScanCode_FK1">
-          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.ScanCode" Role="ScanCode" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Item">
-              <PropertyRef Name="itemID" />
-            </Principal>
-            <Dependent Role="ScanCode">
-              <PropertyRef Name="itemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ItemType_Item_FK1">
-          <End Type="Icon.Framework.Model.ItemType" Role="ItemType" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ItemType">
-              <PropertyRef Name="itemTypeID" />
-            </Principal>
-            <Dependent Role="Item">
-              <PropertyRef Name="itemTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ScanCodeType_ScanCode_FK1">
-          <End Type="Icon.Framework.Model.ScanCodeType" Role="ScanCodeType" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.ScanCode" Role="ScanCode" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ScanCodeType">
-              <PropertyRef Name="scanCodeTypeID" />
-            </Principal>
-            <Dependent Role="ScanCode">
-              <PropertyRef Name="scanCodeTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Hierarchy">
           <Key>
             <PropertyRef Name="hierarchyID" />
@@ -3728,8 +3846,8 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="hierarchyClassID" Type="Int32" Nullable="false" />
           <Property Name="localeID" Type="Int32" />
           <NavigationProperty Name="HierarchyClass" Relationship="Icon.Framework.Model.HierarchyClass_ItemHierarchyClass_FK1" FromRole="ItemHierarchyClass" ToRole="HierarchyClass" />
-          <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.Item_ItemHierarchyClass_FK1" FromRole="ItemHierarchyClass" ToRole="Item" />
           <NavigationProperty Name="Locale" Relationship="Icon.Framework.Model.Locale_ItemHierarchyClass_FK1" FromRole="ItemHierarchyClass" ToRole="Locale" />
+          <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.Item_ItemHierarchyClass_FK1" FromRole="ItemHierarchyClass" ToRole="Item" />
         </EntityType>
         <EntityType Name="LocaleTrait">
           <Key>
@@ -3825,18 +3943,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Item_ItemHierarchyClass_FK1">
-          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.ItemHierarchyClass" Role="ItemHierarchyClass" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Item">
-              <PropertyRef Name="itemID" />
-            </Principal>
-            <Dependent Role="ItemHierarchyClass">
-              <PropertyRef Name="itemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Trait_LocaleTrait_FK1">
           <End Type="Icon.Framework.Model.Trait" Role="Trait" Multiplicity="1" />
           <End Type="Icon.Framework.Model.LocaleTrait" Role="LocaleTrait" Multiplicity="*" />
@@ -3867,7 +3973,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           </Key>
           <Property Name="IRMAItemSubscriptionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="regioncode" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="identifier" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="identifier" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="true" />
           <Property Name="insertDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="deleteDate" Type="DateTime" Precision="7" />
         </EntityType>
@@ -3889,19 +3995,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="swPLU" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
           <Property Name="ukPLU" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.Item_PLUMap_ItemID_FK" FromRole="PLUMap" ToRole="Item" />
-        </EntityType>
-        <Association Name="Item_PLUMap_ItemID_FK">
-          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.PLUMap" Role="PLUMap" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Item">
-              <PropertyRef Name="itemID" />
-            </Principal>
-            <Dependent Role="PLUMap">
-              <PropertyRef Name="itemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+          </EntityType>
         <EntityType Name="MessageType">
           <Key>
             <PropertyRef Name="MessageTypeId" />
@@ -3943,22 +4037,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="uomID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="traitValue" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="localeID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.Item_ItemTrait_FK1" FromRole="ItemTrait" ToRole="Item" />
           <NavigationProperty Name="Trait" Relationship="Icon.Framework.Model.Trait_ItemTrait_FK1" FromRole="ItemTrait" ToRole="Trait" />
           <NavigationProperty Name="Locale" Relationship="Icon.Framework.Model.Locale_ItemTrait_FK1" FromRole="ItemTrait" ToRole="Locale" />
+          <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.Item_ItemTrait_FK1" FromRole="ItemTrait" ToRole="Item" />
         </EntityType>
-        <Association Name="Item_ItemTrait_FK1">
-          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.ItemTrait" Role="ItemTrait" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Item">
-              <PropertyRef Name="itemID" />
-            </Principal>
-            <Dependent Role="ItemTrait">
-              <PropertyRef Name="itemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Trait_ItemTrait_FK1">
           <End Type="Icon.Framework.Model.Trait" Role="Trait" Multiplicity="1" />
           <End Type="Icon.Framework.Model.ItemTrait" Role="ItemTrait" Multiplicity="*" />
@@ -3971,27 +4053,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ItemPrice">
-          <Key>
-            <PropertyRef Name="itemPriceID" />
-          </Key>
-          <Property Name="itemPriceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="itemID" Type="Int32" Nullable="false" />
-          <Property Name="localeID" Type="Int32" Nullable="false" />
-          <Property Name="itemPriceTypeID" Type="Int32" Nullable="false" />
-          <Property Name="uomID" Type="Int32" Nullable="false" />
-          <Property Name="currencyTypeID" Type="Int32" Nullable="false" />
-          <Property Name="itemPriceAmt" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="breakPointStartQty" Type="Int32" />
-          <Property Name="breakPointEndQty" Type="Int32" />
-          <Property Name="startDate" Type="DateTime" Precision="0" />
-          <Property Name="endDate" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.Item_ItemPrice_FK1" FromRole="ItemPrice" ToRole="Item" />
-          <NavigationProperty Name="ItemPriceType" Relationship="Icon.Framework.Model.ItemPriceType_ItemPrice_FK1" FromRole="ItemPrice" ToRole="ItemPriceType" />
-          <NavigationProperty Name="UOM" Relationship="Icon.Framework.Model.UOM_ItemPrice_FK1" FromRole="ItemPrice" ToRole="UOM" />
-          <NavigationProperty Name="Locale" Relationship="Icon.Framework.Model.Locale_ItemPrice_FK1" FromRole="ItemPrice" ToRole="Locale" />
-          <NavigationProperty Name="CurrencyType" Relationship="Icon.Framework.Model.CurrencyType_ItemPrice_FK1" FromRole="ItemPrice" ToRole="CurrencyType" />
-        </EntityType>
         <EntityType Name="ItemPriceType">
           <Key>
             <PropertyRef Name="itemPriceTypeID" />
@@ -4001,30 +4062,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="itemPriceTypeDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ItemPrice" Relationship="Icon.Framework.Model.ItemPriceType_ItemPrice_FK1" FromRole="ItemPriceType" ToRole="ItemPrice" />
         </EntityType>
-        <Association Name="Item_ItemPrice_FK1">
-          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.ItemPrice" Role="ItemPrice" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Item">
-              <PropertyRef Name="itemID" />
-            </Principal>
-            <Dependent Role="ItemPrice">
-              <PropertyRef Name="itemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ItemPriceType_ItemPrice_FK1">
-          <End Type="Icon.Framework.Model.ItemPriceType" Role="ItemPriceType" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.ItemPrice" Role="ItemPrice" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ItemPriceType">
-              <PropertyRef Name="itemPriceTypeID" />
-            </Principal>
-            <Dependent Role="ItemPrice">
-              <PropertyRef Name="itemPriceTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="MessageAction">
           <Key>
             <PropertyRef Name="MessageActionId" />
@@ -4042,22 +4079,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="uomID" Type="Int32" Nullable="false" />
           <Property Name="uomCode" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="uomName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ItemPrice" Relationship="Icon.Framework.Model.UOM_ItemPrice_FK1" FromRole="UOM" ToRole="ItemPrice" />
           <NavigationProperty Name="LocaleTrait" Relationship="Icon.Framework.Model.UOM_LocaleTrait_FK1" FromRole="UOM" ToRole="LocaleTrait" />
           <NavigationProperty Name="HierarchyClassTrait" Relationship="Icon.Framework.Model.UOM_HierarchyClassTrait_FK1" FromRole="UOM" ToRole="HierarchyClassTrait" />
+          <NavigationProperty Name="ItemPrice" Relationship="Icon.Framework.Model.UOM_ItemPrice_FK1" FromRole="UOM" ToRole="ItemPrice" />
         </EntityType>
-        <Association Name="UOM_ItemPrice_FK1">
-          <End Type="Icon.Framework.Model.UOM" Role="UOM" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.ItemPrice" Role="ItemPrice" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UOM">
-              <PropertyRef Name="uomID" />
-            </Principal>
-            <Dependent Role="ItemPrice">
-              <PropertyRef Name="uomID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="UOM_LocaleTrait_FK1">
           <End Type="Icon.Framework.Model.UOM" Role="UOM" Multiplicity="0..1" />
           <End Type="Icon.Framework.Model.LocaleTrait" Role="LocaleTrait" Multiplicity="*" />
@@ -4480,16 +4505,16 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="localeTypeID" Type="Int32" Nullable="false" />
           <Property Name="parentLocaleID" Type="Int32" />
           <NavigationProperty Name="ItemHierarchyClass" Relationship="Icon.Framework.Model.Locale_ItemHierarchyClass_FK1" FromRole="Locale" ToRole="ItemHierarchyClass" />
-          <NavigationProperty Name="ItemPrice" Relationship="Icon.Framework.Model.Locale_ItemPrice_FK1" FromRole="Locale" ToRole="ItemPrice" />
           <NavigationProperty Name="ItemTrait" Relationship="Icon.Framework.Model.Locale_ItemTrait_FK1" FromRole="Locale" ToRole="ItemTrait" />
           <NavigationProperty Name="Locale1" Relationship="Icon.Framework.Model.Locale_Locale_FK1" FromRole="Locale" ToRole="Locale1" />
           <NavigationProperty Name="Locale2" Relationship="Icon.Framework.Model.Locale_Locale_FK1" FromRole="Locale1" ToRole="Locale" />
           <NavigationProperty Name="LocaleAddress" Relationship="Icon.Framework.Model.Locale_LocaleAddress_FK1" FromRole="Locale" ToRole="LocaleAddress" />
           <NavigationProperty Name="LocaleTrait" Relationship="Icon.Framework.Model.Locale_LocaleTrait_FK1" FromRole="Locale" ToRole="LocaleTrait" />
-          <NavigationProperty Name="ScanCode" Relationship="Icon.Framework.Model.Locale_ScanCode_FK1" FromRole="Locale" ToRole="ScanCode" />
           <NavigationProperty Name="LocaleType" Relationship="Icon.Framework.Model.LocaleType_Locale_FK1" FromRole="Locale" ToRole="LocaleType" />
           <NavigationProperty Name="Agency" Relationship="Icon.Framework.Model.AgencyLocale" FromRole="Locale" ToRole="Agency" />
           <NavigationProperty Name="ItemLink" Relationship="Icon.Framework.Model.Locale_ItemLink_FK1" FromRole="Locale" ToRole="ItemLink" />
+          <NavigationProperty Name="ScanCode" Relationship="Icon.Framework.Model.Locale_ScanCode_FK1" FromRole="Locale" ToRole="ScanCode" />
+          <NavigationProperty Name="ItemPrice" Relationship="Icon.Framework.Model.Locale_ItemPrice_FK1" FromRole="Locale" ToRole="ItemPrice" />
         </EntityType>
         <Association Name="Locale_ItemHierarchyClass_FK1">
           <End Type="Icon.Framework.Model.Locale" Role="Locale" Multiplicity="0..1" />
@@ -4499,18 +4524,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
               <PropertyRef Name="localeID" />
             </Principal>
             <Dependent Role="ItemHierarchyClass">
-              <PropertyRef Name="localeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Locale_ItemPrice_FK1">
-          <End Type="Icon.Framework.Model.Locale" Role="Locale" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.ItemPrice" Role="ItemPrice" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Locale">
-              <PropertyRef Name="localeID" />
-            </Principal>
-            <Dependent Role="ItemPrice">
               <PropertyRef Name="localeID" />
             </Dependent>
           </ReferentialConstraint>
@@ -4563,18 +4576,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Locale_ScanCode_FK1">
-          <End Type="Icon.Framework.Model.Locale" Role="Locale" Multiplicity="0..1" />
-          <End Type="Icon.Framework.Model.ScanCode" Role="ScanCode" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Locale">
-              <PropertyRef Name="localeID" />
-            </Principal>
-            <Dependent Role="ScanCode">
-              <PropertyRef Name="localeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="LocaleType_Locale_FK1">
           <End Type="Icon.Framework.Model.LocaleType" Role="LocaleType" Multiplicity="1" />
           <End Type="Icon.Framework.Model.Locale" Role="Locale" Multiplicity="*" />
@@ -4587,52 +4588,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="MessageQueueItemLocale">
-          <Key>
-            <PropertyRef Name="MessageQueueId" />
-          </Key>
-          <Property Name="MessageQueueId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MessageTypeId" Type="Int32" Nullable="false" />
-          <Property Name="MessageStatusId" Type="Int32" Nullable="false" />
-          <Property Name="MessageHistoryId" Type="Int32" />
-          <Property Name="MessageActionId" Type="Int32" Nullable="false" />
-          <Property Name="IRMAPushID" Type="Int32" Nullable="false" />
-          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="RegionCode" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Name="BusinessUnit_ID" Type="Int32" Nullable="false" />
-          <Property Name="ItemId" Type="Int32" Nullable="false" />
-          <Property Name="ItemTypeCode" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="ItemTypeDesc" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="LocaleId" Type="Int32" Nullable="false" />
-          <Property Name="LocaleName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ScanCodeId" Type="Int32" Nullable="false" />
-          <Property Name="ScanCode" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
-          <Property Name="ScanCodeTypeId" Type="Int32" Nullable="false" />
-          <Property Name="ScanCodeTypeDesc" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ChangeType" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
-          <Property Name="LockedForSale" Type="Boolean" Nullable="false" />
-          <Property Name="Recall" Type="Boolean" Nullable="false" />
-          <Property Name="TMDiscountEligible" Type="Boolean" Nullable="false" />
-          <Property Name="Case_Discount" Type="Boolean" Nullable="false" />
-          <Property Name="AgeCode" Type="Int32" />
-          <Property Name="Restricted_Hours" Type="Boolean" Nullable="false" />
-          <Property Name="Sold_By_Weight" Type="Boolean" Nullable="false" />
-          <Property Name="ScaleForcedTare" Type="Boolean" Nullable="false" />
-          <Property Name="Quantity_Required" Type="Boolean" Nullable="false" />
-          <Property Name="Price_Required" Type="Boolean" Nullable="false" />
-          <Property Name="QtyProhibit" Type="Boolean" Nullable="false" />
-          <Property Name="VisualVerify" Type="Boolean" Nullable="false" />
-          <Property Name="LinkedItemScanCode" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
-          <Property Name="PosScaleTare" Type="Int32" />
-          <Property Name="InProcessBy" Type="Int32" />
-          <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="MessageAction" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageActionId" FromRole="MessageQueueItemLocale" ToRole="MessageAction" />
-          <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageStatusId" FromRole="MessageQueueItemLocale" ToRole="MessageStatus" />
-          <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageTypeId" FromRole="MessageQueueItemLocale" ToRole="MessageType" />
-          <NavigationProperty Name="IRMAPush" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_IRMAPushID" FromRole="MessageQueueItemLocale" ToRole="IRMAPush" />
-          <Property Name="PreviousLinkedItemScanCode" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageHistoryId" FromRole="MessageQueueItemLocale" ToRole="MessageHistory" />
-        </EntityType>
         <EntityType Name="MessageQueuePrice">
           <Key>
             <PropertyRef Name="MessageQueueId" />
@@ -4675,42 +4630,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <NavigationProperty Name="IRMAPush" Relationship="Icon.Framework.Model.FK_MessageQueuePrice_IRMAPushID" FromRole="MessageQueuePrice" ToRole="IRMAPush" />
           <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageQueuePrice_MessageHistoryId" FromRole="MessageQueuePrice" ToRole="MessageHistory" />
         </EntityType>
-        <Association Name="FK_MessageQueueItemLocale_MessageActionId">
-          <End Type="Icon.Framework.Model.MessageAction" Role="MessageAction" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.MessageQueueItemLocale" Role="MessageQueueItemLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageAction">
-              <PropertyRef Name="MessageActionId" />
-            </Principal>
-            <Dependent Role="MessageQueueItemLocale">
-              <PropertyRef Name="MessageActionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MessageQueueItemLocale_MessageStatusId">
-          <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.MessageQueueItemLocale" Role="MessageQueueItemLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageStatus">
-              <PropertyRef Name="MessageStatusId" />
-            </Principal>
-            <Dependent Role="MessageQueueItemLocale">
-              <PropertyRef Name="MessageStatusId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MessageQueueItemLocale_MessageTypeId">
-          <End Type="Icon.Framework.Model.MessageType" Role="MessageType" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.MessageQueueItemLocale" Role="MessageQueueItemLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageType">
-              <PropertyRef Name="MessageTypeId" />
-            </Principal>
-            <Dependent Role="MessageQueueItemLocale">
-              <PropertyRef Name="MessageTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_MessageQueuePrice_MessageStatusId">
           <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
           <End Type="Icon.Framework.Model.MessageQueuePrice" Role="MessageQueuePrice" Multiplicity="*" />
@@ -4754,9 +4673,12 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="TraitId" Type="Int32" />
           <Property Name="TraitValue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="MerchandiseHierarchyClassId" Type="Int32" />
+          <Property Name="AttributeId" Type="Int32" />
+          <Property Name="AttributeValue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="HierarchyClass" Relationship="Icon.Framework.Model.FK__ProductSelectionGroup_MerchandiseHierarchyClass" FromRole="ProductSelectionGroup" ToRole="HierarchyClass" />
           <NavigationProperty Name="Trait" Relationship="Icon.Framework.Model.FK__ProductSelectionGroup_Trait" FromRole="ProductSelectionGroup" ToRole="Trait" />
           <NavigationProperty Name="ProductSelectionGroupType" Relationship="Icon.Framework.Model.FK_ProductSelectionGroup_ProductSelectionGroupType" FromRole="ProductSelectionGroup" ToRole="ProductSelectionGroupType" />
+          <NavigationProperty Name="Attributes" Relationship="Icon.Framework.Model.FK__ProductSelectionGroup_Attributes" FromRole="ProductSelectionGroup" ToRole="Attributes" />
         </EntityType>
         <Association Name="FK__ProductSelectionGroup_MerchandiseHierarchyClass">
           <End Type="Icon.Framework.Model.HierarchyClass" Role="HierarchyClass" Multiplicity="0..1" />
@@ -4779,6 +4701,18 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Principal>
             <Dependent Role="ProductSelectionGroup">
               <PropertyRef Name="TraitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductSelectionGroup_Attributes">
+          <End Type="Icon.Framework.Model.Attributes" Role="Attributes" Multiplicity="0..1" />
+          <End Type="Icon.Framework.Model.ProductSelectionGroup" Role="ProductSelectionGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attributes">
+              <PropertyRef Name="AttributeId" />
+            </Principal>
+            <Dependent Role="ProductSelectionGroup">
+              <PropertyRef Name="AttributeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5042,23 +4976,9 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="EsbReadyDate" Type="DateTime" Precision="7" />
           <Property Name="UdmFailedDate" Type="DateTime" Precision="7" />
           <Property Name="EsbReadyFailedDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="MessageQueueItemLocale" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_IRMAPushID" FromRole="IRMAPush" ToRole="MessageQueueItemLocale" />
           <NavigationProperty Name="MessageQueuePrice" Relationship="Icon.Framework.Model.FK_MessageQueuePrice_IRMAPushID" FromRole="IRMAPush" ToRole="MessageQueuePrice" />
+          <NavigationProperty Name="MessageQueueItemLocale" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_IRMAPushID" FromRole="IRMAPush" ToRole="MessageQueueItemLocale" />
         </EntityType>
-        <Association Name="FK_MessageQueueItemLocale_IRMAPushID">
-          <End Type="Icon.Framework.Model.IRMAPush" Role="IRMAPush" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Icon.Framework.Model.MessageQueueItemLocale" Role="MessageQueueItemLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="IRMAPush">
-              <PropertyRef Name="IRMAPushID" />
-            </Principal>
-            <Dependent Role="MessageQueueItemLocale">
-              <PropertyRef Name="IRMAPushID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_MessageQueuePrice_IRMAPushID">
           <End Type="Icon.Framework.Model.IRMAPush" Role="IRMAPush" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5080,8 +5000,8 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="AgencyId" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Mapping" Relationship="Icon.Framework.Model.FK_ewic_Mapping_Agency" FromRole="Agency" ToRole="Mapping" />
           <NavigationProperty Name="Locale" Relationship="Icon.Framework.Model.AgencyLocale" FromRole="Agency" ToRole="Locale" />
-          <NavigationProperty Name="ScanCode" Relationship="Icon.Framework.Model.Exclusion" FromRole="Agency" ToRole="ScanCode" />
           <NavigationProperty Name="AuthorizedProductList" Relationship="Icon.Framework.Model.FK_ewic_AuthorizedProductList_Agency" FromRole="Agency" ToRole="AuthorizedProductList" />
+          <NavigationProperty Name="ScanCode" Relationship="Icon.Framework.Model.Exclusion" FromRole="Agency" ToRole="ScanCode" />
         </EntityType>
         <EntityType Name="Mapping">
           <Key>
@@ -5092,22 +5012,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="AgencyId" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
           <Property Name="AplScanCode" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="ScanCodeId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ScanCode" Relationship="Icon.Framework.Model.FK_ewic_Mapping_ScanCode" FromRole="Mapping" ToRole="ScanCode" />
           <NavigationProperty Name="Agency" Relationship="Icon.Framework.Model.FK_ewic_Mapping_Agency" FromRole="Mapping" ToRole="Agency" />
           <NavigationProperty Name="AuthorizedProductList" Relationship="Icon.Framework.Model.FK_ewic_Mapping_AuthorizedProductList" FromRole="Mapping" ToRole="AuthorizedProductList" />
+          <NavigationProperty Name="ScanCode" Relationship="Icon.Framework.Model.FK_ewic_Mapping_ScanCode" FromRole="Mapping" ToRole="ScanCode" />
         </EntityType>
-        <Association Name="FK_ewic_Mapping_ScanCode">
-          <End Type="Icon.Framework.Model.ScanCode" Role="ScanCode" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.Mapping" Role="Mapping" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ScanCode">
-              <PropertyRef Name="scanCodeID" />
-            </Principal>
-            <Dependent Role="Mapping">
-              <PropertyRef Name="ScanCodeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ewic_Mapping_Agency">
           <End Type="Icon.Framework.Model.Agency" Role="Agency" Multiplicity="1" />
           <End Type="Icon.Framework.Model.Mapping" Role="Mapping" Multiplicity="*" />
@@ -5123,10 +5031,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
         <Association Name="AgencyLocale">
           <End Type="Icon.Framework.Model.Agency" Role="Agency" Multiplicity="*" />
           <End Type="Icon.Framework.Model.Locale" Role="Locale" Multiplicity="*" />
-        </Association>
-        <Association Name="Exclusion">
-          <End Type="Icon.Framework.Model.Agency" Role="Agency" Multiplicity="*" />
-          <End Type="Icon.Framework.Model.ScanCode" Role="ScanCode" Multiplicity="*" />
         </Association>
         <EntityType Name="PLURequest">
           <Key>
@@ -5459,34 +5363,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="parentItemID" Type="Int32" Nullable="false" />
           <Property Name="childItemID" Type="Int32" Nullable="false" />
           <Property Name="localeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Locale" Relationship="Icon.Framework.Model.Locale_ItemLink_FK1" FromRole="ItemLink" ToRole="Locale" />
           <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.Item_ItemLink_FK1" FromRole="ItemLink" ToRole="Item" />
           <NavigationProperty Name="Item1" Relationship="Icon.Framework.Model.Item_ItemLink_FK2" FromRole="ItemLink" ToRole="Item" />
-          <NavigationProperty Name="Locale" Relationship="Icon.Framework.Model.Locale_ItemLink_FK1" FromRole="ItemLink" ToRole="Locale" />
-        </EntityType>
-        <Association Name="Item_ItemLink_FK1">
-          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.ItemLink" Role="ItemLink" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Item">
-              <PropertyRef Name="itemID" />
-            </Principal>
-            <Dependent Role="ItemLink">
-              <PropertyRef Name="parentItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Item_ItemLink_FK2">
-          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.ItemLink" Role="ItemLink" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Item">
-              <PropertyRef Name="itemID" />
-            </Principal>
-            <Dependent Role="ItemLink">
-              <PropertyRef Name="childItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+          </EntityType>
         <Association Name="Locale_ItemLink_FK1">
           <End Type="Icon.Framework.Model.Locale" Role="Locale" Multiplicity="1" />
           <End Type="Icon.Framework.Model.ItemLink" Role="ItemLink" Multiplicity="*" />
@@ -5548,70 +5428,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="MessageProperties" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
         </EntityType>
-        <EntityType Name="MessageArchiveHierarchy">
-          <Key>
-            <PropertyRef Name="MessageArchiveId" />
-          </Key>
-          <Property Name="MessageArchiveId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="HierarchyClassId" Type="Int32" Nullable="false" />
-          <Property Name="HierarchyClassName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="HierarchyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="InforMessageId" Type="Guid" Nullable="false" />
-          <Property Name="Context" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ErrorCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ErrorDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
-        </EntityType>
-        <EntityType Name="ItemSignAttribute">
-          <Key>
-            <PropertyRef Name="ItemSignAttributeID" />
-          </Key>
-          <Property Name="ItemSignAttributeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ItemID" Type="Int32" Nullable="false" />
-          <Property Name="Biodynamic" Type="Boolean" Nullable="false" />
-          <Property Name="CheeseRaw" Type="Boolean" Nullable="false" />
-          <Property Name="GlutenFreeAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="HealthyEatingRatingId" Type="Int32" />
-          <Property Name="KosherAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Msc" Type="Boolean" Nullable="false" />
-          <Property Name="NonGmoAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="OrganicAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="PremiumBodyCare" Type="Boolean" Nullable="false" />
-          <Property Name="VeganAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Vegetarian" Type="Boolean" Nullable="false" />
-          <Property Name="WholeTrade" Type="Boolean" Nullable="false" />
-          <Property Name="GrassFed" Type="Boolean" Nullable="false" />
-          <Property Name="PastureRaised" Type="Boolean" Nullable="false" />
-          <Property Name="FreeRange" Type="Boolean" Nullable="false" />
-          <Property Name="DryAged" Type="Boolean" Nullable="false" />
-          <Property Name="AirChilled" Type="Boolean" Nullable="false" />
-          <Property Name="MadeInHouse" Type="Boolean" Nullable="false" />
-          <Property Name="CustomerFriendlyDescription" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />          
-          <Property Name="AnimalWelfareRating" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="EcoScaleRating" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="FreshOrFrozen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SeafoodCatchType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="MilkType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AnimalWelfareRatingId" Type="Int32" />
-          <Property Name="CheeseMilkTypeId" Type="Int32" />
-          <Property Name="EcoScaleRatingId" Type="Int32" />
-          <Property Name="SeafoodFreshOrFrozenId" Type="Int32" />
-          <Property Name="SeafoodCatchTypeId" Type="Int32" />
-          <Property Name="DeliverySystems" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DrainedWeightUom" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <Association Name="FK_ItemSignAttribute_ItemId">
-          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Item">
-              <PropertyRef Name="itemID" />
-            </Principal>
-            <Dependent Role="ItemSignAttribute">
-              <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="IRMAItem">
           <Key>
             <PropertyRef Name="irmaItemID" />
@@ -5667,20 +5483,8 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="numericCode" Type="Int32" />
           <Property Name="minorUnit" Type="Int32" />
           <Property Name="symbol" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ItemPrices" Relationship="Icon.Framework.Model.CurrencyType_ItemPrice_FK1" FromRole="CurrencyType" ToRole="ItemPrice" />
+          <NavigationProperty Name="ItemPrice" Relationship="Icon.Framework.Model.CurrencyType_ItemPrice_FK1" FromRole="Currency" ToRole="ItemPrice" />
         </EntityType>
-        <Association Name="CurrencyType_ItemPrice_FK1">
-          <End Type="Icon.Framework.Model.Currency" Role="CurrencyType" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.ItemPrice" Role="ItemPrice" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CurrencyType">
-              <PropertyRef Name="currencyTypeID" />
-            </Principal>
-            <Dependent Role="ItemPrice">
-              <PropertyRef Name="currencyTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="LocaleSubType">
           <Key>
             <PropertyRef Name="localeSubTypeID" />
@@ -5700,6 +5504,31 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Principal>
             <Dependent Role="LocaleSubType">
               <PropertyRef Name="localeTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+       
+        <Association Name="FK_app_MessageQueueLocale_MessageStatus">
+          <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.MessageQueueLocale" Role="MessageQueueLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageStatus">
+              <PropertyRef Name="MessageStatusId" />
+            </Principal>
+            <Dependent Role="MessageQueueLocale">
+              <PropertyRef Name="MessageStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_app_MessageQueueLocale_MessageType">
+          <End Type="Icon.Framework.Model.MessageType" Role="MessageType" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.MessageQueueLocale" Role="MessageQueueLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageQueueLocale">
+              <PropertyRef Name="MessageTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5749,16 +5578,16 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MessageQueueItemLocale_MessageHistoryId">
+        <Association Name="FK_MessageQueueHierarchy_MessageHistoryId">
           <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="Icon.Framework.Model.MessageQueueItemLocale" Role="MessageQueueItemLocale" Multiplicity="*" />
+          <End Type="Icon.Framework.Model.MessageQueueHierarchy" Role="MessageQueueHierarchy" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MessageHistory">
               <PropertyRef Name="MessageHistoryId" />
             </Principal>
-            <Dependent Role="MessageQueueItemLocale">
+            <Dependent Role="MessageQueueHierarchy">
               <PropertyRef Name="MessageHistoryId" />
             </Dependent>
           </ReferentialConstraint>
@@ -5948,30 +5777,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_app_MessageQueueLocale_MessageStatus">
-          <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.MessageQueueLocale" Role="MessageQueueLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageStatus">
-              <PropertyRef Name="MessageStatusId" />
-            </Principal>
-            <Dependent Role="MessageQueueLocale">
-              <PropertyRef Name="MessageStatusId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_app_MessageQueueLocale_MessageType">
-          <End Type="Icon.Framework.Model.MessageType" Role="MessageType" Multiplicity="1" />
-          <End Type="Icon.Framework.Model.MessageQueueLocale" Role="MessageQueueLocale" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageType">
-              <PropertyRef Name="MessageTypeId" />
-            </Principal>
-            <Dependent Role="MessageQueueLocale">
-              <PropertyRef Name="MessageTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+
         <EntityType Name="MessageQueueProduct">
           <Key>
             <PropertyRef Name="MessageQueueId" />
@@ -6163,6 +5969,213 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="AttributeGroup">
+          <Key>
+            <PropertyRef Name="AttributeGroupId" />
+          </Key>
+          <Property Name="AttributeGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AttributeGroupName" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Attributes" Relationship="Icon.Framework.Model.FK_Attributes_AttributeType_AttributeGroupId" FromRole="AttributeGroup" ToRole="Attributes" />
+        </EntityType>
+        <EntityType Name="CharacterSets">
+          <Key>
+            <PropertyRef Name="CharacterSetId" />
+          </Key>
+          <Property Name="CharacterSetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegEx" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AttributeCharacterSets" Relationship="Icon.Framework.Model.FK_AttributeCharacterSets_CharacterSets_CharacterSetId" FromRole="CharacterSets" ToRole="AttributeCharacterSets" />
+        </EntityType>
+        <EntityType Name="DataType">
+          <Key>
+            <PropertyRef Name="DataTypeId" />
+          </Key>
+          <Property Name="DataTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DataType1" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Attributes" Relationship="Icon.Framework.Model.FK_Attributes_DataType_DataTypeId" FromRole="DataType" ToRole="Attributes" />
+        </EntityType>
+        <EntityType Name="MessageQueueItem">
+          <Key>
+            <PropertyRef Name="MessageQueueItemId" />
+          </Key>
+          <Property Name="MessageQueueItemId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EsbReadyDateTimeUtc" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ItemId" Type="Int32" Nullable="false" />
+          <Property Name="InsertDateUtc" Type="DateTime" Nullable="false" Precision="7" />
+        </EntityType>
+        <EntityType Name="Attributes">
+          <Key>
+            <PropertyRef Name="AttributeId" />
+          </Key>
+          <Property Name="AttributeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DisplayName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AttributeName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HasUniqueValues" Type="Boolean" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DefaultValue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RequiredForPublishing" Type="Boolean" />
+          <Property Name="SpecialCharactersAllowed" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TraitCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayOrder" Type="Int32" />
+          <Property Name="InitialValue" Type="Int32" />
+          <Property Name="IncrementBy" Type="Int32" />
+          <Property Name="InitialMax" Type="Int32" />
+          <Property Name="DisplayType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MaxLengthAllowed" Type="Int32" />
+          <Property Name="NumberValidationRule" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsPickList" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProductSelectionGroup" Relationship="Icon.Framework.Model.FK__ProductSelectionGroup_Attributes" FromRole="Attributes" ToRole="ProductSelectionGroup" />
+          <NavigationProperty Name="AttributeGroup" Relationship="Icon.Framework.Model.FK_Attributes_AttributeType_AttributeGroupId" FromRole="Attributes" ToRole="AttributeGroup" />
+          <NavigationProperty Name="DataType" Relationship="Icon.Framework.Model.FK_Attributes_DataType_DataTypeId" FromRole="Attributes" ToRole="DataType" />
+          <NavigationProperty Name="PickListData" Relationship="Icon.Framework.Model.FK_PickListData_Attributes_AttributeId" FromRole="Attributes" ToRole="PickListData" />
+          <NavigationProperty Name="AttributeCharacterSets" Relationship="Icon.Framework.Model.FK_AttributeCharacterSets_Attributes_AttributeId" FromRole="Attributes" ToRole="AttributeCharacterSets" />
+        </EntityType>
+        <Association Name="FK_Attributes_AttributeType_AttributeGroupId">
+          <End Type="Icon.Framework.Model.AttributeGroup" Role="AttributeGroup" Multiplicity="0..1" />
+          <End Type="Icon.Framework.Model.Attributes" Role="Attributes" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Attributes_DataType_DataTypeId">
+          <End Type="Icon.Framework.Model.DataType" Role="DataType" Multiplicity="0..1" />
+          <End Type="Icon.Framework.Model.Attributes" Role="Attributes" Multiplicity="*" />
+        </Association>
+        <EntityType Name="PickListData">
+          <Key>
+            <PropertyRef Name="PickListId" />
+          </Key>
+          <Property Name="PickListId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PickListValue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Attributes" Relationship="Icon.Framework.Model.FK_PickListData_Attributes_AttributeId" FromRole="PickListData" ToRole="Attributes" />
+        </EntityType>
+        <Association Name="FK_PickListData_Attributes_AttributeId">
+          <End Type="Icon.Framework.Model.Attributes" Role="Attributes" Multiplicity="0..1" />
+          <End Type="Icon.Framework.Model.PickListData" Role="PickListData" Multiplicity="*" />
+        </Association>
+        <EntityType Name="AttributeCharacterSets">
+          <Key>
+            <PropertyRef Name="AttributeCharacterSetID" />
+          </Key>
+          <Property Name="AttributeCharacterSetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Attributes" Relationship="Icon.Framework.Model.FK_AttributeCharacterSets_Attributes_AttributeId" FromRole="AttributeCharacterSets" ToRole="Attributes" />
+          <NavigationProperty Name="CharacterSets" Relationship="Icon.Framework.Model.FK_AttributeCharacterSets_CharacterSets_CharacterSetId" FromRole="AttributeCharacterSets" ToRole="CharacterSets" />
+        </EntityType>
+        <Association Name="FK_AttributeCharacterSets_Attributes_AttributeId">
+          <End Type="Icon.Framework.Model.Attributes" Role="Attributes" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.AttributeCharacterSets" Role="AttributeCharacterSets" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_AttributeCharacterSets_CharacterSets_CharacterSetId">
+          <End Type="Icon.Framework.Model.CharacterSets" Role="CharacterSets" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.AttributeCharacterSets" Role="AttributeCharacterSets" Multiplicity="*" />
+        </Association>
+        <EntityType Name="MessageQueueItemLocale">
+          <Key>
+            <PropertyRef Name="MessageQueueId" />
+          </Key>
+          <Property Name="MessageQueueId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageTypeId" Type="Int32" Nullable="false" />
+          <Property Name="MessageStatusId" Type="Int32" Nullable="false" />
+          <Property Name="MessageHistoryId" Type="Int32" />
+          <Property Name="MessageActionId" Type="Int32" Nullable="false" />
+          <Property Name="IRMAPushID" Type="Int32" Nullable="false" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="RegionCode" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="BusinessUnit_ID" Type="Int32" Nullable="false" />
+          <Property Name="ItemId" Type="Int32" Nullable="false" />
+          <Property Name="ItemTypeCode" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="ItemTypeDesc" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LocaleId" Type="Int32" Nullable="false" />
+          <Property Name="LocaleName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ScanCodeId" Type="Int32" Nullable="false" />
+          <Property Name="ScanCode" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="ScanCodeTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ScanCodeTypeDesc" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ChangeType" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="LockedForSale" Type="Boolean" Nullable="false" />
+          <Property Name="Recall" Type="Boolean" Nullable="false" />
+          <Property Name="TMDiscountEligible" Type="Boolean" Nullable="false" />
+          <Property Name="Case_Discount" Type="Boolean" Nullable="false" />
+          <Property Name="AgeCode" Type="Int32" />
+          <Property Name="Restricted_Hours" Type="Boolean" Nullable="false" />
+          <Property Name="Sold_By_Weight" Type="Boolean" Nullable="false" />
+          <Property Name="ScaleForcedTare" Type="Boolean" Nullable="false" />
+          <Property Name="Quantity_Required" Type="Boolean" Nullable="false" />
+          <Property Name="Price_Required" Type="Boolean" Nullable="false" />
+          <Property Name="QtyProhibit" Type="Boolean" Nullable="false" />
+          <Property Name="VisualVerify" Type="Boolean" Nullable="false" />
+          <Property Name="LinkedItemScanCode" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="PreviousLinkedItemScanCode" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="PosScaleTare" Type="Int32" />
+          <Property Name="InProcessBy" Type="Int32" />
+          <Property Name="ProcessedDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="IRMAPush" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_IRMAPushID" FromRole="MessageQueueItemLocale" ToRole="IRMAPush" />
+          <NavigationProperty Name="MessageAction" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageActionId" FromRole="MessageQueueItemLocale" ToRole="MessageAction" />
+          <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageHistoryId" FromRole="MessageQueueItemLocale" ToRole="MessageHistory" />
+          <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageStatusId" FromRole="MessageQueueItemLocale" ToRole="MessageStatus" />
+          <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_MessageQueueItemLocale_MessageTypeId" FromRole="MessageQueueItemLocale" ToRole="MessageType" />
+        </EntityType>
+        <Association Name="FK_MessageQueueItemLocale_IRMAPushID">
+          <End Type="Icon.Framework.Model.IRMAPush" Role="IRMAPush" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Icon.Framework.Model.MessageQueueItemLocale" Role="MessageQueueItemLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IRMAPush">
+              <PropertyRef Name="IRMAPushID" />
+            </Principal>
+            <Dependent Role="MessageQueueItemLocale">
+              <PropertyRef Name="IRMAPushID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueItemLocale_MessageActionId">
+          <End Type="Icon.Framework.Model.MessageAction" Role="MessageAction" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.MessageQueueItemLocale" Role="MessageQueueItemLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageAction">
+              <PropertyRef Name="MessageActionId" />
+            </Principal>
+            <Dependent Role="MessageQueueItemLocale">
+              <PropertyRef Name="MessageActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueItemLocale_MessageHistoryId">
+          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Icon.Framework.Model.MessageQueueItemLocale" Role="MessageQueueItemLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageHistory">
+              <PropertyRef Name="MessageHistoryId" />
+            </Principal>
+            <Dependent Role="MessageQueueItemLocale">
+              <PropertyRef Name="MessageHistoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueItemLocale_MessageStatusId">
+          <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.MessageQueueItemLocale" Role="MessageQueueItemLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageStatus">
+              <PropertyRef Name="MessageStatusId" />
+            </Principal>
+            <Dependent Role="MessageQueueItemLocale">
+              <PropertyRef Name="MessageStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageQueueItemLocale_MessageTypeId">
+          <End Type="Icon.Framework.Model.MessageType" Role="MessageType" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.MessageQueueItemLocale" Role="MessageQueueItemLocale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="MessageTypeId" />
+            </Principal>
+            <Dependent Role="MessageQueueItemLocale">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="MessageQueueHierarchy">
           <Key>
             <PropertyRef Name="MessageQueueId" />
@@ -6192,6 +6205,8 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <NavigationProperty Name="MessageHistory" Relationship="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageHistoryId" FromRole="MessageQueueHierarchy" ToRole="MessageHistory" />
           <NavigationProperty Name="MessageStatus" Relationship="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageStatusId" FromRole="MessageQueueHierarchy" ToRole="MessageStatus" />
           <NavigationProperty Name="MessageType" Relationship="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageTypeId" FromRole="MessageQueueHierarchy" ToRole="MessageType" />
+          <Property Name="ArCustomerId" Type="String" MaxLength="255" FixedLength="false" />
+          <Property Name="ParentCompany" Type="String" FixedLength="false" MaxLength="255" />
         </EntityType>
         <Association Name="FK_MessageQueueHierarchy_MessageActionId">
           <End Type="Icon.Framework.Model.MessageAction" Role="MessageAction" Multiplicity="1" />
@@ -6205,20 +6220,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MessageQueueHierarchy_MessageHistoryId">
-          <End Type="Icon.Framework.Model.MessageHistory" Role="MessageHistory" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Icon.Framework.Model.MessageQueueHierarchy" Role="MessageQueueHierarchy" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageHistory">
-              <PropertyRef Name="MessageHistoryId" />
-            </Principal>
-            <Dependent Role="MessageQueueHierarchy">
-              <PropertyRef Name="MessageHistoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+       
         <Association Name="FK_MessageQueueHierarchy_MessageStatusId">
           <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
           <End Type="Icon.Framework.Model.MessageQueueHierarchy" Role="MessageQueueHierarchy" Multiplicity="*" />
@@ -6243,42 +6245,320 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ScanCode">
+          <Key>
+            <PropertyRef Name="scanCodeID" />
+          </Key>
+          <Property Name="scanCodeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="itemID" Type="Int32" Nullable="false" />
+          <Property Name="scanCode" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="scanCodeTypeID" Type="Int32" Nullable="false" />
+          <Property Name="localeID" Type="Int32" />
+          <NavigationProperty Name="Locale" Relationship="Icon.Framework.Model.Locale_ScanCode_FK1" FromRole="ScanCode" ToRole="Locale" />
+          <NavigationProperty Name="Mapping" Relationship="Icon.Framework.Model.FK_ewic_Mapping_ScanCode" FromRole="ScanCode" ToRole="Mapping" />
+          <NavigationProperty Name="ScanCodeType" Relationship="Icon.Framework.Model.ScanCodeType_ScanCode_FK1" FromRole="ScanCode" ToRole="ScanCodeType" />
+          <NavigationProperty Name="Agency" Relationship="Icon.Framework.Model.Exclusion" FromRole="ScanCode" ToRole="Agency" />
+          <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.Item_ScanCode_FK1" FromRole="ScanCode" ToRole="Item" />
+        </EntityType>
+        <Association Name="Locale_ScanCode_FK1">
+          <End Type="Icon.Framework.Model.Locale" Role="Locale" Multiplicity="0..1" />
+          <End Type="Icon.Framework.Model.ScanCode" Role="ScanCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locale">
+              <PropertyRef Name="localeID" />
+            </Principal>
+            <Dependent Role="ScanCode">
+              <PropertyRef Name="localeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ewic_Mapping_ScanCode">
+          <End Type="Icon.Framework.Model.ScanCode" Role="ScanCode" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.Mapping" Role="Mapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScanCode">
+              <PropertyRef Name="scanCodeID" />
+            </Principal>
+            <Dependent Role="Mapping">
+              <PropertyRef Name="ScanCodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ScanCodeType_ScanCode_FK1">
+          <End Type="Icon.Framework.Model.ScanCodeType" Role="ScanCodeType" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.ScanCode" Role="ScanCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScanCodeType">
+              <PropertyRef Name="scanCodeTypeID" />
+            </Principal>
+            <Dependent Role="ScanCode">
+              <PropertyRef Name="scanCodeTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Exclusion">
+          <End Type="Icon.Framework.Model.Agency" Role="Agency" Multiplicity="*" />
+          <End Type="Icon.Framework.Model.ScanCode" Role="ScanCode" Multiplicity="*" />
+        </Association>
+        <EntityType Name="ItemPrice">
+          <Key>
+            <PropertyRef Name="itemPriceID" />
+          </Key>
+          <Property Name="itemPriceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="itemID" Type="Int32" Nullable="false" />
+          <Property Name="localeID" Type="Int32" Nullable="false" />
+          <Property Name="itemPriceTypeID" Type="Int32" Nullable="false" />
+          <Property Name="uomID" Type="Int32" Nullable="false" />
+          <Property Name="currencyTypeID" Type="Int32" Nullable="false" />
+          <Property Name="itemPriceAmt" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="breakPointStartQty" Type="Int32" />
+          <Property Name="breakPointEndQty" Type="Int32" />
+          <Property Name="startDate" Type="DateTime" Precision="0" />
+          <Property Name="endDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="CurrencyType" Relationship="Icon.Framework.Model.CurrencyType_ItemPrice_FK1" FromRole="ItemPrice" ToRole="Currency" />
+          <NavigationProperty Name="ItemPriceType" Relationship="Icon.Framework.Model.ItemPriceType_ItemPrice_FK1" FromRole="ItemPrice" ToRole="ItemPriceType" />
+          <NavigationProperty Name="Locale" Relationship="Icon.Framework.Model.Locale_ItemPrice_FK1" FromRole="ItemPrice" ToRole="Locale" />
+          <NavigationProperty Name="UOM" Relationship="Icon.Framework.Model.UOM_ItemPrice_FK1" FromRole="ItemPrice" ToRole="UOM" />
+          <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.Item_ItemPrice_FK1" FromRole="ItemPrice" ToRole="Item" />
+        </EntityType>
+        <Association Name="CurrencyType_ItemPrice_FK1">
+          <End Type="Icon.Framework.Model.Currency" Role="Currency" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.ItemPrice" Role="ItemPrice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="currencyTypeID" />
+            </Principal>
+            <Dependent Role="ItemPrice">
+              <PropertyRef Name="currencyTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ItemPriceType_ItemPrice_FK1">
+          <End Type="Icon.Framework.Model.ItemPriceType" Role="ItemPriceType" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.ItemPrice" Role="ItemPrice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemPriceType">
+              <PropertyRef Name="itemPriceTypeID" />
+            </Principal>
+            <Dependent Role="ItemPrice">
+              <PropertyRef Name="itemPriceTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Locale_ItemPrice_FK1">
+          <End Type="Icon.Framework.Model.Locale" Role="Locale" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.ItemPrice" Role="ItemPrice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locale">
+              <PropertyRef Name="localeID" />
+            </Principal>
+            <Dependent Role="ItemPrice">
+              <PropertyRef Name="localeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UOM_ItemPrice_FK1">
+          <End Type="Icon.Framework.Model.UOM" Role="UOM" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.ItemPrice" Role="ItemPrice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UOM">
+              <PropertyRef Name="uomID" />
+            </Principal>
+            <Dependent Role="ItemPrice">
+              <PropertyRef Name="uomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MessageArchiveHierarchy">
+          <Key>
+            <PropertyRef Name="MessageArchiveId" />
+          </Key>
+          <Property Name="MessageArchiveId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HierarchyClassId" Type="Int32" Nullable="false" />
+          <Property Name="HierarchyClassName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HierarchyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="EsbMessageId" Type="Guid" Nullable="false" />
+          <Property Name="Context" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="7" />
+        </EntityType>
+        <EntityType Name="ItemSignAttribute">
+          <Key>
+            <PropertyRef Name="ItemSignAttributeID" />
+          </Key>
+          <Property Name="ItemSignAttributeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemID" Type="Int32" Nullable="false" />
+          <Property Name="AnimalWelfareRatingId" Type="Int32" />
+          <Property Name="Biodynamic" Type="Boolean" Nullable="false" />
+          <Property Name="CheeseMilkTypeId" Type="Int32" />
+          <Property Name="CheeseRaw" Type="Boolean" Nullable="false" />
+          <Property Name="EcoScaleRatingId" Type="Int32" />
+          <Property Name="GlutenFreeAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HealthyEatingRatingId" Type="Int32" />
+          <Property Name="KosherAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Msc" Type="Boolean" Nullable="false" />
+          <Property Name="NonGmoAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="OrganicAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PremiumBodyCare" Type="Boolean" Nullable="false" />
+          <Property Name="SeafoodFreshOrFrozenId" Type="Int32" />
+          <Property Name="SeafoodCatchTypeId" Type="Int32" />
+          <Property Name="VeganAgencyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Vegetarian" Type="Boolean" Nullable="false" />
+          <Property Name="WholeTrade" Type="Boolean" Nullable="false" />
+          <Property Name="GrassFed" Type="Boolean" Nullable="false" />
+          <Property Name="PastureRaised" Type="Boolean" Nullable="false" />
+          <Property Name="FreeRange" Type="Boolean" Nullable="false" />
+          <Property Name="DryAged" Type="Boolean" Nullable="false" />
+          <Property Name="AirChilled" Type="Boolean" Nullable="false" />
+          <Property Name="MadeInHouse" Type="Boolean" Nullable="false" />
+          <Property Name="CustomerFriendlyDescription" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="AnimalWelfareRating" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MilkType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DeliverySystems" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DrainedWeightUom" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="EcoScaleRating" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FreshOrFrozen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SeafoodCatchType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_ItemId" FromRole="ItemSignAttribute" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemTypeId" Type="Int32" />
+          <Property Name="ItemAttributesJson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PLUMap" Relationship="Icon.Framework.Model.Item_PLUMap_ItemID_FK" FromRole="Item" ToRole="PLUMap" />
+          <NavigationProperty Name="ItemSignAttribute" Relationship="Icon.Framework.Model.FK_ItemSignAttribute_ItemId" FromRole="Item" ToRole="ItemSignAttribute" />
+          <NavigationProperty Name="ItemHierarchyClass" Relationship="Icon.Framework.Model.Item_ItemHierarchyClass_FK1" FromRole="Item" ToRole="ItemHierarchyClass" />
+          <NavigationProperty Name="ItemLink" Relationship="Icon.Framework.Model.Item_ItemLink_FK1" FromRole="Item" ToRole="ItemLink" />
+          <NavigationProperty Name="ItemLink1" Relationship="Icon.Framework.Model.Item_ItemLink_FK2" FromRole="Item" ToRole="ItemLink" />
+          <NavigationProperty Name="ItemPrice" Relationship="Icon.Framework.Model.Item_ItemPrice_FK1" FromRole="Item" ToRole="ItemPrice" />
+          <NavigationProperty Name="ItemTrait" Relationship="Icon.Framework.Model.Item_ItemTrait_FK1" FromRole="Item" ToRole="ItemTrait" />
+          <NavigationProperty Name="ScanCode" Relationship="Icon.Framework.Model.Item_ScanCode_FK1" FromRole="Item" ToRole="ScanCode" />
+          <NavigationProperty Name="ItemType" Relationship="Icon.Framework.Model.ItemType_Item_FK1" FromRole="Item" ToRole="ItemType" />
+        </EntityType>
+        <Association Name="Item_PLUMap_ItemID_FK">
+          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.PLUMap" Role="PLUMap" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="PLUMap">
+              <PropertyRef Name="itemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemSignAttribute_ItemId">
+          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.ItemSignAttribute" Role="ItemSignAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ItemSignAttribute">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Item_ItemHierarchyClass_FK1">
+          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.ItemHierarchyClass" Role="ItemHierarchyClass" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ItemHierarchyClass">
+              <PropertyRef Name="itemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Item_ItemLink_FK1">
+          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.ItemLink" Role="ItemLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ItemLink">
+              <PropertyRef Name="parentItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Item_ItemLink_FK2">
+          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.ItemLink" Role="ItemLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ItemLink">
+              <PropertyRef Name="childItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Item_ItemPrice_FK1">
+          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.ItemPrice" Role="ItemPrice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ItemPrice">
+              <PropertyRef Name="itemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Item_ItemTrait_FK1">
+          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.ItemTrait" Role="ItemTrait" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ItemTrait">
+              <PropertyRef Name="itemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Item_ScanCode_FK1">
+          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="1" />
+          <End Type="Icon.Framework.Model.ScanCode" Role="ScanCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ScanCode">
+              <PropertyRef Name="itemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ItemType_Item_FK1">
+          <End Type="Icon.Framework.Model.ItemType" Role="ItemType" Multiplicity="0..1" />
+          <End Type="Icon.Framework.Model.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemType">
+              <PropertyRef Name="itemTypeID" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="ItemTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="IconFrameworkModelStoreContainer" CdmEntityContainer="IconContext">
-          <EntitySetMapping Name="Item">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.Item">
-              <MappingFragment StoreEntitySet="Item">
-                <ScalarProperty Name="imageURL" ColumnName="imageURL" />
-                <ScalarProperty Name="kitchenDescription" ColumnName="kitchenDescription" />
-                <ScalarProperty Name="kitchenItem" ColumnName="kitchenItem" />
-                <ScalarProperty Name="hospitalityItem" ColumnName="hospitalityItem" />
-                <ScalarProperty Name="productKey" ColumnName="productKey" />
-                <ScalarProperty Name="itemTypeID" ColumnName="itemTypeID" />
-                <ScalarProperty Name="itemID" ColumnName="itemID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ItemType">
             <EntityTypeMapping TypeName="Icon.Framework.Model.ItemType">
               <MappingFragment StoreEntitySet="ItemType">
                 <ScalarProperty Name="itemTypeDesc" ColumnName="itemTypeDesc" />
                 <ScalarProperty Name="itemTypeCode" ColumnName="itemTypeCode" />
                 <ScalarProperty Name="itemTypeID" ColumnName="itemTypeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ScanCode">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.ScanCode">
-              <MappingFragment StoreEntitySet="ScanCode">
-                <ScalarProperty Name="localeID" ColumnName="localeID" />
-                <ScalarProperty Name="scanCodeTypeID" ColumnName="scanCodeTypeID" />
-                <ScalarProperty Name="scanCode" ColumnName="scanCode" />
-                <ScalarProperty Name="itemID" ColumnName="itemID" />
-                <ScalarProperty Name="scanCodeID" ColumnName="scanCodeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6421,23 +6701,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
                 <ScalarProperty Name="uomID" ColumnName="uomID" />
                 <ScalarProperty Name="itemID" ColumnName="itemID" />
                 <ScalarProperty Name="traitID" ColumnName="traitID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ItemPrice">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.ItemPrice">
-              <MappingFragment StoreEntitySet="ItemPrice">
-                <ScalarProperty Name="endDate" ColumnName="endDate" />
-                <ScalarProperty Name="startDate" ColumnName="startDate" />
-                <ScalarProperty Name="breakPointEndQty" ColumnName="breakPointEndQty" />
-                <ScalarProperty Name="breakPointStartQty" ColumnName="breakPointStartQty" />
-                <ScalarProperty Name="itemPriceAmt" ColumnName="itemPriceAmt" />
-                <ScalarProperty Name="currencyTypeID" ColumnName="currencyTypeID" />
-                <ScalarProperty Name="uomID" ColumnName="uomID" />
-                <ScalarProperty Name="itemPriceTypeID" ColumnName="itemPriceTypeID" />
-                <ScalarProperty Name="localeID" ColumnName="localeID" />
-                <ScalarProperty Name="itemID" ColumnName="itemID" />
-                <ScalarProperty Name="itemPriceID" ColumnName="itemPriceID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6625,48 +6888,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="MessageQueueItemLocale">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueItemLocale">
-              <MappingFragment StoreEntitySet="MessageQueueItemLocale">
-                <ScalarProperty Name="PreviousLinkedItemScanCode" ColumnName="PreviousLinkedItemScanCode" />
-                <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
-                <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />
-                <ScalarProperty Name="PosScaleTare" ColumnName="PosScaleTare" />
-                <ScalarProperty Name="LinkedItemScanCode" ColumnName="LinkedItemScanCode" />
-                <ScalarProperty Name="VisualVerify" ColumnName="VisualVerify" />
-                <ScalarProperty Name="QtyProhibit" ColumnName="QtyProhibit" />
-                <ScalarProperty Name="Price_Required" ColumnName="Price_Required" />
-                <ScalarProperty Name="Quantity_Required" ColumnName="Quantity_Required" />
-                <ScalarProperty Name="ScaleForcedTare" ColumnName="ScaleForcedTare" />
-                <ScalarProperty Name="Sold_By_Weight" ColumnName="Sold_By_Weight" />
-                <ScalarProperty Name="Restricted_Hours" ColumnName="Restricted_Hours" />
-                <ScalarProperty Name="AgeCode" ColumnName="AgeCode" />
-                <ScalarProperty Name="Case_Discount" ColumnName="Case_Discount" />
-                <ScalarProperty Name="TMDiscountEligible" ColumnName="TMDiscountEligible" />
-                <ScalarProperty Name="Recall" ColumnName="Recall" />
-                <ScalarProperty Name="LockedForSale" ColumnName="LockedForSale" />
-                <ScalarProperty Name="ChangeType" ColumnName="ChangeType" />
-                <ScalarProperty Name="ScanCodeTypeDesc" ColumnName="ScanCodeTypeDesc" />
-                <ScalarProperty Name="ScanCodeTypeId" ColumnName="ScanCodeTypeId" />
-                <ScalarProperty Name="ScanCode" ColumnName="ScanCode" />
-                <ScalarProperty Name="ScanCodeId" ColumnName="ScanCodeId" />
-                <ScalarProperty Name="LocaleName" ColumnName="LocaleName" />
-                <ScalarProperty Name="LocaleId" ColumnName="LocaleId" />
-                <ScalarProperty Name="ItemTypeDesc" ColumnName="ItemTypeDesc" />
-                <ScalarProperty Name="ItemTypeCode" ColumnName="ItemTypeCode" />
-                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
-                <ScalarProperty Name="BusinessUnit_ID" ColumnName="BusinessUnit_ID" />
-                <ScalarProperty Name="RegionCode" ColumnName="RegionCode" />
-                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
-                <ScalarProperty Name="IRMAPushID" ColumnName="IRMAPushID" />
-                <ScalarProperty Name="MessageActionId" ColumnName="MessageActionId" />
-                <ScalarProperty Name="MessageHistoryId" ColumnName="MessageHistoryId" />
-                <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
-                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
-                <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="MessageQueuePrice">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueuePrice">
               <MappingFragment StoreEntitySet="MessageQueuePrice">
@@ -6719,6 +6940,8 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="ProductSelectionGroup">
             <EntityTypeMapping TypeName="Icon.Framework.Model.ProductSelectionGroup">
               <MappingFragment StoreEntitySet="ProductSelectionGroup">
+                <ScalarProperty Name="AttributeValue" ColumnName="AttributeValue" />
+                <ScalarProperty Name="AttributeId" ColumnName="AttributeId" />
                 <ScalarProperty Name="MerchandiseHierarchyClassId" ColumnName="MerchandiseHierarchyClassId" />
                 <ScalarProperty Name="TraitValue" ColumnName="TraitValue" />
                 <ScalarProperty Name="TraitId" ColumnName="TraitId" />
@@ -6912,14 +7135,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <AssociationSetMapping Name="AgencyLocale" TypeName="Icon.Framework.Model.AgencyLocale" StoreEntitySet="AgencyLocale">
             <EndProperty Name="Locale">
               <ScalarProperty Name="localeID" ColumnName="LocaleId" />
-            </EndProperty>
-            <EndProperty Name="Agency">
-              <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="Exclusion" TypeName="Icon.Framework.Model.Exclusion" StoreEntitySet="Exclusion">
-            <EndProperty Name="ScanCode">
-              <ScalarProperty Name="scanCodeID" ColumnName="ScanCodeId" />
             </EndProperty>
             <EndProperty Name="Agency">
               <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
@@ -7199,60 +7414,6 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="MessageArchiveHierarchy">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.MessageArchiveHierarchy">
-              <MappingFragment StoreEntitySet="MessageArchiveHierarchy">
-                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
-                <ScalarProperty Name="ErrorDetails" ColumnName="ErrorDetails" />
-                <ScalarProperty Name="ErrorCode" ColumnName="ErrorCode" />
-                <ScalarProperty Name="Context" ColumnName="Context" />
-                <ScalarProperty Name="InforMessageId" ColumnName="InforMessageId" />
-                <ScalarProperty Name="HierarchyName" ColumnName="HierarchyName" />
-                <ScalarProperty Name="HierarchyClassName" ColumnName="HierarchyClassName" />
-                <ScalarProperty Name="HierarchyClassId" ColumnName="HierarchyClassId" />
-                <ScalarProperty Name="MessageArchiveId" ColumnName="MessageArchiveId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ItemSignAttribute">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.ItemSignAttribute">
-              <MappingFragment StoreEntitySet="ItemSignAttribute">
-                <ScalarProperty Name="DrainedWeightUom" ColumnName="DrainedWeightUom" />
-                <ScalarProperty Name="DeliverySystems" ColumnName="DeliverySystems" />
-                <ScalarProperty Name="SeafoodCatchTypeId" ColumnName="SeafoodCatchTypeId" />
-                <ScalarProperty Name="SeafoodFreshOrFrozenId" ColumnName="SeafoodFreshOrFrozenId" />
-                <ScalarProperty Name="EcoScaleRatingId" ColumnName="EcoScaleRatingId" />
-                <ScalarProperty Name="CheeseMilkTypeId" ColumnName="CheeseMilkTypeId" />
-                <ScalarProperty Name="AnimalWelfareRatingId" ColumnName="AnimalWelfareRatingId" />
-                <ScalarProperty Name="MilkType" ColumnName="MilkType" />
-                <ScalarProperty Name="SeafoodCatchType" ColumnName="SeafoodCatchType" />
-                <ScalarProperty Name="FreshOrFrozen" ColumnName="FreshOrFrozen" />
-                <ScalarProperty Name="EcoScaleRating" ColumnName="EcoScaleRating" />
-                <ScalarProperty Name="AnimalWelfareRating" ColumnName="AnimalWelfareRating" />
-                <ScalarProperty Name="CustomerFriendlyDescription" ColumnName="CustomerFriendlyDescription" />
-                <ScalarProperty Name="MadeInHouse" ColumnName="MadeInHouse" />
-                <ScalarProperty Name="AirChilled" ColumnName="AirChilled" />
-                <ScalarProperty Name="DryAged" ColumnName="DryAged" />
-                <ScalarProperty Name="FreeRange" ColumnName="FreeRange" />
-                <ScalarProperty Name="PastureRaised" ColumnName="PastureRaised" />
-                <ScalarProperty Name="GrassFed" ColumnName="GrassFed" />
-                <ScalarProperty Name="WholeTrade" ColumnName="WholeTrade" />
-                <ScalarProperty Name="Vegetarian" ColumnName="Vegetarian" />
-                <ScalarProperty Name="VeganAgencyName" ColumnName="VeganAgencyName" />
-                <ScalarProperty Name="PremiumBodyCare" ColumnName="PremiumBodyCare" />
-                <ScalarProperty Name="OrganicAgencyName" ColumnName="OrganicAgencyName" />
-                <ScalarProperty Name="NonGmoAgencyName" ColumnName="NonGmoAgencyName" />
-                <ScalarProperty Name="Msc" ColumnName="Msc" />
-                <ScalarProperty Name="KosherAgencyName" ColumnName="KosherAgencyName" />
-                <ScalarProperty Name="HealthyEatingRatingId" ColumnName="HealthyEatingRatingId" />
-                <ScalarProperty Name="GlutenFreeAgencyName" ColumnName="GlutenFreeAgencyName" />
-                <ScalarProperty Name="CheeseRaw" ColumnName="CheeseRaw" />
-                <ScalarProperty Name="Biodynamic" ColumnName="Biodynamic" />
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
-                <ScalarProperty Name="ItemSignAttributeID" ColumnName="ItemSignAttributeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="IRMAItem">
             <EntityTypeMapping TypeName="Icon.Framework.Model.IRMAItem">
               <MappingFragment StoreEntitySet="IRMAItem">
@@ -7318,6 +7479,48 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
                 <ScalarProperty Name="localSubTypeCode" ColumnName="localSubTypeCode" />
                 <ScalarProperty Name="localeTypeID" ColumnName="localeTypeID" />
                 <ScalarProperty Name="localeSubTypeID" ColumnName="localeSubTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageQueueLocale">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueLocale">
+              <MappingFragment StoreEntitySet="MessageQueueLocale">
+                <ScalarProperty Name="TouchPointGroupId" ColumnName="TouchPointGroupId" />
+                <ScalarProperty Name="VenueSubType" ColumnName="VenueSubType" />
+                <ScalarProperty Name="VenueOccupant" ColumnName="VenueOccupant" />
+                <ScalarProperty Name="VenueCode" ColumnName="VenueCode" />
+                <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
+                <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="TimezoneName" ColumnName="TimezoneName" />
+                <ScalarProperty Name="TimezoneCode" ColumnName="TimezoneCode" />
+                <ScalarProperty Name="AddressLine3" ColumnName="AddressLine3" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="TerritoryCode" ColumnName="TerritoryCode" />
+                <ScalarProperty Name="TerritoryName" ColumnName="TerritoryName" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="AddressUsageCode" ColumnName="AddressUsageCode" />
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+                <ScalarProperty Name="BusinessUnitId" ColumnName="BusinessUnitId" />
+                <ScalarProperty Name="ParentLocaleId" ColumnName="ParentLocaleId" />
+                <ScalarProperty Name="LocaleTypeId" ColumnName="LocaleTypeId" />
+                <ScalarProperty Name="LocaleCloseDate" ColumnName="LocaleCloseDate" />
+                <ScalarProperty Name="LocaleOpenDate" ColumnName="LocaleOpenDate" />
+                <ScalarProperty Name="LocaleName" ColumnName="LocaleName" />
+                <ScalarProperty Name="StoreAbbreviation" ColumnName="StoreAbbreviation" />
+                <ScalarProperty Name="OwnerOrgPartyId" ColumnName="OwnerOrgPartyId" />
+                <ScalarProperty Name="LocaleId" ColumnName="LocaleId" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="MessageHistoryId" ColumnName="MessageHistoryId" />
+                <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
+                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
+                <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7598,9 +7801,268 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="AttributeGroup">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.AttributeGroup">
+              <MappingFragment StoreEntitySet="AttributeGroup">
+                <ScalarProperty Name="AttributeGroupName" ColumnName="AttributeGroupName" />
+                <ScalarProperty Name="AttributeGroupId" ColumnName="AttributeGroupId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CharacterSets">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.CharacterSets">
+              <MappingFragment StoreEntitySet="CharacterSets">
+                <ScalarProperty Name="RegEx" ColumnName="RegEx" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CharacterSetId" ColumnName="CharacterSetId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DataType">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.DataType">
+              <MappingFragment StoreEntitySet="DataType">
+                <ScalarProperty Name="DataType1" ColumnName="DataType" />
+                <ScalarProperty Name="DataTypeId" ColumnName="DataTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageQueueItem">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueItem">
+              <MappingFragment StoreEntitySet="MessageQueueItem">
+                <ScalarProperty Name="InsertDateUtc" ColumnName="InsertDateUtc" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="EsbReadyDateTimeUtc" ColumnName="EsbReadyDateTimeUtc" />
+                <ScalarProperty Name="MessageQueueItemId" ColumnName="MessageQueueItemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Attributes">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.Attributes">
+              <MappingFragment StoreEntitySet="Attributes">
+                <ScalarProperty Name="IsPickList" ColumnName="IsPickList" />
+                <ScalarProperty Name="NumberValidationRule" ColumnName="NumberValidationRule" />
+                <ScalarProperty Name="MaxLengthAllowed" ColumnName="MaxLengthAllowed" />
+                <ScalarProperty Name="DisplayType" ColumnName="DisplayType" />
+                <ScalarProperty Name="InitialMax" ColumnName="InitialMax" />
+                <ScalarProperty Name="IncrementBy" ColumnName="IncrementBy" />
+                <ScalarProperty Name="InitialValue" ColumnName="InitialValue" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="TraitCode" ColumnName="TraitCode" />
+                <ScalarProperty Name="SpecialCharactersAllowed" ColumnName="SpecialCharactersAllowed" />
+                <ScalarProperty Name="RequiredForPublishing" ColumnName="RequiredForPublishing" />
+                <ScalarProperty Name="DefaultValue" ColumnName="DefaultValue" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="HasUniqueValues" ColumnName="HasUniqueValues" />
+                <ScalarProperty Name="AttributeName" ColumnName="AttributeName" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="AttributeId" ColumnName="AttributeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_Attributes_AttributeType_AttributeGroupId" TypeName="Icon.Framework.Model.FK_Attributes_AttributeType_AttributeGroupId" StoreEntitySet="Attributes">
+            <EndProperty Name="Attributes">
+              <ScalarProperty Name="AttributeId" ColumnName="AttributeId" />
+            </EndProperty>
+            <EndProperty Name="AttributeGroup">
+              <ScalarProperty Name="AttributeGroupId" ColumnName="AttributeGroupId" />
+            </EndProperty>
+            <Condition ColumnName="AttributeGroupId" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Attributes_DataType_DataTypeId" TypeName="Icon.Framework.Model.FK_Attributes_DataType_DataTypeId" StoreEntitySet="Attributes">
+            <EndProperty Name="Attributes">
+              <ScalarProperty Name="AttributeId" ColumnName="AttributeId" />
+            </EndProperty>
+            <EndProperty Name="DataType">
+              <ScalarProperty Name="DataTypeId" ColumnName="DataTypeId" />
+            </EndProperty>
+            <Condition ColumnName="DataTypeId" IsNull="false" />
+          </AssociationSetMapping>
+          <EntitySetMapping Name="PickListData">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.PickListData">
+              <MappingFragment StoreEntitySet="PickListData">
+                <ScalarProperty Name="PickListValue" ColumnName="PickListValue" />
+                <ScalarProperty Name="PickListId" ColumnName="PickListId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_PickListData_Attributes_AttributeId" TypeName="Icon.Framework.Model.FK_PickListData_Attributes_AttributeId" StoreEntitySet="PickListData">
+            <EndProperty Name="PickListData">
+              <ScalarProperty Name="PickListId" ColumnName="PickListId" />
+            </EndProperty>
+            <EndProperty Name="Attributes">
+              <ScalarProperty Name="AttributeId" ColumnName="AttributeId" />
+            </EndProperty>
+            <Condition ColumnName="AttributeId" IsNull="false" />
+          </AssociationSetMapping>
+          <EntitySetMapping Name="AttributeCharacterSets">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.AttributeCharacterSets">
+              <MappingFragment StoreEntitySet="AttributeCharacterSets">
+                <ScalarProperty Name="AttributeCharacterSetID" ColumnName="AttributeCharacterSetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_AttributeCharacterSets_Attributes_AttributeId" TypeName="Icon.Framework.Model.FK_AttributeCharacterSets_Attributes_AttributeId" StoreEntitySet="AttributeCharacterSets">
+            <EndProperty Name="AttributeCharacterSets">
+              <ScalarProperty Name="AttributeCharacterSetID" ColumnName="AttributeCharacterSetID" />
+            </EndProperty>
+            <EndProperty Name="Attributes">
+              <ScalarProperty Name="AttributeId" ColumnName="AttributeId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_AttributeCharacterSets_CharacterSets_CharacterSetId" TypeName="Icon.Framework.Model.FK_AttributeCharacterSets_CharacterSets_CharacterSetId" StoreEntitySet="AttributeCharacterSets">
+            <EndProperty Name="AttributeCharacterSets">
+              <ScalarProperty Name="AttributeCharacterSetID" ColumnName="AttributeCharacterSetID" />
+            </EndProperty>
+            <EndProperty Name="CharacterSets">
+              <ScalarProperty Name="CharacterSetId" ColumnName="CharacterSetId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="MessageQueueItemLocale">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueItemLocale">
+              <MappingFragment StoreEntitySet="MessageQueueItemLocale">
+                <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
+                <ScalarProperty Name="InProcessBy" ColumnName="InProcessBy" />
+                <ScalarProperty Name="PosScaleTare" ColumnName="PosScaleTare" />
+                <ScalarProperty Name="PreviousLinkedItemScanCode" ColumnName="PreviousLinkedItemScanCode" />
+                <ScalarProperty Name="LinkedItemScanCode" ColumnName="LinkedItemScanCode" />
+                <ScalarProperty Name="VisualVerify" ColumnName="VisualVerify" />
+                <ScalarProperty Name="QtyProhibit" ColumnName="QtyProhibit" />
+                <ScalarProperty Name="Price_Required" ColumnName="Price_Required" />
+                <ScalarProperty Name="Quantity_Required" ColumnName="Quantity_Required" />
+                <ScalarProperty Name="ScaleForcedTare" ColumnName="ScaleForcedTare" />
+                <ScalarProperty Name="Sold_By_Weight" ColumnName="Sold_By_Weight" />
+                <ScalarProperty Name="Restricted_Hours" ColumnName="Restricted_Hours" />
+                <ScalarProperty Name="AgeCode" ColumnName="AgeCode" />
+                <ScalarProperty Name="Case_Discount" ColumnName="Case_Discount" />
+                <ScalarProperty Name="TMDiscountEligible" ColumnName="TMDiscountEligible" />
+                <ScalarProperty Name="Recall" ColumnName="Recall" />
+                <ScalarProperty Name="LockedForSale" ColumnName="LockedForSale" />
+                <ScalarProperty Name="ChangeType" ColumnName="ChangeType" />
+                <ScalarProperty Name="ScanCodeTypeDesc" ColumnName="ScanCodeTypeDesc" />
+                <ScalarProperty Name="ScanCodeTypeId" ColumnName="ScanCodeTypeId" />
+                <ScalarProperty Name="ScanCode" ColumnName="ScanCode" />
+                <ScalarProperty Name="ScanCodeId" ColumnName="ScanCodeId" />
+                <ScalarProperty Name="LocaleName" ColumnName="LocaleName" />
+                <ScalarProperty Name="LocaleId" ColumnName="LocaleId" />
+                <ScalarProperty Name="ItemTypeDesc" ColumnName="ItemTypeDesc" />
+                <ScalarProperty Name="ItemTypeCode" ColumnName="ItemTypeCode" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="BusinessUnit_ID" ColumnName="BusinessUnit_ID" />
+                <ScalarProperty Name="RegionCode" ColumnName="RegionCode" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="IRMAPushID" ColumnName="IRMAPushID" />
+                <ScalarProperty Name="MessageActionId" ColumnName="MessageActionId" />
+                <ScalarProperty Name="MessageHistoryId" ColumnName="MessageHistoryId" />
+                <ScalarProperty Name="MessageStatusId" ColumnName="MessageStatusId" />
+                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
+                <ScalarProperty Name="MessageQueueId" ColumnName="MessageQueueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScanCode">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.ScanCode">
+              <MappingFragment StoreEntitySet="ScanCode">
+                <ScalarProperty Name="localeID" ColumnName="localeID" />
+                <ScalarProperty Name="scanCodeTypeID" ColumnName="scanCodeTypeID" />
+                <ScalarProperty Name="scanCode" ColumnName="scanCode" />
+                <ScalarProperty Name="itemID" ColumnName="itemID" />
+                <ScalarProperty Name="scanCodeID" ColumnName="scanCodeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Exclusion" TypeName="Icon.Framework.Model.Exclusion" StoreEntitySet="Exclusion">
+            <EndProperty Name="ScanCode">
+              <ScalarProperty Name="scanCodeID" ColumnName="ScanCodeId" />
+            </EndProperty>
+            <EndProperty Name="Agency">
+              <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="ItemPrice">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.ItemPrice">
+              <MappingFragment StoreEntitySet="ItemPrice">
+                <ScalarProperty Name="endDate" ColumnName="endDate" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="breakPointEndQty" ColumnName="breakPointEndQty" />
+                <ScalarProperty Name="breakPointStartQty" ColumnName="breakPointStartQty" />
+                <ScalarProperty Name="itemPriceAmt" ColumnName="itemPriceAmt" />
+                <ScalarProperty Name="currencyTypeID" ColumnName="currencyTypeID" />
+                <ScalarProperty Name="uomID" ColumnName="uomID" />
+                <ScalarProperty Name="itemPriceTypeID" ColumnName="itemPriceTypeID" />
+                <ScalarProperty Name="localeID" ColumnName="localeID" />
+                <ScalarProperty Name="itemID" ColumnName="itemID" />
+                <ScalarProperty Name="itemPriceID" ColumnName="itemPriceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageArchiveHierarchy">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.MessageArchiveHierarchy">
+              <MappingFragment StoreEntitySet="MessageArchiveHierarchy">
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="ErrorDetails" ColumnName="ErrorDetails" />
+                <ScalarProperty Name="ErrorCode" ColumnName="ErrorCode" />
+                <ScalarProperty Name="Context" ColumnName="Context" />
+                <ScalarProperty Name="EsbMessageId" ColumnName="EsbMessageId" />
+                <ScalarProperty Name="HierarchyName" ColumnName="HierarchyName" />
+                <ScalarProperty Name="HierarchyClassName" ColumnName="HierarchyClassName" />
+                <ScalarProperty Name="HierarchyClassId" ColumnName="HierarchyClassId" />
+                <ScalarProperty Name="MessageArchiveId" ColumnName="MessageArchiveId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemSignAttribute">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.ItemSignAttribute">
+              <MappingFragment StoreEntitySet="ItemSignAttribute">
+                <ScalarProperty Name="SeafoodCatchType" ColumnName="SeafoodCatchType" />
+                <ScalarProperty Name="FreshOrFrozen" ColumnName="FreshOrFrozen" />
+                <ScalarProperty Name="EcoScaleRating" ColumnName="EcoScaleRating" />
+                <ScalarProperty Name="DrainedWeightUom" ColumnName="DrainedWeightUom" />
+                <ScalarProperty Name="DeliverySystems" ColumnName="DeliverySystems" />
+                <ScalarProperty Name="MilkType" ColumnName="MilkType" />
+                <ScalarProperty Name="AnimalWelfareRating" ColumnName="AnimalWelfareRating" />
+                <ScalarProperty Name="CustomerFriendlyDescription" ColumnName="CustomerFriendlyDescription" />
+                <ScalarProperty Name="MadeInHouse" ColumnName="MadeInHouse" />
+                <ScalarProperty Name="AirChilled" ColumnName="AirChilled" />
+                <ScalarProperty Name="DryAged" ColumnName="DryAged" />
+                <ScalarProperty Name="FreeRange" ColumnName="FreeRange" />
+                <ScalarProperty Name="PastureRaised" ColumnName="PastureRaised" />
+                <ScalarProperty Name="GrassFed" ColumnName="GrassFed" />
+                <ScalarProperty Name="WholeTrade" ColumnName="WholeTrade" />
+                <ScalarProperty Name="Vegetarian" ColumnName="Vegetarian" />
+                <ScalarProperty Name="VeganAgencyName" ColumnName="VeganAgencyName" />
+                <ScalarProperty Name="SeafoodCatchTypeId" ColumnName="SeafoodCatchTypeId" />
+                <ScalarProperty Name="SeafoodFreshOrFrozenId" ColumnName="SeafoodFreshOrFrozenId" />
+                <ScalarProperty Name="PremiumBodyCare" ColumnName="PremiumBodyCare" />
+                <ScalarProperty Name="OrganicAgencyName" ColumnName="OrganicAgencyName" />
+                <ScalarProperty Name="NonGmoAgencyName" ColumnName="NonGmoAgencyName" />
+                <ScalarProperty Name="Msc" ColumnName="Msc" />
+                <ScalarProperty Name="KosherAgencyName" ColumnName="KosherAgencyName" />
+                <ScalarProperty Name="HealthyEatingRatingId" ColumnName="HealthyEatingRatingId" />
+                <ScalarProperty Name="GlutenFreeAgencyName" ColumnName="GlutenFreeAgencyName" />
+                <ScalarProperty Name="EcoScaleRatingId" ColumnName="EcoScaleRatingId" />
+                <ScalarProperty Name="CheeseRaw" ColumnName="CheeseRaw" />
+                <ScalarProperty Name="CheeseMilkTypeId" ColumnName="CheeseMilkTypeId" />
+                <ScalarProperty Name="Biodynamic" ColumnName="Biodynamic" />
+                <ScalarProperty Name="AnimalWelfareRatingId" ColumnName="AnimalWelfareRatingId" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="ItemSignAttributeID" ColumnName="ItemSignAttributeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Item">
+            <EntityTypeMapping TypeName="Icon.Framework.Model.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="ItemAttributesJson" ColumnName="ItemAttributesJson" />
+                <ScalarProperty Name="ItemTypeId" ColumnName="ItemTypeId" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="MessageQueueHierarchy">
-            <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueHierarchy">
+            <EntityTypeMapping TypeName="IsTypeOf(Icon.Framework.Model.MessageQueueHierarchy)">
               <MappingFragment StoreEntitySet="MessageQueueHierarchy">
+                <ScalarProperty Name="ArCustomerId" ColumnName="ArCustomerId" />
+                <ScalarProperty Name="ParentCompany" ColumnName="ParentCompany" />
                 <ScalarProperty Name="Locality" ColumnName="Locality" />
                 <ScalarProperty Name="Designation" ColumnName="Designation" />
                 <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
@@ -7638,7 +8100,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
     </Connection>
     <Options>
       <DesignerInfoPropertySet>
-        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="ValidateOnBuild" Value="True" />
         <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />

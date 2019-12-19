@@ -2,10 +2,9 @@
 using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
-using Icon.Web.Extensions;
+using Icon.Web.Mvc.Extensions;
 using Icon.Web.Mvc.Attributes;
 using Icon.Web.Mvc.Models;
 using System;
@@ -77,7 +76,7 @@ namespace Icon.Web.Mvc.Controllers
             };
 
             List<ItemSearchModel> items = getSearchResultsQueryHandler.Search(parameters);
-            viewModel.ItemSearchResults.Items = items.ToViewModels();
+            //viewModel.ItemSearchResults.Items = items.ToViewModels(); //
 
             List<string> foundScanCodes = items.Select(i => i.ScanCode).ToList();
             List<string> invalidOrNotFoundScanCodes = scanCodesToSearch.Except(foundScanCodes).ToList();
@@ -144,7 +143,7 @@ namespace Icon.Web.Mvc.Controllers
             };
 
             List<ItemSearchModel> items = getSearchResultsQueryHandler.Search(parameters);
-            viewModel.ItemSearchResults.Items = items.ToViewModels();
+            //viewModel.ItemSearchResults.Items = items.ToViewModels();
 
             List<string> foundScanCodes = items.Select(i => i.ScanCode).ToList();
             List<string> invalidOrNotFoundScanCodes = scanCodesToSearch.Except(foundScanCodes).ToList();

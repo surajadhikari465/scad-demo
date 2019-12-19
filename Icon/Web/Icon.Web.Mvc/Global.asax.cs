@@ -1,4 +1,6 @@
-﻿using Icon.Web.Mvc.App_Start;
+﻿using FluentValidation.Mvc;
+using Icon.Web.Mvc.App_Start;
+using Icon.Web.Mvc.Validators;
 using System;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -9,13 +11,20 @@ namespace Icon.Web.Mvc
     public class MvcApplication : System.Web.HttpApplication
     {
         public static string IconVersionWithDate = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            AutoMapperWebConfiguration.Configure();
+            var mapper = AutoMapperWebConfiguration.Configure();
+            var container = SimpleInjectorInitializer.Initialize(mapper);
+            FluentValidationModelValidatorProvider.Configure(provider =>
+                {
+                    provider.ValidatorFactory = new SimpleInjectorValidatorFactory(container);
+                    provider.AddImplicitRequiredValidator = false;
+                });
             GetBuildDate();
         }
 

@@ -139,8 +139,8 @@ namespace PushController.Tests.DataAccess.Queries
 
             var itemLink = new ItemLink
             {
-                parentItemID = testLinkedItems[0].itemID,
-                childItemID = testItems[0].itemID,
+                parentItemID = testLinkedItems[0].ItemId,
+                childItemID = testItems[0].ItemId,
                 localeID = testLocales[0].localeID
             };
             context.Context.ItemLink.Add(itemLink);
@@ -170,14 +170,14 @@ namespace PushController.Tests.DataAccess.Queries
             {
                 new ItemLink
                 {
-                    parentItemID = testLinkedItems[0].itemID,
-                    childItemID = testItems[0].itemID,
+                    parentItemID = testLinkedItems[0].ItemId,
+                    childItemID = testItems[0].ItemId,
                     localeID = testLocales[0].localeID
                 },
                 new ItemLink
                 {
-                    parentItemID = testLinkedItems[0].itemID,
-                    childItemID = testItems[0].itemID,
+                    parentItemID = testLinkedItems[0].ItemId,
+                    childItemID = testItems[0].ItemId,
                     localeID = testLocales[1].localeID
                 }
             };
@@ -218,14 +218,14 @@ namespace PushController.Tests.DataAccess.Queries
             {
                 new ItemLink
                 {
-                    parentItemID = testLinkedItems[0].itemID,
-                    childItemID = testItems[0].itemID,
+                    parentItemID = testLinkedItems[0].ItemId,
+                    childItemID = testItems[0].ItemId,
                     localeID = testLocales[0].localeID
                 },
                 new ItemLink
                 {
-                    parentItemID = testLinkedItems[1].itemID,
-                    childItemID = testItems[0].itemID,
+                    parentItemID = testLinkedItems[1].ItemId,
+                    childItemID = testItems[0].ItemId,
                     localeID = testLocales[1].localeID
                 }
             };
@@ -264,8 +264,8 @@ namespace PushController.Tests.DataAccess.Queries
 
             var itemLink = new ItemLink
             {
-                parentItemID = testLinkedItems[0].itemID,
-                childItemID = testItems[0].itemID,
+                parentItemID = testLinkedItems[0].ItemId,
+                childItemID = testItems[0].ItemId,
                 localeID = testLocales[0].localeID
             };
             context.Context.ItemLink.Add(itemLink);
@@ -302,14 +302,14 @@ namespace PushController.Tests.DataAccess.Queries
             {
                 new ItemLink
                 {
-                    parentItemID = testLinkedItems[0].itemID,
-                    childItemID = testItems[0].itemID,
+                    parentItemID = testLinkedItems[0].ItemId,
+                    childItemID = testItems[0].ItemId,
                     localeID = testLocales[0].localeID
                 },
                 new ItemLink
                 {
-                    parentItemID = testLinkedItems[0].itemID,
-                    childItemID = testItems[1].itemID,
+                    parentItemID = testLinkedItems[0].ItemId,
+                    childItemID = testItems[1].ItemId,
                     localeID = testLocales[0].localeID
                 }
             };
@@ -350,14 +350,14 @@ namespace PushController.Tests.DataAccess.Queries
             {
                 new ItemLink
                 {
-                    parentItemID = testLinkedItems[0].itemID,
-                    childItemID = testItems[0].itemID,
+                    parentItemID = testLinkedItems[0].ItemId,
+                    childItemID = testItems[0].ItemId,
                     localeID = testLocales[0].localeID
                 },
                 new ItemLink
                 {
-                    parentItemID = testLinkedItems[0].itemID,
-                    childItemID = testItems[1].itemID,
+                    parentItemID = testLinkedItems[0].ItemId,
+                    childItemID = testItems[1].ItemId,
                     localeID = testLocales[1].localeID
                 }
             };
@@ -398,14 +398,14 @@ namespace PushController.Tests.DataAccess.Queries
             {
                 new ItemLink
                 {
-                    parentItemID = testLinkedItems[0].itemID,
-                    childItemID = testItems[0].itemID,
+                    parentItemID = testLinkedItems[0].ItemId,
+                    childItemID = testItems[0].ItemId,
                     localeID = testLocales[0].localeID
                 },
                 new ItemLink
                 {
-                    parentItemID = testLinkedItems[1].itemID,
-                    childItemID = testItems[1].itemID,
+                    parentItemID = testLinkedItems[1].ItemId,
+                    childItemID = testItems[1].ItemId,
                     localeID = testLocales[0].localeID
                 }
             };
@@ -446,14 +446,14 @@ namespace PushController.Tests.DataAccess.Queries
             {
                 new ItemLink
                 {
-                    parentItemID = testLinkedItems[0].itemID,
-                    childItemID = testItems[0].itemID,
+                    parentItemID = testLinkedItems[0].ItemId,
+                    childItemID = testItems[0].ItemId,
                     localeID = testLocales[0].localeID
                 },
                 new ItemLink
                 {
-                    parentItemID = testLinkedItems[1].itemID,
-                    childItemID = testItems[1].itemID,
+                    parentItemID = testLinkedItems[1].ItemId,
+                    childItemID = testItems[1].ItemId,
                     localeID = testLocales[1].localeID
                 }
             };

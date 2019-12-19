@@ -22,7 +22,7 @@ namespace GlobalEventController.Controller.EventOperations
         private ExceptionHandler<ItemEventBulkProcessor> exceptionHandler;
         private IQueryHandler<GetIconItemNutritionQuery, List<ItemNutrition>> getIconItemNutritionQueryHandler;
         private IEventArchiver eventArchiver;
-				HashSet<int> hsEventIDs = new HashSet<int>{EventTypes.NutritionAdd, EventTypes.NutritionUpdate, EventTypes.NutritionDelete};
+        HashSet<int> hsEventIDs = new HashSet<int> { EventTypes.NutritionAdd, EventTypes.NutritionUpdate, EventTypes.NutritionDelete };
 
         public NutriFactsEventBulkProcessor(IEventQueues queues,
             ILogger<ItemEventBulkProcessor> logger,
@@ -44,37 +44,37 @@ namespace GlobalEventController.Controller.EventOperations
         {
             //Filter Queued Events to Item Event Types. In case of multiple events for the same item the last item will processed.
             var nutritionQueuedEvents = this.queues.QueuedEvents.Where(x => hsEventIDs.Contains(x.EventId))
-																						.GroupBy(x => new { x.EventMessage, Region = x.RegionCode ?? String.Empty })
-																						.Select(x => x.MaxBy(y => y.QueueId))
-																						.ToArray();
+                                                                                        .GroupBy(x => new { x.EventMessage, Region = x.RegionCode ?? String.Empty })
+                                                                                        .Select(x => x.MaxBy(y => y.QueueId))
+                                                                                        .ToArray();
 
             if (!nutritionQueuedEvents.Any())
             {
                 logger.Info("There are no item events to process.");
-								return;
+                return;
             }
 
-						// Populate Dictionary with Region as the Key and List of EventQueues as the value
-						this.queues.RegionToEventQueueDictionary = nutritionQueuedEvents
-								.Where(x => x.EventId != EventTypes.NutritionDelete)
-							  .GroupBy(e => e.RegionCode)
-								.ToDictionary(group => group.Key, g => g.ToList());
+            // Populate Dictionary with Region as the Key and List of EventQueues as the value
+            this.queues.RegionToEventQueueDictionary = nutritionQueuedEvents
+                    .Where(x => x.EventId != EventTypes.NutritionDelete)
+                  .GroupBy(e => e.RegionCode)
+                    .ToDictionary(group => group.Key, g => g.ToList());
 
-						// Iterate Dictionary and perform Bulk Updates for All Regions
-						foreach (KeyValuePair<string, List<EventQueue>> entry in this.queues.RegionToEventQueueDictionary)
-						{
-               ProcessEvents(entry.Key, entry.Value);
-						}
+            // Iterate Dictionary and perform Bulk Updates for All Regions
+            foreach (KeyValuePair<string, List<EventQueue>> entry in this.queues.RegionToEventQueueDictionary)
+            {
+                ProcessEvents(entry.Key, entry.Value);
+            }
 
-						//Process Delete events. Nutrition deletes applies to all regions
-						ExecuteDeleteEventService(nutritionQueuedEvents.Where(x => x.EventId == EventTypes.NutritionDelete).ToList(), false);
+            //Process Delete events. Nutrition deletes in regions as specified by the queued events
+            ExecuteDeleteEventService(nutritionQueuedEvents.Where(x => x.EventId == EventTypes.NutritionDelete).ToList(), false);
         }
 
         private void ProcessEvents(string region, IEnumerable<EventQueue> eventsToProcess)
         {
             try
             {
-               ExecuteAddUpdateEventService(region, eventsToProcess.ToList(), false);
+                ExecuteAddUpdateEventService(region, eventsToProcess.ToList(), false);
             }
             catch (Exception ex)
             {
@@ -126,51 +126,54 @@ namespace GlobalEventController.Controller.EventOperations
 
             logger.Info($"Successfully processed {queuedEvents.Count().ToString()} events for {regionCode} region.");
 
-						var hsScanCode = new HashSet<string>(queuedEvents.Select(x => x.EventMessage), StringComparer.InvariantCultureIgnoreCase);
-						var allApplicableEvents = this.queues.QueuedEvents.Where(x => hsScanCode.Contains(x.EventMessage) && hsEventIDs.Contains(x.EventId) && x.EventId != EventTypes.NutritionDelete).ToArray();
-            
-						// Add to ProcessedEvents List
+            var hsScanCode = new HashSet<string>(queuedEvents.Select(x => x.EventMessage), StringComparer.InvariantCultureIgnoreCase);
+            var allApplicableEvents = this.queues.QueuedEvents.Where(x => hsScanCode.Contains(x.EventMessage) && hsEventIDs.Contains(x.EventId) && x.EventId != EventTypes.NutritionDelete).ToArray();
+
+            // Add to ProcessedEvents List
             this.queues.ProcessedEvents.AddRange(allApplicableEvents);
 
             // Remove from QueuedEvents List so that they do not get processed again with single item process
             this.queues.QueuedEvents.RemoveAll(qe => allApplicableEvents.Contains(qe));
         }
 
-				private void ExecuteDeleteEventService(List<EventQueue> queuedEvents, bool markFailedEvents = true)
+        private void ExecuteDeleteEventService(List<EventQueue> queuedEvents, bool markFailedEvents = true)
         {
-					if(queuedEvents == null || queuedEvents.Count() == 0) return;
+            if (queuedEvents == null || queuedEvents.Count() == 0) return;
 
-					var isFailed = false;
-					foreach(var region in Enum.GetNames(typeof(Enums.IrmaRegion)))
-					{
-						try
-						{
-							var bulkNutritionEventService = eventServiceProvider.GetBulkItemNutriFactsEventService(region);
-							bulkNutritionEventService.Region = region;
-							bulkNutritionEventService.ValidatedItemList = queuedEvents.Select(x => new ValidatedItemModel(){ ScanCode = x.EventMessage, EventTypeId = x.EventId }).ToList();
+            var isFailed = false;
+            foreach (var region in queuedEvents.DistinctBy(qe => qe.RegionCode).Select(qe => qe.RegionCode))
+            {
+                try
+                {
+                    IEnumerable<EventQueue> queuedEventsForRegion = queuedEvents.Where(qe => qe.RegionCode == region);
 
-							logger.Info($"Begin deleting {queuedEvents.Count().ToString()} nutrition scan codes in IRMA for {region} region.");
-							bulkNutritionEventService.Run();
+                    var bulkNutritionEventService = eventServiceProvider.GetBulkItemNutriFactsEventService(region);
+                    bulkNutritionEventService.Region = region;
+                    bulkNutritionEventService.ValidatedItemList = queuedEventsForRegion.Select(x => new ValidatedItemModel { ScanCode = x.EventMessage, EventTypeId = x.EventId }).ToList();
 
-							logger.Info($"Successfully processed {queuedEvents.Count().ToString()} events for {region} region.");
-						}
-						catch(Exception ex)
-						{
-							isFailed = true;
-							this.logger.Error($"DeleteNutrition failed for {region}. {ex.Message}");
-						}
-					}
-					
-					if(!isFailed)
-					{
-						var events = this.queues.QueuedEvents.Where(x => x.EventId == EventTypes.NutritionDelete).ToArray();
+                    int count = queuedEventsForRegion.Count();
+                    logger.Info($"Begin deleting {count} nutrition scan codes in IRMA for {region} region.");
+                    bulkNutritionEventService.Run();
 
-						//Add to ProcessedEvents List
-						this.queues.ProcessedEvents.AddRange(events);
+                    logger.Info($"Successfully processed {count} events for {region} region.");
+                }
+                catch (Exception ex)
+                {
+                    isFailed = true;
+                    this.logger.Error($"DeleteNutrition failed for {region}. {ex.Message}");
+                }
+            }
 
-						//Remove from QueuedEvents List so that they do not get processed again with single item process
-						this.queues.QueuedEvents = this.queues.QueuedEvents.Except(events).ToList();
-					}
+            if (!isFailed)
+            {
+                var events = this.queues.QueuedEvents.Where(x => x.EventId == EventTypes.NutritionDelete).ToArray();
+
+                //Add to ProcessedEvents List
+                this.queues.ProcessedEvents.AddRange(events);
+
+                //Remove from QueuedEvents List so that they do not get processed again with single item process
+                this.queues.QueuedEvents = this.queues.QueuedEvents.Except(events).ToList();
+            }
         }
 
         private IEnumerable<EventQueue> FilterEventQueueByEventTypes(List<int> eventTypes)

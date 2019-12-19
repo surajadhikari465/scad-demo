@@ -65,9 +65,9 @@ namespace PushController.Tests.DataAccess.Commands
         {
             this.testItemPrices = new List<ItemPrice>
             {
-                new TestItemPriceBuilder().WithItemId(testItems[0].itemID).WithLocaleId(testLocale.localeID),
-                new TestItemPriceBuilder().WithItemId(testItems[1].itemID).WithLocaleId(testLocale.localeID),
-                new TestItemPriceBuilder().WithItemId(testItems[2].itemID).WithLocaleId(testLocale.localeID)
+                new TestItemPriceBuilder().WithItemId(testItems[0].ItemId).WithLocaleId(testLocale.localeID),
+                new TestItemPriceBuilder().WithItemId(testItems[1].ItemId).WithLocaleId(testLocale.localeID),
+                new TestItemPriceBuilder().WithItemId(testItems[2].ItemId).WithLocaleId(testLocale.localeID)
             };
 
             this.context.Context.ItemPrice.AddRange(testItemPrices);
@@ -82,9 +82,9 @@ namespace PushController.Tests.DataAccess.Commands
 
             this.testItemPrices = new List<ItemPrice>
             {
-                new TestItemPriceBuilder().WithItemId(testItems[0].itemID).WithLocaleId(testLocale.localeID),
-                new TestItemPriceBuilder().WithItemId(testItems[1].itemID).WithLocaleId(testLocale.localeID),
-                new TestItemPriceBuilder().WithItemId(testItems[2].itemID).WithLocaleId(testLocale.localeID)
+                new TestItemPriceBuilder().WithItemId(testItems[0].ItemId).WithLocaleId(testLocale.localeID),
+                new TestItemPriceBuilder().WithItemId(testItems[1].ItemId).WithLocaleId(testLocale.localeID),
+                new TestItemPriceBuilder().WithItemId(testItems[2].ItemId).WithLocaleId(testLocale.localeID)
             };
 
             // When.

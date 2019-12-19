@@ -5,7 +5,6 @@ using Icon.Ewic.Transmission.Producers;
 using Icon.Framework;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Queries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

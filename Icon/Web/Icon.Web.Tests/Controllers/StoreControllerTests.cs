@@ -12,7 +12,6 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Icon.Web.Tests.Unit.Controllers
@@ -46,6 +45,12 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockGenericQuery.Setup(q => q.GetAll<Territory>()).Returns(new List<Territory> { new Territory { countryID = 1, territoryID = 1, territoryCode = "TR", territoryName = "Territory" } });
             mockGenericQuery.Setup(q => q.GetAll<Timezone>()).Returns(new List<Timezone> { new Timezone { timezoneID = 1, timezoneCode = "TZ", timezoneName = "Time Zone" } });
             mockGenericQuery.Setup(q => q.GetAll<Agency>()).Returns(new List<Agency>());
+            mockGenericQuery.Setup(q => q.GetAll<Currency>()).Returns(new List<Currency>());
+            mockGenericQuery.Setup(r => r.GetAll<LocaleSubType>()).Returns(new List<LocaleSubType>
+            {
+                new LocaleSubType
+                    {localeSubTypeID = 1, localeTypeID = 5, localSubTypeCode = "HS", localeSubTypeDesc = "Hospitality"}
+            }); 
 
             controller = new StoreController(mockLogger.Object, mockGetLocalesQuery.Object, mockGetLocalesByChainQuery.Object, mockGenericQuery.Object, mockUpdateLocaleManager.Object, mockUpdatVenueManager.Object, mockAddLocaleManager.Object);
             controller.ControllerContext = mockContext.Object;
@@ -59,8 +64,10 @@ namespace Icon.Web.Tests.Unit.Controllers
             // Given.
 
             List<Locale> fakeLocale = TestHelpers.GetFakeLocale();
-
+            mockGetLocalesByChainQuery.Setup(r => r.Search(It.IsAny<GetLocalesByChainParameters>()))
+                .Returns(fakeLocale.ToList());
             mockGetLocalesQuery.Setup(r => r.Search(It.IsAny<GetLocaleParameters>())).Returns(fakeLocale.ToList());
+            
             
             // When.
             ViewResult result = controller.Index() as ViewResult;

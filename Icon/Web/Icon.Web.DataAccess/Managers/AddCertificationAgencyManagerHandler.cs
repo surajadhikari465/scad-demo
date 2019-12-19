@@ -12,18 +12,21 @@ namespace Icon.Web.DataAccess.Managers
     {
         private IconContext context;
         private ICommandHandler<AddCertificationAgencyCommand> AddCertificationAgencyCommandHandler;
+        private IMapper mapper;
 
         public AddCertificationAgencyManagerHandler(
             IconContext context,
-            ICommandHandler<AddCertificationAgencyCommand> AddCertificationAgencyCommandHandler)
+            ICommandHandler<AddCertificationAgencyCommand> AddCertificationAgencyCommandHandler,
+            IMapper mapper)
         {
             this.context = context;
             this.AddCertificationAgencyCommandHandler = AddCertificationAgencyCommandHandler;
+            this.mapper = mapper;
         }
 
         public void Execute(AddCertificationAgencyManager data)
         {            
-            AddCertificationAgencyCommand addCertificationAgencyCommand = Mapper.Map<AddCertificationAgencyCommand>(data);
+            AddCertificationAgencyCommand addCertificationAgencyCommand = mapper.Map<AddCertificationAgencyCommand>(data);
             
             try
             {

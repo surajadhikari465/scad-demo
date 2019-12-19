@@ -1,0 +1,67 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="/Scripts/angular/angular.min.js"></script>
+<script src="/Scripts/promiseTracker.js"></script>
+<script src="/Scripts/angular/angular-animate.min.js"></script>
+<script src="/Scripts/angular/angular-route.min.js"></script>
+<script src="/Scripts/angAdmin.js"></script>
+
+
+<style>
+    #userInfo table td {
+        padding-left: 10px;
+    }
+
+    #userInfo table thead tr td {
+        font-weight: bold;
+        padding-top: 4px;
+        padding-bottom: 4px;
+    }
+
+    #userInfo table {
+        font-family: monospace;
+        font-size: 12px;
+        
+    }
+
+    
+</style>
+
+<div class="row" id="storeUpdater" ng-app="adminApp" ng-controller="userManagementCtrl" style='font-family: tahoma'>
+    <h3>User Administration</h3>
+
+    Search by Username: <input id="txtUserSearch" type="text" />
+    <button id="btnUserSearch" ng-click="getUserInfo()">search</button>
+    <br />
+    <br />
+    <div id="userInfo" ng-show="matchedUsers!=null">
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th style="width: 200px">Last Login</th>
+                    <th>Region</th>
+                    <th>Store</th>
+                    <th>Region Override</th>
+                    <th>Store Override</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in matchedUsers">
+                    <td>{{user.Username}}</td>
+                    <td nowrap>{{user.LastLogin}}</td>
+                    <td style="width: 75px; text-align: center;">{{user.Region}}</td>
+                    <td style="width: 75px; text-align: center;">{{user.Store}}</td>
+                    <td style="width: 75px; text-align: center;"><input maxlength="2" id="ro{{user.UniqueId}}" style="width: 125px;" type="text" ng-model="user.RegionOverride" /></td>
+                    <td style="width: 75px; text-align: center;"><input maxlength="3" id="so{{user.UniqueId}}" style="width: 125px;" type="text" ng-model="user.StoreOverride" /></td>
+                    <td><button ng-click="saveOverride(user.Username, user.UniqueId)" >save</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

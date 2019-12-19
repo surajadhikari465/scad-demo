@@ -108,7 +108,7 @@ namespace Icon.Web.Tests.Common.Builders
                 }
                 if (item == null) 
                 { 
-                    itemTrait.Item = context.Item.FirstOrDefault(i => i.itemID == itemId); 
+                    itemTrait.Item = context.Item.FirstOrDefault(i => i.ItemId == itemId); 
                 }
                 if (locale == null) 
                 {
@@ -123,7 +123,7 @@ namespace Icon.Web.Tests.Common.Builders
             //Assign the foreign keys of the ItemTrait to the primary keys of the navigational properties
             if (item != null)
             {
-                itemTrait.itemID = item.itemID;
+                itemTrait.itemID = item.ItemId;
             }
             if (locale != null)
             {

@@ -226,6 +226,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\BootstrapAlertHelper.cs" />
+    <Compile Include="Helpers\ScheduledJobHelpers.cs" />
     <Compile Include="Helpers\SelectListHelper.cs" />
     <Compile Include="Helpers\TextAreaHelper.cs" />
     <Compile Include="Helpers\ValidationHelper.cs" />
@@ -295,6 +296,9 @@
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Images\paper-icon.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\sort_asc.png" />
     <Content Include="Images\sort_asc_disabled.png" />
     <Content Include="Images\sort_both.png" />

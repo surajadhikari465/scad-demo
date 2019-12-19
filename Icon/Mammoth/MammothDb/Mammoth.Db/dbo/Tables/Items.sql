@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[Items] (
     [ItemID]						INT            NOT NULL,
     [ItemTypeID]					INT            NULL,
-    [ScanCode]						NVARCHAR (13)  NULL,
+    [ScanCode]						NVARCHAR (13)  NOT NULL,
     [HierarchyMerchandiseID]		INT            NULL,
     [HierarchyNationalClassID]		INT            NULL,
     [BrandHCID]						INT            NULL,
@@ -13,7 +13,7 @@
     [RetailSize]					NVARCHAR (255) NULL,
     [RetailUOM]						NVARCHAR (255) NULL,
     [FoodStampEligible]				BIT            NULL,
-	[Desc_CustomerFriendly]			NVARCHAR(255)  NULL,
+    [Desc_CustomerFriendly]			NVARCHAR(255)  NULL,
     [AddedDate]						DATETIME       DEFAULT (getdate()) NOT NULL,
     [ModifiedDate]					DATETIME       NULL,
 	[ProhibitDiscount]				BIT			   NULL,
@@ -22,7 +22,7 @@
 );
 GO
 
-CREATE NONCLUSTERED INDEX IX_Items_ScanCode
+CREATE UNIQUE NONCLUSTERED INDEX IX_Items_ScanCode
 	ON dbo.Items (ScanCode ASC)
 	INCLUDE (ItemID, Desc_Product, PackageUnit, RetailSize, RetailUOM, FoodStampEligible, BrandHCID, PSNumber)
 

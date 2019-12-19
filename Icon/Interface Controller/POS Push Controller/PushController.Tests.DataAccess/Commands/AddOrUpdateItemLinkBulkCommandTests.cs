@@ -75,16 +75,16 @@ namespace PushController.Tests.DataAccess.Commands
             this.testItemLinks = new List<ItemLink>
             {
                 new TestItemLinkBuilder()
-                    .WithParentItemId(this.testLinkedItems[0].itemID)
-                    .WithChildItemId(this.testItems[0].itemID)
+                    .WithParentItemId(this.testLinkedItems[0].ItemId)
+                    .WithChildItemId(this.testItems[0].ItemId)
                     .WithLocaleId(this.testLocale.localeID),
                 new TestItemLinkBuilder()
-                    .WithParentItemId(this.testLinkedItems[0].itemID)
-                    .WithChildItemId(this.testItems[1].itemID)
+                    .WithParentItemId(this.testLinkedItems[0].ItemId)
+                    .WithChildItemId(this.testItems[1].ItemId)
                     .WithLocaleId(this.testLocale.localeID),
                 new TestItemLinkBuilder()
-                    .WithParentItemId(this.testLinkedItems[0].itemID)
-                    .WithChildItemId(this.testItems[2].itemID)
+                    .WithParentItemId(this.testLinkedItems[0].ItemId)
+                    .WithChildItemId(this.testItems[2].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
             };
 
@@ -101,16 +101,16 @@ namespace PushController.Tests.DataAccess.Commands
             this.testItemLinks = new List<ItemLink>
             {
                 new TestItemLinkBuilder()
-                    .WithParentItemId(testLinkedItems[0].itemID)
-                    .WithChildItemId(testItems[0].itemID)
+                    .WithParentItemId(testLinkedItems[0].ItemId)
+                    .WithChildItemId(testItems[0].ItemId)
                     .WithLocaleId(testLocale.localeID),
                 new TestItemLinkBuilder()
-                    .WithParentItemId(testLinkedItems[0].itemID)
-                    .WithChildItemId(testItems[1].itemID)
+                    .WithParentItemId(testLinkedItems[0].ItemId)
+                    .WithChildItemId(testItems[1].ItemId)
                     .WithLocaleId(testLocale.localeID),
                 new TestItemLinkBuilder()
-                    .WithParentItemId(testLinkedItems[0].itemID)
-                    .WithChildItemId(testItems[2].itemID)
+                    .WithParentItemId(testLinkedItems[0].ItemId)
+                    .WithChildItemId(testItems[2].ItemId)
                     .WithLocaleId(testLocale.localeID)
             };
 
@@ -140,7 +140,7 @@ namespace PushController.Tests.DataAccess.Commands
                     il.childItemID == testItemId2 && il.localeID == testLocale.localeID)
             };
 
-            int newLinkedItemId = testLinkedItems[0].itemID;
+            int newLinkedItemId = testLinkedItems[0].ItemId;
             bool newItemLinksMatch = newItemLinks.TrueForAll(il => il.parentItemID == newLinkedItemId);
 
             Assert.IsTrue(newItemLinksMatch);
@@ -153,9 +153,9 @@ namespace PushController.Tests.DataAccess.Commands
             SetupTestData();
             SetupExistingItemLink();
 
-            testItemLinks[0].parentItemID = testLinkedItems[1].itemID;
-            testItemLinks[1].parentItemID = testLinkedItems[1].itemID;
-            testItemLinks[2].parentItemID = testLinkedItems[1].itemID;
+            testItemLinks[0].parentItemID = testLinkedItems[1].ItemId;
+            testItemLinks[1].parentItemID = testLinkedItems[1].ItemId;
+            testItemLinks[2].parentItemID = testLinkedItems[1].ItemId;
 
             var command = new AddOrUpdateItemLinkBulkCommand
             {
@@ -182,7 +182,7 @@ namespace PushController.Tests.DataAccess.Commands
                     il.childItemID == testItemId2 && il.localeID == testLocale.localeID)
             };
 
-            int newLinkedItemId = testLinkedItems[1].itemID;
+            int newLinkedItemId = testLinkedItems[1].ItemId;
             bool updatedItemLinksMatch = updatedItemLinks.TrueForAll(il => il.parentItemID == newLinkedItemId);
 
             Assert.IsTrue(updatedItemLinksMatch);

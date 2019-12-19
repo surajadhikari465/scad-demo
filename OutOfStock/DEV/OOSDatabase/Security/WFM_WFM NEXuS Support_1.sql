@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [WFM\WFM NEXuS Support]
+    FROM WINDOWS WITH DEFAULT_LANGUAGE = [us_english];
+

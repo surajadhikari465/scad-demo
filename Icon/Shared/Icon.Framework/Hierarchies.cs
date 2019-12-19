@@ -19,6 +19,7 @@ namespace Icon.Framework
         public const int Financial = 5;
         public const int National = 6;
         public const int CertificationAgencyManagement = 7;
+        public const int Manufacturer = 8;
 
 		private static Dictionary<string, int> descriptionToIdDictionary = new Dictionary<string, int>
 			{
@@ -28,7 +29,8 @@ namespace Icon.Framework
 				{ "Browsing", 4 },
 				{ "Financial", 5 },
 				{ "National", 6 },
-				{ "Certification Agency Management", 7 }
+				{ "Certification Agency Management", 7 },
+				{ "Manufacturer", 8 }
 			};
 		public static Dictionary<string, int> Ids { get { return descriptionToIdDictionary; } }
 
@@ -41,6 +43,7 @@ namespace Icon.Framework
 			public const string Financial = "Financial";
 			public const string National = "National";
 			public const string CertificationAgencyManagement = "Certification Agency Management";
+			public const string Manufacturer = "Manufacturer";
 
 			private static string[] descriptions = new string[]
 				{
@@ -50,7 +53,8 @@ namespace Icon.Framework
 					"Browsing",
 					"Financial",
 					"National",
-					"Certification Agency Management"
+					"Certification Agency Management",
+					"Manufacturer"
 				};
 			public static string[] AsArray { get { return descriptions; } }
 
@@ -62,7 +66,8 @@ namespace Icon.Framework
 				{ 4, "Browsing" },
 				{ 5, "Financial" },
 				{ 6, "National" },
-				{ 7, "Certification Agency Management" }
+				{ 7, "Certification Agency Management" },
+				{ 8, "Manufacturer" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}

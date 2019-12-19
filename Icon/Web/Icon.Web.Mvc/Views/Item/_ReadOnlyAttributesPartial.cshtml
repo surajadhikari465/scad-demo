@@ -1,0 +1,14 @@
+﻿@model Dictionary<string,string>
+@using Icon.Common;
+
+
+<div class="read-only-container">
+    <div class="read-only-attribute">
+        <span class="read-only-attribute-label"><span class="badge badge-info">Created on @DateTime.Parse(Model[Constants.Attributes.CreatedDateTimeUtc]).ToString("g") by @Model[Constants.Attributes.CreatedBy]</span></span>
+        <span class="read-only-attribute-value"></span>
+    </div>
+    <div class="read-only-attribute">
+        <span class="read-only-attribute-label"><span class="badge badge-info">Modified on @DateTime.Parse(Model[Constants.Attributes.ModifiedDateTimeUtc]).ToString("g") by @Model[Constants.Attributes.ModifiedBy]</span></span>
+        <span class="read-only-attribute-value"></span>
+    </div>
+</div>

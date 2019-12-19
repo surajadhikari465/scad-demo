@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Icon.Web.DataAccess.Models;
+﻿using Icon.Web.DataAccess.Models;
 using Icon.Framework;
 
 namespace Icon.Web.Tests.Common.Builders

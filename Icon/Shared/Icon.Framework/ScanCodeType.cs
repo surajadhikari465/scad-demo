@@ -16,14 +16,14 @@ namespace Icon.Framework
     {
         public ScanCodeType()
         {
-            this.ScanCode = new HashSet<ScanCode>();
             this.PLURequest = new HashSet<PLURequest>();
+            this.ScanCode = new HashSet<ScanCode>();
         }
     
         public int scanCodeTypeID { get; set; }
         public string scanCodeTypeDesc { get; set; }
     
-        public virtual ICollection<ScanCode> ScanCode { get; set; }
         public virtual ICollection<PLURequest> PLURequest { get; set; }
+        public virtual ICollection<ScanCode> ScanCode { get; set; }
     }
 }

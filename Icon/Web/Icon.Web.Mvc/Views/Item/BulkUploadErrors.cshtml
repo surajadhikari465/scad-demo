@@ -1,0 +1,38 @@
+﻿
+@model Icon.Web.DataAccess.Models.BulkUploadStatusModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ var Id = Model.BulkItemUploadId; }
+
+
+@Html.ActionLink("<- back", "BulkUpload", "Item")
+
+@if (Id != null)
+{
+    <h4>Errors for  @Model.FileName</h4>
+    <h6>Uploaded by: @Model.UploadedBy On: @Model.FileUploadTime</h6>
+    <br/>
+    if (!string.IsNullOrWhiteSpace(Model.Message))
+    {
+        <h5>Spreadsheet Error: @Model.Message</h5>
+    }
+    <br/>
+    <div id="errorsGrid">
+
+    </div>
+}
+else
+{
+    <h3>Invalid Bulk Upload Id</h3>
+
+}
+
+@Scripts.Render("~/Scripts/Item/bulkuploaderrors.js")
+@if (Id != null)
+{
+    <script>
+        BulkUploadErrorsFunctions.init(@Id);
+    </script>
+}

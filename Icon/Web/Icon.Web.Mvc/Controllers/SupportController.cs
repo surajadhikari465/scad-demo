@@ -90,7 +90,6 @@ namespace Icon.Web.Controllers
                 HierarchyLevelName = HierarchyClassAccessor.GetHierarchyLevelName(hierarchyClass),
                 TaxAbbreviation = HierarchyClassAccessor.GetTaxAbbreviation(hierarchyClass),
                 TaxRomance = HierarchyClassAccessor.GetTaxRomance(hierarchyClass),
-                GlAccount = HierarchyClassAccessor.GetGlAccount(hierarchyClass),
                 SubTeam = HierarchyClassAccessor.GetSubTeam(hierarchyClass),
                 NonMerchandiseTrait = HierarchyClassAccessor.GetNonMerchandiseTrait(hierarchyClass)
             };

@@ -197,6 +197,7 @@
     <Compile Include="Controllers\RegenerateEventsControllerTest.cs" />
     <Compile Include="EsbProducerFactory\PriceRefreshEsbProducerFactoryTests.cs" />
     <Compile Include="Helpers\ItemPriceTypes.cs" />
+    <Compile Include="Helpers\ScheduledJobHelpersTests.cs" />
     <Compile Include="Helpers\TextAreaHelperTests.cs" />
     <Compile Include="Helpers\SelectListHelperTest.cs" />
     <Compile Include="Helpers\ValidationHelperTest.cs" />

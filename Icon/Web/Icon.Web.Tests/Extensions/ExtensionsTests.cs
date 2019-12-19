@@ -1,13 +1,10 @@
 ﻿using Icon.Web.Common.Utility;
 using Icon.Web.DataAccess.Infrastructure;
-using Icon.Web.Extensions;
+using Icon.Web.Mvc.Extensions;
 using Icon.Web.Mvc.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Unit.Extensions
 {
@@ -86,8 +83,8 @@ namespace Icon.Web.Tests.Unit.Extensions
             Assert.AreEqual(result.DryAged, viewModel.ItemSignAttributes.SelectedDryAgedOption);
             Assert.AreEqual(result.AirChilled, viewModel.ItemSignAttributes.SelectedAirChilledOption);
             Assert.AreEqual(result.MadeInHouse, viewModel.ItemSignAttributes.SelectedMadeInHouseOption);
-            Assert.AreEqual(result.CreatedDate, Icon.Web.Extensions.Extensions.ConvertDateFormat(viewModel.CreatedDate));
-            Assert.AreEqual(result.LastModifiedDate, Icon.Web.Extensions.Extensions.ConvertDateFormat(viewModel.LastModifiedDate));
+            Assert.AreEqual(result.CreatedDate, Icon.Web.Mvc.Extensions.Extensions.ConvertDateFormat(viewModel.CreatedDate));
+            Assert.AreEqual(result.LastModifiedDate, Icon.Web.Mvc.Extensions.Extensions.ConvertDateFormat(viewModel.LastModifiedDate));
             Assert.AreEqual(result.LastModifiedUser, viewModel.LastModifiedUser);
             Assert.AreEqual(result.PageIndex, viewModel.Page);
             Assert.AreEqual(result.PageSize, 10);
@@ -179,8 +176,8 @@ namespace Icon.Web.Tests.Unit.Extensions
             Assert.AreEqual(result.DryAged, viewModel.ItemSignAttributes.SelectedDryAgedOption);
             Assert.AreEqual(result.AirChilled, viewModel.ItemSignAttributes.SelectedAirChilledOption);
             Assert.AreEqual(result.MadeInHouse, viewModel.ItemSignAttributes.SelectedMadeInHouseOption);
-            Assert.AreEqual(result.CreatedDate, Icon.Web.Extensions.Extensions.ConvertDateFormat(viewModel.CreatedDate));
-            Assert.AreEqual(result.LastModifiedDate, Icon.Web.Extensions.Extensions.ConvertDateFormat(viewModel.LastModifiedDate));
+            Assert.AreEqual(result.CreatedDate, Icon.Web.Mvc.Extensions.Extensions.ConvertDateFormat(viewModel.CreatedDate));
+            Assert.AreEqual(result.LastModifiedDate, Icon.Web.Mvc.Extensions.Extensions.ConvertDateFormat(viewModel.LastModifiedDate));
             Assert.AreEqual(result.LastModifiedUser, viewModel.LastModifiedUser);
             Assert.AreEqual(result.PageIndex, viewModel.Page);
             Assert.AreEqual(result.PageSize, 20);

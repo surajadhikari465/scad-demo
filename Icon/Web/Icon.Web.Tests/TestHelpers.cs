@@ -31,7 +31,8 @@ namespace Icon.Web.Tests
                 ownerOrgPartyID = 1,
                 localeOpenDate = Convert.ToDateTime("1980-09-20"),
                 localeCloseDate = null,
-                LocaleType = new LocaleType()
+                LocaleType = new LocaleType(),
+                
             };
 
             Locale localeRegion = new Locale()
@@ -298,7 +299,8 @@ namespace Icon.Web.Tests
                 MakeTrait(Traits.InsertDate, TraitCodes.InsertDate, new DateTime(2014, 4, 24, 18, 30, 30).ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture)),
                 MakeTrait(Traits.ModifiedUser, TraitCodes.ModifiedUser, "test person"),
                 MakeTrait(Traits.VenueCode, TraitCodes.VenueCode, "Test Venue Code"),
-                MakeTrait(Traits.VenueOccupant, TraitCodes.VenueOccupant, "Test Venue Occupant")
+                MakeTrait(Traits.VenueOccupant, TraitCodes.VenueOccupant, "Test Venue Occupant"),
+                MakeTrait(Traits.TouchpointGroupId, TraitCodes.TouchpointGroupId, "Test TouchpointGroupId")
             };
             return localeTraits;
         }

@@ -1,7 +1,6 @@
 ﻿using Icon.Testing.Builders;
 using Icon.Framework;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Data.Entity;

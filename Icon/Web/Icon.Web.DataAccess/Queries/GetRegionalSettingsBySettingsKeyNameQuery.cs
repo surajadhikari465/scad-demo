@@ -1,15 +1,10 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Logging;
-using Icon.Web.Common;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Models;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Reflection;
 
 namespace Icon.Web.DataAccess.Queries
 {

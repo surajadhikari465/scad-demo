@@ -1,5 +1,4 @@
-﻿@using Infragistics.Web.Mvc
-@model Icon.Web.Mvc.Models.EwicMappingDetailViewModel
+﻿@model Icon.Web.Mvc.Models.EwicMappingDetailViewModel
 
 @{
     ViewBag.Title = "Mapping Detail";
@@ -10,8 +9,8 @@
 
 <hr />
 
-<div class="page-section row">
-    @using (Html.BeginForm("AddMapping", "Ewic", FormMethod.Post, new { @class = "begin-form col-md-6" }))
+<div class="page-section">
+    @using (Html.BeginForm("AddMapping", "Ewic", FormMethod.Post, new { @class = "begin-form" }))
     {
         @Html.HiddenFor(model => model.AplScanCode)
         
@@ -21,13 +20,13 @@
                 <div class="form-group">
                     @Html.TextBoxFor(model => Model.NewMapping, null, new { @class = "form-control", @id = "newExclusion" })
                 </div>
-                <input type="submit" value="Add Mapping" class="btn btn-default" id="addButton" />
+                <input type="submit" value="Add Mapping" class="btn btn-light inline-submit-button" id="addButton" />
                 @Html.ValidationMessageFor(model => model.NewMapping, null, new { @class = "form-property-val" })
             </div>
         </fieldset>
     }
 
-    @using (Html.BeginForm("RemoveMapping", "Ewic", FormMethod.Post, new { @class = "begin-form col-md-6" }))
+    @using (Html.BeginForm("RemoveMapping", "Ewic", FormMethod.Post, new { @class = "begin-form" }))
     {
         @Html.HiddenFor(model => model.AplScanCode)
         
@@ -37,7 +36,7 @@
                 <div class="form-group">
                     @Html.DropDownListFor(model => Model.RemovableMappedWfmScanCodesSelectedId, Model.RemovableMappedWfmScanCodes, "--Select Mapping--", new { @class = "form-control" })
                 </div>
-                <input type="submit" value="Remove Mapping" class="btn btn-default" id="removeButton" />
+                <input type="submit" value="Remove Mapping" class="btn btn-light inline-submit-button" id="removeButton" />
                 @Html.ValidationMessageFor(model => model.RemovableMappedWfmScanCodesSelectedId, null, new { @class = "form-property-val" })
             </div>
         </fieldset>

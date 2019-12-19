@@ -1,22 +1,369 @@
-﻿@using Icon.Framework;
+﻿@using Infragistics.Web.Mvc
+@using IconResources = Icon.Web.Mvc.Resources
+@model Icon.Web.Mvc.Models.LocaleGridViewModel
+
 @{
-    ViewBag.Title = "Stores";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Stores";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+<div id="searchResults" class="page-subsection">
+	@if (Model.ChainLocale.Locales.Count() > 0)
+	{
+		@(Html.Infragistics().Grid(Model.ChainLocale.Locales.AsQueryable())
+					.ID("storeGrid")
+					.LoadOnDemand(false)
+					.AutoGenerateColumns(false)
+					.AutoGenerateLayouts(false)
+					.Width("100%")
+					.InitialExpandDepth(0)
+					.Columns(column =>
+					{
+						column.For(x => x.LocaleName).HeaderText("Organization").Width("50%");
+						column.For(x => x.OpenDate).HeaderText("Open Date").Width("30%");
+						column.For(x => x.LocaleId).Hidden(true);
+						column.For(x => x.ParentLocaleId).Hidden(true);
+					})
+					.ColumnLayouts(regionLayouts =>
+					{
+						regionLayouts.For(x => x.Locales)
+							.PrimaryKey("LocaleId")
+							.ForeignKey("ParentLocaleId")
+							.AutoGenerateColumns(false)
+							.AutoGenerateLayouts(false)
+							.RenderCheckboxes(true)
+							.Columns(column =>
+							{
+								column.For(x => x.LocaleName).HeaderText("Region").Width("30%");
+								column.For(x => x.RegionAbbreviation).HeaderText("Abbreviation").Width("10%");
+								column.For(x => x.OpenDate).HeaderText("Open Date").DataType("date").Width("20%");
+								column.For(x => x.CloseDate).HeaderText("Close Date").DataType("date").Width("20%");
+								column.For(x => x.LocaleId).Hidden(true);
+								column.For(x => x.ParentLocaleId).Hidden(true);
+								column.For(x => x.OwnerOrgPartyId).Hidden(true);
+								column.For(x => x.LocaleTypeDesc).Hidden(true);
+								column.For(x => x.LocaleTypeId).Hidden(true);
+								column.For(x => x.ChildLocaleTypeCode).Hidden(true);
+							})  // Columns (Region)
+							.ColumnLayouts(metroLayouts =>
+							{
+								metroLayouts.For(x => x.Locales)
+									.PrimaryKey("LocaleId")
+									.ForeignKey("ParentLocaleId")
+									.AutoGenerateColumns(false)
+									.AutoGenerateLayouts(false)
+									.RenderCheckboxes(true)
+									.Columns(column =>
+									{
+										column.For(x => x.LocaleName).HeaderText("Metro").Width("40%");
+										column.For(x => x.OpenDate).HeaderText("Open Date").DataType("date").Width("20%");
+										column.For(x => x.CloseDate).HeaderText("Close Date").DataType("date").Width("20%");
+										column.For(x => x.LocaleAddLink).HeaderText("Administration").Width("10%").Format("ReadOnly");
+										column.For(x => x.LocaleId).Hidden(true);
+										column.For(x => x.ParentLocaleId).Hidden(true);
+										column.For(x => x.OwnerOrgPartyId).Hidden(true);
+										column.For(x => x.LocaleTypeDesc).Hidden(true);
+										column.For(x => x.LocaleTypeId).Hidden(true);
+										column.For(x => x.ChildLocaleTypeCode).Hidden(true);
+									})  // Columns (Metro)
 
-@using (Html.BeginForm("Search", "Store", FormMethod.Post))
+									.ColumnLayouts(storeLayouts =>
+									{
+										storeLayouts.For(x => x.Locales)
+											.PrimaryKey("LocaleId")
+											.ForeignKey("ParentLocaleId")
+											.AutoGenerateColumns(false)
+											.AutoGenerateLayouts(false)
+											.RenderCheckboxes(true)
+											.Columns(column =>
+											{
+												column.For(x => x.LocaleAddLink).HeaderText("Administration").Width("20%").Format("ReadOnly");
+												column.For(x => x.LocaleName).HeaderText("Store").Width("10%");
+												column.For(x => x.StoreAbbreviation).HeaderText("Abbr").Width("4%");
+												column.For(x => x.BusinessUnitId).HeaderText("Business Unit").DataType("string").Width("4%");
+												column.For(x => x.OpenDate).HeaderText("Open Date").DataType("date").Width("5%");
+												column.For(x => x.CloseDate).HeaderText("Close Date").DataType("date").Width("3%");
+												column.For(x => x.AddressLine1).HeaderText("Address Line 1").DataType("string").Width("14%");
+												column.For(x => x.AddressLine2).HeaderText("Address Line 2").DataType("string").Width("4%");
+												column.For(x => x.AddressLine3).HeaderText("Address Line 3").DataType("string").Width("4%");
+												column.For(x => x.City).HeaderText("City").Width("8%");
+												column.For(x => x.County).HeaderText("County").Width("6%");
+												column.For(x => x.TerritoryId).HeaderText("State/Province").Width("2%").FormatterFunction("lookupTerritoryCode");
+												column.For(x => x.PostalCode).HeaderText("Postal Code").Width("3%");
+												column.For(x => x.CountryId).HeaderText("Country").Width("4%").FormatterFunction("lookupCountryCode");
+												column.For(x => x.TimeZoneId).HeaderText("Time Zone").Width("4%").FormatterFunction("lookupTimeZoneCode");
+												column.For(x => x.CurrencyCode).HeaderText("Currency").Width("4%");
+												column.For(x => x.Latitude).HeaderText("Latitude").Width("3%");
+												column.For(x => x.Longitude).HeaderText("Longitude").Width("3%");
+												column.For(x => x.PhoneNumber).HeaderText("Phone Number").Width("3%");
+												column.For(x => x.Fax).HeaderText("Fax").Width("3%");
+												column.For(x => x.ContactPerson).HeaderText("Contact Person").Width("3%");
+												column.For(x => x.EwicAgencyId).HeaderText("eWIC Agency").Width("2%");
+												column.For(x => x.IrmaStoreId).HeaderText("IRMA Store Number").Width("2%");
+												column.For(x => x.StorePosType).HeaderText("POS Type").Width("2%");
+
+												column.For(x => x.Ident).HeaderText("Ident").Width("2%");
+                                                column.For(x => x.SodiumWarningRequired).HeaderText("SodiumWarningRequired").Width("2%");
+												column.For(x => x.LocalZone).HeaderText("Local Zone").Width("2%");
+												column.For(x => x.LiquorLicense).HeaderText("Liquor License").Width("3%");
+												column.For(x => x.PrimeMerchantID).HeaderText("Prime Merchant ID").Width("3%");
+												column.For(x => x.PrimeMerchantIDEncrypted).HeaderText("Prime Merchant ID Encrypted").Width("3%");
+
+												column.For(x => x.ChildLocaleTypeCode).Hidden(true);
+												column.For(x => x.LocaleId).Hidden(true);
+												column.For(x => x.ParentLocaleId).Hidden(true);
+												column.For(x => x.OwnerOrgPartyId).Hidden(true);
+												column.For(x => x.LocaleTypeDesc).Hidden(true);
+												column.For(x => x.LocaleTypeId).Hidden(true);
+												column.For(x => x.AddressID).Hidden(true);
+											})  // Columns (Store)
+											.Features(feature =>
+											{
+												feature.Resizing();
+												feature.Updating()
+												.EnableAddRow(false)
+												.ShowReadonlyEditors(false)
+												.EnableDeleteRow(false)
+												.StartEditTriggers(GridStartEditTriggers.DblClick)
+												.ColumnSettings(colSetting =>
+												{
+													colSetting.ColumnSetting().ColumnKey("LocaleAddLink").ReadOnly(true).TextEditorOptions(o => o.Width("0").Height("0"));
+													colSetting.ColumnSetting().ColumnKey("LocaleId").ReadOnly(true);
+													colSetting.ColumnSetting().ColumnKey("ParentLocaleId").ReadOnly(true);
+													colSetting.ColumnSetting().ColumnKey("LocaleName")
+														.Required(true)
+														.TextEditorOptions(option => option.MaxLength(255).Width("400"));
+													colSetting.ColumnSetting().ColumnKey("StoreAbbreviation")
+														.Required(true)
+														.Validation(true)
+														.EditorType(ColumnEditorType.Text)
+														.TextEditorOptions(option => option.Width("400")
+															.MaxLength(3)
+															.ValidatorOptions(vo => vo.Pattern("^[A-Z]{3}$").ErrorMessage(IconResources.Store.StoreAbbreviationValidationMessage)));
+													colSetting.ColumnSetting().ColumnKey("BusinessUnitId")
+														.Required(true)
+														.Validation(true)
+														.EditorType(ColumnEditorType.Numeric)
+														.NumericEditorOptions(o => o.MaxDecimals(0).MaxValue(99999).MinValue(10000).GroupSeparator(String.Empty).TextAlignment(TextEditorTextAlignment.Left).Width("400"));
+													colSetting.ColumnSetting().ColumnKey("OpenDate").EditorType(ColumnEditorType.DatePicker).TextEditorOptions(o => o.Width("400"));
+													colSetting.ColumnSetting().ColumnKey("CloseDate").EditorType(ColumnEditorType.DatePicker).TextEditorOptions(o => o.Width("400"));
+													colSetting.ColumnSetting().ColumnKey("AddressLine1")
+														.Required(true)
+														.Validation(true)
+														.TextEditorOptions(option => option.MaxLength(200).Width("400"));
+													colSetting.ColumnSetting().ColumnKey("AddressLine2")
+														.Validation(true)
+														.TextEditorOptions(option => option.MaxLength(200).Width("400"));
+													colSetting.ColumnSetting().ColumnKey("AddressLine3")
+														.Validation(true)
+														.TextEditorOptions(option => option.MaxLength(200).Width("400"));
+													colSetting.ColumnSetting().ColumnKey("City")
+														.Required(true)
+														.Validation(true)
+														.TextEditorOptions(option => option.MaxLength(50).Width("400"));
+													colSetting.ColumnSetting().ColumnKey("County")
+														.Required(true)
+														.Validation(true)
+														.TextEditorOptions(option => option.MaxLength(255).Width("400"));
+													colSetting.ColumnSetting().ColumnKey("PostalCode")
+														.Required(true)
+														.Validation(true)
+														.EditorType(ColumnEditorType.Text)
+														.TextEditorOptions(o => o.Width(400).MaxLength(15).ValidatorOptions(vo => vo.Pattern(@"^[\w ]+$").ErrorMessage(IconResources.Store.PostalCodeValidationMessage)));
+													colSetting.ColumnSetting().ColumnKey("Latitude")
+														.Validation(true)
+														.EditorType(ColumnEditorType.Text)
+														.TextEditorOptions(o => o.Width(400).MaxLength(10).ValidatorOptions(vo => vo.Pattern(@"^-?([1-8]?[0-9]\.\d{6}$|90\.0{6}$)").ErrorMessage(IconResources.Store.LatitudeValidationMessage)));
+													colSetting.ColumnSetting().ColumnKey("Longitude")
+														.Validation(true)
+														.EditorType(ColumnEditorType.Text)
+														.TextEditorOptions(o => o.Width(400).MaxLength(11).ValidatorOptions(vo => vo.Pattern(@"^-?((180\.[0]{6})|((1[0-7]\d)|\d?\d)\.[\d]{6}$)").ErrorMessage(IconResources.Store.LongitudeValidationMessage)));
+													colSetting.ColumnSetting().ColumnKey("PhoneNumber")
+														.Required(true)
+														.Validation(true)
+														.EditorType(ColumnEditorType.Text)
+														.TextEditorOptions(o => o.Width(400).ValidatorOptions(vo => vo.Pattern(@"(^([0-9]{3}-)[0-9]{3}-[0-9]{4}$)|^((\(?0\d{4}\)?\s?\d{3}\s?\d{3})|(\(?0\d{3}\)?\s?\d{3}\s?\d{4})|(\(?0\d{2}\)?\s?\d{4}\s?\d{4}))?$").ErrorMessage(IconResources.Store.PhoneNumberValidationMessage)));
+													colSetting.ColumnSetting().ColumnKey("ContactPerson")
+														.Validation(true)
+														.TextEditorOptions(option => option.MaxLength(40).Width("400"));
+													colSetting.ColumnSetting().ColumnKey("AddressID").ReadOnly(true);
+													colSetting.ColumnSetting().ColumnKey("TerritoryId")
+														.Required(true)
+														.EditorType(ColumnEditorType.Combo)
+														.ComboEditorOptions(territoryOptions =>
+															territoryOptions.DataSource(Model.Territories.AsQueryable())
+																.ValueKey("TerritoryId")
+																.TextKey("TerritoryCode")
+																.Width("400")
+																.AllowCustomValue(false)
+																.Virtualization(true));
+													colSetting.ColumnSetting().ColumnKey("CountryId")
+														.Required(true)
+														.EditorType(ColumnEditorType.Combo)
+														.ComboEditorOptions(countryOptions =>
+															countryOptions.DataSource(Model.Countries.AsQueryable())
+																.ValueKey("CountryId")
+																.TextKey("CountryCode")
+																.Width("400")
+																.AllowCustomValue(false)
+																.Virtualization(true));
+													colSetting.ColumnSetting().ColumnKey("TimeZoneId")
+														.Required(true)
+														.EditorType(ColumnEditorType.Combo)
+														.ComboEditorOptions(timeZoneOptions =>
+															timeZoneOptions.DataSource(Model.TimeZones.AsQueryable())
+																.ValueKey("TimeZoneId")
+																.TextKey("TimeZoneName")
+																.Width("400")
+																.AllowCustomValue(false)
+																.Virtualization(true));
+													colSetting.ColumnSetting().ColumnKey("EwicAgencyId")
+														.Required(false)
+														.EditorType(ColumnEditorType.Combo)
+														.ComboEditorOptions(eWicOptions =>
+															eWicOptions.DataSource(Model.EwicAgencies.AsQueryable())
+																.ValueKey("AgencyId")
+																.TextKey("AgencyId")
+																.Width("400")
+																.AllowCustomValue(false)
+																.Virtualization(true));
+													colSetting.ColumnSetting().ColumnKey("StorePosType")
+														.Required(false)
+														.EditorType(ColumnEditorType.Combo)
+														.ComboEditorOptions(posTypeOptions =>
+															posTypeOptions.DataSource(Model.StorePosTypes.AsQueryable())
+																.Width("400")
+																.AllowCustomValue(false)
+																.Virtualization(true));
+													colSetting.ColumnSetting().ColumnKey("PrimeMerchantID")
+														.Validation(true)
+														.EditorType(ColumnEditorType.Text)
+														.TextEditorOptions(o => o.Width(400).MaxLength(11).ValidatorOptions(vo => vo.Pattern(@"^[0-9]{11}$").ErrorMessage("Expecting numeric with 11 digits length.")));
+													colSetting.ColumnSetting().ColumnKey("PrimeMerchantIDEncrypted")
+														.Validation(true)
+														.EditorType(ColumnEditorType.Text)
+														.TextEditorOptions(o => o.Width(400).MaxLength(13).ValidatorOptions(vo => vo.Pattern(@"^[a-zA-Z0-9]{13}$").ErrorMessage("Expecting alpha-numeric with 13 characters length.")));
+													colSetting.ColumnSetting().ColumnKey("LocalZone")
+														.Validation(true)
+														.EditorType(ColumnEditorType.Text)
+														.TextEditorOptions(o => o.Width(400).MaxLength(35).ValidatorOptions(vo => vo.Pattern(@"^.{1,35}$").ErrorMessage("Expecting alpha-numeric up to 35 characters length.")));
+													colSetting.ColumnSetting().ColumnKey("LiquorLicense")
+														.Required(false)
+														.EditorType(ColumnEditorType.Combo)
+														.ComboEditorOptions(posTypeOptions =>
+															posTypeOptions.DataSource(Model.LiquorLicenseTypes.AsQueryable())
+																.Width("400")
+																.AllowCustomValue(false)
+																.Virtualization(true));
+													colSetting.ColumnSetting().ColumnKey("Fax")
+														.Validation(true)
+														.EditorType(ColumnEditorType.Text)
+														.TextEditorOptions(o => o.Width(400).ValidatorOptions(vo => vo.Pattern(@"(^([0-9]{3}-)[0-9]{3}-[0-9]{4}$)|^((\(?0\d{4}\)?\s?\d{3}\s?\d{3})|(\(?0\d{3}\)?\s?\d{3}\s?\d{4})|(\(?0\d{2}\)?\s?\d{4}\s?\d{4}))?$").ErrorMessage(IconResources.Store.FaxValidationMessage)));
+													colSetting.ColumnSetting().ColumnKey("IrmaStoreId")
+														.Validation(true)
+														.EditorType(ColumnEditorType.Text)
+														.EditorOptions(@"validatorOptions: {errorMessage: '" + IconResources.Store.IrmaStoreId + @"', regExp:/^$|^([0-9]){1,5}$/}");
+													colSetting.ColumnSetting().ColumnKey("CurrencyCode")
+														.ReadOnly(true)
+														.Required(false)
+														.EditorType(ColumnEditorType.Combo)
+														.ComboEditorOptions(currencyOptions =>
+															currencyOptions.DataSource(Model.Currencies.AsQueryable())
+																.ValueKey("CurrencyTypeCode")
+																.Width("400")
+																.AllowCustomValue(false)
+																.Virtualization(true));
+												}) // ColumnSettings (Store)
+												.EditMode(GridEditMode.Dialog)
+												.RowEditDialogOptions(r => r.Height("900")
+																			.Width("700")
+																			.NamesColumnWidth("240")
+																			.ShowReadonlyEditors(false))
+												.SaveChangesSuccessHandler("onSuccess")
+												.SaveChangesErrorHandler("onError");
+											})  // Features (Store)
+											.ColumnLayouts(venueLayouts =>
+											{
+												venueLayouts.For(x => x.Locales)
+															.PrimaryKey("LocaleId")
+															.ForeignKey("ParentLocaleId")
+															.AutoGenerateColumns(false)
+															.AutoGenerateLayouts(false)
+															.RenderCheckboxes(true)
+															.Columns(column =>
+															{
+																column.For(x => x.LocaleName).HeaderText("Venue").Width("15%");
+																column.For(x => x.LocaleSubTypeId).HeaderText("Sub Type").Width("15%").FormatterFunction("lookupSubtype");
+																column.For(x => x.VenueOccupant).HeaderText("Venue Occupant").Width("15%");
+																column.For(x => x.VenueCode).HeaderText("Venue Code").Width("15%");
+																column.For(x => x.OpenDate).HeaderText("Open Date").DataType("date").Width("15%");
+																column.For(x => x.CloseDate).HeaderText("Close Date").DataType("date").Width("15%");
+																column.For(x => x.TouchPointGroupId).HeaderText("TouchPoint Group Id").Width("15%");
+																column.For(x => x.ChildLocaleTypeCode).Hidden(true);
+																column.For(x => x.LocaleId).Hidden(true);
+																column.For(x => x.ParentLocaleId).Hidden(true);
+																column.For(x => x.OwnerOrgPartyId).Hidden(true);
+																column.For(x => x.LocaleTypeDesc).Hidden(true);
+																column.For(x => x.LocaleTypeId).Hidden(true);
+																column.For(x => x.AddressID).Hidden(true);
+															})  // Columns (Venue)
+															.Features(feature =>
+															{
+																feature.Resizing();
+																feature.Updating()
+																.EnableAddRow(false)
+																.EnableDeleteRow(false)
+																.StartEditTriggers(GridStartEditTriggers.DblClick)
+																.ColumnSettings(colSetting =>
+																{
+																	colSetting.ColumnSetting().ColumnKey("LocaleId").ReadOnly(true);
+																	colSetting.ColumnSetting().ColumnKey("ParentLocaleId").ReadOnly(true);
+																	colSetting.ColumnSetting().ColumnKey("LocaleName")
+																		.Required(true)
+																		.TextEditorOptions(o => o.Width("500"));
+																	colSetting.ColumnSetting().ColumnKey("OpenDate").EditorType(ColumnEditorType.DatePicker);
+																	colSetting.ColumnSetting().ColumnKey("CloseDate").EditorType(ColumnEditorType.DatePicker);
+																	colSetting.ColumnSetting().ColumnKey("LocaleSubTypeId")
+																		.Required(true)
+																		.EditorType(ColumnEditorType.Combo)
+																		.ComboEditorOptions(localeSubTypeOptions =>
+																			localeSubTypeOptions.DataSource(Model.LocaleSubTypes.AsQueryable())
+																				.ValueKey("LocaleSubTypeID")
+																				.TextKey("LocaleSubTypeDescription")
+																				.AllowCustomValue(false)
+																				.Virtualization(true));
+																})  // ColumnSettings (Venue Features)
+																.EditMode(GridEditMode.Row)
+																.RowEditDialogOptions(r => r.Height("900px")
+																							.Width("700px"))
+																.SaveChangesSuccessHandler("onSuccess")
+																.SaveChangesErrorHandler("onError");
+															}); // Features (Venue)
+											});  // ColumnLayouts (Venue)
+									});  // ColumnLayouts (Store)
+							});  // ColumnLayouts (Metro)
+
+					})  // ColumnLayouts (Region)
+			.UpdateUrl(Url.Action("SaveChanges"))
+			.PrimaryKey("LocaleId")
+			.ForeignKey("ParentLocaleId")
+			.DataBind()
+			.Render()
+		);
+
+		<input type="button" id="saveButton" class="btn btn-light form-submit" value="Save Changes" />
+
+		<div class="search-alert page-subsection"></div>
+	}
+	else
+	{
+		<h4>No store hierarchy data was found.</h4>
+	}
+</div>
+
+@section scripts
 {
-    <fieldset style="margin-top:30px;">
-        <legend>Select a Store Chain</legend>
-
-        <div style="margin-left:10px;">
-            @Html.DropDownList("ChainName", new SelectList( Locales.Names.List ))
-        </div>
-
-        <div style="margin-left:10px;">
-            <input type="submit" value="Search" class="btn btn-default form-submit" />
-        </div>
-    </fieldset>
+	@Scripts.Render("~/Scripts/Locale/store-view-edit.js")
+	@Scripts.Render("~/Scripts/Common/display-alert.js")
+	@Scripts.Render("~/Scripts/jquery-disable.js")
 }

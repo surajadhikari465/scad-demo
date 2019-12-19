@@ -25,6 +25,8 @@ namespace Icon.ApiController.Tests.QueueReaders
         private string testZipCode;
         private string testLocality;
         private string testBrandAbbreviation;
+        private string testParentCompany;
+        private string testArCustomerId;
 
         [TestInitialize]
         public void Initialize()
@@ -39,6 +41,8 @@ namespace Icon.ApiController.Tests.QueueReaders
             testDesignation = "TestDesignation"; ;
             testZipCode = "78745";
             testLocality = "TestLocality";
+            testParentCompany = "TestParentCompany";
+            testArCustomerId = "TestArCustomerId";
 
             queueReader = new HierarchyQueueReader(
                 mockLogger.Object,
@@ -219,12 +223,13 @@ namespace Icon.ApiController.Tests.QueueReaders
             fakeMessageQueueHierarchies.Designation = testDesignation;
             fakeMessageQueueHierarchies.ZipCode = testZipCode;
             fakeMessageQueueHierarchies.Locality = testLocality;
+            fakeMessageQueueHierarchies.ParentCompany = testParentCompany;
 
             // When.
             var miniBulk = queueReader.BuildMiniBulk(new List<MessageQueueHierarchy> { fakeMessageQueueHierarchies });
 
             // Then.
-            Assert.AreEqual(4, miniBulk.@class[0].traits.Length);
+            Assert.AreEqual(5, miniBulk.@class[0].traits.Length);
         }
 
         [TestMethod]
@@ -232,6 +237,36 @@ namespace Icon.ApiController.Tests.QueueReaders
         {
             // Given.
             var fakeMessageQueueHierarchies = TestHelpers.GetFakeMessageQueueHierarchy(2, "Brands", true);
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(new List<MessageQueueHierarchy> { fakeMessageQueueHierarchies });
+
+            // Then.
+            Assert.IsNull(miniBulk.@class[0].traits);
+        }
+
+        [TestMethod]
+        public void GetHierarchyMiniBulk_ManufacturerMessageWithTraits_ShouldReturnMiniBulkWithTraits()
+        {
+            // Given.
+            var fakeMessageQueueHierarchies = TestHelpers.GetFakeMessageQueueHierarchy(8, "Manufacturer", true);
+           
+            fakeMessageQueueHierarchies.ZipCode = testZipCode;
+            fakeMessageQueueHierarchies.ArCustomerId = testArCustomerId;
+       
+
+            // When.
+            var miniBulk = queueReader.BuildMiniBulk(new List<MessageQueueHierarchy> { fakeMessageQueueHierarchies });
+
+            // Then.
+            Assert.AreEqual(2, miniBulk.@class[0].traits.Length);
+        }
+
+        [TestMethod]
+        public void GetHierarchyMiniBulk_ManufacturerMessageWithNoTraitsSet_ShouldReturnMiniBulkWithNoTraits()
+        {
+            // Given.
+            var fakeMessageQueueHierarchies = TestHelpers.GetFakeMessageQueueHierarchy(8, "Manufacturer", true);
 
             // When.
             var miniBulk = queueReader.BuildMiniBulk(new List<MessageQueueHierarchy> { fakeMessageQueueHierarchies });

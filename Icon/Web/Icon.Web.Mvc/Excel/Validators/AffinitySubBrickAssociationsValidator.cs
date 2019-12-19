@@ -4,8 +4,6 @@ using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Excel.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System;
 
 namespace Icon.Web.Mvc.Excel.Validators
 {

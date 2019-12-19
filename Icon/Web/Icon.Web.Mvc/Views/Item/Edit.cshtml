@@ -1,27 +1,325 @@
-﻿@using Infragistics.Web.Mvc
-@model Icon.Web.Mvc.Models.ItemEditViewModel
-
+﻿@model Icon.Web.Mvc.Models.ItemEditViewModel
+@using Infragistics.Web.Mvc
 @{
-    ViewBag.Title = "Edit Item";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = Model.ItemViewModel.ScanCode + " Edit";
+    var itemViewModel = Model.ItemViewModel;
+}
+<style type="text/css">
+    input {
+        max-width: 1000px;
+    }
+    #btnSubmit {
+        max-width: 500px;
+    }
+</style>
+<h3>Item Edit</h3>
+
+<div class="page-section">
+    @Html.ActionLink("Back to Search", "Index")
+</div>
+
+<div class="page-section">
+    <div class="alert alert-success @(Model.Success ? "" : "d-none")" role="alert">
+        Item updated successfully
+    </div>
+    <div class="alert alert-danger alert-dismissible @(Model.Errors.Count > 0 ? "" : "d-none")" role="alert">
+        <ul>
+            @foreach (var error in Model.Errors)
+            {
+                <li>@error</li>
+            }
+        </ul>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    </div>
+
+    @Html.ActionLink("Infor History", "History", new { scanCode = Model.ItemViewModel.ScanCode }, new { @class = "infor-history-button", target = "_blank" })
+
+    @{Html.RenderPartial("_ReadOnlyAttributesPartial", Model.ItemViewModel.ItemAttributes);}
+
+    @{Html.RenderPartial("_ItemHistoryPartial", Model.ItemHistoryModel);}
+
+    @if (Model.ItemViewModel.Nutritions != null && Model.ItemViewModel.Nutritions.Any())
+    {
+        <br />
+        <br />
+        <div id="NutritionContainer">
+            <h5>Nutrition Details</h5>
+
+            <div id="ItemNutritionContainer">
+                <table class="nutrTable">
+                    @foreach (var itm in Model.ItemViewModel.Nutritions)
+                    {
+                        <tr>
+                            <td>@itm.Key</td>
+                            <td>@itm.Value</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    }
+
+</div>
+
+@using (Html.BeginForm("Edit", "Item", FormMethod.Post, new { @class = "begin-form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.ItemId)
+        @Html.TextBoxFor(m => m.ItemViewModel.ItemId, new { @readonly = "true", @class = "form-control form-input", @style = "width:500px;" })
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.ItemTypeDescription)
+        @Html.TextBoxFor(m => m.ItemViewModel.ItemTypeDescription, new { @readonly = "true", @class = "form-control form-input", @style = "width:500px;" })
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.ScanCode)
+        @Html.TextBoxFor(m => m.ItemViewModel.ScanCode, new { @readonly = "true", @class = "form-control form-input", @style = "width:500px;" })
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.BarcodeType)
+        @Html.TextBoxFor(m => m.ItemViewModel.BarcodeType, new { @readonly = "true", @class = "form-control form-input", @style = "width:500px;" })
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.MerchandiseHierarchyClassId)
+        <br />
+        @(Html.Infragistics()
+            .Combo()
+            .InputName("ItemViewModel.MerchandiseHierarchyClassId")
+            .DelayFilteringOnKeyUp(500)
+            .FilteringType(ComboFilteringType.Remote)
+            .ValueKey("HierarchyClassId")
+            .TextKey("HierarchyLineage")
+            .Width("1000px")
+            .DataSource("/HierarchyClass/ByHierarchyName?hierarchyName=Merchandise&initialSelection=" + itemViewModel.MerchandiseHierarchyClassId)
+            .SelectedValues(new List<int>() { itemViewModel.MerchandiseHierarchyClassId })
+            .ValidatorOptions(
+                options => options.Required(true))
+            .DataBind()
+            .Render())
+        <script>
+            $(function () {
+                $("#ItemViewModel_MerchandiseHierarchyClassId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
+            });
+        </script>
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.BrandsHierarchyClassId)
+        <br />
+        @(Html.Infragistics()
+            .Combo()
+            .InputName("ItemViewModel.BrandsHierarchyClassId")
+            .DelayFilteringOnKeyUp(500)
+            .FilteringType(ComboFilteringType.Remote)
+            .ValueKey("HierarchyClassId")
+            .TextKey("HierarchyLineage")
+            .Width("1000px")
+            .DataSource("/HierarchyClass/ByHierarchyName?hierarchyName=Brands&initialSelection=" + itemViewModel.BrandsHierarchyClassId)
+            .SelectedValues(new List<int>() { itemViewModel.BrandsHierarchyClassId })
+            .DataBind()
+            .ValidatorOptions(
+                options => options.Required(true))
+            .Render())
+        <script>
+            $(function () {
+                $("#ItemViewModel_BrandsHierarchyClassId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
+            });
+        </script>
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.TaxHierarchyClassId)
+        <br />
+        @(Html.Infragistics()
+            .Combo()
+            .InputName("ItemViewModel.TaxHierarchyClassId")
+            .DelayFilteringOnKeyUp(500)
+            .FilteringType(ComboFilteringType.Remote)
+            .ValueKey("HierarchyClassId")
+            .TextKey("HierarchyLineage")
+            .Width("1000px")
+            .DataSource("/HierarchyClass/ByHierarchyName?hierarchyName=Tax&initialSelection=" + itemViewModel.TaxHierarchyClassId)
+            .SelectedValues(new List<int>() { itemViewModel.TaxHierarchyClassId })
+            .ValidatorOptions(
+                options => options.Required(true))
+            .DataBind()
+            .Render())
+        <script>
+            $(function () {
+                $("#ItemViewModel_TaxHierarchyClassId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
+            });
+        </script>
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.NationalHierarchyClassId)
+        <br />
+        @(Html.Infragistics()
+            .Combo()
+            .InputName("ItemViewModel.NationalHierarchyClassId")
+            .DelayFilteringOnKeyUp(500)
+            .FilteringType(ComboFilteringType.Remote)
+            .ValueKey("HierarchyClassId")
+            .TextKey("HierarchyLineage")
+            .Width("1000px")
+            .DataSource("/HierarchyClass/ByHierarchyName?hierarchyName=National&initialSelection=" + itemViewModel.NationalHierarchyClassId)
+            .SelectedValues(new List<int>() { itemViewModel.NationalHierarchyClassId })
+            .DataBind()
+            .ValidatorOptions(
+                options => options.Required(true))
+            .Render())
+        <script>
+            $(function () {
+                $("#ItemViewModel_NationalHierarchyClassId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
+            });
+        </script>
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.ManufacturerHierarchyClassId)
+        <br />
+        @(Html.Infragistics()
+            .Combo()
+            .InputName("ItemViewModel.ManufacturerHierarchyClassId")
+            .DelayFilteringOnKeyUp(500)
+            .FilteringType(ComboFilteringType.Remote)
+            .ValueKey("HierarchyClassId")
+            .TextKey("HierarchyLineage")
+            .Width("1000px")
+            .DataSource("/HierarchyClass/ByHierarchyName?hierarchyName=Manufacturer&initialSelection=" + itemViewModel.ManufacturerHierarchyClassId.GetValueOrDefault())
+            .SelectedValues(new List<int>() { itemViewModel.ManufacturerHierarchyClassId.GetValueOrDefault() })
+            .DataBind()
+            .ValidatorOptions(options => options.Required(false))
+            .Render())
+        <script>
+            $(function () {
+                $("#ItemViewModel_ManufacturerHierarchyClassId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
+            });
+        </script>
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.FinancialHierarchyClassId)
+        @Html.TextBoxFor(m => m.ItemViewModel.FinancialHierarchyLineage, new { @readonly = "true", @class = "form-control form-input", @style = "width:500px;" })
+        @Html.HiddenFor(m => m.ItemViewModel.FinancialHierarchyClassId)
+    </div>
+
+    foreach (var attribute in Model.Attributes.OrderBy(a => a.DisplayOrder))
+    {
+        if (attribute.IsSystemAttribute)
+        {
+            continue;
+        }
+        <div class="item">
+            @Html.Label(attribute.AttributeName, attribute.DisplayName)
+            <br />
+            @if (attribute.IsPickList)
+            {
+                var selectedValue = itemViewModel.ItemAttributes.ContainsKey(attribute.AttributeName) ? itemViewModel.ItemAttributes[attribute.AttributeName] : "";
+
+                @(Html.Infragistics()
+                    .Combo()
+                    .FilteringType(ComboFilteringType.Local)
+                    .InputName("ItemViewModel.ItemAttributes[" + attribute.AttributeName + "]")
+                    .ValueKey("PickListValue")
+                    .TextKey("PickListValue")
+                    .DataSource(attribute.PickListData)
+                    .SelectedValues(new List<string>() { selectedValue })
+                    .ValidatorOptions(
+                        options => options.Required(attribute.IsRequired))
+                    .DataBind()
+                    .Render());
+            }
+            else if (attribute.DataTypeName.ToUpper().Equals("TEXT"))
+            {
+                var textEditor = Html.Infragistics()
+                    .TextEditor()
+                    .InputName("ItemViewModel.ItemAttributes[" + attribute.AttributeName + "]")
+                    .Value(itemViewModel.ItemAttributes.ContainsKey(attribute.AttributeName) ? itemViewModel.ItemAttributes[attribute.AttributeName].ToString() : "")
+                    .HtmlAttributes(new Dictionary<string, object> { { "class", "form-control form-input" } })
+                    .ValidatorOptions(
+                        options => options.Required(attribute.IsRequired)
+                            .Pattern(attribute.CharacterSetRegexPattern))
+                    .ReadOnly(attribute.IsReadOnly);
+
+                if (attribute.MaxLengthAllowed.HasValue)
+                {
+                    textEditor.MaxLength(attribute.MaxLengthAllowed.Value);
+                }
+
+                @(textEditor.Render())
+            }
+            else if (attribute.DataTypeName.ToUpper().Equals("NUMBER"))
+            {
+                @(Html.Infragistics()
+                    .TextEditor()
+                    .InputName("ItemViewModel.ItemAttributes[" + attribute.AttributeName + "]")
+                    .Value(itemViewModel.ItemAttributes.ContainsKey(attribute.AttributeName) ? itemViewModel.ItemAttributes[attribute.AttributeName].ToString() : "")
+                    .HtmlAttributes(new Dictionary<string, object>
+                        {
+                            { "class", "form-control form-input" },
+                            { "data-number-of-decimals", attribute.NumberOfDecimals },
+                        })
+                    .ValidatorOptions(options => options.Required(attribute.IsRequired)
+                        .Number(true)
+                        .ValueRange(double.Parse(attribute.MinimumNumber), double.Parse(attribute.MaximumNumber))
+                        .Custom("validateNumberOfDecimals", string.Format("A valid number with up to {0} decimals should be entered", attribute.NumberOfDecimals)))
+                    .TextAlignment(TextEditorTextAlignment.Left)
+                    .ReadOnly(attribute.IsReadOnly)
+                    .Render())
+            }
+            else if (attribute.DataTypeName.ToUpper().Equals("BOOLEAN"))
+            {
+
+                var checkboxValue = itemViewModel.ItemAttributes.ContainsKey(attribute.AttributeName) ? bool.Parse(itemViewModel.ItemAttributes[attribute.AttributeName]) : false;
+                var checkboxName = "ItemViewModel.ItemAttributes[" + attribute.AttributeName + "]";
+                var htmlAttributes = new Dictionary<string, object> { { "id", checkboxName }, { "style", "height: 16px; width: 16px;" } };
+                if (attribute.IsReadOnly) { htmlAttributes.Add("disabled", "disabled"); }
+
+                @(Html.CheckBox(checkboxName, checkboxValue, htmlAttributes))
+
+            }
+            else if (attribute.DataTypeName.ToUpper().Equals("DATE"))
+            {
+                @(Html.Infragistics()
+                    .DatePicker()
+                    .DateDisplayFormat("yyyy-MM-dd")
+                    .DateInputFormat("yyyy-MM-dd")
+                    .ID("ItemViewModel.ItemAttributes[" + attribute.AttributeName + "]")
+                    .InputName("ItemViewModel.ItemAttributes[" + attribute.AttributeName + "]")
+                    .Value(itemViewModel.ItemAttributes.ContainsKey(attribute.AttributeName) ? itemViewModel.ItemAttributes[attribute.AttributeName].ToString() : "")
+                    .ValidatorOptions(
+                        o => o.Required(attribute.IsRequired))
+                    .ReadOnly(attribute.IsReadOnly)
+                    .Render())
+            }
+            else
+            {
+                throw new NotImplementedException(attribute.DataTypeName + " is not implemented");
+            }
+        </div>
+    }
+    <input type="submit" class="form-control btn-success" value="Save" id="btnSubmit" disabled="disabled" />
 }
 
-@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
-
-@{Html.RenderPartial("_HeaderPartial", "Item Management");}
-
-<div id="updateInput" class="page-section">
-    @{Html.RenderPartial("_ItemEditInputPartial");}
+<div class="form-footer">
+    @Html.ActionLink("Back to Search", "Index")
 </div>
 
-<hr />
-
-<div id="itemForUpdate" class="page-section">
-    @{Html.RenderPartial("_SingleItemDetailsPartial");}
+<div id="divBlock" class="block" style="display: none;">
+    <div class="block-message">
+        <img src="\Content\Infragistics\css\structure\images\igLoadingSmall.gif" style="max-width: 35px; max-height: 35px; margin: 25px 0 0 10px;" />
+        <label class="block-label">Please wait... <br /> &nbsp Processing request...</label>
+    </div>
 </div>
+
 
 @section scripts
 {
-    @Scripts.Render("~/Scripts/apply-autocomplete.js")
-    @Scripts.Render("~/Scripts/Item/item-edit.js")
+    <script src="~/Scripts/Item/edit.js" type="module"></script>
 }

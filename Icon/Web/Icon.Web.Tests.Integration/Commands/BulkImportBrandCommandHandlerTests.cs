@@ -1,7 +1,6 @@
 ﻿using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -9,8 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Integration.Commands
 {

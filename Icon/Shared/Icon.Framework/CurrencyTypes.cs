@@ -14,5 +14,5 @@ namespace Icon.Framework
         public const int Usd = 1;
         public const int Cad = 2;
         public const int Gbp = 3;
-    }
+	}
 }

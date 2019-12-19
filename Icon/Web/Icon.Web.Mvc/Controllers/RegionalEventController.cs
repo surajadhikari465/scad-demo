@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.RegionalItemCatalogs;
 using Icon.Web.Mvc.Models;
@@ -8,26 +7,30 @@ using Irma.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Icon.Common.DataAccess;
+using Icon.Web.Mvc.Attributes;
 
 namespace Icon.Web.Mvc.Controllers
 {
-    [Authorize(Roles = "WFM\\IRMA.Developers")]
+    [AdminAccessAuthorizeAttribute]
     public class RegionalEventController : Controller
     {
         private IRegionalItemCatalogFactory regionalItemCatalogFactory;
         private IQueryHandler<GetFailedIconItemChangesParameters, List<IconItemChangeQueue>> getFailedIconItemChangesQueryHandler;
         private ICommandHandler<ReprocessIconItemChangesCommand> reprocessFailedIconItemChangesCommandHandler;
+        private IMapper mapper;
 
-        public RegionalEventController(IRegionalItemCatalogFactory regionalItemCatalogFactory,
+        public RegionalEventController(
+            IRegionalItemCatalogFactory regionalItemCatalogFactory,
             IQueryHandler<GetFailedIconItemChangesParameters, List<IconItemChangeQueue>> getFailedIconItemChangesQueryHandler,
-            ICommandHandler<ReprocessIconItemChangesCommand> reprocessFailedIconItemChangesCommandHandler)
+            ICommandHandler<ReprocessIconItemChangesCommand> reprocessFailedIconItemChangesCommandHandler,
+            IMapper mapper)
         {
             this.regionalItemCatalogFactory = regionalItemCatalogFactory;
             this.getFailedIconItemChangesQueryHandler = getFailedIconItemChangesQueryHandler;
             this.reprocessFailedIconItemChangesCommandHandler = reprocessFailedIconItemChangesCommandHandler;
+            this.mapper = mapper;
         }
 
         public ActionResult Index()
@@ -43,7 +46,7 @@ namespace Icon.Web.Mvc.Controllers
                         RegionConnectionStringName = regionalItemCatalog.ConnectionStringName
                     });
                 List<FailedRegionalEventViewModel> itemUpdates = iconItemChangeQueue
-                        .Select(i => Mapper.Map<FailedRegionalEventViewModel>(i))
+                        .Select(i => mapper.Map<FailedRegionalEventViewModel>(i))
                         .ToList();
                 itemUpdates.ForEach(vm => vm.RegionAbbreviation = regionalItemCatalog.Abbreviation);
                 failedRegionalItemUpdateViewModels.AddRange(itemUpdates);

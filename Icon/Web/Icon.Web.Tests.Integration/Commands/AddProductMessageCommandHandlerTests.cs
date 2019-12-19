@@ -1,7 +1,6 @@
 ﻿using Icon.Framework;
 using Icon.Testing.Builders;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Data.Entity;
@@ -49,7 +48,7 @@ namespace Icon.Web.Tests.Integration.Commands
             // Given.
             SetupProductMessageTestData();
 
-            int expectedId = testItem.itemID;
+            int expectedId = testItem.ItemId;
             string expectedProductDescription = testItem.ItemTrait.First(it => it.traitID == Traits.ProductDescription).traitValue;
             string expectedPosDescription = testItem.ItemTrait.First(it => it.traitID == Traits.PosDescription).traitValue;
             string expectedPackageUnit = testItem.ItemTrait.First(it => it.traitID == Traits.PackageUnit).traitValue;
@@ -59,23 +58,23 @@ namespace Icon.Web.Tests.Integration.Commands
             string expectedRetailUom = testItem.ItemTrait.First(it => it.traitID == Traits.RetailUom).traitValue;
             string expectedDepartmentSale = "1";
 
-            var expectedBrand = context.HierarchyClass.Single(hc => hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.itemID) && hc.Hierarchy.hierarchyName == HierarchyNames.Brands);
-            var expectedMerch = context.HierarchyClass.Single(hc => hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.itemID) && hc.Hierarchy.hierarchyName == HierarchyNames.Merchandise);
-            var expectedTax = context.HierarchyClass.Single(hc => hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.itemID) && hc.Hierarchy.hierarchyName == HierarchyNames.Tax);
-            var subTeam = context.HierarchyClass.Single(hc => hc.Hierarchy.hierarchyName == HierarchyNames.Merchandise && hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.itemID))
+            var expectedBrand = context.HierarchyClass.Single(hc => hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.ItemId) && hc.Hierarchy.hierarchyName == HierarchyNames.Brands);
+            var expectedMerch = context.HierarchyClass.Single(hc => hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.ItemId) && hc.Hierarchy.hierarchyName == HierarchyNames.Merchandise);
+            var expectedTax = context.HierarchyClass.Single(hc => hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.ItemId) && hc.Hierarchy.hierarchyName == HierarchyNames.Tax);
+            var subTeam = context.HierarchyClass.Single(hc => hc.Hierarchy.hierarchyName == HierarchyNames.Merchandise && hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.ItemId))
                 .HierarchyClassTrait.Single(hct => hct.traitID == Traits.MerchFinMapping);
             var expectedFinancial = context.HierarchyClass.Single(fin => fin.hierarchyClassName == subTeam.traitValue);
             string expectedFinancialName = expectedFinancial.hierarchyClassName;
             string expectedFinancialId = expectedFinancial.hierarchyClassName.Split('(')[1].Trim(')') == "0000" ? "na" : expectedFinancial.hierarchyClassName.Split('(')[1].Trim(')');
             // When.
-            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.itemID });
+            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.ItemId });
 
             // Then.
-            var result = context.MessageQueueProduct.Where(mq => mq.ItemId == testItem.itemID && mq.MessageStatusId == MessageStatusTypes.Staged).OrderBy(mq => mq.MessageQueueId).ToList();
+            var result = context.MessageQueueProduct.Where(mq => mq.ItemId == testItem.ItemId && mq.MessageStatusId == MessageStatusTypes.Staged).OrderBy(mq => mq.MessageQueueId).ToList();
             var actualMessage = result[0];
             var actualNutritionMessage = context.MessageQueueNutrition.Where(mqn => mqn.MessageQueueProduct.MessageQueueId == actualMessage.MessageQueueId).FirstOrDefault();
             
-            Assert.AreEqual(testItem.itemID, actualMessage.ItemId);
+            Assert.AreEqual(testItem.ItemId, actualMessage.ItemId);
             Assert.AreEqual(MessageTypes.Product, actualMessage.MessageTypeId);
             Assert.AreEqual(MessageStatusTypes.Staged, actualMessage.MessageStatusId);
             Assert.AreEqual(testItem.ScanCode.First().scanCode, actualMessage.ScanCode);
@@ -154,7 +153,7 @@ namespace Icon.Web.Tests.Integration.Commands
             // Given.
             SetupNonRetailProductMessageTestData();
 
-            int expectedId = testItem.itemID;
+            int expectedId = testItem.ItemId;
             string expectedProductDescription = testItem.ItemTrait.First(it => it.traitID == Traits.ProductDescription).traitValue;
             string expectedPosDescription = testItem.ItemTrait.First(it => it.traitID == Traits.PosDescription).traitValue;
             string expectedPackageUnit = testItem.ItemTrait.First(it => it.traitID == Traits.PackageUnit).traitValue;
@@ -164,24 +163,24 @@ namespace Icon.Web.Tests.Integration.Commands
             string expectedRetailUom = testItem.ItemTrait.First(it => it.traitID == Traits.RetailUom).traitValue;
             string expectedDepartmentSale = "1";
 
-            var expectedBrand = context.HierarchyClass.Single(hc => hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.itemID) && hc.Hierarchy.hierarchyName == HierarchyNames.Brands);
-            var expectedMerch = context.HierarchyClass.Single(hc => hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.itemID) && hc.Hierarchy.hierarchyName == HierarchyNames.Merchandise);
-            var expectedTax = context.HierarchyClass.Single(hc => hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.itemID) && hc.Hierarchy.hierarchyName == HierarchyNames.Tax);
-            var subTeam = context.HierarchyClass.Single(hc => hc.Hierarchy.hierarchyName == HierarchyNames.Merchandise && hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.itemID))
+            var expectedBrand = context.HierarchyClass.Single(hc => hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.ItemId) && hc.Hierarchy.hierarchyName == HierarchyNames.Brands);
+            var expectedMerch = context.HierarchyClass.Single(hc => hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.ItemId) && hc.Hierarchy.hierarchyName == HierarchyNames.Merchandise);
+            var expectedTax = context.HierarchyClass.Single(hc => hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.ItemId) && hc.Hierarchy.hierarchyName == HierarchyNames.Tax);
+            var subTeam = context.HierarchyClass.Single(hc => hc.Hierarchy.hierarchyName == HierarchyNames.Merchandise && hc.ItemHierarchyClass.Any(ihc => ihc.itemID == testItem.ItemId))
                 .HierarchyClassTrait.Single(hct => hct.traitID == Traits.MerchFinMapping);
             var expectedFinancial = context.HierarchyClass.Single(fin => fin.hierarchyClassName == subTeam.traitValue);
             string expectedFinancialId = expectedFinancial.hierarchyClassName.Split('(')[1].Trim(')') == "0000" ? "na" : expectedFinancial.hierarchyClassName.Split('(')[1].Trim(')');
             string expectedFinancialName = expectedFinancial.hierarchyClassName.ToString();
 
             // When.
-            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.itemID });
+            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.ItemId });
 
             // Then.
-            var result = context.MessageQueueProduct.Where(mq => mq.ItemId == testItem.itemID && mq.MessageStatusId == MessageStatusTypes.Staged).OrderBy(mq => mq.MessageQueueId).ToList();
+            var result = context.MessageQueueProduct.Where(mq => mq.ItemId == testItem.ItemId && mq.MessageStatusId == MessageStatusTypes.Staged).OrderBy(mq => mq.MessageQueueId).ToList();
             var actualMessage = result[0];
             var actualNutritionMessage = context.MessageQueueNutrition.Where(mqn => mqn.MessageQueueProduct.MessageQueueId == actualMessage.MessageQueueId).FirstOrDefault();
 
-            Assert.AreEqual(testItem.itemID, actualMessage.ItemId);
+            Assert.AreEqual(testItem.ItemId, actualMessage.ItemId);
             Assert.AreEqual(MessageTypes.Product, actualMessage.MessageTypeId);
             Assert.AreEqual(MessageStatusTypes.Staged, actualMessage.MessageStatusId);
             Assert.AreEqual(testItem.ScanCode.First().scanCode, actualMessage.ScanCode);
@@ -263,10 +262,10 @@ namespace Icon.Web.Tests.Integration.Commands
             context.SaveChanges();
 
             // When.
-            commandHandler.Execute(new AddProductMessageCommand { ItemId = item.itemID });
+            commandHandler.Execute(new AddProductMessageCommand { ItemId = item.ItemId });
 
             // Then.
-            var result = context.MessageQueueProduct.Where(mq => mq.ItemId == item.itemID && mq.MessageStatusId == MessageStatusTypes.Ready);
+            var result = context.MessageQueueProduct.Where(mq => mq.ItemId == item.ItemId && mq.MessageStatusId == MessageStatusTypes.Ready);
             Assert.IsTrue(result.Count() == 0);
         }
 
@@ -277,10 +276,10 @@ namespace Icon.Web.Tests.Integration.Commands
             SetupProductMessageTestData();
 
             // When.
-            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.itemID });
+            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.ItemId });
 
             // Then.
-            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.itemID && mq.MessageStatusId == MessageStatusTypes.Staged);
+            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.ItemId && mq.MessageStatusId == MessageStatusTypes.Staged);
             Assert.IsNotNull(result);
         }
 
@@ -297,10 +296,10 @@ namespace Icon.Web.Tests.Integration.Commands
             context.SaveChanges();
 
             // When
-            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.itemID });
+            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.ItemId });
 
             //Then
-            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.itemID && mq.MessageStatusId == MessageStatusTypes.Staged);
+            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.ItemId && mq.MessageStatusId == MessageStatusTypes.Staged);
             Assert.IsNotNull(result);
         }
 
@@ -314,10 +313,10 @@ namespace Icon.Web.Tests.Integration.Commands
             testFinancialClass.HierarchyClassTrait.Add(CreateTestHierarchyClassTrait(Traits.SentToEsb, testFinancialClass.hierarchyClassID, DateTime.Now.ToString()));
 
             // When
-            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.itemID });
+            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.ItemId });
 
             // Then
-            var message = context.MessageQueueProduct.Single(mq => mq.ItemId == testItem.itemID);
+            var message = context.MessageQueueProduct.Single(mq => mq.ItemId == testItem.ItemId);
             Assert.AreEqual(MessageStatusTypes.Staged, message.MessageStatusId);
         }
 
@@ -331,10 +330,10 @@ namespace Icon.Web.Tests.Integration.Commands
             testFinancialClass.HierarchyClassTrait.Add(CreateTestHierarchyClassTrait(Traits.SentToEsb, testFinancialClass.hierarchyClassID, DateTime.Now.ToString()));
 
             // When
-            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.itemID });
+            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.ItemId });
 
             // Then
-            var message = context.MessageQueueProduct.Single(mq => mq.ItemId == testItem.itemID);
+            var message = context.MessageQueueProduct.Single(mq => mq.ItemId == testItem.ItemId);
             Assert.AreEqual(MessageStatusTypes.Staged, message.MessageStatusId);
         }
 
@@ -348,10 +347,10 @@ namespace Icon.Web.Tests.Integration.Commands
             testMerchandiseClass.HierarchyClassTrait.Add(CreateTestHierarchyClassTrait(Traits.SentToEsb, testMerchandiseClass.hierarchyClassID, DateTime.Now.ToString()));
 
             // When
-            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.itemID });
+            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.ItemId });
 
             // Then
-            var message = context.MessageQueueProduct.Single(mq => mq.ItemId == testItem.itemID);
+            var message = context.MessageQueueProduct.Single(mq => mq.ItemId == testItem.ItemId);
             Assert.AreEqual(MessageStatusTypes.Staged, message.MessageStatusId);
         }
 
@@ -368,10 +367,10 @@ namespace Icon.Web.Tests.Integration.Commands
             context.SaveChanges();
 
             // When
-            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.itemID });
+            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.ItemId });
 
             //Then
-            var message = context.MessageQueueProduct.Single(mq => mq.ItemId == testItem.itemID);
+            var message = context.MessageQueueProduct.Single(mq => mq.ItemId == testItem.ItemId);
             Assert.AreEqual(MessageStatusTypes.Ready, message.MessageStatusId);
         }
 
@@ -382,10 +381,10 @@ namespace Icon.Web.Tests.Integration.Commands
             SetupProductMessageTestData();
 
             // When
-            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.itemID });
+            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.ItemId });
 
             // Then
-            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.itemID && mq.MessageStatusId == MessageStatusTypes.Staged);
+            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.ItemId && mq.MessageStatusId == MessageStatusTypes.Staged);
             Assert.IsNotNull(result);
             Assert.AreEqual("1", result.DepartmentSale);
         }
@@ -396,7 +395,7 @@ namespace Icon.Web.Tests.Integration.Commands
             // Given
             SetupProductMessageTestData();
 
-            testItem.itemTypeID = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Coupon).itemTypeID;
+            testItem.ItemTypeId = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Coupon).itemTypeID;
 
             HierarchyClassTrait nonMerchTrait = new HierarchyClassTrait();
             nonMerchTrait.Trait = this.context.Trait.First(t => t.traitCode == TraitCodes.NonMerchandise);
@@ -407,10 +406,10 @@ namespace Icon.Web.Tests.Integration.Commands
             this.context.SaveChanges();
 
             // When
-            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.itemID });
+            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.ItemId });
 
             // Then
-            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.itemID && mq.MessageStatusId == MessageStatusTypes.Staged);
+            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.ItemId && mq.MessageStatusId == MessageStatusTypes.Staged);
             Assert.IsNull(result);
         }
 
@@ -420,14 +419,14 @@ namespace Icon.Web.Tests.Integration.Commands
             // Given
             SetupProductMessageTestData();
 
-            this.context.Item.First(i => i.itemID == testItem.itemID).itemTypeID = this.context.ItemType.First(it => it.itemTypeCode == ItemTypeCodes.Deposit).itemTypeID;
+            this.context.Item.First(i => i.ItemId == testItem.ItemId).ItemTypeId = this.context.ItemType.First(it => it.itemTypeCode == ItemTypeCodes.Deposit).itemTypeID;
             this.context.SaveChanges();
 
             // When
-            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.itemID });
+            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.ItemId });
 
             // Then
-            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.itemID && mq.MessageStatusId == MessageStatusTypes.Staged);
+            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.ItemId && mq.MessageStatusId == MessageStatusTypes.Staged);
             Assert.IsNotNull(result);
             Assert.AreEqual(result.ItemTypeCode, ItemTypeCodes.Deposit);
             Assert.AreEqual(result.ItemTypeDesc, context.ItemType.First(it => it.itemTypeCode == ItemTypeCodes.Deposit).itemTypeDesc);
@@ -438,14 +437,14 @@ namespace Icon.Web.Tests.Integration.Commands
         {
             // Given
             SetupProductMessageTestData();
-            this.context.Item.First(i => i.itemID == testItem.itemID).itemTypeID = this.context.ItemType.First(it => it.itemTypeCode == ItemTypeCodes.Deposit).itemTypeID;
+            this.context.Item.First(i => i.ItemId == testItem.ItemId).ItemTypeId = this.context.ItemType.First(it => it.itemTypeCode == ItemTypeCodes.Deposit).itemTypeID;
             this.context.SaveChanges();
 
             // When
-            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.itemID });
+            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.ItemId });
 
             // Then
-            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.itemID && mq.MessageStatusId == MessageStatusTypes.Staged);
+            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.ItemId && mq.MessageStatusId == MessageStatusTypes.Staged);
             Assert.IsNotNull(result);
             Assert.AreEqual(result.ItemTypeCode, ItemTypeCodes.Deposit);
             Assert.AreEqual(result.ItemTypeDesc, context.ItemType.First(it => it.itemTypeCode == ItemTypeCodes.Deposit).itemTypeDesc);
@@ -457,14 +456,14 @@ namespace Icon.Web.Tests.Integration.Commands
             // Given
             SetupProductMessageTestData();
 
-            this.context.Item.First(i => i.itemID == testItem.itemID).itemTypeID = this.context.ItemType.First(it => it.itemTypeCode == ItemTypeCodes.Return).itemTypeID;
+            this.context.Item.First(i => i.ItemId == testItem.ItemId).ItemTypeId = this.context.ItemType.First(it => it.itemTypeCode == ItemTypeCodes.Return).itemTypeID;
             this.context.SaveChanges();
 
             // When
-            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.itemID });
+            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.ItemId });
 
             // Then
-            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.itemID && mq.MessageStatusId == MessageStatusTypes.Staged);
+            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.ItemId && mq.MessageStatusId == MessageStatusTypes.Staged);
             Assert.IsNotNull(result);
             Assert.AreEqual(result.ItemTypeCode, ItemTypeCodes.Return);
             Assert.AreEqual(result.ItemTypeDesc, context.ItemType.First(it => it.itemTypeCode == ItemTypeCodes.Return).itemTypeDesc);
@@ -476,14 +475,14 @@ namespace Icon.Web.Tests.Integration.Commands
             // Given
             SetupProductMessageTestData();
 
-            this.context.Item.First(i => i.itemID == testItem.itemID).itemTypeID = this.context.ItemType.First(it => it.itemTypeCode == ItemTypeCodes.Return).itemTypeID;
+            this.context.Item.First(i => i.ItemId == testItem.ItemId).ItemTypeId = this.context.ItemType.First(it => it.itemTypeCode == ItemTypeCodes.Return).itemTypeID;
             this.context.SaveChanges();
 
             // When
-            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.itemID });
+            commandHandler.Execute(new AddProductMessageCommand { ItemId = testItem.ItemId });
 
             // Then
-            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.itemID && mq.MessageStatusId == MessageStatusTypes.Staged);
+            var result = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == testItem.ItemId && mq.MessageStatusId == MessageStatusTypes.Staged);
             Assert.IsNotNull(result);
             Assert.AreEqual(result.ItemTypeCode, ItemTypeCodes.Return);
             Assert.AreEqual(result.ItemTypeDesc, context.ItemType.First(it => it.itemTypeCode == ItemTypeCodes.Return).itemTypeDesc);
@@ -525,35 +524,35 @@ namespace Icon.Web.Tests.Integration.Commands
                 context.SaveChanges();
 
                 // Item
-                testItem = new Item { itemTypeID = 1, ItemType = context.ItemType.First(it => it.itemTypeCode == "RTL") };
+                testItem = new Item { ItemTypeId = 1, ItemType = context.ItemType.First(it => it.itemTypeCode == "RTL") };
                 context.Item.Add(testItem);
                 context.SaveChanges();
 
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.ProductDescription, "ProdDes"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.PosDescription, "PosDesc"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.PackageUnit, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.RetailSize, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.RetailUom, "EA"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.FoodStampEligible, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.PosScaleTare, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.DepartmentSale, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.ValidationDate, DateTime.Now.ToString()));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.ProductDescription, "ProdDes"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PosDescription, "PosDesc"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PackageUnit, "1"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.RetailSize, "1"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.RetailUom, "EA"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.FoodStampEligible, "1"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PosScaleTare, "1"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.DepartmentSale, "1"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.ValidationDate, DateTime.Now.ToString()));
 
-                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.itemID, testMerchandiseClass.hierarchyClassID));
-                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.itemID, testBrowsingClass.hierarchyClassID));
-                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.itemID, testBrandClass.hierarchyClassID));
-                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.itemID, testTaxClass.hierarchyClassID));
-                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.itemID, testNationalClass.hierarchyClassID));
+                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testMerchandiseClass.hierarchyClassID));
+                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testBrowsingClass.hierarchyClassID));
+                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testBrandClass.hierarchyClassID));
+                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testTaxClass.hierarchyClassID));
+                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testNationalClass.hierarchyClassID));
                 
                 context.SaveChanges();
 
                 testScanCode = new ScanCode
                 {
-                    itemID = testItem.itemID,
+                    itemID = testItem.ItemId,
                     localeID = Locales.WholeFoods,
                     scanCodeTypeID = ScanCodeTypes.PosPlu,
                     scanCode = "111222333499",
-                    Item = context.Item.First(i => i.itemID == testItem.itemID),
+                    Item = context.Item.First(i => i.ItemId == testItem.ItemId),
                     ScanCodeType = context.ScanCodeType.Single(sct => sct.scanCodeTypeDesc == ScanCodeTypeDescriptions.PosPlu)
                 };
 
@@ -574,7 +573,7 @@ namespace Icon.Web.Tests.Integration.Commands
 
                 itemSignAttribute = new ItemSignAttribute
                 {
-                    ItemID = testItem.itemID,
+                    ItemID = testItem.ItemId,
                     Biodynamic = true,
                     CheeseRaw = false,
                     MadeInHouse = true,
@@ -634,35 +633,35 @@ namespace Icon.Web.Tests.Integration.Commands
                 context.SaveChanges();
 
                 // Item
-                testItem = new Item { itemTypeID = 1, ItemType = context.ItemType.First(it => it.itemTypeCode == "NRT") };
+                testItem = new Item { ItemTypeId = 1, ItemType = context.ItemType.First(it => it.itemTypeCode == "NRT") };
                 context.Item.Add(testItem);
                 context.SaveChanges();
 
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.ProductDescription, "ProdDes"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.PosDescription, "PosDesc"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.PackageUnit, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.RetailSize, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.RetailUom, "EA"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.FoodStampEligible, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.PosScaleTare, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.DepartmentSale, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.itemID, Traits.ValidationDate, DateTime.Now.ToString()));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.ProductDescription, "ProdDes"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PosDescription, "PosDesc"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PackageUnit, "1"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.RetailSize, "1"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.RetailUom, "EA"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.FoodStampEligible, "1"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PosScaleTare, "1"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.DepartmentSale, "1"));
+                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.ValidationDate, DateTime.Now.ToString()));
 
-                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.itemID, testMerchandiseClass.hierarchyClassID));
-                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.itemID, testBrowsingClass.hierarchyClassID));
-                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.itemID, testBrandClass.hierarchyClassID));
-                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.itemID, testTaxClass.hierarchyClassID));
-                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.itemID, testNationalClass.hierarchyClassID));
+                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testMerchandiseClass.hierarchyClassID));
+                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testBrowsingClass.hierarchyClassID));
+                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testBrandClass.hierarchyClassID));
+                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testTaxClass.hierarchyClassID));
+                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testNationalClass.hierarchyClassID));
 
                 context.SaveChanges();
 
                 testScanCode = new ScanCode
                 {
-                    itemID = testItem.itemID,
+                    itemID = testItem.ItemId,
                     localeID = Locales.WholeFoods,
                     scanCodeTypeID = ScanCodeTypes.PosPlu,
                     scanCode = "111222333499",
-                    Item = context.Item.First(i => i.itemID == testItem.itemID),
+                    Item = context.Item.First(i => i.ItemId == testItem.ItemId),
                     ScanCodeType = context.ScanCodeType.Single(sct => sct.scanCodeTypeDesc == ScanCodeTypeDescriptions.PosPlu)
                 };
 
@@ -683,7 +682,7 @@ namespace Icon.Web.Tests.Integration.Commands
 
                 itemSignAttribute = new ItemSignAttribute
                 {
-                    ItemID = testItem.itemID,
+                    ItemID = testItem.ItemId,
                     Biodynamic = true,
                     CheeseRaw = false,
                     MadeInHouse = true,
@@ -749,7 +748,7 @@ namespace Icon.Web.Tests.Integration.Commands
                 itemID = itemId,
                 hierarchyClassID = hierarchyClassID,
                 localeID = Locales.WholeFoods,
-                Item = context.Item.First(i => i.itemID == itemId),
+                Item = context.Item.First(i => i.ItemId == itemId),
                 HierarchyClass = context.HierarchyClass.Single(hc => hc.hierarchyClassID == hierarchyClassID)
             };
         }

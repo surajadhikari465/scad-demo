@@ -1,12 +1,4 @@
-﻿@using Infragistics.Web.Mvc
-@model Icon.Web.Mvc.Models.PluAssignmentSearchViewModel
-
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Resources("igCombo,igDialog")
-    .Render()
-)
+﻿@model Icon.Web.Mvc.Models.PluAssignmentSearchViewModel
 
 @using (Ajax.BeginForm("Search", "PluAssignment", null, new AjaxOptions
 {
@@ -21,29 +13,27 @@
     <fieldset>
         <legend>Search Options</legend>
         
-        <div class="row">
-            @Html.LabelFor(model => Model.SelectedPluCategoryName, new { @class = "col-md-2 form-label" })
+        <div class="form-group">
+            @Html.LabelFor(model => Model.SelectedPluCategoryName, new { @class = "form-label" })
             <div>
-                @Html.DropDownListFor(model => Model.SelectedPluCategoryId, Model.PluCategories, new { @class = "col-md-6 form-input" })
+                @Html.DropDownListFor(model => Model.SelectedPluCategoryId, Model.PluCategories, new { @class = "form-control form-input" })
             </div>
         </div>
-        <div class="row">
-            @Html.LabelFor(model => Model.MaxPlus, new { @class = "col-md-2 form-label" })
+        <div class="form-group">
+            @Html.LabelFor(model => Model.MaxPlus, new { @class = "form-label" })
             <div>
-                @Html.TextBoxFor(model => Model.MaxPlus, new { @class = "col-md-6 form-input" })
-                @Html.ValidationMessageFor(model => model.MaxPlus, null, new { @class = "col-md-4 form-property-val" })
+                @Html.TextBoxFor(model => Model.MaxPlus, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.MaxPlus, null, new { @class = "form-property-val" })
             </div>
         </div>
     </fieldset>
 
-    <div class="row">
-        <div class="col-md-offset-2 col-md-1">
-            <input type="submit" value="Search" class="btn btn-default form-submit" id="search-button" />
-        </div>
+    <div class="form-group">
+         <input type="submit" value="Search" class="btn btn-light form-submit" id="search-button" />
     </div>
     
-    <div class="row">
-        <div class="col-md-6 page-subsection">
+    <div class="form-group">
+        <div class="page-subsection">
             @Html.ValidationSummary(true)
         </div>
     </div>

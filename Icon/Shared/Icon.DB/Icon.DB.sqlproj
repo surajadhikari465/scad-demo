@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{ebd98e20-5db9-4be9-93ec-e43ef5aca89d}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql140DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -136,6 +136,17 @@
     <Folder Include="Scripts\Projects\Infor\Data Audit Scripts\Icon" />
     <Folder Include="Scripts\Projects\Infor\Phase 1" />
     <Folder Include="Scripts\Projects\365Conversion" />
+    <Folder Include="dbo\StoredProcedures" />
+    <Folder Include="Scripts\Projects\IconReboot" />
+    <Folder Include="esb" />
+    <Folder Include="esb\Tables" />
+    <Folder Include="esb\User Defined Types" />
+    <Folder Include="esb\Stored Procedures\" />
+    <Folder Include="dbo\User Defined Types" />
+    <Folder Include="dbo\Views" />
+    <Folder Include="Storage" />
+    <Folder Include="extract" />
+    <Folder Include="extract\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Party.sql" />
@@ -274,7 +285,6 @@
     <None Include="Scripts\Projects\UDM v3.0\Icon DB Update Schema - 5 - Populate ItemPriceType and UOM.sql" />
     <None Include="Scripts\Projects\UDM v3.0\Icon DB Update Schema - 6 - Update Trait.sql" />
     <None Include="Scripts\Projects\UDM v3.0\Icon DB Update Schema - 7 - Populate EventTypeTable.sql" />
-    <Build Include="app\Stored Procedures\UpdateItemTypeByHierarchyClass.sql" />
     <Build Include="app\Stored Procedures\GenerateItemUpdateMessagesByHierarchyClass.sql" />
     <None Include="Scripts\Projects\Regional On-Boarding\LoadIconItemChangeQueue.sql" />
     <Build Include="app\User Defined Types\ItemLocaleMessageType.sql" />
@@ -475,7 +485,6 @@
     <Build Include="vim\Tables\EventType.sql" />
     <Build Include="Schemas\vim.sql" />
     <Build Include="vim\Tables\StorePosType.sql" />
-    <Build Include="app\Functions\fn_GetNextProductKey.sql" />
     <Build Include="app\Stored Procedures\ApplyMerchTaxMappingToItems.sql" />
     <Build Include="app\Stored Procedures\GetDefaultTaxClassMismatches.sql" />
     <Build Include="app\Tables\ItemMovementErrorQueue.sql" />
@@ -503,14 +512,11 @@
     <Build Include="infor\User Defined Types\ItemAddorUpdateType.sql" />
     <Build Include="infor\User Defined Types\ItemTraitAddOrUpdateType.sql" />
     <Build Include="infor\Stored Procedures\ItemTraitAddOrUpdate.sql" />
-    <Build Include="infor\User Defined Types\ItemHierarchyClassAddOrUpdateType.sql" />
-    <Build Include="infor\Stored Procedures\ItemHierarchyClassAddOrUpdate.sql" />
     <Build Include="infor\Stored Procedures\ItemSignAttributeAddOrUpdate.sql" />
     <Build Include="infor\Functions\GetHierarchyClassIdFromInfor.sql" />
     <Build Include="infor\User Defined Types\HierarchyClassType.sql" />
     <Build Include="infor\User Defined Types\HierarchyClassTraitType.sql" />
     <Build Include="infor\User Defined Types\RegionCodeList.sql" />
-    <Build Include="infor\Stored Procedures\AddNewItems.sql" />
     <Build Include="app\Tables\PerformanceLog.sql" />
     <Build Include="infor\Stored Procedures\GenerateItemUpdateMessages.sql" />
     <Build Include="app\Stored Procedures\AddOrUpdateItemLinkEntities.sql" />
@@ -609,19 +615,11 @@
     <Build Include="infor\Stored Procedures\GetItemValidationProperties.sql" />
     <Build Include="app\Tables\DbStatus.sql" />
     <Build Include="infor\Tables\MessageArchiveProductOutOfSync.sql" />
-    <Build Include="infor\Stored Procedures\AddOrUpdateLocaleAddress.sql" />
-    <Build Include="infor\Stored Procedures\AddOrUpdateLocales.sql" />
-    <Build Include="infor\Stored Procedures\AddOrUpdateLocaleTraits.sql" />
-    <Build Include="infor\Stored Procedures\AddOrUpdateStores.sql" />
-    <Build Include="infor\User Defined Types\LocaleAddOrUpdateType.sql" />
-    <Build Include="infor\User Defined Types\LocaleAddressAddOrUpdateType.sql" />
-    <Build Include="infor\User Defined Types\LocaleTraitAddOrUpdateType.sql" />
     <Build Include="infor\Stored Procedures\HierarchyClassGenerateMessages.sql" />
     <Build Include="infor\Tables\ItemSequence.sql" />
     <Build Include="infor\Tables\HierarchyClassSequence.sql" />
     <Build Include="infor\Tables\LocaleSequence.sql" />
     <Build Include="infor\Tables\MessageArchiveNewItem.sql" />
-    <Build Include="infor\Stored Procedures\GetScanCodeToIconItemIds.sql" />
     <None Include="Scripts\Jobs\InforExtract_FromIcon.sql" />
     <None Include="Scripts\PopulateData\Archive\AddBrandDeleteEventType.sql" />
     <None Include="Scripts\PopulateData\Archive\AddCustomerFriendlyDescriptionTraitCode.sql" />
@@ -695,6 +693,63 @@
     <None Include="Scripts\PopulateData\Archive\PopulateIconWebApiApp.sql" />
     <None Include="Scripts\Projects\365Conversion\IconLocale_365StoreMetroChange_DataSurgery.sql" />
     <None Include="Scripts\Projects\365Conversion\IconLocale_365StoreMetroChange_DataSurgery_ROLLBACK.sql" />
+    <Build Include="dbo\Tables\ItemHistory.sql" />
+    <None Include="Scripts\PopulateData\Archive\IconLocale_365StoreMetroChange_DataSurgery_ROLLBACK.sql" />
+    <None Include="Scripts\PopulateData\Archive\IconLocale_365StoreMetroChange_DataSurgery.sql" />
+    <Build Include="dbo\StoredProcedures\AddUpdateItemSubscription.sql" />
+    <Build Include="dbo\StoredProcedures\GetScanCodeToIconItemIds.sql" />
+    <None Include="Scripts\Projects\IconReboot\IconRebootItemConversion.sql" />
+    <Build Include="Schemas\esb.sql" />
+    <Build Include="esb\Tables\MessageQueueItem.sql" />
+    <Build Include="esb\User Defined Types\MessageQueueItemIdsType.sql" />
+    <Build Include="dbo\Tables\Attributes.sql" />
+    <Build Include="dbo\Tables\AttributeCharacterSets.sql" />
+    <Build Include="dbo\Tables\AttributeGroup.sql" />
+    <Build Include="dbo\Tables\CharacterSets.sql" />
+    <Build Include="dbo\Tables\DataType.sql" />
+    <Build Include="dbo\Tables\PickListData.sql" />
+    <Build Include="esb\Stored Procedures\DequeMessageQueueItem.sql" />
+    <Build Include="esb\Tables\MessageQueueItemArchive.sql" />
+    <Build Include="esb\Stored Procedures\RetrieveMessageQueueItems.sql" />
+    <Build Include="dbo\StoredProcedures\GetItemsSearch.sql" />
+    <Build Include="esb\Stored Procedures\AddMessageQueueItem.sql" />
+    <Build Include="dbo\Tables\ItemHierarchyClassHistory.sql" />
+    <None Include="Scripts\Projects\IconReboot\IconRebootAttributesConversionUsingJsonFile.sql" />
+    <Build Include="app\Stored Procedures\GenerateItemUpdateMessages.sql" />
+    <Build Include="dbo\Tables\AttributesWebConfiguration.sql" />
+    <Build Include="dbo\Views\ItemView.sql" />
+    <None Include="Scripts\PopulateData\PopulateAttributesWebConfiguration.sql" />
+    <Build Include="dbo\StoredProcedures\AddAttributes.sql" />
+    <Build Include="dbo\StoredProcedures\AddOrUpdatePickListData.sql" />
+    <Build Include="dbo\User Defined Types\PickListType.sql" />
+    <Build Include="dbo\User Defined Types\AttributeCharacterSetsType.sql" />
+    <Build Include="dbo\StoredProcedures\AddOrUpdateAttributeCharaterSets.sql" />
+    <Build Include="dbo\StoredProcedures\UpdateAttributes.sql" />
+    <Build Include="dbo\StoredProcedures\GetHierarchyClasses.sql" />
+    <Build Include="dbo\Views\AttributesView.sql" />
+    <Build Include="dbo\StoredProcedures\UpdateItem.sql" />
+    <Build Include="dbo\StoredProcedures\AddItem.sql" />
+    <Build Include="dbo\StoredProcedures\GetItemPropertiesByMerchHierarchyClassId.sql" />
+    <Build Include="dbo\StoredProcedures\GetAvailableScanCodesForBarcodeTypeId.sql" />
+    <Build Include="dbo\Tables\BarcodeType.sql" />
+    <Build Include="dbo\Tables\AttributeHistory.sql" />
+    <Build Include="dbo\Tables\BulkItemUpload.sql" />
+    <Build Include="dbo\Tables\BulkItemUploadData.sql" />
+    <Build Include="dbo\StoredProcedures\AddBulkItemUpload.sql" />
+    <None Include="Scripts\Projects\IconReboot\IconRebootHierarchyClassTraitConversion.sql" />
+    <Build Include="infor\Tables\ItemHistory.sql" />
+    <Build Include="dbo\Tables\BulkItemUploadStatus.sql" />
+    <Build Include="dbo\StoredProcedures\UpdateItemTypeByHierarchyClassId.sql" />
+    <Build Include="dbo\StoredProcedures\UpdateItemProhibitDiscountByHierarchyClassId.sql" />
+    <Build Include="dbo\StoredProcedures\UpdateItemSubTeamByHierarchyClassId.sql" />
+    <Build Include="dbo\Tables\BulkItemUploadFileTypes.sql" />
+    <Build Include="infor\Tables\HistoricalAttributes.sql" />
+    <None Include="Scripts\PopulateData\AddTouchPointGroupIdTrait.sql" />
+    <None Include="Scripts\PopulateData\PopulateBulkItemUploadFileTypes.sql" />
+    <None Include="Scripts\PopulateData\ItemSignAttribute_DeleteDuplicates.sql" />
+    <None Include="Scripts\PopulateData\ItemSignAttribute_DeleteDuplicates_ROLLBACK.sql" />
+    <Build Include="esb\Tables\MessageQueueAttributeArchive.sql" />
+    <Build Include="esb\Tables\MessageArchive.sql" />
     <None Include="Scripts\PopulateData\Archive\AddDeleteNutritionToEventType.sql" />
     <None Include="Scripts\PopulateData\Archive\PopulateTraits.sql" />
     <None Include="Scripts\PopulateData\Archive\AddTouchPointGroupIdTrait.sql" />
@@ -705,6 +760,30 @@
     <None Include="Scripts\PopulateData\Archive\AddNewAndUpdateExistingSubteams_10570.sql" />
     <None Include="Scripts\PopulateData\Archive\PopulateTrait_SWR.sql" />
     <Build Include="app\Stored Procedures\AuditLocationHierarchy.sql" />
+    <None Include="Scripts\PopulateData\AddTablesToRetentionPolicyTable.sql" />
+    <Build Include="dbo\Views\BrandHierarchyView.sql" />
+    <Build Include="dbo\Views\FinancialHierarchyView.sql" />
+    <Build Include="dbo\Views\MerchandiseHierarchyView.sql" />
+    <Build Include="dbo\Views\NationalClassHierarchyView.sql" />
+    <Build Include="dbo\Views\TaxHierarchyView.sql" />
+    <Build Include="dbo\Views\ManufacturerHierarchyView.sql" />
+    <Build Include="app\Stored Procedures\GetManufacturers.sql" />
+    <None Include="Scripts\PopulateData\23417-PopulateManufacturerValues.sql" />
+    <Build Include="dbo\Tables\BulkItemUploadErrors.sql" />
+    <Build Include="Schemas\extract.sql" />
+    <Build Include="extract\Stored Procedures\ExtractHierarchy.sql" />
+    <Build Include="extract\Stored Procedures\ItemsWithAttributes.sql" />
+    <Build Include="extract\Stored Procedures\ProductHierarchy.sql" />
+    <None Include="Scripts\PopulateData\28242IconRebootHierarchyUpdates.sql" />
+    <None Include="Scripts\Projects\IconReboot\IconRebootConversionCreateMessageQueueItems.sql" />
+    <Build Include="dbo\StoredProcedures\GetItemsByIdSearch.sql" />
+    <Build Include="dbo\Tables\BarcodeTypeRangePool.sql" />
+    <Build Include="dbo\User Defined Types\UpdateItemsType.sql" />
+    <Build Include="dbo\StoredProcedures\UpdateItems.sql" />
+    <Build Include="dbo\StoredProcedures\GetItemPropertiesForAllMerchHierarchies.sql" />
+    <Build Include="dbo\StoredProcedures\AddItems.sql" />
+    <Build Include="dbo\User Defined Types\AddItemsType.sql" />
+    <Build Include="dbo\StoredProcedures\GetMultipleAvailableScanCodesForBarcodeTypeId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -739,17 +818,39 @@
     <None Include="Scripts\Projects\Infor\SubteamTest\RemoveSeasonalGoodsSubTeam.sql" />
     <Build Include="infor\Stored Procedures\HierarchyClassGenerateEvents.sql" />
     <None Include="Scripts\Jobs\Icon.ReseedMessageQueueId.sql" />
+    <None Include="Scripts\PopulateData\PopulateHospitalityTraits.sql" />
+    <Build Include="app\Stored Procedures\RefreshNationalHierarchyClasses.sql" />
+    <None Include="Scripts\PopulateData\RemoveMDTTraitsFromHierarchyClassTrait.sql" />
+    <None Include="Icon_1.DB.publish.xml" />
+    <None Include="IconDevLocal.publish.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Build Include="Storage\FG_History.sql" />
+    <None Include="Scripts\PopulateData\PopulateBulkItemUploadStatus.sql" />
+    <None Include="Scripts\Projects\IconReboot\IconRebootInforItemHistoryConversion.sql" />
+    <None Include="Scripts\PopulateData\AddItemPublisherToAppTable.sql" />
+    <None Include="Scripts\Projects\IconReboot\DeploymentSteps.docx" />
+    <Build Include="esb\Tables\MessageQueueAttribute.sql" />
+    <None Include="Scripts\PopulateData\PopulateAttributeMessageType.sql" />
+    <None Include="Scripts\PopulateData\AddAttributePublisherAppId.sql" />
     <None Include="Scripts\PopulateData\Archive\AddNewSubteams_10570.sql" />
     <None Include="Scripts\PopulateData\Archive\AddNewSubteams_10570_Rollback.sql" />
     <None Include="Scripts\PopulateData\Archive\UpdateExistingSubteamNames_25348.sql" />
     <None Include="Scripts\PopulateData\Archive\MoveExistingFinancialSubteams_25355.sql" />
     <None Include="Scripts\PopulateData\Archive\MoveExistingFinancialSubteams_25355_Rollback.sql" />
+    <None Include="Scripts\PopulateData\28121-MoveBrandTraitsToHierarchyClass.sql" />
+    <Build Include="app\Stored Procedures\RefreshManufacturerHierarchyClasses.sql" />
+    <None Include="Scripts\Projects\IconReboot\IconRebootPopulateBarcodeTypeRangePool.sql" />
+    <Build Include="extract\Stored Procedures\LocationAttributes.sql" />
+    <Build Include="extract\Stored Procedures\LocationHierarchy.sql" />
+    <None Include="Scripts\PopulateData\24848_AddAppIdForExtractService.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploymentScript.sql" />
+    <None Include="Scripts\Projects\IconReboot\IconRebootPopulateBrandHierarchy.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="PreDeploymentScript.sql" />

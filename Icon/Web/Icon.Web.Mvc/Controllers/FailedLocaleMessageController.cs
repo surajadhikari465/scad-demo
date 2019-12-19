@@ -1,17 +1,16 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Queries;
+using Icon.Web.Mvc.Attributes;
 using Icon.Web.Mvc.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 namespace Icon.Web.Mvc.Controllers
 {
-    [Authorize(Roles = "WFM\\IRMA.Developers")]
+    [AdminAccessAuthorizeAttribute]
     public class FailedLocaleMessageController : Controller
     {
 

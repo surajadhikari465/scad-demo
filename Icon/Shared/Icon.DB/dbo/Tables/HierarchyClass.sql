@@ -34,5 +34,7 @@ ALTER TABLE [dbo].[HierarchyClass] ADD CONSTRAINT [HierarchyClass_PK] PRIMARY KE
 )
 GO
 
-CREATE NONCLUSTERED INDEX [IX_HierarchyClass_hierarchyID] ON [dbo].[HierarchyClass] ([hierarchyID])
-INCLUDE ([hierarchyClassID],[hierarchyLevel],[hierarchyParentClassID],[hierarchyClassName])
+CREATE NONCLUSTERED INDEX [IX_HierarchyClass_hierarchyClassId] ON [dbo].[HierarchyClass] ([hierarchyClassId])
+INCLUDE ([hierarchyClassName],[hierarchyId],[hierarchyParentClassId])
+GO
+

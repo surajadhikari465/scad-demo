@@ -11,7 +11,12 @@ Post-Deployment Script Template
 */
 
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
+:r .\23063_PopulateAttributeGroupsTable.sql --2019-11-1
+:r .\Add_Attribute_Listener_To_App_Table_23063.sql --2019-11-01
 :r .\PopulateRetentionPolicyForStagingESLePlumTables.sql --2019-09-25 PBI 23939
+:r .\22694_ExtractService_Jobs.sql -- 2019-11-17 PBI 22694
+:r .\25982_IRMAItemAttributeFileSentToS3.sql --2019-12-06
+:r .\24848_PopulateLocaleHieararchyJob_ForExtractService.sql -- 2019-12-12 24848
 
 -- Run every time (add your script above; keep this at bottom, as last post-deploy script).
 :r ..\..\Security\SecurityGrants.sql

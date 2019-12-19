@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:tns="http://schemas.wfm.com/Icon/Attributes.xsd"
+	 targetNamespace="http://schemas.wfm.com/Icon/Attributes.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+  <xs:element name="Attribute" type="tns:AttributeType"/>
+  <xs:complexType name="AttributeType">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string"/>
+      <xs:element name="TraitCode" type="xs:string"/>
+      <xs:element name="Description" type="xs:string"/>
+      <xs:element name="Group" type="xs:string"/>
+      <xs:element name="DataType" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

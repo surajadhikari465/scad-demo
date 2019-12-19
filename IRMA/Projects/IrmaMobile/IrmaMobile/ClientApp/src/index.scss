@@ -1,0 +1,73 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+// @import './wfm-ui-stencil.css';
+@import '../node_modules/@wfm/ui-core/dist/wfm-ui-stencil/wfm-ui-stencil.css';
+
+@import "circular-std";
+
+/* font converted using font-converter.net. thank you! */
+@font-face {
+  font-family: "Corda-Regular";
+  src: local('Corda-Regular'), url("./assets/fonts/CORDA-REGULAR.eot"); /* IE9 Compat Modes */
+  src: local('Corda-Regular'), url("./assets/fonts/CORDA-REGULAR.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+    local('Corda-Regular'), url("./assets/fonts/CORDA-REGULAR.otf") format("opentype"), /* Open Type Font */
+    local('Corda-Regular'), url("./assets/fonts/CORDA-REGULAR.svg") format("svg"), /* Legacy iOS */
+    local('Corda-Regular'), url("./assets/fonts/CORDA-REGULAR.ttf") format("truetype"), /* Safari, Android, iOS */
+    local('Corda-Regular'), url("./assets/fonts/CORDA-REGULAR.woff") format("woff"), /* Modern Browsers */
+    local('Corda-Regular'), url("./assets/fonts/CORDA-REGULAR.woff2") format("woff2"); /* Modern Browsers */
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "CircularStd-Book";
+  src:  local('CircularStd-Book'), url("./assets/fonts/CircularStd-Book.eot"); /* IE9 Compat Modes */
+  src: local('CircularStd-Book'), url("./assets/fonts/CircularStd-Book.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+    local('CircularStd-Book'), url("./assets/fonts/CircularStd-Book.otf") format("opentype"), /* Open Type Font */
+    local('CircularStd-Book'), url("./assets/fonts/CircularStd-Book.svg") format("svg"), /* Legacy iOS */
+    local('CircularStd-Book'), url("./assets/fonts/CircularStd-Book.ttf") format("truetype"), /* Safari, Android, iOS */
+    local('CircularStd-Book'), url("./assets/fonts/CircularStd-Book.woff") format("woff"), /* Modern Browsers */
+    local('CircularStd-Book'), url("./assets/fonts/CircularStd-Book.woff2") format("woff2"); /* Modern Browsers */
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: "CircularStd";
+}
+
+button {
+  font-family: "CircularStd";
+  flex: 1 1 0%;
+  color: #004e36;   
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.25px;
+  border-style: solid;
+  border-image: initial;
+  border-width: 2px;
+  padding: 10px;
+  border-radius: 2px;
+  margin: 2px;    
+  background-color: rgb(255, 255, 255);   
+  border-color: rgb(0, 78, 54);
+  &:hover{
+      cursor: pointer;
+  }
+  &:focus{
+      background-color:rgb(0, 78, 54);
+      color: rgb(255, 255, 255); 
+  }
+}
+
+h1, h2, h3, h4 {
+  font-family: "CircularStd";
+}
+

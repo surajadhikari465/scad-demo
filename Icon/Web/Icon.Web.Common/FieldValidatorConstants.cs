@@ -1,5 +1,5 @@
-﻿using Icon.Framework;
-using System;
+﻿using System;
+using Icon.Common;
 
 namespace Icon.Web.Common
 {
@@ -28,18 +28,26 @@ namespace Icon.Web.Common
 
     public static class ValidatorErrorMessages
     {
-        public static readonly string ProductDescriptionError = String.Format("Please enter {0} or fewer valid characters.", Constants.ProductDescriptionMaxLength);
-        public static readonly string PosDescriptionError = String.Format("Please enter {0} or fewer valid characters.", Constants.PosDescriptionMaxLength);
-        public static readonly string TaxAbbreviationError = String.Format("The tax abbreviation must start with the 7 digit numerical tax code followed by a space and may contain {0} or fewer letters, numbers, or the following characters: % & ( ) - $.", Constants.TaxAbbreviationMaxLength);
-        public static readonly string BrandAbbreviationError = String.Format("Please enter {0} or fewer valid characters (Letters, Numbers, and Ampersands only).", Constants.BrandAbbreviationMaxLength);
-        public static readonly string BrandNameError = String.Format("Please enter {0} or fewer valid characters.", Constants.IconBrandNameMaxLength);
+        public static readonly string ProductDescriptionError =
+            $"Please enter {Constants.ProductDescriptionMaxLength} or fewer valid characters.";
+        public static readonly string PosDescriptionError =
+            $"Please enter {Constants.PosDescriptionMaxLength} or fewer valid characters.";
+        public static readonly string TaxAbbreviationError =
+            $"The tax abbreviation must start with the 7 digit numerical tax code followed by a space and may contain {Constants.TaxAbbreviationMaxLength} or fewer letters, numbers, or the following characters: % & ( ) - $.";
+        public static readonly string BrandAbbreviationError =
+            $"Please enter {Constants.BrandAbbreviationMaxLength} or fewer valid characters (Letters, Numbers, and Ampersands only).";
+        public static readonly string BrandNameError =
+            $"Please enter {Constants.IconBrandNameMaxLength} or fewer valid characters.";
         public static readonly string HierarchyClassNameError = "Please enter only valid characters.";
-        public static readonly string TaxRomanceError = String.Format("The Tax Romance is required and may contain {0} or fewer letters, numbers, or the following characters: % & ( ) - $.", Constants.TaxRomanceMaxLength);
+        public static readonly string TaxRomanceError =
+            $"The Tax Romance is required and may contain {Constants.TaxRomanceMaxLength} or fewer letters, numbers, or the following characters: % & ( ) - $.";
         public static readonly string MaxPlusError = String.Format("Number of PLUs must be a number");
         public static readonly string AgencyNameError = String.Format("Agency Name should contain no more than 255 characters.");
-        public static readonly string NotesError = String.Format("Please enter {0} or fewer valid characters.", Constants.NotesMaxLength);
+        public static readonly string NotesError =
+            $"Please enter {Constants.NotesMaxLength} or fewer valid characters.";
         public static readonly string DateFormatError = String.Format("Please enter date in mm/dd/yyyy format.");
-        public static readonly string UserFormatError = String.Format("Please enter {0} or fewer valid characters.", Constants.NotesMaxLength);
+        public static readonly string UserFormatError =
+            $"Please enter {Constants.NotesMaxLength} or fewer valid characters.";
         public static readonly string RetailSizeError = String.Format("Please enter a number greater than zero with 5 or less digits to the left of the decimal and 4 or less digits to the right of the decimal.");
         public static readonly string AlcoholByVolumeError = String.Format("Alcohol By Volume must be a number between 0 and 99.99 with up to two decimal places.");
        public static readonly string DrainedWeightError = "Drained Weight is not recognized. Valid entry should be a number with maximum of 4 decimal places.";

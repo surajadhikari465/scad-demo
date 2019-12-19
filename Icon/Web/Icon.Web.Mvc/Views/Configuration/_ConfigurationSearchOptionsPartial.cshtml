@@ -1,11 +1,4 @@
-﻿@using Infragistics.Web.Mvc
-@model Icon.Web.Mvc.Models.ConfigurationSearchViewModel
-
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Render()
-)
+﻿@model Icon.Web.Mvc.Models.ConfigurationSearchViewModel
 
 @using (Ajax.BeginForm("Search", "Configuration", null, new AjaxOptions
 {
@@ -20,18 +13,16 @@
     <fieldset>
         <legend>Select Region</legend>
         
-        <div class="row">            
-            @Html.LabelFor(model => Model.SelectedRegionCode, new { @class = "col-md-2 form-label" })
+        <div class="form-group">            
+            @Html.LabelFor(model => Model.SelectedRegionCode, new { @class = "cform-label" })
             <div>
-                @Html.DropDownListFor(model => Model.SelectedRegionCode, Model.RegionList, new { @class = "col-md-6 form-input" })
+                @Html.DropDownListFor(model => Model.SelectedRegionCode, Model.RegionList, new { @class = "form-control form-input" })
             </div>
         </div>
     </fieldset>
 
-    <div class="row">
-        <div class="col-md-offset-2 col-md-1">
-            <input type="submit" value="Display" class="btn btn-default form-submit" id="search-button" />
-        </div>
+    <div class="form-group">
+        <input type="submit" value="Display" class="btn btn-light form-submit" id="search-button" />
         <div class="col-md-6 page-subsection">
             @Html.ValidationSummary(true)
         </div>

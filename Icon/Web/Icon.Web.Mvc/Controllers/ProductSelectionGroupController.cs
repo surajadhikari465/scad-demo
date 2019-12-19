@@ -1,10 +1,13 @@
-﻿using Icon.Common.DataAccess;
+﻿using DevTrends.MvcDonutCaching;
+using Icon.Common.DataAccess;
+using Icon.Common.Models;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Queries;
+using Icon.Web.Mvc.Attributes;
 using Icon.Web.Mvc.Models;
 using Infragistics.Web.Mvc;
 using System;
@@ -15,7 +18,7 @@ using System.Web.Mvc;
 
 namespace Icon.Web.Mvc.Controllers
 {
-    [Authorize(Roles = "WFM\\IRMA.Applications, WFM\\IRMA.Developers")]
+    [AdminAccessAuthorizeAttribute]
     public class ProductSelectionGroupController : Controller
     {
         private ILogger logger;
@@ -25,6 +28,7 @@ namespace Icon.Web.Mvc.Controllers
         private IQueryHandler<GetHierarchyParameters, List<Hierarchy>> getHierarchiesQueryHandler;
         private IManagerHandler<AddProductSelectionGroupManager> addProductSelectionGroupManagerHandler;
         private IManagerHandler<UpdateProductSelectionGroupManager> updateProductSelectionGroupManagerHandler;
+        private IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>> getAttributesQueryHandler;
 
         public ProductSelectionGroupController(
             ILogger logger,
@@ -33,7 +37,8 @@ namespace Icon.Web.Mvc.Controllers
             IQueryHandler<GetTraitsParameters, List<Trait>> getTraitsQueryHandler,
             IQueryHandler<GetHierarchyParameters, List<Hierarchy>> getHierarchiesQueryHandler,
             IManagerHandler<AddProductSelectionGroupManager> addProductSelectionGroupManagerHandler,
-            IManagerHandler<UpdateProductSelectionGroupManager> updateProductSelectionGroupManagerHandler)
+            IManagerHandler<UpdateProductSelectionGroupManager> updateProductSelectionGroupManagerHandler,
+            IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>> getAttributesQueryHandler)
         {
             this.logger = logger;
             this.getProductSelectionGroupsQueryHandler = getProductSelectionGroupsQueryHandler;
@@ -42,6 +47,7 @@ namespace Icon.Web.Mvc.Controllers
             this.getHierarchiesQueryHandler = getHierarchiesQueryHandler;
             this.addProductSelectionGroupManagerHandler = addProductSelectionGroupManagerHandler;
             this.updateProductSelectionGroupManagerHandler = updateProductSelectionGroupManagerHandler;
+            this.getAttributesQueryHandler = getAttributesQueryHandler;
         }
 
         public ActionResult Index()
@@ -55,12 +61,16 @@ namespace Icon.Web.Mvc.Controllers
                     ProductSelectionGroupTypeId = p.ProductSelectionGroupTypeId,
                     TraitId = p.TraitId,
                     TraitValue = p.TraitValue,
-                    MerchandiseHierarchyClassId = p.MerchandiseHierarchyClassId
+                    MerchandiseHierarchyClassId = p.MerchandiseHierarchyClassId,
+                    AttributeId = p.AttributeId,
+                    AttributeValue = p.AttributeValue
                 });
 
             List<ProductSelectionGroupType> productSelectionGroupTypes = getProductSelectionGroupTypesQueryHandler.Search(new GetProductSelectionGroupTypesParameters());
             List<Trait> traits = getTraitsQueryHandler.Search(new GetTraitsParameters { IncludeNavigation = true });
             List<Hierarchy> merchandiseHierarchy = getHierarchiesQueryHandler.Search(new GetHierarchyParameters { HierarchyId = Hierarchies.Merchandise, IncludeNavigation = true });
+            var attributes = getAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>())
+                .Select(a => new AttributeViewModel(){ AttributeId = a.AttributeId, AttributeName = a.AttributeName });
 
             var viewModel = new ProductSelectionGroupGridViewModel
             {
@@ -78,14 +88,15 @@ namespace Icon.Web.Mvc.Controllers
                         HierarchyParentClassId = merch.hierarchyParentClassID
                     })
                     .OrderBy(hc => hc.HierarchyClassName)
-                    .ToList()
+                    .ToList(),
+                Attributes = attributes.ToList()
             };
 
             return View("Index", viewModel);
         }
 
         [HttpGet]
-        [OutputCache(Duration = 20)]
+        [DonutOutputCache(Duration = 20)]
         public ActionResult Create()
         {
             var viewModel = BuildProductSelectionGroupCreateViewModel();
@@ -117,7 +128,9 @@ namespace Icon.Web.Mvc.Controllers
                     ProductSelectionGroupTypeId = viewModel.SelectedProductSelectionGroupTypeId,
                     TraitId = viewModel.SelectedTraitId,
                     TraitValue = viewModel.TraitValue,
-                    MerchandiseHierarchyClassId = viewModel.SelectedMerchandiseHierarchyClassId
+                    MerchandiseHierarchyClassId = viewModel.SelectedMerchandiseHierarchyClassId,
+                    AttributeId = viewModel.SelectedAttributeId,
+                    AttributeValue = viewModel.AttributeValue
                 };
 
                 addProductSelectionGroupManagerHandler.Execute(addPsgManager);
@@ -161,11 +174,13 @@ namespace Icon.Web.Mvc.Controllers
                 })
                 .OrderBy(vm => vm.HierarchyClassLineage)
                 .ToList();
+            var attributes = getAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>())
+                .Select(a => new AttributeViewModel(){ AttributeId = a.AttributeId, AttributeName = a.AttributeName}).ToList();
 
             viewModel.ProductSelectionGroupTypes = new SelectList(productSelectionGroupTypes, "ProductSelectionGroupTypeId", "ProductSelectionGroupTypeName");
             viewModel.Traits = new SelectList(traits, "traitID", "traitDesc");
             viewModel.MerchandiseHierarchyClasses = new SelectList(merchandiseSubBricks, "hierarchyClassID", "HierarchyClassName");
-
+            viewModel.Attributes = new SelectList(attributes, "attributeId", "attributeName");
             return viewModel;
         }
 
@@ -198,7 +213,9 @@ namespace Icon.Web.Mvc.Controllers
                 ProductSelectionGroupTypeId = psg.ProductSelectionGroupTypeId,
                 TraitValue = String.IsNullOrEmpty(psg.TraitValue) ? null : psg.TraitValue,
                 TraitId = psg.TraitId,
-                MerchandiseHierarchyClassId = psg.MerchandiseHierarchyClassId
+                MerchandiseHierarchyClassId = psg.MerchandiseHierarchyClassId,
+                AttributeId = psg.AttributeId,
+                AttributeValue = String.IsNullOrEmpty(psg.AttributeValue) ? null : psg.AttributeValue,
             };
 
             try
@@ -221,9 +238,9 @@ namespace Icon.Web.Mvc.Controllers
             string errorMessage = String.Empty;
 
             // A PSG cannot have a Selected Trait with TraiValue combo and a MerchandiseHierarchyClassId
-            if (viewModel.SelectedMerchandiseHierarchyClassId.HasValue && (viewModel.SelectedTraitId.HasValue || !String.IsNullOrEmpty(viewModel.TraitValue)))
+            if (viewModel.SelectedMerchandiseHierarchyClassId.HasValue && (viewModel.SelectedTraitId.HasValue || !String.IsNullOrEmpty(viewModel.TraitValue) || viewModel.SelectedAttributeId.HasValue || !String.IsNullOrEmpty(viewModel.AttributeValue)))
             {
-                errorMessage = "There cannot be a Merchandise Sub Brick assigned to the PSG if there is a Trait and Trait Value assigned.";
+                errorMessage = "There cannot be a Merchandise Sub Brick assigned to the PSG if there is a Trait/Attribute and Trait Value/Attribute Value assigned.";
             }
 
             if (viewModel.SelectedMerchandiseHierarchyClassId.HasValue)
@@ -239,18 +256,17 @@ namespace Icon.Web.Mvc.Controllers
             }
             else
             {
-                // A Trait and TraitValue need to jointly have values, e.g. when one has a value, the other must also have a value
-                if (viewModel.SelectedTraitId.HasValue && String.IsNullOrEmpty(viewModel.TraitValue))
+                // Trait/Attribute and TraitValue/AttributeValue need to jointly have values, e.g. when one has a value, the other must also have a value
+                if ((viewModel.SelectedTraitId.HasValue && String.IsNullOrEmpty(viewModel.TraitValue)) || (viewModel.SelectedAttributeId.HasValue && String.IsNullOrEmpty(viewModel.AttributeValue)))
                 {
-                    errorMessage = "The Trait Value must have a value for the selected Trait.";
+                    errorMessage = "Trait/Attribute must have a value for the selected Trait/Attribute.";
                 }
 
-                if (!viewModel.SelectedTraitId.HasValue && !String.IsNullOrEmpty(viewModel.TraitValue))
+                if ((!viewModel.SelectedTraitId.HasValue && !String.IsNullOrEmpty(viewModel.TraitValue)) || (!viewModel.SelectedAttributeId.HasValue && !String.IsNullOrEmpty(viewModel.AttributeValue)))
                 {
-                    errorMessage = "A Trait must be selected for the specific Trait Value.";
+                    errorMessage = "Trait/Attribute must be selected for the specific Trait/Attribute Value.";
                 }
             }
-
             return errorMessage;
         }
 
@@ -259,9 +275,9 @@ namespace Icon.Web.Mvc.Controllers
             string errorMessage = String.Empty;
 
             // A PSG cannot have a Selected Trait with TraiValue combo and a MerchandiseHierarchyClassId
-            if (viewModel.MerchandiseHierarchyClassId.HasValue && (viewModel.TraitId.HasValue || !String.IsNullOrEmpty(viewModel.TraitValue)))
+            if (viewModel.MerchandiseHierarchyClassId.HasValue && (viewModel.TraitId.HasValue || !String.IsNullOrEmpty(viewModel.TraitValue) || viewModel.AttributeId.HasValue || !String.IsNullOrEmpty(viewModel.AttributeValue)))
             {
-                errorMessage = "There cannot be a Merchandise Sub Brick assigned to the PSG if there is a Trait and Trait Value assigned.";
+                errorMessage = "There cannot be a Merchandise Sub Brick assigned to the PSG if there is a Trait/Attribute and Trait Value/Attribute Value assigned.";
             }
 
             if (viewModel.MerchandiseHierarchyClassId.HasValue)
@@ -277,18 +293,17 @@ namespace Icon.Web.Mvc.Controllers
             }
             else
             {
-                // A Trait and TraitValue need to jointly have values, e.g. when one has a value, the other must also have a value
-                if (viewModel.TraitId.HasValue && String.IsNullOrEmpty(viewModel.TraitValue))
+                // Trait/Attribute and TraitValue/AttributeValue need to jointly have values, e.g. when one has a value, the other must also have a value
+                if ((viewModel.TraitId.HasValue && String.IsNullOrEmpty(viewModel.TraitValue)) || (viewModel.AttributeId.HasValue && String.IsNullOrEmpty(viewModel.AttributeValue)))
                 {
-                    errorMessage = "The Trait Value must have a value for the selected Trait.";
+                    errorMessage = "Trait/Attribute must have a value for the selected Trait/Attribute.";
                 }
 
-                if (!viewModel.TraitId.HasValue && !String.IsNullOrEmpty(viewModel.TraitValue))
+                if ((!viewModel.TraitId.HasValue && !String.IsNullOrEmpty(viewModel.TraitValue)) || (!viewModel.AttributeId.HasValue && !String.IsNullOrEmpty(viewModel.AttributeValue)))
                 {
-                    errorMessage = "A Trait must be selected for the specific Trait Value.";
+                    errorMessage = "Trait/Attribute must be selected for the specific Trait/Attribute Value.";
                 }
             }
-
             return errorMessage;
         }
     }

@@ -1,11 +1,8 @@
 ﻿using Icon.Common.DataAccess;
-using Icon.Framework;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Excel.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System;
 using Icon.Web.DataAccess.Models;
 
 namespace Icon.Web.Mvc.Excel.Validators

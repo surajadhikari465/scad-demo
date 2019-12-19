@@ -65,17 +65,17 @@ namespace Icon.Web.Tests.Integration.Queries
 
             item1 = new Item
             {
-                itemTypeID = 1,
+                ItemTypeId = 1,
                 ScanCode = new List<ScanCode> { new ScanCode { scanCode = "11111155549", scanCodeTypeID = 1, localeID = 1 } }
             };
             item2 = new Item
             {
-                itemTypeID = 1,
+                ItemTypeId = 1,
                 ScanCode = new List<ScanCode> { new ScanCode { scanCode = "11111155545", scanCodeTypeID = 1, localeID = 1 } }
             };
             item3 = new Item
             {
-                itemTypeID = 1,
+                ItemTypeId = 1,
                 ScanCode = new List<ScanCode> { new ScanCode { scanCode = "11111155536", scanCodeTypeID = 1, localeID = 1 } }
             };
             context.Item.Add(item1);
@@ -85,30 +85,30 @@ namespace Icon.Web.Tests.Integration.Queries
 
             itemTraits = new List<ItemTrait>
             {
-                new ItemTrait { itemID = item1.itemID, traitID = Traits.ProductDescription, traitValue = "GetItemsBySearchQuery Product Description1", localeID = 1 },
-                new ItemTrait { itemID = item2.itemID, traitID = Traits.ProductDescription, traitValue = "GetItemsBySearchQuery Product Description2", localeID = 1 },
-                new ItemTrait { itemID = item3.itemID, traitID = Traits.ProductDescription, traitValue = "GetItemsBySearchQuery Product Description3", localeID = 1 },
-                new ItemTrait { itemID = item1.itemID, traitID = Traits.ValidationDate, traitValue = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture), localeID = 1 },
-                new ItemTrait { itemID = item2.itemID, traitID = Traits.ValidationDate, traitValue = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture), localeID = 1 },
-                new ItemTrait { itemID = item1.itemID, traitID = Traits.PosDescription, traitValue = "GetItemsBySearchQuery Pos Description1", localeID = 1 },
-                new ItemTrait { itemID = item1.itemID, traitID = Traits.PackageUnit, traitValue = "9", localeID = 1 },
-                new ItemTrait { itemID = item1.itemID, traitID = Traits.FoodStampEligible, traitValue = "1", localeID = 1 },
-                new ItemTrait { itemID = item1.itemID, traitID = Traits.PosScaleTare, traitValue = "1.4", localeID = 1 },
-                new ItemTrait { itemID = item1.itemID, traitID = Traits.DepartmentSale, traitValue = "1", localeID = 1 },
-                new ItemTrait { itemID = item2.itemID, traitID = Traits.PackageUnit, traitValue = "10", localeID = 1 },
-                new ItemTrait { itemID = item2.itemID, traitID = Traits.FoodStampEligible, traitValue = "1", localeID = 1 },
-                new ItemTrait { itemID = item3.itemID, traitID = Traits.PosScaleTare, traitValue = "1.4", localeID = 1 },
-                new ItemTrait { itemID = item3.itemID, traitID = Traits.FoodStampEligible, traitValue = "0", localeID = 1 }
+                new ItemTrait { itemID = item1.ItemId, traitID = Traits.ProductDescription, traitValue = "GetItemsBySearchQuery Product Description1", localeID = 1 },
+                new ItemTrait { itemID = item2.ItemId, traitID = Traits.ProductDescription, traitValue = "GetItemsBySearchQuery Product Description2", localeID = 1 },
+                new ItemTrait { itemID = item3.ItemId, traitID = Traits.ProductDescription, traitValue = "GetItemsBySearchQuery Product Description3", localeID = 1 },
+                new ItemTrait { itemID = item1.ItemId, traitID = Traits.ValidationDate, traitValue = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture), localeID = 1 },
+                new ItemTrait { itemID = item2.ItemId, traitID = Traits.ValidationDate, traitValue = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture), localeID = 1 },
+                new ItemTrait { itemID = item1.ItemId, traitID = Traits.PosDescription, traitValue = "GetItemsBySearchQuery Pos Description1", localeID = 1 },
+                new ItemTrait { itemID = item1.ItemId, traitID = Traits.PackageUnit, traitValue = "9", localeID = 1 },
+                new ItemTrait { itemID = item1.ItemId, traitID = Traits.FoodStampEligible, traitValue = "1", localeID = 1 },
+                new ItemTrait { itemID = item1.ItemId, traitID = Traits.PosScaleTare, traitValue = "1.4", localeID = 1 },
+                new ItemTrait { itemID = item1.ItemId, traitID = Traits.DepartmentSale, traitValue = "1", localeID = 1 },
+                new ItemTrait { itemID = item2.ItemId, traitID = Traits.PackageUnit, traitValue = "10", localeID = 1 },
+                new ItemTrait { itemID = item2.ItemId, traitID = Traits.FoodStampEligible, traitValue = "1", localeID = 1 },
+                new ItemTrait { itemID = item3.ItemId, traitID = Traits.PosScaleTare, traitValue = "1.4", localeID = 1 },
+                new ItemTrait { itemID = item3.ItemId, traitID = Traits.FoodStampEligible, traitValue = "0", localeID = 1 }
             };
             itemHierarchyClasses = new List<ItemHierarchyClass>
             {
-                new ItemHierarchyClass { itemID = item1.itemID, hierarchyClassID = testBrand.hierarchyClassID },
-                new ItemHierarchyClass { itemID = item2.itemID, hierarchyClassID = testBrand.hierarchyClassID },
-                new ItemHierarchyClass { itemID = item3.itemID, hierarchyClassID = testBrand.hierarchyClassID },
-                new ItemHierarchyClass { itemID = item2.itemID, hierarchyClassID = testTaxClass.hierarchyClassID },
-                new ItemHierarchyClass { itemID = item3.itemID, hierarchyClassID = testTaxClass.hierarchyClassID },
-                new ItemHierarchyClass { itemID = item1.itemID, hierarchyClassID = testMerch.hierarchyClassID },
-                new ItemHierarchyClass { itemID = item1.itemID, hierarchyClassID = testNationalClass.hierarchyClassID }
+                new ItemHierarchyClass { itemID = item1.ItemId, hierarchyClassID = testBrand.hierarchyClassID },
+                new ItemHierarchyClass { itemID = item2.ItemId, hierarchyClassID = testBrand.hierarchyClassID },
+                new ItemHierarchyClass { itemID = item3.ItemId, hierarchyClassID = testBrand.hierarchyClassID },
+                new ItemHierarchyClass { itemID = item2.ItemId, hierarchyClassID = testTaxClass.hierarchyClassID },
+                new ItemHierarchyClass { itemID = item3.ItemId, hierarchyClassID = testTaxClass.hierarchyClassID },
+                new ItemHierarchyClass { itemID = item1.ItemId, hierarchyClassID = testMerch.hierarchyClassID },
+                new ItemHierarchyClass { itemID = item1.ItemId, hierarchyClassID = testNationalClass.hierarchyClassID }
             };
 
             context.ItemTrait.AddRange(itemTraits);
@@ -118,7 +118,7 @@ namespace Icon.Web.Tests.Integration.Queries
             getItemsBySearchQuery = new GetItemsBySearchQuery(this.context);
 
             testTaxRomance = testTaxClass.HierarchyClassTrait.First(hct => hct.traitID == Traits.TaxRomance).traitValue;
-            itemsById = new List<int> { item1.itemID, item2.itemID, item3.itemID };
+            itemsById = new List<int> { item1.ItemId, item2.ItemId, item3.ItemId };
         }
 
         [TestCleanup]
@@ -431,7 +431,7 @@ namespace Icon.Web.Tests.Integration.Queries
         public void GetItemsBySearchQuery_RetailSize_ReturnsItemsWithSameRetailSize()
         {
             // Given
-            item1.ItemTrait.Add(new ItemTrait { traitID = Traits.RetailSize, traitValue = "15", itemID = item1.itemID, localeID = Locales.WholeFoods });
+            item1.ItemTrait.Add(new ItemTrait { traitID = Traits.RetailSize, traitValue = "15", itemID = item1.ItemId, localeID = Locales.WholeFoods });
             context.SaveChanges();
 
             parameters = new GetItemsBySearchParameters
@@ -470,7 +470,7 @@ namespace Icon.Web.Tests.Integration.Queries
         public void GetItemsBySearchQuery_RetailUom_ReturnsItemsWithSameRetailUom()
         {
             // Given
-            item1.ItemTrait.Add(new ItemTrait { traitID = Traits.RetailUom, traitValue = UomCodes.SquareFoot, itemID = item1.itemID, localeID = Locales.WholeFoods });
+            item1.ItemTrait.Add(new ItemTrait { traitID = Traits.RetailUom, traitValue = UomCodes.SquareFoot, itemID = item1.ItemId, localeID = Locales.WholeFoods });
             context.SaveChanges();
 
             parameters = new GetItemsBySearchParameters
@@ -2183,7 +2183,7 @@ namespace Icon.Web.Tests.Integration.Queries
 
             //Then
             Assert.AreEqual(1, items.Count);
-            Assert.AreEqual(item2.itemID, items[0].ItemId);
+            Assert.AreEqual(item2.ItemId, items[0].ItemId);
         }
 
         [TestMethod]

@@ -8,8 +8,7 @@ namespace Icon.Web.Common
         public enum WriteAccess
         {
             None = 0,
-            Full = 1,
-            Traits = 2
+            Full = 1
         }
     }
 }

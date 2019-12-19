@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[AddOrUpdateHierarchyNationalSubCategory]
-	@hierarchyNational dbo.HierarchyNationalClassType READONLY
+    @hierarchyNational dbo.HierarchyNationalClassType READONLY
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -22,7 +22,7 @@ BEGIN
     INSERT INTO dbo.Hierarchy_NationalClass(FamilyHCID, CategoryHCID, SubcategoryHCID)
     SELECT t.FamilyHCID, t.CategoryHCID, t.SubcategoryHCID
     FROM #hierarchyNational t
-    LEFT JOIN dbo.Hierarchy_NationalClass h on h.SubCategoryHCID = t.SubCategoryHCID
+    LEFT JOIN dbo.Hierarchy_NationalClass h on h.SubcategoryHCID = t.SubcategoryHCID
     WHERE h.SubcategoryHCID IS NULL;
   END
 

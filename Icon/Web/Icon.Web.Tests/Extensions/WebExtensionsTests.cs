@@ -1,6 +1,6 @@
 ﻿using Icon.Framework;
 using Icon.Testing.Builders;
-using Icon.Web.Extensions;
+using Icon.Web.Mvc.Extensions;
 using Icon.Web.Tests.Common.Builders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;

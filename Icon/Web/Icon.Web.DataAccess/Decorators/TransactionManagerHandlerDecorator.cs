@@ -1,7 +1,6 @@
 ﻿using Icon.Framework;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Infrastructure;
-using Icon.Web.Common.Cache;
 
 namespace Icon.Web.DataAccess.Decorators
 {
@@ -9,13 +8,11 @@ namespace Icon.Web.DataAccess.Decorators
     {
         private readonly IManagerHandler<TManager> managerHandler;
         private IconContext context;
-        private ICache cache;
 
-        public TransactionManagerHandlerDecorator(IManagerHandler<TManager> managerHandler, IconContext context, ICache cache)
+        public TransactionManagerHandlerDecorator(IManagerHandler<TManager> managerHandler, IconContext context)
         {
             this.managerHandler = managerHandler;
             this.context = context;
-            this.cache = cache;
         }
 
         public void Execute(TManager manager)
@@ -26,15 +23,6 @@ namespace Icon.Web.DataAccess.Decorators
                 {
                     managerHandler.Execute(manager);
                     transaction.Commit();
-
-                    if (CacheRefreshNeededHandler.HiearchyCacheRefreshNeededHandlerList.Contains(managerHandler.GetType().Name))
-                    {
-                        cache.Remove("GetHierarchyLineageParameters");
-                    }
-                    if (CacheRefreshNeededHandler.AgencyCacheRefreshNeededHandlerList.Contains(managerHandler.GetType().Name))
-                    {
-                        cache.Remove("GetCertificationAgenciesParameters");
-                    }
                 }
                 catch (CommandException)
                 {

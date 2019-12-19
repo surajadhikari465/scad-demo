@@ -1,0 +1,354 @@
+﻿@model OutOfStock.Models.UPCEditViewModel           
+@{
+    ViewBag.Title = "UPC Edit Tool";
+}
+
+@(Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text>
+
+                                                        $('#UPCToFind').first().focus();
+                                                        
+                                     
+    if ($(this).find(".t-no-data").length) {
+        
+    }
+
+
+                                                    </text>))
+
+<p style="font-weight:bold; color:#FF0000;">@(ViewBag.Error ?? string.Empty)</p>
+
+
+                @using (Html.BeginForm("Search", "UPCEdit", FormMethod.Post, new {id = "formSubmitSearch"}))
+                {
+
+
+                    <table class="CleanTable" style="width: auto;">
+                        <tr class="CleanTable">
+                            <td align="left" valign="top" class="CleanTable" style="padding-right: 25px;">
+                                <div class="InfoPanel" style="">
+                                    <div class="InfoPanelTitle">SEARCH</div>
+                                    <div style="">
+                                        <span style="padding-right: 6px;">@Html.Label("UPCToFind", "UPC")</span>
+                                        <span style="padding-right: 6px;">@Html.TextBox("UPCToFind")</span>
+                                        <input type="submit" name="submitButton" value="Search" />
+                                    </div>
+                                </div>
+
+                    @if (Model != null)
+                    {
+                        if (Model.CombinedResults != null && Model.VimDetails != null)
+                        {
+                            if (Model.CombinedResults.Count == 0 && Model.VimDetails.Count == 1 && Model.VimDetails[Model.UPCs[0]] != null)
+                            {
+                                <div class="" style="padding-top: 10px;">
+                                    <div class="InfoPanelTitle">Add product status for: @(Model.VimDetails[Model.UPCs[0]].LONG_DESCRIPTION) [@(Model.VimDetails[Model.UPCs[0]].NAT_UPC)] </div>
+                                    <div style="">
+                                        @Html.Hidden( "newUPC", Model.VimDetails[Model.UPCs[0]].NAT_UPC)
+                                        <span style="padding-right: 6px;">@Html.TextArea("newStatus", new {style = "width: 400px"})</span><br/>
+                                        Expiration Date: @(Html.Telerik().DatePicker()
+                        .ButtonTitle("Select expiration date")
+                        .Format("MM/dd/yyyy")
+                        .Name("newExpirationDate")
+                        .ShowButton(true)
+                        .HtmlAttributes(new { id = "DatePicker_wrapper", tabindex = "4" })
+                    )
+                                            
+                        
+                                        <p><input type="submit" name="submitButton" value="Add" /></p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+
+                
+                                
+                                
+
+                            </td>
+                        </tr>
+
+                    </table>
+                }
+                
+@Html.ValidationSummary(true)
+<div style="padding-top:16px;"> 
+<table border="0" cellpadding="0" cellspacing="0"><tr><td>
+    @{ 
+        if (Model != null)
+        {
+            @(Html.Telerik().Grid(Model.CombinedResults)
+                .Name("Grid")
+            // .RowTemplate( grid =>@<text><div class="employee-details"><h3>@item.ItemDescription</h3><dl><dt>Upload Date:</dt><dd>@item.StartDate.ToString("MM/dd/yyyy hh:mm:ss")</dd><dt>Region:</dt><dd>@item.Region</dd><dt>UPC:</dt><dd>@item.UPC</dd></dl><dl class="t-widget"><dt>Brand:</dt><dd>@item.BrandName</dd><dt>Size:</dt><dd>@item.Size</dd><dt>UOM:</dt><dd>@item.UOM</dd> </dl><dl class="t-widget" style="overflow: scroll; height: 100px; width: 500px">@item.Status</dl><div class="commands">@grid.EditButton(item)@grid.DeleteButton(item)</div></div></text>//<!-- <%= grid.EditButton(c) %> <%= grid.DeleteButton(c) %> -->
+               .DataKeys(k =>
+               {
+                   k.Add(o => o.Id).RouteKey("Id");
+                   k.Add(o => o.UPC).RouteKey("UPC");
+               })
+                    .RowAction(action => action.HtmlAttributes.Add("style", "height: 100px;"))
+                .DataBinding(dataBinding => dataBinding.Server()
+                    .Select("GridSelect", "UPCEdit")
+                        .Update("GridUpdate", "UPCEdit")
+                        .Delete("GridDelete", "UPCEdit"))
+                .Columns(columns =>
+                {
+                    columns.Command(commands => commands
+                        .Delete()
+                        .ButtonType(GridButtonType.Image)
+                        .HtmlAttributes(new { @class = "delete-image", title = "Delete" })
+                        ).Width(50);
+
+                    columns.Bound(c => c.StartDate)
+                        .Width(120)
+                        .Format("{0:MM/dd/yyyy hh:mm:ss}")
+                        .HeaderTemplate("Upload Date")
+                        .ReadOnly();
+                    columns.Bound(c => c.Region)
+                        .Width(75)
+                        .HeaderTemplate("Region")
+                        .ReadOnly()
+                        .HtmlAttributes(new { style = "text-align: center;" })
+                        .HeaderHtmlAttributes(new { style = "text-align: center;" });
+                    columns.Bound(c => c.UPC)
+                        .Width(110)
+                        .HeaderTemplate("UPC")
+                        .ReadOnly();
+                    columns.Bound(c => c.BrandName)
+                        .Width(95)
+                        .HeaderTemplate("Brand Name")
+                        .ReadOnly();
+                    columns.Bound(c => c.ItemDescription)
+                        .Width(160)
+                        .HeaderTemplate("Item Description")
+                        .ReadOnly()
+                        .HtmlAttributes(new { style = "white-space:nowrap;" });
+                    columns.Bound(c => c.Size)
+                        .Width(45)
+                        .HeaderTemplate("Size")
+                        .ReadOnly()
+                        .HtmlAttributes(new { style = "text-align: center;" })
+                        .HeaderHtmlAttributes(new { style = "text-align: center;" });
+                    columns.Bound(c => c.UOM)
+                        .Width(45)
+                        .HeaderTemplate("UOM")
+                        .ReadOnly()
+                        .HtmlAttributes(new { style = "text-align: center;" })
+                        .HeaderHtmlAttributes(new { style = "text-align: center;" });
+                    columns.Bound(c => c.ExpirationDate)
+                        .Width(170).Format("{0:MM/dd/yyyy}")
+                        .HeaderTemplate("Expiration Date")
+                        .HtmlAttributes(new { style = "text-align: center;" })
+                        .HeaderHtmlAttributes(new { style = "text-align: center;" });
+                    columns.Bound(c => c.Status)
+                           .Width(220)
+                           .HeaderTemplate("Product Status")
+                           .HtmlAttributes(new { style = "text-align: left;" })
+                           .HeaderHtmlAttributes(new { style = "text-align: center;" })
+                           .Template(template => "<div style='height: 75px; overflow: scroll;'>" + template.Status + "</div>"
+
+                        );
+                    columns.Command(commands =>
+
+                        commands.Edit().ButtonType(GridButtonType.Image).HtmlAttributes(new { @class = "edit-image", title = "Edit" })
+
+                    ).Width(100);
+                })
+                 .ClientEvents(events => events.OnEdit("onEdit"))
+                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                .Scrollable(scrolling => scrolling.Enabled(false))
+                .Sortable(sorting => sorting.Enabled(false))
+                .Pageable(paging => paging.Enabled(false))
+                .Filterable(filtering => filtering.Enabled(false))
+                .Groupable(grouping => grouping.Enabled(false))
+                .Footer(false))
+        }
+        }
+</td></tr><tr><td></td></tr></table>
+</div>
+
+<script type="text/javascript">
+
+
+  
+</script>
+
+@section HeadContent
+{ 
+
+  
+    <!--<style type="text/css">    /* validators */    .field-validation-error    {        position: absolute;        display: block;    }        * html .field-validation-error { position: relative; }    *+html .field-validation-error { position: relative; }        .field-validation-error span    {        position: absolute;        white-space: nowrap;        color: red;        padding: 17px 5px 3px;        background: transparent url('@Url.Content("~/Content/Common/validation-error-message.png") ') no-repeat 0 0;    }        /* in-form editing */    .t-edit-form-container    {        width: 350px;        margin: 1em;    }        .t-edit-form-container .editor-label,    .t-edit-form-container .editor-field    {        padding-bottom: 1em;        float: left;    }        .t-edit-form-container .editor-label    {        width: 30%;        text-align: right;        padding-right: 3%;        clear: left;    }        .t-edit-form-container .editor-field    {        width: 60%;    }</style> -->
+    <style type="text/css">
+
+
+        .t-grid .t-button,
+        .t-grid .t-button:hover,
+        .t-grid .t-button:visited,
+        .t-grid .t-button:active,
+        .t-grid .t-button:link
+        {
+            /*
+            color: #1A6A94;
+            text-decoration:underline;
+            font-size: x-small;
+            
+            padding:0;
+            margin:0;
+            border:none 0px transparent;
+            border-left:none 0px transparent;
+            border-right:none 0px transparent;
+            height:auto;
+            width:70px;
+            border-radius: 0 0;
+            -webkit-border-radius: 0 0;
+            -moz-border-radius: 0 0;
+            text-align:center;
+            */
+        }
+        .t-grid .t-button:hover
+        {
+            background: #A2BB7A;
+        }
+        .t-grid-actions,
+        .t-grid-edit,
+        .t-grid-delete,
+        .t-grid-update,
+        .t-grid-cancel
+        {
+            /*
+            border:none 0px transparent;
+            border-left:none 0px transparent;
+            border-right:none 0px transparent;
+            
+            color:inherit;
+            padding:inherit;
+            margin:inherit;
+            border:inherit;
+            height:inherit;
+            */
+        }
+        /*.t-grid tbody td { height: 100px;}*/
+        .t-grid tbody tr { height: 100px;}
+
+        .t-grid .t-status
+        {
+            display: none;
+        }
+
+        .t-grid
+        {
+            border: none 0px transparent;font-size: 11px;
+        }
+
+        .t-grid-header .t-header
+        {
+            border-top: solid 2px #E1E1E1;
+            border-bottom: solid 2px #E1E1E1;
+            border-right: solid 2px #FFFFFF;
+            border-left: none 0px transparent;
+            background-color: #F4F4F4;
+            background: -moz-linear-gradient(top, #F4F4F4, #E1E1E1);
+            background: -webkit-gradient(linear, left top, left bottom, from(#F4F4F4), to(#E1E1E1));
+            filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr=#F4F4F4, endColorstr=#E1E1E1);
+        }
+
+        .t-grid table
+        {
+            width: auto;
+            border-collapse: separate;
+            empty-cells: show;
+            border: 0;
+        }
+
+        .delete-image .t-icon {
+            background: transparent url('/Content/images/icons/delete.png') no-repeat 0 0;
+        }
+
+        .edit-image .t-edit {
+            background: transparent url('/Content/images/icons/page_edit.png') no-repeat 0 0;
+        }
+
+        .edit-image .t-cancel {
+            background: transparent url('/Content/images/icons/arrow_undo.png') no-repeat 0 0;
+        }
+
+        .edit-image .t-update {
+            background: transparent url('/Content/images/icons/page_save.png') no-repeat 0 0;
+        }
+
+        .t-footer-template td
+        {
+            background-color: #526B2A;
+            border-color: #526B2A;
+            border-width: 1px 0 0 1px;
+            border-style: solid;
+            color: #ffffff;
+
+            font-size: x-small;
+        }
+        .employee-details
+        {
+            padding: .8em .6em;
+            display: inline-block;
+        }
+        .employee-details
+        {
+            display: block;
+        }
+
+        .employee-details:after
+        {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .employee-details dl,
+        .employee-details dt,
+        .employee-details dd
+        {
+
+            margin-left: 0;
+            padding: 0;
+
+        }
+        .employee-details dd:after {
+            content: "\A";white-space: pre;
+        }
+
+        .employee-details img,
+        .employee-details h2,
+        .employee-details dl,
+        .commands
+        {
+            float: left;
+            clear: none;
+            margin: 0 14px 0 0;
+        }
+        .employee-details h2,
+        .employee-details dl
+        {
+            width: 150px;
+            min-height: 115px;
+            border-width: 0 1px 0 0;
+            background-color: transparent;
+            color: inherit;
+        }
+
+        .employee-details h2 {
+            width: 90px;
+            padding: 0;
+            font-size: 1em;
+            padding-right: 20px;
+        }
+
+        .employee-details dt
+        {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .employee-details status {
+
+        }
+    </style>
+}

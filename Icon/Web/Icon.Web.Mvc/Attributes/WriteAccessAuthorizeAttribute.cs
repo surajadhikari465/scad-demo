@@ -18,10 +18,9 @@ namespace Icon.Web.Mvc.Attributes
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            var inforDisableAccess = ConfigurationManager.AppSettings["InforDisableIconInterface"] == "1";
-            bool grantAccess = GlobalDataTeamException || !inforDisableAccess;
+            bool grantAccess = false ;
 
-            if(grantAccess && httpContext.Request.IsAuthenticated)
+            if(httpContext.Request.IsAuthenticated)
             {
                 grantAccess = ConfigurationManager.AppSettings["WriteAccess"].Split(',').Any(x => httpContext.User.IsInRole(x.Trim()));
             }
@@ -51,8 +50,8 @@ namespace Icon.Web.Mvc.Attributes
                         Data = new
                         {
                             Success = false,
-                            Error = "Access denied. This is now being managed in Infor.",
-                            Message = "Access denied. This is now being managed in Infor."
+                            Error = "Access denied. You do not have sufficient permissions to perform this operation.",
+                            Message = "Access denied. You do not have sufficient permissions to perform this operation."
                         }
                     };
                 }

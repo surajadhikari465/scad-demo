@@ -1,4 +1,4 @@
-﻿using System.Web;
+﻿using Icon.Web.Mvc.Attributes;
 using System.Web.Mvc;
 
 namespace Icon.Web
@@ -8,6 +8,7 @@ namespace Icon.Web
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new ReadAccessAuthorizeAttribute());
         }
     }
 }

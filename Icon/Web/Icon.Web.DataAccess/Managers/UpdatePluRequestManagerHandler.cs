@@ -1,14 +1,12 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Web.Common;
-using Icon.Web.Common.Validators;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
-using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using Icon.Common.Validators;
 
 namespace Icon.Web.DataAccess.Managers
 {

@@ -1,0 +1,28 @@
+
+{
+    "region" : "us-east-2",
+    "profile" : "OutOfStockDevUser",
+    "configuration" : "Release",
+    "tag"           : "irmamobile:latest",
+    "docker-build-working-dir" : "",
+    "cluster"                  : "irma-mobile-cluster",
+    "launch-type"              : "FARGATE",
+    "launch-subnets"           : "subnet-68b90301,subnet-f021ed8b,subnet-e818fea5",
+    "launch-security-groups"   : "sg-66d9460f",
+    "assign-public-ip"         : true,
+    "task-definition-name"     : "irma-mobile-task",
+    "task-cpu"                 : "256",
+    "task-memory"              : "512",
+    "task-execution-role"      : "ecsTaskExecutionRole",
+    "container-name"           : "irma-mobile-container",
+    "container-port-mapping"   : "80:80,443:443",
+    "container-environment-variables" : "\"ASPNETCORE_ENVIRONMENT\"=\"Production\";\"ASPNETCORE_HTTPS_PORT\"=\"443\"",
+    "skip-image-push"                 : false,
+    "cluster-service"                 : "irma-mobile-service",
+    "desired-count"                   : 1,
+    "deployment-minimum-healthy-percent" : 50,
+    "deployment-maximum-percent"         : 200,
+    "elb-target-group"                   : "arn:aws:elasticloadbalancing:us-east-2:842741608200:targetgroup/irma-mobile-lb-g/aeaf5c6cc1a8e98d",
+    "elb-container-port"                 : 80,
+    "vstoolkit-deployment-mode"          : "DeployService"
+}

@@ -71,7 +71,7 @@ namespace Icon.Web.Mvc.Models
 
         public PluMappingViewModel(Item item)
         {
-            ItemId = item.itemID;
+            ItemId = item.ItemId;
             NationalPlu = item.ScanCode.Single().scanCode;
             PluType = item.ScanCode.Single().ScanCodeType.scanCodeTypeDesc;
 

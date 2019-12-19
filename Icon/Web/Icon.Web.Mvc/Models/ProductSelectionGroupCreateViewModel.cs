@@ -25,5 +25,13 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = "Merchandise Sub Brick")]
         public int? SelectedMerchandiseHierarchyClassId { get; set; }
         public SelectList MerchandiseHierarchyClasses { get; set; }
+
+        [Display(Name = "Attribute Name")]
+        public int? SelectedAttributeId { get; set; }
+
+        [Display(Name = "Attribute Value")]
+        public string AttributeValue { get; set; }
+
+        public SelectList Attributes { get; set; }
     }
 }

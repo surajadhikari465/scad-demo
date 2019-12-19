@@ -24,17 +24,17 @@ namespace Icon.Web.Mvc.Models
 
         [Display(Name = "Brand Name")]
         [Required]
-        [IconPropertyValidation(ValidatorPropertyNames.BrandName, CanBeNullOrEmprty = false)]
+        [IconPropertyValidation(ValidatorPropertyNames.BrandName, CanBeNullOrEmpty = false)]
         public string BrandName { get; set; }
 
         [Display(Name = "Product Description")]
         [Required]
-        [IconPropertyValidation(ValidatorPropertyNames.ProductDescription, CanBeNullOrEmprty = false)]
+        [IconPropertyValidation(ValidatorPropertyNames.ProductDescription, CanBeNullOrEmpty = false)]
         public string ProductDescription { get; set; }
 
         [Display(Name = "POS Description")]
         [Required]
-        [IconPropertyValidation(ValidatorPropertyNames.PosDescription, CanBeNullOrEmprty = false)]
+        [IconPropertyValidation(ValidatorPropertyNames.PosDescription, CanBeNullOrEmpty = false)]
         public string PosDescription { get; set; }
 
         [Display(Name = "Item Pack")]

@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System;
 using Icon.Logging;
 using Icon.Monitoring.DataAccess.Model;
-using Icon.Monitoring.Common.Opsgenie;
 
 namespace Icon.Monitoring.Monitors
 {

@@ -1,5 +1,4 @@
-﻿@using Infragistics.Web.Mvc
-@model Icon.Web.Mvc.Models.VenueViewModel
+﻿@model Icon.Web.Mvc.Models.VenueViewModel
 
 @{
     ViewBag.Title = "New Store";
@@ -8,7 +7,7 @@
 
 @Styles.Render("~/Content/themes/base/all.css")
 
-@{Html.RenderPartial("_HeaderPartial", "Locale Management");}
+@{Html.RenderPartial("_HeaderPartial", "Create Venue");}
 
 <div class="page-section">
     @using (Html.BeginForm("CreateVenue", "Venue", FormMethod.Post, new { @class = "begin-form" }))
@@ -21,72 +20,51 @@
         @Html.HiddenFor(model => model.LocaleTypeId)
         @Html.HiddenFor(model => model.OwnerOrgPartyId)
 
-    <fieldset>
-        <legend>Create Venue</legend>
-
-        <div class="row page-subsection">
-            <h4 class="col-md-2 form-label">Attributes</h4>
-        </div>
-        <div class="row">
-            @Html.LabelFor(model => model.ParentLocaleName, new { @class = "col-md-2 form-label" })
-            <div>
-                @Html.TextBoxFor(model => model.ParentLocaleName, new { @disabled = "disabled", @class = "col-md-6 form-input" })
+        <fieldset>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ParentLocaleName, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.ParentLocaleName, new { @disabled = "disabled", @class = "form-control form-input" })
             </div>
-        </div>
-        <div class="row">
-            @Html.LabelFor(model => model.LocaleName, new { @class = "col-md-2 form-label" })
-            <div>
-                @Html.TextBoxFor(model => model.LocaleName, new { @class = "col-md-6 form-input" })
-                @Html.ValidationMessageFor(model => model.LocaleName, null, new { @class = "col-md-6 form-property-val" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.LocaleName, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.LocaleName, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.LocaleName, null, new { @class = "form-property-val" })
             </div>
-        </div>
 
-        <div class="row">
-            @Html.LabelFor(model => model.LocaleSubTypes, new { @class = "col-md-2 form-label" })
-            <div>
-                @Html.DropDownListFor(model => model.LocaleSubTypeId, Model.LocaleSubTypes, "--Select Sub Type--", new { @class = "col-md-6 form-input" })
-                @Html.ValidationMessageFor(model => model.LocaleSubTypeId, null, new { @class = "col-md-4 form-property-val" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.LocaleSubTypes, new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.LocaleSubTypeId, Model.LocaleSubTypes, "--Select Sub Type--", new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.LocaleSubTypeId, null, new { @class = "form-property-val" })
             </div>
-        </div>
 
-        <div class="row">
-            @Html.LabelFor(model => model.TouchPointGroupId, new { @class = "col-md-2 form-label" })
-            <div>
-                @Html.TextBoxFor(model => model.TouchPointGroupId, new { @class = "col-md-6 form-input" })
-                @Html.ValidationMessageFor(model => model.TouchPointGroupId, null, new { @class = "col-md-6 form-property-val" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.TouchPointGroupId, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.TouchPointGroupId, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.TouchPointGroupId, null, new { @class = "form-property-val" })
             </div>
-        </div>
 
-        <div class="row">
-            @Html.LabelFor(model => model.VenueOccupant, new { @class = "col-md-2 form-label" })
-            <div>
-                @Html.TextBoxFor(model => model.VenueOccupant, new { @class = "col-md-6 form-input" })
-                @Html.ValidationMessageFor(model => model.VenueOccupant, null, new { @class = "col-md-6 form-property-val" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.VenueOccupant, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.VenueOccupant, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.VenueOccupant, null, new { @class = "form-property-val" })
             </div>
-        </div>
 
-        <div class="row">
-            @Html.LabelFor(model => model.VenueCode, new { @class = "col-md-2 form-label" })
-            <div>
-                @Html.TextBoxFor(model => model.VenueCode, new { @class = "col-md-6 form-input" })
-                @Html.ValidationMessageFor(model => model.VenueCode, null, new { @class = "col-md-6 form-property-val" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.VenueCode, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.VenueCode, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.VenueCode, null, new { @class = "form-property-val" })
             </div>
-        </div>
 
-        <div class="row">
-            @Html.LabelFor(model => model.OpenDate, new { @class = "col-md-2 form-label" })
-            <div>
-                @Html.TextBoxFor(model => model.OpenDate, new { @id = "datepicker", @class = "col-md-6 form-input" })
-                @Html.ValidationMessageFor(model => model.OpenDate, null, new { @class = "col-md-6 form-property-val" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.OpenDate, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.OpenDate, new { @id = "datepicker", @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.OpenDate, null, new { @class = "form-property-val" })
             </div>
-        </div>
 
-    </fieldset>
+        </fieldset>
 
-        <div class="row">
-            <div class="col-md-offset-2 col-md-1">
-                <input type="submit" id="create-button" value="Create" class="btn btn-default form-submit" />
-            </div>
+        <div class="form-group">
+            <input type="submit" id="create-button" value="Create" class="btn btn-light form-submit" />
         </div>
 
         <div class="validation-section page-subsection">
@@ -111,7 +89,7 @@
 </div>
 
 <div class="form-footer">
-    @Html.ActionLink("Back to Locale Management", "Index","Store")
+    @Html.ActionLink("Back to Locale Management", "Index", "Store")
 </div>
 
 @section scripts

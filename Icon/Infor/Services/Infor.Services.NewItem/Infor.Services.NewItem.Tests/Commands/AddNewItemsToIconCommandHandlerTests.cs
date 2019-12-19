@@ -2,16 +2,16 @@
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Infor.Services.NewItem.Commands;
+using Services.NewItem.Commands;
 using Icon.Framework;
 using System.Data.Entity;
-using Infor.Services.NewItem.Cache;
+using Services.NewItem.Cache;
 using Moq;
-using Infor.Services.NewItem.Models;
+using Services.NewItem.Models;
 using System.Linq;
 using Icon.Common.Context;
 
-namespace Infor.Services.NewItem.Tests.Commands
+namespace Services.NewItem.Tests.Commands
 {
     /// <summary>
     /// Summary description for AddNewItemsToIconCommandHandlerTests
@@ -19,8 +19,8 @@ namespace Infor.Services.NewItem.Tests.Commands
     [TestClass]
     public class AddNewItemsToIconCommandHandlerTests
     {
-        private AddNewItemsToIconCommandHandler commandHandler;
-        private AddNewItemsToIconCommand command;
+        private UpdateItemSubscriptionInIconCommandHandler commandHandler;
+        private UpdateItemSubscriptionInIconCommand command;
         private IconContext context;
         private DbContextTransaction transaction;
         private Mock<IIconCache> mockIconCache;
@@ -36,8 +36,8 @@ namespace Infor.Services.NewItem.Tests.Commands
             mockRenewableContext.SetupGet(m => m.Context).Returns(context);
 
             mockIconCache = new Mock<IIconCache>();
-            commandHandler = new AddNewItemsToIconCommandHandler(mockRenewableContext.Object, mockIconCache.Object);
-            command = new AddNewItemsToIconCommand();
+            commandHandler = new UpdateItemSubscriptionInIconCommandHandler(mockRenewableContext.Object, mockIconCache.Object);
+            command = new UpdateItemSubscriptionInIconCommand();
         }
 
         [TestCleanup]

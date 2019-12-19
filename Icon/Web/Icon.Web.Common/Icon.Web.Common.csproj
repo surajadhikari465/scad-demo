@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Icon.Web.Common</RootNamespace>
     <AssemblyName>Icon.Web.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -75,27 +75,26 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
+      <HintPath>..\packages\Icon.Common.2019.11.13.3\lib\net472\Icon.Common.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.DbContextFactory.2019.5.15.1\lib\net46\Icon.DbContextFactory.dll</HintPath>
+      <HintPath>..\packages\Icon.DbContextFactory.2019.5.22.1\lib\net472\Icon.DbContextFactory.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2019.8.29.3\lib\net46\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2019.11.13.3\lib\net472\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.RenewableContext.2019.5.14.2\lib\net472\Icon.RenewableContext.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.Extended.4.5.10\lib\net45\NLog.Extended.dll</HintPath>
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -114,46 +113,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\Cache.cs" />
-    <Compile Include="Cache\CacheExtensions.cs" />
-    <Compile Include="Cache\CachePolicy.cs" />
-    <Compile Include="Cache\ICachePolicy.cs" />
+    <Compile Include="AppSettings.cs" />
     <Compile Include="CommandException.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="FieldValidatorConstants.cs" />
-    <Compile Include="Constants.cs" />
     <Compile Include="ExceptionLogger.cs" />
-    <Compile Include="Cache\ICache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\ConversionUtility.cs" />
+    <Compile Include="Utility\MerchToItemTypeCodeMapper.cs" />
     <Compile Include="Utility\PropertyUtility.cs" />
-    <Compile Include="Validators\BusinessUnitValidator.cs" />
-    <Compile Include="Validators\SubBrickCodeValidator.cs" />
-    <Compile Include="Validators\YesNoValidator.cs" />
-    <Compile Include="Validators\HierarchyClassNameValidator.cs" />
-    <Compile Include="Validators\IconPropertyValidationRules.cs" />
-    <Compile Include="Validators\IObjectValidator.cs" />
-    <Compile Include="Validators\PackageUnitValidator.cs" />
-    <Compile Include="Validators\PluValidator.cs" />
-    <Compile Include="Validators\PosDescriptionValidator.cs" />
-    <Compile Include="Validators\PosScaleTareValidator.cs" />
-    <Compile Include="Validators\ProductDescriptionValidator.cs" />
-    <Compile Include="Validators\RetailSizeValidator.cs" />
-    <Compile Include="Validators\RetailUomValidator.cs" />
-    <Compile Include="Validators\ScanCodeValidator.cs" />
-    <Compile Include="Validators\ObjectValidationResult.cs" />
-    <Compile Include="Validators\ValueRequiredValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="lib\" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

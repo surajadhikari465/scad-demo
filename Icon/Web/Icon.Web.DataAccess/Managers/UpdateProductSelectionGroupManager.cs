@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Icon.Web.DataAccess.Managers
+﻿namespace Icon.Web.DataAccess.Managers
 {
     public class UpdateProductSelectionGroupManager
     {
@@ -13,5 +8,7 @@ namespace Icon.Web.DataAccess.Managers
         public int? TraitId { get; set; }
         public string TraitValue { get; set; }
         public int? MerchandiseHierarchyClassId { get; set; }
+        public int? AttributeId { get; set; }
+        public string AttributeValue { get; set; }
     }
 }

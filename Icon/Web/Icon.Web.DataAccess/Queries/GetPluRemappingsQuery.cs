@@ -1,8 +1,6 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -66,7 +64,7 @@ namespace Icon.Web.DataAccess.Queries
                     string newNationalPlu = remapRow.NationalPlu;
                     remapping.NewNationalPlu = newNationalPlu;
 
-                    int newNationalPluId = context.Item.Where(item => item.ScanCode.Any(scanCode => scanCode.scanCode == newNationalPlu)).Select(item => item.itemID).Single();
+                    int newNationalPluId = context.Item.Where(item => item.ScanCode.Any(scanCode => scanCode.scanCode == newNationalPlu)).Select(item => item.ItemId).Single();
                     string currentNationalPlu = context.ScanCode.Where(scanCode => scanCode.itemID == remapping.CurrentNationalPluId).Select(scanCode => scanCode.scanCode).FirstOrDefault();
 
                     remapping.NewNationalPluId = newNationalPluId;

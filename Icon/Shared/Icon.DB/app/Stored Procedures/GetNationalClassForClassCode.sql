@@ -14,7 +14,6 @@ BEGIN
 		select hc.* from HierarchyClass hc
 		join HierarchyClassTrait hct on hc.hierarchyClassID = hct.hierarchyClassID and traitID = @classCodeTraitId
 		where hc.hierarchyID = @nationalHierarchyId
-			and hc.hierarchyLevel = 4
 			and hct.traitValue = @NationalClassCode
 		
 

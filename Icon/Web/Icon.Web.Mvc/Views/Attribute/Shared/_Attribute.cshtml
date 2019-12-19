@@ -1,0 +1,46 @@
+﻿@using Icon.Web.Mvc.Models
+@model Icon.Web.Mvc.Models.AttributeViewModel
+
+<div class="form-group">
+    @Html.HiddenFor(model => model.Action, new { id = "attributeAction" })
+    @Html.LabelFor(model => model.DisplayName, new { @class = "form-label" })
+    @Html.TextBoxFor(model => model.DisplayName, new { @class = "form-control form-input", @id = "displayName" })
+    @Html.ValidationMessageFor(model => model.DisplayName, null, new { @class = "form-property-val" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, new { @class = "form-label" })
+    @Html.TextAreaFor(model => model.Description, new { @class = "form-control form-input", @id = "description" })
+    @Html.ValidationMessageFor(model => model.Description, null, new { @class = "form-property-val" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.TraitCode, new { @class = "form-label" })
+    @if (Model.Action == ActionEnum.Update)
+    {
+        @Html.TextBoxFor(model => model.TraitCode, new { @class = "form-control form-input", @id = "traitCode", @disabled = "disabled" })
+        @Html.HiddenFor(model => model.TraitCode)
+    }
+    else
+    {
+        @Html.TextBoxFor(model => model.TraitCode, new { @class = "form-control form-input", @id = "traitCode" })
+    }
+    @Html.ValidationMessageFor(model => model.TraitCode, null, new { @class = "form-property-val" })
+</div>
+
+<div class="form-group">
+    @Html.CheckBoxFor(model => model.IsRequired, new { @id = "chk_Required" })
+    @Html.LabelFor(model => model.IsRequired, new { @class = "form-label", @for = "chk_Required" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.DataTypeId, new { @class = "form-label" })
+    @if (Model.AttributeId > 0)
+    {
+        @Html.DropDownListFor(model => Model.DataTypeId, Model.AvailableDataTypes, new { @class = "form-control", @disabled = "disabled" })
+        @Html.HiddenFor(model => model.DataTypeId)
+    }
+    else
+    {
+        @Html.DropDownListFor(model => Model.DataTypeId, Model.AvailableDataTypes, new { @class = "form-control" })
+    }
+</div>
+<div id="partialViewPlaceHolder" style="display:none;"> </div>

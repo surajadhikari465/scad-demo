@@ -31,7 +31,7 @@ namespace Icon.Framework
 	var uomNames = new List<string>();
 	var uomCodes = new List<string>();
 
-    string fullPath = Host.ResolvePath("") + @"App.config";
+    string fullPath = Host.ResolvePath(@"..\Icon.Framework\App.config");
 	var config = new ConfigurationAccessor((IServiceProvider)this.Host, fullPath);
     string connectionString = config.ConnectionStrings["T4"].ConnectionString;
     SqlConnection conn = new SqlConnection(connectionString);

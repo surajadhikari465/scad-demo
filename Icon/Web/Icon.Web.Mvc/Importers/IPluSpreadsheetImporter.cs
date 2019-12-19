@@ -1,8 +1,7 @@
-﻿using Icon.Web.Common.Validators;
-using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Models;
+﻿using Icon.Web.DataAccess.Models;
 using Infragistics.Documents.Excel;
 using System.Collections.Generic;
+using Icon.Common.Validators;
 
 namespace Icon.Web.Mvc.Importers
 {

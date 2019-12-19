@@ -1,8 +1,6 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Web.DataAccess.Infrastructure;
 using System;
-using System.Linq;
 
 namespace Icon.Web.DataAccess.Commands
 {
@@ -17,28 +15,29 @@ namespace Icon.Web.DataAccess.Commands
 
         public void Execute(AddBrandMessageCommand data)
         {
-            var message = new MessageQueueHierarchy();
-
-            message.MessageTypeId = MessageTypes.Hierarchy;
-            message.MessageStatusId = MessageStatusTypes.Ready;
-            message.MessageHistoryId = null;
-            message.MessageActionId = data.Action;
-            message.InsertDate = DateTime.Now;
-            message.HierarchyId = data.Brand.hierarchyID;
-            message.HierarchyName = HierarchyNames.Brands;
-            message.HierarchyLevelName = HierarchyLevelNames.Brand;
-            message.ItemsAttached = true;
-            message.HierarchyClassId = data.Brand.hierarchyClassID.ToString();
-            message.HierarchyClassName = data.Brand.hierarchyClassName;
-            message.HierarchyLevel = data.Brand.hierarchyLevel.Value;
-            message.HierarchyParentClassId = data.Brand.hierarchyParentClassID;
-            message.InProcessBy = null;
-            message.ProcessedDate = null;
-            message.BrandAbbreviation = data.BrandAbbreviation;
-            message.ZipCode = data.ZipCode;
-            message.Designation = data.Designation;
-            message.Locality = data.Locality;
-            
+            var message = new MessageQueueHierarchy
+            {
+                MessageTypeId = MessageTypes.Hierarchy,
+                MessageStatusId = MessageStatusTypes.Ready,
+                MessageHistoryId = null,
+                MessageActionId = data.Action,
+                InsertDate = DateTime.Now,
+                HierarchyId = data.Brand.hierarchyID,
+                HierarchyName = HierarchyNames.Brands,
+                HierarchyLevelName = HierarchyLevelNames.Brand,
+                ItemsAttached = true,
+                HierarchyClassId = data.Brand.hierarchyClassID.ToString(),
+                HierarchyClassName = data.Brand.hierarchyClassName,
+                HierarchyLevel = data.Brand.hierarchyLevel.Value,
+                HierarchyParentClassId = data.Brand.hierarchyParentClassID,
+                InProcessBy = null,
+                ProcessedDate = null,
+                BrandAbbreviation = data.BrandAbbreviation,
+                ZipCode = data.ZipCode,
+                Designation = data.Designation,
+                Locality = data.Locality,
+                ParentCompany = data.ParentCompany
+            };
             context.MessageQueueHierarchy.Add(message);
             context.SaveChanges();
         }

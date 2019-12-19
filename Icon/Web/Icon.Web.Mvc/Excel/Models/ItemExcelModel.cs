@@ -1,10 +1,9 @@
-﻿namespace Icon.Web.Mvc.Excel.Models
+﻿using Icon.Common;
+
+namespace Icon.Web.Mvc.Excel.Models
 {
-    using Common;
     using Common.Utility;
     using DataAccess.Models;
-    using Framework;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using static ExcelHelper;

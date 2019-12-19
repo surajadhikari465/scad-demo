@@ -131,8 +131,8 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
         {
             this.testItemLink = new TestItemLinkBuilder()
                 .WithLocaleId(this.testLocale.localeID)
-                .WithParentItemId(this.testLinkedItems[0].itemID)
-                .WithChildItemId(this.testItems[0].itemID);
+                .WithParentItemId(this.testLinkedItems[0].ItemId)
+                .WithChildItemId(this.testItems[0].ItemId);
 
             this.context.Context.ItemLink.Add(testItemLink);
             this.context.Context.SaveChanges();
@@ -145,8 +145,8 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemLink>
             {
                 new TestItemLinkBuilder()
-                    .WithParentItemId(this.testLinkedItems[0].itemID)
-                    .WithChildItemId(this.testItems[0].itemID)
+                    .WithParentItemId(this.testLinkedItems[0].ItemId)
+                    .WithChildItemId(this.testItems[0].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
             }.ConvertAll(e => new ItemLinkModel
             {
@@ -167,8 +167,8 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             this.itemLinkUpdateService.SaveEntitiesBulk(testEntities);
 
             // Then.
-            var testParentItemId = this.testLinkedItems[0].itemID;
-            var testChildItemId = this.testItems[0].itemID;
+            var testParentItemId = this.testLinkedItems[0].ItemId;
+            var testChildItemId = this.testItems[0].ItemId;
 
             var newItemLinkEntity = context.Context.ItemLink.Single(il =>
                 il.localeID == this.testLocale.localeID && il.parentItemID == testParentItemId && il.childItemID == testChildItemId);
@@ -187,8 +187,8 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemLink>
             {
                 new TestItemLinkBuilder()
-                    .WithParentItemId(this.testLinkedItems[1].itemID)
-                    .WithChildItemId(this.testItems[0].itemID)
+                    .WithParentItemId(this.testLinkedItems[1].ItemId)
+                    .WithChildItemId(this.testItems[0].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
             }.ConvertAll(e => new ItemLinkModel
             {
@@ -209,7 +209,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             this.itemLinkUpdateService.SaveEntitiesBulk(testEntities);
 
             // Then.
-            var testChildItemId = this.testItems[0].itemID;
+            var testChildItemId = this.testItems[0].ItemId;
 
             var updatedItemLinkEntity = context.Context.ItemLink.Single(il =>
                 il.localeID == this.testLocale.localeID && il.childItemID == testChildItemId);
@@ -229,8 +229,8 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemLink>
                 {
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[0].itemID)
-                        .WithChildItemId(this.testItems[0].itemID)
+                        .WithParentItemId(this.testLinkedItems[0].ItemId)
+                        .WithChildItemId(this.testItems[0].ItemId)
                         .WithLocaleId(this.testLocale.localeID)
                 }.ConvertAll(e => new ItemLinkModel
                 {
@@ -276,8 +276,8 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemLink>
                 {
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[0].itemID)
-                        .WithChildItemId(this.testItems[0].itemID)
+                        .WithParentItemId(this.testLinkedItems[0].ItemId)
+                        .WithChildItemId(this.testItems[0].ItemId)
                         .WithLocaleId(this.testLocale.localeID)
                 }.ConvertAll(e => new ItemLinkModel
                 {
@@ -310,16 +310,16 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemLink>
                 {
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[0].itemID)
-                        .WithChildItemId(this.testItems[0].itemID)
+                        .WithParentItemId(this.testLinkedItems[0].ItemId)
+                        .WithChildItemId(this.testItems[0].ItemId)
                         .WithLocaleId(this.testLocale.localeID),
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[1].itemID)
-                        .WithChildItemId(this.testItems[1].itemID)
+                        .WithParentItemId(this.testLinkedItems[1].ItemId)
+                        .WithChildItemId(this.testItems[1].ItemId)
                         .WithLocaleId(this.testLocale.localeID),
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[2].itemID)
-                        .WithChildItemId(this.testItems[2].itemID)
+                        .WithParentItemId(this.testLinkedItems[2].ItemId)
+                        .WithChildItemId(this.testItems[2].ItemId)
                         .WithLocaleId(this.testLocale.localeID)
                 }.ConvertAll(e => new ItemLinkModel
                 {
@@ -340,7 +340,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             this.itemLinkUpdateService.SaveEntitiesRowByRow(testEntities);
 
             // Then.
-            var testItemsId = testItems.Select(i => i.itemID).ToList();
+            var testItemsId = testItems.Select(i => i.ItemId).ToList();
 
             var itemLinkEntities = context.Context.ItemLink.Where(il =>
                 il.localeID == testLocale.localeID && testItemsId.Contains(il.childItemID)).ToList();
@@ -355,16 +355,16 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemLink>
                 {
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[0].itemID)
-                        .WithChildItemId(this.testItems[0].itemID)
+                        .WithParentItemId(this.testLinkedItems[0].ItemId)
+                        .WithChildItemId(this.testItems[0].ItemId)
                         .WithLocaleId(this.testLocale.localeID),
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[1].itemID)
-                        .WithChildItemId(this.testItems[1].itemID)
+                        .WithParentItemId(this.testLinkedItems[1].ItemId)
+                        .WithChildItemId(this.testItems[1].ItemId)
                         .WithLocaleId(unknownLocaleId),
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[2].itemID)
-                        .WithChildItemId(this.testItems[2].itemID)
+                        .WithParentItemId(this.testLinkedItems[2].ItemId)
+                        .WithChildItemId(this.testItems[2].ItemId)
                         .WithLocaleId(this.testLocale.localeID)
                 }.ConvertAll(e => new ItemLinkModel
                 {
@@ -385,7 +385,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             this.itemLinkUpdateService.SaveEntitiesRowByRow(testEntities);
 
             // Then.
-            var testItemsId = testItems.Select(i => i.itemID).ToList();
+            var testItemsId = testItems.Select(i => i.ItemId).ToList();
             var successfulItemLinkEntities = context.Context.ItemLink.Where(il =>
                 il.localeID == testLocale.localeID && testItemsId.Contains(il.childItemID)).ToList();
 
@@ -399,16 +399,16 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemLink>
                 {
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[0].itemID)
-                        .WithChildItemId(this.testItems[0].itemID)
+                        .WithParentItemId(this.testLinkedItems[0].ItemId)
+                        .WithChildItemId(this.testItems[0].ItemId)
                         .WithLocaleId(this.testLocale.localeID),
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[1].itemID)
-                        .WithChildItemId(this.testItems[1].itemID)
+                        .WithParentItemId(this.testLinkedItems[1].ItemId)
+                        .WithChildItemId(this.testItems[1].ItemId)
                         .WithLocaleId(unknownLocaleId),
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[2].itemID)
-                        .WithChildItemId(this.testItems[2].itemID)
+                        .WithParentItemId(this.testLinkedItems[2].ItemId)
+                        .WithChildItemId(this.testItems[2].ItemId)
                         .WithLocaleId(this.testLocale.localeID)
                 }.ConvertAll(e => new ItemLinkModel
                 {
@@ -441,16 +441,16 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemLink>
                 {
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[0].itemID)
-                        .WithChildItemId(this.testItems[0].itemID)
+                        .WithParentItemId(this.testLinkedItems[0].ItemId)
+                        .WithChildItemId(this.testItems[0].ItemId)
                         .WithLocaleId(unknownLocaleId),
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[1].itemID)
-                        .WithChildItemId(this.testItems[1].itemID)
+                        .WithParentItemId(this.testLinkedItems[1].ItemId)
+                        .WithChildItemId(this.testItems[1].ItemId)
                         .WithLocaleId(this.testLocale.localeID),
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[2].itemID)
-                        .WithChildItemId(this.testItems[2].itemID)
+                        .WithParentItemId(this.testLinkedItems[2].ItemId)
+                        .WithChildItemId(this.testItems[2].ItemId)
                         .WithLocaleId(this.testLocale.localeID)
                 }.ConvertAll(e => new ItemLinkModel
                 {
@@ -471,7 +471,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             this.itemLinkUpdateService.SaveEntitiesRowByRow(testEntities);
 
             // Then.
-            var testItemId = testItems[0].itemID;
+            var testItemId = testItems[0].ItemId;
             var failedItemLinkEntity = context.Context.ItemLink.Single(il =>
                 il.localeID == testLocale.localeID && il.childItemID == testItemId);
 
@@ -488,16 +488,16 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemLink>
                 {
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[0].itemID)
-                        .WithChildItemId(this.testItems[0].itemID)
+                        .WithParentItemId(this.testLinkedItems[0].ItemId)
+                        .WithChildItemId(this.testItems[0].ItemId)
                         .WithLocaleId(unknownLocaleId),
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[1].itemID)
-                        .WithChildItemId(this.testItems[1].itemID)
+                        .WithParentItemId(this.testLinkedItems[1].ItemId)
+                        .WithChildItemId(this.testItems[1].ItemId)
                         .WithLocaleId(this.testLocale.localeID),
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[2].itemID)
-                        .WithChildItemId(this.testItems[2].itemID)
+                        .WithParentItemId(this.testLinkedItems[2].ItemId)
+                        .WithChildItemId(this.testItems[2].ItemId)
                         .WithLocaleId(this.testLocale.localeID)
                 }.ConvertAll(e => new ItemLinkModel
                 {
@@ -530,16 +530,16 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemLink>
                 {
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[0].itemID)
-                        .WithChildItemId(this.testItems[0].itemID)
+                        .WithParentItemId(this.testLinkedItems[0].ItemId)
+                        .WithChildItemId(this.testItems[0].ItemId)
                         .WithLocaleId(unknownLocaleId),
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[1].itemID)
-                        .WithChildItemId(this.testItems[1].itemID)
+                        .WithParentItemId(this.testLinkedItems[1].ItemId)
+                        .WithChildItemId(this.testItems[1].ItemId)
                         .WithLocaleId(this.testLocale.localeID),
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[2].itemID)
-                        .WithChildItemId(this.testItems[2].itemID)
+                        .WithParentItemId(this.testLinkedItems[2].ItemId)
+                        .WithChildItemId(this.testItems[2].ItemId)
                         .WithLocaleId(this.testLocale.localeID)
                 }.ConvertAll(e => new ItemLinkModel
                 {
@@ -570,16 +570,16 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemLink>
                 {
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[0].itemID)
-                        .WithChildItemId(this.testItems[0].itemID)
+                        .WithParentItemId(this.testLinkedItems[0].ItemId)
+                        .WithChildItemId(this.testItems[0].ItemId)
                         .WithLocaleId(unknownLocaleId),
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[1].itemID)
-                        .WithChildItemId(this.testItems[1].itemID)
+                        .WithParentItemId(this.testLinkedItems[1].ItemId)
+                        .WithChildItemId(this.testItems[1].ItemId)
                         .WithLocaleId(this.testLocale.localeID),
                     new TestItemLinkBuilder()
-                        .WithParentItemId(this.testLinkedItems[2].itemID)
-                        .WithChildItemId(this.testItems[2].itemID)
+                        .WithParentItemId(this.testLinkedItems[2].ItemId)
+                        .WithChildItemId(this.testItems[2].ItemId)
                         .WithLocaleId(this.testLocale.localeID)
                 }.ConvertAll(e => new ItemLinkModel
                 {

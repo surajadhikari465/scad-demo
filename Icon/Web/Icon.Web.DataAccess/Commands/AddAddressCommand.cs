@@ -1,6 +1,4 @@
-﻿using Icon.Framework;
-
-namespace Icon.Web.DataAccess.Commands
+﻿namespace Icon.Web.DataAccess.Commands
 {
     public class AddAddressCommand : AddressCommand
     {

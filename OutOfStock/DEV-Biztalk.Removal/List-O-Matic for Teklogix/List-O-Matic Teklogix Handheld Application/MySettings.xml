@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<MySettings>
+<MyRegion></MyRegion>
+<MyStore></MyStore>
+<MaxItems>500</MaxItems>
+<ServiceAddress>http://cewp5016/listomaticService/Service.svc/basic</ServiceAddress>
+</MySettings>

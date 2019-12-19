@@ -1,4 +1,5 @@
-﻿using Icon.Common.DataAccess;
+﻿using DevTrends.MvcDonutCaching;
+using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
@@ -58,22 +59,13 @@ namespace Icon.Web.Controllers
 			this.localeSubTypes = genericQuery.GetAll<LocaleSubType>();
 		}
 
-		[OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-		public ActionResult Index()
-		{
-			return View();
-		}
-
-		public ActionResult Search(string chainName)
-		{
-			var locales = getLocalesByChainQuery.Search(new GetLocalesByChainParameters
-			{
-				ChainName = chainName
-			});
-
-			var localeViewModels = locales.Select(locale => new LocaleGridRowViewModel(locale)).ToList();
-			return View(CreateChain(false, localeViewModels));
-		}
+        [DonutOutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public ActionResult Index()
+        {
+			var locales = getLocalesByChainQuery.Search(new GetLocalesByChainParameters { ChainName = "Whole Foods" });
+            var localeViewModels = locales.Select(locale => new LocaleGridRowViewModel(locale)).ToList();
+            return View(CreateChain(false, localeViewModels));
+        }
 
 		private LocaleGridViewModel RetrieveLocales(bool includeDeleted)
 		{
@@ -93,16 +85,16 @@ namespace Icon.Web.Controllers
 
 			model.ChainLocale = PopulateChildAttribute(model.ChainLocale);
 
-			model.Countries = this.countries.Select(c => new CountryViewModel { CountryId = c.countryID, CountryCode = c.countryCode, CountryName = c.countryName });
-			model.Territories = this.territories.Select(t => new TerritoryViewModel { TerritoryId = t.territoryID, TerritoryCode = t.territoryCode, TerritoryName = t.territoryName });
-			model.TimeZones = this.timeZones.Select(t => new TimeZoneViewModel { TimeZoneId = t.timezoneID, TimeZoneCode = t.timezoneCode, TimeZoneName = t.timezoneName });
-			model.EwicAgencies = this.eWicAgencies;
-			model.StorePosTypes = StorePosTypes.AsDictionary.Values.ToList();
-			model.Currencies = this.currencies.Select(c => new CurrencyViewModel { CurrencyTypeID = c.currencyTypeID, CurrencyTypeCode = c.currencyTypeCode, CurrencyTypeDesc = c.currencyTypeDesc, IssuingEntity = c.issuingEntity, NumericCode = c.numericCode, MinorUnit = c.minorUnit, Symbol = c.symbol });
-			model.LocaleSubTypes = this.localeSubTypes.Select(l => new LocaleSubTypeViewModel { LocaleSubTypeID = l.localeSubTypeID, LocaleTypeID = l.localeTypeID, LocaleSubTypeCode = l.localSubTypeCode, LocaleSubTypeDescription = l.localeSubTypeDesc });
-			model.LiquorLicenseTypes = new string[] { "Beer", "Spirit", "Wine" };
-			return model;
-		}
+            model.Countries = this.countries.Select(c => new CountryViewModel { CountryId = c.countryID, CountryCode = c.countryCode, CountryName = c.countryName });
+            model.Territories = this.territories.Select(t => new TerritoryViewModel { TerritoryId = t.territoryID, TerritoryCode = t.territoryCode, TerritoryName = t.territoryName });
+            model.TimeZones = this.timeZones.Select(t => new TimeZoneViewModel { TimeZoneId = t.timezoneID, TimeZoneCode = t.timezoneCode, TimeZoneName = t.timezoneName });
+            model.EwicAgencies = this.eWicAgencies.Select(x => new Agency(){ AgencyId = x.AgencyId }).ToList();
+            model.StorePosTypes = StorePosTypes.AsDictionary.Values.ToList();
+            model.Currencies = this.currencies.Select(c => new CurrencyViewModel { CurrencyTypeID = c.currencyTypeID, CurrencyTypeCode = c.currencyTypeCode, CurrencyTypeDesc = c.currencyTypeDesc, IssuingEntity = c.issuingEntity, NumericCode = c.numericCode, MinorUnit = c.minorUnit, Symbol = c.symbol });
+            model.LocaleSubTypes = this.localeSubTypes.Select(l => new LocaleSubTypeViewModel { LocaleSubTypeID = l.localeSubTypeID, LocaleTypeID = l.localeTypeID, LocaleSubTypeCode = l.localSubTypeCode, LocaleSubTypeDescription = l.localeSubTypeDesc });
+            model.LiquorLicenseTypes = new string[] { "Beer", "Spirit", "Wine" };
+            return model;
+        }
 
 		private List<LocaleGridRowViewModel> GetLocales(List<LocaleGridRowViewModel> allLocales, LocaleGridRowViewModel parentLocale, bool includeDeleted)
 		{
@@ -242,40 +234,40 @@ namespace Icon.Web.Controllers
 				return View(viewModel);
 			}
 
-			AddLocaleManager manager = new AddLocaleManager
-			{
-				LocaleName = viewModel.LocaleName,
-				LocaleParentId = viewModel.ParentLocaleId,
-				OpenDate = viewModel.OpenDate,
-				OwnerOrgPartyId = viewModel.OwnerOrgPartyId,
-				LocaleTypeID = viewModel.LocaleTypeId.HasValue ? viewModel.LocaleTypeId.Value : LocaleTypes.Store,
-				BusinessUnit = viewModel.BusinessUnit,
-				StoreAbbreviation = viewModel.StoreAbbreviation,
-				PhoneNumber = viewModel.PhoneNumber,
-				ContactPerson = viewModel.ContactPerson,
-				AddressLine1 = viewModel.AddressLine1,
-				AddressLine2 = viewModel.AddressLine2,
-				AddressLine3 = viewModel.AddressLine3,
-				City = viewModel.City,
-				TerritoryId = viewModel.TerritoryId,
-				PostalCode = viewModel.PostalCode,
-				County = viewModel.County,
-				TimeZoneId = viewModel.TimeZoneId,
-				CountryId = viewModel.CountryId,
-				Latitude = viewModel.Latitude,
-				Longitude = viewModel.Longitude,
-				EwicAgencyId = viewModel.EwicAgencyId,
-				Fax = viewModel.Fax,
-				IrmaStoreId = viewModel.IrmaStoreId,
-				StorePosType = viewModel.SelectedStorePosType,
-				UserName = User.Identity.Name,
-				Ident = viewModel.Ident,
-				LocalZone = viewModel.LocalZone,
-				LiquorLicense = viewModel.SelectedLiquorLicense,
-				PrimeMerchantID = viewModel.PrimeMerchantID,
-				PrimeMerchantIDEncrypted = viewModel.PrimeMerchantIDEncrypted,
-				SodiumWarningRequired = viewModel.SodiumWarningRequired
-			};
+            AddLocaleManager manager = new AddLocaleManager
+            {
+                LocaleName = viewModel.LocaleName,
+                LocaleParentId = viewModel.ParentLocaleId,
+                OpenDate = viewModel.OpenDate,
+                OwnerOrgPartyId = viewModel.OwnerOrgPartyId,
+                LocaleTypeID = viewModel.LocaleTypeId.HasValue ? viewModel.LocaleTypeId.Value : LocaleTypes.Store,
+                BusinessUnit = viewModel.BusinessUnit,
+                StoreAbbreviation = viewModel.StoreAbbreviation,
+                PhoneNumber = viewModel.PhoneNumber,
+                ContactPerson = viewModel.ContactPerson,
+                AddressLine1 = viewModel.AddressLine1,
+                AddressLine2 = viewModel.AddressLine2,
+                AddressLine3 = viewModel.AddressLine3,
+                City = viewModel.City,
+                TerritoryId = viewModel.TerritoryId,
+                PostalCode = viewModel.PostalCode,
+                County = viewModel.County,
+                TimeZoneId = viewModel.TimeZoneId,
+                CountryId = viewModel.CountryId,
+                Latitude = viewModel.Latitude,
+                Longitude = viewModel.Longitude,
+                EwicAgencyId = viewModel.EwicAgencyId,
+                Fax = viewModel.Fax,
+                IrmaStoreId = viewModel.IrmaStoreId,
+                StorePosType = viewModel.SelectedStorePosType,
+                UserName = User.Identity.Name,
+                Ident = viewModel.Ident,
+                LocalZone = viewModel.LocalZone,
+                LiquorLicense = viewModel.SelectedLiquorLicense,
+                PrimeMerchantID = viewModel.PrimeMerchantID,
+                PrimeMerchantIDEncrypted = viewModel.PrimeMerchantIDEncrypted,
+                SodiumWarningRequired = viewModel.SodiumWarningRequired,
+            };
 
 			try
 			{

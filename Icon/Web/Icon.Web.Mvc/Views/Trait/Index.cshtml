@@ -6,14 +6,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
-
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Render()
-)
-
 @{Html.RenderPartial("_HeaderPartial", "Trait Management");}
 
 <div class="page-section">
@@ -21,15 +13,13 @@
     {
         <fieldset>
             <legend>View Traits</legend>
-            <div class="row">
-                @Html.LabelFor(model => Model.TraitGroupSelectedId, new { @class = "col-md-2 form-label" })
+            <div class="form-group">
+                @Html.LabelFor(model => Model.TraitGroupSelectedId, new { @class = "form-label" })
                 @Html.DropDownListFor(model => Model.TraitGroupSelectedId, Model.TraitGroup)
             </div>
         </fieldset>
-        <div class="row">
-            <div class="col-md-offset-2 col-md-1">
-                <input type="submit" value="Search" class="btn btn-default form-submit" />
-            </div>
+        <div class="form-group">
+              <input type="submit" value="Search" class="btn btn-light form-submit" />
         </div>   
     }
 </div>

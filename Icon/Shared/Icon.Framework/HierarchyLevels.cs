@@ -28,5 +28,6 @@ namespace Icon.Framework
         public const int NationalSubCategory = 3;
         public const int NationalClass = 4;
         public const int CertificationAgencyManagement = 1;
+        public const int Manufacturer = 1;
 	}
 }

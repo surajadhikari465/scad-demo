@@ -1,4 +1,4 @@
-﻿using Infor.Services.NewItem.Models;
+﻿using Services.NewItem.Models;
 using System;
 using System.Collections.Generic;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
@@ -6,14 +6,14 @@ using System.Linq;
 using Icon.Framework;
 using Esb.Core.Mappers;
 using Esb.Core.Serializer;
-using Infor.Services.NewItem.Cache;
+using Services.NewItem.Cache;
 using Icon.Common.DataAccess;
-using Infor.Services.NewItem.Queries;
+using Services.NewItem.Queries;
 using System.Text.RegularExpressions;
-using Infor.Services.NewItem.Constants;
-using Infor.Services.NewItem.Extensions;
+using Services.NewItem.Constants;
+using Services.NewItem.Extensions;
 
-namespace Infor.Services.NewItem.MessageBuilders
+namespace Services.NewItem.MessageBuilders
 {
     public class NewItemMessageBuilder : IMessageBuilder<IEnumerable<NewItemModel>>
     {
@@ -23,14 +23,14 @@ namespace Infor.Services.NewItem.MessageBuilders
         private ISerializer<Contracts.items> serializer;
         private IIconCache iconCache;
         private IQueryHandler<GetItemIdsQuery, Dictionary<string, int>> getItemIdsQueryHandler;
-        private InforNewItemApplicationSettings settings;
+        private NewItemApplicationSettings settings;
 
         public NewItemMessageBuilder(
             IUomMapper uomMapper, 
             ISerializer<Contracts.items> serializer, 
             IIconCache iconCache, 
             IQueryHandler<GetItemIdsQuery, Dictionary<string, int>> getItemIdsQueryHandler,
-            InforNewItemApplicationSettings settings)
+            NewItemApplicationSettings settings)
         {
             this.uomMapper = uomMapper;
             this.serializer = serializer;

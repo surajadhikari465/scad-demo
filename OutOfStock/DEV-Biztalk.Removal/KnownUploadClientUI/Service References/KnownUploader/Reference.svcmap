@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="878311c8-fc0e-4251-9ef4-d249fba53f93" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:54264/KnownUploadWebService/KnownUploader.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="KnownUploader.disco" MetadataType="Disco" ID="279fa3ca-7244-4eb9-8c40-9225b7e417a6" SourceId="1" SourceUrl="http://localhost:54264/KnownUploadWebService/KnownUploader.svc?disco" />
+    <MetadataFile FileName="KnownUploader.xsd" MetadataType="Schema" ID="62ef0966-f175-4b45-98d3-c38b7d22776c" SourceId="1" SourceUrl="http://localhost:54264/KnownUploadWebService/KnownUploader.svc?xsd=xsd0" />
+    <MetadataFile FileName="KnownUploader.wsdl" MetadataType="Wsdl" ID="ce91e019-4d5d-439e-88b9-e989ae68a2dd" SourceId="1" SourceUrl="http://localhost:54264/KnownUploadWebService/KnownUploader.svc?wsdl" />
+    <MetadataFile FileName="KnownUploader2.xsd" MetadataType="Schema" ID="d4788020-bbf1-4a36-999f-eac8584419b8" SourceId="1" SourceUrl="http://localhost:54264/KnownUploadWebService/KnownUploader.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

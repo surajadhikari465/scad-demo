@@ -1,0 +1,2614 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/27/2019 11:00:37 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="CECEN-3PH2N72"
+  DTS:CreatorName="WFM\Blake.Jones"
+  DTS:DelayValidation="True"
+  DTS:DTSID="{1730B64D-2BCE-4D96-A8B1-AD168B4ED68C}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.1900.73"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="90"
+  DTS:VersionGUID="{6F220140-3964-4551-81DC-04F97AF988B6}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[IrmaConnection]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{A843FDDA-39B9-485D-BA70-976F8F58010C}"
+      DTS:ObjectName="IrmaConnection">
+      <DTS:PropertyExpression
+        DTS:Name="InitialCatalog">@[User::IrmaDatabase]</DTS:PropertyExpression>
+      <DTS:PropertyExpression
+        DTS:Name="ServerName">@[User::IrmaServer]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=idd-so\sod;Initial Catalog=ItemCatalog_Test;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[MammothConnection]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{53197F6F-6E27-4BCE-927E-9D9ADA8A9788}"
+      DTS:ObjectName="MammothConnection">
+      <DTS:PropertyExpression
+        DTS:Name="InitialCatalog">@[$Package::MammothDatabase]</DTS:PropertyExpression>
+      <DTS:PropertyExpression
+        DTS:Name="ServerName">@[$Package::MammothServer]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=MAMMOTH-DB01-DEV\MAMMOTH;Initial Catalog=Mammoth_Dev;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:PackageParameters>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{0443A7C5-5157-4B7C-BB4B-70DA08BF23C9}"
+      DTS:ObjectName="Environment"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">Dev</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{97E08AE2-E161-47AD-AFA8-BBE3279991E3}"
+      DTS:ObjectName="MammothDatabase"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">Mammoth_Dev</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{23849A9D-0483-4C57-B1DD-60CF86CE421C}"
+      DTS:ObjectName="MammothServer"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">MAMMOTH-DB01-DEV\MAMMOTH</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{E8EC49E9-832F-40F9-ACBE-2B2B40B3477E}"
+      DTS:ObjectName="Regions"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">FL,MA,MW,NA,NC,NE,PN,RM,SO,SP,SW</DTS:Property>
+    </DTS:PackageParameter>
+  </DTS:PackageParameters>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A7610D75-1591-4F0D-8D49-786D4CEFBBFF}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;CREATE CLUSTERED INDEX IX_IrmaDataUpdateRecords_&quot; + @[User::Region] + &quot;_ItemId_BusinessUnitId ON stage.IrmaDataUpdatedRecords_&quot; + @[User::Region] + &quot;(BusinessUnitId, ItemId)&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="CreateIndexOnStageIrmaDataUpdateRecordsSql">
+      <DTS:VariableValue
+        DTS:DataType="8">CREATE CLUSTERED INDEX IX_IrmaDataUpdateRecords_FL_ItemId_BusinessUnitId ON stage.IrmaDataUpdatedRecords_FL(BusinessUnitId, ItemId)</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A2AFAF8B-15B1-4BE9-836B-5F1FB3A987CB}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="IrmaDatabase">
+      <DTS:VariableValue
+        DTS:DataType="8">ItemCatalog_Test</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{CBC0B924-8669-4BC0-8D7F-69E5D5AD1296}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="IrmaServer">
+      <DTS:VariableValue
+        DTS:DataType="8">idd-so\sod</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{125B521E-0C06-4751-915A-816289B42360}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Region">
+      <DTS:VariableValue
+        DTS:DataType="8">FL</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{4167F29B-B219-4703-BFDE-29814B92011F}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="RegionsToProcess">
+      <DTS:VariableValue
+        DTS:DataSubType="ManagedSerializable"
+        DTS:DataType="13">
+        <SOAP-ENV:Envelope xmlns:clr="http://schemas.microsoft.com/soap/encoding/clr/1.0" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+          <SOAP-ENV:Body>
+            <xsd:anyType
+              id="ref-1"></xsd:anyType>
+          </SOAP-ENV:Body>
+        </SOAP-ENV:Envelope>
+      </DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{7A938722-57C9-4CFD-8C6D-126634146161}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;UPDATE ial&#xA;SET Authorized = 0&#xA;&#x9;,IrmaItemKey = NULL&#xA;&#x9;,DefaultScanCode = 0&#xA;&#x9;,ModifiedDate = SYSDATETIME()&#xA;OUTPUT inserted.ItemID&#xA;&#x9;,inserted.BusinessUnitID&#xA;&#x9;,CASE &#xA;&#x9;&#x9;WHEN deleted.Authorized = 1 THEN 'Authorized is true but item is deleted in IRMA'&#xA;&#x9;&#x9;WHEN deleted.IrmaItemKey IS NOT NULL THEN 'IrmaItemKey is not null but item is deleted in IRMA'&#xA;&#x9;&#x9;WHEN deleted.DefaultScanCode = 1 THEN 'DefaultScanCode is true but item is deleted in IRMA'&#xA;&#x9;&#x9;ELSE 'Invalid Error'&#xA;&#x9;END&#xA;INTO stage.IrmaDataUpdatedRecords_&quot; + @[User::Region] + &quot;&#xA;FROM ItemAttributes_Locale_&quot; + @[User::Region] + &quot; ial&#xA;JOIN Items i ON ial.ItemId = i.ItemId&#xA;JOIN stage.IrmaData id ON i.ScanCode = id.ScanCode&#xA;&#x9;AND ial.BusinessUnitId = id.BusinessUnitId&#xA;WHERE id.DeletedItem = 1&#xA;&#x9;AND (&#xA;&#x9;&#x9;ial.Authorized = 1&#xA;&#x9;&#x9;OR ial.IrmaItemKey IS NOT NULL&#xA;&#x9;&#x9;OR ial.DefaultScanCode = 1&#xA;&#x9;&#x9;)&#xA;&#xA;UPDATE ial&#xA;SET Authorized = 0&#xA;&#x9;,IrmaItemKey = NULL&#xA;&#x9;,DefaultScanCode = 0&#xA;&#x9;,ModifiedDate = SYSDATETIME()&#xA;OUTPUT inserted.ItemID&#xA;&#x9;,inserted.BusinessUnitID&#xA;&#x9;,CASE &#xA;&#x9;&#x9;WHEN deleted.Authorized = 1 THEN 'Authorized is true but item does not exist in IRMA'&#xA;&#x9;&#x9;WHEN deleted.IrmaItemKey IS NOT NULL THEN 'IrmaItemKey is not null but item does not exist in IRMA'&#xA;&#x9;&#x9;WHEN deleted.DefaultScanCode = 1 THEN 'DefaultScanCode is true but item does not exist in IRMA'&#xA;&#x9;&#x9;ELSE 'Invalid Error'&#xA;&#x9;END&#xA;INTO stage.IrmaDataUpdatedRecords_&quot; + @[User::Region] + &quot;&#xA;FROM ItemAttributes_Locale_&quot; + @[User::Region] + &quot; ial&#xA;JOIN Locales_&quot; + @[User::Region] + &quot; l ON ial.BusinessUnitId = l.BusinessUnitId&#xA;JOIN Items i ON ial.ItemId = i.ItemId&#xA;LEFT JOIN stage.IrmaData id ON i.ScanCode = id.ScanCode&#xA;&#x9;AND ial.BusinessUnitId = id.BusinessUnitId&#xA;WHERE (&#xA;&#x9;&#x9;ial.Authorized = 1&#xA;&#x9;&#x9;OR ial.DefaultScanCode = 1&#xA;&#x9;&#x9;OR ial.IrmaItemKey IS NOT NULL&#xA;&#x9;&#x9;)&#xA;&#x9;AND id.ScanCode IS NULL&#xA;&#xA;UPDATE ial&#xA;SET Authorized = id.Authorized&#xA;&#x9;,IrmaItemKey = id.IrmaItemKey&#xA;&#x9;,DefaultScanCode = id.DefaultIdentifier&#xA;&#x9;,ModifiedDate = SYSDATETIME()&#xA;OUTPUT inserted.ItemID&#xA;&#x9;,inserted.BusinessUnitID&#xA;&#x9;,CASE &#xA;&#x9;&#x9;WHEN deleted.Authorized &lt;&gt; inserted.Authorized THEN 'Authorized does not match'&#xA;&#x9;&#x9;WHEN deleted.IrmaItemKey &lt;&gt; inserted.IrmaItemKey THEN 'IrmaItemKey does not match'&#xA;&#x9;&#x9;WHEN deleted.DefaultScanCode &lt;&gt; inserted.DefaultScanCode THEN 'DefaultScanCode does not match'&#xA;&#x9;&#x9;ELSE 'Invalid Error'&#xA;&#x9;END&#xA;INTO stage.IrmaDataUpdatedRecords_&quot; + @[User::Region] + &quot;&#xA;FROM ItemAttributes_Locale_&quot; + @[User::Region] + &quot; ial&#xA;JOIN Items i ON ial.ItemId = i.ItemId&#xA;JOIN stage.IrmaData id ON i.ScanCode = id.ScanCode&#xA;&#x9;AND ial.BusinessUnitId = id.BusinessUnitId&#xA;WHERE id.DeletedItem = 0&#xA;&#x9;AND id.DeletedIdentifier = 0&#xA;&#x9;AND (&#xA;&#x9;&#x9;ISNULL(ial.IrmaItemKey, - 1) &lt;&gt; id.IrmaItemKey&#xA;&#x9;&#x9;OR ial.Authorized &lt;&gt; id.Authorized&#xA;&#x9;&#x9;OR ial.DefaultScanCode &lt;&gt; id.DefaultIdentifier&#xA;&#x9;&#x9;)&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SyncMammothSql">
+      <DTS:VariableValue
+        DTS:DataType="8">UPDATE ial
+SET Authorized = 0
+	,IrmaItemKey = NULL
+	,DefaultScanCode = 0
+	,ModifiedDate = SYSDATETIME()
+OUTPUT inserted.ItemID
+	,inserted.BusinessUnitID
+	,CASE 
+		WHEN deleted.Authorized = 1 THEN 'Authorized is true but item is deleted in IRMA'
+		WHEN deleted.IrmaItemKey IS NOT NULL THEN 'IrmaItemKey is not null but item is deleted in IRMA'
+		WHEN deleted.DefaultScanCode = 1 THEN 'DefaultScanCode is true but item is deleted in IRMA'
+		ELSE 'Invalid Error'
+	END
+INTO stage.IrmaDataUpdatedRecords_FL
+FROM ItemAttributes_Locale_FL ial
+JOIN Items i ON ial.ItemId = i.ItemId
+JOIN stage.IrmaData id ON i.ScanCode = id.ScanCode
+	AND ial.BusinessUnitId = id.BusinessUnitId
+WHERE id.DeletedItem = 1
+	AND (
+		ial.Authorized = 1
+		OR ial.IrmaItemKey IS NOT NULL
+		OR ial.DefaultScanCode = 1
+		)
+
+UPDATE ial
+SET Authorized = 0
+	,IrmaItemKey = NULL
+	,DefaultScanCode = 0
+	,ModifiedDate = SYSDATETIME()
+OUTPUT inserted.ItemID
+	,inserted.BusinessUnitID
+	,CASE 
+		WHEN deleted.Authorized = 1 THEN 'Authorized is true but item does not exist in IRMA'
+		WHEN deleted.IrmaItemKey IS NOT NULL THEN 'IrmaItemKey is not null but item does not exist in IRMA'
+		WHEN deleted.DefaultScanCode = 1 THEN 'DefaultScanCode is true but item does not exist in IRMA'
+		ELSE 'Invalid Error'
+	END
+INTO stage.IrmaDataUpdatedRecords_FL
+FROM ItemAttributes_Locale_FL ial
+JOIN Locales_FL l ON ial.BusinessUnitId = l.BusinessUnitId
+JOIN Items i ON ial.ItemId = i.ItemId
+LEFT JOIN stage.IrmaData id ON i.ScanCode = id.ScanCode
+	AND ial.BusinessUnitId = id.BusinessUnitId
+WHERE (
+		ial.Authorized = 1
+		OR ial.DefaultScanCode = 1
+		OR ial.IrmaItemKey IS NOT NULL
+		)
+	AND id.ScanCode IS NULL
+
+UPDATE ial
+SET Authorized = id.Authorized
+	,IrmaItemKey = id.IrmaItemKey
+	,DefaultScanCode = id.DefaultIdentifier
+	,ModifiedDate = SYSDATETIME()
+OUTPUT inserted.ItemID
+	,inserted.BusinessUnitID
+	,CASE 
+		WHEN deleted.Authorized &lt;&gt; inserted.Authorized THEN 'Authorized does not match'
+		WHEN deleted.IrmaItemKey &lt;&gt; inserted.IrmaItemKey THEN 'IrmaItemKey does not match'
+		WHEN deleted.DefaultScanCode &lt;&gt; inserted.DefaultScanCode THEN 'DefaultScanCode does not match'
+		ELSE 'Invalid Error'
+	END
+INTO stage.IrmaDataUpdatedRecords_FL
+FROM ItemAttributes_Locale_FL ial
+JOIN Items i ON ial.ItemId = i.ItemId
+JOIN stage.IrmaData id ON i.ScanCode = id.ScanCode
+	AND ial.BusinessUnitId = id.BusinessUnitId
+WHERE id.DeletedItem = 0
+	AND id.DeletedIdentifier = 0
+	AND (
+		ISNULL(ial.IrmaItemKey, - 1) &lt;&gt; id.IrmaItemKey
+		OR ial.Authorized &lt;&gt; id.Authorized
+		OR ial.DefaultScanCode &lt;&gt; id.DefaultIdentifier
+		)</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Foreach Region to Process"
+      DTS:CreationName="STOCK:FOREACHLOOP"
+      DTS:Description="Foreach Loop Container"
+      DTS:DTSID="{BD4B0716-4CD7-4FBE-90F2-81E4DECE24E0}"
+      DTS:ExecutableType="STOCK:FOREACHLOOP"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Foreach Region to Process">
+      <DTS:ForEachEnumerator
+        DTS:CreationName="Microsoft.ForEachFromVarEnumerator"
+        DTS:DTSID="{7C0A5F28-717A-4023-9A0A-0297D9037AC7}"
+        DTS:ObjectName="{7C0A5F28-717A-4023-9A0A-0297D9037AC7}">
+        <DTS:ObjectData>
+          <FEEFVE
+            VariableName="User::RegionsToProcess" />
+        </DTS:ObjectData>
+      </DTS:ForEachEnumerator>
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:DTSID="{B0A3B716-B090-4F41-A92B-E2EBDE258FB6}"
+          DTS:EvaluateAsExpression="True"
+          DTS:Expression="&quot;IF OBJECT_ID('stage.IrmaData') IS NOT NULL&#xA;&#x9;DROP TABLE stage.IrmaData&#xA;CREATE TABLE stage.IrmaData&#xA;(&#xA;&#x9;Region NVARCHAR(2),&#xA;&#x9;ScanCode NVARCHAR(13),&#xA;&#x9;BusinessUnitId INT,&#xA;&#x9;IrmaItemKey INT,&#xA;&#x9;DefaultIdentifier BIT,&#xA;&#x9;Authorized BIT,&#xA;&#x9;RemoveItem BIT,&#xA;&#x9;DeletedItem BIT,&#xA;&#x9;RemoveIdentifier BIT,&#xA;&#x9;DeletedIdentifier BIT&#xA;)&#xA;IF OBJECT_ID('stage.IrmaDataUpdatedRecords_&quot; + @[User::Region] + &quot;') IS NOT NULL&#xA;&#x9;DROP TABLE stage.IrmaDataUpdatedRecords_&quot; + @[User::Region] + &quot;&#xA;CREATE TABLE stage.IrmaDataUpdatedRecords_&quot; + @[User::Region] + &quot;&#xA;(&#xA;&#x9;ItemId INT,&#xA;&#x9;BusinessUnitId INT,&#xA;&#x9;UpdateReason NVARCHAR(200)&#xA;)&quot;"
+          DTS:IncludeInDebugDump="2345"
+          DTS:Namespace="User"
+          DTS:ObjectName="CreateStagingTablesInMammothSql">
+          <DTS:VariableValue
+            DTS:DataType="8">IF OBJECT_ID('stage.IrmaData') IS NOT NULL
+	DROP TABLE stage.IrmaData
+CREATE TABLE stage.IrmaData
+(
+	Region NVARCHAR(2),
+	ScanCode NVARCHAR(13),
+	BusinessUnitId INT,
+	IrmaItemKey INT,
+	DefaultIdentifier BIT,
+	Authorized BIT,
+	RemoveItem BIT,
+	DeletedItem BIT,
+	RemoveIdentifier BIT,
+	DeletedIdentifier BIT
+)
+IF OBJECT_ID('stage.IrmaDataUpdatedRecords_FL') IS NOT NULL
+	DROP TABLE stage.IrmaDataUpdatedRecords_FL
+CREATE TABLE stage.IrmaDataUpdatedRecords_FL
+(
+	ItemId INT,
+	BusinessUnitId INT,
+	UpdateReason NVARCHAR(200)
+)</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Foreach Region to Process\Create Index on stage IrmaDataUpdateRecords"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{C2C637E7-1A0D-40EF-ABDA-7ACE7BA04507}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Create Index on stage IrmaDataUpdateRecords"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{53197F6F-6E27-4BCE-927E-9D9ADA8A9788}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::CreateIndexOnStageIrmaDataUpdateRecordsSql" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Foreach Region to Process\Create Staging Table in Mammoth"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DelayValidation="True"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{711E3C1A-48BB-4D5C-B2F0-94C2FC79456A}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Create Staging Table in Mammoth"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{53197F6F-6E27-4BCE-927E-9D9ADA8A9788}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::CreateStagingTablesInMammothSql" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Foreach Region to Process\Drop stage IrmaData table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{15CDE997-35FE-4BD1-BA64-8E489F515B8F}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Drop stage IrmaData table"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{53197F6F-6E27-4BCE-927E-9D9ADA8A9788}"
+              SQLTask:SqlStatementSource="IF OBJECT_ID('stage.IrmaData') IS NOT NULL&#xA;&#xA;&#x9;DROP TABLE stage.IrmaData" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DelayValidation="True"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{1FE6A2B6-B52F-453E-A920-499ADA3562A1}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Move data from IRMA to Mammoth"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="OLE DB Destination"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[stage].[IrmaData]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS,ROWS_PER_BATCH = 50000</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[MammothConnection]"
+                      connectionManagerRefId="Package.ConnectionManagers[MammothConnection]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ScanCode]"
+                          cachedDataType="wstr"
+                          cachedLength="13"
+                          cachedName="ScanCode"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ScanCode]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[ScanCode]" />
+                        <inputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Authorized]"
+                          cachedDataType="bool"
+                          cachedName="Authorized"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Authorized]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[Authorized]" />
+                        <inputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Region]"
+                          cachedDataType="wstr"
+                          cachedLength="2"
+                          cachedName="Region"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Region]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[Region]" />
+                        <inputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[BusinessUnitId]"
+                          cachedDataType="i4"
+                          cachedName="BusinessUnitId"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[BusinessUnitId]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[BusinessUnitId]" />
+                        <inputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[IrmaItemKey]"
+                          cachedDataType="i4"
+                          cachedName="IrmaItemKey"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IrmaItemKey]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[IrmaItemKey]" />
+                        <inputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[DefaultIdentifier]"
+                          cachedDataType="ui1"
+                          cachedName="DefaultIdentifier"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DefaultIdentifier]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[DefaultIdentifier]" />
+                        <inputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[RemoveItem]"
+                          cachedDataType="ui1"
+                          cachedName="RemoveItem"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RemoveItem]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[RemoveItem]" />
+                        <inputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[DeletedItem]"
+                          cachedDataType="bool"
+                          cachedName="DeletedItem"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DeletedItem]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[DeletedItem]" />
+                        <inputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[RemoveIdentifier]"
+                          cachedDataType="ui1"
+                          cachedName="RemoveIdentifier"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RemoveIdentifier]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[RemoveIdentifier]" />
+                        <inputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[DeletedIdentifier]"
+                          cachedDataType="ui1"
+                          cachedName="DeletedIdentifier"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DeletedIdentifier]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[DeletedIdentifier]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Region]"
+                          dataType="wstr"
+                          length="2"
+                          name="Region" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ScanCode]"
+                          dataType="wstr"
+                          length="13"
+                          name="ScanCode" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[BusinessUnitId]"
+                          dataType="i4"
+                          name="BusinessUnitId" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IrmaItemKey]"
+                          dataType="i4"
+                          name="IrmaItemKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DefaultIdentifier]"
+                          dataType="bool"
+                          name="DefaultIdentifier" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Authorized]"
+                          dataType="bool"
+                          name="Authorized" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RemoveItem]"
+                          dataType="bool"
+                          name="RemoveItem" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DeletedItem]"
+                          dataType="bool"
+                          name="DeletedItem" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RemoveIdentifier]"
+                          dataType="bool"
+                          name="RemoveIdentifier" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DeletedIdentifier]"
+                          dataType="bool"
+                          name="DeletedIdentifier" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="OLE DB Source"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">declare @Region NVARCHAR(2) = (SELECT TOP 1 RegionCode FROM Region)
+declare @ExcludedStoreNo varchar(250) = (
+	SELECT acv.Value
+	FROM 
+		AppConfigValue acv
+		INNER JOIN AppConfigEnv ace ON acv.EnvironmentID = ace.EnvironmentID 
+		INNER JOIN AppConfigApp aca ON acv.ApplicationID = aca.ApplicationID 
+		INNER JOIN AppConfigKey ack ON acv.KeyID = ack.KeyID 
+	WHERE 
+		aca.Name = 'IRMA Client'
+		AND ack.Name = 'LabAndClosedStoreNo'
+		and SUBSTRING(ace.Name, 1, 1) = SUBSTRING((SELECT top(1) Environment FROM Version), 1, 1))
+
+declare @ActiveStores as table (Store_No int Primary Key)
+
+INSERT INTO @ActiveStores
+SELECT Store_No
+FROM Store s
+WHERE s.Store_No not in (select Key_Value from dbo.fn_Parse_List(@ExcludedStoreNo, '|'))
+	AND (s.WFM_Store = 1 OR s.Mega_Store = 1 )
+	AND (Internal = 1 AND BusinessUnit_ID IS NOT NULL)
+
+select
+                @Region Region,
+	CAST(vsc.ScanCode AS NVARCHAR(13)) AS ScanCode,
+	s.BusinessUnit_ID AS BusinessUnitId,
+	i.Item_Key AS IrmaItemKey,
+	CAST(ii.Default_Identifier AS BIT) AS DefaultIdentifier,
+	si.Authorized AS Authorized,
+	CAST(i.Remove_Item AS BIT) AS RemoveItem,
+	CAST(i.Deleted_Item AS BIT) AS DeletedItem,
+	CAST(ii.Remove_Identifier AS BIT) AS RemoveIdentifier,
+	CAST(ii.Deleted_Identifier AS BIT) AS DeletedIdentifier
+from Item i
+join ItemIdentifier ii on i.Item_Key = ii.Item_Key
+join StoreItem si on ii.Item_Key = si.Item_Key
+join Store s on si.Store_No = s.Store_No
+join @ActiveStores acts on s.Store_No = acts.Store_No
+join ValidatedScanCode vsc on ii.Identifier = vsc.ScanCode
+where (i.Deleted_Item = 0 and ii.Deleted_Identifier = 0)
+    or (i.Deleted_Item = 1 and ii.Deleted_Identifier = 1
+        and ii.Identifier not in (select ii2.Identifier 
+									from ItemIdentifier ii2
+									join Item i2 on ii2.Item_Key = i2.Item_Key
+									where ii2.Deleted_Identifier = 0
+									and i2.Deleted_Item = 0))</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[IrmaConnection]"
+                      connectionManagerRefId="Package.ConnectionManagers[IrmaConnection]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[Authorized]"
+                          dataType="bool"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Authorized]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[Authorized]"
+                          name="Authorized"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[Region]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Region]"
+                          length="2"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[Region]"
+                          name="Region"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[BusinessUnitId]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[BusinessUnitId]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[BusinessUnitId]"
+                          name="BusinessUnitId"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[IrmaItemKey]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[IrmaItemKey]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[IrmaItemKey]"
+                          name="IrmaItemKey"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[DefaultIdentifier]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DefaultIdentifier]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[DefaultIdentifier]"
+                          name="DefaultIdentifier"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[RemoveItem]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[RemoveItem]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[RemoveItem]"
+                          name="RemoveItem"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[DeletedItem]"
+                          dataType="bool"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DeletedItem]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[DeletedItem]"
+                          name="DeletedItem"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[RemoveIdentifier]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[RemoveIdentifier]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[RemoveIdentifier]"
+                          name="RemoveIdentifier"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[DeletedIdentifier]"
+                          dataType="ui1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DeletedIdentifier]"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[DeletedIdentifier]"
+                          name="DeletedIdentifier"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[ScanCode]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ScanCode]"
+                          length="13"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].Columns[ScanCode]"
+                          name="ScanCode"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ScanCode]"
+                          dataType="wstr"
+                          length="13"
+                          name="ScanCode" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Authorized]"
+                          dataType="bool"
+                          name="Authorized" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Region]"
+                          dataType="wstr"
+                          length="2"
+                          name="Region" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[BusinessUnitId]"
+                          dataType="i4"
+                          name="BusinessUnitId" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[IrmaItemKey]"
+                          dataType="i4"
+                          name="IrmaItemKey" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DefaultIdentifier]"
+                          dataType="bool"
+                          name="DefaultIdentifier" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[RemoveItem]"
+                          dataType="bool"
+                          name="RemoveItem" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DeletedItem]"
+                          dataType="bool"
+                          name="DeletedItem" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[RemoveIdentifier]"
+                          dataType="bool"
+                          name="RemoveIdentifier" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DeletedIdentifier]"
+                          dataType="bool"
+                          name="DeletedIdentifier" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Region]"
+                          dataType="wstr"
+                          length="2"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Region]"
+                          name="Region" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[BusinessUnitId]"
+                          dataType="i4"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[BusinessUnitId]"
+                          name="BusinessUnitId" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[IrmaItemKey]"
+                          dataType="i4"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[IrmaItemKey]"
+                          name="IrmaItemKey" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DefaultIdentifier]"
+                          dataType="bool"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DefaultIdentifier]"
+                          name="DefaultIdentifier" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Authorized]"
+                          dataType="bool"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Authorized]"
+                          name="Authorized" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[RemoveItem]"
+                          dataType="bool"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[RemoveItem]"
+                          name="RemoveItem" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DeletedItem]"
+                          dataType="bool"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DeletedItem]"
+                          name="DeletedItem" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[RemoveIdentifier]"
+                          dataType="bool"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[RemoveIdentifier]"
+                          name="RemoveIdentifier" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DeletedIdentifier]"
+                          dataType="bool"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DeletedIdentifier]"
+                          name="DeletedIdentifier" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                        <outputColumn
+                          refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ScanCode]"
+                          dataType="wstr"
+                          length="13"
+                          lineageId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ScanCode]"
+                          name="ScanCode" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Foreach Region to Process\Move data from IRMA to Mammoth.Paths[OLE DB Source Output]"
+                  endId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source.Outputs[OLE DB Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Foreach Region to Process\Set IRMA Connection Properties"
+          DTS:CreationName="Microsoft.ScriptTask"
+          DTS:Description="Script Task"
+          DTS:DTSID="{06E48FA6-1751-4391-8C4A-984E57301667}"
+          DTS:ExecutableType="Microsoft.ScriptTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Set IRMA Connection Properties"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <ScriptProject
+              Name="ST_27c6361f5aef4527baabb166120a4ba7"
+              VSTAMajorVersion="15"
+              VSTAMinorVersion="0"
+              Language="CSharp"
+              ReadOnlyVariables="User::Region,$Package::Environment"
+              ReadWriteVariables="User::IrmaDatabase,User::IrmaServer">
+              <ProjectItem
+                Name="Properties\Settings.settings"
+                Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
+              <ProjectItem
+                Name="Properties\Resources.resx"
+                Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+</root>]]></ProjectItem>
+              <ProjectItem
+                Name="ST_27c6361f5aef4527baabb166120a4ba7.csproj"
+                Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{944b8292-a74e-4942-bcaf-6c5f7afc8deb}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ST_27c6361f5aef4527baabb166120a4ba7</RootNamespace>
+    <AssemblyName>ST_27c6361f5aef4527baabb166120a4ba7</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptMain.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="ScriptTask" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" DebugInfoCommandLine="" DebugInfoWorkingDir="" IconImageList="" />
+        <Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex=""></Host>
+        <ProjectClient>
+          <HostIdentifier>SSIS_ST140</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></ProjectItem>
+              <ProjectItem
+                Name="ScriptMain.cs"
+                Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
+/* The Script Task allows you to perform virtually any operation that can be accomplished in
+ * a .Net application within the context of an Integration Services control flow. 
+ * 
+ * Expand the other regions which have "Help" prefixes for examples of specific ways to use
+ * Integration Services features within this script task. */
+#endregion
+
+
+#region Namespaces
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Runtime;
+using System.Windows.Forms;
+using System.Collections.Generic;
+#endregion
+
+namespace ST_27c6361f5aef4527baabb166120a4ba7
+{
+    /// <summary>
+    /// ScriptMain is the entry point class of the script.  Do not change the name, attributes,
+    /// or parent of this class.
+    /// </summary>
+	[Microsoft.SqlServer.Dts.Tasks.ScriptTask.SSISScriptTaskEntryPointAttribute]
+    public partial class ScriptMain : Microsoft.SqlServer.Dts.Tasks.ScriptTask.VSTARTScriptObjectModelBase
+    {
+        #region Help:  Using Integration Services variables and parameters in a script
+        /* To use a variable in this script, first ensure that the variable has been added to 
+         * either the list contained in the ReadOnlyVariables property or the list contained in 
+         * the ReadWriteVariables property of this script task, according to whether or not your
+         * code needs to write to the variable.  To add the variable, save this script, close this instance of
+         * Visual Studio, and update the ReadOnlyVariables and 
+         * ReadWriteVariables properties in the Script Transformation Editor window.
+         * To use a parameter in this script, follow the same steps. Parameters are always read-only.
+         * 
+         * Example of reading from a variable:
+         *  DateTime startTime = (DateTime) Dts.Variables["System::StartTime"].Value;
+         * 
+         * Example of writing to a variable:
+         *  Dts.Variables["User::myStringVariable"].Value = "new value";
+         * 
+         * Example of reading from a package parameter:
+         *  int batchId = (int) Dts.Variables["$Package::batchId"].Value;
+         *  
+         * Example of reading from a project parameter:
+         *  int batchId = (int) Dts.Variables["$Project::batchId"].Value;
+         * 
+         * Example of reading from a sensitive project parameter:
+         *  int batchId = (int) Dts.Variables["$Project::batchId"].GetSensitiveValue();
+         * */
+
+        #endregion
+
+        #region Help:  Firing Integration Services events from a script
+        /* This script task can fire events for logging purposes.
+         * 
+         * Example of firing an error event:
+         *  Dts.Events.FireError(18, "Process Values", "Bad value", "", 0);
+         * 
+         * Example of firing an information event:
+         *  Dts.Events.FireInformation(3, "Process Values", "Processing has started", "", 0, ref fireAgain)
+         * 
+         * Example of firing a warning event:
+         *  Dts.Events.FireWarning(14, "Process Values", "No values received for input", "", 0);
+         * */
+        #endregion
+
+        #region Help:  Using Integration Services connection managers in a script
+        /* Some types of connection managers can be used in this script task.  See the topic 
+         * "Working with Connection Managers Programatically" for details.
+         * 
+         * Example of using an ADO.Net connection manager:
+         *  object rawConnection = Dts.Connections["Sales DB"].AcquireConnection(Dts.Transaction);
+         *  SqlConnection myADONETConnection = (SqlConnection)rawConnection;
+         *  //Use the connection in some code here, then release the connection
+         *  Dts.Connections["Sales DB"].ReleaseConnection(rawConnection);
+         *
+         * Example of using a File connection manager
+         *  object rawConnection = Dts.Connections["Prices.zip"].AcquireConnection(Dts.Transaction);
+         *  string filePath = (string)rawConnection;
+         *  //Use the connection in some code here, then release the connection
+         *  Dts.Connections["Prices.zip"].ReleaseConnection(rawConnection);
+         * */
+        #endregion
+
+        #region IrmaServers
+
+        public static Dictionary<string, string> irmaTest0Servers = new Dictionary<string, string>
+        {
+            {"FL",@"idd-fl\fld" },
+            {"MA",@"idd-ma\mad" },
+            {"MW",@"idd-mw\mwd" },
+            {"NA",@"idd-na\nad" },
+            {"NC",@"idt-nc\nct" },
+            {"NE",@"idt-ne\net" },
+            {"PN",@"idt-pn\pnt" },
+            {"RM",@"idd-rm\rmd" },
+            {"SO",@"idd-so\sod" },
+            {"SP",@"idt-sp\spt" },
+            {"SW",@"idt-sw\swt" }
+        };
+        public static Dictionary<string, string> irmaTest1Servers = new Dictionary<string, string>
+        {
+            {"FL","fl-db01-tst01" },
+            {"MA","ma-db01-tst01" },
+            {"MW","mw-db01-tst01" },
+            {"NA","na-db01-tst01" },
+            {"NC","nc-db01-tst01" },
+            {"NE","ne-db01-tst01" },
+            {"PN","pn-db01-tst01" },
+            {"RM","rm-db01-tst01" },
+            {"SO","so-db01-tst01" },
+            {"SP","sp-db01-tst01" },
+            {"SW","sw-db01-tst01" }
+        };
+        public static Dictionary<string, string> irmaQa0Servers = new Dictionary<string, string>
+        {
+            {"FL",@"idq-fl\flq" },
+            {"MA",@"idq-ma\maq" },
+            {"MW",@"idq-mw\mwq" },
+            {"NA",@"idq-na\naq" },
+            {"NC",@"idq-nc\ncq" },
+            {"NE",@"idq-ne\neq" },
+            {"PN",@"idq-pn\pnq" },
+            {"RM",@"idq-rm\rmq" },
+            {"SO",@"idq-so\soq" },
+            {"SP",@"idq-sp\spq" },
+            {"SW",@"idq-sw\swq" }
+        };
+        public static Dictionary<string, string> irmaQa1Servers = new Dictionary<string, string>
+        {
+            {"FL","irma-fl-db-qa" },
+            {"MA","irma-ma-db-qa" },
+            {"MW","irma-mw-db-qa" },
+            {"NA","irma-na-db-qa" },
+            {"NC","irma-nc-db-qa" },
+            {"NE","irma-ne-db-qa" },
+            {"PN","irma-pn-db-qa" },
+            {"RM","irma-rm-db-qa" },
+            {"SO","irma-so-db-qa" },
+            {"SP","irma-sp-db-qa" },
+            {"SW","irma-sw-db-qa" }
+        };
+        public static Dictionary<string, string> irmaProdServers = new Dictionary<string, string>
+        {
+            {"FL",@"idp-fl\flp" },
+            {"MA",@"idp-ma\map" },
+            {"MW",@"idp-mw\mwp" },
+            {"NA",@"idp-na\nap" },
+            {"NC",@"idp-nc\ncp" },
+            {"NE",@"idp-ne\nep" },
+            {"PN",@"idp-pn\pnp" },
+            {"RM",@"idp-rm\rmp" },
+            {"SO",@"idp-so\sop" },
+            {"SP",@"idp-sp\spp" },
+            {"SW",@"idp-sw\swp" }
+        };
+
+        #endregion IrmaServers
+
+        /// <summary>
+        /// This method is called when this script task executes in the control flow.
+        /// Before returning from this method, set the value of Dts.TaskResult to indicate success or failure.
+        /// To open Help, press F1.
+        /// </summary>
+        public void Main()
+        {
+            string environment = Dts.Variables["Environment"].Value.ToString();
+            string region = Dts.Variables["Region"].Value.ToString();
+            string irmaDatabase;
+            string irmaServer;
+
+            if (environment.Equals("Dev") || environment.Equals("Dev0") || environment.Equals("Test") || environment.Equals("Test0"))
+            {
+                irmaDatabase = "ItemCatalog_Test";
+            }
+            else
+            {
+                irmaDatabase = "ItemCatalog";
+            }
+            if (environment.Equals("Dev") || environment.Equals("Dev0") || environment.Equals("Test") || environment.Equals("Test0") || environment.Equals("Test1"))
+            {
+                irmaServer = irmaTest0Servers[region];
+            }
+            else if (environment.Equals("Test1"))
+            {
+                irmaServer = irmaTest1Servers[region];
+            }
+            else if (environment.Equals("QA") || environment.Equals("QA0"))
+            {
+                irmaServer = irmaQa0Servers[region];
+            }
+            else if (environment.Equals("QA1"))
+            {
+                irmaServer = irmaQa1Servers[region];
+            }
+            else if (environment.Equals("Prod"))
+            {
+                irmaServer = irmaProdServers[region];
+            }
+            else
+            {
+                throw new ArgumentException("Unexpected value for Environment argument. Possible expected values are either Test0, Test1, QA0, QA1, or Prod.");
+            }
+
+            Dts.Variables["IrmaServer"].Value = irmaServer;
+            Dts.Variables["IrmaDatabase"].Value = irmaDatabase;
+
+            Dts.TaskResult = (int)ScriptResults.Success;
+        }
+
+        #region ScriptResults declaration
+        /// <summary>
+        /// This enum provides a convenient shorthand within the scope of this class for setting the
+        /// result of the script.
+        /// 
+        /// This code was generated automatically.
+        /// </summary>
+        enum ScriptResults
+        {
+            Success = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Success,
+            Failure = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Failure
+        };
+        #endregion
+
+    }
+}]]></ProjectItem>
+              <ProjectItem
+                Name="Project"
+                Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
+  <msb:PropertyGroup>
+    <msb:CodeName>ST_27c6361f5aef4527baabb166120a4ba7</msb:CodeName>
+    <msb:Language>msBuild</msb:Language>
+    <msb:DisplayName>ST_27c6361f5aef4527baabb166120a4ba7</msb:DisplayName>
+    <msb:ProjectId>{B32D9C3D-097F-4162-9F8D-54C22A2F4DD3}</msb:ProjectId>
+  </msb:PropertyGroup>
+  <msb:ItemGroup>
+    <msb:Project Include="ST_27c6361f5aef4527baabb166120a4ba7.csproj" />
+    <msb:File Include="Properties\Resources.resx" />
+    <msb:File Include="Properties\Settings.settings" />
+    <msb:File Include="Properties\AssemblyInfo.cs" />
+    <msb:File Include="Properties\Resources.Designer.cs" />
+    <msb:File Include="Properties\Settings.Designer.cs" />
+    <msb:File Include="ScriptMain.cs" />
+  </msb:ItemGroup>
+</c:Project>]]></ProjectItem>
+              <ProjectItem
+                Name="Properties\Settings.Designer.cs"
+                Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_27c6361f5aef4527baabb166120a4ba7.Properties.Settings.get_Default():ST_27c6361f5aef4527baabb166120a4ba7.Properties.Sett" +
+    "ings")]
+
+namespace ST_27c6361f5aef4527baabb166120a4ba7.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+              <ProjectItem
+                Name="Properties\AssemblyInfo.cs"
+                Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_27c6361f5aef4527baabb166120a4ba7")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_27c6361f5aef4527baabb166120a4ba7")]
+[assembly: AssemblyCopyright("Copyright @  2019")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+              <ProjectItem
+                Name="Properties\Resources.Designer.cs"
+                Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_27c6361f5aef4527baabb166120a4ba7.Properties.Resources.get_ResourceManager():System.Resources.Resou" +
+    "rceManager")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_27c6361f5aef4527baabb166120a4ba7.Properties.Resources.get_Culture():System.Globalization.CultureIn" +
+    "fo")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_27c6361f5aef4527baabb166120a4ba7.Properties.Resources.set_Culture(System.Globalization.CultureInfo" +
+    "):Void")]
+
+namespace ST_27c6361f5aef4527baabb166120a4ba7.Properties {
+    
+    
+    /// <summary>
+    ///   A strongly-typed resource class, for looking up localized strings, etc.
+    /// </summary>
+    // This class was auto-generated by the StronglyTypedResourceBuilder
+    // class via a tool like ResGen or Visual Studio.
+    // To add or remove a member, edit your .ResX file then rerun ResGen
+    // with the /str option, or rebuild your VS project.
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    internal class Resources {
+        
+        private static global::System.Resources.ResourceManager resourceMan;
+        
+        private static global::System.Globalization.CultureInfo resourceCulture;
+        
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        internal Resources() {
+        }
+        
+        /// <summary>
+        ///   Returns the cached ResourceManager instance used by this class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if ((resourceMan == null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ST_27c6361f5aef4527baabb166120a4ba7.Properties.Resources", typeof(Resources).Assembly);
+                    resourceMan = temp;
+                }
+                return resourceMan;
+            }
+        }
+        
+        /// <summary>
+        ///   Overrides the current thread's CurrentUICulture property for all
+        ///   resource lookups using this strongly typed resource class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
+                return resourceCulture;
+            }
+            set {
+                resourceCulture = value;
+            }
+        }
+    }
+}]]></ProjectItem>
+              <BinaryItem
+                Name="ST_27c6361f5aef4527baabb166120a4ba7.dll">TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDALGV0l0AAAAAAAAAAOAAIiALATAAABwAAAAIAAAAAAAA/joA
+AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAGAAAAAAAAAACAAAAAAgAAAAAAAAMAYIUAABAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAKw6AABPAAAAAEAAAHgEAAAAAAAAAAAAAAAAAAAA
+AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAABBsAAAAgAAAAHAAAAAIA
+AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAHgEAAAAQAAAAAYAAAAeAAAAAAAAAAAAAAAAAABAAABA
+LnJlbG9jAAAMAAAAAGAAAAACAAAAJAAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAADg
+OgAAAAAAAEgAAAACAAUAECYAAOQTAAABAAAAAAAAAPQ5AAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAABMwAgCbAQAAAQAAEQIoEAAACm8RAAAKcgEAAHBvEgAACm8T
+AAAKbxQAAAoKAigQAAAKbxEAAApyGQAAcG8SAAAKbxMAAApvFAAACgsGcicAAHBvFQAACi0nBnIv
+AABwbxUAAAotGgZyOQAAcG8VAAAKLQ0GckMAAHBvFQAACiwIck8AAHAMKwZycQAAcAwGcicAAHBv
+FQAACi00BnIvAABwbxUAAAotJwZyOQAAcG8VAAAKLRoGckMAAHBvFQAACi0NBnKJAABwbxUAAAos
+EX4BAAAEB28WAAAKDTiEAAAABnKJAABwbxUAAAosDn4CAAAEB28WAAAKDStpBnKVAABwbxUAAAot
+DQZymwAAcG8VAAAKLA5+AwAABAdvFgAACg0rQQZyowAAcG8VAAAKLA5+BAAABAdvFgAACg0rJgZy
+qwAAcG8VAAAKLA5+BQAABAdvFgAACg0rC3K1AABwcxcAAAp6AigQAAAKbxEAAApylgEAcG8SAAAK
+CW8YAAAKAigQAAAKbxEAAApyrAEAcG8SAAAKCG8YAAAKAigQAAAKFm8ZAAAKKh4CKBoAAAoqABMw
+BACjAwAAAAAAAHMbAAAKJXLGAQBwcswBAHBvHAAACiVy4gEAcHLoAQBwbxwAAAolcv4BAHByBAIA
+cG8cAAAKJXIaAgBwciACAHBvHAAACiVyNgIAcHI8AgBwbxwAAAolclICAHByWAIAcG8cAAAKJXJu
+AgBwcnQCAHBvHAAACiVyigIAcHKQAgBwbxwAAAolcqYCAHByrAIAcG8cAAAKJXLCAgBwcsgCAHBv
+HAAACiVy3gIAcHLkAgBwbxwAAAqAAQAABHMbAAAKJXLGAQBwcvoCAHBvHAAACiVy4gEAcHIWAwBw
+bxwAAAolcv4BAHByMgMAcG8cAAAKJXIaAgBwck4DAHBvHAAACiVyNgIAcHJqAwBwbxwAAAolclIC
+AHByhgMAcG8cAAAKJXJuAgBwcqIDAHBvHAAACiVyigIAcHK+AwBwbxwAAAolcqYCAHBy2gMAcG8c
+AAAKJXLCAgBwcvYDAHBvHAAACiVy3gIAcHISBABwbxwAAAqAAgAABHMbAAAKJXLGAQBwci4EAHBv
+HAAACiVy4gEAcHJEBABwbxwAAAolcv4BAHByWgQAcG8cAAAKJXIaAgBwcnAEAHBvHAAACiVyNgIA
+cHKGBABwbxwAAAolclICAHBynAQAcG8cAAAKJXJuAgBwcrIEAHBvHAAACiVyigIAcHLIBABwbxwA
+AAolcqYCAHBy3gQAcG8cAAAKJXLCAgBwcvQEAHBvHAAACiVy3gIAcHIKBQBwbxwAAAqAAwAABHMb
+AAAKJXLGAQBwciAFAHBvHAAACiVy4gEAcHI8BQBwbxwAAAolcv4BAHByWAUAcG8cAAAKJXIaAgBw
+cnQFAHBvHAAACiVyNgIAcHKQBQBwbxwAAAolclICAHByrAUAcG8cAAAKJXJuAgBwcsgFAHBvHAAA
+CiVyigIAcHLkBQBwbxwAAAolcqYCAHByAAYAcG8cAAAKJXLCAgBwchwGAHBvHAAACiVy3gIAcHI4
+BgBwbxwAAAqABAAABHMbAAAKJXLGAQBwclQGAHBvHAAACiVy4gEAcHJqBgBwbxwAAAolcv4BAHBy
+gAYAcG8cAAAKJXIaAgBwcpYGAHBvHAAACiVyNgIAcHKsBgBwbxwAAAolclICAHBywgYAcG8cAAAK
+JXJuAgBwctgGAHBvHAAACiVyigIAcHLuBgBwbxwAAAolcqYCAHByBAcAcG8cAAAKJXLCAgBwchoH
+AHBvHAAACiVy3gIAcHIwBwBwbxwAAAqABQAABCoeAigdAAAKKq5+BgAABC0eckYHAHDQAwAAAige
+AAAKbx8AAApzIAAACoAGAAAEfgYAAAQqGn4HAAAEKh4CgAcAAAQqGn4IAAAEKh4CKCEAAAoqLnMJ
+AAAGgAgAAAQqAAAAQlNKQgEAAQAAAAAADAAAAHY0LjAuMzAzMTkAAAAABQBsAAAAJAQAACN+AACQ
+BAAA/AUAACNTdHJpbmdzAAAAAIwKAAC4BwAAI1VTAEQSAAAQAAAAI0dVSUQAAABUEgAAkAEAACNC
+bG9iAAAAAAAAAAIAAAFXHaIJCQMAAAD6ATMAFgAAAQAAACAAAAAFAAAACwAAAAoAAAABAAAAIQAA
+AAIAAAAQAAAAAQAAAAIAAAADAAAABAAAAAEAAAABAAAABAAAAAEAAAABAAAAAACrAwEAAAAAAAYA
+UQKNBAYA4AKNBAYAnQF6BA8AAQUAAAYAygEpBAYANAIpBAYAFQIpBAYAxwIpBAYAcQIpBAYAigIp
+BAYA4QEpBAYA/AEYAwoApQJaAwoAHAFaAwYAAQBrAAYA4wPcAwYAgAF6BAYAywXcAwYAXQStBAYA
+TQQUBA4AUAGVAw4AsQGVAw4AOAH/AwYAZQGNBAoAgwNaAxIAQwXHABIAmgDHAAYANAPcAwYAOwTc
+AwYA5wDcAwYAowDcAwYA8QUpBAAAAAAyAAAAAAABAAEAAQAQAPQDDgA5AAEAAQAAABAAtAQQBUkA
+BgAEAAABEABNBRAFXQAIAAgAAwEAAL0FAABBAAkACwAWAGwFiwAWAIwFiwAWAF0FiwAWAH0FiwAW
+AJ0FiwARAOgDkwARAAwBlwARAIoAmwAGBloAnwBWgK0FogBWgOwAogBQIAAAAACGAPoDBgABAPch
+AAAAAIYYbQQGAAEAACIAAAAAkRhzBKYAAQCvJQAAAACDGG0EBgABALclAAAAAJMIWQSqAAEA4yUA
+AAAAkwj0AK8AAQDqJQAAAACTCAABtAABAPIlAAAAAJYI0gW6AAIA+SUAAAAAhhhtBAYAAgABJgAA
+AACRGHMEpgACAAAAAQASAwkAbQQBABEAbQQGABkAbQQKACkAbQQQADEAbQQQADkAbQQQAEEAbQQQ
+AEkAbQQQAFEAbQQQAFkAbQQQAGEAbQQQAGkAbQQGAIkAbQQGALEAbQQVAMEAbQQGAHEAtQUiAMkA
+PwUnANEA0wMsANkA/gIyAJEAMgM2AOEAVgU6AAwA0wNGAOkAbQQQANkACANNAMkA3gUBAHEAbQQG
+AAwAbQQGAAwAhgBSAJEAbQQGAPEAtQBaAPEA7QVhAJkAbQRnALkAbQQGAAgAKACBAAgALACGACkA
+cwD2AC4ACwDOAC4AEwDXAC4AGwD2AC4AIwD/AC4AKwAoAS4AMwAoAS4AOwAoAS4AQwD/AC4ASwAu
+AS4AUwAoAS4AWwBFAUMAYwCGAEkAcwD2AGMAawCGAAEBewCGABsAAwABAAQAAwAAAF0EvwAAABQB
+xAAAANYFyQACAAUAAwACAAYABQABAAcABQACAAgABwA/AASAAAABAAAAXRwoMQAAAAAAAA4AAAAE
+AAAAAAAAAAAAAABvAGIAAAAAAA4AAAAAAAAAAAAAAHgAOwMAAAAABAAAAAAAAAAAAAAAbwDcAwAA
+AAAOAAAAAAAAAAAAAAB4ADsAAAAAAAAAAAABAAAAvgQAAAUAAgAAAABEaWN0aW9uYXJ5YDIAU1Rf
+MjdjNjM2MWY1YWVmNDUyN2JhYWJiMTY2MTIwYTRiYTcAPE1vZHVsZT4ATWljcm9zb2Z0LlNxbFNl
+cnZlci5NYW5hZ2VkRFRTAHZhbHVlX18AbXNjb3JsaWIAU3lzdGVtLkNvbGxlY3Rpb25zLkdlbmVy
+aWMAQWRkAGRlZmF1bHRJbnN0YW5jZQBWYXJpYWJsZQBSdW50aW1lVHlwZUhhbmRsZQBHZXRUeXBl
+RnJvbUhhbmRsZQBNaWNyb3NvZnQuU3FsU2VydmVyLkR0cy5SdW50aW1lAFR5cGUARmFpbHVyZQBn
+ZXRfQ3VsdHVyZQBzZXRfQ3VsdHVyZQByZXNvdXJjZUN1bHR1cmUAVlNUQVJUU2NyaXB0T2JqZWN0
+TW9kZWxCYXNlAEFwcGxpY2F0aW9uU2V0dGluZ3NCYXNlAEVkaXRvckJyb3dzYWJsZVN0YXRlAENv
+bXBpbGVyR2VuZXJhdGVkQXR0cmlidXRlAERlYnVnZ2VyTm9uVXNlckNvZGVBdHRyaWJ1dGUARGVi
+dWdnYWJsZUF0dHJpYnV0ZQBFZGl0b3JCcm93c2FibGVBdHRyaWJ1dGUAQXNzZW1ibHlUaXRsZUF0
+dHJpYnV0ZQBBc3NlbWJseVRyYWRlbWFya0F0dHJpYnV0ZQBUYXJnZXRGcmFtZXdvcmtBdHRyaWJ1
+dGUAQXNzZW1ibHlDb25maWd1cmF0aW9uQXR0cmlidXRlAEFzc2VtYmx5RGVzY3JpcHRpb25BdHRy
+aWJ1dGUAQ29tcGlsYXRpb25SZWxheGF0aW9uc0F0dHJpYnV0ZQBBc3NlbWJseVByb2R1Y3RBdHRy
+aWJ1dGUAQXNzZW1ibHlDb3B5cmlnaHRBdHRyaWJ1dGUAU1NJU1NjcmlwdFRhc2tFbnRyeVBvaW50
+QXR0cmlidXRlAEFzc2VtYmx5Q29tcGFueUF0dHJpYnV0ZQBSdW50aW1lQ29tcGF0aWJpbGl0eUF0
+dHJpYnV0ZQBnZXRfVmFsdWUAc2V0X1ZhbHVlAHZhbHVlAFN5c3RlbS5SdW50aW1lLlZlcnNpb25p
+bmcAVG9TdHJpbmcATWljcm9zb2Z0LlNxbFNlcnZlci5TY3JpcHRUYXNrAE1pY3Jvc29mdC5TcWxT
+ZXJ2ZXIuRHRzLlRhc2tzLlNjcmlwdFRhc2sAU2NyaXB0T2JqZWN0TW9kZWwAU3lzdGVtLkNvbXBv
+bmVudE1vZGVsAFNUXzI3YzYzNjFmNWFlZjQ1MjdiYWFiYjE2NjEyMGE0YmE3LmRsbABnZXRfSXRl
+bQBTeXN0ZW0ARW51bQByZXNvdXJjZU1hbgBTY3JpcHRNYWluAFN5c3RlbS5Db25maWd1cmF0aW9u
+AFN5c3RlbS5HbG9iYWxpemF0aW9uAFN5c3RlbS5SZWZsZWN0aW9uAEFyZ3VtZW50RXhjZXB0aW9u
+AEN1bHR1cmVJbmZvAGdldF9SZXNvdXJjZU1hbmFnZXIALmN0b3IALmNjdG9yAFN5c3RlbS5EaWFn
+bm9zdGljcwBTeXN0ZW0uUnVudGltZS5Db21waWxlclNlcnZpY2VzAFN5c3RlbS5SZXNvdXJjZXMA
+U1RfMjdjNjM2MWY1YWVmNDUyN2JhYWJiMTY2MTIwYTRiYTcuUHJvcGVydGllcy5SZXNvdXJjZXMu
+cmVzb3VyY2VzAERlYnVnZ2luZ01vZGVzAFNUXzI3YzYzNjFmNWFlZjQ1MjdiYWFiYjE2NjEyMGE0
+YmE3LlByb3BlcnRpZXMAZ2V0X1ZhcmlhYmxlcwBTZXR0aW5ncwBFcXVhbHMAaXJtYVFhMFNlcnZl
+cnMAaXJtYVRlc3QwU2VydmVycwBpcm1hUWExU2VydmVycwBpcm1hVGVzdDFTZXJ2ZXJzAGlybWFQ
+cm9kU2VydmVycwBTdWNjZXNzAGdldF9EdHMAU2NyaXB0UmVzdWx0cwBPYmplY3QAZ2V0X0RlZmF1
+bHQAc2V0X1Rhc2tSZXN1bHQAZ2V0X0Fzc2VtYmx5AAAAABdFAG4AdgBpAHIAbwBuAG0AZQBuAHQA
+AA1SAGUAZwBpAG8AbgAAB0QAZQB2AAAJRABlAHYAMAAACVQAZQBzAHQAAAtUAGUAcwB0ADAAACFJ
+AHQAZQBtAEMAYQB0AGEAbABvAGcAXwBUAGUAcwB0AAAXSQB0AGUAbQBDAGEAdABhAGwAbwBnAAAL
+VABlAHMAdAAxAAAFUQBBAAAHUQBBADAAAAdRAEEAMQAACVAAcgBvAGQAAIDfVQBuAGUAeABwAGUA
+YwB0AGUAZAAgAHYAYQBsAHUAZQAgAGYAbwByACAARQBuAHYAaQByAG8AbgBtAGUAbgB0ACAAYQBy
+AGcAdQBtAGUAbgB0AC4AIABQAG8AcwBzAGkAYgBsAGUAIABlAHgAcABlAGMAdABlAGQAIAB2AGEA
+bAB1AGUAcwAgAGEAcgBlACAAZQBpAHQAaABlAHIAIABUAGUAcwB0ADAALAAgAFQAZQBzAHQAMQAs
+ACAAUQBBADAALAAgAFEAQQAxACwAIABvAHIAIABQAHIAbwBkAC4AABVJAHIAbQBhAFMAZQByAHYA
+ZQByAAAZSQByAG0AYQBEAGEAdABhAGIAYQBzAGUAAAVGAEwAABVpAGQAZAAtAGYAbABcAGYAbABk
+AAEFTQBBAAAVaQBkAGQALQBtAGEAXABtAGEAZAABBU0AVwAAFWkAZABkAC0AbQB3AFwAbQB3AGQA
+AQVOAEEAABVpAGQAZAAtAG4AYQBcAG4AYQBkAAEFTgBDAAAVaQBkAHQALQBuAGMAXABuAGMAdAAB
+BU4ARQAAFWkAZAB0AC0AbgBlAFwAbgBlAHQAAQVQAE4AABVpAGQAdAAtAHAAbgBcAHAAbgB0AAEF
+UgBNAAAVaQBkAGQALQByAG0AXAByAG0AZAABBVMATwAAFWkAZABkAC0AcwBvAFwAcwBvAGQAAQVT
+AFAAABVpAGQAdAAtAHMAcABcAHMAcAB0AAEFUwBXAAAVaQBkAHQALQBzAHcAXABzAHcAdAABG2YA
+bAAtAGQAYgAwADEALQB0AHMAdAAwADEAARttAGEALQBkAGIAMAAxAC0AdABzAHQAMAAxAAEbbQB3
+AC0AZABiADAAMQAtAHQAcwB0ADAAMQABG24AYQAtAGQAYgAwADEALQB0AHMAdAAwADEAARtuAGMA
+LQBkAGIAMAAxAC0AdABzAHQAMAAxAAEbbgBlAC0AZABiADAAMQAtAHQAcwB0ADAAMQABG3AAbgAt
+AGQAYgAwADEALQB0AHMAdAAwADEAARtyAG0ALQBkAGIAMAAxAC0AdABzAHQAMAAxAAEbcwBvAC0A
+ZABiADAAMQAtAHQAcwB0ADAAMQABG3MAcAAtAGQAYgAwADEALQB0AHMAdAAwADEAARtzAHcALQBk
+AGIAMAAxAC0AdABzAHQAMAAxAAEVaQBkAHEALQBmAGwAXABmAGwAcQABFWkAZABxAC0AbQBhAFwA
+bQBhAHEAARVpAGQAcQAtAG0AdwBcAG0AdwBxAAEVaQBkAHEALQBuAGEAXABuAGEAcQABFWkAZABx
+AC0AbgBjAFwAbgBjAHEAARVpAGQAcQAtAG4AZQBcAG4AZQBxAAEVaQBkAHEALQBwAG4AXABwAG4A
+cQABFWkAZABxAC0AcgBtAFwAcgBtAHEAARVpAGQAcQAtAHMAbwBcAHMAbwBxAAEVaQBkAHEALQBz
+AHAAXABzAHAAcQABFWkAZABxAC0AcwB3AFwAcwB3AHEAARtpAHIAbQBhAC0AZgBsAC0AZABiAC0A
+cQBhAAEbaQByAG0AYQAtAG0AYQAtAGQAYgAtAHEAYQABG2kAcgBtAGEALQBtAHcALQBkAGIALQBx
+AGEAARtpAHIAbQBhAC0AbgBhAC0AZABiAC0AcQBhAAEbaQByAG0AYQAtAG4AYwAtAGQAYgAtAHEA
+YQABG2kAcgBtAGEALQBuAGUALQBkAGIALQBxAGEAARtpAHIAbQBhAC0AcABuAC0AZABiAC0AcQBh
+AAEbaQByAG0AYQAtAHIAbQAtAGQAYgAtAHEAYQABG2kAcgBtAGEALQBzAG8ALQBkAGIALQBxAGEA
+ARtpAHIAbQBhAC0AcwBwAC0AZABiAC0AcQBhAAEbaQByAG0AYQAtAHMAdwAtAGQAYgAtAHEAYQAB
+FWkAZABwAC0AZgBsAFwAZgBsAHAAARVpAGQAcAAtAG0AYQBcAG0AYQBwAAEVaQBkAHAALQBtAHcA
+XABtAHcAcAABFWkAZABwAC0AbgBhAFwAbgBhAHAAARVpAGQAcAAtAG4AYwBcAG4AYwBwAAEVaQBk
+AHAALQBuAGUAXABuAGUAcAABFWkAZABwAC0AcABuAFwAcABuAHAAARVpAGQAcAAtAHIAbQBcAHIA
+bQBwAAEVaQBkAHAALQBzAG8AXABzAG8AcAABFWkAZABwAC0AcwBwAFwAcwBwAHAAARVpAGQAcAAt
+AHMAdwBcAHMAdwBwAAFxUwBUAF8AMgA3AGMANgAzADYAMQBmADUAYQBlAGYANAA1ADIANwBiAGEA
+YQBiAGIAMQA2ADYAMQAyADAAYQA0AGIAYQA3AC4AUAByAG8AcABlAHIAdABpAGUAcwAuAFIAZQBz
+AG8AdQByAGMAZQBzAADZejGLA9uBRrz1QE+wgnsHAAQgAQEIAyAAAQUgAQEREQQgAQEOBSABARFV
+BgcEDg4ODgQgABJlBCAAEmkFIAESbRwDIAAcAyAADgQgAQIOBhUSPQIODgYgARMBEwAEIAEBHAcg
+AgETABMBBgABEnkRfQUgABKAgQcgAgEOEoCBCLd6XFYZNOCJCImEXc2AgMyRBAAAAAAEAQAAAAcG
+FRI9Ag4OAwYSTQMGElEDBhIQAgYIAwYRFAMAAAEEAAASTQQAABJRBQABARJRBAAAEhAECAASTQQI
+ABJRBAgAEhAIAQAIAAAAAAAeAQABAFQCFldyYXBOb25FeGNlcHRpb25UaHJvd3MBCAEAAgAAAAAA
+KAEAI1NUXzI3YzYzNjFmNWFlZjQ1MjdiYWFiYjE2NjEyMGE0YmE3AAAFAQAAAAAWAQARQ29weXJp
+Z2h0IEAgIDIwMTkAAEkBABouTkVURnJhbWV3b3JrLFZlcnNpb249djQuNQEAVA4URnJhbWV3b3Jr
+RGlzcGxheU5hbWUSLk5FVCBGcmFtZXdvcmsgNC41ALQAAADOyu++AQAAAJEAAABsU3lzdGVtLlJl
+c291cmNlcy5SZXNvdXJjZVJlYWRlciwgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVy
+ZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5I1N5c3RlbS5SZXNvdXJj
+ZXMuUnVudGltZVJlc291cmNlU2V0AgAAAAAAAAAAAAAAUEFEUEFEULQAAADUOgAAAAAAAAAAAADu
+OgAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4DoAAAAAAAAAAAAAAABfQ29yRGxsTWFpbgBtc2Nv
+cmVlLmRsbAAAAAAA/yUAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB
+ABAAAAAYAACAAAAAAAAAAAAAAAAAAAABAAEAAAAwAACAAAAAAAAAAAAAAAAAAAABAAAAAABIAAAA
+WEAAABoEAAAAAAAAAAAAABoENAAAAFYAUwBfAFYARQBSAFMASQBPAE4AXwBJAE4ARgBPAAAAAAC9
+BO/+AAABAAAAAQAoMV0cAAABACgxXRw/AAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAARAAAAAEA
+VgBhAHIARgBpAGwAZQBJAG4AZgBvAAAAAAAkAAQAAABUAHIAYQBuAHMAbABhAHQAaQBvAG4AAAAA
+AAAAsAR6AwAAAQBTAHQAcgBpAG4AZwBGAGkAbABlAEkAbgBmAG8AAABWAwAAAQAwADAAMAAwADAA
+NABiADAAAAAaAAEAAQBDAG8AbQBtAGUAbgB0AHMAAAAAAAAAIgABAAEAQwBvAG0AcABhAG4AeQBO
+AGEAbQBlAAAAAAAAAAAAcAAkAAEARgBpAGwAZQBEAGUAcwBjAHIAaQBwAHQAaQBvAG4AAAAAAFMA
+VABfADIANwBjADYAMwA2ADEAZgA1AGEAZQBmADQANQAyADcAYgBhAGEAYgBiADEANgA2ADEAMgAw
+AGEANABiAGEANwAAAD4ADwABAEYAaQBsAGUAVgBlAHIAcwBpAG8AbgAAAAAAMQAuADAALgA3ADIA
+NgAxAC4AMQAyADUAOAA0AAAAAABwACgAAQBJAG4AdABlAHIAbgBhAGwATgBhAG0AZQAAAFMAVABf
+ADIANwBjADYAMwA2ADEAZgA1AGEAZQBmADQANQAyADcAYgBhAGEAYgBiADEANgA2ADEAMgAwAGEA
+NABiAGEANwAuAGQAbABsAAAASAASAAEATABlAGcAYQBsAEMAbwBwAHkAcgBpAGcAaAB0AAAAQwBv
+AHAAeQByAGkAZwBoAHQAIABAACAAIAAyADAAMQA5AAAAKgABAAEATABlAGcAYQBsAFQAcgBhAGQA
+ZQBtAGEAcgBrAHMAAAAAAAAAAAB4ACgAAQBPAHIAaQBnAGkAbgBhAGwARgBpAGwAZQBuAGEAbQBl
+AAAAUwBUAF8AMgA3AGMANgAzADYAMQBmADUAYQBlAGYANAA1ADIANwBiAGEAYQBiAGIAMQA2ADYA
+MQAyADAAYQA0AGIAYQA3AC4AZABsAGwAAABoACQAAQBQAHIAbwBkAHUAYwB0AE4AYQBtAGUAAAAA
+AFMAVABfADIANwBjADYAMwA2ADEAZgA1AGEAZQBmADQANQAyADcAYgBhAGEAYgBiADEANgA2ADEA
+MgAwAGEANABiAGEANwAAAEIADwABAFAAcgBvAGQAdQBjAHQAVgBlAHIAcwBpAG8AbgAAADEALgAw
+AC4ANwAyADYAMQAuADEAMgA1ADgANAAAAAAARgAPAAEAQQBzAHMAZQBtAGIAbAB5ACAAVgBlAHIA
+cwBpAG8AbgAAADEALgAwAC4ANwAyADYAMQAuADEAMgA1ADgANAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAwAAAAAOwAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
+            </ScriptProject>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Foreach Region to Process\Sync Mammoth"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DelayValidation="True"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{602AB7A7-D02A-49AD-BAA8-8C2C8F73FCC9}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Sync Mammoth"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{53197F6F-6E27-4BCE-927E-9D9ADA8A9788}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::SyncMammothSql" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Foreach Region to Process.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{6ACEBF1D-8CF1-4BAB-9E42-7E03072C5231}"
+          DTS:From="Package\Foreach Region to Process\Set IRMA Connection Properties"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Foreach Region to Process\Create Staging Table in Mammoth" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Foreach Region to Process.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{4EA99D5D-EAB6-446A-8E4C-C43A1A3447E0}"
+          DTS:From="Package\Foreach Region to Process\Create Staging Table in Mammoth"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\Foreach Region to Process\Move data from IRMA to Mammoth" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Foreach Region to Process.PrecedenceConstraints[Constraint 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{F0530D24-912B-488D-A367-30E7F81BA6F1}"
+          DTS:From="Package\Foreach Region to Process\Move data from IRMA to Mammoth"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 2"
+          DTS:To="Package\Foreach Region to Process\Sync Mammoth" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Foreach Region to Process.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{3BBBB2DB-3A53-482B-BFE2-C8F29815F2C7}"
+          DTS:From="Package\Foreach Region to Process\Sync Mammoth"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\Foreach Region to Process\Create Index on stage IrmaDataUpdateRecords" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Foreach Region to Process.PrecedenceConstraints[Constraint 4]"
+          DTS:CreationName=""
+          DTS:DTSID="{804534C8-BFFE-416B-A8B0-C11575639D77}"
+          DTS:From="Package\Foreach Region to Process\Create Index on stage IrmaDataUpdateRecords"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 4"
+          DTS:To="Package\Foreach Region to Process\Drop stage IrmaData table" />
+      </DTS:PrecedenceConstraints>
+      <DTS:ForEachVariableMappings>
+        <DTS:ForEachVariableMapping
+          DTS:CreationName=""
+          DTS:DTSID="{8F71FB60-2652-499B-8795-2457164E815F}"
+          DTS:ObjectName="{8F71FB60-2652-499B-8795-2457164E815F}"
+          DTS:ValueIndex="0"
+          DTS:VariableName="User::Region" />
+      </DTS:ForEachVariableMappings>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Set Regions to Process"
+      DTS:CreationName="Microsoft.ScriptTask"
+      DTS:Description="Script Task"
+      DTS:DTSID="{DB101C06-9588-4B15-A6ED-F09BE437236A}"
+      DTS:ExecutableType="Microsoft.ScriptTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Set Regions to Process"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ScriptProject
+          Name="ST_60b6bad78770405eb20ae46d6bc0b780"
+          VSTAMajorVersion="15"
+          VSTAMinorVersion="0"
+          Language="CSharp"
+          ReadOnlyVariables="$Package::Regions"
+          ReadWriteVariables="User::RegionsToProcess">
+          <ProjectItem
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_60b6bad78770405eb20ae46d6bc0b780")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_60b6bad78770405eb20ae46d6bc0b780")]
+[assembly: AssemblyCopyright("Copyright @  2019")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Resources.resx"
+            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+</root>]]></ProjectItem>
+          <ProjectItem
+            Name="ST_60b6bad78770405eb20ae46d6bc0b780.csproj"
+            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2abb027b-f271-4955-adad-591672d6f0d2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ST_60b6bad78770405eb20ae46d6bc0b780</RootNamespace>
+    <AssemblyName>ST_60b6bad78770405eb20ae46d6bc0b780</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptMain.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="ScriptTask" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" DebugInfoCommandLine="" DebugInfoWorkingDir="" IconImageList="" />
+        <Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex=""></Host>
+        <ProjectClient>
+          <HostIdentifier>SSIS_ST140</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></ProjectItem>
+          <ProjectItem
+            Name="ScriptMain.cs"
+            Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
+/* The Script Task allows you to perform virtually any operation that can be accomplished in
+ * a .Net application within the context of an Integration Services control flow. 
+ * 
+ * Expand the other regions which have "Help" prefixes for examples of specific ways to use
+ * Integration Services features within this script task. */
+#endregion
+
+
+#region Namespaces
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Runtime;
+using System.Windows.Forms;
+using System.Linq;
+#endregion
+
+namespace ST_60b6bad78770405eb20ae46d6bc0b780
+{
+    /// <summary>
+    /// ScriptMain is the entry point class of the script.  Do not change the name, attributes,
+    /// or parent of this class.
+    /// </summary>
+	[Microsoft.SqlServer.Dts.Tasks.ScriptTask.SSISScriptTaskEntryPointAttribute]
+	public partial class ScriptMain : Microsoft.SqlServer.Dts.Tasks.ScriptTask.VSTARTScriptObjectModelBase
+	{
+        #region Help:  Using Integration Services variables and parameters in a script
+        /* To use a variable in this script, first ensure that the variable has been added to 
+         * either the list contained in the ReadOnlyVariables property or the list contained in 
+         * the ReadWriteVariables property of this script task, according to whether or not your
+         * code needs to write to the variable.  To add the variable, save this script, close this instance of
+         * Visual Studio, and update the ReadOnlyVariables and 
+         * ReadWriteVariables properties in the Script Transformation Editor window.
+         * To use a parameter in this script, follow the same steps. Parameters are always read-only.
+         * 
+         * Example of reading from a variable:
+         *  DateTime startTime = (DateTime) Dts.Variables["System::StartTime"].Value;
+         * 
+         * Example of writing to a variable:
+         *  Dts.Variables["User::myStringVariable"].Value = "new value";
+         * 
+         * Example of reading from a package parameter:
+         *  int batchId = (int) Dts.Variables["$Package::batchId"].Value;
+         *  
+         * Example of reading from a project parameter:
+         *  int batchId = (int) Dts.Variables["$Project::batchId"].Value;
+         * 
+         * Example of reading from a sensitive project parameter:
+         *  int batchId = (int) Dts.Variables["$Project::batchId"].GetSensitiveValue();
+         * */
+
+        #endregion
+
+        #region Help:  Firing Integration Services events from a script
+        /* This script task can fire events for logging purposes.
+         * 
+         * Example of firing an error event:
+         *  Dts.Events.FireError(18, "Process Values", "Bad value", "", 0);
+         * 
+         * Example of firing an information event:
+         *  Dts.Events.FireInformation(3, "Process Values", "Processing has started", "", 0, ref fireAgain)
+         * 
+         * Example of firing a warning event:
+         *  Dts.Events.FireWarning(14, "Process Values", "No values received for input", "", 0);
+         * */
+        #endregion
+
+        #region Help:  Using Integration Services connection managers in a script
+        /* Some types of connection managers can be used in this script task.  See the topic 
+         * "Working with Connection Managers Programatically" for details.
+         * 
+         * Example of using an ADO.Net connection manager:
+         *  object rawConnection = Dts.Connections["Sales DB"].AcquireConnection(Dts.Transaction);
+         *  SqlConnection myADONETConnection = (SqlConnection)rawConnection;
+         *  //Use the connection in some code here, then release the connection
+         *  Dts.Connections["Sales DB"].ReleaseConnection(rawConnection);
+         *
+         * Example of using a File connection manager
+         *  object rawConnection = Dts.Connections["Prices.zip"].AcquireConnection(Dts.Transaction);
+         *  string filePath = (string)rawConnection;
+         *  //Use the connection in some code here, then release the connection
+         *  Dts.Connections["Prices.zip"].ReleaseConnection(rawConnection);
+         * */
+        #endregion
+
+
+		/// <summary>
+        /// This method is called when this script task executes in the control flow.
+        /// Before returning from this method, set the value of Dts.TaskResult to indicate success or failure.
+        /// To open Help, press F1.
+        /// </summary>
+		public void Main()
+		{
+            Dts.Variables["RegionsToProcess"].Value = Dts.Variables["Regions"].Value.ToString().Split(',').ToList();
+
+			Dts.TaskResult = (int)ScriptResults.Success;
+		}
+
+        #region ScriptResults declaration
+        /// <summary>
+        /// This enum provides a convenient shorthand within the scope of this class for setting the
+        /// result of the script.
+        /// 
+        /// This code was generated automatically.
+        /// </summary>
+        enum ScriptResults
+        {
+            Success = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Success,
+            Failure = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Failure
+        };
+        #endregion
+
+	}
+}]]></ProjectItem>
+          <ProjectItem
+            Name="Project"
+            Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
+  <msb:PropertyGroup>
+    <msb:CodeName>ST_60b6bad78770405eb20ae46d6bc0b780</msb:CodeName>
+    <msb:Language>msBuild</msb:Language>
+    <msb:DisplayName>ST_60b6bad78770405eb20ae46d6bc0b780</msb:DisplayName>
+    <msb:ProjectId>{059FEF0D-4A1E-4FE0-A65C-FE528430757D}</msb:ProjectId>
+  </msb:PropertyGroup>
+  <msb:ItemGroup>
+    <msb:Project Include="ST_60b6bad78770405eb20ae46d6bc0b780.csproj" />
+    <msb:File Include="Properties\Settings.settings" />
+    <msb:File Include="Properties\AssemblyInfo.cs" />
+    <msb:File Include="Properties\Resources.resx" />
+    <msb:File Include="Properties\Resources.Designer.cs" />
+    <msb:File Include="Properties\Settings.Designer.cs" />
+    <msb:File Include="ScriptMain.cs" />
+  </msb:ItemGroup>
+</c:Project>]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_60b6bad78770405eb20ae46d6bc0b780.Properties.Settings.get_Default():ST_60b6bad78770405eb20ae46d6bc0b780.Properties.Sett" +
+    "ings")]
+
+namespace ST_60b6bad78770405eb20ae46d6bc0b780.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Resources.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_60b6bad78770405eb20ae46d6bc0b780.Properties.Resources.get_ResourceManager():System.Resources.Resou" +
+    "rceManager")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_60b6bad78770405eb20ae46d6bc0b780.Properties.Resources.get_Culture():System.Globalization.CultureIn" +
+    "fo")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_60b6bad78770405eb20ae46d6bc0b780.Properties.Resources.set_Culture(System.Globalization.CultureInfo" +
+    "):Void")]
+
+namespace ST_60b6bad78770405eb20ae46d6bc0b780.Properties {
+    
+    
+    /// <summary>
+    ///   A strongly-typed resource class, for looking up localized strings, etc.
+    /// </summary>
+    // This class was auto-generated by the StronglyTypedResourceBuilder
+    // class via a tool like ResGen or Visual Studio.
+    // To add or remove a member, edit your .ResX file then rerun ResGen
+    // with the /str option, or rebuild your VS project.
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    internal class Resources {
+        
+        private static global::System.Resources.ResourceManager resourceMan;
+        
+        private static global::System.Globalization.CultureInfo resourceCulture;
+        
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        internal Resources() {
+        }
+        
+        /// <summary>
+        ///   Returns the cached ResourceManager instance used by this class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if ((resourceMan == null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ST_60b6bad78770405eb20ae46d6bc0b780.Properties.Resources", typeof(Resources).Assembly);
+                    resourceMan = temp;
+                }
+                return resourceMan;
+            }
+        }
+        
+        /// <summary>
+        ///   Overrides the current thread's CurrentUICulture property for all
+        ///   resource lookups using this strongly typed resource class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
+                return resourceCulture;
+            }
+            set {
+                resourceCulture = value;
+            }
+        }
+    }
+}]]></ProjectItem>
+          <BinaryItem
+            Name="ST_60b6bad78770405eb20ae46d6bc0b780.dll">TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDABdc0l0AAAAAAAAAAOAAIiALATAAABAAAAAIAAAAAAAAoi4A
+AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAGAAAAAAAAAACAAAAAAgAAAAAAAAMAYIUAABAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAFAuAABPAAAAAEAAAGwEAAAAAAAAAAAAAAAAAAAA
+AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAqA4AAAAgAAAAEAAAAAIA
+AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAGwEAAAAQAAAAAYAAAASAAAAAAAAAAAAAAAAAABAAABA
+LnJlbG9jAAAMAAAAAGAAAAACAAAAGAAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAACE
+LgAAAAAAAEgAAAACAAUAICEAAHgMAAABAAAAAAAAAJgtAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAABMwBgBbAAAAAAAAAAIoEAAACm8RAAAKcgEAAHBvEgAACgIo
+EAAACm8RAAAKciMAAHBvEgAACm8TAAAKbxQAAAoXjRsAAAElFh8snW8VAAAKKAEAACtvFwAACgIo
+EAAAChZvGAAACioeAigZAAAKKh4CKBoAAAoqrn4BAAAELR5yMwAAcNADAAACKBsAAApvHAAACnMd
+AAAKgAEAAAR+AQAABCoafgIAAAQqHgKAAgAABCoafgMAAAQqHgIoHgAACioucwgAAAaAAwAABCoA
+AABCU0pCAQABAAAAAAAMAAAAdjQuMC4zMDMxOQAAAAAFAGwAAAAEBAAAI34AAHAEAADMBQAAI1N0
+cmluZ3MAAAAAPAoAAKgAAAAjVVMA5AoAABAAAAAjR1VJRAAAAPQKAACEAQAAI0Jsb2IAAAAAAAAA
+AgAAAVcdoAEJCwAAAPoBMwAWAAABAAAAIgAAAAUAAAAGAAAACQAAAAEAAAAeAAAAAgAAABAAAAAC
+AAAAAwAAAAQAAAABAAAABQAAAAEAAAABAAAAAQAAAAAAxgMBAAAAAAAGAGwCpwQGAPsCpwQGALgB
+lAQPABsFAAAGAOUBRAQGAE8CRAQGADACRAQGAOICRAQGAIwCRAQGAKUCRAQGAPwBRAQGABcCMwMK
+AMACdQMKADcBdQMGAP4D9wMGAJsBlAQGAI4F9wMGAHcExwQGAFYELwQOAGsBsAMOAMwBsAMOAFMB
+GgQGAIABpwQKAJ4DdQMSAF0F1gASAJ4A1gAGAG4E9wMGAE8D9wMWAKcAYgQGADMAcwAGACUAcwAG
+APYA9wMGALIA9wMGAMEFRAQAAAAAOgAAAAAAAQABAAEAEAAPBAEAOQABAAEAAAAQAM4EKgVFAAEA
+AwAAARAAZwUqBVkAAwAHAAMBAACABQAAPQAEAAoAEQADBIYAEQAnAYoAEQCOAI4ABgZiAJIAVoBw
+BZUAVoAHAZUAUCAAAAAAhgAVBAYAAQC3IAAAAACGGIcEBgABAL8gAAAAAIMYhwQGAAEAxyAAAAAA
+kwhzBJkAAQDzIAAAAACTCA8BngABAPogAAAAAJMIGwGjAAEAAiEAAAAAlgibBakAAgAJIQAAAACG
+GIcEBgACABEhAAAAAJEYjQSuAAIAAAABAC0DCQCHBAEAEQCHBAYAGQCHBAoAKQCHBBAAMQCHBBAA
+OQCHBBAAQQCHBBAASQCHBBAAUQCHBBAAWQCHBBAAYQCHBBAAaQCHBAYAgQCHBAYAqQCHBBUAuQCH
+BAYAcQB4BRsAwQBZBSAAyQDuAyUA0QAZAysAiQBNAy8A4QCVBTMA6QC2BToA0QAjA04AwQCnBQEA
+cQCHBAYAiQCHBAYAAQHEAFMAAQG9BVwAkQCHBGIAsQCHBAYACAAUAHwACAAYAIEAKQBzAOkALgAL
+AMEALgATAMoALgAbAOkALgAjAPIALgArABsBLgAzABsBLgA7ABsBLgBDAPIALgBLACEBLgBTABsB
+LgBbADgBQwBjAIEASQBzAOkAYQB7AIEAYwBrAIEAAwABAAQAAwAAAHcEsgAAAC8BtwAAAJ8FvAAC
+AAQAAwACAAUABQABAAYABQACAAcABwAEgAAAAQAAAF0cWxQAAAAAAAABAAAABAAAAAAAAAAAAAAA
+agBqAAAAAAAOAAAAAAAAAAAAAABzAFYDAAAAAAQAAAAAAAAAAAAAAGoA9wMAAAAADgAAAAAAAAAA
+AAAAcwBDAAAAAAAEAAAAAAAAAAAAAABqAPsAAAAAAAAAAAABAAAA2AQAAAUAAgAtAEoAAAAAAABT
+VF82MGI2YmFkNzg3NzA0MDVlYjIwYWU0NmQ2YmMwYjc4MABJRW51bWVyYWJsZWAxAExpc3RgMQA8
+TW9kdWxlPgBNaWNyb3NvZnQuU3FsU2VydmVyLk1hbmFnZWREVFMAdmFsdWVfXwBtc2NvcmxpYgBT
+eXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYwBkZWZhdWx0SW5zdGFuY2UAVmFyaWFibGUARW51bWVy
+YWJsZQBSdW50aW1lVHlwZUhhbmRsZQBHZXRUeXBlRnJvbUhhbmRsZQBNaWNyb3NvZnQuU3FsU2Vy
+dmVyLkR0cy5SdW50aW1lAFR5cGUAU3lzdGVtLkNvcmUARmFpbHVyZQBnZXRfQ3VsdHVyZQBzZXRf
+Q3VsdHVyZQByZXNvdXJjZUN1bHR1cmUAVlNUQVJUU2NyaXB0T2JqZWN0TW9kZWxCYXNlAEFwcGxp
+Y2F0aW9uU2V0dGluZ3NCYXNlAEVkaXRvckJyb3dzYWJsZVN0YXRlAENvbXBpbGVyR2VuZXJhdGVk
+QXR0cmlidXRlAERlYnVnZ2VyTm9uVXNlckNvZGVBdHRyaWJ1dGUARGVidWdnYWJsZUF0dHJpYnV0
+ZQBFZGl0b3JCcm93c2FibGVBdHRyaWJ1dGUAQXNzZW1ibHlUaXRsZUF0dHJpYnV0ZQBBc3NlbWJs
+eVRyYWRlbWFya0F0dHJpYnV0ZQBUYXJnZXRGcmFtZXdvcmtBdHRyaWJ1dGUAQXNzZW1ibHlDb25m
+aWd1cmF0aW9uQXR0cmlidXRlAEFzc2VtYmx5RGVzY3JpcHRpb25BdHRyaWJ1dGUAQ29tcGlsYXRp
+b25SZWxheGF0aW9uc0F0dHJpYnV0ZQBBc3NlbWJseVByb2R1Y3RBdHRyaWJ1dGUAQXNzZW1ibHlD
+b3B5cmlnaHRBdHRyaWJ1dGUAU1NJU1NjcmlwdFRhc2tFbnRyeVBvaW50QXR0cmlidXRlAEFzc2Vt
+Ymx5Q29tcGFueUF0dHJpYnV0ZQBSdW50aW1lQ29tcGF0aWJpbGl0eUF0dHJpYnV0ZQBnZXRfVmFs
+dWUAc2V0X1ZhbHVlAHZhbHVlAFN5c3RlbS5SdW50aW1lLlZlcnNpb25pbmcAVG9TdHJpbmcATWlj
+cm9zb2Z0LlNxbFNlcnZlci5TY3JpcHRUYXNrAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuRHRzLlRhc2tz
+LlNjcmlwdFRhc2sAU2NyaXB0T2JqZWN0TW9kZWwAU3lzdGVtLkNvbXBvbmVudE1vZGVsAFNUXzYw
+YjZiYWQ3ODc3MDQwNWViMjBhZTQ2ZDZiYzBiNzgwLmRsbABnZXRfSXRlbQBTeXN0ZW0ARW51bQBy
+ZXNvdXJjZU1hbgBTY3JpcHRNYWluAFN5c3RlbS5Db25maWd1cmF0aW9uAFN5c3RlbS5HbG9iYWxp
+emF0aW9uAFN5c3RlbS5SZWZsZWN0aW9uAEN1bHR1cmVJbmZvAFN5c3RlbS5MaW5xAENoYXIAZ2V0
+X1Jlc291cmNlTWFuYWdlcgAuY3RvcgAuY2N0b3IAU3lzdGVtLkRpYWdub3N0aWNzAFN5c3RlbS5S
+dW50aW1lLkNvbXBpbGVyU2VydmljZXMAU3lzdGVtLlJlc291cmNlcwBTVF82MGI2YmFkNzg3NzA0
+MDVlYjIwYWU0NmQ2YmMwYjc4MC5Qcm9wZXJ0aWVzLlJlc291cmNlcy5yZXNvdXJjZXMARGVidWdn
+aW5nTW9kZXMAU1RfNjBiNmJhZDc4NzcwNDA1ZWIyMGFlNDZkNmJjMGI3ODAuUHJvcGVydGllcwBn
+ZXRfVmFyaWFibGVzAFNldHRpbmdzAFN1Y2Nlc3MAZ2V0X0R0cwBTY3JpcHRSZXN1bHRzAE9iamVj
+dABTcGxpdABnZXRfRGVmYXVsdABzZXRfVGFza1Jlc3VsdABUb0xpc3QAZ2V0X0Fzc2VtYmx5AAAA
+ACFSAGUAZwBpAG8AbgBzAFQAbwBQAHIAbwBjAGUAcwBzAAAPUgBlAGcAaQBvAG4AcwAAcVMAVABf
+ADYAMABiADYAYgBhAGQANwA4ADcANwAwADQAMAA1AGUAYgAyADAAYQBlADQANgBkADYAYgBjADAA
+YgA3ADgAMAAuAFAAcgBvAHAAZQByAHQAaQBlAHMALgBSAGUAcwBvAHUAcgBjAGUAcwAAAAAA2VSP
+AqeZiUSpebbQz51KaAAEIAEBCAMgAAEFIAEBEREEIAEBDgUgAQERUQQgABJhBCAAEmUFIAESaRwD
+IAAcAyAADgYgAR0OHQMPEAEBFRJ5AR4AFRJ9AR4AAwoBDgQgAQEcCAABEoCBEYCFBSAAEoCJByAC
+AQ4SgIkIt3pcVhk04IkIiYRdzYCAzJEEAAAAAAQBAAAAAwYSSQMGEk0DBhIQAgYIAwYRFAQAABJJ
+BAAAEk0FAAEBEk0EAAASEAMAAAEECAASSQQIABJNBAgAEhAIAQAIAAAAAAAeAQABAFQCFldyYXBO
+b25FeGNlcHRpb25UaHJvd3MBCAEAAgAAAAAAKAEAI1NUXzYwYjZiYWQ3ODc3MDQwNWViMjBhZTQ2
+ZDZiYzBiNzgwAAAFAQAAAAAWAQARQ29weXJpZ2h0IEAgIDIwMTkAAEkBABouTkVURnJhbWV3b3Jr
+LFZlcnNpb249djQuNQEAVA4URnJhbWV3b3JrRGlzcGxheU5hbWUSLk5FVCBGcmFtZXdvcmsgNC41
+AAC0AAAAzsrvvgEAAACRAAAAbFN5c3RlbS5SZXNvdXJjZXMuUmVzb3VyY2VSZWFkZXIsIG1zY29y
+bGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3
+YTVjNTYxOTM0ZTA4OSNTeXN0ZW0uUmVzb3VyY2VzLlJ1bnRpbWVSZXNvdXJjZVNldAIAAAAAAAAA
+AAAAAFBBRFBBRFC0AAAAeC4AAAAAAAAAAAAAki4AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIQu
+AAAAAAAAAAAAAAAAX0NvckRsbE1haW4AbXNjb3JlZS5kbGwAAAAAAP8lACAAEAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAABABAAAAAYAACAAAAAAAAAAAAAAAAAAAABAAEAAAAwAACAAAAAAAAAAAAAAAAAAAABAAAA
+AABIAAAAWEAAABAEAAAAAAAAAAAAABAENAAAAFYAUwBfAFYARQBSAFMASQBPAE4AXwBJAE4ARgBP
+AAAAAAC9BO/+AAABAAAAAQBbFF0cAAABAFsUXRw/AAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAA
+RAAAAAEAVgBhAHIARgBpAGwAZQBJAG4AZgBvAAAAAAAkAAQAAABUAHIAYQBuAHMAbABhAHQAaQBv
+AG4AAAAAAAAAsARwAwAAAQBTAHQAcgBpAG4AZwBGAGkAbABlAEkAbgBmAG8AAABMAwAAAQAwADAA
+MAAwADAANABiADAAAAAaAAEAAQBDAG8AbQBtAGUAbgB0AHMAAAAAAAAAIgABAAEAQwBvAG0AcABh
+AG4AeQBOAGEAbQBlAAAAAAAAAAAAcAAkAAEARgBpAGwAZQBEAGUAcwBjAHIAaQBwAHQAaQBvAG4A
+AAAAAFMAVABfADYAMABiADYAYgBhAGQANwA4ADcANwAwADQAMAA1AGUAYgAyADAAYQBlADQANgBk
+ADYAYgBjADAAYgA3ADgAMAAAADwADgABAEYAaQBsAGUAVgBlAHIAcwBpAG8AbgAAAAAAMQAuADAA
+LgA3ADIANgAxAC4ANQAyADEAMQAAAHAAKAABAEkAbgB0AGUAcgBuAGEAbABOAGEAbQBlAAAAUwBU
+AF8ANgAwAGIANgBiAGEAZAA3ADgANwA3ADAANAAwADUAZQBiADIAMABhAGUANAA2AGQANgBiAGMA
+MABiADcAOAAwAC4AZABsAGwAAABIABIAAQBMAGUAZwBhAGwAQwBvAHAAeQByAGkAZwBoAHQAAABD
+AG8AcAB5AHIAaQBnAGgAdAAgAEAAIAAgADIAMAAxADkAAAAqAAEAAQBMAGUAZwBhAGwAVAByAGEA
+ZABlAG0AYQByAGsAcwAAAAAAAAAAAHgAKAABAE8AcgBpAGcAaQBuAGEAbABGAGkAbABlAG4AYQBt
+AGUAAABTAFQAXwA2ADAAYgA2AGIAYQBkADcAOAA3ADcAMAA0ADAANQBlAGIAMgAwAGEAZQA0ADYA
+ZAA2AGIAYwAwAGIANwA4ADAALgBkAGwAbAAAAGgAJAABAFAAcgBvAGQAdQBjAHQATgBhAG0AZQAA
+AAAAUwBUAF8ANgAwAGIANgBiAGEAZAA3ADgANwA3ADAANAAwADUAZQBiADIAMABhAGUANAA2AGQA
+NgBiAGMAMABiADcAOAAwAAAAQAAOAAEAUAByAG8AZAB1AGMAdABWAGUAcgBzAGkAbwBuAAAAMQAu
+ADAALgA3ADIANgAxAC4ANQAyADEAMQAAAEQADgABAEEAcwBzAGUAbQBiAGwAeQAgAFYAZQByAHMA
+aQBvAG4AAAAxAC4AMAAuADcAMgA2ADEALgA1ADIAMQAxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAwAAACkPgAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
+        </ScriptProject>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 7]"
+      DTS:CreationName=""
+      DTS:DTSID="{4A9ED011-CE08-4D01-AE8C-1F75CED97A08}"
+      DTS:From="Package\Set Regions to Process"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 7"
+      DTS:To="Package\Foreach Region to Process" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="298.4,41.6"
+          Id="Package\Foreach Region to Process\Create Index on stage IrmaDataUpdateRecords"
+          TopLeft="33.0666513019144,294.080002413432" />
+        <NodeLayout
+          Size="239.2,41.6"
+          Id="Package\Foreach Region to Process\Create Staging Table in Mammoth"
+          TopLeft="58.9714197029069,86.6415714967737" />
+        <NodeLayout
+          Size="164.8,41.6"
+          Id="Package\Foreach Region to Process\Drop stage IrmaData table"
+          TopLeft="93.7333190547101,359.786668248071" />
+        <NodeLayout
+          Size="244,41.6"
+          Id="Package\Foreach Region to Process\Move data from IRMA to Mammoth"
+          TopLeft="57.733324708637,154.889415334347" />
+        <NodeLayout
+          Size="228.8,41.6"
+          Id="Package\Foreach Region to Process\Set IRMA Connection Properties"
+          TopLeft="59.066647089853,16.1600016860962" />
+        <NodeLayout
+          Size="150.4,41.6"
+          Id="Package\Foreach Region to Process\Sync Mammoth"
+          TopLeft="107.066658738303,223.742748594429" />
+        <EdgeLayout
+          Id="Package\Foreach Region to Process.PrecedenceConstraints[Constraint]"
+          TopLeft="176.01903339638,57.7600016860962">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28.8815698106775"
+              Start="0,0"
+              End="0,21.3815698106775">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.3815698106775" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Foreach Region to Process.PrecedenceConstraints[Constraint 1]"
+          TopLeft="179.152372205772,128.241571496774">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,26.6478438375735"
+              Start="0,0"
+              End="0,19.1478438375735">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.1478438375735" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Foreach Region to Process.PrecedenceConstraints[Constraint 2]"
+          TopLeft="180.99999172347,196.489415334347">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,27.253333260082"
+              Start="0,0"
+              End="0,19.753333260082">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.753333260082" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Foreach Region to Process.PrecedenceConstraints[Constraint 3]"
+          TopLeft="182.266655020109,265.342748594429">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28.7372538190029"
+              Start="0,0"
+              End="0,21.2372538190029">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.2372538190029" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Foreach Region to Process.PrecedenceConstraints[Constraint 4]"
+          TopLeft="179.199985178312,335.680002413432">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,24.1066658346388"
+              Start="0,0"
+              End="0,16.6066658346388">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,16.6066658346388" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="364,456"
+          Size="364,499.2"
+          Id="Package\Foreach Region to Process"
+          TopLeft="353.999985933304,157.920001057943" />
+        <NodeLayout
+          Size="186.4,41.6"
+          Id="Package\Set Regions to Process"
+          TopLeft="89.9999964237213,385.333336198595" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 7]"
+          TopLeft="276.399996423721,406.826668628269">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="77.5999895095828,0"
+              Start="0,0"
+              End="70.0999895095828,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="70.0999895095828,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Foreach Region to Process\Move data from IRMA to Mammoth">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="149.6,41.6"
+          Id="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source"
+          TopLeft="123.65714283768,100.188235285538" />
+        <NodeLayout
+          Size="170.4,41.6"
+          Id="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination"
+          TopLeft="376.8,103.2" />
+        <EdgeLayout
+          Id="Package\Foreach Region to Process\Move data from IRMA to Mammoth.Paths[OLE DB Source Output]"
+          TopLeft="273.25714283768,122.494117642769">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="103.54285716232,0"
+              Start="0,0"
+              End="96.0428571623199,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="96.0428571623199,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Foreach Region to Process\Move data from IRMA to Mammoth\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

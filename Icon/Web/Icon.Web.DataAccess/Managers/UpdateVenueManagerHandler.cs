@@ -18,22 +18,25 @@ namespace Icon.Web.DataAccess.Managers
         private ICommandHandler<UpdateVenueCommand> updateVenueHandler;
         private ICommandHandler<AddLocaleMessageCommand> addLocaleMessageHandler;
         private IQueryHandler<GetLocaleParameters, List<Locale>> getLocaleQuery;
+        private IMapper mapper;
 
         public UpdateVenueManagerHandler(
             IconContext context,
             ICommandHandler<UpdateVenueCommand> updateVenueHandler,
             ICommandHandler<AddLocaleMessageCommand> addLocaleMessageHandler,
-            IQueryHandler<GetLocaleParameters, List<Locale>> getLocaleQuery)
+            IQueryHandler<GetLocaleParameters, List<Locale>> getLocaleQuery,
+            IMapper mapper)
         {
             this.context = context;
             this.updateVenueHandler = updateVenueHandler;
             this.addLocaleMessageHandler = addLocaleMessageHandler;
             this.getLocaleQuery = getLocaleQuery;
+            this.mapper = mapper;
         }
 
         public void Execute(UpdateVenueManager data)
         {
-            UpdateVenueCommand updateVenueCommand = Mapper.Map<UpdateVenueCommand>(data);
+            UpdateVenueCommand updateVenueCommand = mapper.Map<UpdateVenueCommand>(data);
             Boolean enableLocaleEventGenerationForVenue;
 
             using (var transaction = context.Database.BeginTransaction())

@@ -26,6 +26,9 @@ textarea {
 .custom-wide-input {
     max-width: 540px;
 }
+.custom-wider-input {
+    max-width: 640px;
+}
 
 /* helps to vertically align a checkbox form-control within a form-group in bootstrap */
 .custom-checkbox-form-control {

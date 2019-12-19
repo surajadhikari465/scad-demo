@@ -8,11 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
+using MoreLinq;
 
 namespace Mammoth.Esb.ProductListener.MessageParsers
 {
     public class ProductMessageParser : MessageParserBase<Contracts.items, List<ItemModel>>
     {
+		HashSet<string> traitCodes = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+
         public override List<ItemModel> ParseMessage(IEsbMessage message)
         {
             List<ItemModel> itemModelCollection = new List<ItemModel>();
@@ -58,12 +61,12 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
                 // Nutrition
                 itemModel.NutritionAttributes = ParseNutritionInformation(item, traits);
 
-                // Extended Attributes
-                itemModel.ExtendedAttributes = ParseExtendedAttributes(item, traits);
-
                 // Hospitality Attributes
                 itemModel.KitItemAttributes = ParseHospitalityElements(enterpriseItemAttributes);
-   
+
+				// Extended Attributes
+                itemModel.ExtendedAttributes = ParseExtendedAttributes(item, traits);
+
                 itemModelCollection.Add(itemModel);
             }
 
@@ -209,20 +212,15 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
 
         private ExtendedAttributesModel ParseExtendedAttributes(Contracts.ItemType item, TraitType[] traits)
         {
-            var extendedAttributes = new ExtendedAttributesModel();
-            extendedAttributes.ItemId = item.id;
-            extendedAttributes.FairTradeCertified = GetTraitValue(Attributes.Codes.FairTradeCertified, traits);
-            extendedAttributes.FlexibleText = GetTraitValue(Attributes.Codes.FlexibleText, traits);
-            extendedAttributes.GlobalPricingProgram = GetTraitValue(Attributes.Codes.GlobalPricingProgram, traits);
-            extendedAttributes.MadeWithBiodynamicGrapes = GetTraitValue(Attributes.Codes.MadeWithBiodynamicGrapes, traits);
-            extendedAttributes.MadeWithOrganicGrapes = GetTraitValue(Attributes.Codes.MadeWithOrganicGrapes, traits);
-            extendedAttributes.NutritionRequired = GetTraitValue(Attributes.Codes.NutritionRequired, traits);
-            extendedAttributes.PrimeBeef = GetTraitValue(Attributes.Codes.PrimeBeef, traits);
-            extendedAttributes.RainforestAlliance = GetTraitValue(Attributes.Codes.RainforestAlliance, traits);
-            extendedAttributes.RefrigeratedOrShelfStable = GetTraitValue(Attributes.Codes.RefrigeratedOrShelfStable, traits);
-            extendedAttributes.SmithsonianBirdFriendly = GetTraitValue(Attributes.Codes.SmithsonianBirdFriendly, traits);
-            extendedAttributes.Wic = GetTraitValue(Attributes.Codes.Wic, traits);
-            return extendedAttributes;
+			var hs = new HashSet<string>(traits.Select(x => x.code).Except(traitCodes), StringComparer.InvariantCultureIgnoreCase);
+			return new ExtendedAttributesModel()
+			{
+				ItemId = item.id,
+				Traits = traits.Where(x => hs.Contains(x.code))
+					.Select(x => new { x.code, value = x.type.value.First().value.Trim() })
+					.Where(x => !String.IsNullOrEmpty(x.value))
+					.ToDictionary(x => x.code, x => x.value)
+			};
         }
 
         private int GetItemTypeId(Contracts.ItemType item)
@@ -344,18 +342,11 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
             return null;
         }
 
-        private string GetTraitValue(string traitCode, Contracts.TraitType[] traits)
-        {
-            var trait = traits.FirstOrDefault(t => t.code == traitCode);
-
-            if (trait != null)
-            {
-                var value = trait.type.value.First().value;
-                if (!string.IsNullOrWhiteSpace(value))
-                    return value;
-            }
-
-            return null;
-        }
+		private string GetTraitValue(string traitCode, Contracts.TraitType[] traits)
+		{
+			this.traitCodes.Add(traitCode);
+			var value = traits.FirstOrDefault(t => t.code == traitCode)?.type.value.First().value.Trim();
+			return string.IsNullOrWhiteSpace(value) ? null : value;
+		}
     }
 }

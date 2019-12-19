@@ -1,24 +1,17 @@
-﻿using Icon.Web.Mvc.Exporters;
+﻿using System.Collections.Generic;
 
 namespace Icon.Web.Mvc.Exporters
 {
     public interface IExcelExporterService
     {
-        ItemExporter GetItemExporter();
-        BulkItemExporter GetBulkItemExporter();
-        BulkNewItemExporter GetBulkNewItemExporter();
-        IrmaItemExporter GetIrmaItemExporter();
-        PluExporter GetPluExporter();
-        BulkPluExporter GetBulkPluExporter();
-        NewItemTemplateExporter GetNewItemTemplateExporter();
+        BarcodeTypeExporter GetBarcodeTypeExporter();
         HierarchyClassExporter GetHierarchyClassExporter();
         BrandExporter GetBrandExporter();
+        ManufacturerExporter GetManufacturerExporter();
         BulkBrandExporter GetBulkBrandExporter();
         BrandTemplateExporter GetBrandTemplateExporter();
-        PluCategoryExporter GetPluCategoryExporter();
-        ItemTemplateExporter GetItemTemplateExporter();
-        PluRequestExporter GetPluRequestExporter();
-        CertificationAgencyExporter GetCertificationAgencyExporter();
-        DefaultTaxMismatchesExporter GetDefaultTaxMismatchExporter();
+        ItemNewTemplateExporter GetItemTemplateNewExporter(List<string> selectedColumnNames = null, bool exportAllAttributes = false, bool exportNewItemTemplate = false);
+        NationalClassExporter GetNationalClassExporter();
+        AttributeExporter GetAttributeExporter();
     }
 }

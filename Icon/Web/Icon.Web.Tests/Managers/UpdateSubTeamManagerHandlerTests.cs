@@ -2,16 +2,12 @@
 using Icon.Framework;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.Mvc.App_Start;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Common.DataAccess;
@@ -31,11 +27,21 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         private Mock<ICommandHandler<UpdateHierarchyClassTraitCommand>> updateHierarchyClassTraitHandler;
         private Mock<ICommandHandler<AddSubTeamEventsCommand>> addSubTeamEventsCommandHandler;
         private Mock<IQueryHandler<GetRegionalSettingsBySettingsKeyNameParameters, List<RegionalSettingsModel>>> getRegionalSettingsBySettingsKeyNameQuery;
+        private IMapper mapper;
 
         [TestInitialize]
         public void Initialize()
         {
             context = new IconContext();
+            mapper = AutoMapperWebConfiguration.Configure();
+            managerHandler = new UpdateSubTeamManagerHandler(context,
+                updateSubTeamCommandHandler.Object,
+                addHierarchyClassMessageCommandHandler.Object,
+                associatedItemsCommandHandler.Object,
+                updateHierarchyClassTraitHandler.Object,
+                addSubTeamEventsCommandHandler.Object,
+                getRegionalSettingsBySettingsKeyNameQuery.Object,
+                mapper);
             updateSubTeamCommandHandler = new Mock<ICommandHandler<UpdateSubTeamCommand>>();
             addHierarchyClassMessageCommandHandler = new Mock<ICommandHandler<AddHierarchyClassMessageCommand>>();
             associatedItemsCommandHandler = new Mock<ICommandHandler<AddProductMessagesBySubTeamCommand>>();
@@ -55,15 +61,12 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
                     TeamName = "Test Team Name",
                     TeamNumber = "123"
                 };
-
-            AutoMapperWebConfiguration.Configure();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
             context.Dispose();
-            Mapper.Reset();
         }
 
         [TestMethod]
@@ -89,7 +92,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
                         };
                     })
                 .Verifiable();
-            CreateManagerHandler();
 
             //When
             managerHandler.Execute(manager);
@@ -111,7 +113,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
             //Given
             updateSubTeamCommandHandler.Setup(cm => cm.Execute(It.IsAny<UpdateSubTeamCommand>()))
                 .Callback<UpdateSubTeamCommand>(c => c.PeopleSoftChanged = false);
-            CreateManagerHandler();
 
             //When
             managerHandler.Execute(manager);
@@ -128,7 +129,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
             //Given
             updateSubTeamCommandHandler.Setup(cm => cm.Execute(It.IsAny<UpdateSubTeamCommand>()))
                 .Throws(new Exception("There was an error updating subteam"));
-            CreateManagerHandler();
 
             //When
             try
@@ -140,18 +140,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
                 //Then
                 Assert.IsTrue(e.Message.StartsWith("There was an error updating subteam"));
             }
-        }
-
-
-        private void CreateManagerHandler()
-        {
-            managerHandler = new UpdateSubTeamManagerHandler(context,
-                updateSubTeamCommandHandler.Object,
-                addHierarchyClassMessageCommandHandler.Object,
-                associatedItemsCommandHandler.Object,
-                updateHierarchyClassTraitHandler.Object,
-                addSubTeamEventsCommandHandler.Object,
-                getRegionalSettingsBySettingsKeyNameQuery.Object);
         }
     }
 }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="54ccbc30-f39e-4eb0-84f4-2ebf8c9fa637" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://btsprd1/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2323.xsd" MetadataType="Schema" ID="29903468-a203-4e4a-872d-2279e2e594d1" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd9" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2324.xsd" MetadataType="Schema" ID="791d5e08-1956-4650-b928-e5b024eeee92" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd11" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2325.xsd" MetadataType="Schema" ID="a85c910d-c005-4fbd-9d35-431a3f460735" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd18" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2326.xsd" MetadataType="Schema" ID="c584f101-fca2-4b60-be9a-e0ad9c388427" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd5" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2327.xsd" MetadataType="Schema" ID="10458a37-b353-46b4-9391-8cd8fd61cf38" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd16" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2328.xsd" MetadataType="Schema" ID="daa56946-38c0-481f-89b7-ddb18e786a3e" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd19" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2329.xsd" MetadataType="Schema" ID="08d1ff08-e834-4862-9c6b-84f5f7deeb7a" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd23" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2330.xsd" MetadataType="Schema" ID="f354b68b-21d4-46b2-9c00-8804dbc0f508" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd12" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2331.xsd" MetadataType="Schema" ID="7f2b8b2f-2f01-46e6-9704-f703c6437ce0" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd21" />
+    <MetadataFile FileName="BizTalkServiceInstance11.wsdl" MetadataType="Wsdl" ID="f82ccbaf-0963-4999-a42a-49f558737ca8" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?wsdl" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2332.xsd" MetadataType="Schema" ID="66c3611a-bce6-4320-ae21-ae48d64c2e5f" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd2" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2333.xsd" MetadataType="Schema" ID="041e4c03-2eab-41da-b3e2-a3ec6b6bb284" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd6" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2334.xsd" MetadataType="Schema" ID="501f176a-2b05-417b-a7f1-eb068510ffdd" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd17" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync11.disco" MetadataType="Disco" ID="93ddd60b-3635-4cda-8b3e-e8740065ed30" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?disco" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2335.xsd" MetadataType="Schema" ID="384b02fa-bf6f-4021-bb36-41df43fe24c3" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd24" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2336.xsd" MetadataType="Schema" ID="ed27f5fc-7e52-4975-a8b0-97f31e9aad39" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd3" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2337.xsd" MetadataType="Schema" ID="a7a9c872-7fdd-4838-a1ee-ace534883f84" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd7" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2338.xsd" MetadataType="Schema" ID="c8cce79b-e9a9-4129-846e-cf1397b3505e" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd13" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2339.xsd" MetadataType="Schema" ID="4b81169f-dd6b-461b-951c-22767df2a4aa" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd10" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2340.xsd" MetadataType="Schema" ID="042895b0-bc37-4351-a395-0cf5d6259835" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd22" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2341.xsd" MetadataType="Schema" ID="09176270-3a38-4a94-be18-2b6c5d486c57" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd15" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2342.xsd" MetadataType="Schema" ID="c4c70b7b-d31e-4269-9d71-6f6b99c695c0" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd8" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2343.xsd" MetadataType="Schema" ID="de1c7d92-755a-4e98-a4ac-6506e68b6002" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd14" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2344.xsd" MetadataType="Schema" ID="2e727cb9-e6f1-4513-929f-446630df887b" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd4" />
+    <MetadataFile FileName="BTS_OOS_Orch_ScanProduct_ScanProductAsync2345.xsd" MetadataType="Schema" ID="0fda1c6a-1b8a-461a-81da-862f0bbaaa56" SourceId="1" SourceUrl="http://cewp1611.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?xsd=xsd20" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

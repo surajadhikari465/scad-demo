@@ -54,7 +54,7 @@ namespace PushController.Tests.DataAccess.Commands
 
         private void SetupExistingItemPrice()
         {
-            testItemPrice = new TestItemPriceBuilder().WithItemId(testItem.itemID).WithLocaleId(testLocale.localeID);
+            testItemPrice = new TestItemPriceBuilder().WithItemId(testItem.ItemId).WithLocaleId(testLocale.localeID);
             context.Context.ItemPrice.Add(testItemPrice);
             context.Context.SaveChanges();
         }
@@ -64,7 +64,7 @@ namespace PushController.Tests.DataAccess.Commands
         {
             // Given.
             SetupTestData();
-            testItemPrice = new TestItemPriceBuilder().WithItemId(testItem.itemID).WithLocaleId(testLocale.localeID);
+            testItemPrice = new TestItemPriceBuilder().WithItemId(testItem.ItemId).WithLocaleId(testLocale.localeID);
 
             var command = new AddOrUpdateItemPriceRowByRowCommand
             {
@@ -76,7 +76,7 @@ namespace PushController.Tests.DataAccess.Commands
 
             // Then.
             var newItemPrice = context.Context.ItemPrice.Single(ip => 
-                ip.itemID == testItem.itemID && ip.localeID == testLocale.localeID && ip.itemPriceTypeID == testItemPrice.itemPriceTypeID);
+                ip.itemID == testItem.ItemId && ip.localeID == testLocale.localeID && ip.itemPriceTypeID == testItemPrice.itemPriceTypeID);
 
             Assert.IsNotNull(newItemPrice);
             Assert.AreEqual(testItemPrice.itemPriceAmt, newItemPrice.itemPriceAmt);
@@ -88,7 +88,7 @@ namespace PushController.Tests.DataAccess.Commands
             // Given.
             SetupTestData();
 
-            testItemPrice = new TestItemPriceBuilder().WithItemId(testItem.itemID).WithLocaleId(unknownLocaleId);
+            testItemPrice = new TestItemPriceBuilder().WithItemId(testItem.ItemId).WithLocaleId(unknownLocaleId);
 
             var command = new AddOrUpdateItemPriceRowByRowCommand
             {
@@ -122,7 +122,7 @@ namespace PushController.Tests.DataAccess.Commands
 
             // Then.
             var updatedItemPrice = context.Context.ItemPrice.Single(ip =>
-                ip.itemID == testItem.itemID && ip.localeID == testLocale.localeID && ip.itemPriceTypeID == testItemPrice.itemPriceTypeID);
+                ip.itemID == testItem.ItemId && ip.localeID == testLocale.localeID && ip.itemPriceTypeID == testItemPrice.itemPriceTypeID);
 
             Assert.IsNotNull(updatedItemPrice);
             Assert.AreEqual(updatedPrice, updatedItemPrice.itemPriceAmt);

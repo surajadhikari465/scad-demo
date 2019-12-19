@@ -4,18 +4,18 @@ using Moq;
 using Esb.Core.Serializer;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 using Esb.Core.Mappers;
-using Infor.Services.NewItem.Cache;
-using Infor.Services.NewItem.MessageBuilders;
-using Infor.Services.NewItem.Models;
+using Services.NewItem.Cache;
+using Services.NewItem.MessageBuilders;
+using Services.NewItem.Models;
 using System.Collections.Generic;
 using System.IO;
 using Icon.Common.DataAccess;
-using Infor.Services.NewItem.Queries;
+using Services.NewItem.Queries;
 using System.Linq;
 using System.Xml.Linq;
 using Icon.Framework;
 
-namespace Infor.Services.NewItem.Tests.MessageBuilders
+namespace Services.NewItem.Tests.MessageBuilders
 {
     [TestClass]
     public class NewItemMessageBuilderTests
@@ -25,12 +25,12 @@ namespace Infor.Services.NewItem.Tests.MessageBuilders
         private Mock<IIconCache> mockIconCache;
         private NewItemMessageBuilder newItemMessageBuilder;
         private Mock<IQueryHandler<GetItemIdsQuery, Dictionary<string, int>>> mockGetItemIdsQueryHandler;
-        private InforNewItemApplicationSettings settings;
+        private NewItemApplicationSettings settings;
 
         [TestInitialize]
         public void InitializeTests()
         {
-            settings = new InforNewItemApplicationSettings { SendOrganic = false };
+            settings = new NewItemApplicationSettings { SendOrganic = false };
             this.mockUomMapper = new Mock<IUomMapper>();
             serializer = new Serializer<Contracts.items>();
             this.mockIconCache = new Mock<IIconCache>();

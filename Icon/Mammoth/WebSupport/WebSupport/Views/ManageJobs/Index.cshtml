@@ -10,6 +10,12 @@
 
 <h3 class="text-center">@ViewBag.Title</h3>
 
+
+<p>
+    <input type="text" id="FilterText" placeholder="Search...">
+    <button id="FilterButton">Filter</button>
+    <button id="ClearFilterButton">Clear</button>
+</p>
 <div>
     <table id="manageJobsTable" class="dataTable display compact">
         <thead>
@@ -45,7 +51,7 @@
                 <th data-toggle="tooltip" data-placement="top" data-container="body" title="Status">
                     @Html.DisplayNameFor(model => model.Status)
                 </th>
-                <th data-toggle="tooltip" data-placement="top" data-container="body" title="XmlObject">
+                <th data-toggle="tooltip" data-placement="top" data-container="body" title="">
                     @Html.DisplayNameFor(model => model.XmlObject)
                 </th>
                 <th></th>
@@ -56,60 +62,67 @@
 
             @foreach (var item in Model)
             {
-            <tr>
-                <td>
-                @if (String.Compare(item.Status.ToLower(), "ready", false) == 0)
-                {
-                    @Html.ActionLink("Start", "Start", new { id = item.JobScheduleId }, new
-                    {
-                        @class = "btn btn-success",
-                        data_toggle = "tooltip",
-                        data_placement = "bottom",
-                        data_container = "body",
-                        title = "Start " + item.JobName
-                    })
-                }
-                </td>
-                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="JobName">
-                    @Html.DisplayFor(modelItem => item.JobName)
-                </td>
-                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="Region">
-                    @Html.DisplayFor(modelItem => item.Region)
-                </td>
-                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="DestinationQueueName">
-                    @Html.DisplayFor(modelItem => item.DestinationQueueName)
-                </td>
-                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="StartDateTime">
-                    @Html.DisplayFor(modelItem => item.StartDateTime)
-                </td>
-                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="LastScheduledDateTime">
-                    @Html.DisplayFor(modelItem => item.LastScheduledDateTime)
-                </td>
-                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="LastRunEndDateTime">
-                    @Html.DisplayFor(modelItem => item.LastRunEndDateTime)
-                </td>
-                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="NextScheduledDateTime">
-                    @Html.DisplayFor(modelItem => item.NextScheduledDateTime)
-                </td>
-                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="IntervalInSeconds">
-                    @Html.DisplayFor(modelItem => item.IntervalInSeconds)
-                </td>
-                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="Enabled">
-                    @Html.DisplayFor(modelItem => item.Enabled)
-                </td>
-                <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="Status">
-                    <span class="statusCell">@Html.DisplayFor(modelItem => item.Status)</span>
-                </td>
-                <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="XmlObject">
-                    @Html.DisplayFor(modelItem => item.XmlObject)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.JobScheduleId }, new { @class = "btn btn-primary", data_toggle = "tooltip", data_placement = "bottom", data_container = "body", title = "Edit " + item.JobName })
-                </td>
-                <td>
-                    @Html.ActionLink("Delete", "Delete", new { id = item.JobScheduleId }, new { @class = "btn btn-danger", data_toggle = "tooltip", data_placement = "bottom", data_container = "body", title = "Delete " + item.JobName })
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @if (String.Compare(item.Status.ToLower(), "ready", false) == 0)
+                        {
+                            @Html.ActionLink("Start", "Start", new { id = item.JobScheduleId }, new
+                            {
+                                @class = "btn btn-success",
+                                data_toggle = "tooltip",
+                                data_placement = "bottom",
+                                data_container = "body",
+                                title = "Start " + item.JobName
+                            })
+                        }
+                    </td>
+                    <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="JobName">
+                        @Html.DisplayFor(modelItem => item.JobName)
+                    </td>
+                    <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="Region">
+                        @Html.DisplayFor(modelItem => item.Region)
+                    </td>
+                    <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="DestinationQueueName">
+                        @Html.DisplayFor(modelItem => item.DestinationQueueName)
+                    </td>
+                    <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="StartDateTime">
+                        @Html.DisplayFor(modelItem => item.StartDateTime)
+                    </td>
+                    <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="LastScheduledDateTime">
+                        @Html.DisplayFor(modelItem => item.LastScheduledDateTime)
+                    </td>
+                    <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="LastRunEndDateTime">
+                        @Html.DisplayFor(modelItem => item.LastRunEndDateTime)
+                    </td>
+                    <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="NextScheduledDateTime">
+                        @Html.DisplayFor(modelItem => item.NextScheduledDateTime)
+                    </td>
+                    <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="IntervalInSeconds">
+                        @Html.DisplayFor(modelItem => item.IntervalInSeconds)
+                    </td>
+                    <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="Enabled">
+                        @Html.DisplayFor(modelItem => item.Enabled)
+                    </td>
+                    <td data-toggle="tooltip" data-placement="bottom" data-container="body" title="Status">
+                        <span class="statusCell">@Html.DisplayFor(modelItem => item.Status)</span>
+                    </td>
+                    <td class="wrap-ugly-text" data-toggle="tooltip" data-placement="bottom" data-container="body" title="">
+
+                        @if (!string.IsNullOrWhiteSpace(item.XmlObject))
+                        {
+                            <a href="@Url.Action("Edit", "ManageJobs", new { id = item.JobScheduleId })">
+                                <img src="/Images/paper-icon.svg" title="@item.XmlObject)" style="height: 24px; width: 24px;" />
+
+                            </a>
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.JobScheduleId }, new { @class = "btn btn-primary", data_toggle = "tooltip", data_placement = "bottom", data_container = "body", title = "Edit " + item.JobName })
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "Delete", new { id = item.JobScheduleId }, new { @class = "btn btn-danger", data_toggle = "tooltip", data_placement = "bottom", data_container = "body", title = "Delete " + item.JobName })
+                    </td>
+                </tr>
             }
 
         </tbody>
@@ -138,12 +151,13 @@
     @Scripts.Render("~/bundles/datatableScripts")
 
     <script type="text/javascript">
-        $(document).ready(function () {
-        @* must enable bootstrap tooltips in js *@
+        $(document).ready(function() {
+            @* must enable bootstrap tooltips in js *@
             $('[data-toggle="tooltip"]').tooltip();
 
-        @* initialize the datatables.net interactive table *@
-            $("#manageJobsTable").DataTable({
+            @* initialize the datatables.net interactive table *@
+            var datatable = $("#manageJobsTable").DataTable({
+                sDom: "lrtip",
                 // initial page size
                 iDisplayLength: 50,
                 // initial ordering
@@ -156,33 +170,54 @@
                     { "orderable": false, "targets": 12 },
                     { "orderable": false, "targets": 13 }
                 ],
-                // customize the search box label
-                language: {
-                    search: "Filter:"
-                },
-                initComplete: function () {
+                initComplete: function() {
                     //check the value of the status cell and color-code it
-                    $(".statusCell").each(function (index, element) {
+                    $(".statusCell").each(function(index, element) {
                         var text = element.innerText;
                         var color = "Black";
                         if (text && text.length > 0) {
                             switch (text.toLowerCase()) {
-                                case "ready":
-                                    color = "DarkGreen";
-                                    break;
-                                case "running":
-                                    color = "DarkViolet";
-                                    break;
-                                case "failed":
-                                    color = "FireBrick";
-                                    break;
+                            case "ready":
+                                color = "DarkGreen";
+                                break;
+                            case "running":
+                                color = "DarkViolet";
+                                break;
+                            case "failed":
+                                color = "FireBrick";
+                                break;
                             }
                             $(this).css("color", color);
                         }
                     });
                 }
             });
-        $
+
+            var previousSearchFilter = sessionStorage.getItem("searchFilter");
+            if (previousSearchFilter != null) {
+                $('#FilterText').val(previousSearchFilter);
+                doSearch();
+            }
+        
+
+        function doSearch() {
+            var searchValue = $('#FilterText').val();
+            datatable.search(searchValue).draw();
+            sessionStorage.setItem("searchFilter", searchValue);
+            }
+
+            function clearFilter() {
+                $('#FilterText').val("");
+                doSearch();
+            }
+
+        $('#FilterButton').on('keyup click',
+            function () { doSearch(); });
+
+        $('#ClearFilterButton').on('keyup click',
+            function() { clearFilter(); });
+
+
     });
     </script>
 }

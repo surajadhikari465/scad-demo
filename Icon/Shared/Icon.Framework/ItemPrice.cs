@@ -26,10 +26,10 @@ namespace Icon.Framework
         public Nullable<System.DateTime> startDate { get; set; }
         public Nullable<System.DateTime> endDate { get; set; }
     
-        public virtual Item Item { get; set; }
-        public virtual ItemPriceType ItemPriceType { get; set; }
-        public virtual UOM UOM { get; set; }
-        public virtual Locale Locale { get; set; }
         public virtual Currency CurrencyType { get; set; }
+        public virtual ItemPriceType ItemPriceType { get; set; }
+        public virtual Locale Locale { get; set; }
+        public virtual UOM UOM { get; set; }
+        public virtual Item Item { get; set; }
     }
 }

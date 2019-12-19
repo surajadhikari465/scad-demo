@@ -1,12 +1,9 @@
 ﻿using Icon.Framework;
 using Icon.Web.DataAccess.Queries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
@@ -75,7 +72,7 @@ namespace Icon.Web.Tests.Integration.Queries
             //Given
             Item item = new Item
             {
-                itemTypeID = ItemTypes.RetailSale,
+                ItemTypeId = ItemTypes.RetailSale,
                 ScanCode = new List<ScanCode> { new ScanCode { scanCode = "55000000001", scanCodeTypeID = ScanCodeTypes.Upc }}
             };
             context.Item.Add(item);
@@ -105,7 +102,7 @@ namespace Icon.Web.Tests.Integration.Queries
             //Given
             Item item = new Item
             {
-                itemTypeID = ItemTypes.RetailSale,
+                ItemTypeId = ItemTypes.RetailSale,
                 ScanCode = new List<ScanCode> { new ScanCode { scanCode = "55000000000", scanCodeTypeID = ScanCodeTypes.Upc } }
             };
             context.Item.Add(item);
@@ -137,7 +134,7 @@ namespace Icon.Web.Tests.Integration.Queries
 
             Item item = new Item
             {
-                itemTypeID = ItemTypes.RetailSale,
+                ItemTypeId = ItemTypes.RetailSale,
                 ScanCode = new List<ScanCode> { new ScanCode { scanCode = "55000000005", scanCodeTypeID = ScanCodeTypes.Upc } }
             };
             context.Item.Add(item);

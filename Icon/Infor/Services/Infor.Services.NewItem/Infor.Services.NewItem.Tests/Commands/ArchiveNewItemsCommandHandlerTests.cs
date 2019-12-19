@@ -1,7 +1,7 @@
 ﻿using Icon.Common.Context;
 using Icon.Framework;
-using Infor.Services.NewItem.Commands;
-using Infor.Services.NewItem.Models;
+using Services.NewItem.Commands;
+using Services.NewItem.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace Infor.Services.NewItem.Tests.Commands
+namespace Services.NewItem.Tests.Commands
 {
     [TestClass]
     public class ArchiveNewItemsCommandHandlerTests
@@ -63,7 +63,7 @@ namespace Infor.Services.NewItem.Tests.Commands
             commandHandler.Execute(command);
 
             //Then
-            var archiveModel = context.Database.SqlQuery<NewItemArchiveModel>("select * from infor.MessageArchiveNewItem where ScanCode = '123456789'").Single();
+            var archiveModel = context.Database.SqlQuery<NewItemArchiveModel>("select * from MessageArchiveNewItem where ScanCode = '123456789'").Single();
             Assert.AreEqual(newItem.QueueId, archiveModel.QueueId);
             Assert.AreEqual(newItem.ScanCode, archiveModel.ScanCode);
             Assert.AreEqual(newItem.ErrorCode, archiveModel.ErrorCode);

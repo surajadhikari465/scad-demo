@@ -1,0 +1,18 @@
+﻿{
+  "zipOutput": true,
+  "compressionType": "gzip",
+  "concatenateOutputFiles": false,
+  "includeHeaders": true,
+  "source": "Icon",
+  "regions": [
+  ],
+  "query": "Exec [app].[PDX_LocationHierarchyFile]",
+  "parameters": [],
+  "outputFileName": "Location_Hierarchy_{date:yyyyMMdd}.csv",
+  "delimiter": "|",
+  "destination": {
+    "type": "sftp",
+    "credentialsKey": "predictix",
+    "path": "/dev"
+  }
+}

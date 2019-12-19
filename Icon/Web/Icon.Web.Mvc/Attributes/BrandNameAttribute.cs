@@ -1,9 +1,9 @@
 ﻿using Icon.Framework;
-using Icon.Web.Common;
-using Icon.Web.Common.Validators;
 using Icon.Web.Mvc.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
+using Icon.Common;
+using Icon.Common.Validators;
 
 namespace Icon.Web.Attributes
 {

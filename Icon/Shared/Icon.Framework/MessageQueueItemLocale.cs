@@ -46,15 +46,15 @@ namespace Icon.Framework
         public bool QtyProhibit { get; set; }
         public bool VisualVerify { get; set; }
         public string LinkedItemScanCode { get; set; }
+        public string PreviousLinkedItemScanCode { get; set; }
         public Nullable<int> PosScaleTare { get; set; }
         public Nullable<int> InProcessBy { get; set; }
         public Nullable<System.DateTime> ProcessedDate { get; set; }
-        public string PreviousLinkedItemScanCode { get; set; }
     
+        public virtual IRMAPush IRMAPush { get; set; }
         public virtual MessageAction MessageAction { get; set; }
+        public virtual MessageHistory MessageHistory { get; set; }
         public virtual MessageStatus MessageStatus { get; set; }
         public virtual MessageType MessageType { get; set; }
-        public virtual IRMAPush IRMAPush { get; set; }
-        public virtual MessageHistory MessageHistory { get; set; }
     }
 }

@@ -1,0 +1,14 @@
+﻿@model OutOfStock.Models.UPCEditViewModel.ProductStatusWithVIMDetails
+           
+
+<div>
+    <div><span>Edit Product Status</span><br/>@Html.TextAreaFor(o => o.Status, new {style="width: 400px; display:inline;",id="StatusEditor"} )</div>
+    <div style=""><span>Expiration Date: </span>@*<span>@Html.TextBoxFor(o=> o.ExpirationDate)</span>*@
+        
+                            @(Html.Telerik().DatePickerFor(o=>o.ExpirationDate).HtmlAttributes(new { style = "width: 100px;" })
+                      .ButtonTitle("Select expiration date")
+                      .Format("MM/dd/yyyy")
+                      .ShowButton(true)
+                      )
+    </div>
+</div>

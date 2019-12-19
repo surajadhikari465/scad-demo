@@ -3,43 +3,46 @@ using Icon.Web.Mvc.RegionalItemCatalogs;
 using Icon.Web.Mvc.Models;
 using Irma.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace Icon.Web.Mvc.AutoMapperConverters
 {
-    public class IconItemChangeQueueToFailedRegionalItemUpdateViewModelConverter : TypeConverter<IconItemChangeQueue, FailedRegionalEventViewModel>
+    public class IconItemChangeQueueToFailedRegionalItemUpdateViewModelConverter : ITypeConverter<IconItemChangeQueue, FailedRegionalEventViewModel>
     {
-
-        protected override FailedRegionalEventViewModel ConvertCore(IconItemChangeQueue source)
+        public FailedRegionalEventViewModel Convert(IconItemChangeQueue source, FailedRegionalEventViewModel destination, ResolutionContext context)
         {
             ValidateItemChangeTypeId(source);
 
-            FailedRegionalEventViewModel destination = new FailedRegionalEventViewModel();
+            FailedRegionalEventViewModel result = new FailedRegionalEventViewModel();
 
-            destination.Id = source.QID;
-            destination.ScanCode = source.Identifier;
-            destination.ProcessFailedDate = source.ProcessFailedDate.Value;
+            result.Id = source.QID;
+            result.ScanCode = source.Identifier;
+            result.ProcessFailedDate = source.ProcessFailedDate.Value;
 
             RegionalItemChangeType itemChangeType = (RegionalItemChangeType)source.ItemChgTypeID;
             switch (itemChangeType)
             {
-                case RegionalItemChangeType.New: destination.ChangeType = "New";
+                case RegionalItemChangeType.New:
+                    result.ChangeType = "New";
                     break;
-                case RegionalItemChangeType.Item: destination.ChangeType = "Item";
+                case RegionalItemChangeType.Item:
+                    result.ChangeType = "Item";
                     break;
-                case RegionalItemChangeType.Delete: destination.ChangeType = "Delete";
+                case RegionalItemChangeType.Delete:
+                    result.ChangeType = "Delete";
                     break;
-                case RegionalItemChangeType.Offer: destination.ChangeType = "Offer";
+                case RegionalItemChangeType.Offer:
+                    result.ChangeType = "Offer";
                     break;
-                case RegionalItemChangeType.All: destination.ChangeType = "All";
+                case RegionalItemChangeType.All:
+                    result.ChangeType = "All";
                     break;
-                case RegionalItemChangeType.OffPromoCost: destination.ChangeType = "Off Promo Cost";
+                case RegionalItemChangeType.OffPromoCost:
+                    result.ChangeType = "Off Promo Cost";
                     break;
             }
 
-            return destination;
+            return result;
         }
 
         private void ValidateItemChangeTypeId(IconItemChangeQueue source)

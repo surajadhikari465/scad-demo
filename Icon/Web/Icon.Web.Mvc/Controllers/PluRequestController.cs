@@ -1,14 +1,11 @@
-﻿using AutoMapper;
-using Icon.Framework;
+﻿using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
-using Icon.Web.Common.Validators;
-using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
-using Icon.Web.Extensions;
+using Icon.Web.Mvc.Extensions;
 using Icon.Web.Mvc.Models;
 using Icon.Web.Mvc.Exporters;
 using Icon.Web.Mvc.Excel;
@@ -21,9 +18,11 @@ using System.Reflection;
 using System.Web.Mvc;
 using Icon.Common.DataAccess;
 using Icon.Web.Mvc.Attributes;
+using DevTrends.MvcDonutCaching;
 
 namespace Icon.Web.Controllers
 {
+    [RedirectFilterAttribute]
     public class PluRequestController : Controller
     {
         private ILogger logger;
@@ -71,7 +70,7 @@ namespace Icon.Web.Controllers
 
         //
         // GET: /PluRequest/Search
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        [DonutOutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult Search(PluRequestSearchViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -434,29 +433,5 @@ namespace Icon.Web.Controllers
             List<HierarchyClassViewModel> hierarchyClasses = hierarchyList.HierarchyClassForCombo();
             return hierarchyClasses;
         }
-
-        public void Export(PluRequestSearchViewModel viewModel)
-        {
-            
-             // Execute the search.
-            GetPluRequestsParameters searchParameters = new GetPluRequestsParameters
-            {
-
-                requestStatus = viewModel.Status.Single(s => s.Value == viewModel.SelectedStatusId.ToString()).Text.ToEnum<PluRequestStatus>()
-            };
-
-            List<PLURequest> itemsList = getPluRequestsBySearchQueryHandler.Search(searchParameters);
-
-            // To make it easier to work in the View, project the Item objects to ItemViewModel objects.
-            List<PluRequestViewModel> plueRequests = itemsList.Select(p => new PluRequestViewModel(p)).ToList();
-
-
-            var pluRequestExporter = excelExporterService.GetPluRequestExporter();
-            pluRequestExporter.ExportData = plueRequests;
-            pluRequestExporter.Export();
-
-            ExcelHelper.SendForDownload(Response, pluRequestExporter.ExportModel.ExcelWorkbook, pluRequestExporter.ExportModel.ExcelWorkbook.CurrentFormat, "PLURequest");
-        }
-        
     }
 }

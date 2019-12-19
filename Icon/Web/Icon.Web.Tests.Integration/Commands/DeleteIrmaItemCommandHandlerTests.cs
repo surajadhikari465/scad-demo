@@ -1,12 +1,8 @@
 ﻿using Icon.Framework;
-using Icon.Logging;
 using Icon.Testing.Builders;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Commands

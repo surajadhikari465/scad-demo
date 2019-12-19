@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<MySettings>
+<MyRegion>FL</MyRegion>
+<MyStore>BCA</MyStore>
+<MaxItems>500</MaxItems>
+  <!--<Scan>http://oosappprd/WebService/ScanOutOfStock.svc</Scan>-->
+  <Scan>http://oosapptest/WebService/ScanOutOfStock.svc</Scan>
+  <OOS>http://btstst1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</OOS>
+  <!--  <OOS>http://CEN106486/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</OOS>-->  
+</MySettings>

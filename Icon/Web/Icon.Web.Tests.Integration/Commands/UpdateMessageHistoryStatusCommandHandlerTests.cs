@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Icon.Framework;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Data.Entity;

@@ -6,18 +6,18 @@ using Icon.Esb.Producer;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Framework;
 using Icon.Logging;
-using Infor.Services.NewItem.Cache;
-using Infor.Services.NewItem.Commands;
-using Infor.Services.NewItem.MessageBuilders;
-using Infor.Services.NewItem.Processor;
-using Infor.Services.NewItem.Queries;
-using Infor.Services.NewItem.Services;
+using Services.NewItem.Cache;
+using Services.NewItem.Commands;
+using Services.NewItem.MessageBuilders;
+using Services.NewItem.Processor;
+using Services.NewItem.Queries;
+using Services.NewItem.Services;
 using Irma.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using Topshelf;
 
-namespace Infor.Services.NewItem
+namespace Services.NewItem
 {
     class Program
     {
@@ -25,9 +25,9 @@ namespace Infor.Services.NewItem
         {
             HostFactory.Run(r =>
             {
-                r.Service<IInforNewItemApplication>(s =>
+                r.Service<INewItemApplication>(s =>
                 {
-                    s.ConstructUsing(c => SimpleInjectorInitializer.InitializeContainer().GetInstance<IInforNewItemApplication>());
+                    s.ConstructUsing(c => SimpleInjectorInitializer.InitializeContainer().GetInstance<INewItemApplication>());
                     s.WhenStarted(cm => cm.Start());
                     s.WhenStopped(cm => cm.Stop());
                 });

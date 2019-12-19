@@ -1,19 +1,56 @@
-﻿body {
-    padding-bottom: 20px;
+﻿html {
 }
 
-/* Set padding to keep content from hitting the edges */
+body {
+}
+
+textarea {
+    overflow-y: scroll;
+}
+
+#__ig_wm__ {
+    display:none;
+}
+#page-container {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    padding-top: 15px;
+    padding-bottom: 60px;
 }
 
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    padding-left: 15px;
+    padding-right: 30px;
+    overflow: hidden;
+}
+
+ul.greenCheckList {
+    list-style-type: none
+}
+ul.greenCheckList li:before {
+    content: "\2714\0020";
+    color: green
+}
+
+
 /* Set width on the form input elements since they're 100% wide by default */
-input,
+input, 
 select,
 textarea {
-    max-width: 280px;
+    max-width: 500px;
 }
+
+
 
 /* Set width on the Store Management grid so that it uses the full width */
 #storeGrid input,
@@ -33,7 +70,6 @@ textarea {
 
 input.input-validation-error {
     border: 1px solid #b94a48;
-    
     /* Add some padding so that the textbox doesn't appear to shrink. */
     padding-bottom: 2px;
     padding-top: 2px;
@@ -109,7 +145,7 @@ span.ui-igcombo.ui-state-hover {
 
 /* Custom styles for views */
 #title {
-    color: #44d06e;
+    color: #18BC9C;
 }
 
 .scancode-link {
@@ -119,26 +155,30 @@ span.ui-igcombo.ui-state-hover {
 
 .checkbox {
     float: left;
-    margin-top: 0px !important;  
+    margin-top: 0px !important;
 }
 
 .col-checkbox {
     float: left;
     margin-bottom: 0px !important;
-    margin-left: 5px !important;   
+    margin-left: 5px !important;
 }
 
 .checkbox-label {
-     text-align: right;
-     max-width: 15%;
-     margin-left: 5px !important;
+    text-align: right;
+    margin-left: 5px !important;
 }
+
+.checkbox-attached-to-input {
+    margin-top: 5px;
+}
+
 .checkbox-inline-bold {
     display: inline-block;
     margin-left: 5px !important;
     font-weight: bold;
     cursor: pointer;
-    text-align: right;    
+    text-align: right;
     margin-bottom: 0;
 }
 
@@ -155,7 +195,6 @@ span.ui-igcombo.ui-state-hover {
 }
 
 .form-input {
-    width: 50%;
 }
 
 .validation-section {
@@ -163,7 +202,6 @@ span.ui-igcombo.ui-state-hover {
 }
 
 .form-property-val {
-    margin-left: 20px;
 }
 
 .page-title, .form-submit, .begin-form, .page-subsection {
@@ -171,7 +209,11 @@ span.ui-igcombo.ui-state-hover {
 }
 
 .page-section, .form-footer {
-    margin-top: 30px;
+    padding-bottom: 15px;
+}
+
+.inline-submit-button {
+    margin-left: 15px;
 }
 
 .new-brand-cell {
@@ -180,30 +222,227 @@ span.ui-igcombo.ui-state-hover {
 
 .form-offset-left {
     margin-left: 30px;
-} 
+}
+
+.row-with-bottom-margin {
+    margin-bottom: 10px;
+}
+
+nav a {
+    color: white !important;
+}
+
+
+.navbar-text {
+    color: white !important;
+}
+
+.item {
+    margin-bottom: 15px;
+}
+
+.item > label {
+    font-weight: bold;
+}
+
+.item > .ui-igcombo-wrapper {
+    width: 500px;
+}
+
+.item > .ui-igedit {
+    width: 500px;
+}
+
+.infor-history-button {
+    right: 0;
+    position: absolute;
+    padding-right: 25px;
+    top: 244px;
+}
+
+#ItemHistoryContainer {
+    float: right;
+    width: 460px;
+    height: 365px;
+}
+
+#ItemHistoryByDate {
+    width: 460px;
+    height: 365px;
+    overflow:auto; /*overflow-y: scroll;*/
+    overflow-x: hidden;
+}
+
+
+#ItemHistoryByAttribute {
+    width: 460px;
+    height: 365px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#ItemHistoryByDate > .card  {
+    margin: 10px;
+}
+
+#ItemHistoryByAttribute > .card {
+    margin: 10px;
+}
+
+.item-history-heading {
+    background-color: white;
+    color: #0582ca;
+}
+
+.item-history-heading {
+    background-color: white
+}
+
+.item-history-card {
+    background-color: white;
+}
+
+.item-history-user {
+    color: black;
+}
+
+.read-only-container {
+    height: 40px;
+    width: 800px;
+}
+
+.read-only-attribute {
+    width: 300px;
+    display: block;
+}
+
+.read-only-attribute-label {
+    display: block;
+    font-weight: bold;
+}
+
+.read-only-attribute-value {
+    display: block;
+}
+
+.item-history-date {
+    color: #0582ca;
+}
+
+#NutritionContainer {
+	float: right;
+	width: 450px;
+	height: 500px;
+}
+
+#ItemNutritionContainer {
+	display: inline-block;
+	width: inherit;
+	height: inherit;
+	overflow:auto;
+	border: solid 1px lightgray;
+}
+
+.nutrTable {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.nutrTable td {
+	text-align: left;
+	padding: 2px 0px 2px 10px;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+.nutrTable tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+.nutrTable tr:hover {
+	background-color: lightblue;
+}
+
+/* Override bootstrap so checkboxes display correctly*/
+.form-check-input {
+    margin-top: 0;
+    margin-left: 0;
+}
+
+/* fix spacing in infragistics grid by preventing word wrap*/
+td {
+    white-space: nowrap;
+}
 
 @media (min-width: 1200px) {
-  .container {
-    width: 1190px;
-  }
+    .container {
+        width: 1190px;
+    }
 }
 
 @media (min-width: 1400px) {
-  .container {
-    width: 1390px;
-  }
+    .container {
+        width: 1390px;
+    }
 }
 
 @media (min-width: 1600px) {
-  .container {
-    width: 1590px;
-  }
+    .container {
+        width: 1590px;
+    }
 }
 
 @media (min-width: 1900px) {
-  .container {
-    width: 1890px;
-  }
-
+    .container {
+        width: 1890px;
+    }
 }
 
+.disabled-checkbox {
+    opacity: .5
+}
+
+/*overriding this class to fix link buttons inside grids from displaying as white after sorting grid.*/
+.ui-state-highlight a, .ui-widget-content .ui-state-highlight a, .ui-widget-header .ui-state-highlight a {
+    color: #0275d8;
+}
+
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
+    color: #0275d8;
+}
+
+.block {
+    background: rgba(0, 0, 0, .2);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.block-message {
+    border: solid 1px black;
+    border-radius: 15px;
+    display: flex;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    background-color: whitesmoke;
+    z-index: 100;
+    height: 90px;
+    width: 250px;
+    margin: -100px 0 0 -150px;
+    box-shadow: 0.4em 0.4em rgba(0,0,0,0.6);
+    opacity: 1;
+    text-align:center;
+}
+
+.block-label {
+    font-size: larger;
+    font-weight: bold;
+    margin: 15px 0 0 15px
+}

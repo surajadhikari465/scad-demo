@@ -16,8 +16,8 @@ namespace Icon.Framework
     {
         public IRMAPush()
         {
-            this.MessageQueueItemLocale = new HashSet<MessageQueueItemLocale>();
             this.MessageQueuePrice = new HashSet<MessageQueuePrice>();
+            this.MessageQueueItemLocale = new HashSet<MessageQueueItemLocale>();
         }
     
         public int IRMAPushID { get; set; }
@@ -55,7 +55,7 @@ namespace Icon.Framework
         public Nullable<System.DateTime> UdmFailedDate { get; set; }
         public Nullable<System.DateTime> EsbReadyFailedDate { get; set; }
     
-        public virtual ICollection<MessageQueueItemLocale> MessageQueueItemLocale { get; set; }
         public virtual ICollection<MessageQueuePrice> MessageQueuePrice { get; set; }
+        public virtual ICollection<MessageQueueItemLocale> MessageQueueItemLocale { get; set; }
     }
 }

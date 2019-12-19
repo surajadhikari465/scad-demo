@@ -1,4 +1,5 @@
-﻿using Icon.Common.DataAccess;
+﻿using DevTrends.MvcDonutCaching;
+using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
@@ -6,7 +7,6 @@ using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
-using Icon.Web.Extensions;
 using Icon.Web.Mvc.Attributes;
 using Icon.Web.Mvc.Excel;
 using Icon.Web.Mvc.Exporters;
@@ -21,6 +21,7 @@ using System.Web.Mvc;
 
 namespace Icon.Web.Controllers
 {
+    [RedirectFilterAttribute]
     public class PluAssignmentController : Controller
     {
         private ILogger logger;
@@ -66,7 +67,7 @@ namespace Icon.Web.Controllers
 
         //
         // GET: /Item/Search
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        [DonutOutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult Search(PluAssignmentSearchViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -135,8 +136,8 @@ namespace Icon.Web.Controllers
 
             var addItemManager = new AddItemManager
             {
-                Item = item.ToBulkImportNewItemModel(true),
-                UserName = User.Identity.Name,
+                //Item = item.ToBulkImportNewItemModel(true),
+                //UserName = User.Identity.Name,
             };
 
             try
@@ -186,61 +187,6 @@ namespace Icon.Web.Controllers
         {
             var uoms = UomCodes.ByName.Values.ToList();
             return new SelectList(uoms, selectedUom);
-        }
-
-        public void Export(PluAssignmentSearchViewModel viewModel)
-        {
-            // Execute the search.
-            List<IRMAItem> itemsList = null;
-            bool isPluCategory = getPluCategoriesQuery.Search(new GetPluCategoriesParameters()).First(c => c.PluCategoryID == viewModel.SelectedPluCategoryId).BeginRange.IsPosOrScalePlu();
-            int maxPlus = string.IsNullOrEmpty(viewModel.MaxPlus) ? 0 : Int32.Parse(viewModel.MaxPlus);
-
-            if (isPluCategory)
-            {
-                itemsList = getAvailablePlusByCategoryQueryHandler.Search(new GetAvailablePlusByCategoryParameters
-                {
-                    PluCategoryId = viewModel.SelectedPluCategoryId,
-                    MaxPlus = maxPlus
-                });
-            }
-            else
-            {
-                itemsList = getAvailableScanCodesByCategoryQueryHandler.Search(new GetAvailableScanCodesByCategoryParameters
-                {
-                    CategoryId = viewModel.SelectedPluCategoryId,
-                    MaxScanCodes = maxPlus
-                });
-            }
-
-            // To make it easier to work in the View, project the Item objects to ItemViewModel objects.
-            List<IrmaItemViewModel> items = itemsList.Select(item => new IrmaItemViewModel(item)).ToList();
-
-            foreach (IrmaItemViewModel item in items)
-            {
-                if (item.MerchandiseHierarchyClassId == null)
-                {
-                    item.MerchandiseHierarchyClassName = String.Empty;
-                }
-                else
-                {
-                    item.MerchandiseHierarchyClassName = hieararchyQueryHandler.Search(new GetHierarchyClassByIdParameters { HierarchyClassId = item.MerchandiseHierarchyClassId.Value }).ToFlattenedHierarchyClassString();
-                }
-
-                if (item.TaxHierarchyClassId == null)
-                {
-                    item.TaxHierarchyClassName = String.Empty;
-                }
-                else
-                {
-                    item.TaxHierarchyClassName = hieararchyQueryHandler.Search(new GetHierarchyClassByIdParameters { HierarchyClassId = item.TaxHierarchyClassId.Value }).ToFlattenedHierarchyClassString();
-                }
-            }
-
-            var irmaItemExporter = excelExporterService.GetIrmaItemExporter();
-            irmaItemExporter.ExportData = items;
-            irmaItemExporter.Export();
-
-            ExcelHelper.SendForDownload(Response, irmaItemExporter.ExportModel.ExcelWorkbook, irmaItemExporter.ExportModel.ExcelWorkbook.CurrentFormat, "IrmaItem");
         }
     }
 }

@@ -2,16 +2,10 @@
 using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.Mvc.App_Start;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Unit.Managers
 {
@@ -22,22 +16,20 @@ namespace Icon.Web.Tests.Unit.Managers
         private AddCertificationAgencyManager manager;
         private IconContext context;
         private Mock<ICommandHandler<AddCertificationAgencyCommand>> mockAddCertificationAgencyCommandHandler;
+        private IMapper mapper;
 
         [TestInitialize]
         public void Initialize()
         {
             context = new IconContext();
+            mapper = AutoMapperWebConfiguration.Configure();
             mockAddCertificationAgencyCommandHandler = new Mock<ICommandHandler<AddCertificationAgencyCommand>>();
             
             manager = new AddCertificationAgencyManager();
-            managerHandler = new AddCertificationAgencyManagerHandler(this.context, mockAddCertificationAgencyCommandHandler.Object);
-            AutoMapperWebConfiguration.Configure();
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            Mapper.Reset();
+            managerHandler = new AddCertificationAgencyManagerHandler(
+                this.context, 
+                mockAddCertificationAgencyCommandHandler.Object, 
+                mapper);
         }
 
         [TestMethod]

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:tns="http://schemas.wfm.com/Icon/Attributes.xsd"
+	 targetNamespace="http://schemas.wfm.com/Icon/Attributes.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+  
+  <xs:include schemaLocation="./Attribute.xsd" />
+  
+  <xs:element name="Attributes" type="tns:AttributesType"/>
+  <xs:complexType name="AttributesType">
+    <xs:sequence>
+      <xs:element name="Attribute" type="tns:AttributeType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

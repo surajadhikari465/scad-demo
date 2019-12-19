@@ -1,5 +1,4 @@
-﻿@using Infragistics.Web.Mvc
-@using Icon.Framework
+﻿@using Icon.Framework
 @model Icon.Web.Mvc.Models.HierarchyClassViewModel
 
 @{ string hierarchyName = Model.HierarchyName; }
@@ -28,91 +27,63 @@
 		<fieldset>
 			<legend>@ViewBag.Title</legend>
 
-			<div class="row">
-				@Html.LabelFor(model => model.HierarchyName, new { @class = "col-md-2 form-label" })
-				<div>
-					@Html.TextBoxFor(model => model.HierarchyName, new { @disabled = "disabled", @class = "col-md-6 form-input" })
-				</div>
+			<div class="form-group">
+				@Html.LabelFor(model => model.HierarchyName, new { @class = "form-label" })
+					@Html.TextBoxFor(model => model.HierarchyName, new { @disabled = "disabled", @class = "form-control form-input" })
 			</div>
 
 			@if (!String.IsNullOrEmpty(Model.HierarchyParentClassName))
 			{
-				<div class="row">
-					@Html.LabelFor(model => model.HierarchyParentClassName, new { @class = "col-md-2 form-label" })
-					<div>
-						@Html.TextBoxFor(model => model.HierarchyParentClassName, new { @disabled = "disabled", @class = "col-md-6 form-input" })
-					</div>
+				<div class="form-group">
+					@Html.LabelFor(model => model.HierarchyParentClassName, new { @class = "form-label" })
+						@Html.TextBoxFor(model => model.HierarchyParentClassName, new { @disabled = "disabled", @class = "form-control form-input" })
 				</div>
 			}
 
-			<div class="row">
-				@Html.LabelFor(model => model.HierarchyClassName, "New Class Name", new { @class = "col-md-2 form-label" })
-				<div>
-					@Html.TextBoxFor(model => model.HierarchyClassName, new { @class = "col-md-6 form-input" })
-					@Html.ValidationMessageFor(model => model.HierarchyClassName, null, new { @class = "col-md-4 form-property-val" })
-				</div>
+			<div class="form-group">
+				@Html.LabelFor(model => model.HierarchyClassName, "New Class Name", new { @class = "form-label" })
+					@Html.TextBoxFor(model => model.HierarchyClassName, new { @class = "form-control form-input" })
+					@Html.ValidationMessageFor(model => model.HierarchyClassName, null, new { @class = "form-property-val" })
 			</div>
 			<br />
 			@if (hierarchyName == HierarchyNames.Tax)
 			{
-				<div class="row">
-					@Html.LabelFor(model => model.TaxAbbreviation, new { @class = "col-md-2 form-label" })
-					<div>
-						@Html.TextBoxFor(model => model.TaxAbbreviation, new { @class = "col-md-6 form-input" })
+				<div class="form-group">
+					@Html.LabelFor(model => model.TaxAbbreviation, new { @class = "form-label" })
+						@Html.TextBoxFor(model => model.TaxAbbreviation, new { @class = "form-control form-input" })
 						@Html.ValidationMessageFor(model => model.TaxAbbreviation)
-					</div>
 				</div>
-                <div class="row">
-					@Html.LabelFor(model => model.TaxRomance, new { @class = "col-md-2 form-label" })
-					<div>
-						@Html.TextBoxFor(model => model.TaxRomance, new { @class = "col-md-6 form-input" })
+                <div class="form-group">
+					@Html.LabelFor(model => model.TaxRomance, new { @class = "form-label" })
+						@Html.TextBoxFor(model => model.TaxRomance, new { @class = "form-control form-input" })
 						@Html.ValidationMessageFor(model => model.TaxRomance)
-					</div>
 				</div>
 			}
 			else if (hierarchyName == HierarchyNames.Merchandise)
 			{
 				if (Model.HierarchyLevel == 5)
 				{
-					<div class="row">
-						@Html.LabelFor(model => model.SubTeam, new { @class = "col-md-2 form-label" })
-						<div>
-							@Html.DropDownListFor(model => model.SelectedSubTeam, Model.SubTeamList, "--Select Sub-Team--", new { @class = "col-md-6 form-input" })
-							@Html.ValidationMessageFor(model => model.SelectedSubTeam, null, new { @class = "col-md-4 form-property-val" })
-						</div>
+					<div class="form-group">
+						@Html.LabelFor(model => model.SubTeam, new { @class = "form-label" })
+							@Html.DropDownListFor(model => model.SelectedSubTeam, Model.SubTeamList, "--Select Sub-Team--", new { @class = "form-control form-input" })
+							@Html.ValidationMessageFor(model => model.SelectedSubTeam, null, new { @class = "form-property-val" })
 					</div>  
-                    <div class="row">
-						@Html.LabelFor(model => model.NonMerchandiseTrait, new { @class = "col-md-2 form-label" })
-						<div>
-							@Html.DropDownListFor(model => model.SelectedNonMerchandiseTrait, Model.NonMerchandiseTraitList, new { @class = "col-md-6 form-input" })
-							@Html.ValidationMessageFor(model => model.SelectedNonMerchandiseTrait, null, new { @class = "col-md-4 form-property-val" })
-						</div>
+                    <div class="form-group">
+						@Html.LabelFor(model => model.NonMerchandiseTrait, new { @class = "form-label" })
+							@Html.DropDownListFor(model => model.SelectedNonMerchandiseTrait, Model.NonMerchandiseTraitList, new { @class = "form-control form-input" })
+							@Html.ValidationMessageFor(model => model.SelectedNonMerchandiseTrait, null, new { @class = "form-property-val" })
 					</div>
-                    <div class="row">
-                        @Html.LabelFor(model => model.SubBrickCode, new { @class = "col-md-2 form-label" })
-                        <div>
-                            @Html.TextBoxFor(model => model.SubBrickCode, null, new { @class = "col-md-6 form-input" })
-                            @Html.ValidationMessageFor(model => model.SubBrickCode, null, new { @class = "col-md-4 form-property-val" })
-                        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SubBrickCode, new { @class = "form-label" })
+                            @Html.TextBoxFor(model => model.SubBrickCode, null, new { @class = "form-control form-input" })
+                            @Html.ValidationMessageFor(model => model.SubBrickCode, null, new { @class = "form-property-val" })
                     </div>     
                 }
-                else
-                {
-					<div class="row">
-						@Html.LabelFor(model => model.GlAccount, new { @class = "col-md-2 form-label" })
-						<div>
-							@Html.TextBoxFor(model => model.GlAccount, new { @class = "col-md-6 form-input" })
-							@Html.ValidationMessageFor(model => model.GlAccount)
-						</div>
-					</div>                    
-				}
 			}
 		</fieldset>
 
-		<div class="row">
-			<div class="col-md-offset-2 col-md-1">
-				<input type="submit" value="Create" class="btn btn-default form-submit" />
-			</div>
+		<div class="form-group">
+			<input type="submit" value="Create" class="btn btn-light form-submit" />
 		</div>
 
 		<div class="validation-section page-subsection">
@@ -128,5 +99,5 @@
 </div>
 
 <div class="form-footer">
-	@Html.ActionLink("Back to Hierarchy Management", "Index")
+    @Html.ActionLink("Back to Hierarchy Search", "Index", "Hierarchy", new { SelectedHierarchyId = Model.HierarchyId }, null)
 </div>

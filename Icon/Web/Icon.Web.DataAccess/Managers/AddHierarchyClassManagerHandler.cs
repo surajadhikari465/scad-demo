@@ -1,18 +1,15 @@
 ﻿using AutoMapper;
+using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Logging;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
-using System;
-using System.Data.Entity.Validation;
-using System.Reflection;
-using Icon.Web.DataAccess.Queries;
 using Icon.Web.DataAccess.Models;
+using Icon.Web.DataAccess.Queries;
+using System;
 using System.Collections.Generic;
-using Icon.Common.DataAccess;
 using System.Linq;
-using Icon.Web.Common.Validators;
+using Icon.Common.Validators;
 
 namespace Icon.Web.DataAccess.Managers
 {
@@ -23,19 +20,22 @@ namespace Icon.Web.DataAccess.Managers
         private ICommandHandler<AddSubTeamEventsCommand> addSubTeamEventsHandler;
         private ICommandHandler<AddHierarchyClassMessageCommand> addHierarchyClassMessageHandler;
         private IQueryHandler<GetRegionalSettingsBySettingsKeyNameParameters, List<RegionalSettingsModel>> getRegionalSettingsBySettingsKeyNameQuery;
+        private IMapper mapper;
 
         public AddHierarchyClassManagerHandler(
             IconContext context,
             ICommandHandler<AddHierarchyClassCommand> hierarchyClassHandler,
             ICommandHandler<AddHierarchyClassMessageCommand> addHierarchyClassMessageHandler,
             ICommandHandler<AddSubTeamEventsCommand> addSubTeamEventsHandler,
-            IQueryHandler<GetRegionalSettingsBySettingsKeyNameParameters, List<RegionalSettingsModel>> getRegionalSettingsBySettingsKeyNameQuery)
+            IQueryHandler<GetRegionalSettingsBySettingsKeyNameParameters, List<RegionalSettingsModel>> getRegionalSettingsBySettingsKeyNameQuery,
+            IMapper mapper)
         {
             this.context = context;
             this.addHierarchyClassHandler = hierarchyClassHandler;
             this.addHierarchyClassMessageHandler = addHierarchyClassMessageHandler;
             this.addSubTeamEventsHandler = addSubTeamEventsHandler;
             this.getRegionalSettingsBySettingsKeyNameQuery = getRegionalSettingsBySettingsKeyNameQuery;
+            this.mapper = mapper;
         }
 
         public void Execute(AddHierarchyClassManager data)
@@ -43,7 +43,7 @@ namespace Icon.Web.DataAccess.Managers
             ValidateHierarchyClass(data);
             using (var transaction = this.context.Database.BeginTransaction())
             {
-                AddHierarchyClassCommand addHierarchyClassCommand = Mapper.Map<AddHierarchyClassCommand>(data);
+                AddHierarchyClassCommand addHierarchyClassCommand = mapper.Map<AddHierarchyClassCommand>(data);
 
                 try
                 {
@@ -60,12 +60,12 @@ namespace Icon.Web.DataAccess.Managers
                     }
 
                     AddHierarchyClassMessageCommand addHierarchyClassMessageCommand = new AddHierarchyClassMessageCommand
-                        {
-                            ClassNameChange = true,
-                            HierarchyClass = addHierarchyClassCommand.NewHierarchyClass
-                        };
-                        addHierarchyClassMessageHandler.Execute(addHierarchyClassMessageCommand);
-                    
+                    {
+                        ClassNameChange = true,
+                        HierarchyClass = addHierarchyClassCommand.NewHierarchyClass
+                    };
+                    addHierarchyClassMessageHandler.Execute(addHierarchyClassMessageCommand);
+
                     transaction.Commit();
                 }
                 catch (DuplicateValueException exception)

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Attributes xmlns="http://schemas.wfm.com/Icon/Attributes.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <Attribute>
+      <Name>TestName</Name>
+      <TraitCode>TTC</TraitCode>
+      <Description>TestDescription</Description>
+      <Group>Test</Group>
+      <DataType>TestDataType</DataType>
+   </Attribute>
+</Attributes>

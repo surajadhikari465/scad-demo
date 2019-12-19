@@ -30,3 +30,8 @@ ALTER TABLE [dbo].[HierarchyClassTrait] ADD CONSTRAINT [HierarchyClassTrait_PK] 
 [traitID]
 , [HierarchyClassID]
 )
+GO
+
+CREATE NONCLUSTERED INDEX IX_HierarchyClassTrait_HierarchyClassId ON dbo.HierarchyClassTrait(HierarchyClassId)
+INCLUDE(traitValue)
+GO

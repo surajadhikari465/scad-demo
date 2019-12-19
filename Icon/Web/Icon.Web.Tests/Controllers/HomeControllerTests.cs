@@ -1,7 +1,5 @@
 ﻿using Icon.Web.Controllers;
-using Icon.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System.Web.Mvc;
 
 namespace Icon.Web.Tests.Unit.Controllers

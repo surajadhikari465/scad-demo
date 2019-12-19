@@ -6,5 +6,6 @@ namespace Mammoth.Esb.ProductListener.Commands
     public class AddOrUpdateProductsCommand
     {
         public List<ItemModel> Items { get; set; }
+		public string TraitCodeWarning { get; set; }
     }
 }

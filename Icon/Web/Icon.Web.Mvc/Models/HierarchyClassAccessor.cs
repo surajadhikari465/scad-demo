@@ -1,7 +1,8 @@
 ﻿using Icon.Framework;
 using System;
 using System.Linq;
-using Icon.Web.Extensions;
+using Icon.Web.Mvc.Extensions;
+using System.Collections.Generic;
 
 namespace Icon.Web.Mvc.Models
 {
@@ -13,12 +14,6 @@ namespace Icon.Web.Mvc.Models
             return subTeamQuery.Count() == 0 ? String.Empty : subTeamQuery.Single().traitValue;
         }
 
-        public static string GetGlAccount(HierarchyClass hierarchyClass)
-        {
-            var glAccountQuery = hierarchyClass.HierarchyClassTrait.Where(hct => hct.Trait.traitCode == TraitCodes.GlAccount);
-            return glAccountQuery.Count() == 0 ? String.Empty : glAccountQuery.Single().traitValue;
-        }
-
         public static string GetTaxAbbreviation(HierarchyClass hierarchyClass)
         {
             var taxAbbreviationQuery = hierarchyClass.HierarchyClassTrait.Where(hct => hct.Trait.traitCode == TraitCodes.TaxAbbreviation);
@@ -28,6 +23,17 @@ namespace Icon.Web.Mvc.Models
         {
             var taxRomanceQuery = hierarchyClass.HierarchyClassTrait.Where(hct => hct.Trait.traitCode == TraitCodes.TaxRomance);
             return taxRomanceQuery.Count() == 0 ? String.Empty : taxRomanceQuery.Single().traitValue;
+        }
+
+        public static string MapSubTeamTraitIdToValue(HierarchyClass hierarchyClass, List<HierarchyClass> financialClasses)
+        {
+                var subTeamTraitValue = hierarchyClass.HierarchyClassTrait
+                    .Where(hct => hct.Trait.traitCode == TraitCodes.MerchFinMapping)
+                    .Select(s => s.traitValue)
+                    .DefaultIfEmpty("")
+                    .First();
+
+                return subTeamTraitValue == string.Empty ? subTeamTraitValue : financialClasses.Where(f => f.hierarchyClassID == int.Parse(subTeamTraitValue)).FirstOrDefault().hierarchyClassName;
         }
 
         public static string GetHierarchyParentName(HierarchyClass hierarchyClass)
@@ -91,7 +97,7 @@ namespace Icon.Web.Mvc.Models
             else
             {
                 return false;
-            }            
+            }
         }
 
         public static string GetSubBrickCode(HierarchyClass hierarchyClass)

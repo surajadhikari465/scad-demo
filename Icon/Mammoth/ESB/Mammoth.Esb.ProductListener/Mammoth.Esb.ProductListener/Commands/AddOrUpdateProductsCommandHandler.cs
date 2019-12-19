@@ -3,6 +3,7 @@ using Mammoth.Common.DataAccess;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.DataAccess.DbProviders;
 using MoreLinq;
+using System;
 using System.Data;
 using System.Linq;
 
@@ -106,50 +107,28 @@ namespace Mammoth.Esb.ProductListener.Commands
 
         private void AddOrUpdateItemAttributesExtended(AddOrUpdateProductsCommand data)
         {
-            string sql = @"dbo.AddOrUpdateItemAttributesExt";
-            int rowCount = this.db.Connection.Execute(sql,
-                new
-                {
-                    extAttributes = data.Items.SelectMany(
-                        i => new[]
-                        {
-                            new { ItemID = i.ExtendedAttributes.ItemId,
-                                AttributeCode = Attributes.Codes.FairTradeCertified,
-                                AttributeValue = i.ExtendedAttributes.FairTradeCertified },
-                            new { ItemID = i.ExtendedAttributes.ItemId,
-                                AttributeCode = Attributes.Codes.FlexibleText,
-                                AttributeValue = i.ExtendedAttributes.FlexibleText },
-                            new { ItemID = i.ExtendedAttributes.ItemId,
-                                AttributeCode = Attributes.Codes.GlobalPricingProgram,
-                                AttributeValue = i.ExtendedAttributes.GlobalPricingProgram },
-                            new { ItemID = i.ExtendedAttributes.ItemId,
-                                AttributeCode = Attributes.Codes.MadeWithBiodynamicGrapes,
-                                AttributeValue = i.ExtendedAttributes.MadeWithBiodynamicGrapes },
-                            new { ItemID = i.ExtendedAttributes.ItemId,
-                                AttributeCode = Attributes.Codes.MadeWithOrganicGrapes,
-                                AttributeValue = i.ExtendedAttributes.MadeWithOrganicGrapes },
-                            new { ItemID = i.ExtendedAttributes.ItemId,
-                                AttributeCode = Attributes.Codes.NutritionRequired,
-                                AttributeValue = i.ExtendedAttributes.NutritionRequired },
-                            new { ItemID = i.ExtendedAttributes.ItemId,
-                                AttributeCode = Attributes.Codes.PrimeBeef,
-                                AttributeValue = i.ExtendedAttributes.PrimeBeef },
-                            new { ItemID = i.ExtendedAttributes.ItemId,
-                                AttributeCode = Attributes.Codes.RainforestAlliance,
-                                AttributeValue = i.ExtendedAttributes.RainforestAlliance },
-                            new { ItemID = i.ExtendedAttributes.ItemId,
-                                AttributeCode = Attributes.Codes.RefrigeratedOrShelfStable,
-                                AttributeValue = i.ExtendedAttributes.RefrigeratedOrShelfStable },
-                            new { ItemID = i.ExtendedAttributes.ItemId,
-                                AttributeCode = Attributes.Codes.SmithsonianBirdFriendly,
-                                AttributeValue = i.ExtendedAttributes.SmithsonianBirdFriendly },
-                            new { ItemID = i.ExtendedAttributes.ItemId,
-                                AttributeCode = Attributes.Codes.Wic,
-                                AttributeValue = i.ExtendedAttributes.Wic }
-                        }).ToDataTable()
-                },
-                transaction: this.db.Transaction,
-                commandType: CommandType.StoredProcedure);
+            var itemExtAttributeValues = data.Items.Where(x => x.ExtendedAttributes != null && x.ExtendedAttributes.Traits != null && x.ExtendedAttributes.Traits.Any())
+                            .SelectMany(x => x.ExtendedAttributes.Traits.SelectMany(y => new[]
+                                {
+                                    new
+                                    {
+                                        ItemID = x.ExtendedAttributes.ItemId,
+                                        AttributeCode = y.Key,
+                                        AttributeValue = y.Value
+                                    }
+                                }
+                            )).ToDataTable();
+            
+            if(itemExtAttributeValues.Rows.Count > 0)
+            {
+                var result = this.db.Connection.ExecuteScalar(
+                    sql: "dbo.AddOrUpdateItemAttributesExt",
+                    param: new { extAttributes = itemExtAttributeValues },
+                    transaction: this.db.Transaction,
+                    commandType: CommandType.StoredProcedure);
+
+                data.TraitCodeWarning = (result == null || result == DBNull.Value) ? null : result.ToString();
+            }
         }
     }
 }

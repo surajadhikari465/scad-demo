@@ -102,7 +102,7 @@ namespace PushController.Tests.Controller.UdmEntityBuilderTests
                 ScanCodeId = this.testItem.ScanCode.Single().scanCodeID,
                 ScanCodeTypeId = this.testItem.ScanCode.Single().scanCodeTypeID,
                 ScanCodeTypeDesc = this.testItem.ScanCode.Single().ScanCodeType.scanCodeTypeDesc,
-                ItemId = this.testItem.itemID,
+                ItemId = this.testItem.ItemId,
                 ItemTypeCode = this.testItem.ItemType.itemTypeCode,
                 ItemTypeDesc = this.testItem.ItemType.itemTypeDesc,
                 ValidationDate = null,
@@ -126,7 +126,7 @@ namespace PushController.Tests.Controller.UdmEntityBuilderTests
                 ScanCodeId = this.testLinkedItem.ScanCode.Single().scanCodeID,
                 ScanCodeTypeId = this.testLinkedItem.ScanCode.Single().scanCodeTypeID,
                 ScanCodeTypeDesc = this.testLinkedItem.ScanCode.Single().ScanCodeType.scanCodeTypeDesc,
-                ItemId = this.testLinkedItem.itemID,
+                ItemId = this.testLinkedItem.ItemId,
                 ItemTypeCode = this.testLinkedItem.ItemType.itemTypeCode,
                 ItemTypeDesc = this.testLinkedItem.ItemType.itemTypeDesc,
                 ValidationDate = null,
@@ -253,8 +253,8 @@ namespace PushController.Tests.Controller.UdmEntityBuilderTests
             var constructedEntities = entityBuilder.BuildEntities(new List<IRMAPush> { posDataRecord });
 
             // Then.
-            Assert.AreEqual(testLinkedItem.itemID, constructedEntities[0].ParentItemId);
-            Assert.AreEqual(testItem.itemID, constructedEntities[0].ChildItemId);
+            Assert.AreEqual(testLinkedItem.ItemId, constructedEntities[0].ParentItemId);
+            Assert.AreEqual(testItem.ItemId, constructedEntities[0].ChildItemId);
             Assert.AreEqual(testLocale.localeID, constructedEntities[0].LocaleId);
         }
 
@@ -277,8 +277,8 @@ namespace PushController.Tests.Controller.UdmEntityBuilderTests
             var constructedEntities = entityBuilder.BuildEntities(new List<IRMAPush> { posDataRecord });
 
             // Then.
-            Assert.AreEqual(testLinkedItem.itemID, constructedEntities[0].ParentItemId);
-            Assert.AreEqual(testItem.itemID, constructedEntities[0].ChildItemId);
+            Assert.AreEqual(testLinkedItem.ItemId, constructedEntities[0].ParentItemId);
+            Assert.AreEqual(testItem.ItemId, constructedEntities[0].ChildItemId);
             Assert.AreEqual(testLocale.localeID, constructedEntities[0].LocaleId);
         }
 
@@ -301,8 +301,8 @@ namespace PushController.Tests.Controller.UdmEntityBuilderTests
             var constructedEntities = entityBuilder.BuildEntities(new List<IRMAPush> { posDataRecord });
 
             // Then.
-            Assert.AreEqual(testLinkedItem.itemID, constructedEntities[0].ParentItemId);
-            Assert.AreEqual(testItem.itemID, constructedEntities[0].ChildItemId);
+            Assert.AreEqual(testLinkedItem.ItemId, constructedEntities[0].ParentItemId);
+            Assert.AreEqual(testItem.ItemId, constructedEntities[0].ChildItemId);
             Assert.AreEqual(testLocale.localeID, constructedEntities[0].LocaleId);
         }
 

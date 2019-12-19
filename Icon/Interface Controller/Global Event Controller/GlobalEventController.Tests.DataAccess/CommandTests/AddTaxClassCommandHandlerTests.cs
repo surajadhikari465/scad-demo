@@ -2,7 +2,7 @@
 using Irma.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Transactions;
 
@@ -16,7 +16,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
         private IrmaDbContextFactory contextFactory;
         private IrmaContext context;
         private TransactionScope transaction;
-
+       
         [TestInitialize]
         public void InitializeData()
         {
@@ -53,25 +53,45 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
             var entry = this.context.Entry(actual);
             Assert.AreEqual(this.command.TaxClassDescription, actual.TaxClassDesc);
             Assert.AreEqual(this.command.TaxCode, actual.ExternalTaxGroupCode);
-            Assert.AreEqual(actual.TaxClassID, this.command.TaxClassId);
         }
 
         [TestMethod]
-        public void AddTaxClassCommandHandler_TaxClassExists_TaxClassIdIsSet()
+        public void AddTaxClassCommandHandler_TaxClassExist_TaxClassAdded()
         {
             // Given
-            TaxClass existingTaxClass = this.context.TaxClass.First(tc => !tc.TaxClassDesc.ToLower().Contains("do not use"));
-            string existingTaxDesc = existingTaxClass.TaxClassDesc;
-            string existingTaxCode = existingTaxClass.ExternalTaxGroupCode;
-
-            this.command.TaxClassDescription = existingTaxClass.TaxClassDesc;
-            this.command.TaxCode = existingTaxCode;
+            this.command.TaxClassDescription = "3142143 GlobalController Tax Class Testing Tax description length";
+            this.command.TaxCode = "3142143";
 
             // When
             this.handler.Handle(this.command);
 
             // Then
-            Assert.AreEqual(existingTaxClass.TaxClassID, this.command.TaxClassId, "The TaxClassId was not populated for the existing tax class.");
+           
+            TaxClass actual = this.context.TaxClass.AsNoTracking().FirstOrDefault(tc => tc.TaxClassDesc == this.command.TaxClassDescription);
+
+            var entry = this.context.Entry(actual);
+            Assert.AreEqual(this.command.TaxClassDescription, actual.TaxClassDesc);
+            Assert.AreEqual(this.command.TaxCode, actual.ExternalTaxGroupCode);
+        }
+
+        [TestMethod]
+        public void AddTaxFlag_TaxFlagExist_TaxFlagAdded()
+        {
+            // Given
+            this.command.TaxClassDescription = "3142143 GlobalController Tax Class Testing Tax description length";
+            this.command.TaxCode = "3142143";
+
+            // When
+            this.handler.Handle(this.command);
+
+            // Then
+            string sql = @"select count(*) from dbo.TaxFlag with (nolock) where TaxClassId = (SELECT TaxclassId from Taxclass with (nolock) where ExternalTaxGroupCode = '3142143') ";
+            SqlConnection sqlConnection = new SqlConnection(context.Database.Connection.ConnectionString);
+            SqlCommand slqCommand = new SqlCommand(sql, sqlConnection);
+            sqlConnection.Open();
+            var taxClassIdCount = slqCommand.ExecuteScalar();
+            sqlConnection.Close();
+            Assert.AreEqual(52, taxClassIdCount);
         }
     }
 }

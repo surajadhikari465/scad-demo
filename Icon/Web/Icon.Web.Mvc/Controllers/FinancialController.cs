@@ -1,18 +1,10 @@
-﻿using Icon.Common.DataAccess;
+﻿using DevTrends.MvcDonutCaching;
+using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Logging;
-using Icon.Web.Common;
-using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
-using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Models;
-using Infragistics.Web.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Icon.Web.Controllers
@@ -28,7 +20,7 @@ namespace Icon.Web.Controllers
 
         //
         // GET: /Financial/
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        [DonutOutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult Index()
         {
             // Get Financial Hierarchy data from Database

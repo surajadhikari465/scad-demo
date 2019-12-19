@@ -1,22 +1,30 @@
-﻿using Icon.Common.DataAccess;
+﻿using DevTrends.MvcDonutCaching;
+using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
+using Icon.Web.Common.Utility;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
+using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Attributes;
+using Icon.Web.Mvc.Extensions;
 using Icon.Web.Mvc.Models;
+using Icon.Web.Mvc.Utility;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Icon.Web.Controllers
 {
-	public class HierarchyClassController : Controller
+    public class HierarchyClassController : Controller
 	{
 		private ILogger logger;
         private IQueryHandler<GetHierarchyParameters, List<Hierarchy>> hierarchyQuery;
@@ -24,15 +32,16 @@ namespace Icon.Web.Controllers
         private IManagerHandler<DeleteHierarchyClassManager> deleteHierarchyClass;
         private IManagerHandler<AddHierarchyClassManager> addManager;
         private IManagerHandler<UpdateHierarchyClassManager> updateManager;
-        private ICommandHandler<ClearHierarchyClassCacheCommand> clearHierarchyClassCacheCommandHandler;
-
-		public HierarchyClassController(ILogger logger,
+        private IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler;
+        private IDonutCacheManager cacheManager;
+        public HierarchyClassController(ILogger logger,
             IQueryHandler<GetHierarchyParameters, List<Hierarchy>> hierarchyQuery,
 			IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> hierarchyClassQuery,
             IManagerHandler<DeleteHierarchyClassManager> deleteHierarchyClass,
             IManagerHandler<AddHierarchyClassManager> addManager,
             IManagerHandler<UpdateHierarchyClassManager> updateManager,
-            ICommandHandler<ClearHierarchyClassCacheCommand> clearHierarchyClassCacheCommandHandler)
+            IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler,
+            IDonutCacheManager cacheManager)
 		{
 			this.logger = logger;
             this.hierarchyQuery = hierarchyQuery;
@@ -40,8 +49,10 @@ namespace Icon.Web.Controllers
 			this.deleteHierarchyClass = deleteHierarchyClass;
             this.addManager = addManager;
             this.updateManager = updateManager;
-            this.clearHierarchyClassCacheCommandHandler = clearHierarchyClassCacheCommandHandler;
-		}
+            this.getHierarchyClassesQueryHandler = getHierarchyClassesQueryHandler;
+            this.cacheManager = cacheManager;
+
+        }
 
 		//
 		// GET: /HierarchyClass/
@@ -52,16 +63,16 @@ namespace Icon.Web.Controllers
 
 		// GET: /HierarchyClass/Edit?hierarchyClassId={0}
 		[HttpGet]
+        [WriteAccessAuthorize]
 		public ActionResult Edit(int hierarchyClassId)
 		{
-			if (hierarchyClassId == 0 || hierarchyClassId < 1)
-			{
-				return RedirectToAction("Index", "Hierarchy");
-			}
-
 			// Get HierarchyClass and Finanacial Hierarchy from Database
 			var hierarchyClass = hierarchyClassQuery.Search(new GetHierarchyClassByIdParameters { HierarchyClassId = hierarchyClassId });
-			var financialHierarchy = hierarchyQuery.Search(new GetHierarchyParameters { HierarchyName = "Financial" });
+
+            if (hierarchyClassId == 0 || hierarchyClassId < 1)
+            {
+                return RedirectToAction("Index", "Hierarchy", new { SelectedHeirachyId = hierarchyClass.hierarchyID });
+            }
 
             if (hierarchyClass.hierarchyID == Hierarchies.Brands)
             {
@@ -70,33 +81,35 @@ namespace Icon.Web.Controllers
 
             if (hierarchyClass.hierarchyID == Hierarchies.Financial)
             {
-                return RedirectToAction("Index", "Hierarchy");
+                return RedirectToAction("Index", "Hierarchy", new { SelectedHeirachyId = hierarchyClass.hierarchyID });
             }
 
-			// Populate view model
-			HierarchyClassViewModel viewModel = new HierarchyClassViewModel();
-			viewModel.HierarchyId = hierarchyClass.Hierarchy.hierarchyID;
-			viewModel.HierarchyName = hierarchyClass.Hierarchy.hierarchyName;
-			viewModel.HierarchyClassId = hierarchyClass.hierarchyClassID;
-			viewModel.HierarchyParentClassId = hierarchyClass.hierarchyParentClassID;
-			viewModel.HierarchyParentClassName = HierarchyClassAccessor.GetHierarchyParentName(hierarchyClass);
-			viewModel.HierarchyClassName = hierarchyClass.hierarchyClassName;
-			viewModel.HierarchyLevel = hierarchyClass.hierarchyLevel;
-			viewModel.SubTeam = HierarchyClassAccessor.GetSubTeam(hierarchyClass);
-			viewModel.TaxAbbreviation = HierarchyClassAccessor.GetTaxAbbreviation(hierarchyClass);
-            viewModel.TaxRomance = HierarchyClassAccessor.GetTaxRomance(hierarchyClass);
-			viewModel.HierarchyLevelName = HierarchyClassAccessor.GetHierarchyLevelName(hierarchyClass);
-			viewModel.GlAccount = HierarchyClassAccessor.GetGlAccount(hierarchyClass);
-            viewModel.NonMerchandiseTrait = HierarchyClassAccessor.GetNonMerchandiseTrait(hierarchyClass);
-            viewModel.ProhibitDiscount = HierarchyClassAccessor.GetProhibitDiscount(hierarchyClass);
-            viewModel.SubBrickCode = HierarchyClassAccessor.GetSubBrickCode(hierarchyClass);
+            // Populate view model
+            HierarchyClassViewModel viewModel = new HierarchyClassViewModel
+            {
+                HierarchyId = hierarchyClass.Hierarchy.hierarchyID,
+                HierarchyName = hierarchyClass.Hierarchy.hierarchyName,
+                HierarchyClassId = hierarchyClass.hierarchyClassID,
+                HierarchyParentClassId = hierarchyClass.hierarchyParentClassID,
+                HierarchyParentClassName = HierarchyClassAccessor.GetHierarchyParentName(hierarchyClass),
+                HierarchyClassName = hierarchyClass.hierarchyClassName,
+                HierarchyLevel = hierarchyClass.hierarchyLevel,
+                SubTeam = HierarchyClassAccessor.GetSubTeam(hierarchyClass),
+                TaxAbbreviation = HierarchyClassAccessor.GetTaxAbbreviation(hierarchyClass),
+                TaxRomance = HierarchyClassAccessor.GetTaxRomance(hierarchyClass),
+                HierarchyLevelName = HierarchyClassAccessor.GetHierarchyLevelName(hierarchyClass),
+                NonMerchandiseTrait = HierarchyClassAccessor.GetNonMerchandiseTrait(hierarchyClass),
+                ProhibitDiscount = HierarchyClassAccessor.GetProhibitDiscount(hierarchyClass),
+                SubBrickCode = HierarchyClassAccessor.GetSubBrickCode(hierarchyClass)
+            };
 
-			if (viewModel.HierarchyName == HierarchyNames.Merchandise && viewModel.HierarchyLevel == HierarchyLevels.SubBrick)
+            if (viewModel.HierarchyName == HierarchyNames.Merchandise && viewModel.HierarchyLevel == HierarchyLevels.SubBrick)
 			{
                 viewModel.SubTeamList = CreateSubTeamDropDown();
                 if (!String.IsNullOrEmpty(viewModel.SubTeam))
                 {
-                    viewModel.SelectedSubTeam = financialHierarchy.Single().HierarchyClass.Single(hc => hc.hierarchyClassName == viewModel.SubTeam).hierarchyClassID;
+                    var financialHierarchy = hierarchyQuery.Search(new GetHierarchyParameters { HierarchyName = "Financial" });
+                    viewModel.SelectedSubTeam = financialHierarchy.Single().HierarchyClass.Single(hc => hc.hierarchyClassID.ToString() == viewModel.SubTeam).hierarchyClassID;
                 }
 
                 if (!String.IsNullOrEmpty(viewModel.NonMerchandiseTrait))
@@ -105,7 +118,7 @@ namespace Icon.Web.Controllers
                 }
             }
 
-			return View(viewModel);
+            return View(viewModel);
 		}
 
 		// POST: /HierarchyClass/Edit/
@@ -115,14 +128,14 @@ namespace Icon.Web.Controllers
         public ActionResult Edit(HierarchyClassViewModel viewModel)
 		{
             // Tax Abbreviation is required (this has to be done manually since all hierarchies share the same model)
-            if (viewModel.TaxAbbreviation == null && viewModel.HierarchyName == HierarchyNames.Tax)
+            if (string.IsNullOrWhiteSpace(viewModel.TaxAbbreviation) && viewModel.HierarchyName == HierarchyNames.Tax)
             {
                 ViewData["ErrorMessage"] = "Tax Abbreviation is required.";
                 return View(viewModel);
             }
 
             // Tax Romance is required (this has to be done manually since all hierarchies share the same model)
-            if (viewModel.TaxRomance == null && viewModel.HierarchyName == HierarchyNames.Tax)
+            if (string.IsNullOrWhiteSpace(viewModel.TaxRomance) && viewModel.HierarchyName == HierarchyNames.Tax)
             {
                 ViewData["ErrorMessage"] = "Tax Romance is required.";
                 return View(viewModel);
@@ -131,7 +144,7 @@ namespace Icon.Web.Controllers
             if (!ModelState.IsValid)
 			{
                 var allErrors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
-                ViewData["ErrorMessage"] = String.Format("There was an error during update: {0}", allErrors.First());
+                ViewData["ErrorMessage"] = $"There was an error during update: {allErrors.First()}";
                 if (viewModel.HierarchyName == HierarchyNames.Merchandise)
                 {
                     viewModel.SubTeamList = CreateSubTeamDropDown();
@@ -152,19 +165,20 @@ namespace Icon.Web.Controllers
             {
                 UpdatedHierarchyClass = hierarchyClass,
                 TaxAbbreviation = viewModel.TaxAbbreviation,
-                GlAccount = viewModel.GlAccount,
                 SubTeamHierarchyClassId = viewModel.SelectedSubTeam,
                 NonMerchandiseTrait = viewModel.NonMerchandiseTraitList.First(nm => nm.Value == viewModel.SelectedNonMerchandiseTrait.ToString()).Text,
-                ProhibitDiscount = viewModel.ProhibitDiscount ? "1" : String.Empty,
+                ProhibitDiscount = viewModel.ProhibitDiscount ? viewModel.ProhibitDiscount.ToString().ToLower() : string.Empty,
                 SubBrickCode = viewModel.SubBrickCode,
                 UserName = User.Identity.Name,
-                TaxRomance = viewModel.TaxRomance
+                TaxRomance = viewModel.TaxRomance,
+                ModifiedDateTimeUtc = DateTime.UtcNow.ToFormattedDateTimeString()
             };            
 
 			try
 			{
                 updateManager.Execute(manager);
-			}
+                this.cacheManager.ClearCacheForController("HierarchyClass");
+            }
 			catch (Exception exception)
 			{
                 var exceptionLogger = new ExceptionLogger(logger);
@@ -183,6 +197,7 @@ namespace Icon.Web.Controllers
 
 		// GET :  /HierarchyClass/Create
 		[HttpGet]
+        [WriteAccessAuthorize]
         public ActionResult Create(int? parentId, int hierarchyId)
 		{
 			if ((hierarchyId == 0 || hierarchyId < 1) || (parentId == null || parentId < 0))
@@ -231,7 +246,7 @@ namespace Icon.Web.Controllers
 
             if (!(viewModel.HierarchyName == HierarchyNames.Merchandise && viewModel.HierarchyLevel == HierarchyLevels.SubBrick))
             {
-                return RedirectToAction("Index", "Hierarchy", null);
+                return RedirectToAction("Index", "Hierarchy", new { SelectedHeirachyId = viewModel.HierarchyId });
             }
 
 			return View(viewModel);
@@ -243,12 +258,14 @@ namespace Icon.Web.Controllers
         [WriteAccessAuthorize]
         public ActionResult Create(HierarchyClassViewModel viewModel)
 		{
-			if (!ModelState.IsValid)
+            viewModel.SubTeamList = CreateSubTeamDropDown();
+
+            if (!ModelState.IsValid)
 			{
 				return View(viewModel);
 			}
 
-			HierarchyClass hierarchyClass = new HierarchyClass()
+            HierarchyClass hierarchyClass = new HierarchyClass()
 			{
 				hierarchyID = viewModel.HierarchyId,
 				hierarchyClassID = viewModel.HierarchyClassId,
@@ -260,7 +277,6 @@ namespace Icon.Web.Controllers
             AddHierarchyClassManager manager = new AddHierarchyClassManager
             {
                 NewHierarchyClass = hierarchyClass,
-                GlAccount = viewModel.GlAccount,
                 TaxAbbreviation = viewModel.TaxAbbreviation,
                 SubTeamHierarchyClassId = viewModel.SelectedSubTeam,
                 NonMerchandiseTrait = viewModel.NonMerchandiseTraitList.First(nm => nm.Value == viewModel.SelectedNonMerchandiseTrait.ToString()).Text,
@@ -270,7 +286,8 @@ namespace Icon.Web.Controllers
 			try
 			{
                 addManager.Execute(manager);
-			}
+                this.cacheManager.ClearCacheForController("HierarchyClass");
+            }
 			catch (Exception exception)
 			{
                 var exceptionLogger = new ExceptionLogger(logger);
@@ -281,11 +298,12 @@ namespace Icon.Web.Controllers
 			}
 
 			HierarchySearchViewModel hierarchySearchViewModel = new HierarchySearchViewModel { SelectedHierarchyId = viewModel.HierarchyId };
-			return RedirectToAction("Index", "Hierarchy", new { @HierarchySearchViewModel = hierarchySearchViewModel });
+			return RedirectToAction("Index", "Hierarchy", hierarchySearchViewModel);
 		}
         
         // GET: /HierarchyClass/Delete/{HierarchyClassID}
         [HttpGet]
+        [WriteAccessAuthorize]
         public ActionResult Delete(int hierarchyClassId)
 		{
 			if (hierarchyClassId < 1)
@@ -308,15 +326,13 @@ namespace Icon.Web.Controllers
                 HierarchyLevelName = HierarchyClassAccessor.GetHierarchyLevelName(hierarchyClass),
                 TaxAbbreviation = HierarchyClassAccessor.GetTaxAbbreviation(hierarchyClass),
                 TaxRomance = HierarchyClassAccessor.GetTaxRomance(hierarchyClass),
-                GlAccount = HierarchyClassAccessor.GetGlAccount(hierarchyClass),
                 SubTeam = HierarchyClassAccessor.GetSubTeam(hierarchyClass),
                 NonMerchandiseTrait = HierarchyClassAccessor.GetNonMerchandiseTrait(hierarchyClass)
 			};
 
             if (!String.IsNullOrEmpty(viewModel.SubTeam))
             {
-                var financialHierarchy = hierarchyQuery.Search(new GetHierarchyParameters { HierarchyName = "Financial" });
-                viewModel.SelectedSubTeam = financialHierarchy.Single().HierarchyClass.FirstOrDefault(hc => hc.hierarchyClassName == viewModel.SubTeam).hierarchyClassID;
+                viewModel.SelectedSubTeam = Int32.TryParse(viewModel.SubTeam, out int subTeamId) ? subTeamId : 0; // SubTeam now contains HierarchyClassID of the sub-team so should match SelectList Value
                 viewModel.SubTeamList = CreateSubTeamDropDown();
             }
 
@@ -329,7 +345,9 @@ namespace Icon.Web.Controllers
         [WriteAccessAuthorize]
         public ActionResult Delete(HierarchyClassViewModel viewModel)
 		{
-			if (!ModelState.IsValid)
+            viewModel.SubTeamList = CreateSubTeamDropDown();
+
+            if (!ModelState.IsValid)
 			{
 				return View(viewModel);
 			}
@@ -359,7 +377,8 @@ namespace Icon.Web.Controllers
 			try
 			{
 				deleteHierarchyClass.Execute(command);
-			}
+                this.cacheManager.ClearCacheForController("HierarchyClass");
+            }
 			catch (CommandException exception)
 			{
                 var exceptionLogger = new ExceptionLogger(logger);
@@ -368,14 +387,26 @@ namespace Icon.Web.Controllers
                 return View(viewModel);
 			}
 
-			HierarchySearchViewModel hierarchySearchViewModel = new HierarchySearchViewModel() { SelectedHierarchyId = viewModel.HierarchyId };
+            switch (viewModel.HierarchyId)
+            {
+                case Hierarchies.Brands:
+                    return RedirectToAction("Index", "Brand");
+                 case Hierarchies.Manufacturer:
+                    return RedirectToAction("Index", "Manufacturer");
+                case Hierarchies.Tax:
+                    return RedirectToAction("Index", "Hierarchy", new { SelectedHierarchyId = Hierarchies.Tax });
+            }
+            
+            HierarchySearchViewModel hierarchySearchViewModel = new HierarchySearchViewModel() { SelectedHierarchyId = viewModel.HierarchyId };
 
-			return RedirectToAction("Index", hierarchySearchViewModel);
-		}
+            return RedirectToAction("Index", "Hierarchy", hierarchySearchViewModel);
+        }
 
         public ActionResult ClearCache()
         {
-            clearHierarchyClassCacheCommandHandler.Execute(new ClearHierarchyClassCacheCommand());
+            this.cacheManager.ClearCacheForController("HierarchyClass");
+            this.cacheManager.ClearCacheForController("Hierarchy");
+            this.cacheManager.ClearCacheForController("Attribute");
             return View();
         }
 
@@ -390,5 +421,97 @@ namespace Icon.Web.Controllers
 
 			return subTeams.OrderBy(st => st.Text);
 		}
-	}
+
+        [HttpGet]
+        [DonutOutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "hierarchyId;columnFilters")]
+        public ActionResult ByHierarchyId(int hierarchyId, string columnFilters)
+        {
+            ContentResult result;
+          
+            var hierarchyClasses = getHierarchyClassesQueryHandler
+                .Search(new GetHierarchyClassesParameters
+                {
+                    HierarchyId = hierarchyId
+                })
+                .Select(s => new HierarchyClassViewModel(s));
+            
+            if (!string.IsNullOrWhiteSpace(columnFilters))
+                result = Content(JsonConvert.SerializeObject(hierarchyClasses.ShapeData(columnFilters)), "application/json");
+            else
+                 result = Content(JsonConvert.SerializeObject(hierarchyClasses), "application/json");
+
+            return result;
+        }
+
+        
+
+        [HttpGet]
+        public ActionResult ByHierarchyName(string hierarchyName)
+        {
+            var hierarchies = hierarchyQuery.Search(new GetHierarchyParameters {HierarchyName = hierarchyName});
+
+            return this.ComboDataSource(hierarchies.First().hierarchyID);
+        }
+
+        /// <summary>
+        /// This method returns a list of hierarchies based on the query parameters hierarchyId, filter and inititalSelection.
+        /// Filter must be passed and this method is designed to work with the infragistics comboBox.
+        /// This method can be called with a filter or it can be called with inititalSelection which is 
+        /// a single hierarchyClassId that you want the hierarchy returned for. This exists because
+        /// when you load a combobox in edit mode you want to load the existing selected record but you 
+        /// don't want to load all of the records. Passing inititalSelection will return that single record.
+        /// Otherwise when searching you must pass the filter which is an OData statment that we parse the contains clause
+        /// from.
+        /// </summary>
+        /// <param name="hierarchyId"></param>
+        /// <returns></returns>
+        public ActionResult ComboDataSource(int hierarchyId)
+        {
+            string hierarchyLineageFilter = null;
+            int? hierarchyClassIdFilter = null;
+            string filter = this.Request.QueryString["$filter"];
+
+            // we are filtering from a combobox search request with the format indexof(tolower(HierarchyLineage),'test') ge 0
+            if (filter != null)
+            {
+                Regex hierarchyClassNameFilterRegex = new Regex(@"^(indexof\(tolower\(HierarchyLineage\),')(.*)('\) ge 0)$");
+
+                if (hierarchyClassNameFilterRegex.IsMatch(filter))
+                {
+                    string query = filter
+                        .Replace("indexof(tolower(HierarchyLineage),'", "")
+                        .Replace("') ge 0", "")
+                        .Trim();
+                    hierarchyLineageFilter = query;
+                }
+            }
+            else
+            {
+                // we are only going to return the single hierarchy node that was passed in inititalSelection
+                hierarchyClassIdFilter = Convert.ToInt32(this.Request.QueryString["initialSelection"]);
+            }
+
+
+            if (string.IsNullOrWhiteSpace(hierarchyLineageFilter) && hierarchyClassIdFilter == null)
+            {
+                // if the request is missing a filter and inititalSelection was also not passed return nothing instead of everything
+                return Content(JsonConvert.SerializeObject(new List<HierarchyClassModel>() { }), "application/json");
+            }
+            else if (!string.IsNullOrWhiteSpace(hierarchyLineageFilter) && hierarchyLineageFilter.Length < 2)
+            {
+                // if the request is less than 2 characters don't return anything yet. This is to help with searching performance.
+                return Content(JsonConvert.SerializeObject(new List<HierarchyClassModel>() { }), "application/json");
+            }
+            else
+            {
+                var hierarchyClasses = getHierarchyClassesQueryHandler.Search(new GetHierarchyClassesParameters
+                {
+                    HierarchyId = hierarchyId,
+                    HierarchyLineageFilter = hierarchyLineageFilter,
+                    HierarchyClassId = hierarchyClassIdFilter
+                });
+                return Content(JsonConvert.SerializeObject(hierarchyClasses), "application/json");
+            }
+        }
+    }    
 }

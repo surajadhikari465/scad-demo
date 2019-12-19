@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B6438EFE-01FF-4966-AA95-A566CD05E48D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OOS.Model.UnitTests</RootNamespace>
+    <AssemblyName>OOS.Model.UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|AnyCPU'">
+    <OutputPath>bin\QA\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AaronPowell.Dynamics, Version=0.1.0.40373, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AaronPowell.Dynamics\AaronPowell.Dynamics.dll</HintPath>
+    </Reference>
+    <Reference Include="Magnum.TestFramework">
+      <HintPath>..\packages\MassTransit.TestFramework.2.7.0\lib\net40\Magnum.TestFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="MassTransit, Version=2.7.2.0, Culture=neutral, PublicKeyToken=b8e0e9f2f1e657fa, processorArchitecture=MSIL" />
+    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.5.9.10348\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.mocks">
+      <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="pnunit.framework">
+      <HintPath>..\packages\NUnit.2.5.10.11092\lib\pnunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\packages\RhinoMocks.3.6\lib\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap">
+      <HintPath>..\packages\structuremap.2.6.3\lib\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Given_a_product_status_to_known_upload_command_mapper.cs" />
+    <Compile Include="When_upload_known_upload_command_is_created_by_product_status_in_one_vendor_region.cs" />
+    <Compile Include="CustomReportRepositoryTests.cs" />
+    <Compile Include="Given_a_known_upload.cs" />
+    <Compile Include="Given_a_known_upload_to_be_translated_to_product_status.cs" />
+    <Compile Include="KnownUploadRepositoryTests.cs" />
+    <Compile Include="KnownUploadServiceTests.cs" />
+    <Compile Include="MockConfigurator.cs" />
+    <Compile Include="MockLogService.cs" />
+    <Compile Include="OffShelfScanTests.cs" />
+    <Compile Include="OffShelfUploadRepositoryTests.cs" />
+    <Compile Include="OffShelfUploadTests.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="SageStoreFeedStringDecoderTests.cs" />
+    <Compile Include="OOSCountSummaryTests.cs" />
+    <Compile Include="ProductChecksumSpecificationTests.cs" />
+    <Compile Include="ProductRepositoryTests.cs" />
+    <Compile Include="RegionSummaryRepositoryTests.cs" />
+    <Compile Include="RegionRepositoryTests.cs" />
+    <Compile Include="RetailItemRepositoryTests.cs" />
+    <Compile Include="ScanOutOfStockItemServiceTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SkuCountRepositoryTests.cs" />
+    <Compile Include="StoreDataDisposerTests.cs" />
+    <Compile Include="StoreFeedConsumerServiceTests.cs" />
+    <Compile Include="StoreFeedConsumerTests.cs" />
+    <Compile Include="StoreRepositoryTests.cs" />
+    <Compile Include="StoreSKUUpdaterTests.cs" />
+    <Compile Include="StoreSummaryRepositoryTests.cs" />
+    <Compile Include="SummarySpecificationTests.cs" />
+    <Compile Include="InclusiveTimeZoneEndDateSpecificationTests.cs" />
+    <Compile Include="UploadMessageTests.cs" />
+    <Compile Include="ValidUPCTests.cs" />
+    <Compile Include="UPCValidationServiceTests.cs" />
+    <Compile Include="When_a_known_upload_has_no_item_data.cs" />
+    <Compile Include="When_a_known_upload_has_no_region_vendor_map.cs" />
+    <Compile Include="When_a_known_upload_has_one_region_vendor_map_and_one_item_data.cs" />
+    <Compile Include="When_a_known_upload_has_two_region_vendor_map_and_one_item_data.cs" />
+    <Compile Include="When_uploading_a_already_uploaded_known_upload.cs" />
+    <Compile Include="When_uploading_a_non_uploaded_known_upload.cs" />
+    <Compile Include="When_upload_known_upload_command_is_created_by_product_status_in_two_vendor_regions.cs" />
+    <Compile Include="When_upload_known_upload_command_is_created_by_product_status_with_emtpy_region.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OOS.Model\OOS.Model.csproj">
+      <Project>{42EEB29B-E7F5-43DE-A7AE-617BE3DDAD97}</Project>
+      <Name>OOS.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OOSCommon\OOSCommon.csproj">
+      <Project>{554DAF29-3CED-47BA-9FA8-9F87317FAD84}</Project>
+      <Name>OOSCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OutOfStock.Messages\OutOfStock.Messages.csproj">
+      <Project>{977EC94D-A5B4-4049-9EF0-E5E51E271E5E}</Project>
+      <Name>OutOfStock.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedKernel\SharedKernel.csproj">
+      <Project>{C28D2FC7-81B5-40BB-B343-1DD84A1A5CE6}</Project>
+      <Name>SharedKernel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\upload.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="SageStoreFeed.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

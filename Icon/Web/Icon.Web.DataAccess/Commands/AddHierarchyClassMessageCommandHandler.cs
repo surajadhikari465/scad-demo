@@ -1,11 +1,7 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Web.DataAccess.Infrastructure;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Web.DataAccess.Commands
 {
@@ -26,8 +22,8 @@ namespace Icon.Web.DataAccess.Commands
                 return;
             }
 
-            // The Browsing hierarchy isn't supported by R10, so don't generate a message for those changes.
-            if (data.HierarchyClass.hierarchyID == Hierarchies.Browsing)
+            // The Browsing  and tax hierarchy isn't supported by R10, so don't generate a message for those changes.
+            if (data.HierarchyClass.hierarchyID == Hierarchies.Browsing || data.HierarchyClass.hierarchyID == Hierarchies.Tax)
             {
                 return;
             }
@@ -65,6 +61,8 @@ namespace Icon.Web.DataAccess.Commands
 
             message.InProcessBy = null;
             message.ProcessedDate = null;
+
+            message.NationalClassCode = data.NationalClassCode;
 
             context.MessageQueueHierarchy.Add(message);
             context.SaveChanges();

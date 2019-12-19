@@ -1,5 +1,4 @@
 ﻿using Icon.Framework;
-using System;
 using Icon.Web.Mvc.Models;
 
 namespace Icon.Web.Tests.Common.Builders

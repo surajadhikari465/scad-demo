@@ -1,0 +1,246 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A442AF9A-672C-43D6-9F3D-7F561BC8DE0B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WFM.Mobile.OOS</RootNamespace>
+    <AssemblyName>WFM.Mobile.OOS</AssemblyName>
+    <ProjectTypeGuids>{4D628B5B-2FBC-4AA6-8C16-197242AEB884};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PlatformFamilyName>PocketPC</PlatformFamilyName>
+    <PlatformID>b2c48bd2-963d-4549-9169-1fa021dce484</PlatformID>
+    <OSVersion>5.2</OSVersion>
+    <DeployDirSuffix>WFM.Mobile.OOS</DeployDirSuffix>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <NativePlatformName>Windows Mobile 6 Professional SDK</NativePlatformName>
+    <FormFactorID>
+    </FormFactorID>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;$(PlatformFamilyName)</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <FileAlignment>512</FileAlignment>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;$(PlatformFamilyName)</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <FileAlignment>512</FileAlignment>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WholeFoods.Mobile.Interop.Scanner, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Global.cs" />
+    <Compile Include="OOSSettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SavedItem.cs" />
+    <Compile Include="ScanUPCs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScanUPCs.Designer.cs">
+      <DependentUpon>ScanUPCs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Splash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Splash.Designer.cs">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\OOSBiztalk\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\OOSService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ScanUPCs.resx">
+      <DependentUpon>ScanUPCs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Splash.resx">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="images\accept.png" />
+    <Content Include="images\accept_wheat.png" />
+    <Content Include="images\cancel.png" />
+    <Content Include="images\cancel_wheat.png" />
+    <Content Include="images\OOSLogo.png" />
+    <Content Include="references\WholeFoods.Mobile.Interop.Scanner.dll" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync.disco" />
+    <None Include="Web References\OOSService\ScanOutOfStock.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://BTINTERNAL.WHOLEFOODS.COM/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc">
+      <UrlBehavior>Static</UrlBehavior>
+      <RelPath>Web References\OOSBiztalk\</RelPath>
+      <UpdateFromURL>http://BTINTERNAL.WHOLEFOODS.COM/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>
+      </CachedAppSettingsObjectName>
+      <CachedSettingsPropName>
+      </CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://oosappprd/WebService/ScanOutOfStock.svc">
+      <UrlBehavior>Static</UrlBehavior>
+      <RelPath>Web References\OOSService\</RelPath>
+      <UpdateFromURL>http://oosappprd/WebService/ScanOutOfStock.svc</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>
+      </CachedAppSettingsObjectName>
+      <CachedSettingsPropName>
+      </CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BackupManager.cs" />
+    <Compile Include="SavedItemList.cs" />
+    <None Include="Web References\OOSBiztalk\BizTalkServiceInstance.wsdl" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync0.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync1.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync10.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync11.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync12.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync13.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync14.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync15.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync16.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync17.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync18.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync19.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync2.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync20.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync21.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync3.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync4.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync5.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync6.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync7.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync8.xsd" />
+    <None Include="Web References\OOSBiztalk\BTS_OOS_Orch_ScanProduct_ScanProductAsync9.xsd" />
+    <None Include="Web References\OOSBiztalk\CreateEventForResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\OOSBiztalk\CreateEventsForResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\OOSBiztalk\PingResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\OOSBiztalk\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\OOSBiztalk\RegionAbbreviationsResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\OOSBiztalk\RegionNamesResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\OOSBiztalk\ScanProductsByStoreAbbreviationResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\OOSBiztalk\ScanProductsResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\OOSBiztalk\StoreAbbreviationsForResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\OOSBiztalk\StoreNamesForResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\OOSBiztalk\ValidateForResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\OOSBiztalk\ValidateResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\OOSService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\OOSService\ScanOutOfStock.wsdl" />
+    <None Include="Web References\OOSService\ScanOutOfStock.xsd" />
+    <None Include="Web References\OOSService\ScanOutOfStock0.xsd" />
+    <None Include="Web References\OOSService\ScanOutOfStock1.xsd" />
+    <None Include="Web References\OOSService\ScanOutOfStock2.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="controls\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CompactFramework.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}">
+        <HostingProcess disable="1" />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>echo deploy.bat 1.0.0.70 "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

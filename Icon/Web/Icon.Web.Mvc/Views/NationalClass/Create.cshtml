@@ -1,6 +1,4 @@
-﻿@using Infragistics.Web.Mvc
-@using Icon.Framework
-@model Icon.Web.Mvc.Models.NationalClassViewModel 
+﻿@model Icon.Web.Mvc.Models.NationalClassViewModel
 
 @{
     ViewBag.Title = "New National Class";
@@ -17,43 +15,32 @@
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
 
-        @Html.HiddenFor(model => model.HierarchyParentClassId )
+        @Html.HiddenFor(model => model.HierarchyParentClassId)
         @Html.HiddenFor(model => model.HierarchyParentClassName)
         @Html.HiddenFor(model => model.HierarchyLevel)
         @Html.HiddenFor(model => model.HierarchyId)
-        
-        <fieldset>
-            <legend>Create National Class</legend>
 
-            <div class="row">
-                @Html.LabelFor(model => model.HierarchyParentClassName, new { @class = "col-md-2 form-label" })
-                <div>
-                    @Html.TextBoxFor(model => model.HierarchyParentClassName, new { @disabled = "disabled", @class = "col-md-6 form-input" })
-                </div>
+        <fieldset>
+            <legend>Add National Class</legend>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.HierarchyParentClassName, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.HierarchyParentClassName, new { @disabled = "disabled", @class = "form-control form-input" })
             </div>
-            <div class="row">
-                @Html.LabelFor(model => model.HierarchyClassName, new { @class = "col-md-2 form-label" })
-                <div>
-                    @Html.TextBoxFor(model => model.HierarchyClassName, new { @class = "col-md-6 form-input" })
-                    @Html.ValidationMessageFor(model => model.HierarchyClassName, null, new { @class = "col-md-6 form-property-val" })
-                </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.HierarchyClassName, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.HierarchyClassName, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.HierarchyClassName, null, new { @class = "form-property-val" })
             </div>
-            @if (Model.HierarchyLevel == HierarchyLevels.NationalClass)
-            {
-                <div class="row">
-                    @Html.LabelFor(model => model.NationalClassCode, new { @class = "col-md-2 form-label" })
-                    <div>
-                        @Html.TextBoxFor(model => model.NationalClassCode, new { @class = "col-md-6 form-input" })
-                        @Html.ValidationMessageFor(model => model.NationalClassCode, null, new { @class = "col-md-6 form-property-val" })
-                    </div>
-                </div>
-            }     
+            <div class="form-group">
+                @Html.LabelFor(model => model.NationalClassCode, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.NationalClassCode, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.NationalClassCode, null, new { @class = "form-property-val" })
+            </div>
         </fieldset>
 
-        <div class="row">
-            <div class="col-md-offset-2 col-md-1">
-                <input type="submit" id="create-button" value="Create" class="btn btn-default form-submit" />
-            </div>
+        <div class="form-group">
+            <input type="submit" id="create-button" value="Create" class="btn btn-light form-submit" />
         </div>
 
         <div class="validation-section page-subsection">
@@ -71,3 +58,12 @@
 <div class="form-footer">
     @Html.ActionLink("National Class Management", "Index")
 </div>
+
+<div id="divBlock" class="block" style="display: none;">
+    <div class="block-message">
+        <img src="\Content\Infragistics\css\structure\images\igLoadingSmall.gif" style="max-width: 35px; max-height: 35px; margin: 25px 0 0 10px;" />
+        <label class="block-label">Please wait... <br /> &nbsp Processing request...</label>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/National/national-create-edit.js")

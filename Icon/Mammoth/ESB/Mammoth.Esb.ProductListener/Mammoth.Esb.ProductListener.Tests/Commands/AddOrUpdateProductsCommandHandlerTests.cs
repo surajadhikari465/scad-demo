@@ -15,6 +15,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
     public class AddOrUpdateProductsCommandHandlerTests
     {
         private AddOrUpdateProductsCommandHandler commandHandler;
+		private DeleteProductsExtendedAttributesCommandHandler commandDeleteHandler;
         private SqlDbProvider dbProvider;
         private int testClassHCID = 8000003;
         private int testSubBrickHCID = 9000004;
@@ -30,7 +31,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             dbProvider.Transaction = dbProvider.Connection.BeginTransaction();
 
             commandHandler = new AddOrUpdateProductsCommandHandler(dbProvider);
-
+			commandDeleteHandler = new DeleteProductsExtendedAttributesCommandHandler(dbProvider);
             InsertNationalAndMerchandiseHierarchiesForTest();
         }
 
@@ -273,6 +274,28 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             AssertExtendedAttributesAsExpected(itemModel.ExtendedAttributes, extAttributes);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(SqlException), "Cannot insert duplicate key row in object 'dbo.Items' with unique index 'IX_Items_ScanCode'. The duplicate key value is (12345).")]
+        public void AddOrUpdateProducts_ProductWithScanCodeAlreadyExist_ShouldThrowException()
+        {
+            //Given
+            var itemId = 20000002;
+            var itemModel = CreateItemModelForAttributeTest(itemId);
+
+            var commandData = new AddOrUpdateProductsCommand
+            {
+                Items = new List<ItemModel>
+                    {
+                        itemModel
+                    }
+            };
+
+            //When
+            commandHandler.Execute(commandData);
+            itemModel.GlobalAttributes.ItemID = 20000003;
+            commandHandler.Execute(commandData);
+        }
+
 		[TestMethod]
         public void AddOrUpdateProducts_ProductDoesntExist_ShouldAddProductWith5NutritionElementSetToZero()
         {
@@ -311,6 +334,44 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
 
             var extAttributes = ReadExtendedAttributesDynamic(itemId);
             AssertExtendedAttributesAsExpected(itemModel.ExtendedAttributes, extAttributes);
+        }
+
+		[TestMethod]
+		public void AddOrUpdateProducts_ProductDoesntExist_ShouldAddProductWithoutInvalidExtendedAttribute()
+        {
+            //Given
+            var itemId = 20000001;
+            var itemModel = CreateItemModelForAttributeTest(itemId);
+			itemModel.ExtendedAttributes.Traits.Add("zzz", "Missing Mammoth Attribute Code");
+            var commandData = new AddOrUpdateProductsCommand
+            {
+                Items = new List<ItemModel>
+                    {
+                        itemModel
+                    }
+            };
+
+            //When
+            commandHandler.Execute(commandData);
+
+			//Then
+            var globalAttributes = ReadItemAttributesDynamic(itemId);
+            AssertGlobalAttributesAsExpected(itemModel.GlobalAttributes, globalAttributes);
+            
+            var kitAttributes = ReadKitAttributesDynamic(itemId);
+            AssertKitAttributesAsExpected(itemModel.KitItemAttributes, kitAttributes);
+
+            var signAttributes = ReadSignAttributesDynamic(itemId);
+            AssertSignAttributesAsExpected(itemModel.SignAttributes, signAttributes);
+
+            var nutritionAttributes = ReadNutritionAttributesDynamic(itemId);
+            AssertNutritionAttributesAsExpected(itemModel.NutritionAttributes, nutritionAttributes);
+
+            var extAttributes = ReadExtendedAttributesDynamic(itemId);
+            AssertExtendedAttributesAsExpected(itemModel.ExtendedAttributes, extAttributes);
+
+			Assert.IsNull(extAttributes.FirstOrDefault(x => x.AttributeValue == itemModel.ExtendedAttributes.Traits.Last().Value));
+			Assert.AreEqual(1, itemModel.ExtendedAttributes.Traits.Count - extAttributes.Count);
         }
 
 		[TestMethod]
@@ -357,12 +418,31 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             InsertSimulatedPreExistingItemIntoDatabase(itemId);
             var itemModel = CreateItemModelForAttributeTest(itemId);
             itemModel.ExtendedAttributes = new ExtendedAttributesModel { ItemId = 20000000 };
+			var itemList = new List<ItemModel> { itemModel };
+
+            //When
+            commandHandler.Execute(new AddOrUpdateProductsCommand { Items = itemList });
+			commandDeleteHandler.Execute(new DeleteProductsExtendedAttributesCommand(){ Items = itemList });
+
+            //Then
+            var extAttributes = ReadExtendedAttributesDynamic(itemId);
+            Assert.AreEqual(0, extAttributes.Count);
+        }
+
+		[TestMethod]
+        public void AddOrUpdateProducts_TryAddInvalidExtendedAttributes_DeleteExistingExtendedAttributesAndReturnWarningExtendedAttributeNotAdded()
+        {
+            //Given
+            var itemId = 20000002;
+            InsertSimulatedPreExistingItemIntoDatabase(itemId);
+            var itemModel = CreateItemModelForAttributeTest(itemId);
+
             var commandData = new AddOrUpdateProductsCommand
             {
                 Items = new List<ItemModel>
-                    {
-                        itemModel
-                    }
+                {
+                    itemModel
+                }
             };
 
             //When
@@ -370,7 +450,16 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
 
             //Then
             var extAttributes = ReadExtendedAttributesDynamic(itemId);
+            Assert.AreEqual(11, extAttributes.Count);
+
+            //When
+            itemModel.ExtendedAttributes = new ExtendedAttributesModel { ItemId = itemId, Traits = new Dictionary<string, string>{{"XYZ", "Dummy Value"}}};
+            commandData.Items = new List<ItemModel>{ itemModel };
+            commandHandler.Execute(commandData);
+            //Then
+            extAttributes = ReadExtendedAttributesDynamic(itemId);
             Assert.AreEqual(0, extAttributes.Count);
+            Assert.IsTrue("ItemID: 20000002 <Code: XYZ (Dummy Value)>" == commandData.TraitCodeWarning);
         }
 
         [TestMethod]
@@ -468,6 +557,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             //Given
             var itemModel1 = CreateItemModelForAttributeTest(999999999);
             var itemModel2 = CreateItemModelForAttributeTest(999999998);
+            itemModel2.GlobalAttributes.ScanCode = "123456";
             itemModel2.NutritionAttributes = null;
 
             var commandData = new AddOrUpdateProductsCommand
@@ -684,17 +774,20 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                 ExtendedAttributes = new ExtendedAttributesModel
                 {
                     ItemId = itemId,
-                    FairTradeCertified = "Test FairTradeCertified",
-                    FlexibleText = "Test FlexibleText",
-                    GlobalPricingProgram = "GlobalPricingProgram",
-                    MadeWithBiodynamicGrapes = "Test MadeWithBiodynamicGrapes",
-                    MadeWithOrganicGrapes = "Test MadeWithOrganicGrapes",
-                    NutritionRequired = "Test NutritionRequired",
-                    PrimeBeef = "Test PrimeBeef",
-                    RainforestAlliance = "Test RainforestAlliance",
-                    RefrigeratedOrShelfStable = "Test RefrigeratedOrShelfStable",
-                    SmithsonianBirdFriendly = "Test SmithsonianBirdFriendly",
-                    Wic = "Test Wic"
+					Traits = new Dictionary<string, string>()
+						{ 
+							{ Attributes.Codes.FairTradeCertified.ToString(), "Test FairTradeCertified" },
+							{ Attributes.Codes.FlexibleText.ToString(), "Test FlexibleText" },
+							{ Attributes.Codes.GlobalPricingProgram.ToString(), "GlobalPricingProgram" },
+							{ Attributes.Codes.MadeWithBiodynamicGrapes.ToString(), "Test MadeWithBiodynamicGrapes" },
+							{ Attributes.Codes.MadeWithOrganicGrapes.ToString(), "Test MadeWithOrganicGrapes" },
+							{ Attributes.Codes.NutritionRequired.ToString(), "Test NutritionRequired" },
+							{ Attributes.Codes.PrimeBeef.ToString(), "Test PrimeBeef" },
+							{ Attributes.Codes.RainforestAlliance.ToString(), "Test RainforestAlliance" },
+							{ Attributes.Codes.RefrigeratedOrShelfStable.ToString(), "Test RefrigeratedOrShelfStable" },
+							{ Attributes.Codes.SmithsonianBirdFriendly.ToString(), "Test SmithsonianBirdFriendly" },
+							{ Attributes.Codes.Wic.ToString(), "Test Wic" },
+						}
                 },
                 KitItemAttributes = includeHospitalityData ?  new KitItemAttributesModel
                 {
@@ -727,7 +820,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
         {
             #region global attributes
             const int itemTypeID = 1;
-            const string scanCode = "1234";
+            const string scanCode = "12345";
             const int hierarchyMerchandiseID = 1;
             const int hierarchyNationalClassID = 1;
             const int brandHCID = 1;
@@ -1132,39 +1225,39 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             ExtendedAttributesModel expectedExtendedAttributes,
             IEnumerable<dynamic> actualItemAttributes_ExtRows)
         {
-            Assert.AreEqual(
-                expectedExtendedAttributes.FairTradeCertified,
-                actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.FairTradeCertified).AttributeValue);
-            Assert.AreEqual(
-                expectedExtendedAttributes.FlexibleText,
-                actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.FlexibleText).AttributeValue);
-            Assert.AreEqual(
-                expectedExtendedAttributes.GlobalPricingProgram,
-                actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.GlobalPricingProgram).AttributeValue);
-            Assert.AreEqual(
-                expectedExtendedAttributes.MadeWithBiodynamicGrapes,
-                actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.MadeWithBiodynamicGrapes).AttributeValue);
-            Assert.AreEqual(
-                expectedExtendedAttributes.MadeWithOrganicGrapes,
-                actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.MadeWithOrganicGrapes).AttributeValue);
-            Assert.AreEqual(
-                expectedExtendedAttributes.NutritionRequired,
-                actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.NutritionRequired).AttributeValue);
-            Assert.AreEqual(
-                expectedExtendedAttributes.PrimeBeef,
-                actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.PrimeBeef).AttributeValue);
-            Assert.AreEqual(
-                expectedExtendedAttributes.RainforestAlliance,
-                actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.RainforestAlliance).AttributeValue);
-            Assert.AreEqual(
-                expectedExtendedAttributes.RefrigeratedOrShelfStable,
-                actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.RefrigeratedOrShelfStable).AttributeValue);
-            Assert.AreEqual(
-                expectedExtendedAttributes.SmithsonianBirdFriendly,
-                actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.SmithsonianBirdFriendly).AttributeValue);
-            Assert.AreEqual(
-                expectedExtendedAttributes.Wic,
-                actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.Wic).AttributeValue);
-        }
+			Assert.AreEqual(
+			   expectedExtendedAttributes.Traits[Attributes.Codes.FairTradeCertified],
+			   actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.FairTradeCertified).AttributeValue);
+			Assert.AreEqual(
+				expectedExtendedAttributes.Traits[Attributes.Codes.FlexibleText],
+				actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.FlexibleText).AttributeValue);
+			Assert.AreEqual(
+				expectedExtendedAttributes.Traits[Attributes.Codes.GlobalPricingProgram],
+				actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.GlobalPricingProgram).AttributeValue);
+			Assert.AreEqual(
+				expectedExtendedAttributes.Traits[Attributes.Codes.MadeWithBiodynamicGrapes],
+				actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.MadeWithBiodynamicGrapes).AttributeValue);
+			Assert.AreEqual(
+				expectedExtendedAttributes.Traits[Attributes.Codes.MadeWithOrganicGrapes],
+				actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.MadeWithOrganicGrapes).AttributeValue);
+			Assert.AreEqual(
+				expectedExtendedAttributes.Traits[Attributes.Codes.NutritionRequired],
+				actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.NutritionRequired).AttributeValue);
+			Assert.AreEqual(
+				expectedExtendedAttributes.Traits[Attributes.Codes.PrimeBeef],
+				actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.PrimeBeef).AttributeValue);
+			Assert.AreEqual(
+				expectedExtendedAttributes.Traits[Attributes.Codes.RainforestAlliance],
+				actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.RainforestAlliance).AttributeValue);
+			Assert.AreEqual(
+				expectedExtendedAttributes.Traits[Attributes.Codes.RefrigeratedOrShelfStable],
+				actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.RefrigeratedOrShelfStable).AttributeValue);
+			Assert.AreEqual(
+				expectedExtendedAttributes.Traits[Attributes.Codes.SmithsonianBirdFriendly],
+				actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.SmithsonianBirdFriendly).AttributeValue);
+			Assert.AreEqual(
+				expectedExtendedAttributes.Traits[Attributes.Codes.Wic],
+				actualItemAttributes_ExtRows.Single(ea => ea.AttributeID == Attributes.Wic).AttributeValue);
+		}
     }
 }

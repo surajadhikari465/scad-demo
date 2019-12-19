@@ -20,10 +20,12 @@
 	[ZipCode]				 NVARCHAR(255)  NULL,
 	[Designation]			 NVARCHAR(255)  NULL,
 	[Locality]				 NVARCHAR(255)  NULL,
+    [ParentCompany]          NVARCHAR(255)  NULL,
 
+    [ArCustomerId] NVARCHAR(255) NULL, 
     CONSTRAINT [PK_MessageQueueHierarchy] PRIMARY KEY CLUSTERED ([MessageQueueId] ASC) WITH (FILLFACTOR = 80),
     CONSTRAINT [FK_MessageQueueHierarchy_MessageActionId] FOREIGN KEY ([MessageActionId]) REFERENCES [app].[MessageAction] ([MessageActionId]),
     CONSTRAINT [FK_MessageQueueHierarchy_MessageHistoryId] FOREIGN KEY ([MessageHistoryId]) REFERENCES [app].[MessageHistory] ([MessageHistoryId]) ON DELETE CASCADE,
     CONSTRAINT [FK_MessageQueueHierarchy_MessageStatusId] FOREIGN KEY ([MessageStatusId]) REFERENCES [app].[MessageStatus] ([MessageStatusId]),
-    CONSTRAINT [FK_MessageQueueHierarchy_MessageTypeId] FOREIGN KEY ([MessageTypeId]) REFERENCES [app].[MessageType] ([MessageTypeId])
+    CONSTRAINT [FK_MessageQueueHierarchy_MessageTypeId] FOREIGN KEY ([MessageTypeId]) REFERENCES [app].[MessageType] ([MessageTypeId]),	
 );

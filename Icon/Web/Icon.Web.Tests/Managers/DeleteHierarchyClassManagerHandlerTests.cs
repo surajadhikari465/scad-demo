@@ -1,22 +1,16 @@
 ﻿using AutoMapper;
 using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.Mvc.App_Start;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Unit.ManagerHandlers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class DeleteHierarchyClassManagerHandlerTests
     {
         private DeleteHierarchyClassManagerHandler managerHandler;
@@ -25,15 +19,15 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         private IconContext context;
         private Mock<ICommandHandler<DeleteHierarchyClassCommand>> deleteHierarchyClassHandler;
         private Mock<ICommandHandler<AddHierarchyClassMessageCommand>> addHierarchyClassMessageHandler;
-        private Mock<ICommandHandler<RemoveHierarchyClassFromIrmaItemsCommand>> removeHierarchyClassFromIrmaItemsCommandHandler;
-        
+        private IMapper mapper;
+
         [TestInitialize]
         public void Initialize()
         {
             context = new IconContext();
+            mapper = AutoMapperWebConfiguration.Configure();
             deleteHierarchyClassHandler = new Mock<ICommandHandler<DeleteHierarchyClassCommand>>();
             addHierarchyClassMessageHandler = new Mock<ICommandHandler<AddHierarchyClassMessageCommand>>();
-            removeHierarchyClassFromIrmaItemsCommandHandler = new Mock<ICommandHandler<RemoveHierarchyClassFromIrmaItemsCommand>>();
             
             manager = new DeleteHierarchyClassManager
                 {
@@ -48,16 +42,13 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
             managerHandler = new DeleteHierarchyClassManagerHandler(context,
                 deleteHierarchyClassHandler.Object,
                 addHierarchyClassMessageHandler.Object,
-                removeHierarchyClassFromIrmaItemsCommandHandler.Object);
-
-            AutoMapperWebConfiguration.Configure();
+                mapper);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
             context.Dispose();
-            Mapper.Reset();
         }
 
         [TestMethod]
@@ -77,9 +68,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
                 c.HierarchyClass.hierarchyID == manager.DeletedHierarchyClass.hierarchyID &&
                 c.ClassNameChange &&
                 c.DeleteMessage)));
-            removeHierarchyClassFromIrmaItemsCommandHandler.Verify(cm => cm.Execute(It.Is<RemoveHierarchyClassFromIrmaItemsCommand>(c =>
-                c.HierarchyClassId == manager.DeletedHierarchyClass.hierarchyClassID &&
-                c.HierarchyId == manager.DeletedHierarchyClass.hierarchyID)));
         }
 
         [TestMethod]

@@ -1,30 +1,30 @@
 ﻿@using Infragistics.Web.Mvc
+@using Icon.Web.Mvc.Utility
 @model Icon.Web.Mvc.Models.BrandViewModel
 
 @{
-  ViewBag.Title = "Index";
-  Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+@{Html.RenderPartial("_HeaderPartial", "Brands");}
 
-@(Html.Infragistics().Loader()
-        .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-        .CssPath(Url.Content("~/Content/Infragistics/css/"))
-        .Render()
-)
+<style>
+    #divLinks {
+        display: flex;
+        align-items: center;
+    }
+</style>
 
-@{Html.RenderPartial("_HeaderPartial", "Brand Management");}
+<div id="brands" class="page-section">
 
-
-  <div class="page-subsection">@Html.ActionLink("Add New Brand", "Create")</div>
-
-  <hr />
-
-  <div id="brands" class="page-section">
-
-    @Html.ActionLink("Export All Brands", "Export", "Brand", null, new { @class = "btn btn-default form-submit" })
-
+    <div id="divLinks">
+        @Html.ActionLink("Export All Brands", "Export", "Brand", null, new { @class = "btn btn-light" })
+        @if (ViewHelpers.HasWriteAccess(Request, User))
+        {
+            <span style="margin-left: 10px">@Html.ActionLink("Add New Brand", "Create")</span>
+        }
+    </div>
     <hr />
 
     @(Html.Infragistics().Grid<Icon.Web.Mvc.Models.BrandViewModel>()
@@ -33,12 +33,10 @@
             .AvgRowHeight("25px")
             .Height("700px")
             .Width("100%")
-            .RowVirtualization(true)
-            .VirtualizationMode(VirtualizationMode.Fixed)
             .AutoGenerateColumns(false)
             .Columns(columns =>
             {
-              columns.For(c => c.HierarchyClassId).HeaderText("Brand ID").DataType("int").Width("10%");
+              columns.For(c => c.HierarchyClassId).HeaderText("Brand ID").DataType("number").Width("10%");
               columns.For(c => c.BrandName).HeaderText("Brand Name").DataType("string").Width("25%");
               columns.For(c => c.BrandAbbreviation).HeaderText("Brand Abbreviation").DataType("string").Width("15%");
               columns.For(c => c.Designation).HeaderText("Designation").DataType("string").Width("10%");
@@ -61,9 +59,9 @@
 
     <div class="search-alert page-subsection"></div>
 
-  </div>
+</div>
 
-  @section scripts
+@section scripts
 {
     @Scripts.Render("~/Scripts/jquery.fileDownload.js")
-  }
+}

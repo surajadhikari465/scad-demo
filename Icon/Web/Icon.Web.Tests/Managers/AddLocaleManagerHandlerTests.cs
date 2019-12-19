@@ -3,7 +3,6 @@ using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.App_Start;
@@ -21,6 +20,7 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         private AddLocaleManager manager;
 
         private IconContext context;
+        private IMapper mapper;
         private Mock<ICommandHandler<AddLocaleCommand>> addLocaleCommandHandler;
         private Mock<ICommandHandler<AddAddressCommand>> addAddressCommandHandler;
         private Mock<ICommandHandler<AddLocaleMessageCommand>> addLocaleMessageCommandHandler;
@@ -31,6 +31,7 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         public void Initialize()
         {
             context = new IconContext();
+            mapper = AutoMapperWebConfiguration.Configure();
             addLocaleCommandHandler = new Mock<ICommandHandler<AddLocaleCommand>>();
             addAddressCommandHandler = new Mock<ICommandHandler<AddAddressCommand>>();
             addLocaleMessageCommandHandler = new Mock<ICommandHandler<AddLocaleMessageCommand>>();
@@ -47,16 +48,14 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
                 addAddressCommandHandler.Object,
                 addLocaleMessageCommandHandler.Object,
                 addVimLocaleEventCommandHandler.Object,
-                getLocaleQuery.Object);
-
-            AutoMapperWebConfiguration.Configure();
+                getLocaleQuery.Object,
+                mapper);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
             context.Dispose();
-            Mapper.Reset();
         }
 
         [TestMethod]

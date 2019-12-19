@@ -328,7 +328,7 @@ namespace GlobalEventController.Tests.Common
                 ScanCodeType = new ScanCodeType { scanCodeTypeDesc = "Test ScanCode Type Description" },
                 Item = new Item
                 {
-                    itemTypeID = ItemTypes.RetailSale,
+                    ItemTypeId = ItemTypes.RetailSale,
                     ItemTrait = new List<ItemTrait>
                     {
                         new ItemTrait { localeID = Locales.WholeFoods, traitID = Traits.ValidationDate, traitValue = validationDate },

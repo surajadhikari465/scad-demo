@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Infor.Services.NewItem.Models;
+using Services.NewItem.Models;
 
-namespace Infor.Services.NewItem.Commands
+namespace Services.NewItem.Commands
 {
     public class ArchiveNewItemsCommand
     {

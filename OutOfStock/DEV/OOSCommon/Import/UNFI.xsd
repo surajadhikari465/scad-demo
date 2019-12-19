@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="UNFI"
+    targetNamespace="http://tempuri.org/UNFI.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/UNFI.xsd"
+    xmlns:mstns="http://tempuri.org/UNFI.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:complexType name="item_data">
+    <xs:attribute name="reason_code" type="xs:positiveInteger" use="required"/>
+    <xs:attribute name="start_date" type="xs:date" use="required"/>
+    <xs:attribute name="vin" type="xs:positiveInteger" use="required"/>
+    <xs:attribute name="end_date" type="xs:date" use="optional"/>
+    <xs:attribute name="ps_bu" type="xs:positiveInteger" use="optional"/>
+    <xs:attribute name="team_name" type="xs:string" use="optional"/>
+    <xs:attribute name="subteam_name" type="xs:string" use="optional"/>
+  </xs:complexType>
+  
+  <xs:complexType name="vendor_region_map">
+    <xs:attribute name="region" type="xs:string" use="required"/>
+    <xs:attribute name="vendor_key" type="xs:string" use="required"/>
+  </xs:complexType>
+  
+</xs:schema>

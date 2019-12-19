@@ -59,7 +59,7 @@ namespace PushController.Tests.DataAccess.Commands
         private void SetupExistingItemLink()
         {
             testItemLink = new TestItemLinkBuilder()
-                .WithParentItemId(testLinkedItems[0].itemID).WithChildItemId(testItem.itemID).WithLocaleId(testLocale.localeID);
+                .WithParentItemId(testLinkedItems[0].ItemId).WithChildItemId(testItem.ItemId).WithLocaleId(testLocale.localeID);
                    
             context.Context.ItemLink.Add(testItemLink);
             context.Context.SaveChanges();
@@ -72,7 +72,7 @@ namespace PushController.Tests.DataAccess.Commands
             SetupTestData();
 
             testItemLink = new TestItemLinkBuilder()
-                .WithParentItemId(testLinkedItems[0].itemID).WithChildItemId(testItem.itemID).WithLocaleId(testLocale.localeID);
+                .WithParentItemId(testLinkedItems[0].ItemId).WithChildItemId(testItem.ItemId).WithLocaleId(testLocale.localeID);
 
             // When.
             var command = new AddOrUpdateItemLinkRowByRowCommand
@@ -84,10 +84,10 @@ namespace PushController.Tests.DataAccess.Commands
 
             // Then.
             var newItemLink = context.Context.ItemLink.Single(il =>
-                il.childItemID == testItem.itemID && il.localeID == testLocale.localeID);
+                il.childItemID == testItem.ItemId && il.localeID == testLocale.localeID);
 
             Assert.IsNotNull(newItemLink);
-            Assert.AreEqual(testLinkedItems[0].itemID, newItemLink.parentItemID);
+            Assert.AreEqual(testLinkedItems[0].ItemId, newItemLink.parentItemID);
         }
 
         [TestMethod]
@@ -97,7 +97,7 @@ namespace PushController.Tests.DataAccess.Commands
             SetupTestData();
 
             testItemLink = new TestItemLinkBuilder()
-                .WithParentItemId(testLinkedItems[0].itemID).WithChildItemId(testItem.itemID).WithLocaleId(unknownLocaleId);
+                .WithParentItemId(testLinkedItems[0].ItemId).WithChildItemId(testItem.ItemId).WithLocaleId(unknownLocaleId);
 
             var command = new AddOrUpdateItemLinkRowByRowCommand
             {
@@ -119,7 +119,7 @@ namespace PushController.Tests.DataAccess.Commands
             SetupTestData();
             SetupExistingItemLink();
 
-            testItemLink.parentItemID = testLinkedItems[1].itemID;
+            testItemLink.parentItemID = testLinkedItems[1].ItemId;
 
             var command = new AddOrUpdateItemLinkRowByRowCommand
             {
@@ -131,10 +131,10 @@ namespace PushController.Tests.DataAccess.Commands
 
             // Then.
             var existingItemLink = context.Context.ItemLink.Single(il =>
-                il.childItemID == testItem.itemID && il.localeID == testLocale.localeID);
+                il.childItemID == testItem.ItemId && il.localeID == testLocale.localeID);
 
             Assert.IsNotNull(existingItemLink);
-            Assert.AreEqual(testLinkedItems[1].itemID, existingItemLink.parentItemID);
+            Assert.AreEqual(testLinkedItems[1].ItemId, existingItemLink.parentItemID);
         }
 
         [TestMethod]
@@ -146,8 +146,8 @@ namespace PushController.Tests.DataAccess.Commands
 
             var updatedItemLink = new ItemLink
             {
-                parentItemID = testLinkedItems[1].itemID,
-                childItemID = testItem.itemID,
+                parentItemID = testLinkedItems[1].ItemId,
+                childItemID = testItem.ItemId,
                 localeID = unknownLocaleId
             };
             

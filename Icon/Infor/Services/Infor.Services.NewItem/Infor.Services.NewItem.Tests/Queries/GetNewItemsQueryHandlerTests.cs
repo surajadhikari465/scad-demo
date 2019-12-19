@@ -1,18 +1,18 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Infor.Services.NewItem.Queries;
+using Services.NewItem.Queries;
 using System.Linq;
 using Irma.Framework;
 using System.Data.Entity;
 using Irma.Testing.Builders;
 using System.Collections.Generic;
-using Infor.Services.NewItem.Models;
+using Services.NewItem.Models;
 using Moq;
 using Icon.Common.Context;
 using Icon.Logging;
 using Icon.Framework;
 
-namespace Infor.Services.NewItem.Tests.Queries
+namespace Services.NewItem.Tests.Queries
 {
     [TestClass]
     public class GetNewItemsQueryHandlerTests

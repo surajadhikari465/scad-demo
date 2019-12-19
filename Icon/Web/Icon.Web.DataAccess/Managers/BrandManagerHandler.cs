@@ -6,6 +6,7 @@ using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using System;
 using System.Linq;
+using Icon.Common;
 
 namespace Icon.Web.DataAccess.Managers
 {
@@ -15,40 +16,43 @@ namespace Icon.Web.DataAccess.Managers
         private ICommandHandler<BrandCommand> updateBrandCommandHandler;
         private ICommandHandler<UpdateBrandHierarchyClassTraitsCommand> updateHierarchyClassTraitsCommandHandler;
         private ICommandHandler<AddBrandMessageCommand> addBrandMessageCommandHandler;
+        private IMapper mapper;
 
         public BrandManagerHandler(
             IconContext context,
             ICommandHandler<BrandCommand> updateBrandCommandHandler,
             ICommandHandler<UpdateBrandHierarchyClassTraitsCommand> updateHierarchyClassTraitsCommandHandler,
-            ICommandHandler<AddBrandMessageCommand> addBrandMessageCommandHandler)
+            ICommandHandler<AddBrandMessageCommand> addBrandMessageCommandHandler,
+            IMapper mapper)
         {
             this.context = context;
             this.updateBrandCommandHandler = updateBrandCommandHandler;
             this.updateHierarchyClassTraitsCommandHandler = updateHierarchyClassTraitsCommandHandler;
             this.addBrandMessageCommandHandler = addBrandMessageCommandHandler;
+            this.mapper = mapper;
         }
 
         public void Execute(BrandManager data)
         {
-            BrandCommand command = Mapper.Map<BrandCommand>(data);
-            UpdateBrandHierarchyClassTraitsCommand updateHierarchyClassTraitCommand = Mapper.Map<UpdateBrandHierarchyClassTraitsCommand>(data);
+            BrandCommand command = mapper.Map<BrandCommand>(data);
+            UpdateBrandHierarchyClassTraitsCommand updateHierarchyClassTraitCommand = mapper.Map<UpdateBrandHierarchyClassTraitsCommand>(data);
 
             try
             {
-                if (data.WriteAccess == Enums.WriteAccess.Full) //Brand & Message updated/set if Brand's core has been updated
-                {
-                    Validate(data);
-                    updateBrandCommandHandler.Execute(command);
-                    AddBrandMessageCommand addBrandMessageCommand = Mapper.Map<AddBrandMessageCommand>(data);
-                    addBrandMessageCommand.Action = MessageActionTypes.AddOrUpdate;
+                Validate(data);
+                updateBrandCommandHandler.Execute(command);
+                addBrandMessageCommandHandler.Execute(new AddBrandMessageCommand()
+                    {
+                        Brand = data.Brand,
+                        BrandAbbreviation = data.BrandAbbreviation,
+                        Designation = data.Designation,
+                        ParentCompany = data.ParentCompany,
+                        ZipCode = data.ZipCode,
+                        Locality = data.Locality,
+                        Action = MessageActionTypes.AddOrUpdate
 
-                    addBrandMessageCommandHandler.Execute(addBrandMessageCommand);
-                }
-
-                if (data.WriteAccess == Enums.WriteAccess.Full || data.WriteAccess == Enums.WriteAccess.Traits)
-                {
-                    updateHierarchyClassTraitsCommandHandler.Execute(updateHierarchyClassTraitCommand);
-                }
+                    });
+                updateHierarchyClassTraitsCommandHandler.Execute(updateHierarchyClassTraitCommand);
             }
             catch (DuplicateValueException ex)
             {
@@ -56,7 +60,7 @@ namespace Icon.Web.DataAccess.Managers
             }
             catch (Exception ex)
             {
-                throw new CommandException($"An error occurred when processing Brand <{data.Brand.hierarchyClassName}> (ID: {data.Brand.hierarchyClassID.ToString()}).", ex);
+                throw new CommandException($"An error occurred when processing Brand {data.Brand.hierarchyClassName} (ID: {data.Brand.hierarchyClassID.ToString()}).", ex);
             }
         }
 
@@ -76,16 +80,16 @@ namespace Icon.Web.DataAccess.Managers
 
                 if (context.HierarchyClass.Any(x => x.hierarchyID == Hierarchies.Brands && x.hierarchyClassID != data.Brand.hierarchyClassID && String.Compare(x.hierarchyClassName, data.Brand.hierarchyClassName, true) == 0))
                 {
-                    throw new DuplicateValueException($"The brand <{data.Brand.hierarchyClassName}> already exists.");
+                    throw new DuplicateValueException($"The brand {data.Brand.hierarchyClassName} already exists.");
                 }
 
                 if (isTrimmed)
                 {
                     var irmaBrandName = data.Brand.hierarchyClassName.Substring(0, Constants.IrmaBrandNameMaxLength);
 
-                    if (context.HierarchyClass.Any(x => x.Hierarchy.hierarchyName == HierarchyNames.Brands && x.hierarchyClassName.StartsWith(irmaBrandName, true, System.Globalization.CultureInfo.InvariantCulture)))
+                    if (context.HierarchyClass.Any(x => x.Hierarchy.hierarchyName == HierarchyNames.Brands && x.hierarchyClassName.StartsWith(irmaBrandName)))
                     {
-                        throw new DuplicateValueException($"Brand name trimmed to {Constants.IrmaBrandNameMaxLength.ToString()} characters <{irmaBrandName}> already exists. Change the brand name so that the first {Constants.IrmaBrandNameMaxLength.ToString()} characters are unique.");
+                        throw new DuplicateValueException($"Brand name trimmed to {Constants.IrmaBrandNameMaxLength.ToString()} characters {irmaBrandName} already exists. Change the brand name so that the first {Constants.IrmaBrandNameMaxLength.ToString()} characters are unique.");
                     }
                 }
 

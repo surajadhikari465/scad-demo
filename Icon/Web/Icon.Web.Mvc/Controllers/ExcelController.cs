@@ -1,15 +1,13 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
-using Icon.Web.Extensions;
+using Icon.Web.Mvc.Extensions;
 using Icon.Web.Mvc.Excel.ModelMappers;
 using Icon.Web.Mvc.Excel.Models;
 using Icon.Web.Mvc.Excel.Services;
 using Icon.Web.Mvc.Exporters;
 using Icon.Web.Mvc.Models;
-using Icon.Web.Mvc.Utility;
 using Infragistics.Documents.Excel;
 using Newtonsoft.Json;
 using System;
@@ -29,7 +27,6 @@ namespace Icon.Web.Controllers
         private IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>> bulkScanCodeSearchQuery;
         private IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel> getItemsBySearchQueryHandler;
         private IQueryHandler<GetDefaultTaxClassMismatchesParameters, List<DefaultTaxClassMismatchModel>> getDefaultTaxClassMismatchesQuery;
-        private IInfragisticsHelper infragisticsHelper;
         private IExcelService<ItemExcelModel> itemExcelService;
         private IExcelModelMapper<ItemSearchModel, ItemExcelModel> itemModelMapper;
 
@@ -38,7 +35,6 @@ namespace Icon.Web.Controllers
             IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>> bulkScanCodeSearchQuery,
             IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel> getItemsBySearchQueryHandler,
             IQueryHandler<GetDefaultTaxClassMismatchesParameters, List<DefaultTaxClassMismatchModel>> getDefaultTaxClassMismatchesQuery,
-            IInfragisticsHelper infragisticsHelper, 
             IExcelService<ItemExcelModel> itemExcelService,
             IExcelModelMapper<ItemSearchModel, ItemExcelModel> itemModelMapper)
         {
@@ -47,61 +43,8 @@ namespace Icon.Web.Controllers
             this.bulkScanCodeSearchQuery = bulkScanCodeSearchQuery;
             this.getItemsBySearchQueryHandler = getItemsBySearchQueryHandler;
             this.getDefaultTaxClassMismatchesQuery = getDefaultTaxClassMismatchesQuery;
-            this.infragisticsHelper = infragisticsHelper;
             this.itemExcelService = itemExcelService;
             this.itemModelMapper = itemModelMapper;
-        }
-
-        [HttpPost]
-        public void IrmaItemExport(List<IrmaItemViewModel> items)
-        {
-            foreach (IrmaItemViewModel item in items)
-            {
-                if (item.MerchandiseHierarchyClassId == null)
-                {
-                    item.MerchandiseHierarchyClassName = String.Empty;
-                }
-                else
-                {
-                    item.MerchandiseHierarchyClassName = queryHandler.Search(new GetHierarchyClassByIdParameters { HierarchyClassId = item.MerchandiseHierarchyClassId.Value }).ToFlattenedHierarchyClassString();
-                }
-            }
-
-            var irmaItemExporter = exporterService.GetIrmaItemExporter();
-            irmaItemExporter.ExportData = items;
-            irmaItemExporter.Export();
-
-            SendForDownload(irmaItemExporter.ExportModel.ExcelWorkbook, irmaItemExporter.ExportModel.ExcelWorkbook.CurrentFormat, "NewItems");
-        }
-
-        [HttpGet]
-        public void BulkNewItemExport()
-        {
-            var exportData = new List<BulkImportNewItemModel>();
-
-            if (Session["new_item_upload_errors"] == null)
-            {
-                throw new InvalidOperationException(Icon.Web.Mvc.Resources.Excel.ExcelExportInvalidSessionCache);
-            }
-            else
-            {
-                exportData = Session["new_item_upload_errors"] as List<BulkImportNewItemModel>;
-            }
-
-            var bulkItemExporter = exporterService.GetBulkNewItemExporter();
-            bulkItemExporter.ExportData = exportData;
-            bulkItemExporter.Export();
-
-            SendForDownload(bulkItemExporter.ExportModel.ExcelWorkbook, bulkItemExporter.ExportModel.ExcelWorkbook.CurrentFormat, "BulkNewItemErrors");
-        }
-
-        [HttpGet]
-        public void NewItemTemplateExport()
-        {
-            var newItemTemplateExporter = exporterService.GetNewItemTemplateExporter();
-            newItemTemplateExporter.Export();
-
-            SendForDownload(newItemTemplateExporter.ExportModel.ExcelWorkbook, newItemTemplateExporter.ExportModel.ExcelWorkbook.CurrentFormat, "NewItem");
         }
 
         [HttpPost]
@@ -173,12 +116,12 @@ namespace Icon.Web.Controllers
         {
             var searchParameters = viewModel.GetSearchParameters(pageSize:MaxNumberOfItemsToExportFromSearch);
             
-            var result = infragisticsHelper.ParseSortParameterFromQueryString(ControllerContext.HttpContext.Request.QueryString);
-            if (result.SortParameterExists)
-            {
-                searchParameters.SortOrder = result.SortOrder;
-                searchParameters.SortColumn = result.SortColumn;
-            }
+            //var result = infragisticsHelper.ParseSortParameterFromQueryString(ControllerContext.HttpContext.Request.QueryString);
+            //if (result.SortParameterExists)
+            //{
+            //    searchParameters.SortOrder = result.SortOrder;
+            //    searchParameters.SortColumn = result.SortColumn;
+            //}
             var searchResults = getItemsBySearchQueryHandler.Search(searchParameters).Items;
 
             var exportResponse = itemExcelService.Export(new ExportRequest<ItemExcelModel>
@@ -218,79 +161,7 @@ namespace Icon.Web.Controllers
             });
 
             SendForDownload(exportResponse.ExcelWorkbook, WorkbookFormat.Excel2007, "Item");
-        }
-
-        [HttpGet]
-        public void PluExport()
-        {
-            var exportData = new List<PluMappingViewModel>();
-
-            if (Session["grid_search_results"] == null)
-            {
-                throw new InvalidOperationException(Icon.Web.Mvc.Resources.Excel.ExcelExportInvalidSessionCache);
-            }
-            else
-            {
-                exportData = Session["grid_search_results"] as List<PluMappingViewModel>;
-            }
-
-            var pluExporter = exporterService.GetPluExporter();
-            pluExporter.ExportData = exportData;
-            pluExporter.Export();
-
-            SendForDownload(pluExporter.ExportModel.ExcelWorkbook, pluExporter.ExportModel.ExcelWorkbook.CurrentFormat, "PLUMapping");
-        }
-
-        [HttpGet]
-        public void BulkPluExport()
-        {
-            var exportData = new List<BulkImportPluModel>();
-
-            if (Session["grid_search_results"] == null)
-            {
-                throw new InvalidOperationException(Icon.Web.Mvc.Resources.Excel.ExcelExportInvalidSessionCache);
-            }
-            else
-            {
-                exportData = Session["grid_search_results"] as List<BulkImportPluModel>;
-            }
-
-            var bulkPluExporter = exporterService.GetBulkPluExporter();
-            bulkPluExporter.ExportData = exportData;
-            bulkPluExporter.Export();
-
-            SendForDownload(bulkPluExporter.ExportModel.ExcelWorkbook, bulkPluExporter.ExportModel.ExcelWorkbook.CurrentFormat, "BulkPLUMappingErrors");
-        }
-
-        [HttpGet]
-        public void BulkCertificationAgencyExport()
-        {
-            var exportData = new List<BulkImportCertificationAgencyModel>();
-
-            if (Session["certification_agency_import_errors"] == null)
-            {
-                throw new InvalidOperationException(Icon.Web.Mvc.Resources.Excel.ExcelExportInvalidSessionCache);
-            }
-            else
-            {
-                exportData = Session["certification_agency_import_errors"] as List<BulkImportCertificationAgencyModel>;
-            }
-
-            var certificationExporter = exporterService.GetCertificationAgencyExporter();
-            certificationExporter.ExportData = exportData;
-            certificationExporter.Export();
-
-            SendForDownload(certificationExporter.ExportModel.ExcelWorkbook, certificationExporter.ExportModel.ExcelWorkbook.CurrentFormat, "BulkCertificationAgencyErrors");
-        }
-
-        [HttpGet]
-        public void CertificationAgencyTemplateExport()
-        {
-            var exporter = exporterService.GetCertificationAgencyExporter();
-            exporter.Export();
-
-            SendForDownload(exporter.ExportModel.ExcelWorkbook, exporter.ExportModel.ExcelWorkbook.CurrentFormat, "CertificationAgencies");
-        }       
+        }  
 
         [HttpGet]
         public void BrandTemplateExport()
@@ -302,77 +173,13 @@ namespace Icon.Web.Controllers
         }
 
         [HttpPost]
-        public void PluCategoryExport(List<PluCategoryViewModel> plucategoryList)
+        public void BarcodeTypeExport(List<BarcodeTypeViewModel> barcodeTypeList)
         {
-            var pluCategoryExporter = exporterService.GetPluCategoryExporter();
-            pluCategoryExporter.ExportData = plucategoryList;
-            pluCategoryExporter.Export();
+            var barcodeTypeExporter = exporterService.GetBarcodeTypeExporter();
+            barcodeTypeExporter.ExportData = barcodeTypeList;
+            barcodeTypeExporter.Export();
 
-            SendForDownload(pluCategoryExporter.ExportModel.ExcelWorkbook, pluCategoryExporter.ExportModel.ExcelWorkbook.CurrentFormat, "PLUCategory");
-        }
-
-        [HttpGet]
-        public void DefaultTaxMismatchExport()
-        {
-            var queryResults = getDefaultTaxClassMismatchesQuery.Search(new GetDefaultTaxClassMismatchesParameters());
-
-            var exportData = queryResults.Select(r => new DefaultTaxClassMismatchExportModel
-            {
-                ScanCode = r.ScanCode,
-                Brand = r.Brand,
-                ProductDescription = r.ProductDescription,
-                MerchandiseLineage = r.MerchandiseLineage,
-                DefaultTaxClass = r.DefaultTaxClass,
-                TaxClassOverride = r.TaxClassOverride,
-                Error = String.Empty
-            }).ToList();
-
-            var exporter = exporterService.GetDefaultTaxMismatchExporter();
-            exporter.ExportData = exportData;
-            exporter.Export();
-
-            SendForDownload(exporter.ExportModel.ExcelWorkbook, exporter.ExportModel.ExcelWorkbook.CurrentFormat, "DefaultTaxMismatches");
-        }
-
-        [HttpPost]
-        public void DefaultTaxMismatchExport(List<DefaultTaxClassMismatchExportModel> viewModel)
-        {
-            if (Session["tax_corrections_upload_errors"] != null)
-            {
-                var cachedErrors = Session["tax_corrections_upload_errors"] as List<DefaultTaxClassMismatchExportModel>;
-
-                var exportModels = new List<DefaultTaxClassMismatchExportModel>();
-                DefaultTaxClassMismatchExportModel exportModel;
-                string modelError;
-
-                foreach (var error in cachedErrors)
-                {
-                    modelError = cachedErrors.Single(e => e.ScanCode == error.ScanCode).Error;
-
-                    exportModel = new DefaultTaxClassMismatchExportModel
-                    {
-                        ScanCode = error.ScanCode,
-                        Brand = error.Brand,
-                        ProductDescription = error.ProductDescription,
-                        MerchandiseLineage = error.MerchandiseLineage,
-                        DefaultTaxClass = error.DefaultTaxClass,
-                        TaxClassOverride = error.TaxClassOverride,
-                        Error = modelError
-                    };
-
-                    exportModels.Add(exportModel);
-                }
-
-                var exporter = exporterService.GetDefaultTaxMismatchExporter();
-                exporter.ExportData = exportModels;
-                exporter.Export();
-
-                SendForDownload(exporter.ExportModel.ExcelWorkbook, exporter.ExportModel.ExcelWorkbook.CurrentFormat, "DefaultTaxMismatches");
-            }
-            else
-            {
-                throw new InvalidOperationException(Icon.Web.Mvc.Resources.Excel.ExcelExportInvalidSessionCache);
-            }
+            SendForDownload(barcodeTypeExporter.ExportModel.ExcelWorkbook, barcodeTypeExporter.ExportModel.ExcelWorkbook.CurrentFormat, "BarcodeType");
         }
 
         [SecuritySafeCritical]

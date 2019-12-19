@@ -17,14 +17,14 @@ namespace Icon.Framework
         public Locale()
         {
             this.ItemHierarchyClass = new HashSet<ItemHierarchyClass>();
-            this.ItemPrice = new HashSet<ItemPrice>();
             this.ItemTrait = new HashSet<ItemTrait>();
             this.Locale1 = new HashSet<Locale>();
             this.LocaleAddress = new HashSet<LocaleAddress>();
             this.LocaleTrait = new HashSet<LocaleTrait>();
-            this.ScanCode = new HashSet<ScanCode>();
             this.Agency = new HashSet<Agency>();
             this.ItemLink = new HashSet<ItemLink>();
+            this.ScanCode = new HashSet<ScanCode>();
+            this.ItemPrice = new HashSet<ItemPrice>();
         }
     
         public int localeID { get; set; }
@@ -36,15 +36,15 @@ namespace Icon.Framework
         public Nullable<int> parentLocaleID { get; set; }
     
         public virtual ICollection<ItemHierarchyClass> ItemHierarchyClass { get; set; }
-        public virtual ICollection<ItemPrice> ItemPrice { get; set; }
         public virtual ICollection<ItemTrait> ItemTrait { get; set; }
         public virtual ICollection<Locale> Locale1 { get; set; }
         public virtual Locale Locale2 { get; set; }
         public virtual ICollection<LocaleAddress> LocaleAddress { get; set; }
         public virtual ICollection<LocaleTrait> LocaleTrait { get; set; }
-        public virtual ICollection<ScanCode> ScanCode { get; set; }
         public virtual LocaleType LocaleType { get; set; }
         public virtual ICollection<Agency> Agency { get; set; }
         public virtual ICollection<ItemLink> ItemLink { get; set; }
+        public virtual ICollection<ScanCode> ScanCode { get; set; }
+        public virtual ICollection<ItemPrice> ItemPrice { get; set; }
     }
 }

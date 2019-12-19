@@ -1,6 +1,5 @@
 ﻿using Icon.Framework;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data.Entity;
 using System.Linq;

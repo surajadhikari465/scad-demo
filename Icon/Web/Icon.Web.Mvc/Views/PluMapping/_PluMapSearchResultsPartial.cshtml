@@ -1,12 +1,6 @@
 ﻿@using Infragistics.Web.Mvc
 @model Icon.Web.Mvc.Models.PluSearchViewModel
 
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Render()
-)
-
 <hr />
 
 @if (Model.PluMapping.Count() > 0)
@@ -58,7 +52,7 @@
             .Render()
     );
 
-    @Html.ActionLink("Export", "PluExport", "Excel", null, new { @class = "btn btn-default form-submit" })
+    @Html.ActionLink("Export", "PluExport", "Excel", null, new { @class = "btn btn-light form-submit" })
 }
 else
 {

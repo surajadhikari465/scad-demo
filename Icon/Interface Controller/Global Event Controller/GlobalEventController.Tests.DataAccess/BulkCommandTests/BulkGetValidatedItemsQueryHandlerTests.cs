@@ -10,7 +10,7 @@ using System.Transactions;
 
 namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
 {
-    [TestClass]
+    [TestClass] [Ignore]
     public class BulkGetValidatedItemsQueryHandlerTests
     {
         private BulkGetValidatedItemsQueryHandler handler;
@@ -48,10 +48,10 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
             var expectedItems = (from ihc in this.context.ItemHierarchyClass
                                  join b in brands on ihc.itemID equals b.itemID
                                  join t in taxes on ihc.itemID equals t.itemID
-                                 join vi in items on ihc.itemID equals vi.itemID
+                                 join vi in items on ihc.itemID equals vi.ItemId
                                  select new
                                  {
-                                     ItemId = vi.itemID,
+                                     ItemId = vi.ItemId,
                                      ScanCode = vi.ScanCode.FirstOrDefault().scanCode,
                                      ScanCodeType = vi.ScanCode.FirstOrDefault().ScanCodeType.scanCodeTypeDesc,
                                      ProductDescription = vi.ItemTrait.FirstOrDefault(it => it.traitID == Traits.ProductDescription).traitValue,
@@ -440,7 +440,7 @@ namespace GlobalEventController.Tests.DataAccess.BulkCommandTests
                 ScanCodeType = new ScanCodeType { scanCodeTypeDesc = "Test ScanCode Type Description" + identifier },
                 Item = new Item
                 {
-                    itemTypeID = ItemTypes.RetailSale,
+                    ItemTypeId = ItemTypes.RetailSale,
                     //ItemType = new ItemType
                     //{
                     //    itemTypeID = ItemTypes.RetailSale,

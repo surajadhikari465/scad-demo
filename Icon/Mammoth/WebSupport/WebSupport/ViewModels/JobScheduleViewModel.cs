@@ -111,7 +111,7 @@ namespace WebSupport.ViewModels
         [Display(Name = "Status")]
         public object Status { get; set; }
 
-        [Display(Name = "Xml Object (Parameter)")]
+        [Display(Name = "Parameter Data")]
         [AllowHtml]
         [DataType(DataType.MultilineText)]
         public object XmlObject { get; set; }

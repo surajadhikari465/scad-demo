@@ -380,8 +380,14 @@ namespace Icon.ApiController.Tests.QueueReaderTests
                 new TestItemLocaleMessageBuilder().WithLinkedItem("1234")
             };
 
-            Item linkedItem = new TestItemBuilder().WithScanCode("1112223334445").WithItemType(ItemTypes.Deposit);
-            linkedItem.ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Deposit);
+            Item linkedItem = new Item
+            {
+                ScanCode = new ScanCode[]
+                {
+                    new ScanCode { scanCode = "1112223334445" }
+                },
+                ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Deposit)
+            };
 
             mockGetItemByScanCodeQuery.Setup(handler => handler.Search(It.IsAny<GetItemByScanCodeParameters>())).Returns(linkedItem);
 
@@ -393,7 +399,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
 
             var itemAttributes = miniBulk.item[0].locale[0].Item as Contracts.StoreItemAttributesType;
             int retailItemId = fakeMessageQueueItemLocale[0].ItemId;
-            int linkedItemId = linkedItem.itemID;
+            int linkedItemId = linkedItem.ItemId;
 
             Assert.AreEqual(1, itemAttributes.groups.group.Length);
             Assert.AreEqual(linkedItemId.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups.group[0].id);
@@ -408,8 +414,14 @@ namespace Icon.ApiController.Tests.QueueReaderTests
                 new TestItemLocaleMessageBuilder().WithLinkedItem("1234")
             };
 
-            Item linkedItem = new TestItemBuilder().WithScanCode("1112223334445").WithItemType(ItemTypes.Deposit);
-            linkedItem.ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Deposit);
+            Item linkedItem = new Item
+            {
+                ScanCode = new ScanCode[]
+                {
+                    new ScanCode { scanCode = "1112223334445" }
+                },
+                ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Deposit)
+            };
 
             mockGetItemByScanCodeQuery.Setup(handler => handler.Search(It.IsAny<GetItemByScanCodeParameters>())).Returns(linkedItem);
 
@@ -421,10 +433,10 @@ namespace Icon.ApiController.Tests.QueueReaderTests
 
             var itemAttributes = miniBulk.item[0].locale[0].Item as Contracts.StoreItemAttributesType;
             int retailItemId = fakeMessageQueueItemLocale[0].ItemId;
-            int linkedItemId = linkedItem.itemID;
+            int linkedItemId = linkedItem.ItemId;
 
             Assert.AreEqual(1, itemAttributes.links.Length);
-            Assert.AreEqual(linkedItem.itemID, itemAttributes.links[0].parentId);
+            Assert.AreEqual(linkedItem.ItemId, itemAttributes.links[0].parentId);
             Assert.AreEqual(1, itemAttributes.links[0].childId);
             Assert.IsTrue(itemAttributes.links[0].childIdSpecified);
             Assert.IsTrue(itemAttributes.links[0].parentIdSpecified);
@@ -443,8 +455,14 @@ namespace Icon.ApiController.Tests.QueueReaderTests
                 new TestItemLocaleMessageBuilder().WithLinkedItem("1234")
             };
 
-            Item linkedItem = new TestItemBuilder().WithScanCode("1112223334445").WithItemType(ItemTypes.Fee);
-            linkedItem.ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Fee);
+            Item linkedItem = new Item
+            {
+                ScanCode = new ScanCode[]
+                {
+                    new ScanCode { scanCode = "1112223334445" }
+                },
+                ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Fee)
+            };
 
             mockGetItemByScanCodeQuery.Setup(handler => handler.Search(It.IsAny<GetItemByScanCodeParameters>())).Returns(linkedItem);
 
@@ -456,10 +474,10 @@ namespace Icon.ApiController.Tests.QueueReaderTests
 
             var itemAttributes = miniBulk.item[0].locale[0].Item as Contracts.StoreItemAttributesType;
             int retailItemId = fakeMessageQueueItemLocale[0].ItemId;
-            int linkedItemId = linkedItem.itemID;
+            int linkedItemId = linkedItem.ItemId;
 
             Assert.AreEqual(1, itemAttributes.links.Length);
-            Assert.AreEqual(linkedItem.itemID, itemAttributes.links[0].parentId);
+            Assert.AreEqual(linkedItem.ItemId, itemAttributes.links[0].parentId);
             Assert.AreEqual(1, itemAttributes.links[0].childId);
             Assert.IsTrue(itemAttributes.links[0].childIdSpecified);
             Assert.IsTrue(itemAttributes.links[0].parentIdSpecified);
@@ -478,8 +496,14 @@ namespace Icon.ApiController.Tests.QueueReaderTests
                 new TestItemLocaleMessageBuilder().WithLinkedItem("1234")
             };
 
-            Item linkedItem = new TestItemBuilder().WithScanCode("1112223334445").WithItemType(ItemTypes.RetailSale);
-            linkedItem.ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.RetailSale);
+            Item linkedItem = new Item
+            {
+                ScanCode = new ScanCode[]
+                {
+                    new ScanCode { scanCode = "1112223334445" }
+                },
+                ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.RetailSale)
+            };
 
             mockGetItemByScanCodeQuery.Setup(handler => handler.Search(It.IsAny<GetItemByScanCodeParameters>())).Returns(linkedItem);
 
@@ -504,11 +528,23 @@ namespace Icon.ApiController.Tests.QueueReaderTests
                 new TestItemLocaleMessageBuilder().WithLinkedItem("1112223334445").WithPreviousLinkedItem("12345")
             };
 
-            Item linkedItem = new TestItemBuilder().WithScanCode(linkedItemScanCode).WithItemType(ItemTypes.Fee);
-            Item previousLinkedItem = new TestItemBuilder().WithItemId(2).WithScanCode(previousLinkedItemScanCode).WithItemType(ItemTypes.Fee);
+            Item linkedItem = new Item
+            {
+                ScanCode = new ScanCode[]
+                {
+                    new ScanCode { scanCode = linkedItemScanCode }
+                },
+                ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Fee)
+            };
 
-            linkedItem.ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Fee);
-            previousLinkedItem.ItemType = linkedItem.ItemType;
+            Item previousLinkedItem = new Item
+            {
+                ScanCode = new ScanCode[]
+                {
+                    new ScanCode { scanCode = previousLinkedItemScanCode }
+                },
+                ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Fee)
+            };
 
             mockGetItemByScanCodeQuery.Setup(handler => handler.Search(It.Is<GetItemByScanCodeParameters>(p => p.ScanCode == linkedItemScanCode))).Returns(linkedItem);
             mockGetItemByScanCodeQuery.Setup(handler => handler.Search(It.Is<GetItemByScanCodeParameters>(p => p.ScanCode == previousLinkedItemScanCode))).Returns(previousLinkedItem);
@@ -521,7 +557,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
 
             var itemAttributes = miniBulk.item[0].locale[0].Item as Contracts.StoreItemAttributesType;
             int retailItemId = fakeMessageQueueItemLocale[0].ItemId;
-            int linkedItemId = linkedItem.itemID;
+            int linkedItemId = linkedItem.ItemId;
 
             Assert.AreEqual(2, itemAttributes.links.Length);
             Assert.AreEqual(linkedItemId, itemAttributes.links[0].parentId);
@@ -529,7 +565,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             Assert.IsTrue(itemAttributes.links[0].childIdSpecified);
             Assert.IsTrue(itemAttributes.links[0].parentIdSpecified);
 
-            Assert.AreEqual(previousLinkedItem.itemID, itemAttributes.links[1].parentId);
+            Assert.AreEqual(previousLinkedItem.ItemId, itemAttributes.links[1].parentId);
             Assert.AreEqual(1, itemAttributes.links[1].childId);
             Assert.IsTrue(itemAttributes.links[1].childIdSpecified);
             Assert.IsTrue(itemAttributes.links[1].parentIdSpecified);
@@ -540,7 +576,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             Assert.AreEqual(Contracts.ActionEnum.AddOrUpdate, itemAttributes.groups.group[0].Action);
             Assert.IsTrue(itemAttributes.groups.group[0].ActionSpecified);
 
-            Assert.AreEqual(previousLinkedItem.itemID.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups.group[1].id);
+            Assert.AreEqual(previousLinkedItem.ItemId.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups.group[1].id);
             Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Warranty.ToString(), itemAttributes.groups.group[1].description);
             Assert.AreEqual(Contracts.ActionEnum.Delete, itemAttributes.groups.group[1].Action);
             Assert.IsTrue(itemAttributes.groups.group[1].ActionSpecified);
@@ -578,9 +614,14 @@ namespace Icon.ApiController.Tests.QueueReaderTests
                 new TestItemLocaleMessageBuilder().WithLinkedItem("1112223334445")
             };
 
-            Item linkedItem = new TestItemBuilder().WithScanCode(linkedItemScanCode).WithItemType(ItemTypes.Fee);
-
-            linkedItem.ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Fee);
+            Item linkedItem = new Item
+            {
+                ScanCode = new ScanCode[]
+                {
+                    new ScanCode { scanCode = linkedItemScanCode }
+                },
+                ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Fee)
+            };
 
             mockGetItemByScanCodeQuery.Setup(handler => handler.Search(It.Is<GetItemByScanCodeParameters>(p => p.ScanCode == linkedItemScanCode))).Returns(linkedItem);
 
@@ -592,7 +633,7 @@ namespace Icon.ApiController.Tests.QueueReaderTests
 
             var itemAttributes = miniBulk.item[0].locale[0].Item as Contracts.StoreItemAttributesType;
             int retailItemId = fakeMessageQueueItemLocale[0].ItemId;
-            int linkedItemId = linkedItem.itemID;
+            int linkedItemId = linkedItem.ItemId;
 
             Assert.AreEqual(1, itemAttributes.links.Length);
             Assert.AreEqual(linkedItemId, itemAttributes.links[0].parentId);
@@ -618,9 +659,14 @@ namespace Icon.ApiController.Tests.QueueReaderTests
                 new TestItemLocaleMessageBuilder().WithPreviousLinkedItem("12345")
             };
 
-            Item previousLinkedItem = new TestItemBuilder().WithItemId(2).WithScanCode(previousLinkedItemScanCode).WithItemType(ItemTypes.Fee);
-
-            previousLinkedItem.ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Fee);
+            Item previousLinkedItem = new Item
+            {
+                ScanCode = new ScanCode[]
+                {
+                    new ScanCode { scanCode = previousLinkedItemScanCode }
+                },
+                ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Fee)
+            };
 
             mockGetItemByScanCodeQuery.Setup(handler => handler.Search(It.Is<GetItemByScanCodeParameters>(p => p.ScanCode == previousLinkedItemScanCode))).Returns(previousLinkedItem);
 
@@ -633,12 +679,12 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             var itemAttributes = miniBulk.item[0].locale[0].Item as Contracts.StoreItemAttributesType;
             int retailItemId = fakeMessageQueueItemLocale[0].ItemId;
 
-            Assert.AreEqual(previousLinkedItem.itemID, itemAttributes.links[0].parentId);
+            Assert.AreEqual(previousLinkedItem.ItemId, itemAttributes.links[0].parentId);
             Assert.AreEqual(1, itemAttributes.links[0].childId);
             Assert.IsTrue(itemAttributes.links[0].childIdSpecified);
             Assert.IsTrue(itemAttributes.links[0].parentIdSpecified);
 
-            Assert.AreEqual(previousLinkedItem.itemID.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups.group[0].id);
+            Assert.AreEqual(previousLinkedItem.ItemId.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups.group[0].id);
             Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Warranty.ToString(), itemAttributes.groups.group[0].description);
             Assert.AreEqual(Contracts.ActionEnum.Delete, itemAttributes.groups.group[0].Action);
             Assert.IsTrue(itemAttributes.groups.group[0].ActionSpecified);
@@ -655,9 +701,14 @@ namespace Icon.ApiController.Tests.QueueReaderTests
                 new TestItemLocaleMessageBuilder().WithPreviousLinkedItem("12345")
             };
 
-            Item previousLinkedItem = new TestItemBuilder().WithItemId(2).WithScanCode(previousLinkedItemScanCode).WithItemType(ItemTypes.RetailSale);
-
-            previousLinkedItem.ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.RetailSale);
+            Item previousLinkedItem = new Item
+            {
+                ScanCode = new ScanCode[]
+                {
+                    new ScanCode { scanCode = previousLinkedItemScanCode }
+                },
+                ItemType = context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.RetailSale)
+            };
 
             mockGetItemByScanCodeQuery.Setup(handler => handler.Search(It.Is<GetItemByScanCodeParameters>(p => p.ScanCode == previousLinkedItemScanCode))).Returns(previousLinkedItem);
 
@@ -670,14 +721,14 @@ namespace Icon.ApiController.Tests.QueueReaderTests
             var itemAttributes = miniBulk.item[0].locale[0].Item as Contracts.StoreItemAttributesType;
             int retailItemId = fakeMessageQueueItemLocale[0].ItemId;
 
-            Assert.AreEqual(previousLinkedItem.itemID, itemAttributes.links[0].parentId);
+            Assert.AreEqual(previousLinkedItem.ItemId, itemAttributes.links[0].parentId);
             Assert.AreEqual(1, itemAttributes.links[0].childId);
             Assert.AreEqual(1, itemAttributes.links.Length);
             Assert.IsTrue(itemAttributes.links[0].childIdSpecified);
             Assert.IsTrue(itemAttributes.links[0].parentIdSpecified);
 
             Assert.AreEqual(1, itemAttributes.groups.group.Length);
-            Assert.AreEqual(previousLinkedItem.itemID.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups.group[0].id);
+            Assert.AreEqual(previousLinkedItem.ItemId.ToString() + "_" + retailItemId.ToString(), itemAttributes.groups.group[0].id);
             Assert.AreEqual(Contracts.RetailTransactionItemTypeEnum.Deposit.ToString(), itemAttributes.groups.group[0].description);
             Assert.AreEqual(Contracts.ActionEnum.Delete, itemAttributes.groups.group[0].Action);
             Assert.IsTrue(itemAttributes.groups.group[0].ActionSpecified);

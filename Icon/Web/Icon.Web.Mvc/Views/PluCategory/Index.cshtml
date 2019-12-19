@@ -1,38 +1,29 @@
 ﻿@using Infragistics.Web.Mvc
-@model Icon.Web.Mvc.Models.PluCategoryGridViewModel
+@model Icon.Web.Mvc.Models.BarcodeTypeGridViewModel
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
-
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Render()
-)
-
 @{Html.RenderPartial("_HeaderPartial", "PLU Range Management");}
-@Html.ActionLink("Add New PLU Category", "Create")
 
 <div class="search-alert page-subsection"></div>
 <hr />
-<div id="pluCategoryView" class="page-section">
-    @if (Model.PluCategories != null && Model.PluCategories.Count() > 0)
-    {        
-        @(Html.Infragistics().Grid(Model.PluCategories.AsQueryable())
-            .ID("pluCategoryGrid")
-                .PrimaryKey("PluCategoryId")
+<div id="barcodeTypesView" class="page-section">
+    @if (Model.BarcodeTypes != null && Model.BarcodeTypes.Count() > 0)
+    {
+        @(Html.Infragistics().Grid(Model.BarcodeTypes.AsQueryable())
+            .ID("barcodeTypeGrid")
+                .PrimaryKey("BarcodeTypeId")
             .Width("100%")
             .Columns(columns =>
             {
-                columns.For(c => c.PluCategoryId).Hidden(true);
-                columns.For(c => c.PluCategoryName).HeaderText("PLU Category").DataType("string").Width("35%");
-                columns.For(c => c.BeginRange).HeaderText("Start").DataType("string").Width("10%");
-                columns.For(c => c.EndRange).HeaderText("End").DataType("string").Width("10%");
-                columns.Unbound("Delete").Template("<a href='/PluCategory/Delete?PluCategoryId=${PluCategoryId}'>Delete</a>").Width("20%").HeaderText("Delete Link");
+                columns.For(c => c.BarcodeTypeId).Hidden(true);
+                columns.For(c => c.BarcodeType).HeaderText("Barcode Type").DataType("string").Width("35%");
+                columns.For(c => c.BeginRange).HeaderText("Start").DataType("string").Width("15%");
+                columns.For(c => c.EndRange).HeaderText("End").DataType("string").Width("15%");
+                columns.For(c => c.ScalePlu).HeaderText("Scale PLU").DataType("string").FormatterFunction("function(val) { return val ? 'Yes' : 'No'; }").Width("10%");
             })
             .Features(features =>
             {
@@ -40,30 +31,17 @@
                 features.Paging().PageSize(50).Inherit(true);
                 features.Filtering().Inherit(true);
                 features.Updating()
-                    .EditMode(GridEditMode.Row)
-                    .SaveChangesSuccessHandler("onSuccess")
-                    .SaveChangesErrorHandler("onError")
+                    .EditMode(GridEditMode.None)
                     .EnableDeleteRow(false)
-                    .EnableAddRow(false)
-                    .StartEditTriggers(GridStartEditTriggers.DblClick)
-                    .DoneLabel("Apply")
-                    .ColumnSettings(setting =>
-                        {
-                            setting.ColumnSetting().ColumnKey("PluCategoryName").EditorType(ColumnEditorType.Text).Validation(true).Required(true)
-                                .TextEditorOptions(options => options.ValidatorOptions(vo => vo.MaxLength(60)));
-                            setting.ColumnSetting().ColumnKey("BeginRange").EditorType(ColumnEditorType.Text).Validation(true)
-                                .EditorOptions(@"validatorOptions:{errorMessage: 'Please enter only numbers (max 11 digits)', regExp:/^[0-9]{1,11}$/}");
-                            setting.ColumnSetting().ColumnKey("EndRange").EditorType(ColumnEditorType.Text).Validation(true)
-                                .EditorOptions(@"validatorOptions:{errorMessage: 'Please enter a number only (max 11 digits)', regExp:/^[0-9]{1,11}$/}");
-                        });
+                    .EnableAddRow(false);
             })
-                .DataSource(Model.PluCategories.AsQueryable())
+                .DataSource(Model.BarcodeTypes.AsQueryable())
             .UpdateUrl(Url.Action("SaveChangesInGrid"))
             .AggregateTransactions(true)
             .DataBind()
             .Render()
         );
-        <input type="button" id="export" class="btn btn-default form-submit" value="Export PLU Ranges" />
+        <input type="button" id="export" class="btn btn-light form-submit" value="Export Barcode Types" />
     }
     else
     {
@@ -71,6 +49,6 @@
     }   
 </div>
 
-@Scripts.Render("~/Scripts/Plu/plucategory-view.js")
+@Scripts.Render("~/Scripts/Plu/barcodetype-view.js")
 @Scripts.Render("~/Scripts/common-search.js")
 @Scripts.Render("~/Scripts/jquery.fileDownload.js")

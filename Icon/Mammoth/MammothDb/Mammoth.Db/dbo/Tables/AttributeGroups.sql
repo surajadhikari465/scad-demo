@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[AttributeGroups] (
-    [AttributeGroupID]   INT            NOT NULL,
+    [AttributeGroupID]   INT            IDENTITY(1, 1) NOT NULL ,
     [AttributeGroupCode] NVARCHAR (3)   NOT NULL,
     [AttributeGroupDesc] NVARCHAR (255) NULL,
     [AddedDate]          DATETIME       DEFAULT (getdate()) NOT NULL,

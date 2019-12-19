@@ -1,10 +1,10 @@
 ﻿using Icon.Common.DataAccess;
+using Icon.Common.Validators;
 using Icon.Ewic.Models;
 using Icon.Ewic.Serialization.Serializers;
 using Icon.Ewic.Transmission.Producers;
 using Icon.Framework;
 using Icon.Web.Common;
-using Icon.Web.Common.Validators;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Queries;

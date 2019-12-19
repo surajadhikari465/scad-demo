@@ -1,0 +1,308 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Linq
+@model OOSCommon.DataContext.REGION
+@{
+    ViewBag.Title = "Custom Report";
+    ViewBag.MinDate = DateTime.Now.AddYears(-1);
+}
+
+
+
+
+<script>
+    $(function() {
+        initialize();
+    });  
+
+    function initialize() {
+
+        $("#ddlRegions").change(function () {
+            var regionId = $(this).val();
+            $.getJSON("/CustomReport/LoadStoresByRegion", { regionId: regionId },
+                function (GetStores) {
+                    var select = $("#lbStores");
+                    select.empty();
+                    select.append($('<option/>', { value: 0, text: "(all stores)" }));
+                    $.each(GetStores, function (index, itemData) {
+                        select.append($('<option/>', { value: itemData.Value, text: itemData.Text }));
+                    });
+                });
+        });
+
+        $("#lbTeams").change(function () {
+            var regionName = $("#ddlRegions option:selected").text();
+            var storeNumbers = '';
+            $('#lbStores option:selected').each(function (i) {
+                storeNumbers = storeNumbers + $(this).val() + ',';
+            });
+            var teamNames = '';
+            $('#lbTeams option:selected').each(function (i) {
+                teamNames = teamNames + $(this).val() + ',';
+            });
+            $.getJSON("/CustomReport/LoadSubTeamsByTeam", { regionName: regionName, storeNumbers: storeNumbers, teamNames: teamNames },
+                function (GetSubteams) {
+                    var listSubteam = $("#lbSubteams");
+                    listSubteam.empty();
+                    listSubteam.append($('<option/>', { value: 0, text: "(all subteams)" }));
+                    $.each(GetSubteams, function (index, itemData) {
+                        listSubteam.append($('<option/>', { value: itemData.Value, text: itemData.Text }));
+                    });
+                });
+        });
+
+        $('#selectedEndDate').change(function () {
+            var date = $(this).val();
+            var arrDate = date.split("/");
+            var today = new Date();
+            useDate = new Date(arrDate[2], arrDate[1] - 1, arrDate[0]);
+            var startdate = $('#selectedStartDate').val();
+            var startarrDate = startdate.split("/");
+            var starttoday = new Date();
+            startuseDate = new Date(startarrDate[2], startarrDate[1] - 1, startarrDate[0]);
+            if (useDate < startuseDate) {
+                alert('End date cannot be less than Start Date'); $(this).val('');
+            }
+        });
+
+        $('#formSubmit').submit(function () {
+            // Region selection
+            var regionName = $("#ddlRegions option:selected").text();
+            $('#selectedRegion').val(regionName);
+            // Store selection
+            var storeNumbers = '';
+            $('#lbStores option:selected').each(function (i) {
+                storeNumbers = storeNumbers + $(this).val() + '|';
+            });
+            $('#selectedStores').val(storeNumbers);
+
+            // Team selection
+            var teams = '';
+            $('#lbTeams option:selected').each(function (i) {
+                teams = teams + $(this).val() + '|';
+            });
+            $('#selectedTeams').val(teams);
+
+            // SubTeam selection
+            var subteams = '';
+            $('#lbSubteams option:selected').each(function (i) {
+                subteams = subteams + $(this).val() + '|';
+            });
+            $('#selectedSubTeams').val(subteams);
+        });
+
+        $('#ddlRegions').first().focus();
+
+        var tabindex = 1;
+        $('input,select').each(function () {
+            if (this.type != "hidden") {
+                var $input = $(this); $input.attr("tabindex", tabindex); tabindex++;
+            }
+        });
+
+        $('#groupedByUpcCheckbox span').click(function () {
+          
+            if ($('#groupedByUpcCheckbox span').hasClass("checked")) {
+                $('#groupedByUpcCheckbox span').removeClass('checked').addClass('unchecked');
+                $('#isGroupedByUpc').val(0);
+            }
+            else {
+                $('#groupedByUpcCheckbox span').removeClass('unchecked').addClass('checked');
+                $('#isGroupedByUpc').val(1);
+            }
+
+            console.log($('#isGroupedByUpc').val());
+        });
+        $('#isGroupedByUpc').val(1);
+
+
+
+        
+        
+    }
+</script>
+
+
+
+
+
+@*@(Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text>
+
+   
+                                                    </text>))*@
+
+<style type="text/css">
+    table
+    {
+        border:0px none transparent;
+        border-collapse: collapse;
+        padding:0;
+    }
+    table td
+    {
+        border:0px none transparent;
+        border-collapse: collapse;
+        padding:6px 6px 6px 6px;
+    }
+
+    .bold { font-weight: bold;}
+    .centeralign { margin: 0 auto;}
+    .top { vertical-align: top; }
+
+
+
+
+
+    #groupedByUpcCheckbox .label {
+        color: black;
+    }
+
+    #groupedByUpcCheckbox span.unchecked {
+        display: inline-block;
+        width: 19px;
+        height: 19px;
+        margin: -2px 10px 0 0;
+        vertical-align: middle;
+        background: url(/content/images/check_radio_sheet.png) left top no-repeat;
+        cursor: pointer;
+    }
+    
+
+    #groupedByUpcCheckbox span.checked {
+        display: inline-block;
+        width: 19px;
+        height: 19px;
+        margin: -2px 10px 0 0;
+        vertical-align: middle;
+        background: url(/content/images/check_radio_sheet.png) -19px top no-repeat;
+        cursor: pointer;
+    }
+
+</style>
+
+<table class="CleanTable" style="width:auto;">
+    <tr class="CleanTable">
+        <td align="left" valign="top" class="CleanTable" style="width:240px;">
+           
+        </td>
+        <td  align="left" valign="top" class="CleanTable">
+@using (Html.BeginForm("Create", "CustomReport", FormMethod.Post, new { defaultbutton = "GetReport", id = "formSubmit" }))
+{ 
+    <input type="hidden" id="selectedRegion" name="selectedRegion" value="" />
+    <input type="hidden" id="selectedStores" name="selectedStores" value="" />
+    <input type="hidden" id="selectedTeams" name="selectedTeams" value="" />
+    <input type="hidden" id="selectedSubTeams" name="selectedSubTeams" value="" />
+    <input type="hidden" id="isGroupedByUpc" name="isGroupedByUpc" value="" />
+    @Html.Hidden("clientTodayDate", DateTime.Now.ToShortDateString())
+    
+    @Html.ValidationSummary(true)
+
+    <br/>
+    <div class="InfoPanel" style="width: auto;">
+        <table class="centeralign">
+            <tr>
+                <td class="bold">FROM</td>
+                <td>
+                    @(Html.Telerik().DateTimePicker()
+                        .Effects(e => e.Slide())
+                        //.ButtonTitle("Select expiration date")
+                        //.Format("MM/dd/yyyy")
+                        .Name("selectedStartDate")
+                        //.ShowButton(true)
+                        .Min(DateTime.Now.AddYears(-1))
+                        .Max(DateTime.Now)
+                        .Value(DateTime.Now.AddDays(-7))
+                        .HtmlAttributes(new { id = "DatePicker_wrapper" })
+                    )
+                </td>
+                <td class="bold">TO</td>
+                <td>
+                    @(Html.Telerik().DateTimePicker()
+                          .Effects(e => e.Slide())
+                         // .ButtonTitle("Select expiration date")
+                         // .Format("MM/dd/yyyy")
+                          .Name("selectedEndDate")
+                          //.ShowButton(true)
+                          .Min(DateTime.Now.AddYears(-1))
+                          .Max(DateTime.Now)
+                          .Value(DateTime.Now)
+                          .HtmlAttributes(new { id = "DatePicker_wrapper" })
+                          )
+                </td>
+                <td  class="bold">REGION</td>
+                <td >
+                    @if (ViewBag.MyRegion != null)
+                    {
+                        @ViewBag.MyRegion
+                    }
+                    @if (ViewBag.MyRegion == null && ViewBag.MyRegions != null)
+                    {
+                        @Html.DropDownListFor(
+                            Model => Model.REGION_NAME,
+                            new SelectList(ViewBag.MyRegions as System.Collections.IEnumerable, "ID", "REGION_ABBR"),
+                            "Select a Region", new { id = "ddlRegions", style = "width:145px;" })
+                    }
+                </td>
+            </tr>
+        </table>
+        
+        <table class="centeralign" style="width: 640px;" >
+            <tr>
+                <td style="padding: 10px 0 0 0;" class="bold top">STORE</td>
+                <td style="padding: 10px 0 0 0;" class="bold top">TEAM</td>
+                <td style="padding: 10px 0 0 0;" class="bold top">SUBTEAM</td>
+            </tr>
+            <tr>
+                
+                <td  class="bold" style="padding: 0 0 0 0;">
+                    @if (ViewBag.MyStore != null)
+                    {
+                        @ViewBag.MyStore
+                    }
+                    @if (ViewBag.MyStore == null && ViewBag.MyStores != null)
+                    {
+                        @Html.ListBoxFor(
+                            Model => Model.REGION_ABBR,
+                            new SelectList((IEnumerable<SelectListItem>)ViewBag.MyStores, "Value", "Text"),
+                            new { id = "lbStores", style = "width:200px;height:170px;" })
+                    }
+                </td>
+                  
+                <td class="top">
+                    @if (ViewBag.MyTeams != null)
+                    {
+                        @Html.ListBoxFor(
+                            Model => Model.IS_VISIBLE,
+                            new SelectList(ViewBag.MyTeams as System.Collections.IEnumerable, "Key", "Value"),
+                            new { id = "lbTeams", style = "width:200px;height:170px;" })
+                    }
+                </td>
+                    
+                <td class="top" >
+                    @Html.ListBoxFor(
+                        Model => Model.KNOWN_OOS_MAP,
+                        new SelectList(Enumerable.Empty<SelectListItem>(), "Key", "Value"),
+                        new { id = "lbSubteams", style = "width:200px;height:170px;" })
+                </td>
+            </tr>
+            <tr>
+                <Td>
+                    <div id="groupedByUpcCheckbox">
+                        <span class="checked"></span>Grouped By Upc
+                    </div>
+                </Td>
+                <td colspan="2" style="text-align: right">
+                    <input type="submit" id="GetReport" name="GetReport" value="Generate Report"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align: center;">
+                    <div id="resultContainer"><h2>@ViewBag.Message</h2></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+        </td>
+    </tr>
+</table>

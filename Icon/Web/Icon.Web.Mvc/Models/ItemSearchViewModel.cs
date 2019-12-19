@@ -1,9 +1,7 @@
-﻿using Icon.Framework;
-using Icon.Web.Attributes;
+﻿using Icon.Web.Attributes;
 using Icon.Web.Common;
-using Icon.Web.Extensions;
+using Icon.Web.Mvc.Extensions;
 using Icon.Web.Mvc.Attributes;
-using Icon.Web.Mvc.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -67,7 +65,7 @@ namespace Icon.Web.Mvc.Models
         [AtLeastOneRequiredProperty]
         public string ScanCode { get; set; }
 
-        [IconPropertyValidation(ValidatorPropertyNames.ProductDescription, CanBeNullOrEmprty = true)]
+        [IconPropertyValidation(ValidatorPropertyNames.ProductDescription, CanBeNullOrEmpty = true)]
         [Display(Name = "Product Description")]
         [IgGridRouteValue]
         [AtLeastOneRequiredProperty]
@@ -89,7 +87,7 @@ namespace Icon.Web.Mvc.Models
         [AtLeastOneRequiredProperty]
         public string DeliverySystem { get; set; }
 
-        [IconPropertyValidation(ValidatorPropertyNames.BrandName, CanBeNullOrEmprty = true)]
+        [IconPropertyValidation(ValidatorPropertyNames.BrandName, CanBeNullOrEmpty = true)]
         [Display(Name = "Brand")]
         [IgGridRouteValue]
         [AtLeastOneRequiredProperty]
@@ -114,7 +112,7 @@ namespace Icon.Web.Mvc.Models
         [AtLeastOneRequiredProperty]
         public string NationalHierarchy { get; set; }
 
-        [IconPropertyValidation(ValidatorPropertyNames.PosDescription, CanBeNullOrEmprty = true)]
+        [IconPropertyValidation(ValidatorPropertyNames.PosDescription, CanBeNullOrEmpty = true)]
         [Display(Name = "POS Description")]
         [IgGridRouteValue]
         [AtLeastOneRequiredProperty]
@@ -192,7 +190,7 @@ namespace Icon.Web.Mvc.Models
         public string DeliverySystems { get; set; }
 
         [Display(Name = "Notes")]
-        [IconPropertyValidation(ValidatorPropertyNames.Notes, CanBeNullOrEmprty = true)]
+        [IconPropertyValidation(ValidatorPropertyNames.Notes, CanBeNullOrEmpty = true)]
         [IgGridRouteValue]
         [AtLeastOneRequiredProperty]
         public string Notes { get; set; }
@@ -300,19 +298,19 @@ namespace Icon.Web.Mvc.Models
         }
 
         [Display(Name = "Created Date (mm/dd/yyyy)")]
-        [IconPropertyValidation(ValidatorPropertyNames.CreatedDate, CanBeNullOrEmprty = true)]
+        [IconPropertyValidation(ValidatorPropertyNames.CreatedDate, CanBeNullOrEmpty = true)]
         [IgGridRouteValue]
         [AtLeastOneRequiredProperty]
         public string CreatedDate { get; set; }
 
         [Display(Name = "Last Modified Date (mm/dd/yyyy)")]
-        [IconPropertyValidation(ValidatorPropertyNames.ModifiedDate, CanBeNullOrEmprty = true)]
+        [IconPropertyValidation(ValidatorPropertyNames.ModifiedDate, CanBeNullOrEmpty = true)]
         [IgGridRouteValue]
         [AtLeastOneRequiredProperty]
         public string LastModifiedDate { get; set; }
 
         [Display(Name = "Last Modified User")]
-        [IconPropertyValidation(ValidatorPropertyNames.ModifiedUser, CanBeNullOrEmprty = true)]
+        [IconPropertyValidation(ValidatorPropertyNames.ModifiedUser, CanBeNullOrEmpty = true)]
         [IgGridRouteValue]
         [AtLeastOneRequiredProperty]
         public string LastModifiedUser { get; set; }

@@ -3,16 +3,9 @@
 @using Icon.Web.Common
 @model Icon.Web.Mvc.Models.IrmaItemSearchViewModel
 
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Resources("igCombo")
-    .Render()
-)
-
-<input type="button" id="loadRows" class="btn btn-default form-submit" value="Load to Icon" />
-<input type="button" id="validateRows" class="btn btn-default form-submit" value="Validate" />
-<input type="button" id="deleteRows" class="btn btn-default form-submit delete-btn" value="Delete" />
+<input type="button" id="loadRows" class="btn btn-light form-submit" value="Load to Icon" />
+<input type="button" id="validateRows" class="btn btn-light form-submit" value="Validate" />
+<input type="button" id="deleteRows" class="btn btn-light form-submit delete-btn" value="Delete" />
 
 <span class="search-alert page-subsection"></span>
 
@@ -340,7 +333,7 @@
         .Render()
 );
     
-    <input type="button" id="export" class="btn btn-default form-submit" value="Export" />
+    <input type="button" id="export" class="btn btn-light form-submit" value="Export" />
 }
 else
 {

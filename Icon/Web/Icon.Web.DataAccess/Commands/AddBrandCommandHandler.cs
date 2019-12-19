@@ -1,9 +1,9 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Web.Common;
 using Icon.Web.DataAccess.Infrastructure;
 using System;
 using System.Linq;
+using Icon.Common;
 
 namespace Icon.Web.DataAccess.Commands
 {
@@ -27,12 +27,7 @@ namespace Icon.Web.DataAccess.Commands
             
             data.Brand.hierarchyID = Hierarchies.Brands;
             data.Brand.hierarchyParentClassID = null;
-            data.Brand.hierarchyLevel = HierarchyLevels.Parent;           
-            data.Brand.HierarchyClassTrait.Add(new HierarchyClassTrait
-                {
-                    traitID = Traits.SentToEsb,
-                    traitValue = null
-                });
+            data.Brand.hierarchyLevel = HierarchyLevels.Brand;           
 
             context.HierarchyClass.Add(data.Brand);
             context.SaveChanges();

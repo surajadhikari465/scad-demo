@@ -1,6 +1,8 @@
 ﻿using GlobalEventController.DataAccess.Infrastructure;
 using Icon.DbContextFactory;
 using Irma.Framework;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace GlobalEventController.DataAccess.Commands
@@ -25,13 +27,17 @@ namespace GlobalEventController.DataAccess.Commands
                 if (taxClass == null)
                 {
                     taxClass = new TaxClass();
-                    taxClass.TaxClassDesc = command.TaxClassDescription;
-                    taxClass.ExternalTaxGroupCode = command.TaxCode;
-                    context.TaxClass.Add(taxClass);
-                }
+                    if (command.TaxClassDescription.Length > 50)
+                    {
+                        command.TaxClassDescription = command.TaxClassDescription.Substring(0, 50);
+                    }
+                    SqlParameter TaxClassDesc = new SqlParameter("TaxClassDesc", SqlDbType.VarChar);
+                    SqlParameter ExternalTaxGroupCode = new SqlParameter("ExternalTaxGroupCode", SqlDbType.VarChar);
 
-                context.SaveChanges();
-                command.TaxClassId = taxClass.TaxClassID;
+                    TaxClassDesc.Value = command.TaxClassDescription;
+                    ExternalTaxGroupCode.Value = command.TaxCode;
+                    context.Database.ExecuteSqlCommand("EXEC dbo.PopulateDefaultTaxFlags @TaxClassDesc, @ExternalTaxGroupCode", TaxClassDesc, ExternalTaxGroupCode);
+                }
             }
         }
     }

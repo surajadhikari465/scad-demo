@@ -1,14 +1,16 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
-using Icon.Testing.Builders;
 using Icon.Web.Common;
 using Icon.Web.Controllers;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
+using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
+using Icon.Web.Mvc.Exporters;
 using Icon.Web.Mvc.Models;
+using Icon.Web.Mvc.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -18,7 +20,8 @@ using System.Web.Mvc;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
-    [TestClass] [Ignore]
+    [TestClass]
+    [Ignore]
     public class NationalClassControllerTests
     {
         private Mock<ILogger> mockLogger;
@@ -29,7 +32,9 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IManagerHandler<UpdateNationalHierarchyManager>> mockUpdateManager;
         private Mock<ControllerContext> mockContext;
         private NationalClassController controller;
-        private Mock<ICommandHandler<ClearHierarchyClassCacheCommand>> mockClearHierarchyClassCacheCommandHandler;
+        private Mock<IExcelExporterService> mockExcelExporterService;
+        private Mock<IDonutCacheManager> mockCacheManager;
+        private Mock<IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>>> mockGetHierarchyClassesQueryHandler;
 
         [TestInitialize]
         public void Initialize()
@@ -41,14 +46,20 @@ namespace Icon.Web.Tests.Unit.Controllers
             this.mockAddManager = new Mock<IManagerHandler<AddNationalHierarchyManager>>();
             this.mockUpdateManager = new Mock<IManagerHandler<UpdateNationalHierarchyManager>>();
             this.mockContext = new Mock<ControllerContext>();
-            this.mockClearHierarchyClassCacheCommandHandler = new Mock<ICommandHandler<ClearHierarchyClassCacheCommand>>();
+            this.mockExcelExporterService = new Mock<IExcelExporterService>();
+            this.mockCacheManager = new Mock<IDonutCacheManager>();
+            this.mockGetHierarchyClassesQueryHandler = new Mock<IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>>>();
 
             this.controller = new NationalClassController(mockLogger.Object,
+                new Mvc.Utility.IconWebAppSettings() { },
                 mockGetHierarchyQuery.Object,
                 mockHierarchyClassQuery.Object,
                 mockUpdateManager.Object,
                 mockAddManager.Object,
-                mockDeleteManager.Object);
+                mockDeleteManager.Object,
+                mockExcelExporterService.Object,
+                mockCacheManager.Object,
+                mockGetHierarchyClassesQueryHandler.Object);
 
             mockContext.SetupGet(c => c.HttpContext.User.Identity.Name).Returns("Test User");
             controller.ControllerContext = mockContext.Object;
@@ -93,7 +104,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         }
                 
         [TestMethod]
-        public void Create_ValidModelState_CommandShouldBeExecuted()
+        public void Create_ValidModelState_CommandShouldBeExecutedAndHierarchyCacheShouldBeCleared()
         {
             // Given.
             NationalClassViewModel viewModel = new NationalClassViewModel()
@@ -110,6 +121,7 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             // Then.
             mockAddManager.Verify(command => command.Execute(It.IsAny<AddNationalHierarchyManager>()), Times.Once);
+            mockCacheManager.Verify(x => x.ClearCacheForController(It.Is<string>(a => a == "HierarchyClass")));
         }
 
         [TestMethod]
@@ -209,7 +221,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         }
 
         [TestMethod]
-        public void Edit_ValidModelState_CommandShouldBeExecuted()
+        public void Edit_ValidModelState_CommandShouldBeExecutedAndHierarchyCacheShouldBeCleared()
         {
             // Given.
             NationalClassViewModel viewModel = new NationalClassViewModel()
@@ -226,6 +238,7 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             // Then.
             mockUpdateManager.Verify(command => command.Execute(It.IsAny<UpdateNationalHierarchyManager>()), Times.Once);
+            mockCacheManager.Verify(x => x.ClearCacheForController(It.Is<string>(a => a == "HierarchyClass")));
         }
         
         [TestMethod]
@@ -274,7 +287,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         }
 
         [TestMethod]
-        public void Delete_PostWithValidModelState_CommandShouldBeExecuted()
+        public void Delete_PostWithValidModelState_CommandShouldBeExecutedAndHierarchyCacheShouldBeCleared()
         {
             // Given.
             NationalClassViewModel viewModel = new NationalClassViewModel()
@@ -293,6 +306,7 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             // Then.
             mockDeleteManager.Verify(command => command.Execute(It.IsAny<DeleteNationalHierarchyManager>()), Times.Once);
+            mockCacheManager.Verify(x => x.ClearCacheForController(It.Is<string>(a => a == "HierarchyClass")));
         }
 
         [TestMethod]

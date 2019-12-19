@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Icon.Web.DataAccess.Commands;
 using Icon.Framework;
 using System.Data.Entity;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.Tests.Common.Builders;
 
 namespace Icon.Web.Tests.Integration.Commands

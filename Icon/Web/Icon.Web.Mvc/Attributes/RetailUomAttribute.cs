@@ -1,7 +1,7 @@
 ﻿using Icon.Framework;
-using Icon.Web.Common.Validators;
 using System;
 using System.ComponentModel.DataAnnotations;
+using Icon.Common.Validators;
 
 namespace Icon.Web.Attributes
 {

@@ -1,0 +1,73 @@
+﻿@model Icon.Web.Mvc.Models.AttributeViewModel
+
+<div class="form-group" id="MaxLengthAllowed">
+    @Html.LabelFor(model => model.MaxLengthAllowed, new { @class = "form-label" })
+    @Html.TextBoxFor(model => model.MaxLengthAllowed, new { @class = "form-control form-input", id = "maxLengthAllowed", @type = "number" })
+    @Html.ValidationMessageFor(model => model.MaxLengthAllowed, null, new { @class = "form-property-val" })
+</div>
+
+<div class="form-group" id="StringDisplay">
+    @Html.Label("ALLOWABLE CHARACTERS")
+    @for (int i = 0; i < Model.AvailableCharacterSets.Count(); i++)
+    {
+        <div class="">
+            @Html.TextBoxFor(model => model.AvailableCharacterSets[i].CharacterSetId, new { @class = "form-control form-input d-none" })
+            @Html.TextBoxFor(model => model.AvailableCharacterSets[i].Name, new { @class = "form-control form-input d-none" })
+            @Html.TextBoxFor(model => model.AvailableCharacterSets[i].RegEx, new { @class = "form-control form-input d-none" })
+            @Html.TextBoxFor(model => model.AvailableCharacterSets[i].CharacterSetId, new { @class = "form-control form-input d-none" })
+            @Html.CheckBoxFor(model => model.AvailableCharacterSets[i].IsSelected, new { id = "char_" + Model.AvailableCharacterSets[i].CharacterSetId, @class = "character-set-cbx" })
+            @Html.Label(Model.AvailableCharacterSets[i].Name, new { @class = "form-label", @for = "char_" + Model.AvailableCharacterSets[i].CharacterSetId })
+        </div>
+    }
+</div>
+<div class="form-group" id="special_characters">
+    <div class="">
+        @Html.CheckBoxFor(model => model.IsSpecialCharactersSelected, new { id = "cbx_special_characters" })
+        @Html.Label("Special Characters", new { @class = "form-label", @for = "lb_special_characters" })
+    </div>
+    <div class="content">
+        @Html.RadioButtonFor(model => model.SpecialCharacterSetSelected, "All", new { @class = "", id = "special_char_all" }) <label for="special_char_all">All</label><br />
+        @Html.TextBoxFor(model => model.SpecialCharactersAllowed, new { @class = "form-control form-input special-characters-allowed-all", @type = "hidden" })
+        @Html.RadioButtonFor(model => model.SpecialCharacterSetSelected, "Specific", new { @class = "", id = "special_char_specific" }) <label for="special_char_specific">Specific</label><br />
+        @Html.TextBoxFor(model => model.SpecialCharactersAllowed, new { @class = "form-control form-input special-characters-allowed-specific", disabled = "disabled" })
+    </div>
+</div>
+<div class="form-group" id="ispicklist">
+    @Html.Label("ALLOW USER TO PICK FROM A LIST?")
+    <div class="form-group content">
+        @Html.RadioButtonFor(model => model.IsPickList, true, new { @class = "", id = "ispicklist_yes" }) <label for="ispicklist_yes">Yes</label><br />
+        @Html.RadioButtonFor(model => model.IsPickList, false, new { @class = "", id = "ispicklist_no" }) <label for="ispicklist_no">No</label><br />
+    </div>
+</div>
+<div class="form-group @(Model.IsPickList ? "" : "d-none")" id="picklist">
+    @Html.Label("ADD PICKLIST VALUES", new { @style = "" })
+    <div class="form-group" style="margin-bottom: 0">
+        <input type="button" class="form-control btn-primary" style="width: fit-content;" value="Add" id="btnAddPickList" />
+    </div>
+    <div class="content">
+        @Html.Label("At least one value is required", new { @style = "font-size: 10px;" })
+        @if (Model.PickListData != null)
+        {
+
+            for (int i = 0; i < Model.PickListData.Count(); i++)
+            {
+                @Html.TextBoxFor(model => model.PickListData[i].AttributeId, new { @class = "form-control  form-input d-none" })
+                @Html.TextBoxFor(model => model.PickListData[i].PickListId, new { @class = "form-control form-input d-none" })
+                <div class="row" style="margin-left: auto; margin-bottom: 0">
+                    @Html.TextBoxFor(model => model.PickListData[i].PickListValue, new { @class = "form-control form-input pick-list-item", id = "pld_" + i, name = "PickListData[" + i + "].PickListValue" })
+                    &nbsp;
+                    @if (Model.AttributeId > 0)
+                    {
+                        @Html.HiddenFor(model => model.PickListData[i].IsPickListSelectedForDelete)
+                        <input type="button" class="btn btn-link" id="btnDeletePickList_@Model.PickListData[i].PickListId" value="remove" />
+                    }
+                    else
+                    {
+                        <input type="button" class="btn btn-link" id="btnRemovePickList_@i" value="remove" />
+                    }
+                </div>
+            }
+
+        }
+    </div>
+</div>

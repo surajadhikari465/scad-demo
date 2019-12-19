@@ -1,12 +1,4 @@
-﻿@using Infragistics.Web.Mvc
-@model Icon.Web.Mvc.Models.PluRequestSearchViewModel
-
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Resources("igCombo,igDialog")
-    .Render()
-)
+﻿@model Icon.Web.Mvc.Models.PluRequestSearchViewModel
 
 @using (Ajax.BeginForm("Search", "PluRequest", null, new AjaxOptions
     {
@@ -20,23 +12,17 @@
 {
     <fieldset>
         <legend>Search Options</legend>
-       
-        <div class="row">
-            @Html.LabelFor(model => Model.SelectedStatusId, new { @class = "col-md-2 form-label" })
-            <div>
-                @Html.DropDownListFor(model => Model.SelectedStatusId, Model.Status, new { @class = "col-md-6 form-input" })
-            </div>
-        </div>        
 
+        <div class="form-group">
+            @Html.LabelFor(model => Model.SelectedStatusId, new { @class = "form-label" })
+            @Html.DropDownListFor(model => Model.SelectedStatusId, Model.Status, new { @class = "form-control form-input" })
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Search" class="btn btn-light form-submit" id="search-button" />
+        </div>
     </fieldset>
 
-    <div class="row">
-        <div class="col-md-offset-2 col-md-1">
-            <input type="submit" value="Search" class="btn btn-default form-submit" id="search-button" />
-        </div>
-    </div>
-    
-    <div class="row">
+    <div class="form-group">
         <div class="col-md-6 page-subsection">
             @Html.ValidationSummary(true)
         </div>

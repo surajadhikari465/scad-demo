@@ -15,5 +15,3 @@
 See template script for hints:
 :r .\Scripts\PopulateData\Release\IconPredeploymentScript.sql
 */
-
-

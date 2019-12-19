@@ -2,59 +2,48 @@
 using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
-using Infor.Services.NewItem.Commands;
-using Infor.Services.NewItem.Constants;
-using Infor.Services.NewItem.Models;
-using Infor.Services.NewItem.Notifiers;
-using Infor.Services.NewItem.Queries;
-using Infor.Services.NewItem.Services;
-using Infor.Services.NewItem.Validators;
+using Services.NewItem.Commands;
+using Services.NewItem.Constants;
+using Services.NewItem.Models;
+using Services.NewItem.Queries;
+using Services.NewItem.Services;
 using Irma.Framework;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Infor.Services.NewItem.Processor
+namespace Services.NewItem.Processor
 {
     public class NewItemProcessor : INewItemProcessor
     {
-        private InforNewItemApplicationSettings settings;
-        private ICommandHandler<AddNewItemsToIconCommand> addNewItemsToIconCommandHandler;
-        private IInforItemService inforItemService;
+        private NewItemApplicationSettings settings;
+        private ICommandHandler<UpdateItemSubscriptionInIconCommand> updateItemSubscriptionInIconCommandHandler;
         private IIconItemService iconItemService;
         private ICommandHandler<FinalizeNewItemEventsCommand> finalizeNewItemEventsCommandHandler;
         private IQueryHandler<GetNewItemsQuery, IEnumerable<NewItemModel>> getNewItemsQueryHandler;
-        private ICollectionValidator<NewItemModel> newItemCollectionValidator;
         private ICommandHandler<ArchiveNewItemsCommand> archiveNewItemsCommandHandler;
-        private INewItemNotifier notifier;
         private IRenewableContext<IconContext> iconContext;
         private IRenewableContext<IrmaContext> irmaContext;
         private ILogger<NewItemProcessor> logger;
 
         public NewItemProcessor(
-            InforNewItemApplicationSettings settings,
+            NewItemApplicationSettings settings,
             IQueryHandler<GetNewItemsQuery, IEnumerable<NewItemModel>> getNewItemsQueryHandler,
-            ICollectionValidator<NewItemModel> newItemCollectionValidator,
-            ICommandHandler<AddNewItemsToIconCommand> addNewItemsToIconCommandHandler,
-            IInforItemService inforItemService,
+            ICommandHandler<UpdateItemSubscriptionInIconCommand> updateItemSubscriptionInIconCommandHandler,
             IIconItemService iconItemService,
             ICommandHandler<FinalizeNewItemEventsCommand> finalizeNewItemEventsCommandHandler,
             ICommandHandler<ArchiveNewItemsCommand> archiveNewItemsCommandHandler,
-            INewItemNotifier notifier,
             IRenewableContext<IconContext> iconContext,
             IRenewableContext<IrmaContext> irmaContext,
             ILogger<NewItemProcessor> logger)
         {
             this.settings = settings;
             this.getNewItemsQueryHandler = getNewItemsQueryHandler;
-            this.newItemCollectionValidator = newItemCollectionValidator;
-            this.addNewItemsToIconCommandHandler = addNewItemsToIconCommandHandler;
-            this.inforItemService = inforItemService;
+            this.updateItemSubscriptionInIconCommandHandler = updateItemSubscriptionInIconCommandHandler;
             this.iconItemService = iconItemService;
             this.finalizeNewItemEventsCommandHandler = finalizeNewItemEventsCommandHandler;
             this.archiveNewItemsCommandHandler = archiveNewItemsCommandHandler;
-            this.notifier = notifier;
             this.iconContext = iconContext;
             this.irmaContext = irmaContext;
             this.logger = logger;
@@ -79,15 +68,13 @@ namespace Infor.Services.NewItem.Processor
                                 Region = region,
                                 NumberOfItemsInMessage = settings.NumberOfItemsPerMessage
                             });
-                        addNewItemsToIconCommandHandler.Execute(new AddNewItemsToIconCommand { NewItems = newItems });
+                        updateItemSubscriptionInIconCommandHandler.Execute(new UpdateItemSubscriptionInIconCommand { NewItems = newItems });
 
                         //Items that already exist in Icon do not need to be sent to 
                         //Infor and instead will be sent to the Icon queue to be picked up by GloCon.
                         var newItemsThatExistInIcon = newItems.Where(m => m.IconItemId.HasValue).ToList();
-                        var newItemsThatDontExistInIcon = newItems.Where(m => !m.IconItemId.HasValue).ToList();
-                        AddItemEventsToIconEventQueue(newItemsThatExistInIcon);
-                        SendItemsToInfor(region, newItemsThatDontExistInIcon);
-                    }
+                          AddItemEventsToIconEventQueue(newItemsThatExistInIcon);
+                     }
                     catch (Exception ex)
                     {
                         LogException(ex, region, newItems);
@@ -107,7 +94,6 @@ namespace Infor.Services.NewItem.Processor
                             NewItems = newItems,
                             ErrorOccurred = errorOccurredWhileProcessing
                         });
-                        notifier.NotifyOfNewItemError(newItems);
                         archiveNewItemsCommandHandler.Execute(new ArchiveNewItemsCommand { NewItems = newItems });
                     }
                 } while (newItems.Any());
@@ -118,25 +104,6 @@ namespace Infor.Services.NewItem.Processor
         {
             iconItemService.AddItemEventsToIconEventQueue(newItemsThatExistInIcon);
         }
-
-        private bool SendItemsToInfor(string region, IEnumerable<NewItemModel> newItems)
-        {
-            bool errorOccurredWhileProcessing = false;
-            var validationResult = newItemCollectionValidator.ValidateCollection(newItems);
-            if (validationResult.ValidEntities.Any())
-            {
-                AddNewItemsToInforResponse response = inforItemService.AddNewItemsToInfor(
-                    new AddNewItemsToInforRequest
-                    {
-                        NewItems = newItems,
-                        Region = region
-                    });
-                errorOccurredWhileProcessing = response.ErrorOccurred;
-            }
-
-            return errorOccurredWhileProcessing;
-        }
-
         private void LogException(Exception ex, string region, IEnumerable<NewItemModel> newItems)
         {
             logger.Error(JsonConvert.SerializeObject(

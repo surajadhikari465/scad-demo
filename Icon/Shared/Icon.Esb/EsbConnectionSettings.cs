@@ -45,7 +45,18 @@ namespace Icon.Esb
 
         public virtual void LoadFromNamedConfig(string connectionName)
         {
-            var connectionConfiguration = EsbConnectionConfigReader.GetConfig().Connections[connectionName];
+            var esbConnectionConfiguration = EsbConnectionConfigReader.GetConfig();
+            var connectionConfiguration = esbConnectionConfiguration?.Connections[connectionName];
+
+            if(esbConnectionConfiguration == null)
+            {
+                throw new ArgumentException("Could not find esbConnections");
+            }
+
+            if(connectionConfiguration == null)
+            {
+                throw new ArgumentException($"'Could not find '{connectionName}' in esbConnections");
+            }
 
             ServerUrl = connectionConfiguration.ServerUrl;
             JmsUsername = connectionConfiguration.JmsUsername;

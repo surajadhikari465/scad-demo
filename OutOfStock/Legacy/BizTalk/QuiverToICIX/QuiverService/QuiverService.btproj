@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21107</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CB811846-8F9F-427A-B647-B625B57F96FD}</ProjectGuid>
+    <ProjectTypeGuids>{EF7E3281-CD33-11D4-8326-00C04FA0CE8D};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>library</OutputType>
+    <GenericProcessing>true</GenericProcessing>
+    <RootNamespace>QuiverService</RootNamespace>
+    <AssemblyName>QuiverService</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <BpelCompliance>True</BpelCompliance>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="System.Configuration">
+      <Name>System.Configuration</Name>
+    </Reference>
+    <Reference Include="Microsoft.BizTalk.Pipeline">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Microsoft.BizTalk.DefaultPipelines">
+      <Name>Microsoft.BizTalk.DefaultPipelines</Name>
+    </Reference>
+    <Reference Include="Microsoft.BizTalk.GlobalPropertySchemas">
+      <Name>Microsoft.BizTalk.GlobalPropertySchemas</Name>
+    </Reference>
+    <Reference Include="Microsoft.BizTalk.TestTools">
+      <Name>Microsoft.BizTalk.TestTools</Name>
+    </Reference>
+    <Reference Include="Microsoft.XLANGs.BaseTypes">
+      <Name>Microsoft.XLANGs.BaseTypes</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Schema Include="sql\Table.dbo.xsd">
+      <TypeName>Table_dbo</TypeName>
+      <Namespace>QuiverService</Namespace>
+    </Schema>
+    <Schema Include="sql\TableOperation.dbo.Event.xsd">
+      <TypeName>TableOperation_dbo_Event</TypeName>
+      <Namespace>QuiverService</Namespace>
+    </Schema>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ICIX\Service1.BindingInfo.xml" />
+    <XLang Include="ICIX\Service1.odx">
+      <TypeName>Service1</TypeName>
+      <Namespace>QuiverService.ICIX</Namespace>
+    </XLang>
+    <Content Include="ICIX\Service1_Custom.BindingInfo.xml" />
+    <XLang Include="Orch\IcixProcesser.odx">
+      <TypeName>IcixProcesser</TypeName>
+      <Namespace>QuiverService.Orch</Namespace>
+    </XLang>
+    <Map Include="SqlMessage_to_IcixRequest.btm">
+      <TypeName>SqlMessage_to_IcixRequest</TypeName>
+      <Namespace>QuiverService</Namespace>
+    </Map>
+    <Content Include="ReadMe.txt" />
+    <Content Include="sql\WcfSendPort_SqlAdapterBinding_Custom.bindinginfo.xml">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Schema Include="ICIX\Service1.xsd">
+      <Namespace>QuiverService.ICIX</Namespace>
+      <TypeName>Service1</TypeName>
+    </Schema>
+    <Schema Include="ICIX\Service1_schemas_microsoft_com_2003_10_Serialization.xsd">
+      <Namespace>QuiverService.ICIX</Namespace>
+      <TypeName>Service1_schemas_microsoft_com_2003_10_Serialization</TypeName>
+    </Schema>
+    <Schema Include="ICIX\Service1_tempuri_org.xsd">
+      <Namespace>QuiverService.ICIX</Namespace>
+      <TypeName>Service1_tempuri_org</TypeName>
+    </Schema>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\BizTalk\BizTalkC.targets" />
+</Project>

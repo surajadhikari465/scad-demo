@@ -6,21 +6,49 @@ using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Models;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
+using System.Reflection;
 using System.Web.Mvc;
+using Icon.Common.Models;
 
-namespace Icon.Web.Extensions
+namespace Icon.Web.Mvc.Extensions
 {
     public static class Extensions
     {
-        public static List<ItemViewModel> ToViewModels(this List<ItemSearchModel> items)
+        public static ItemViewModel ToViewModel(this ItemDbModel item)
         {
-            return items.Select(item => new ItemViewModel(item)).ToList();
+            return new ItemViewModel(item);
+        }
+
+        public static ItemHistoryModel ToViewModel(this ItemHistoryDbModel itemHistory)
+        {
+            return new ItemHistoryModel(itemHistory);
+        }
+
+        public static IEnumerable<HierarchyClassViewModel> ToViewModels(this IEnumerable<HierarchyClassModel> models)
+        {
+            return models.Select(m => m.ToViewModel());
+        }
+
+        public static HierarchyClassViewModel ToViewModel(this HierarchyClassModel model)
+        {
+            return new HierarchyClassViewModel(model);
         }
 
         public static List<BrandViewModel> ToViewModels(this List<BrandModel> brands)
         {
             return brands.Select(b => new BrandViewModel(b)).ToList();
+        }
+
+        public static List<ManufacturerViewModel> ToViewModels(this List<ManufacturerModel> manufacturer)
+        {
+            return manufacturer.Select(b => new ManufacturerViewModel(b)).ToList();
+        }
+
+        public static IEnumerable<AttributeViewModel> ToViewModels(this IEnumerable<AttributeModel> attributes)
+        {
+            return attributes.Select(a => new AttributeViewModel(a)).ToList();
         }
 
         public static List<CertificationAgencyViewModel> ToViewModels(this List<CertificationAgencyModel> agencies)
@@ -221,6 +249,10 @@ namespace Icon.Web.Extensions
 
         public static IEnumerable<SelectListItem> ToSelectListItem(this IEnumerable<DropDownViewModel> dropDownList)
         {
+            if(dropDownList == null)
+            {
+                return new List<SelectListItem>();
+            }
             return dropDownList.Select(d => new SelectListItem
             {
                 Value = d.Id.ToString(),
@@ -378,5 +410,99 @@ namespace Icon.Web.Extensions
                 GetCountOnly = getCountOnly
             };
         }
+
+        public static string ToPascalCase(this string str)
+        {
+            if (str.Length > 1)
+                return str[0].ToString().ToLower() + str.Substring(1);
+            else
+                return str.ToLower();
+        }
+        public static IEnumerable<ExpandoObject> ShapeData<TSource>(
+            this IEnumerable<TSource> source,
+            string fields, 
+            bool toPascal = false)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            // create a list to hold our ExpandoObjects
+            var expandoObjectList = new List<ExpandoObject>();
+
+            // create a list with PropertyInfo objects on TSource.  Reflection is
+            // expensive, so rather than doing it for each object in the list, we do 
+            // it once and reuse the results.  After all, part of the reflection is on the 
+            // type of the object (TSource), not on the instance
+            var propertyInfoList = new List<PropertyInfo>();
+
+            if (string.IsNullOrWhiteSpace(fields))
+            {
+                // all public properties should be in the ExpandoObject
+                var propertyInfos = typeof(TSource)
+                        .GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+                propertyInfoList.AddRange(propertyInfos);
+            }
+            else
+            {
+                // only the public properties that match the fields should be
+                // in the ExpandoObject
+
+                // the field are separated by ",", so we split it.
+                var fieldsAfterSplit = fields.Split(',');
+
+                foreach (var field in fieldsAfterSplit)
+                {
+                    // trim each field, as it might contain leading 
+                    // or trailing spaces. Can't trim the var in foreach,
+                    // so use another var.
+                    var propertyName = field.Trim();
+
+                    // use reflection to get the property on the source object
+                    // we need to include public and instance, b/c specifying a binding flag overwrites the
+                    // already-existing binding flags.
+                    var propertyInfo = typeof(TSource)
+                        .GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+
+                    if (propertyInfo == null)
+                    {
+                        throw new Exception($"Property {propertyName} wasn't found on {typeof(TSource)}");
+                    }
+
+                    // add propertyInfo to list 
+                    propertyInfoList.Add(propertyInfo);
+                }
+            }
+
+            // run through the source objects
+            foreach (TSource sourceObject in source)
+            {
+                // create an ExpandoObject that will hold the 
+                // selected properties & values
+                var dataShapedObject = new ExpandoObject();
+
+                // Get the value of each property we have to return.  For that,
+                // we run through the list
+                foreach (var propertyInfo in propertyInfoList)
+                {
+                    // GetValue returns the value of the property on the source object
+                    var propertyValue = propertyInfo.GetValue(sourceObject);
+                    var propertyName = toPascal ? propertyInfo.Name.ToPascalCase() : propertyInfo.Name;
+
+                    // add the field to the ExpandoObject
+                    ((IDictionary<string, object>)dataShapedObject).Add(propertyName, propertyValue);
+                }
+
+                // add the ExpandoObject to the list
+                expandoObjectList.Add(dataShapedObject);
+            }
+
+            // return the list
+
+            return expandoObjectList;
+        }
     }
+
 }

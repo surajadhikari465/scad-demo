@@ -16,12 +16,25 @@ function filterButtonClick()
         filterRows(value);
     }
 }
-function clearButtonClikc()
+function clearButtonClick()
 {
     $('#filterText').val('');
     collapseRows();
 }
-
+$(document).ready(function () {
+    $('#export').click(function () {
+        hierarcyClassExportList = [];
+        var hierarchyName = "NationalClass";
+        buildHierarchyClassExportList($('#nationalClassGrid').igGrid('option', 'dataSource').data(), '');
+       
+        var hierarchyClassExportData = { hierarchyName: hierarchyName, hierarchyClasses: hierarcyClassExportList };
+       
+        $.fileDownload('/NationalClass/Export', {
+            httpMethod: 'POST',
+            data: hierarchyClassExportData
+        });
+    });
+});
 function filterRows(searchValue) {
     findRowsToExpand(searchValue);
     expandRows();
@@ -113,9 +126,9 @@ function buildHierarchyClassExportList(igGridHierarchyClassData, parentHierarchy
             buildHierarchyClassExportList(igGridHierarchyClassData[i].HierarchySubClasses.Records, hierarchyClassExportModel.HierarchyClassName + '|');
         }
         else {
- 
-                // only include the HierarchyClassId if it's the lowest level of other hierarchies.
-                hierarchyClassExportModel.HierarchyClassName += '|' + igGridHierarchyClassData[i].HierarchyClassId;
+
+            // only include the HierarchyClassId if it's the lowest level of other hierarchies.
+            hierarchyClassExportModel.HierarchyClassName += '|' + igGridHierarchyClassData[i].HierarchyClassId;
         }
     }
 }

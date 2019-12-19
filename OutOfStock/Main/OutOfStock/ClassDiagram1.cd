@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="ItemMasterModel too">
+    <Position X="6.4" Y="3.858" Height="0.325" Width="1.458" />
+  </Comment>
+  <Class Name="OutOfStock.Controllers.CustomReportController" Collapsed="true">
+    <Position X="0.5" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAQACApAAASAAQAAAAEAAAAAACAAEAAAAEAAAAAQCA=</HashCode>
+      <FileName>Controllers\CustomReportController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Controllers.HomeController" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Controllers.ProductStatusController" Collapsed="true">
+    <Position X="0.5" Y="6.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AABAIAAAEAAIAAAAAAAQCAAAAAAAAAAAAAUAAAAkAAA=</HashCode>
+      <FileName>Controllers\ProductStatusController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Controllers.SummaryReportController" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAQQAAAAAAAAAAEAgAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\SummaryReportController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Controllers.UPCEditController" Collapsed="true">
+    <Position X="0.5" Y="7.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAgIAAAEAAYAAAAAAAUAAAAAAAAAAAAAAUAAAAgABA=</HashCode>
+      <FileName>Controllers\UPCEditController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Controllers.UploadController" Collapsed="true">
+    <Position X="0.5" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAAgAAAEEAAAAAAAA=</HashCode>
+      <FileName>Controllers\UploadController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.MvcApplication" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>oCAAAAAAgAAAAAAkAAAAAIggAADAABCMQAAAgIAQAAA=</HashCode>
+      <FileName>Global.asax.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Models.CustomReportExcelModel" Collapsed="true">
+    <Position X="8" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAgAA=</HashCode>
+      <FileName>Models\CustomReportExcelModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Models.CustomReportViewModel" Collapsed="true">
+    <Position X="4.25" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAACAAQAAQIEAIEAQAAIAQBAQYQAAAIgAgAAAMAAgA=</HashCode>
+      <FileName>Models\CustomReportViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Models.ItemMasterModel" Collapsed="true">
+    <Position X="5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgACCAAQAAAAAAAAAAAAMAABAAAAAAAAAAAQAAMAAAA=</HashCode>
+      <FileName>Models\ItemMasterModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Models.KnownOOSUploadModel" Collapsed="true">
+    <Position X="2.75" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAIAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAgAA=</HashCode>
+      <FileName>Models\KnownOOSUploadModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.MvcApplication.oosLog" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAIAAAAEAAYgAAAAAAACAAAgAABGAAAABAEAEAAA=</HashCode>
+      <FileName>Models\OOSLog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Models.OOSUser" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAQBAgKIAAAAgAIAYAAAAAEAgEAAgAAiIBAgEAIQAA=</HashCode>
+      <FileName>Models\OOSUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Models.RegionalBuyerViewModel" Collapsed="true">
+    <Position X="2.75" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAowAAAAgAAAAAABIAABAAIAAEAAAAAQAAIAAAA=</HashCode>
+      <FileName>Models\RegionalBuyerViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Models.SKUCountModel" Collapsed="true">
+    <Position X="5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\SKUCountModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Models.SummaryReportViewModel" Collapsed="true">
+    <Position X="2.75" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAACAAAAAAQAAAAAEAAAA=</HashCode>
+      <FileName>Models\SummaryReportViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Models.VimSubTeam" Collapsed="true">
+    <Position X="2.75" Y="4.25" Width="1.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAIAAAAAAAEAAAA=</HashCode>
+      <FileName>Models\VimSubTeam.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Models.VimTeam" Collapsed="true">
+    <Position X="2.75" Y="3.5" Width="1.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAIAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Models\VimTeam.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfStock.Models.VimUPC" Collapsed="true">
+    <Position X="5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Models\VimUPC.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Tahoma" Size="8.4" />
+</ClassDiagram>

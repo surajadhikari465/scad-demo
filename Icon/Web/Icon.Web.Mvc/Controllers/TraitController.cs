@@ -1,7 +1,6 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Models;
 using MoreLinq;

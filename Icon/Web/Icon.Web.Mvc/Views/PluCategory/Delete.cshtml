@@ -16,45 +16,37 @@
     @Html.HiddenFor(m => m.PluCategoryName)
     @Html.HiddenFor(m => m.BeginRange)
     @Html.HiddenFor(m => m.EndRange)
-    
+
 
     <fieldset>
         <legend>Delete PLU Range</legend>
-       
 
-        <div class="row">
-            @Html.LabelFor(model => model.PluCategoryName, new { @class = "form-label col-md-2" })
-            <div>
-                @Html.TextBoxFor(model => model.PluCategoryName, new { @disabled = "disabled", @class = "col-md-6 form-input" })
-            </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PluCategoryName, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.PluCategoryName, new { @disabled = "disabled", @class = "form-control form-input" })
         </div>
 
-        <div class="row">
-            @Html.LabelFor(model => model.BeginRange, new { @class = "form-label col-md-2" })
-            <div>
-                @Html.TextBoxFor(model => model.BeginRange, new { @disabled = "disabled", @class = "col-md-6 form-input" })
-            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BeginRange, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.BeginRange, new { @disabled = "disabled", @class = "form-control form-input" })
         </div>
 
-        <div class="row">
-            @Html.LabelFor(model => model.EndRange, new { @class = "form-label col-md-2" })
-            <div>
-                @Html.TextBoxFor(model => model.EndRange, new { @disabled = "disabled", @class = "col-md-6 form-input" })
-            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndRange, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.EndRange, new { @disabled = "disabled", @class = "form-control form-input" })
         </div>
 
-        <div class="row">
-            <div class="col-md-offset-2 col-md-1">
-                <input type="submit" value="Delete" class="btn btn-default form-submit" />
-            </div>
+        <div class="form-group">
+            <input type="submit" value="Delete" class="btn btn-danger form-submit" />
         </div>
-       
+
 
     </fieldset>
 }
 
 <div class="page-subsection">
-   @if (ViewData["ErrorMessage"] != null)
+    @if (ViewData["ErrorMessage"] != null)
     {
         <div class="alert alert-danger alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -66,8 +58,3 @@
 <div class="page-subsection">
     @Html.ActionLink("Return To PLU Ranges", "Index")
 </div>
-
-@section Scripts
-{
-    @Scripts.Render("~/bundles/jqueryval")
-}

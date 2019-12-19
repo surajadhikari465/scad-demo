@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Icon.Web.Tests.Integration</RootNamespace>
     <AssemblyName>Icon.Web.Tests.Integration</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -61,12 +61,14 @@
     <OutputPath>bin\QA1\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
+      <HintPath>..\packages\Castle.Core.4.4.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -75,24 +77,25 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Common.2016.10.19.4\lib\net45\Icon.Common.dll</HintPath>
+      <HintPath>..\packages\Icon.Common.2019.11.13.3\lib\net472\Icon.Common.dll</HintPath>
     </Reference>
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.DbContextFactory.2019.5.15.1\lib\net46\Icon.DbContextFactory.dll</HintPath>
+      <HintPath>..\packages\Icon.DbContextFactory.2019.5.22.1\lib\net472\Icon.DbContextFactory.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2019.8.29.3\lib\net46\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2019.11.13.3\lib\net472\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.RenewableContext.2019.5.14.2\lib\net472\Icon.RenewableContext.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Shared.DataAccess.Dapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Shared.DataAccess.Dapper.2019.7.1.1\lib\net46\Icon.Shared.DataAccess.Dapper.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Testing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Testing.2018.10.5.4\lib\net46\Icon.Testing.dll</HintPath>
+      <HintPath>..\packages\Icon.Testing.2019.8.26.7\lib\net472\Icon.Testing.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Web.Mvc.Documents.Core, Version=14.2.20142.2140, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -103,36 +106,45 @@
       <HintPath>..\Icon.Web.Mvc\lib\Infragistics\MVC\Common\Bin\Infragistics.Web.Mvc.Documents.Excel.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Moq, Version=4.8.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.8.2\lib\net45\Moq.dll</HintPath>
+    <Reference Include="Moq, Version=4.13.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.13.1\lib\net45\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.Extended.4.5.10\lib\net45\NLog.Extended.dll</HintPath>
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleInjector, Version=2.8.3.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.2.8.3\lib\net45\SimpleInjector.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="PresentationCore" />
+    <Reference Include="SimpleInjector, Version=4.7.1.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.4.7.1\lib\net45\SimpleInjector.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Messaging" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.6.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.3\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
-    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -150,10 +162,22 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Commands\AddAddressCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddAttributeMessageCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddManufacturerMessageCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddMessageQueueItemByHierarchyClassIdCommadHandlerTests.cs" />
+    <Compile Include="Commands\RefreshAttributesCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateItemProhibitDiscountCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateItemSubTeamByHierarchyClassCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateItemTypeByHierarchyClassCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateAttributeCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddUpdatePickListDataCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddUpdateCharacterSetCommandHandlerTests .cs" />
+    <Compile Include="Commands\AddAttributeCommandHandlerTests.cs" />
     <Compile Include="Commands\AddCertificationAgencyCommandHandlerTests.cs" />
     <Compile Include="Commands\AddEwicMappingCommandHandlerTests.cs" />
     <Compile Include="Commands\AddVimLocaleEventCommandHandlerTests.cs" />
     <Compile Include="Commands\BulkImportCertificationAgencyCommandHandlerTests.cs" />
+    <Compile Include="Commands\RefreshHierarchiesCommandHandlerTests.cs" />
     <Compile Include="Commands\RemoveEwicMappingCommandHandlerTests.cs" />
     <Compile Include="Commands\RemoveEwicExclusionCommandHandlerTests.cs" />
     <Compile Include="Commands\AddEwicExclusionCommandHandlerTests.cs" />
@@ -174,9 +198,10 @@
     <Compile Include="Commands\DeleteHierarchyClassCommandHandlerTests.cs" />
     <Compile Include="Commands\DeleteIrmaItemCommandHandlerTests.cs" />
     <Compile Include="Commands\DeletePluCategoryByIdCommandHandlerTests.cs" />
-    <Compile Include="Commands\RemoveHierarchyClassFromIrmaItemsCommandHandlerTests.cs" />
     <Compile Include="Commands\SaveToMessageHistoryCommandHandlerTests.cs" />
-    <Compile Include="Commands\ApplyMerchTaxAssociationToItemsCommandHandlerTests.cs" />
+    <Compile Include="Commands\PublishItemUpdatesCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddItemCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateItemCommandHandlerTests.cs" />
     <Compile Include="Commands\UpdateMessageHistoryStatusCommandHandlerTests.cs" />
     <Compile Include="Commands\UpdateBrandCommandHandlerTests.cs" />
     <Compile Include="Commands\UpdateBrandHierarchyClassTraitsCommandHandlerTests.cs" />
@@ -188,8 +213,20 @@
     <Compile Include="Commands\UpdateProductSelectionGroupMappingCommandHandlerTests.cs" />
     <Compile Include="Commands\UpdateRegionalSettingsCommandHandlerTest.cs" />
     <Compile Include="Commands\UpdateSubTeamCommandHandlerTests.cs" />
+    <Compile Include="Decorators\RetryUniqueConstraintManagerHandlerDecoratorTests.cs" />
+    <Compile Include="Decorators\AddItemMessageQueueHierarchyClassTraitDecoratorTests.cs" />
+    <Compile Include="Decorators\UpdateItemProhibitDiscountHierarchyClassTraitDecoratorTests.cs" />
+    <Compile Include="Decorators\UpdateItemSubTeamHierarchyClassTraitDecoratorTests.cs" />
+    <Compile Include="Decorators\UpdateItemTypeHierarchyClassTraitDecoratorTests.cs" />
     <Compile Include="Excel\Services\ItemExcelServiceTests.cs" />
+    <Compile Include="Infrastructure\ItemSearch\ItemQueryBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\DoesAttributeExistOnItemsQueryHandlerTests.cs" />
+    <Compile Include="Queries\GetAttributesQueryTests.cs" />
+    <Compile Include="Queries\GetAttributeByAttributeIdQueryTests.cs" />
+    <Compile Include="Queries\DoesScanCodeExistQueryTests.cs" />
+    <Compile Include="Queries\GetBarcodeTypesQueryTests.cs" />
+    <Compile Include="Queries\GetCharacterSetsByAttributeTests.cs" />
     <Compile Include="Queries\GetAvailableScanCodesByCategoryQueryTests.cs" />
     <Compile Include="Queries\GetCertificationAgenciesQueryTests.cs" />
     <Compile Include="Queries\GetCurrentEwicMappingParametersQueryTests.cs" />
@@ -205,10 +242,16 @@
     <Compile Include="Queries\GetBrandsThatExistQueryTests.cs" />
     <Compile Include="Queries\GetExistingScanCodeUploadsQueryTests.cs" />
     <Compile Include="Queries\GetCertificationAgenciesByTraitQueryTests.cs" />
+    <Compile Include="Queries\GetHierarchyClassesQueryHandlerTests.cs" />
     <Compile Include="Queries\GetHierarchyLineageQueryTests.cs" />
     <Compile Include="Queries\GetIrmaItemsQueryTests.cs" />
+    <Compile Include="Queries\GetItemHierarchyClassHistoryQueryTests.cs" />
+    <Compile Include="Queries\GetItemHistoryQueryHandlerTests.cs" />
+    <Compile Include="Queries\GetItemQueryHandlerTests.cs" />
     <Compile Include="Queries\GetItemsByBulkScanCodeSearchQueryTests.cs" />
+    <Compile Include="Queries\GetItemsByIdSearchQueryTests.cs" />
     <Compile Include="Queries\GetItemsBySearchQueryTests.cs" />
+    <Compile Include="Queries\GetItemsQueryHandlerTests.cs" />
     <Compile Include="Queries\GetNewScanCodeUploadsQueryTests.cs" />
     <Compile Include="Queries\GetPluCategoriesQueryTests.cs" />
     <Compile Include="Queries\GetPluCategoryByIdQueryTests.cs" />
@@ -219,6 +262,17 @@
     <Compile Include="Queries\GetEwicAgenciesWithoutExclusionQueryTests.cs" />
     <Compile Include="Queries\GetMessageHistoryQueryTests.cs" />
     <Compile Include="Queries\GetDefaultTaxClassMismatchesQueryTests.cs" />
+    <Compile Include="Infrastructure\ItemSearch\ItemSearchCriteriaTests.cs" />
+    <Compile Include="TestBuilders\TestItemDbModelBuilder.cs" />
+    <Compile Include="TestHelpers\SqlExceptionCreator.cs" />
+    <Compile Include="TestHelpers\ItemTestHelper.cs" />
+    <Compile Include="TestHelpers\SqlConnectionBuilder.cs" />
+    <Compile Include="TestHelpers\SqlDataGenerator.cs" />
+    <Compile Include="TestModels\TestHierarchyClassModel.cs" />
+    <Compile Include="TestModels\TestItemTypeModel.cs" />
+    <Compile Include="TestModels\TestMessageQueueItemModel.cs" />
+    <Compile Include="TestModels\TestBarCodeTypeModel.cs" />
+    <Compile Include="TestModels\TestScanCodeTypeModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -233,7 +287,7 @@
       <Name>Icon.Web.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Icon.Web.DataAccess\Icon.Web.DataAccess.csproj">
-      <Project>{a4972528-84bc-40d4-a961-7c343eb94d2b}</Project>
+      <Project>{A4972528-84BC-40D4-A961-7C343EB94D2B}</Project>
       <Name>Icon.Web.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Icon.Web.Mvc\Icon.Web.Mvc.csproj">
@@ -245,7 +299,9 @@
       <Name>Icon.Web.Tests.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

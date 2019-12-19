@@ -1,5 +1,4 @@
-﻿using Icon.Web.DataAccess.Infrastructure;
-using Icon.Framework;
+﻿using Icon.Framework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -30,7 +29,7 @@ namespace Icon.Web.DataAccess.Queries
 
             if (parameters.ItemId != null)
             {
-                return query.Where(i => i.itemID == parameters.ItemId).ToList();
+                return query.Where(i => i.ItemId == parameters.ItemId).ToList();
             }
 
             if (!String.IsNullOrEmpty(parameters.NationalPlu))

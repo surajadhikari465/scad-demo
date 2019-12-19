@@ -2,7 +2,6 @@
 using Icon.Framework;
 using System;
 using System.Configuration;
-using System.Data;
 using System.Linq;
 
 namespace Icon.Web.DataAccess.Commands

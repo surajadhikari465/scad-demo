@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[RUNMODE] (
+    [RUNMODE_ID]  INT          IDENTITY (1, 1) NOT NULL,
+    [DESCRIPTION] VARCHAR (20) NOT NULL
+);
+

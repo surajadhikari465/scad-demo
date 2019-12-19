@@ -1,0 +1,9 @@
+<div class="region-container">
+  <wfm-toggle-group
+    [buttons]="regions"
+    (wfmToggleButtonSelected)="setSelected($event)"
+    direction="vertical"
+    flex
+  ></wfm-toggle-group>
+</div>
+<wfm-button type="submit" flex [disabled]="!selectedRegion" (click)="selectRegion()">Select Region</wfm-button>

@@ -4,7 +4,6 @@ using Icon.Logging;
 using Icon.Web.Common;
 using Icon.Web.Controllers;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Models;
@@ -424,9 +423,9 @@ namespace Icon.Web.Tests.Unit.Controllers
 
         private Item GetFakeItemPluMap()
         {
-            Item item = new Item { itemID = 45612378 };
+            Item item = new Item { ItemId = 45612378 };
 
-            ScanCode scanCode = new ScanCode { itemID = item.itemID, scanCodeID = 1, scanCode = "23999900000", scanCodeTypeID = 1 };
+            ScanCode scanCode = new ScanCode { itemID = item.ItemId, scanCodeID = 1, scanCode = "23999900000", scanCodeTypeID = 1 };
             ScanCodeType scanCodeType = new ScanCodeType { scanCodeTypeID = 1, scanCodeTypeDesc = "Scale PLU" };
 
             scanCode.ScanCodeType = scanCodeType;
@@ -434,7 +433,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             
             item.PLUMap = new PLUMap 
             { 
-                itemID = item.itemID,
+                itemID = item.ItemId,
                 flPLU = "23888800000",
                 rmPLU = "24777700000",
                 spPLU = "21333300000"

@@ -18,15 +18,15 @@ namespace Icon.Framework
         {
             this.Mapping = new HashSet<Mapping>();
             this.Locale = new HashSet<Locale>();
-            this.ScanCode = new HashSet<ScanCode>();
             this.AuthorizedProductList = new HashSet<AuthorizedProductList>();
+            this.ScanCode = new HashSet<ScanCode>();
         }
     
         public string AgencyId { get; set; }
     
         public virtual ICollection<Mapping> Mapping { get; set; }
         public virtual ICollection<Locale> Locale { get; set; }
-        public virtual ICollection<ScanCode> ScanCode { get; set; }
         public virtual ICollection<AuthorizedProductList> AuthorizedProductList { get; set; }
+        public virtual ICollection<ScanCode> ScanCode { get; set; }
     }
 }

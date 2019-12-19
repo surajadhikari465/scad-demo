@@ -32,7 +32,7 @@ namespace Icon.Framework
 	var descriptions = new List<string>();
 	var ids = new List<int>();
 
-    string fullPath = Host.ResolvePath("") + @"App.config";
+    string fullPath = Host.ResolvePath(@"..\Icon.Framework\App.config");
 	var config = new ConfigurationAccessor((IServiceProvider)this.Host, fullPath);
     string connectionString = config.ConnectionStrings["T4"].ConnectionString;
     SqlConnection conn = new SqlConnection(connectionString);

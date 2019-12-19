@@ -7,7 +7,6 @@ using System.Transactions;
 namespace GlobalEventController.Tests.DataAccess.CommandTests
 {
     [TestClass]
-    [Ignore] //Ignoring these tests since this functionality has been turned off for 2 years
     public class UpdateTaxCommandHandlerTests
     {
         private UpdateTaxClassCommandHandler handler;
@@ -76,8 +75,31 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
 
             // Then
             TaxClass actual = this.context.TaxClass.First(tc => tc.TaxClassID == taxClass.TaxClassID);
-            Assert.AreEqual(this.command.TaxClassDescription, actual.TaxClassDesc, "The TaxClassDesc did not match the expected value.");
-            Assert.AreNotEqual(description, actual.TaxClassDesc, "The TaxClassDesc was not updated as expected");
+            Assert.AreNotEqual(this.command.TaxClassDescription, actual.TaxClassDesc, "The TaxClassDesc did not match the expected value.");
+            Assert.AreEqual(description, actual.TaxClassDesc, "The TaxClassDesc was not updated as expected");
+        }
+
+        [TestMethod]
+        public void UpdateTax_TaxClassInIrma_TaxClassDescLengthGreatherThan50Updated()
+        {
+            // Given
+            TaxClass taxClass = this.context.TaxClass.First(tc => !tc.TaxClassDesc.ToLower().Contains("do not use"));
+            string description = taxClass.TaxClassDesc;
+
+            this.command.TaxCode = taxClass.ExternalTaxGroupCode;
+            this.command.TaxClassDescription = taxClass.TaxClassDesc + "testing tax description length";
+
+            // When
+            this.handler.Handle(this.command);
+
+            // Then
+            TaxClass actual = this.context.TaxClass.First(tc => tc.TaxClassID == taxClass.TaxClassID);
+            TaxClass result = this.context.TaxClass.AsNoTracking().FirstOrDefault(tc => tc.TaxClassDesc == this.command.TaxClassDescription);
+            
+            Assert.AreEqual(this.command.TaxClassDescription, result.TaxClassDesc);
+            Assert.AreNotEqual(description, result.TaxClassDesc);
+            Assert.AreEqual(this.command.TaxCode, result.ExternalTaxGroupCode);
+            Assert.AreEqual(actual.TaxClassID, this.command.TaxClassId);
         }
     }
 }

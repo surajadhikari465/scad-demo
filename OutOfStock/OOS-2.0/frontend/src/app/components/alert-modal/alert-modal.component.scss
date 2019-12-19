@@ -1,0 +1,11 @@
+
+.alert{
+  &_container {
+    text-align: center;
+  }
+
+  &_button {
+    padding: 0 15px;
+    margin-bottom: 25px;
+  }
+}

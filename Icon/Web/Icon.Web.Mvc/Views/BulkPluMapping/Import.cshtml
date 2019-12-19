@@ -6,14 +6,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
-
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Render()
-)
-
 @{Html.RenderPartial("_HeaderPartial", "Bulk PLU Import");}
 
 <div class="page-section">
@@ -87,7 +79,7 @@
             )
         </div>
 
-        @Html.ActionLink("Export", "BulkPluExport", "Excel", null, new { @class = "btn btn-default form-submit" })
+        @Html.ActionLink("Export", "BulkPluExport", "Excel", null, new { @class = "btn btn-light form-submit" })
     </div>
 }
 
@@ -138,7 +130,7 @@
                     @Html.HiddenFor(model => model.RemapRows[i].RegionalPlu);
                 }
 
-                <input type="submit" value="Overwrite Mappings" id="overwriteButton" class="btn btn-default form-submit" />
+                <input type="submit" value="Overwrite Mappings" id="overwriteButton" class="btn btn-light form-submit" />
             }
 
             <div class="validation-section page-subsection">

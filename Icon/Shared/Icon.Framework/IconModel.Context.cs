@@ -27,9 +27,7 @@ namespace Icon.Framework
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Item> Item { get; set; }
         public virtual DbSet<ItemType> ItemType { get; set; }
-        public virtual DbSet<ScanCode> ScanCode { get; set; }
         public virtual DbSet<ScanCodeType> ScanCodeType { get; set; }
         public virtual DbSet<Trait> Trait { get; set; }
         public virtual DbSet<Hierarchy> Hierarchy { get; set; }
@@ -44,7 +42,6 @@ namespace Icon.Framework
         public virtual DbSet<MessageType> MessageType { get; set; }
         public virtual DbSet<MessageStatus> MessageStatus { get; set; }
         public virtual DbSet<ItemTrait> ItemTrait { get; set; }
-        public virtual DbSet<ItemPrice> ItemPrice { get; set; }
         public virtual DbSet<ItemPriceType> ItemPriceType { get; set; }
         public virtual DbSet<MessageAction> MessageAction { get; set; }
         public virtual DbSet<UOM> UOM { get; set; }
@@ -63,7 +60,6 @@ namespace Icon.Framework
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<EventQueue> EventQueue { get; set; }
         public virtual DbSet<Locale> Locale { get; set; }
-        public virtual DbSet<MessageQueueItemLocale> MessageQueueItemLocale { get; set; }
         public virtual DbSet<MessageQueuePrice> MessageQueuePrice { get; set; }
         public virtual DbSet<ProductSelectionGroupType> ProductSelectionGroupType { get; set; }
         public virtual DbSet<ProductSelectionGroup> ProductSelectionGroup { get; set; }
@@ -95,8 +91,6 @@ namespace Icon.Framework
         public virtual DbSet<APIMessageProcessorLogEntry> APIMessageMonitorLog { get; set; }
         public virtual DbSet<MessageArchiveProduct> MessageArchiveProduct { get; set; }
         public virtual DbSet<InforMessageHistory> InforMessageHistory { get; set; }
-        public virtual DbSet<MessageArchiveHierarchy> MessageArchiveHierarchy { get; set; }
-        public virtual DbSet<ItemSignAttribute> ItemSignAttribute { get; set; }
         public virtual DbSet<IRMAItem> IRMAItem { get; set; }
         public virtual DbSet<Currency> Currencies { get; set; }
         public virtual DbSet<LocaleSubType> LocaleSubTypes { get; set; }
@@ -104,6 +98,19 @@ namespace Icon.Framework
         public virtual DbSet<MessageQueueNutrition> MessageQueueNutrition { get; set; }
         public virtual DbSet<MessageQueueLocale> MessageQueueLocale { get; set; }
         public virtual DbSet<MessageQueueProduct> MessageQueueProduct { get; set; }
+        public virtual DbSet<AttributeGroup> AttributeGroup { get; set; }
+        public virtual DbSet<CharacterSets> CharacterSets { get; set; }
+        public virtual DbSet<DataType> DataType { get; set; }
+        public virtual DbSet<MessageQueueItem> MessageQueueItem { get; set; }
+        public virtual DbSet<Attributes> Attributes { get; set; }
+        public virtual DbSet<PickListData> PickListData { get; set; }
+        public virtual DbSet<AttributeCharacterSets> AttributeCharacterSets { get; set; }
+        public virtual DbSet<MessageQueueItemLocale> MessageQueueItemLocale { get; set; }
+        public virtual DbSet<ScanCode> ScanCode { get; set; }
+        public virtual DbSet<ItemPrice> ItemPrice { get; set; }
+        public virtual DbSet<MessageArchiveHierarchy> MessageArchiveHierarchy { get; set; }
+        public virtual DbSet<ItemSignAttribute> ItemSignAttribute { get; set; }
+        public virtual DbSet<Item> Item { get; set; }
         public virtual DbSet<MessageQueueHierarchy> MessageQueueHierarchy { get; set; }
     
         public virtual int MarkStagingTableEntriesAsInProcessForEsb(Nullable<int> numberOfRows, Nullable<int> jobInstance)

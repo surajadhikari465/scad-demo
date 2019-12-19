@@ -1,6 +1,6 @@
 ﻿using Icon.Framework;
 using Icon.Web.Attributes;
-using Icon.Web.Extensions;
+using Icon.Web.Mvc.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,6 +26,7 @@ namespace Icon.Web.Mvc.Models
 
         [Required]
         [HierarchyClassName]
+        [MaxLength(255)]
         [Display(Name = "Class Name")]
         public virtual string HierarchyClassName { get; set; }
 
@@ -42,15 +43,12 @@ namespace Icon.Web.Mvc.Models
         public IEnumerable<SelectListItem> SubTeamList { get; set; }
 
         [Display(Name = "Tax Abbreviation")]
-        [IconPropertyValidation(ValidatorPropertyNames.TaxAbbreviation, CanBeNullOrEmprty = true)]
-        
+        [IconPropertyValidation(ValidatorPropertyNames.TaxAbbreviation, CanBeNullOrEmpty = true)]
         public string TaxAbbreviation { get; set; }
-        [Display(Name = "Tax Romance")]
-        [IconPropertyValidation(ValidatorPropertyNames.TaxRomance, CanBeNullOrEmprty = true)]
-        public string TaxRomance { get; set; }
 
-        [Display(Name = "GL Account")]
-        public string GlAccount { get; set; }
+        [Display(Name = "Tax Romance")]
+        [IconPropertyValidation(ValidatorPropertyNames.TaxRomance, CanBeNullOrEmpty = true)]
+        public string TaxRomance { get; set; }
 
         public IEnumerable<SelectListItem> NonMerchandiseTraitList
         {
@@ -68,6 +66,7 @@ namespace Icon.Web.Mvc.Models
         public bool ProhibitDiscount { get; set; }
 
         [Display(Name = "SubBrick Code")]
+        [MaxLength(255)]
         public string SubBrickCode { get; set; }
 
         public HierarchyClassViewModel()
@@ -104,20 +103,19 @@ namespace Icon.Web.Mvc.Models
 
             SubTeam = HierarchyClassAccessor.GetSubTeam(hierarchyClass);
             TaxAbbreviation = HierarchyClassAccessor.GetTaxAbbreviation(hierarchyClass);
-            GlAccount = HierarchyClassAccessor.GetGlAccount(hierarchyClass);
             NonMerchandiseTrait = HierarchyClassAccessor.GetNonMerchandiseTrait(hierarchyClass);
             ProhibitDiscount = HierarchyClassAccessor.GetProhibitDiscount(hierarchyClass);
             SubBrickCode = HierarchyClassAccessor.GetSubBrickCode(hierarchyClass);
         }
 
-        public HierarchyClassViewModel(HierarchyClassModel hierarchyLineageModel)
+        public HierarchyClassViewModel(HierarchyClassModel hierarchyClassModel)
         {
-            HierarchyId = hierarchyLineageModel.HierarchyId;
-            HierarchyClassId = hierarchyLineageModel.HierarchyClassId;
-            HierarchyParentClassId = hierarchyLineageModel.HierarchyParentClassId;
-            HierarchyClassName = hierarchyLineageModel.HierarchyClassName;
-            HierarchyLevel = hierarchyLineageModel.HierarchyLevel;
-            HierarchyClassLineage = hierarchyLineageModel.HierarchyLineage;
+            HierarchyId = hierarchyClassModel.HierarchyId;
+            HierarchyClassId = hierarchyClassModel.HierarchyClassId;
+            HierarchyParentClassId = hierarchyClassModel.HierarchyParentClassId;
+            HierarchyClassName = hierarchyClassModel.HierarchyClassName;
+            HierarchyLevel = hierarchyClassModel.HierarchyLevel;
+            HierarchyClassLineage = hierarchyClassModel.HierarchyLineage;
         }
     }
 }

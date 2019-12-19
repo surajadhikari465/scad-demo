@@ -2,11 +2,11 @@
 using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Web.Common;
-using Icon.Web.Common.Validators;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using System;
 using System.Linq;
+using Icon.Common.Validators;
 
 namespace Icon.Web.DataAccess.Managers
 {
@@ -17,18 +17,21 @@ namespace Icon.Web.DataAccess.Managers
         private ICommandHandler<UpdateHierarchyClassTraitCommand> hierarchyClassTraitHandler;
         private ICommandHandler<AddTaxEventCommand> addTaxEventHandler;
         private ICommandHandler<AddHierarchyClassMessageCommand> addHierarchyClassMessageHandler;
+        private IMapper mapper;
 
         public UpdateHierarchyClassManagerHandler(IconContext context,
             ICommandHandler<UpdateHierarchyClassCommand> hierarchyClassHandler,
             ICommandHandler<UpdateHierarchyClassTraitCommand> hierarchyClassTraitHandler,
             ICommandHandler<AddTaxEventCommand> addTaxEventHandler,
-            ICommandHandler<AddHierarchyClassMessageCommand> addHierarchyClassMessageHandler)
+            ICommandHandler<AddHierarchyClassMessageCommand> addHierarchyClassMessageHandler,
+            IMapper mapper)
         {
             this.context = context;
             this.hierarchyClassHandler = hierarchyClassHandler;
             this.hierarchyClassTraitHandler = hierarchyClassTraitHandler;
             this.addTaxEventHandler = addTaxEventHandler;
             this.addHierarchyClassMessageHandler = addHierarchyClassMessageHandler;
+            this.mapper = mapper;
         }
 
         public void Execute(UpdateHierarchyClassManager data)
@@ -39,16 +42,16 @@ namespace Icon.Web.DataAccess.Managers
                 try
                 {
                     // Update Hierarchy Class - Events are generated inside handler
-                    UpdateHierarchyClassCommand updateHierarchyClassCommand = Mapper.Map<UpdateHierarchyClassCommand>(data);
+                    UpdateHierarchyClassCommand updateHierarchyClassCommand = mapper.Map<UpdateHierarchyClassCommand>(data);
                     hierarchyClassHandler.Execute(updateHierarchyClassCommand);
 
                     // Update Hierarchy Class Traits
-                    UpdateHierarchyClassTraitCommand updateHierarchyClassTraitCommand = Mapper.Map<UpdateHierarchyClassTraitCommand>(data);
+                    UpdateHierarchyClassTraitCommand updateHierarchyClassTraitCommand = mapper.Map<UpdateHierarchyClassTraitCommand>(data);
                     hierarchyClassTraitHandler.Execute(updateHierarchyClassTraitCommand);
 
                     // Generate Hierarchy Messages
                     // HierarchyData.ClassNameChange will indicate if a Hierarchy Message will be generated.
-                    AddHierarchyClassMessageCommand addHierarchyClassMessageCommand = Mapper.Map<AddHierarchyClassMessageCommand>(updateHierarchyClassCommand);
+                    AddHierarchyClassMessageCommand addHierarchyClassMessageCommand = mapper.Map<AddHierarchyClassMessageCommand>(updateHierarchyClassCommand);
                     addHierarchyClassMessageHandler.Execute(addHierarchyClassMessageCommand);
 
                     // Generate Tax Update Event

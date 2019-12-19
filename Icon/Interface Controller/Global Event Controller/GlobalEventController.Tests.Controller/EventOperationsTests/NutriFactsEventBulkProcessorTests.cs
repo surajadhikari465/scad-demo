@@ -85,6 +85,35 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
         }
 
         [TestMethod]
+        public void ProcessNutritionEvents_NutritionEventsAreQueued_DeleteEventsAreProperlyProcessed()
+        {
+            // Given
+            PopulateQueueWithRandomDeleteEvents();
+            int expectedRegionCount = this.queues.QueuedEvents.Select(e => e.RegionCode).Distinct().Count();
+
+            // When
+            this.processor.BulkProcessEvents();
+
+            // Then
+            mockServiceProvider.Verify(m => m.GetBulkItemNutriFactsEventService(It.IsAny<string>()), Times.Exactly(expectedRegionCount), "The service provider did not get called for each region");
+            mockBulkEventService.Verify(s => s.Run(), Times.Exactly(expectedRegionCount), "The event service did not get called for each region");
+        }
+
+        [TestMethod]
+        public void ProcessNutritionEvents_NutritionEventsAreQueued_DeleteEventsAreProperlyGroupedByRegion()
+        {
+            // Given
+            PopulateQueueWithDeleteEventsFromSameRegion();
+
+            // When
+            this.processor.BulkProcessEvents();
+
+            // Then
+            mockServiceProvider.Verify(m => m.GetBulkItemNutriFactsEventService(It.IsAny<string>()), Times.Once, "The service provider did not get called an expected single time");
+            mockBulkEventService.Verify(s => s.Run(), Times.Once, "The event service did not get called an expected single time");
+        }
+
+       [TestMethod]
         public void ProcessNutritionEvents_NutritionEventsAreQueued_EventQueueDictionaryListValuesAreExpected()
         {
             // Given
@@ -345,6 +374,36 @@ namespace GlobalEventController.Tests.Controller.EventOperationsTests
             EventQueue eventSeven = new TestEventQueueBuilder().WithEventId(EventTypes.NutritionAdd).WithEventMessage("36925814725").WithRegionCode("FL").Build();
             eventSeven.EventType = new EventType { EventId = eventSeven.EventId, EventName = EventConstants.ItemNutritionAdd };
             this.queues.QueuedEvents.Add(eventSeven);
+        }
+
+        private void PopulateQueueWithRandomDeleteEvents()
+        {
+            EventQueue @event = new TestEventQueueBuilder().WithEventId(EventTypes.NutritionDelete).WithEventMessage("101848").WithRegionCode("FL").Build();
+            @event.EventType = new EventType { EventId = @event.EventId, EventName = EventConstants.IconItemUpdatedEventName };
+            this.queues.QueuedEvents.Add(@event);
+
+            @event = new TestEventQueueBuilder().WithEventId(EventTypes.NutritionDelete).WithEventMessage("26096100000").WithRegionCode("FL").Build();
+            @event.EventType = new EventType { EventId = @event.EventId, EventName = EventConstants.IconItemUpdatedEventName };
+            this.queues.QueuedEvents.Add(@event);
+
+            @event = new TestEventQueueBuilder().WithEventId(EventTypes.NutritionDelete).WithEventMessage("101848").WithRegionCode("PN").Build();
+            @event.EventType = new EventType { EventId = @event.EventId, EventName = EventConstants.IconItemUpdatedEventName };
+            this.queues.QueuedEvents.Add(@event);
+
+            @event = new TestEventQueueBuilder().WithEventId(EventTypes.NutritionDelete).WithEventMessage("101040").WithRegionCode("MA").Build();
+            @event.EventType = new EventType { EventId = @event.EventId, EventName = EventConstants.IconItemUpdatedEventName };
+            this.queues.QueuedEvents.Add(@event);
+        }
+
+        private void PopulateQueueWithDeleteEventsFromSameRegion()
+        {
+            EventQueue @event = new TestEventQueueBuilder().WithEventId(EventTypes.NutritionDelete).WithEventMessage("101848").WithRegionCode("FL").Build();
+            @event.EventType = new EventType { EventId = @event.EventId, EventName = EventConstants.IconItemUpdatedEventName };
+            this.queues.QueuedEvents.Add(@event);
+
+            @event = new TestEventQueueBuilder().WithEventId(EventTypes.NutritionDelete).WithEventMessage("101840").WithRegionCode("FL").Build();
+            @event.EventType = new EventType { EventId = @event.EventId, EventName = EventConstants.IconItemUpdatedEventName };
+            this.queues.QueuedEvents.Add(@event);
         }
 
         private void PopulateQueueWithNonNutritionEvents()

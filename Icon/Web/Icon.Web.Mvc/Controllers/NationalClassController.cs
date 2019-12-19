@@ -1,4 +1,5 @@
-﻿using Icon.Common.DataAccess;
+﻿using DevTrends.MvcDonutCaching;
+using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
@@ -7,45 +8,62 @@ using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Attributes;
+using Icon.Web.Mvc.Exporters;
 using Icon.Web.Mvc.Models;
-using Infragistics.Web.Mvc;
+using Icon.Web.Mvc.Utility;
+using Infragistics.Documents.Excel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Icon.Web.Controllers
 {
-	public class NationalClassController : Controller
-	{
-		private ILogger logger;
-		private IQueryHandler<GetHierarchyParameters, List<Hierarchy>> getHierarchyQuery;
+    public class NationalClassController : Controller
+    {
+        private ILogger logger;
+        private IconWebAppSettings settings;
+        private IQueryHandler<GetHierarchyParameters, List<Hierarchy>> getHierarchyQuery;
         private IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> hierarchyClassQuery;
         private IManagerHandler<UpdateNationalHierarchyManager> updateNationalHierarchyManager;
         private IManagerHandler<AddNationalHierarchyManager> addNationalHierarchyManager;
         private IManagerHandler<DeleteNationalHierarchyManager> deleteNationalHierarchyManager;
-
+        private IExcelExporterService exporterService;
+        private IDonutCacheManager cacheManager;
+        private IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler;
         public NationalClassController(
-            ILogger logger, 
+            ILogger logger,
+            IconWebAppSettings settings,
             IQueryHandler<GetHierarchyParameters, List<Hierarchy>> getHierarchyQuery,
             IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> hierarchyClassQuery,
             IManagerHandler<UpdateNationalHierarchyManager> updateNationalHierarchyManager,
             IManagerHandler<AddNationalHierarchyManager> addNationalHierarchyManager,
-            IManagerHandler<DeleteNationalHierarchyManager> deleteNationalHierarchyManager)
-		{
-			this.logger = logger;
-			this.getHierarchyQuery = getHierarchyQuery;
+            IManagerHandler<DeleteNationalHierarchyManager> deleteNationalHierarchyManager,
+            IExcelExporterService exporterService,
+            IDonutCacheManager cacheManager,
+            IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler)
+        {
+            this.logger = logger;
+            this.settings = settings;
+            this.getHierarchyQuery = getHierarchyQuery;
             this.hierarchyClassQuery = hierarchyClassQuery;
             this.updateNationalHierarchyManager = updateNationalHierarchyManager;
             this.addNationalHierarchyManager = addNationalHierarchyManager;
             this.deleteNationalHierarchyManager = deleteNationalHierarchyManager;
-		}
+            this.exporterService = exporterService;
+            this.cacheManager = cacheManager;
+            this.getHierarchyClassesQueryHandler = getHierarchyClassesQueryHandler;
+        }
 
         // GET: /NationalClass/
         public ActionResult Index()
 		{
-            NationalClassSearchViewModel viewModel = new NationalClassSearchViewModel();            
+            NationalClassSearchViewModel viewModel = new NationalClassSearchViewModel()
+            {
+                UserWriteAccess = this.GetWriteAccess()
+            };            
             GetHierarchyParameters searchHierarchyParameters = new GetHierarchyParameters
             {
                 HierarchyId = Hierarchies.National,
@@ -74,6 +92,7 @@ namespace Icon.Web.Controllers
 
         // GET: /NationalClass/Create/
         [HttpGet]
+        [WriteAccessAuthorize]
         public ActionResult Create(int? hierarchyParentClassID)
         {
             HierarchyClass  parentHierarchyClass = null;
@@ -125,6 +144,7 @@ namespace Icon.Web.Controllers
             try
             {
                 addNationalHierarchyManager.Execute(manager);
+                this.cacheManager.ClearCacheForController("HierarchyClass");
             }
             catch (Exception ex)
             {
@@ -136,18 +156,29 @@ namespace Icon.Web.Controllers
                 return View(viewModel);
             }
 
+            TempData["SuccessMessage"] = $"Created {viewModel.HierarchyClassName} successfully.";
+
             return RedirectToAction("Index");
         }
 
         // GET: /NationalClass/Edit
         [HttpGet]
+        [WriteAccessAuthorize]
         public ActionResult Edit(int hierarchyClassId)
         {
             if (hierarchyClassId < 1)
             {
                 return RedirectToAction("Index");
             }
-            var hierarchyClass = hierarchyClassQuery.Search(new GetHierarchyClassByIdParameters { HierarchyClassId = hierarchyClassId });
+            var hierarchyClass = hierarchyClassQuery.Search(new GetHierarchyClassByIdParameters { HierarchyClassId = hierarchyClassId  });
+
+            if(hierarchyClass.hierarchyID != Hierarchies.National)
+            {
+                string msg = $"Hierarchy class is not a National Class. HierarchyClassId = {hierarchyClassId}";
+                logger.Error(msg);
+                ViewData["ErrorMessage"] = msg;
+                return View("Error");
+            }
 
             NationalClassViewModel viewModel = new NationalClassViewModel
             {                
@@ -196,6 +227,7 @@ namespace Icon.Web.Controllers
             try
             {
                 updateNationalHierarchyManager.Execute(command);
+                this.cacheManager.ClearCacheForController("HierarchyClass");
             }
             catch (Exception ex)
             {
@@ -205,13 +237,16 @@ namespace Icon.Web.Controllers
                                 
                 return View(viewModel);
             }
-            TempData["SuccessMessage"] = "Update was successful.";
-            return RedirectToAction("Edit", new { @hierarchyClassId = viewModel.HierarchyClassId });
+
+            TempData["SuccessMessage"] = $"Updated {viewModel.HierarchyClassName} successfully.";
+
+            return RedirectToAction("Index");
         }
 
 
         // GET: /NationalClass/Delete
         [HttpGet]
+        [WriteAccessAuthorize]
         public ActionResult Delete(int hierarchyClassId)
         {
             if (hierarchyClassId < 1)
@@ -263,12 +298,14 @@ namespace Icon.Web.Controllers
 
             var command = new DeleteNationalHierarchyManager
             {
-                DeletedHierarchyClass = deletedHierarchyClass
+                DeletedHierarchyClass = deletedHierarchyClass,
+                NationalClassCode = viewModel.NationalClassCode
             };
 
             try
             {
                 deleteNationalHierarchyManager.Execute(command);
+                this.cacheManager.ClearCacheForController("HierarchyClass");
             }
             catch (CommandException exception)
             {
@@ -277,6 +314,8 @@ namespace Icon.Web.Controllers
                 ViewData["ErrorMessage"] = "Error: There was a problem with applying this delete on the database.";
                 return View(viewModel);
             }
+
+            TempData["SuccessMessage"] = $"Deleted {viewModel.HierarchyClassName} successfully.";
 
             return RedirectToAction("Index");
         }
@@ -319,5 +358,50 @@ namespace Icon.Web.Controllers
 
             return nationalClassGridViewModels;
 		}
-	}
+
+        [HttpPost]
+        public void Export()
+        {
+            IEnumerable<HierarchyClassModel> nationalHierarchyModel = getHierarchyClassesQueryHandler.Search(
+                new GetHierarchyClassesParameters
+                {
+                    HierarchyId = Hierarchies.National
+                });
+
+            var nationalHierarchyClass = nationalHierarchyModel
+                .ToDictionary(nc => nc.HierarchyClassId.ToString(), nc => nc.HierarchyLineage + " | " + nc.HierarchyClassId);
+
+            var nationalClassExporter = exporterService.GetNationalClassExporter();
+            nationalClassExporter.ExportData = nationalHierarchyClass;
+            nationalClassExporter.Export();
+
+            SendForDownload(nationalClassExporter.ExportModel.ExcelWorkbook, nationalClassExporter.ExportModel.ExcelWorkbook.CurrentFormat, "NationalClassHierarchy");
+        }
+
+        private void SendForDownload(Workbook document, WorkbookFormat excelFormat, string source)
+        {
+            string documentFileNameRoot = String.Format("IconExport_{0}_{1}.xlsx", source, DateTime.Now.ToString("yyyyMMddHHmmss"));
+
+            Response.Clear();
+            Response.AppendHeader("content-disposition", "attachment; filename=" + documentFileNameRoot);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.SetCookie(new HttpCookie("fileDownload", "true") { Path = "/" });
+            document.SetCurrentFormat(excelFormat);
+            document.Save(Response.OutputStream);
+            Response.End();
+        }
+
+        private Enums.WriteAccess GetWriteAccess()
+        {
+            bool hasWriteAccess = this.settings.WriteAccessGroups.Split(',').Any(x => this.HttpContext.User.IsInRole(x.Trim()));
+            var userAccess = Enums.WriteAccess.None;
+
+            if (hasWriteAccess)
+            {
+                userAccess = Enums.WriteAccess.Full;
+            }
+
+            return userAccess;
+        }
+    }
 }

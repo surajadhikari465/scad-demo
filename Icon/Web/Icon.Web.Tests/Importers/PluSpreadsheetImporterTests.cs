@@ -1,8 +1,6 @@
 ﻿using Icon.Common.DataAccess;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
-using Icon.Web.Mvc;
 using Icon.Web.Mvc.Importers;
 using Infragistics.Documents.Excel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

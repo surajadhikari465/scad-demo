@@ -1,10 +1,7 @@
 ﻿using Icon.Web.Mvc.Excel.Validators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Icon.Common.DataAccess;
 using Icon.Web.DataAccess.Queries;
 using Moq;

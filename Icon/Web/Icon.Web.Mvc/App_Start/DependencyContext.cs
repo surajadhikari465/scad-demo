@@ -50,11 +50,11 @@ namespace Icon.Web.App_Start
             // injected into parent types.
             container.ExpressionBuilding += (sender, e) =>
             {
-                if (e.RegisteredServiceType != typeof(TService))
+                if (e.KnownImplementationType != typeof(TService))
                 {
                     var rewriter = new DependencyContextRewriter
                     {
-                        ServiceType = e.RegisteredServiceType,
+                        ServiceType = e.KnownImplementationType,
                         ContextBasedFactory = contextBasedFactory,
                         RootFactory = rootFactory,
                         Expression = e.Expression

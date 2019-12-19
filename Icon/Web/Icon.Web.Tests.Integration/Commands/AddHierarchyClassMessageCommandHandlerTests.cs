@@ -1,17 +1,13 @@
 ﻿using Icon.Framework;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class AddHierarchyClassMessageCommandHandlerTests
     {
         private AddHierarchyClassMessageCommandHandler commandHandler;
@@ -67,41 +63,26 @@ namespace Icon.Web.Tests.Integration.Commands
         }
 
         [TestMethod]
-        [Ignore] //Ignoring because this functionality is no longer used
-        public void MessageGeneratorHierarchy_Tax_MessageCreated()
+        public void MessageGeneratorHierarchy_Tax_MessageShouldNotBeCreated()
         {
             // Given
             AddHierarchyClassMessageCommand command = new AddHierarchyClassMessageCommand();
             command.ClassNameChange = true;
             command.HierarchyClass = context.HierarchyClass.First(hc => hc.Hierarchy.hierarchyName == HierarchyNames.Tax);
+            string hierarchyClassName = command.HierarchyClass.hierarchyClassName;
 
             // When
             var now = DateTime.Now;
 
             commandHandler.Execute(command);
 
-            // Then
-            var actualMessage = context.MessageQueueHierarchy.First(mq => 
-                mq.HierarchyClassId == command.HierarchyClass.hierarchyClassID.ToString() &&
-                mq.InsertDate > now);
-            
-            var entry = context.Entry(actualMessage);
+            //Then
+            var messageThatShouldNotExist = context.MessageQueueHierarchy.Where(
+              mq => mq.HierarchyName == HierarchyNames.Tax &&
+              mq.HierarchyClassName == hierarchyClassName &&
+              mq.InsertDate > now).ToList();
 
-            Assert.IsTrue(entry.State == EntityState.Unchanged);
-            Assert.AreEqual(command.HierarchyClass.hierarchyClassID.ToString(), actualMessage.HierarchyClassId);
-            Assert.AreEqual(command.HierarchyClass.hierarchyClassName, actualMessage.HierarchyClassName);
-            Assert.AreEqual(command.HierarchyClass.hierarchyID, actualMessage.HierarchyId);
-            Assert.AreEqual(command.HierarchyClass.hierarchyParentClassID, actualMessage.HierarchyParentClassId);
-            Assert.AreEqual(command.HierarchyClass.HierarchyPrototype.hierarchyLevelName, actualMessage.HierarchyLevelName);
-            Assert.AreEqual(command.HierarchyClass.hierarchyLevel, actualMessage.HierarchyLevel);
-            Assert.AreEqual(command.HierarchyClass.Hierarchy.hierarchyName, actualMessage.HierarchyName);
-            Assert.AreEqual(command.HierarchyClass.HierarchyPrototype.itemsAttached, actualMessage.ItemsAttached);
-            Assert.IsNull(actualMessage.MessageHistoryId);
-            Assert.AreEqual(MessageTypes.Hierarchy, actualMessage.MessageTypeId);
-            Assert.AreEqual(MessageStatusTypes.Ready, actualMessage.MessageStatusId);
-            Assert.AreEqual(MessageActionTypes.AddOrUpdate, actualMessage.MessageActionId);
-            Assert.IsNull(actualMessage.InProcessBy);
-            Assert.IsNull(actualMessage.ProcessedDate);
+            Assert.AreEqual(0, messageThatShouldNotExist.Count);
         }
 
         [TestMethod]

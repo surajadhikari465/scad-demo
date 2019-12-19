@@ -3,6 +3,8 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -15,7 +17,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Icon.Web.Tests.Unit</RootNamespace>
     <AssemblyName>Icon.Web.Tests.Unit</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <SccProjectName>SAK</SccProjectName>
@@ -74,12 +76,17 @@
     <OutputPath>bin\QA1\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
+      <HintPath>..\packages\Castle.Core.4.4.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.9.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.9.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -87,54 +94,57 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.5.0\lib\net45\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Common.2019.6.25.1\lib\net46\Icon.Common.dll</HintPath>
+      <HintPath>..\packages\Icon.Common.2019.11.13.3\lib\net472\Icon.Common.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.DbContextFactory.2019.5.15.1\lib\net46\Icon.DbContextFactory.dll</HintPath>
+      <HintPath>..\packages\Icon.DbContextFactory.2019.5.22.1\lib\net472\Icon.DbContextFactory.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.2019.7.1.3\lib\net46\Icon.Esb.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Ewic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.Schemas.Ewic.2016.10.20.1\lib\net45\Icon.Esb.Schemas.Ewic.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Ewic.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Ewic.Models.2016.10.20.3\lib\net45\Icon.Ewic.Models.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.Ewic.Models.2019.5.15.1\lib\net46\Icon.Ewic.Models.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Ewic.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Ewic.Serialization.2016.10.20.3\lib\net45\Icon.Ewic.Serialization.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.Ewic.Serialization.2019.5.15.1\lib\net46\Icon.Ewic.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Ewic.Transmission, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Ewic.Transmission.2016.10.21.1\lib\net45\Icon.Ewic.Transmission.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.Ewic.Transmission.2019.5.15.2\lib\net46\Icon.Ewic.Transmission.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2019.8.29.3\lib\net46\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2019.11.13.3\lib\net472\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.RenewableContext.2019.5.14.2\lib\net472\Icon.RenewableContext.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Shared.DataAccess.Dapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Shared.DataAccess.Dapper.2019.7.1.1\lib\net46\Icon.Shared.DataAccess.Dapper.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Testing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Testing.2018.10.5.4\lib\net46\Icon.Testing.dll</HintPath>
+      <HintPath>..\packages\Icon.Testing.2019.8.26.7\lib\net472\Icon.Testing.dll</HintPath>
     </Reference>
-    <Reference Include="Infragistics.Web.Mvc, Version=5.14.1.2249, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Icon.Web.Mvc\lib\Infragistics\MVC\MVC5\Bin\Infragistics.Web.Mvc.dll</HintPath>
+    <Reference Include="Infragistics.Olap.DataProvider.Adomd.Mvc, Version=5.19.1.22, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <HintPath>..\packages\IgniteUI.MVC.19.1.22\lib\net451\Infragistics.Olap.DataProvider.Adomd.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="Infragistics.Web.Mvc.Documents.Core, Version=14.1.20141.2249, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="Infragistics.Web.Mvc, Version=5.19.1.22, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <HintPath>..\packages\IgniteUI.MVC.19.1.22\lib\net451\Infragistics.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Web.Mvc.Documents.Core, Version=14.2.20142.2140, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Icon.Web.Mvc\lib\Infragistics\MVC\Common\Bin\Infragistics.Web.Mvc.Documents.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Infragistics.Web.Mvc.Documents.Excel, Version=14.1.20141.2249, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="Infragistics.Web.Mvc.Documents.Excel, Version=14.2.20142.2140, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Icon.Web.Mvc\lib\Infragistics\MVC\Common\Bin\Infragistics.Web.Mvc.Documents.Excel.dll</HintPath>
     </Reference>
@@ -142,79 +152,86 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Moq, Version=4.8.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.8.2\lib\net45\Moq.dll</HintPath>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="MoreLinq, Version=1.4.18916.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
-      <HintPath>..\packages\morelinq.1.4.0\lib\net35\MoreLinq.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Moq, Version=4.13.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.13.1\lib\net45\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MoreLinq, Version=3.2.0.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.3.2.0\lib\net451\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.Extended.4.5.10\lib\net45\NLog.Extended.dll</HintPath>
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleInjector, Version=2.8.3.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.2.8.3\lib\net45\SimpleInjector.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="PresentationCore" />
+    <Reference Include="SimpleInjector, Version=4.7.1.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.4.7.1\lib\net45\SimpleInjector.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.6.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.6.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
     <Reference Include="System.Messaging" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.6.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.3\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
-    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="TIBCO.EMS, Version=1.0.840.14, Culture=neutral, PublicKeyToken=5b83db8ff05c64ba, processorArchitecture=MSIL">
@@ -223,18 +240,20 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AutoMapperConfigurationTests.cs" />
     <Compile Include="App_Start\SimpleInjectorInitializerTests.cs" />
     <Compile Include="Attributes\AtLeastOneRequiredSpecifiedAttributeTests.cs" />
     <Compile Include="Attributes\IconPropertyValidationAttributeTests.cs" />
     <Compile Include="AutoMapperConverters\LocaleToMessageQueueLocaleConverterTests.cs" />
+    <Compile Include="Controllers\AttributeControllerTests.cs" />
     <Compile Include="Controllers\BulkScanCodeSearchControllerTests.cs" />
+    <Compile Include="Controllers\ManufacturerControllerTests.cs" />
     <Compile Include="Controllers\NationalClassControllerTests.cs" />
-    <Compile Include="Controllers\MerchTaxMappingControllerTests.cs" />
     <Compile Include="Controllers\PluAssignmentControllerTests.cs" />
     <Compile Include="Controllers\PluCategoryControllerTests.cs" />
     <Compile Include="Controllers\ProductSelectionGroupControllerTests.cs" />
+    <Compile Include="Controllers\RefreshDataControllerTests.cs" />
     <Compile Include="Controllers\StoreControllerTests.cs" />
-    <Compile Include="Controllers\IrmaItemControllerTests.cs" />
     <Compile Include="Controllers\FinancialControllerTests.cs" />
     <Compile Include="Controllers\HierarchyControllerTests.cs" />
     <Compile Include="Controllers\BrandControllerTests.cs" />
@@ -251,14 +270,13 @@
     <Compile Include="Excel\Validators\PredicateExcelValidatorTests.cs" />
     <Compile Include="Excel\Validators\CertificationAgencyValidatorTests.cs" />
     <Compile Include="Excel\Validators\RegexItemModelValidatorTests.cs" />
-    <Compile Include="Exporters\DefaultTaxMismatchesExporterTests.cs" />
-    <Compile Include="Exporters\BulkNewItemExporterTests.cs" />
+    <Compile Include="Exporters\BaseNewItemExportersTests.cs" />
+    <Compile Include="Exporters\AttributeExporterTests.cs" />
+    <Compile Include="Exporters\ManufacturerExporterTests.cs" />
+    <Compile Include="Exporters\NationalClassExporterTests.cs" />
     <Compile Include="Exporters\HierarchiesExporterTests.cs" />
     <Compile Include="Exporters\BrandTemplateExporterTests.cs" />
-    <Compile Include="Exporters\PluCategoryExporterTests.cs" />
-    <Compile Include="Exporters\IrmaItemExporterTests.cs" />
-    <Compile Include="Exporters\PluExporterTests.cs" />
-    <Compile Include="Exporters\BulkPluExporterTests.cs" />
+    <Compile Include="Exporters\ItemNewTemplateExporterTests.cs" />
     <Compile Include="Exporters\NewItemTemplateExporterTests.cs" />
     <Compile Include="Exporters\ExcelExporterServiceTests.cs" />
     <Compile Include="Exporters\BrandExporterTests.cs" />
@@ -272,8 +290,13 @@
     <Compile Include="Controllers\PluMappingControllerTests.cs" />
     <Compile Include="Controllers\HierarchyClassControllerTests.cs" />
     <Compile Include="Importers\BrandSpreadsheetImporterTests.cs" />
+    <Compile Include="Managers\AddManufacturerManagerHandlerTests.cs" />
+    <Compile Include="Managers\UpdateAttributeManagerHandlerTests.cs" />
+    <Compile Include="Managers\AddAttributeManagerHandlerTests.cs" />
     <Compile Include="Managers\AddCertificationAgencyManagerHandlerTests.cs" />
     <Compile Include="Managers\AddLocaleManagerHandlerTests.cs" />
+    <Compile Include="Managers\AddNationalHierarchyManagerHandlerTests.cs" />
+    <Compile Include="Managers\DeleteNationalHierarchyManagerHandlerTests.cs" />
     <Compile Include="Managers\RemoveEwicMappingManagerHandlerTests.cs" />
     <Compile Include="Managers\RemoveEwicExclusionManagerHandlerTests.cs" />
     <Compile Include="Managers\AddEwicMappingManagerHandlerTests.cs" />
@@ -281,9 +304,8 @@
     <Compile Include="Managers\AddPluCategoryManagerHandlerTests.cs" />
     <Compile Include="Controllers\ItemControllerTests.cs" />
     <Compile Include="Controllers\ExcelControllerTests.cs" />
-    <Compile Include="Managers\AddMerchTaxAssociationManagerHandlerTests.cs" />
+    <Compile Include="Managers\UpdateNationalHierarchyManagerHandlerTests.cs" />
     <Compile Include="Managers\UpdateVenueManagerHandlerTests.cs" />
-    <Compile Include="Managers\UpdateMerchTaxAssociationManagerHandlerTests.cs" />
     <Compile Include="Managers\UpdateBrandManagerHandlerTests.cs" />
     <Compile Include="Managers\AddHierarchyClassManagerHandlerTests.cs" />
     <Compile Include="Managers\AddItemManagerHandlerTests.cs" />
@@ -309,8 +331,21 @@
     </Compile>
     <Compile Include="TestHelpers.cs" />
     <Compile Include="Managers\AddBrandManagerHandlerTests.cs" />
+    <Compile Include="Utility\AttributesHelperTests.cs" />
+    <Compile Include="Utility\ItemHistoryBuilderTests.cs" />
+    <Compile Include="Utility\ConversionUtilityTests.cs" />
+    <Compile Include="Utility\ItemHistoryModelTransformerTests.cs" />
     <Compile Include="Utility\ViewModelHelpersTests.cs" />
     <Compile Include="Validators\AddEwicMappingManagerValidatorTests.cs" />
+    <Compile Include="Validators\AttributeViewModelValidatorTests.cs" />
+    <Compile Include="Validators\ItemAttributes\ItemAttributesValidatorFactoryTests.cs" />
+    <Compile Include="Validators\ItemAttributes\ItemAttributesBooleanValidatorTests.cs" />
+    <Compile Include="Validators\ItemAttributes\ItemAttributesDateValidatorTests.cs" />
+    <Compile Include="Validators\ItemAttributes\ItemAttributesNumericItemValidatorTest.cs" />
+    <Compile Include="Validators\ItemAttributes\ItemAttributesPickListValidatorTests.cs" />
+    <Compile Include="Validators\ItemAttributes\ItemAttributesTextValidatorTests.cs" />
+    <Compile Include="Validators\ItemEditViewModelValidatorTests.cs" />
+    <Compile Include="Validators\ItemCreateViewModelValidatorTests.cs" />
     <Compile Include="Validators\BusinessUnitValidatorTests.cs" />
     <Compile Include="Validators\HierarchyValidatorTests.cs" />
     <Compile Include="Validators\IconPropertyValidationRulesTests.cs" />
@@ -325,23 +360,1115 @@
     <Compile Include="Validators\PluValidatorTests.cs" />
     <Compile Include="Validators\AddItemManagerValidatorTests.cs" />
     <Compile Include="Validators\AddEwicExclusionManagerValidatorTests.cs" />
-    <Compile Include="Validators\UpdateItemManagerValidatorTests.cs" />
     <Compile Include="Validators\ValueRequiredValidatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="lib\TIBCO.EMS.dll" />
+    <Content Include="Content\Infragistics\css\structure\fonts\jquery-ui.svg" />
+    <Content Include="Content\Infragistics\css\structure\images\icon_sprite.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igBrowserLogos.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igGrid\blank.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igGrid\diagonals-medium.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igGrid\filter-icons-333333.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igGrid\filter-icons-FFFFFF.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igGrid\group-by-label-right-edge.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igGrid\indicators-icon-on.svg" />
+    <Content Include="Content\Infragistics\css\structure\images\igGrid\indicators-icon.svg" />
+    <Content Include="Content\Infragistics\css\structure\images\igGrid\overlay-icon-on.svg" />
+    <Content Include="Content\Infragistics\css\structure\images\igGrid\overlay-icon.svg" />
+    <Content Include="Content\Infragistics\css\structure\images\igGrid\touch-icons.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igGrid\touch-icons.svg" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\arrow_collapse.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\arrow_expand.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\arrow_redo.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\arrow_undo.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\background_color.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\check.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\cut.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\decrease-font-size.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\html-editor-sprite.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\html.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\html_add.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\html_delete.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\html_go.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\html_valid.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\image_add.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\increase-font-size.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\link.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\link_add.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\link_break.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\page_copy.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\page_paste.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\table-delete-column-icon.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\table-insert-column-icon.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\table.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\table_row_delete.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\table_row_insert.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\text_align_center.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\text_align_justify.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\text_align_left.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\text_align_right.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\text_bold.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\text_color.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\text_horizontalrule.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\text_indent.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\text_indent_remove.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\text_italic.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\text_list_bullets.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\text_list_numbers.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\text_strikethrough.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igHtmlEditor\text_underline.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igLoadingSmall.gif" />
+    <Content Include="Content\Infragistics\css\structure\images\igPivot\dataselector-sprite.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igPivot\kpi-icons.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igPivot\pivot-header-icons.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igPopover\igPopoverArrowBottom.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igPopover\igPopoverArrowLeft.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igPopover\igPopoverArrowRight.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igPopover\igPopoverArrows.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igPopover\igPopoverArrowTop.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igRating\ig-rating-touch.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igRating\ig-rating-touchx2.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igScroll\up.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igScroll\up_active.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igVideoPlayer\igBigPauseButton.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igVideoPlayer\igBigPlayButton.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igVideoPlayer\igLoadingSmall.gif" />
+    <Content Include="Content\Infragistics\css\structure\images\igVideoPlayer\igPlayButton24.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igVideoPlayer\igPlayButton32.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igVideoPlayer\igPlayButton48.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igVideoPlayer\igVPBackground.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igVideoPlayer\igVPBookmarkSprite.png" />
+    <Content Include="Content\Infragistics\css\structure\images\igVideoPlayer\igWarningIcon.png" />
+    <Content Include="Content\Infragistics\css\structure\images\trial.png" />
+    <Content Include="Content\Infragistics\css\structure\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Content\Infragistics\css\structure\infragistics.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.barcode.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.bulletgraph.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.categorychart.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.chart.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.chart.legacy.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.colorpicker.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.combo.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.dialog.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.editors.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.financialchart.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.grid.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.html5.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.htmleditor.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.layout.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.lineargauge.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.map.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.notifier.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.pivot.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.popover.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.radialgauge.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.radialmenu.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.rating.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.scheduler.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.scroll.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.shapechart.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.shared.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.sparkline.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.splitbutton.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.splitter.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.spreadsheet.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.tilemanager.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.toolbar.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.toolbarbutton.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.tree.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.treegrid.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.upload.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.validator.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.videoplayer.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\infragistics.ui.zoombar.css" />
+    <Content Include="Content\Infragistics\css\structure\modules\licensing.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\icons-styles.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\images\icon_sprite.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\images\igGrid\filter-icons-333333.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\images\igGrid\filter-icons-FFFFFF.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\images\igRating\ig-rating.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\images\igSpreadsheet\ig-Spreadsheet.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\images\igVideoPlayer\igVideoPlayerIcons.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\images\igVideoPlayer\igVPBackground.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\images\igVideoPlayer\igVPBookmarkSprite.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\infragistics.theme.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\style-guide\style-guide.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\default\style-guide\style-guide.html" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\icons-styles.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\images\icon_sprite.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\images\igGrid\filter-icons-333333.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\images\igGrid\filter-icons-FFFFFF.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\images\igRating\ig-rating.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\images\igSpreadsheet\ig-Spreadsheet.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\images\igVideoPlayer\igVideoPlayerIcons.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\images\igVideoPlayer\igVPBackground.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\images\igVideoPlayer\igVPBookmarkSprite.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\infragistics.theme.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\style-guide\style-guide.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\flatly\style-guide\style-guide.html" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\icons-styles.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\images\icon_sprite.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\images\igGrid\filter-icons-333333.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\images\igGrid\filter-icons-FFFFFF.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\images\igRating\ig-rating.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\images\igSpreadsheet\ig-Spreadsheet.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\images\igVideoPlayer\igVideoPlayerIcons.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\images\igVideoPlayer\igVPBackground.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\images\igVideoPlayer\igVPBookmarkSprite.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\infragistics.theme.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\style-guide\style-guide.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\superhero\style-guide\style-guide.html" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\icons-styles.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\images\icon_sprite.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\images\igGrid\filter-icons-333333.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\images\igGrid\filter-icons-FFFFFF.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\images\igRating\ig-rating.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\images\igSpreadsheet\spreadsheet-sprite.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\images\igVideoPlayer\igVideoPlayerIcons.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\images\igVideoPlayer\igVPBackground.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\images\igVideoPlayer\igVPBookmarkSprite.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\infragistics.theme.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\style-guide\style-guide.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap3\yeti\style-guide\style-guide.html" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\icons-styles.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\images\icon_sprite.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\images\igGrid\filter-icons-333333.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\images\igGrid\filter-icons-FFFFFF.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\images\igRating\ig-rating.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\images\igSpreadsheet\ig-Spreadsheet.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\images\igVideoPlayer\igVideoPlayerIcons.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\images\igVideoPlayer\igVPBackground.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\images\igVideoPlayer\igVPBookmarkSprite.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\infragistics.theme.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\style-guide\style-guide.css" />
+    <Content Include="Content\Infragistics\css\themes\bootstrap4\default\style-guide\style-guide.html" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\icons-styles.css" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\datepicker.gif" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\gradient_1.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\gradient_2.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\gradient_3.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\gradient_4.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\gradient_5.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\gradient_6.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\gradient_7.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\icon_sprite.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\igRating\ig-rating.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\igSpreadsheet\ig-Spreadsheet.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\igVideoPlayer\igVideoPlayerIcons.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\igVideoPlayer\igVPBackground.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\igVideoPlayer\igVPBookmarkSprite.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\progress_bar.gif" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\slider_handles.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\slider_h_bg.gif" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\slider_v_bg.gif" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\tab_bg.gif" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\infragistics.theme.css" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\style-guides\style-guide.css" />
+    <Content Include="Content\Infragistics\css\themes\infragistics2012\style-guides\style-guide.html" />
+    <Content Include="Content\Infragistics\css\themes\infragistics\icons-styles.css" />
+    <Content Include="Content\Infragistics\css\themes\infragistics\images\icon_sprite.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics\images\igRating\ig-rating.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics\images\igSpreadsheet\ig-Spreadsheet.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics\images\igVideoPlayer\igVideoPlayerIcons.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics\images\igVideoPlayer\igVPBackground.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics\images\igVideoPlayer\igVPBookmarkSprite.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Content\Infragistics\css\themes\infragistics\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\infragistics\infragistics.theme.css" />
+    <Content Include="Content\Infragistics\css\themes\infragistics\style-guides\style-guide.css" />
+    <Content Include="Content\Infragistics\css\themes\infragistics\style-guides\style-guide.html" />
+    <Content Include="Content\Infragistics\css\themes\ios\icons-styles.css" />
+    <Content Include="Content\Infragistics\css\themes\ios\images\icon_sprite.png" />
+    <Content Include="Content\Infragistics\css\themes\ios\images\igGrid\filter-icons-333333.png" />
+    <Content Include="Content\Infragistics\css\themes\ios\images\igGrid\filter-icons-FFFFFF.png" />
+    <Content Include="Content\Infragistics\css\themes\ios\images\igRating\ig-rating.png" />
+    <Content Include="Content\Infragistics\css\themes\ios\images\igSpreadsheet\ig-Spreadsheet.png" />
+    <Content Include="Content\Infragistics\css\themes\ios\images\igVideoPlayer\igVideoPlayerIcons.png" />
+    <Content Include="Content\Infragistics\css\themes\ios\images\igVideoPlayer\igVPBackground.png" />
+    <Content Include="Content\Infragistics\css\themes\ios\images\igVideoPlayer\igVPBookmarkSprite.png" />
+    <Content Include="Content\Infragistics\css\themes\ios\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Content\Infragistics\css\themes\ios\images\ui-icons_000000_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\ios\images\ui-icons_007aff_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\ios\images\ui-icons_8e8e93_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\ios\images\ui-icons_fd472b_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\ios\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\ios\infragistics.theme.css" />
+    <Content Include="Content\Infragistics\css\themes\ios\style-guides\style-guide.css" />
+    <Content Include="Content\Infragistics\css\themes\ios\style-guides\style-guide.html" />
+    <Content Include="Content\Infragistics\css\themes\metro\icons-styles.css" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\icon_sprite.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\igGrid\filter-icons-858585.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\igHtmlEditor\html-editor-sprite.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\igRating\ig-rating-touch.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\igRating\ig-rating-touchx2.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\igRating\ig-rating.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\igRating\SOURCE_ig-rating-touch.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\igRating\SOURCE_ig-rating-touchx2.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\igRating\SOURCE_ig-rating.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\igSpreadsheet\ig-Spreadsheet.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\igTooltip\igTooltipArrows.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\igVideoPlayer\igVideoPlayerIcons_858585.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\igVideoPlayer\igVideoPlayerIcons_ffffff.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\igVideoPlayer\igVPBookmarkSprite.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\ui-icons_00AADE_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\ui-icons_565656_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\ui-icons_858585_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\Infragistics\css\themes\metro\infragistics.theme.css" />
+    <Content Include="Content\Infragistics\css\themes\metro\style-guides\style-guide.css" />
+    <Content Include="Content\Infragistics\css\themes\metro\style-guides\style-guide.html" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Scripts\Infragistics\js\extensions\infragistics.datasource.knockoutjs.js" />
+    <Content Include="Scripts\Infragistics\js\extensions\infragistics.ui.combo.knockout-extensions.js" />
+    <Content Include="Scripts\Infragistics\js\extensions\infragistics.ui.datachart.knockout-extensions.js" />
+    <Content Include="Scripts\Infragistics\js\extensions\infragistics.ui.editors.knockout-extensions.js" />
+    <Content Include="Scripts\Infragistics\js\extensions\infragistics.ui.grid.knockout-extensions.js" />
+    <Content Include="Scripts\Infragistics\js\extensions\infragistics.ui.tree.knockout-extensions.js" />
+    <Content Include="Scripts\Infragistics\js\i18n\infragistics-bg.js" />
+    <Content Include="Scripts\Infragistics\js\i18n\infragistics-de.js" />
+    <Content Include="Scripts\Infragistics\js\i18n\infragistics-en.js" />
+    <Content Include="Scripts\Infragistics\js\i18n\infragistics-es.js" />
+    <Content Include="Scripts\Infragistics\js\i18n\infragistics-fr.js" />
+    <Content Include="Scripts\Infragistics\js\i18n\infragistics-ja.js" />
+    <Content Include="Scripts\Infragistics\js\i18n\infragistics-ru.js" />
+    <Content Include="Scripts\Infragistics\js\infragistics.core.js" />
+    <Content Include="Scripts\Infragistics\js\infragistics.dv.js" />
+    <Content Include="Scripts\Infragistics\js\infragistics.excel-bundled.js" />
+    <Content Include="Scripts\Infragistics\js\infragistics.loader.js" />
+    <Content Include="Scripts\Infragistics\js\infragistics.lob.js" />
+    <Content Include="Scripts\Infragistics\js\infragistics.scheduler-bundled.js" />
+    <Content Include="Scripts\Infragistics\js\infragistics.spreadsheet-bundled.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding.core.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_big5.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_cp437.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_gb2312.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_iso-8859-1.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_iso-8859-11.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_iso-8859-13.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_iso-8859-15.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_iso-8859-2.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_iso-8859-3.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_iso-8859-4.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_iso-8859-5.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_iso-8859-6.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_iso-8859-7.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_iso-8859-8.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_iso-8859-9.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_iso646-us.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_ksc5601.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_shift_jis.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_windows-1250.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_windows-1251.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_windows-1252.js" />
+    <Content Include="Scripts\Infragistics\js\modules\encoding\infragistics.encoding_windows-1256.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.datasource-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.datasource-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.datasource-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.datasource-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.datasource-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.datasource-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.datasource-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.documents.core_core-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.documents.core_core-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.documents.core_core-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.documents.core_core-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.documents.core_core-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.documents.core_core-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.documents.core_core-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.dvcommonwidget-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.dvcommonwidget-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.dvcommonwidget-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.dvcommonwidget-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.dvcommonwidget-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.dvcommonwidget-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.dvcommonwidget-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.excel_core-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.excel_core-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.excel_core-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.excel_core-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.excel_core-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.excel_core-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.excel_core-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.scheduler.core-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.scheduler.core-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.scheduler.core-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.scheduler.core-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.scheduler.core-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.scheduler.core-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.scheduler.core-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.shared-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.shared-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.shared-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.shared-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.shared-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.shared-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.shared-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.spreadsheet-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.spreadsheet-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.spreadsheet-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.spreadsheet-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.spreadsheet-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.spreadsheet-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.spreadsheet-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.templating-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.templating-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.templating-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.templating-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.templating-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.templating-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.templating-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.barcode-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.barcode-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.barcode-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.barcode-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.barcode-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.barcode-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.barcode-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.bulletgraph-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.bulletgraph-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.bulletgraph-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.bulletgraph-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.bulletgraph-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.bulletgraph-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.bulletgraph-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.combo-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.combo-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.combo-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.combo-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.combo-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.combo-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.combo-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.dialog-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.dialog-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.dialog-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.dialog-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.dialog-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.dialog-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.dialog-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.doughnutchart-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.doughnutchart-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.doughnutchart-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.doughnutchart-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.doughnutchart-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.doughnutchart-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.doughnutchart-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.editors-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.editors-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.editors-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.editors-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.editors-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.editors-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.editors-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.grid-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.grid-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.grid-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.grid-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.grid-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.grid-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.grid-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.htmleditor-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.htmleditor-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.htmleditor-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.htmleditor-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.htmleditor-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.htmleditor-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.htmleditor-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.lineargauge-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.lineargauge-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.lineargauge-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.lineargauge-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.lineargauge-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.lineargauge-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.lineargauge-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.notifier-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.notifier-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.notifier-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.notifier-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.notifier-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.notifier-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.notifier-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivot.shared-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivot.shared-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivot.shared-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivot.shared-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivot.shared-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivot.shared-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivot.shared-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivotdataselector-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivotdataselector-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivotdataselector-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivotdataselector-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivotdataselector-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivotdataselector-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivotdataselector-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivotgrid-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivotgrid-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivotgrid-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivotgrid-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivotgrid-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivotgrid-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.pivotgrid-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.popover-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.popover-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.popover-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.popover-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.popover-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.popover-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.popover-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.radialgauge-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.radialgauge-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.radialgauge-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.radialgauge-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.radialgauge-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.radialgauge-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.radialgauge-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.radialmenu-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.radialmenu-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.radialmenu-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.radialmenu-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.radialmenu-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.radialmenu-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.radialmenu-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.rating-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.rating-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.rating-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.rating-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.rating-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.rating-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.rating-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.scheduler-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.scheduler-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.scheduler-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.scheduler-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.scheduler-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.scheduler-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.scheduler-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.scroll-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.scroll-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.scroll-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.scroll-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.scroll-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.scroll-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.scroll-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.splitter-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.splitter-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.splitter-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.splitter-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.splitter-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.splitter-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.splitter-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.tilemanager-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.tilemanager-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.tilemanager-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.tilemanager-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.tilemanager-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.tilemanager-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.tilemanager-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.toolbar-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.toolbar-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.toolbar-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.toolbar-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.toolbar-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.toolbar-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.toolbar-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.tree-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.tree-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.tree-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.tree-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.tree-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.tree-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.tree-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.treegrid-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.treegrid-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.treegrid-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.treegrid-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.treegrid-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.treegrid-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.treegrid-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.upload-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.upload-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.upload-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.upload-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.upload-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.upload-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.upload-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.validator-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.validator-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.validator-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.validator-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.validator-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.validator-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.validator-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.videoplayer-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.videoplayer-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.videoplayer-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.videoplayer-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.videoplayer-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.videoplayer-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.videoplayer-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.zoombar-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.zoombar-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.zoombar-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.zoombar-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.zoombar-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.zoombar-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.ui.zoombar-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.undo-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.undo-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.undo-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.undo-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.undo-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.undo-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.undo-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.util-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.util-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.util-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.util-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.util-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.util-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\infragistics.util-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-af.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-ar.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-az.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-bg.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-bs.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-ca.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-cs.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-da.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-de.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-el.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-en-GB.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-en.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-es-419.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-es-MX.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-es.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-et.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-fa.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-fi.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-fo.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-fr-CH.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-fr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-he.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-hr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-hu.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-hy.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-i18n.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-id.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-is.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-it.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-ja.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-ko.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-lt.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-lv.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-ms.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-nl.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-no.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-pl.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-pt-BR.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-ro.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-ru.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-sk.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-sl.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-sq.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-sr-SR.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-sr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-sv.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-ta.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-th.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-tr.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-uk.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-vi.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-zh-CN.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-zh-HK.js" />
+    <Content Include="Scripts\Infragistics\js\modules\i18n\regional\infragistics.ui.regional-zh-TW.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.barcode_core.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.barcode_qrcodebarcode.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.bulletgraph.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.categorychart.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_annotation.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_category.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_categorycore.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_core.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_domainChart.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_extendedaxes.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_extendedfinancial.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_financial.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_interactivity.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_polar.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_radial.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_rangecategory.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_scatter.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_shape.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_stacked.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_verticalcategory.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datachart_visualdata.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.datasource.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.documents.core_core.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.documents.core_openxml.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.doughnutchart.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.dvcommonwidget.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.dv_core.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.dv_dataseriesadapter.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.dv_datasource.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.dv_description.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.dv_geo.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.dv_geometry.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.dv_interactivity.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.dv_jquerydom.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.dv_opd.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.dv_scroller.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.dv_visualdata.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.excel_core.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.excel_functions.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.excel_serialization_biff8.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.excel_serialization_openxml.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ext_collections.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ext_collectionsextended.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ext_core.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ext_io.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ext_text.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ext_threading.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ext_ui.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ext_web.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ext_xml.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.financialchart.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.funnelchart.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.geographicmap_core.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.gridexcelexporter.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.legend.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.lineargauge.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.olap.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.olapdatasource.doc.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.olapflatdatasource.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.olapxmladatasource.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.piechart.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.radialgauge.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.radialmenu.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.scheduler.core.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.shapechart.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.sparkline.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.spreadsheet.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.templating.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.barcode.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.basechart.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.bulletgraph.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.categorychart.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.chart.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.chart.template.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.chartlegend.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.colorpicker.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.colorpickersplitbutton.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.combo.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.dialog.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.doughnutchart.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.editors.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.financialchart.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.funnelchart.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.appendrowsondemand.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.cellmerging.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.columnfixing.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.columnmoving.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.featurechooser.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.filtering.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.framework.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.groupby.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.hiding.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.hierarchical.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.multicolumnheaders.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.paging.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.resizing.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.responsive.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.rowselectors.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.selection.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.shared.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.sorting.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.summaries.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.tooltips.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.grid.updating.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.htmleditor.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.layoutmanager.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.lineargauge.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.map.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.map.template.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.notifier.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.pivot.shared.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.pivotdataselector.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.pivotgrid.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.pivotview.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.popover.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.qrcodebarcode.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.radialgauge.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.radialmenu.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.rating.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.scheduler.core.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.scheduler.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.scroll.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.shapechart.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.shared.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.sparkline.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.splitbutton.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.splitter.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.spreadsheet.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.tilemanager.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.toolbar.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.toolbarbutton.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.tree.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.treegrid.columnfixing.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.treegrid.columnmoving.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.treegrid.filtering.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.treegrid.hiding.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.treegrid.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.treegrid.multicolumnheaders.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.treegrid.paging.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.treegrid.resizing.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.treegrid.rowselectors.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.treegrid.selection.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.treegrid.sorting.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.treegrid.tooltips.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.treegrid.updating.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.upload.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.validator.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.videoplayer.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.widget.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.zoombar.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.ui.zoomslider.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.undo.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.util.jquery.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.util.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.xml.js" />
+    <Content Include="Scripts\Infragistics\js\modules\infragistics.zoomslider_core.js" />
+    <Content Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\jquery-ui-1.12.0.js" />
+    <Content Include="Scripts\jquery-ui-1.12.0.min.js" />
+    <None Include="Content\Infragistics\css\README.ja.md" />
+    <None Include="Content\Infragistics\css\README.md" />
+    <None Include="Content\Infragistics\css\structure\fonts\jquery-ui.eot" />
+    <None Include="Content\Infragistics\css\structure\fonts\jquery-ui.ttf" />
+    <None Include="Content\Infragistics\css\structure\fonts\jquery-ui.woff" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\framework.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\ignite-ui-variables.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\infragistics.theme.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\mixins.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\base\infragistics.ui.checkbox.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.chart.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.chart.toolbar.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.combo.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.dialog.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.editors.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.grid.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.notifier.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.pivot.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.popover.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.rating.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.scheduler.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.splitter.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.spreadsheet.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.tilemanager.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.tree.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.treegrid.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.upload.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\infragistics.ui.videoplayer.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\modules\modules.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\style-guide\style-guide" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\default\variables.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\framework.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\ignite-ui-variables.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\infragistics.theme.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\mixins.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\base\infragistics.ui.checkbox.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.chart.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.chart.toolbar.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.combo.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.dialog.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.editors.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.grid.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.notifier.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.pivot.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.popover.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.rating.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.scheduler.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.splitter.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.spreadsheet.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.tilemanager.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.tree.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.treegrid.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.upload.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\infragistics.ui.videoplayer.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\modules\modules.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\style-guide\style-guide" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\flatly\variables.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\README.ja.md" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\README.md" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\framework.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\ignite-ui-variables.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\infragistics.theme.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\mixins.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\base\infragistics.ui.checkbox.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.chart.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.chart.toolbar.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.combo.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.dialog.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.editors.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.grid.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.notifier.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.pivot.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.popover.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.rating.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.scheduler.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.splitter.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.spreadsheet.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.tilemanager.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.tree.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.treegrid.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.upload.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\infragistics.ui.videoplayer.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\modules\modules.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\style-guide\style-guide" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\superhero\variables.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\framework.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\ignite-ui-variables.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\infragistics.theme.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\mixins.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\base\infragistics.ui.checkbox.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.chart.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.chart.toolbar.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.combo.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.dialog.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.editors.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.grid.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.notifier.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.pivot.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.popover.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.rating.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.scheduler.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.splitter.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.spreadsheet.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.tilemanager.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.tree.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.treegrid.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.upload.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\infragistics.ui.videoplayer.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\modules\modules.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\style-guide\style-guide" />
+    <None Include="Content\Infragistics\css\themes\bootstrap3\yeti\variables.less" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\infragistics.theme.css.map" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\infragistics.theme.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\base\_infragistics.ui.checkbox.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.chart.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.chart.toolbar.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.combo.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.dialog.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.editors.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.grid.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.notifier.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.pivot.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.popover.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.rating.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.scheduler.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.splitter.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.spreadsheet.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.tilemanager.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.tree.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.treegrid.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.upload.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_infragistics.ui.videoplayer.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\modules\_modules.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\style-guide\style-guide.css.map" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\style-guide\style-guide.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\_framework.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\_ignite-ui-variables.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\_mixins.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\default\_variables.scss" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\README.ja.md" />
+    <None Include="Content\Infragistics\css\themes\bootstrap4\README.md" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\framework.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\infragistics.theme.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\mixins.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\base\infragistics.ui.checkbox.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.chart.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.chart.toolbar.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.combo.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.dialog.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.editors.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.grid.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.notifier.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.pivot.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.popover.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.rating.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.scheduler.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.splitter.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.spreadsheet.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.tilemanager.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.tree.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.treegrid.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.upload.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\infragistics.ui.videoplayer.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\modules\modules.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\style-guides\style-guide" />
+    <None Include="Content\Infragistics\css\themes\infragistics2012\variables.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\framework.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\infragistics.theme.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\mixins.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\base\infragistics.ui.checkbox.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.chart.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.chart.toolbar.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.combo.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.dialog.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.editors.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.grid.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.notifier.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.pivot.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.popover.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.rating.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.scheduler.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.splitter.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.spreadsheet.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.tilemanager.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.tree.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.treegrid.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.upload.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\infragistics.ui.videoplayer.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\modules\modules.less" />
+    <None Include="Content\Infragistics\css\themes\infragistics\style-guides\style-guide" />
+    <None Include="Content\Infragistics\css\themes\infragistics\variables.less" />
+    <None Include="Content\Infragistics\css\themes\ios\framework.less" />
+    <None Include="Content\Infragistics\css\themes\ios\infragistics.theme.less" />
+    <None Include="Content\Infragistics\css\themes\ios\mixins.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\base\infragistics.ui.checkbox.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.chart.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.chart.toolbar.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.combo.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.dialog.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.editors.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.grid.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.notifier.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.pivot.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.popover.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.rating.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.scheduler.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.splitter.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.spreadsheet.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.tilemanager.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.tree.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.treegrid.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.upload.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\infragistics.ui.videoplayer.less" />
+    <None Include="Content\Infragistics\css\themes\ios\modules\modules.less" />
+    <None Include="Content\Infragistics\css\themes\ios\style-guides\style-guide" />
+    <None Include="Content\Infragistics\css\themes\ios\variables.less" />
+    <None Include="Content\Infragistics\css\themes\metro\framework.less" />
+    <None Include="Content\Infragistics\css\themes\metro\infragistics.theme.less" />
+    <None Include="Content\Infragistics\css\themes\metro\mixins.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\base\infragistics.ui.checkbox.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.chart.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.chart.toolbar.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.combo.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.dialog.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.editors.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.grid.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.notifier.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.pivot.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.popover.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.rating.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.scheduler.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.splitter.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.spreadsheet.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.tilemanager.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.tree.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.treegrid.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.upload.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\infragistics.ui.videoplayer.less" />
+    <None Include="Content\Infragistics\css\themes\metro\modules\modules.less" />
+    <None Include="Content\Infragistics\css\themes\metro\style-guides\style-guide" />
+    <None Include="Content\Infragistics\css\themes\metro\variables.less" />
+    <None Include="Content\Infragistics\css\themes\README.ja.md" />
+    <None Include="Content\Infragistics\css\themes\README.md" />
+    <None Include="packages.config" />
+    <None Include="Resources\test.xlsx" />
     <None Include="Resources\TextFile.txt" />
+    <None Include="Scripts\jquery-3.4.1.min.map" />
+    <None Include="Scripts\jquery-3.4.1.slim.min.map" />
     <None Include="TestDocs\IconExport_Item.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Resources\ExcelWorkbook.xlsx" />
   </ItemGroup>
   <ItemGroup>
@@ -354,7 +1481,7 @@
       <Name>Icon.Web.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Icon.Web.Mvc\Icon.Web.Mvc.csproj">
-      <Project>{273BC688-78CD-443E-BEDB-B532982C95B6}</Project>
+      <Project>{273bc688-78cd-443e-bedb-b532982c95b6}</Project>
       <Name>Icon.Web.Mvc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Icon.Web.Tests.Common\Icon.Web.Tests.Common.csproj">
@@ -365,17 +1492,26 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="lib\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\SSDT\Microsoft.Data.Tools.Schema.Sql.UnitTesting.targets" Condition="'$(VisualStudioVersion)' == ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.Sql.UnitTesting.targets" Condition="'$(VisualStudioVersion)' != ''" />
+  <Import Project="..\packages\IgniteUI.19.1.39\build\IgniteUI.targets" Condition="Exists('..\packages\IgniteUI.19.1.39\build\IgniteUI.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\IgniteUI.19.1.39\build\IgniteUI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\IgniteUI.19.1.39\build\IgniteUI.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

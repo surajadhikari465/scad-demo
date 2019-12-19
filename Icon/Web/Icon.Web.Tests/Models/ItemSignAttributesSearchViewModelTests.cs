@@ -1,5 +1,4 @@
-﻿using Icon.Framework;
-using Icon.Web.Mvc.Models;
+﻿using Icon.Web.Mvc.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

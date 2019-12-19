@@ -42,7 +42,27 @@ namespace Icon.ApiController.Tests.Queries
 
         private void StageTestScanCode()
         {
-            testItem = new TestItemBuilder().WithScanCode(testScanCode);
+            testItem = new Item 
+            { 
+                ItemAttributesJson = "{}",
+                ItemType = new ItemType 
+                { 
+                    itemTypeCode = "TST", 
+                    itemTypeDesc = "Test" 
+                },
+                ScanCode = new  ScanCode[] 
+                { 
+                    new ScanCode 
+                    { 
+                        scanCode = testScanCode, 
+                        ScanCodeType = new ScanCodeType
+                        {
+                            scanCodeTypeDesc = "Test"
+                        }
+                    } 
+                }
+            };
+            //testItem = new TestItemBuilder().WithScanCode(testScanCode);
 
             context.Item.Add(testItem);
             context.SaveChanges();
@@ -81,7 +101,7 @@ namespace Icon.ApiController.Tests.Queries
 
             // Then.
             Assert.IsNotNull(item);
-            Assert.AreEqual(item.itemID, testItem.itemID);
+            Assert.AreEqual(item.ItemId, testItem.ItemId);
         }
     }
 }

@@ -6,7 +6,7 @@ using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
-using Icon.Web.Extensions;
+using Icon.Web.Mvc.Extensions;
 using Icon.Web.Mvc.Attributes;
 using Icon.Web.Mvc.Excel;
 using Icon.Web.Mvc.Exporters;
@@ -17,10 +17,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
-using System.Configuration;
 using System.Text;
 using System.Security.Cryptography;
-using Icon.Common;
 using Icon.Web.Mvc.Utility;
 
 namespace Icon.Web.Mvc.Controllers
@@ -32,15 +30,16 @@ namespace Icon.Web.Mvc.Controllers
         private IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> getHierarchyClassQuery;
         private IManagerHandler<BrandManager> updateBrandManagerHandler;
         private IExcelExporterService excelExporterService;
+        private IDonutCacheManager cacheManager;
         private IconWebAppSettings settings;
-
         public BrandController(
             ILogger logger,
             IQueryHandler<GetBrandsParameters, List<BrandModel>> getBrandsQuery,
             IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> getHierarchyClassQuery,
             IManagerHandler<BrandManager> updateBrandManagerHandler,
             IExcelExporterService excelExporterService,
-            IconWebAppSettings settings)
+            IconWebAppSettings settings,
+            IDonutCacheManager cacheManager)
         {
             this.logger = logger;
             this.getBrandsQuery = getBrandsQuery;
@@ -48,6 +47,7 @@ namespace Icon.Web.Mvc.Controllers
             this.updateBrandManagerHandler = updateBrandManagerHandler;
             this.excelExporterService = excelExporterService;
             this.settings = settings;
+            this.cacheManager = cacheManager;
         }
 
         // GET: Brand
@@ -77,22 +77,23 @@ namespace Icon.Web.Mvc.Controllers
             if (!ModelState.IsValid)
             {
                 viewModel.BrandList =  GetBrandList();
+
                 return View(viewModel);
             }
 
             string newBrandName = viewModel.BrandName.Trim();
             string newBrandAbbreviation = String.IsNullOrEmpty(viewModel.BrandAbbreviation) ? null : viewModel.BrandAbbreviation.Trim();
-
+             
             var manager = new BrandManager
             {
-                Brand = new HierarchyClass(){ hierarchyClassName = newBrandName, hierarchyID = Hierarchies.Brands, hierarchyLevel = HierarchyLevels.Parent, hierarchyParentClassID = null  },
+                Brand = new HierarchyClass(){ hierarchyClassName = newBrandName, hierarchyID = Hierarchies.Brands, hierarchyLevel = HierarchyLevels.Brand, hierarchyParentClassID = null  },
                 BrandAbbreviation = newBrandAbbreviation,
                 Designation = string.IsNullOrWhiteSpace(viewModel.Designation) ? null : viewModel.Designation.Trim(),
                 ParentCompany = string.IsNullOrWhiteSpace(viewModel.ParentCompany) ? null : viewModel.ParentCompany.Trim(),
-                ZipCode = string.IsNullOrWhiteSpace(viewModel.ZipCode) ? null : viewModel.ZipCode.Replace(" ", String.Empty),
+                ZipCode = string.IsNullOrWhiteSpace(viewModel.ZipCode) ? null : viewModel.ZipCode.Trim(),
                 Locality = string.IsNullOrWhiteSpace(viewModel.Locality) ? null : viewModel.Locality.Trim(),
                 WriteAccess = GetWriteAccess()
-            };
+        };
 
             try
             {
@@ -105,6 +106,7 @@ namespace Icon.Web.Mvc.Controllers
                 ViewData["SuccessMessage"] = successMessage;
 
                 ModelState.Clear();
+                this.cacheManager.ClearCacheForController("HierarchyClass");
                 return View(EmptyViewModel());
             }
             catch (CommandException ex)
@@ -118,9 +120,19 @@ namespace Icon.Web.Mvc.Controllers
         }
 
         // GET: Brand/Edit/5
+        [WriteAccessAuthorize]
         public ActionResult Edit(int hierarchyClassId)
         {
             var brand = getHierarchyClassQuery.Search(new GetHierarchyClassByIdParameters(){ HierarchyClassId = hierarchyClassId });
+
+            if (brand.hierarchyID != Hierarchies.Brands)
+            {
+                string msg = $"Hierarchy class is not a brand. HierarchyClassId = {hierarchyClassId}";
+                logger.Error(msg);
+                ViewData["ErrorMessage"] = msg;
+                return View("Error");
+            }
+
             var traits = brand.HierarchyClassTrait.ToArray();
             var brands = GetBrandList();
 
@@ -130,7 +142,7 @@ namespace Icon.Web.Mvc.Controllers
                     BrandAbbreviation = traits.SingleOrDefault(x => x.traitID == Traits.BrandAbbreviation)?.traitValue.Trim(),
                     HierarchyId = brand.hierarchyID,
                     HierarchyClassId = brand.hierarchyClassID,
-                    HierarchyLevel = HierarchyLevels.Parent,
+                    HierarchyLevel = HierarchyLevels.Brand,
                     Designation = traits.SingleOrDefault(x => x.traitID == Traits.Designation)?.traitValue,
                     ZipCode = traits.SingleOrDefault(x => x.traitID == Traits.ZipCode)?.traitValue,
                     Locality = traits.SingleOrDefault(x => x.traitID == Traits.Locality)?.traitValue,
@@ -147,6 +159,7 @@ namespace Icon.Web.Mvc.Controllers
 
         // POST: Brand/Edit/
         [HttpPost]
+        [WriteAccessAuthorize]
         public ActionResult Edit(BrandViewModel viewModel)
         {
             // Ignore model state errors for this property until all hierarchy logic has been separated and this property can be safely removed.
@@ -180,7 +193,6 @@ namespace Icon.Web.Mvc.Controllers
                         hierarchyLevel = viewModel.HierarchyLevel
                     };
 
-                    var userAccess = GetWriteAccess();
                     var manager = new BrandManager
                     {
                         Brand = updatedBrand,
@@ -189,7 +201,6 @@ namespace Icon.Web.Mvc.Controllers
                         ParentCompany = String.IsNullOrWhiteSpace(viewModel.ParentCompany) ? null : viewModel.ParentCompany.Trim(),
                         ZipCode = String.IsNullOrWhiteSpace(viewModel.ZipCode) ? null : viewModel.ZipCode.Trim(),
                         Locality = String.IsNullOrWhiteSpace(viewModel.Locality) ? null : viewModel.Locality.Trim(),
-                        WriteAccess = userAccess
                     };
 
                     updateBrandManagerHandler.Execute(manager);
@@ -212,8 +223,13 @@ namespace Icon.Web.Mvc.Controllers
             
             viewModel.UserWriteAccess = GetWriteAccess();
             viewModel.BrandList = GetBrandList();
+
+            this.cacheManager.ClearCacheForController("HierarchyClass");
+
             return View(viewModel);
         }
+
+
 
         [GridDataSourceAction]
         public ActionResult All()
@@ -231,7 +247,11 @@ namespace Icon.Web.Mvc.Controllers
                 {
                     BrandId = b.HierarchyClassId.ToString(),
                     BrandName = b.BrandName,
-                    BrandAbbreviation = b.BrandAbbreviation
+                    BrandAbbreviation = b.BrandAbbreviation,
+                    Designation = b.Designation,
+                    ParentCompany = b.ParentCompany,
+                    ZipCode = b.ZipCode,
+                    Locality = b.Locality
                 })
                 .ToList();
 
@@ -250,7 +270,7 @@ namespace Icon.Web.Mvc.Controllers
                 BrandAbbreviation = String.Empty,
                 HierarchyId = -1,
                 HierarchyClassId = -1,
-                HierarchyLevel = HierarchyLevels.Parent,
+                HierarchyLevel = HierarchyLevels.Brand,
                 BrandList = GetBrandList()
             };
         }
@@ -267,19 +287,13 @@ namespace Icon.Web.Mvc.Controllers
         /// </returns>
         private Enums.WriteAccess GetWriteAccess()
         {
-            bool isIconEnabled = this.settings.IconInterfaceEnabled;
             bool hasWriteAccess = this.settings.WriteAccessGroups.Split(',').Any(x => this.HttpContext.User.IsInRole(x.Trim()));
-            bool hasTraitWriteAccess = this.settings.TraitWriteAccessGroups.Split(',').Any(x => this.HttpContext.User.IsInRole(x.Trim()));
 
             var userAccess = Enums.WriteAccess.None;
 
-            if (isIconEnabled && hasWriteAccess)
+            if (hasWriteAccess)
             {
                 userAccess = Enums.WriteAccess.Full;
-            }
-            else if (hasTraitWriteAccess)
-            {
-                userAccess = Enums.WriteAccess.Traits;
             }
 
             return userAccess;

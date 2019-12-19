@@ -1,5 +1,4 @@
-﻿using Icon.Framework;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Icon.Web.Mvc.Models
 {
@@ -9,5 +8,6 @@ namespace Icon.Web.Mvc.Models
         public List<TraitViewModel> Traits { get; set; }
         public List<ProductSelectionGroupTypeViewModel> ProductSelectionGroupTypes { get; set; }
         public List<HierarchyClassViewModel> MerchandiseHierarchyClasses { get; set; }
+        public IEnumerable<AttributeViewModel> Attributes { get; set; }
     }
 }

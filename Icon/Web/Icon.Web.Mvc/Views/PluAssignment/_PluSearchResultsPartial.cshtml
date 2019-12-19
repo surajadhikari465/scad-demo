@@ -3,12 +3,6 @@
 @using Icon.Web.Common
 @model Icon.Web.Mvc.Models.PluAssignmentSearchViewModel
 
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Render()
-)
-
 <span class="search-alert page-subsection"></span>
 
 <div class="validation-section page-subsection">
@@ -149,7 +143,7 @@
             .Render()
     )
 
-    <input type="button" id="export" class="btn btn-default form-submit" value="Export" />
+    <input type="button" id="export" class="btn btn-light form-submit" value="Export" />
 }
 else
 {

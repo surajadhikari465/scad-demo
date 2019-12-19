@@ -1,0 +1,24 @@
+﻿
+      ▄• ▄▌▄▄▄▄▄          ·▄▄▄    .▄▄ · ▄▄▄▄▄       ▄▄· ▄ •▄ 
+▪     █▪██▌•██      ▪     ▐▄▄·    ▐█ ▀. •██  ▪     ▐█ ▌▪█▌▄▌▪
+ ▄█▀▄ █▌▐█▌ ▐█.▪     ▄█▀▄ ██▪     ▄▀▀▀█▄ ▐█.▪ ▄█▀▄ ██ ▄▄▐▀▀▄·
+▐█▌.▐▌▐█▄█▌ ▐█▌·    ▐█▌.▐▌██▌.    ▐█▄▪▐█ ▐█▌·▐█▌.▐▌▐███▌▐█.█▌
+ ▀█▄▀▪ ▀▀▀  ▀▀▀      ▀█▄▀▪▀▀▀      ▀▀▀▀  ▀▀▀  ▀█▄▀▪·▀▀▀ ·▀  ▀
+
+
+! Bug Fix
++ Enhancement
+
+Version 2.0.0.0		04.09.2018
+=======================================================================================================================================
+! Fixed calculations in Multi Store reports.
+  Timescanned and cost calculations were not displayed correctly when results were not grouped.
+
++ Upated support page for OrchardNow
++ Added basic support for user telemetry information
++ Added display of deployed version numbers
++ Added version history information
++ General code cleanup
+
+
+

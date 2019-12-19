@@ -576,11 +576,13 @@ namespace Icon.ApiController.Tests
                 MessageActionId = MessageActionTypes.AddOrUpdate,
                 MessageStatusId = MessageStatusTypes.Ready,
                 MessageTypeId = MessageTypes.Hierarchy,
-                NationalClassCode = String.Empty,
-                BrandAbbreviation = String.Empty,
-                ZipCode = String.Empty,
-                Designation = String.Empty,
-                Locality = String.Empty
+                NationalClassCode = string.Empty,
+                BrandAbbreviation = string.Empty,
+                ZipCode = string.Empty,
+                Designation = string.Empty,
+                Locality = string.Empty,
+                ParentCompany = string.Empty,
+                ArCustomerId = string.Empty
             };
         }
 

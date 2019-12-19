@@ -2,11 +2,6 @@
 using Icon.Framework;
 using Icon.Web.DataAccess.Infrastructure;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Icon.Web.Common.Cache;
 
 namespace Icon.Web.DataAccess.Decorators
 {
@@ -14,13 +9,11 @@ namespace Icon.Web.DataAccess.Decorators
     {
         private readonly ICommandHandler<TCommand> commandHandler;
         private IconContext context;
-        private ICache cache;
 
-        public TransactionCommandHandlerDecorator(ICommandHandler<TCommand> commandHandler, IconContext context, ICache cache)
+        public TransactionCommandHandlerDecorator(ICommandHandler<TCommand> commandHandler, IconContext context)
         {
             this.commandHandler = commandHandler;
             this.context = context;
-            this.cache = cache;
         }
 
         public void Execute(TCommand command)
@@ -31,14 +24,6 @@ namespace Icon.Web.DataAccess.Decorators
                 {
                     commandHandler.Execute(command);
                     transaction.Commit();
-                    if (CacheRefreshNeededHandler.HiearchyCacheRefreshNeededHandlerList.Contains(commandHandler.GetType().Name))
-                    {
-                        cache.Remove("GetHierarchyLineageParameters");
-                    }
-                    if (CacheRefreshNeededHandler.AgencyCacheRefreshNeededHandlerList.Contains(commandHandler.GetType().Name))
-                    {
-                        cache.Remove("GetCertificationAgenciesParameters");
-                    }
                 }
                 catch (Exception)
                 {

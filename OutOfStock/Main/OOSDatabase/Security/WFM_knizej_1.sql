@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [WFM\knizej]
+    AUTHORIZATION [WFM\knizej];
+

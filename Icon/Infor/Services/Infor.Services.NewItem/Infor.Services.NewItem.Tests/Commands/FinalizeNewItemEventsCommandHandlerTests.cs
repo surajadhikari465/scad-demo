@@ -1,7 +1,7 @@
 ﻿using Icon.Common.Context;
 using Icon.Logging;
-using Infor.Services.NewItem.Commands;
-using Infor.Services.NewItem.Models;
+using Services.NewItem.Commands;
+using Services.NewItem.Models;
 using Irma.Framework;
 using Irma.Testing.Builders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infor.Services.NewItem.Tests.Commands
+namespace Services.NewItem.Tests.Commands
 {
     [TestClass]
     public class FinalizeNewItemEventsCommandHandlerTests

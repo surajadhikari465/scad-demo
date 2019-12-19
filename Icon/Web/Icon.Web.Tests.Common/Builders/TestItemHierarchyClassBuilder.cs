@@ -1,9 +1,5 @@
 ﻿using Icon.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Common.Builders
 {
@@ -97,7 +93,7 @@ namespace Icon.Web.Tests.Common.Builders
                 }
                 if(item == null)
                 {
-                    itemHierarchyClass.Item = context.Item.FirstOrDefault(i => i.itemID == itemId);
+                    itemHierarchyClass.Item = context.Item.FirstOrDefault(i => i.ItemId == itemId);
                 }
                 if(locale == null)
                 {
@@ -111,7 +107,7 @@ namespace Icon.Web.Tests.Common.Builders
             }
             if (item != null)
             {
-                itemHierarchyClass.itemID = item.itemID;
+                itemHierarchyClass.itemID = item.ItemId;
             }
             if (locale != null)
             {

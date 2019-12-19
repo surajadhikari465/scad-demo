@@ -8,7 +8,6 @@ namespace Icon.Testing.Builders
     {
         private int itemId;
         private int itemTypeId;
-        private int productKey;
         private int localeId;
         private string scanCode;
         private int scanCodeTypeId;
@@ -33,7 +32,6 @@ namespace Icon.Testing.Builders
         {
             this.itemId = 0;
             this.itemTypeId = 1;
-            this.productKey = 0;
             this.localeId = 1;
             this.productDescription = "Unit Test Product Description 1";
             this.posDescription = "Unit Test Pos Description 1";
@@ -215,58 +213,57 @@ namespace Icon.Testing.Builders
             HierarchyClass merchSubBrick = new HierarchyClass();
 
             // Item Base
-            Item item = new Item { itemID = itemId };
-            item.itemTypeID = this.itemTypeId;
-            item.productKey = this.productKey;
+            Item item = new Item { ItemId = itemId };
+            item.ItemTypeId = this.itemTypeId;
 
             // Item Traits
             List<ItemTrait> itemTraits = new List<ItemTrait>
             {
-                new ItemTrait { itemID = item.itemID, localeID = this.localeId, traitID = Traits.ProductDescription, Trait = traitReferences == null ? null : traitReferences[Traits.ProductDescription], traitValue = this.productDescription },
-                new ItemTrait { itemID = item.itemID, localeID = this.localeId, traitID = Traits.PosDescription, Trait = traitReferences == null ? null : traitReferences[Traits.PosDescription], traitValue = this.posDescription },
-                new ItemTrait { itemID = item.itemID, localeID = this.localeId, traitID = Traits.PackageUnit, Trait = traitReferences == null ? null : traitReferences[Traits.PackageUnit], traitValue = this.packageUnit },
-                new ItemTrait { itemID = item.itemID, localeID = this.localeId, traitID = Traits.RetailSize, Trait = traitReferences == null ? null : traitReferences[Traits.RetailSize], traitValue = this.retailSize },
-                new ItemTrait { itemID = item.itemID, localeID = this.localeId, traitID = Traits.RetailUom, Trait = traitReferences == null ? null : traitReferences[Traits.RetailUom], traitValue = this.retailUom },
-                new ItemTrait { itemID = item.itemID, localeID = this.localeId, traitID = Traits.DeliverySystem, Trait = traitReferences == null ? null : traitReferences[Traits.DeliverySystem], traitValue = this.deliverySystem },
-                new ItemTrait { itemID = item.itemID, localeID = this.localeId, traitID = Traits.PosScaleTare, Trait = traitReferences == null ? null : traitReferences[Traits.PosScaleTare], traitValue = this.posScaleTare },
-                new ItemTrait { itemID = item.itemID, localeID = this.localeId, traitID = Traits.FoodStampEligible, Trait = traitReferences == null ? null : traitReferences[Traits.FoodStampEligible], traitValue = this.foodStampEligible },
-                new ItemTrait { itemID = item.itemID, localeID = this.localeId, traitID = Traits.ModifiedDate, Trait = traitReferences == null ? null : traitReferences[Traits.ModifiedDate], traitValue = this.modifiedDate }
+                new ItemTrait { itemID = item.ItemId, localeID = this.localeId, traitID = Traits.ProductDescription, Trait = traitReferences == null ? null : traitReferences[Traits.ProductDescription], traitValue = this.productDescription },
+                new ItemTrait { itemID = item.ItemId, localeID = this.localeId, traitID = Traits.PosDescription, Trait = traitReferences == null ? null : traitReferences[Traits.PosDescription], traitValue = this.posDescription },
+                new ItemTrait { itemID = item.ItemId, localeID = this.localeId, traitID = Traits.PackageUnit, Trait = traitReferences == null ? null : traitReferences[Traits.PackageUnit], traitValue = this.packageUnit },
+                new ItemTrait { itemID = item.ItemId, localeID = this.localeId, traitID = Traits.RetailSize, Trait = traitReferences == null ? null : traitReferences[Traits.RetailSize], traitValue = this.retailSize },
+                new ItemTrait { itemID = item.ItemId, localeID = this.localeId, traitID = Traits.RetailUom, Trait = traitReferences == null ? null : traitReferences[Traits.RetailUom], traitValue = this.retailUom },
+                new ItemTrait { itemID = item.ItemId, localeID = this.localeId, traitID = Traits.DeliverySystem, Trait = traitReferences == null ? null : traitReferences[Traits.DeliverySystem], traitValue = this.deliverySystem },
+                new ItemTrait { itemID = item.ItemId, localeID = this.localeId, traitID = Traits.PosScaleTare, Trait = traitReferences == null ? null : traitReferences[Traits.PosScaleTare], traitValue = this.posScaleTare },
+                new ItemTrait { itemID = item.ItemId, localeID = this.localeId, traitID = Traits.FoodStampEligible, Trait = traitReferences == null ? null : traitReferences[Traits.FoodStampEligible], traitValue = this.foodStampEligible },
+                new ItemTrait { itemID = item.ItemId, localeID = this.localeId, traitID = Traits.ModifiedDate, Trait = traitReferences == null ? null : traitReferences[Traits.ModifiedDate], traitValue = this.modifiedDate }
             };
 
             if (validationDate != null)
             {
-                ItemTrait validationDateTrait = new ItemTrait { itemID = item.itemID, localeID = this.localeId, traitID = Traits.ValidationDate, Trait = traitReferences == null ? null : traitReferences[Traits.ValidationDate], traitValue = this.validationDate };
+                ItemTrait validationDateTrait = new ItemTrait { itemID = item.ItemId, localeID = this.localeId, traitID = Traits.ValidationDate, Trait = traitReferences == null ? null : traitReferences[Traits.ValidationDate], traitValue = this.validationDate };
                 itemTraits.Add(validationDateTrait);
             }
 
             // Add ScanCodes
             List<ScanCode> scanCodes = new List<ScanCode>
             {
-                new ScanCode { itemID = item.itemID, localeID = this.localeId, scanCodeTypeID = this.scanCodeTypeId, scanCode = this.scanCode }
+                new ScanCode { itemID = item.ItemId, localeID = this.localeId, scanCodeTypeID = this.scanCodeTypeId, scanCode = this.scanCode }
             };
 
             // Setup HierarchyClass Associations
             if (this.merchLevelFiveId != 0)
             {
-                itemHierarchyClasses.Add(new ItemHierarchyClass { itemID = item.itemID, localeID = this.localeId, hierarchyClassID = this.merchLevelFiveId });
+                itemHierarchyClasses.Add(new ItemHierarchyClass { itemID = item.ItemId, localeID = this.localeId, hierarchyClassID = this.merchLevelFiveId });
             }
 
             // Setup Tax Class Association
             if (this.taxId != 0)
             {
-                itemHierarchyClasses.Add(new ItemHierarchyClass { itemID = item.itemID, localeID = this.localeId, hierarchyClassID = this.taxId });
+                itemHierarchyClasses.Add(new ItemHierarchyClass { itemID = item.ItemId, localeID = this.localeId, hierarchyClassID = this.taxId });
             }
 
             // Setup National Class Association
             if (this.nationalClassId != 0)
             {
-                itemHierarchyClasses.Add(new ItemHierarchyClass { itemID = item.itemID, localeID = this.localeId, hierarchyClassID = this.nationalClassId });
+                itemHierarchyClasses.Add(new ItemHierarchyClass { itemID = item.ItemId, localeID = this.localeId, hierarchyClassID = this.nationalClassId });
             }
 
             // Setup Brand Association
             if (this.brandId != 0)
             {
-                itemHierarchyClasses.Add(new ItemHierarchyClass { itemID = item.itemID, localeID = this.localeId, hierarchyClassID = brandId });
+                itemHierarchyClasses.Add(new ItemHierarchyClass { itemID = item.ItemId, localeID = this.localeId, hierarchyClassID = brandId });
             }
 
             // Add Navigation Properties to Item

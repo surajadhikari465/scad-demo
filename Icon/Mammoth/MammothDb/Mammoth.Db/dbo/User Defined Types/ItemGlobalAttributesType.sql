@@ -1,8 +1,8 @@
 ﻿CREATE TYPE [dbo].ItemGlobalAttributesType AS TABLE
 (
-	[ItemID]						INT				NOT NULL,
+    [ItemID]						INT				NOT NULL,
     [ItemTypeID]					INT				NULL,
-    [ScanCode]						NVARCHAR (13)	NULL,
+    [ScanCode]						NVARCHAR (13)	NOT NULL,
     [SubBrickID]					INT				NULL,
     [NationalClassID]				INT				NULL,
     [BrandHCID]						INT				NULL,

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Icon.Web.Mvc.Models;
+﻿using Icon.Web.Mvc.Models;
 
 namespace Icon.Web.Tests.Common.Builders
 {

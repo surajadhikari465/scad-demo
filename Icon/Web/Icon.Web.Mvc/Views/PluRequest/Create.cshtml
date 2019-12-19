@@ -1,18 +1,9 @@
-﻿@using Infragistics.Web.Mvc
-@model Icon.Web.Mvc.Models.PluRequestCreateViewModel
+﻿@model Icon.Web.Mvc.Models.PluRequestCreateViewModel
 
 @{
     ViewBag.Title = "Create Request";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
-
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Render()
-)
 
 @{Html.RenderPartial("_HeaderPartial", "PLU Request Management");}
 
@@ -23,100 +14,77 @@
         
         
 
-        <fieldset>
-            <legend>Create PLU Request</legend>
+    <fieldset>
+        <legend>Create PLU Request</legend>
 
-            <div class="row">
-                @Html.LabelFor(model => model.NationalPLU, new { @class = "col-md-3 form-label" })
-                <div>
-                    @Html.TextBoxFor(model => model.NationalPLU, new { @class = "col-md-6 form-input" })
-                    @Html.ValidationMessageFor(model => model.NationalPLU, null, new { @class = "form-property-val" })
-                </div>
-            </div>
-
-            <div class="row">
-                @Html.LabelFor(model => model.BrandName, new { @class = "col-md-3 form-label" })
-                <div>
-                    @Html.TextBoxFor(model => model.BrandName, new { @class = "col-md-6 form-input .ui-autocomplete", data_icon_autocomplete = @Url.Action("BrandAutocomplete") })
-                    @Html.ValidationMessageFor(model => model.BrandName, null, new { @class = "form-property-val" })
-                </div>
-            </div>
-
-            <div class="row">
-                @Html.LabelFor(model => model.ProductDescription, new { @class = "col-md-3 form-label" })
-                <div>
-                    @Html.TextBoxFor(model => model.ProductDescription, new { @class = "col-md-6 form-input" })
-                    @Html.ValidationMessageFor(model => model.ProductDescription, null, new { @class = "form-property-val" })
-                </div>
-            </div>
-
-            <div class="row">
-                @Html.LabelFor(model => model.PosDescription, new { @class = "col-md-3 form-label" })
-                <div>
-                    @Html.TextBoxFor(model => model.PosDescription, new { @class = "col-md-6 form-input" })
-                    @Html.ValidationMessageFor(model => model.PosDescription, null, new { @class = "form-property-val" })
-                </div>
-            </div>
-
-            <div class="row">
-                @Html.LabelFor(model => model.PackageUnit, new { @class = "col-md-3 form-label" })
-                <div>
-                    @Html.TextBoxFor(model => model.PackageUnit, new { @class = "col-md-6 form-input" })
-                    @Html.ValidationMessageFor(model => model.PackageUnit, null, new { @class = "form-property-val" })
-                </div>
-            </div>
-
-            <div class="row">
-                @Html.LabelFor(model => model.RetailSize, new { @class = "col-md-3 form-label" })
-                <div>
-                    @Html.TextBoxFor(model => model.RetailSize, new { @class = "col-md-6 form-input" })
-                    @Html.ValidationMessageFor(model => model.RetailSize, null, new { @class = "form-property-val" })
-                </div>
-            </div>
-
-            <div class="row">
-                @Html.LabelFor(model => model.RetailUom, new { @class = "col-md-3 form-label" })
-                <div>
-                    @Html.DropDownListFor(model => model.RetailUom, Model.RetailUoms, new { @class = "col-md-6 form-input" })
-                </div>
-            </div> 
-            
-            <div class="row">
-                @Html.LabelFor(model => model.PluType, new { @class = "col-md-3 form-label" })
-                <div>
-                    @Html.DropDownListFor(model => model.PluType, Model.PluTypes, new { @class = "col-md-6 form-input" })
-                </div>
-            </div>            
-
-            <div class="row">
-                @Html.LabelFor(model => Model.FinancialHierarchyName, new { @class = "col-md-3 form-label" })
-                <div>
-                    @Html.DropDownListFor(model => Model.FinancialHierarchyClassId, Model.FinanacialHierarchyClasses, "", new { @class = "col-md-6 form-input" })
-                </div>
-            </div>
-            
-            <div class="row">
-                @Html.LabelFor(model => Model.NationalHierarchyName, new { @class = "col-md-3 form-label" })
-                <div>
-                    @Html.DropDownListFor(model => Model.NationalHierarchyClassId, Model.NationalHierarchyClasses, "", new { @class = "col-md-6 form-input" })
-                </div>
-            </div>
-
-            <div class="row">
-                @Html.LabelFor(model => model.Notes, new { @class = "col-md-3 form-label" })
-                <div>
-                    @Html.TextBoxFor(model => model.Notes, new { @class = "col-md-6 form-input" })
-                    @Html.ValidationMessageFor(model => model.Notes, null, new { @class = "form-property-val" })
-                </div>
-            </div>
-           
-        </fieldset>
-
-        <div class="row">
-            <div class="col-md-offset-3 col-md-1">
-                <input type="submit" value="Create" class="btn btn-default form-submit" />
-            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.NationalPLU, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.NationalPLU, new { @class = "form-control form-input" })
+            @Html.ValidationMessageFor(model => model.NationalPLU, null, new { @class = "form-property-val" })
         </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BrandName, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.BrandName, new { @class = "form-control form-input .ui-autocomplete", data_icon_autocomplete = @Url.Action("BrandAutocomplete") })
+            @Html.ValidationMessageFor(model => model.BrandName, null, new { @class = "form-property-val" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductDescription, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.ProductDescription, new { @class = "form-control form-input" })
+            @Html.ValidationMessageFor(model => model.ProductDescription, null, new { @class = "form-property-val" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PosDescription, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.PosDescription, new { @class = "form-control form-input" })
+            @Html.ValidationMessageFor(model => model.PosDescription, null, new { @class = "form-property-val" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PackageUnit, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.PackageUnit, new { @class = "form-control form-input" })
+            @Html.ValidationMessageFor(model => model.PackageUnit, null, new { @class = "form-property-val" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RetailSize, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.RetailSize, new { @class = "form-control form-input" })
+            @Html.ValidationMessageFor(model => model.RetailSize, null, new { @class = "form-property-val" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RetailUom, new { @class = "form-label" })
+            @Html.DropDownListFor(model => model.RetailUom, Model.RetailUoms, new { @class = "form-control form-input" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PluType, new { @class = "form-label" })
+            @Html.DropDownListFor(model => model.PluType, Model.PluTypes, new { @class = "form-control form-input" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => Model.FinancialHierarchyName, new { @class = "form-label" })
+            @Html.DropDownListFor(model => Model.FinancialHierarchyClassId, Model.FinanacialHierarchyClasses, "", new { @class = "form-control form-input" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => Model.NationalHierarchyName, new { @class = "form-label" })
+            @Html.DropDownListFor(model => Model.NationalHierarchyClassId, Model.NationalHierarchyClasses, "", new { @class = "form-control form-input" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Notes, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.Notes, new { @class = "form-control form-input" })
+            @Html.ValidationMessageFor(model => model.Notes, null, new { @class = "form-property-val" })
+        </div>
+        
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-light form-submit" />
+        </div>
+    </fieldset>
+
+     
 
         <div class="validation-section page-subsection">
             @if (ViewData["ErrorMessage"] != null)
@@ -147,6 +115,5 @@
 @section Scripts 
 {
     @Scripts.Render("~/Scripts/apply-autocomplete.js")
-    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/searchable-dropdown.js")
 }

@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="OOS.Model.AbstractSummaryRepository" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAgAAAAAAAEAIAAAAAAAQAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>AbstractSummaryRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="OOS.Model.CheckumSpecification" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAIAAAAA=</HashCode>
+      <FileName>CheckumSpecification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.CustomReportDTO" Collapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAGAAAQIEAAAAAAAAAQIAAIAAAAIAAgAAAAAAwA=</HashCode>
+      <FileName>CustomReportDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.CustomReportEntry" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAGAAAQIEAAAAAAAAAQIAAIAAAAIAAgAAAAAAwA=</HashCode>
+      <FileName>CustomReportEntry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.CustomReportRepository" Collapsed="true">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAEBAAEAAAAAAAoACQAAAAgAAABAAAAgA=</HashCode>
+      <FileName>CustomReportRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.EventCreatorFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAACAAAAACIAEAACCAAAAABQAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>EventCreatorFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OOS.Model.InvalidStoreException" Collapsed="true">
+    <Position X="14" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>InvalidStoreException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.InvalidUPCException" Collapsed="true">
+    <Position X="5.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>InvalidUPCException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.LogService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAACAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LogService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OOS.Model.OOSCountDTO" Collapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>OOSCountDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.OOSCountSummary" Collapsed="true">
+    <Position X="10.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAABAAAAAAAAGAAABAQAIgAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>OOSCountSummary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.OOSCustomReport" Collapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>OOSCustomReport.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.OOSEntitiesFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>OOSEntitiesFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OOS.Model.OOSSummary" Collapsed="true">
+    <Position X="5.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAgAAQgAAAIQABAAAAAAAAAAA=</HashCode>
+      <FileName>OOSSummary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.Product" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACEgAAAAAAAAAACACIAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Product.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OOS.Model.ProductDTO" Collapsed="true">
+    <Position X="8.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAACAAQAAAAAAAAAAAAIAABAAIAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>ProductDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.ProductFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAABAAAAAADAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>ProductFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OOS.Model.Region" Collapsed="true">
+    <Position X="14" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAABAAAAAAAAAAAAAAAAAAABAAABAAAAEAAAIAg=</HashCode>
+      <FileName>Region.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.RegionSummaryRepository" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACCAAAAgiAQAAAAAAAAAAAAAAQAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>RegionSummaryRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.ScanOutOfStockItemService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAACAAAACAAAAAAAAAAAAIAAAAIABBAQAAAA=</HashCode>
+      <FileName>ScanOutOfStockItemService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OOS.Model.ScanSummary" Collapsed="true">
+    <Position X="8.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAEAAAAAAAAAAAAAAABAAAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>ScanSummary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.SKUSummary" Collapsed="true">
+    <Position X="10.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAABAQAIAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>SKUSummary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.Store" Collapsed="true">
+    <Position X="5.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAAAAAAAAAAAAAAQAAAABAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Store.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.StoreSummaryRepository" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgCAAAAAAAAAAAAAAAAQAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>StoreSummaryRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.SummarySpecification" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAABAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SummarySpecification.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OOS.Model.UPC" Collapsed="true">
+    <Position X="10.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UPC.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.UPCValidationService" Collapsed="true">
+    <Position X="12.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>UPCValidationService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.Repository.ProductRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAABAAAAAAAQCABAQgAAEIAgIAAgACAAAAAAAAAA=</HashCode>
+      <FileName>ProductRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OOS.Model.Repository.RegionRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAACAAAAAAAAAAAAAAAAAAAAAIAAEAAAAAAAA=</HashCode>
+      <FileName>RegionRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OOS.Model.Repository.SQLRegionFactory" Collapsed="true">
+    <Position X="12.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>SQLRegionFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.Repository.SQLStoreFactory" Collapsed="true">
+    <Position X="14" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>SQLStoreFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOS.Model.Repository.StoreRepository" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>StoreRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Struct Name="OOS.Model.SummaryKey" Collapsed="true">
+    <Position X="5.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAQAIABEAAAAQAAAAA=</HashCode>
+      <FileName>SummaryKey.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="OOS.Model.IConfigurator" Collapsed="true">
+    <Position X="5.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAgAAAACAAAAAIAAAIAAAQAIAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>IConfigurator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OOS.Model.IEventCreatorFactory" Collapsed="true">
+    <Position X="7" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>IEventCreatorFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OOS.Model.ILogService" Collapsed="true">
+    <Position X="8.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ILogService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OOS.Model.IOOSEntitiesFactory" Collapsed="true">
+    <Position X="10.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IOOSEntitiesFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OOS.Model.IProduct" Collapsed="true">
+    <Position X="12.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACEgAAAAAAAAAACACIAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>IProduct.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OOS.Model.IProductFactory" Collapsed="true">
+    <Position X="14" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>IProductFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OOS.Model.IProductRepository" Collapsed="true">
+    <Position X="5.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IProductRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OOS.Model.IRegionRepository" Collapsed="true">
+    <Position X="7" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>IRegionRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OOS.Model.IScanOutOfStockItemService" Collapsed="true">
+    <Position X="8.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAABAAQAAAA=</HashCode>
+      <FileName>IScanOutOfStockItemService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OOS.Model.IStoreRepository" Collapsed="true">
+    <Position X="10.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IStoreRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OOS.Model.ISummaryRepository" Collapsed="true">
+    <Position X="12.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ISummaryRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OOS.Model.ISummarySpecification" Collapsed="true">
+    <Position X="14" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ISummarySpecification.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OOS.Model.IUserProfile" Collapsed="true">
+    <Position X="5.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAABAAAgAAAAAAAAAAAAABAAAAAAAQAAA=</HashCode>
+      <FileName>IUserProfile.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

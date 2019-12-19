@@ -11,66 +11,88 @@ namespace Icon.Web.Mvc.App_Start
 {
     public static class AutoMapperWebConfiguration
     {
-        public static void Configure()
+        public static IMapper Configure()
         {
-            Mapper.Initialize(config => 
-            { 
-                config.AddProfile(new LocaleProfile());
-                config.AddProfile(new HierarchyClassProfile());
-                config.AddProfile(new RegionalItemProfile());
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<LocaleProfile>();
+                cfg.AddProfile<HierarchyClassProfile>();
+                cfg.AddProfile<RegionalItemProfile>();
             });
+            var mapper = new Mapper(config);
+            return mapper;
         }
+    }
+
+    public class ItemProfile : Profile
+    {
+
     }
 
     public class HierarchyClassProfile : Profile
     {
-        protected override void Configure()
+        public HierarchyClassProfile()
         {
-            Mapper.CreateMap<AddHierarchyClassManager, AddHierarchyClassCommand>();
-            Mapper.CreateMap<BrandManager, BrandCommand>();
-            Mapper.CreateMap<BrandManager, UpdateBrandHierarchyClassTraitsCommand>();
-            Mapper.CreateMap<UpdateHierarchyClassManager, UpdateHierarchyClassCommand>();
-            Mapper.CreateMap<UpdateHierarchyClassManager, UpdateHierarchyClassTraitCommand>();
-            Mapper.CreateMap<AddHierarchyClassCommand, MessageHierarchyData>()
-                .ForMember(destination => destination.HierarchyClass, option => option.MapFrom(source => source.NewHierarchyClass));
-            Mapper.CreateMap<UpdateHierarchyClassCommand, MessageHierarchyData>()
-                .ForMember(destination => destination.HierarchyClass, option => option.MapFrom(source => source.UpdatedHierarchyClass))
-                .ForMember(destination => destination.ClassNameChange, option => option.MapFrom(source => source.ClassNameChanged));
-            Mapper.CreateMap<AddHierarchyClassCommand, AddHierarchyClassMessageCommand>();
-            Mapper.CreateMap<DeleteHierarchyClassManager, DeleteHierarchyClassCommand>();
-            Mapper.CreateMap<UpdateSubTeamManager, UpdateSubTeamCommand>();
-            Mapper.CreateMap<AddCertificationAgencyManager, AddCertificationAgencyCommand>();        
-            Mapper.CreateMap<AddMerchTaxAssociationManager, AddMerchTaxMappingCommand>();
-            Mapper.CreateMap<AddMerchTaxAssociationManager, ApplyMerchTaxAssociationToItemsCommand>();
-            Mapper.CreateMap<UpdateMerchTaxAssociationManager, UpdateMerchTaxMappingCommand>();
-            Mapper.CreateMap<UpdateMerchTaxAssociationManager, ApplyMerchTaxAssociationToItemsCommand>();
-            Mapper.CreateMap<UpdateHierarchyClassCommand, AddHierarchyClassMessageCommand>()
-                .ForMember(destination => destination.HierarchyClass, option => option.MapFrom(source => source.UpdatedHierarchyClass))
-                .ForMember(destination => destination.ClassNameChange, option => option.MapFrom(source => source.ClassNameChanged));
-          
+            this.CreateMap<AddHierarchyClassManager, AddHierarchyClassCommand>();
+            this.CreateMap<ManufacturerManager, AddManufacturerCommand>();
+            this.CreateMap<ManufacturerManager, UpdateManufacturerCommand>();
+            this.CreateMap<ManufacturerManager, UpdateManufacturerHierarchyClassTraitsCommand>();
+            this.CreateMap<BrandManager, BrandCommand>();
+            this.CreateMap<BrandManager, UpdateBrandHierarchyClassTraitsCommand>();
+            this.CreateMap<UpdateHierarchyClassManager, UpdateHierarchyClassCommand>()
+                .ForMember(d => d.ClassNameChanged, o => o.Ignore());
+            this.CreateMap<UpdateHierarchyClassManager, UpdateHierarchyClassTraitCommand>()
+                .ForMember(d => d.PosDeptNumber, o => o.Ignore())
+                .ForMember(d => d.TeamNumber, o => o.Ignore())
+                .ForMember(d => d.TeamName, o => o.Ignore())
+                .ForMember(d => d.NonAlignedSubteam, o => o.Ignore())
+                .ForMember(d => d.SubteamChanged, o => o.Ignore());
+            this.CreateMap<AddHierarchyClassCommand, MessageHierarchyData>()
+                .ForMember(d => d.HierarchyClass, o => o.MapFrom(s => s.NewHierarchyClass))
+                .ForMember(d => d.ClassNameChange, o => o.Ignore())
+                .ForMember(d => d.DeleteMessage, o => o.Ignore());
+            this.CreateMap<UpdateHierarchyClassCommand, MessageHierarchyData>()
+                .ForMember(d => d.HierarchyClass, o => o.MapFrom(s => s.UpdatedHierarchyClass))
+                .ForMember(d => d.ClassNameChange, o => o.MapFrom(s => s.ClassNameChanged))
+                .ForMember(d => d.DeleteMessage, o => o.Ignore());
+            this.CreateMap<AddHierarchyClassCommand, AddHierarchyClassMessageCommand>()
+                .ForMember(d => d.HierarchyClass, o => o.MapFrom(s => s.NewHierarchyClass))
+                .ForMember(d => d.ClassNameChange, o => o.Ignore())
+                .ForMember(d => d.DeleteMessage, o => o.Ignore());
+            this.CreateMap<DeleteHierarchyClassManager, DeleteHierarchyClassCommand>();
+            this.CreateMap<UpdateSubTeamManager, UpdateSubTeamCommand>()
+                .ForMember(d => d.UpdatedHierarchyClass, o => o.Ignore())
+                .ForMember(d => d.PeopleSoftChanged, o => o.Ignore());
+            this.CreateMap<AddCertificationAgencyManager, AddCertificationAgencyCommand>();
+            this.CreateMap<UpdateHierarchyClassCommand, AddHierarchyClassMessageCommand>()
+                .ForMember(d => d.HierarchyClass, o => o.MapFrom(s => s.UpdatedHierarchyClass))
+                .ForMember(d => d.ClassNameChange, o => o.MapFrom(s => s.ClassNameChanged))
+                .ForMember(d => d.DeleteMessage, o => o.Ignore())
+                .ForMember(d => d.NationalClassCode, o => o.Ignore());
+            this.CreateMap<DeleteNationalHierarchyManager, DeleteHierarchyClassCommand>();
         }
     }
 
     public class LocaleProfile : Profile
     {
-        protected override void Configure()
+        public LocaleProfile()
         {
-            Mapper.CreateMap<UpdateLocaleManager, UpdateLocaleCommand>();
-            Mapper.CreateMap<AddLocaleManager, AddLocaleCommand>();
-            Mapper.CreateMap<Locale, MessageQueueLocale>()
+            this.CreateMap<UpdateLocaleManager, UpdateLocaleCommand>();
+            this.CreateMap<AddLocaleManager, AddLocaleCommand>();
+            this.CreateMap<Locale, MessageQueueLocale>()
                 .ConvertUsing<LocaleToMessageQueueLocaleConverter>();
-            Mapper.CreateMap<AddLocaleManager, AddAddressCommand>();
-            Mapper.CreateMap<UpdateVenueManager, UpdateVenueCommand>();
-            Mapper.CreateMap<AddVenueManager, AddVenueCommand>();
-            Mapper.CreateMap<BrandManager, AddBrandMessageCommand>();
+            this.CreateMap<AddLocaleManager, AddAddressCommand>()
+                .ForMember(d => d.AddressId, o => o.Ignore());
+            this.CreateMap<UpdateVenueManager, UpdateVenueCommand>();
+            this.CreateMap<AddVenueManager, AddVenueCommand>();
         }
     }
 
     public class RegionalItemProfile : Profile
     {
-        protected override void Configure()
+        public RegionalItemProfile()
         {
-            Mapper.CreateMap<IconItemChangeQueue, FailedRegionalEventViewModel>()
+            this.CreateMap<IconItemChangeQueue, FailedRegionalEventViewModel>()
                 .ConvertUsing<IconItemChangeQueueToFailedRegionalItemUpdateViewModelConverter>();
         }
     }

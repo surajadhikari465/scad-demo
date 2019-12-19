@@ -1,6 +1,5 @@
 ﻿using Icon.Common.DataAccess;
-using Icon.Web.Common.Validators;
-using Icon.Web.DataAccess.Infrastructure;
+using Icon.Common.Validators;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;

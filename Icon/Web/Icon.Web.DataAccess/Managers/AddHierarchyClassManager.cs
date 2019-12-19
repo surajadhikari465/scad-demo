@@ -6,7 +6,6 @@ namespace Icon.Web.DataAccess.Managers
     {
         public HierarchyClass NewHierarchyClass { get; set; }
         public string TaxAbbreviation { get; set; }
-        public string GlAccount { get; set; }
         public int SubTeamHierarchyClassId { get; set; }
         public string NonMerchandiseTrait { get; set; }
         public string PosDeptNumber { get; set; }

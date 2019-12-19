@@ -1,10 +1,4 @@
-﻿using Icon.Framework;
-using Icon.Web.DataAccess.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Icon.Web.DataAccess.Models;
 using Icon.Common.DataAccess;
 

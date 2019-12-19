@@ -1,5 +1,4 @@
-﻿using Icon.Framework;
-using Icon.Web.Attributes;
+﻿using Icon.Web.Attributes;
 using Icon.Web.Common;
 using Icon.Web.Mvc.Attributes;
 using System.Collections.Generic;
@@ -23,7 +22,7 @@ namespace Icon.Web.Mvc.Models
         public int SelectedPluCategoryId { get; set; }
 
         [Display(Name="Number of PLUs")]        
-        [IconPropertyValidation(ValidatorPropertyNames.MaxPlus, CanBeNullOrEmprty = true)]
+        [IconPropertyValidation(ValidatorPropertyNames.MaxPlus, CanBeNullOrEmpty = true)]
         public string MaxPlus { get; set; }
 
 

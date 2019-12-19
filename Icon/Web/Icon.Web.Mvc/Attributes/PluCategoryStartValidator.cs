@@ -1,7 +1,4 @@
-﻿
-using Icon.Framework;
-using Icon.Web.Common.Validators;
-using Icon.Web.Mvc.Models;
+﻿using Icon.Web.Mvc.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,7 +10,7 @@ namespace Icon.Web.Attributes
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var pluCategoryViewModel = validationContext.ObjectInstance as PluCategoryViewModel;
+            var pluCategoryViewModel = validationContext.ObjectInstance as BarcodeTypeViewModel;
 
             if (pluCategoryViewModel != null && value != null && pluCategoryViewModel.EndRange != null)
             {

@@ -1,10 +1,8 @@
 ﻿using Icon.Framework;
-using Icon.Web.Common;
-using Icon.Web.Common.Validators;
 using Icon.Web.Mvc.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
+using Icon.Common.Validators;
 
 namespace Icon.Web.Attributes
 {

@@ -10,5 +10,6 @@ namespace Icon.Web.DataAccess.Commands
         public string Designation { get; set; }
         public string ZipCode { get; set; }
         public string Locality { get; set; }
+        public string ParentCompany { get; set; }
     }
 }

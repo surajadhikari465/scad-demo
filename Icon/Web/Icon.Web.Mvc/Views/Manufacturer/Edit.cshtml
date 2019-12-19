@@ -1,0 +1,87 @@
+﻿@model Icon.Web.Mvc.Models.ManufacturerViewModel
+
+@{
+    ViewBag.Title = "Edit Manufacturer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{Html.RenderPartial("_HeaderPartial", "Manufacturer Management");}
+
+
+<div class="page-section">
+    @using (Html.BeginForm("Edit", "Manufacturer", FormMethod.Post, new { @class = "begin-form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Edit Manufacturer</legend>
+
+            @Html.HiddenFor(model => model.HierarchyClassId)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ManufacturerName, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.ManufacturerName, new { @class = "form-control form-input", @id = "manufacturerName" })
+                @Html.ValidationMessageFor(model => model.ManufacturerName, null, new { @class = "form-property-val" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ZipCode, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.ZipCode, new { @class = "form-control form-input", @id = "zipCode" })
+                @Html.ValidationMessageFor(model => model.ZipCode, null, new { @class = "form-property-val" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ArCustomerId, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.ArCustomerId, new { @class = "form-control form-input", @id = "arCustomerId" })
+            </div>
+        </fieldset>
+
+        <div class="form-group">
+            <input type="submit" value="Save" id="saveButton" class="btn btn-light form-submit" />
+        </div>
+
+        <div class="validation-section page-subsection">
+            @if (ViewData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>@ViewData["SuccessMessage"].ToString()</strong>
+                </div>
+            }
+            @if (ViewData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>@ViewData["ErrorMessage"].ToString()</strong>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@if (Model != null && (Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full)
+{
+    <div class="form-footer">
+        @Html.ActionLink("Back to Manufacturers", "Index") | @Html.ActionLink("Add New Manufacturer", "Create")
+    </div>
+}
+else
+{
+    <div class="form-footer">
+        @Html.ActionLink("Back to Manufacturers", "Index")
+    </div>
+}
+
+<div id="divBlock" class="block" style="display: none;">
+    <div class="block-message">
+        <img src="\Content\Infragistics\css\structure\images\igLoadingSmall.gif" style="max-width: 35px; max-height: 35px; margin: 25px 0 0 10px;" />
+        <label class="block-label">Please wait... <br /> &nbsp Processing request...</label>
+    </div>
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/jquery-disable.js")
+    @Scripts.Render("~/Scripts/Manufacturer/manufacturer-edit.js")
+}

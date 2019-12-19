@@ -35,6 +35,8 @@ namespace Icon.Framework
         public string ZipCode { get; set; }
         public string Designation { get; set; }
         public string Locality { get; set; }
+        public string ArCustomerId { get; set; }
+        public string ParentCompany { get; set; }
     
         public virtual MessageAction MessageAction { get; set; }
         public virtual MessageHistory MessageHistory { get; set; }

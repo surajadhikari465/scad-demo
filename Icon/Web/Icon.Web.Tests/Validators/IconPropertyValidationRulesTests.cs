@@ -1,6 +1,6 @@
-﻿using Icon.Web.Common.Validators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Icon.Common.Validators;
 using Icon.Web.Common;
 
 namespace Icon.Web.Tests.Unit.Validators

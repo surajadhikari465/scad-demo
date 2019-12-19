@@ -1,11 +1,4 @@
-﻿using Icon.Framework;
-using Icon.Web.Attributes;
-using Icon.Web.Extensions;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
-using Icon.Web.DataAccess.Models;
+﻿using Icon.Web.DataAccess.Models;
 
 namespace Icon.Web.Mvc.Models
 {

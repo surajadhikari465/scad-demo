@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass] 
     public class AddHierarchyClassCommandHandlerTests
     {
         private IconContext context;

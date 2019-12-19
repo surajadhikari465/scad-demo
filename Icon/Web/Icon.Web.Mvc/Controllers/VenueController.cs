@@ -7,7 +7,6 @@ using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Attributes;
 using Icon.Web.Mvc.Models;
-using Infragistics.Web.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;

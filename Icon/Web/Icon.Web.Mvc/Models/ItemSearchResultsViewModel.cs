@@ -1,8 +1,5 @@
 ﻿using Icon.Web.DataAccess.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Icon.Web.Mvc.Models

@@ -1,7 +1,5 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Web.DataAccess.Infrastructure;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;

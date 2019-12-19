@@ -193,8 +193,18 @@ namespace Icon.ApiController.Controller.QueueReaders
                         BuildTrait(TraitCodes.BrandAbbreviation, TraitDescriptions.BrandAbbreviation, message.BrandAbbreviation),
                         BuildTrait(TraitCodes.ZipCode, TraitDescriptions.ZipCode, message.ZipCode),
                         BuildTrait(TraitCodes.Designation, TraitDescriptions.Designation, message.Designation),
-                        BuildTrait(TraitCodes.Locality, TraitDescriptions.Locality, message.Locality)
+                        BuildTrait(TraitCodes.Locality, TraitDescriptions.Locality, message.Locality),
+                        BuildTrait(TraitCodes.ParentCompany, TraitDescriptions.ParentCompany, message.ParentCompany)
                     });
+            }
+
+            if (message.HierarchyId == Hierarchies.Manufacturer)
+            {
+                traits.AddRange(new List<Contracts.TraitType>()
+                {
+                    BuildTrait(TraitCodes.ZipCode, TraitDescriptions.ZipCode, message.ZipCode),
+                    BuildTrait(TraitCodes.ArCustomerId, TraitDescriptions.ArCustomerId, message.ArCustomerId)
+                });
             }
 
             return traits.Where(b => b.type.value[0].value != string.Empty).ToArray();

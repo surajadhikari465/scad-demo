@@ -5,33 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
 
-@{Html.RenderPartial("_HeaderPartial", "Hierarchy Management");}
 
-<div class="page-section">
-    @using (Ajax.BeginForm("Search", "Hierarchy", null, new AjaxOptions
-        {
-            HttpMethod = "GET",
-            UpdateTargetId = "hierarchyView",
-            InsertionMode = InsertionMode.Replace,
-            OnBegin = "searchButtonClick",
-            OnSuccess = "hierarchySearchSuccess"
-        }, new { @class = "begin-form" }))
-    {
-        <fieldset>
-            <legend>Select Hierarchy</legend>
-            <div class="form-inline">
-                <div class="form-group">
-                    @Html.DropDownListFor(model => Model.SelectedHierarchyId, Model.Hierarchies, null, new { @class = "form-control col-md-6" })
-                </div>
-                <span class="form-group">
-                    <input type="submit" value="Display" class="btn btn-default" id="search-button" />
-                </span>
-            </div>
-        </fieldset>    
-    }
-</div>
+@{Html.RenderPartial("_HeaderPartial", "");}
+
+@if (Model.SelectedHierarchyId >= 1)
+{
+    Html.RenderAction("Search", "Hierarchy");
+}
 
 <div id="hierarchyView" class="page-section"></div>
 

@@ -4,7 +4,6 @@ using Icon.Ewic.Serialization.Serializers;
 using Icon.Ewic.Transmission.Producers;
 using Icon.Framework;
 using Icon.Web.Common;
-using Icon.Web.Common.Validators;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Queries;
@@ -13,6 +12,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Icon.Common.Validators;
 
 namespace Icon.Web.Tests.Unit.Managers
 {

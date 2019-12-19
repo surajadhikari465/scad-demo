@@ -1,10 +1,6 @@
 ﻿namespace Icon.Web.Common.Utility
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public static class ConversionUtility
     {
@@ -55,6 +51,11 @@
                 return result;
             else
                 return null;
+        }
+
+        public static string ToFormattedDateTimeString(this DateTime dateTime)
+        {
+            return dateTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ");
         }
 
         /// <summary>

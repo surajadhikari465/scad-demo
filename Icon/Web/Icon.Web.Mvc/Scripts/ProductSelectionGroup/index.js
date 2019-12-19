@@ -2,11 +2,13 @@
 var traitNameLookup = {};
 var merchNameLookup = {};
 var psgTypeNameLookup = {};
+var attributeNameLookup = {};
 
 // These are used to fix the bug in IE10 where the 'undefined' showed up in tax, merch, and uom lookups.
 var alreadyRunTraitLookup = false;
 var alreadyRunMerchLookup = false;
 var alreadyRunPsgTypeLookup = false;
+var alreadyRunAttributeLookup = false;
 
 $(document).ready(function () {
     rowEditSaveChanges();
@@ -112,6 +114,29 @@ function fillPsgNameLookup() {
     alreadyRunPsgTypeLookup = true;
 }
 
+//Populate Attribute Lookup Array for displaying Attribute Names instead of IDs
+function fillAttributeLookup() {
+    var columnSettings = $('#igGrid').igGridUpdating('option', 'columnSettings');
+    var setting;
+
+    for (var i = 0; i < columnSettings.length; i++) {
+        setting = columnSettings[i];
+        if (setting.columnKey === 'AttributeId') {
+            debugger;
+            var comboDataSource = setting.editorOptions.dataSource;
+            var textKey = setting.editorOptions.textKey;
+            var valueKey = setting.editorOptions.valueKey;
+            var item;
+            for (var j = 0; j < comboDataSource.length; j++) {
+                item = comboDataSource[j];
+                attributeNameLookup[item[valueKey]] = item[textKey];
+            }
+        }
+    }
+
+    alreadyRunAttributeLookup = true;
+}
+
 // These Formatter Functions display the Names instead of the IDs and are called on the asp.net view
 // FormatterFunction for TraitId column in igGrid
 function lookupTraitName(traitId) {
@@ -145,4 +170,15 @@ function lookupPsgTypeName(psgTypeId) {
         return "";
     }
     return psgTypeNameLookup[psgTypeId];
+}
+
+// FormatterFunction for AttributeId column in igGrid
+function lookupAttributeName(attributeId) {
+    if (!alreadyRunAttributeLookup) {
+        fillAttributeLookup();
+    }
+    if (attributeId === null) {
+        return "";
+    }
+    return attributeNameLookup[attributeId];
 }

@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E342D7F6-43A0-446B-A458-ED7A5E838657}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OOS.StoreManagementUI</RootNamespace>
+    <AssemblyName>OOS.StoreManagementUI</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="StructureMap">
+      <HintPath>..\packages\structuremap.2.6.3\lib\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddStoreStatusView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddStoreStatusView.Designer.cs">
+      <DependentUpon>AddStoreStatusView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddStoreView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddStoreView.Designer.cs">
+      <DependentUpon>AddStoreView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configurator.cs" />
+    <Compile Include="InsertStoreSkuCountView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InsertStoreSkuCountView.Designer.cs">
+      <DependentUpon>InsertStoreSkuCountView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UpdateStoreSkuCountView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdateStoreSkuCountView.Designer.cs">
+      <DependentUpon>UpdateStoreSkuCountView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UpdateStoreView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdateStoreView.Designer.cs">
+      <DependentUpon>UpdateStoreView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StoreManagementUI.cs" />
+    <Compile Include="StoreSkuCountView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StoreSkuCountView.Designer.cs">
+      <DependentUpon>StoreSkuCountView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StoreManagementTasks.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StoreManagementTasks.Designer.cs">
+      <DependentUpon>StoreManagementTasks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StructureMapBootstrapper.cs" />
+    <Compile Include="UserProfile.cs" />
+    <EmbeddedResource Include="AddStoreStatusView.resx">
+      <DependentUpon>AddStoreStatusView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddStoreView.resx">
+      <DependentUpon>AddStoreView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InsertStoreSkuCountView.resx">
+      <DependentUpon>InsertStoreSkuCountView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="StoreManagementTasks.resx">
+      <DependentUpon>StoreManagementTasks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StoreSkuCountView.resx">
+      <DependentUpon>StoreSkuCountView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UpdateStoreSkuCountView.resx">
+      <DependentUpon>UpdateStoreSkuCountView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UpdateStoreView.resx">
+      <DependentUpon>UpdateStoreView.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OOS.Model\OOS.Model.csproj">
+      <Project>{42EEB29B-E7F5-43DE-A7AE-617BE3DDAD97}</Project>
+      <Name>OOS.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OOSCommon\OOSCommon.csproj">
+      <Project>{554DAF29-3CED-47BA-9FA8-9F87317FAD84}</Project>
+      <Name>OOSCommon</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

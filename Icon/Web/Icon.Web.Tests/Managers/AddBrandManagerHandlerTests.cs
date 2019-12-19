@@ -1,6 +1,6 @@
-﻿using Icon.Common.DataAccess;
+﻿using AutoMapper;
+using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Testing.Builders;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
@@ -18,9 +18,6 @@ namespace Icon.Web.Tests.Unit.Managers
         private BrandManagerHandler managerHandler;
         private IconContext context;
         private Mock<ICommandHandler<BrandCommand>> mockBrandCommand;
-        private Mock<ICommandHandler<BrandCommandHandler>> mockBrandCommandhandler;
-        private Mock<ICommandHandler<UpdateHierarchyClassTraitCommand>> mockBrandTraitsCommand;
-        private Mock<ICommandHandler<UpdateHierarchyClassTraitCommandHandler>> mockBrandTraitsCommandHandler;
         private Mock<ICommandHandler<AddBrandMessageCommand>> mockAddBrandMessageCommand;
         private Mock<ICommandHandler<UpdateBrandHierarchyClassTraitsCommand>> mockBrandHierarchyClassTraitsCommand;
         private HierarchyClass testBrand;
@@ -29,40 +26,39 @@ namespace Icon.Web.Tests.Unit.Managers
         private string testDesignation;
         private string testZipCode;
         private string testLocality;
+        private IMapper mapper;
 
         [TestInitialize]
         public void Initialize()
         {
             context = new IconContext();
+            mapper = AutoMapperWebConfiguration.Configure();
             mockBrandCommand = new Mock<ICommandHandler<BrandCommand>>();
             mockAddBrandMessageCommand = new Mock<ICommandHandler<AddBrandMessageCommand>>();
             mockBrandHierarchyClassTraitsCommand = new Mock<ICommandHandler<UpdateBrandHierarchyClassTraitsCommand>>();
 
-            testBrandName = "Test";
+            testBrand = new HierarchyClass();
+            testBrandName = "Test" + Guid.NewGuid().ToString();
             testBrandAbbreviation = "ABBR";
             testDesignation = "TestDesignation"; ;
             testZipCode = "78745";
             testLocality = "TestLocality";
 
-            testBrand = new HierarchyClass() { hierarchyClassName = testBrandName, hierarchyID = Hierarchies.Brands, hierarchyLevel = HierarchyLevels.Parent, hierarchyParentClassID = null };
-
-            AutoMapperWebConfiguration.Configure();
-        }
-
-        private void BuildManagerHandler()
-        {
-            managerHandler = new BrandManagerHandler(context, mockBrandCommand.Object, mockBrandHierarchyClassTraitsCommand.Object, mockAddBrandMessageCommand.Object);
+            managerHandler = new BrandManagerHandler(
+                context,
+                mockBrandCommand.Object,
+                mockBrandHierarchyClassTraitsCommand.Object,
+                mockAddBrandMessageCommand.Object,
+                mapper);
         }
 
         [TestMethod]
         public void AddBrand_SuccessfulExecution_AllCommandsShouldBeCalled()
         {
             // Given.
-            BuildManagerHandler();
-
             HierarchyClass hierarchyClass = new HierarchyClass
             {
-                hierarchyClassName = "TestBrand",
+                hierarchyClassName = "TestBrand_!!",
                 hierarchyClassID = 1
             };
 
@@ -80,12 +76,10 @@ namespace Icon.Web.Tests.Unit.Managers
         public void AddBrand_AddBrandCommandThrowsDuplicateValueException_CommandExceptionShouldBeThrownWithMessage()
         {
             // Given.
-            string exceptionMessage = "Duplicate";
+            string exceptionMessage = "The brand TestBrand already exists.";
             var duplicateValueException = new DuplicateValueException(exceptionMessage);
 
             mockBrandCommand.Setup(c => c.Execute(It.IsAny<BrandCommand>())).Throws(duplicateValueException);
-
-            BuildManagerHandler();
 
             HierarchyClass hierarchyClass = new HierarchyClass
             {
@@ -109,19 +103,17 @@ namespace Icon.Web.Tests.Unit.Managers
 
             // Then.
             Assert.AreEqual(exceptionMessage, caughtException.Message);
-            Assert.AreSame(caughtException.InnerException, duplicateValueException);
+            Assert.AreEqual(caughtException.InnerException.Message, duplicateValueException.Message);
         }
 
         [TestMethod]
         public void AddBrand_AddBrandCommandThrowsUnexpectedException_CommandExceptionShouldBeThrownWithMessage()
         {
             // Given.
-            string exceptionMessage = $"An error occurred when processing Brand <{testBrandName}> (ID: 0).";
+            string exceptionMessage = $"An error occurred when processing Brand {testBrandName} (ID: 0).";
             var unexpectedException = new Exception(exceptionMessage);
 
             mockBrandCommand.Setup(c => c.Execute(It.IsAny<BrandCommand>())).Throws(unexpectedException);
-
-            BuildManagerHandler();
 
             HierarchyClass hierarchyClass = new HierarchyClass
             {
@@ -152,12 +144,10 @@ namespace Icon.Web.Tests.Unit.Managers
         public void AddBrand_AddHierarchyClassMessageCommandThrowsException_CommandExceptionShouldBeThrownWithMessage()
         {
             // Given.
-            string exceptionMessage = $"An error occurred when processing Brand <{testBrandName}> (ID: 0).";
+            string exceptionMessage = $"An error occurred when processing Brand {testBrandName} (ID: 0).";
             var unexpectedException = new Exception(exceptionMessage);
 
             mockAddBrandMessageCommand.Setup(c => c.Execute(It.IsAny<AddBrandMessageCommand>())).Throws(unexpectedException);
-
-            BuildManagerHandler();
 
             HierarchyClass hierarchyClass = new HierarchyClass
             {
@@ -188,11 +178,9 @@ namespace Icon.Web.Tests.Unit.Managers
         public void AddBrand_UserWriteAccessIsFull_AllCommandHandlersCalled()
         {
             // Given.
-            BuildManagerHandler();
-
             HierarchyClass hierarchyClass = new HierarchyClass
             {
-                hierarchyClassName = "TestBrand",
+                hierarchyClassName = "TestBrand_!!",
                 hierarchyClassID = 1
             };
 
@@ -207,35 +195,11 @@ namespace Icon.Web.Tests.Unit.Managers
             mockBrandHierarchyClassTraitsCommand.Verify(c => c.Execute(It.IsAny<UpdateBrandHierarchyClassTraitsCommand>()), Times.Once);
         }
 
-        [TestMethod]
-        public void AddBrand_UserWriteAccessIsTraits_AllCommandHandlersCalled()
-        {
-            // Given.
-            BuildManagerHandler();
-
-            HierarchyClass hierarchyClass = new HierarchyClass
-            {
-                hierarchyClassName = "TestBrand",
-                hierarchyClassID = 1
-            };
-
-            var manager = GetBrandManager(hierarchyClass, Enums.WriteAccess.Traits);
-
-            // When.
-            managerHandler.Execute(manager);
-
-            // Then.
-            mockBrandCommand.Verify(c => c.Execute(It.IsAny<BrandCommand>()), Times.Never);
-            mockAddBrandMessageCommand.Verify(c => c.Execute(It.IsAny<AddBrandMessageCommand>()), Times.Never);
-            mockBrandHierarchyClassTraitsCommand.Verify(c => c.Execute(It.IsAny<UpdateBrandHierarchyClassTraitsCommand>()), Times.Once);
-        }
 
         [TestMethod]
         public void AddBrand_UserWriteAccessIsNone_ZeroCommandHandlersCalled()
         {
             // Given.
-            BuildManagerHandler();
-
             HierarchyClass hierarchyClass = new HierarchyClass
             {
                 hierarchyClassName = "TestBrand",

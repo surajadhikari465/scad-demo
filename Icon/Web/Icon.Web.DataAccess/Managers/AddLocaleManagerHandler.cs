@@ -19,6 +19,7 @@ namespace Icon.Web.DataAccess.Managers
         private ICommandHandler<AddLocaleMessageCommand> addLocaleMessageHandler;
         private ICommandHandler<AddVimEventCommand> addVimLocaleEventCommandHandler;
         private IQueryHandler<GetLocaleParameters, List<Locale>> getLocaleQuery;
+        private IMapper mapper;
 
         public AddLocaleManagerHandler(
             IconContext context,
@@ -26,7 +27,8 @@ namespace Icon.Web.DataAccess.Managers
             ICommandHandler<AddAddressCommand> addAddressHandler,
             ICommandHandler<AddLocaleMessageCommand> addLocaleMessageHandler,
             ICommandHandler<AddVimEventCommand> addVimLocaleEventCommandHandler,
-            IQueryHandler<GetLocaleParameters, List<Locale>> getLocaleQuery)
+            IQueryHandler<GetLocaleParameters, List<Locale>> getLocaleQuery,
+            IMapper mapper)
         {
             this.context = context;
             this.addLocaleHandler = addLocaleHandler;
@@ -34,6 +36,7 @@ namespace Icon.Web.DataAccess.Managers
             this.addLocaleMessageHandler = addLocaleMessageHandler;
             this.addVimLocaleEventCommandHandler = addVimLocaleEventCommandHandler;
             this.getLocaleQuery = getLocaleQuery;
+            this.mapper = mapper;
         }
 
         public void Execute(AddLocaleManager data)
@@ -42,10 +45,10 @@ namespace Icon.Web.DataAccess.Managers
             {
                 try
                 {
-                    AddLocaleCommand addLocaleCommand = Mapper.Map<AddLocaleCommand>(data);
+                    AddLocaleCommand addLocaleCommand = mapper.Map<AddLocaleCommand>(data);
                     addLocaleHandler.Execute(addLocaleCommand);
 
-                    AddAddressCommand addAddressCommand = Mapper.Map<AddAddressCommand>(data);
+                    AddAddressCommand addAddressCommand = mapper.Map<AddAddressCommand>(data);
                     addAddressCommand.LocaleId = addLocaleCommand.LocaleId;
                     addAddressHandler.Execute(addAddressCommand);
 

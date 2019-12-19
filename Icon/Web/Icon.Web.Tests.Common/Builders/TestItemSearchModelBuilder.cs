@@ -312,7 +312,7 @@ namespace Icon.Web.Tests.Common.Builders
 
         public TestItemSearchModelBuilder WithVeganAgencyId(string veganAgencyId)
         {
-            this.veganAgency = veganAgency;
+            this.veganAgency = veganAgencyId;
             return this;
         }
 

@@ -18,8 +18,8 @@ namespace Icon.Framework
         public string AplScanCode { get; set; }
         public int ScanCodeId { get; set; }
     
-        public virtual ScanCode ScanCode { get; set; }
         public virtual Agency Agency { get; set; }
         public virtual AuthorizedProductList AuthorizedProductList { get; set; }
+        public virtual ScanCode ScanCode { get; set; }
     }
 }

@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 using FastMember;
 using Icon.Framework;
 using Icon.Common.Context;
-using Infor.Services.NewItem.Models;
+using Services.NewItem.Models;
 using Newtonsoft.Json;
 
-namespace Infor.Services.NewItem.Commands
+namespace Services.NewItem.Commands
 {
     public class ArchiveNewItemsCommandHandler : ICommandHandler<ArchiveNewItemsCommand>
     {

@@ -33,6 +33,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass>> mockGetHierarchyClassQuery;
         private Mock<IManagerHandler<BrandManager>> mockBrandManagerHandler;
         private Mock<IExcelExporterService> mockExcelExporterService;
+        private Mock<IDonutCacheManager> mockCacheManager;
         private HierarchyClass testBrand;
         private string testBrandName;
         private string testBrandAbbreviation;
@@ -53,7 +54,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             settings = new IconWebAppSettings();
             mockControllerContext = new Mock<ControllerContext>();
             mockIdentity = new Mock<IIdentity>();
-
+            mockCacheManager = new Mock<IDonutCacheManager>();
             testBrandName = "Test Brand";
             testBrandAbbreviation = "TSTBRND";
 
@@ -63,7 +64,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockGetHierarchyClassQuery.Object,
                 mockBrandManagerHandler.Object,
                 mockExcelExporterService.Object,
-                settings);
+                settings,
+                mockCacheManager.Object);
 
             transaction = context.Database.BeginTransaction();
 
@@ -75,9 +77,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockControllerContext.Setup(c => c.HttpContext.User.IsInRole(It.Is<string>(s => s == userName))).Returns(true);
 
             // default settings for all tests
-            settings.IconInterfaceEnabled = false;
             settings.WriteAccessGroups = "";
-            settings.TraitWriteAccessGroups = "";
 
             // setup for get brands list
             mockGetBrandsQuery.Setup(bq => bq.Search(It.IsAny<GetBrandsParameters>())).Returns(new List<BrandModel>());
@@ -130,7 +130,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         }
 
         [TestMethod]
-        public void BrandControllerCreatePost_InvalidModelState_DefaultViewShouldBeReturnedWithPopulatedViewModel()
+        public void BrandControllerCreatePost_InvalidModelState_DefaultViewShouldBeReturnedWithPopulatedViewModelAndHierarchyCacheIsCleared()
         {
             // Given.
             controller.ModelState.AddModelError("test", "test");
@@ -151,6 +151,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             Assert.IsNotNull(returnedViewModel);
             Assert.AreEqual(testBrandName, returnedViewModel.BrandName);
             Assert.AreEqual(testBrandAbbreviation, returnedViewModel.BrandAbbreviation);
+            mockCacheManager.Verify(x => x.ClearCacheForController(It.Is<string>(a => a == "HierarchyClass")), Times.Never());
         }
 
         [TestMethod]
@@ -268,9 +269,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         public void BrandControllerEditGet_IconInterfaceNotEnabledAndNoTraitWriteAccess_UserAccessSetToNone()
         {
             // Given.
-            settings.IconInterfaceEnabled = false;
-            settings.WriteAccessGroups = userName;
-            settings.TraitWriteAccessGroups = "";
+            settings.WriteAccessGroups = "";
             testBrand = new HierarchyClass() { hierarchyClassName = testBrandName, hierarchyID = Hierarchies.Brands, hierarchyLevel = HierarchyLevels.Parent, hierarchyParentClassID = null };
             testBrand.HierarchyClassTrait.Add(new HierarchyClassTrait { traitID = Traits.BrandAbbreviation, traitValue = testBrandAbbreviation });
             testBrand.HierarchyClassTrait.Single().Trait = new Trait { traitCode = TraitCodes.BrandAbbreviation };
@@ -289,9 +288,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         public void BrandControllerEditGet_IconInterfaceEnabledAndUserInWriteAccess_UserAccessSetToFull()
         {
             // Given.
-            settings.IconInterfaceEnabled = true;
             settings.WriteAccessGroups = userName;
-            settings.TraitWriteAccessGroups = "";
             testBrand = new HierarchyClass() { hierarchyClassName = testBrandName, hierarchyID = Hierarchies.Brands, hierarchyLevel = HierarchyLevels.Parent, hierarchyParentClassID = null };
             testBrand.HierarchyClassTrait.Add(new HierarchyClassTrait { traitID = Traits.BrandAbbreviation, traitValue = testBrandAbbreviation });
             testBrand.HierarchyClassTrait.Single().Trait = new Trait { traitCode = TraitCodes.BrandAbbreviation };
@@ -307,54 +304,10 @@ namespace Icon.Web.Tests.Unit.Controllers
         }
 
         [TestMethod]
-        public void BrandControllerEditGet_IconInterfaceEnabledAndUserNotInWriteAccessButUserInTraitWriteAccess_UserAccessSetToTraits()
-        {
-            // Given.
-            settings.IconInterfaceEnabled = true;
-            settings.WriteAccessGroups = "";
-            settings.TraitWriteAccessGroups = userName;
-            testBrand = new HierarchyClass() { hierarchyClassName = testBrandName, hierarchyID = Hierarchies.Brands, hierarchyLevel = HierarchyLevels.Parent, hierarchyParentClassID = null };
-            testBrand.HierarchyClassTrait.Add(new HierarchyClassTrait { traitID = Traits.BrandAbbreviation, traitValue = testBrandAbbreviation });
-            testBrand.HierarchyClassTrait.Single().Trait = new Trait { traitCode = TraitCodes.BrandAbbreviation };
-            mockGetBrandsQuery.Setup(q => q.Search(It.IsAny<GetBrandsParameters>())).Returns(new List<BrandModel>());
-            mockGetHierarchyClassQuery.Setup(q => q.Search(It.IsAny<GetHierarchyClassByIdParameters>())).Returns(testBrand);
-
-            // When.
-            var result = controller.Edit(testBrand.hierarchyClassID) as ViewResult;
-
-            // Then.
-            var viewModel = result.Model as BrandViewModel;
-            Assert.AreEqual(viewModel.UserWriteAccess, Enums.WriteAccess.Traits);
-        }
-
-        [TestMethod]
-        public void BrandControllerEditGet_IconInterfaceNotEnabledButUserInTraitWriteAccess_UserAccessSetToTraits()
-        {
-            // Given.
-            settings.IconInterfaceEnabled = false;
-            settings.WriteAccessGroups = "";
-            settings.TraitWriteAccessGroups = userName;
-            testBrand = new HierarchyClass() { hierarchyClassName = testBrandName, hierarchyID = Hierarchies.Brands, hierarchyLevel = HierarchyLevels.Parent, hierarchyParentClassID = null };
-            testBrand.HierarchyClassTrait.Add(new HierarchyClassTrait { traitID = Traits.BrandAbbreviation, traitValue = testBrandAbbreviation });
-            testBrand.HierarchyClassTrait.Single().Trait = new Trait { traitCode = TraitCodes.BrandAbbreviation };
-            mockGetBrandsQuery.Setup(q => q.Search(It.IsAny<GetBrandsParameters>())).Returns(new List<BrandModel>());
-            mockGetHierarchyClassQuery.Setup(q => q.Search(It.IsAny<GetHierarchyClassByIdParameters>())).Returns(testBrand);
-
-            // When.
-            var result = controller.Edit(testBrand.hierarchyClassID) as ViewResult;
-
-            // Then.
-            var viewModel = result.Model as BrandViewModel;
-            Assert.AreEqual(viewModel.UserWriteAccess, Enums.WriteAccess.Traits);
-        }
-
-        [TestMethod]
         public void BrandControllerEditGet_IconInterfaceNotEnabledAndUserNotInTraitWriteAccess_UserAccessSetToNone()
         {
             // Given.
-            settings.IconInterfaceEnabled = false;
             settings.WriteAccessGroups = "";
-            settings.TraitWriteAccessGroups = "";
             testBrand = new HierarchyClass() { hierarchyClassName = testBrandName, hierarchyID = Hierarchies.Brands, hierarchyLevel = HierarchyLevels.Parent, hierarchyParentClassID = null };
             testBrand.HierarchyClassTrait.Add(new HierarchyClassTrait { traitID = Traits.BrandAbbreviation, traitValue = testBrandAbbreviation });
             testBrand.HierarchyClassTrait.Single().Trait = new Trait { traitCode = TraitCodes.BrandAbbreviation };
@@ -417,7 +370,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         }
 
         [TestMethod]
-        public void BrandControllerEditPost_BrandInformationIsUpdatedSuccessfully_DefaultViewShouldBeReturnedWithSuccessMessage()
+        public void BrandControllerEditPost_BrandInformationIsUpdatedSuccessfully_DefaultViewShouldBeReturnedWithSuccessMessageAndHierarchyCacheIsCleared()
         {
             // Given.
             string successMessage = "Brand update was successful.";
@@ -438,6 +391,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockBrandManagerHandler.Verify(t => t.Execute(It.IsAny<BrandManager>()), Times.Once);
             Assert.AreEqual(result.ViewName, String.Empty);
             Assert.AreEqual(successMessage, viewData["SuccessMessage"]);
+            mockCacheManager.Verify(x => x.ClearCacheForController(It.Is<string>(a => a == "HierarchyClass")));
         }
 
         [TestMethod]

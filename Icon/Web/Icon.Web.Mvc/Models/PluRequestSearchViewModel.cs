@@ -1,8 +1,4 @@
-﻿using Icon.Framework;
-using Icon.Web.Attributes;
-using Icon.Web.Common;
-using Icon.Web.Extensions;
-using System;
+﻿using Icon.Web.Mvc.Extensions;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;

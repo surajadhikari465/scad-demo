@@ -12,7 +12,7 @@ using System;
 
 namespace Icon.Web.Tests.Unit.ManagerHandlers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class UpdateHierarchyClassManagerHandlerTests
     {
         private UpdateHierarchyClassManagerHandler managerHandler;
@@ -23,16 +23,25 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         private Mock<ICommandHandler<UpdateHierarchyClassTraitCommand>> updateHierarchyClassTraitCommandHandler;
         private Mock<ICommandHandler<AddTaxEventCommand>> addTaxEventCommandHandler;
         private Mock<ICommandHandler<AddHierarchyClassMessageCommand>> addHierarchyClassMessageCommandHandler;
-        
+        private IMapper mapper;
+
         [TestInitialize]
         public void Initialize()
         {
             context = new IconContext();
+            mapper = AutoMapperWebConfiguration.Configure();
+
             updateHierarchyClassCommandHandler = new Mock<ICommandHandler<UpdateHierarchyClassCommand>>();
             updateHierarchyClassTraitCommandHandler = new Mock<ICommandHandler<UpdateHierarchyClassTraitCommand>>();
             addTaxEventCommandHandler = new Mock<ICommandHandler<AddTaxEventCommand>>();
             addHierarchyClassMessageCommandHandler = new Mock<ICommandHandler<AddHierarchyClassMessageCommand>>();
-            
+            managerHandler = new UpdateHierarchyClassManagerHandler(context,
+                updateHierarchyClassCommandHandler.Object,
+                updateHierarchyClassTraitCommandHandler.Object,
+                addTaxEventCommandHandler.Object,
+                addHierarchyClassMessageCommandHandler.Object,
+                mapper);
+
             manager = new UpdateHierarchyClassManager
             {
                 UpdatedHierarchyClass = new HierarchyClass 
@@ -41,7 +50,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
                     hierarchyClassName = "Test Update HierarchyClass",
                     hierarchyID = Hierarchies.Financial
                 }, 
-                GlAccount = "Test GlAccount",
                 NonMerchandiseTrait = "Test Non Merch Trait",
                 SubTeamHierarchyClassId = 32,
                 TaxAbbreviation = "Test Tax Abb"
@@ -54,7 +62,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         public void Cleanup()
         {
             context.Dispose();
-            Mapper.Reset();
         }
 
         [TestMethod]
@@ -62,15 +69,13 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         {
             //Given
             //Setting up the command handler expectation here because Moq seems to have a bug when verifying a parameter that you've updated from a callback.
-            updateHierarchyClassCommandHandler.Setup(ch => ch.Execute(It.Is<UpdateHierarchyClassCommand>(c =>
-                c.GlAccount == manager.GlAccount &&
+            updateHierarchyClassCommandHandler.Setup(ch => ch.Execute(It.Is<UpdateHierarchyClassCommand>(c =>    
                 c.SubTeamHierarchyClassId == manager.SubTeamHierarchyClassId &&
                 c.TaxAbbreviation == manager.TaxAbbreviation &&
                 c.UpdatedHierarchyClass.hierarchyClassName == manager.UpdatedHierarchyClass.hierarchyClassName &&
                 !c.ClassNameChanged)))
                 .Callback<UpdateHierarchyClassCommand>(c => c.ClassNameChanged = true)
                 .Verifiable();
-            CreateManagerHandler();
 
             //When
             managerHandler.Execute(manager);
@@ -78,7 +83,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
             //Then
             updateHierarchyClassCommandHandler.Verify();
             updateHierarchyClassTraitCommandHandler.Verify(cm => cm.Execute(It.Is<UpdateHierarchyClassTraitCommand>(c =>
-                c.GlAccount == manager.GlAccount &&
                 c.NonMerchandiseTrait == manager.NonMerchandiseTrait &&
                 c.SubTeamHierarchyClassId == manager.SubTeamHierarchyClassId &&
                 c.TaxAbbreviation == manager.TaxAbbreviation &&
@@ -99,7 +103,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
             //Given
             updateHierarchyClassCommandHandler.Setup(cm => cm.Execute(It.IsAny<UpdateHierarchyClassCommand>()))
                 .Throws(new HierarchyClassTraitUpdateException("Test Exception"));
-            CreateManagerHandler();
 
             //When
             managerHandler.Execute(manager);
@@ -112,7 +115,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
             //Given
             updateHierarchyClassCommandHandler.Setup(cm => cm.Execute(It.IsAny<UpdateHierarchyClassCommand>()))
                 .Throws(new ArgumentException("Test Exception"));
-            CreateManagerHandler();
 
             //When
             managerHandler.Execute(manager);
@@ -124,7 +126,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
             //Given
             updateHierarchyClassCommandHandler.Setup(cm => cm.Execute(It.IsAny<UpdateHierarchyClassCommand>()))
                 .Throws(new Exception("Test Exception"));
-            CreateManagerHandler();
 
             //When
             try
@@ -136,15 +137,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
                 //Then
                 Assert.IsTrue(e.Message.StartsWith("There was an error updating HierarchyClassID"));
             }
-        }
-
-        private void CreateManagerHandler()
-        {    
-            managerHandler = new UpdateHierarchyClassManagerHandler(context,
-                updateHierarchyClassCommandHandler.Object,
-                updateHierarchyClassTraitCommandHandler.Object,
-                addTaxEventCommandHandler.Object,
-                addHierarchyClassMessageCommandHandler.Object);
         }
     }
 }

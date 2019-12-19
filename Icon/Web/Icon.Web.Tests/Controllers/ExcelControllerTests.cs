@@ -8,7 +8,6 @@ using Icon.Web.Mvc.Excel.Models;
 using Icon.Web.Mvc.Excel.Services;
 using Icon.Web.Mvc.Exporters;
 using Icon.Web.Mvc.Models;
-using Icon.Web.Mvc.Utility;
 using Infragistics.Documents.Excel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -39,7 +38,6 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>>> mockBulkScanCodeSearchQueryHandler;
         private Mock<IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel>> mockGetItemsBySearchQueryHandler;
         private Mock<IQueryHandler<GetDefaultTaxClassMismatchesParameters, List<DefaultTaxClassMismatchModel>>> mockGetDefaultTaxClassMismatchesQuery;
-        private Mock<IInfragisticsHelper> mockInfragisticsHelper;
         private Mock<IExcelService<ItemExcelModel>> mockItemExcelService;
         private Mock<IExcelModelMapper<ItemSearchModel, ItemExcelModel>> mockItemModelMapper;
 
@@ -61,7 +59,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockBulkScanCodeSearchQueryHandler = new Mock<IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>>>();
             mockGetItemsBySearchQueryHandler = new Mock<IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel>>();
             mockGetDefaultTaxClassMismatchesQuery = new Mock<IQueryHandler<GetDefaultTaxClassMismatchesParameters, List<DefaultTaxClassMismatchModel>>>();
-            mockInfragisticsHelper = new Mock<IInfragisticsHelper>();
             mockItemExcelService = new Mock<IExcelService<ItemExcelModel>>();
             mockItemModelMapper = new Mock<IExcelModelMapper<ItemSearchModel, ItemExcelModel>>();
 
@@ -74,7 +71,6 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockBulkScanCodeSearchQueryHandler.Object,
                 mockGetItemsBySearchQueryHandler.Object,
                 mockGetDefaultTaxClassMismatchesQuery.Object,
-                mockInfragisticsHelper.Object,
                 mockItemExcelService.Object,
                 mockItemModelMapper.Object);
         }
@@ -131,154 +127,6 @@ namespace Icon.Web.Tests.Unit.Controllers
         }
 
         [TestMethod]
-        public void IrmaItemExport_NoErrors_SpreadsheetShouldBeCreated()
-        {
-            // Given.
-            response.Setup(r => r.OutputStream).Returns(outputStream.Object);
-            context.Setup(c => c.HttpContext.Response).Returns(response.Object);
-
-            mockGetHierarchyClassQuery.Setup(query => query.Search(It.IsAny<GetHierarchyClassByIdParameters>())).Returns(new HierarchyClass { hierarchyClassName = "Test Hierarchy Class" });
-            mockGetHierarchyQuery.Setup(r => r.Search(It.IsAny<GetHierarchyParameters>())).Returns(TestHelpers.GetFakeHierarchyList());
-            mockGetHierarchyLineageQueryHandler.Setup(r => r.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(GetFakeHierarchy());
-            mockGetMerchTaxMappingsQueryHandler.Setup(r => r.Search(It.IsAny<GetMerchTaxMappingsParameters>())).Returns(new List<MerchTaxMappingModel>());
-
-            var exporter = new IrmaItemExporter(
-                mockGetHierarchyLineageQueryHandler.Object,
-                mockGetMerchTaxMappingsQueryHandler.Object,
-                mockGetCertificationAgenciesByTraitQueryHandler.Object,
-                mockGetBrandsQueryHandler.Object);
-
-            exporter.ExportModel = new ExcelExportModel(WorkbookFormat.Excel2007);
-
-            mockExcelExporterService.Setup(moq => moq.GetIrmaItemExporter()).Returns(exporter);
-
-            controller.ControllerContext = context.Object;
-
-            // When.
-            var testViewModel = new IrmaItemViewModel();
-
-            controller.IrmaItemExport(new List<IrmaItemViewModel> { testViewModel });
-
-            // Then.
-
-            // Check that the http resonse was created.
-            response.Verify(r => r.End());
-        }
-
-        [TestMethod]
-        public void PluExport_NoErrors_SpreadsheetShouldBeCreated()
-        {
-            // Given.
-            response.Setup(r => r.OutputStream).Returns(outputStream.Object);
-            session.SetupGet(s => s["grid_search_results"]).Returns(new List<PluMappingViewModel>());
-
-            context.Setup(c => c.HttpContext.Session).Returns(session.Object);
-            context.Setup(c => c.HttpContext.Response).Returns(response.Object);
-
-            var exporter = new PluExporter();
-            exporter.ExportModel = new ExcelExportModel(WorkbookFormat.Excel2007);
-
-            mockExcelExporterService.Setup(moq => moq.GetPluExporter()).Returns(exporter);
-
-            controller.ControllerContext = context.Object;
-
-            // When.
-            controller.PluExport();
-
-            // Then.
-
-            // Check that the http resonse was created.
-            response.Verify(r => r.End());
-        }
-
-        [TestMethod]
-        public void BulkNewItemExport_NoErrors_SpreadsheetShouldBeCreated()
-        {
-            // Given.
-            var testModel = new BulkImportNewItemModel
-            {
-                ScanCode = String.Empty,
-                BrandName = String.Empty,
-                BrandLineage = String.Empty,
-                BrandId = String.Empty,
-                ProductDescription = String.Empty,
-                PosDescription = String.Empty,
-                PackageUnit = String.Empty,
-                FoodStampEligible = String.Empty,
-                PosScaleTare = String.Empty,
-                RetailSize = String.Empty,
-                RetailUom = String.Empty,
-                IrmaSubTeamName = String.Empty,
-                MerchandiseLineage = String.Empty,
-                MerchandiseId = String.Empty,
-                TaxLineage = String.Empty,
-                TaxId = String.Empty,
-                BrowsingLineage = String.Empty,
-                BrowsingId = String.Empty,
-                NationalLineage = String.Empty,
-                NationalId = String.Empty,
-                IsValidated = String.Empty,
-                Error = String.Empty
-            };
-
-            response.Setup(r => r.OutputStream).Returns(outputStream.Object);
-            session.SetupGet(s => s["new_item_upload_errors"]).Returns(new List<BulkImportNewItemModel> { testModel });
-
-            context.Setup(c => c.HttpContext.Session).Returns(session.Object);
-            context.Setup(c => c.HttpContext.Response).Returns(response.Object);
-
-            var exporter = new BulkNewItemExporter(
-                mockGetHierarchyLineageQueryHandler.Object,
-                mockGetMerchTaxMappingsQueryHandler.Object,
-                mockGetCertificationAgenciesByTraitQueryHandler.Object,
-                mockGetBrandsQueryHandler.Object);
-
-            exporter.ExportModel = new ExcelExportModel(WorkbookFormat.Excel2007);
-
-            mockGetHierarchyQuery.Setup(r => r.Search(It.IsAny<GetHierarchyParameters>())).Returns(TestHelpers.GetFakeHierarchyList());
-            mockExcelExporterService.Setup(moq => moq.GetBulkNewItemExporter()).Returns(exporter);
-            mockGetHierarchyLineageQueryHandler.Setup(r => r.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(GetFakeHierarchy());
-            mockGetMerchTaxMappingsQueryHandler.Setup(r => r.Search(It.IsAny<GetMerchTaxMappingsParameters>())).Returns(new List<MerchTaxMappingModel>());
-
-            controller.ControllerContext = context.Object;
-
-            // When.
-            controller.BulkNewItemExport();
-
-            // Then.
-
-            // Check that the http resonse was created.
-            response.Verify(r => r.End());
-        }
-
-        [TestMethod]
-        public void BulkPluExport_NoErrors_SpreadsheetShouldBeCreated()
-        {
-            // Given.
-            response.Setup(r => r.OutputStream).Returns(outputStream.Object);
-            session.SetupGet(s => s["grid_search_results"]).Returns(new List<BulkImportPluModel>());
-
-            context.Setup(c => c.HttpContext.Session).Returns(session.Object);
-            context.Setup(c => c.HttpContext.Response).Returns(response.Object);
-
-            var exporter = new BulkPluExporter();
-            exporter.ExportModel = new ExcelExportModel(WorkbookFormat.Excel2007);
-
-            mockExcelExporterService.Setup(moq => moq.GetBulkPluExporter()).Returns(exporter);
-
-            controller.ControllerContext = context.Object;
-            mockGetHierarchyLineageQueryHandler.Setup(r => r.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(GetFakeHierarchy());
-
-            // When.
-            controller.BulkPluExport();
-
-            // Then.
-
-            // Check that the http resonse was created.
-            response.Verify(r => r.End());
-        }
-
-        [TestMethod]
         public void BrandExport_JsonString_SpreadsheetShouldBeCreated()
         {
             // Given
@@ -304,36 +152,6 @@ namespace Icon.Web.Tests.Unit.Controllers
         }
 
         [TestMethod]
-        public void BulkCertificationAgencyExport_ItemsExistInSession_ShouldExportItems()
-        {
-            //Given
-            context.Setup(c => c.HttpContext.Response).Returns(response.Object);
-            context.Setup(c => c.HttpContext.Session).Returns(session.Object);
-            controller.ControllerContext = context.Object;
-            response.Setup(r => r.OutputStream).Returns(outputStream.Object);
-            var agencies = new List<BulkImportCertificationAgencyModel>
-                {
-                    new BulkImportCertificationAgencyModel { CertificationAgencyNameAndId = "Test1|123" },
-                    new BulkImportCertificationAgencyModel { CertificationAgencyNameAndId = "Test2|1234" },
-                    new BulkImportCertificationAgencyModel { CertificationAgencyNameAndId = "Test3|12345" }
-                };
-            session.SetupGet(s => s["certification_agency_import_errors"]).Returns(agencies);
-
-            var exporter = new CertificationAgencyExporter
-            {
-                ExportModel = new ExcelExportModel(WorkbookFormat.Excel2007)
-            };
-            mockExcelExporterService.Setup(m => m.GetCertificationAgencyExporter()).Returns(exporter);
-
-            //When
-            controller.BulkCertificationAgencyExport();
-
-            //Then
-            response.Verify(r => r.End());
-            Assert.AreEqual(agencies, exporter.ExportData);
-        }
-
-        [TestMethod]
         public void ItemSearchExport_ItemsExist_ShouldExportItems()
         {
             //Given
@@ -342,8 +160,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             context.Setup(c => c.HttpContext.Response).Returns(response.Object);
             mockGetItemsBySearchQueryHandler.Setup(m => m.Search(It.IsAny<GetItemsBySearchParameters>()))
                 .Returns(new ItemsBySearchResultsModel() { Items = new List<ItemSearchModel>() { new ItemSearchModel { ScanCode = "12345" } } });
-            mockInfragisticsHelper.Setup(m => m.ParseSortParameterFromQueryString(It.IsAny<NameValueCollection>()))
-                .Returns(new InfragisticsSortParameterPaseResult());
 
             Workbook workbook = new Workbook();
             workbook.Worksheets.Add("Items");
@@ -358,26 +174,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             //Then
             response.Verify(r => r.End());
             mockGetItemsBySearchQueryHandler.Verify(m => m.Search(It.IsAny<GetItemsBySearchParameters>()), Times.Once);
-            mockInfragisticsHelper.Verify(m => m.ParseSortParameterFromQueryString(It.IsAny<NameValueCollection>()), Times.Once);
-        }
-
-        [TestMethod]
-        public void CertificationAgencyTemplateExport()
-        {
-            //Given
-            controller.ControllerContext = context.Object;
-            context.Setup(c => c.HttpContext.Response).Returns(response.Object);
-            response.Setup(r => r.OutputStream).Returns(outputStream.Object);
-            mockExcelExporterService.Setup(m => m.GetCertificationAgencyExporter()).Returns(new CertificationAgencyExporter
-            {
-                ExportModel = new ExcelExportModel(WorkbookFormat.Excel2007)
-            });
-
-            //When
-            controller.CertificationAgencyTemplateExport();
-
-            //Then
-            response.Verify(r => r.End());
         }
 
         private HierarchyClassListModel GetFakeHierarchy()

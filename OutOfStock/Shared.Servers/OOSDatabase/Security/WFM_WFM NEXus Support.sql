@@ -1,0 +1,2 @@
+﻿CREATE USER [WFM\WFM NEXus Support] FOR LOGIN [WFM\WFM NEXuS Support];
+

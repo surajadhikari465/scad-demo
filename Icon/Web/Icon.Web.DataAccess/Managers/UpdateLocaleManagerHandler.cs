@@ -18,24 +18,27 @@ namespace Icon.Web.DataAccess.Managers
         private ICommandHandler<AddLocaleMessageCommand> addLocaleMessageHandler;
         private ICommandHandler<AddVimEventCommand> addVimLocaleEventCommandHandler;
         private IQueryHandler<GetLocaleParameters, List<Locale>> getLocaleQuery;
+        private IMapper mapper;
 
         public UpdateLocaleManagerHandler(
             IconContext context,
             ICommandHandler<UpdateLocaleCommand> updateLocaleHandler,
             ICommandHandler<AddLocaleMessageCommand> addLocaleMessageHandler,
             ICommandHandler<AddVimEventCommand> addVimLocaleEventCommandHandler,
-            IQueryHandler<GetLocaleParameters, List<Locale>> getLocaleQuery)
+            IQueryHandler<GetLocaleParameters, List<Locale>> getLocaleQuery,
+            IMapper mapper)
         {
             this.context = context;
             this.updateLocaleHandler = updateLocaleHandler;
             this.addLocaleMessageHandler = addLocaleMessageHandler;
             this.addVimLocaleEventCommandHandler = addVimLocaleEventCommandHandler;
             this.getLocaleQuery = getLocaleQuery;
+            this.mapper = mapper;
         }
 
         public void Execute(UpdateLocaleManager data)
         {
-            UpdateLocaleCommand updateLocaleCommand = Mapper.Map<UpdateLocaleCommand>(data);
+            UpdateLocaleCommand updateLocaleCommand = mapper.Map<UpdateLocaleCommand>(data);
 
             using (var transaction = context.Database.BeginTransaction())
             {

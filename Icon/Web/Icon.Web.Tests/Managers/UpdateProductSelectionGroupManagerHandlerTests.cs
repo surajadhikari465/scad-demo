@@ -1,8 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Icon.Framework;
 using Icon.Web.DataAccess.Managers;
-using Icon.Web.DataAccess.Infrastructure;
 using Moq;
 using Icon.Web.DataAccess.Commands;
 using Icon.Common.DataAccess;

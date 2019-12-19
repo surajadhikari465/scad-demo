@@ -15,7 +15,9 @@ namespace Icon.Monitoring.Common.ApiController
                 { MessageQueueTypes.ItemLocale, new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } },
                 { MessageQueueTypes.Hierarchy,  new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } },
                 { MessageQueueTypes.Locale,     new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } },
-                { MessageQueueTypes.ProductSelectionGroup,     new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } }
+                { MessageQueueTypes.ProductSelectionGroup, new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } },
+                { MessageQueueTypes.Attribute,  new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } },
+                { MessageQueueTypes.Item,       new QueueData { LastMessageQueueId = 0, NumberOfTimesMatched = 0 } }
             };
         }
     }

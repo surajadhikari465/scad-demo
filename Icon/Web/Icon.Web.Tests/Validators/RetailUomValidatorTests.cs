@@ -1,9 +1,9 @@
 ﻿using Icon.Framework;
-using Icon.Web.Common.Validators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Icon.Common.Validators;
 
 namespace Icon.Web.Tests.Unit.Validators
 {

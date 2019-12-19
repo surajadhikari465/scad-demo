@@ -1,0 +1,19 @@
+@import '../../../mixins.scss';
+
+.store {
+  &-container {
+    @include toggle-scroll-content();
+  }
+
+  &-message {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 80%;
+    align-items: center;
+  }
+
+  &-nav {
+    display:flex;
+  }
+}

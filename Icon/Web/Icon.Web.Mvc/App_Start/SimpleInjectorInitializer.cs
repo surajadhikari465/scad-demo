@@ -1,13 +1,17 @@
-[assembly: WebActivator.PostApplicationStartMethod(typeof(Icon.Web.Mvc.App_Start.SimpleInjectorInitializer), "Initialize")]
+using Icon.Common.Models;
+using Icon.Common.Validators;
+using Icon.Common.Validators.ItemAttributes;
 
 namespace Icon.Web.Mvc.App_Start
 {
+    using AutoMapper;
     using Excel.ExcelValidationRuleBuilders.Factories;
     using Excel.ModelMappers;
     using Excel.Models;
     using Excel.Services;
     using Excel.Validators.Factories;
     using Excel.WorksheetBuilders.Factories;
+    using FluentValidation;
     using Icon.Common;
     using Icon.Common.DataAccess;
     using Icon.Esb.Factory;
@@ -15,8 +19,9 @@ namespace Icon.Web.Mvc.App_Start
     using Icon.Ewic.Transmission.Producers;
     using Icon.Framework;
     using Icon.Logging;
-    using Icon.Web.Common.Cache;
-    using Icon.Web.Common.Validators;
+    using Icon.Shared.DataAccess.Dapper.ConnectionBuilders;
+    using Icon.Shared.DataAccess.Dapper.DbProviders;
+    using Icon.Shared.DataAccess.Dapper.Decorators;
     using Icon.Web.DataAccess.Commands;
     using Icon.Web.DataAccess.Decorators;
     using Icon.Web.DataAccess.Infrastructure;
@@ -25,55 +30,49 @@ namespace Icon.Web.Mvc.App_Start
     using Icon.Web.DataAccess.Queries;
     using Icon.Web.Mvc.Exporters;
     using Icon.Web.Mvc.Importers;
-    using Icon.Web.Mvc.Models;
+    using Icon.Web.Mvc.InfragisticsHelpers;
     using Icon.Web.Mvc.RegionalItemCatalogs;
+    using Icon.Web.Mvc.Utility.ItemHistory;
     using Icon.Web.Mvc.Validators;
     using Icon.Web.Mvc.Validators.Managers;
     using SimpleInjector;
-    using SimpleInjector.Extensions;
+    using SimpleInjector.Integration.Web;
     using SimpleInjector.Integration.Web.Mvc;
     using System;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.Data;
+    using System.Data.SqlClient;
     using System.Reflection;
     using System.Web.Mvc;
     using Utility;
+
     public static class SimpleInjectorInitializer
     {
-        /// <summary>Initialize the container and register it as MVC3 Dependency Resolver.</summary>
-        public static void Initialize()
+        public static Container Initialize(IMapper mapper = null)
         {
-            // Did you know the container can diagnose your configuration? 
-            // Go to: https://simpleinjector.org/diagnostics
             var container = new Container();
-            
-            InitializeContainer(container);
+            container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
-            container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
-            
-            container.Verify();
-            
-            DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
-        }
-     
-        public static void InitializeContainer(Container container)
-        {
-            container.Register<IconContext>(() => GetIconContext());
+            container.Register<IconContext>(() => GetIconContext(), Lifestyle.Scoped);
+            container.Register<IDbProvider, SqlDbProvider>(Lifestyle.Scoped);
+            container.Register<IConnectionBuilder>(() => new ConnectionBuilder("Icon"), Lifestyle.Scoped);
+            container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString), Lifestyle.Scoped);
 
-            container.RegisterManyForOpenGeneric(typeof(ICommandHandler<>), typeof(AddAddressCommand).Assembly);
-            container.RegisterManyForOpenGeneric(typeof(IQueryHandler<,>), typeof(GetAffinitySubBricksParameters).Assembly);
-            container.RegisterManyForOpenGeneric(typeof(IManagerHandler<>), typeof(IManagerHandler<>).Assembly);
-            container.RegisterManyForOpenGeneric(typeof(ISpreadsheetImporter<>), typeof(ISpreadsheetImporter<>).Assembly);
-            container.RegisterManyForOpenGeneric(typeof(ISerializer<>), typeof(ISerializer<>).Assembly);
-            container.RegisterSingle<ILogger>(() => new NLogLoggerSingleton(typeof(NLogLoggerSingleton)));
+            container.RegisterDecorator(typeof(ICommandHandler<>), typeof(DbProviderCommandHandlerDecorator<>));
+            container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(DbProviderQueryHandlerDecorator<,>));
+            container.RegisterDecorator<IManagerHandler<AddItemManager>, RetryUniqueConstraintManagerHandlerDecorator<AddItemManager>>(Lifestyle.Transient);
+            container.Register(typeof(ICommandHandler<>), typeof(AddAddressCommand).Assembly);
+            container.Register(typeof(IQueryHandler<,>), typeof(GetAffinitySubBricksParameters).Assembly);
+
+            container.Register(typeof(IManagerHandler<>), typeof(IManagerHandler<>).Assembly);
+            container.Register(typeof(ISpreadsheetImporter<>), typeof(ISpreadsheetImporter<>).Assembly);
+            container.Register(typeof(ISerializer<>), typeof(ISerializer<>).Assembly);
+            container.RegisterSingleton<ILogger>(() => new NLogLoggerSingleton(typeof(NLogLoggerSingleton)));
             container.Register<IPluSpreadsheetImporter, PluSpreadsheetImporter>(Lifestyle.Transient);
             container.Register<IExcelExporterService, ExcelExporterService>(Lifestyle.Transient);
             container.Register<IGenericQuery, GenericGetDbSet>(Lifestyle.Transient);
             container.Register<IRegionalItemCatalogFactory, RegionalItemCatalogFactory>();
-            container.Register<ICache, Cache>(Lifestyle.Singleton);
-            container.Register<IObjectValidator<ItemViewModel>, ItemViewModelValidator>(Lifestyle.Transient);
-            container.Register<IObjectValidator<AddItemManager>, AddItemManagerValidator>(Lifestyle.Transient);
-            container.Register<IObjectValidator<UpdateItemManager>, UpdateItemManagerValidator>(Lifestyle.Transient);
             container.Register<IObjectValidator<AddPluRequestManager>, AddPluRequestManagerValidator>(Lifestyle.Transient);
             container.Register<IObjectValidator<UpdatePluRequestManager>, UpdatePluRequestManagerValidator>(Lifestyle.Transient);
             container.Register<IObjectValidator<AddEwicExclusionManager>, AddEwicExclusionManagerValidator>(Lifestyle.Transient);
@@ -81,18 +80,35 @@ namespace Icon.Web.Mvc.App_Start
             container.Register<IMessageProducer, EwicMessageProducer>(Lifestyle.Singleton);
             container.Register<IEsbConnectionFactory, EsbConnectionFactory>(Lifestyle.Singleton);
             container.Register<IInfragisticsHelper, InfragisticsHelper>(Lifestyle.Singleton);
-            container.RegisterOpenGeneric(typeof(ICachePolicy<>), typeof(CachePolicy<>), Lifestyle.Singleton);
-            container.RegisterSingle(() => IconWebAppSettings.CreateSettingsFromConfig());
-            
-            container.RegisterManyForOpenGeneric(typeof(IExcelModelMapper<,>), typeof(IExcelModelMapper<,>).Assembly);
-            container.RegisterManyForOpenGeneric(typeof(IExcelValidatorFactory<>), typeof(IExcelValidatorFactory<>).Assembly);
-            container.RegisterManyForOpenGeneric(typeof(IWorksheetBuilderFactory<>), typeof(IWorksheetBuilderFactory<>).Assembly);
-            container.RegisterManyForOpenGeneric(typeof(IExcelValidationRuleBuilderFactory<>), typeof(IExcelValidationRuleBuilderFactory<>).Assembly);
+            container.RegisterSingleton(() => IconWebAppSettings.CreateSettingsFromConfig());
+
+            container.Register(typeof(IExcelModelMapper<,>), typeof(IExcelModelMapper<,>).Assembly);
+            container.Register(typeof(IExcelValidatorFactory<>), typeof(IExcelValidatorFactory<>).Assembly);
+            container.Register(typeof(IWorksheetBuilderFactory<>), typeof(IWorksheetBuilderFactory<>).Assembly);
+            container.Register(typeof(IExcelValidationRuleBuilderFactory<>), typeof(IExcelValidationRuleBuilderFactory<>).Assembly);
             container.Register<IExcelService<ItemExcelModel>, ItemExcelService>();
+            container.Register<IAttributesHelper, AttributesHelper>();
+            container.Register<IDonutCacheManager, DonutCacheManager>();
+            container.Register<IItemQueryBuilder, ItemQueryBuilder>();
+            
+
+            container.Register<IValidatorFactory, SimpleInjectorValidatorFactory>(Lifestyle.Singleton);
+            container.Register(typeof(IValidator<>), typeof(ItemCreateViewModelValidator).Assembly);
+            // Add unregistered type resolution for objects missing an IValidator<T>
+            // This should be placed after the registration of IValidator<>
+            container.RegisterConditional(typeof(IValidator<>), typeof(ValidateNothingDecorator<>), Lifestyle.Singleton, context => !context.Handled);
+
+            container.Register<IItemAttributesValidatorFactory, ItemAttributesValidatorFactory>();
+            container.Register<IItemHistoryBuilder, ItemHistoryBuilder>();
+            container.Register<IHistoryModelTransformer, HistoryModelTransformer>();
 
             container.RegisterDecorator(typeof(ICommandHandler<BulkImportCommand<BulkImportNewItemModel>>), typeof(AddProductMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<BulkImportCommand<BulkImportItemModel>>), typeof(UpdateProductMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<UpdateHierarchyClassTraitCommand>), typeof(UpdateSubTeamMammothEventDecorator));
+            container.RegisterDecorator(typeof(ICommandHandler<UpdateHierarchyClassTraitCommand>), typeof(UpdateItemTypeHierarchyClassTraitDecorator));
+            container.RegisterDecorator(typeof(ICommandHandler<UpdateHierarchyClassTraitCommand>), typeof(UpdateItemProhibitDiscountHierarchyClassTraitDecorator));
+            container.RegisterDecorator(typeof(ICommandHandler<UpdateHierarchyClassTraitCommand>), typeof(UpdateItemSubTeamHierarchyClassTraitDecorator));
+            container.RegisterDecorator(typeof(ICommandHandler<UpdateHierarchyClassTraitCommand>), typeof(AddItemMessageQueueHierarchyClassTraitDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<AddHierarchyClassCommand>), typeof(AddHierarchyClassMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<DeleteHierarchyClassCommand>), typeof(DeleteHierarchyClassMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<DeleteHierarchyClassCommand>), typeof(DeleteHierarchyClassIconEventDecorator));
@@ -100,37 +116,35 @@ namespace Icon.Web.Mvc.App_Start
             container.RegisterDecorator(typeof(ICommandHandler<AddBrandCommand>), typeof(AddBrandMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<BrandCommand>), typeof(UpdateBrandMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<BulkImportCommand<BulkImportBrandModel>>), typeof(BulkImportBrandMammothEventDecorator));
-
-            container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(CachingQueryHandlerDecorator<GetUomParameters, List<UOM>>));
-            container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(CachingQueryHandlerDecorator<GetHierarchyLineageParameters, HierarchyClassListModel>));
-            container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(CachingQueryHandlerDecorator<GetBrandsParameters, List<BrandModel>>));
-
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<BrandManager>));
+            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<ManufacturerManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddEwicExclusionManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<RemoveEwicExclusionManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddEwicMappingManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<RemoveEwicMappingManager>));
-            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<UpdateMerchTaxAssociationManager>));
-            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddMerchTaxAssociationManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddCertificationAgencyManager>));
+            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<UpdateNationalHierarchyManager>));
+            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddNationalHierarchyManager>));
+            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<DeleteNationalHierarchyManager>));
+            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddAttributeManager>));
+            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<UpdateAttributeManager>));
+            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddItemManager>));
+            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<BulkItemUploadManager>));
 
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandlerDecorator<BulkImportCommand<BulkImportBrandModel>>));
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandlerDecorator<BulkImportCommand<BulkImportItemModel>>));
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandlerDecorator<BulkImportCommand<BulkImportNewItemModel>>));
-            container.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandlerDecorator<AddHierarchyClassCommand>));
-            container.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandlerDecorator<UpdateHierarchyClassCommand>));
-            container.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandlerDecorator<DeleteHierarchyClassCommand>));
 
-            // Set Caching policies for Caching Decorator
-            var uomPolicy = SetupCachePolicy<GetUomParameters>(appSetting: "UomQueryCacheExpirationInMinutes", defaultExpiry: 720);
-            container.RegisterSingle<ICachePolicy<GetUomParameters>>(uomPolicy);
+            //Register AutoMapper
+            container.Register(() => mapper, Lifestyle.Singleton);
 
-            var hierarchyClassPolicy = SetupCachePolicy<GetHierarchyLineageParameters>(appSetting: "HierarchyClassQueryCacheExpirationInMinutes", defaultExpiry: 15);
-            container.RegisterSingle<ICachePolicy<GetHierarchyLineageParameters>>(hierarchyClassPolicy);
+            container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
 
-            var brandPolicy = SetupCachePolicy<GetBrandsParameters>(appSetting: "GetBrandsQueryCacheExpirationInMinutes", defaultExpiry: 5);
-            container.RegisterSingle<ICachePolicy<GetBrandsParameters>>(brandPolicy);   
-           
+            container.Verify();
+
+            DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
+
+            return container;
         }
 
         private static IconContext GetIconContext()
@@ -140,17 +154,6 @@ namespace Icon.Web.Mvc.App_Start
             context.Database.CommandTimeout = AppSettingsAccessor.GetIntSetting("IconContextCommandTimeout", 30);
 
             return context;
-        }
-
-        private static CachePolicy<T> SetupCachePolicy<T>(string appSetting, double defaultExpiry)
-        {
-            double timeExpiryInMinutes;
-            if (!Double.TryParse(ConfigurationManager.AppSettings[appSetting], out timeExpiryInMinutes))
-            {
-                timeExpiryInMinutes = defaultExpiry;
-            }
-            var cachePolicy = new CachePolicy<T> { AbsoluteExpiration = DateTime.Now.AddMinutes(timeExpiryInMinutes) };
-            return cachePolicy;
         }
     }
 }

@@ -1,0 +1,109 @@
+﻿#if __DESIGNER_DATA
+#error Do not define __DESIGNER_DATA.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<om:MetaModel MajorVersion="1" MinorVersion="3" Core="2b131234-7959-458d-834f-2dc0769ce683" ScheduleModel="66366196-361d-448d-976f-cab5e87496d2" xmlns:om="http://schemas.microsoft.com/BizTalk/2003/DesignerData">
+    <om:Element Type="Module" OID="6c2cc319-2214-4657-90d8-b279ac35978b">
+        <om:Property Name="ReportToAnalyst" Value="True" />
+        <om:Property Name="Name" Value="BTS.OOS.StoreConsumer" />
+        <om:Property Name="Signal" Value="False" />
+        <om:Element Type="PortType" OID="bf79b5d4-0914-4014-8551-f308c2b3f2be" ParentLink="Module_PortType">
+            <om:Property Name="Synchronous" Value="True" />
+            <om:Property Name="TypeModifier" Value="Internal" />
+            <om:Property Name="ReportToAnalyst" Value="True" />
+            <om:Property Name="AnalystComments" Value="&lt;wsdl:portType name=&quot;IStoreConsumer&quot;/&gt;&#xD;&#xA;" />
+            <om:Property Name="Name" Value="IStoreConsumer" />
+            <om:Property Name="Signal" Value="False" />
+            <om:Element Type="OperationDeclaration" OID="74d74ad3-7749-4d67-aafd-a4cf328fb9ca" ParentLink="PortType_OperationDeclaration">
+                <om:Property Name="OperationType" Value="RequestResponse" />
+                <om:Property Name="ReportToAnalyst" Value="True" />
+                <om:Property Name="AnalystComments" Value="&lt;wsdl:operation name=&quot;Consume&quot;/&gt;&#xD;&#xA;" />
+                <om:Property Name="Name" Value="Consume" />
+                <om:Property Name="Signal" Value="False" />
+                <om:Element Type="MessageRef" OID="3c722b28-797f-4ef6-af9d-30ddce40cf97" ParentLink="OperationDeclaration_RequestMessageRef">
+                    <om:Property Name="Ref" Value="BTS.OOS.StoreConsumer.IStoreConsumer_Consume_InputMessage" />
+                    <om:Property Name="ReportToAnalyst" Value="True" />
+                    <om:Property Name="AnalystComments" Value="&lt;wsdl:input message=&quot;http://tempuri.org/:IStoreConsumer_Consume_InputMessage&quot;/&gt;&#xD;&#xA;Action=&quot;http://tempuri.org/IStoreConsumer/Consume&quot;&#xD;&#xA;" />
+                    <om:Property Name="Name" Value="Request" />
+                    <om:Property Name="Signal" Value="False" />
+                </om:Element>
+                <om:Element Type="MessageRef" OID="935f19ac-70fd-4401-87ef-4d41e29c2d0a" ParentLink="OperationDeclaration_ResponseMessageRef">
+                    <om:Property Name="Ref" Value="BTS.OOS.StoreConsumer.IStoreConsumer_Consume_OutputMessage" />
+                    <om:Property Name="ReportToAnalyst" Value="True" />
+                    <om:Property Name="AnalystComments" Value="&lt;wsdl:output message=&quot;http://tempuri.org/:IStoreConsumer_Consume_OutputMessage&quot;/&gt;&#xD;&#xA;Action=&quot;http://tempuri.org/IStoreConsumer/ConsumeResponse&quot;&#xD;&#xA;" />
+                    <om:Property Name="Name" Value="Response" />
+                    <om:Property Name="Signal" Value="False" />
+                </om:Element>
+            </om:Element>
+        </om:Element>
+        <om:Element Type="MultipartMessageType" OID="2eaeacab-1f5c-4761-9a69-3b7f093c1501" ParentLink="Module_MessageType">
+            <om:Property Name="TypeModifier" Value="Internal" />
+            <om:Property Name="ReportToAnalyst" Value="True" />
+            <om:Property Name="AnalystComments" Value="&lt;wsdl:message name=&quot;IStoreConsumer_Consume_InputMessage&quot;/&gt;&#xD;&#xA;" />
+            <om:Property Name="Name" Value="IStoreConsumer_Consume_InputMessage" />
+            <om:Property Name="Signal" Value="False" />
+            <om:Element Type="PartDeclaration" OID="d7896000-5858-4797-ae75-776466063b44" ParentLink="MultipartMessageType_PartDeclaration">
+                <om:Property Name="ClassName" Value="BTS.OOS.StoreConsumer.StoreConsumer_tempuri_org.Consume" />
+                <om:Property Name="IsBodyPart" Value="True" />
+                <om:Property Name="ReportToAnalyst" Value="True" />
+                <om:Property Name="AnalystComments" Value="&lt;wsdl:part name=&quot;parameters&quot;/&gt;&#xD;&#xA;" />
+                <om:Property Name="Name" Value="parameters" />
+                <om:Property Name="Signal" Value="False" />
+            </om:Element>
+        </om:Element>
+        <om:Element Type="MultipartMessageType" OID="931ba178-194b-4707-9b8a-f563813b23bb" ParentLink="Module_MessageType">
+            <om:Property Name="TypeModifier" Value="Internal" />
+            <om:Property Name="ReportToAnalyst" Value="True" />
+            <om:Property Name="AnalystComments" Value="&lt;wsdl:message name=&quot;IStoreConsumer_Consume_OutputMessage&quot;/&gt;&#xD;&#xA;" />
+            <om:Property Name="Name" Value="IStoreConsumer_Consume_OutputMessage" />
+            <om:Property Name="Signal" Value="False" />
+            <om:Element Type="PartDeclaration" OID="d46208fd-65fa-4e9f-8981-0fd7a105b8cc" ParentLink="MultipartMessageType_PartDeclaration">
+                <om:Property Name="ClassName" Value="BTS.OOS.StoreConsumer.StoreConsumer_tempuri_org.ConsumeResponse" />
+                <om:Property Name="IsBodyPart" Value="True" />
+                <om:Property Name="ReportToAnalyst" Value="True" />
+                <om:Property Name="AnalystComments" Value="&lt;wsdl:part name=&quot;parameters&quot;/&gt;&#xD;&#xA;" />
+                <om:Property Name="Name" Value="parameters" />
+                <om:Property Name="Signal" Value="False" />
+            </om:Element>
+        </om:Element>
+        <om:Element Type="ServiceDeclaration" OID="bb03c3a6-23dc-4477-9f17-296f7d3d4995" ParentLink="Module_ServiceDeclaration">
+            <om:Property Name="InitializedTransactionType" Value="False" />
+            <om:Property Name="IsInvokable" Value="True" />
+            <om:Property Name="TypeModifier" Value="Internal" />
+            <om:Property Name="ReportToAnalyst" Value="True" />
+            <om:Property Name="AnalystComments" Value="&lt;wsdl:service name=&quot;StoreConsumer&quot;/&gt;&#xD;&#xA;" />
+            <om:Property Name="Name" Value="StoreConsumerClient" />
+            <om:Property Name="Signal" Value="False" />
+            <om:Element Type="ServiceBody" OID="44e96ebc-e14d-4b2f-9a70-759ee303b762" ParentLink="ServiceDeclaration_ServiceBody">
+                <om:Property Name="Signal" Value="False" />
+            </om:Element>
+        </om:Element>
+    </om:Element>
+</om:MetaModel>
+#endif // __DESIGNER_DATA
+[Microsoft.XLANGs.BaseTypes.BPELExportable(false)]
+module BTS.OOS.StoreConsumer
+{
+    internal messagetype IStoreConsumer_Consume_InputMessage
+    {
+        body StoreConsumer_tempuri_org.Consume parameters;
+    };
+    internal messagetype IStoreConsumer_Consume_OutputMessage
+    {
+        body StoreConsumer_tempuri_org.ConsumeResponse parameters;
+    };
+    internal porttype IStoreConsumer
+    {
+        requestresponse Consume
+        {
+            IStoreConsumer_Consume_InputMessage, IStoreConsumer_Consume_OutputMessage
+        };
+    };
+    [Microsoft.XLANGs.BaseTypes.BPELExportable(false)]
+    internal service StoreConsumerClient
+    {
+        body ()
+        {
+        }
+    }
+}
+

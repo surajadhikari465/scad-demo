@@ -1,0 +1,24 @@
+﻿DECLARE @populateHospitalityScriptKey VARCHAR(128) = 'AddItemPublisherToAppTable'
+
+IF(NOT EXISTS(SELECT 1 FROM app.PostDeploymentScriptHistory WHERE ScriptKey = @populateHospitalityScriptKey))
+BEGIN
+	PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @populateHospitalityScriptKey;	
+
+	IF NOT EXISTS (SELECT 1 FROM app.App WHERE AppID = 19 AND AppName = 'Item Publisher')
+	BEGIN
+		SET IDENTITY_INSERT app.App ON
+
+		INSERT INTO app.App (AppID, AppName)
+		VALUES (19, 'Item Publisher')
+
+		SET IDENTITY_INSERT app.App OFF
+	END
+	
+	INSERT INTO app.PostDeploymentScriptHistory (ScriptKey, RunTime) values (@populateHospitalityScriptKey, GETDATE())
+
+END
+ELSE
+BEGIN
+	PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + 'Pop-data already applied: ' + @populateHospitalityScriptKey
+END
+GO

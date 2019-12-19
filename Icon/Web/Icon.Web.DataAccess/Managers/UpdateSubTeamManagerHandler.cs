@@ -21,14 +21,17 @@ namespace Icon.Web.DataAccess.Managers
         private ICommandHandler<UpdateHierarchyClassTraitCommand> updateHierarchyClassTraitHandler;
         private ICommandHandler<AddSubTeamEventsCommand> addSubTeamEventsHandler;
         private IQueryHandler<GetRegionalSettingsBySettingsKeyNameParameters, List<RegionalSettingsModel>> getRegionalSettingsBySettingsKeyNameQuery;
+        private IMapper mapper;
 
-        public UpdateSubTeamManagerHandler(IconContext context,
+        public UpdateSubTeamManagerHandler(
+            IconContext context,
             ICommandHandler<UpdateSubTeamCommand> updateSubTeamHandler,
             ICommandHandler<AddHierarchyClassMessageCommand> addHierarchyClassMessageHandler,
             ICommandHandler<AddProductMessagesBySubTeamCommand> addProductMessagesForSubTeamsAssociatedItemsCommandHandler,
             ICommandHandler<UpdateHierarchyClassTraitCommand> hierarchyClassTraitHandler,
             ICommandHandler<AddSubTeamEventsCommand> addSubTeamEventsHandler,
-            IQueryHandler<GetRegionalSettingsBySettingsKeyNameParameters, List<RegionalSettingsModel>> getRegionalSettingsBySettingsKeyNameQuery)
+            IQueryHandler<GetRegionalSettingsBySettingsKeyNameParameters, List<RegionalSettingsModel>> getRegionalSettingsBySettingsKeyNameQuery,
+            IMapper mapper)
         {
             this.context = context;
             this.updateSubTeamHandler = updateSubTeamHandler;
@@ -37,6 +40,7 @@ namespace Icon.Web.DataAccess.Managers
             this.updateHierarchyClassTraitHandler = hierarchyClassTraitHandler;
             this.addSubTeamEventsHandler = addSubTeamEventsHandler;
             this.getRegionalSettingsBySettingsKeyNameQuery = getRegionalSettingsBySettingsKeyNameQuery;
+            this.mapper = mapper;
         }
 
         public void Execute(UpdateSubTeamManager data)
@@ -45,7 +49,7 @@ namespace Icon.Web.DataAccess.Managers
             {
                 try
                 {
-                    UpdateSubTeamCommand updateSubTeamCommand = Mapper.Map<UpdateSubTeamCommand>(data);
+                    UpdateSubTeamCommand updateSubTeamCommand = mapper.Map<UpdateSubTeamCommand>(data);
                     updateSubTeamHandler.Execute(updateSubTeamCommand);
 
                     if (updateSubTeamCommand.PeopleSoftChanged)

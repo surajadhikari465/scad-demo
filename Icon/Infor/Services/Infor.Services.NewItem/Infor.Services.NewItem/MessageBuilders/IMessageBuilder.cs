@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infor.Services.NewItem.MessageBuilders
+namespace Services.NewItem.MessageBuilders
 {
     public interface IMessageBuilder<TModel>
     {

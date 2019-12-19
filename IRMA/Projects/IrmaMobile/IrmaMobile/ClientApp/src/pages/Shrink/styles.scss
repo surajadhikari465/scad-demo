@@ -1,0 +1,102 @@
+.shrink-page{
+    text-align: center;
+    header{
+        padding: 0 5px;
+        background-color:rgb(190,190,190);
+        border-bottom: 1px solid black; 
+        text-align: left;
+    }
+    .region-store-header{
+        display:flex;
+        justify-content: space-between;
+    }
+    .shrink-container{
+        margin: 0px auto;
+        line-height: 1.4;
+        display: flex;
+        flex-direction: column;
+        label{
+            line-height: 2.8;
+        }
+        .shrink-buttons{   
+            margin: 20px auto;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 500px;
+            button{
+                color: rgb(255, 255, 255); 
+                background-color: rgb(0, 78, 54);
+                flex: 1 1 40%;
+                max-width: 49%;
+                a{
+                    color: rgb(255, 255, 255);
+                    text-decoration: none;
+                } 
+            }
+            button[disabled]{
+                color: black;
+                background-color: rgb(190,190,190);
+            }
+        }
+        .entry-section{
+            margin-bottom: 10px;
+            margin-top: 20px;
+            height: 100px;
+            label{
+                margin-right: 15px;
+            }
+            .upc-input{
+                width: 76%;
+            }
+            .input-line{
+                display: flex;
+                margin-left: 6%;
+                margin-right: 6%;
+                line-height: 0;
+            }
+            .qty-input{
+                max-width: 100px;
+            }
+            .submit-upc{
+                margin-left: 10px;
+            }
+            .description{
+                display: flex;
+                margin: 10px 0 0 6%;
+                line-height: 2.8;
+                text-align: left;
+                span{
+                    width: 100px;
+                }
+            }    
+            .shrink-buttons{
+                display: flex;
+                position: fixed;
+                bottom: 0;  
+                min-width: 100%;
+                button{
+                    width: 49%;
+                }
+            }
+            .qty-type{
+                margin-left:10px;
+                font-weight: 500;
+            } 
+        }
+        .queued-section{
+            width: 100%;
+            margin-top: 40px;
+            margin-left: 6%;
+            text-align: left;
+            h1{ 
+                line-height:2;
+                font-size: 30px;
+            }
+            label{
+                margin-left: 10px;
+            }
+        }  
+    }
+}

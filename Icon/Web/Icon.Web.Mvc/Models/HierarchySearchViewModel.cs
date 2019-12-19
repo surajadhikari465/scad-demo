@@ -1,11 +1,9 @@
-﻿using Icon.Web.DataAccess.Infrastructure;
-using Icon.Web.DataAccess.Queries;
-using Icon.Framework;
+﻿using Icon.Framework;
+using Icon.Web.Common;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
-using Icon.Web.Extensions;
 
 namespace Icon.Web.Mvc.Models
 {
@@ -16,5 +14,6 @@ namespace Icon.Web.Mvc.Models
         public IEnumerable<SelectListItem> Hierarchies { get; set; }
         public IQueryable<HierarchyClassGridViewModel> HierarchyClasses { get; set; }
         public Hierarchy Hierarchy { get; set; }
+        public Enums.WriteAccess UserWriteAccess { get; set; }
     }
 }

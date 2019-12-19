@@ -1,13 +1,6 @@
 ﻿@using Infragistics.Web.Mvc
 @model IEnumerable<Icon.Web.Mvc.Models.FailedRegionalEventViewModel>
 
-@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Render()
-)
-
 @{
     ViewBag.Title = "Regional Events";
 }
@@ -48,7 +41,7 @@
             .Render()
         )
 
-        <button id="reprocess" class="btn btn-default form-submit">Reprocess Failed Regional Events</button>
+        <button id="reprocess" class="btn btn-light form-submit">Reprocess Failed Regional Events</button>
     }
 </div>
 

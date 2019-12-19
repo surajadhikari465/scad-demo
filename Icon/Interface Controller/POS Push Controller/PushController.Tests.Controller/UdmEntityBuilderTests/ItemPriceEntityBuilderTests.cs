@@ -99,7 +99,7 @@ namespace PushController.Tests.Controller.UdmEntityBuilderTests
                 ScanCodeId = this.testItem.ScanCode.Single().scanCodeID,
                 ScanCodeTypeId = this.testItem.ScanCode.Single().scanCodeTypeID,
                 ScanCodeTypeDesc = this.testItem.ScanCode.Single().ScanCodeType.scanCodeTypeDesc,
-                ItemId = this.testItem.itemID,
+                ItemId = this.testItem.ItemId,
                 ItemTypeCode = this.testItem.ItemType.itemTypeCode,
                 ItemTypeDesc = this.testItem.ItemType.itemTypeDesc,
                 ValidationDate = null,

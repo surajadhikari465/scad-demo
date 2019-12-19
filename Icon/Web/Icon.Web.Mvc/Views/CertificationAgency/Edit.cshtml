@@ -1,5 +1,4 @@
-﻿@using Infragistics.Web.Mvc
-@model Icon.Web.Mvc.Models.CertificationAgencyViewModel
+﻿@model Icon.Web.Mvc.Models.CertificationAgencyViewModel
 
 @{
     ViewBag.Title = "Edit Certification Agency";
@@ -19,55 +18,39 @@
         @Html.HiddenFor(model => model.HierarchyLevel)
 
         <fieldset>
-            <legend>Edit Certification Agency</legend>
-
-            <div class="row">
-                @Html.LabelFor(model => model.AgencyName, new { @class = "col-md-2 form-label" })
-                <div>
-                    @Html.TextBoxFor(model => model.AgencyName, new { @class = "col-md-6 form-input", @id = "brandName" })
-                    @Html.ValidationMessageFor(model => model.AgencyName, null, new { @class = "col-md-4 form-property-val" })
-                </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.AgencyName, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.AgencyName, new { @class = "form-control form-input", @id = "brandName" })
+                @Html.ValidationMessageFor(model => model.AgencyName, null, new { @class = "form-property-val" })
             </div>
-            <div class="row">
-                @Html.LabelFor(model => model.GlutenFree, new { @class = "col-md-2 form-label" })
-                <div>
-                    @Html.CheckBoxFor(model => model.GlutenFree, new { @class = "col-checkbox" })
-                </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.GlutenFree, new { @class = "form-label" })
+                @Html.CheckBoxFor(model => model.GlutenFree, new { @class = "col-checkbox" })
             </div>
-            <div class="row">
-                @Html.LabelFor(model => model.Kosher, new { @class = "col-md-2 form-label" })
-                <div>
-                    @Html.CheckBoxFor(model => model.Kosher, new { @class = "col-checkbox" })
-                </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Kosher, new { @class = "form-label" })
+                @Html.CheckBoxFor(model => model.Kosher, new { @class = "col-checkbox" })
             </div>
-            <div class="row">
-                @Html.LabelFor(model => model.NonGMO, new { @class = "col-md-2 form-label" })
-                <div>
-                    @Html.CheckBoxFor(model => model.NonGMO, new { @class = "col-checkbox" })
-                </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.NonGMO, new { @class = "form-label" })
+                @Html.CheckBoxFor(model => model.NonGMO, new { @class = "col-checkbox" })
             </div>
-            <div class="row">
-                @Html.LabelFor(model => model.Organic, new { @class = "col-md-2 form-label" })
-                <div>
-                    @Html.CheckBoxFor(model => model.Organic, new { @class = "col-checkbox" })
-                </div>
-                @Html.LabelFor(model => model.DefaultOrganic, new { @class = "col-md-2 form-label" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Organic, new { @class = "form-label" })
+                @Html.CheckBoxFor(model => model.Organic, new { @class = "col-checkbox" })
+                @Html.LabelFor(model => model.DefaultOrganic, new { @class = "form-label" })
                 <div>
                     @Html.CheckBoxFor(model => model.DefaultOrganic, new { @disabled = "disabled" })
                 </div>
             </div>
-            <div class="row">
-                @Html.LabelFor(model => model.Vegan, new { @class = "col-md-2 form-label" })
-                <div>
-                    @Html.CheckBoxFor(model => model.Vegan, new { @class = "col-checkbox" })
-                </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Vegan, new { @class = "form-label" })
+                @Html.CheckBoxFor(model => model.Vegan, new { @class = "col-checkbox" })
             </div>
         </fieldset>
 
-        <div class="row">
-            <div class="col-md-offset-2 col-md-1">
-                <input type="submit" value="Save" id="saveButton" class="btn btn-default form-submit" />
-            </div>
+        <div class="form-group">
+            <input type="submit" value="Save" id="saveButton" class="btn btn-light form-submit" />
         </div>
 
         <div class="validation-section page-subsection">

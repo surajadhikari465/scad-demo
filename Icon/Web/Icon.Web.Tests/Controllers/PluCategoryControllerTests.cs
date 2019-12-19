@@ -6,6 +6,7 @@ using Icon.Web.Controllers;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
+using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Models;
 using Icon.Web.Tests.Common.Builders;
@@ -40,7 +41,10 @@ namespace Icon.Web.Tests.Unit.Controllers
         private List<PLUCategory> pluCategories;
         private PLUCategory pluCategory;        
         private string testUser = "TestUser";
-        
+        private Mock<IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>>> mockGetBarcodeTypesQueryHandler;
+
+
+
         [TestInitialize]
         public void InitializeData()
         {
@@ -52,11 +56,14 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockContext = new Mock<ControllerContext>();
             mockDeletePluCategoryByIdCommand = new Mock<ICommandHandler<DeletePluCategoryByIdCommand>>();
             mockGetPluCageroyByIdQuery = new Mock<IQueryHandler<GetPluCategoryByIdParameters, PLUCategory>>();
+            mockGetBarcodeTypesQueryHandler = new Mock<IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>>>();
+
             controller = new PluCategoryController(logger.Object,
                 mockPluCategoriesQuery.Object,
                 mockAddCommand.Object,
                 mockUpdateCommand.Object,
-                mockGetPluCageroyByIdQuery.Object, mockDeletePluCategoryByIdCommand.Object);
+                mockGetPluCageroyByIdQuery.Object, mockDeletePluCategoryByIdCommand.Object,
+                mockGetBarcodeTypesQueryHandler.Object);
 
             //Setup up Username
             mockContext.SetupGet(c => c.HttpContext.User.Identity.Name).Returns(testUser);
@@ -124,9 +131,9 @@ namespace Icon.Web.Tests.Unit.Controllers
         public void Create_PostWithValidViewModel_DefaultViewShouldBeReturnedWithSuccessMessage()
         {
             // Given.
-            var viewModel = new PluCategoryViewModel
+            var viewModel = new BarcodeTypeViewModel
             {
-                PluCategoryName = "Test",
+                BarcodeType = "Test",
                 BeginRange = "15",
                 EndRange = "20"
             };
@@ -150,9 +157,9 @@ namespace Icon.Web.Tests.Unit.Controllers
             string errorMessage = "An unexpected error occurred.";
             mockAddCommand.Setup(t => t.Execute(It.IsAny<AddPluCategoryManager>())).Throws(new CommandException(errorMessage));
                       
-            var viewModel = new PluCategoryViewModel
+            var viewModel = new BarcodeTypeViewModel
             {
-                PluCategoryName = "Test",
+                BarcodeType = "Test",
                 BeginRange = "15",
                 EndRange = "20"
             };

@@ -1,0 +1,1014 @@
+<?xml version="1.0"?>
+<StoresResult xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://api.wholelabs.com/v1/stores">
+  <query>
+    <text>Page 1 of 13, showing 25 records out of 325 total, starting on record 1, ending on 25</text>
+    <page>1</page>
+    <pages>13</pages>
+    <current>25</current>
+    <count>325</count>
+    <start>1</start>
+    <end>25</end>
+  </query>
+  <stores>
+    <Store>
+      <tlc>ABS</tlc>
+      <name>Arabella+Station</name>
+      <display_name />
+      <address>5600+Magazine+St</address>
+      <address2 />
+      <zipchar>70115</zipchar>
+      <city>New+Orleans</city>
+      <state>Louisiana</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>504.899.9119</phone>
+      <fax>504.899.9210</fax>
+      <hours>9am+-+9pm%3A+Monday+through+Saturday%0D%0A9am+-+8pm%3A+Sunday.</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>29.921103</lat>
+      <lon>-90.117292</lon>
+      <folder>arabellastation</folder>
+      <region>SW</region>
+      <status>OPEN</status>
+      <blogid>70</blogid>
+      <mapblurb />
+      <modified_dt>2012-05-01+13%3A01%3A08</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>1</sq_feet>
+      <bu>10143</bu>
+      <vim_price_zone>4</vim_price_zone>
+      <twitter>WFM_Louisiana</twitter>
+      <facebook>109805825723707</facebook>
+      <flickr />
+      <foursquare>179610</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DABS</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>ACC</tlc>
+      <name>Annapolis+Culinary+Center</name>
+      <display_name />
+      <address>Annapolis+Towne+Centre+at+Parole%3Cbr+%2F%3E200+Harker+Place%2C+Suite+100</address>
+      <address2 />
+      <zipchar>21410</zipchar>
+      <city>Annapolis</city>
+      <state>Maryland</state>
+      <country>USA</country>
+      <facility>Culinary+Center</facility>
+      <phone>410.224.2042</phone>
+      <fax />
+      <hours>8%3A00+a.m.+to+10%3A00+p.m.+seven+days+a+week</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>38.980751</lat>
+      <lon>-76.538025</lon>
+      <folder>annapolisculinary</folder>
+      <region>MA</region>
+      <status>OPEN</status>
+      <blogid>0</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-08+15%3A44%3A37</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>0</bu>
+      <vim_price_zone />
+      <twitter>asiculinary</twitter>
+      <facebook>253886962312</facebook>
+      <flickr />
+      <foursquare />
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DACC</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>0</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>ACD</tlc>
+      <name>Academy</name>
+      <display_name />
+      <address>5815+Wyoming+Blvd+NE</address>
+      <address2 />
+      <zipchar>87109</zipchar>
+      <city>Albuquerque</city>
+      <state>New+Mexico</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>505.856.0474</phone>
+      <fax>505.858.3048</fax>
+      <hours>7%3A30+a.m.+to+10%3A00+p.m.+seven+days+a+week.</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>35.146797</lat>
+      <lon>-106.554591</lon>
+      <folder>albuquerque</folder>
+      <region>RM</region>
+      <status>OPEN</status>
+      <blogid>52</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A06</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10144</bu>
+      <vim_price_zone>8</vim_price_zone>
+      <twitter>WFMAcademy</twitter>
+      <facebook>112876460910</facebook>
+      <flickr />
+      <foursquare>2080774</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DACD</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>ACZ</tlc>
+      <name>Allegro+Coffee+Company</name>
+      <display_name />
+      <address>12799+Claude+Court</address>
+      <address2 />
+      <zipchar>80241</zipchar>
+      <city>Allegro</city>
+      <state>Colorado</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>800.277.1107</phone>
+      <fax>800.530.3993</fax>
+      <hours />
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>39.707808</lat>
+      <lon>-105.081321</lon>
+      <folder>acc_test</folder>
+      <region>RM</region>
+      <status>OPEN</status>
+      <blogid>0</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-09+16%3A17%3A52</modified_dt>
+      <opened_dt>2011-12-09+16%3A12%3A03</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>99991</bu>
+      <vim_price_zone />
+      <twitter />
+      <facebook />
+      <flickr />
+      <foursquare>0</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2Fshopat.aspx%3Fs%3DACO</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>0</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>ARB</tlc>
+      <name>Ann+Arbor</name>
+      <display_name />
+      <address>3135+Washtenaw+Ave</address>
+      <address2 />
+      <zipchar>48104</zipchar>
+      <city>Ann+Arbor</city>
+      <state>Michigan</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>734.975.4500</phone>
+      <fax>734.975.4545</fax>
+      <hours>8%3A00+a.m.+to+10%3A00+p.m.+seven+days+a+week.</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>42.257373</lat>
+      <lon>-83.6981</lon>
+      <folder>annarbor</folder>
+      <region>MW</region>
+      <status>OPEN</status>
+      <blogid>0</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A06</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10167</bu>
+      <vim_price_zone>1</vim_price_zone>
+      <twitter />
+      <facebook>105043659428</facebook>
+      <flickr />
+      <foursquare>160730</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DARB</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>ARD</tlc>
+      <name>Sacramento</name>
+      <display_name />
+      <address>4315+Arden+Way</address>
+      <address2 />
+      <zipchar>95864</zipchar>
+      <city>Sacramento</city>
+      <state>California</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>916.488.2800</phone>
+      <fax>916.488.2801</fax>
+      <hours>8%3A00+a.m.+to+9%3A00+p.m.+seven+days+a+week+%0D%0A%0D%0AHOLIDAY+HOURS%0D%0ADecember+23+7+am+-10+pm%0D%0ADecember+24+7+am+-+6+pm%0D%0AChristmas+Day+-+CLOSED</hours>
+      <homestore />
+      <miscinfo>Place+you+Holiday+orders+after+December+1st+both+in-store+and+online%21+Last+day+for+placing+Christmas+orders%3A%0D%0ATuesday+12%2F22+%40+9+pm</miscinfo>
+      <sortcat>None</sortcat>
+      <lat>38.595827</lat>
+      <lon>-121.364298</lon>
+      <folder>sacramento</folder>
+      <region>NC</region>
+      <status>OPEN</status>
+      <blogid>24</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A05</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10152</bu>
+      <vim_price_zone>5</vim_price_zone>
+      <twitter>wholefoodssac</twitter>
+      <facebook>137344912966798</facebook>
+      <flickr />
+      <foursquare>197851</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DARD</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>ARE</tlc>
+      <name>Alpharetta+Harry%27s</name>
+      <display_name />
+      <address>1180+Upper+Hembree+Rd</address>
+      <address2 />
+      <zipchar>30076</zipchar>
+      <city>Roswell</city>
+      <state>Georgia</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>770.664.6300</phone>
+      <fax>770.772.9070</fax>
+      <hours>8%3A00+a.m.+to+9%3A00+p.m.+Monday+to+Saturday%3Cbr+%2F%3E+8%3A00+a.m.+to+8%3A00+p.m.+Sunday.+Coffee%2FGelato+Bar+Hours%3A++7%3A00+a.m.+to++7%3A00+p.m.+seven+days+a+week</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>34.068145</lat>
+      <lon>-84.325702</lon>
+      <folder>alpharetta</folder>
+      <region>SO</region>
+      <status>OPEN</status>
+      <blogid>89</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A05</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10182</bu>
+      <vim_price_zone>1</vim_price_zone>
+      <twitter>HFM_Alpharetta</twitter>
+      <facebook>188008237889576</facebook>
+      <flickr />
+      <foursquare>98123</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DARE</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>ARL</tlc>
+      <name>Arlington</name>
+      <display_name />
+      <address>2700+Wilson+Blvd</address>
+      <address2 />
+      <zipchar>22201</zipchar>
+      <city>Arlington</city>
+      <state>Virginia</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>703.527.6596</phone>
+      <fax>703.527.6568</fax>
+      <hours>8%3A00+a.m.+to+10%3A30+p.m.+seven+days+a+week.</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>38.889418</lat>
+      <lon>-77.090784</lon>
+      <folder>arlington</folder>
+      <region>MA</region>
+      <status>OPEN</status>
+      <blogid>0</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-31+19%3A58%3A37</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10042</bu>
+      <vim_price_zone>1</vim_price_zone>
+      <twitter>WFMArlingtonVA</twitter>
+      <facebook>227895584758</facebook>
+      <flickr />
+      <foursquare>67831</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DARL</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>ARR</tlc>
+      <name>Arroyo</name>
+      <display_name />
+      <address>465+South+Arroyo+Parkway</address>
+      <address2 />
+      <zipchar>91105</zipchar>
+      <city>Pasadena</city>
+      <state>California</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>626.204.2266</phone>
+      <fax>626.204.2277</fax>
+      <hours>7%3A00+a.m.+to+10%3A00+p.m.+seven+days+a+week.</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>34.13788</lat>
+      <lon>-118.147428</lon>
+      <folder>arroyo</folder>
+      <region>SP</region>
+      <status>OPEN</status>
+      <blogid>45</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A05</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10237</bu>
+      <vim_price_zone>1</vim_price_zone>
+      <twitter>WFMArroyo</twitter>
+      <facebook>98424574831</facebook>
+      <flickr />
+      <foursquare>50491</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DARR</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>ASH</tlc>
+      <name>Greenlife+Grocery+Asheville</name>
+      <display_name />
+      <address>70+Merrimon+Ave</address>
+      <address2 />
+      <zipchar>28801</zipchar>
+      <city>Asheville</city>
+      <state>North+Carolina</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>828.254.5440</phone>
+      <fax />
+      <hours>Everyday+7%3A30am+-+9%3A00pm</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>35.602015</lat>
+      <lon>-82.5545906</lon>
+      <folder>asheville</folder>
+      <region>SO</region>
+      <status>OPEN</status>
+      <blogid>0</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A05</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10351</bu>
+      <vim_price_zone>7</vim_price_zone>
+      <twitter>GreenlifeAVL</twitter>
+      <facebook>63728675493</facebook>
+      <flickr />
+      <foursquare>0</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DASH</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>0</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>ASI</tlc>
+      <name>Annapolis</name>
+      <display_name />
+      <address>Annapolis+Towne+Centre+at+Parole%3Cbr+%2F%3E200+Harker+Place%2C+Suite+100</address>
+      <address2 />
+      <zipchar>21401</zipchar>
+      <city>Annapolis</city>
+      <state>Maryland</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>410.573.1800</phone>
+      <fax>410.573.1801</fax>
+      <hours>Monday+-+Saturday%3A+8am+-+10pm%3Cbr+%3ESunday%3A+8am+-+9pm%3Cbr%3EEvery+Day+8am%3A+Coffee+roaster+bar+and+breakfast+bar+open</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>38.980751</lat>
+      <lon>-76.538025</lon>
+      <folder>annapolis</folder>
+      <region>MA</region>
+      <status>OPEN</status>
+      <blogid>36</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A06</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10228</bu>
+      <vim_price_zone>1</vim_price_zone>
+      <twitter>WholeFoodsAnp</twitter>
+      <facebook>91647092246</facebook>
+      <flickr />
+      <foursquare>226676</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DASI</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>0</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>AVR</tlc>
+      <name>Andover</name>
+      <display_name />
+      <address>40+Railroad+St.</address>
+      <address2 />
+      <zipchar>01810</zipchar>
+      <city>Andover</city>
+      <state>Massachusetts</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>978.749.6664</phone>
+      <fax>978.749.0621</fax>
+      <hours>Every+Day%3A+8am+-+9pm</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>42.659069</lat>
+      <lon>-71.144719</lon>
+      <folder>andover</folder>
+      <region>NA</region>
+      <status>OPEN</status>
+      <blogid>0</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A05</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10371</bu>
+      <vim_price_zone>1</vim_price_zone>
+      <twitter>WFM_Andover</twitter>
+      <facebook>94724512088</facebook>
+      <flickr />
+      <foursquare>329915</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DAVR</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>0</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>BCA</tlc>
+      <name>Boca+Raton</name>
+      <display_name />
+      <address>1400+Glades+Rd</address>
+      <address2>Ste+110</address2>
+      <zipchar>33431</zipchar>
+      <city>Boca+Raton</city>
+      <state>Florida</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>561.447.0000</phone>
+      <fax>561.447.0001</fax>
+      <hours>+8%3A00+a.m.+to+10%3A00+p.m.+seven+days+a+week.</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>26.365397</lat>
+      <lon>-80.109004</lon>
+      <folder>bocaraton</folder>
+      <region>FL</region>
+      <status>OPEN</status>
+      <blogid>94</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A06</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10130</bu>
+      <vim_price_zone>1</vim_price_zone>
+      <twitter>WholeFoodsBoca</twitter>
+      <facebook>195758920225</facebook>
+      <flickr />
+      <foursquare>342655</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DBCA</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>BCF</tlc>
+      <name>Briarcliff</name>
+      <display_name />
+      <address>2111+Briarcliff+Rd+NE</address>
+      <address2 />
+      <zipchar>30329</zipchar>
+      <city>Atlanta</city>
+      <state>Georgia</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>404.634.7800</phone>
+      <fax>404.634.0229</fax>
+      <hours>8%3A00+a.m.+to+10%3A00+p.m.+Monday+to+Saturday%3Cbr%3E9%3A00+a.m.+to+9%3A00+p.m.+Sunday.</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>33.81514</lat>
+      <lon>-84.334285</lon>
+      <folder>briarcliff</folder>
+      <region>SO</region>
+      <status>OPEN</status>
+      <blogid>29</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A05</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10094</bu>
+      <vim_price_zone>6</vim_price_zone>
+      <twitter>wfmbcf</twitter>
+      <facebook>177486458960461</facebook>
+      <flickr />
+      <foursquare>94068</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DBCF</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>BED</tlc>
+      <name>Bedford</name>
+      <display_name />
+      <address>170+Great+Rd</address>
+      <address2 />
+      <zipchar>01730</zipchar>
+      <city>Bedford</city>
+      <state>Massachusetts</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>781.275.8264</phone>
+      <fax>781.275.1571</fax>
+      <hours>+8%3A00+a.m.+to+9%3A00+p.m.+seven+days+a+week.</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>42.490061</lat>
+      <lon>-71.27422</lon>
+      <folder>bedford</folder>
+      <region>NA</region>
+      <status>OPEN</status>
+      <blogid>0</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A05</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10090</bu>
+      <vim_price_zone>1</vim_price_zone>
+      <twitter>WFMBedford</twitter>
+      <facebook>80385398565</facebook>
+      <flickr />
+      <foursquare>13177735</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DBED</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>0</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>BEL</tlc>
+      <name>Bellaire</name>
+      <display_name />
+      <address>4004+Bellaire+Blvd</address>
+      <address2 />
+      <zipchar>77025</zipchar>
+      <city>Houston</city>
+      <state>Texas</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>713.667.4090</phone>
+      <fax>713.667.4013</fax>
+      <hours>8%3A00+a.m.+to+10%3A00+p.m.+seven+days+a+week.%0D%0A%0D%0AHoliday+Hours%3A%0D%0ADecember+23-+8am-10pm%0D%0AChristmas+Eve-8am-8pm%0D%0AChristmas+Day-CLOSED%0D%0ADecember+26-8am-10pm</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>29.706224</lat>
+      <lon>-95.441226</lon>
+      <folder>bellaire</folder>
+      <region>SW</region>
+      <status>OPEN</status>
+      <blogid>92</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A06</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10134</bu>
+      <vim_price_zone>3</vim_price_zone>
+      <twitter>WholeFoodsHOU</twitter>
+      <facebook>103080159829</facebook>
+      <flickr />
+      <foursquare>106673</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DBEL</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>BET</tlc>
+      <name>Bethesda</name>
+      <display_name />
+      <address>5269+River+Rd</address>
+      <address2 />
+      <zipchar>20816</zipchar>
+      <city>Bethesda</city>
+      <state>Maryland</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>301.984.4860</phone>
+      <fax>301.984.4870</fax>
+      <hours>8%3A00+a.m.+to+9%3A00+p.m.+seven+days+a+week.</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>38.965906</lat>
+      <lon>-77.104971</lon>
+      <folder>bethesda</folder>
+      <region>MA</region>
+      <status>OPEN</status>
+      <blogid>79</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A05</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10048</bu>
+      <vim_price_zone>1</vim_price_zone>
+      <twitter>WFM_MoCo</twitter>
+      <facebook>79182792982</facebook>
+      <flickr />
+      <foursquare>328042</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DBET</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>0</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>BHL</tlc>
+      <name>Orlando</name>
+      <display_name />
+      <address>8003+Turkey+Lake+Road</address>
+      <address2>Phillips+Crossing</address2>
+      <zipchar>32819</zipchar>
+      <city>Orlando</city>
+      <state>Florida</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>407.355.7100</phone>
+      <fax>407.355.7101</fax>
+      <hours>8%3A00+a.m.+to+10%3A00+p.m.+seven+days+a+week.</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>28.447436</lat>
+      <lon>-81.477279</lon>
+      <folder>orlando</folder>
+      <region>FL</region>
+      <status>OPEN</status>
+      <blogid>0</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A05</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10194</bu>
+      <vim_price_zone>1</vim_price_zone>
+      <twitter>WFMOrlando</twitter>
+      <facebook>135662079096</facebook>
+      <flickr />
+      <foursquare>9777485</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DBHL</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>BIS</tlc>
+      <name>Aventura</name>
+      <display_name />
+      <address>21105+Biscayne+Blvd</address>
+      <address2 />
+      <zipchar>33180</zipchar>
+      <city>Aventura</city>
+      <state>Florida</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>305.933.1543</phone>
+      <fax>305.933.2567</fax>
+      <hours>8%3A00+a.m.+to+10%3A00+p.m.+seven+days+a+week.</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>25.970933</lat>
+      <lon>-80.14335</lon>
+      <folder>aventura</folder>
+      <region>FL</region>
+      <status>OPEN</status>
+      <blogid>56</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A06</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10096</bu>
+      <vim_price_zone>1</vim_price_zone>
+      <twitter>WFMAventura</twitter>
+      <facebook>104243442428</facebook>
+      <flickr />
+      <foursquare>160205</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DBIS</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>BLD</tlc>
+      <name>Blithedale</name>
+      <display_name />
+      <address>731+East+Blithedale</address>
+      <address2 />
+      <zipchar>94941</zipchar>
+      <city>Mill+Valley</city>
+      <state>California</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>415.381.3900</phone>
+      <fax />
+      <hours>8am-9pm+Everyday</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>37.902417</lat>
+      <lon>-122.525682</lon>
+      <folder>blithedale</folder>
+      <region>NC</region>
+      <status>OPEN</status>
+      <blogid>0</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A05</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>23200</sq_feet>
+      <bu>10337</bu>
+      <vim_price_zone>3</vim_price_zone>
+      <twitter>WFMMarinCo</twitter>
+      <facebook>85502777268</facebook>
+      <flickr />
+      <foursquare>5076539</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DBLD</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>BLH</tlc>
+      <name>Bellingham</name>
+      <display_name />
+      <address>255+Hartford+Ave</address>
+      <address2 />
+      <zipchar>02019</zipchar>
+      <city>Bellingham</city>
+      <state>Massachusetts</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>508.966.3331</phone>
+      <fax>508.966.0994</fax>
+      <hours>+8%3A00+a.m.+to+9%3A00+p.m.+seven+days+a+week%2C+except+holidays.</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>42.114699</lat>
+      <lon>-71.461807</lon>
+      <folder>bellingham</folder>
+      <region>NA</region>
+      <status>OPEN</status>
+      <blogid>0</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A05</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10091</bu>
+      <vim_price_zone>1</vim_price_zone>
+      <twitter>WFM_Bellingham</twitter>
+      <facebook>79884299849</facebook>
+      <flickr />
+      <foursquare>329383</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DBLH</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>0</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>BLL</tlc>
+      <name>Blossom+Hill</name>
+      <display_name />
+      <address>1146+Blossom+Hill+Rd.</address>
+      <address2 />
+      <zipchar>95118</zipchar>
+      <city>San+Jose</city>
+      <state>California</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>408.266.3700</phone>
+      <fax />
+      <hours>8am-10pm+Everyday</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>37.25039</lat>
+      <lon>-121.8777657</lon>
+      <folder>blossomhill</folder>
+      <region>NC</region>
+      <status>OPEN</status>
+      <blogid>0</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A04</modified_dt>
+      <opened_dt>2010-11-10+09%3A00%3A00</opened_dt>
+      <sq_feet>50000</sq_feet>
+      <bu>10320</bu>
+      <vim_price_zone>4</vim_price_zone>
+      <twitter>wfmblossomhill</twitter>
+      <facebook>157987874230719</facebook>
+      <flickr />
+      <foursquare>4541106</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DBLL</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>BLV</tlc>
+      <name>Bellevue</name>
+      <display_name />
+      <address>888+116th+Ave+NE</address>
+      <address2 />
+      <zipchar>98004</zipchar>
+      <city>Bellevue</city>
+      <state>Washington</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>425.462.1400</phone>
+      <fax />
+      <hours>7+am+-+10+pm+everyday+with+the+Coffee+Bar+available+starting+at+6+am%21</hours>
+      <homestore />
+      <miscinfo>Holiday+hours%3A%0D%0A12%2F21+-+7a-10p%0D%0A12%2F22+%26+12%2F23+-+7a-11p%0D%0AChristmas+Eve+-+7a-6p%0D%0AChristmas+Day+-+CLOSED</miscinfo>
+      <sortcat>None</sortcat>
+      <lat>47.618067</lat>
+      <lon>-122.185495</lon>
+      <folder>bellevue</folder>
+      <region>PN</region>
+      <status>OPEN</status>
+      <blogid>0</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A05</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10153</bu>
+      <vim_price_zone>1</vim_price_zone>
+      <twitter>WFMbellevue</twitter>
+      <facebook>133558150952</facebook>
+      <flickr />
+      <foursquare>36638</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DBLV</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>BMR</tlc>
+      <name>Belmar</name>
+      <display_name />
+      <address>444+S.Wadsworth+Blvd</address>
+      <address2 />
+      <zipchar>80226</zipchar>
+      <city>Lakewood</city>
+      <state>Colorado</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>303.935.5000</phone>
+      <fax>303.935.5206</fax>
+      <hours>7%3A30+a.m.+to+9%3A30+p.m.+seven+days+a+week.</hours>
+      <homestore />
+      <miscinfo>Open+Thanksgiving+Day+7%3A30am+-+2%3A00+pm</miscinfo>
+      <sortcat>None</sortcat>
+      <lat>39.707808</lat>
+      <lon>-105.081321</lon>
+      <folder>belmar</folder>
+      <region>RM</region>
+      <status>OPEN</status>
+      <blogid>0</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A05</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10218</bu>
+      <vim_price_zone>7</vim_price_zone>
+      <twitter>WFMBelmarPFDS</twitter>
+      <facebook>114492145278883</facebook>
+      <flickr />
+      <foursquare>135224</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DBMR</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>0</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+    <Store>
+      <tlc>BND</tlc>
+      <name>Bend</name>
+      <display_name />
+      <address>2610+NE+Hwy+20</address>
+      <address2 />
+      <zipchar>97701</zipchar>
+      <city>Bend</city>
+      <state>Oregon</state>
+      <country>USA</country>
+      <facility>Whole+Foods+Market</facility>
+      <phone>541.389.0151</phone>
+      <fax>541.389.0526</fax>
+      <hours>8%3A00+a.m.+to+9%3A00+p.m.+seven+days+a+week.</hours>
+      <homestore />
+      <miscinfo />
+      <sortcat>None</sortcat>
+      <lat>44.055037</lat>
+      <lon>-121.266093</lon>
+      <folder>bend</folder>
+      <region>PN</region>
+      <status>OPEN</status>
+      <blogid>110</blogid>
+      <mapblurb />
+      <modified_dt>2011-12-16+16%3A27%3A04</modified_dt>
+      <opened_dt>2010-08-18+12%3A00%3A00</opened_dt>
+      <sq_feet>0</sq_feet>
+      <bu>10407</bu>
+      <vim_price_zone>2</vim_price_zone>
+      <twitter>WholefoodsBND</twitter>
+      <facebook>96371842481</facebook>
+      <flickr />
+      <foursquare>749915</foursquare>
+      <canorder>1</canorder>
+      <orderurl>http%3A%2F%2Fshop-tst.wholefoodsmarket.com%2Fstore%2FShopAt.aspx%3Fs%3DBND</orderurl>
+      <exclude_google>0</exclude_google>
+      <has_alcohol>1</has_alcohol>
+      <flex />
+      <cquest_contact />
+    </Store>
+  </stores>
+</StoresResult>

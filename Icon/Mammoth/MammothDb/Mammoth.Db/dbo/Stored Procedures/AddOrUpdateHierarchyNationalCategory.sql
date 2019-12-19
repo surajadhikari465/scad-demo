@@ -19,7 +19,7 @@ BEGIN
       SELECT t.FamilyHCID, t.CategoryHCID
       FROM #hierarchyNational t
       LEFT JOIN dbo.Hierarchy_NationalClass h ON h.CategoryHCID = t.CategoryHCID
-	  WHERE h.CategoryHCID IS NULL;
+    WHERE h.CategoryHCID IS NULL;
   END
 
   DROP TABLE #hierarchyNational;

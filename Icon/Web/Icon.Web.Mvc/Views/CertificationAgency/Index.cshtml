@@ -5,14 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
-
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Render()
-)
-
 @{Html.RenderPartial("_HeaderPartial", "Certification Agency Management");}
 
 <div class="page-subsection">@Html.ActionLink("Add New Agency", "Create")</div>
@@ -21,7 +13,7 @@
 
 <div id="CertificationAgencies" class="page-section">
 
-    @Html.ActionLink("Export All Certification Agencies", "CertificationAgencyExport", "Excel", null, new { @class = "btn btn-default form-submit" })
+    @Html.ActionLink("Export All Certification Agencies", "CertificationAgencyExport", "Excel", null, new { @class = "btn btn-light form-submit" })
 
     <hr />
 
@@ -34,7 +26,7 @@
             .AutoGenerateColumns(false)
             .Columns(columns =>
             {
-                columns.For(c => c.HierarchyClassId).HeaderText("Agency ID").DataType("int").Width("10%");
+                columns.For(c => c.HierarchyClassId).HeaderText("Agency ID").DataType("number").Width("10%");
                 columns.For(c => c.AgencyName).HeaderText("Agency Name").DataType("string").Width("20%")
                             .Template("{{if ${DefaultOrganic} }}"
                             + "<b>${AgencyName}</b>"

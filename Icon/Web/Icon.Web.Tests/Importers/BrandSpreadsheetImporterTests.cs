@@ -1,12 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Icon.Web.Mvc.Importers;
 using Infragistics.Documents.Excel;
 using Moq;
 using Icon.Web.DataAccess.Queries;
-using Icon.Web.DataAccess.Infrastructure;
 using System.Collections.Generic;
-using Icon.Web.Common;
+using Icon.Common;
 using Icon.Common.DataAccess;
 
 namespace Icon.Web.Tests.Unit.Importers

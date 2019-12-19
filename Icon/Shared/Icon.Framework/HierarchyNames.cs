@@ -18,5 +18,6 @@ namespace Icon.Framework
         public const string Financial = "Financial";
         public const string National = "National";
         public const string CertificationAgencyManagement = "Certification Agency Management";
+        public const string Manufacturer = "Manufacturer";
 	}
 }

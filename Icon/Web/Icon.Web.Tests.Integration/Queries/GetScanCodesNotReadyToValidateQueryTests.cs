@@ -1,6 +1,5 @@
 ﻿using Icon.Framework;
 using Icon.Testing.Builders;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Tests.Common.Builders;
@@ -242,10 +241,10 @@ namespace Icon.Web.Tests.Integration.Queries
 
             context.Item.AddRange(new List<Item>
                 {
-                    new Item { itemTypeID = 1, ScanCode = new List<ScanCode> { new ScanCode { scanCode = scanCode1, scanCodeTypeID = ScanCodeTypes.Upc } } },
-                    new Item { itemTypeID = 1, ScanCode = new List<ScanCode> { new ScanCode { scanCode = scanCode2, scanCodeTypeID = ScanCodeTypes.Upc } } },
-                    new Item { itemTypeID = 1, ScanCode = new List<ScanCode> { new ScanCode { scanCode = scanCode3, scanCodeTypeID = ScanCodeTypes.Upc } } },
-                    new Item { itemTypeID = 1, ScanCode = new List<ScanCode> { new ScanCode { scanCode = scanCode4, scanCodeTypeID = ScanCodeTypes.Upc } } },
+                    new Item { ItemTypeId = 1, ScanCode = new List<ScanCode> { new ScanCode { scanCode = scanCode1, scanCodeTypeID = ScanCodeTypes.Upc } } },
+                    new Item { ItemTypeId = 1, ScanCode = new List<ScanCode> { new ScanCode { scanCode = scanCode2, scanCodeTypeID = ScanCodeTypes.Upc } } },
+                    new Item { ItemTypeId = 1, ScanCode = new List<ScanCode> { new ScanCode { scanCode = scanCode3, scanCodeTypeID = ScanCodeTypes.Upc } } },
+                    new Item { ItemTypeId = 1, ScanCode = new List<ScanCode> { new ScanCode { scanCode = scanCode4, scanCodeTypeID = ScanCodeTypes.Upc } } },
                 });
             context.SaveChanges();
 

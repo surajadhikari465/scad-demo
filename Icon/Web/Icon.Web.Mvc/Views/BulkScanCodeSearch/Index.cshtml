@@ -1,5 +1,4 @@
-﻿@using Infragistics.Web.Mvc
-@model Icon.Web.Mvc.Models.BulkScanCodeSearchViewModel
+﻿@model Icon.Web.Mvc.Models.BulkScanCodeSearchViewModel
 
 @{
     ViewBag.Title = "Bulk Scan Code Search";
@@ -7,7 +6,7 @@
 }
 @section headerScripts
 {
-    @Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
+    
     @Scripts.Render("~/Scripts/BulkScanCodeSearch/bulk-scan-code-search.js")
     @Scripts.Render("~/Scripts/Common/display-alert.js")
     @Scripts.Render("~/Scripts/igGrid/iggrid-item-search-formatting.js")
@@ -23,51 +22,37 @@
 
 <div id="searchOptions" class="page-section">
     <div class="row">
-        @using (Html.BeginForm("Search", "BulkScanCodeSearch", null, FormMethod.Post, new { @class = "begin-form col-md-6" }))
+        @using (Html.BeginForm("Search", "BulkScanCodeSearch", null, FormMethod.Post, new { @class = "begin-form" }))
         {
-            <fieldset>
-                <legend>Text Entry</legend>
-                <div class="row">
-                    @Html.Label(String.Format("Scan Codes (one per line, maximum {0})", Model.BulkScanCodeSearchLimit), new { @class = "form-label col-md-4" })
-                    <div>
-                        @Html.TextAreaFor(model => Model.TextAreaViewModel.ScanCodes, 20, 13, new { @class = "form-input", @type = "number" })
-                        <div class="row col-md-offset-4">
-                            @Html.ValidationMessageFor(model => Model.TextAreaViewModel.ScanCodes)
-                        </div>
-                    </div>
-                </div>
-            </fieldset>
-
-            <div class="row">
-                <div>
-                    <input type="submit" value="Search" class="btn btn-default form-submit col-md-offset-4" id="search-button" />
-                </div>
+        <fieldset>
+            <legend>Text Entry</legend>
+            <div class="form-group">
+                @Html.Label(String.Format("Scan Codes (one per line, maximum {0})", Model.BulkScanCodeSearchLimit), new { @class = "form-label" })
+                @Html.TextAreaFor(model => Model.TextAreaViewModel.ScanCodes, 15, 13, new { @class = "form-control form-input", @type = "number" })
+                @Html.ValidationMessageFor(model => Model.TextAreaViewModel.ScanCodes)
             </div>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-light form-submit col-md-offset-4" id="search-button" />
+            </div>
+        </fieldset>
+
+         
         }
 
         @using (Html.BeginForm("Upload", "BulkScanCodeSearch", null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "begin-form col-md-6" }))
         {
-            <fieldset>
-                <legend>File Upload</legend>
-                <div class="row">
-                    @Html.LabelFor(model => Model.FileUploadViewModel.TextFileAttachment, new { @class = "form-label col-md-2" })
-                    <div>
-                        <input type="file" name="FileUploadViewModel.TextFileAttachment" accept="text/plain" />
-                        <div class="row">
-                            <p class="help-block col-md-3">Select a .txt file with up to @Model.BulkScanCodeSearchLimit scan codes (one per line).</p>
-                        </div>
-                        <div class="row col-md-offset-2">
-                            @Html.ValidationMessageFor(model => Model.FileUploadViewModel.TextFileAttachment)
-                        </div>
-                    </div>
-                </div>
-            </fieldset>
-
-            <div class="row">
-                <div>
-                    <input type="submit" value="Upload" class="btn btn-default form-submit col-md-offset-2" id="upload-button" />
-                </div>
-            </div>
+    <fieldset>
+        <legend>File Upload</legend>
+        <div class="form-group">
+            @Html.LabelFor(model => Model.FileUploadViewModel.TextFileAttachment, new { @class = "form-label" })
+            <input type="file" name="FileUploadViewModel.TextFileAttachment" class="form-control-file" accept="text/plain" />
+            <p>Select a .txt file with up to @Model.BulkScanCodeSearchLimit scan codes (one per line).</p>
+            @Html.ValidationMessageFor(model => Model.FileUploadViewModel.TextFileAttachment)
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Upload" class="btn btn-light form-submit" id="upload-button" />
+        </div>
+    </fieldset>      
         }
     </div>
 </div>

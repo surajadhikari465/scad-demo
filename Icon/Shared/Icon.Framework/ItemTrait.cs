@@ -20,8 +20,8 @@ namespace Icon.Framework
         public string traitValue { get; set; }
         public int localeID { get; set; }
     
-        public virtual Item Item { get; set; }
         public virtual Trait Trait { get; set; }
         public virtual Locale Locale { get; set; }
+        public virtual Item Item { get; set; }
     }
 }

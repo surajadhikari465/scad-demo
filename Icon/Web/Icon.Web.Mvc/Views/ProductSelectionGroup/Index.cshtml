@@ -4,19 +4,11 @@
     ViewBag.Title = "Product Selection Groups";
 }
 
-@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Resources("igCombo,igDialog")
-    .Render()
-)
-
 @{Html.RenderPartial("_HeaderPartial", "Product Selection Group Management");}
 
 <div class="page-section">
     <div id="psgAlert">
-        @if(ViewData["Message"] != null)
+        @if (ViewData["Message"] != null)
         {
             <div id="createItemAlert" class="alert alert-success alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -31,85 +23,103 @@
     else
     {
         @(Html.Infragistics().Grid(Model.ProductSelectionGroups.AsQueryable())
-            .ID("igGrid")
-            .Width("100%")
-            .PrimaryKey("ProductSelectionGroupId")
-            .AutoGenerateColumns(false)
-            .AutoCommit(false)
-            .Columns(column =>
-            {
-                column.For(vm => vm.ProductSelectionGroupId).Hidden(true);
-                column.For(vm => vm.ProductSelectionGroupName).HeaderText("PSG Name");
-                column.For(vm => vm.ProductSelectionGroupTypeId).HeaderText("PSG Type").FormatterFunction("lookupPsgTypeName");
-                column.For(vm => vm.MerchandiseHierarchyClassId).HeaderText("Merchandise Sub Brick").FormatterFunction("lookupMerchName");
-                column.For(vm => vm.TraitId).HeaderText("Trait Name").FormatterFunction("lookupTraitName");
-                column.For(vm => vm.TraitValue).HeaderText("Trait Value");
-            })
-            .Features(features =>
-            {
-                features.Selection().MultipleSelection(true).Mode(SelectionMode.Row);
-                features.Updating()
-                    .EnableAddRow(false)
-                    .EnableDeleteRow(false)
-                    .EditMode(GridEditMode.Row)
-                    .DoneLabel("Apply")
-                    .StartEditTriggers(GridStartEditTriggers.DblClick)
-                    .Validation(true)
-                    .EditMode(GridEditMode.Row)
-                    .ColumnSettings(columnSettings =>
-                        {
-                            columnSettings.ColumnSetting().ColumnKey("ProductSelectionGroupName").Required(true);
-                            columnSettings.ColumnSetting().ColumnKey("ProductSelectionGroupTypeId")
-                                .Required(true)
-                                .EditorType(ColumnEditorType.Combo)
-                                .ComboEditorOptions(editorOptions =>
-                                    editorOptions.DataSource(Model.ProductSelectionGroupTypes.AsQueryable())
-                                        .ValueKey("ProductSelectionGroupTypeId")
-                                        .TextKey("ProductSelectionGroupTypeName")
-                                        .ShowDropDownButton(true)
-                                        .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
-                                        .AllowCustomValue(false)
-                                        .Virtualization(true)
-                                        .DropDownWidth(600)
-                                );                            
-                            columnSettings.ColumnSetting().ColumnKey("TraitId")
-                                .Required(false)
-                                .EditorType(ColumnEditorType.Combo)
-                                .ComboEditorOptions(editorOptions =>
-                                    editorOptions.DataSource(Model.Traits.AsQueryable())
-                                        .ValueKey("TraitId")
-                                        .TextKey("TraitDesc")
-                                        .ShowDropDownButton(true)
-                                        .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
-                                        .AllowCustomValue(false)
-                                        .Virtualization(true)
-                                        .DropDownWidth(600)
-                                );
-                            columnSettings.ColumnSetting().ColumnKey("TraitValue").Required(false);
-                            columnSettings.ColumnSetting().ColumnKey("MerchandiseHierarchyClassId")
-                                .Required(false)
-                                .EditorType(ColumnEditorType.Combo)
-                                .ComboEditorOptions(editorOptions =>
-                                    editorOptions.DataSource(Model.MerchandiseHierarchyClasses.AsQueryable())
-                                        .ValueKey("HierarchyClassId")
-                                        .TextKey("HierarchyClassName")
-                                        .ShowDropDownButton(true)
-                                        .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
-                                        .AllowCustomValue(false)
-                                        .Virtualization(true)
-                                        .DropDownWidth(600)
-                                );
-                        });
-            })
-            .UpdateUrl(Url.Action("SaveChangesInGrid"))
-            .AggregateTransactions(true)
-            .DataBind()
-            .Render()
+                    .ID("igGrid")
+                    .Width("100%")
+                    .PrimaryKey("ProductSelectionGroupId")
+                    .AutoGenerateColumns(false)
+                    .AutoCommit(false)
+                    .Columns(column =>
+                    {
+                        column.For(vm => vm.ProductSelectionGroupId).Hidden(true);
+                        column.For(vm => vm.ProductSelectionGroupName).HeaderText("PSG Name").Width("15%");
+                        column.For(vm => vm.ProductSelectionGroupTypeId).HeaderText("PSG Type").Width("15%");
+                        column.For(vm => vm.MerchandiseHierarchyClassId).HeaderText("Merchandise Sub Brick").FormatterFunction("lookupMerchName").Width("15%");
+                        column.For(vm => vm.TraitId).HeaderText("Trait Name").FormatterFunction("lookupTraitName").Width("15%");
+                        column.For(vm => vm.TraitValue).HeaderText("Trait Value").Width("15%");
+                        column.For(vm => vm.AttributeId).HeaderText("Attribute Name").FormatterFunction("lookupAttributeName").Width("15%");
+                        column.For(vm => vm.AttributeValue).HeaderText("Attribute Value").Width("15%");
+                    })
+                    .Features(features =>
+                    {
+                        features.Selection().MultipleSelection(true).Mode(SelectionMode.Row);
+                        features.Updating()
+                            .EnableAddRow(false)
+                            .EnableDeleteRow(false)
+                            .EditMode(GridEditMode.Row)
+                            .StartEditTriggers(GridStartEditTriggers.DblClick)
+                            .Validation(true)
+                            .EditMode(GridEditMode.Row)
+                            .ColumnSettings(columnSettings =>
+                            {
+                                columnSettings.ColumnSetting().ColumnKey("ProductSelectionGroupName").Required(true);
+                                columnSettings.ColumnSetting().ColumnKey("ProductSelectionGroupTypeId")
+                                    .Required(true)
+                                    .EditorType(ColumnEditorType.Combo)
+                                    .ComboEditorOptions(editorOptions =>
+                                        editorOptions.DataSource(Model.ProductSelectionGroupTypes.AsQueryable())
+                                            .ValueKey("ProductSelectionGroupTypeId")
+                                            .TextKey("ProductSelectionGroupTypeName")
+                                            .AllowCustomValue(false)
+                                            .Virtualization(true)
+                                            .DropDownWidth(600)
+                                    );
+                                columnSettings.ColumnSetting().ColumnKey("TraitId")
+                                    .Required(false)
+                                    .EditorType(ColumnEditorType.Combo)
+                                    .ComboEditorOptions(editorOptions =>
+                                        editorOptions.DataSource(Model.Traits.AsQueryable())
+                                            .ValueKey("TraitId")
+                                            .TextKey("TraitDesc")
+                                            .AllowCustomValue(false)
+                                            .Virtualization(true)
+                                            .DropDownWidth(600)
+                                    );
+                                columnSettings.ColumnSetting().ColumnKey("TraitValue").Required(false);
+                                columnSettings.ColumnSetting().ColumnKey("MerchandiseHierarchyClassId")
+                                    .Required(false)
+                                    .EditorType(ColumnEditorType.Combo)
+                                    .ComboEditorOptions(editorOptions =>
+                                        editorOptions.DataSource(Model.MerchandiseHierarchyClasses.AsQueryable())
+                                            .ValueKey("HierarchyClassId")
+                                            .TextKey("HierarchyClassName")
+                                            .AllowCustomValue(false)
+                                            .Virtualization(true)
+                                            .DropDownWidth(600)
+                                    );
+                                columnSettings.ColumnSetting().ColumnKey("AttributeId")
+                                    .Required(false)
+                                    .EditorType(ColumnEditorType.Combo)
+                                    .ComboEditorOptions(editorOptions =>
+                                        editorOptions.DataSource(Model.Attributes.AsQueryable())
+                                            .ValueKey("AttributeId")
+                                            .TextKey("AttributeName")
+                                            .AllowCustomValue(false)
+                                            .Virtualization(true)
+                                            .DropDownWidth(600)
+                                    );
+                                columnSettings.ColumnSetting().ColumnKey("AttributeValue").Required(false);
+                                columnSettings.ColumnSetting().ColumnKey("MerchandiseHierarchyClassId")
+                                    .Required(false)
+                                    .EditorType(ColumnEditorType.Combo)
+                                    .ComboEditorOptions(editorOptions =>
+                                        editorOptions.DataSource(Model.MerchandiseHierarchyClasses.AsQueryable())
+                                            .ValueKey("HierarchyClassId")
+                                            .TextKey("HierarchyClassName")
+                                            .AllowCustomValue(false)
+                                            .Virtualization(true)
+                                            .DropDownWidth(600)
+                                    );
+                            });
+                    })
+                    .UpdateUrl(Url.Action("SaveChangesInGrid"))
+                    .AggregateTransactions(true)
+                    .DataBind()
+                    .Render()
         )
     }
 </div>
 
-@Html.ActionLink("Add New PSG", "Create", "ProductSelectionGroup", null, new { @class = "btn btn-default form-submit" })
+@Html.ActionLink("Add New PSG", "Create", "ProductSelectionGroup", null, new { @class = "btn btn-light form-submit" })
 
 @section scripts
 {

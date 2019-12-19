@@ -1,11 +1,18 @@
-﻿
-using Icon.Web.DataAccess.Models;
+﻿using System.Collections.Generic;
 
 namespace Icon.Web.DataAccess.Managers
 {
     public class UpdateItemManager
     {
-        public BulkImportItemModel Item { get; set; }
-        public string UserName { get; set; }
+        public int ItemId { get; set; }
+        public string ScanCode { get; set; }
+        public int MerchandiseHierarchyClassId { get; set; }
+        public int BrandsHierarchyClassId { get; set; }
+        public int TaxHierarchyClassId { get; set; }
+        public int FinancialHierarchyClassId { get; set; }
+        public int NationalHierarchyClassId { get; set; }
+        public int ManufacturerHierarchyClassId { get; set; }
+        public Dictionary<string, string> ItemAttributes { get; set; } = new Dictionary<string, string>();
+        public string ItemTypeCode { get; set; }
     }
 }

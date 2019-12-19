@@ -5,97 +5,21 @@ using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Models;
 using Infragistics.Documents.Excel;
 using System.Collections.Generic;
-using System;
+using System.Data.SqlClient;
+using System.Configuration;
+using Icon.Common;
+using Icon.Common.Models;
+using Icon.Web.Mvc.Excel;
 
 namespace Icon.Web.Mvc.Exporters
 {
     public class ExcelExporterService : IExcelExporterService
     {
-        private IQueryHandler<GetHierarchyLineageParameters, HierarchyClassListModel> getHierarchyLineageQueryHandler;
-        private IQueryHandler<GetMerchTaxMappingsParameters, List<MerchTaxMappingModel>> getMerchTaxMappingQueryHandler;
-        private IQueryHandler<GetCertificationAgenciesByTraitParameters, List<HierarchyClass>> getCertificationAgenciesQueryHandler;
-        private IQueryHandler<GetBrandsParameters, List<BrandModel>> getBrandsQuery;
+        private IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler;
+        private IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>> getAttributesQueryHandler;
+        private IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypeQueryHandler;
         private ExcelExportModel exportModel = new ExcelExportModel(WorkbookFormat.Excel2007);
-
-        public ItemExporter GetItemExporter()
-        {
-            getHierarchyLineageQueryHandler = new GetHierarchyLineageQuery(new IconContext());
-            getMerchTaxMappingQueryHandler = new GetMerchTaxMappingsQuery(new IconContext());
-            getCertificationAgenciesQueryHandler = new GetCertificationAgenciesByTraitQuery(new IconContext());
-
-            ItemExporter itemExporter = new ItemExporter(getHierarchyLineageQueryHandler, getMerchTaxMappingQueryHandler, getCertificationAgenciesQueryHandler);
-            itemExporter.ExportModel = exportModel;
-
-            return itemExporter;
-        }
-
-        public BulkItemExporter GetBulkItemExporter()
-        {
-            getHierarchyLineageQueryHandler = new GetHierarchyLineageQuery(new IconContext());
-            getMerchTaxMappingQueryHandler = new GetMerchTaxMappingsQuery(new IconContext());
-            getCertificationAgenciesQueryHandler = new GetCertificationAgenciesByTraitQuery(new IconContext());
-
-            BulkItemExporter bulkItemExporter = new BulkItemExporter(getHierarchyLineageQueryHandler, getMerchTaxMappingQueryHandler, getCertificationAgenciesQueryHandler);
-            bulkItemExporter.ExportModel = exportModel;
-
-            return bulkItemExporter;
-        }
-
-        public BulkNewItemExporter GetBulkNewItemExporter()
-        {
-            getHierarchyLineageQueryHandler = new GetHierarchyLineageQuery(new IconContext());
-            getMerchTaxMappingQueryHandler = new GetMerchTaxMappingsQuery(new IconContext());
-            getCertificationAgenciesQueryHandler = new GetCertificationAgenciesByTraitQuery(new IconContext());
-            getBrandsQuery = new GetBrandsQuery(new IconContext());
-
-
-            BulkNewItemExporter bulkItemExporter = new BulkNewItemExporter(getHierarchyLineageQueryHandler, getMerchTaxMappingQueryHandler, getCertificationAgenciesQueryHandler, getBrandsQuery);
-            bulkItemExporter.ExportModel = exportModel;
-
-            return bulkItemExporter;
-        }
-
-        public IrmaItemExporter GetIrmaItemExporter()
-        {
-            getHierarchyLineageQueryHandler = new GetHierarchyLineageQuery(new IconContext());
-            getMerchTaxMappingQueryHandler = new GetMerchTaxMappingsQuery(new IconContext());
-            getCertificationAgenciesQueryHandler = new GetCertificationAgenciesByTraitQuery(new IconContext());
-            getBrandsQuery = new GetBrandsQuery(new IconContext());
-
-            IrmaItemExporter irmaItemExporter = new IrmaItemExporter(getHierarchyLineageQueryHandler, getMerchTaxMappingQueryHandler, getCertificationAgenciesQueryHandler, getBrandsQuery);
-            irmaItemExporter.ExportModel = exportModel;
-
-            return irmaItemExporter;
-        }
-
-        public PluExporter GetPluExporter()
-        {
-            PluExporter pluExporter = new PluExporter();
-            pluExporter.ExportModel = exportModel;
-
-            return pluExporter;
-        }
-
-        public BulkPluExporter GetBulkPluExporter()
-        {
-            BulkPluExporter bulkPluExporter = new BulkPluExporter();
-            bulkPluExporter.ExportModel = exportModel;
-
-            return bulkPluExporter;
-        }
-
-        public NewItemTemplateExporter GetNewItemTemplateExporter()
-        {
-            getHierarchyLineageQueryHandler = new GetHierarchyLineageQuery(new IconContext());
-            getMerchTaxMappingQueryHandler = new GetMerchTaxMappingsQuery(new IconContext());
-            getCertificationAgenciesQueryHandler = new GetCertificationAgenciesByTraitQuery(new IconContext());
-            getBrandsQuery = new GetBrandsQuery(new IconContext());
-
-            NewItemTemplateExporter newItemTemplateExporter = new NewItemTemplateExporter(getHierarchyLineageQueryHandler, getMerchTaxMappingQueryHandler, getCertificationAgenciesQueryHandler, getBrandsQuery);
-            newItemTemplateExporter.ExportModel = exportModel;
-
-            return newItemTemplateExporter;
-        }
+        private SqlConnection connection;
 
         public HierarchyClassExporter GetHierarchyClassExporter()
         {
@@ -112,6 +36,17 @@ namespace Icon.Web.Mvc.Exporters
 
             return exporter;
         }
+
+        public ManufacturerExporter GetManufacturerExporter()
+        {
+            ManufacturerExporter exporter = new ManufacturerExporter
+            {
+                ExportModel = exportModel
+            };
+
+            return exporter;
+        }
+
         public BulkBrandExporter GetBulkBrandExporter()
         {
             BulkBrandExporter exporter = new BulkBrandExporter();
@@ -127,49 +62,45 @@ namespace Icon.Web.Mvc.Exporters
             return exporter;
         }
 
-        public PluCategoryExporter GetPluCategoryExporter()
+        public BarcodeTypeExporter GetBarcodeTypeExporter()
         {
-            PluCategoryExporter pluCategoryExporter = new PluCategoryExporter();
-            pluCategoryExporter.ExportModel = exportModel;
-            return pluCategoryExporter;
+            BarcodeTypeExporter barcodeTypeExporter = new BarcodeTypeExporter();
+            barcodeTypeExporter.ExportModel = exportModel;
+            return barcodeTypeExporter;
         }
 
-        public ItemTemplateExporter GetItemTemplateExporter()
+        public ItemNewTemplateExporter GetItemTemplateNewExporter(List<string> selectedColumnNames = null, bool exportAllAttributes = false, bool exportNewItemTemplate = false)
         {
-            getHierarchyLineageQueryHandler = new GetHierarchyLineageQuery(new IconContext());
-            getMerchTaxMappingQueryHandler = new GetMerchTaxMappingsQuery(new IconContext());
-            getCertificationAgenciesQueryHandler = new GetCertificationAgenciesByTraitQuery(new IconContext());
-
-            ItemTemplateExporter itemTemplateExporter = new ItemTemplateExporter(getHierarchyLineageQueryHandler, getMerchTaxMappingQueryHandler, getCertificationAgenciesQueryHandler);
-            itemTemplateExporter.ExportModel = exportModel;
-
-            return itemTemplateExporter;
-        }
-
-        public PluRequestExporter GetPluRequestExporter()
-        {
-            getHierarchyLineageQueryHandler = new GetHierarchyLineageQuery(new IconContext());
-
-            PluRequestExporter pluRequestExporter = new PluRequestExporter(getHierarchyLineageQueryHandler);
-            pluRequestExporter.ExportModel = exportModel;
-
-            return pluRequestExporter;
-        }
-
-
-        public CertificationAgencyExporter GetCertificationAgencyExporter()
-        {
-            return new CertificationAgencyExporter
+            connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString);
+            getHierarchyClassesQueryHandler = new GetHierarchyClassesQueryHandler(connection);
+            getAttributesQueryHandler = new GetAttributesQueryHandler(connection);
+            getBarcodeTypeQueryHandler = new GetBarcodeTypesQuery(connection);
+            ItemNewTemplateExporter itemTemplateNewExporter = new ItemNewTemplateExporter(getHierarchyClassesQueryHandler, getAttributesQueryHandler, getBarcodeTypeQueryHandler);
+            itemTemplateNewExporter.ExportModel = exportModel;
+            itemTemplateNewExporter.ExportAllAttributes = exportAllAttributes;
+            itemTemplateNewExporter.SelectedColumnNames = selectedColumnNames;
+            itemTemplateNewExporter.ExportNewItemTemplate = exportNewItemTemplate;
+            itemTemplateNewExporter.ListHiddenColumnNames = new List<string>()
             {
-                ExportModel = exportModel
+                NewItemExcelHelper.NewExcelExportColumnNames.ItemId, NewItemExcelHelper.NewExcelExportColumnNames.ItemType, NewItemExcelHelper.NewExcelExportColumnNames.Financial, Constants.Attributes.ProhibitDiscount,
+                Constants.Attributes.CreatedBy, Constants.Attributes.CreatedDateTimeUtc, Constants.Attributes.ModifiedBy, Constants.Attributes.ModifiedDateTimeUtc
             };
+            itemTemplateNewExporter.AddSpreadsheetColumns();
+
+            return itemTemplateNewExporter;
         }
 
-        public DefaultTaxMismatchesExporter GetDefaultTaxMismatchExporter()
+        public NationalClassExporter GetNationalClassExporter()
         {
-            getHierarchyLineageQueryHandler = new GetHierarchyLineageQuery(new IconContext());
+            NationalClassExporter exporter = new NationalClassExporter();
+            exporter.ExportModel = exportModel;
 
-            var exporter = new DefaultTaxMismatchesExporter(getHierarchyLineageQueryHandler);
+            return exporter;
+        }
+
+        public AttributeExporter GetAttributeExporter()
+        {
+            AttributeExporter exporter = new AttributeExporter();
             exporter.ExportModel = exportModel;
 
             return exporter;

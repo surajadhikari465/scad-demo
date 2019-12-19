@@ -7,6 +7,7 @@ using NutritionWebApi.DataAccess.Decorators;
 using NutritionWebApi.DataAccess.Queries;
 using SimpleInjector;
 using SimpleInjector.Integration.WebApi;
+using SimpleInjector.Lifestyles;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -22,10 +23,12 @@ namespace NutritionWebApi
             // Simple Injector Registration
             var container = new Container();
 
-            container.RegisterWebApiRequest<IDbConnectionProvider, DbConnectionProvider>();
-            container.RegisterWebApiRequest<IQueryHandler<GetNutritionItemQuery, List<NutritionItemModel>>, GetNutritionItemQueryHandler>();
-            container.RegisterWebApiRequest<ICommandHandler<AddOrUpdateNutritionItemCommand>, AddOrUpdateNutritionItemCommandHandler>();
-            container.RegisterWebApiRequest<ICommandHandler<DeleteNutritionCommand>, DeleteNutritionCommandHandler>();
+            container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
+
+            container.Register<IDbConnectionProvider, DbConnectionProvider>(Lifestyle.Scoped);
+            container.Register<IQueryHandler<GetNutritionItemQuery, List<NutritionItemModel>>, GetNutritionItemQueryHandler>(Lifestyle.Scoped);
+            container.Register<ICommandHandler<AddOrUpdateNutritionItemCommand>, AddOrUpdateNutritionItemCommandHandler>(Lifestyle.Scoped);
+            container.Register<ICommandHandler<DeleteNutritionCommand>, DeleteNutritionCommandHandler>(Lifestyle.Scoped);
             
             container.RegisterDecorator(typeof(IQueryHandler<GetNutritionItemQuery, List<NutritionItemModel>>),
                 typeof(DbQueryHandlerDecorator<GetNutritionItemQuery, List<NutritionItemModel>>));

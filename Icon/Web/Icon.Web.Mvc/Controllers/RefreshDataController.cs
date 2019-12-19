@@ -1,35 +1,45 @@
 ﻿using Icon.Common.DataAccess;
+using Icon.Common.Models;
 using Icon.Logging;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.Extensions;
+using Icon.Web.DataAccess.Queries;
+using Icon.Web.Mvc.Attributes;
+using Icon.Web.Mvc.Extensions;
 using Icon.Web.Mvc.Models.RefreshData;
+using Icon.Web.Mvc.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Icon.Web.Mvc.Controllers
 {
+    [AdminAccessAuthorizeAttribute]
     public class RefreshDataController : Controller
     {
-        private ICommandHandler<RefreshItemsCommand> addProductMessagesCommandHandler;
+        private ICommandHandler<PublishItemUpdatesCommand> publishItemUpdatesCommandHandler;
         private ICommandHandler<RefreshLocalesCommand> addLocaleMessagesCommandHandler;
-        private ICommandHandler<RefreshBrandsCommand> addBrandMessagesCommandHandler;
-        private ICommandHandler<RefreshMerchandiseHierarchyClassesCommand> addMerchandiseHierarchyClassMessagesCommandHandler;
+        private ICommandHandler<RefreshHierarchiesCommand> addHierarchiesCommandHandler;
+        private ICommandHandler<RefreshAttributesCommand> publishAttributeQueueCommandHandler;
+        private IQueryHandler<GetAttributeByAttributeIdParameters, AttributeModel> getAttributeByAttributeIdQuery;
         private ILogger logger;
-
-        public RefreshDataController(ICommandHandler<RefreshItemsCommand> addProductMessagesCommandHandler,
+        private IconWebAppSettings settings;
+        public RefreshDataController(ICommandHandler<PublishItemUpdatesCommand> publishItemUpdatesCommandHandler,
             ICommandHandler<RefreshLocalesCommand> addLocaleMessagesCommandHandler,
-            ICommandHandler<RefreshBrandsCommand> addBrandMessagesCommandHandler,
-            ICommandHandler<RefreshMerchandiseHierarchyClassesCommand> addMerchandiseHierarchyClassMessagesCommandHandler,
-            ILogger logger)
+            ICommandHandler<RefreshHierarchiesCommand> addHierarchiesCommandHandler,
+            ICommandHandler<RefreshAttributesCommand> publishAttributeQueueCommandHandler,
+            IQueryHandler<GetAttributeByAttributeIdParameters, AttributeModel> getAttributeByAttributeIdQuery,
+            ILogger logger,
+            IconWebAppSettings settings)
         {
-            this.addProductMessagesCommandHandler = addProductMessagesCommandHandler;
+            this.publishItemUpdatesCommandHandler = publishItemUpdatesCommandHandler;
             this.addLocaleMessagesCommandHandler = addLocaleMessagesCommandHandler;
-            this.addBrandMessagesCommandHandler = addBrandMessagesCommandHandler;
-            this.addMerchandiseHierarchyClassMessagesCommandHandler = addMerchandiseHierarchyClassMessagesCommandHandler;
+            this.addHierarchiesCommandHandler = addHierarchiesCommandHandler;
+            this.publishAttributeQueueCommandHandler = publishAttributeQueueCommandHandler;
+            this.getAttributeByAttributeIdQuery = getAttributeByAttributeIdQuery;
             this.logger = logger;
+            this.settings = settings;
+
         }
 
         // GET: RefreshData
@@ -56,7 +66,7 @@ namespace Icon.Web.Mvc.Controllers
                 string[] uniqueScanCodesWithNoWhitespaceLines = uniqueScanCodes.Where(sc => !String.IsNullOrWhiteSpace(sc)).ToArray();
                 List<string> scanCodesToRefresh = uniqueScanCodesWithNoWhitespaceLines.Take(3000).ToList();
 
-                addProductMessagesCommandHandler.Execute(new RefreshItemsCommand { ScanCodes = scanCodesToRefresh });
+                publishItemUpdatesCommandHandler.Execute(new PublishItemUpdatesCommand { ScanCodes = scanCodesToRefresh });
             }
             catch (Exception ex)
             {
@@ -66,6 +76,64 @@ namespace Icon.Web.Mvc.Controllers
             }
             ViewBag.Message = "Refreshed items successfully.";
             return View(new RefreshDataViewModel());
+        }
+
+        public ActionResult Attributes()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Attributes(RefreshAttributesViewModel viewModel)
+        {
+            try
+            {
+                if (viewModel == null || String.IsNullOrWhiteSpace(viewModel.AttributeIds))
+                {
+                    return View(viewModel);
+                }
+
+                string[] parsedIds = viewModel.AttributeIds.ParseByLine();
+
+                string[] uniqueIds = parsedIds.Distinct().ToArray();
+                string[] uniqueIdsWithNoWhitespaceLines = uniqueIds.Where(sc => !String.IsNullOrWhiteSpace(sc)).ToArray();
+                List<string> attributeIdsToRefresh = uniqueIdsWithNoWhitespaceLines.Take(3000).ToList();
+
+                List<string> badIds = new List<string>();
+                foreach (var id in attributeIdsToRefresh)
+                {
+                    int idInt;
+                    if(!int.TryParse(id, out idInt))
+                    {
+                        badIds.Add(id);
+                    }
+                    else
+                    {
+                        var attribute = this.getAttributeByAttributeIdQuery.Search(new GetAttributeByAttributeIdParameters() { AttributeId = idInt });
+                        if (attribute == null)
+                        {
+                            badIds.Add(id);
+                        }
+                    }
+                }
+
+                if(badIds.Count > 0)
+                {
+                    string concat = string.Join(", ", badIds.ToArray());
+                    ViewBag.Message = $"The following IDs are invalid: {concat}";
+                    return View(viewModel);
+                }
+
+                publishAttributeQueueCommandHandler.Execute(new RefreshAttributesCommand { AttributeIds = attributeIdsToRefresh });
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                ViewBag.Message = "Unexpected exception occurred: " + ex.Message;
+                return View(viewModel);
+            }
+            ViewBag.Message = "Refreshed attributes successfully.";
+            return View(new RefreshAttributesViewModel());
         }
 
         public ActionResult Locales()
@@ -100,13 +168,13 @@ namespace Icon.Web.Mvc.Controllers
             return View(new RefreshDataViewModel());
         }
 
-        public ActionResult Brands()
+        public ActionResult Hierarchy()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Brands(RefreshDataViewModel viewModel)
+        public ActionResult Hierarchy(RefreshDataViewModel viewModel)
         {
             try
             {
@@ -115,46 +183,15 @@ namespace Icon.Web.Mvc.Controllers
                     return View(viewModel);
                 }
 
-                List<int> brandIds = viewModel.Identifiers.ParseByLine()
+                List<int> hierarchyClassIds = viewModel.Identifiers.ParseByLine()
                     .Take(3000)
                     .Select(id => int.Parse(id))
                     .ToList();
 
-                addBrandMessagesCommandHandler.Execute(new RefreshBrandsCommand { Brands = brandIds });
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex.ToString());
-                ViewBag.Message = "Unexpected exception occurred: " + ex.Message;
-                return View(viewModel);
-            }
-            ViewBag.Message = "Refreshed Brands successfully.";
-            return View(new RefreshDataViewModel());
-        }
-
-        public ActionResult Merchandise()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Merchandise(RefreshDataViewModel viewModel)
-        {
-            try
-            {
-                if (viewModel == null || String.IsNullOrWhiteSpace(viewModel.Identifiers))
+                addHierarchiesCommandHandler.Execute(new RefreshHierarchiesCommand
                 {
-                    return View(viewModel);
-                }
-
-                List<int> merchandiseHierarchyClassIds = viewModel.Identifiers.ParseByLine()
-                    .Take(3000)
-                    .Select(id => int.Parse(id))
-                    .ToList();
-
-                addMerchandiseHierarchyClassMessagesCommandHandler.Execute(new RefreshMerchandiseHierarchyClassesCommand
-                {
-                    MerchandiseHierarchyClassIds = merchandiseHierarchyClassIds
+                    HierarchyClassIds = hierarchyClassIds,
+                    IsManufacturerHierarchyMessage =settings.IsManufacturerHierarchyMessage
                 });
             }
             catch (Exception ex)
@@ -163,7 +200,8 @@ namespace Icon.Web.Mvc.Controllers
                 ViewBag.Message = "Unexpected exception occurred: " + ex.Message;
                 return View(viewModel);
             }
-            ViewBag.Message = "Refreshed Merchandise Hierarchy Classes successfully.";
+
+            ViewBag.Message = "Refreshed Hierarchy successfully.";
             return View(new RefreshDataViewModel());
         }
     }

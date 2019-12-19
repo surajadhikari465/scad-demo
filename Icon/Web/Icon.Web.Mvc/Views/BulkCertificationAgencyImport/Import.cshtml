@@ -7,14 +7,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
-
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Render()
-)
-
 @{Html.RenderPartial("_HeaderPartial", "Bulk Certification Agency Import");}
 
 <div class="page-section">
@@ -61,6 +53,6 @@
             )
         </div>
 
-        @Html.ActionLink("Export", "BulkCertificationAgencyExport", "Excel", null, new { @class = "btn btn-default form-submit" })
+        @Html.ActionLink("Export", "BulkCertificationAgencyExport", "Excel", null, new { @class = "btn btn-light form-submit" })
     </div>
 }

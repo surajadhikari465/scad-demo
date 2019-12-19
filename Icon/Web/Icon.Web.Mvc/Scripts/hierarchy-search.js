@@ -14,8 +14,6 @@ function searchButtonClick() {
 
 function hierarchySearchSuccess() {
 
-    $('#search-button').val('Display');
-    $('#search-button').disable(false);
     $('#export').click(function () {
         hierarcyClassExportList = [];
 
@@ -197,6 +195,10 @@ function buildMerchandiseHierarchyClassExportList(igGridHierarchyClassData, pare
         }
     }
 }
+
+$(document).ready(function() {
+    hierarchySearchSuccess();
+});
 
 
 // Helper function to allow toggling of the 'disabled' CSS class.

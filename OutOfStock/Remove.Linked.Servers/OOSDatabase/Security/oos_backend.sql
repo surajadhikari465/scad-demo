@@ -1,0 +1,2 @@
+﻿CREATE USER [oos_backend] WITHOUT LOGIN;
+

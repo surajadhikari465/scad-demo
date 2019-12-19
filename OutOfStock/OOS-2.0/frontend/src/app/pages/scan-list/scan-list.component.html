@@ -1,0 +1,28 @@
+<app-toolbar (onMenuDismissed)="executeMenuOption($event)"></app-toolbar>
+
+<main>
+  <div class="region-store">
+    <span>Region: {{wfmRegion}}</span>
+    <span>Store: {{wfmStore.name}}</span>
+  </div>
+
+  <div class="message-container">
+    <h1>Scan Items</h1>
+    <p>Hold the scan button and point the device at a barcode to scan an item!</p>
+    <p>Having trouble? Enter the number manually by clicking the settings <wfm-icon name="cog"></wfm-icon> icon in the above toolbar</p>
+  </div>
+  <hr/>
+
+  <div class="itemlist-container">
+    <p class="itemlist-message" *ngIf="!items.length">You haven't scanned any items yet!</p>
+    <wfm-item *ngFor="let item of items">
+      <label>{{item}}</label>
+      <wfm-button slot="end" fill="clear" (click)="removeItem(item)">
+        <wfm-icon name="trash"></wfm-icon>
+      </wfm-button>
+    </wfm-item>
+  </div>
+  <div>
+    <wfm-button (click)="items.length ? submitListItems(): ''" [disabled]="!items.length" flex>Upload Items</wfm-button>
+  </div>
+</main>

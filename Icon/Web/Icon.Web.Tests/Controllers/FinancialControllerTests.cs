@@ -1,23 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Icon.Web.Controllers;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Queries;
 using Icon.Framework;
 using System.Collections.Generic;
 using Moq;
 using Icon.Web.Mvc.Models;
 using System.Web.Mvc;
-using Icon.Web.DataAccess.Commands;
-using Icon.Logging;
 using System.Linq;
-using System.Web.Script.Serialization;
-using System.Collections.Specialized;
-using System.Web;
-using Infragistics.Web.Mvc;
-using System.Data.Entity.Validation;
-using Icon.Web.DataAccess.Managers;
-using Icon.Web.Common;
 using Icon.Common.DataAccess;
 
 namespace Icon.Web.Tests.Unit.Controllers

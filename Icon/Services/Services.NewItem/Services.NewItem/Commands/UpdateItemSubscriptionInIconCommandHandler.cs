@@ -1,0 +1,94 @@
+﻿using Icon.Common;
+using Icon.Common.Context;
+using Icon.Common.DataAccess;
+using Icon.Framework;
+using Services.NewItem.Cache;
+using Services.NewItem.Constants;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Services.NewItem.Commands
+{
+    public class UpdateItemSubscriptionInIconCommandHandler : ICommandHandler<UpdateItemSubscriptionInIconCommand>
+    {
+        private IRenewableContext<IconContext> context;
+        private IIconCache cache;
+
+        public UpdateItemSubscriptionInIconCommandHandler(IRenewableContext<IconContext> context, IIconCache cache)
+        {
+            this.context = context;
+            this.cache = cache;
+        }
+
+        public void Execute(UpdateItemSubscriptionInIconCommand data)
+        {
+            if (data.NewItems.Any())
+            {
+                var taxClassCodesToIdDictionary = cache.TaxClassCodesToIdDictionary;
+                var nationalClassCodesToIdDictionary = cache.NationalClassCodesToIdDictionary;
+
+                var newItemsParameter = data.NewItems
+                    .Select(i => new
+                    {
+                        RegionCode = i.Region,
+                        Identifier = i.ScanCode,
+                        DefaultIdentifier = i.IsDefaultIdentifier,
+                        BrandName = i.BrandName,
+                        ItemDescription = i.ItemDescription,
+                        PosDescription = i.PosDescription,
+                        PackageUnit = i.PackageUnit,
+                        RetailSize = i.RetailSize,
+                        RetailUom = i.RetailUom,
+                        FoodStamp = i.FoodStampEligible,
+                        PosScaleTare = 0.0,
+                        DepartmentSale = false,
+                        GiftCard = false,
+                        TaxClassID = GetTaxClassId(i, taxClassCodesToIdDictionary),
+                        MerchandiseClassID = (int?)null,
+                        IrmaSubTeamName = i.SubTeamName,
+                        NationalClassID = GetNationalClassId(i, nationalClassCodesToIdDictionary)
+                    })
+                    .ToTvp("items", "app.IRMAItemType");
+
+                try
+                {
+                    context.Context.Database.ExecuteSqlCommand("EXEC AddUpdateItemSubscription @items", newItemsParameter);
+                }
+                catch (Exception ex)
+                {
+                    foreach (var item in data.NewItems.Where(i => i.ErrorCode == null))
+                    {
+                        item.ErrorCode = ApplicationErrors.Codes.FailedToAddItemsToIcon;
+                        item.ErrorDetails = string.Format(ApplicationErrors.Details.FailedToAddItemsToIcon, ex.ToString());
+                    }
+                    throw;
+                }
+            }
+        }
+
+        private static int? GetNationalClassId(Models.NewItemModel item, Dictionary<string, int> nationalClassCodesToIdDictionary)
+        {
+            if (!string.IsNullOrWhiteSpace(item.NationalClassCode) && nationalClassCodesToIdDictionary.ContainsKey(item.NationalClassCode))
+            {
+                return nationalClassCodesToIdDictionary[item.NationalClassCode];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private static int? GetTaxClassId(Models.NewItemModel item, Dictionary<string, int> taxClassCodesToIdDictionary)
+        {
+            if (!string.IsNullOrWhiteSpace(item.TaxClassCode) && taxClassCodesToIdDictionary.ContainsKey(item.TaxClassCode))
+            {
+                return taxClassCodesToIdDictionary[item.TaxClassCode];
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+}

@@ -1,0 +1,31 @@
+namespace Icon.Services.ItemPublisher.Infrastructure.Repositories
+{
+    /// <summary>
+    /// AbstractRepository is the base repository class that all repositories can inherit from.
+    /// It provides a IProviderFactory and also transactional methods.
+    /// </summary>
+    public abstract class AbstractRepository : ITransactionRepository
+    {
+        protected readonly IProviderFactory DbProviderFactory;
+
+        public AbstractRepository(IProviderFactory dbProviderFactory)
+        {
+            this.DbProviderFactory = dbProviderFactory;
+        }
+
+        public void BeginTransaction()
+        {
+            this.DbProviderFactory.BeginTransaction();
+        }
+
+        public void CommitTransaction()
+        {
+            this.DbProviderFactory.CommitTransaction();
+        }
+
+        public void RollbackTransaction()
+        {
+            this.DbProviderFactory.RollbackTransaction();
+        }
+    }
+}

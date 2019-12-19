@@ -7,18 +7,22 @@ using Icon.Web.Controllers;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
+using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Models;
+using Icon.Web.Mvc.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class HierarchyClassControllerTests
     {
         private Mock<ILogger> mockLogger;
@@ -29,7 +33,8 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IManagerHandler<UpdateHierarchyClassManager>> mockUpdateManager;
         private Mock<ControllerContext> mockContext;
         private HierarchyClassController controller;
-        private Mock<ICommandHandler<ClearHierarchyClassCacheCommand>> mockClearHierarchyClassCacheCommandHandler;
+        private Mock<IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>>> mockGetHierarchyClassesQueryHandler;
+        private Mock<IDonutCacheManager> mockCacheManager;
 
         [TestInitialize]
         public void Initialize()
@@ -41,7 +46,8 @@ namespace Icon.Web.Tests.Unit.Controllers
             this.mockAddManager = new Mock<IManagerHandler<AddHierarchyClassManager>>();
             this.mockUpdateManager = new Mock<IManagerHandler<UpdateHierarchyClassManager>>();
             this.mockContext = new Mock<ControllerContext>();
-            this.mockClearHierarchyClassCacheCommandHandler = new Mock<ICommandHandler<ClearHierarchyClassCacheCommand>>();
+            this.mockGetHierarchyClassesQueryHandler = new Mock<IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>>>();
+            this.mockCacheManager = new Mock<IDonutCacheManager>();
 
             this.controller = new HierarchyClassController(mockLogger.Object,
                 mockGetHierarchyQuery.Object,
@@ -49,7 +55,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockDeleteHierarchyClassManager.Object,
                 mockAddManager.Object,
                 mockUpdateManager.Object,
-                mockClearHierarchyClassCacheCommandHandler.Object);
+                mockGetHierarchyClassesQueryHandler.Object,
+                mockCacheManager.Object);
 
             mockContext.SetupGet(c => c.HttpContext.User.Identity.Name).Returns("Test User");
             controller.ControllerContext = mockContext.Object;
@@ -153,9 +160,29 @@ namespace Icon.Web.Tests.Unit.Controllers
         }
 
         [TestMethod]
-        public void Create_ValidModelState_CommandShouldBeExecuted()
+        public void Create_ValidModelState_CommandShouldBeExecutedAndHierarchyCacheShouldBeCleared()
         {
             // Given.
+          
+            List<Hierarchy> subTeams = new List<Hierarchy>
+            {
+                new Hierarchy
+                {
+                    hierarchyID = Hierarchies.Financial,
+                    hierarchyName = "Financial",
+                    HierarchyClass = new List<HierarchyClass>
+                    {
+                        new HierarchyClass
+                        {
+                            hierarchyID = Hierarchies.Financial,
+                            hierarchyClassID = 1,
+                            hierarchyClassName = "TestSubTeam1",
+                            hierarchyParentClassID = null
+                        }
+                    }
+                }
+            };
+
             HierarchyClassViewModel viewModel = new HierarchyClassViewModel()
             {
                 HierarchyId = 1,
@@ -165,18 +192,41 @@ namespace Icon.Web.Tests.Unit.Controllers
                 HierarchyLevel = 1
             };
 
+            this.mockGetHierarchyQuery.Setup(s => s.Search(It.IsAny<GetHierarchyParameters>())).Returns(subTeams);
+
             // When.
             ViewResult result = controller.Create(viewModel) as ViewResult;
 
             // Then.
             mockAddManager.Verify(command => command.Execute(It.IsAny<AddHierarchyClassManager>()), Times.Once);
+            mockCacheManager.Verify(x => x.ClearCacheForController(It.Is<string>(a => a == "HierarchyClass")));
         }
 
         [TestMethod]
         public void Create_InvalidModelState_ShouldReturnViewModelObject()
         {
             // Given.
+            List<Hierarchy> subTeams = new List<Hierarchy>
+            {
+                new Hierarchy
+                {
+                    hierarchyID = Hierarchies.Financial,
+                    hierarchyName = "Financial",
+                    HierarchyClass = new List<HierarchyClass>
+                    {
+                        new HierarchyClass
+                        {
+                            hierarchyID = Hierarchies.Financial,
+                            hierarchyClassID = 1,
+                            hierarchyClassName = "TestSubTeam1",
+                            hierarchyParentClassID = null
+                        }
+                    }
+                }
+            };
+
             controller.ModelState.AddModelError("test", "test");
+            this.mockGetHierarchyQuery.Setup(s => s.Search(It.IsAny<GetHierarchyParameters>())).Returns(subTeams);
 
             // When.
             ViewResult result = controller.Create(new HierarchyClassViewModel()) as ViewResult;
@@ -381,7 +431,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         }
 
         [TestMethod]
-        public void Edit_ValidModelState_CommandShouldBeExecuted()
+        public void Edit_ValidModelState_CommandShouldBeExecutedAndHierarchCacheShouldBeCleared()
         {
             // Given.
             HierarchyClassViewModel viewModel = new HierarchyClassViewModel()
@@ -398,6 +448,7 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             // Then.
             mockUpdateManager.Verify(command => command.Execute(It.IsAny<UpdateHierarchyClassManager>()), Times.Once);
+            mockCacheManager.Verify(x => x.ClearCacheForController(It.Is<string>(a => a == "HierarchyClass")));
         }
 
         [TestMethod]
@@ -524,6 +575,54 @@ namespace Icon.Web.Tests.Unit.Controllers
         }
 
         [TestMethod]
+        public void Delete_GetWithValidParameters_Brand_MethodShouldRedirectToIndex()
+        {
+            // Given.
+            mockHierarchyClassQuery.Setup(q => q.Search(It.IsAny<GetHierarchyClassByIdParameters>())).Returns(GetFakeHierarchyClass());
+            mockGetHierarchyQuery.Setup(q => q.Search(It.IsAny<GetHierarchyParameters>())).Returns(GetFakeHierarchyWithSubclasses());
+
+            var viewModel = new HierarchyClassViewModel
+            {
+                HierarchyId = Hierarchies.Brands
+            };
+
+            // When.
+            var nonZeroResult = controller.Delete(viewModel) as RedirectToRouteResult;
+
+            string routeName = "Index";
+            string controllerName = "Brand";
+
+            // Then.
+            Assert.AreEqual(routeName, nonZeroResult.RouteValues["action"]);
+            Assert.AreEqual(controllerName, nonZeroResult.RouteValues["controller"]);
+        }
+
+        [TestMethod]
+        public void Delete_GetWithValidParameters_Tax_MethodShouldRedirectToIndex()
+        {
+            // Given.
+            mockHierarchyClassQuery.Setup(q => q.Search(It.IsAny<GetHierarchyClassByIdParameters>())).Returns(GetFakeHierarchyClass());
+            mockGetHierarchyQuery.Setup(q => q.Search(It.IsAny<GetHierarchyParameters>())).Returns(GetFakeHierarchyWithSubclasses());
+
+            var viewModel = new HierarchyClassViewModel
+            {
+                HierarchyId = Hierarchies.Tax
+            };
+
+            // When.
+            var nonZeroResult = controller.Delete(viewModel) as RedirectToRouteResult;
+
+            string routeName = "Index";
+            string controllerName = "Hierarchy";
+            int selectedHierarchyId = Hierarchies.Tax;
+
+            // Then.
+            Assert.AreEqual(routeName, nonZeroResult.RouteValues["action"]);
+            Assert.AreEqual(controllerName, nonZeroResult.RouteValues["controller"]);
+            Assert.AreEqual(selectedHierarchyId, nonZeroResult.RouteValues["SelectedHierarchyId"]);
+        }
+
+        [TestMethod]
         public void Delete_GetWithInvalidParameters_MethodShouldRedirectToIndex()
         {
             // Given.
@@ -541,9 +640,13 @@ namespace Icon.Web.Tests.Unit.Controllers
         }
 
         [TestMethod]
-        public void Delete_PostWithValidModelState_CommandShouldBeExecuted()
+        public void Delete_PostWithValidModelState_CommandShouldBeExecutedAndHierarchyCacheShouldBeCleared()
         {
             // Given.
+            var financialHierarchy = GetFakeHierarchy();
+            financialHierarchy.FirstOrDefault().hierarchyName = HierarchyNames.Financial;
+            mockGetHierarchyQuery.Setup(q => q.Search(It.IsAny<GetHierarchyParameters>())).Returns(financialHierarchy);
+
             HierarchyClassViewModel viewModel = new HierarchyClassViewModel()
             {
                 HierarchyId = 1,
@@ -560,12 +663,16 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             // Then.
             mockDeleteHierarchyClassManager.Verify(command => command.Execute(It.IsAny<DeleteHierarchyClassManager>()), Times.Once);
+            mockCacheManager.Verify(x => x.ClearCacheForController(It.Is<string>(a => a == "HierarchyClass")));
         }
 
         [TestMethod]
         public void Delete_PostWithInvalidModelState_ShouldReturnViewModelObject()
         {
             // Given.
+            var financialHierarchy = GetFakeHierarchy();
+            financialHierarchy.FirstOrDefault().hierarchyName = HierarchyNames.Financial;
+            mockGetHierarchyQuery.Setup(q => q.Search(It.IsAny<GetHierarchyParameters>())).Returns(financialHierarchy);
             controller.ModelState.AddModelError("test", "test");
 
             // When.
@@ -579,6 +686,9 @@ namespace Icon.Web.Tests.Unit.Controllers
         public void Delete_HierarchyClassHasItemAssociations_HierarchyClassShouldNotBeDeleted()
         {
             // Given.
+            var financialHierarchy = GetFakeHierarchy();
+            financialHierarchy.FirstOrDefault().hierarchyName = HierarchyNames.Financial;
+            mockGetHierarchyQuery.Setup(q => q.Search(It.IsAny<GetHierarchyParameters>())).Returns(financialHierarchy);
             HierarchyClassViewModel viewModel = new HierarchyClassViewModel()
             {
                 HierarchyId = 1,
@@ -601,6 +711,9 @@ namespace Icon.Web.Tests.Unit.Controllers
         public void Delete_HierarchyClassHasSubclasses_HierarchyClassShouldNotBeDeleted()
         {
             // Given.
+            var financialHierarchy = GetFakeHierarchy();
+            financialHierarchy.FirstOrDefault().hierarchyName = HierarchyNames.Financial;
+            mockGetHierarchyQuery.Setup(q => q.Search(It.IsAny<GetHierarchyParameters>())).Returns(financialHierarchy);
             HierarchyClassViewModel viewModel = new HierarchyClassViewModel()
             {
                 HierarchyId = 1,
@@ -623,6 +736,9 @@ namespace Icon.Web.Tests.Unit.Controllers
         public void Delete_PostWithUnexpectedError_ErrorShouldBeLogged()
         {
             // Given.
+            var financialHierarchy = GetFakeHierarchy();
+            financialHierarchy.FirstOrDefault().hierarchyName = HierarchyNames.Financial;
+            mockGetHierarchyQuery.Setup(q => q.Search(It.IsAny<GetHierarchyParameters>())).Returns(financialHierarchy);
             mockDeleteHierarchyClassManager.Setup(c => c.Execute(It.IsAny<DeleteHierarchyClassManager>())).Throws(new CommandException("error"));
             mockHierarchyClassQuery.Setup(q => q.Search(It.IsAny<GetHierarchyClassByIdParameters>())).Returns(GetFakeHierarchyClass());
 
@@ -653,6 +769,114 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             //Then
             mockUpdateManager.Verify(m => m.Execute(It.Is<UpdateHierarchyClassManager>(man => man.UserName == "Test User")));
+        }
+
+
+        [TestMethod]
+        public void ComboDataSource_NofilterPassedWithInitialSelectionPassed_SingleMatchingRecordShouldBeReturned()
+        {
+            // Given. 
+            NameValueCollection queryString = new NameValueCollection();
+            queryString["initialSelection"] = "1";
+            this.mockContext.SetupGet(m => m.HttpContext.Request.QueryString).Returns(queryString);
+            controller.ControllerContext = mockContext.Object;
+
+            IEnumerable<HierarchyClassModel> hierarchyClasses = new List<HierarchyClassModel>() { this.GetFakeHierarchyClassModel() };
+
+            var hierarchy = this.GetFakeHierarchy();
+
+            this.mockGetHierarchyQuery.Setup(q => q.Search(It.IsAny<GetHierarchyParameters>())).Returns(hierarchy);
+            this.mockGetHierarchyClassesQueryHandler.Setup(q => q.Search(It.IsAny<GetHierarchyClassesParameters>())).Returns(hierarchyClasses);
+
+            // When.
+            var result = controller.ComboDataSource(1) as ContentResult;
+            var model = JsonConvert.DeserializeObject<List<HierarchyClassModel>>(result.Content);
+
+            // Then.
+            Assert.AreEqual(1, model.Count);
+        }
+
+        /// <summary>
+        /// Tests that when searching for hierarchies with a combobox filter calls the search function
+        /// with the filter and that the filter is parsed from the contains query.
+        /// </summary>
+        [TestMethod]
+        public void ComboDataSource_FilterPassed_SearchIsCalledWithCorrectFilter()
+        {
+            // Given.
+            NameValueCollection queryString = new NameValueCollection();
+            queryString["$filter"] = "indexof(tolower(HierarchyLineage),'test') ge 0";
+            this.mockContext.SetupGet(m => m.HttpContext.Request.QueryString).Returns(queryString);
+            controller.ControllerContext = mockContext.Object;
+
+            IEnumerable<HierarchyClassModel> hierarchyClasses = new List<HierarchyClassModel>() { this.GetFakeHierarchyClassModel(), this.GetFakeHierarchyClassModel2() };
+
+            var hierarchy = this.GetFakeHierarchy();
+
+            this.mockGetHierarchyQuery.Setup(q => q.Search(It.IsAny<GetHierarchyParameters>())).Returns(hierarchy);
+            this.mockGetHierarchyClassesQueryHandler.Setup(q => q.Search(It.IsAny<GetHierarchyClassesParameters>())).Returns(hierarchyClasses);
+
+            // When.
+            var result = controller.ComboDataSource(1) as ContentResult;
+            var model = JsonConvert.DeserializeObject<List<HierarchyClassModel>>(result.Content);
+
+            // Then.
+            this.mockGetHierarchyClassesQueryHandler.Verify(x => x.Search(It.Is<GetHierarchyClassesParameters>(v => v.HierarchyLineageFilter == "test")));
+        }
+
+        /// <summary>
+        /// Tests that when searching for hierarchies with a filter < 2 characters doesn't return anything
+        /// </summary>
+        [TestMethod]
+        public void ComboDataSource_FilterPassed_FilterLessThan2CharactersReturnsNothing()
+        {
+            // Given.
+            NameValueCollection queryString = new NameValueCollection();
+            queryString["$filter"] = "indexof(tolower(HierarchyClassName),'f') ge 0";
+            this.mockContext.SetupGet(m => m.HttpContext.Request.QueryString).Returns(queryString);
+            controller.ControllerContext = mockContext.Object;
+
+            IEnumerable<HierarchyClassModel> hierarchyClasses = new List<HierarchyClassModel>() { this.GetFakeHierarchyClassModel(), this.GetFakeHierarchyClassModel2() };
+
+            var hierarchy = this.GetFakeHierarchy();
+
+            this.mockGetHierarchyQuery.Setup(q => q.Search(It.IsAny<GetHierarchyParameters>())).Returns(hierarchy);
+            this.mockGetHierarchyClassesQueryHandler.Setup(q => q.Search(It.IsAny<GetHierarchyClassesParameters>())).Returns(hierarchyClasses);
+
+            // When.
+            var result = controller.ComboDataSource(1) as ContentResult;
+            var model = JsonConvert.DeserializeObject<List<HierarchyClassModel>>(result.Content);
+
+            // Then.
+            Assert.AreEqual(0, model.Count);
+            this.mockGetHierarchyClassesQueryHandler.Verify(x => x.Search(It.IsAny<GetHierarchyClassesParameters>()),Times.Never);
+        }
+
+        /// <summary>
+        /// Tests that when searching for hierarchies with a filter > 1 characters returns something
+        /// </summary>
+        [TestMethod]
+        public void ComboDataSource_FilterPassed_FilterGreaterThan1CharactersReturnsSomething()
+        {
+            // Given.
+            NameValueCollection queryString = new NameValueCollection();
+            queryString["$filter"] = "indexof(tolower(HierarchyLineage),'fak') ge 0";
+            this.mockContext.SetupGet(m => m.HttpContext.Request.QueryString).Returns(queryString);
+            controller.ControllerContext = mockContext.Object;
+
+            IEnumerable<HierarchyClassModel> hierarchyClasses = new List<HierarchyClassModel>() { this.GetFakeHierarchyClassModel()};
+
+            var hierarchy = this.GetFakeHierarchy();
+
+            this.mockGetHierarchyQuery.Setup(q => q.Search(It.IsAny<GetHierarchyParameters>())).Returns(hierarchy);
+            this.mockGetHierarchyClassesQueryHandler.Setup(q => q.Search(It.IsAny<GetHierarchyClassesParameters>())).Returns(hierarchyClasses);
+
+            // When.
+            var result = controller.ComboDataSource(1) as ContentResult;
+            var model = JsonConvert.DeserializeObject<List<HierarchyClassModel>>(result.Content);
+
+            // Then.
+            this.mockGetHierarchyClassesQueryHandler.Verify(x => x.Search(It.IsAny<GetHierarchyClassesParameters>()));
         }
 
         private List<Hierarchy> GetFakeHierarchy()
@@ -692,11 +916,11 @@ namespace Icon.Web.Tests.Unit.Controllers
             return hierarchy;
         }
 
-        private HierarchyClass GetFakeHierarchyClass()
+        private HierarchyClass GetFakeHierarchyClass(int hierarchyId = 1)
         {
             HierarchyClass hierarchyClass = new HierarchyClass()
             {
-                hierarchyID = 1,
+                hierarchyID = hierarchyId,
                 hierarchyClassID = 1,
                 hierarchyParentClassID = null,
                 hierarchyLevel = HierarchyLevels.Gs1Brick,
@@ -712,6 +936,37 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             return hierarchyClass;
         }
+
+        private HierarchyClassModel GetFakeHierarchyClassModel()
+        {
+            HierarchyClassModel hierarchyClass = new HierarchyClassModel()
+            {
+                HierarchyId = 1,
+                HierarchyClassId = 1,
+                HierarchyParentClassId = null,
+                HierarchyLevel = HierarchyLevels.Gs1Brick,
+                HierarchyClassName = "Fake Hierarchy Class Name",
+                HierarchyLineage = "Lineage"
+            };
+
+            return hierarchyClass;
+        }
+
+        private HierarchyClassModel GetFakeHierarchyClassModel2()
+        {
+            HierarchyClassModel hierarchyClass = new HierarchyClassModel()
+            {
+                HierarchyId = 1,
+                HierarchyClassId = 2,
+                HierarchyParentClassId = null,
+                HierarchyLevel = HierarchyLevels.Gs1Brick,
+                HierarchyClassName = "Fake Hierarchy Class Name 2",
+                HierarchyLineage = "Lineage 2"
+            };
+
+            return hierarchyClass;
+        }
+
 
         private List<HierarchyPrototype> GetFakeHierarchyPrototypeList()
         {

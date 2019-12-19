@@ -70,6 +70,11 @@ BEGIN
 			SELECT traitID
 			FROM dbo.Trait
 			WHERE traitCode = 'LCL'
+			)
+		,@parentCompanyId INT = (
+			SELECT traitID
+			FROM dbo.Trait
+			WHERE traitCode = 'PCO'
 			);
 
 	INSERT INTO app.MessageQueueHierarchy (
@@ -89,6 +94,7 @@ BEGIN
 		,ZipCode
 		,Designation
 		,Locality
+		,ParentCompany
 		)
 	SELECT @hierarchyMessageTypeId
 		,@readyStatusId
@@ -106,6 +112,7 @@ BEGIN
 		,zc.TraitValue AS ZipCode
 		,ds.TraitValue AS Designation
 		,lo.TraitValue AS Locality
+		,pa.TraitValue AS ParentCompany
 	FROM @ids ids
 	INNER JOIN HierarchyClass hc ON ids.I = hc.hierarchyClassID
 	LEFT JOIN HierarchyClassTrait hct ON hct.hierarchyClassID = hc.HierarchyClassId
@@ -118,6 +125,8 @@ BEGIN
 		AND ds.traitID = @designationId
 	LEFT JOIN dbo.HierarchyClassTrait lo ON lo.hierarchyClassID = hc.HierarchyClassId
 		AND lo.traitID = @localityId
+	LEFT JOIN dbo.HierarchyClassTrait pa ON pa.hierarchyClassID = hc.HierarchyClassId
+		AND pa.traitID = @parentCompanyId
 	WHERE hc.HIERARCHYID = @brandsHierarchyId
 
 	PRINT '[' + convert(NVARCHAR, getdate(), 121) + '] ' + '[' + @taskName + '] ' + 'Adding global events for Brands...';

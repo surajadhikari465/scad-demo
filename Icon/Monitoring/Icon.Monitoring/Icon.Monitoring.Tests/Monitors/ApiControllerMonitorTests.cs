@@ -115,6 +115,18 @@ namespace Icon.Monitoring.Tests.Monitors
             MessageQueueIdMatchesFirstTime_ShouldSendsOpsgenieAlert(MessageQueueTypes.ProductSelectionGroup);
         }
 
+        [TestMethod]
+        public void ApiControllerMonitorCheckStatusAndNotify_AttributeMessageQueueIdMatchesCacheFirstTime_ShouldSendsOpsgenieAlert()
+        {
+            MessageQueueIdMatchesFirstTime_ShouldSendsOpsgenieAlert(MessageQueueTypes.Attribute);
+        }
+
+        [TestMethod]
+        public void ApiControllerMonitorCheckStatusAndNotify_ItemMessageQueueIdMatchesCacheFirstTime_ShouldSendsOpsgenieAlert()
+        {
+            MessageQueueIdMatchesFirstTime_ShouldSendsOpsgenieAlert(MessageQueueTypes.Item);
+        }
+
         private void MessageQueueIdMatchesFirstTime_ShouldSendsOpsgenieAlert(string messagQueueType)
         {
             // Given
@@ -179,6 +191,18 @@ namespace Icon.Monitoring.Tests.Monitors
             MessageQueueIdMatchesCacheSecondTime_ShouldNotSendOpsgenieAlert(MessageQueueTypes.ProductSelectionGroup);
         }
 
+        [TestMethod]
+        public void ApiControllerMonitorCheckStatusAndNotify_AttributeMessageQueueIdMatchesCacheASecondTimeOrSubsequentTimes_ShouldNotSendsOpsgenieAlert()
+        {
+            MessageQueueIdMatchesCacheSecondTime_ShouldNotSendOpsgenieAlert(MessageQueueTypes.Attribute);
+        }
+
+        [TestMethod]
+        public void ApiControllerMonitorCheckStatusAndNotify_ItemMessageQueueIdMatchesCacheASecondTimeOrSubsequentTimes_ShouldNotSendsOpsgenieAlert()
+        {
+            MessageQueueIdMatchesCacheSecondTime_ShouldNotSendOpsgenieAlert(MessageQueueTypes.Item);
+        }
+
         private void MessageQueueIdMatchesCacheSecondTime_ShouldNotSendOpsgenieAlert(string messageQueueType)
         {
             // Given
@@ -236,6 +260,18 @@ namespace Icon.Monitoring.Tests.Monitors
         public void ApiControllerMonitorCheckStatusAndNotify_LocaleMessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendsOpsgenieAlert()
         {
             MessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendOpsgenieAlert(MessageQueueTypes.Locale);
+        }
+
+        [TestMethod]
+        public void ApiControllerMonitorCheckStatusAndNotify_AttributeMessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendsOpsgenieAlert()
+        {
+            MessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendOpsgenieAlert(MessageQueueTypes.Attribute);
+        }
+
+        [TestMethod]
+        public void ApiControllerMonitorCheckStatusAndNotify_ItemMessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendsOpsgenieAlert()
+        {
+            MessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendOpsgenieAlert(MessageQueueTypes.Item);
         }
 
         private void MessageQueueIdIsZeroAndCacheIdIsZero_ShouldNotSendOpsgenieAlert(string messageQueueType)
@@ -305,6 +341,22 @@ namespace Icon.Monitoring.Tests.Monitors
             MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(MessageQueueTypes.Locale, 0, 323);
             MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(MessageQueueTypes.Locale, 311, 0);
             MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(MessageQueueTypes.Locale, 556, 2);
+        }
+
+        [TestMethod]
+        public void ApiControllerMonitorCheckStatusAndNotify_AttributeMessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert()
+        {
+            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(MessageQueueTypes.Attribute, 0, 323);
+            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(MessageQueueTypes.Attribute, 311, 0);
+            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(MessageQueueTypes.Attribute, 556, 2);
+        }
+
+        [TestMethod]
+        public void ApiControllerMonitorCheckStatusAndNotify_ItemMessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert()
+        {
+            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(MessageQueueTypes.Item, 0, 323);
+            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(MessageQueueTypes.Item, 311, 0);
+            MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(MessageQueueTypes.Item, 556, 2);
         }
 
         private void MessageQueueIdAndCacheIdAreDifferent_ShouldNotSendsOpsgenieAlert(string messageQueueType, int queueId, int cacheId)

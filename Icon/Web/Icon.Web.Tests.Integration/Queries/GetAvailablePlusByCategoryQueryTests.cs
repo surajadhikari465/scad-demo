@@ -1,5 +1,4 @@
 ﻿using Icon.Framework;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Queries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
@@ -23,11 +22,11 @@ namespace Icon.Web.Tests.Integration.Queries
         public void Initialize()
         {
             List<Item>  items = new List<Item>();
-            Item item1 = new Item { itemTypeID = 1 };
-            Item item2 = new Item { itemTypeID = 1 };
-            Item item3 = new Item { itemTypeID = 1 };
-            Item item4 = new Item { itemTypeID = 1 };
-            Item item5 = new Item { itemTypeID = 1 };
+            Item item1 = new Item { ItemTypeId = 1 };
+            Item item2 = new Item { ItemTypeId = 1 };
+            Item item3 = new Item { ItemTypeId = 1 };
+            Item item4 = new Item { ItemTypeId = 1 };
+            Item item5 = new Item { ItemTypeId = 1 };
 
             context = new IconContext();
 
@@ -43,11 +42,11 @@ namespace Icon.Web.Tests.Integration.Queries
 
             scanCodes = new List<ScanCode>
             {
-                new ScanCode { itemID = item1.itemID, scanCode = "21111100000", scanCodeTypeID = 3, localeID = 1 },
-                new ScanCode { itemID = item2.itemID, scanCode = "21119800000", scanCodeTypeID = 3, localeID = 1 },
-                new ScanCode { itemID = item3.itemID, scanCode = "21111200000", scanCodeTypeID = 3, localeID = 1 },
-                new ScanCode { itemID = item4.itemID, scanCode = "1111", scanCodeTypeID = 2, localeID = 1 },
-                new ScanCode { itemID = item5.itemID, scanCode = "1999", scanCodeTypeID = 2, localeID = 1 }
+                new ScanCode { itemID = item1.ItemId, scanCode = "21111100000", scanCodeTypeID = 3, localeID = 1 },
+                new ScanCode { itemID = item2.ItemId, scanCode = "21119800000", scanCodeTypeID = 3, localeID = 1 },
+                new ScanCode { itemID = item3.ItemId, scanCode = "21111200000", scanCodeTypeID = 3, localeID = 1 },
+                new ScanCode { itemID = item4.ItemId, scanCode = "1111", scanCodeTypeID = 2, localeID = 1 },
+                new ScanCode { itemID = item5.ItemId, scanCode = "1999", scanCodeTypeID = 2, localeID = 1 }
             };
 
             var testScanCodes = scanCodes.Select(sc => sc.scanCode).ToList();

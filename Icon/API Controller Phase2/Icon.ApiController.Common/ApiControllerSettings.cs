@@ -25,7 +25,6 @@ namespace Icon.ApiController.Common
         public bool EnableHospitalityVenues { get; set; }
         public bool EnableNutritionNewValues { get; set; }
 
-
         public static ApiControllerSettings CreateFromConfig(string source, int instance)
         {
             return new ApiControllerSettings
@@ -48,7 +47,6 @@ namespace Icon.ApiController.Common
                 EnableHospitalityImageUrl = AppSettingsAccessor.GetBoolSetting(nameof(EnableHospitalityImageUrl), false),
                 EnableHospitalityVenues = AppSettingsAccessor.GetBoolSetting(nameof(EnableHospitalityVenues), false),
                 EnableNutritionNewValues = AppSettingsAccessor.GetBoolSetting(nameof(EnableNutritionNewValues), false)
-
             };
         }
     }

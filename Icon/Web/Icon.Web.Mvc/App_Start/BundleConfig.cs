@@ -1,4 +1,4 @@
-﻿using System.Web;
+﻿using System.Configuration;
 using System.Web.Optimization;
 
 namespace Icon.Web
@@ -8,32 +8,30 @@ namespace Icon.Web
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery.unobtrusive-ajax*"));
+            BundleTable.EnableOptimizations = true; // set to false to see unminified css and js
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                        "~/Scripts/jquery-ui-{version}.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate.min.js",
-                        "~/Scripts/jquery.validate.unobtrusive*"));
-
-            // Use the development version of Modernizr to develop with and learn from. Then, when you're
-            // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
-            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
-
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                        "~/Scripts/bootstrap.js",
-                        "~/Scripts/respond.js"));
+            bundles.Add(new ScriptBundle("~/bundles/everything").Include(
+                "~/Scripts/jquery-{version}.js",
+                "~/Scripts/bootstrap.bundle.js",
+                "~/Scripts/jquery.unobtrusive-ajax*",
+                "~/Scripts/jquery.validate.min.js",
+                "~/Scripts/jquery.validate.unobtrusive*",
+                "~/Scripts/jquery-ui-{version}.js",
+                "~/Scripts/infragistics/js/infragistics.core.js",
+                "~/Scripts/infragistics/js/infragistics.lob.js",
+                "~/Scripts/infragistics/js/infragistics.dv.js",
+                "~/Scripts/modernizr-*",
+                "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                        "~/Content/bootstrap.css",
-                        "~/Content/site.css"));
+                "~/Content/themes/base/jquery-ui.css")
+                .Include("~/Content/Infragistics/css/themes/bootstrap4/default/infragistics.theme.css", new CssRewriteUrlTransform())
+                .Include("~/Content/Infragistics/css/structure/infragistics.css", new CssRewriteUrlTransform())
+                .Include("~/Content/site.css", new CssRewriteUrlTransform())
+                .Include("~/Content/font-awesome.css", new CssRewriteUrlTransform()));
 
-            bundles.Add(new StyleBundle("~/Content/jqueryui").Include(
-                        "~/Content/themes/base/jquery-ui.css"));
+            // .NET MVC bundler does not currently suport CSS variables so Bootstrap won't minify
+            bundles.Add(new StyleBundle("~/Content/bootstrap").Include("~/Content/bootswatch.css"));
         }
     }
 }

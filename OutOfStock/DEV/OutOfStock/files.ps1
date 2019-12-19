@@ -1,0 +1,1 @@
+gci *.dll -Recurse

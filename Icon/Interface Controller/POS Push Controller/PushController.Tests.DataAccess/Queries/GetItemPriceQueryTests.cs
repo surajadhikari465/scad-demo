@@ -37,7 +37,7 @@ namespace PushController.Tests.DataAccess.Queries
 
             testItemPrice = new ItemPrice
             {
-                itemID = testItem.itemID,
+                itemID = testItem.ItemId,
                 localeID = testLocale.localeID,
                 itemPriceTypeID = testItemPriceTypeId,
                 itemPriceAmt = 2.99m,
@@ -61,7 +61,7 @@ namespace PushController.Tests.DataAccess.Queries
             // Given.
             var query = new GetItemPriceQuery
             {
-                ItemId = testItem.itemID,
+                ItemId = testItem.ItemId,
                 LocaleId = testLocale.localeID,
                 PriceTypeId = ItemPriceTypes.Reg
             };
@@ -97,7 +97,7 @@ namespace PushController.Tests.DataAccess.Queries
             // Given.
             var query = new GetItemPriceQuery
             {
-                ItemId = testItem.itemID,
+                ItemId = testItem.ItemId,
                 LocaleId = 88888888,
                 PriceTypeId = testItemPriceTypeId
             };
@@ -115,7 +115,7 @@ namespace PushController.Tests.DataAccess.Queries
             // Given.
             var query = new GetItemPriceQuery
             {
-                ItemId = testItem.itemID,
+                ItemId = testItem.ItemId,
                 LocaleId = testLocale.localeID,
                 PriceTypeId = ItemPriceTypes.Tpr
             };

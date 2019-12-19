@@ -8,15 +8,17 @@ namespace Icon.Web.DataAccess.Commands
     public class AddLocaleMessageCommandHandler : ICommandHandler<AddLocaleMessageCommand>
     {
         private IconContext context;
+        private IMapper mapper;
 
-        public AddLocaleMessageCommandHandler(IconContext context)
+        public AddLocaleMessageCommandHandler(IconContext context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
         public void Execute(AddLocaleMessageCommand data)
         {
-            MessageQueueLocale messageQueueLocale = Mapper.Map<MessageQueueLocale>(data.Locale);
+            MessageQueueLocale messageQueueLocale = mapper.Map<MessageQueueLocale>(data.Locale);
             messageQueueLocale.MessageTypeId = MessageTypes.Locale;
             messageQueueLocale.MessageStatusId = MessageStatusTypes.Ready;
             messageQueueLocale.InsertDate = DateTime.Now;

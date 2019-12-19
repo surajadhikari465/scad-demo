@@ -1,0 +1,35 @@
+﻿CREATE TABLE dbo.Attributes
+(
+	AttributeId INT  IDENTITY (1, 1) NOT NULL,
+	DisplayName NVARCHAR(255),
+	AttributeName NVARCHAR(255), 
+	AttributeGroupId INT NULL,
+	HasUniqueValues  BIT NULL,
+	Description NVARCHAR(Max),
+	DefaultValue NVARCHAR(255) NULL,
+	IsRequired BIT NULL,
+	SpecialCharactersAllowed NVARCHAR(255) NULL,
+	TraitCode NVARCHAR(10),
+	DataTypeId INT,
+	DisplayOrder Int Null,
+	InitialValue INT NULL,
+	IncrementBy INT NULL,
+	InitialMax INT NULL,
+	DisplayType NVARCHAR(255) Null,
+	MaxLengthAllowed int null,
+	MinimumNumber NVARCHAR(14) NULL,
+	MaximumNumber NVARCHAR(14) NULL,
+	NumberOfDecimals NVARCHAR(1) NULL,
+	IsPickList bit NOT NULL CONSTRAINT [Attributes_PickList_DF] DEFAULT (0),
+	XmlTraitDescription NVARCHAR(255) NULL,
+	AttributeGuid uniqueidentifier NULL,
+	IsSpecialTransform  BIT NOT NULL DEFAULT(0),
+	SysStartTimeUtc datetime2 GENERATED ALWAYS AS ROW START HIDDEN,
+	SysEndTimeUtc datetime2 GENERATED ALWAYS AS ROW END HIDDEN,
+	PERIOD FOR SYSTEM_TIME (SysStartTimeUtc, SysEndTimeUtc),
+	CONSTRAINT [FK_Attributes_DataType_DataTypeId] FOREIGN KEY ([DataTypeId]) REFERENCES [dbo].[DataType] ([DataTypeId]),
+	CONSTRAINT [PK_Attributes] PRIMARY KEY CLUSTERED ([AttributeId] ASC),
+	CONSTRAINT [FK_Attributes_AttributeType_AttributeGroupId] FOREIGN KEY ([AttributeGroupId]) REFERENCES [dbo].AttributeGroup (AttributeGroupId)
+)
+WITH (SYSTEM_VERSIONING = ON (HISTORY_TABLE = dbo.AttributeHistory));
+GO

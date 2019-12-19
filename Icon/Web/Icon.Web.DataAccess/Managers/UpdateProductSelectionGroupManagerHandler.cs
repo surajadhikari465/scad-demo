@@ -2,11 +2,6 @@
 using Icon.Framework;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Web.DataAccess.Managers
 {
@@ -34,7 +29,9 @@ namespace Icon.Web.DataAccess.Managers
                 ProductSelectionGroupTypeId = data.ProductSelectionGroupTypeId,
                 TraitId = data.TraitId,
                 TraitValue = data.TraitValue,
-                MerchandiseHierarchyClassId = data.MerchandiseHierarchyClassId
+                MerchandiseHierarchyClassId = data.MerchandiseHierarchyClassId,
+                AttributeId = data.AttributeId,
+                AttributeValue = data.AttributeValue
             };
 
             this.updateProductSelectionGroupCommandHandler.Execute(command);

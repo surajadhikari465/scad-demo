@@ -12,6 +12,8 @@ namespace Icon.Monitoring.Common
         public const string Hierarchy = "Hierarchy";
         public const string Locale = "Locale";
         public const string ProductSelectionGroup = "ProductSelectionGroup";
+        public const string Attribute = "Attribute";
+        public const string Item = "Item";
     }
 
     public class QueueData

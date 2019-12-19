@@ -9,6 +9,8 @@ namespace Icon.Web.DataAccess.Commands
         public int? TraitId { get; set; }
         public string TraitValue { get; set; }
         public int? MerchandiseHierarchyClassId { get; set; }
+        public int? AttributeId { get; set; }
+        public string AttributeValue { get; set; }
 
         //Output property
         public bool ProductSelectionGroupNameChanged { get; set; }

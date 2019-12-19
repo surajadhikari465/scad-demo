@@ -16,7 +16,7 @@ namespace Icon.Framework
     {
         public Currency()
         {
-            this.ItemPrices = new HashSet<ItemPrice>();
+            this.ItemPrice = new HashSet<ItemPrice>();
         }
     
         public int currencyTypeID { get; set; }
@@ -27,6 +27,6 @@ namespace Icon.Framework
         public Nullable<int> minorUnit { get; set; }
         public string symbol { get; set; }
     
-        public virtual ICollection<ItemPrice> ItemPrices { get; set; }
+        public virtual ICollection<ItemPrice> ItemPrice { get; set; }
     }
 }

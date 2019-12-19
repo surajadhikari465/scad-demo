@@ -1,106 +1,80 @@
-﻿@using Infragistics.Web.Mvc
-@using Icon.Framework
-@model Icon.Web.Mvc.Models.NationalClassViewModel
+﻿@model Icon.Web.Mvc.Models.NationalClassViewModel
 
 @{
-	ViewBag.Title = String.Format("Edit {0}", Model.HierarchyLevelName);
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = String.Format("Edit {0}", Model.HierarchyLevelName);
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @{Html.RenderPartial("_HeaderPartial", "National Class Management");}
 
 <div class="page-section">
-	@using (Html.BeginForm("Edit", "NationalClass", FormMethod.Post, new { @class = "begin-form" }))
-	{
-		@Html.AntiForgeryToken()
-		@Html.ValidationSummary(true)
+    @using (Html.BeginForm("Edit", "NationalClass", FormMethod.Post, new { @class = "begin-form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
 
-		@Html.HiddenFor(model => model.HierarchyId)
-		@Html.HiddenFor(model => model.HierarchyName)
-		@Html.HiddenFor(model => model.HierarchyClassId)
-		@Html.HiddenFor(model => model.HierarchyLevel)
-		@Html.HiddenFor(model => model.HierarchyParentClassId)
-		@Html.HiddenFor(model => model.HierarchyParentClassName)
+        @Html.HiddenFor(model => model.HierarchyId)
+        @Html.HiddenFor(model => model.HierarchyName)
+        @Html.HiddenFor(model => model.HierarchyClassId)
+        @Html.HiddenFor(model => model.HierarchyLevel)
+        @Html.HiddenFor(model => model.HierarchyParentClassId)
+        @Html.HiddenFor(model => model.HierarchyParentClassName)
         @Html.HiddenFor(model => model.HierarchyLevelName)
 
-		<fieldset>
-			<legend>@ViewBag.Title</legend>
-			
-			@if (!String.IsNullOrEmpty(Model.HierarchyParentClassName))
-			{
-				<div class="row">
-					@Html.LabelFor(model => model.HierarchyParentClassName, new { @class = "col-md-2 form-label" })
-					<div>
-						@Html.TextBoxFor(model => model.HierarchyParentClassName, new { @readonly = "readonly", @class = "col-md-6 form-input" })
-					</div>
-				</div>
-			}
-            			
-				<div class="row">
-					@Html.LabelFor(model => model.HierarchyClassName, "Updated Name", new { @class = "col-md-2 form-label" })
-					<div>
-						@Html.TextBoxFor(model => model.HierarchyClassName, new { @class = "col-md-6 form-input" })
-						@Html.ValidationMessageFor(model => model.HierarchyClassName, null, new { @class = "col-md-6 form-property-val" })
-					</div>
-				</div>
-			
-			@if (Model.HierarchyLevel == HierarchyLevels.NationalClass)
-			{
-				<div class="row">
-					@Html.LabelFor(model => model.NationalClassCode, new { @class = "col-md-2 form-label" })
-                    <div>
-                            @Html.TextBoxFor(model => model.NationalClassCode, new { @class = "col-md-6 form-input" })
-                           @Html.ValidationMessageFor(model => model.NationalClassCode, null, new { @class = "col-md-6 form-property-val" })
-                    </div>
-				</div> 
-                 
-			}
-		</fieldset>
-	   
-		<div class="col-md-offset-2">
-			<input type="submit" id="saveButton" value="Save Changes" class="btn btn-default form-submit" />
-		</div>
-	}
-	
-	<div class="validation-section page-subsection">
-		@if (ViewData["ErrorMessage"] != null)
-		{
-			<div class="alert alert-danger alert-dismissable">
-				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				<strong>@ViewData["ErrorMessage"].ToString()</strong>
-			</div>
-		}
-		else if (ViewData["SuccessMessage"] != null)
-		{
-			<div class="alert alert-success alert-dismissable">
-				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				<strong>@ViewData["SuccessMessage"]</strong>
-			</div>
-		}
-		else if (TempData["ErrorMessage"] != null)
-		{
-			<div class="alert alert-danger alert-dismissable">
-				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				<strong>@TempData["ErrorMessage"].ToString()</strong>
-			</div>
-		}
-		else if (TempData["SuccessMessage"] != null)
-		{
-			<div class="alert alert-success alert-dismissable">
-				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				<strong>@TempData["SuccessMessage"]</strong>
-			</div>
-		}
-	</div>
+        <fieldset>
+            <legend>@ViewBag.Title</legend>
+
+            @if (!String.IsNullOrEmpty(Model.HierarchyParentClassName))
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.HierarchyParentClassName, new { @class = "form-label" })
+                    @Html.TextBoxFor(model => model.HierarchyParentClassName, new { @readonly = "readonly", @class = "form-control form-input" })
+                </div>
+            }
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.HierarchyClassName, "Updated Name", new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.HierarchyClassName, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.HierarchyClassName, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.NationalClassCode, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.NationalClassCode, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.NationalClassCode, null, new { @class = "form-property-val" })
+            </div>
+        </fieldset>
+
+        <div class="col-md-offset-2">
+            <input type="submit" id="saveButton" value="Save Changes" class="btn btn-light form-submit" />
+        </div>
+    }
+
+    <div class="validation-section page-subsection">
+        @if (ViewData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <strong>@ViewData["ErrorMessage"].ToString()</strong>
+            </div>
+        }
+    </div>
 
 </div>
 
 <div class="form-footer">
-	@Html.ActionLink("Back to National Class Management", "Index")
+    @Html.ActionLink("Back to National Class Management", "Index")
+</div>
+
+<div id="divBlock" class="block" style="display: none;">
+    <div class="block-message">
+        <img src="\Content\Infragistics\css\structure\images\igLoadingSmall.gif" style="max-width: 35px; max-height: 35px; margin: 25px 0 0 10px;" />
+        <label class="block-label">Please wait... <br /> &nbsp Processing request...</label>
+    </div>
 </div>
 
 @section scripts
 {
     @Scripts.Render("~/Scripts/jquery-disable.js")
-   @* @Scripts.Render("~/Scripts/HierarchyClass/hierarchy-class-edit.js")*@
+    @* @Scripts.Render("~/Scripts/HierarchyClass/hierarchy-class-edit.js")*@
+    @Scripts.Render("~/Scripts/National/national-create-edit.js")
 }

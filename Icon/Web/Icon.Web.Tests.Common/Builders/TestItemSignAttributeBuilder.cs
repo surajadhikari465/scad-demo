@@ -1,6 +1,4 @@
 ﻿using Icon.Framework;
-using Icon.Web.DataAccess.Models;
-using System;
 
 namespace Icon.Web.Tests.Common.Builders
 {

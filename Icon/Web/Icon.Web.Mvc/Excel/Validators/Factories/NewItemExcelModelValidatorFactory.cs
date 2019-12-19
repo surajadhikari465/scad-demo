@@ -1,15 +1,14 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Web.Common;
-using Icon.Web.Common.Validators;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Excel.Models;
 using SimpleInjector;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using Icon.Common;
+using Icon.Common.Validators;
 
 namespace Icon.Web.Mvc.Excel.Validators.Factories
 {

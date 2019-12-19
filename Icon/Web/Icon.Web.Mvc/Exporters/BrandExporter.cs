@@ -10,6 +10,10 @@ namespace Icon.Web.Mvc.Exporters
     {
         private const int BrandNameIndex = 0;
         private const int BrandAbbreviationIndex = 1;
+        private const int DesignationIndex = 2;
+        private const int ParentCompanyIndex = 3;
+        private const int ZipCodeIndex = 4;
+        private const int LocalityIndex = 5;
 
         public BrandExporter()
             : base()
@@ -28,6 +32,30 @@ namespace Icon.Web.Mvc.Exporters
                 5000,
                 HorizontalCellAlignment.Left,
                 (row, hierarchyClass) => row.Cells[BrandAbbreviationIndex].Value = hierarchyClass.BrandAbbreviation);
+
+            AddSpreadsheetColumn(DesignationIndex,
+                "Designation",
+                5000,
+                HorizontalCellAlignment.Left,
+                (row, hierarchyClass) => row.Cells[DesignationIndex].Value = hierarchyClass.Designation);
+
+            AddSpreadsheetColumn(ParentCompanyIndex,
+                "Parent Company",
+                5000,
+                HorizontalCellAlignment.Left,
+                (row, hierarchyClass) => row.Cells[ParentCompanyIndex].Value = hierarchyClass.ParentCompany);
+
+            AddSpreadsheetColumn(ZipCodeIndex,
+                "Zip Code",
+                5000,
+                HorizontalCellAlignment.Left,
+                (row, hierarchyClass) => row.Cells[ZipCodeIndex].Value = hierarchyClass.ZipCode);
+
+            AddSpreadsheetColumn(LocalityIndex,
+                "Locality",
+                5000,
+                HorizontalCellAlignment.Left,
+                (row, hierarchyClass) => row.Cells[LocalityIndex].Value = hierarchyClass.Locality);
         }
 
         protected override List<BrandExportViewModel> ConvertExportDataToExportHierarchyClassModel()
@@ -36,8 +64,12 @@ namespace Icon.Web.Mvc.Exporters
                 {
                     BrandId = d.BrandId,
                     BrandName = d.BrandName,
-                    BrandAbbreviation = d.BrandAbbreviation
-                })
+                    BrandAbbreviation = d.BrandAbbreviation,
+                    Designation = d.Designation,
+                    ParentCompany = d.ParentCompany,
+                    ZipCode = d.ZipCode,
+                    Locality = d.Locality
+            })
                 .ToList();
 
             return exportBrands;

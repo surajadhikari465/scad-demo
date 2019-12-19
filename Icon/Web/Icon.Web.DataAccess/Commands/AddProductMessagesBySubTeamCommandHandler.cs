@@ -1,7 +1,6 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Web.DataAccess.Extensions;
-using Icon.Web.DataAccess.Infrastructure;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -33,8 +32,8 @@ namespace Icon.Web.DataAccess.Commands
                         && i.ItemTrait.Any(it => it.Trait.traitCode == TraitCodes.ValidationDate))
                 .Select(i => new
                     {
-                        itemID = i.itemID
-                    })
+                        itemID = i.ItemId
+                })
                 .ToList();
 
             SqlParameter items = new SqlParameter("updatedItemIDs", SqlDbType.Structured);

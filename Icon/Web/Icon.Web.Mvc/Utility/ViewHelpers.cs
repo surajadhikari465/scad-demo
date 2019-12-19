@@ -23,5 +23,22 @@ namespace Icon.Web.Mvc.Utility
 
             return false;
         }
+
+        public static bool HasWriteAccess(HttpRequestBase request, IPrincipal user)
+        {
+            if (request.IsAuthenticated)
+            {
+                var adminRoles = AppSettingsAccessor.GetStringSetting("WriteAccess").Split(',');
+
+                if (adminRoles.Contains("AllRoles"))
+                    return true;
+
+                bool grantAccess = adminRoles.Any(r => user.IsInRole(r));
+
+                return grantAccess;
+            }
+
+            return false;
+        }
     }
 }

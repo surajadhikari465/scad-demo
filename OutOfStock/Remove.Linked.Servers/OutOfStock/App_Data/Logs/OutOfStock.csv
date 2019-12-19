@@ -1,0 +1,80 @@
+Time,Level,Logger,Message
+2013-12-30 16:01:17.1543,Info,NLogEventLog,(12/30/2013 16:01:17.154) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+2013-12-30 16:01:17.8873,Info,NLogEventLog,"(12/30/2013 16:01:17.887) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NC, Store=CEN"
+2013-12-30 16:01:17.9053,Info,NLogEventLog,"(12/30/2013 16:01:17.905) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"
+Time,Level,Logger,Message
+2013-12-31 13:32:25.3790,Info,NLogEventLog,(12/31/2013 13:32:25.379) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+2013-12-31 13:32:26.5921,Info,NLogEventLog,"(12/31/2013 13:32:26.592) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NC, Store=CEN"
+2013-12-31 13:32:26.6121,Info,NLogEventLog,"(12/31/2013 13:32:26.612) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"
+Time,Level,Logger,Message
+2013-12-31 14:22:46.5991,Info,NLogEventLog,(12/31/2013 14:22:46.608) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+2013-12-31 14:22:47.3642,Info,NLogEventLog,"(12/31/2013 14:22:47.364) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NC, Store=CEN"
+2013-12-31 14:22:47.3752,Info,NLogEventLog,"(12/31/2013 14:22:47.383) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"
+Time,Level,Logger,Message
+2013-12-31 14:30:19.9564,Info,NLogEventLog,(12/31/2013 14:30:19.961) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+2013-12-31 14:30:20.6735,Info,NLogEventLog,"(12/31/2013 14:30:20.673) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NC, Store=CEN"
+2013-12-31 14:30:20.6905,Info,NLogEventLog,"(12/31/2013 14:30:20.698) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"
+Time,Level,Logger,Message
+2014-01-01 10:07:04.9244,Info,NLogEventLog,(01/01/2014 10:07:04.929) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+2014-01-01 10:07:06.0034,Info,NLogEventLog,"(01/01/2014 10:07:06.003) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NC, Store=CEN"
+2014-01-01 10:07:06.0184,Info,NLogEventLog,"(01/01/2014 10:07:06.018) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"
+2014-01-01 10:07:06.3504,Info,NLogEventLog,"(01/01/2014 10:07:06.350) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NC, Store=CEN"
+2014-01-01 10:07:06.3504,Info,NLogEventLog,"(01/01/2014 10:07:06.352) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"
+2014-01-01 10:07:06.4784,Info,NLogEventLog,"(01/01/2014 10:07:06.478) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NC, Store=CEN"
+2014-01-01 10:07:06.4864,Info,NLogEventLog,"(01/01/2014 10:07:06.486) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"
+Time,Level,Logger,Message
+2014-01-01 10:20:29.5464,Info,NLogEventLog,(01/01/2014 10:20:29.546) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+2014-01-01 10:20:30.2534,Info,NLogEventLog,"(01/01/2014 10:20:30.253) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NC, Store=CEN"
+2014-01-01 10:20:30.2634,Info,NLogEventLog,"(01/01/2014 10:20:30.271) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"
+Time,Level,Logger,Message
+2014-01-01 10:29:50.3101,Info,NLogEventLog,(01/01/2014 10:29:50.318) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+2014-01-01 10:29:51.0421,Info,NLogEventLog,"(01/01/2014 10:29:51.042) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NC, Store=CEN"
+2014-01-01 10:29:51.0601,Info,NLogEventLog,"(01/01/2014 10:29:51.060) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"
+Time,Level,Logger,Message
+2014-01-01 10:39:07.8988,Info,NLogEventLog,(01/01/2014 10:39:07.907) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+2014-01-01 10:39:09.2000,Info,NLogEventLog,"(01/01/2014 10:39:09.200) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NC, Store=CEN"
+2014-01-01 10:39:09.2360,Info,NLogEventLog,"(01/01/2014 10:39:09.236) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"
+Time,Level,Logger,Message
+2014-01-02 09:57:24.2551,Info,NLogEventLog,(01/02/2014 09:57:24.255) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+2014-01-02 09:57:25.2901,Info,NLogEventLog,"(01/02/2014 09:57:25.290) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NC, Store=CEN"
+2014-01-02 09:57:25.3001,Info,NLogEventLog,"(01/02/2014 09:57:25.309) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"
+Time,Level,Logger,Message
+2014-01-02 10:49:43.5024,Info,NLogEventLog,(01/02/2014 10:49:43.511) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+2014-01-02 10:49:55.1366,Info,NLogEventLog,"(01/02/2014 10:49:55.144) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=, Region=, Store="
+2014-01-02 10:49:55.9146,Info,NLogEventLog,"(01/02/2014 10:49:55.914) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=, Permissions=Store|Leader"
+Time,Level,Logger,Message
+2014-01-02 10:51:51.5662,Info,NLogEventLog,(01/02/2014 10:51:51.575) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+2014-01-02 10:51:55.2896,Info,NLogEventLog,"(01/02/2014 10:51:55.289) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NC, Store=CEN"
+2014-01-02 10:51:55.2986,Info,NLogEventLog,"(01/02/2014 10:51:55.307) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"
+Time,Level,Logger,Message
+2014-01-02 10:54:34.1125,Info,NLogEventLog,(01/02/2014 10:54:34.112) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+Time,Level,Logger,Message
+2014-01-02 10:58:14.4705,Info,NLogEventLog,(01/02/2014 10:58:14.470) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+2014-01-02 10:58:18.4169,Info,NLogEventLog,"(01/02/2014 10:58:18.416) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NC, Store=CEN"
+2014-01-02 10:58:18.4349,Info,NLogEventLog,"(01/02/2014 10:58:18.434) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"
+Time,Level,Logger,Message
+2014-01-02 11:03:20.5801,Info,NLogEventLog,(01/02/2014 11:03:20.588) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+2014-01-02 11:03:21.3152,Info,NLogEventLog,"(01/02/2014 11:03:21.315) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NC, Store=CEN"
+2014-01-02 11:03:21.3232,Info,NLogEventLog,"(01/02/2014 11:03:21.332) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"
+2014-01-02 11:04:43.5194,Info,NLogEventLog,(01/02/2014 11:04:43.519) c:\GNPT\OutOfStock\DEV\OOS.Model\ScanOutOfStockItemService.cs[68] Info[(no session)] Raw Scan data: UPC='0009948241892'
+2014-01-02 11:04:53.2264,Info,NLogEventLog,"(01/02/2014 11:04:53.226) c:\GNPT\OutOfStock\DEV\OOSCommon\Import\OOSUpdateReported.cs[300] Info[(no session)] No VIM data: UPC='0009948241892', STORE=BRK/10006"
+2014-01-02 11:04:53.2424,Info,NLogEventLog,(01/02/2014 11:04:53.244) c:\GNPT\OutOfStock\DEV\OOSCommon\Import\OOSUpdateReported.cs[303] Info[(no session)] No movement data: UPC='0009948241892'
+2014-01-02 11:06:08.6717,Info,NLogEventLog,(01/02/2014 11:06:08.671) c:\GNPT\OutOfStock\DEV\OOS.Model\ScanOutOfStockItemService.cs[68] Info[(no session)] Raw Scan data: UPC='04256300879'
+2014-01-02 11:06:23.7587,Info,NLogEventLog,"(01/02/2014 11:06:23.758) c:\GNPT\OutOfStock\DEV\OOSCommon\Import\OOSUpdateReported.cs[300] Info[(no session)] No VIM data: UPC='04256300879', STORE=BRK/10006"
+2014-01-02 11:06:23.7677,Info,NLogEventLog,(01/02/2014 11:06:23.771) c:\GNPT\OutOfStock\DEV\OOSCommon\Import\OOSUpdateReported.cs[303] Info[(no session)] No movement data: UPC='04256300879'
+2014-01-02 11:06:39.2007,Info,NLogEventLog,(01/02/2014 11:06:39.200) c:\GNPT\OutOfStock\DEV\OOS.Model\ScanOutOfStockItemService.cs[68] Info[(no session)] Raw Scan data: UPC='0004256300879'
+2014-01-02 11:07:27.6657,Info,NLogEventLog,"(01/02/2014 11:07:27.672) c:\GNPT\OutOfStock\DEV\OOSCommon\Import\OOSUpdateReported.cs[300] Info[(no session)] No VIM data: UPC='0004256300879', STORE=BRK/10006"
+2014-01-02 11:07:27.6827,Info,NLogEventLog,(01/02/2014 11:07:27.685) c:\GNPT\OutOfStock\DEV\OOSCommon\Import\OOSUpdateReported.cs[303] Info[(no session)] No movement data: UPC='0004256300879'
+2014-01-02 11:07:38.8467,Info,NLogEventLog,(01/02/2014 11:07:38.846) c:\GNPT\OutOfStock\DEV\OOS.Model\ScanOutOfStockItemService.cs[68] Info[(no session)] Raw Scan data: UPC='004256300879'
+2014-01-02 11:07:48.1447,Info,NLogEventLog,"(01/02/2014 11:07:48.145) c:\GNPT\OutOfStock\DEV\OOSCommon\Import\OOSUpdateReported.cs[300] Info[(no session)] No VIM data: UPC='004256300879', STORE=BRK/10006"
+2014-01-02 11:07:48.1597,Info,NLogEventLog,(01/02/2014 11:07:48.162) c:\GNPT\OutOfStock\DEV\OOSCommon\Import\OOSUpdateReported.cs[303] Info[(no session)] No movement data: UPC='004256300879'
+2014-01-02 11:08:50.3197,Info,NLogEventLog,(01/02/2014 11:08:50.319) c:\GNPT\OutOfStock\DEV\OOS.Model\ScanOutOfStockItemService.cs[68] Info[(no session)] Raw Scan data: UPC='0007631430087'
+2014-01-02 11:10:12.6337,Info,NLogEventLog,(01/02/2014 11:10:12.633) c:\GNPT\OutOfStock\DEV\OOS.Model\ScanOutOfStockItemService.cs[68] Info[(no session)] Raw Scan data: UPC='0007631430087'
+Time,Level,Logger,Message
+2014-01-02 11:43:33.7657,Info,NLogEventLog,(01/02/2014 11:43:33.765) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+2014-01-02 11:43:33.9397,Info,NLogEventLog,"(01/02/2014 11:43:33.939) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NC, Store=CEN"
+2014-01-02 11:43:33.9907,Info,NLogEventLog,"(01/02/2014 11:43:33.990) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"
+Time,Level,Logger,Message
+2014-01-02 13:03:42.2385,Info,NLogEventLog,(01/02/2014 13:03:42.247) Global.asax.cs[188] Info[(no session)] Version=1.0.4.2
+2014-01-02 13:03:42.4635,Info,NLogEventLog,"(01/02/2014 13:03:42.463) Models\OOSUser.cs[157] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Region=NA, Store=BLH"
+2014-01-02 13:03:42.7455,Info,NLogEventLog,"(01/02/2014 13:03:42.745) Models\OOSUser.cs[178] Info[wno2mwcrifzobwf2v4xrxc4o] User=WFM\eudyr, Permissions=Store|Leader|Regional|Central"

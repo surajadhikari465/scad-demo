@@ -1,5 +1,4 @@
 ﻿using Icon.Framework;
-using Icon.Web.DataAccess.Models;
 
 namespace Icon.Web.DataAccess.Commands
 {
@@ -8,5 +7,6 @@ namespace Icon.Web.DataAccess.Commands
         public HierarchyClass HierarchyClass { get; set; }
         public bool ClassNameChange { get; set; }
         public bool DeleteMessage { get; set; }
+        public string NationalClassCode { get; set; }
     }
 }

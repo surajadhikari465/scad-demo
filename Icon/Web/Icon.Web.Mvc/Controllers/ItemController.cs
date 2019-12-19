@@ -1,577 +1,846 @@
-﻿using AutoMapper;
+﻿using Icon.Common;
 using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
 using Icon.Web.Common.Utility;
-using Icon.Web.Common.Validators;
-using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
-using Icon.Web.Extensions;
-using Icon.Web.Mvc.Attributes;
+using Icon.Web.Mvc.Exporters;
 using Icon.Web.Mvc.Extensions;
+using Icon.Web.Mvc.InfragisticsHelpers;
 using Icon.Web.Mvc.Models;
 using Icon.Web.Mvc.Utility;
-using Infragistics.Web.Mvc;
+using Infragistics.Documents.Excel;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Web;
 using System.Web.Mvc;
+using Icon.Common.Models;
+using Icon.Common.Validators.ItemAttributes;
+using Constants = Icon.Common.Constants;
+using Icon.Web.Mvc.Attributes;
+using Icon.Web.Mvc.Utility.ItemHistory;
+using Icon.Web.DataAccess.Infrastructure.ItemSearch;
 
 namespace Icon.Web.Controllers
 {
     public class ItemController : Controller
     {
         private ILogger logger;
+        private IconWebAppSettings settings;
+        private IQueryHandler<GetItemsParameters, GetItemsResult> getItemsQueryHandler;
+        private IQueryHandler<GetItemParameters, ItemDbModel> getItemQueryHandler;
+        private IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>> getAttributesQueryHandler;
+        private IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeInforModel>>, IEnumerable<AttributeInforModel>> getInforAttributesQueryHandler;
+        private IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler;
+        private IQueryHandler<GetItemHistoryParameters, IEnumerable<ItemHistoryDbModel>> getItemHistoryQueryHandler;
+        private IQueryHandler<GetItemHierarchyClassHistoryParameters, ItemHierarchyClassHistoryAllModel> getItemHierarchyHistoryQueryHandler;
+        private IQueryHandler<GetBulkUploadErrorsPrameters, List<BulkUploadErrorModel>> getBulkUploadErrorsQueryHandler;
         private IManagerHandler<UpdateItemManager> updateItemManagerHandler;
-        private IManagerHandler<ValidateItemManager> validateItemManagerHandler;
-        private IManagerHandler<AddItemManager> addItemManagerHandler;
-        private IObjectValidator<ItemViewModel> itemViewModelValidator;
-        private IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel> getItemsBySearchQueryHandler;
-        private IQueryHandler<GetHierarchyLineageParameters, HierarchyClassListModel> getHierarchyLineageQueryHandler;  
-        private ICommandHandler<AddProductMessageCommand> addProductMessageCommandHandler;
         private IInfragisticsHelper infragisticsHelper;
-        private IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>> getItemsByBulkScanCodeSearcParameters;
+        private IQueryHandler<GetItemPropertiesFromMerchHierarchyParameters, MerchDependentItemPropertiesModel> getItemPropertiesFromMerchQueryHandler;
+        private IQueryHandler<DoesScanCodeExistParameters, bool> doesScanCodeExistQueryHandler;
+        private IManagerHandler<AddItemManager> addItemManagerHandler;
+        private IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypeQueryHandler;
+        private IExcelExporterService exporterService;
+        private IManagerHandler<BulkItemUploadManager> bulkItemUploadManagerHandler;
+        private IItemAttributesValidatorFactory itemAttributesValidatorFactory;
+        private IItemHistoryBuilder itemHistoryBuilder;
+        private IQueryHandler<GetBulkUploadStatusParameters, List<BulkUploadStatusModel>> getBulkItemUploadStatusQueryHandler;
+        private IQueryHandler<GetItemInforHistoryParameters, IEnumerable<ItemInforHistoryDbModel>> getItemInforHistoryQueryHandler;
+        private IQueryHandler<GetBulkUploadByIdParameters, BulkUploadStatusModel> getBulkUploadByIdQueryHandler;
+
+        private IHistoryModelTransformer historyModelTransformer;
+        private readonly IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler;
 
         public ItemController(
             ILogger logger,
+            IQueryHandler<GetItemsParameters, GetItemsResult> getItemsQueryHandler,
+            IQueryHandler<GetItemHistoryParameters, IEnumerable<ItemHistoryDbModel>> getItemHistoryQueryHandler,
+            IQueryHandler<GetItemHierarchyClassHistoryParameters, ItemHierarchyClassHistoryAllModel> getItemHierarchyHistoryQueryHandler,
+            IQueryHandler<GetItemParameters, ItemDbModel> getItemQueryHandler,
+            IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>> getAttributesQueryHandler,
+            IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeInforModel>>, IEnumerable<AttributeInforModel>> getInforAttributesQueryHandler,
+            IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler,
+            IQueryHandler<GetBulkUploadByIdParameters, BulkUploadStatusModel> getBulkUploadByIdQueryHandler,
             IManagerHandler<UpdateItemManager> updateItemManagerHandler,
-            IManagerHandler<ValidateItemManager> validateItemManagerHandler,
-            IManagerHandler<AddItemManager> addItemManagerHandler,
-            IObjectValidator<ItemViewModel> itemViewModelValidator,
-            IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel> getItemsBySearchQueryHandler,
-            IQueryHandler<GetHierarchyLineageParameters, HierarchyClassListModel> getHierarchyLineageQueryHandler,
-            ICommandHandler<AddProductMessageCommand> addProductMessageHandler,
             IInfragisticsHelper infragisticsHelper,
-            IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>> getItemsByBulkScanCodeSearcParameters)
+            IManagerHandler<AddItemManager> addItemManagerHandler,
+            IQueryHandler<GetItemPropertiesFromMerchHierarchyParameters, MerchDependentItemPropertiesModel> getItemPropertiesFromMerchQueryHandler,
+            IQueryHandler<DoesScanCodeExistParameters, bool> doesScanCodeExistQueryHandler,
+            IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypeQueryHandler,
+            IQueryHandler<GetBulkUploadStatusParameters, List<BulkUploadStatusModel>> getBulkItemUploadStatusQueryHandler,
+            IQueryHandler<GetBulkUploadErrorsPrameters, List<BulkUploadErrorModel>> getBulkUploadErrorsQueryHandler,
+            IExcelExporterService exporterService,
+            IItemAttributesValidatorFactory itemAttributesValidatorFactory,
+            IManagerHandler<BulkItemUploadManager> bulkItemUploadManagerHandler,
+            IQueryHandler<GetItemInforHistoryParameters,
+            IEnumerable<ItemInforHistoryDbModel>> getItemInforHistoryQueryHandler,
+            IconWebAppSettings settings,
+            IItemHistoryBuilder itemHistoryBuilder,
+            IHistoryModelTransformer historyModelTransformer,
+            IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler)
         {
             this.logger = logger;
+            this.settings = settings;
+            this.getItemsQueryHandler = getItemsQueryHandler;
+            this.getItemQueryHandler = getItemQueryHandler;
+            this.getAttributesQueryHandler = getAttributesQueryHandler;
+            this.getInforAttributesQueryHandler = getInforAttributesQueryHandler;
+            this.getHierarchyClassesQueryHandler = getHierarchyClassesQueryHandler;
             this.updateItemManagerHandler = updateItemManagerHandler;
-            this.validateItemManagerHandler = validateItemManagerHandler;
-            this.addItemManagerHandler = addItemManagerHandler;
-            this.itemViewModelValidator = itemViewModelValidator;
-            this.getItemsBySearchQueryHandler = getItemsBySearchQueryHandler;
-            this.getHierarchyLineageQueryHandler = getHierarchyLineageQueryHandler;
-            this.addProductMessageCommandHandler = addProductMessageHandler;
             this.infragisticsHelper = infragisticsHelper;
-            this.getItemsByBulkScanCodeSearcParameters = getItemsByBulkScanCodeSearcParameters;
-    }
-        
+            this.addItemManagerHandler = addItemManagerHandler;
+            this.getItemHistoryQueryHandler = getItemHistoryQueryHandler;
+            this.getItemPropertiesFromMerchQueryHandler = getItemPropertiesFromMerchQueryHandler;
+            this.doesScanCodeExistQueryHandler = doesScanCodeExistQueryHandler;
+            this.getBarcodeTypeQueryHandler = getBarcodeTypeQueryHandler;
+            this.exporterService = exporterService;
+            this.itemAttributesValidatorFactory = itemAttributesValidatorFactory;
+            this.bulkItemUploadManagerHandler = bulkItemUploadManagerHandler;
+            this.getItemHierarchyHistoryQueryHandler = getItemHierarchyHistoryQueryHandler;
+            this.itemHistoryBuilder = itemHistoryBuilder;
+            this.getBulkItemUploadStatusQueryHandler = getBulkItemUploadStatusQueryHandler;
+            this.getItemInforHistoryQueryHandler = getItemInforHistoryQueryHandler;
+            this.historyModelTransformer = historyModelTransformer;
+            this.getItemsByIdHandler = getItemsByIdHandler;
+            this.getBulkUploadErrorsQueryHandler = getBulkUploadErrorsQueryHandler;
+            this.getBulkUploadByIdQueryHandler = getBulkUploadByIdQueryHandler;
+        }
+
         public ActionResult Index()
         {
-            var viewModel = new ItemSearchViewModel
-            {
-                RetailUoms = GetRetailUomSelectList(string.Empty, includeInitialBlank: true),
-                //DeliverySystems = GetDeliverySystemSelectList(string.Empty, includeInitialBlank: true),
-                //DrainedWeightUomOptions = GetDrainedWeightUomSelectList(string.Empty, includeInitialBlank: true),
-                //FairTradeCertifiedOptions = GetFairTradeCertifiedSelectList(string.Empty, includeInitialBlank: true)
-            }; 
-
-            ViewData["CreateItemMessage"] = TempData["CreateItemMessage"];
-
-            return View(viewModel);
+            Session["GetItemsParametersViewModel"] = new GetItemsParametersViewModel();
+            return View();
         }
 
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public ActionResult Search(ItemSearchViewModel viewModel)
+        public ActionResult HasWriteAccess()
         {
-            if (!ModelState.IsValid)
-            {
-                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
-                viewModel.RetailUoms = GetRetailUomSelectList(string.Empty, includeInitialBlank: true);
-                //viewModel.DeliverySystems = GetDeliverySystemSelectList(string.Empty, includeInitialBlank: true);
-                //viewModel.DrainedWeightUomOptions = GetDrainedWeightUomSelectList(string.Empty, includeInitialBlank: true);
-                //viewModel.FairTradeCertifiedOptions = GetFairTradeCertifiedSelectList(string.Empty, includeInitialBlank: true);
-                return PartialView("_ItemSearchOptionsPartial", viewModel);
-            }
-
-            viewModel.TotalRecordsCount = getItemsBySearchQueryHandler.Search(viewModel.GetSearchParameters(true)).ItemsCount;
-            
-            viewModel.ItemSearchResults.RetailUoms = GetRetailUomSelectList(string.Empty, includeInitialBlank: false);      
-           
-            HierarchyClassListModel hierarchyListModel = getHierarchyLineageQueryHandler.Search(new GetHierarchyLineageParameters());
-            viewModel.ItemSearchResults.BrandHierarchyClasses = GetHierarchyLineage(hierarchyListModel.BrandHierarchyList);
-            viewModel.ItemSearchResults.TaxHierarchyClasses = GetHierarchyLineage(hierarchyListModel.TaxHierarchyList);
-            viewModel.ItemSearchResults.MerchandiseHierarchyClasses = GetHierarchyLineage(hierarchyListModel.MerchandiseHierarchyList);
-            viewModel.ItemSearchResults.NationalHierarchyClasses = GetHierarchyLineage(hierarchyListModel.NationalHierarchyList);
-
-            viewModel.ItemSearchResults.NullableBooleanComboBoxValues = new NullableBooleanComboBoxValuesViewModel();
-            viewModel.ItemSearchResults.BooleanComboBoxValues = new BooleanComboBoxValuesViewModel();
-
-            ViewData["displayAddItemLink"] = true;
-            ViewData["dataSourceUrl"] = BuildItemSearchDataSourceUrl(viewModel);
-            ViewData["totalRecordsCount"] = viewModel.TotalRecordsCount;
-
-            return PartialView("_ItemSearchResults", viewModel.ItemSearchResults);
-        }
-
-        private string BuildItemSearchDataSourceUrl(ItemSearchViewModel viewModel)
-        {
-            return Url.Action("SearchJson", "Item", viewModel.GetRouteValuesObject());
-        }
-        
-        public ActionResult SearchJson(ItemSearchViewModel viewModel)
-        {
-            var searchParameters = viewModel.GetSearchParameters();
-
-            var result = infragisticsHelper.ParseSortParameterFromQueryString(HttpContext.Request.QueryString);
-            if (result.SortParameterExists)
-            {
-                searchParameters.SortOrder = result.SortOrder;
-                searchParameters.SortColumn = result.SortColumn;
-            }
-
-            var itemsList = getItemsBySearchQueryHandler.Search(searchParameters)
-                .Items
-                .ToViewModels();
-
-            if (result.SortParameterExists)
-            {
-                return Json(new
-                {
-                    Records = itemsList,
-                    TotalRecordsCount = viewModel.TotalRecordsCount,
-                    MetaData = new
-                    {
-                        GroupBy = result.SortColumn
-                    }
-                }, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(new { Records = itemsList, TotalRecordsCount = viewModel.TotalRecordsCount }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        public ActionResult BrandAutocomplete(string term)
-        {
-            HierarchyClassListModel hierarchyListModel = getHierarchyLineageQueryHandler.Search(new GetHierarchyLineageParameters());
-            List<HierarchyClassModel> brandHierarchyClasses = hierarchyListModel.BrandHierarchyList;
-
-            var brandMatches = brandHierarchyClasses
-                .Where(hc => hc.HierarchyClassName.ToLower().Contains(term.ToLower()))
-                .OrderBy(hc => hc.HierarchyClassName)
-                .Select(hc => hc.HierarchyClassName)
-                .ToArray();
-
-            return Json(brandMatches, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult MerchandiseAutocomplete(string term)
-        {
-            HierarchyClassListModel hierarchyListModel = getHierarchyLineageQueryHandler.Search(new GetHierarchyLineageParameters());
-            List<HierarchyClassModel> merchHierarchyClasses = hierarchyListModel.MerchandiseHierarchyList;
-
-            var merchandiseMatches = merchHierarchyClasses
-                .Where(hc => hc.HierarchyClassName.ToLower().Contains(term.ToLower()))
-                .OrderBy(hc => hc.HierarchyClassName)
-                .Select(hc => hc.HierarchyClassName).ToArray();
-
-            return Json(merchandiseMatches, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult MerchandiseWithSubTeamAutocomplete(string term)
-        {
-            HierarchyClassListModel hierarchyListModel = getHierarchyLineageQueryHandler.Search(new GetHierarchyLineageParameters());
-            List<HierarchyClassModel> merchHierarchyClasses = hierarchyListModel.MerchandiseHierarchyList;
-
-            var merchandiseMatches = merchHierarchyClasses
-                .Where(hc => hc.HierarchyClassName.ToLower().Contains(term.ToLower()))
-                .OrderBy(hc => hc.HierarchyClassName)
-                .Select(hc => new { label = hc.HierarchyLineage.Split('|').LastOrDefault(), valueID = hc.HierarchyClassId }).ToArray();
-
-            return Json(merchandiseMatches, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult TaxAutocomplete(string term)
-        {
-            HierarchyClassListModel hierarchyListModel = getHierarchyLineageQueryHandler.Search(new GetHierarchyLineageParameters());
-            List<HierarchyClassModel> taxHierarchyClasses = hierarchyListModel.TaxHierarchyList;
-
-            var taxMatches = taxHierarchyClasses
-                .Where(hc => hc.HierarchyLineage.ToLower().Contains(term.ToLower()))
-                .OrderBy(hc => hc.HierarchyLineage)
-                .Select(hc => hc.HierarchyLineage).ToArray();
-
-            return Json(taxMatches, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult NationalAutocomplete(string term)
-        {
-            HierarchyClassListModel hierarchyListModel = getHierarchyLineageQueryHandler.Search(new GetHierarchyLineageParameters());
-            List<HierarchyClassModel> nationalHierarchyClasses = hierarchyListModel.NationalHierarchyList;
-
-            var taxMatches = nationalHierarchyClasses
-                .Where(hc => hc.HierarchyClassName.ToLower().Contains(term.ToLower()) || hc.HierarchyLineage.Contains(term.ToLower()))
-                .OrderBy(hc => hc.HierarchyClassName)
-                .Select(hc => hc.HierarchyLineage).ToArray();
-
-            return Json(taxMatches, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult NationalAutocompleteWithClassCode(string term)
-        {
-            HierarchyClassListModel hierarchyListModel = getHierarchyLineageQueryHandler.Search(new GetHierarchyLineageParameters());
-            List<HierarchyClassModel> nationalHierarchyClasses = hierarchyListModel.NationalHierarchyList;
-
-            var taxMatches = nationalHierarchyClasses
-                .Where(hc => hc.HierarchyClassName.ToLower().Contains(term.ToLower()))
-                .OrderBy(hc => hc.HierarchyClassName)
-                .Select(hc => new { label = hc.HierarchyLineage, valueID = hc.HierarchyClassId }).ToArray();
-
-            return Json(taxMatches, JsonRequestBehavior.AllowGet);
-        }
-        
-        public ActionResult Edit(string scanCode)
-        {
-            if (!ModelState.IsValid)
-            {
-                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
-                return RedirectToAction("Index");
-            }
-
-            var viewModel = BuildItemEditViewModel(scanCode);
-            if (TempData["MessageSendSuccess"] != null)
-            {
-                ViewData["UpdateSuccess"] = TempData["MessageSendSuccess"];
-            }
-            if (TempData["MessageSendFailed"] != null)
-            {
-                ViewData["UpdateFailed"] = TempData["MessageSendFailed"];
-            }
-            return View(viewModel);
-        }
-        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [WriteAccessAuthorize]
-        public ActionResult Edit(ItemEditViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(BuildItemEditViewModel(viewModel.ScanCode));
-            }
-
-            var brand = getHierarchyLineageQueryHandler.Search(new GetHierarchyLineageParameters())
-                .BrandHierarchyList
-                .FirstOrDefault(hc => hc.HierarchyClassName == viewModel.BrandName);
-
-            if(brand == null)
-            {
-                ViewData["UpdateFailed"] = string.Format("Brand {0} does not exist.", viewModel.BrandName);
-                return View(BuildItemEditViewModel(viewModel.ScanCode));
-            }
-            else
-            {
-                var manager = new UpdateItemManager
-                {
-                    Item = viewModel.ToBulkImportModel(brand.HierarchyClassId),
-                    UserName = User.Identity.Name                    
-                };
-
-                try
-                {
-                    updateItemManagerHandler.Execute(manager);
-                    ViewData["UpdateSuccess"] = "Update successful.";
-                }
-                catch (Exception ex)
-                {
-                    string errorDetails = ex.Message;
-                    ViewData["UpdateFailed"] = errorDetails;
-                }
-
-                // Rebuild lists and appropriate pieces of view.
-                return View(BuildItemEditViewModel(viewModel.ScanCode));
-            }
-        }
-        
-        [HttpPost]
-        public ActionResult SendProductMessage(int itemId, string scanCode)
-        {
-            if (!ModelState.IsValid)
-            {
-                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
-                return RedirectToAction("Index");
-            }
-
-            var parameters = new GetItemByIdParameters
-            {
-                ItemId = itemId
-            };
-
-            try
-            {
-                addProductMessageCommandHandler.Execute(new AddProductMessageCommand { ItemId = itemId });
-                TempData["MessageSendSuccess"] = "Message generated successfully.";
-            }
-            catch (Exception e)
-            {
-                string errorDetails = "There was an error creating the message for the ESB.";
-                logger.Error(errorDetails + e.InnerException);
-                TempData["MessageSendFailed"] = errorDetails;
-            }
-            return RedirectToAction("Edit", new { scanCode = scanCode });
-        }
-
-        [WriteAccessAuthorize(IsJsonResult = true)]
-        public ActionResult SaveChangesInGrid()
-        {
-            ViewData["GenerateCompactJSONResponse"] = false;
-
-            List<Transaction<ItemViewModel>> transactions = new GridModel()
-                .LoadTransactions<ItemViewModel>(HttpContext.Request.Form["ig_transactions"]);
-
-            if (!transactions.Any())
-            {
-                return Json(new { Success = false, Error = "No new values were specified for the item." });
-            }
-
-            try
-            {
-                updateItemManagerHandler.Execute(new UpdateItemManager
-                {
-                    Item = transactions.First().row.ToBulkImportModel(),
-                    UserName = User.Identity.Name,
-                });
-            }
-            catch (CommandException exception)
-            {
-                var exceptionLogger = new ExceptionLogger(logger);
-                exceptionLogger.LogException(exception, this.GetType(), MethodBase.GetCurrentMethod());
-
-                return Json(new { Success = false, Error = exception.Message });
-            }
-            catch (ArgumentException exception)
-            {
-                var exceptionLogger = new ExceptionLogger(logger);
-                exceptionLogger.LogException(exception, this.GetType(), MethodBase.GetCurrentMethod());
-
-                return Json(new { Success = false, Error = exception.Message });
-            }
-
-            return Json(new { Success = true });
+            return this.Content(JsonConvert.SerializeObject(this.GetWriteAccess() == Enums.WriteAccess.Full ? true : false), "application/json");
         }
 
         /// <summary>
-        /// Validates selected rows into Icon.
-        /// This is only available when all fields are populated and it populates the validatedDate Trait in Icon
+        /// This method is a POST method but should not have write security. The Item grid
+        /// POSTs to this method while searching and a read only user needs to have access for 
+        /// GridDataSource to function correctly. 
         /// </summary>
-        /// <param name="selected">Selected igGrid (infragistics grid) rows</param>
-        /// <returns>JsonResult: bool Success, string Message</returns>
+        /// <param name="getItemsParametersViewModel"></param>
         [HttpPost]
-        [WriteAccessAuthorize(IsJsonResult = true)]
-        public ActionResult ValidateSelected(List<ItemViewModel> selected)
+        public void SaveGetItemsParameters(GetItemsParametersViewModel getItemsParametersViewModel)
         {
-            if (selected == null || !selected.Any())
+            Session["GetItemsParametersViewModel"] = getItemsParametersViewModel;
+            logger.Debug($"sessionID={this.Session.SessionID}, getItemsParametersViewModel={JsonConvert.SerializeObject(getItemsParametersViewModel)}");
+        }
+
+        public ActionResult GridDataSource()
+        {
+            var getItemsParametersViewModel = Session["GetItemsParametersViewModel"] as GetItemsParametersViewModel;
+
+            if(getItemsParametersViewModel == null)
             {
-                return Json(new
-                {
-                    Success = false,
-                    Message = "No items were selected to validate."
-                });
-            }
-
-            List<ItemViewModel> erroneousItems = new List<ItemViewModel>();
-            string errorMessage = null;
-
-            foreach (var row in selected)
-            {
-                ValidateItemManager validateItemManager = new ValidateItemManager
-                {
-                    ScanCode = row.ScanCode,
-                    UserName = User.Identity.Name
-                };
-
-                try
-                {
-                    validateItemManagerHandler.Execute(validateItemManager);
-                }
-                catch (CommandException exception)
-                {
-                    var exceptionLogger = new ExceptionLogger(logger);
-                    exceptionLogger.LogException(exception, this.GetType(), MethodBase.GetCurrentMethod());
-                    erroneousItems.Add(row);
-                    errorMessage = exception.Message;
-                }
-                catch (Exception ex)
-                {
-                    var exceptionLogger = new ExceptionLogger(logger);
-                    exceptionLogger.LogException(ex, this.GetType(), MethodBase.GetCurrentMethod());
-                    erroneousItems.Add(row);
-                    errorMessage = ex.Message;
-                }
-            }
-
-            if (erroneousItems.Count == 0)
-            {
-                return Json(new
-                {
-                    Success = true,
-                    Message = "Successfully validated all selected items."
-                });
+                logger.Error($"sessionID={this.Session.SessionID}, getItemsParametersViewModel was null");
+                throw new Exception("Search parameters were not set");
             }
             else
             {
-                string listOfErroneousIdentifiers = erroneousItems
-                    .Select(ei => ei.ScanCode)
-                    .Aggregate((identifier1, identifier2) => identifier1 + ", " + identifier2)
-                    .TrimEnd(',');
-
-                return Json(new
-                {
-                    Success = false,
-                    Message = errorMessage != null ? errorMessage : string.Format("Validation failed for the following identifiers: {0}", listOfErroneousIdentifiers)
-                });
+                logger.Debug($"sessionID={this.Session.SessionID}, getItemsParametersViewModel={JsonConvert.SerializeObject(getItemsParametersViewModel)}");
             }
-        }
+            
+            int top = int.Parse(Request.QueryString["$top"]);
+            int skip = int.Parse(Request.QueryString["$skip"]);
+            string orderByValue = null;
+            string orderByOrder = null;
 
-        [HttpGet]
-        public ActionResult Create()
-        {
-            var viewModel = new ItemCreateViewModel();
-            HierarchyClassListModel hierarchyListModel = getHierarchyLineageQueryHandler.Search(new GetHierarchyLineageParameters());
-            viewModel.MerchandiseHierarchyClasses = GetHierarchyLineage(hierarchyListModel.MerchandiseHierarchyList);
-            viewModel.TaxHierarchyClasses = GetHierarchyLineage(hierarchyListModel.TaxHierarchyList);
-            viewModel.BrowsingHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.BrowsingHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
-            viewModel.NationalHierarchyClasses = GetHierarchyLineage(hierarchyListModel.NationalHierarchyList);
+            if (Request.QueryString.AllKeys.Any(k => k.Contains("$orderby")))
+            {
+                var splitOrderBy = Request.QueryString["$orderby"].Split(' ');
+                orderByValue = splitOrderBy[0];
+                orderByOrder = splitOrderBy[1];
+            }
 
-            viewModel.RetailUoms = GetRetailUomSelectList(string.Empty, true);
+            ItemResultModel result = GetSearchResults(top, skip, orderByOrder, orderByValue);
+            for (int i = 0; i < result.Records.Count; i++)
+            {
+                result.Records[i]["UserWriteAccess"] = this.GetWriteAccess();
+            }
 
-            return View(viewModel);
+            return this.Content(JsonConvert.SerializeObject(result), "application/json");
         }
 
         [HttpPost]
         [WriteAccessAuthorize]
-        public ActionResult Create(ItemCreateViewModel viewModel)
+        public ActionResult GridUpdate()
         {
-            if (!ModelState.IsValid)
-            {
-                HierarchyClassListModel hierarchyListModel = getHierarchyLineageQueryHandler.Search(new GetHierarchyLineageParameters());
-                viewModel.MerchandiseHierarchyClasses = GetHierarchyLineage(hierarchyListModel.MerchandiseHierarchyList);
-                viewModel.TaxHierarchyClasses = GetHierarchyLineage(hierarchyListModel.TaxHierarchyList);
-                viewModel.BrowsingHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.BrowsingHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
-                viewModel.NationalHierarchyClasses = GetHierarchyLineage(hierarchyListModel.NationalHierarchyList);
-                viewModel.RetailUoms = GetRetailUomSelectList(string.Empty, true);
+            var transactions = infragisticsHelper.LoadTransactions<JObject>(HttpContext.Request.Form);
+            var row = transactions.Single().row;
 
-                return View(viewModel);
+            var dictionary = row.ToObject<Dictionary<string, string>>();
+
+            ItemEditViewModel model = new ItemEditViewModel()
+            {
+                ItemViewModel = new ItemViewModel()
+                {
+                    ItemId = Convert.ToInt32(dictionary["ItemId"]),
+                    ScanCode = dictionary["ScanCode"],
+                    MerchandiseHierarchyClassId = Convert.ToInt32(dictionary["MerchandiseHierarchyClassId"]),
+                    BrandsHierarchyClassId = Convert.ToInt32(dictionary["BrandsHierarchyClassId"]),
+                    TaxHierarchyClassId = Convert.ToInt32(dictionary["TaxHierarchyClassId"]),
+                    FinancialHierarchyClassId = Convert.ToInt32(dictionary["FinancialHierarchyClassId"]),
+                    NationalHierarchyClassId = Convert.ToInt32(dictionary["NationalHierarchyClassId"]),
+                    ManufacturerHierarchyClassId = Convert.ToInt32(dictionary["ManufacturerHierarchyClassId"]),
+                }
+            };
+
+            dictionary.Remove("ItemId");
+            dictionary.Remove("ScanCode");
+            dictionary.Remove("ScanCodeTypeId");
+            dictionary.Remove("BarcodeType");
+            dictionary.Remove("ScanCodeTypeDescription");
+            dictionary.Remove("ItemType");
+            dictionary.Remove("ItemTypeId");
+            dictionary.Remove("ItemTypeDescription");
+            dictionary.Remove("MerchandiseHierarchyClassId");
+            dictionary.Remove("BrandsHierarchyClassId");
+            dictionary.Remove("TaxHierarchyClassId");
+            dictionary.Remove("FinancialHierarchyClassId");
+            dictionary.Remove("NationalHierarchyClassId");
+            dictionary.Remove("ManufacturerHierarchyClassId");
+
+            List<string> errors = new List<string>();
+            var attributeValidationErrors = dictionary
+                .Select(kvp => itemAttributesValidatorFactory.CreateItemAttributesJsonValidator(kvp.Key).Validate(kvp.Value))
+                .Where(r => !r.IsValid)
+                .SelectMany(r => r.ErrorMessages)
+                .ToList();
+            if (attributeValidationErrors.Count > 0)
+            {
+                return Json(new { Success = false, Errors = attributeValidationErrors });
             }
 
+            model.ItemViewModel.ItemAttributes = dictionary;
+            this.UpdateItem(model);
+            return Json(new { Success = true });
+        }
+
+        private void UpdateItem(ItemEditViewModel model)
+        {
+            var existingItem = this.getItemQueryHandler.Search(new GetItemParameters()
+            {
+                ScanCode = model.ItemViewModel.ScanCode
+            }).ToViewModel();
+
+            UpdateItemManager manager = new UpdateItemManager();
+            manager.ItemId = model.ItemViewModel.ItemId;
+            manager.ScanCode = model.ItemViewModel.ScanCode;
+            manager.MerchandiseHierarchyClassId = model.ItemViewModel.MerchandiseHierarchyClassId;
+            manager.BrandsHierarchyClassId = model.ItemViewModel.BrandsHierarchyClassId;
+            manager.TaxHierarchyClassId = model.ItemViewModel.TaxHierarchyClassId;
+            manager.NationalHierarchyClassId = model.ItemViewModel.NationalHierarchyClassId;
+            manager.ManufacturerHierarchyClassId = model.ItemViewModel.ManufacturerHierarchyClassId.GetValueOrDefault();
+            var merchDependentItemPropertiesModel = getItemPropertiesFromMerchQueryHandler.Search(new GetItemPropertiesFromMerchHierarchyParameters
+            {
+                MerchHierarchyClassId = manager.MerchandiseHierarchyClassId,
+            });
+            manager.FinancialHierarchyClassId = merchDependentItemPropertiesModel.FinancialHierarcyClassId;
+            manager.ItemTypeCode = MerchToItemTypeCodeMapper.GetItemTypeCode(merchDependentItemPropertiesModel.NonMerchandiseTraitValue);
+            manager.ItemAttributes = model.ItemViewModel.ItemAttributes.Where(i => !string.IsNullOrWhiteSpace(i.Value)).ToDictionary(i => i.Key, i => i.Value);
+            manager.ItemAttributes[Constants.Attributes.ProhibitDiscount] = merchDependentItemPropertiesModel.ProhibitDiscount.ToString().ToLower();
+            manager.ItemAttributes[Constants.Attributes.ModifiedBy] = User.Identity.Name;
+            manager.ItemAttributes[Constants.Attributes.ModifiedDateTimeUtc] = DateTime.UtcNow.ToFormattedDateTimeString();
+            manager.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc] = existingItem.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc];
+            manager.ItemAttributes[Constants.Attributes.CreatedBy] = existingItem.ItemAttributes[Constants.Attributes.CreatedBy];
+            manager.ItemAttributes.Remove(Constants.Attributes.ItemTypeCode);
+
+            List<AttributeModel> attributes = getAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>()).ToList();
+            for (int i = 0; i < attributes.Count; i++)
+            {
+                if (attributes[i].DataTypeName == Constants.DataTypeNames.Boolean)
+                {
+                    if (manager.ItemAttributes.ContainsKey(attributes[i].AttributeName))
+                    {
+                        manager.ItemAttributes[attributes[i].AttributeName] = manager.ItemAttributes[attributes[i].AttributeName].ToLower();
+                    }
+                }
+
+                if (attributes[i].DataTypeName == Constants.DataTypeNames.Date && !attributes[i].IsReadOnly)
+                {
+                    string attributeValue = string.Empty;
+                    if (manager.ItemAttributes.TryGetValue(attributes[i].AttributeName, out attributeValue))
+                    {
+                        if (!string.IsNullOrWhiteSpace(attributeValue))
+                        {
+                            manager.ItemAttributes[attributes[i].AttributeName] =
+                                Convert.ToDateTime(attributeValue).ToString("yyyy-MM-dd");
+                        }
+                    }
+                }
+            }
+
+            this.updateItemManagerHandler.Execute(manager);
+        }
+
+        [HttpGet]
+        public ActionResult Detail(string scanCode)
+        {
+            ItemDbModel item = getItemQueryHandler.Search(new GetItemParameters { ScanCode = scanCode });
+            IEnumerable<AttributeModel> attributes = getAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>());
+
+            ItemViewModel itemViewModel = item.ToViewModel();
+            itemViewModel.MerchandiseHierarchyLineage = GetHierarchyLineage(Hierarchies.Merchandise, itemViewModel.MerchandiseHierarchyClassId);
+            itemViewModel.BrandsHierarchyLineage = GetHierarchyLineage(Hierarchies.Brands, itemViewModel.BrandsHierarchyClassId);
+            itemViewModel.TaxHierarchyLineage = GetHierarchyLineage(Hierarchies.Tax, itemViewModel.TaxHierarchyClassId);
+            itemViewModel.FinancialHierarchyLineage = GetHierarchyLineage(Hierarchies.Financial, itemViewModel.FinancialHierarchyClassId);
+            itemViewModel.NationalHierarchyLineage = GetHierarchyLineage(Hierarchies.National, itemViewModel.NationalHierarchyClassId);
+            itemViewModel.ManufacturerHierarchyLineage = GetHierarchyLineage(Hierarchies.Manufacturer, itemViewModel.ManufacturerHierarchyClassId.GetValueOrDefault());
+
+            var viewModel = new ItemDetailViewModel
+            {
+                ItemViewModel = itemViewModel,
+                Attributes = attributes.ToViewModels(),
+                ItemHistoryModel = this.GetItemHistoryModel(itemViewModel, false)
+            };
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public ActionResult History(string scanCode)
+        {
+            var itemView = this.GetByScanCode(scanCode, true);
+            return View(itemView.ItemHistoryModel);
+        }
+
+        [HttpGet]
+        [WriteAccessAuthorize]
+        public ActionResult Create()
+        {
+            ItemCreateViewModel itemCreateViewModel = new ItemCreateViewModel();
+            BuildItemCreateViewModel(itemCreateViewModel, true);
+
+            return View(itemCreateViewModel);
+        }
+
+        [HttpPost]
+        [WriteAccessAuthorize]
+        public ActionResult Create(ItemCreateViewModel itemCreateViewModel)
+        {
             try
             {
-                AddItemManager addItemManager = new AddItemManager
+                if (!ModelState.IsValid)
                 {
-                    Item = viewModel.ToBulkImportNewItemModel(),
-                    UserName = User.Identity.Name
-                };
-                addItemManagerHandler.Execute(addItemManager);
+                    List<string> allErrors = ModelState.Values.SelectMany(v => v.Errors).Select(s => s.ErrorMessage).ToList();
+                    ViewData["ErrorMessages"] = allErrors;
+                    BuildItemCreateViewModel(itemCreateViewModel);
+                    return View(itemCreateViewModel);
+                }
+
+                AddItemManager manager = new AddItemManager();
+                manager.MerchandiseHierarchyClassId = itemCreateViewModel.MerchandiseHierarchyClassId;
+                manager.BrandsHierarchyClassId = itemCreateViewModel.BrandHierarchyClassId;
+                manager.TaxHierarchyClassId = itemCreateViewModel.TaxHierarchyClassId;
+                manager.NationalHierarchyClassId = itemCreateViewModel.NationalHierarchyClassId;
+                manager.ManufacturerHierarchyClassId = itemCreateViewModel.ManufacturerHierarchyClassId.GetValueOrDefault();
+                manager.BarCodeTypeId = itemCreateViewModel.BarcodeTypeId;
+                manager.ScanCode = itemCreateViewModel.ScanCode;
+
+                var merchDependentItemPropertiesModel = getItemPropertiesFromMerchQueryHandler.Search(new GetItemPropertiesFromMerchHierarchyParameters
+                {
+                    MerchHierarchyClassId = manager.MerchandiseHierarchyClassId,
+                });
+
+                manager.FinancialHierarchyClassId = merchDependentItemPropertiesModel.FinancialHierarcyClassId;
+                manager.ItemTypeCode = MerchToItemTypeCodeMapper.GetItemTypeCode(merchDependentItemPropertiesModel.NonMerchandiseTraitValue);
+                manager.ItemAttributes = itemCreateViewModel.ItemAttributes.Where(i => !string.IsNullOrWhiteSpace(i.Value)).ToDictionary(i => i.Key, i => i.Value);
+                manager.ItemAttributes.Add(Constants.Attributes.ProhibitDiscount, merchDependentItemPropertiesModel.ProhibitDiscount.ToString().ToLower());
+                manager.ItemAttributes[Constants.Attributes.CreatedBy] = User.Identity.Name;
+                manager.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc] = DateTime.UtcNow.ToFormattedDateTimeString();
+                manager.ItemAttributes[Constants.Attributes.ModifiedBy] = User.Identity.Name;
+                manager.ItemAttributes[Constants.Attributes.ModifiedDateTimeUtc] = manager.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc];
+                List<AttributeModel> attributes = getAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>()).ToList();
+                for (int i = 0; i < attributes.Count; i++)
+                {
+                    if (attributes[i].DataTypeName == Constants.DataTypeNames.Date && !attributes[i].IsReadOnly)
+                    {
+                        string attributeValue = string.Empty;
+                        if (manager.ItemAttributes.TryGetValue(attributes[i].AttributeName, out attributeValue))
+                        {
+                            if (!string.IsNullOrWhiteSpace(attributeValue))
+                            {
+                                manager.ItemAttributes[attributes[i].AttributeName] =
+                                    Convert.ToDateTime(attributeValue).ToString("yyyy-MM-dd");
+                            }
+                        }
+                    }
+                }
+                addItemManagerHandler.Execute(manager);
+
+                return RedirectToAction("Detail", new { scanCode = manager.ScanCode });
             }
             catch (Exception ex)
             {
                 var exceptionLogger = new ExceptionLogger(logger);
                 exceptionLogger.LogException(ex, this.GetType(), MethodBase.GetCurrentMethod());
+                List<string> allErrors = new List<string>() { ex.Message };
+                ViewData["ErrorMessages"] = allErrors;
+                BuildItemCreateViewModel(itemCreateViewModel);
+                return View(itemCreateViewModel);
+            }
+        }
 
-                ViewData["ErrorMessage"] = ex.Message;
+        [WriteAccessAuthorize]
+        public ActionResult Edit(string scanCode)
+        {
+            return View(this.GetByScanCode(scanCode));
+        }
 
-                HierarchyClassListModel hierarchyListModel = getHierarchyLineageQueryHandler.Search(new GetHierarchyLineageParameters());
-                viewModel.MerchandiseHierarchyClasses = GetHierarchyLineage(hierarchyListModel.MerchandiseHierarchyList);
-                viewModel.TaxHierarchyClasses = GetHierarchyLineage(hierarchyListModel.TaxHierarchyList);
-                viewModel.BrowsingHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.BrowsingHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
-                viewModel.NationalHierarchyClasses = GetHierarchyLineage(hierarchyListModel.NationalHierarchyList);
-                viewModel.RetailUoms = GetRetailUomSelectList(string.Empty, true);     
-
+        [HttpPost]
+        [WriteAccessAuthorize]
+        public ActionResult Edit(ItemEditViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                this.UpdateItem(viewModel);
+                ItemEditViewModel updatedModel = this.GetByScanCode(viewModel.ItemViewModel.ScanCode);
+                updatedModel.Success = true;
+                ModelState.Clear();
+                return View(updatedModel);
+            }
+            else
+            {
+                IEnumerable<AttributeModel> attributes = getAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>());
+                viewModel.Attributes = attributes.ToViewModels().ToList();
+                viewModel.ItemHistoryModel = GetItemHistoryModel(viewModel.ItemViewModel, false);
+                viewModel.Success = false;
+                viewModel.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(s => s.ErrorMessage).ToList();
                 return View(viewModel);
             }
-
-            TempData["CreateItemMessage"] = "Created item successfully.";
-
-            return RedirectToAction("Create");
         }
 
-        private ItemEditViewModel BuildItemEditViewModel(string scanCode)
+        private string GetHierarchyLineage(int hierarchyId, int hierarchyClassId)
         {
-            // Build view from selected item.
-            var item = getItemsByBulkScanCodeSearcParameters.Search(new GetItemsByBulkScanCodeSearchParameters { ScanCodes = new List<string> { scanCode } }).First();
-            ItemEditViewModel viewModel = new ItemEditViewModel(item);
-
-            // Populate selection lists in view.
-            viewModel.RetailUoms = GetRetailUomSelectList(viewModel.RetailUom, includeInitialBlank: true);
-            HierarchyClassListModel hierarchyListModel = getHierarchyLineageQueryHandler.Search(new GetHierarchyLineageParameters());
-            viewModel.MerchandiseHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.MerchandiseHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
-            viewModel.TaxHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.TaxHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
-            viewModel.BrowsingHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.BrowsingHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
-            viewModel.NationalHierarchyClasses = new SelectList(GetHierarchyLineage(hierarchyListModel.NationalHierarchyList), "HierarchyClassId", "HierarchyClassLineage");
-
-            return viewModel;
+            return getHierarchyClassesQueryHandler
+                  .Search(new GetHierarchyClassesParameters
+                  {
+                      HierarchyId = hierarchyId,
+                      HierarchyClassId = hierarchyClassId
+                  })
+                  .FirstOrDefault()?
+                  .HierarchyLineage;
         }
 
-        private SelectList GetRetailUomSelectList(string selectedUom, bool includeInitialBlank)
+        private void BuildItemCreateViewModel(ItemCreateViewModel itemCreateViewModel, bool shouldUpdateToPlu = false)
         {
-            var uoms = UomCodes.ByName.Values.ToList();
+            var attributeModels = getAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>());
+            var filteredAttributeModels = attributeModels.Where(a => a.AttributeName != Constants.Attributes.ProhibitDiscount);
 
-            if (includeInitialBlank)
+            itemCreateViewModel.Attributes = filteredAttributeModels.ToViewModels();
+            var barcodeTypes = getBarcodeTypeQueryHandler.Search(new GetBarcodeTypeParameters());
+            itemCreateViewModel.BarcodeTypes = barcodeTypes;
+
+            if (shouldUpdateToPlu)
             {
-                // Insert empty value at the beginning of the list to allow for an un-selected state.
-                uoms.Insert(0, string.Empty);
-            }
+                itemCreateViewModel.ScanCodeType = Constants.Plu;
 
-            return new SelectList(uoms, selectedUom);
-        }
-
-        //private SelectList GetDrainedWeightUomSelectList(string selectedValue, bool includeInitialBlank)
-        //{
-        //    var values = DrainedWeightUoms.Values.ToList();
-
-        //    if (includeInitialBlank)
-        //    {
-        //        // Insert empty value at the beginning of the list to allow for an un-selected state.
-        //        values.Insert(0, string.Empty);
-        //    }
-
-        //    return new SelectList(values, selectedValue);
-        //}
-
-        //private SelectList GetFairTradeCertifiedSelectList(string selectedValue, bool includeInitialBlank)
-        //{
-        //    var values = FairTradeCertifiedValues.Values.ToList();
-
-        //    if (includeInitialBlank)
-        //    {
-        //        // Insert empty value at the beginning of the list to allow for an un-selected state.
-        //        values.Insert(0, string.Empty);
-        //    }
-
-        //    return new SelectList(values, selectedValue);
-        //}
-
-        private List<HierarchyClassViewModel> GetHierarchyLineage(List<HierarchyClassModel> hierarchyList)
-        {
-            List<HierarchyClassViewModel> hierarchyClasses = hierarchyList.HierarchyClassForCombo();
-            return hierarchyClasses;
-        }
-
-        private SelectList GetAgencySelectList(List<CertificationAgencyModel> certificateAgencyList)
-        {
-            return new SelectList(certificateAgencyList, "HierarchyClassId", "HierarchyClassName");
-        }
-        
-        [ComboDataSourceAction]
-        public ActionResult Combo()
-        {
-            var queryString = HttpContext.Request.QueryString;
-            using (var context = new IconContext())
-            {
-                var brands = context.HierarchyClass.Where(hc => hc.hierarchyID == Hierarchies.Brands)
-                    .OrderBy(hc => hc.hierarchyClassName)
-                    .Select(hc => new { Id = hc.hierarchyClassID, Name = hc.hierarchyClassName })
-                    .ToList();
-
-                return View(brands.AsQueryable());
             }
         }
+
+        private ItemEditViewModel GetByScanCode(string scanCode, bool isInforHistory = false)
+        {
+            ItemDbModel item = this.getItemQueryHandler.Search(new GetItemParameters()
+            {
+                ScanCode = scanCode
+            });
+
+            IEnumerable<AttributeModel> attributes = getAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>());
+            ItemViewModel itemViewModel = item.ToViewModel();
+            itemViewModel.MerchandiseHierarchyLineage = GetHierarchyLineage(Hierarchies.Merchandise, itemViewModel.MerchandiseHierarchyClassId);
+            itemViewModel.BrandsHierarchyLineage = GetHierarchyLineage(Hierarchies.Brands, itemViewModel.BrandsHierarchyClassId);
+            itemViewModel.TaxHierarchyLineage = GetHierarchyLineage(Hierarchies.Tax, itemViewModel.TaxHierarchyClassId);
+            itemViewModel.FinancialHierarchyLineage = GetHierarchyLineage(Hierarchies.Financial, itemViewModel.FinancialHierarchyClassId);
+            itemViewModel.NationalHierarchyLineage = GetHierarchyLineage(Hierarchies.National, itemViewModel.NationalHierarchyClassId);
+            itemViewModel.ManufacturerHierarchyLineage = GetHierarchyLineage(Hierarchies.Manufacturer, itemViewModel.ManufacturerHierarchyClassId.GetValueOrDefault());
+
+            return new ItemEditViewModel
+            {
+                ItemViewModel = itemViewModel,
+                Attributes = attributes.ToViewModels().ToList(),
+                ItemHistoryModel = GetItemHistoryModel(itemViewModel, isInforHistory)
+            };
+        }
+
+        private ItemHistoryViewModel GetItemHistoryModel(ItemViewModel viewModel, bool isInforHistory)
+        {
+            IEnumerable<ItemHistoryDbModel> history = this.getItemHistoryQueryHandler.Search(new GetItemHistoryParameters()
+            {
+                ItemId = viewModel.ItemId
+            });
+
+            ItemHierarchyClassHistoryAllModel itemHierarchyHistory = this.getItemHierarchyHistoryQueryHandler.Search(new GetItemHierarchyClassHistoryParameters()
+            {
+                ItemId = viewModel.ItemId
+            });
+
+            IEnumerable<ItemInforHistoryDbModel> inforHistory = this.getItemInforHistoryQueryHandler.Search(new GetItemInforHistoryParameters()
+            {
+                ItemId = viewModel.ItemId
+            });
+
+            if (isInforHistory)
+            {
+                IEnumerable<AttributeInforModel> attributes = getInforAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeInforModel>>());
+
+                List<AttributeDisplayModel> displayAttributes = (from a in attributes
+                                                                 select new AttributeDisplayModel
+                                                                 {
+                                                                     AttributeName = a.AttributeName,
+                                                                     DisplayName = a.DisplayName
+                                                                 }).ToList();
+
+                return itemHistoryBuilder.BuildItemHistory(this.historyModelTransformer.TransformInforHistory(inforHistory, displayAttributes), new ItemHierarchyClassHistoryAllModel(), displayAttributes, viewModel);
+            }
+            else
+            {
+                List<AttributeModel> attributes = getAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>()).ToList();
+
+                List<AttributeDisplayModel> displayAttributes = (from a in attributes
+                                                                 select new AttributeDisplayModel
+                                                                 {
+                                                                     AttributeName = a.AttributeName,
+                                                                     DisplayName = a.DisplayName
+                                                                 }).ToList();
+
+                return itemHistoryBuilder.BuildItemHistory(this.historyModelTransformer.ToViewModels(history), itemHierarchyHistory, displayAttributes, viewModel);
+            }
+        }
+
+
+        [HttpGet]
+        public void ItemTemplateNewExporter()
+        {
+            var newItemTemplateExporter = exporterService.GetItemTemplateNewExporter(null, true, true);
+            newItemTemplateExporter.Export();
+
+            SendForDownload(newItemTemplateExporter.ExportModel.ExcelWorkbook, newItemTemplateExporter.ExportModel.ExcelWorkbook.CurrentFormat, "NewItem", "IconImportTemplate_");
+        }
+
+        [HttpPost]
+        public void ItemSearchExport(string[] selectedColumnNames)
+        {
+            Session["SelectedColumnNames"] = selectedColumnNames;
+            logger.Debug($"sessionID={this.Session.SessionID}, SelectedColumnNames={JsonConvert.SerializeObject(selectedColumnNames)}");
+
+        }
+
+        [HttpPost]
+        public void ExportSelectedItems(List<int> selectedIds)
+        {
+            var result = GetMultipleSearchResults(selectedIds);
+
+            Session["SelectedExportList"] = result;
+        }
+
+        [HttpGet]
+        public void ExportSelectedItems(bool exportAllAttributes)
+        {
+            
+            if (Session["SelectedExportList"] == null)
+            {
+                logger.Debug($"sessionID={this.Session.SessionID}, SelectedExportList was null");
+                return;
+            }
+            else
+            {
+                logger.Debug($"sessionID={this.Session.SessionID}, SelectedExportList={JsonConvert.SerializeObject(Session["SelectedExportList"])}");
+            }
+
+            List<string> selectedColumnNames = null;
+            if (Session["SelectedColumnNames"] != null)
+            {
+                selectedColumnNames = ((string[])Session["SelectedColumnNames"]).ToList();
+                logger.Debug($"sessionID={this.Session.SessionID}, SelectedColumnNames={JsonConvert.SerializeObject(selectedColumnNames)}");
+            }
+            else
+            {
+                logger.Debug($"sessionID={this.Session.SessionID}, SelectedColumnNames was null");
+            }
+
+            ItemResultModel results = Session["SelectedExportList"] as ItemResultModel;
+
+            var newItemTemplateExporter = exporterService.GetItemTemplateNewExporter(selectedColumnNames, exportAllAttributes);
+            newItemTemplateExporter.Export(results.Records.ToList());
+
+            SendForDownload(newItemTemplateExporter.ExportModel.ExcelWorkbook, newItemTemplateExporter.ExportModel.ExcelWorkbook.CurrentFormat, "Item", "IconExport");
+
+            Session["SelectedExportList"] = null;
+        }
+
+        [HttpGet]
+        public void ItemSearchExport(bool exportAllAttributes)
+        {
+            List<String> selectedColumnNames = null;
+
+            if (Session["SelectedColumnNames"] != null)
+            {
+                selectedColumnNames = ((string[])Session["SelectedColumnNames"]).ToList();
+                logger.Debug($"sessionID={this.Session.SessionID}, SelectedColumnNames={JsonConvert.SerializeObject(selectedColumnNames)}");
+            }
+            else
+            {
+                logger.Debug($"sessionID={this.Session.SessionID}, SelectedColumnNames was null");
+            }
+
+            int maxNumberofItemsRecordsToBeExported = AppSettingsAccessor.GetIntSetting("maxNumberOfItemsRecordToBeExported", 10000);
+            ItemResultModel result = GetSearchResults(maxNumberofItemsRecordsToBeExported, 0, null, null);
+
+            var newItemTemplateExporter = exporterService.GetItemTemplateNewExporter(selectedColumnNames, exportAllAttributes);
+            newItemTemplateExporter.Export(result.Records.ToList());
+            SendForDownload(newItemTemplateExporter.ExportModel.ExcelWorkbook, newItemTemplateExporter.ExportModel.ExcelWorkbook.CurrentFormat, "Item", "IconExport");
+        }
+
+        private void SendForDownload(Workbook document, WorkbookFormat excelFormat, string source, string filePrefix)
+        {
+            string documentFileNameRoot = $"{filePrefix}_{source}_{DateTime.Now.ToString("yyyyMMddHHmmss")}.xlsx";
+
+            Response.Clear();
+            Response.AppendHeader("content-disposition", "attachment; filename=" + documentFileNameRoot);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.SetCookie(new HttpCookie("fileDownload", "true") { Path = "/" });
+            document.SetCurrentFormat(excelFormat);
+            document.Save(Response.OutputStream);
+            Response.End();
+        }
+
+
+        [HttpGet]
+        public ActionResult BulkUploadStatus(int rowCount)
+        {
+            var data = this.getBulkItemUploadStatusQueryHandler.Search(new GetBulkUploadStatusParameters() { RowCount = rowCount });
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        [WriteAccessAuthorize]
+        public ActionResult BulkUpload()
+        {
+            BulkUploadViewModel bulkUploadViewModel = new BulkUploadViewModel();
+            return View(bulkUploadViewModel);
+        }
+
+        [HttpGet]
+        public ActionResult BulkUploadErrors(int Id)
+        {
+            var model = getBulkUploadByIdQueryHandler.Search(new GetBulkUploadByIdParameters {BulkItemUploadId = Id});
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult GetBulkUploadErrors(int Id)
+        {
+            var parameters = new GetBulkUploadErrorsPrameters() {BulkItemUploadId = Id};
+            var data = this.getBulkUploadErrorsQueryHandler.Search(parameters);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [WriteAccessAuthorize]
+        public ActionResult UploadFiles()
+        {
+            // Checking no of files injected in Request object  
+            if (Request.Files.Count > 0)
+            {
+                var uploadedFileName = string.Empty;
+                var uploadedFileType = Request.Form["fileType"];
+                try
+                {
+                    //  Get all files from Request object  
+                    HttpFileCollectionBase files = Request.Files;
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        var uploadedFile = files[i];
+
+                        if (uploadedFile == null)
+                        {
+                            var result = new BulkItemUploadResultModel { Result = "Error", Message = "No file selected" };
+                            return Json(result);
+                        }
+
+                        // Checking for Internet Explorer  
+                        if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                        {
+                            string[] testfiles = uploadedFile.FileName.Split(new char[] { '\\' });
+                            uploadedFileName = testfiles[testfiles.Length - 1];
+                        }
+                        else
+                        {
+                            uploadedFileName = uploadedFile.FileName;
+                        }
+
+                        var binaryReader = new BinaryReader(uploadedFile.InputStream);
+                        var uploadedData = binaryReader.ReadBytes(uploadedFile.ContentLength);
+
+                        try
+                        {
+
+                            var manager = new BulkItemUploadManager
+                            {
+                                BulkItemUploadModel = new BulkItemUploadModel
+                                {
+                                    FileName = uploadedFileName,
+                                    FileContent = uploadedData,
+                                    FileModeType = uploadedFileType == "UpdateExisting" ? 1 : 0,
+                                    UploadedBy = User.Identity.Name
+                                }
+                            };
+                            bulkItemUploadManagerHandler.Execute(manager);
+                            var successMessage = $"File name: {uploadedFileName} uploaded successfully.";
+                            var result = new BulkItemUploadResultModel { Result = "Success", Message = successMessage };
+                            return Json(result);
+                        }
+                        catch (Exception ex)
+                        {
+                            var result = new BulkItemUploadResultModel { Result = "Error", Message = $"Error occurred. Error details: {ex.Message}" };
+                            return Json(result);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var result = new BulkItemUploadResultModel { Result = "Error", Message = $"Error occurred. Error details: {ex.Message}" };
+                    return Json(result);
+                }
+            }
+            else
+            {
+                var result = new BulkItemUploadResultModel { Result = "Error", Message = "No files selected" };
+
+                return Json(result);
+            }
+
+            return null;
+        }
+
+        private ItemResultModel GetMultipleSearchResults(List<int> itemIds)
+        {
+            var dbResponse = getItemsByIdHandler.Search(new GetItemsByIdSearchParameters { ItemIds = itemIds });
+
+            var dynamicObjects = dbResponse.Items
+                .Select(i =>
+                {
+                    Dictionary<string, object> itemAttributes = JsonConvert.DeserializeObject<Dictionary<string, object>>(i.ItemAttributesJson);
+                    itemAttributes["ItemId"] = i.ItemId;
+                    itemAttributes["ItemTypeDescription"] = i.ItemTypeDescription;
+                    itemAttributes["ScanCode"] = i.ScanCode;
+                    itemAttributes["BarcodeType"] = i.BarcodeType;
+                    itemAttributes["MerchandiseHierarchyClassId"] = i.MerchandiseHierarchyClassId;
+                    itemAttributes["BrandsHierarchyClassId"] = i.BrandsHierarchyClassId;
+                    itemAttributes["TaxHierarchyClassId"] = i.TaxHierarchyClassId;
+                    itemAttributes["FinancialHierarchyClassId"] = i.FinancialHierarchyClassId;
+                    itemAttributes["NationalHierarchyClassId"] = i.NationalHierarchyClassId;
+                    itemAttributes["ManufacturerHierarchyClassId"] = i.ManufacturerHierarchyClassId;
+                    itemAttributes["Brands"] = i.Brands;
+                    itemAttributes["National"] = i.National;
+                    itemAttributes["Merchandise"] = i.Merchandise;
+                    itemAttributes["Tax"] = i.Tax;
+                    itemAttributes["Financial"] = i.Financial;
+                    itemAttributes["Manufacturer"] = i.Manufacturer;
+                    return itemAttributes;
+                });
+
+            var result = new ItemResultModel
+            {
+                Records = dynamicObjects.ToList(),
+                TotalRecordsCount = dbResponse.TotalRecordsCount
+            };
+
+            return result;
+        }
+
+        private ItemResultModel GetSearchResults(int top, int skip, string orderByOrder, string orderByValue, string itemId = "")
+        {
+            var getItemsParametersViewModel = Session["GetItemsParametersViewModel"] as GetItemsParametersViewModel;
+
+            var getItemsParameters = new GetItemsParameters
+            {
+                Skip = skip,
+                OrderByOrder = orderByOrder ?? "ASC",
+                OrderByValue = orderByValue ?? "ItemId",
+                Top = top,
+                ItemAttributeJsonParameters = !String.IsNullOrWhiteSpace(itemId) ? new List<ItemSearchCriteria>()
+                {
+                    new ItemSearchCriteria("ItemId", AttributeSearchOperator.ExactlyMatchesAll, itemId)
+                } : new List<ItemSearchCriteria>() { }
+            };
+
+            getItemsParametersViewModel.GetItemsAttributesParameters.ForEach(x =>
+            {
+                if (!string.IsNullOrWhiteSpace(x.AttributeValue) || (x.SearchOperator == AttributeSearchOperator.HasAttribute || x.SearchOperator == AttributeSearchOperator.DoesNotHaveAttribute))
+                {
+                    var criteria = new ItemSearchCriteria(x.AttributeName,
+                        x.SearchOperator,
+                        x.AttributeValue);
+
+                    if (criteria.Values.Count > 0 || (x.SearchOperator == AttributeSearchOperator.HasAttribute || x.SearchOperator == AttributeSearchOperator.DoesNotHaveAttribute))
+                    {
+                        getItemsParameters.ItemAttributeJsonParameters.Add(criteria);
+                    }
+                }
+            });
+
+            var queryResult = getItemsQueryHandler.Search(getItemsParameters);
+
+            var dynamicObjects = queryResult.Items
+                .Select(i =>
+                {
+                    Dictionary<string, object> itemAttributes = JsonConvert.DeserializeObject<Dictionary<string, object>>(i.ItemAttributesJson);
+                    itemAttributes["ItemId"] = i.ItemId;
+                    itemAttributes["ItemTypeDescription"] = i.ItemTypeDescription;
+                    itemAttributes["ScanCode"] = i.ScanCode;
+                    itemAttributes["BarcodeType"] = i.BarcodeType;
+                    itemAttributes["MerchandiseHierarchyClassId"] = i.MerchandiseHierarchyClassId;
+                    itemAttributes["BrandsHierarchyClassId"] = i.BrandsHierarchyClassId;
+                    itemAttributes["TaxHierarchyClassId"] = i.TaxHierarchyClassId;
+                    itemAttributes["FinancialHierarchyClassId"] = i.FinancialHierarchyClassId;
+                    itemAttributes["NationalHierarchyClassId"] = i.NationalHierarchyClassId;
+                    itemAttributes["ManufacturerHierarchyClassId"] = i.ManufacturerHierarchyClassId;
+                    itemAttributes["Brands"] = i.Brands;
+                    itemAttributes["National"] = i.National;
+                    itemAttributes["Merchandise"] = i.Merchandise;
+                    itemAttributes["Tax"] = i.Tax;
+                    itemAttributes["Financial"] = i.Financial;
+                    itemAttributes["Manufacturer"] = i.Manufacturer;
+                    return itemAttributes;
+                });
+
+            var result = new ItemResultModel
+            {
+                Records = dynamicObjects.ToList(),
+                TotalRecordsCount = queryResult.TotalRecordsCount,
+                Query = queryResult.Query
+            };
+
+            return result;
+
+        }
+        private Enums.WriteAccess GetWriteAccess()
+        {
+            bool hasWriteAccess = this.settings.WriteAccessGroups.Split(',').Any(x => this.HttpContext.User.IsInRole(x.Trim()));
+            var userAccess = Enums.WriteAccess.None;
+
+            if (hasWriteAccess)
+            {
+                userAccess = Enums.WriteAccess.Full;
+            }
+
+            return userAccess;
+        }
+
     }
 }

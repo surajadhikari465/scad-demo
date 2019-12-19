@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Migrated rules for Moq.ruleset" Description="This rule set was created from the CodeAnalysisRules property for the &quot;Release (Any CPU)&quot; configuration in project &quot;C:\Documents and Settings\joe.elizondo\My Documents\Visual Studio 2010\Projects\Titan\NEXuS\Proofs of Concept\Mocking Frameworks\Frameworks\Moq\Source\Moq.csproj&quot;." ToolsVersion="10.0">
+  <IncludeAll Action="Warning" />
+  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1004" Action="None" />
+    <Rule Id="CA1006" Action="None" />
+    <Rule Id="CA1500" Action="None" />
+    <Rule Id="CA1704" Action="None" />
+  </Rules>
+</RuleSet>

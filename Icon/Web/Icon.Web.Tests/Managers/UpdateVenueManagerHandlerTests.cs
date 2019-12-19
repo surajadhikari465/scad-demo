@@ -3,7 +3,6 @@ using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.App_Start;
@@ -21,6 +20,7 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         private UpdateVenueManager manager;
 
         private IconContext context;
+        private IMapper mapper;
         private Mock<ICommandHandler<UpdateVenueCommand>> updateVenueHandler;
         private Mock<ICommandHandler<AddLocaleMessageCommand>> addLocaleMessageHandler;
         private Mock<IQueryHandler<GetLocaleParameters, List<Locale>>> getLocaleQuery;
@@ -29,6 +29,7 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         public void Initialize()
         {
             context = new IconContext();
+            mapper = AutoMapperWebConfiguration.Configure();
             updateVenueHandler = new Mock<ICommandHandler<UpdateVenueCommand>>();
             addLocaleMessageHandler = new Mock<ICommandHandler<AddLocaleMessageCommand>>();
             getLocaleQuery = new Mock<IQueryHandler<GetLocaleParameters, List<Locale>>>();
@@ -52,15 +53,8 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
             managerHandler = new UpdateVenueManagerHandler(context,
                 updateVenueHandler.Object,
                 addLocaleMessageHandler.Object,
-                getLocaleQuery.Object);
-
-            AutoMapperWebConfiguration.Configure();
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            Mapper.Reset();
+                getLocaleQuery.Object,
+                mapper);
         }
 
         [TestMethod]
@@ -108,7 +102,7 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         [TestMethod]
         public void UpdateVenueManager_CommandHandlerThrowsException_ShouldThrowExceptionWithCustomMessage()
         {
-            //Given
+            // Given
             updateVenueHandler.Setup(cm => cm.Execute(It.IsAny<UpdateVenueCommand>())).Throws(new Exception("Test Exception"));
 
             // When.

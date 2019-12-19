@@ -1,87 +1,73 @@
-﻿@using Infragistics.Web.Mvc
-@model Icon.Web.Mvc.Models.NationalClassViewModel
+﻿@model Icon.Web.Mvc.Models.NationalClassViewModel
 
 @{
     ViewBag.Title = "Delete National Class";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @{Html.RenderPartial("_HeaderPartial", "National Class Management");}
 
 <div class="page-section">
-	@using (Html.BeginForm("Delete", "NationalClass", FormMethod.Post, new { @class = "begin-form" }))
-	{
-		@Html.AntiForgeryToken()
-		@Html.ValidationSummary(true)
+    @using (Html.BeginForm("Delete", "NationalClass", FormMethod.Post, new { @class = "begin-form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
 
-		@Html.HiddenFor(model => model.HierarchyId)
-		@Html.HiddenFor(model => model.HierarchyName)
-		@Html.HiddenFor(model => model.HierarchyClassId)
-		@Html.HiddenFor(model => model.HierarchyClassName)
-		@Html.HiddenFor(model => model.HierarchyLevel)
-		@Html.HiddenFor(model => model.HierarchyParentClassId)
-		@Html.HiddenFor(model => model.HierarchyParentClassName)
+        @Html.HiddenFor(model => model.HierarchyId)
+        @Html.HiddenFor(model => model.HierarchyName)
+        @Html.HiddenFor(model => model.HierarchyClassId)
+        @Html.HiddenFor(model => model.HierarchyClassName)
+        @Html.HiddenFor(model => model.HierarchyLevel)
+        @Html.HiddenFor(model => model.HierarchyParentClassId)
+        @Html.HiddenFor(model => model.HierarchyParentClassName)
+        @Html.HiddenFor(model => model.NationalClassCode)
 
-		<fieldset>
-			<legend>Delete National Class</legend>
+        <fieldset>
+            <legend>Delete National Class</legend>
 
-			@if (!String.IsNullOrEmpty(Model.HierarchyParentClassName))
-			{
-				<div class="row">
-					@Html.LabelFor(model => model.HierarchyParentClassName, new { @class = "col-md-2 form-label" })
-					<div>
-						@Html.TextBoxFor(model => model.HierarchyParentClassName, new { @disabled = "disabled", @class = "col-md-6 form-input" })
-					</div>
-				</div>
-			}
-
-			<div class="row">
-				@Html.LabelFor(model => model.HierarchyClassName, "Deleted Class Name", new { @class = "col-md-2 form-label" })
-				<div>
-					@Html.TextBoxFor(model => model.HierarchyClassName, new { @disabled = "disabled", @class = "col-md-6 form-input" })
-				</div>
-			</div>
-            <br />
-			@* Display Appropriate National Class Traits where available *@
-			@if (!String.IsNullOrEmpty(Model.NationalClassCode))
-			{
-				<div class="row">
-					@Html.LabelFor(model => model.NationalClassCode, new { @class = "col-md-2 form-label" })
-					<div>
-						@Html.TextBoxFor(model => model.NationalClassCode, new { @disabled = "disabled", @class = "col-md-6 form-input" })
-					</div>
-				</div>
-			}           
-          
-            
-		</fieldset>
-
-		<div class="row">
-			<div class="col-md-offset-2 col-md-1">
-				<input type="submit" value="Delete" class="btn btn-default form-submit" />
-			</div>
-		</div>
-
-		<div class="validation-section page-subsection">
-			@if (ViewData["ErrorMessage"] != null)
-			{
-				<div class="alert alert-danger alert-dismissable">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-					<strong>@ViewData["ErrorMessage"].ToString()</strong>
-				</div>
-            }
-            else
+            @if (!String.IsNullOrEmpty(Model.HierarchyParentClassName))
             {
-                <div class="alert alert-info alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <strong>Upon successful deletion, you will be directed to National Class Management</strong>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.HierarchyParentClassName, new { @class = "form-label" })
+                    @Html.TextBoxFor(model => model.HierarchyParentClassName, new { @disabled = "disabled", @class = "form-control form-input" })
                 </div>
             }
-      
-		</div>
-	}
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.HierarchyClassName, "Deleted Class Name", new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.HierarchyClassName, new { @disabled = "disabled", @class = "form-control form-input" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.NationalClassCode, "Deleted Class Code", new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.NationalClassCode, new { @disabled = "disabled", @class = "form-control form-input" })
+            </div>
+        </fieldset>
+
+        <div class="form-group">
+            <input type="submit" value="Delete" class="btn btn-danger form-submit" />
+        </div>
+
+        <div class="validation-section page-subsection">
+            @if (ViewData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>@ViewData["ErrorMessage"].ToString()</strong>
+                </div>
+            }
+        </div>
+    }
 </div>
 
 <div class="form-footer">
-	@Html.ActionLink("Back to National Class Management", "Index")
+    @Html.ActionLink("Back to National Class Management", "Index")
 </div>
+
+<div id="divBlock" class="block" style="display: none;">
+    <div class="block-message">
+        <img src="\Content\Infragistics\css\structure\images\igLoadingSmall.gif" style="max-width: 35px; max-height: 35px; margin: 25px 0 0 10px;" />
+        <label class="block-label">Please wait... <br /> &nbsp Processing request...</label>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/National/national-create-edit.js")

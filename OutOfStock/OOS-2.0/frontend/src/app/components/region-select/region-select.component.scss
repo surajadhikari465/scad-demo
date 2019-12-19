@@ -1,0 +1,5 @@
+@import '../../../mixins.scss';
+
+.region-container {
+  @include toggle-scroll-content();
+}

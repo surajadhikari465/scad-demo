@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Icon.Web.DataAccess</RootNamespace>
     <AssemblyName>Icon.Web.DataAccess</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -68,9 +68,11 @@
     <OutputPath>bin\QA1\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -79,58 +81,62 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Common.2019.6.25.1\lib\net46\Icon.Common.dll</HintPath>
+      <HintPath>..\packages\Icon.Common.2019.11.13.3\lib\net472\Icon.Common.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.DbContextFactory.2019.5.15.1\lib\net46\Icon.DbContextFactory.dll</HintPath>
+      <HintPath>..\packages\Icon.DbContextFactory.2019.5.22.1\lib\net472\Icon.DbContextFactory.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.2019.7.1.3\lib\net46\Icon.Esb.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Ewic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.Schemas.Ewic.2016.10.20.1\lib\net45\Icon.Esb.Schemas.Ewic.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.Ewic.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Ewic.Serialization.2016.10.20.3\lib\net45\Icon.Ewic.Models.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.Ewic.Models.2019.5.15.1\lib\net46\Icon.Ewic.Models.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Ewic.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Ewic.Serialization.2016.10.20.3\lib\net45\Icon.Ewic.Serialization.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.Ewic.Serialization.2019.5.15.1\lib\net46\Icon.Ewic.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Ewic.Transmission, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Ewic.Transmission.2016.10.21.1\lib\net45\Icon.Ewic.Transmission.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.Ewic.Transmission.2019.5.15.2\lib\net46\Icon.Ewic.Transmission.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2019.8.29.3\lib\net46\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2019.11.13.3\lib\net472\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.RenewableContext.2019.5.14.2\lib\net472\Icon.RenewableContext.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Shared.DataAccess.Dapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Shared.DataAccess.Dapper.2019.7.1.1\lib\net46\Icon.Shared.DataAccess.Dapper.dll</HintPath>
     </Reference>
     <Reference Include="Irma.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Irma.Framework.2017.8.31.1\lib\net45\Irma.Framework.dll</HintPath>
+      <HintPath>..\packages\Irma.Framework.2019.7.29.1\lib\net472\Irma.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.Extended.4.5.10\lib\net45\NLog.Extended.dll</HintPath>
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Messaging" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
@@ -145,14 +151,35 @@
   <ItemGroup>
     <Compile Include="Attributes\SqlParameterAttribute.cs" />
     <Compile Include="Attributes\SqlResultAttribute.cs" />
+    <Compile Include="Commands\AddAttributeMessageCommand.cs" />
+    <Compile Include="Commands\AddAttributeMessageCommandHandler.cs" />
+    <Compile Include="Commands\AddBrandCommand.cs" />
+    <Compile Include="Commands\AddBrandCommandHandler.cs" />
+    <Compile Include="Commands\UpdateManufacturerCommand.cs" />
+    <Compile Include="Commands\AddManufacturerCommand.cs" />
+    <Compile Include="Commands\UpdateManufacturerCommandHandler.cs" />
+    <Compile Include="Commands\AddManufacturerCommandHandler.cs" />
+    <Compile Include="Commands\AddManufacturerMessageCommand.cs" />
+    <Compile Include="Commands\AddManufacturerMessageCommandHandler.cs" />
+    <Compile Include="Commands\AddMessageQueueItemByHierarchyClassIdCommandHandler.cs" />
+    <Compile Include="Commands\AddMessageQueueItemByHierarchyClassIdCommand.cs" />
+    <Compile Include="Commands\AddUpdatePickListDataCommand.cs" />
+    <Compile Include="Commands\AddUpdateCharacterSetCommand.cs" />
+    <Compile Include="Commands\AddAttributeCommand.cs" />
+    <Compile Include="Commands\AddUpdatePickListDataCommandHandler.cs" />
+    <Compile Include="Commands\AddUpdateCharacterSetCommandHandler.cs" />
+    <Compile Include="Commands\AddAttributeCommandHandler.cs" />
     <Compile Include="Commands\AddVenueCommand.cs" />
     <Compile Include="Commands\AddVenueCommandHandler.cs" />
-    <Compile Include="Commands\RefreshBrandsCommand.cs" />
-    <Compile Include="Commands\RefreshBrandsCommandHandler.cs" />
+    <Compile Include="Commands\BulkItemUploadCommand.cs" />
+    <Compile Include="Commands\BulkItemUploadCommandHandler.cs" />
+    <Compile Include="Commands\ManufacturerHierarchyClassTraitsCommandHandler.cs" />
+    <Compile Include="Commands\RefreshAttributesCommand.cs" />
+    <Compile Include="Commands\RefreshAttributesCommandHandler.cs" />
+    <Compile Include="Commands\RefreshHierarchiesCommand.cs" />
+    <Compile Include="Commands\RefreshHierarchiesCommandHandler.cs" />
     <Compile Include="Commands\RefreshLocalesCommand.cs" />
     <Compile Include="Commands\RefreshLocalesCommandHandler.cs" />
-    <Compile Include="Commands\RefreshMerchandiseHierarchyClassesCommand.cs" />
-    <Compile Include="Commands\RefreshMerchandiseHierarchyClassesCommandHandler.cs" />
     <Compile Include="Commands\AddNationalHierarchyCommand.cs" />
     <Compile Include="Commands\AddNationalHierarchyCommandHandler.cs" />
     <Compile Include="Commands\AddCertificationAgencyCommand.cs" />
@@ -163,15 +190,11 @@
     <Compile Include="Commands\AddPluRequestCommand.cs" />
     <Compile Include="Commands\AddPluRequestChangeHistoryCommandHandler.cs" />
     <Compile Include="Commands\AddPluRequestCommandHandler.cs" />
-    <Compile Include="Commands\RefreshItemsCommand.cs" />
-    <Compile Include="Commands\RefreshItemsCommandHandler.cs" />
+    <Compile Include="Commands\PublishItemUpdatesCommand.cs" />
+    <Compile Include="Commands\PublishItemUpdatesCommandHandler.cs" />
     <Compile Include="Commands\AddVimEventCommand.cs" />
     <Compile Include="Commands\AddVimEventCommandHandler.cs" />
-    <Compile Include="Commands\ApplyMerchTaxAssociationToItemsCommand.cs" />
-    <Compile Include="Commands\ApplyMerchTaxAssociationToItemsCommandHandler.cs" />
     <Compile Include="Commands\BulkImportCertificationAgencyCommandHandler.cs" />
-    <Compile Include="Commands\ClearHierarchyClassCacheCommand.cs" />
-    <Compile Include="Commands\ClearHierarchyClassCacheCommandHandler.cs" />
     <Compile Include="Commands\RemoveEwicMappingCommandHandler.cs" />
     <Compile Include="Commands\RemoveEwicMappingCommand.cs" />
     <Compile Include="Commands\RemoveEwicExclusionCommandHandler.cs" />
@@ -180,12 +203,8 @@
     <Compile Include="Commands\AddAddressCommand.cs" />
     <Compile Include="Commands\AddEwicExclusionCommandHandler.cs" />
     <Compile Include="Commands\AddAddressCommandHandler.cs" />
-    <Compile Include="Commands\AddBrandCommand.cs" />
-    <Compile Include="Commands\AddBrandCommandHandler.cs" />
-    <Compile Include="Commands\AddMerchTaxMappingCommand.cs" />
     <Compile Include="Commands\AddPluCategoryCommand.cs" />
     <Compile Include="Commands\AddBrandMessageCommand.cs" />
-    <Compile Include="Commands\AddMerchTaxMappingCommandHandler.cs" />
     <Compile Include="Commands\AddPluCategoryCommandHandler.cs" />
     <Compile Include="Commands\AddBrandMessageCommandHandler.cs" />
     <Compile Include="Commands\AddProductMessageCommand.cs" />
@@ -209,17 +228,13 @@
     <Compile Include="Commands\AddTaxEventCommandHandler.cs" />
     <Compile Include="Commands\BulkImportBrandCommandHandler.cs" />
     <Compile Include="Commands\BulkImportNewItemCommandHandler.cs" />
-    <Compile Include="Commands\DeleteMerchTaxMappingByIdCommand.cs" />
     <Compile Include="Commands\DeletePluCategoryByIdCommand.cs" />
-    <Compile Include="Commands\DeleteMerchTaxMappingByIdCommandHandler.cs" />
     <Compile Include="Commands\DeletePluCategoryByIdCommandHandler.cs" />
     <Compile Include="Commands\DeleteHierarchyClassCommandHandler.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\DeleteIrmaItemCommand.cs" />
     <Compile Include="Commands\DeleteIrmaItemCommandHandler.cs" />
-    <Compile Include="Commands\RemoveHierarchyClassFromIrmaItemsCommandHandler.cs" />
-    <Compile Include="Commands\RemoveHierarchyClassFromIrmaItemsCommand.cs" />
     <Compile Include="Commands\ReprocessFailedEventsCommand.cs" />
     <Compile Include="Commands\ReprocessFailedEventsCommandHandler.cs" />
     <Compile Include="Commands\ReprocessFailedHierarchyMessageCommand.cs" />
@@ -242,6 +257,19 @@
     <Compile Include="Commands\ReprocessIconItemChangesCommandHandler.cs" />
     <Compile Include="Commands\SaveToMessageHistoryCommand.cs" />
     <Compile Include="Commands\SaveToMessageHistoryCommandHandler.cs" />
+    <Compile Include="Commands\UpdateAttributeCommand.cs" />
+    <Compile Include="Commands\UpdateAttributeCommandHandler.cs" />
+    <Compile Include="Commands\AddItemCommand.cs" />
+    <Compile Include="Commands\UpdateItemCommand.cs" />
+    <Compile Include="Commands\AddItemCommandHandler.cs" />
+    <Compile Include="Commands\UpdateItemCommandHandler.cs" />
+    <Compile Include="Commands\UpdateItemProhibitDiscountByHierarchyClassCommand.cs" />
+    <Compile Include="Commands\UpdateItemSubTeamByHierarchyClassCommand.cs" />
+    <Compile Include="Commands\UpdateItemSubTeamByHierarchyClassCommandHandler.cs" />
+    <Compile Include="Commands\UpdateItemTypeByHierarchyClassCommand.cs" />
+    <Compile Include="Commands\UpdateItemProhibitDiscountByHierarchyClassCommandHandler.cs" />
+    <Compile Include="Commands\UpdateItemTypeByHierarchyClassCommandHandler.cs" />
+    <Compile Include="Commands\UpdateManufacturerHierarchyClassTraitsCommand.cs" />
     <Compile Include="Commands\UpdateVenueCommandHandler.cs" />
     <Compile Include="Commands\UpdateVenueCommand.cs" />
     <Compile Include="Commands\UpdateNationalHierarchyCommand.cs" />
@@ -255,14 +283,12 @@
     <Compile Include="Commands\UpdateHierarchyClassTraitCommandHandler.cs" />
     <Compile Include="Commands\UpdateBrandHierarchyClassTraitsCommand.cs" />
     <Compile Include="Commands\BrandHierarchyClassTraitsCommandHandler.cs" />
-    <Compile Include="Commands\UpdateMerchTaxMappingCommand.cs" />
     <Compile Include="Commands\UpdateMessageHistoryMessageCommand.cs" />
     <Compile Include="Commands\UpdateMessageHistoryMessageCommandHandler.cs" />
     <Compile Include="Commands\UpdateMessageHistoryStatusCommand.cs" />
     <Compile Include="Commands\UpdateMessageHistoryStatusCommandHandler.cs" />
     <Compile Include="Commands\UpdatePluRequestCommand.cs" />
     <Compile Include="Commands\UpdatePluCategoryCommand.cs" />
-    <Compile Include="Commands\UpdateMerchTaxMappingCommandHandler.cs" />
     <Compile Include="Commands\UpdatePluRequestCommandHandler.cs" />
     <Compile Include="Commands\UpdatePluCategoryCommandHandler.cs" />
     <Compile Include="Commands\UpdateProductSelectionGroupCommand.cs" />
@@ -271,31 +297,43 @@
     <Compile Include="Commands\UpdateRegionalSettingsCommandHandler.cs" />
     <Compile Include="Decorators\AddBrandMammothEventDecorator.cs" />
     <Compile Include="Decorators\AddHierarchyClassMammothEventDecorator.cs" />
+    <Compile Include="Decorators\AddItemMessageQueueHierarchyClassTraitDecorator.cs" />
     <Compile Include="Decorators\AddProductMammothEventDecorator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Decorators\BulkImportBrandMammothEventDecorator.cs" />
-    <Compile Include="Decorators\CachingQueryHandlerDecorator.cs" />
+    <Compile Include="Decorators\RetryUniqueConstraintManagerHandlerDecorator.cs" />
     <Compile Include="Decorators\DeleteHierarchyClassIconEventDecorator.cs" />
     <Compile Include="Decorators\DeleteHierarchyClassMammothEventDecorator.cs" />
     <Compile Include="Decorators\TransactionCommandHandlerDecorator.cs" />
     <Compile Include="Decorators\TransactionManagerHandlerDecorator.cs" />
     <Compile Include="Decorators\UpdateBrandMammothEventDecorator.cs" />
     <Compile Include="Decorators\UpdateHierarchyClassMammothEventDecorator.cs" />
+    <Compile Include="Decorators\UpdateItemProhibitDiscountHierarchyClassTraitDecorator.cs" />
+    <Compile Include="Decorators\UpdateItemSubTeamHierarchyClassTraitDecorator.cs" />
+    <Compile Include="Decorators\UpdateItemTypeHierarchyClassTraitDecorator.cs" />
     <Compile Include="Decorators\UpdateProductMammothEventDecorator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Decorators\UpdateSubTeamMammothEventDecorator.cs" />
-    <Compile Include="Infrastructure\CacheRefreshNeededHandler.cs" />
     <Compile Include="Infrastructure\ConfigurationConstants.cs" />
     <Compile Include="Infrastructure\IGenericQuery.cs" />
+    <Compile Include="Infrastructure\ItemQuery\IItemQueryBuilder.cs" />
+    <Compile Include="Infrastructure\ItemQuery\ItemQueryBuilder.cs" />
+    <Compile Include="Infrastructure\ItemQuery\ItemSearchCriteria.cs" />
     <Compile Include="Infrastructure\MessageHierarchyData.cs" />
+    <Compile Include="Managers\AddAttributeManager.cs" />
+    <Compile Include="Managers\AddAttributeManagerHandler.cs" />
     <Compile Include="Managers\AddNationalHierarchyManager.cs" />
     <Compile Include="Managers\AddNationalHierarchyManagerHandler.cs" />
     <Compile Include="Managers\AddCertificationAgencyManager.cs" />
     <Compile Include="Managers\AddCertificationAgencyManagerHandler.cs" />
+    <Compile Include="Managers\BulkItemUploadManager.cs" />
+    <Compile Include="Managers\BulkItemUploadManagerHandler.cs" />
     <Compile Include="Managers\DeleteNationalHierarchyManager.cs" />
     <Compile Include="Managers\DeleteNationalHierarchyManagerHandler.cs" />
+    <Compile Include="Managers\ManufacturerManager.cs" />
+    <Compile Include="Managers\ManufacturerManagerHandler.cs" />
     <Compile Include="Managers\RemoveEwicMappingManager.cs" />
     <Compile Include="Managers\RemoveEwicExclusionManager.cs" />
     <Compile Include="Managers\RemoveEwicMappingManagerHandler.cs" />
@@ -308,15 +346,13 @@
     <Compile Include="Managers\AddPluRequestManagerHandler.cs" />
     <Compile Include="Managers\AddVenueManager.cs" />
     <Compile Include="Managers\AddVenueManagerHandler.cs" />
+    <Compile Include="Managers\UpdateAttributeManager.cs" />
+    <Compile Include="Managers\UpdateAttributeManagerHandler.cs" />
     <Compile Include="Managers\UpdateVenueManagerHandler.cs" />
     <Compile Include="Managers\UpdateVenueManager.cs" />
     <Compile Include="Managers\UpdateNationalHierarchyManager.cs" />
     <Compile Include="Managers\UpdateNationalHierarchyManagerHandler.cs" />
     <Compile Include="Managers\UpdateCertificationAgencyManager.cs" />
-    <Compile Include="Managers\AddMerchTaxAssociationManager.cs" />
-    <Compile Include="Managers\UpdateMerchTaxAssociationManager.cs" />
-    <Compile Include="Managers\AddMerchTaxAssociationManagerHandler.cs" />
-    <Compile Include="Managers\UpdateMerchTaxAssociationManagerHandler.cs" />
     <Compile Include="Managers\UpdatePluRequestManager.cs" />
     <Compile Include="Managers\UpdatePluRequestManagerHandler.cs" />
     <Compile Include="Managers\UpdatePluCategoryManager.cs" />
@@ -356,12 +392,22 @@
     <Compile Include="Infrastructure\HierarchyClassTraitUpdateException.cs" />
     <Compile Include="Infrastructure\IManagerHandler.cs" />
     <Compile Include="Infrastructure\MessageQueueException.cs" />
+    <Compile Include="Models\AttributeCharacterSetModel.cs" />
+    <Compile Include="Models\AttributeListModel.cs" />
+    <Compile Include="Models\AttributeInforModel.cs" />
+    <Compile Include="Models\AttributesWebConfigurationModel.cs" />
+    <Compile Include="Models\BarcodeTypeModel.cs" />
     <Compile Include="Models\BrandModel.cs" />
     <Compile Include="Models\BulkImportBrandModel.cs" />
     <Compile Include="Models\BulkImportCertificationAgencyModel.cs" />
+    <Compile Include="Models\BulkItemUploadModel.cs" />
+    <Compile Include="Models\BulkUploadErrorModel.cs" />
     <Compile Include="Models\CertificationAgencyModel.cs" />
+    <Compile Include="Models\CharacterSetModel.cs" />
+    <Compile Include="Models\DataTypeModel.cs" />
     <Compile Include="Models\DefaultTaxClassMismatchExportModel.cs" />
     <Compile Include="Models\DefaultTaxClassMismatchModel.cs" />
+    <Compile Include="Models\EventQueueModel.cs" />
     <Compile Include="Models\EwicExclusionModel.cs" />
     <Compile Include="Models\EwicMappingModel.cs" />
     <Compile Include="Models\ExportPluRequestModel.cs" />
@@ -396,20 +442,76 @@
     <Compile Include="Infrastructure\ItemHierarchyClassUpdateException.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Models\ExportItemModel.cs" />
+    <Compile Include="Models\HierarchyModel.cs" />
     <Compile Include="Models\IImportItemModel.cs" />
+    <Compile Include="Models\IrmaItemSubscriptionModel.cs" />
+    <Compile Include="Models\ItemHierarchyClassHistoryModel.cs" />
+    <Compile Include="Models\ItemHierarchyClassHistoryAllModel.cs" />
+    <Compile Include="Models\ItemInforHistoryDbModel.cs" />
+    <Compile Include="Models\ItemHistoryDbModel.cs" />
+    <Compile Include="Models\ItemDbModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\ItemsBySearchResultsModel.cs" />
     <Compile Include="Models\ItemSearchModel.cs" />
+    <Compile Include="Models\ManufacturerModel.cs" />
+    <Compile Include="Models\MerchDependentItemPropertiesModel.cs" />
     <Compile Include="Models\MerchTaxMappingModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
+    <Compile Include="Models\MessageQueueAttributeModel.cs" />
+    <Compile Include="Models\MessageQueueItemModel.cs" />
+    <Compile Include="Models\PickListModel.cs" />
     <Compile Include="Models\PluCategoryModel.cs" />
     <Compile Include="Models\RegionalSettingsModel.cs" />
     <Compile Include="Models\EwicAplScanCodeModel.cs" />
     <Compile Include="Models\StoreModel.cs" />
     <Compile Include="Models\VenueModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\BulkUploadStatusModel.cs" />
+    <Compile Include="Queries\DoesAttributeExistOnItemsParameters.cs" />
+    <Compile Include="Queries\DoesAttributeExistOnItemsQueryHandler.cs" />
     <Compile Include="Queries\GetAffinitySubBricksParameters.cs" />
     <Compile Include="Queries\GetAffinitySubBricksQuery.cs" />
+    <Compile Include="Queries\GetAttributeByAttributeIdParameters.cs" />
+    <Compile Include="Queries\GetAttributeByAttributeIdQuery.cs" />
+    <Compile Include="Queries\GetAttributesParameters.cs" />
+    <Compile Include="Queries\GetBulkUploadByIdParameters.cs" />
+    <Compile Include="Queries\GetBulkUploadByIdQueryHandler.cs" />
+    <Compile Include="Queries\GetInforAttributesQueryHandler.cs" />
+    <Compile Include="Queries\GetAttributesQueryHandler.cs" />
+    <Compile Include="Queries\DoesScanCodeExistParameters.cs" />
+    <Compile Include="Queries\DoesScanCodeExistQuery.cs" />
+    <Compile Include="Queries\GetBulkItemUploadErrorsQuery.cs" />
+    <Compile Include="Queries\GetBulkUploadErrorsParameters.cs" />
+    <Compile Include="Queries\GetBulkUploadStatusParameters.cs" />
+    <Compile Include="Queries\GetBulkUploadStatusQuery.cs" />
+    <Compile Include="Queries\GetCharacterSetsByAttributeParameters.cs" />
+    <Compile Include="Queries\GetCharacterSetParameters .cs" />
+    <Compile Include="Queries\GetDataTypeParameters.cs" />
+    <Compile Include="Queries\GetCharacterSetQuery.cs" />
+    <Compile Include="Queries\GetHierarchiesParameters.cs" />
+    <Compile Include="Queries\GetHierarchiesQueryHandler.cs" />
+    <Compile Include="Queries\GetHierarchyClassesParameters.cs" />
+    <Compile Include="Queries\GetHierarchyClassesQueryHandler.cs" />
+    <Compile Include="Queries\GetItemHierarchyClassHistoryParameters.cs" />
+    <Compile Include="Queries\GetItemInforHistoryParameters.cs" />
+    <Compile Include="Queries\GetItemHistoryParameters.cs" />
+    <Compile Include="Queries\GetItemHierarchyClassHistoryQuery.cs" />
+    <Compile Include="Queries\GetItemInforHistoryQueryHandler.cs" />
+    <Compile Include="Queries\GetItemHistoryQueryHandler.cs" />
+    <Compile Include="Queries\GetItemParameters.cs" />
+    <Compile Include="Queries\GetItemPropertiesFromMerchHierarchyQuery.cs" />
+    <Compile Include="Queries\GetItemPropertiesFromMerchHierarchyParameters.cs" />
+    <Compile Include="Queries\GetItemQueryHandler.cs" />
+    <Compile Include="Queries\GetItemsByIdSearchParameters.cs" />
+    <Compile Include="Queries\GetItemsByIdSearchQuery.cs" />
+    <Compile Include="Queries\GetItemsParameters.cs" />
+    <Compile Include="Queries\GetItemsQueryHandler.cs" />
+    <Compile Include="Queries\GetManufacturersQuery.cs" />
+    <Compile Include="Queries\GetManufacturersParameters.cs" />
+    <Compile Include="Queries\GetPickListByAttributeParameters.cs" />
+    <Compile Include="Queries\GetCharacterSetsByAttributeQuery.cs" />
+    <Compile Include="Queries\GetDataTypeQuery.cs" />
+    <Compile Include="Queries\GetPickListByAttributeQuery.cs" />
     <Compile Include="Queries\GetAvailablePlusByCategoryParameters.cs" />
     <Compile Include="Queries\GetAvailablePlusByCategoryQuery.cs" />
     <Compile Include="Queries\GetAvailableScanCodesByCategoryParameters.cs" />
@@ -465,6 +567,10 @@
     <Compile Include="Queries\GetLocalesByChainQuery.cs" />
     <Compile Include="Queries\GetMessageHistoryParameters.cs" />
     <Compile Include="Queries\GetMessageHistoryQuery.cs" />
+    <Compile Include="Queries\GetPickListOptionsParameters.cs" />
+    <Compile Include="Queries\GetPickListOptionsQueryHandler.cs" />
+    <Compile Include="Queries\GetBarcodeTypesQuery.cs" />
+    <Compile Include="Queries\GetBarcodeTypeParameters.cs" />
     <Compile Include="Queries\GetPluRequestChangeHistoryByIdParameters.cs" />
     <Compile Include="Queries\GetPluRequestByIdParameters.cs" />
     <Compile Include="Queries\GetPluRequestChangeHistoryByIdQuery.cs" />
@@ -552,13 +658,10 @@
     <Compile Include="Validators\UpdatePluRequestManagerValidator.cs" />
     <Compile Include="Validators\AddPluRequestManagerValidator.cs" />
     <Compile Include="Validators\AddItemManagerValidator.cs" />
-    <Compile Include="Validators\UpdateItemManagerValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Icon.Web.Common\Icon.Web.Common.csproj">

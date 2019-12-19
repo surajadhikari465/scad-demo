@@ -1,6 +1,7 @@
-﻿using Icon.Framework;
+﻿using Icon.Common;
+using Icon.Common.Validators;
+using Icon.Framework;
 using Icon.Web.Common;
-using Icon.Web.Common.Validators;
 using Icon.Web.DataAccess.Managers;
 using System;
 

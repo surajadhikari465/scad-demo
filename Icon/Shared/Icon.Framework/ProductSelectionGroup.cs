@@ -20,9 +20,12 @@ namespace Icon.Framework
         public Nullable<int> TraitId { get; set; }
         public string TraitValue { get; set; }
         public Nullable<int> MerchandiseHierarchyClassId { get; set; }
+        public Nullable<int> AttributeId { get; set; }
+        public string AttributeValue { get; set; }
     
         public virtual HierarchyClass HierarchyClass { get; set; }
         public virtual Trait Trait { get; set; }
         public virtual ProductSelectionGroupType ProductSelectionGroupType { get; set; }
+        public virtual Attributes Attributes { get; set; }
     }
 }

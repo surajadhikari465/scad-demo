@@ -2,7 +2,6 @@
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
-using Icon.Web.DataAccess.Infrastructure;
 using System;
 
 namespace Icon.Web.DataAccess.Commands

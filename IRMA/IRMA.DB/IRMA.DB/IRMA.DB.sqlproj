@@ -118,7 +118,6 @@
     <Folder Include="Schema\dbo\XMLSchemaCollections" />
     <Folder Include="Schema\infor" />
     <Folder Include="Schema\infor\Stored Procedures" />
-    <Folder Include="Schema\infor\User Defined Types" />
     <Folder Include="Schema\mammoth" />
     <Folder Include="Schema\mammoth\Stored Procedures" />
     <Folder Include="Schema\mammoth\Tables" />
@@ -143,7 +142,11 @@
     <Folder Include="Schema\amz" />
     <Folder Include="Schema\amz\Tables" />
     <Folder Include="Schema\amz\StoredProcedures" />
-    <Folder Include="Scripts\PostDeploy\23903 - AddNonScaleExtraTextToEIM" />
+    <Folder Include="Schema\icon" />
+    <Folder Include="Schema\icon\Stored Procedures" />
+    <Folder Include="Schema\icon\User Defined Types" />
+    <Folder Include="Schema\extract" />
+    <Folder Include="Schema\extract\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Storage\Warehouse.sql" />
@@ -3130,10 +3133,7 @@
     <Build Include="schema\dbo\Views\zz_deprecated_Dist_Sub_Team_View.sql" />
     <Build Include="schema\dbo\Views\zz_deprecated_Item_Temp_Load.sql" />
     <Build Include="schema\dbo\XMLSchemaCollections\ApplicationConfiguration.sql" />
-    <Build Include="schema\infor\Stored Procedures\FailUnprocessedEvents.sql" />
-    <Build Include="schema\infor\Stored Procedures\FinalizeNewItemEvents.sql" />
     <Build Include="schema\infor\Stored Procedures\GetNewItems.sql" />
-    <Build Include="schema\infor\User Defined Types\NewItemEventType.sql" />
     <Build Include="schema\mammoth\Stored Procedures\GenerateEvents.sql" />
     <Build Include="schema\mammoth\Stored Procedures\GetItemLocaleChanges.sql" />
     <Build Include="schema\mammoth\Stored Procedures\IconGenerateMammothEvents.sql" />
@@ -3349,8 +3349,16 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs1\AuditAuthorizedItems.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI23075_UpdateShrinkReasonCode_PrimeNowReturns.sql" />
     <None Include="Scripts\PostDeploy\PBI25271-RemoveInforOrdering.sql" />
-    <None Include="Scripts\PostDeploy\23903 - AddNonScaleExtraTextToEIM\AddNonScaleExtraTextToEIM.RollBack.sql" />
-    <None Include="Scripts\PostDeploy\23903 - AddNonScaleExtraTextToEIM\AddNonScaleExtraTextToEIM.sql" />
+    <Build Include="Schema\icon\Stored Procedures\FinalizeNewItemEvents.sql" />
+    <Build Include="Schema\icon\Stored Procedures\FailUnprocessedEvents.sql" />
+    <Build Include="Schema\icon\icon.sql" />
+    <Build Include="Schema\icon\User Defined Types\NewItemEventType.sql" />
+    <Build Include="Schema\dbo\Stored Procedures\Procs3\PopulateDefaultTaxFlags.sql" />
+    <Build Include="Schema\extract\extract.sql" />
+    <Build Include="Schema\extract\Stored Procedures\APT_SupplierName.sql" />
+    <Build Include="Schema\extract\Stored Procedures\APT_SupplierId.sql" />
+    <Build Include="Schema\extract\Stored Procedures\APT_ItemStore.sql" />
+    <Build Include="Schema\extract\Stored Procedures\ItemAttribute.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

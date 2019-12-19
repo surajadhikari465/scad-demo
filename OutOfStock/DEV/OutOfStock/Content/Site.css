@@ -1,0 +1,486 @@
+﻿/*----------------------------------------------------------
+The base color for this template is #5c87b2. If you'd like
+to use a different color start by replacing all instances of
+#5c87b2 with your new color.
+----------------------------------------------------------*/
+body {
+    background: #fff url(css/smoothness/images/header-footer-gradient.png) center top repeat-x;
+     padding: 2em 20px 0; 
+     position: relative; 
+    font-size: .85em;
+    font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
+    margin: 0;
+    padding: 0;
+    color:#000000; /*#696969;*/
+}
+
+a:link {
+    color: #034af3;
+    text-decoration: underline;
+}
+
+.MenuLink:link  {
+    color: #000000;
+    text-decoration: none;
+}
+
+
+.VersionInfo {
+    text-decoration: :none;
+    font-size: 10px;
+    font-variant: small-caps;
+    color: #AAAAAA !important;
+}
+
+
+a:visited {
+    color: #505abc;
+}
+
+a:hover {
+    color: #1d60ff;
+    text-decoration: none;
+}
+
+a:active {
+    color: #12eb87;
+}
+
+p, ul {
+    margin-bottom: 20px;
+    line-height: 1.6em;
+}
+
+header,
+footer,
+nav,
+section {
+    display: block;
+}
+
+/* HEADINGS   
+----------------------------------------------------------*/
+h1, h2, h3, h4, h5, h6
+{
+    font-size: 1.5em;
+    color: #000;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    font-size: 2em;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+h2 {
+    padding: 0 0 4px 0;
+}
+
+h3 {
+    font-size: 1.2em;
+}
+
+h4 {
+    font-size: 1.1em;
+}
+
+h5, h6 {
+    font-size: 1em;
+}
+
+/* PRIMARY LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+/* you can specify a greater or lesser percentage for the 
+page width. Or, you can specify an exact pixel width. */
+.page 
+{
+    width:100%;
+    margin:8px 0px 0px 0px;
+    padding:0px;
+    background:#2D431F;
+    background:-moz-linear-gradient(top, #2D431F, #526B2A);
+    background:-webkit-gradient(linear, left top, left bottom, from(#2D431F), to(#526B2A));
+    filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr=#2D431F,endColorstr=#526B2A);
+}
+
+.pageInner
+{
+    width:100%;
+    padding:0px;
+    margin:0px 0px 0px 0px;
+    background: #FFFFFF;
+    border:solid 1px transparent; /* Without this Chrome pads the top by about 10px */
+}
+
+header, #header
+{
+    /* position: relative; */
+    margin:15px 30px 5px 30px;
+    color: #000;
+    padding:0;
+  /*  background: #526B29; */
+}
+
+header h1, #header h1
+{
+    font-weight:900;
+    padding: 5px 0;
+    margin: 0;
+    color: #006E6D;
+    border: none;
+    line-height: 2em;
+    font-size: 28px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.main,
+#main {
+    margin:5px 30px 15px 30px;
+    background-color: #fff;
+    border-radius: 4px 0 0 0;
+    -webkit-border-radius: 4px 0 0 0;
+    -moz-border-radius: 4px 0 0 0;
+}
+
+footer, 
+#footer 
+{
+    margin:0px 30px 30px 30px;
+    background-color: #fff;
+    color: #999;
+    padding: 10px 0;
+    text-align: center;
+    line-height: normal;
+    font-size: .9em;
+    border-radius: 0 0 4px 4px;
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+
+}
+
+/* TAB MENU   
+----------------------------------------------------------*/
+.MenuTab
+{
+    width: 165px;
+    height: 24px;
+    margin: 0px 6px 0px 0px;
+    padding: 12px 0px 0px 0px;
+    text-decoration: none;
+    font-weight:500;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.MenuTabNormal
+{
+    color: #333333;
+    background-color: #ACACAC;
+    background: -moz-linear-gradient(top, #E7E6E6, #ACACAC);
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E6E6), to(#ACACAC));
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr=#E7E6E6,endColorstr=#ACACAC);
+}
+
+.MenuTabSelected
+{
+    color:#FFFFFF;
+    background-color: #ACACAC;
+    background: -moz-linear-gradient(top, #ACACAC, #5F5F5F);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ACACAC), to(#5F5F5F));
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr=#ACACAC,endColorstr=#5F5F5F);
+}
+
+.MenuTab a
+{
+    color: #333333;
+    text-decoration: none;
+}
+
+.MenuTabSelected a
+{
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.MenuTab:hover
+{
+    background-color: #ACACAC;
+    background: -moz-linear-gradient(top, #ACACAC, #5F5F5F);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ACACAC), to(#5F5F5F));
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr=#ACACAC,endColorstr=#5F5F5F);
+}
+
+.menu
+{
+    border-bottom: 1px solid #AFAFAF;
+}
+
+ul#menu {
+    padding: 0 0 2px;
+    margin: 0;
+}
+
+ul#menu li {
+    display: inline;
+    list-style: none;
+}
+
+ul#menu li#greeting {
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 2.8em;
+    color: #fff;
+}
+
+ul#menu li a {
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 2.8em;
+    background-color: #e8eef4;
+    /*color: #034af3;*/
+    color:#3B521C;
+    border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+}
+
+ul#menu li a:hover {
+    text-decoration: none;
+    text-decoration: underline;
+}
+
+ul#menu li a:active {
+    background-color: #fff;
+    text-decoration: none;
+}
+
+ul#menu li.selected a {
+    background-color: #fff;
+    color: #000;
+}
+
+/* FORM LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+fieldset {
+    border: 1px solid #ddd;
+    padding: 0 1.4em 1.4em 1.4em;
+    margin: 0 0 1.5em 0;
+}
+
+legend {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+
+
+input[type="text"], 
+input[type="password"] {
+    border: 1px solid #ccc;
+    padding: 2px;
+    font-size: 1.2em;
+    color: #444;
+    width: 200px;
+}
+
+select
+{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    border:1px solid #CCCCCC;
+    margin:0;
+    padding:2px 0px 2px 0px;
+    font-size:1em;
+    color:#000000;
+}
+
+input[type="submit"] {
+    font-size: 1em;
+    margin:2px 4px 2px 4px; 
+    padding:3px 5px 3px 5px; 
+    color:#FFFFFF;
+    background-color: #76AECB;
+    background: -moz-linear-gradient(top, #76AECB, #3E545F);
+    background: -webkit-gradient(linear, left top, left bottom, from(#76AECB), to(#3E545F));
+    /*filter: progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr=#76AECB,endColorstr=#3E545F);*/
+    border-radius:8px 12px;
+    -webkit-border-radius:8px 12px;
+    -moz-border-radius:8px 12px;
+}
+
+/* TABLE
+----------------------------------------------------------*/
+.CleanTable
+{
+    border:none 0px transparent;
+    border-collapse:collapse;
+    padding:0;
+}
+
+table {
+    border:none 0px transparent;
+    border-collapse:collapse;
+    padding:0;
+    background:inherit;
+/*
+    border: solid 1px #e8eef4;
+    border-collapse: collapse;
+*/
+}
+
+table td 
+{
+    border:none 0px transparent;
+    border-collapse:collapse;
+    padding:0;
+    background:inherit;
+    
+/*
+    padding: 5px;
+    border: solid 1px #e8eef4;
+*/
+}
+
+table th 
+{
+    border:none 0px transparent;
+    border-collapse:collapse;
+    padding:0;
+    background:inherit;
+/*
+    padding: 6px 5px;
+    text-align: left;
+    background-color: #e8eef4;
+    border: solid 1px #e8eef4;
+*/
+}
+
+/* MISC  
+----------------------------------------------------------*/
+.clear {
+    clear: both;
+}
+
+.error {
+    color: Red;
+}
+
+nav, 
+#menucontainer 
+{
+    border-bottom: 1px solid #AFAFAF;
+}
+
+.logo
+{
+    height:55px;
+    width:200px;
+    background:url(/Content/wfm-logo.jpg) no-repeat;
+    margin:0;
+    padding:0;
+}
+
+div.title,
+div#title 
+{
+    height:20px;
+    width:220px;
+    background:url(/Content/OutOfStock.png) no-repeat;
+    margin:24px 0px 12px 0px;
+    padding:0;
+}
+
+#logindisplay {
+    font-size: .9em;
+    color:#AAAAAA;
+    font-variant: small-caps;
+}
+
+    #logindisplay a:link {
+        color: #AAAAAA;
+        text-decoration: underline;
+    }
+
+    #logindisplay a:visited {
+        color: #AAAAAA;
+        text-decoration: underline;
+    }
+
+    #logindisplay a:hover {
+        color: #AAAAAA;
+        text-decoration: none;
+    }
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error {
+    color: #ff0000;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+/* Styles for editor and display helpers
+----------------------------------------------------------*/
+.display-label, 
+.editor-label {
+    margin: 1em 0 0 0;
+}
+
+.display-field, 
+.editor-field {
+    margin: 0.5em 0 0 0;
+}
+
+.text-box {
+    width: 30em;
+}
+
+.text-box.multi-line {
+    height: 6.5em;
+}
+
+.tri-state {
+    width: 6em;
+}
+
+/* For Sheryl Cababa design */
+.InfoPanel
+{
+    padding:8px;
+    margin:0;
+    width:500px;
+    border:solid 1px #E1E1E1;
+    background-color: #F4F4F4;
+    background: -moz-linear-gradient(top, #F4F4F4, #E1E1E1);
+    background: -webkit-gradient(linear, left top, left bottom, from(#F4F4F4), to(#E1E1E1));
+   /* filter: progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr=#F4F4F4,endColorstr=#E1E1E1); */
+    border-radius: 4px 4px;
+    -webkit-border-radius: 6px 6px;
+    -moz-border-radius: 6px 6px;
+}
+
+.InfoPanelTitle
+{
+    color: #993300;
+    font-weight:bold;
+}

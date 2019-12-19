@@ -1,981 +1,770 @@
-﻿using AutoMapper;
-using Icon.Common.DataAccess;
+﻿using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
-using Icon.Testing.Builders;
-using Icon.Web.Common;
-using Icon.Web.Common.Validators;
 using Icon.Web.Controllers;
-using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
-using Icon.Web.Mvc.App_Start;
+using Icon.Web.Mvc.Exporters;
+using Icon.Web.Mvc.InfragisticsHelpers;
 using Icon.Web.Mvc.Models;
 using Icon.Web.Mvc.Utility;
-using Icon.Web.Tests.Common.Builders;
 using Infragistics.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
+using Icon.Common;
+using Icon.Common.Models;
+using Icon.Common.Validators.ItemAttributes;
+using static Icon.Framework.ItemTypes;
+using ScanCodeTypesDescription = Icon.Framework.ScanCodeTypes.Descriptions;
+using Icon.Web.Mvc.Utility.ItemHistory;
+using Icon.Web.DataAccess.Infrastructure.ItemSearch;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class ItemControllerTests
     {
-        private Mock<ILogger> mockLogger;
         private Mock<IManagerHandler<UpdateItemManager>> mockUpdateItemManagerHandler;
-        private Mock<IManagerHandler<ValidateItemManager>> mockValidateItemManagerHandler;
-        private Mock<IManagerHandler<AddItemManager>> mockAddItemManagerHandler;
-        private Mock<IObjectValidator<ItemViewModel>> mockItemViewModelValidator;
-        private Mock<HttpSessionStateBase> mockSession;
-        private Mock<HttpResponseBase> mockResponse;
-        private Mock<ControllerContext> mockContext;
+        private Mock<IInfragisticsHelper> mockInfragisticsHelper = new Mock<IInfragisticsHelper>();
+        private const string GET_ITEMS_PARAMETERS_VIEW_MODEL = "GetItemsParametersViewModel";
+        private const string SELECTED_COLUMN_NAMES = "SelectedColumnNames";
+        private const string JSON_CONTENT_TYPE = "application/json";
         private ItemController controller;
-        private List<ItemViewModel> selectedRows;
-        private string testUser = "TestUser";
-        private Mock<IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel>> mockGetItemsBySearchQueryHandler;
-        private Mock<IQueryHandler<GetHierarchyLineageParameters, HierarchyClassListModel>> mockGetHierarchyLineageQueryHandler;
-        private Mock<ICommandHandler<AddProductMessageCommand>> mockAddProductMessageCommandHandler;     
-        private Mock<IInfragisticsHelper> mockInfragisticsHelper;
-        private Mock<UrlHelper> mockUrlHelper;
-        private Mock<IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>>> mockGetItemsByBulkScanCodeSearcParameters;
+        private Mock<ILogger> mockLogger;
+        private Mock<IQueryHandler<GetItemsParameters, GetItemsResult>> mockGetItemsQueryHandler;
+        private Mock<IQueryHandler<GetItemParameters, ItemDbModel>> mockGetItemQueryHandler;
+        private Mock<IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>>> mockGetAttributesQueryHandler;
+        private Mock<IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeInforModel>>, IEnumerable<AttributeInforModel>>> mockGetInforAttributesQueryHandler;
+        private Mock<IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>>> mockGetHierarchyClassesQueryHandler;
+        private Mock<ControllerContext> context = new Mock<ControllerContext>();
+        private MockHttpSessionStateBase session = new MockHttpSessionStateBase();
+        private NameValueCollection queryString = new NameValueCollection();
+        private GetItemsResult getItemsResult = new GetItemsResult();
+        private Mock<IQueryHandler<GetItemPropertiesFromMerchHierarchyParameters, MerchDependentItemPropertiesModel>> mockGetItemPropertiesFromMerchQueryHandler;
+        private Mock<IQueryHandler<DoesScanCodeExistParameters, bool>> mockDoesScanCodeExistQueryHandler;
+        private Mock<IManagerHandler<AddItemManager>> mockAddItemManagerHandler;
+        private Mock<IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>>> mockGetBarcodeTypeQueryHandler;
+        private Mock<IExcelExporterService> mockExcelExporterService;
+        private Mock<IManagerHandler<BulkItemUploadManager>> mockBulkItemUploadManagerHandler;
+        private Mock<IQueryHandler<GetBulkUploadByIdParameters, BulkUploadStatusModel>> mockGetBulkUploadByIdQueryHandler;
+
+        private Mock<IQueryHandler<GetBulkUploadErrorsPrameters, List<BulkUploadErrorModel>>> mockGetBulkUploadErrorsQueryHandler;
+        private Mock<IQueryHandler<GetItemHistoryParameters, IEnumerable<ItemHistoryDbModel>>> mockGetItemHistoryQueryHandler;
+        private Mock<IQueryHandler<GetItemInforHistoryParameters, IEnumerable<ItemInforHistoryDbModel>>> mockGetInforItemHistoryQueryHandler;
+        private Mock<IItemHistoryBuilder> mockItemHistoryBuilder;
+        private Mock<IQueryHandler<GetItemHierarchyClassHistoryParameters, ItemHierarchyClassHistoryAllModel>> mockItemHierarchyHistoryQueryHandler;
+        private Mock<IQueryHandler<GetBulkUploadStatusParameters, List<BulkUploadStatusModel>>> mockGetBulkItemUploadStatusQueryHandler;
+        private Mock<IHistoryModelTransformer> mockHistoryModelTransformer;
+        private string top = "20";
+        private string skip = "10";
+        private Mock<IItemAttributesValidatorFactory> mockItemAttributesValidatorFactory;
+        private Mock<HttpContextBase> fakeHttpContext;
+        private GenericIdentity fakeIdentity;
+        private GenericPrincipal principal;
+        private Mock<ControllerContext> controllerContext;
+        private Mock<IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult>> mockGetItemsByIdHandler;
 
         [TestInitialize]
-        public void InitializeTestData()
+        public void Initialize()
         {
-            this.mockLogger = new Mock<ILogger>();
-            this.mockUpdateItemManagerHandler = new Mock<IManagerHandler<UpdateItemManager>>();
-            this.mockValidateItemManagerHandler = new Mock<IManagerHandler<ValidateItemManager>>();
-            this.mockAddItemManagerHandler = new Mock<IManagerHandler<AddItemManager>>();
-            this.mockItemViewModelValidator = new Mock<IObjectValidator<ItemViewModel>>();
-            this.mockGetItemsBySearchQueryHandler = new Mock<IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel>>();
-            this.mockGetHierarchyLineageQueryHandler = new Mock<IQueryHandler<GetHierarchyLineageParameters, HierarchyClassListModel>>();         
-            this.mockAddProductMessageCommandHandler = new Mock<ICommandHandler<AddProductMessageCommand>>();
-            this.mockInfragisticsHelper = new Mock<IInfragisticsHelper>();
-            this.mockUrlHelper = new Mock<UrlHelper>();
-            mockGetItemsByBulkScanCodeSearcParameters = new Mock<IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>>>();
+            mockLogger = new Mock<ILogger>();
+            mockGetItemsQueryHandler = new Mock<IQueryHandler<GetItemsParameters, GetItemsResult>>();
+            mockGetItemQueryHandler = new Mock<IQueryHandler<GetItemParameters, ItemDbModel>>();
+            mockGetItemHistoryQueryHandler = new Mock<IQueryHandler<GetItemHistoryParameters, IEnumerable<ItemHistoryDbModel>>>();
+            mockGetInforItemHistoryQueryHandler = new Mock<IQueryHandler<GetItemInforHistoryParameters, IEnumerable<ItemInforHistoryDbModel>>>();
+            mockGetAttributesQueryHandler = new Mock<IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>>>();
+            mockGetInforAttributesQueryHandler = new Mock<IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeInforModel>>, IEnumerable<AttributeInforModel>>>();
+            mockGetHierarchyClassesQueryHandler = new Mock<IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>>>();
+            mockUpdateItemManagerHandler = new Mock<IManagerHandler<UpdateItemManager>>();
+            mockInfragisticsHelper = new Mock<IInfragisticsHelper>();
+            mockGetItemPropertiesFromMerchQueryHandler = new Mock<IQueryHandler<GetItemPropertiesFromMerchHierarchyParameters, MerchDependentItemPropertiesModel>>();
+            mockDoesScanCodeExistQueryHandler = new Mock<IQueryHandler<DoesScanCodeExistParameters, bool>>();
+            mockAddItemManagerHandler = new Mock<IManagerHandler<AddItemManager>>();
+            mockGetBarcodeTypeQueryHandler = new Mock<IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>>>();
+            mockExcelExporterService = new Mock<IExcelExporterService>();
+            mockItemAttributesValidatorFactory = new Mock<IItemAttributesValidatorFactory>();
+            mockBulkItemUploadManagerHandler = new Mock<IManagerHandler<BulkItemUploadManager>>();
+            mockItemHistoryBuilder = new Mock<IItemHistoryBuilder>();
+            mockHistoryModelTransformer = new Mock<IHistoryModelTransformer>();
+            mockItemHierarchyHistoryQueryHandler = new Mock<IQueryHandler<GetItemHierarchyClassHistoryParameters, ItemHierarchyClassHistoryAllModel>>();
+            mockGetBulkItemUploadStatusQueryHandler = new Mock<IQueryHandler<GetBulkUploadStatusParameters, List<BulkUploadStatusModel>>>();
+            mockGetBulkUploadErrorsQueryHandler = new Mock<IQueryHandler<GetBulkUploadErrorsPrameters, List<BulkUploadErrorModel>>>();
+            mockGetBulkUploadByIdQueryHandler = new Mock<IQueryHandler<GetBulkUploadByIdParameters, BulkUploadStatusModel>>();
+            context = new Mock<ControllerContext>();
+            session = new MockHttpSessionStateBase();
+            fakeHttpContext = new Mock<HttpContextBase>();
+            fakeIdentity = new GenericIdentity("User");
+            principal = new GenericPrincipal(fakeIdentity, null);
+            controllerContext = new Mock<ControllerContext>();
+            mockGetItemsByIdHandler = new Mock<IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult>>();
 
-            this.mockSession = new Mock<HttpSessionStateBase>();
-            this.mockResponse = new Mock<HttpResponseBase>();
-            this.mockContext = new Mock<ControllerContext>();
-
-            this.controller = new ItemController(mockLogger.Object,
+            controller = new ItemController(
+                mockLogger.Object,
+                mockGetItemsQueryHandler.Object,
+                mockGetItemHistoryQueryHandler.Object,
+                mockItemHierarchyHistoryQueryHandler.Object,
+                mockGetItemQueryHandler.Object,
+                mockGetAttributesQueryHandler.Object,
+                mockGetInforAttributesQueryHandler.Object,
+                mockGetHierarchyClassesQueryHandler.Object,
+                mockGetBulkUploadByIdQueryHandler.Object,
                 mockUpdateItemManagerHandler.Object,
-                mockValidateItemManagerHandler.Object,
+                mockInfragisticsHelper.Object,
                 mockAddItemManagerHandler.Object,
-                mockItemViewModelValidator.Object,
-                mockGetItemsBySearchQueryHandler.Object,
-                mockGetHierarchyLineageQueryHandler.Object,
-                mockAddProductMessageCommandHandler.Object,
-                mockInfragisticsHelper.Object, 
-                mockGetItemsByBulkScanCodeSearcParameters.Object);
-      
-            mockContext.SetupGet(c => c.HttpContext.User.Identity.Name).Returns(testUser);
-            controller.ControllerContext = mockContext.Object;
+                mockGetItemPropertiesFromMerchQueryHandler.Object,
+                mockDoesScanCodeExistQueryHandler.Object,
+                mockGetBarcodeTypeQueryHandler.Object,
+                mockGetBulkItemUploadStatusQueryHandler.Object,
+                mockGetBulkUploadErrorsQueryHandler.Object,
+                mockExcelExporterService.Object,
+                mockItemAttributesValidatorFactory.Object,
+                mockBulkItemUploadManagerHandler.Object,
+                mockGetInforItemHistoryQueryHandler.Object,
+                new IconWebAppSettings()
+                {
+                    WriteAccessGroups= "none",
+                    ReadAccessGroups="none",
+                    AdminAccessGroups="none"
+                },
+                mockItemHistoryBuilder.Object,
+                mockHistoryModelTransformer.Object,
+                mockGetItemsByIdHandler.Object
+                );
 
-            this.selectedRows = new List<ItemViewModel>
-			{
-				new ItemViewModel
-				{
-					ItemId = 1,
-					ScanCode = "12345123456"
-				},
-				new ItemViewModel
-				{
-					ItemId = 1,
-					ScanCode = "12345123457"
-				},
-				new ItemViewModel
-				{
-					ItemId = 1,
-					ScanCode = "12345123458"
-				}
-			};
 
-            AutoMapperWebConfiguration.Configure();
-            controller.Url = mockUrlHelper.Object;
+            fakeHttpContext.Setup(t => t.User).Returns(principal);
+            fakeHttpContext.Setup(t => t.Session).Returns(session);
+            fakeHttpContext.Setup(t => t.Request.QueryString).Returns(queryString);
+            controllerContext.Setup(t => t.HttpContext).Returns(fakeHttpContext.Object);
+
+            controller.ControllerContext = controllerContext.Object;
+            mockGetItemsQueryHandler.Setup(m => m.Search(It.IsAny<GetItemsParameters>())).Returns(getItemsResult);
+            getItemsResult.TotalRecordsCount = 10;
+
+
+
+            getItemsResult.Items = new List<ItemDbModel>
+            {
+                new ItemDbModel
+                {
+                    BrandsHierarchyClassId = 1,
+                    FinancialHierarchyClassId = 2,
+                    ItemAttributesJson = "{ProductDescription: 'Test'}",
+                    ItemId = 3,
+                    ItemTypeId = 4,
+                    ItemTypeDescription = Descriptions.RetailSale,
+                    MerchandiseHierarchyClassId = 5,
+                    NationalHierarchyClassId = 6,
+                    ScanCode = "1111",
+                    BarcodeTypeId = 1,
+                    BarcodeType = "5 Digit POS PLU (10000-82999)",
+                    TaxHierarchyClassId = 8
+                }
+            };
+            session[GET_ITEMS_PARAMETERS_VIEW_MODEL] = new GetItemsParametersViewModel
+            {
+                GetItemsAttributesParameters = new List<GetItemsAttributesParameters>()
+            };
         }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            Mapper.Reset();
-        }
-
-        [TestCategory("Controller"), TestCategory("Item Search")]
         [TestMethod]
-        public void Index_IndexAction_ReturnsNewItemSearchViewModel()
+        public void Index_Get_ReturnsView()
         {
-            // When.
+            //When
             var result = controller.Index() as ViewResult;
 
-            // Then.
-            result.Model.Equals(new ItemSearchViewModel());
-        }
-
-        [TestCategory("Controller"), TestCategory("Item Search")]
-        [TestMethod]
-        public void Search_InvalidModelState_ReturnsSearchOptionsPartialView()
-        {
-            // Given.
-            mockResponse.SetupGet(r => r.StatusCode).Returns(500);
-            mockSession.SetupSet(s => s["grid_search_results"] = new List<ItemViewModel>());
-            mockContext.Setup(c => c.HttpContext.Session).Returns(mockSession.Object);
-            mockContext.Setup(c => c.HttpContext.Response).Returns(mockResponse.Object);
-            controller.ControllerContext = mockContext.Object;
-
-            // When.
-            controller.ModelState.AddModelError("test", "test");
-            var result = controller.Search(new ItemSearchViewModel()) as PartialViewResult;
-
-            // Then.
-            result.ViewName = "_ItemSearchOptionsPartial";
-        }
-
-        [TestCategory("Controller"), TestCategory("Item Search")]
-        [TestMethod]
-        public void Search_ValidSearchParameters_ReturnsNoItems()
-        {
-            // Given.
-            ItemSearchViewModel searchItem = new ItemSearchViewModel();
-            List<HierarchyClass> hierarchyClasses = new List<HierarchyClass>
-                {
-                    new HierarchyClass { hierarchyClassName = "Test HierarchyClass", hierarchyClassID = 123, hierarchyLevel = 1 }
-                };
-            Hierarchy hierarchy = new Hierarchy
-            {
-                hierarchyID = 1,
-                hierarchyName = "Test Hierarchy",
-                HierarchyPrototype = null
-            };
-
-            controller.ControllerContext = mockContext.Object;
-
-            mockGetItemsBySearchQueryHandler.Setup(r => r.Search(It.IsAny<GetItemsBySearchParameters>())).Returns(new ItemsBySearchResultsModel { ItemsCount = 1 });
-            mockGetHierarchyLineageQueryHandler.Setup(r => r.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(GetFakeHierarchy());
-
-            // When.
-            PartialViewResult result = controller.Search(searchItem) as PartialViewResult;
-            ItemSearchResultsViewModel resultModel = result.Model as ItemSearchResultsViewModel;
-
-            // Then.
-            int expectedCount = 0;
-            int actualCount = resultModel.Items.Count;
-
-            Assert.AreEqual(expectedCount, actualCount);
+            //Then
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
-        public void Search_FullSearchParameters_ShouldSendParametersToCommandHandler()
+        public void SaveGetItemsParameters_PassedInAGetItemsParametersViewModel_ShouldSaveParametersToSession()
         {
             //Given
-            var viewModel = new ItemSearchViewModel
+            GetItemsParametersViewModel viewModel = new GetItemsParametersViewModel
+            {
+                GetItemsAttributesParameters = new List<GetItemsAttributesParameters>
                 {
-                    BrandName = "Test Brand",
-                    ProductDescription = "Test Desc",
-                    MerchandiseHierarchy = "Test Merch",
-                    NationalHierarchy = "Test National",
-                    PackageUnit = "Test PackageUnit",
-                    PartialBrandName = true,
-                    PartialScanCode = true,
-                    PosDescription = "Test POS Desc",
-                    PosScaleTare = "Test PosScaleTare",
-                    RetailSize = "Test Retail Size",
-                    ScanCode = "Test Scan Code",
-                    SelectedDepartmentSaleId = "Test Dept",
-                    SelectedFoodStampId = "Test FoodStamp",
-                    SelectedRetailUom = "Test UOM",
-                    DeliverySystem = "Test Delivery System",
-                    TaxHierarchy = "Test Tax",
-                    ItemSignAttributes = new ItemSignAttributesSearchViewModel
+                    new GetItemsAttributesParameters { AttributeName = "Test1", AttributeValue = "Value1" },
+                    new GetItemsAttributesParameters { AttributeName = "Test2", AttributeValue = "Value2" },
+                }
+            };
+
+            //When
+            controller.SaveGetItemsParameters(viewModel);
+
+            //Then
+            Assert.AreEqual(viewModel, session[GET_ITEMS_PARAMETERS_VIEW_MODEL]);
+        }
+
+        [TestMethod]
+        public void ItemSearchExport_SelectedColumnNamesSent_SessionIsSet()
+        {
+            //Given
+            string[] values = new string [] { "A", "B" };
+            //When
+            controller.ItemSearchExport(values);
+
+            //Then
+            Assert.AreEqual(values, session[SELECTED_COLUMN_NAMES]);
+        }
+
+        [TestMethod]
+        public void GridDataSource_GetItemsParametersContainsItemId_ShouldSetItemIdOnQueryHandlerParameters()
+        {
+            //Given
+            AssertBasicGridDataSourceTest(new GetItemsAttributesParameters { AttributeName = "ItemId", AttributeValue = "1" });
+
+            //Then
+            mockGetItemsQueryHandler.Verify(m => m.Search(It.Is<GetItemsParameters>(
+                    p => p.ItemAttributeJsonParameters.First(x => x.AttributeName == "ItemId").Values.First() == "1")),
+                    Times.Once);
+        }
+
+        [TestMethod]
+        public void GridDataSource_GetItemsParametersContainsScanCode_ShouldSetScanCodeOnQueryHandlerParameters()
+        {
+            //Given
+            AssertBasicGridDataSourceTest(new GetItemsAttributesParameters { AttributeName = "ScanCode", AttributeValue = "1010" });
+
+            //Then
+            mockGetItemsQueryHandler.Verify(m => m.Search(It.Is<GetItemsParameters>(
+                p => p.ItemAttributeJsonParameters.First(x => x.AttributeName == "ScanCode").Values.First() == "1010")),
+                Times.Once);
+        }
+
+        [TestMethod]
+        public void GridDataSource_GetItemsParametersContainsMerchandiseHierarchyClassId_ShouldSetMerchandiseHierarchyClassIdOnQueryHandlerParameters()
+        {
+            //Given
+            AssertBasicGridDataSourceTest(new GetItemsAttributesParameters { AttributeName = "MerchandiseHierarchyClassId", AttributeValue = "1" });
+
+            //Then
+            mockGetItemsQueryHandler.Verify(m => m.Search(It.Is<GetItemsParameters>(
+                p => p.ItemAttributeJsonParameters.First(x => x.AttributeName == "MerchandiseHierarchyClassId").Values.First() == "1")),
+                Times.Once);
+        }
+
+        [TestMethod]
+        public void GridDataSource_GetItemsParametersContainsBrandsHierarchyClassId_ShouldSetBrandsHierarchyClassIdOnQueryHandlerParameters()
+        {
+            //Given
+            AssertBasicGridDataSourceTest(new GetItemsAttributesParameters { AttributeName = "BrandsHierarchyClassId", AttributeValue = "1" });
+
+            //Then
+            mockGetItemsQueryHandler.Verify(m => m.Search(It.Is<GetItemsParameters>(
+                p => p.ItemAttributeJsonParameters.First(x => x.AttributeName == "BrandsHierarchyClassId").Values.First() == "1")),
+                Times.Once);
+        }
+
+        [TestMethod]
+        public void GridDataSource_GetItemsParametersContainsTaxHierarchyClassId_ShouldSetTaxHierarchyClassIdOnQueryHandlerParameters()
+        {
+            //Given
+            AssertBasicGridDataSourceTest(new GetItemsAttributesParameters { AttributeName = "TaxHierarchyClassId", AttributeValue = "1" });
+
+            //Then
+            mockGetItemsQueryHandler.Verify(m => m.Search(It.Is<GetItemsParameters>(
+                p => p.ItemAttributeJsonParameters.First(x => x.AttributeName == "TaxHierarchyClassId").Values.First() == "1")),
+                Times.Once);
+        }
+
+        [TestMethod]
+        public void GridDataSource_GetItemsParametersContainsNationalHierarchyClassId_ShouldSetNationalHierarchyClassIdOnQueryHandlerParameters()
+        {
+            //Given
+            AssertBasicGridDataSourceTest(new GetItemsAttributesParameters { AttributeName = "NationalHierarchyClassId", AttributeValue = "1" });
+
+            //Then
+            mockGetItemsQueryHandler.Verify(m => m.Search(It.Is<GetItemsParameters>(
+                p => p.ItemAttributeJsonParameters.First(x => x.AttributeName == "NationalHierarchyClassId").Values.First() == "1")),
+                Times.Once);
+        }
+
+        [TestMethod]
+        public void GridDataSource_GetItemsParametersContainsFinancialHierarchyClassId_ShouldSetFinancialHierarchyClassIdOnQueryHandlerParameters()
+        {
+            //Given
+            AssertBasicGridDataSourceTest(new GetItemsAttributesParameters { AttributeName = "FinancialHierarchyClassId", AttributeValue = "1" });
+
+            //Then
+            mockGetItemsQueryHandler.Verify(m => m.Search(It.Is<GetItemsParameters>(
+                p => p.ItemAttributeJsonParameters.First(x => x.AttributeName == "FinancialHierarchyClassId").Values.First() == "1")),
+                Times.Once);
+        }
+
+        [TestMethod]
+        public void GridDataSource_GetItemsParametersContainsManufacturerHierarchyClassId_ShouldSetManufacturerHierarchyClassIdOnQueryHandlerParameters()
+        {
+            //Given
+            AssertBasicGridDataSourceTest(new GetItemsAttributesParameters { AttributeName = "ManufacturerHierarchyClassId", AttributeValue = "1" });
+
+            //Then
+            mockGetItemsQueryHandler.Verify(m => m.Search(It.Is<GetItemsParameters>(
+                p => p.ItemAttributeJsonParameters.First(x => x.AttributeName == "ManufacturerHierarchyClassId").Values.First() == "1")),
+                Times.Once);
+        }
+
+        [TestMethod]
+        public void GridDataSource_GetItemsParametersContainsJsonAttributes_ShouldSetItemAttributesJsonOnQueryHandlerParameters()
+        {
+            //Given
+            var parameters = new[]
+            {
+                new GetItemsAttributesParameters { AttributeName = "Json1", AttributeValue = "1", SearchOperator=AttributeSearchOperator.ContainsAll },
+                new GetItemsAttributesParameters { AttributeName = "Json2", AttributeValue = "2", SearchOperator=AttributeSearchOperator.ContainsAll },
+                new GetItemsAttributesParameters { AttributeName = "Json3", AttributeValue = "3", SearchOperator=AttributeSearchOperator.ContainsAll }
+            };
+            AssertBasicGridDataSourceTest(parameters);
+
+            //Then
+            mockGetItemsQueryHandler.Verify(m => m.Search(It.Is<GetItemsParameters>(
+                    p => JsonConvert.SerializeObject(p.ItemAttributeJsonParameters) == JsonConvert.SerializeObject(parameters))),
+                Times.Once);
+        }
+
+        [TestMethod]
+        public void GridDataSource_GetItemsParametersRequestContainsOrderByValueAndOrderByOrder_ShouldSetOrderByValueAndOrderByOrder()
+        {
+            //Given
+            var parameters = new[] { new GetItemsAttributesParameters { AttributeName = "Json3", AttributeValue = "3", SearchOperator = AttributeSearchOperator.ContainsAll } }.ToList();
+
+            //When
+            session[GET_ITEMS_PARAMETERS_VIEW_MODEL] = new GetItemsParametersViewModel
+            {
+                GetItemsAttributesParameters = parameters
+            };
+            queryString["$top"] = top;
+            queryString["$skip"] = skip;
+            queryString["$orderby"] = "ScanCode ASC";
+
+            //When
+            var result = controller.GridDataSource() as ContentResult;
+
+            //Then
+            Assert.IsNotNull(result);
+            Assert.AreEqual(JSON_CONTENT_TYPE, result.ContentType);
+            var content = JsonConvert.DeserializeObject<dynamic>(result.Content);
+            Assert.AreEqual(10, content.TotalRecordsCount.Value);
+            Assert.AreEqual(3, content.Records[0].ItemId.Value);
+            mockGetItemsQueryHandler.Verify(m => m.Search(It.Is<GetItemsParameters>(
+                    p => p.Top == 20
+                         && p.Skip == 10
+                         && p.OrderByOrder == "ASC"
+                         && p.OrderByValue == "ScanCode"
+                         && JsonConvert.SerializeObject(p.ItemAttributeJsonParameters) == JsonConvert.SerializeObject(parameters))),
+                     Times.Once);
+        }
+
+        [TestMethod]
+        public void Detail_ItemIdIsSet_ShouldReturnViewWithItem()
+        {
+            //Given
+            string testScanCode = "testScanCode";
+            var testItemModel = new ItemDbModel
+            {
+                ScanCode = testScanCode,
+                BrandsHierarchyClassId = 1,
+                FinancialHierarchyClassId = 2,
+                ItemAttributesJson = "{TestProp:'TestValue'}",
+                ItemTypeId = ItemTypes.RetailSale,
+                ItemTypeDescription = Descriptions.RetailSale,
+                MerchandiseHierarchyClassId = 3,
+                NationalHierarchyClassId = 4,
+                BarcodeTypeId = 1,
+                BarcodeType = "5 Digit POS PLU (10000-82999)",
+                TaxHierarchyClassId = 5,
+                ManufacturerHierarchyClassId = 6
+            };
+            mockGetItemQueryHandler.Setup(m => m.Search(It.Is<GetItemParameters>(p => p.ScanCode == testScanCode)))
+                .Returns(testItemModel);
+            mockGetAttributesQueryHandler.Setup(m => m.Search(It.IsAny<EmptyQueryParameters<IEnumerable<AttributeModel>>>()))
+                .Returns(new List<AttributeModel> { new AttributeModel { AttributeName = "Test" } });
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.Merchandise
+                         && p.HierarchyClassId == testItemModel.MerchandiseHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Merchandise" } });
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.Brands
+                         && p.HierarchyClassId == testItemModel.BrandsHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Brands" } });
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.Tax
+                         && p.HierarchyClassId == testItemModel.TaxHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Tax" } });
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.Financial
+                         && p.HierarchyClassId == testItemModel.FinancialHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Financial" } });
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.National
+                         && p.HierarchyClassId == testItemModel.NationalHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "National" } });
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.Manufacturer
+                         && p.HierarchyClassId == testItemModel.ManufacturerHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Manufacturer" } });
+
+            //When
+            var result = controller.Detail(testScanCode) as ViewResult;
+
+            //Then
+            Assert.IsNotNull(result);
+            var model = result.Model as ItemDetailViewModel;
+            Assert.IsNotNull(model);
+            Assert.AreEqual(testItemModel.ItemId, model.ItemViewModel.ItemId);
+            Assert.AreEqual("Merchandise", model.ItemViewModel.MerchandiseHierarchyLineage);
+            Assert.AreEqual("Brands", model.ItemViewModel.BrandsHierarchyLineage);
+            Assert.AreEqual("Tax", model.ItemViewModel.TaxHierarchyLineage);
+            Assert.AreEqual("Financial", model.ItemViewModel.FinancialHierarchyLineage);
+            Assert.AreEqual("National", model.ItemViewModel.NationalHierarchyLineage);
+        }
+
+        [TestMethod]
+        public void Edit_UpdateSubmitted_ShouldUpdate()
+        {
+            //Given
+            string testScanCode = "testScanCode";
+            var testItemModel = new ItemDbModel
+            {
+                ScanCode = testScanCode,
+                BrandsHierarchyClassId = 1,
+                FinancialHierarchyClassId = 2,
+                ItemAttributesJson = JsonConvert.SerializeObject(new Dictionary<string, string>()
+                {
+                    { Constants.Attributes.CreatedBy, "TestCreate" },
+                    { Constants.Attributes.CreatedDateTimeUtc, "2001-01-01 12:12:12" },
+                    { Constants.Attributes.ModifiedBy, "Test" },
+                    { Constants.Attributes.ModifiedDateTimeUtc, "2002-01-01 00:00:00" }
+                }),
+                ItemTypeId = ItemTypes.RetailSale,
+                ItemTypeDescription = Descriptions.RetailSale,
+                MerchandiseHierarchyClassId = 3,
+                NationalHierarchyClassId = 4,
+                BarcodeTypeId = 1,
+                BarcodeType = "5 Digit POS PLU (10000-82999)",
+                TaxHierarchyClassId = 5,
+                ManufacturerHierarchyClassId = 6
+            };
+
+            mockUpdateItemManagerHandler.Setup(x => x.Execute(It.IsAny<UpdateItemManager>())).Callback<UpdateItemManager>((item) =>
+            {
+                Assert.AreEqual("2001-01-01 12:12:12", item.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc], "CreatedDateTimeUtc should not change regardless of what the client sends");
+                Assert.IsTrue(item.ItemAttributes[Constants.Attributes.ModifiedBy] != null, "ModifiedBy should be set when updating records");
+                Assert.IsTrue(item.ItemAttributes[Constants.Attributes.ModifiedDateTimeUtc] != null, "ModifiedDateTime should be set when updating records");
+                Assert.AreEqual("TestCreate", item.ItemAttributes[Constants.Attributes.CreatedBy]);
+                Assert.AreEqual("2001-01-01 12:12:12", item.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc]);
+            });
+
+            mockGetItemQueryHandler.Setup(m => m.Search(It.Is<GetItemParameters>(p => p.ScanCode == testScanCode)))
+                .Returns(testItemModel);
+
+            mockGetAttributesQueryHandler.Setup(m => m.Search(It.IsAny<EmptyQueryParameters<IEnumerable<AttributeModel>>>()))
+                .Returns(new List<AttributeModel> { new AttributeModel { AttributeName = "Test" } });
+
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.Merchandise
+                         && p.HierarchyClassId == testItemModel.MerchandiseHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Merchandise" } });
+
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.Brands
+                         && p.HierarchyClassId == testItemModel.BrandsHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Brands" } });
+
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.Tax
+                         && p.HierarchyClassId == testItemModel.TaxHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Tax" } });
+
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.Financial
+                         && p.HierarchyClassId == testItemModel.FinancialHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Financial" } });
+
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.National
+                         && p.HierarchyClassId == testItemModel.NationalHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "National" } });
+
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                   p => p.HierarchyId == Hierarchies.Manufacturer
+                        && p.HierarchyClassId == testItemModel.ManufacturerHierarchyClassId)))
+               .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Manufacturer" } });
+
+            mockGetItemPropertiesFromMerchQueryHandler.Setup(m => m.Search(It.IsAny<GetItemPropertiesFromMerchHierarchyParameters>()))
+                .Returns(new MerchDependentItemPropertiesModel { FinancialHierarcyClassId = 1, ProhibitDiscount = false, NonMerchandiseTraitValue = "test" });
+
+            ItemEditViewModel model = new ItemEditViewModel
+            {
+                ItemViewModel = new ItemViewModel()
+                {
+                    ItemId = 1,
+                    ScanCode = "testScanCode",
+                    MerchandiseHierarchyClassId = 1,
+                    BrandsHierarchyClassId = 2,
+                    TaxHierarchyClassId = 3,
+                    NationalHierarchyClassId = 5,
+                    ManufacturerHierarchyClassId = 6,
+                    ItemAttributes = new Dictionary<string, string>()
                     {
-                        AnimalWelfareRating ="Step 3",
-                        SelectedBiodynamicOption = "Test Biodynamic",
-                        SelectedCheeseRawOption = "Test CheeseRaw",
-                        GlutenFreeAgency = "Test Gluten",
-                        KosherAgency = "Test Kosher",
-                        NonGmoAgency = "Test NonGmo",
-                        OrganicAgency = "Test Organic",
-                        SelectedPremiumBodyCareOption = "Test PremiumBodyCare",
-                        CheeseMilkType = "Goat Milk",
-                        EcoScaleRating = "Premium/Yellow",
-                        SeafoodCatchType = "Wild",
-                        SeafoodFreshOrFrozen = "Previously Frozen",
-                        VeganAgency = "Test Vegan",
-                        SelectedVegetarianOption = "Test Vegetarian",
-                        SelectedWholeTradeOption = "Test WholeTrade"
+                        { Constants.Attributes.ProhibitDiscount, "false" },
+                        { Constants.Attributes.CreatedDateTimeUtc, DateTime.Parse("2002-01-01").ToString() },
                     }
-                };
-            viewModel.SelectedStatusId = int.Parse(viewModel.Status.First(s => s.Text == "Loaded").Value);
-            viewModel.SelectedHiddenItemStatusId = int.Parse(viewModel.HiddenStatus.First(s => s.Text == "Hidden").Value);
-
-            mockGetItemsBySearchQueryHandler.Setup(m => m.Search(It.Is<GetItemsBySearchParameters>(p =>
-                    p.BrandName == viewModel.BrandName
-                    && p.ProductDescription == viewModel.ProductDescription
-                    && p.PosDescription == viewModel.PosDescription
-                    && p.MerchandiseHierarchy == viewModel.MerchandiseHierarchy
-                    && p.NationalClass == viewModel.NationalHierarchy
-                    && p.PackageUnit == viewModel.PackageUnit
-                    && p.PartialBrandName == viewModel.PartialBrandName
-                    && p.PartialScanCode == viewModel.PartialScanCode
-                    && p.PosScaleTare == viewModel.PosScaleTare
-                    && p.RetailSize == viewModel.RetailSize
-                    && p.ScanCode == viewModel.ScanCode
-                    && p.DepartmentSale == viewModel.SelectedDepartmentSaleId
-                    && p.FoodStampEligible == viewModel.SelectedFoodStampId
-                    && p.HiddenItemStatus == HiddenStatus.Hidden
-                    && p.RetailUom == viewModel.SelectedRetailUom
-                    && p.DeliverySystem == viewModel.DeliverySystem
-                    && p.SearchStatus == SearchStatus.Loaded
-                    && p.TaxRomance == viewModel.TaxHierarchy
-                    && p.AnimalWelfareRating == "Step 3"
-                    && p.Biodynamic == viewModel.ItemSignAttributes.SelectedBiodynamicOption
-                    && p.MilkType == "Goat Milk"
-                    && p.CheeseRaw == viewModel.ItemSignAttributes.SelectedCheeseRawOption
-                    && p.EcoScaleRating == "Premium/Yellow"
-                    && p.GlutenFreeAgency == viewModel.ItemSignAttributes.GlutenFreeAgency
-                    && p.KosherAgency == viewModel.ItemSignAttributes.KosherAgency
-                    && p.NonGmoAgency == viewModel.ItemSignAttributes.NonGmoAgency
-                    && p.OrganicAgency == viewModel.ItemSignAttributes.OrganicAgency
-                    && p.PremiumBodyCare == viewModel.ItemSignAttributes.SelectedPremiumBodyCareOption
-                    && p.SeafoodFreshOrFrozen == "Previously Frozen"
-                    && p.SeafoodCatchType == "Wild"
-                    && p.VeganAgency == viewModel.ItemSignAttributes.VeganAgency
-                    && p.Vegetarian == viewModel.ItemSignAttributes.SelectedVegetarianOption
-                    && p.WholeTrade == viewModel.ItemSignAttributes.SelectedWholeTradeOption)))
-                .Returns(new ItemsBySearchResultsModel { Items = new List<ItemSearchModel>() });
-
-            mockGetHierarchyLineageQueryHandler.Setup(r => r.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(GetFakeHierarchy());
-
-            //When
-            controller.Search(viewModel);
-
-            //Then
-            mockGetItemsBySearchQueryHandler.Verify();
-        }
-
-        [TestCategory("Controller"), TestCategory("Item Edit")]
-        [TestMethod]
-        public void Edit_RequestToEditValidItemId_ReturnsItemEditViewModel()
-        {
-            // Given.
-            List<Hierarchy> hierList = new List<Hierarchy>() { 
-				new Hierarchy { 
-					HierarchyClass = new List<HierarchyClass>() {
-						new HierarchyClass { hierarchyClassID = 1, hierarchyClassName = "fake hier class" }
-					}, 
-					hierarchyID = 1, 
-					hierarchyName = "fake hier", 
-					HierarchyPrototype = null 
-				} 
-			};
-                        
-            mockGetHierarchyLineageQueryHandler.Setup(r => r.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(GetFakeHierarchy());
-            mockGetItemsByBulkScanCodeSearcParameters.Setup(q => q.Search(It.IsAny<GetItemsByBulkScanCodeSearchParameters>()))
-                .Returns(new List<ItemSearchModel> { GetFakeItemNavigationData() });
-
-            // When.
-            var result = controller.Edit("1234") as ViewResult;
-
-            // Then.
-            string modelName = result.Model.GetType().ToString();
-            Assert.IsTrue(modelName.ToLower().EndsWith("ItemEditViewModel".ToLower()));
-        }
-
-        [TestCategory("Controller"), TestCategory("Item Edit")]
-        [TestMethod]
-        public void Edit_DataInViewForUpdatesCausesError_ResultHasUpdateFailedViewData()
-        {
-            // Given.
-            List<Hierarchy> hierList = new List<Hierarchy>() { 
-				new Hierarchy { 
-					HierarchyClass = new List<HierarchyClass>() {
-						new HierarchyClass { hierarchyClassID = 1, hierarchyClassName = "fake hier class" }
-					}, 
-					hierarchyID = 1, 
-					hierarchyName = "fake hier", 
-					HierarchyPrototype = null 
-				} 
-			};
-
-            mockGetHierarchyLineageQueryHandler.Setup(r => r.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(GetFakeHierarchy());
-            mockGetItemsByBulkScanCodeSearcParameters.Setup(q => q.Search(It.IsAny<GetItemsByBulkScanCodeSearchParameters>()))
-                .Returns(new List<ItemSearchModel> { GetFakeItemNavigationData() });
-            mockUpdateItemManagerHandler.Setup(uic => uic.Execute(It.IsAny<UpdateItemManager>())).Throws(new ItemTraitUpdateException("Fake Item Update Error", string.Empty, string.Empty, string.Empty, new Exception()));
-
-
-            // When.
-            var viewModel = new ItemEditViewModel(GetFakeItemNavigationData());
-            var result = controller.Edit(viewModel) as ViewResult;
-
-            // Then.
-            Assert.IsTrue(result.ViewData["UpdateFailed"] != null);
-        }
-
-        [TestMethod]
-        public void Edit_TaxClassHasNoTaxAbbreviation_ResultHasUpdateFailedViewDataTaxSpecificErrorMessage()
-        {
-            // Given
-            List<Hierarchy> hierList = new List<Hierarchy>() { 
-				new Hierarchy { 
-					HierarchyClass = new List<HierarchyClass>() {
-						new HierarchyClass { hierarchyClassID = 1, hierarchyClassName = "fake hier class" }
-					}, 
-					hierarchyID = 1, 
-					hierarchyName = "fake hier", 
-					HierarchyPrototype = null 
-				} 
-			};
-
-            mockGetHierarchyLineageQueryHandler.Setup(r => r.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(GetFakeHierarchy());
-            mockUpdateItemManagerHandler.Setup(uic => uic.Execute(It.IsAny<UpdateItemManager>()))
-                .Throws(new CommandException("The tax class needs a tax abbreviation before it can be assigned to any items."));
-            mockGetItemsByBulkScanCodeSearcParameters.Setup(q => q.Search(It.IsAny<GetItemsByBulkScanCodeSearchParameters>()))
-                .Returns(new List<ItemSearchModel> { GetFakeItemNavigationData() });
-
-
-            var expectedMessage = "The tax class needs a tax abbreviation before it can be assigned to any items.";
-
-            // When
-            var viewModel = new ItemEditViewModel(GetFakeItemNavigationData());
-            var result = controller.Edit(viewModel) as ViewResult;
-            var actualMessage = result.ViewData["UpdateFailed"];
-
-            // Then
-            Assert.AreEqual(expectedMessage, actualMessage);
-        }
-
-        [TestMethod]
-        public void Edit_BrandNameDoesNotExist_ShouldReturnError()
-        {
-            //Given
-            mockGetHierarchyLineageQueryHandler.Setup(m => m.Search(It.IsAny<GetHierarchyLineageParameters>()))
-                .Returns(GetFakeHierarchy());
-            mockGetItemsByBulkScanCodeSearcParameters.Setup(q => q.Search(It.IsAny<GetItemsByBulkScanCodeSearchParameters>()))
-                .Returns(new List<ItemSearchModel> { GetFakeItemNavigationData() });
-
-            //When
-            var result = controller.Edit(new ItemEditViewModel() { BrandName = "Not Exists" }) as ViewResult;
-
-            //Then
-            Assert.AreEqual("Brand Not Exists does not exist.", result.ViewData["UpdateFailed"]);
-        }
-
-        [TestCategory("Controller"), TestCategory("Item Message")]
-        [TestMethod]
-        public void SendProductMessage_CallsEventHandlerAndRedirectsToEdit()
-        {
-            // Given.
-            Item item = GetFakeItem();
-            List<Hierarchy> hierList = new List<Hierarchy>() {
-                new Hierarchy {
-                    HierarchyClass = new List<HierarchyClass>() {
-                        new HierarchyClass { hierarchyClassID = 1, hierarchyClassName = "fake hier class" }
-                    },
-                    hierarchyID = 1,
-                    hierarchyName = "fake hier",
-                    HierarchyPrototype = null
                 }
             };
-
-            mockGetHierarchyLineageQueryHandler.Setup(r => r.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(GetFakeHierarchy());
-            mockAddProductMessageCommandHandler.Setup(e => e.Execute(It.IsAny<AddProductMessageCommand>()));
-
-            // When.
-            var result = controller.SendProductMessage(1, "1234") as RedirectToRouteResult;
-
-            //Then
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Edit", result.RouteValues["action"]);
-            Assert.AreEqual("1234", result.RouteValues["scanCode"]);
-            mockAddProductMessageCommandHandler.Verify(e => e.Execute(It.IsAny<AddProductMessageCommand>()), Times.Once);
-        }
-
-        [TestMethod]
-        public void ValidateSelected_SuccessValidation_ReturnsTrueJsonResult()
-        {
-            // Given
-            var expectedSuccess = true;
-            var expectedMessage = "Successfully validated all selected items.";
-
-            mockContext.SetupGet(c => c.HttpContext.User.Identity.Name).Returns(testUser);
-            controller.ControllerContext = mockContext.Object;
-
             // When
-            var result = controller.ValidateSelected(selectedRows) as JsonResult;
-            var actualSuccess = result.GetDataProperty("Success");
-            var actualMessage = result.GetDataProperty("Message");
+            var result = controller.Edit(model) as ViewResult;
 
             // Then
-            Assert.AreEqual(expectedSuccess, actualSuccess);
-            Assert.AreEqual(expectedMessage, actualMessage);
-        }
-
-        [TestMethod]
-        public void ValidateSelected_ErrorLoading_ReturnsFalseJsonResult()
-        {
-            // Given
-            var expectedSuccess = false;
-            var expectedMessage = "Validation failed.";
-
-            var exception = new CommandException(expectedMessage);
-            mockValidateItemManagerHandler.Setup(c => c.Execute(It.IsAny<ValidateItemManager>())).Throws(exception);
-
-            // When
-            var result = controller.ValidateSelected(selectedRows) as JsonResult;
-            var actualSuccess = result.GetDataProperty("Success");
-            var actualMessage = result.GetDataProperty("Message");
-
-            // Then
-            Assert.AreEqual(expectedSuccess, actualSuccess);
-            Assert.AreEqual(expectedMessage, actualMessage);
-        }
-
-        [TestMethod]
-        public void ValidateSelected_SelectedIsEmpty_ShouldReturnJsonResultWithFalseSuccessAndFailureMessage()
-        {
-            //Given
-            var expectedSuccess = false;
-            var expectedMessage = "No items were selected to validate.";
-
-            //When
-            var actual = controller.ValidateSelected(new List<ItemViewModel>()) as JsonResult;
-
-            //Then
-            Assert.AreEqual(expectedSuccess, actual.GetDataProperty("Success"));
-            Assert.AreEqual(expectedMessage, actual.GetDataProperty("Message"));
-        }
-
-        [TestMethod]
-        public void ValidateSelected_SelectedIsNull_ShouldReturnJsonResultWithFalseSuccessAndFailureMessage()
-        {
-            //Given
-            var expectedSuccess = false;
-            var expectedMessage = "No items were selected to validate.";
-
-            //When
-            var actual = controller.ValidateSelected(null) as JsonResult;
-
-            //Then
-            Assert.AreEqual(expectedSuccess, actual.GetDataProperty("Success"));
-            Assert.AreEqual(expectedMessage, actual.GetDataProperty("Message"));
-        }
-
-        [TestMethod]
-        public void Create_SuccessfullyPopulatesViewModel_ShouldReturnViewModelWithHierarchyClassesPopulated()
-        {
-            // Given.
-            HierarchyClassListModel hierarchyClassViewModel = new HierarchyClassListModel();
-
-            var merchHierarchyClasses = new List<HierarchyClassModel>
-            {
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("MerchHierarchyClass1").WithHierarchyClassId(1).WithHierarchyClassLineage("MerchHierarchyClass1")
-            };
-            
-            var taxHierarchyClasses = new List<HierarchyClassModel>
-            {
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("TaxHierarchyClass1").WithHierarchyClassId(1).WithHierarchyClassLineage("TaxHierarchyClass1"),
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("TaxHierarchyClass2").WithHierarchyClassId(2).WithHierarchyClassLineage("TaxHierarchyClass2")
-            };
-            
-            var browsingHierarchyClasses = new List<HierarchyClassModel>
-            {
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("BrowsingHierarchyClass1").WithHierarchyClassId(1).WithHierarchyClassLineage("BrowsingHierarchyClass1"),
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("BrowsingHierarchyClass2").WithHierarchyClassId(2).WithHierarchyClassLineage("BrowsingHierarchyClass2"),
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("BrowsingHierarchyClass3").WithHierarchyClassId(3).WithHierarchyClassLineage("BrowsingHierarchyClass3")
-            };
-
-            var nationalHierarchyClasses = new List<HierarchyClassModel>
-            {
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("NationalHierarchyClass1").WithHierarchyClassId(1).WithHierarchyClassLineage("NationalHierarchyClass1"),
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("NationalHierarchyClass2").WithHierarchyClassId(2).WithHierarchyClassLineage("NationalHierarchyClass2")
-            };
-
-            hierarchyClassViewModel.MerchandiseHierarchyList = merchHierarchyClasses;
-            hierarchyClassViewModel.TaxHierarchyList = taxHierarchyClasses;
-            hierarchyClassViewModel.BrowsingHierarchyList = browsingHierarchyClasses;
-            hierarchyClassViewModel.NationalHierarchyList = nationalHierarchyClasses;
-
-            mockGetHierarchyLineageQueryHandler.Setup(r => r.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(hierarchyClassViewModel);
-
-            // When.
-            var view = controller.Create() as ViewResult;
-            
-            // Then.
-            var viewModel = view.Model as ItemCreateViewModel;
-            var actualMerch = viewModel.MerchandiseHierarchyClasses.ToList();
-            var actualTax = viewModel.TaxHierarchyClasses.ToList();
-            var actualBrowse = viewModel.BrowsingHierarchyClasses.ToList();
-            var actualUoms = viewModel.RetailUoms.ToList();
-
-            Assert.AreEqual(1, actualMerch.Count);
-            Assert.AreEqual(2, actualTax.Count);
-            Assert.AreEqual(3, actualBrowse.Count);
-            Assert.AreEqual(string.Empty, actualUoms[0].Text);
-            Assert.AreEqual("EA", actualUoms[1].Text);
-            Assert.AreEqual("LB", actualUoms[2].Text);
-            Assert.AreEqual("CT", actualUoms[3].Text);
-        }
-
-        [TestMethod]
-        public void Create_SuccessfullyPopulatesViewModel_ShouldReturnViewModelWithAgencyListPopulated()
-        {
-            // Given.
-            HierarchyClassListModel hierarchyClassViewModel = new HierarchyClassListModel();
-
-            var merchHierarchyClasses = new List<HierarchyClassModel>
-            {
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("MerchHierarchyClass1").WithHierarchyClassId(1).WithHierarchyClassLineage("MerchHierarchyClass1")
-            };
-
-            var taxHierarchyClasses = new List<HierarchyClassModel>
-            {
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("TaxHierarchyClass1").WithHierarchyClassId(1).WithHierarchyClassLineage("TaxHierarchyClass1"),
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("TaxHierarchyClass2").WithHierarchyClassId(2).WithHierarchyClassLineage("TaxHierarchyClass2")
-            };
-
-            var browsingHierarchyClasses = new List<HierarchyClassModel>
-            {
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("BrowsingHierarchyClass1").WithHierarchyClassId(1).WithHierarchyClassLineage("BrowsingHierarchyClass1"),
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("BrowsingHierarchyClass2").WithHierarchyClassId(2).WithHierarchyClassLineage("BrowsingHierarchyClass2"),
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("BrowsingHierarchyClass3").WithHierarchyClassId(3).WithHierarchyClassLineage("BrowsingHierarchyClass3")
-            };
-
-            var nationalHierarchyClasses = new List<HierarchyClassModel>
-            {
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("NationalHierarchyClass1").WithHierarchyClassId(1).WithHierarchyClassLineage("NationalHierarchyClass1"),
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("NationalHierarchyClass2").WithHierarchyClassId(2).WithHierarchyClassLineage("NationalHierarchyClass2")
-            };
-
-            hierarchyClassViewModel.MerchandiseHierarchyList = merchHierarchyClasses;
-            hierarchyClassViewModel.TaxHierarchyList = taxHierarchyClasses;
-            hierarchyClassViewModel.BrowsingHierarchyList = browsingHierarchyClasses;
-            hierarchyClassViewModel.NationalHierarchyList = nationalHierarchyClasses;
-
-            mockGetHierarchyLineageQueryHandler.Setup(r => r.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(hierarchyClassViewModel);
-
-            // When.
-            var view = controller.Create() as ViewResult;
-
-            // Then.
-            var viewModel = view.Model as ItemCreateViewModel;
-            var actualGlutenFreeAgencies = viewModel.GlutenFreeAgencies.ToList();
-            var actualKosherAgencies = viewModel.KosherAgencies.ToList();
-            var actualNonGmoAgencies = viewModel.NonGmoAgencies.ToList();
-            var actualOrganicAgencies = viewModel.OrganicAgencies.ToList();
-            var actualVeganAgencies = viewModel.VeganAgencies.ToList();
-
-            Assert.AreEqual(1, actualGlutenFreeAgencies.Count);
-            Assert.AreEqual(1, actualKosherAgencies.Count);
-            Assert.AreEqual(1, actualNonGmoAgencies.Count);
-            Assert.AreEqual(1, actualOrganicAgencies.Count);
-            Assert.AreEqual(1, actualVeganAgencies.Count);            
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(Exception), "Test Exception")]
-        public void Create_QueryHandlersThrowAnException_ShouldThrowException()
-        {
-            //Given
-            mockGetHierarchyLineageQueryHandler.Setup(qh => qh.Search(It.IsAny<GetHierarchyLineageParameters>()))
-                .Throws(new Exception("Test Exception"));
-
-            //When
-            controller.Create();
-        }
-
-        [TestMethod]
-        public void Create_ItemCreateIsSuccessful_ShouldReturnRedirectToRouteResultAndCreationMessage()
-        {
-            //Given
-            mockAddItemManagerHandler.Setup(mh => mh.Execute(It.IsAny<AddItemManager>())).Verifiable();
-
-            //When
-            var result = controller.Create(new ItemCreateViewModel
-            {
-                ScanCode = "1234",
-                ProductDescription = "Test",
-                PosDescription = "Test"
-            }) as RedirectToRouteResult;
-
-            //Then
-            mockAddItemManagerHandler.Verify();
+            mockUpdateItemManagerHandler.Verify(x => x.Execute(It.IsAny<UpdateItemManager>()), Times.Once);
             Assert.IsNotNull(result);
-            Assert.AreEqual("Created item successfully.", controller.TempData["CreateItemMessage"]);
+            var modelResult = result.Model as ItemEditViewModel;
+            Assert.IsNotNull(modelResult);
+            Assert.AreEqual("false", model.ItemViewModel.ItemAttributes[Constants.Attributes.ProhibitDiscount]);
+            Assert.AreEqual(2,modelResult.ItemViewModel.FinancialHierarchyClassId);
+            Assert.AreEqual(1, modelResult.ItemViewModel.ItemTypeId);
+            Assert.IsTrue(modelResult.Success);
         }
 
         [TestMethod]
-        public void Create_ItemCreateNotSuccessful_ShouldReturnFailureMessageToUserAndFillSelectLists()
-        {
-            // Given.
-            HierarchyClassListModel hierarchyClassViewModel = new HierarchyClassListModel();
-            mockAddItemManagerHandler.Setup(mh => mh.Execute(It.IsAny<AddItemManager>())).Throws(new Exception("Test Exception"));
-
-            var merchHierarchyClasses = new List<HierarchyClassModel>
-            {
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("MerchHierarchyClass1").WithHierarchyClassId(1).WithHierarchyClassLineage("MerchHierarchyClass1")
-            };
-          
-
-            var taxHierarchyClasses = new List<HierarchyClassModel>
-            {
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("TaxHierarchyClass1").WithHierarchyClassId(1).WithHierarchyClassLineage("TaxHierarchyClass1"),
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("TaxHierarchyClass2").WithHierarchyClassId(2).WithHierarchyClassLineage("TaxHierarchyClass2")
-            };
-           
-            var browsingHierarchyClasses = new List<HierarchyClassModel>
-            {
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("BrowsingHierarchyClass1").WithHierarchyClassId(1).WithHierarchyClassLineage("BrowsingHierarchyClass1"),
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("BrowsingHierarchyClass1").WithHierarchyClassId(2).WithHierarchyClassLineage("BrowsingHierarchyClass1"),
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("BrowsingHierarchyClass1").WithHierarchyClassId(3).WithHierarchyClassLineage("BrowsingHierarchyClass1")
-            };
-            var nationalHierarchyClasses = new List<HierarchyClassModel>
-            {
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("NationalHierarchyClass1").WithHierarchyClassId(1).WithHierarchyClassLineage("NationalHierarchyClass1"),
-                new TestHierarchyClassModelBuilder().WithHierarchyClassName("NationalHierarchyClass1").WithHierarchyClassId(2).WithHierarchyClassLineage("NationalHierarchyClass1")
-            };
-
-            hierarchyClassViewModel.MerchandiseHierarchyList = merchHierarchyClasses;
-            hierarchyClassViewModel.TaxHierarchyList = taxHierarchyClasses;
-            hierarchyClassViewModel.BrowsingHierarchyList = browsingHierarchyClasses;
-            hierarchyClassViewModel.NationalHierarchyList = nationalHierarchyClasses;
-            mockGetHierarchyLineageQueryHandler.Setup(r => r.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(hierarchyClassViewModel);
-
-            // When.
-            var result = controller.Create(new ItemCreateViewModel()) as ViewResult;
-
-            // Then.
-            var viewModel = result.Model as ItemCreateViewModel;
-            var actualMerchandise = viewModel.MerchandiseHierarchyClasses.ToList();
-            var actualTax = viewModel.TaxHierarchyClasses.ToList();
-            var actualBrowsing = viewModel.BrowsingHierarchyClasses.ToList();
-            var actualUoms = viewModel.RetailUoms.ToList();
-
-            Assert.AreEqual(1, actualMerchandise.Count);
-            Assert.AreEqual(2, actualTax.Count);
-            Assert.AreEqual(3, actualBrowsing.Count);
-            Assert.AreEqual(string.Empty, actualUoms[0].Text);
-            Assert.AreEqual("EA", actualUoms[1].Text);
-            Assert.AreEqual("LB", actualUoms[2].Text);
-            Assert.AreEqual("CT", actualUoms[3].Text);
-        }
-
-        [TestMethod]
-        public void Create_ModelStateIsInvalid_ShouldReturnViewWithValidationErrors()
+        public void Add_AddItemSubmitted_ShouldAddItem()
         {
             //Given
-            controller.ModelState.AddModelError("test", "test");
-            mockGetHierarchyLineageQueryHandler.Setup(r => r.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(GetFakeHierarchy());
+            string testScanCode = "testScanCode";
+            var testItemModel = new ItemCreateViewModel
+            {
+                ScanCode = testScanCode,
+                BrandHierarchyClassId = 1,
+                ItemAttributes = new Dictionary<string, string>() {
+                    { "TestProp", "TestValue" }
+                },
+                BarcodeTypeId = 2,
+                MerchandiseHierarchyClassId = 3,
+                NationalHierarchyClassId = 4,
+                TaxHierarchyClassId = 5,
+                ManufacturerHierarchyClassId = 6,
+                ScanCodeType = "Plu"
+            };
 
+            mockGetItemPropertiesFromMerchQueryHandler.Setup(m => m.Search(It.IsAny<GetItemPropertiesFromMerchHierarchyParameters>()))
+                .Returns(new MerchDependentItemPropertiesModel { FinancialHierarcyClassId = 1, ProhibitDiscount = false, NonMerchandiseTraitValue = "test" });
 
+            mockAddItemManagerHandler.Setup(x => x.Execute(It.IsAny<AddItemManager>())).Callback<AddItemManager>((item) =>
+            {
+                Assert.IsTrue(item.ItemAttributes[Constants.Attributes.ModifiedBy] != null, "ModifiedBy should be set when creating records");
+                Assert.IsTrue(item.ItemAttributes[Constants.Attributes.ModifiedDateTimeUtc] != null, "ModifiedDateTimeUTC should be set when creating records");
+                Assert.IsTrue(item.ItemAttributes[Constants.Attributes.CreatedBy] != null, "CreatedBy should be set when creating records");
+                Assert.IsTrue(item.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc] != null, "CreatedDateTimeUTC should be set when creating records");
+            });
             //When
-            var result = controller.Create(new ItemCreateViewModel()) as ViewResult;
+            var result = controller.Create(testItemModel) as RedirectToRouteResult;
 
             //Then
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, controller.ModelState.Count);
-            Assert.AreEqual("test", controller.ModelState["test"].Errors.First().ErrorMessage);
+            Assert.AreEqual("Detail", result.RouteValues["action"]);
+            mockAddItemManagerHandler.Verify(x => x.Execute(It.Is<AddItemManager>(m => m.ItemTypeCode == "RTL")));
+            mockAddItemManagerHandler.Verify(x => x.Execute(It.Is<AddItemManager>(m => m.FinancialHierarchyClassId == 1)));
+            mockAddItemManagerHandler.Verify(x => x.Execute(It.Is<AddItemManager>(m => m.ItemAttributes.ContainsKey(Constants.Attributes.ProhibitDiscount))));
+            mockAddItemManagerHandler.Verify(x => x.Execute(It.Is<AddItemManager>(m => m.MerchandiseHierarchyClassId == testItemModel.MerchandiseHierarchyClassId)));
+            mockAddItemManagerHandler.Verify(x => x.Execute(It.Is<AddItemManager>(m => m.BrandsHierarchyClassId == testItemModel.BrandHierarchyClassId)));
+            mockAddItemManagerHandler.Verify(x => x.Execute(It.Is<AddItemManager>(m => m.TaxHierarchyClassId == testItemModel.TaxHierarchyClassId)));
+            mockAddItemManagerHandler.Verify(x => x.Execute(It.Is<AddItemManager>(m => m.NationalHierarchyClassId == testItemModel.NationalHierarchyClassId)));
+            mockAddItemManagerHandler.Verify(x => x.Execute(It.Is<AddItemManager>(m => m.ManufacturerHierarchyClassId == testItemModel.ManufacturerHierarchyClassId)));
         }
 
         [TestMethod]
-        public void SaveChangesInGrid_SuccessfullySaveChanges_ShouldReturnSuccessTrueJsonResult()
+        public void Edit_ItemIdIsSet_ShouldReturnViewWithItem()
         {
-            // Given
-            List<Transaction<ItemViewModel>> itemViewModels = new List<Transaction<ItemViewModel>>()
+            //Given
+            string testScanCode = "testScanCode";
+            var testItemModel = new ItemDbModel
             {
-                new Transaction<ItemViewModel>
-                {
-                    row = new ItemViewModel()
-                }
+                ScanCode = testScanCode,
+                BrandsHierarchyClassId = 1,
+                FinancialHierarchyClassId = 2,
+                ItemAttributesJson = "{TestProp:'TestValue'}",
+                ItemTypeId = ItemTypes.RetailSale,
+                ItemTypeDescription = Descriptions.RetailSale,
+                MerchandiseHierarchyClassId = 3,
+                NationalHierarchyClassId = 4,
+                BarcodeTypeId = 1,
+                BarcodeType = "5 Digit POS PLU (10000-82999)",
+                TaxHierarchyClassId = 5,
+                ManufacturerHierarchyClassId = 6
             };
-            mockItemViewModelValidator.Setup(v => v.Validate(It.IsAny<ItemViewModel>()))
-                .Returns(ObjectValidationResult.ValidResult());
-            mockUpdateItemManagerHandler.Setup(mh => mh.Execute(It.IsAny<UpdateItemManager>()))
-                .Verifiable();
-            mockContext.SetupGet(mc => mc.HttpContext.Request.Form)
-                .Returns(new NameValueCollection 
+            mockGetItemQueryHandler.Setup(m => m.Search(It.Is<GetItemParameters>(p => p.ScanCode == testScanCode)))
+                .Returns(testItemModel);
+            mockGetAttributesQueryHandler.Setup(m => m.Search(It.IsAny<EmptyQueryParameters<IEnumerable<AttributeModel>>>()))
+                .Returns(new List<AttributeModel> { new AttributeModel { AttributeName = "Test" } });
+
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.Merchandise
+                         && p.HierarchyClassId == testItemModel.MerchandiseHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Merchandise" } });
+
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.Brands
+                         && p.HierarchyClassId == testItemModel.BrandsHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Brands" } });
+
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.Tax
+                         && p.HierarchyClassId == testItemModel.TaxHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Tax" } });
+
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.Financial
+                         && p.HierarchyClassId == testItemModel.FinancialHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Financial" } });
+
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                    p => p.HierarchyId == Hierarchies.National
+                         && p.HierarchyClassId == testItemModel.NationalHierarchyClassId)))
+                .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "National" } });
+
+            mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
+                p => p.HierarchyId == Hierarchies.Manufacturer
+                     && p.HierarchyClassId == testItemModel.ManufacturerHierarchyClassId)))
+            .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Manufacturer" } });
+
+            //When
+            var result = controller.Edit(testScanCode) as ViewResult;
+
+            //Then
+            Assert.IsNotNull(result);
+            var model = result.Model as ItemEditViewModel;
+            Assert.IsNotNull(model);
+            Assert.AreEqual(testItemModel.ItemId, model.ItemViewModel.ItemId);
+            Assert.AreEqual("Merchandise", model.ItemViewModel.MerchandiseHierarchyLineage);
+            Assert.AreEqual("Brands", model.ItemViewModel.BrandsHierarchyLineage);
+            Assert.AreEqual("Tax", model.ItemViewModel.TaxHierarchyLineage);
+            Assert.AreEqual("Financial", model.ItemViewModel.FinancialHierarchyLineage);
+            Assert.AreEqual("National", model.ItemViewModel.NationalHierarchyLineage);
+            Assert.AreEqual("Manufacturer", model.ItemViewModel.ManufacturerHierarchyLineage);
+        }
+
+        [TestMethod]
+        public void GridUpdate_GivenAnItem_ShouldAssignStaticAttributesAsPropertiesOnManager()
+        {
+            //Given
+            DateTime now = DateTime.UtcNow;
+            string expectedCreatedDateTime = DateTime.UtcNow.AddDays(-10).ToString();
+            dynamic jObject = new JObject();
+            jObject.ItemId = 1;
+            jObject.MerchandiseHierarchyClassId = 2;
+            jObject.BrandsHierarchyClassId = 3;
+            jObject.TaxHierarchyClassId = 4;
+            jObject.FinancialHierarchyClassId = 5;
+            jObject.NationalHierarchyClassId = 6;
+            jObject.ManufacturerHierarchyClassId = 6;
+            jObject.ScanCode = "4011";
+            jObject.ScanCodeTypeId = 0;
+            jObject.ItemTypeId = 0;
+            jObject.TestAttribute1 = "Test1";
+            jObject.TestAttribute2 = "Test2";
+
+            mockInfragisticsHelper.Setup(m => m.LoadTransactions<JObject>(It.IsAny<NameValueCollection>()))
+                .Returns(new List<Transaction<JObject>>
                 {
-                    { "ig_transactions", new JavaScriptSerializer().Serialize(itemViewModels) }
+                    new Transaction<JObject>
+                    {
+                        row = jObject
+                    }
                 });
 
-            controller.ControllerContext = mockContext.Object;
+            mockItemAttributesValidatorFactory
+                .Setup(v => v.CreateItemAttributesJsonValidator(It.IsAny<string>()).Validate(It.IsAny<string>()))
+                .Returns(new ItemAttributesValidationResult { ErrorMessages = null, IsValid = true });
 
-            // When
-            JsonResult result = controller.SaveChangesInGrid() as JsonResult;
-
-            // Then
-            Assert.IsNotNull(result);
-            Assert.IsTrue(Convert.ToBoolean(result.GetDataProperty("Success")));
-            mockUpdateItemManagerHandler.Verify();
-        }
-
-        [TestMethod]
-        public void SaveChangesInGrid_NoTransactionsGiven_ShouldSuccessFalseAndErrorJsonResult()
-        {
-            // Given.
-            mockContext.SetupGet(mc => mc.HttpContext.Request.Form)
-                .Returns(new NameValueCollection 
+            mockGetItemQueryHandler
+                .Setup(q => q.Search(It.IsAny<GetItemParameters>()))
+                .Returns(new ItemDbModel
                 {
-                    { "ig_transactions", "[]" }
+                    ItemAttributesJson = JsonConvert.SerializeObject(new Dictionary<string, string>()
+                    {
+                        {Constants.Attributes.CreatedDateTimeUtc,expectedCreatedDateTime},
+                        {Constants.Attributes.CreatedBy,"CreatedUser"}
+                    }),
+                    ItemId = 1,
+                    ItemTypeId = ItemTypes.RetailSale,
+                    BarcodeTypeId = 1
                 });
 
-            // When.
-            JsonResult result = controller.SaveChangesInGrid() as JsonResult;
-
-            // Then.
-            Assert.IsNotNull(result);
-            Assert.IsFalse(Convert.ToBoolean(result.GetDataProperty("Success")));
-            Assert.AreEqual("No new values were specified for the item.", result.GetDataProperty("Error"));
-        }
-
-        [TestMethod]
-        public void SaveChangesInGrid_ViewModelIsInvalid_ShouldReturnFailure()
-        {
-            // Given.
-            var itemViewModels = new List<Transaction<ItemViewModel>>()
-            {
-                new Transaction<ItemViewModel>
+            mockGetItemPropertiesFromMerchQueryHandler
+                .Setup(q => q.Search(It.IsAny<GetItemPropertiesFromMerchHierarchyParameters>()))
+                .Returns(new MerchDependentItemPropertiesModel
                 {
-                    row = new ItemViewModel()
-                }
-            };
-
-            mockUpdateItemManagerHandler.Setup(m => m.Execute(It.IsAny<UpdateItemManager>())).Throws(new ArgumentException("Invalid Result"));
-            mockContext.SetupGet(mc => mc.HttpContext.Request.Form).Returns(new NameValueCollection 
-                {
-                    { "ig_transactions", new JavaScriptSerializer().Serialize(itemViewModels) }
+                    FinancialHierarcyClassId = 5,
+                    NonMerchandiseTraitValue = ItemTypeCodes.RetailSale,
+                    ProhibitDiscount = false
                 });
 
-            controller.ControllerContext = mockContext.Object;
+            //When
+            controller.GridUpdate();
 
-            // When.
-            var result = controller.SaveChangesInGrid() as JsonResult;
-
-            // Then.
-            Assert.IsNotNull(result);
-            Assert.IsFalse(Convert.ToBoolean(result.GetDataProperty("Success")));
-            Assert.AreEqual("Invalid Result", result.GetDataProperty("Error"));
+            //Then
+            mockUpdateItemManagerHandler.Verify(m => m.Execute(It.Is<UpdateItemManager>(
+                uim => uim.ItemId == 1
+                       && uim.MerchandiseHierarchyClassId == 2
+                       && uim.BrandsHierarchyClassId == 3
+                       && uim.TaxHierarchyClassId == 4
+                       && uim.FinancialHierarchyClassId == 5
+                       && uim.NationalHierarchyClassId == 6
+                       && uim.ItemAttributes.Keys.Count == 7
+                       && uim.ItemAttributes["TestAttribute1"].ToString() == "Test1"
+                       && uim.ItemAttributes["TestAttribute2"].ToString() == "Test2"
+                       && uim.ItemAttributes[Constants.Attributes.ProhibitDiscount] == "false"
+                       && uim.ItemAttributes[Constants.Attributes.ModifiedBy] == "User"
+                       && uim.ItemAttributes[Constants.Attributes.CreatedBy] == "CreatedUser"
+                       && uim.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc] == expectedCreatedDateTime
+                       && DateTime.Parse(uim.ItemAttributes[Constants.Attributes.ModifiedDateTimeUtc]).Date == now.Date )));
         }
 
-        [TestMethod]
-        public void Search_ViewModel_MerchandiseHierarchyClassesExcludeAffinitySubBricks()
+        private void AssertBasicGridDataSourceTest(params GetItemsAttributesParameters[] getItemAttributesParameters)
         {
-            // Given.
-            var hierarchies = new List<Hierarchy>();
-            hierarchies.Add(new Hierarchy { hierarchyID = Hierarchies.Merchandise, hierarchyName = HierarchyNames.Merchandise });
-            
-            hierarchies[0].HierarchyClass = new List<HierarchyClass>();
-            hierarchies[0].HierarchyClass.Add(new TestHierarchyClassBuilder().WithHierarchyClassId(1).WithAffinityTrait("1").WithHierarchyLevel(5).Build());
-            hierarchies[0].HierarchyClass.Add(new TestHierarchyClassBuilder().WithHierarchyClassId(2).WithHierarchyLevel(5).Build());
-            HierarchyClassListModel HierarchyListModal = new HierarchyClassListModel();
-            HierarchyListModal.MerchandiseHierarchyList = new List<HierarchyClassModel>();
-            HierarchyClass nonAffinityHierarchy = hierarchies[0].HierarchyClass.First(hc => !hc.HierarchyClassTrait.Any(hct => hct.traitID == Traits.Affinity));
-            HierarchyClassModel merchLineage = new HierarchyClassModel() { HierarchyClassId = nonAffinityHierarchy.hierarchyClassID, HierarchyClassName = nonAffinityHierarchy.hierarchyClassName };
-            HierarchyListModal.MerchandiseHierarchyList.Add(merchLineage);
-            HierarchyListModal.BrandHierarchyList = new List<HierarchyClassModel>();
-            HierarchyListModal.TaxHierarchyList = new List<HierarchyClassModel>();
-            HierarchyListModal.NationalHierarchyList = new List<HierarchyClassModel>();
-            mockGetItemsBySearchQueryHandler.Setup(q => q.Search(It.IsAny<GetItemsBySearchParameters>())).Returns(new ItemsBySearchResultsModel { Items = new List<ItemSearchModel> { GetFakeItemNavigationData() } });
-            mockGetHierarchyLineageQueryHandler.Setup(r => r.Search(It.IsAny<GetHierarchyLineageParameters>())).Returns(HierarchyListModal);
-
-            // When.
-            var result = controller.Search(new ItemSearchViewModel { ScanCode = "12345" }) as PartialViewResult;
-            var model = result.Model as ItemSearchResultsViewModel;
-
-            // Then.
-            HierarchyClass expected = hierarchies[0].HierarchyClass.First(hc => !hc.HierarchyClassTrait.Any(hct => hct.traitID == Traits.Affinity));
-            Assert.AreEqual(expected.hierarchyClassID, model.MerchandiseHierarchyClasses[0].HierarchyClassId);
-            Assert.AreEqual(expected.hierarchyClassName, model.MerchandiseHierarchyClasses[0].HierarchyClassName);
-        }
-        
-        private Item GetFakeItem()
-        {
-            Item item = new Item() { itemID = 1 };
-
-            // ScanCode
-            item.ScanCode = new List<ScanCode>();
-            item.ScanCode.Add(new ScanCode { itemID = 1, scanCode = "1234567890" });
-
-            // BrandName
-            item.ItemHierarchyClass = new List<ItemHierarchyClass>();
-            item.ItemHierarchyClass.Add(new ItemHierarchyClass { itemID = 1, hierarchyClassID = 1 });
-
-            item.ItemHierarchyClass.First().HierarchyClass = new HierarchyClass();
-            item.ItemHierarchyClass.First().HierarchyClass.hierarchyClassID = 1;
-            item.ItemHierarchyClass.First().HierarchyClass.hierarchyClassName = "Test";
-            item.ItemHierarchyClass.First().HierarchyClass.hierarchyID = 2;
-
-            item.ItemHierarchyClass.First().HierarchyClass.Hierarchy = new Hierarchy();
-            item.ItemHierarchyClass.First().HierarchyClass.Hierarchy.hierarchyID = 2;
-            item.ItemHierarchyClass.First().HierarchyClass.Hierarchy.hierarchyName = "Brand";
-
-            // ItemTraits
-            item.ItemTrait = new List<ItemTrait>();
-
-            // Product Description
-            item.ItemTrait.Add(new ItemTrait
+            session[GET_ITEMS_PARAMETERS_VIEW_MODEL] = new GetItemsParametersViewModel
             {
-                itemID = 1,
-                traitValue = null,
-                traitID = Traits.ProductDescription,
-                Trait = new Trait { traitCode = TraitCodes.ProductDescription, traitID = Traits.ProductDescription }
-            });
-
-            // POS Description
-            item.ItemTrait.Add(new ItemTrait
-            {
-                itemID = 1,
-                traitValue = null,
-                traitID = Traits.PosDescription,
-                Trait = new Trait { traitCode = TraitCodes.PosDescription, traitID = Traits.PosDescription }
-            });
-
-            // Package Unit
-            item.ItemTrait.Add(new ItemTrait
-            {
-                itemID = 1,
-                traitValue = null,
-                traitID = Traits.PackageUnit,
-                Trait = new Trait { traitCode = TraitCodes.RetailSize, traitID = Traits.PackageUnit }
-            });
-
-            // Retail Size
-            item.ItemTrait.Add(new ItemTrait
-            {
-                itemID = 1,
-                traitValue = null,
-                traitID = Traits.RetailSize,
-                Trait = new Trait { traitCode = TraitCodes.RetailSize, traitID = Traits.RetailSize }
-            });
-
-            //Retail UOM
-            item.ItemTrait.Add(new ItemTrait
-            {
-                itemID = 1,
-                traitValue = null,
-                traitID = Traits.RetailUom,
-                Trait = new Trait { traitCode = TraitCodes.RetailUom, traitID = Traits.RetailUom }
-            });
-
-            //Delivery System
-            item.ItemTrait.Add(new ItemTrait
-            {
-                itemID = 1,
-                traitValue = null,
-                traitID = Traits.DeliverySystem,
-                Trait = new Trait { traitCode = TraitCodes.DeliverySystem, traitID = Traits.DeliverySystem }
-            });
-
-            item.ItemTrait.Add(new ItemTrait
-            {
-                itemID = 1,
-                traitValue = null,
-                traitID = Traits.InsertDate,
-                Trait = new Trait { traitCode = TraitCodes.InsertDate, traitID = Traits.InsertDate }
-            });
-
-            return item;
-        }
-        
-        private ItemSearchModel GetFakeItemNavigationData()
-        {
-            ItemSearchModel itemData = new ItemSearchModel() { ItemId = 1 };
-
-            // ScanCode
-            itemData.ScanCode = "1234567890";
-            itemData.BrandHierarchyClassId = 2;
-            itemData.BrandName = "Brand";
-            itemData.MerchandiseHierarchyClassId = 1;
-            itemData.MerchandiseHierarchyName =  "Test";
-            itemData.ProductDescription = "TestProduct";
-
-            itemData.PosDescription = "";
-            itemData.PackageUnit = "1";
-            itemData.FoodStampEligible = "1";
-            itemData.PosScaleTare = "05";
-            itemData.RetailSize ="ea";
-            itemData.RetailUom = "pound";
-            itemData.DeliverySystem = "cap";           
-
-            itemData.TaxHierarchyName = "TestTax";
-            itemData.TaxHierarchyClassId = 3;
-
-            itemData.BrowsingHierarchyName = "TestBrowsing";
-            itemData.BrowsingHierarchyClassId = 4;
-            itemData.DepartmentSale = "1";
-
-            itemData.CreatedDate = DateTime.Now.ToString();
-
-            return itemData;
-        }
-
-        private HierarchyClassListModel GetFakeHierarchy()
-        {
-            HierarchyClassListModel hierarchyListModal  = new HierarchyClassListModel();
-            HierarchyClassModel hierarchyModel = new HierarchyClassModel();
-
-            hierarchyModel.HierarchyClassId = 2;
-            hierarchyModel.HierarchyClassName = "Brand";
-            hierarchyModel.HierarchyParentClassId = null;
-
-
-            HierarchyClassModel hierarchyModelTax = new HierarchyClassModel();
-            hierarchyModelTax.HierarchyClassId = 3;
-            hierarchyModelTax.HierarchyClassName = "Tax";
-            hierarchyModelTax.HierarchyParentClassId = null;
-
-
-            HierarchyClassModel hierarchyModelMerch = new HierarchyClassModel();
-            hierarchyModelMerch.HierarchyClassId = 4;
-            hierarchyModelMerch.HierarchyClassName = "Merch";
-            hierarchyModelMerch.HierarchyParentClassId = null;
-
-            hierarchyListModal.BrandHierarchyList = new List<HierarchyClassModel>{hierarchyModel};
-            hierarchyListModal.TaxHierarchyList = new List<HierarchyClassModel>{hierarchyModelTax};
-            hierarchyListModal.MerchandiseHierarchyList = new List<HierarchyClassModel> { hierarchyModelMerch };
-
-
-            HierarchyClassModel hierarchyModelBrowsing = new HierarchyClassModel();
-            hierarchyModelBrowsing.HierarchyClassId = 5;
-            hierarchyModelBrowsing.HierarchyClassName = "Browsing";
-            hierarchyModelBrowsing.HierarchyParentClassId = null;
-
-            HierarchyClassModel hierarchyModelNational = new HierarchyClassModel();
-            hierarchyModelNational.HierarchyClassId = 6;
-            hierarchyModelNational.HierarchyClassName = "National";
-            hierarchyModelNational.HierarchyParentClassId = null;
-
-            hierarchyListModal.BrandHierarchyList = new List<HierarchyClassModel> { hierarchyModel };
-            hierarchyListModal.TaxHierarchyList = new List<HierarchyClassModel> { hierarchyModelTax };
-            hierarchyListModal.MerchandiseHierarchyList = new List<HierarchyClassModel> { hierarchyModelMerch };
-            hierarchyListModal.BrowsingHierarchyList = new List<HierarchyClassModel> { hierarchyModelBrowsing };
-            hierarchyListModal.NationalHierarchyList = new List<HierarchyClassModel> { hierarchyModelNational };
-
-
-            return hierarchyListModal;
-        }
-
-        private List<CertificationAgencyModel> BuildFakeAgencies()
-        {
-            var agencyClasses = new List<CertificationAgencyModel>
-            {
-                new TestCertificationAgencyModelBuilder().WithHierarchyClassName("GlutenFree").WithHierarchyClassId(9).WithGlutenFree("1"),
-                new TestCertificationAgencyModelBuilder().WithHierarchyClassName("WithKosher").WithHierarchyClassId(2).WithKosher("1"),
-                new TestCertificationAgencyModelBuilder().WithHierarchyClassName("WithNonGMO").WithHierarchyClassId(3).WithNonGMO("1"),
-                new TestCertificationAgencyModelBuilder().WithHierarchyClassName("WithOrganic").WithHierarchyClassId(4).WithOrganic("1"),
-                new TestCertificationAgencyModelBuilder().WithHierarchyClassName("WithVegan").WithHierarchyClassId(5).WithVegan("1"),
+                GetItemsAttributesParameters = getItemAttributesParameters.ToList()
             };
+            queryString["$top"] = top;
+            queryString["$skip"] = skip;
 
-            return agencyClasses;
+            //When
+            var result = controller.GridDataSource() as ContentResult;
+
+            //Then
+            Assert.IsNotNull(result);
+            Assert.AreEqual(JSON_CONTENT_TYPE, result.ContentType);
+            var content = JsonConvert.DeserializeObject<dynamic>(result.Content);
+            Assert.AreEqual(10, content.TotalRecordsCount.Value);
+            Assert.AreEqual(3, content.Records[0].ItemId.Value);
+            mockGetItemsQueryHandler.Verify(m => m.Search(It.Is<GetItemsParameters>(
+                    p => p.Top == 20
+                         && p.Skip == 10
+                         && p.OrderByOrder == "ASC"
+                         && p.OrderByValue == "ItemId")),
+                   Times.Once);
         }
+   }
+
+    internal class MockHttpSessionStateBase : HttpSessionStateBase
+    {
+        private Dictionary<string, object> dictionary = new Dictionary<string, object>();
+
+        public override object this[string name] { get => dictionary[name]; set => dictionary[name] = value; }
     }
+
+
 }

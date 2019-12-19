@@ -5,10 +5,6 @@ using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Web.DataAccess.Managers
 {
@@ -17,25 +13,25 @@ namespace Icon.Web.DataAccess.Managers
         private IconContext context;
         private ICommandHandler<DeleteHierarchyClassCommand> deleteHierarchyClassHandler;
         private ICommandHandler<AddHierarchyClassMessageCommand> addHierarchyClassMessageHandler;
-        private ICommandHandler<RemoveHierarchyClassFromIrmaItemsCommand> removeHierarchyClassFromIrmaItemsCommandHandler;
+        private IMapper mapper;
         
         public DeleteHierarchyClassManagerHandler(
             IconContext context,
             ICommandHandler<DeleteHierarchyClassCommand> deleteHierarchyClassHandler,
             ICommandHandler<AddHierarchyClassMessageCommand> addHierarchyClassMessageHandler,
-            ICommandHandler<RemoveHierarchyClassFromIrmaItemsCommand> removeHierarchyClassFromIrmaItemsCommandHandler)
+            IMapper mapper)
         {
             this.context = context;
             this.deleteHierarchyClassHandler = deleteHierarchyClassHandler;
             this.addHierarchyClassMessageHandler = addHierarchyClassMessageHandler;
-            this.removeHierarchyClassFromIrmaItemsCommandHandler = removeHierarchyClassFromIrmaItemsCommandHandler;
+            this.mapper = mapper;
         }
 
         public void Execute(DeleteHierarchyClassManager data)
         {
             using (var transaction = this.context.Database.BeginTransaction())
             {
-                DeleteHierarchyClassCommand deleteHierarchyClassCommand = Mapper.Map<DeleteHierarchyClassCommand>(data);
+                DeleteHierarchyClassCommand deleteHierarchyClassCommand = mapper.Map<DeleteHierarchyClassCommand>(data);
 
                 try
                 {
@@ -49,12 +45,6 @@ namespace Icon.Web.DataAccess.Managers
                     addHierarchyClassMessageHandler.Execute(addHierarchyClassMessageCommand);
 
                     deleteHierarchyClassHandler.Execute(deleteHierarchyClassCommand);
-                    removeHierarchyClassFromIrmaItemsCommandHandler.Execute(
-                        new RemoveHierarchyClassFromIrmaItemsCommand
-                        {
-                            HierarchyId = data.DeletedHierarchyClass.hierarchyID,
-                            HierarchyClassId = data.DeletedHierarchyClass.hierarchyClassID
-                        });
 
                     transaction.Commit();
                 }

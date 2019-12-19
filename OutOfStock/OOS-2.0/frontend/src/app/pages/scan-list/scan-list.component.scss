@@ -1,0 +1,43 @@
+
+.message-container{
+  margin: 0 10px;
+
+  h1 {
+    text-align: center;
+  }
+}
+
+.region-store {
+  margin: 0;
+  background: var(--clr-light-gray-2);
+  padding: 5px;
+
+  display: flex;
+  justify-content: space-between
+}
+
+main {
+  height: calc(100% - 60px);
+  display: flex;
+  flex-direction: column;
+
+  hr {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+.itemlist{
+  &-container {
+    flex: 1;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+
+  }
+
+  &-message {
+    text-align: center;
+    margin-top: 25px;
+    color: var(--clr-light-gray-1);
+  }
+}

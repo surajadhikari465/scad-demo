@@ -4,7 +4,6 @@ using Icon.Logging;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Extensions;
-using Icon.Web.DataAccess.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -46,8 +45,8 @@ namespace Icon.Web.DataAccess.Decorators
                 if (command.SubteamChanged)
                 {
                     List<string> scanCodes = (from sc in context.ScanCode
-                                              join i in context.Item on sc.itemID equals i.itemID
-                                              join ih in context.ItemHierarchyClass on i.itemID equals ih.itemID
+                                              join i in context.Item on sc.itemID equals i.ItemId
+                                              join ih in context.ItemHierarchyClass on i.ItemId equals ih.itemID
                                               where (ih.hierarchyClassID == command.UpdatedHierarchyClass.hierarchyClassID)
                                               select sc.scanCode).ToList();
 

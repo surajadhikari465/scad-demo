@@ -1,0 +1,29 @@
+﻿@using OutOfStock.Models
+@model OutOfStock.Models.UPCEditViewModel           
+@{
+    ViewBag.Title = "Index";
+}
+
+@(Html.Telerik().ScriptRegistrar());
+<script>
+    function oload(e) {
+        alert("loading...");
+    }
+</script>
+
+<h2>Index</h2>
+@{
+
+    @(Html.Telerik().Grid<UPCEditViewModel.ProductStatusWithVIMDetails>()
+    .Name("testgrid")
+    .DataKeys(k =>
+                  {
+                      k.Add(o => o.Id).RouteKey("Id");
+                      k.Add(o => o.UPC).RouteKey("UPC");
+                  })
+    .DataBinding(db  => db.Ajax().Select("GridSelectAjax", "Grid"))
+    .ClientEvents(ce => ce.OnLoad("oload"))
+    )
+    
+}
+

@@ -1,16 +1,12 @@
 ﻿using AutoMapper;
 using Icon.Framework;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.Mvc.App_Start;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
@@ -19,16 +15,18 @@ namespace Icon.Web.Tests.Integration.Commands
 	{
 		private AddLocaleMessageCommandHandler commandHandler;
 
-		private IconContext context;
-		private DbContextTransaction transaction;
+        private IconContext context;
+        private DbContextTransaction transaction;
+        private IMapper mapper;
 
-		[TestInitialize]
-		public void Initialize()
-		{
-			context = new IconContext();
-			commandHandler = new AddLocaleMessageCommandHandler(context);
-			transaction = context.Database.BeginTransaction();
-		}
+        [TestInitialize]
+        public void Initialize()
+        {
+            context = new IconContext();
+            mapper = AutoMapperWebConfiguration.Configure();
+            commandHandler = new AddLocaleMessageCommandHandler(context, mapper);
+            transaction = context.Database.BeginTransaction();
+        }
 
 		[TestCleanup]
 		public void Cleanup()
@@ -37,12 +35,11 @@ namespace Icon.Web.Tests.Integration.Commands
 			context.Dispose();
 		}
 
-		[TestMethod]
-		public void AddLocaleMessage_LocaleHasAllRequiredProperties_MessageCreated()
-		{
-			// Given
-			AutoMapperWebConfiguration.Configure();
-			Locale locale = CreateTestLocale();
+        [TestMethod]
+        public void AddLocaleMessage_LocaleHasAllRequiredProperties_MessageCreated()
+        {
+            // Given
+            Locale locale = CreateTestLocale();
 
 			// When
 			commandHandler.Execute(new AddLocaleMessageCommand { Locale = locale });
@@ -52,54 +49,49 @@ namespace Icon.Web.Tests.Integration.Commands
 
 			var expectedAddress = locale.LocaleAddress.First().Address.PhysicalAddress;
 
-			Assert.AreEqual(locale.localeID, message.LocaleId);
-			Assert.AreEqual(locale.localeName, message.LocaleName);
-			Assert.AreEqual(locale.localeOpenDate, message.LocaleOpenDate);
-			Assert.AreEqual(locale.localeTypeID, message.LocaleTypeId);
-			Assert.AreEqual(locale.ownerOrgPartyID, message.OwnerOrgPartyId);
-			Assert.AreEqual(locale.parentLocaleID, message.ParentLocaleId);
-			Assert.AreEqual(
-				locale.LocaleTrait.FirstOrDefault(lt => lt.Trait.traitCode == TraitCodes.PsBusinessUnitId).traitValue,
-				message.BusinessUnitId);
-			Assert.AreEqual(
-				locale.LocaleTrait.First(lt => lt.traitID == Traits.StoreAbbreviation).traitValue,
-				message.StoreAbbreviation);
-			Assert.AreEqual(
-				locale.LocaleAddress.First().addressID,
-				message.AddressId);
-			Assert.AreEqual(
-				locale.LocaleAddress.First().AddressUsage.addressUsageCode,
-				message.AddressUsageCode);
-			Assert.AreEqual(expectedAddress.addressLine1, message.AddressLine1);
-			Assert.AreEqual(expectedAddress.addressLine2, message.AddressLine2);
-			Assert.AreEqual(expectedAddress.addressLine3, message.AddressLine3);
-			Assert.AreEqual(expectedAddress.City.cityName, message.CityName);
-			Assert.AreEqual(expectedAddress.Country.countryCode, message.CountryCode);
-			Assert.AreEqual(expectedAddress.Country.countryName, message.CountryName);
-			Assert.AreEqual(expectedAddress.latitude, Decimal.Parse(message.Latitude));
-			Assert.AreEqual(expectedAddress.longitude, Decimal.Parse(message.Longitude));
-			Assert.AreEqual(expectedAddress.PostalCode.postalCode, message.PostalCode);
-			Assert.AreEqual(expectedAddress.Territory.territoryCode, message.TerritoryCode);
-			Assert.AreEqual(expectedAddress.Territory.territoryName, message.TerritoryName);
-			Assert.AreEqual(expectedAddress.Timezone.timezoneCode, message.TimezoneCode);
-			Assert.AreEqual(expectedAddress.Timezone.posTimeZoneName, message.TimezoneName);
-			Assert.AreEqual(locale.LocaleTrait.First(lt => lt.traitID == Traits.PhoneNumber).traitValue,
-				message.PhoneNumber);
-			Assert.IsNull(message.InProcessBy);
-			Assert.IsNull(message.ProcessedDate);
-			Assert.AreEqual(locale.LocaleTrait.Where(x => x.traitID == Traits.SodiumWarningRequired).Single().traitValue, (message.SodiumWarningRequired ?? false) ? "1" : "0");
+            Assert.AreEqual(locale.localeID, message.LocaleId);
+            Assert.AreEqual(locale.localeName, message.LocaleName);
+            Assert.AreEqual(locale.localeOpenDate, message.LocaleOpenDate);
+            Assert.AreEqual(locale.localeTypeID, message.LocaleTypeId);
+            Assert.AreEqual(locale.ownerOrgPartyID, message.OwnerOrgPartyId);
+            Assert.AreEqual(locale.parentLocaleID, message.ParentLocaleId);
+            Assert.AreEqual(
+                locale.LocaleTrait.FirstOrDefault(lt => lt.Trait.traitCode == TraitCodes.PsBusinessUnitId).traitValue,
+                message.BusinessUnitId);
+            Assert.AreEqual(
+                locale.LocaleTrait.First(lt => lt.traitID == Traits.StoreAbbreviation).traitValue,
+                message.StoreAbbreviation);
+            Assert.AreEqual(
+                locale.LocaleAddress.First().addressID,
+                message.AddressId);
+            Assert.AreEqual(
+                locale.LocaleAddress.First().AddressUsage.addressUsageCode,
+                message.AddressUsageCode);
+            Assert.AreEqual(expectedAddress.addressLine1, message.AddressLine1);
+            Assert.AreEqual(expectedAddress.addressLine2, message.AddressLine2);
+            Assert.AreEqual(expectedAddress.addressLine3, message.AddressLine3);
+            Assert.AreEqual(expectedAddress.City.cityName, message.CityName);
+            Assert.AreEqual(expectedAddress.Country.countryCode, message.CountryCode);
+            Assert.AreEqual(expectedAddress.Country.countryName, message.CountryName);
+            Assert.AreEqual(expectedAddress.latitude, Decimal.Parse(message.Latitude));
+            Assert.AreEqual(expectedAddress.longitude, Decimal.Parse(message.Longitude));
+            Assert.AreEqual(expectedAddress.PostalCode.postalCode, message.PostalCode);
+            Assert.AreEqual(expectedAddress.Territory.territoryCode, message.TerritoryCode);
+            Assert.AreEqual(expectedAddress.Territory.territoryName, message.TerritoryName);
+            Assert.AreEqual(expectedAddress.Timezone.timezoneCode, message.TimezoneCode);
+            Assert.AreEqual(expectedAddress.Timezone.posTimeZoneName, message.TimezoneName);
+            Assert.AreEqual(locale.LocaleTrait.First(lt => lt.traitID == Traits.PhoneNumber).traitValue,
+                message.PhoneNumber);
+            Assert.IsNull(message.InProcessBy);
+            Assert.IsNull(message.ProcessedDate);
+        }
 
-			// Cleanup
-			Mapper.Reset();
-		}
-
-		[TestMethod]
-		public void AddLocaleMessage_LocaleHasNullCloseDate_MessageCreatedWithNoValueForCloseDate()
-		{
-			// Given
-			AutoMapperWebConfiguration.Configure();
-			Locale locale = CreateTestLocale();
-			locale.localeCloseDate = null;
+        [TestMethod]
+        public void AddLocaleMessage_LocaleHasNullCloseDate_MessageCreatedWithNoValueForCloseDate()
+        {
+            // Given
+            Locale locale = CreateTestLocale();
+            locale.localeCloseDate = null;
 
 			// When
 			commandHandler.Execute(new AddLocaleMessageCommand { Locale = locale });
@@ -107,12 +99,9 @@ namespace Icon.Web.Tests.Integration.Commands
 			// Then
 			var message = context.MessageQueueLocale.Single(mql => mql.LocaleId == locale.localeID);
 
-			Assert.AreEqual(locale.localeID, message.LocaleId);
-			Assert.AreEqual(locale.localeCloseDate, message.LocaleCloseDate);
-
-			// Cleanup
-			Mapper.Reset();
-		}
+            Assert.AreEqual(locale.localeID, message.LocaleId);
+            Assert.AreEqual(locale.localeCloseDate, message.LocaleCloseDate);
+        }
 
 		private Locale CreateTestLocale()
 		{

@@ -9,120 +9,42 @@ namespace Icon.Web.Tests.Unit.Exporters
         private IExcelExporterService exporterService;
 
         [TestMethod]
-        public void GetItemExporter_NoError_ShouldReturnItemExporter()
+        public void GetItemTemplateNewExporter_NoError_ShouldReturnItemTemplateNewExporter()
         {
             // Given.
             exporterService = new ExcelExporterService();
 
             // When.
-            var itemExporter = exporterService.GetItemExporter();
+            var itemTemplateNewExporter = exporterService.GetItemTemplateNewExporter(null, true, true);
 
             // Then.
-            Assert.IsInstanceOfType(itemExporter, typeof(ItemExporter));
+            Assert.IsInstanceOfType(itemTemplateNewExporter, typeof(ItemNewTemplateExporter));
         }
 
         [TestMethod]
-        public void GetBulkItemExporter_NoError_ShouldReturnBulkItemExporter()
+        public void GetNationalClassExporter_NoError_ShouldReturnNationalClassExporter()
         {
             // Given.
             exporterService = new ExcelExporterService();
 
             // When.
-            var bulkItemExporter = exporterService.GetBulkItemExporter();
+            var nationalClassExporter = exporterService.GetNationalClassExporter();
 
             // Then.
-            Assert.IsInstanceOfType(bulkItemExporter, typeof(BulkItemExporter));
+            Assert.IsInstanceOfType(nationalClassExporter, typeof(NationalClassExporter));
         }
 
         [TestMethod]
-        public void GetNewItemTemplateExporter_NoError_ShouldReturnNewItemTemplateExporter()
+        public void GetAttributeExporter_NoError_ShouldReturnAttributeExporter()
         {
             // Given.
             exporterService = new ExcelExporterService();
 
             // When.
-            var newItemTemplateExporter = exporterService.GetNewItemTemplateExporter();
+            var attributeExporter = exporterService.GetAttributeExporter();
 
             // Then.
-            Assert.IsInstanceOfType(newItemTemplateExporter, typeof(NewItemTemplateExporter));
-        }
-
-        [TestMethod]
-        public void GetBulkNewItemExporter_NoError_ShouldReturnNewBulkItemTemplateExporter()
-        {
-            // Given.
-            exporterService = new ExcelExporterService();
-
-            // When.
-            var bulkNewItemExporter = exporterService.GetBulkNewItemExporter();
-
-            // Then.
-            Assert.IsInstanceOfType(bulkNewItemExporter, typeof(BulkNewItemExporter));
-        }
-
-        [TestMethod]
-        public void GetIrmaItemExporter_NoError_ShouldReturnIrmaItemExporter()
-        {
-            // Given.
-            exporterService = new ExcelExporterService();
-
-            // When.
-            var irmaItemExporter = exporterService.GetIrmaItemExporter();
-
-            // Then.
-            Assert.IsInstanceOfType(irmaItemExporter, typeof(IrmaItemExporter));
-        }
-
-        [TestMethod]
-        public void GetPluExporter_NoError_ShouldReturnPluExporter()
-        {
-            // Given.
-            exporterService = new ExcelExporterService();
-
-            // When.
-            var pluExporter = exporterService.GetPluExporter();
-
-            // Then.
-            Assert.IsInstanceOfType(pluExporter, typeof(PluExporter));
-        }
-
-        [TestMethod]
-        public void GetBulkPluExporter_NoError_ShouldReturnBulkPluExporter()
-        {
-            // Given.
-            exporterService = new ExcelExporterService();
-
-            // When.
-            var bulkPluExporter = exporterService.GetBulkPluExporter();
-
-            // Then.
-            Assert.IsInstanceOfType(bulkPluExporter, typeof(BulkPluExporter));
-        }
-
-        [TestMethod]
-        public void GetDefaultTaxMismatchExporter_NoError_ShouldReturnTaxMismatchExporter()
-        {
-            // Given.
-            exporterService = new ExcelExporterService();
-
-            // When.
-            var taxMismatchExporter = exporterService.GetDefaultTaxMismatchExporter();
-
-            // Then.
-            Assert.IsInstanceOfType(taxMismatchExporter, typeof(DefaultTaxMismatchesExporter));
-        }
-
-        [TestMethod]
-        public void GetCertificationAgencyExporter_NoError_ShouldReturnCertificationAgencyExporter()
-        {
-            // Given.
-            exporterService = new ExcelExporterService();
-
-            // When.
-            var certificationAgencyExporter = exporterService.GetCertificationAgencyExporter();
-
-            // Then.
-            Assert.IsInstanceOfType(certificationAgencyExporter, typeof(CertificationAgencyExporter));
+            Assert.IsInstanceOfType(attributeExporter, typeof(AttributeExporter));
         }
     }
 }

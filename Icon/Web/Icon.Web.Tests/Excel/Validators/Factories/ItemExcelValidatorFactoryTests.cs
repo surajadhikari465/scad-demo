@@ -2,7 +2,6 @@
 using Icon.Framework;
 using Icon.Testing.Builders;
 using Icon.Web.Common;
-using Icon.Web.Common.Utility;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.App_Start;
@@ -18,8 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using Icon.Common;
 
 namespace Icon.Web.Tests.Unit.Excel.Validators.Factories
 {
@@ -136,8 +134,7 @@ namespace Icon.Web.Tests.Unit.Excel.Validators.Factories
             mockGetNewScanCodeUploadsQuery.Setup(m => m.Search(It.IsAny<GetNewScanCodeUploadsParameters>()))
                 .Returns(new List<ScanCodeModel>());
 
-            container = new Container();
-            SimpleInjectorInitializer.InitializeContainer(container);
+            container = SimpleInjectorInitializer.Initialize();
             container.Options.AllowOverridingRegistrations = true;
             container.Register<IQueryHandler<GetCertificationAgenciesByTraitParameters, List<HierarchyClass>>>(() => mockGetCertificationAgenciesByTraitQuery.Object);
             container.Register<IQueryHandler<GetHierarchyLineageParameters, HierarchyClassListModel>>(() => mockGetHierarchyLineageQuery.Object);

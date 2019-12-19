@@ -112,7 +112,7 @@ namespace PushController.Controller.UdmDeleteServices
                 {
                     var exceptionHandler = new ExceptionHandler<IrmaItemSubscriptionDeleteService>(this.logger);
 
-                    string errorMessage = String.Format("Failed to delete item subscritpion:  ScanCode: {1}, Region: {2}",
+                    string errorMessage = String.Format("Failed to delete item subscritpion:  ScanCode: {0}, Region: {1}",
                        subscription.identifier, subscription.regioncode);
                     
                     exceptionHandler.HandleException(errorMessage, ex, this.GetType(), MethodBase.GetCurrentMethod());

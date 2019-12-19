@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Icon.Web.DataAccess.Models
+﻿namespace Icon.Web.DataAccess.Models
 {
     public class EwicMappingModel
     {

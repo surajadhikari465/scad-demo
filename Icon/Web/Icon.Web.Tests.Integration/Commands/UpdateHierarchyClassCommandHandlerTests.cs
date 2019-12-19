@@ -1,7 +1,6 @@
 ﻿using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -9,7 +8,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass] 
     public class UpdateHierarchyClassCommandHandlerTests
     {
         private IconContext context;

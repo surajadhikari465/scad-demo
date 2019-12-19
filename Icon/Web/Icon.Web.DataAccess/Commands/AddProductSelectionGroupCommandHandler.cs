@@ -1,6 +1,5 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Web.DataAccess.Infrastructure;
 
 namespace Icon.Web.DataAccess.Commands
 {
@@ -21,7 +20,9 @@ namespace Icon.Web.DataAccess.Commands
                 ProductSelectionGroupTypeId = data.ProductSelectionGroupTypeId,
                 TraitId = data.TraitId,
                 TraitValue = data.TraitValue,
-                MerchandiseHierarchyClassId = data.MerchandiseHierarchyClassId
+                MerchandiseHierarchyClassId = data.MerchandiseHierarchyClassId,
+                AttributeId = data.AttributeId,
+                AttributeValue = data.AttributeValue
             };
 
             context.ProductSelectionGroup.Add(psg);

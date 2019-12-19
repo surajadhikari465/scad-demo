@@ -2,7 +2,6 @@
 using Icon.Logging;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

@@ -1,16 +1,11 @@
-﻿using AutoMapper;
-using Icon.Framework;
+﻿using Icon.Framework;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Queries;
 using System;
-using System.Data.Entity;
-using System.Linq;
-using Icon.Web.DataAccess.Models;
-using System.Collections.Generic;
-using Icon.Web.Common.Validators;
 using Icon.Common.DataAccess;
+using Icon.Common.Validators;
 
 namespace Icon.Web.DataAccess.Managers
 {

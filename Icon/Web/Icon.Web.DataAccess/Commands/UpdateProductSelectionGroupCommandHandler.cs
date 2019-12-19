@@ -1,6 +1,5 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Framework;
-using Icon.Web.DataAccess.Infrastructure;
 using System;
 using System.Linq;
 
@@ -39,6 +38,8 @@ namespace Icon.Web.DataAccess.Commands
             psg.TraitId = data.TraitId;
             psg.TraitValue = data.TraitValue;
             psg.MerchandiseHierarchyClassId = data.MerchandiseHierarchyClassId;
+            psg.AttributeId = data.AttributeId;
+            psg.AttributeValue = data.AttributeValue;
 
             this.context.SaveChanges();
         }

@@ -1,0 +1,7 @@
+﻿CREATE TABLE dbo.CharacterSets
+(
+	CharacterSetId INT IDENTITY (1, 1) NOT NULL,
+	Name NVARCHAR(50),
+	RegEx NVARCHAR(200),
+	CONSTRAINT [PK_CharacterSets] PRIMARY KEY CLUSTERED (CharacterSetId ASC)
+)

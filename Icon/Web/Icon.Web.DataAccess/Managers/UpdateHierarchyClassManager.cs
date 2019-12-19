@@ -6,7 +6,6 @@ namespace Icon.Web.DataAccess.Managers
     {
         public HierarchyClass UpdatedHierarchyClass { get; set; }
         public string TaxAbbreviation { get; set; }
-        public string GlAccount { get; set; }
         public int SubTeamHierarchyClassId { get; set; }
         public string NonMerchandiseTrait { get; set; }
         public string ProhibitDiscount { get; set; }
@@ -14,5 +13,6 @@ namespace Icon.Web.DataAccess.Managers
         public string TaxRomance { get; set; }
         public string NationalClassCode { get; set; }
         public string SubBrickCode { get; set; }
+        public string ModifiedDateTimeUtc { get; set; }
     }
 }

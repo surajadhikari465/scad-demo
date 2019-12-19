@@ -13,5 +13,6 @@ namespace Icon.Web.Mvc.Exporters
         public int Width { get; set; }
         public HorizontalCellAlignment Alignment { get; set; }
         public Action<WorksheetRow, T> SetValue { get; set; }
+        public bool IsWrapText { get; set; }
     }
 }

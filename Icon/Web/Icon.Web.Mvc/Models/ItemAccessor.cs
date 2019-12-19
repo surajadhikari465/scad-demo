@@ -1,5 +1,5 @@
 ﻿using Icon.Framework;
-using Icon.Web.Extensions;
+using Icon.Web.Mvc.Extensions;
 using System;
 using System.Linq;
 

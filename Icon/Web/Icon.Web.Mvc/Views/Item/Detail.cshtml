@@ -1,0 +1,138 @@
+﻿@model Icon.Web.Mvc.Models.ItemDetailViewModel
+@using Icon.Common;
+@{
+    ViewBag.Title = Model.ItemViewModel.ScanCode + " Details";
+    var itemViewModel = Model.ItemViewModel;
+}
+<h3>Item Details</h3>
+
+<div class="page-section">
+    @Html.ActionLink("Edit", "Edit", new { Model.ItemViewModel.ScanCode }) |
+    @Html.ActionLink("Back to Search", "Index")
+</div>
+
+<div class="page-section">
+
+    @Html.ActionLink("Infor History", "History", new { scanCode = Model.ItemViewModel.ScanCode }, new { @class = "infor-history-button", target = "_blank" })
+
+    @{Html.RenderPartial("_ReadOnlyAttributesPartial", Model.ItemViewModel.ItemAttributes);}
+
+    @{Html.RenderPartial("_ItemHistoryPartial", Model.ItemHistoryModel);}
+
+    @if (Model.ItemViewModel.Nutritions != null && Model.ItemViewModel.Nutritions.Any())
+    {
+        <div id="NutritionContainer">
+            <h5>Nutrition Details</h5>
+
+            <div id="ItemNutritionContainer">
+                <table class="nutrTable">
+                    @*style="table-layout:fixed">*@
+                    @foreach (var itm in Model.ItemViewModel.Nutritions)
+                    {
+                        <tr>
+                            <td>@itm.Key</td>
+                            <td>@itm.Value</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    }
+</div>
+<div class="page-section">
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.ItemId)
+        <div>@Model.ItemViewModel.ItemId</div>
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.ItemTypeDescription)
+        <div>@Model.ItemViewModel.ItemTypeDescription</div>
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.ScanCode)
+        <div>@Model.ItemViewModel.ScanCode</div>
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.BarcodeType)
+        <div>@Model.ItemViewModel.BarcodeType</div>
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.MerchandiseHierarchyLineage)
+        <div>@Model.ItemViewModel.MerchandiseHierarchyLineage</div>
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.BrandsHierarchyLineage)
+        <div>@Model.ItemViewModel.BrandsHierarchyLineage</div>
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.TaxHierarchyLineage)
+        <div>@Model.ItemViewModel.TaxHierarchyLineage</div>
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.FinancialHierarchyLineage)
+        <div>@Model.ItemViewModel.FinancialHierarchyLineage</div>
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.NationalHierarchyLineage)
+        <div>@Model.ItemViewModel.NationalHierarchyLineage</div>
+    </div>
+
+    <div class="item">
+        @Html.LabelFor(m => m.ItemViewModel.ManufacturerHierarchyLineage)
+        @if (string.IsNullOrWhiteSpace(Model.ItemViewModel.ManufacturerHierarchyLineage))
+        {
+            <div>-</div>
+        }
+        else
+        {
+            <div>@Model.ItemViewModel.ManufacturerHierarchyLineage</div>
+        }
+    </div>
+
+    @foreach (var attribute in Model.Attributes.OrderBy(a => a.DisplayOrder))
+    {
+        if (attribute.IsSystemAttribute)
+        {
+            continue;
+        }
+        <div class="item">
+            @Html.Label(attribute.DisplayName)
+            @if (itemViewModel.ItemAttributes.ContainsKey(attribute.AttributeName))
+            {
+                if (attribute.DataTypeName == "Date")
+                {
+                    string dateValue = itemViewModel.ItemAttributes[attribute.AttributeName].ToString();
+                    if (!string.IsNullOrWhiteSpace(dateValue))
+                    {
+                        <div>@Convert.ToDateTime(dateValue).ToString("yyyy-MM-dd")</div>
+                    }
+                    else
+                    {
+                        <div>@dateValue</div>
+                    }
+                }
+                else
+                {
+                    <div>@itemViewModel.ItemAttributes[attribute.AttributeName].ToString()</div>
+                }
+            }
+            else
+            {
+                <div>-</div>
+            }
+        </div>
+    }
+</div>
+
+<div class="form-footer">
+    @Html.ActionLink("Edit", "Edit", new { Model.ItemViewModel.ScanCode }) |
+    @Html.ActionLink("Back to Search", "Index")
+</div>

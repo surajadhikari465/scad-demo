@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+
+<IcixUpdate>
+
+  <IncidentReportDetails>
+    <Subject> SubjectTopic (short description of issue) :: string </Subject>
+    <Category>  Category (string:: listed on Quiver page) </Category>
+    <AssignedTo>  RQAAssignedTo (string:: name of RQA if applicable) </AssignedTo>
+    <DateCompleted>  DateCompleted (date:: when investigation gets closed out) </DateCompleted>
+    <RootCauseID>   not sure what this is yet - string </RootCauseID>
+    <VendorActionRequired> Notification Only | RootCauseIdentification | CAPRequired (radio button behaviour) </VendorActionRequired>
+    <QuiverID> QuiverID : (id from Qiver DB - unique - pass as a string) :: string </QuiverID>
+    <Status>   New | Submitted | ... </Status>
+    <CommentsToVendor> string:: (comments or free text to be sent to vendor) </CommentsToVendor>
+    <Classification>  ??? not sure what this is </Classification>
+    <Region> string:: (two letter code) </Region>
+    <Store>  string :: (three letter code) </Store>
+    <IncidentDate> date:: (incident occurred) </IncidentDate>
+    <SubmittedToICIXDate> date:: </SubmittedToICIXDate>
+
+    <ComplaintType>  Allergen | Foreign Object ... (multi-select for sure!) -- what is this vs above at (**) </ComplaintType>
+
+
+  </IncidentReportDetails>
+
+  <ProductInformation>
+    <UPC> string </UPC>
+    <ProductName> string </ProductName>
+    <Brand> string </Brand>
+    <LotCode> string </LotCode>
+    <SellByDate>  ! has to be a string since these are not really dates </SellByDate>
+  </ProductInformation>
+
+  <VendorInformation>
+    <Vendor> string </Vendor>
+    <FacilityIDs>
+      <FacilityID> integer or string? (ICIX Facility Org ID)  -- this probably needs to be a list?</FacilityID>
+      <FacilityID> integer or string? (ICIX Facility Org ID)  -- this probably needs to be a list?</FacilityID>
+    </FacilityIDs>
+    <Distributor> string:: distributor</Distributor>
+    <MemberName> string:: ??? </MemberName>
+    <RQAContact> string:: name of RQA </RQAContact>
+  </VendorInformation>
+
+  <ClaimInformation>
+    <IsClaim> boolean T|F </IsClaim>
+    <ClaimType> Illness | Injury | PropertyDamage (multiselect*) </ClaimType>
+    <Risk-FacsID> integer ??? </Risk-FacsID>
+    <CustomerComments>  ??? is this customer comments or some other set of comments </CustomerComments>
+  </ClaimInformation>
+
+  <GFSS>
+    <RiskLevel> number?  </RiskLevel>
+    <Comments> stringlist (multiline comments from GFSS) </Comments>
+    <SampleRecieved> bool T|F </SampleRecieved>
+    <PhotoRecieved> bool T|F </PhotoRecieved>
+    <DatePhotoRecieved> date:: sampleDate </DatePhotoRecieved>
+    <WFMRecipient>  string:: name of reporting TM </WFMRecipient>
+
+    <SupportingDocuments>
+      <SupportingDocument></SupportingDocument>
+      <SupportingDocument></SupportingDocument>
+
+
+    </SupportingDocuments>
+
+
+  </GFSS>
+
+</IcixUpdate>

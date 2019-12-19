@@ -35,4 +35,46 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="InforMessageId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="8c36d754-ea1e-4d39-9e32-a046a6490d0f" ChangeDateTime="08/23/2019 02:17:34">
+    <Property Name="ElementName" Value="[dbo].[BulkItemUploadData].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BulkItemUploadData]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="BulkItemUploadDataId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d01fe629-86f9-4683-a516-3d473b5be7d4" ChangeDateTime="08/23/2019 02:18:19">
+    <Property Name="ElementName" Value="[dbo].[BulkItemUpload].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BulkItemUpload]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="BulkItemUploadId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2003331a-7f0e-4939-a3c6-9668778804ba" ChangeDateTime="08/26/2019 20:44:18">
+    <Property Name="ElementName" Value="[dbo].[BulkItemUpload].[IsNew]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BulkItemUpload]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FileModeType" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5ea9e741-7eea-40cb-81fd-4889c9b68ec1" ChangeDateTime="10/18/2019 14:29:06">
+    <Property Name="ElementName" Value="[dbo].[BarcodeType].[SetFlag]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BarcodeType]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Specific" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="61e6f491-d76c-4f14-afd7-d273c46402b2" ChangeDateTime="10/18/2019 14:47:30">
+    <Property Name="ElementName" Value="[dbo].[BarcodeType].[Specific]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BarcodeType]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ScalePLU" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="0780a416-466e-493e-b1ba-a6f5cce5f534" ChangeDateTime="10/15/2019 17:42:10">
+    <Property Name="ElementName" Value="[dbo].[BulkItemUpload].[Messag]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BulkItemUpload]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Message" />
+  </Operation>
 </Operations>

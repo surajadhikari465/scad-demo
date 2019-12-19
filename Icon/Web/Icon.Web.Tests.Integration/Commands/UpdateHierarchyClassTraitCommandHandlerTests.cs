@@ -7,16 +7,17 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass] 
     public class UpdateHierarchyClassTraitCommandHandlerTests
     {
         private IconContext context;
+        private TransactionScope transaction;
         private UpdateHierarchyClassTraitCommandHandler updateHierarchyClassTraitCommandHandler;
         private UpdateHierarchyClassTraitCommand updateTraitCommand;
-        private DbContextTransaction transaction;
         private HierarchyClass merchandiseClassLevelOne;
         private HierarchyClass merchandiseClassLevelTwo;
         private HierarchyClass merchandiseClassLevelThree;
@@ -28,72 +29,23 @@ namespace Icon.Web.Tests.Integration.Commands
         private HierarchyClass brand;
         private HierarchyClass financialClass;
         private Item associatedItem;
-        private string testGlAccount;
         private List<string> testScanCodes;
 
         [TestInitialize]
         public void InitializeData()
         {
+            this.transaction = new TransactionScope();
             this.context = new IconContext();
             this.updateHierarchyClassTraitCommandHandler = new UpdateHierarchyClassTraitCommandHandler(this.context);
             this.updateTraitCommand = new UpdateHierarchyClassTraitCommand();
             this.testScanCodes = new List<string> { "8428428428", "84284284280", "84284284281" };
-            this.testGlAccount = "6101014";
-
-            this.transaction = this.context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            this.transaction.Rollback();
-
-            this.context.MessageQueueProduct.RemoveRange(this.context.MessageQueueProduct.Where(mq => this.testScanCodes.Contains(mq.ScanCode)));
-            this.context.SaveChanges();
-        }
-
-        [TestMethod]
-        public void UpdateHierarchyClassTrait_AddGlAccount_ShouldOnlyAddGlAccount()
-        {
-            // Given.
-            AddTestMerchandiseHierarchyClassLevels();
-
-            this.updateTraitCommand.GlAccount = this.testGlAccount;
-            this.updateTraitCommand.UpdatedHierarchyClass = merchandiseClassLevelThree;
-
-            // When.
-            updateHierarchyClassTraitCommandHandler.Execute(this.updateTraitCommand);
-
-            // Then.
-            HierarchyClassTrait actualTrait = this.context.HierarchyClassTrait
-                .SingleOrDefault(hct => hct.hierarchyClassID == this.updateTraitCommand.UpdatedHierarchyClass.hierarchyClassID && hct.Trait.traitCode == TraitCodes.GlAccount);
-            var entry = this.context.Entry(actualTrait);
-
-            Assert.AreEqual(this.updateTraitCommand.GlAccount, actualTrait.traitValue, "GL Account was not updated as expected.");
-            Assert.IsTrue(entry.State == EntityState.Unchanged);
-            Assert.IsTrue(this.context.HierarchyClassTrait.Where(hct => hct.hierarchyClassID == merchandiseClassLevelThree.hierarchyClassID).Count() == 1);
-            Assert.IsNull(this.context.HierarchyClassTrait
-                .SingleOrDefault(hct => hct.hierarchyClassID == merchandiseClassLevelThree.hierarchyClassID && hct.Trait.traitCode == TraitCodes.TaxAbbreviation));
-            Assert.IsNull(this.context.HierarchyClassTrait
-                .SingleOrDefault(hct => hct.hierarchyClassID == merchandiseClassLevelThree.hierarchyClassID && hct.Trait.traitCode == TraitCodes.MerchFinMapping));
-        }
-
-        [TestMethod]
-        public void UpdateHierarchyClassTrait_UpdateGlAccountToEmptyString_ShouldDeleteGlAccountTrait()
-        {
-            // Given.
-            AddTestMerchandiseHierarchyClassLevels();
-
-            this.updateTraitCommand.GlAccount = String.Empty;
-            this.updateTraitCommand.UpdatedHierarchyClass = merchandiseClassLevelThree;
-
-            // When.
-            updateHierarchyClassTraitCommandHandler.Execute(this.updateTraitCommand);
-
-            // Then.
-            HierarchyClassTrait actualTrait = this.context.HierarchyClassTrait
-                .SingleOrDefault(hct => hct.hierarchyClassID == this.updateTraitCommand.UpdatedHierarchyClass.hierarchyClassID && hct.Trait.traitCode == TraitCodes.GlAccount);
-            Assert.IsNull(actualTrait);
+            transaction.Dispose();
+            context.Dispose();
         }
 
         [TestMethod]
@@ -116,8 +68,6 @@ namespace Icon.Web.Tests.Integration.Commands
             Assert.AreEqual(this.updateTraitCommand.TaxAbbreviation, actualTrait.traitValue, "Tax Abbreviation was not updated as expected.");
             Assert.IsTrue(entry.State == EntityState.Unchanged);
             Assert.IsTrue(context.HierarchyClassTrait.Where(hct => hct.hierarchyClassID == taxClass.hierarchyClassID).Count() == 1);
-            Assert.IsNull(this.context.HierarchyClassTrait
-                .SingleOrDefault(hct => hct.hierarchyClassID == taxClass.hierarchyClassID && hct.Trait.traitCode == TraitCodes.GlAccount));
             Assert.IsNull(this.context.HierarchyClassTrait
                 .SingleOrDefault(hct => hct.hierarchyClassID == taxClass.hierarchyClassID && hct.Trait.traitCode == TraitCodes.MerchFinMapping));
         }
@@ -166,8 +116,6 @@ namespace Icon.Web.Tests.Integration.Commands
             Assert.IsTrue(entry.State == EntityState.Unchanged);
             Assert.IsTrue(context.HierarchyClassTrait.Where(hct => hct.hierarchyClassID == taxClass.hierarchyClassID).Count() == 1);
             Assert.IsNull(this.context.HierarchyClassTrait
-                .SingleOrDefault(hct => hct.hierarchyClassID == taxClass.hierarchyClassID && hct.Trait.traitCode == TraitCodes.GlAccount));
-            Assert.IsNull(this.context.HierarchyClassTrait
                 .SingleOrDefault(hct => hct.hierarchyClassID == taxClass.hierarchyClassID && hct.Trait.traitCode == TraitCodes.MerchFinMapping));
         }
 
@@ -175,12 +123,13 @@ namespace Icon.Web.Tests.Integration.Commands
         public void UpdateHierarchyClassTrait_UpdateSubTeamAssociation_ShouldOnlyUpdateSubTeamAssociation()
         {
             // Given.
-            AddTestMerchandiseHierarchyClassLevels();
+            int existingSubTeamId = AddTestFinancialClass("TestPSNumber","TestPOSNumber");
+            int expectedSubTeamId = AddTestFinancialClass("Expected Test PS Number", "Expected Test POS Dept Num");
+            AddTestMerchandiseHierarchyClassLevels(existingSubTeamId);
 
-            this.updateTraitCommand.SubTeamHierarchyClassId = this.context.HierarchyClass.First(hc => hc.hierarchyID == Hierarchies.Financial).hierarchyClassID;
+            this.updateTraitCommand.SubTeamHierarchyClassId = expectedSubTeamId;
             this.updateTraitCommand.UpdatedHierarchyClass = merchandiseClassLevelFiveA;
 
-            var expectedSubTeam = this.context.HierarchyClass.First(hc => hc.hierarchyID == Hierarchies.Financial).hierarchyClassName;
             var expectedClassName = this.merchandiseClassLevelFiveA.hierarchyClassName;
 
             // When.
@@ -191,11 +140,9 @@ namespace Icon.Web.Tests.Integration.Commands
                 .SingleOrDefault(hct => hct.hierarchyClassID == this.updateTraitCommand.UpdatedHierarchyClass.hierarchyClassID && hct.Trait.traitCode == TraitCodes.MerchFinMapping);
             var entry = this.context.Entry(actualTrait);
 
-            Assert.AreEqual(expectedSubTeam, actualTrait.traitValue, "SubTeam was not updated as expected.");
+            Assert.AreEqual(expectedSubTeamId.ToString(), actualTrait.traitValue, "SubTeam was not updated as expected.");
             Assert.IsTrue(entry.State == EntityState.Unchanged);
             Assert.IsTrue(context.HierarchyClassTrait.Where(hct => hct.hierarchyClassID == merchandiseClassLevelFiveA.hierarchyClassID).Count() == 1);
-            Assert.IsNull(this.context.HierarchyClassTrait
-                .SingleOrDefault(hct => hct.hierarchyClassID == merchandiseClassLevelFiveA.hierarchyClassID && hct.Trait.traitCode == TraitCodes.GlAccount));
             Assert.IsNull(this.context.HierarchyClassTrait
                 .SingleOrDefault(hct => hct.hierarchyClassID == merchandiseClassLevelFiveA.hierarchyClassID && hct.Trait.traitCode == TraitCodes.TaxAbbreviation));
         }
@@ -363,7 +310,8 @@ namespace Icon.Web.Tests.Integration.Commands
         public void UpdateHierarchyClassTrait_AddNonMerchandiseTraitForSubBrick_NonMerchandiseTraitIsCreated()
         {
             // Given.
-            AddTestMerchandiseHierarchyClassLevels();
+            int expectedSubTeamId = AddTestFinancialClass("TestPSNumber", "TestPOSNumber");
+            AddTestMerchandiseHierarchyClassLevels(expectedSubTeamId);
 
             this.updateTraitCommand.NonMerchandiseTrait = NonMerchandiseTraits.BottleDeposit;
             this.updateTraitCommand.SubTeamHierarchyClassId = this.context.HierarchyClass.First(hc => hc.hierarchyID == Hierarchies.Financial).hierarchyClassID;
@@ -382,8 +330,6 @@ namespace Icon.Web.Tests.Integration.Commands
             Assert.AreEqual(expectedNonMerchandise, actualTrait.traitValue);
             Assert.IsTrue(entry.State == EntityState.Unchanged);
             Assert.IsNull(this.context.HierarchyClassTrait
-                .SingleOrDefault(hct => hct.hierarchyClassID == merchandiseClassLevelFiveA.hierarchyClassID && hct.Trait.traitCode == TraitCodes.GlAccount));
-            Assert.IsNull(this.context.HierarchyClassTrait
                 .SingleOrDefault(hct => hct.hierarchyClassID == merchandiseClassLevelFiveA.hierarchyClassID && hct.Trait.traitCode == TraitCodes.TaxAbbreviation));
         }
 
@@ -391,7 +337,8 @@ namespace Icon.Web.Tests.Integration.Commands
         public void UpdateHierarchyClassTrait_UpdateNonMerchandiseTraitForSubBrick_NonMerchandiseTraitShouldBeUpdated()
         {
             // Given.
-            AddTestMerchandiseHierarchyClassLevels();
+            int expectedSubTeamId = AddTestFinancialClass("TestPSNumber", "TestPOSNumber");
+            AddTestMerchandiseHierarchyClassLevels(expectedSubTeamId);
 
             this.updateTraitCommand.UpdatedHierarchyClass = merchandiseClassLevelFiveA;
 
@@ -421,8 +368,6 @@ namespace Icon.Web.Tests.Integration.Commands
             Assert.AreEqual(expectedNonMerchandise, actualTrait.traitValue);
             Assert.IsTrue(entry.State == EntityState.Unchanged);
             Assert.IsNull(this.context.HierarchyClassTrait
-                .SingleOrDefault(hct => hct.hierarchyClassID == merchandiseClassLevelFiveA.hierarchyClassID && hct.Trait.traitCode == TraitCodes.GlAccount));
-            Assert.IsNull(this.context.HierarchyClassTrait
                 .SingleOrDefault(hct => hct.hierarchyClassID == merchandiseClassLevelFiveA.hierarchyClassID && hct.Trait.traitCode == TraitCodes.TaxAbbreviation));
         }
 
@@ -430,7 +375,8 @@ namespace Icon.Web.Tests.Integration.Commands
         public void UpdateHierarchyClassTrait_RemoveNonMerchandiseTraitFromSubBrick_NonMerchandiseTraitShouldBeRemovedFromSubBrick()
         {
             // Given.
-            AddTestMerchandiseHierarchyClassLevels();
+            int expectedSubTeamId = AddTestFinancialClass("TestPSNumber", "TestPOSNumber");
+            AddTestMerchandiseHierarchyClassLevels(expectedSubTeamId);
 
             this.updateTraitCommand.UpdatedHierarchyClass = merchandiseClassLevelFiveA;
 
@@ -456,285 +402,15 @@ namespace Icon.Web.Tests.Integration.Commands
 
             Assert.IsNull(actualTrait);
             Assert.IsNull(this.context.HierarchyClassTrait
-                .SingleOrDefault(hct => hct.hierarchyClassID == merchandiseClassLevelFiveA.hierarchyClassID && hct.Trait.traitCode == TraitCodes.GlAccount));
-            Assert.IsNull(this.context.HierarchyClassTrait
                 .SingleOrDefault(hct => hct.hierarchyClassID == merchandiseClassLevelFiveA.hierarchyClassID && hct.Trait.traitCode == TraitCodes.TaxAbbreviation));
-        }
-
-        [TestMethod]
-        public void UpdateHierarchyClassTrait_RemoveNonMerchandiseTraitFromSubBrick_AssociatedItemsShouldBeOfTypeRetailSale()
-        {
-            // Given.
-            AddTestMerchandiseHierarchyClassLevels();
-            AddItemAssociationToSubBrick();
-
-            this.updateTraitCommand.UpdatedHierarchyClass = merchandiseClassLevelFiveA;
-            this.associatedItem.itemTypeID = this.context.ItemType.First(it => it.itemTypeCode == ItemTypeCodes.Deposit).itemTypeID;
-
-            HierarchyClassTrait nonMerchTrait = new HierarchyClassTrait
-            {
-                traitValue = NonMerchandiseTraits.Crv,
-                hierarchyClassID = this.updateTraitCommand.UpdatedHierarchyClass.hierarchyClassID,
-                traitID = Traits.NonMerchandise
-            };
-
-            this.context.HierarchyClassTrait.Add(nonMerchTrait);
-            this.context.SaveChanges();
-
-            this.updateTraitCommand.NonMerchandiseTrait = String.Empty;
-            this.updateTraitCommand.SubTeamHierarchyClassId = this.context.HierarchyClass.First(hc => hc.hierarchyID == Hierarchies.Financial).hierarchyClassID;
-
-            // When.
-            updateHierarchyClassTraitCommandHandler.Execute(this.updateTraitCommand);
-
-            // Then.
-            context.Entry(this.associatedItem).Reload();
-            int expectedTypeId = this.context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.RetailSale).itemTypeID;
-            int actualTypeId = this.associatedItem.itemTypeID;
-
-            Assert.AreEqual(expectedTypeId, actualTypeId);
-        }
-
-        [TestMethod]
-        public void UpdateHierarchyClassTrait_UpdateNonMerchandiseTraitToBottleDeposit_AssociatedItemsShouldBeOfTypeDeposit()
-        {
-            // Given.
-            AddTestMerchandiseHierarchyClassLevels();
-            AddItemAssociationToSubBrick();
-
-            this.updateTraitCommand.UpdatedHierarchyClass = merchandiseClassLevelFiveA;
-
-            HierarchyClassTrait nonMerchTrait = new HierarchyClassTrait
-            {
-                traitValue = NonMerchandiseTraits.Coupon,
-                hierarchyClassID = this.updateTraitCommand.UpdatedHierarchyClass.hierarchyClassID,
-                traitID = Traits.NonMerchandise
-            };
-
-            this.context.HierarchyClassTrait.Add(nonMerchTrait);
-            this.context.SaveChanges();
-
-            this.updateTraitCommand.NonMerchandiseTrait = NonMerchandiseTraits.BottleDeposit;
-            this.updateTraitCommand.SubTeamHierarchyClassId = this.context.HierarchyClass.First(hc => hc.hierarchyID == Hierarchies.Financial).hierarchyClassID;
-
-            // When.
-            updateHierarchyClassTraitCommandHandler.Execute(this.updateTraitCommand);
-
-            // Then.
-            context.Entry(this.associatedItem).Reload();
-            int expectedTypeId = this.context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Deposit).itemTypeID;
-            int actualTypeId = this.associatedItem.itemTypeID;
-
-            Assert.AreEqual(expectedTypeId, actualTypeId);
-        }
-
-        [TestMethod]
-        public void UpdateHierarchyClassTrait_UpdateNonMerchandiseTraitToCrv_AssociatedItemsShouldBeOfTypeDeposit()
-        {
-            // Given.
-            AddTestMerchandiseHierarchyClassLevels();
-            AddItemAssociationToSubBrick();
-
-            this.updateTraitCommand.UpdatedHierarchyClass = merchandiseClassLevelFiveA;
-
-            HierarchyClassTrait nonMerchTrait = new HierarchyClassTrait
-            {
-                traitValue = NonMerchandiseTraits.Coupon,
-                hierarchyClassID = this.updateTraitCommand.UpdatedHierarchyClass.hierarchyClassID,
-                traitID = Traits.NonMerchandise
-            };
-
-            this.context.HierarchyClassTrait.Add(nonMerchTrait);
-            this.context.SaveChanges();
-
-            this.updateTraitCommand.NonMerchandiseTrait = NonMerchandiseTraits.Crv;
-            this.updateTraitCommand.SubTeamHierarchyClassId = this.context.HierarchyClass.First(hc => hc.hierarchyID == Hierarchies.Financial).hierarchyClassID;
-
-            // When.
-            updateHierarchyClassTraitCommandHandler.Execute(this.updateTraitCommand);
-
-            // Then.
-            context.Entry(this.associatedItem).Reload();
-            int expectedTypeId = this.context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Deposit).itemTypeID;
-            int actualTypeId = this.associatedItem.itemTypeID;
-
-            Assert.AreEqual(expectedTypeId, actualTypeId);
-        }
-
-        [TestMethod]
-        public void UpdateHierarchyClassTrait_UpdateNonMerchandiseTraitToBottleReturn_AssociatedItemsShouldBeOfTypeReturn()
-        {
-            // Given.
-            AddTestMerchandiseHierarchyClassLevels();
-            AddItemAssociationToSubBrick();
-
-            this.updateTraitCommand.UpdatedHierarchyClass = merchandiseClassLevelFiveA;
-
-            HierarchyClassTrait nonMerchTrait = new HierarchyClassTrait
-            {
-                traitValue = NonMerchandiseTraits.Coupon,
-                hierarchyClassID = this.updateTraitCommand.UpdatedHierarchyClass.hierarchyClassID,
-                traitID = Traits.NonMerchandise
-            };
-
-            this.context.HierarchyClassTrait.Add(nonMerchTrait);
-            this.context.SaveChanges();
-
-            this.updateTraitCommand.NonMerchandiseTrait = NonMerchandiseTraits.BottleReturn;
-            this.updateTraitCommand.SubTeamHierarchyClassId = this.context.HierarchyClass.First(hc => hc.hierarchyID == Hierarchies.Financial).hierarchyClassID;
-
-            // When.
-            updateHierarchyClassTraitCommandHandler.Execute(this.updateTraitCommand);
-
-            // Then.
-            context.Entry(this.associatedItem).Reload();
-            int expectedTypeId = this.context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Return).itemTypeID;
-            int actualTypeId = this.associatedItem.itemTypeID;
-
-            Assert.AreEqual(expectedTypeId, actualTypeId);
-        }
-
-        [TestMethod]
-        public void UpdateHierarchyClassTrait_UpdateNonMerchandiseTraitToCrvCredit_AssociatedItemsShouldBeOfTypeReturn()
-        {
-            // Given.
-            AddTestMerchandiseHierarchyClassLevels();
-            AddItemAssociationToSubBrick();
-
-            this.updateTraitCommand.UpdatedHierarchyClass = merchandiseClassLevelFiveA;
-
-            HierarchyClassTrait nonMerchTrait = new HierarchyClassTrait
-            {
-                traitValue = NonMerchandiseTraits.Coupon,
-                hierarchyClassID = this.updateTraitCommand.UpdatedHierarchyClass.hierarchyClassID,
-                traitID = Traits.NonMerchandise
-            };
-
-            this.context.HierarchyClassTrait.Add(nonMerchTrait);
-            this.context.SaveChanges();
-
-            this.updateTraitCommand.NonMerchandiseTrait = NonMerchandiseTraits.CrvCredit;
-            this.updateTraitCommand.SubTeamHierarchyClassId = this.context.HierarchyClass.First(hc => hc.hierarchyID == Hierarchies.Financial).hierarchyClassID;
-
-            // When.
-            updateHierarchyClassTraitCommandHandler.Execute(this.updateTraitCommand);
-
-            // Then.
-            context.Entry(this.associatedItem).Reload();
-            int expectedTypeId = this.context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Return).itemTypeID;
-            int actualTypeId = this.associatedItem.itemTypeID;
-
-            Assert.AreEqual(expectedTypeId, actualTypeId);
-        }
-
-        [TestMethod]
-        public void UpdateHierarchyClassTrait_UpdateNonMerchandiseTraitToLegacyPosOnly_AssociatedItemsShouldBeOfTypeNonRetail()
-        {
-            // Given.
-            AddTestMerchandiseHierarchyClassLevels();
-            AddItemAssociationToSubBrick();
-
-            this.updateTraitCommand.UpdatedHierarchyClass = merchandiseClassLevelFiveA;
-
-            HierarchyClassTrait nonMerchTrait = new HierarchyClassTrait
-            {
-                traitValue = NonMerchandiseTraits.Coupon,
-                hierarchyClassID = this.updateTraitCommand.UpdatedHierarchyClass.hierarchyClassID,
-                traitID = Traits.NonMerchandise
-            };
-
-            this.context.HierarchyClassTrait.Add(nonMerchTrait);
-            this.context.SaveChanges();
-
-            this.updateTraitCommand.NonMerchandiseTrait = NonMerchandiseTraits.LegacyPosOnly;
-            this.updateTraitCommand.SubTeamHierarchyClassId = this.context.HierarchyClass.First(hc => hc.hierarchyID == Hierarchies.Financial).hierarchyClassID;
-
-            // When.
-            updateHierarchyClassTraitCommandHandler.Execute(this.updateTraitCommand);
-
-            // Then.
-            context.Entry(this.associatedItem).Reload();
-            int expectedTypeId = this.context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.NonRetail).itemTypeID;
-            int actualTypeId = this.associatedItem.itemTypeID;
-
-            Assert.AreEqual(expectedTypeId, actualTypeId);
-        }
-
-        [TestMethod]
-        public void UpdateHierarchyClassTrait_UpdateNonMerchandiseTraitToBlackhawkFee_AssociatedItemsShouldBeOfTypeFee()
-        {
-            // Given.
-            AddTestMerchandiseHierarchyClassLevels();
-            AddItemAssociationToSubBrick();
-
-            this.updateTraitCommand.UpdatedHierarchyClass = merchandiseClassLevelFiveA;
-
-            HierarchyClassTrait nonMerchTrait = new HierarchyClassTrait
-            {
-                traitValue = NonMerchandiseTraits.Coupon,
-                hierarchyClassID = this.updateTraitCommand.UpdatedHierarchyClass.hierarchyClassID,
-                traitID = Traits.NonMerchandise
-            };
-
-            this.context.HierarchyClassTrait.Add(nonMerchTrait);
-            this.context.SaveChanges();
-
-            this.updateTraitCommand.NonMerchandiseTrait = NonMerchandiseTraits.BlackhawkFee;
-            this.updateTraitCommand.SubTeamHierarchyClassId = this.context.HierarchyClass.First(hc => hc.hierarchyID == Hierarchies.Financial).hierarchyClassID;
-
-            // When.
-            updateHierarchyClassTraitCommandHandler.Execute(this.updateTraitCommand);
-
-            // Then.
-            context.Entry(this.associatedItem).Reload();
-            int expectedTypeId = this.context.ItemType.Single(it => it.itemTypeCode == ItemTypeCodes.Fee).itemTypeID;
-            int actualTypeId = this.associatedItem.itemTypeID;
-
-            Assert.AreEqual(expectedTypeId, actualTypeId);
-        }
-
-        [TestMethod]
-        public void UpdateHierarchyClassTrait_UpdateNonMerchandiseTrait_ModifiedDateTraitShouldBeUpdatedForAssociatedItems()
-        {
-            // Given.
-            string now = DateTime.Now.ToString();
-
-            AddTestMerchandiseHierarchyClassLevels();
-            AddItemAssociationToSubBrick();
-
-            this.updateTraitCommand.UpdatedHierarchyClass = merchandiseClassLevelFiveA;
-
-            HierarchyClassTrait nonMerchTrait = new HierarchyClassTrait
-            {
-                traitValue = NonMerchandiseTraits.Coupon,
-                hierarchyClassID = this.updateTraitCommand.UpdatedHierarchyClass.hierarchyClassID,
-                traitID = Traits.NonMerchandise
-            };
-
-            this.context.HierarchyClassTrait.Add(nonMerchTrait);
-            this.context.SaveChanges();
-
-            this.updateTraitCommand.NonMerchandiseTrait = NonMerchandiseTraits.Crv;
-
-            // When.
-            updateHierarchyClassTraitCommandHandler.Execute(this.updateTraitCommand);
-
-            // Then.
-            ItemTrait itemTrait = this.context.ItemTrait.SingleOrDefault(it => it.itemID == this.associatedItem.itemID && it.traitID == Traits.ModifiedDate);
-
-            this.context.Entry(itemTrait).Reload();
-            string actualModifiedDate = itemTrait.traitValue;
-                        
-            Assert.IsNotNull(actualModifiedDate);
-            Assert.IsTrue(Convert.ToDateTime(actualModifiedDate) > Convert.ToDateTime(now));
         }
 
         [TestMethod]
         public void UpdateHierarchyClassTrait_NoUpdateToNonMerchandiseTrait_NoUpdateShouldOccurr()
         {
             // Given.
-            AddTestMerchandiseHierarchyClassLevels();
-            AddItemAssociationToSubBrick();
+            int expectedSubTeamId = AddTestFinancialClass("TestPSNumber", "TestPOSNumber");
+            AddTestMerchandiseHierarchyClassLevels(expectedSubTeamId);
 
             this.updateTraitCommand.UpdatedHierarchyClass = merchandiseClassLevelFiveA;
 
@@ -767,8 +443,8 @@ namespace Icon.Web.Tests.Integration.Commands
         public void UpdateHierarchyClassTrait_NonMerchandiseTraitRemainsEmptyString_NonMerchandiseTraitShouldNotBeCreated()
         {
             // Given.
-            AddTestMerchandiseHierarchyClassLevels();
-            AddItemAssociationToSubBrick();
+            int expectedSubTeamId = AddTestFinancialClass("TestPSNumber", "TestPOSNumber");
+            AddTestMerchandiseHierarchyClassLevels(expectedSubTeamId);
 
             this.updateTraitCommand.UpdatedHierarchyClass = merchandiseClassLevelFiveA;
             this.updateTraitCommand.NonMerchandiseTrait = String.Empty;
@@ -784,281 +460,10 @@ namespace Icon.Web.Tests.Integration.Commands
         }
 
         [TestMethod]
-        public void UpdateHierarchyClassTrait_NonMerchandiseTraitAssignedToSubBrick_ProductMessageShouldBeGeneratedForEachItemAssocaitedToTheSubBrick()
-        {
-            // Given.
-            DateTime now = DateTime.Now;
-            AddTestMerchandiseHierarchyClassLevels();
-            AddTestTaxClass();
-            AddTestBrand();
-
-            var testItems = new List<Item>
-            {
-                new TestItemBuilder()
-                    .WithValidationDate(DateTime.Now.ToString())
-                    .WithScanCode(this.testScanCodes[0])
-                    .WithSubBrickAssociation(this.merchandiseClassLevelFiveA.hierarchyClassID)
-                    .WithTaxClassAssociation(this.taxClass.hierarchyClassID)
-                    .WithBrandAssociation(this.brand.hierarchyClassID),
-
-                new TestItemBuilder()
-                    .WithValidationDate(DateTime.Now.ToString())
-                    .WithScanCode(this.testScanCodes[1])
-                    .WithSubBrickAssociation(this.merchandiseClassLevelFiveA.hierarchyClassID)
-                    .WithTaxClassAssociation(this.taxClass.hierarchyClassID)
-                    .WithBrandAssociation(this.brand.hierarchyClassID),
-
-                new TestItemBuilder()
-                    .WithValidationDate(DateTime.Now.ToString())
-                    .WithScanCode(this.testScanCodes[2])
-                    .WithSubBrickAssociation(this.merchandiseClassLevelFiveA.hierarchyClassID)
-                    .WithTaxClassAssociation(this.taxClass.hierarchyClassID)
-                    .WithBrandAssociation(this.brand.hierarchyClassID)
-            };
-
-            this.context.Item.AddRange(testItems);
-            this.context.SaveChanges();
-
-            this.updateTraitCommand.UpdatedHierarchyClass = this.merchandiseClassLevelFiveA;
-            this.updateTraitCommand.NonMerchandiseTrait = NonMerchandiseTraits.Crv;
-
-            // When.
-            this.updateHierarchyClassTraitCommandHandler.Execute(this.updateTraitCommand);
-
-            // Then.
-            var generatedMessages = this.context.MessageQueueProduct.Where(mq => testScanCodes.Contains(mq.ScanCode)).ToList();
-            bool allMessagesAreTypeDeposit = generatedMessages.TrueForAll(m => m.ItemTypeCode == ItemTypeCodes.Deposit);
-            var testItem = testItems[0];
-
-            var testItem1BrandClass = testItem.ItemHierarchyClass.Single(ihc => ihc.HierarchyClass.hierarchyID == Hierarchies.Brands).HierarchyClass;
-            var testItem1BrowsingClass = testItem.ItemHierarchyClass.SingleOrDefault(ihc => ihc.HierarchyClass.hierarchyID == Hierarchies.Browsing);
-            var testItem1MerchandiseClass = testItem.ItemHierarchyClass.Single(ihc => ihc.HierarchyClass.hierarchyID == Hierarchies.Merchandise).HierarchyClass;
-            var testItem1TaxClass = testItem.ItemHierarchyClass.Single(ihc => ihc.HierarchyClass.hierarchyID == Hierarchies.Tax).HierarchyClass;
-            string testItem1MerchFinMapping = testItem1MerchandiseClass.HierarchyClassTrait.Single(hct => hct.traitID == Traits.MerchFinMapping).traitValue;
-            var testItem1FinancialClass = this.context.HierarchyClass.Single(hc => hc.hierarchyID == Hierarchies.Financial && hc.hierarchyClassName == testItem1MerchFinMapping);
-
-            Assert.AreEqual(testItems.Count, generatedMessages.Count);
-            Assert.IsTrue(allMessagesAreTypeDeposit);
-            Assert.AreEqual(MessageTypes.Product, generatedMessages[0].MessageTypeId);
-            Assert.AreEqual(MessageStatusTypes.Staged, generatedMessages[0].MessageStatusId);
-            Assert.IsNull(generatedMessages[0].MessageHistoryId);
-            Assert.AreEqual(now.Date.ToShortDateString(), generatedMessages[0].InsertDate.Date.ToShortDateString());
-            Assert.AreEqual(testItem.itemID, generatedMessages[0].ItemId);
-            Assert.AreEqual(Locales.WholeFoods, generatedMessages[0].LocaleId);
-            Assert.AreEqual(ItemTypeDescriptions.Deposit, generatedMessages[0].ItemTypeDesc);
-            Assert.AreEqual(testItem.ScanCode.Single().scanCodeID, generatedMessages[0].ScanCodeId);
-            Assert.AreEqual(testScanCodes[0], generatedMessages[0].ScanCode);
-            Assert.AreEqual(ScanCodeTypes.Upc, generatedMessages[0].ScanCodeTypeId);
-            Assert.AreEqual(ScanCodeTypeDescriptions.Upc, generatedMessages[0].ScanCodeTypeDesc);
-            Assert.AreEqual(testItem.ItemTrait.Single(it => it.traitID == Traits.ProductDescription).traitValue, generatedMessages[0].ProductDescription);
-            Assert.AreEqual(testItem.ItemTrait.Single(it => it.traitID == Traits.PosDescription).traitValue, generatedMessages[0].PosDescription);
-            Assert.AreEqual(testItem.ItemTrait.Single(it => it.traitID == Traits.PackageUnit).traitValue, generatedMessages[0].PackageUnit);
-            Assert.AreEqual(testItem.ItemTrait.Single(it => it.traitID == Traits.RetailSize).traitValue, generatedMessages[0].RetailSize);
-            Assert.AreEqual(testItem.ItemTrait.Single(it => it.traitID == Traits.RetailUom).traitValue, generatedMessages[0].RetailUom);
-            Assert.AreEqual(testItem.ItemTrait.Single(it => it.traitID == Traits.FoodStampEligible).traitValue, generatedMessages[0].FoodStampEligible);
-            Assert.IsFalse(generatedMessages[0].ProhibitDiscount);
-            Assert.AreEqual("0", generatedMessages[0].DepartmentSale);
-            Assert.IsNull(testItem.ItemTrait.SingleOrDefault(it => it.traitID == Traits.DepartmentSale));
-            Assert.AreEqual(testItem1BrandClass.hierarchyClassID, generatedMessages[0].BrandId);
-            Assert.AreEqual(testItem1BrandClass.hierarchyClassName, generatedMessages[0].BrandName);
-            Assert.AreEqual(testItem1BrandClass.hierarchyLevel, generatedMessages[0].BrandLevel);
-            Assert.AreEqual(testItem1BrandClass.hierarchyParentClassID, generatedMessages[0].BrandParentId);
-            Assert.IsNull(generatedMessages[0].BrowsingClassId);
-            Assert.IsNull(generatedMessages[0].BrowsingClassName);
-            Assert.IsNull(generatedMessages[0].BrowsingLevel);
-            Assert.IsNull(generatedMessages[0].BrowsingParentId);
-            Assert.AreEqual(testItem1MerchandiseClass.hierarchyClassID, generatedMessages[0].MerchandiseClassId);
-            Assert.AreEqual(testItem1MerchandiseClass.hierarchyClassName, generatedMessages[0].MerchandiseClassName);
-            Assert.AreEqual(testItem1MerchandiseClass.hierarchyLevel, generatedMessages[0].MerchandiseLevel);
-            Assert.AreEqual(testItem1MerchandiseClass.hierarchyParentClassID, generatedMessages[0].MerchandiseParentId);
-            Assert.AreEqual(testItem1TaxClass.hierarchyClassID, generatedMessages[0].TaxClassId);
-            Assert.AreEqual(testItem1TaxClass.hierarchyClassName, generatedMessages[0].TaxClassName);
-            Assert.AreEqual(testItem1TaxClass.hierarchyLevel, generatedMessages[0].TaxLevel);
-            Assert.AreEqual(testItem1TaxClass.hierarchyParentClassID, generatedMessages[0].TaxParentId);
-            Assert.AreEqual(testItem1FinancialClass.hierarchyClassName.Split('(')[1].Trim(')'), generatedMessages[0].FinancialClassId);
-            Assert.AreEqual(testItem1FinancialClass.hierarchyClassName, generatedMessages[0].FinancialClassName);
-            Assert.AreEqual(testItem1FinancialClass.hierarchyLevel, generatedMessages[0].FinancialLevel);
-            Assert.AreEqual(testItem1FinancialClass.hierarchyParentClassID, generatedMessages[0].FinancialParentId);
-            Assert.IsNull(generatedMessages[0].InProcessBy);
-            Assert.IsNull(generatedMessages[0].ProcessedDate);
-        }
-
-        [TestMethod]
-        public void UpdateHierarchyClassTrait_ProhibitDiscountTraitAssignedToBrick_ProductMessageShouldBeGeneratedForEachItemAssocaitedToTheSubBricksOfTheBrick()
-        {
-            // Given.
-            AddTestMerchandiseHierarchyClassLevels();
-            AddTestTaxClass();
-            AddTestBrand();
-
-            var testItems = new List<Item>
-            {
-                new TestItemBuilder()
-                    .WithValidationDate(DateTime.Now.ToString())
-                    .WithScanCode(this.testScanCodes[0])
-                    .WithSubBrickAssociation(this.merchandiseClassLevelFiveB.hierarchyClassID)
-                    .WithTaxClassAssociation(this.taxClass.hierarchyClassID)
-                    .WithBrandAssociation(this.brand.hierarchyClassID),
-
-                new TestItemBuilder()
-                    .WithValidationDate(DateTime.Now.ToString())
-                    .WithScanCode(this.testScanCodes[1])
-                    .WithSubBrickAssociation(this.merchandiseClassLevelFiveB.hierarchyClassID)
-                    .WithTaxClassAssociation(this.taxClass.hierarchyClassID)
-                    .WithBrandAssociation(this.brand.hierarchyClassID),
-
-                new TestItemBuilder()
-                    .WithValidationDate(DateTime.Now.ToString())
-                    .WithScanCode(this.testScanCodes[2])
-                    .WithSubBrickAssociation(this.merchandiseClassLevelFiveB.hierarchyClassID)
-                    .WithTaxClassAssociation(this.taxClass.hierarchyClassID)
-                    .WithBrandAssociation(this.brand.hierarchyClassID)
-            };
-
-            this.context.Item.AddRange(testItems);
-            this.context.SaveChanges();
-
-            this.updateTraitCommand.UpdatedHierarchyClass = this.merchandiseClassLevelFour;
-            this.updateTraitCommand.ProhibitDiscount = "1";
-
-            // When.
-            this.updateHierarchyClassTraitCommandHandler.Execute(this.updateTraitCommand);
-
-            // Then.
-            var generatedMessages = this.context.MessageQueueProduct.Where(mq => this.testScanCodes.Contains(mq.ScanCode)).ToList();
-
-            bool eachMessageIsRetailSale = generatedMessages.TrueForAll(m => m.ItemTypeCode == ItemTypeCodes.RetailSale);
-            bool eachMessageIsProhibitDiscount = generatedMessages.TrueForAll(m => m.ProhibitDiscount == true);
-
-            Assert.AreEqual(testItems.Count, generatedMessages.Count);
-            Assert.IsTrue(eachMessageIsRetailSale);
-            Assert.IsTrue(eachMessageIsProhibitDiscount);
-        }
-
-        [TestMethod]
-        public void UpdateHierarchyClassTrait_NonMerchandiseTraitValueIsCoupon_NoProductMessagesShouldBeGenerated()
-        {
-            // Given.
-            DateTime now = DateTime.Now;
-
-            AddTestMerchandiseHierarchyClassLevels();
-            AddTestTaxClass();
-            AddTestBrand();
-
-            var testItems = new List<Item>
-            {
-                new TestItemBuilder()
-                    .WithValidationDate(DateTime.Now.ToString())
-                    .WithScanCode(this.testScanCodes[0])
-                    .WithSubBrickAssociation(this.merchandiseClassLevelFiveA.hierarchyClassID)
-                    .WithTaxClassAssociation(this.taxClass.hierarchyClassID)
-                    .WithBrandAssociation(this.brand.hierarchyClassID),
-
-                new TestItemBuilder()
-                    .WithValidationDate(DateTime.Now.ToString())
-                    .WithScanCode(this.testScanCodes[1])
-                    .WithSubBrickAssociation(this.merchandiseClassLevelFiveA.hierarchyClassID)
-                    .WithTaxClassAssociation(this.taxClass.hierarchyClassID)
-                    .WithBrandAssociation(this.brand.hierarchyClassID),
-
-                new TestItemBuilder()
-                    .WithValidationDate(DateTime.Now.ToString())
-                    .WithScanCode(this.testScanCodes[2])
-                    .WithSubBrickAssociation(this.merchandiseClassLevelFiveA.hierarchyClassID)
-                    .WithTaxClassAssociation(this.taxClass.hierarchyClassID)
-                    .WithBrandAssociation(this.brand.hierarchyClassID)  
-            };
-
-            this.context.Item.AddRange(testItems);
-            this.context.SaveChanges();
-
-            this.updateTraitCommand.UpdatedHierarchyClass = this.merchandiseClassLevelFiveA;
-            this.updateTraitCommand.NonMerchandiseTrait = NonMerchandiseTraits.Coupon;
-
-            // When.
-            this.updateHierarchyClassTraitCommandHandler.Execute(this.updateTraitCommand);
-
-            // Then.
-            var generatedMessages = this.context.MessageQueueProduct.Where(mq => mq.InsertDate > now && testScanCodes.Contains(mq.ScanCode)).ToList();
-            Assert.IsTrue(generatedMessages.Count == 0);
-        }
-
-        [TestMethod]
-        public void UpdateHierarchyClassTrait_NonMerchandiseTraitValueIsLegacyPosOnly_NoProductMessagesShouldBeGenerated()
-        {
-            // Given.
-            DateTime now = DateTime.Now;
-
-            AddTestMerchandiseHierarchyClassLevels();
-            AddTestTaxClass();
-            AddTestBrand();
-
-            var testItems = new List<Item>
-            {
-                new TestItemBuilder()
-                    .WithValidationDate(DateTime.Now.ToString())
-                    .WithScanCode(this.testScanCodes[0])
-                    .WithSubBrickAssociation(this.merchandiseClassLevelFiveA.hierarchyClassID)
-                    .WithTaxClassAssociation(this.taxClass.hierarchyClassID)
-                    .WithBrandAssociation(this.brand.hierarchyClassID),
-
-                new TestItemBuilder()
-                    .WithValidationDate(DateTime.Now.ToString())
-                    .WithScanCode(this.testScanCodes[1])
-                    .WithSubBrickAssociation(this.merchandiseClassLevelFiveA.hierarchyClassID)
-                    .WithTaxClassAssociation(this.taxClass.hierarchyClassID)
-                    .WithBrandAssociation(this.brand.hierarchyClassID),
-
-                new TestItemBuilder()
-                    .WithValidationDate(DateTime.Now.ToString())
-                    .WithScanCode(this.testScanCodes[2])
-                    .WithSubBrickAssociation(this.merchandiseClassLevelFiveA.hierarchyClassID)
-                    .WithTaxClassAssociation(this.taxClass.hierarchyClassID)
-                    .WithBrandAssociation(this.brand.hierarchyClassID)
-            };
-
-            this.context.Item.AddRange(testItems);
-            this.context.SaveChanges();
-
-            this.updateTraitCommand.UpdatedHierarchyClass = this.merchandiseClassLevelFiveA;
-            this.updateTraitCommand.NonMerchandiseTrait = NonMerchandiseTraits.LegacyPosOnly;
-
-            // When.
-            this.updateHierarchyClassTraitCommandHandler.Execute(this.updateTraitCommand);
-
-            // Then.
-            var generatedMessages = this.context.MessageQueueProduct.Where(mq => mq.InsertDate > now && testScanCodes.Contains(mq.ScanCode)).ToList();
-            Assert.IsTrue(generatedMessages.Count == 0);
-        }
-
-        [TestMethod]
-        public void UpdateHierarchyClassTrait_TaxAbbreviationChanged_NoProductMessageShouldBeGenerated()
-        {
-            // Given.
-            DateTime now = DateTime.Now;
-
-            AddTestTaxClass();
-
-            Item testItem = new TestItemBuilder()
-                .WithValidationDate(DateTime.Now.ToString())
-                .WithTaxClassAssociation(this.taxClass.hierarchyClassID);
-
-            this.updateTraitCommand.TaxAbbreviation = "2488424 Edit Tax Abbreviation";
-            this.updateTraitCommand.UpdatedHierarchyClass = this.taxClass;
-
-            // When.
-            updateHierarchyClassTraitCommandHandler.Execute(this.updateTraitCommand);
-
-            // Then.
-            MessageQueueProduct message = this.context.MessageQueueProduct.OrderByDescending(q => q.InsertDate).FirstOrDefault(q => q.ItemId == testItem.itemID && q.InsertDate > now);
-            Assert.IsNull(message);
-        }
-
-        [TestMethod]
         public void UpdateHierarchyClassTrait_UpdatePosDeptNumberTeamNameTeamNumber_ShouldOnlyUpdatePosDeptNumberTeamNameAndTeamNumber()
         {
             // Given.
-            AddTestFinancialClass("0001", String.Empty);
+            int subTeamId = AddTestFinancialClass("0001", String.Empty);
 
             this.updateTraitCommand.PosDeptNumber = "001";
             this.updateTraitCommand.TeamName = "TestTeamNameUpdate";
@@ -1152,7 +557,12 @@ namespace Icon.Web.Tests.Integration.Commands
 
         private void AddItemAssociationToSubBrick()
         {
-            this.associatedItem = new TestItemBuilder().WithSubBrickAssociation(this.merchandiseClassLevelFiveA.hierarchyClassID);
+            this.associatedItem = new Item
+            {
+                ItemHierarchyClass = new List<ItemHierarchyClass> { new ItemHierarchyClass { hierarchyClassID = this.merchandiseClassLevelFiveA.hierarchyClassID } },
+                ItemTypeId = ItemTypes.RetailSale,
+                ItemAttributesJson = "{}"
+            };
             this.context.Item.Add(this.associatedItem);
             this.context.SaveChanges();
         }
@@ -1174,7 +584,7 @@ namespace Icon.Web.Tests.Integration.Commands
             this.context.SaveChanges();
         }
 
-        private void AddTestMerchandiseHierarchyClassLevels()
+        private void AddTestMerchandiseHierarchyClassLevels(int? merchFinMapping = null)
         {
             this.merchandiseClassLevelOne = new TestHierarchyClassBuilder()
                 .WithHierarchyClassName("TestMerchandiseLevel1")
@@ -1198,8 +608,7 @@ namespace Icon.Web.Tests.Integration.Commands
                 .WithHierarchyId(Hierarchies.Merchandise)
                 .WithHierarchyClassName("TestMerchandiseLevel3")
                 .WithHierarchyLevel(3)
-                .WithHierarchyParentClassId(this.merchandiseClassLevelTwo.hierarchyClassID)
-                .WithGlAccountTrait("4500001");
+                .WithHierarchyParentClassId(this.merchandiseClassLevelTwo.hierarchyClassID);
             this.merchandiseClassLevelThree.Hierarchy = this.context.Hierarchy.Single(h => h.hierarchyID == this.merchandiseClassLevelThree.hierarchyID);
             this.context.HierarchyClass.Add(merchandiseClassLevelThree);
             this.context.SaveChanges();
@@ -1218,7 +627,7 @@ namespace Icon.Web.Tests.Integration.Commands
                 .WithHierarchyClassName("TestMerchandiseLevel5A")
                 .WithHierarchyLevel(5)
                 .WithHierarchyParentClassId(this.merchandiseClassLevelFour.hierarchyClassID)
-                .WithMerchFinMapping(this.context.HierarchyClass.FirstOrDefault(hc => hc.hierarchyID == Hierarchies.Financial).hierarchyClassName);
+                .WithMerchFinMapping(merchFinMapping.ToString());
             this.merchandiseClassLevelFiveA.Hierarchy = this.context.Hierarchy.Single(h => h.hierarchyID == this.merchandiseClassLevelFiveA.hierarchyID);
             this.context.HierarchyClass.Add(merchandiseClassLevelFiveA);
             this.context.SaveChanges();
@@ -1228,7 +637,7 @@ namespace Icon.Web.Tests.Integration.Commands
                 .WithHierarchyClassName("TestMerchandiseLevel5B")
                 .WithHierarchyLevel(5)
                 .WithHierarchyParentClassId(this.merchandiseClassLevelFour.hierarchyClassID)
-                .WithMerchFinMapping(this.context.HierarchyClass.FirstOrDefault(hc => hc.hierarchyID == Hierarchies.Financial).hierarchyClassName);
+                .WithMerchFinMapping(merchFinMapping.ToString());
             this.merchandiseClassLevelFiveB.Hierarchy = this.context.Hierarchy.Single(h => h.hierarchyID == this.merchandiseClassLevelFiveB.hierarchyID);
             this.context.HierarchyClass.Add(merchandiseClassLevelFiveB);
             this.context.SaveChanges();
@@ -1238,13 +647,13 @@ namespace Icon.Web.Tests.Integration.Commands
                 .WithHierarchyClassName("TestMerchandiseLevel5C")
                 .WithHierarchyLevel(5)
                 .WithHierarchyParentClassId(this.merchandiseClassLevelFour.hierarchyClassID)
-                .WithMerchFinMapping(this.context.HierarchyClass.FirstOrDefault(hc => hc.hierarchyID == Hierarchies.Financial).hierarchyClassName);
+                .WithMerchFinMapping(merchFinMapping.ToString());
             this.merchandiseClassLevelFiveC.Hierarchy = this.context.Hierarchy.Single(h => h.hierarchyID == this.merchandiseClassLevelFiveC.hierarchyID);
             this.context.HierarchyClass.Add(merchandiseClassLevelFiveC);
             this.context.SaveChanges();
         }
 
-        private void AddTestFinancialClass(string peopleSoftNumber, string posDeptNumber)
+        private int AddTestFinancialClass(string peopleSoftNumber, string posDeptNumber)
         {
             string hierarchyClassName = "TestFinancialClass" + " (" + peopleSoftNumber + ")";
 
@@ -1260,6 +669,8 @@ namespace Icon.Web.Tests.Integration.Commands
 
             this.context.HierarchyClass.Add(this.financialClass);
             this.context.SaveChanges();
+
+            return financialClass.hierarchyClassID;
         }
     }
 }

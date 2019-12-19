@@ -18,8 +18,8 @@ namespace Icon.Framework
         public int childItemID { get; set; }
         public int localeID { get; set; }
     
+        public virtual Locale Locale { get; set; }
         public virtual Item Item { get; set; }
         public virtual Item Item1 { get; set; }
-        public virtual Locale Locale { get; set; }
     }
 }

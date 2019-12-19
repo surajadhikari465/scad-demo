@@ -1,0 +1,10 @@
+﻿CREATE TYPE [esb].[MessageQueueItemIdsType] AS TABLE(
+    ItemId INT NOT NULL,
+	EsbReadyDateTimeUtc DATETIME2(7) NOT NULL,
+    InsertDateUtc DATETIME2(7) NOT NULL
+	PRIMARY KEY CLUSTERED 
+(
+	[ItemId] ASC
+)WITH (IGNORE_DUP_KEY = OFF)
+)
+GO

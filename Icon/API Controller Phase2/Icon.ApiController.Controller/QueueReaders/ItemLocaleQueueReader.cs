@@ -429,14 +429,14 @@ namespace Icon.ApiController.Controller.QueueReaders
             {
                 parentIdSpecified = true,
                 childIdSpecified = true,
-                parentId = linkedItem.itemID,
+                parentId = linkedItem.ItemId,
                 childId = message.ItemId
             });
             groups.Add(new Contracts.ItemGroupTypeType
             {
                 ActionSpecified = true,
                 Action = action,
-                id = linkedItem.itemID.ToString() + "_" + message.ItemId.ToString(),
+                id = linkedItem.ItemId.ToString() + "_" + message.ItemId.ToString(),
                 description = groupTypeDescription
             });
         }

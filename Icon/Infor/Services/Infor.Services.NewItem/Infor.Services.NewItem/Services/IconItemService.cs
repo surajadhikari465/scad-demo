@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Infor.Services.NewItem.Models;
+using Services.NewItem.Models;
 using Icon.Common.DataAccess;
-using Infor.Services.NewItem.Commands;
+using Services.NewItem.Commands;
 
-namespace Infor.Services.NewItem.Services
+namespace Services.NewItem.Services
 {
     public class IconItemService : IIconItemService
     {

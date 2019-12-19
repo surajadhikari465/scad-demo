@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2A637586-FC42-49F2-B113-F045A7A06B23}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WFM.Nexus.BTS.OOS.ScanProduct.UnitTests</RootNamespace>
+    <AssemblyName>WFM.Nexus.BTS.OOS.ScanProduct.UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ScanProductTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\ScanProductAsyncReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Service References\ScanProductAsyncReference\BizTalkServiceInstance.wsdl" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync1.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync10.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync11.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync12.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync13.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync14.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync15.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync16.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync17.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync18.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync19.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync2.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync20.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync21.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync22.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync3.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync4.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync5.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync6.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync7.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync8.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync9.xsd" />
+    <None Include="Service References\ScanProductAsyncReference\WFM.Nexus.BTS.OOS.ScanProduct.UnitTests.ScanProductAsyncReference.CreateEventForResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ScanProductAsyncReference\WFM.Nexus.BTS.OOS.ScanProduct.UnitTests.ScanProductAsyncReference.CreateEventsForResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ScanProductAsyncReference\WFM.Nexus.BTS.OOS.ScanProduct.UnitTests.ScanProductAsyncReference.PingResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ScanProductAsyncReference\WFM.Nexus.BTS.OOS.ScanProduct.UnitTests.ScanProductAsyncReference.RegionAbbreviationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ScanProductAsyncReference\WFM.Nexus.BTS.OOS.ScanProduct.UnitTests.ScanProductAsyncReference.RegionNamesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ScanProductAsyncReference\WFM.Nexus.BTS.OOS.ScanProduct.UnitTests.ScanProductAsyncReference.ScanProductsByStoreAbbreviationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ScanProductAsyncReference\WFM.Nexus.BTS.OOS.ScanProduct.UnitTests.ScanProductAsyncReference.ScanProductsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ScanProductAsyncReference\WFM.Nexus.BTS.OOS.ScanProduct.UnitTests.ScanProductAsyncReference.StoreAbbreviationsForResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ScanProductAsyncReference\WFM.Nexus.BTS.OOS.ScanProduct.UnitTests.ScanProductAsyncReference.StoreNamesForResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ScanProductAsyncReference\WFM.Nexus.BTS.OOS.ScanProduct.UnitTests.ScanProductAsyncReference.ValidateForResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ScanProductAsyncReference\WFM.Nexus.BTS.OOS.ScanProduct.UnitTests.ScanProductAsyncReference.ValidateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ScanProductAsyncReference\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ScanProductAsyncReference\BTS_OOS_Orch_ScanProduct_ScanProductAsync.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ScanProductAsyncReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ScanProductAsyncReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ScanProductAsyncReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

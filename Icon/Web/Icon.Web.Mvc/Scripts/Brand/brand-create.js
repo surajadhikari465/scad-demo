@@ -1,9 +1,5 @@
 ﻿$(function () {
 
-    $('#createButton').click(function () {
-        $('#createButton').disable(true);
-    });
-
     $('#brandName').on('input propertychange paste', function () {
         $('#createButton').disable(false);
     });
@@ -16,5 +12,12 @@
     $('body').on('click', 'a.disabled', function (event) {
         event.preventDefault();
     });
-    
+
+    $('form').submit(function () {
+        $(this).validate();
+
+        if ($(this).valid()) {
+            $(':submit', this).attr('disabled', true).val('Processing...');
+        }
+    });
 });

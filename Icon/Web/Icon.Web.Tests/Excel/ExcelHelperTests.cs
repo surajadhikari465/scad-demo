@@ -1,6 +1,4 @@
-﻿using Icon.Framework;
-using Icon.Web.Common;
-using Icon.Web.Mvc.Excel;
+﻿using Icon.Web.Mvc.Excel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

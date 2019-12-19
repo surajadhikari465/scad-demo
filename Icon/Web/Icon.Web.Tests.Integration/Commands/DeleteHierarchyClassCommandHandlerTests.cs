@@ -1,20 +1,18 @@
 ﻿using Icon.Framework;
-using Icon.Logging;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class DeleteHierarchyClassCommandHandlerTests
     {
         private IconContext context;
+        private AppSettings settings;
         private DeleteHierarchyClassCommandHandler deleteHierarchyClassCommandHandler;
         private HierarchyClass testHierarchyClass;
 
@@ -38,8 +36,9 @@ namespace Icon.Web.Tests.Integration.Commands
         [TestInitialize]
         public void Initialize()
         {
-            context = new IconContext();
-            deleteHierarchyClassCommandHandler = new DeleteHierarchyClassCommandHandler(this.context);
+            this.context = new IconContext();
+            this.settings = new AppSettings();
+            deleteHierarchyClassCommandHandler = new DeleteHierarchyClassCommandHandler(this.context, this.settings);
         }
 
         [TestCleanup]
@@ -201,12 +200,6 @@ namespace Icon.Web.Tests.Integration.Commands
                     hierarchyClassID = this.testHierarchyClass.hierarchyClassID,
                     traitID = Traits.NonMerchandise,
                     traitValue = NonMerchandiseTraits.BottleDeposit
-                },
-                new HierarchyClassTrait
-                {
-                    hierarchyClassID = this.testHierarchyClass.hierarchyClassID,
-                    traitID = Traits.GlAccount,
-                    traitValue = "10023400001"
                 },
                 new HierarchyClassTrait
                 {

@@ -1,0 +1,26 @@
+.page-title-wrapper{
+    p{
+        margin: 30px auto;
+        text-align: center;
+    }
+}
+.region-container{
+    margin: 5px;
+    padding: 5px;
+    flex: 1;
+    height: calc(100vh - 205px);
+    overflow-y: scroll;
+    .toggle-group{
+        flex-direction: column;
+        display: flex;
+    }
+}
+.region-select{
+    flex: 1 1 0%;
+    button{
+        color: rgb(255, 255, 255); 
+        background-color: rgb(0, 78, 54);
+        width: 100%;
+    }
+
+}

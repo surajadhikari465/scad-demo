@@ -1,6 +1,5 @@
 ﻿using Icon.Framework;
 using Icon.Logging;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,12 +30,12 @@ namespace Icon.Web.Tests.Integration.Queries
             context.ScanCode.RemoveRange(context.ScanCode.Where(sc => sc.scanCode == "424242424242"));
             context.SaveChanges();
 
-            item = new Item { itemTypeID = 1 };
+            item = new Item { ItemTypeId = 1 };
             context.Item.Add(item);
             context.SaveChanges();
-            addedItemId = item.itemID;
+            addedItemId = item.ItemId;
 
-            upc = new ScanCode { itemID = item.itemID, scanCode = "424242424242", scanCodeTypeID = 1, localeID = 1 };
+            upc = new ScanCode { itemID = item.ItemId, scanCode = "424242424242", scanCodeTypeID = 1, localeID = 1 };
             context.ScanCode.Add(upc);
             context.SaveChanges();
 
@@ -46,7 +45,7 @@ namespace Icon.Web.Tests.Integration.Queries
         [TestCleanup]
         public void Cleanup()
         {
-            item = context.Item.Where(i => i.itemID == addedItemId).FirstOrDefault();
+            item = context.Item.Where(i => i.ItemId == addedItemId).FirstOrDefault();
             upc = context.ScanCode.Where(sc => sc.itemID == addedItemId).FirstOrDefault();
             context.Item.Remove(item);
             context.ScanCode.Remove(upc);

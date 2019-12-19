@@ -1,0 +1,30 @@
+﻿CREATE TABLE [dbo].[AttributeHistory]
+(
+	AttributeId INT NOT NULL,
+	DisplayName NVARCHAR(255),
+	AttributeName NVARCHAR(255), 
+	AttributeGroupId INT NULL,
+	HasUniqueValues  BIT NULL,
+	Description NVARCHAR(Max),
+	DefaultValue NVARCHAR(255) NULL,
+	IsRequired BIT NULL,
+	SpecialCharactersAllowed NVARCHAR(255) NULL,
+	TraitCode NVARCHAR(10),
+	DataTypeId INT,
+	DisplayOrder Int Null,
+	InitialValue INT NULL,
+	IncrementBy INT NULL,
+	InitialMax INT NULL,
+	DisplayType NVARCHAR(255) Null,
+	MaxLengthAllowed int null,
+	MinimumNumber NVARCHAR(14) NULL,
+	MaximumNumber NVARCHAR(14) NULL,
+	NumberOfDecimals NVARCHAR(1) NULL,
+	IsPickList bit NOT NULL,
+	XmlTraitDescription NVARCHAR(255) NULL,
+	AttributeGuid uniqueidentifier null,
+	IsSpecialTransform  BIT NOT NULL DEFAULT(0),
+	SysStartTimeUtc datetime2 NOT NULL,
+	SysEndTimeUtc datetime2 NOT NULL
+) ON [FG_History]
+GO

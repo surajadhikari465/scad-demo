@@ -7,19 +7,21 @@ AS
 -- We need to filter out Coupon Item Types
 -- ***************************************************************
 
-DECLARE @itemAssociations app.UpdatedItemIDsType
+DECLARE @itemAssociations esb.MessageQueueItemIdsType
+DECLARE @now DATETIME2(7) = SYSUTCDATETIME()
 
 INSERT INTO @itemAssociations
 SELECT
-	ihc.itemID			as itemId
+	ihc.itemID			AS itemId,
+	@now				AS EsbReadyDateTimeUtc,
+	@now				AS InsertDateUtc
 FROM
 	ItemHierarchyClass	ihc
-	JOIN Item			i	on ihc.itemID = i.itemID
-	JOIN ItemType		t	on i.itemTypeID = t.itemTypeID
+	JOIN Item			i	ON ihc.itemID = i.itemID
+	JOIN ItemType		t	ON i.itemTypeID = t.itemTypeID
 WHERE
 	ihc.hierarchyClassID = @hierarchyClassID
 	AND t.itemTypeCode <> 'CPN'
-	AND t.itemTypeCode <> 'NRT'
 
-EXEC app.GenerateItemUpdateMessages @updatedItemIDs = @itemAssociations
+EXEC esb.AddMessageQueueItem @MessageQueueItems = @itemAssociations
 GO

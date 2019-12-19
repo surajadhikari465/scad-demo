@@ -1,0 +1,14 @@
+@mixin toggle-scroll-content {
+  margin: 5px;
+  padding: 5px;
+  flex: 1;
+  height: calc(100vh - 185px);
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+@mixin settings-message {
+  margin: 15px;
+  text-align: center;
+}

@@ -1,5 +1,4 @@
 ﻿using Icon.Framework;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -43,10 +42,10 @@ namespace Icon.Web.Tests.Integration.Queries
             context.Item.Add(item3);
             context.Item.Add(item4);
             context.SaveChanges();
-            itemId1 = item1.itemID;
-            itemId2 = item2.itemID;
-            itemId3 = item3.itemID;
-            itemId4 = item4.itemID;
+            itemId1 = item1.ItemId;
+            itemId2 = item2.ItemId;
+            itemId3 = item3.ItemId;
+            itemId4 = item4.ItemId;
             
             scanCodes = new List<ScanCode>
             {
@@ -334,22 +333,22 @@ namespace Icon.Web.Tests.Integration.Queries
 
             int productDescriptionTraitId = context.Trait.Single(t => t.traitCode == TraitCodes.ProductDescription).traitID;
 
-            item1 = new Item { itemTypeID = 1 };
+            item1 = new Item { ItemTypeId = 1 };
             item1.ItemTrait = new List<ItemTrait>();
             item1.ItemTrait.Add(new ItemTrait { itemID = 1, traitValue = "PLU Test1", traitID = productDescriptionTraitId, localeID = 1 });
             items.Add(item1);
 
-            item2 = new Item { itemTypeID = 1 };
+            item2 = new Item { ItemTypeId = 1 };
             item2.ItemTrait = new List<ItemTrait>();
             item2.ItemTrait.Add(new ItemTrait { itemID = 1, traitValue = "PLU Test2", traitID = productDescriptionTraitId, localeID = 1 });
             items.Add(item2);
 
-            item3 = new Item { itemTypeID = 1 };
+            item3 = new Item { ItemTypeId = 1 };
             item3.ItemTrait = new List<ItemTrait>();
             item3.ItemTrait.Add(new ItemTrait { itemID = 1, traitValue = "PLU Test3", traitID = productDescriptionTraitId, localeID = 1 });
             items.Add(item3);
 
-            item4 = new Item { itemTypeID = 1 };
+            item4 = new Item { ItemTypeId = 1 };
             item4.ItemTrait = new List<ItemTrait>();
             item4.ItemTrait.Add(new ItemTrait { itemID = 1, traitValue = "PLU Test4", traitID = productDescriptionTraitId, localeID = 1 });
             items.Add(item4);

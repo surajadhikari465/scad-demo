@@ -26,10 +26,10 @@ namespace Icon.Framework
         public int scanCodeTypeID { get; set; }
         public Nullable<int> localeID { get; set; }
     
-        public virtual Item Item { get; set; }
-        public virtual ScanCodeType ScanCodeType { get; set; }
         public virtual Locale Locale { get; set; }
         public virtual ICollection<Mapping> Mapping { get; set; }
+        public virtual ScanCodeType ScanCodeType { get; set; }
         public virtual ICollection<Agency> Agency { get; set; }
+        public virtual Item Item { get; set; }
     }
 }

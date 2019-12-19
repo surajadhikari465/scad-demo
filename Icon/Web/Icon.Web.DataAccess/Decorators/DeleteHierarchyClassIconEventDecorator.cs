@@ -1,18 +1,6 @@
 ﻿using Icon.Framework;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
-using Icon.Web.DataAccess.Models;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Icon.Web.DataAccess.Extensions;
-using Icon.Web.Common;
 using Icon.Logging;
-using System.Configuration;
 using Icon.Common.DataAccess;
 
 namespace Icon.Web.DataAccess.Decorators

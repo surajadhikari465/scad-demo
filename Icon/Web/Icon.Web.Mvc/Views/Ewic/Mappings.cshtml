@@ -6,15 +6,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
-
-@(Html.Infragistics().Loader()
-        .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-        .CssPath(Url.Content("~/Content/Infragistics/css/"))
-        .Resources("igCombo")
-        .Render()
-)
-
 @{Html.RenderPartial("_HeaderPartial", "eWIC Mappings");}
 
 <hr />
@@ -27,7 +18,6 @@
             <fieldset>
                 <legend>Select APL Scan Code to View Mappings</legend>
                 <div class="form-group">
-                    <div class="form-offset-left">
                         @(Html.Infragistics().ComboFor(model => model.AplScanCodeSelectedId)
                                 .DataSource(Model.AplScanCodes)
                                 .Width("20%")
@@ -38,13 +28,10 @@
                                 .FilteringType(ComboFilteringType.Local)
                                 .Render()
                         )
-                    </div>
                 </div>
                 <div class="form-group">
-                    <div class="form-offset-left">
-                        <input type="submit" value="Display" class="btn btn-default" id="displayMappingButton" />
-                        @Html.ValidationMessageFor(model => model.AplScanCodeSelectedId, null, new { @class = "form-property-val" })
-                    </div>
+                     <input type="submit" value="Display" class="btn btn-light" id="displayMappingButton" />
+                     @Html.ValidationMessageFor(model => model.AplScanCodeSelectedId, null, new { @class = "form-property-val" })
                 </div>
             </fieldset>
         }

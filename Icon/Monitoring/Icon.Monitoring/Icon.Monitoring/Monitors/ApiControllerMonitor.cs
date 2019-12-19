@@ -54,6 +54,8 @@
             this.CheckMessageQueueId(MessageQueueTypes.Hierarchy);
             this.CheckMessageQueueId(MessageQueueTypes.Locale);
             this.CheckMessageQueueId(MessageQueueTypes.ProductSelectionGroup);
+            this.CheckMessageQueueId(MessageQueueTypes.Attribute);
+            this.CheckMessageQueueId(MessageQueueTypes.Item);
             var regions = settings.ApiControllerMonitorRegions;
             // loop through each region
             foreach (var region in regions)
@@ -145,8 +147,10 @@
 
         private void CheckMessageQueueId(string queueType)
         {
-            GetApiMessageQueueIdParameters queryParameters = new GetApiMessageQueueIdParameters();
-            queryParameters.MessageQueueType = queueType;
+            GetApiMessageQueueIdParameters queryParameters = new GetApiMessageQueueIdParameters
+            {
+                MessageQueueType = queueType
+            };
             int id = this.messageQueueQuery.Search(queryParameters);
 
             if (messageQueueCache.QueueTypeToIdMapper[queueType].LastMessageQueueId == id

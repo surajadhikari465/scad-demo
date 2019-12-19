@@ -8,13 +8,14 @@ namespace Icon.Web.Mvc.Models
 {
     public class BrandViewModel : HierarchyClassViewModel
     {
-        [IconPropertyValidation(ValidatorPropertyNames.BrandName, CanBeNullOrEmprty = false)]
+        [IconPropertyValidation(ValidatorPropertyNames.BrandName, CanBeNullOrEmpty = false)]
         [Required(ErrorMessage = "Please enter a brand name.")]
         [Display(Name = "Brand Name")]
         public string BrandName { get; set; }
 
+        [Required(ErrorMessage = "Please enter a brand abbreviation.")]
         [Display(Name = "Brand Abbreviation")]
-        [IconPropertyValidation(ValidatorPropertyNames.BrandAbbreviation, CanBeNullOrEmprty = true)]
+        [IconPropertyValidation(ValidatorPropertyNames.BrandAbbreviation, CanBeNullOrEmpty = true)]
         public string BrandAbbreviation { get; set; }
 
         [Display(Name = "Designation")]
@@ -29,7 +30,8 @@ namespace Icon.Web.Mvc.Models
         public IEnumerable<string> BrandList { get; set; }
        
         [Display(Name = "Zip Code")]
-        [RegularExpression(@"^[0-9]{5}(?:-[0-9]{4})?$", ErrorMessage = "Invalid Zip Code. Example: 12345 or 12345-6789")]
+        [RegularExpression(@"^[A-Za-z0-9\s-]+$", ErrorMessage = "Zip Code allows letters,numbers,space and hyphens only.")]
+        [MaxLength(10, ErrorMessage = "ZipCode must be 10 characters or less")]
         public string ZipCode { get; set; }
 
         [Display(Name = "Locality")]

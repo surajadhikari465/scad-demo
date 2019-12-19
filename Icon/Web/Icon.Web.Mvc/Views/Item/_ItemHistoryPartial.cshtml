@@ -1,0 +1,77 @@
+﻿@model Icon.Web.Mvc.Models.ItemHistoryViewModel
+
+<div id="ItemHistoryContainer">
+    <div id="RevisionHistoryHeader">
+        <h5>Revision History</h5>
+        @if (Model.RevisionsByDate.Count == 0)
+        {
+            <div>No history entries found...</div>
+        }
+        else
+        {
+            <button id="ItemHistoryToggleDate"
+                    class="btn btn-link">
+                By Date
+            </button>
+            <button id="ItemHistoryToggleAttribute"
+                    class="btn btn-link">
+                By Attribute
+            </button>
+        }
+    </div>
+
+   
+    <div id="ItemHistoryByDate">
+        @foreach (var revision in Model.RevisionsByDate)
+        {
+        <div class="card">
+            <div class="card-header item-history-card" id="heading@(revision.Id)"
+                 data-toggle="collapse" data-target="#collapse@(revision.Id)"
+                 aria-expanded="false" aria-controls="collapse@(revision.Id)">
+                <h5 class="item-history-heading">@(revision.GetDisplayDate())</h5>
+                <span class="item-history-user">@(revision.User)</span>
+            </div>
+            <div id="collapse@(revision.Id)" class="collapse" aria-labelledby="heading@(revision.Id)" data-parent="#ItemHistoryByDate">
+                <div class="card-body">
+                    @foreach (var key in revision.Values.Keys)
+                    {
+                    <span>Edited <span style="font-weight: bold;">@(Model.GetAttributeDisplayName(key))</span> to @(revision.Values[key])</span>
+                    <br />
+                    }
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+
+    <div id="ItemHistoryByAttribute" style="display:none;">
+        @foreach (var kvp in Model.RevisionsByAttribute)
+        {
+        <div class="card">
+            <div class="card-header item-history-card" id="heading@(kvp.Key.Replace(" ",""))"
+                 data-toggle="collapse" data-target="#collapse@(kvp.Key.Replace(" ",""))"
+                 aria-expanded="false" aria-controls="collapse@(kvp.Key.Replace(" ",""))"
+                 data-parent="#ItemHistoryByAttribute">
+                <h5 class="item-history-heading">@(Model.GetAttributeDisplayName(kvp.Key))</h5>
+                <span>@(kvp.Value.Count) Revision(s)</span>
+            </div>
+            <div id="collapse@(kvp.Key.Replace(" ",""))" class="collapse" aria-labelledby="heading@(kvp.Key.Replace(" ",""))" data-parent="#ItemHistoryByDate">
+                <div class="card-body">
+                    @foreach (var revision in kvp.Value)
+                    {
+                    <span>@(revision.GetDisplayDate())</span>
+                    <br />
+                    <span>Edited to @(revision.NewValue)</span>
+                    <br />
+                    <span>by <span style="font-weight:bold;">@(revision.User)</span></span>
+                    <br />
+                    <br />
+                    }
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+    <script src="~/Scripts/Item/itemHistory.js" type="module"></script>
+    

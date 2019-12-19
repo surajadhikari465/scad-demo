@@ -6,7 +6,7 @@ BEGIN
 	DECLARE @eventTypeID INT = (
 			SELECT EventId
 			FROM app.EventType
-			WHERE EventName = 'Nutrition Delete'
+				WHERE EventName = 'Nutrition Delete'
 			);
 
 	IF (object_id('tempdb..#plu') IS NOT NULL)
@@ -26,11 +26,14 @@ BEGIN
 		EventID
 		,EventMessage
 		,InsertDate
+		,RegionCode
 		)
 	SELECT @eventTypeID
 		,Plu
 		,SysDateTime()
-	FROM @nutritionPlu;
+		,regioncode
+	FROM app.IRMAItemSubscription i 
+	INNER JOIN @nutritionPlu np ON np.Plu = i.identifier
 
 	--Generate messages
 	INSERT INTO @itemIDs (itemID)

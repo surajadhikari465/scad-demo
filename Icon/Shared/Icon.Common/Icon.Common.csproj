@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Icon.Common</RootNamespace>
     <AssemblyName>Icon.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -63,16 +63,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.DbContextFactory.2019.5.22.1\lib\net472\Icon.DbContextFactory.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Framework.2019.10.2.3\lib\net472\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Icon.RenewableContext.2019.5.14.2\lib\net472\Icon.RenewableContext.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -87,6 +90,7 @@
   <ItemGroup>
     <Compile Include="AppSettingsAccessor.cs" />
     <Compile Include="ConfigurationConstants.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Context\GlobalContext.cs" />
     <Compile Include="Context\IRenewableContext.cs" />
     <Compile Include="CustomExceptions\ConcurrencyException.cs" />
@@ -98,16 +102,45 @@
     <Compile Include="Email\EmailClient.cs" />
     <Compile Include="Email\EmailClientSettings.cs" />
     <Compile Include="Email\IEmailClient.cs" />
+    <Compile Include="Models\AttributeCharacterSetModel.cs" />
+    <Compile Include="Models\AttributeModel.cs" />
+    <Compile Include="Models\CharacterSetModel.cs" />
+    <Compile Include="Models\PickListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validators\BusinessUnitValidator.cs" />
+    <Compile Include="Validators\HierarchyClassNameValidator.cs" />
+    <Compile Include="Validators\IconPropertyValidationRules.cs" />
+    <Compile Include="Validators\IObjectValidator.cs" />
+    <Compile Include="Validators\ItemAttributes\AbstractItemAttributesValidator.cs" />
+    <Compile Include="DataAccess\EmptyQueryParameters.cs" />
+    <Compile Include="Validators\ItemAttributes\IItemAttributesValidator.cs" />
+    <Compile Include="Validators\ItemAttributes\IItemAttributesValidatorFactory.cs" />
+    <Compile Include="Validators\ItemAttributes\ItemAttributesBooleanValidator.cs" />
+    <Compile Include="Validators\ItemAttributes\ItemAttributesDateValidator.cs" />
+    <Compile Include="Validators\ItemAttributes\ItemAttributesNumericItemValidator.cs" />
+    <Compile Include="Validators\ItemAttributes\ItemAttributesPickListValidator.cs" />
+    <Compile Include="Validators\ItemAttributes\ItemAttributesTextValidator.cs" />
+    <Compile Include="Validators\ItemAttributes\ItemAttributesValidationResult.cs" />
+    <Compile Include="Validators\ItemAttributes\ItemAttributesValidatorFactory.cs" />
+    <Compile Include="Validators\ObjectValidationResult.cs" />
+    <Compile Include="Validators\PackageUnitValidator.cs" />
+    <Compile Include="Validators\PluValidator.cs" />
+    <Compile Include="Validators\PosDescriptionValidator.cs" />
+    <Compile Include="Validators\PosScaleTareValidator.cs" />
+    <Compile Include="Validators\ProductDescriptionValidator.cs" />
+    <Compile Include="Validators\RetailSizeValidator.cs" />
+    <Compile Include="Validators\RetailUomValidator.cs" />
+    <Compile Include="Validators\ScanCodeValidator.cs" />
+    <Compile Include="Validators\SubBrickCodeValidator.cs" />
+    <Compile Include="Validators\ValueRequiredValidator.cs" />
+    <Compile Include="Validators\YesNoValidator.cs" />
     <Compile Include="Xml\Utf8StringWriter.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

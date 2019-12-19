@@ -6,3 +6,11 @@
 
 <h2 class="text-danger">An error occurred while processing your request.</h2>
 <h3>The error information has been logged.</h3>
+
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong>@ViewData["ErrorMessage"].ToString()</strong>
+    </div>
+}

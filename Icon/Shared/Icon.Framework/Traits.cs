@@ -227,6 +227,7 @@ namespace Icon.Framework
         public const int KitchenDescription = 218;
         public const int ImageUrl = 219;
         public const int SodiumWarningRequired = 220;
+        public const int ArCustomerId = 221;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -444,7 +445,8 @@ namespace Icon.Framework
 				{ "KI", 217 },
 				{ "KD", 218 },
 				{ "URL", 219 },
-				{ "SWR", 220 }
+				{ "SWR", 220 },
+				{ "ARC", 221 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -635,7 +637,7 @@ namespace Icon.Framework
 			public const string Designation = "Designation";
 			public const string ParentCompany = "Parent Company";
 			public const string DataSource = "Data Source";
-			public const string NonGmoTransparency = "Non-GMO Transparency";
+			public const string NonGmoTransparency = "NON-GMO Transparency";
 			public const string ItemDepth = "Item Depth";
 			public const string ItemHeight = "Item Height";
 			public const string ItemWidth = "Item Width";
@@ -665,6 +667,7 @@ namespace Icon.Framework
 			public const string KitchenDescription = "Kitchen Description";
 			public const string ImageUrl = "Image Url";
 			public const string SodiumWarningRequired = "Sodium Warning Required";
+			public const string ArCustomerId = "AR Customer ID";
 			
 			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
@@ -853,7 +856,7 @@ namespace Icon.Framework
 				{ 188, "Designation" },
 				{ 189, "Parent Company" },
 				{ 190, "Data Source" },
-				{ 191, "Non-GMO Transparency" },
+				{ 191, "NON-GMO Transparency" },
 				{ 192, "Item Depth" },
 				{ 193, "Item Height" },
 				{ 194, "Item Width" },
@@ -882,7 +885,8 @@ namespace Icon.Framework
 				{ 217, "Kitchen Item" },
 				{ 218, "Kitchen Description" },
 				{ 219, "Image Url" },
-				{ 220, "Sodium Warning Required" }
+				{ 220, "Sodium Warning Required" },
+				{ 221, "AR Customer ID" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -1104,6 +1108,7 @@ namespace Icon.Framework
 			public const string KitchenDescription = "KD";
 			public const string ImageUrl = "URL";
 			public const string SodiumWarningRequired = "SWR";
+			public const string ArCustomerId = "ARC";
 			
 			private static Dictionary<int, string> idToCodesDictionary = new Dictionary<int, string>
 			{
@@ -1321,7 +1326,8 @@ namespace Icon.Framework
 				{ 217, "KI" },
 				{ 218, "KD" },
 				{ 219, "URL" },
-				{ 220, "SWR" }
+				{ 220, "SWR" },
+				{ 221, "ARC" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}

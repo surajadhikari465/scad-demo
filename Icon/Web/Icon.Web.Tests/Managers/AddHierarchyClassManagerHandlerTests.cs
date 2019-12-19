@@ -16,13 +16,14 @@ using Icon.Common.DataAccess;
 
 namespace Icon.Web.Tests.Unit.ManagerHandlers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class AddHierarchyClassManagerHandlerTests
     {
         private AddHierarchyClassManagerHandler managerHandler;
         private AddHierarchyClassManager manager;
 
         private IconContext context;
+        private IMapper mapper;
         private Mock<ICommandHandler<AddHierarchyClassCommand>> addHierarchyClassCommandHandler;
         private Mock<ICommandHandler<AddHierarchyClassMessageCommand>> addHierarchyClassMessageCommandHandler;
         private Mock<ICommandHandler<AddSubTeamEventsCommand>> addSubTeamCommandHandler;
@@ -32,6 +33,7 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         public void Initialize()
         {
             context = new IconContext();
+            mapper = AutoMapperWebConfiguration.Configure();
             addHierarchyClassCommandHandler = new Mock<ICommandHandler<AddHierarchyClassCommand>>();
             addHierarchyClassMessageCommandHandler = new Mock<ICommandHandler<AddHierarchyClassMessageCommand>>();
             addSubTeamCommandHandler = new Mock<ICommandHandler<AddSubTeamEventsCommand>>();
@@ -39,7 +41,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
 
             manager = new AddHierarchyClassManager
             {
-                GlAccount = "TestGlAccount",
                 NewHierarchyClass = new TestHierarchyClassBuilder(),
                 NonMerchandiseTrait = "TestNonMerchandiseTrait",
                 SubTeamHierarchyClassId = 5,
@@ -49,14 +50,20 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
                 TeamNumber = "123"
             };
 
-            AutoMapperWebConfiguration.Configure();
+            managerHandler = new AddHierarchyClassManagerHandler(
+                context,
+                addHierarchyClassCommandHandler.Object,
+                addHierarchyClassMessageCommandHandler.Object,
+                addSubTeamCommandHandler.Object,
+                getRegionalSettingsBySettingsKeyNameQuery.Object,
+                mapper);
+
         }
 
         [TestCleanup]
         public void Cleanup()
         {
             context.Dispose();
-            Mapper.Reset();
         }
 
         [TestMethod]
@@ -69,7 +76,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
                 .Callback<AddHierarchyClassCommand>(c => command = c);
             addHierarchyClassMessageCommandHandler.Setup(cm => cm.Execute(It.IsAny<AddHierarchyClassMessageCommand>()))
                 .Callback<AddHierarchyClassMessageCommand>(c => messageCommand = c);
-            CreateManagerHandler();
 
             //When
             managerHandler.Execute(manager);
@@ -78,7 +84,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
             addHierarchyClassCommandHandler.Verify(cm => cm.Execute(It.IsAny<AddHierarchyClassCommand>()));
             addHierarchyClassMessageCommandHandler.Verify(cm => cm.Execute(It.IsAny<AddHierarchyClassMessageCommand>()));
 
-            Assert.AreEqual(manager.GlAccount, command.GlAccount);
             Assert.AreEqual(manager.NewHierarchyClass.hierarchyClassName, command.NewHierarchyClass.hierarchyClassName);
             Assert.AreEqual(manager.NonMerchandiseTrait, command.NonMerchandiseTrait);
             Assert.AreEqual(manager.SubTeamHierarchyClassId, command.SubTeamHierarchyClassId);
@@ -96,7 +101,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
             //Given
             addHierarchyClassCommandHandler.Setup(cm => cm.Execute(It.IsAny<AddHierarchyClassCommand>()))
                 .Throws(new Exception("Test Exception"));
-            CreateManagerHandler();
 
             //When
             managerHandler.Execute(manager);
@@ -109,7 +113,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
             //Given
             addHierarchyClassMessageCommandHandler.Setup(cm => cm.Execute(It.IsAny<AddHierarchyClassMessageCommand>()))
                 .Throws(new Exception("Test Exception"));
-            CreateManagerHandler();
 
             //When
             managerHandler.Execute(manager);
@@ -121,7 +124,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
             //Given
             addHierarchyClassMessageCommandHandler.Setup(cm => cm.Execute(It.IsAny<AddHierarchyClassMessageCommand>()))
                 .Throws(new DuplicateValueException("Test Exception"));
-            CreateManagerHandler();
 
             //When
             try
@@ -134,16 +136,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
                 DuplicateValueException innerException = ex.InnerException as DuplicateValueException;
                 Assert.IsNotNull(innerException);
             }
-        }
-
-        private void CreateManagerHandler()
-        {
-            managerHandler = new AddHierarchyClassManagerHandler(
-                context,
-                addHierarchyClassCommandHandler.Object,
-                addHierarchyClassMessageCommandHandler.Object,
-                addSubTeamCommandHandler.Object,
-                getRegionalSettingsBySettingsKeyNameQuery.Object);
         }
     }
 }

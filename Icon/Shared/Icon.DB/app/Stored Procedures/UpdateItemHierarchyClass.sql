@@ -28,7 +28,7 @@ AS
 	*/
 
 	print '[' + convert(nvarchar, getdate(), 121) + '] ' + '[' + @taskName + '] ' + 'Identifying existing item-hier-class entries to be removed...';
-	insert into @removeItemHierClassList
+	insert into @removeItemHierClassList (itemID, hierarchyClassID, localeID)
 		select
 			il.itemID,
 			oldIHC.hierarchyClassID,
@@ -78,8 +78,8 @@ AS
 
 	print '[' + convert(nvarchar, getdate(), 121) + '] ' + '[' + @taskName + '] ' + 'Adding new item-hier-class entries...';
 	-- Add new item-hier-class entries.
-	insert into ItemHierarchyClass
-		select * from @itemList il
+	insert into ItemHierarchyClass (itemID, hierarchyClassID, localeID)
+		select il.itemID, il.hierarchyClassID, il.localeID from @itemList il
 		where not exists
 			(select 1 from ItemHierarchyClass ihc where ihc.itemID = il.itemID and ihc.hierarchyClassID = il.hierarchyClassID)
 
@@ -92,7 +92,7 @@ AS
 	
 	print '[' + convert(nvarchar, getdate(), 121) + '] ' + '[' + @taskName + '] ' + 'Get newly added hierarchy class IDs...';
 	-- Get newly added hierarchy class IDs
-	insert into @updatedItems
+	insert into @updatedItems (itemID, originalHierarchyClassID, newHierarchyClassID)
 	select il.itemID, 0, il.hierarchyClassID
 	from @itemList il
 	where not exists 
@@ -100,7 +100,7 @@ AS
 		
 	print '[' + convert(nvarchar, getdate(), 121) + '] ' + '[' + @taskName + '] ' + 'Get updated hierarchy class IDs...';
 	-- Get updated hierarchy class IDs
-	insert into @updatedItems
+	insert into @updatedItems (itemID, originalHierarchyClassID, newHierarchyClassID)
 	select il.itemID, rihcl.hierarchyClassID, il.hierarchyClassID
 	from @itemList il
 	join @removeItemHierClassList rihcl 

@@ -19,7 +19,7 @@ namespace Icon.Framework
         public Nullable<int> localeID { get; set; }
     
         public virtual HierarchyClass HierarchyClass { get; set; }
-        public virtual Item Item { get; set; }
         public virtual Locale Locale { get; set; }
+        public virtual Item Item { get; set; }
     }
 }

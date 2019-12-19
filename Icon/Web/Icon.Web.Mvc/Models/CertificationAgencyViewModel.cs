@@ -8,7 +8,7 @@ namespace Icon.Web.Mvc.Models
 {
     public class CertificationAgencyViewModel : HierarchyClassViewModel
     {
-        [IconPropertyValidation(ValidatorPropertyNames.CertificationAgencyName, CanBeNullOrEmprty = false)]
+        [IconPropertyValidation(ValidatorPropertyNames.CertificationAgencyName, CanBeNullOrEmpty = false)]
         [Required(ErrorMessage = "Please enter an agency name.")]
         [Display(Name = "Agency Name")]
         public string AgencyName { get; set; }

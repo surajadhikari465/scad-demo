@@ -37,8 +37,7 @@ namespace Icon.Web.DataAccess.Commands
             context.HierarchyClass.Add(data.NewHierarchyClass);
 
             AddHierarchyClassTrait(data.NewHierarchyClass, TraitCodes.TaxAbbreviation, data.TaxAbbreviation);
-            AddHierarchyClassTrait(data.NewHierarchyClass, TraitCodes.GlAccount, data.GlAccount);
-            AddSubTeamTrait(data.NewHierarchyClass, data.SubTeamHierarchyClassId);
+            AddHierarchyClassTrait(data.NewHierarchyClass, TraitCodes.MerchFinMapping, data.SubTeamHierarchyClassId.ToString());
             AddHierarchyClassTrait(data.NewHierarchyClass, TraitCodes.NonMerchandise, data.NonMerchandiseTrait);
             if (data.NewHierarchyClass.hierarchyID != Hierarchies.National)
                 AddHierarchyClassTraitWithNullValue(data.NewHierarchyClass, TraitCodes.SentToEsb);
@@ -102,18 +101,6 @@ namespace Icon.Web.DataAccess.Commands
             addHierarchyClassTrait.hierarchyClassID = hierarchyClass.hierarchyClassID;
 
             context.HierarchyClassTrait.Add(addHierarchyClassTrait);
-        }
-
-        private void AddSubTeamTrait(HierarchyClass hierarchyClass, int subTeamId)
-        {
-            if (subTeamId == 0)
-            {
-                return;
-            }
-
-            string subTeam = context.HierarchyClass.Single(hc => hc.hierarchyClassID == subTeamId).hierarchyClassName;
-            
-            AddHierarchyClassTrait(hierarchyClass, TraitCodes.MerchFinMapping, subTeam);
         }
 
         /// <summary>

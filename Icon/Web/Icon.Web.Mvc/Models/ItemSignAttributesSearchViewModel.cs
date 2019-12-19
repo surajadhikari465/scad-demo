@@ -1,7 +1,6 @@
 ﻿using Icon.Web.Mvc.Utility;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using System.Linq;
 using Icon.Web.Mvc.Attributes;
 
 namespace Icon.Web.Mvc.Models

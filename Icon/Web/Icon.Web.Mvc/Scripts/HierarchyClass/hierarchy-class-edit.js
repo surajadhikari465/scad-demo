@@ -1,13 +1,16 @@
 ﻿$(document).ready(function() {
-    $("#saveButton").click(saveButtonClick);
-});
+    $(":submit").removeAttr("disabled");
 
-function saveButtonClick() {
-    $('#saveButton').val('Saving Changes...');
-    $('#saveButton').disable(true);
+    $('form').submit(function () {
+        $(this).validate();
+        if ($(this).valid()) {
+            $(':submit', this).attr('disabled', true).val('Processing...');
+            $('#divBlock').show();
+        }
 
-    // Prevent button from being clicked like a link.
-    $('body').on('click', 'a.disabled', function (event) {
-        event.preventDefault();
+        // Prevent button from being clicked like a link.
+        $('body').on('click', 'a.disabled', function (event) {
+            event.preventDefault();
+        });
     });
-}
+});

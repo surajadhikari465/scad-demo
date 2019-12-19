@@ -1,7 +1,7 @@
-﻿using Icon.Web.Common;
-using Icon.Web.Common.Validators;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Icon.Common;
+using Icon.Common.Validators;
 
 namespace Icon.Web.Attributes
 {
@@ -24,7 +24,7 @@ namespace Icon.Web.Attributes
                 return ValidationResult.Success;
             }
 
-            return new ValidationResult(String.Format("Please enter {0} or fewer digits.", Constants.ScanCodeMaxLength.ToString()));
+            return new ValidationResult($"Please enter {Constants.ScanCodeMaxLength.ToString()} or fewer digits.");
         }
     }
 }

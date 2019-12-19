@@ -2,9 +2,9 @@
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Controllers;
-using Icon.Web.DataAccess.Infrastructure;
+using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
-using Icon.Web.Extensions;
+using Icon.Web.Mvc.Extensions;
 using Icon.Web.Mvc.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -14,20 +14,28 @@ using System.Web.Mvc;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class HierarchyControllerTests
     {
         private Mock<ILogger> mockLogger;
         private Mock<IQueryHandler<GetHierarchyParameters, List<Hierarchy>>> mockGetHierarchyQuery;
         private HierarchyController controller;
         private HierarchySearchViewModel viewModel;
+        private Mock<IQueryHandler<GetHierarchiesParameters, IEnumerable<HierarchyModel>>> mockGetHierarchiesQueryHandler;
 
         [TestInitialize]
         public void InitializeData()
         {
             this.mockLogger = new Mock<ILogger>();
             this.mockGetHierarchyQuery = new Mock<IQueryHandler<GetHierarchyParameters, List<Hierarchy>>>();
-            this.controller = new HierarchyController(this.mockLogger.Object, this.mockGetHierarchyQuery.Object);
+            this.mockGetHierarchiesQueryHandler = new Mock<IQueryHandler<GetHierarchiesParameters, IEnumerable<HierarchyModel>>>();
+            this.controller = new HierarchyController(
+                this.mockLogger.Object, 
+                new Mvc.Utility.IconWebAppSettings()
+                {
+                },
+                this.mockGetHierarchyQuery.Object,
+                mockGetHierarchiesQueryHandler.Object);
             this.viewModel = new HierarchySearchViewModel();
         }
 

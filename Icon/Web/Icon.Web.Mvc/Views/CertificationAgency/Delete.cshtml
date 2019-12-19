@@ -16,50 +16,35 @@
 
 
     <fieldset>
-        <legend>Delete Certification Agency</legend>
-
         <div class="row">
-            @Html.LabelFor(model => model.AgencyName, new { @class = "form-label col-md-2" })
-            <div>
-                @Html.TextBoxFor(model => model.AgencyName, new { @disabled = "disabled", @class = "col-md-6 form-input" })
-            </div>
+            @Html.LabelFor(model => model.AgencyName, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.AgencyName, new { @disabled = "disabled", @class = "form-control form-input" })
         </div>
 
         <div class="row">
-            @Html.LabelFor(model => model.GlutenFree, new { @class = "form-label col-md-2" })
-            <div>
-                @Html.CheckBoxFor(model => model.GlutenFree, new { @disabled = "disabled", @class = "col-checkbox" })
-            </div>
+            @Html.LabelFor(model => model.GlutenFree, new { @class = "form-label" })
+            @Html.CheckBoxFor(model => model.GlutenFree, new { @disabled = "disabled", @class = "col-checkbox" })
+
         </div>
         <div class="row">
-            @Html.LabelFor(model => model.Kosher, new { @class = "form-label col-md-2" })
-            <div>
-                @Html.CheckBoxFor(model => model.Kosher, new { @disabled = "disabled", @class = "col-checkbox" })
-            </div>
+            @Html.LabelFor(model => model.Kosher, new { @class = "form-label" })
+            @Html.CheckBoxFor(model => model.Kosher, new { @disabled = "disabled", @class = "col-checkbox" })
         </div>
         <div class="row">
-            @Html.LabelFor(model => model.NonGMO, new { @class = "form-label col-md-2" })
-            <div>
-                @Html.CheckBoxFor(model => model.NonGMO, new { @disabled = "disabled", @class = "col-checkbox" })
-            </div>
+            @Html.LabelFor(model => model.NonGMO, new { @class = "form-label" })
+            @Html.CheckBoxFor(model => model.NonGMO, new { @disabled = "disabled", @class = "col-checkbox" })
         </div>
         <div class="row">
-            @Html.LabelFor(model => model.Organic, new { @class = "form-label col-md-2" })
-            <div>
-                @Html.CheckBoxFor(model => model.Organic, new { @disabled = "disabled", @class = "col-checkbox" })
-            </div>
+            @Html.LabelFor(model => model.Organic, new { @class = "form-label" })
+            @Html.CheckBoxFor(model => model.Organic, new { @disabled = "disabled", @class = "col-checkbox" })
         </div>
         <div class="row">
-            @Html.LabelFor(model => model.Vegan, new { @class = "form-label col-md-2" })
-            <div>
-                @Html.CheckBoxFor(model => model.Vegan, new { @disabled = "disabled", @class = "col-checkbox" })
-            </div>
+            @Html.LabelFor(model => model.Vegan, new { @class = "form-label" })
+            @Html.CheckBoxFor(model => model.Vegan, new { @disabled = "disabled", @class = "col-checkbox" })
         </div>
     </fieldset>
     <div class="row">
-        <div class="col-md-offset-3 col-md-1">
-            <input type="submit" value="Delete" class="btn btn-default form-submit" />
-        </div>
+        <input type="submit" value="Delete" class="btn btn-danger form-submit" />
     </div>
 }
 
@@ -77,7 +62,3 @@
     @Html.ActionLink("Return To Certification Agency Management", "Index")
 </div>
 
-@section Scripts
-{
-    @Scripts.Render("~/bundles/jqueryval")
-}

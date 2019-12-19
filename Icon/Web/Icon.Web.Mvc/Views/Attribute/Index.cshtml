@@ -1,0 +1,46 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.AttributeViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{Html.RenderPartial("_HeaderPartial", "Attribute Management");}
+
+@if (Model.UserWriteAccess == Icon.Web.Common.Enums.WriteAccess.Full)
+{
+    <div class="page-subsection">@Html.ActionLink("Add New Attribute", "Create")</div>
+}
+    <div id="attributes" class="page-section">
+
+        @Html.ActionLink("Export", "Export", "Attribute", null, new { @class = "btn btn-light form-submit" })
+
+        <hr />
+        @(Html.Infragistics().Grid<Icon.Web.Mvc.Models.AttributeViewModel>
+        ()
+        .ID("attributeGrid")
+        .PrimaryKey("AttributeId")
+        .AvgRowHeight("25px")
+        .Height("700px")
+        .Width("100%")
+        .AutoGenerateColumns(false)
+        .Columns(columns =>
+        {
+        columns.For(c => c.AttributeId).HeaderText("Attribute ID").DataType("number").Width("10%");
+        columns.For(c => c.DisplayName).HeaderText("Display Name").DataType("string").Width("25%");
+        columns.For(c => c.Description).HeaderText("Attribute Description").DataType("string").Width("65%");
+        columns.Unbound("ActionEdit").Template("&nbsp&nbsp&nbsp&nbsp <a href='/Attribute/Edit?attributeId=${AttributeId}'>Edit</a>").Width("10%").HeaderText("").Hidden(Model == null ? true : ((int)Model.UserWriteAccess) == 0);
+        })
+        .Features(features =>
+        {
+        features.Paging().PageSize(20);
+        features.Sorting().Inherit(true);
+        features.Filtering().Inherit(true);
+
+        })
+        .DataSourceUrl(Url.Action("GridDataSource", "Attribute"))
+        .DataBind()
+        .Render())
+
+        <div class="search-alert page-subsection"></div>
+    </div>

@@ -1,6 +1,5 @@
 ﻿using Icon.Framework;
 using Icon.Logging;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -27,14 +26,14 @@ namespace Icon.Web.Tests.Integration.Queries
             mockLogger = new Mock<ILogger>();
             context = new IconContext();
 
-            item = new Item { itemTypeID = 1 };
+            item = new Item { ItemTypeId = 1 };
             context.Item.Add(item);
             context.SaveChanges();
-            addedItemId = item.itemID;
+            addedItemId = item.ItemId;
 
             if (!context.ScanCode.Any(s => s.scanCode == "424242424242"))
             {
-                upc = new ScanCode { itemID = item.itemID, scanCode = "424242424242", scanCodeTypeID = 1, localeID = 1 };
+                upc = new ScanCode { itemID = item.ItemId, scanCode = "424242424242", scanCodeTypeID = 1, localeID = 1 };
                 context.ScanCode.Add(upc);
                 context.SaveChanges();
             }
@@ -46,7 +45,7 @@ namespace Icon.Web.Tests.Integration.Queries
         {
             mockLogger = null;
 
-            item = context.Item.Where(i => i.itemID == addedItemId).FirstOrDefault();
+            item = context.Item.Where(i => i.ItemId == addedItemId).FirstOrDefault();
             upc = context.ScanCode.Where(sc => sc.itemID == addedItemId).FirstOrDefault();
             context.Item.Remove(item);
             if (null != (upc))

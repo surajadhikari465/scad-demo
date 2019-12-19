@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using Infragistics.Documents.Excel;
 using Icon.Web.DataAccess.Queries;
 using Icon.Common.DataAccess;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.Mvc.Excel.Models;
-using Icon.Web.Common;
 
 namespace Icon.Web.Mvc.Excel.WorksheetBuilders
 {

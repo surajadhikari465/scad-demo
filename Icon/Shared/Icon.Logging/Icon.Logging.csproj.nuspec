@@ -11,18 +11,11 @@
     <releaseNotes>Log it!</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <dependencies>
-      <dependency id="Nlog" version="4.0.0" />
-      <dependency id="Nlog.Extended" version="4.0.0" />
+      <dependency id="Nlog" version="4.6.3" />
+      <dependency id="Nlog.Extended" version="4.6.3" />
     </dependencies>
-    <references>
-      <reference file="Icon.Logging.dll" />
-      <reference file="NLog.dll" />
-      <reference file="NLog.Extended.dll" />
-    </references>
   </metadata>
   <files>
     <file src="Icon.Logging\bin\Release\Icon.Logging.dll" target="lib" />
-    <file src="Icon.Logging\bin\Release\NLog.dll" target="lib" />
-    <file src="Icon.Logging\bin\Release\NLog.Extended.dll" target="lib" />
   </files>
 </package>

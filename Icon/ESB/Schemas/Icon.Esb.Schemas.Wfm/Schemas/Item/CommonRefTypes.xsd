@@ -240,12 +240,12 @@
 					<xs:documentation>A code to denote the type of hazardous material, eg fireworks.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="minCalories" default="0" minOccurs="0">
+			<xs:element name="minCalories" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Minimum number of Calories. Used for Kit Items</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="maxCalories" default="0" minOccurs="0">
+			<xs:element name="maxCalories" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Maximum number of Calories. Used for Kit Items</xs:documentation>
 				</xs:annotation>

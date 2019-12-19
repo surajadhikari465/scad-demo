@@ -1,6 +1,5 @@
 ﻿using Icon.Framework;
 using Icon.Testing.Builders;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Queries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
@@ -122,7 +121,7 @@ namespace Icon.Web.Tests.Integration.Queries
             var expectedItem = testItems[0];
             var actualItem = items[0];
             
-            var expectedItemId = expectedItem.itemID;
+            var expectedItemId = expectedItem.ItemId;
             var expectedScanCode = expectedItem.ScanCode.Single().scanCode;
             var expectedBrandHierarchyClass = expectedItem.ItemHierarchyClass.Single(ihc => ihc.HierarchyClass.hierarchyID == Hierarchies.Brands).HierarchyClass;
             var expectedProductDescription = expectedItem.ItemTrait.Single(it => it.traitID == Traits.ProductDescription).traitValue;

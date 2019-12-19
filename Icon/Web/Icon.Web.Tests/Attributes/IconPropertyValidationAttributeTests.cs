@@ -1,9 +1,7 @@
-﻿using Icon.Web.Common.Validators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Icon.Web.Common;
 using Icon.Web.Attributes;
-using System.ComponentModel.DataAnnotations;
+
 namespace Icon.Web.Tests.Unit.Validators
 {
     [TestClass] [Ignore]
@@ -16,10 +14,10 @@ namespace Icon.Web.Tests.Unit.Validators
         {
             // When
             validator = new IconPropertyValidationAttribute(ValidatorPropertyNames.ProductDescription);
-            validator.CanBeNullOrEmprty = true;            
+            validator.CanBeNullOrEmpty = true;            
 
             // Then.
-            Assert.IsTrue(validator.CanBeNullOrEmprty);
+            Assert.IsTrue(validator.CanBeNullOrEmpty);
         }
 
         [TestMethod]
@@ -27,7 +25,7 @@ namespace Icon.Web.Tests.Unit.Validators
         {
             // Given.
             validator = new IconPropertyValidationAttribute(ValidatorPropertyNames.ProductDescription);
-            validator.CanBeNullOrEmprty = false; 
+            validator.CanBeNullOrEmpty = false; 
 
             // When.
             bool result = validator.IsValid(null);
@@ -42,7 +40,7 @@ namespace Icon.Web.Tests.Unit.Validators
             // Given.
             string productDescription = null;
             validator = new IconPropertyValidationAttribute(ValidatorPropertyNames.ProductDescription);
-            validator.CanBeNullOrEmprty = true; 
+            validator.CanBeNullOrEmpty = true; 
 
             
             // When.

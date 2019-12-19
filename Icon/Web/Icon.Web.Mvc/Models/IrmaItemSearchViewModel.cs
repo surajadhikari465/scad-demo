@@ -1,5 +1,4 @@
-﻿using Icon.Framework;
-using Icon.Web.Attributes;
+﻿using Icon.Web.Attributes;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Icon.Web.DataAccess.Models;

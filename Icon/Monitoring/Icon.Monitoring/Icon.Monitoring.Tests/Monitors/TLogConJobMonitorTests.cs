@@ -15,7 +15,6 @@ using Icon.Monitoring.DataAccess.Model;
 using Icon.Monitoring.DataAccess;
 using System.Data.SqlClient;
 using System.Configuration;
-using Icon.Monitoring.Common.Opsgenie;
 
 namespace Icon.Monitoring.Tests.Monitors
 {

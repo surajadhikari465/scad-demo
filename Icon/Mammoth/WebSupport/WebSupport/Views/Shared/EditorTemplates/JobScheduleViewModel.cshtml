@@ -110,7 +110,7 @@
     <div class="col-md-10">
         @* using TextArea to allow stretching the input for complex multiline xml data entry if needed *@
         @* CSS class '.custom-wide-input' overrides the mvc default max-width to make the input wider *@
-        @Html.TextAreaFor(model => model.XmlObject, 1, 38, new { @class = "form-control custom-wide-input" })
+        @Html.TextAreaFor(model => model.XmlObject, 10, 50, new { @class = "form-control custom-wider-input" })
         @Html.ValidationMessageFor(model => model.XmlObject, "", new { @class = "text-danger" })
     </div>
 </div>

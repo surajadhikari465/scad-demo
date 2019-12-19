@@ -18,7 +18,7 @@ namespace Icon.Framework
         public int HierarchyClassId { get; set; }
         public string HierarchyClassName { get; set; }
         public string HierarchyName { get; set; }
-        public System.Guid InforMessageId { get; set; }
+        public System.Guid EsbMessageId { get; set; }
         public string Context { get; set; }
         public string ErrorCode { get; set; }
         public string ErrorDetails { get; set; }

@@ -1,5 +1,4 @@
-﻿@using Infragistics.Web.Mvc
-@model Icon.Web.Mvc.Models.LocaleManagementViewModel
+﻿@model Icon.Web.Mvc.Models.LocaleManagementViewModel
 
 @{
     ViewBag.Title = "New Store";
@@ -8,7 +7,7 @@
 
 @Styles.Render("~/Content/themes/base/all.css")
 
-@{Html.RenderPartial("_HeaderPartial", "Locale Management");}
+@{Html.RenderPartial("_HeaderPartial", "Create Locale");}
 
 <div class="page-section">
     @using (Html.BeginForm("CreateStore", "Store", FormMethod.Post, new { @class = "begin-form" }))
@@ -21,214 +20,154 @@
         @Html.HiddenFor(model => model.LocaleTypeId)
         @Html.HiddenFor(model => model.OwnerOrgPartyId)
 
-  <fieldset>
-    <legend>Create Locale</legend>
-
-    <div class="row page-subsection">
-      <h4 class="col-md-2 form-label">Attributes</h4>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.ParentLocaleName, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.ParentLocaleName, new { @disabled = "disabled", @class = "col-md-6 form-input" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.LocaleName, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.LocaleName, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.LocaleName, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.OpenDate, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.OpenDate, new { @id = "datepicker", @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.OpenDate, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.BusinessUnit, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.BusinessUnit, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.BusinessUnit, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.StoreAbbreviation, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.StoreAbbreviation, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.StoreAbbreviation, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.EwicAgencies, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.DropDownListFor(model => model.EwicAgencyId, Model.EwicAgencies, "--Select eWIC Agency--", new { @class = "col-md-6 form-input" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.PhoneNumber, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.PhoneNumber, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.Fax, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.Fax, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.Fax, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.ContactPerson, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.ContactPerson, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.ContactPerson, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.IrmaStoreId, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.IrmaStoreId, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.IrmaStoreId, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.StorePosTypes, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.DropDownListFor(model => model.SelectedStorePosType, Model.StorePosTypes, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.StorePosTypes, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.Ident, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.CheckBoxFor(model => model.Ident, new { @class = "col-md-2 form-input" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.SodiumWarningRequired, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.CheckBoxFor(model => model.SodiumWarningRequired, new { @class = "col-md-2 form-input" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.LocalZone, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.LocalZone, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.LocalZone, null, new { @class = "col-left-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.LiquorLicenseTypes, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.DropDownListFor(model => model.SelectedLiquorLicense, Model.LiquorLicenseTypes, "--Liquor License--", new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.LiquorLicenseTypes, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.PrimeMerchantID, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.PrimeMerchantID, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.PrimeMerchantID, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.PrimeMerchantIDEncrypted, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.PrimeMerchantIDEncrypted, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.PrimeMerchantIDEncrypted, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-
-    <div class="row page-subsection">
-      <h4 class="col-md-2 form-label">Address</h4>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.AddressLine1, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.AddressLine1, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.AddressLine1, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.AddressLine2, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.AddressLine2, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.AddressLine2, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.AddressLine3, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.AddressLine3, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.AddressLine3, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.City, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.City, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.City, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.TerritoryList, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.DropDownListFor(model => model.TerritoryId, Model.TerritoryList, "--Select State/Province--", new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.TerritoryId, null, new { @class = "col-md-4 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.PostalCode, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.PostalCode, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.PostalCode, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.County, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.County, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.County, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.CountryList, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.DropDownListFor(model => model.CountryId, Model.CountryList, "--Select Country--", new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.CountryId, null, new { @class = "col-md-4 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.TimeZones, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.DropDownListFor(model => model.TimeZoneId, Model.TimeZones, "--Select Time Zone--", new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.TimeZoneId, null, new { @class = "col-md-4 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.Latitude, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.Latitude, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.Latitude, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-    <div class="row">
-      @Html.LabelFor(model => model.Longitude, new { @class = "col-md-2 form-label" })
-      <div>
-        @Html.TextBoxFor(model => model.Longitude, new { @class = "col-md-6 form-input" })
-        @Html.ValidationMessageFor(model => model.Longitude, null, new { @class = "col-md-6 form-property-val" })
-      </div>
-    </div>
-  </fieldset>
-
-        <div class="row">
-            <div class="col-md-offset-2 col-md-1">
-                <input type="submit" id="create-button" value="Create" class="btn btn-default form-submit" />
+        <fieldset>
+            <div class="row page-subsection">
+                <h4 class="form-label">Attributes</h4>
             </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ParentLocaleName, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.ParentLocaleName, new { @disabled = "disabled", @class = "form-control form-input" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.LocaleName, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.LocaleName, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.LocaleName, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.OpenDate, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.OpenDate, new { @id = "datepicker", @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.OpenDate, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.BusinessUnit, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.BusinessUnit, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.BusinessUnit, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.StoreAbbreviation, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.StoreAbbreviation, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.StoreAbbreviation, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.EwicAgencies, new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.EwicAgencyId, Model.EwicAgencies, "--Select eWIC Agency--", new { @class = "form-control form-input" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PhoneNumber, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.PhoneNumber, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Fax, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.Fax, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.Fax, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ContactPerson, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.ContactPerson, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.ContactPerson, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.IrmaStoreId, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.IrmaStoreId, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.IrmaStoreId, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.StorePosTypes, new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.SelectedStorePosType, Model.StorePosTypes, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.StorePosTypes, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group" >
+                @Html.LabelFor(model => model.Ident, new { @class = "form-label", style="width:200px; text-align:left;" })
+                @Html.CheckBoxFor(model => model.Ident, new { @class = "form-input" })
+                <br />
+                @Html.LabelFor(model => model.SodiumWarningRequired, new { @class = "form-label", style="width:200px; text-align:left;" })
+                @Html.CheckBoxFor(model => model.SodiumWarningRequired, new { @class = "form-input" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.LocalZone, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.LocalZone, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.LocalZone, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.LiquorLicenseTypes, new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.SelectedLiquorLicense, Model.LiquorLicenseTypes, "--Liquor License--", new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.LiquorLicenseTypes, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PrimeMerchantID, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.PrimeMerchantID, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.PrimeMerchantID, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PrimeMerchantIDEncrypted, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.PrimeMerchantIDEncrypted, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.PrimeMerchantIDEncrypted, null, new { @class = "form-property-val" })
+            </div>
+
+            <div class="row page-subsection">
+                <h4 class="form-label">Address</h4>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.AddressLine1, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.AddressLine1, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.AddressLine1, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.AddressLine2, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.AddressLine2, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.AddressLine2, null, new { @class = "form-property-val" })
+
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.AddressLine3, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.AddressLine3, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.AddressLine3, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.City, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.City, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.City, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.TerritoryList, new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.TerritoryId, Model.TerritoryList, "--Select State/Province--", new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.TerritoryId, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PostalCode, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.PostalCode, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.PostalCode, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.County, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.County, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.County, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.CountryList, new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.CountryId, Model.CountryList, "--Select Country--", new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.CountryId, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.TimeZones, new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.TimeZoneId, Model.TimeZones, "--Select Time Zone--", new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.TimeZoneId, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Latitude, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.Latitude, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.Latitude, null, new { @class = "form-property-val" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Longitude, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.Longitude, new { @class = "form-control form-input" })
+                @Html.ValidationMessageFor(model => model.Longitude, null, new { @class = "form-property-val" })
+            </div>
+        </fieldset>
+
+        <div class="form-group">
+            <input type="submit" id="create-button" value="Create" class="btn btn-light form-submit" />
         </div>
 
         <div class="validation-section page-subsection">

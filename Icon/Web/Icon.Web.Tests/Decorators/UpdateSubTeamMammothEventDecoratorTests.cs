@@ -3,7 +3,6 @@ using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Decorators;
-using Icon.Web.DataAccess.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
@@ -86,8 +85,8 @@ namespace Icon.Web.Tests.Unit.Decorators
                 maxQueueId = context.Database.SqlQuery<int>("select max(QueueId) from mammoth.EventQueue").First();
 
             List<string> scanCodes = (from sc in context.ScanCode
-                                      join i in context.Item on sc.itemID equals i.itemID
-                                      join ih in context.ItemHierarchyClass on i.itemID equals ih.itemID
+                                      join i in context.Item on sc.itemID equals i.ItemId
+                                      join ih in context.ItemHierarchyClass on i.ItemId equals ih.itemID
                                       where (ih.hierarchyClassID == updateHierarchyClassTraitCommand.SubTeamHierarchyClassId)
                                       orderby sc.scanCode
                                       select sc.scanCode).ToList();

@@ -16,17 +16,17 @@ namespace Icon.Framework
     {
         public UOM()
         {
-            this.ItemPrice = new HashSet<ItemPrice>();
             this.LocaleTrait = new HashSet<LocaleTrait>();
             this.HierarchyClassTrait = new HashSet<HierarchyClassTrait>();
+            this.ItemPrice = new HashSet<ItemPrice>();
         }
     
         public int uomID { get; set; }
         public string uomCode { get; set; }
         public string uomName { get; set; }
     
-        public virtual ICollection<ItemPrice> ItemPrice { get; set; }
         public virtual ICollection<LocaleTrait> LocaleTrait { get; set; }
         public virtual ICollection<HierarchyClassTrait> HierarchyClassTrait { get; set; }
+        public virtual ICollection<ItemPrice> ItemPrice { get; set; }
     }
 }

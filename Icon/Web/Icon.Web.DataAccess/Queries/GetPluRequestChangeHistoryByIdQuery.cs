@@ -1,6 +1,4 @@
 ﻿using Icon.Framework;
-using Icon.Web.DataAccess.Infrastructure;
-using System.Data.Entity;
 using System.Linq;
 using System.Collections.Generic;
 using Icon.Common.DataAccess;

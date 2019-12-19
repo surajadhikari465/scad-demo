@@ -1,7 +1,6 @@
 ﻿using Icon.Framework;
 using Icon.Testing.Builders;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Data.Entity;
@@ -20,6 +19,7 @@ namespace Icon.Web.Tests.Integration.Commands
         private string testDesignation;
         private string testZipCode;
         private string testLocality;
+        private string testParentCompany;
 
         [TestInitialize]
         public void Initialize()
@@ -34,9 +34,10 @@ namespace Icon.Web.Tests.Integration.Commands
                 .WithHierarchyParentClassId(null);
 
             testBrandAbbreviation = "TestBa";
-            testDesignation = "TestDesignation"; ;
+            testDesignation = "TestDesignation";
             testZipCode = "78745";
             testLocality = "TestLocality";
+            testParentCompany = "TestParentCompany";
             context.HierarchyClass.Add(testBrand);
 
             context.SaveChanges();
@@ -61,7 +62,8 @@ namespace Icon.Web.Tests.Integration.Commands
                 BrandAbbreviation = testBrandAbbreviation,
                 Designation = testDesignation,
                 ZipCode = testZipCode,
-                Locality = testLocality
+                Locality = testLocality,
+                ParentCompany = testParentCompany
             };
 
             // When.
@@ -89,6 +91,7 @@ namespace Icon.Web.Tests.Integration.Commands
             Assert.AreEqual(testDesignation, actualMessage.Designation);
             Assert.AreEqual(testZipCode, actualMessage.ZipCode);
             Assert.AreEqual(testLocality, actualMessage.Locality);
+            Assert.AreEqual(testParentCompany, actualMessage.ParentCompany);
         }
 
         [TestMethod]
@@ -102,7 +105,8 @@ namespace Icon.Web.Tests.Integration.Commands
                 BrandAbbreviation = testBrandAbbreviation,
                 Designation = testDesignation,
                 ZipCode = testZipCode,
-                Locality = testLocality
+                Locality = testLocality,
+                ParentCompany = testParentCompany
             };
 
             // When.
@@ -130,6 +134,7 @@ namespace Icon.Web.Tests.Integration.Commands
             Assert.AreEqual(testDesignation, actualMessage.Designation);
             Assert.AreEqual(testZipCode, actualMessage.ZipCode);
             Assert.AreEqual(testLocality, actualMessage.Locality);
+            Assert.AreEqual(testParentCompany, actualMessage.ParentCompany);
         }
     }
 }

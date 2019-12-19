@@ -8,24 +8,18 @@
 
 
 <div id="searchOptions" class="page-section">
-    <div class="row">
         @using (Html.BeginForm("Items", "RefreshData", FormMethod.Post))
         {
-            <div class="row">
-                @Html.Label(String.Format("Scan Codes (one per line, maximum {0})", 3000), new { @class = "form-label col-md-4" })
-                <div>
-                    @Html.TextAreaFor(model => Model.Identifiers, 20, 13, new { @class = "form-input", @type = "number" })
-                    <div class="row col-md-offset-4">
-                        @Html.ValidationMessageFor(model => model.Identifiers, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+            <div class="form-group">
+                @Html.Label(String.Format("Scan Codes (one per line, maximum {0})", 3000), new { @class = "form-label" })
+                @Html.TextAreaFor(model => Model.Identifiers, 15, 13, new { @class = "form-control form-input", @type = "number" })
+                @Html.ValidationMessageFor(model => model.Identifiers, "", new { @class = "text-danger" })
             </div>
 
-            <div class="row">
-                <input type="submit" value="Refresh" class="btn btn-default form-submit col-md-offset-4" id="refresh-button" />
+            <div class="form-group">
+                <input type="submit" value="Refresh" class="btn btn-light form-submit" id="refresh-button" />
             </div>
         }
-    </div>
     @if (ViewBag.Message != null)
     {
         <div>

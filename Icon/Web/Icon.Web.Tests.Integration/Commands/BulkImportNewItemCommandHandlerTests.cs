@@ -2,7 +2,6 @@
 using Icon.Logging;
 using Icon.Testing.Builders;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.Tests.Common.Builders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -348,7 +347,7 @@ namespace Icon.Web.Tests.Integration.Commands
 
             // Then.
             int newItemId = context.ScanCode.Single(sc => sc.scanCode == newItemData.ScanCode).itemID;
-            string newItemTypeCode = context.Item.Single(i => i.itemID == newItemId).ItemType.itemTypeCode;
+            string newItemTypeCode = context.Item.Single(i => i.ItemId == newItemId).ItemType.itemTypeCode;
 
             Assert.AreEqual(ItemTypeCodes.Deposit, newItemTypeCode);
         }
@@ -392,7 +391,7 @@ namespace Icon.Web.Tests.Integration.Commands
 
             // Then.
             int newItemId = context.ScanCode.Single(sc => sc.scanCode == newItemData.ScanCode).itemID;
-            string newItemTypeCode = context.Item.Single(i => i.itemID == newItemId).ItemType.itemTypeCode;
+            string newItemTypeCode = context.Item.Single(i => i.ItemId == newItemId).ItemType.itemTypeCode;
 
             Assert.AreEqual(ItemTypeCodes.Deposit, newItemTypeCode);
         }
@@ -436,7 +435,7 @@ namespace Icon.Web.Tests.Integration.Commands
 
             // Then.
             int newItemId = context.ScanCode.Single(sc => sc.scanCode == newItemData.ScanCode).itemID;
-            string newItemTypeCode = context.Item.Single(i => i.itemID == newItemId).ItemType.itemTypeCode;
+            string newItemTypeCode = context.Item.Single(i => i.ItemId == newItemId).ItemType.itemTypeCode;
 
             Assert.AreEqual(ItemTypeCodes.Return, newItemTypeCode);
         }
@@ -480,7 +479,7 @@ namespace Icon.Web.Tests.Integration.Commands
 
             // Then.
             int newItemId = context.ScanCode.Single(sc => sc.scanCode == newItemData.ScanCode).itemID;
-            string newItemTypeCode = context.Item.Single(i => i.itemID == newItemId).ItemType.itemTypeCode;
+            string newItemTypeCode = context.Item.Single(i => i.ItemId == newItemId).ItemType.itemTypeCode;
 
             Assert.AreEqual(ItemTypeCodes.Return, newItemTypeCode);
         }
@@ -524,7 +523,7 @@ namespace Icon.Web.Tests.Integration.Commands
 
             // Then.
             int newItemId = context.ScanCode.Single(sc => sc.scanCode == newItemData.ScanCode).itemID;
-            string newItemTypeCode = context.Item.Single(i => i.itemID == newItemId).ItemType.itemTypeCode;
+            string newItemTypeCode = context.Item.Single(i => i.ItemId == newItemId).ItemType.itemTypeCode;
 
             Assert.AreEqual(ItemTypeCodes.Coupon, newItemTypeCode);
         }
@@ -568,7 +567,7 @@ namespace Icon.Web.Tests.Integration.Commands
 
             // Then.
             int newItemId = context.ScanCode.Single(sc => sc.scanCode == newItemData.ScanCode).itemID;
-            string newItemTypeCode = context.Item.Single(i => i.itemID == newItemId).ItemType.itemTypeCode;
+            string newItemTypeCode = context.Item.Single(i => i.ItemId == newItemId).ItemType.itemTypeCode;
 
             Assert.AreEqual(ItemTypeCodes.NonRetail, newItemTypeCode);
         }
@@ -596,7 +595,7 @@ namespace Icon.Web.Tests.Integration.Commands
 
             // Then.
             int newItemId = context.ScanCode.Single(sc => sc.scanCode == newItemData.ScanCode).itemID;
-            string newItemTypeCode = context.Item.Single(i => i.itemID == newItemId).ItemType.itemTypeCode;
+            string newItemTypeCode = context.Item.Single(i => i.ItemId == newItemId).ItemType.itemTypeCode;
 
             Assert.AreEqual(ItemTypeCodes.RetailSale, newItemTypeCode);
         }
@@ -640,7 +639,7 @@ namespace Icon.Web.Tests.Integration.Commands
 
             // Then.
             int newItemId = context.ScanCode.Single(sc => sc.scanCode == newItemData.ScanCode).itemID;
-            string newItemTypeCode = context.Item.Single(i => i.itemID == newItemId).ItemType.itemTypeCode;
+            string newItemTypeCode = context.Item.Single(i => i.ItemId == newItemId).ItemType.itemTypeCode;
 
             Assert.AreEqual(ItemTypeCodes.Fee, newItemTypeCode);
         }
@@ -1413,7 +1412,7 @@ namespace Icon.Web.Tests.Integration.Commands
             commandHandler.Execute(command);
 
             // Then.
-            int newItemId = context.ScanCode.Single(sc => sc.scanCode == scanCode).Item.itemID;
+            int newItemId = context.ScanCode.Single(sc => sc.scanCode == scanCode).Item.ItemId;
             var message = context.MessageQueueProduct.Single(mq => mq.ItemId == newItemId);
 
             Assert.AreEqual(scanCode, message.ScanCode);
@@ -1483,7 +1482,7 @@ namespace Icon.Web.Tests.Integration.Commands
             var item = context.ScanCode.Single(sc => sc.scanCode == scanCode).Item;
             Assert.IsNotNull(item);
 
-            var message = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == item.itemID && mq.MessageTypeId == MessageTypes.Product);
+            var message = context.MessageQueueProduct.SingleOrDefault(mq => mq.ItemId == item.ItemId && mq.MessageTypeId == MessageTypes.Product);
             Assert.IsNull(message);
         }
 

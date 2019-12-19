@@ -1,0 +1,476 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="iCONDevModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AttributeCharacterSets">
+          <Key>
+            <PropertyRef Name="AttributeCharacterSetID" />
+          </Key>
+          <Property Name="AttributeCharacterSetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AttributeId" Type="int" Nullable="false" />
+          <Property Name="CharacterSetId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AttributeGroup">
+          <Key>
+            <PropertyRef Name="AttributeGroupId" />
+          </Key>
+          <Property Name="AttributeGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AttributeGroupName" Type="nvarchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="Attributes">
+          <Key>
+            <PropertyRef Name="AttributeId" />
+          </Key>
+          <Property Name="AttributeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="255" />
+          <Property Name="AttributeName" Type="nvarchar" MaxLength="255" />
+          <Property Name="AttributeGroupId" Type="int" />
+          <Property Name="HasUniqueValues" Type="bit" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="DefaultValue" Type="nvarchar" MaxLength="255" />
+          <Property Name="RequiredForPublishing" Type="bit" />
+          <Property Name="SpecialCharactersAllowed" Type="nvarchar" MaxLength="255" />
+          <Property Name="TraitCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="DataTypeId" Type="int" />
+          <Property Name="DisplayOrder" Type="int" />
+          <Property Name="InitialValue" Type="int" />
+          <Property Name="IncrementBy" Type="int" />
+          <Property Name="InitialMax" Type="int" />
+          <Property Name="DisplayType" Type="varchar" MaxLength="255" />
+          <Property Name="MaxLengthAllowed" Type="int" />
+          <Property Name="NumberValidationRule" Type="nvarchar" MaxLength="500" />
+          <Property Name="PickList" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CharacterSets">
+          <Key>
+            <PropertyRef Name="CharacterSetId" />
+          </Key>
+          <Property Name="CharacterSetId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="RegEx" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'iCONDev.dbo.IconRebootData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="IconRebootData">
+          <Key>
+            <PropertyRef Name="REQUIRED_FOR_VALIDATION" />
+          </Key>
+          <Property Name="NAME" Type="nvarchar" MaxLength="255" />
+          <Property Name="INFOR_SYSTEM_ID" Type="nvarchar" MaxLength="255" />
+          <Property Name="EXTERNAL_SYSTEM_ID" Type="nvarchar" MaxLength="255" />
+          <Property Name="ATTRIBUTE_TYPE" Type="nvarchar" MaxLength="255" />
+          <Property Name="DATA_TYPE" Type="nvarchar" MaxLength="255" />
+          <Property Name="DESCRIPTION" Type="nvarchar" MaxLength="255" />
+          <Property Name="DEFAULT_VALUE" Type="nvarchar" MaxLength="255" />
+          <Property Name="RULE_TYPE" Type="nvarchar" MaxLength="255" />
+          <Property Name="RULE_VALUE" Type="nvarchar" MaxLength="255" />
+          <Property Name="PICKLIST_VALUES" Type="nvarchar" MaxLength="255" />
+          <Property Name="CHARACTER_SETS" Type="nvarchar" MaxLength="255" />
+          <Property Name="SPECIAL_CHARACTERS" Type="nvarchar" MaxLength="255" />
+          <Property Name="REQUIRED_FOR_VALIDATION" Type="bit" Nullable="false" />
+          <Property Name="DISPLAY_ORDER" Type="nvarchar" MaxLength="255" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="255" />
+          <Property Name="CREATED_DATE" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="255" />
+          <Property Name="MODIFIED_ON" Type="datetime" />
+          <Property Name="INITIAL_VALUE" Type="nvarchar" MaxLength="255" />
+          <Property Name="INCREMENT_BY" Type="nvarchar" MaxLength="255" />
+          <Property Name="INITIAL_MAX" Type="nvarchar" MaxLength="255" />
+          <Property Name="SELECT_LOWEST_VALUE" Type="nvarchar" MaxLength="255" />
+          <Property Name="DISPLAY_TYPE" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="PickListData">
+          <Key>
+            <PropertyRef Name="PickListId" />
+          </Key>
+          <Property Name="PickListId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AttributeId" Type="int" />
+          <Property Name="PickListValue" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_AttributeCharacterSets_Attributes_AttributeId">
+          <End Role="Attributes" Type="Self.Attributes" Multiplicity="1" />
+          <End Role="AttributeCharacterSets" Type="Self.AttributeCharacterSets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attributes">
+              <PropertyRef Name="AttributeId" />
+            </Principal>
+            <Dependent Role="AttributeCharacterSets">
+              <PropertyRef Name="AttributeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttributeCharacterSets_CharacterSets_CharacterSetId">
+          <End Role="CharacterSets" Type="Self.CharacterSets" Multiplicity="1" />
+          <End Role="AttributeCharacterSets" Type="Self.AttributeCharacterSets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CharacterSets">
+              <PropertyRef Name="CharacterSetId" />
+            </Principal>
+            <Dependent Role="AttributeCharacterSets">
+              <PropertyRef Name="CharacterSetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attributes_AttributeType_AttributeGroupId">
+          <End Role="AttributeGroup" Type="Self.AttributeGroup" Multiplicity="0..1" />
+          <End Role="Attributes" Type="Self.Attributes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AttributeGroup">
+              <PropertyRef Name="AttributeGroupId" />
+            </Principal>
+            <Dependent Role="Attributes">
+              <PropertyRef Name="AttributeGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PickListData_Attributes_AttributeId">
+          <End Role="Attributes" Type="Self.Attributes" Multiplicity="0..1" />
+          <End Role="PickListData" Type="Self.PickListData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attributes">
+              <PropertyRef Name="AttributeId" />
+            </Principal>
+            <Dependent Role="PickListData">
+              <PropertyRef Name="AttributeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="iCONDevModelStoreContainer">
+          <EntitySet Name="AttributeCharacterSets" EntityType="Self.AttributeCharacterSets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AttributeGroup" EntityType="Self.AttributeGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Attributes" EntityType="Self.Attributes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CharacterSets" EntityType="Self.CharacterSets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PickListData" EntityType="Self.PickListData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IconRebootData" EntityType="Self.IconRebootData" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [IconRebootData].[NAME] AS [NAME], 
+    [IconRebootData].[INFOR_SYSTEM_ID] AS [INFOR_SYSTEM_ID], 
+    [IconRebootData].[EXTERNAL_SYSTEM_ID] AS [EXTERNAL_SYSTEM_ID], 
+    [IconRebootData].[ATTRIBUTE_TYPE] AS [ATTRIBUTE_TYPE], 
+    [IconRebootData].[DATA_TYPE] AS [DATA_TYPE], 
+    [IconRebootData].[DESCRIPTION] AS [DESCRIPTION], 
+    [IconRebootData].[DEFAULT_VALUE] AS [DEFAULT_VALUE], 
+    [IconRebootData].[RULE_TYPE] AS [RULE_TYPE], 
+    [IconRebootData].[RULE_VALUE] AS [RULE_VALUE], 
+    [IconRebootData].[PICKLIST_VALUES] AS [PICKLIST_VALUES], 
+    [IconRebootData].[CHARACTER_SETS] AS [CHARACTER_SETS], 
+    [IconRebootData].[SPECIAL_CHARACTERS] AS [SPECIAL_CHARACTERS], 
+    [IconRebootData].[REQUIRED_FOR_VALIDATION] AS [REQUIRED_FOR_VALIDATION], 
+    [IconRebootData].[DISPLAY_ORDER] AS [DISPLAY_ORDER], 
+    [IconRebootData].[CREATED_BY] AS [CREATED_BY], 
+    [IconRebootData].[CREATED_DATE] AS [CREATED_DATE], 
+    [IconRebootData].[MODIFIED_BY] AS [MODIFIED_BY], 
+    [IconRebootData].[MODIFIED_ON] AS [MODIFIED_ON], 
+    [IconRebootData].[INITIAL_VALUE] AS [INITIAL_VALUE], 
+    [IconRebootData].[INCREMENT_BY] AS [INCREMENT_BY], 
+    [IconRebootData].[INITIAL_MAX] AS [INITIAL_MAX], 
+    [IconRebootData].[SELECT_LOWEST_VALUE] AS [SELECT_LOWEST_VALUE], 
+    [IconRebootData].[DISPLAY_TYPE] AS [DISPLAY_TYPE]
+    FROM [dbo].[IconRebootData] AS [IconRebootData]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_AttributeCharacterSets_Attributes_AttributeId" Association="Self.FK_AttributeCharacterSets_Attributes_AttributeId">
+            <End Role="Attributes" EntitySet="Attributes" />
+            <End Role="AttributeCharacterSets" EntitySet="AttributeCharacterSets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttributeCharacterSets_CharacterSets_CharacterSetId" Association="Self.FK_AttributeCharacterSets_CharacterSets_CharacterSetId">
+            <End Role="CharacterSets" EntitySet="CharacterSets" />
+            <End Role="AttributeCharacterSets" EntitySet="AttributeCharacterSets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attributes_AttributeType_AttributeGroupId" Association="Self.FK_Attributes_AttributeType_AttributeGroupId">
+            <End Role="AttributeGroup" EntitySet="AttributeGroup" />
+            <End Role="Attributes" EntitySet="Attributes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PickListData_Attributes_AttributeId" Association="Self.FK_PickListData_Attributes_AttributeId">
+            <End Role="Attributes" EntitySet="Attributes" />
+            <End Role="PickListData" EntitySet="PickListData" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="iCONDevModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="iCONDevEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AttributeCharacterSets" EntityType="iCONDevModel.AttributeCharacterSet" />
+          <EntitySet Name="AttributeGroups" EntityType="iCONDevModel.AttributeGroup" />
+          <EntitySet Name="CharacterSets" EntityType="iCONDevModel.CharacterSet" />
+          <EntitySet Name="PickListDatas" EntityType="iCONDevModel.PickListData" />
+          <EntitySet Name="IconRebootDatas" EntityType="iCONDevModel.IconRebootData" />
+          <AssociationSet Name="FK_AttributeCharacterSets_CharacterSets_CharacterSetId" Association="iCONDevModel.FK_AttributeCharacterSets_CharacterSets_CharacterSetId">
+            <End Role="CharacterSet" EntitySet="CharacterSets" />
+            <End Role="AttributeCharacterSet" EntitySet="AttributeCharacterSets" />
+          </AssociationSet>
+          <EntitySet Name="Attributes" EntityType="iCONDevModel.Attribute" />
+          <AssociationSet Name="FK_AttributeCharacterSets_Attributes_AttributeId" Association="iCONDevModel.FK_AttributeCharacterSets_Attributes_AttributeId">
+            <End Role="Attribute" EntitySet="Attributes" />
+            <End Role="AttributeCharacterSet" EntitySet="AttributeCharacterSets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attributes_AttributeType_AttributeGroupId" Association="iCONDevModel.FK_Attributes_AttributeType_AttributeGroupId">
+            <End Role="AttributeGroup" EntitySet="AttributeGroups" />
+            <End Role="Attribute" EntitySet="Attributes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PickListData_Attributes_AttributeId" Association="iCONDevModel.FK_PickListData_Attributes_AttributeId">
+            <End Role="Attribute" EntitySet="Attributes" />
+            <End Role="PickListData" EntitySet="PickListDatas" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AttributeCharacterSet">
+          <Key>
+            <PropertyRef Name="AttributeCharacterSetID" />
+          </Key>
+          <Property Name="AttributeCharacterSetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AttributeId" Type="Int32" Nullable="false" />
+          <Property Name="CharacterSetId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CharacterSet" Relationship="iCONDevModel.FK_AttributeCharacterSets_CharacterSets_CharacterSetId" FromRole="AttributeCharacterSet" ToRole="CharacterSet" />
+          <NavigationProperty Name="Attribute" Relationship="iCONDevModel.FK_AttributeCharacterSets_Attributes_AttributeId" FromRole="AttributeCharacterSet" ToRole="Attribute" />
+        </EntityType>
+        <EntityType Name="AttributeGroup">
+          <Key>
+            <PropertyRef Name="AttributeGroupId" />
+          </Key>
+          <Property Name="AttributeGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AttributeGroupName" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Attributes" Relationship="iCONDevModel.FK_Attributes_AttributeType_AttributeGroupId" FromRole="AttributeGroup" ToRole="Attribute" />
+        </EntityType>
+        <EntityType Name="CharacterSet">
+          <Key>
+            <PropertyRef Name="CharacterSetId" />
+          </Key>
+          <Property Name="CharacterSetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegEx" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AttributeCharacterSets" Relationship="iCONDevModel.FK_AttributeCharacterSets_CharacterSets_CharacterSetId" FromRole="CharacterSet" ToRole="AttributeCharacterSet" />
+        </EntityType>
+        <EntityType Name="PickListData">
+          <Key>
+            <PropertyRef Name="PickListId" />
+          </Key>
+          <Property Name="PickListId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AttributeId" Type="Int32" />
+          <Property Name="PickListValue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Attribute" Relationship="iCONDevModel.FK_PickListData_Attributes_AttributeId" FromRole="PickListData" ToRole="Attribute" />
+        </EntityType>
+        <EntityType Name="IconRebootData">
+          <Key>
+            <PropertyRef Name="REQUIRED_FOR_VALIDATION" />
+          </Key>
+          <Property Name="NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="INFOR_SYSTEM_ID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="EXTERNAL_SYSTEM_ID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ATTRIBUTE_TYPE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DATA_TYPE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DEFAULT_VALUE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RULE_TYPE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RULE_VALUE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PICKLIST_VALUES" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CHARACTER_SETS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SPECIAL_CHARACTERS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="REQUIRED_FOR_VALIDATION" Type="Boolean" Nullable="false" />
+          <Property Name="DISPLAY_ORDER" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_ON" Type="DateTime" Precision="3" />
+          <Property Name="INITIAL_VALUE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="INCREMENT_BY" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="INITIAL_MAX" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SELECT_LOWEST_VALUE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DISPLAY_TYPE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_AttributeCharacterSets_CharacterSets_CharacterSetId">
+          <End Type="iCONDevModel.CharacterSet" Role="CharacterSet" Multiplicity="1" />
+          <End Type="iCONDevModel.AttributeCharacterSet" Role="AttributeCharacterSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CharacterSet">
+              <PropertyRef Name="CharacterSetId" />
+            </Principal>
+            <Dependent Role="AttributeCharacterSet">
+              <PropertyRef Name="CharacterSetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Attribute">
+          <Key>
+            <PropertyRef Name="AttributeId" />
+          </Key>
+          <Property Name="AttributeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DisplayName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AttributeName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AttributeGroupId" Type="Int32" />
+          <Property Name="HasUniqueValues" Type="Boolean" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DefaultValue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RequiredForPublishing" Type="Boolean" />
+          <Property Name="SpecialCharactersAllowed" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TraitCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DataTypeId" Type="Int32" />
+          <Property Name="DisplayOrder" Type="Int32" />
+          <Property Name="InitialValue" Type="Int32" />
+          <Property Name="IncrementBy" Type="Int32" />
+          <Property Name="InitialMax" Type="Int32" />
+          <Property Name="DisplayType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MaxLengthAllowed" Type="Int32" />
+          <Property Name="NumberValidationRule" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PickList" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AttributeCharacterSets" Relationship="iCONDevModel.FK_AttributeCharacterSets_Attributes_AttributeId" FromRole="Attribute" ToRole="AttributeCharacterSet" />
+          <NavigationProperty Name="AttributeGroup" Relationship="iCONDevModel.FK_Attributes_AttributeType_AttributeGroupId" FromRole="Attribute" ToRole="AttributeGroup" />
+          <NavigationProperty Name="PickListDatas" Relationship="iCONDevModel.FK_PickListData_Attributes_AttributeId" FromRole="Attribute" ToRole="PickListData" />
+        </EntityType>
+        <Association Name="FK_AttributeCharacterSets_Attributes_AttributeId">
+          <End Type="iCONDevModel.Attribute" Role="Attribute" Multiplicity="1" />
+          <End Type="iCONDevModel.AttributeCharacterSet" Role="AttributeCharacterSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attribute">
+              <PropertyRef Name="AttributeId" />
+            </Principal>
+            <Dependent Role="AttributeCharacterSet">
+              <PropertyRef Name="AttributeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attributes_AttributeType_AttributeGroupId">
+          <End Type="iCONDevModel.AttributeGroup" Role="AttributeGroup" Multiplicity="0..1" />
+          <End Type="iCONDevModel.Attribute" Role="Attribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AttributeGroup">
+              <PropertyRef Name="AttributeGroupId" />
+            </Principal>
+            <Dependent Role="Attribute">
+              <PropertyRef Name="AttributeGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PickListData_Attributes_AttributeId">
+          <End Type="iCONDevModel.Attribute" Role="Attribute" Multiplicity="0..1" />
+          <End Type="iCONDevModel.PickListData" Role="PickListData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attribute">
+              <PropertyRef Name="AttributeId" />
+            </Principal>
+            <Dependent Role="PickListData">
+              <PropertyRef Name="AttributeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="iCONDevModelStoreContainer" CdmEntityContainer="iCONDevEntities">
+          <EntitySetMapping Name="AttributeCharacterSets">
+            <EntityTypeMapping TypeName="iCONDevModel.AttributeCharacterSet">
+              <MappingFragment StoreEntitySet="AttributeCharacterSets">
+                <ScalarProperty Name="CharacterSetId" ColumnName="CharacterSetId" />
+                <ScalarProperty Name="AttributeId" ColumnName="AttributeId" />
+                <ScalarProperty Name="AttributeCharacterSetID" ColumnName="AttributeCharacterSetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AttributeGroups">
+            <EntityTypeMapping TypeName="iCONDevModel.AttributeGroup">
+              <MappingFragment StoreEntitySet="AttributeGroup">
+                <ScalarProperty Name="AttributeGroupName" ColumnName="AttributeGroupName" />
+                <ScalarProperty Name="AttributeGroupId" ColumnName="AttributeGroupId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CharacterSets">
+            <EntityTypeMapping TypeName="iCONDevModel.CharacterSet">
+              <MappingFragment StoreEntitySet="CharacterSets">
+                <ScalarProperty Name="RegEx" ColumnName="RegEx" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CharacterSetId" ColumnName="CharacterSetId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PickListDatas">
+            <EntityTypeMapping TypeName="iCONDevModel.PickListData">
+              <MappingFragment StoreEntitySet="PickListData">
+                <ScalarProperty Name="PickListValue" ColumnName="PickListValue" />
+                <ScalarProperty Name="AttributeId" ColumnName="AttributeId" />
+                <ScalarProperty Name="PickListId" ColumnName="PickListId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IconRebootDatas">
+            <EntityTypeMapping TypeName="iCONDevModel.IconRebootData">
+              <MappingFragment StoreEntitySet="IconRebootData">
+                <ScalarProperty Name="DISPLAY_TYPE" ColumnName="DISPLAY_TYPE" />
+                <ScalarProperty Name="SELECT_LOWEST_VALUE" ColumnName="SELECT_LOWEST_VALUE" />
+                <ScalarProperty Name="INITIAL_MAX" ColumnName="INITIAL_MAX" />
+                <ScalarProperty Name="INCREMENT_BY" ColumnName="INCREMENT_BY" />
+                <ScalarProperty Name="INITIAL_VALUE" ColumnName="INITIAL_VALUE" />
+                <ScalarProperty Name="MODIFIED_ON" ColumnName="MODIFIED_ON" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="DISPLAY_ORDER" ColumnName="DISPLAY_ORDER" />
+                <ScalarProperty Name="REQUIRED_FOR_VALIDATION" ColumnName="REQUIRED_FOR_VALIDATION" />
+                <ScalarProperty Name="SPECIAL_CHARACTERS" ColumnName="SPECIAL_CHARACTERS" />
+                <ScalarProperty Name="CHARACTER_SETS" ColumnName="CHARACTER_SETS" />
+                <ScalarProperty Name="PICKLIST_VALUES" ColumnName="PICKLIST_VALUES" />
+                <ScalarProperty Name="RULE_VALUE" ColumnName="RULE_VALUE" />
+                <ScalarProperty Name="RULE_TYPE" ColumnName="RULE_TYPE" />
+                <ScalarProperty Name="DEFAULT_VALUE" ColumnName="DEFAULT_VALUE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="DATA_TYPE" ColumnName="DATA_TYPE" />
+                <ScalarProperty Name="ATTRIBUTE_TYPE" ColumnName="ATTRIBUTE_TYPE" />
+                <ScalarProperty Name="EXTERNAL_SYSTEM_ID" ColumnName="EXTERNAL_SYSTEM_ID" />
+                <ScalarProperty Name="INFOR_SYSTEM_ID" ColumnName="INFOR_SYSTEM_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Attributes">
+            <EntityTypeMapping TypeName="iCONDevModel.Attribute">
+              <MappingFragment StoreEntitySet="Attributes">
+                <ScalarProperty Name="PickList" ColumnName="PickList" />
+                <ScalarProperty Name="NumberValidationRule" ColumnName="NumberValidationRule" />
+                <ScalarProperty Name="MaxLengthAllowed" ColumnName="MaxLengthAllowed" />
+                <ScalarProperty Name="DisplayType" ColumnName="DisplayType" />
+                <ScalarProperty Name="InitialMax" ColumnName="InitialMax" />
+                <ScalarProperty Name="IncrementBy" ColumnName="IncrementBy" />
+                <ScalarProperty Name="InitialValue" ColumnName="InitialValue" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="DataTypeId" ColumnName="DataTypeId" />
+                <ScalarProperty Name="TraitCode" ColumnName="TraitCode" />
+                <ScalarProperty Name="SpecialCharactersAllowed" ColumnName="SpecialCharactersAllowed" />
+                <ScalarProperty Name="RequiredForPublishing" ColumnName="RequiredForPublishing" />
+                <ScalarProperty Name="DefaultValue" ColumnName="DefaultValue" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="HasUniqueValues" ColumnName="HasUniqueValues" />
+                <ScalarProperty Name="AttributeGroupId" ColumnName="AttributeGroupId" />
+                <ScalarProperty Name="AttributeName" ColumnName="AttributeName" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="AttributeId" ColumnName="AttributeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

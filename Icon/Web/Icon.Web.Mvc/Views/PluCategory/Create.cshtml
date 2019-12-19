@@ -16,33 +16,33 @@
 
     <fieldset>
         <legend>Add New PLU Range</legend>
-            <div class="row">
-                @Html.LabelFor(model => model.PluCategoryName, new { @class = "form-label col-md-2" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.PluCategoryName, new { @class = "form-label" })
                 <div>
-                    @Html.TextBoxFor(model => model.PluCategoryName, new { @class = "col-md-6 form-input" })
-                    @Html.ValidationMessageFor(model => model.PluCategoryName, null, new { @class = "col-md-4 form-property-val" })
+                    @Html.TextBoxFor(model => model.PluCategoryName, new { @class = "form-control form-input" })
+                    @Html.ValidationMessageFor(model => model.PluCategoryName, null, new { @class = "form-property-val" })
                 </div>
             </div>
 
-            <div class="row">
-                @Html.LabelFor(model => model.BeginRange, new { @class = "form-label col-md-2" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.BeginRange, new { @class = "form-label" })
                 <div>
-                    @Html.TextBoxFor(model => model.BeginRange, new { @class = "col-md-6 form-input" })
-                    @Html.ValidationMessageFor(model => model.BeginRange, null, new { @class = "col-md-4 form-property-val" })
+                    @Html.TextBoxFor(model => model.BeginRange, new { @class = "form-control form-input" })
+                    @Html.ValidationMessageFor(model => model.BeginRange, null, new { @class = " form-property-val" })
                 </div>
             </div>
 
-            <div class="row">
-                @Html.LabelFor(model => model.EndRange, new { @class = "form-label col-md-2" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.EndRange, new { @class = "form-label" })
                 <div>
-                    @Html.TextBoxFor(model => model.EndRange, new { @class = "col-md-6 form-input" })
+                    @Html.TextBoxFor(model => model.EndRange, new { @class = "form-control form-input" })
                     @Html.ValidationMessageFor(model => model.EndRange, null, new { @class = "col-md-4 form-property-val" })
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-offset-2 col-md-1">
-                    <input type="submit" value="Create" class="btn btn-default form-submit" />
+            <div class="form-group">
+                <div class="">
+                    <input type="submit" value="Create" class="btn btn-light form-submit" />
                 </div>
             </div>
         
@@ -71,8 +71,3 @@
 <div class="page-subsection">
     @Html.ActionLink("Return To PLU Ranges", "Index")
 </div>
-
-@section Scripts
-{
-    @Scripts.Render("~/bundles/jqueryval")
-}

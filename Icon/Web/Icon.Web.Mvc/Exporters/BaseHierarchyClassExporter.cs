@@ -1,15 +1,8 @@
-﻿using Icon.Framework;
-using Icon.Web.DataAccess.Infrastructure;
-using Icon.Web.DataAccess.Queries;
-using Icon.Web.Mvc.Models;
+﻿using Icon.Web.Mvc.Models;
 using Infragistics.Documents.Excel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Icon.Web.Extensions;
 using System.Drawing;
-using Icon.Web.DataAccess.Models;
 
 namespace Icon.Web.Mvc.Exporters
 {

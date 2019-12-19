@@ -1,9 +1,9 @@
-﻿using Icon.Common.DataAccess;
+﻿using DevTrends.MvcDonutCaching;
+using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Models;
@@ -15,6 +15,7 @@ using System.Web.Mvc;
 
 namespace Icon.Web.Controllers
 {
+    [RedirectFilterAttribute]
     public class PluMappingController : Controller
     {
         private ILogger logger;
@@ -46,7 +47,7 @@ namespace Icon.Web.Controllers
 
         //
         // GET: /PluMapping/Search
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        [DonutOutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult Search(PluSearchViewModel viewModel)
         {
             if (!ModelState.IsValid)

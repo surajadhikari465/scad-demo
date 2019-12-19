@@ -1,0 +1,360 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<items xmlns:iea="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesEnterprise/V2" xmlns:icr="http://schemas.wfm.com/Enterprise/ItemMgmt/CommonRefTypes/V1" xmlns:sis="http://schemas.wfm.com/Enterprise/ItemMgmt/ScanCode/V2" xmlns:lnk="http://schemas.wfm.com/Enterprise/RetailMgmt/LinkType/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" xmlns:tra="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:ama="http://schemas.wfm.com/Enterprise/AmountMgmt/Amount/V1" xmlns:lcy="http://schemas.wfm.com/Enterprise/LocaleMgmt/LocaleType/V2" xmlns:prc="http://schemas.wfm.com/Enterprise/PriceMgmt/Price/V2" xmlns:psg="http://schemas.wfm.com/Enterprise/SelectionGrpMgmt/SelectionGrp/V2" xmlns:grp="http://schemas.wfm.com/Enterprise/RetailMgmt/GroupType/V2" xmlns:ici="http://schemas.wfm.com/Enterprise/ItemMgmt/ConsumerInformation/V1" xmlns:ihy="http://schemas.wfm.com/Enterprise/HierarchyMgmt/Hierarchy/V2" xmlns:itp="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemType/V1" xmlns:isa="http://schemas.wfm.com/Enterprise/ItemMgmt/ItemAttributesStore/V2" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:ibi="http://schemas.wfm.com/Enterprise/ItemMgmt/BaseItem/V1" xmlns:hcl="http://schemas.wfm.com/Enterprise/HierarchyMgmt/HierarchyClass/V2" xmlns:pry="http://schemas.wfm.com/Enterprise/PriceMgmt/PriceType/V1" xmlns:lcl="http://schemas.wfm.com/Enterprise/LocaleMgmt/Locale/V2" xmlns="http://schemas.wfm.com/Enterprise/ItemMgmt/Item/V1">
+  <item crf:Action="AddOrUpdate">
+    <id>0</id>
+    <base>
+      <ibi:type>
+        <itp:code>RTL</itp:code>
+        <itp:description>Retail Sale</itp:description>
+      </ibi:type>
+    </base>
+    <locale>
+      <lcl:id>1</lcl:id>
+      <lcl:name>Whole Foods Market</lcl:name>
+      <lcl:type>
+        <lcy:code>CHN</lcy:code>
+        <lcy:description>Chain</lcy:description>
+      </lcl:type>
+      <lcl:enterpriseItemAttributes>
+        <iea:scanCodes>
+          <sis:scanCode>
+            <sis:code>1234567890</sis:code>
+            <sis:typeDescription>UPC</sis:typeDescription>
+          </sis:scanCode>
+        </iea:scanCodes>
+        <iea:hierarchies>
+          <crf:hierarchy>
+            <ihy:name>Brands</ihy:name>
+            <ihy:class>
+              <hcl:id>5</hcl:id>
+              <hcl:name>Test Brand Abbr</hcl:name>
+              <hcl:parentId>0</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+          <crf:hierarchy>
+            <ihy:name>Tax</ihy:name>
+            <ihy:class>
+              <hcl:id>1111111</hcl:id>
+              <hcl:name>Test Tax</hcl:name>
+              <hcl:parentId>0</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+          <crf:hierarchy>
+            <ihy:name>Financial</ihy:name>
+            <ihy:class>
+              <hcl:id>1234</hcl:id>
+              <hcl:name>Test Sub Team (1234)</hcl:name>
+              <hcl:parentId>0</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+          <crf:hierarchy>
+            <ihy:name>National</ihy:name>
+            <ihy:class>
+              <hcl:id>22</hcl:id>
+              <hcl:name>Test National</hcl:name>
+              <hcl:parentId>1</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+        </iea:hierarchies>
+        <iea:traits>
+          <crf:trait>
+            <tra:code>PRD</tra:code>
+            <tra:type>
+              <trt:description>Product Description</trt:description>
+              <trt:value>
+                <trv:value>Test Item Description 0</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>POS</tra:code>
+            <tra:type>
+              <trt:description>POS Description</trt:description>
+              <trt:value>
+                <trv:value>Test Brand Abbr TestPOS 0</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>FSE</tra:code>
+            <tra:type>
+              <trt:description>Food Stamp Eligible</trt:description>
+              <trt:value>
+                <trv:value>1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>PKG</tra:code>
+            <tra:type>
+              <trt:description>Package Unit</trt:description>
+              <trt:value>
+                <trv:value>1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>RSZ</tra:code>
+            <tra:type>
+              <trt:description>Retail Size</trt:description>
+              <trt:value>
+                <trv:value>1.1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>RUM</tra:code>
+            <tra:type>
+              <trt:description>Retail UOM</trt:description>
+              <trt:value>
+                <trv:value>EA</trv:value>
+                <trv:uom>
+                  <uom:code>EA</uom:code>
+                  <uom:name>EACH</uom:name>
+                </trv:uom>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+        </iea:traits>
+      </lcl:enterpriseItemAttributes>
+    </locale>
+  </item>
+  <item crf:Action="AddOrUpdate">
+    <id>0</id>
+    <base>
+      <ibi:type>
+        <itp:code>RTL</itp:code>
+        <itp:description>Retail Sale</itp:description>
+      </ibi:type>
+    </base>
+    <locale>
+      <lcl:id>1</lcl:id>
+      <lcl:name>Whole Foods Market</lcl:name>
+      <lcl:type>
+        <lcy:code>CHN</lcy:code>
+        <lcy:description>Chain</lcy:description>
+      </lcl:type>
+      <lcl:enterpriseItemAttributes>
+        <iea:scanCodes>
+          <sis:scanCode>
+            <sis:code>1234567891</sis:code>
+            <sis:typeDescription>UPC</sis:typeDescription>
+          </sis:scanCode>
+        </iea:scanCodes>
+        <iea:hierarchies>
+          <crf:hierarchy>
+            <ihy:name>Brands</ihy:name>
+            <ihy:class>
+              <hcl:id>5</hcl:id>
+              <hcl:name>Test Brand Abbr</hcl:name>
+              <hcl:parentId>0</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+          <crf:hierarchy>
+            <ihy:name>Tax</ihy:name>
+            <ihy:class>
+              <hcl:id>1111111</hcl:id>
+              <hcl:name>Test Tax</hcl:name>
+              <hcl:parentId>0</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+          <crf:hierarchy>
+            <ihy:name>Financial</ihy:name>
+            <ihy:class>
+              <hcl:id>1234</hcl:id>
+              <hcl:name>Test Sub Team (1234)</hcl:name>
+              <hcl:parentId>0</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+          <crf:hierarchy>
+            <ihy:name>National</ihy:name>
+            <ihy:class>
+              <hcl:id>22</hcl:id>
+              <hcl:name>Test National</hcl:name>
+              <hcl:parentId>1</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+        </iea:hierarchies>
+        <iea:traits>
+          <crf:trait>
+            <tra:code>PRD</tra:code>
+            <tra:type>
+              <trt:description>Product Description</trt:description>
+              <trt:value>
+                <trv:value>Test Item Description 1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>POS</tra:code>
+            <tra:type>
+              <trt:description>POS Description</trt:description>
+              <trt:value>
+                <trv:value>Test Brand Abbr TestPOS 1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>FSE</tra:code>
+            <tra:type>
+              <trt:description>Food Stamp Eligible</trt:description>
+              <trt:value>
+                <trv:value>1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>PKG</tra:code>
+            <tra:type>
+              <trt:description>Package Unit</trt:description>
+              <trt:value>
+                <trv:value>1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>RSZ</tra:code>
+            <tra:type>
+              <trt:description>Retail Size</trt:description>
+              <trt:value>
+                <trv:value>1.1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>RUM</tra:code>
+            <tra:type>
+              <trt:description>Retail UOM</trt:description>
+              <trt:value>
+                <trv:value>EA</trv:value>
+                <trv:uom>
+                  <uom:code>EA</uom:code>
+                  <uom:name>EACH</uom:name>
+                </trv:uom>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+        </iea:traits>
+      </lcl:enterpriseItemAttributes>
+    </locale>
+  </item>
+  <item crf:Action="AddOrUpdate">
+    <id>0</id>
+    <base>
+      <ibi:type>
+        <itp:code>RTL</itp:code>
+        <itp:description>Retail Sale</itp:description>
+      </ibi:type>
+    </base>
+    <locale>
+      <lcl:id>1</lcl:id>
+      <lcl:name>Whole Foods Market</lcl:name>
+      <lcl:type>
+        <lcy:code>CHN</lcy:code>
+        <lcy:description>Chain</lcy:description>
+      </lcl:type>
+      <lcl:enterpriseItemAttributes>
+        <iea:scanCodes>
+          <sis:scanCode>
+            <sis:code>1234567892</sis:code>
+            <sis:typeDescription>UPC</sis:typeDescription>
+          </sis:scanCode>
+        </iea:scanCodes>
+        <iea:hierarchies>
+          <crf:hierarchy>
+            <ihy:name>Brands</ihy:name>
+            <ihy:class>
+              <hcl:id>5</hcl:id>
+              <hcl:name>Test Brand Abbr</hcl:name>
+              <hcl:parentId>0</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+          <crf:hierarchy>
+            <ihy:name>Tax</ihy:name>
+            <ihy:class>
+              <hcl:id>1111111</hcl:id>
+              <hcl:name>Test Tax</hcl:name>
+              <hcl:parentId>0</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+          <crf:hierarchy>
+            <ihy:name>Financial</ihy:name>
+            <ihy:class>
+              <hcl:id>1234</hcl:id>
+              <hcl:name>Test Sub Team (1234)</hcl:name>
+              <hcl:parentId>0</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+          <crf:hierarchy>
+            <ihy:name>National</ihy:name>
+            <ihy:class>
+              <hcl:id>22</hcl:id>
+              <hcl:name>Test National</hcl:name>
+              <hcl:parentId>1</hcl:parentId>
+            </ihy:class>
+          </crf:hierarchy>
+        </iea:hierarchies>
+        <iea:traits>
+          <crf:trait>
+            <tra:code>PRD</tra:code>
+            <tra:type>
+              <trt:description>Product Description</trt:description>
+              <trt:value>
+                <trv:value>Test Item Description 2</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>POS</tra:code>
+            <tra:type>
+              <trt:description>POS Description</trt:description>
+              <trt:value>
+                <trv:value>Test Brand Abbr TestPOS 2</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>FSE</tra:code>
+            <tra:type>
+              <trt:description>Food Stamp Eligible</trt:description>
+              <trt:value>
+                <trv:value>1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>PKG</tra:code>
+            <tra:type>
+              <trt:description>Package Unit</trt:description>
+              <trt:value>
+                <trv:value>1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>RSZ</tra:code>
+            <tra:type>
+              <trt:description>Retail Size</trt:description>
+              <trt:value>
+                <trv:value>1.1</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>RUM</tra:code>
+            <tra:type>
+              <trt:description>Retail UOM</trt:description>
+              <trt:value>
+                <trv:value>EA</trv:value>
+                <trv:uom>
+                  <uom:code>EA</uom:code>
+                  <uom:name>EACH</uom:name>
+                </trv:uom>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+        </iea:traits>
+      </lcl:enterpriseItemAttributes>
+    </locale>
+  </item>
+</items>

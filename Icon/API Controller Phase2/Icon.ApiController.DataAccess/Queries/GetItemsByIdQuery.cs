@@ -27,7 +27,7 @@ namespace Icon.ApiController.DataAccess.Queries
                     .Include(i => i.ItemTrait.Select(it => it.Trait))
                     .Include(i => i.ScanCode.Select(sc => sc.ScanCodeType))
                     .Include(i => i.ItemType)
-                    .Where(i => parameters.ItemsById.Contains(i.itemID))
+                    .Where(i => parameters.ItemsById.Contains(i.ItemId))
                     .ToList();
 
                 return items;

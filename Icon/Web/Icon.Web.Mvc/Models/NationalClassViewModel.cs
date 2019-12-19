@@ -1,12 +1,7 @@
 ﻿using Icon.Framework;
 using Icon.Web.Attributes;
-using Icon.Web.Extensions;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 using Icon.Web.DataAccess.Models;
-using Icon.Web.Common;
 
 namespace Icon.Web.Mvc.Models
 {
@@ -27,9 +22,9 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = "Class Name")]
         public virtual string HierarchyClassName { get; set; }
 
+        [Required]
         [Display(Name = "Class Code")]
-        [RegularExpression(@"^[0-9]{0,255}$", ErrorMessage = "Please enter a numerical value.")]
-        
+        [RegularExpression(@"^[0-9]{5}$", ErrorMessage = "Please enter a 5 digit numerical value.")]
         public string NationalClassCode { get; set; }
 
         public string HierarchyLevelName { get; set; }     

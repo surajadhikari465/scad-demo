@@ -1,6 +1,5 @@
 ﻿using Icon.Framework;
 using Icon.Logging;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Queries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -36,9 +35,9 @@ namespace Icon.Web.Tests.Integration.Queries
         public void Initialize()
         {
             items = new List<Item>();
-            item1 = new Item { itemTypeID = 1 };
-            item2 = new Item { itemTypeID = 1 };
-            item3 = new Item { itemTypeID = 1 };
+            item1 = new Item { ItemTypeId = 1 };
+            item2 = new Item { ItemTypeId = 1 };
+            item3 = new Item { ItemTypeId = 1 };
             testBrand = new HierarchyClass { hierarchyID = 2, hierarchyClassName = "Integration Test Brand" };
             context = new IconContext();
             context.Database.Connection.Open();
@@ -49,9 +48,9 @@ namespace Icon.Web.Tests.Integration.Queries
             context.Item.Add(item3);
             context.HierarchyClass.Add(testBrand);
             context.SaveChanges();
-            itemId1 = item1.itemID;
-            itemId2 = item2.itemID;
-            itemId3 = item3.itemID;
+            itemId1 = item1.ItemId;
+            itemId2 = item2.ItemId;
+            itemId3 = item3.ItemId;
             brandClassId = testBrand.hierarchyClassID;
 
             int productDescriptionTraitId = context.Trait.Single(t => t.traitCode == TraitCodes.ProductDescription).traitID;

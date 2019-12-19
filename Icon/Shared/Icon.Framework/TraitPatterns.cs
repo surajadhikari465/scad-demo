@@ -87,7 +87,7 @@ namespace Icon.Framework
         public const string StorePosType = @"^[a-zA-Z0-9_]*$";
         public const string Fax = @"^[a-zA-Z0-9_]*$";
         public const string DefaultCertificationAgency = @"1";
-        public const string AnimalWelfareRating = @"^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,50}$";
+        public const string AnimalWelfareRating = @"^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C\+]{0,50}$";
         public const string Biodynamic = @"^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,50}$";
         public const string CheeseMilkType = @"^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,50}$";
         public const string CheeseRaw = @"^[\x20-\x21\x23-\x2A\x2C-\x5A\x61-\x7A\x9C]{0,50}$";
@@ -196,12 +196,12 @@ namespace Icon.Framework
         public const string Designation = @"(Global|Regional)$";
         public const string ParentCompany = @"^[0-9]{1,10}$";
         public const string DataSource = @"";
-        public const string GmoTransparency = @"";
+        public const string NonGmoTransparency = @"";
         public const string ItemDepth = @"";
         public const string ItemHeight = @"";
         public const string ItemWidth = @"";
         public const string Cube = @"";
-        public const string Weight = @"";
+        public const string ItemWeight = @"";
         public const string TrayDepth = @"";
         public const string TrayHeight = @"";
         public const string TrayWidth = @"";

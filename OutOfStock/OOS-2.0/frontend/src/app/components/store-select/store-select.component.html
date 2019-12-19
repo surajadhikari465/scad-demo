@@ -1,0 +1,23 @@
+<div class="store-container">
+  <div class="store-message" *ngIf="isLoading && !isError">
+      <ion-spinner></ion-spinner>
+  </div>
+  <div *ngIf="!isLoading && isError" class="store-message">
+    <p>{{errorMessage || 'An Error Occured'}}</p>
+    <wfm-button (click)="getStores()">
+      Retry
+      <wfm-icon name="undo"></wfm-icon>
+    </wfm-button>
+  </div>
+  <wfm-toggle-group
+    *ngIf="!isLoading && !isError"
+    [buttons]="stores"
+    (wfmToggleButtonSelected)="setSelectedStore($event)"
+    direction="vertical"
+    flex
+  ></wfm-toggle-group>
+</div>
+<div style="display:flex;">
+  <wfm-button (click)="goBack()" label="Back" flex fill="outline">Back</wfm-button>
+  <wfm-button (click)="this.selectedStore ? continue(): ''" [disabled]="!this.selectedStore" flex>Continue</wfm-button>
+</div>

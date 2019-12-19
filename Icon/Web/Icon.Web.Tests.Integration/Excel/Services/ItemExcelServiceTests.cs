@@ -7,9 +7,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SimpleInjector;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icon.Web.Tests.Integration.Excel.Services
 {
@@ -21,8 +18,7 @@ namespace Icon.Web.Tests.Integration.Excel.Services
         [TestInitialize]
         public void Initialize()
         {
-            Container container = new Container();
-            SimpleInjectorInitializer.InitializeContainer(container);
+            Container container = SimpleInjectorInitializer.Initialize();
 
             excelService = container.GetInstance<ItemExcelService>();
         }

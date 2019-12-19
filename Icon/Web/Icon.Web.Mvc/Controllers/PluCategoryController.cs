@@ -1,10 +1,12 @@
-﻿using Icon.Common.DataAccess;
+﻿using DevTrends.MvcDonutCaching;
+using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
+using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Attributes;
 using Icon.Web.Mvc.Models;
@@ -13,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Icon.Web.Controllers
@@ -26,6 +27,7 @@ namespace Icon.Web.Controllers
         private IManagerHandler<UpdatePluCategoryManager> updatePluCategoryManager;
         private IQueryHandler<GetPluCategoryByIdParameters, PLUCategory> getPluCageroyByIdQuery;
         private ICommandHandler<DeletePluCategoryByIdCommand> deletePluCategoryByIdCommand;
+        private readonly IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypesQueryHandler;
 
         public PluCategoryController(
             ILogger logger,
@@ -33,7 +35,8 @@ namespace Icon.Web.Controllers
             IManagerHandler<AddPluCategoryManager> addPluCategoryManager,
             IManagerHandler<UpdatePluCategoryManager> updatePluCategoryManager,
             IQueryHandler<GetPluCategoryByIdParameters, PLUCategory> getPluCageroyByIdQuery,
-            ICommandHandler<DeletePluCategoryByIdCommand> deletePluCategoryByIdCommand)
+            ICommandHandler<DeletePluCategoryByIdCommand> deletePluCategoryByIdCommand,
+            IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypesQueryHandler)
         {
             this.logger = logger;
             this.getPluCategoriesQuery = getPluCategoriesQuery;
@@ -41,26 +44,28 @@ namespace Icon.Web.Controllers
             this.updatePluCategoryManager = updatePluCategoryManager;
             this.getPluCageroyByIdQuery = getPluCageroyByIdQuery;
             this.deletePluCategoryByIdCommand = deletePluCategoryByIdCommand;
+            this.getBarcodeTypesQueryHandler = getBarcodeTypesQueryHandler;
         }
 
         //
         // GET: /PluCategory/
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        [DonutOutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult Index()
         {
             // Get PLU categoty range data from Database
-            List<PLUCategory> pluCategoryList = getPluCategoriesQuery.Search(new GetPluCategoriesParameters());
+            var barcodeTypesList = getBarcodeTypesQueryHandler.Search(new GetBarcodeTypeParameters { });
 
             // Populate ViewModel
-            PluCategoryGridViewModel viewModel = new PluCategoryGridViewModel();
+            BarcodeTypeGridViewModel viewModel = new BarcodeTypeGridViewModel();
 
-            viewModel.PluCategories = pluCategoryList
-                .Select(pc => new PluCategoryViewModel
+            viewModel.BarcodeTypes = barcodeTypesList
+                .Select(bt => new BarcodeTypeViewModel
                     {
-                        PluCategoryId = pc.PluCategoryID,
-                        PluCategoryName = pc.PluCategoryName,
-                        BeginRange = pc.BeginRange.ToString(),
-                        EndRange = pc.EndRange.ToString()
+                        BarcodeTypeId = bt.BarcodeTypeId,
+                        BarcodeType = bt.BarcodeType,
+                        BeginRange = bt.BeginRange?.ToString(),
+                        EndRange = bt.EndRange?.ToString(),
+                        ScalePlu = bt.ScalePlu
                     });
 
             return View(viewModel);
@@ -69,16 +74,18 @@ namespace Icon.Web.Controllers
         //
         // GET: /PluCategory/Create/
         [WriteAccessAuthorize]
+        [RedirectFilterAttribute]
         public ActionResult Create()
         {
-            return View(new PluCategoryViewModel());
+            return View(new BarcodeTypeViewModel());
         }
 
         //
         // POST: /PluCategory/Create
         [WriteAccessAuthorize]
         [HttpPost]
-        public ActionResult Create(PluCategoryViewModel viewModel)
+        [RedirectFilterAttribute]
+        public ActionResult Create(BarcodeTypeViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -90,13 +97,13 @@ namespace Icon.Web.Controllers
                 // Add new PLU category
                 AddPluCategoryManager manager = new AddPluCategoryManager
                 {
-                    PluCategoryName = viewModel.PluCategoryName,
+                    PluCategoryName = viewModel.BarcodeType,
                     BeginRange = viewModel.BeginRange,
                     EndRange = viewModel.EndRange
                 };
 
                 addPluCategoryManager.Execute(manager);
-                string successMessage = String.Format("Successfully added category {0}.", viewModel.PluCategoryName);
+                string successMessage = String.Format("Successfully added category {0}.", viewModel.BarcodeType);
 
                 ViewData["SuccessMessage"] = successMessage;
                 ModelState.Clear();
@@ -114,22 +121,23 @@ namespace Icon.Web.Controllers
         //
         // GET: /PluCategory/Delete/
         [WriteAccessAuthorize]
+        [RedirectFilterAttribute]
         public ActionResult Delete(int PluCategoryId)
         {
             PLUCategory plucategory = getPluCageroyByIdQuery.Search(new GetPluCategoryByIdParameters() { PluCategoryID = PluCategoryId });
             if (plucategory != null)
             {
-                return View(new PluCategoryViewModel
+                return View(new BarcodeTypeViewModel
                         {
-                            PluCategoryId = plucategory.PluCategoryID,
-                            PluCategoryName = plucategory.PluCategoryName,
+                            BarcodeTypeId = plucategory.PluCategoryID,
+                            BarcodeType = plucategory.PluCategoryName,
                             BeginRange = plucategory.BeginRange.ToString(),
                             EndRange = plucategory.EndRange.ToString()
                         });
             }
             else
             {
-                return View(new PluCategoryViewModel());
+                return View(new BarcodeTypeViewModel());
             }
         }
 
@@ -137,6 +145,7 @@ namespace Icon.Web.Controllers
         // POST: /PluCategory/Create
         [WriteAccessAuthorize]
         [HttpPost]
+        [RedirectFilterAttribute]
         public ActionResult Delete(PluCategoryViewModel viewModel)
         {
             try
@@ -157,18 +166,19 @@ namespace Icon.Web.Controllers
 
         // Processes the Update and Add for each row in the Infragistics igGrid
         [WriteAccessAuthorize(IsJsonResult = true)]
+        [RedirectFilterAttribute]
         public ActionResult SaveChangesInGrid()
         {
             ViewData["GenerateCompactJSONResponse"] = false;
             GridModel m = new GridModel();
-            List<Transaction<PluCategoryViewModel>> transactions = m.LoadTransactions<PluCategoryViewModel>(HttpContext.Request.Form["ig_transactions"]);
+            List<Transaction<BarcodeTypeViewModel>> transactions = m.LoadTransactions<BarcodeTypeViewModel>(HttpContext.Request.Form["ig_transactions"]);
 
             if (!transactions.Any())
             {
                 return Json(new { Success = false, Error = "No new values were specified for the PLU category." });
             }
 
-            foreach (Transaction<PluCategoryViewModel> item in transactions)
+            foreach (Transaction<BarcodeTypeViewModel> item in transactions)
             {
                 try
                 {
@@ -176,8 +186,8 @@ namespace Icon.Web.Controllers
 
                     UpdatePluCategoryManager command = new UpdatePluCategoryManager
                     {
-                        PluCategoryId = item.row.PluCategoryId,
-                        PluCategoryName = item.row.PluCategoryName,
+                        PluCategoryId = item.row.BarcodeTypeId,
+                        PluCategoryName = item.row.BarcodeType,
                         BeginRange = item.row.BeginRange,
                         EndRange = item.row.EndRange
                     };

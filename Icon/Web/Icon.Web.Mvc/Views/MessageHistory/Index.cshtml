@@ -1,13 +1,6 @@
 ﻿@using Infragistics.Web.Mvc
 @model List<Icon.Web.Mvc.Models.FailedMessageViewModel>
 
-@Scripts.Render("~/Scripts/Infragistics/js/infragistics.loader.js")
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Render()
-)
-
 @{Html.RenderPartial("_HeaderPartial", "Messages to ESB Status");}
 
 <div class="page-section">
@@ -42,7 +35,7 @@
         <div id="alert" class="validation-section page-subsection"></div>
 
         <div class="page-subsection">
-            <button id="reprocess" class="btn btn-default form-submit">Reprocess Failed Messages</button>
+            <button id="reprocess" class="btn btn-light form-submit">Reprocess Failed Messages</button>
         </div>
     }
 </div>

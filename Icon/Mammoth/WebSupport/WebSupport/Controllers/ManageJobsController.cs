@@ -10,6 +10,7 @@ using WebSupport.DataAccess.Commands;
 using WebSupport.DataAccess.Models;
 using WebSupport.DataAccess.Queries;
 using WebSupport.Filters;
+using WebSupport.Helpers;
 using WebSupport.Models;
 using WebSupport.ViewModels;
 
@@ -190,32 +191,40 @@ namespace WebSupport.Controllers
 
         private void StartJobFromDestinationQueue(JobSchedule jobSchedule, JobScheduleModel model)
         {
-            var response = startJobService.Send(model);
-            if (response.Status == EsbServiceResponseStatus.Failed)
+            try
             {
-                ViewBag.Error = response.ErrorDetails;
-                LogJobScheduleChange("Start", jobSchedule, response.ErrorDetails);
-            }
-            else
-            {
-                LogJobScheduleChange("Start", jobSchedule);
+                var response = startJobService.Send(model);
+                if (response.Status == EsbServiceResponseStatus.Failed)
+                {
+                    ViewBag.Error = response.ErrorDetails;
+                    LogJobScheduleChange("Start", jobSchedule, response.ErrorDetails);
+                }
+                else
+                {
+                    LogJobScheduleChange("Start", jobSchedule);
 
                 //update next scheduled run datetime if the job scheduler gets stuck, and an adhoc run is kicked off
                 if (DateTime.UtcNow > jobSchedule.NextScheduledDateTimeUtc)
                 {
-                    var secondsInDifference = Math.Ceiling((DateTime.UtcNow - jobSchedule.NextScheduledDateTimeUtc).TotalSeconds / jobSchedule.IntervalInSeconds) * jobSchedule.IntervalInSeconds;
-                    jobSchedule.NextScheduledDateTimeUtc = jobSchedule.NextScheduledDateTimeUtc.AddSeconds(secondsInDifference);
+                    jobSchedule.NextScheduledDateTimeUtc = ScheduledJobHelpers.DetermineNextScheduledTime(DateTime.UtcNow, jobSchedule.StartDateTimeUtc, jobSchedule.IntervalInSeconds);
 
-                    updateJobScheduleCommandHandler.Execute(new UpdateJobScheduleCommand
-                    {
-                        JobSchedule = jobSchedule
-                    });
+                        updateJobScheduleCommandHandler.Execute(new UpdateJobScheduleCommand
+                        {
+                            JobSchedule = jobSchedule
+                        });
 
-                    LogJobScheduleChange("Update", jobSchedule);
+                        LogJobScheduleChange("Update", jobSchedule);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message);
+                if (ex.InnerException != null)
+                    logger.Error(ex.InnerException.Message);
+                throw;
+            }
         }
-
         private void LogJobScheduleChange(string action, JobSchedule jobSchedule, string error = null)
         {
             logger.Info(JsonConvert.SerializeObject(new

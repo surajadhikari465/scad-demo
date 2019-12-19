@@ -1,12 +1,12 @@
-﻿using Icon.Common.DataAccess;
+﻿using DevTrends.MvcDonutCaching;
+using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
-using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
-using Icon.Web.Extensions;
+using Icon.Web.Mvc.Extensions;
 using Icon.Web.Mvc.Models;
 using Infragistics.Web.Mvc;
 using System;
@@ -50,7 +50,7 @@ namespace Icon.Web.Mvc.Controllers
 
         //
         // GET: /Configuration/Search/
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        [DonutOutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public PartialViewResult Search(ConfigurationSearchViewModel viewModel)
         {
             if (!ModelState.IsValid)

@@ -106,7 +106,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
         private void StageTestItemPrice(int itemPriceTypeId)
         {
             this.testItemPrice = new TestItemPriceBuilder()
-                .WithItemId(this.testItems[0].itemID)
+                .WithItemId(this.testItems[0].ItemId)
                 .WithLocaleId(this.testLocale.localeID)
                 .WithItemPriceTypeId(itemPriceTypeId)
                 .WithPriceAmount(this.testOriginalPrice);
@@ -125,7 +125,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
 
             var testEntities = new List<ItemPrice>
             { 
-                new TestItemPriceBuilder().WithItemId(this.testItems[0].itemID).WithLocaleId(this.testLocale.localeID)
+                new TestItemPriceBuilder().WithItemId(this.testItems[0].ItemId).WithLocaleId(this.testLocale.localeID)
             }.ConvertAll(e => new ItemPriceModel
                 {
                     IrmaPushId = this.testPosData.IRMAPushID,
@@ -151,7 +151,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             this.itemPriceUpdateService.SaveEntitiesBulk(testEntities);
 
             // Then.
-            var testItemId = this.testItems[0].itemID;
+            var testItemId = this.testItems[0].ItemId;
             var newItemPriceEntity = context.Context.ItemPrice.Single(ip => ip.localeID == this.testLocale.localeID && testItemId == ip.itemID);
 
             Assert.AreEqual(testEntities[0].ItemId, newItemPriceEntity.itemID);
@@ -176,7 +176,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
 
             var testEntities = new List<ItemPrice>
             { 
-                new TestItemPriceBuilder().WithItemId(this.testItems[0].itemID).WithLocaleId(this.testLocale.localeID).WithPriceAmount(this.testUpdatedPrice)
+                new TestItemPriceBuilder().WithItemId(this.testItems[0].ItemId).WithLocaleId(this.testLocale.localeID).WithPriceAmount(this.testUpdatedPrice)
             }.ConvertAll(e => new ItemPriceModel
                 {
                     IrmaPushId = this.testPosData.IRMAPushID,
@@ -202,7 +202,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             this.itemPriceUpdateService.SaveEntitiesBulk(testEntities);
 
             // Then.
-            var testItemId = this.testItems[0].itemID;
+            var testItemId = this.testItems[0].ItemId;
             var updatedItemPriceEntity = context.Context.ItemPrice.Single(ip => ip.localeID == this.testLocale.localeID && testItemId == ip.itemID);
 
             // Have to reload the entity since the price update was done via stored procedure.
@@ -229,7 +229,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
 
             var testEntities = new List<ItemPrice>
             { 
-                new TestItemPriceBuilder().WithItemId(this.testItems[0].itemID).WithLocaleId(this.testLocale.localeID).WithItemPriceTypeId(ItemPriceTypes.Tpr)
+                new TestItemPriceBuilder().WithItemId(this.testItems[0].ItemId).WithLocaleId(this.testLocale.localeID).WithItemPriceTypeId(ItemPriceTypes.Tpr)
             }.ConvertAll(e => new ItemPriceModel
                 {
                     IrmaPushId = this.testPosData.IRMAPushID,
@@ -255,7 +255,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             this.itemPriceUpdateService.SaveEntitiesBulk(testEntities);
 
             // Then.
-            var testItemsId = this.testItems.Select(i => i.itemID).ToList();
+            var testItemsId = this.testItems.Select(i => i.ItemId).ToList();
             var newItemPriceEntity = context.Context.ItemPrice.Single(ip => ip.localeID == this.testLocale.localeID && testItemsId.Contains(ip.itemID));
 
             Assert.AreEqual(testEntities[0].ItemId, newItemPriceEntity.itemID);
@@ -281,7 +281,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemPrice>
             { 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[0].itemID)
+                    .WithItemId(this.testItems[0].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Tpr)
                     .WithPriceAmount(this.testUpdatedPrice)
@@ -310,7 +310,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             this.itemPriceUpdateService.SaveEntitiesBulk(testEntities);
 
             // Then.
-            var testItemId = this.testItems[0].itemID;
+            var testItemId = this.testItems[0].ItemId;
 
             var updatedItemPriceEntity = context.Context.ItemPrice.Single(ip => ip.localeID == this.testLocale.localeID && testItemId == ip.itemID);
 
@@ -342,17 +342,17 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemPrice>
             { 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[0].itemID)
+                    .WithItemId(this.testItems[0].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg),
                     
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[1].itemID)
+                    .WithItemId(this.testItems[1].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg),
 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[2].itemID)
+                    .WithItemId(this.testItems[2].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg)
             }.ConvertAll(e => new ItemPriceModel
@@ -401,17 +401,17 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemPrice>
             { 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[0].itemID)
+                    .WithItemId(this.testItems[0].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg),
                     
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[1].itemID)
+                    .WithItemId(this.testItems[1].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg),
 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[2].itemID)
+                    .WithItemId(this.testItems[2].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg)
             }.ConvertAll(e => new ItemPriceModel
@@ -442,8 +442,8 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
 
             // Uncomment assertions during manual runs to properly verify the test.
 
-            //var testItemsId = testItems.Select(i => i.itemID).ToList();
-            //var itemPriceEntities = context.Context.ItemPrice.Where(ip => ip.localeID == testLocale.localeID && testItemsId.Contains(ip.itemID)).ToList();
+            //var testItemsId = testItems.Select(i => i.ItemId).ToList();
+            //var itemPriceEntities = context.Context.ItemPrice.Where(ip => ip.localeID == testLocale.localeID && testItemsId.Contains(ip.ItemId)).ToList();
 
             //Assert.AreEqual(testEntities.Count, itemPriceEntities.Count);
         }
@@ -501,17 +501,17 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemPrice>
             { 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[0].itemID)
+                    .WithItemId(this.testItems[0].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg),
                     
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[1].itemID)
+                    .WithItemId(this.testItems[1].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg),
 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[2].itemID)
+                    .WithItemId(this.testItems[2].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg)
             }.ConvertAll(e => new ItemPriceModel
@@ -539,7 +539,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             this.itemPriceUpdateService.SaveEntitiesRowByRow(testEntities);
 
             // Then.
-            var testItemsId = testItems.Select(i => i.itemID).ToList();
+            var testItemsId = testItems.Select(i => i.ItemId).ToList();
             var itemPriceEntities = context.Context.ItemPrice.Where(ip => ip.localeID == testLocale.localeID && testItemsId.Contains(ip.itemID)).ToList();
 
             Assert.AreEqual(testEntities.Count, itemPriceEntities.Count);
@@ -556,17 +556,17 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemPrice>
             { 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[0].itemID)
+                    .WithItemId(this.testItems[0].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg),
                     
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[1].itemID)
+                    .WithItemId(this.testItems[1].ItemId)
                     .WithLocaleId(this.unknownLocaleId)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg),
 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[2].itemID)
+                    .WithItemId(this.testItems[2].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg)
             }.ConvertAll(e => new ItemPriceModel
@@ -594,7 +594,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             this.itemPriceUpdateService.SaveEntitiesRowByRow(testEntities);
 
             // Then.
-            var testItemsId = testItems.Select(i => i.itemID).ToList();
+            var testItemsId = testItems.Select(i => i.ItemId).ToList();
             var successfulItemPriceEntities = context.Context.ItemPrice.Where(ip => ip.localeID == testLocale.localeID && testItemsId.Contains(ip.itemID)).ToList();
 
             Assert.AreEqual(testEntities.Count - 1, successfulItemPriceEntities.Count);
@@ -611,17 +611,17 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemPrice>
             { 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[0].itemID)
+                    .WithItemId(this.testItems[0].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg),
                     
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[1].itemID)
+                    .WithItemId(this.testItems[1].ItemId)
                     .WithLocaleId(this.unknownLocaleId)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg),
 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[2].itemID)
+                    .WithItemId(this.testItems[2].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg)
             }.ConvertAll(e => new ItemPriceModel
@@ -664,19 +664,19 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemPrice>
             { 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[0].itemID)
+                    .WithItemId(this.testItems[0].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg)
                     .WithPriceAmount(this.testUpdatedPrice)
                     .WithUomId(this.unknownUomId),
                     
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[1].itemID)
+                    .WithItemId(this.testItems[1].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg),
 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[2].itemID)
+                    .WithItemId(this.testItems[2].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg)
             }.ConvertAll(e => new ItemPriceModel
@@ -704,7 +704,7 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             this.itemPriceUpdateService.SaveEntitiesRowByRow(testEntities);
 
             // Then.
-            var testItemId = testItems[0].itemID;
+            var testItemId = testItems[0].ItemId;
             var failedItemPriceEntity = context.Context.ItemPrice.Single(ip => ip.localeID == testLocale.localeID && ip.itemID == testItemId);
 
             Assert.AreEqual(UOMs.Each, failedItemPriceEntity.uomID);
@@ -723,18 +723,18 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemPrice>
             { 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[0].itemID)
+                    .WithItemId(this.testItems[0].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg)
                     .WithUomId(this.unknownUomId),
                     
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[1].itemID)
+                    .WithItemId(this.testItems[1].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg),
 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[2].itemID)
+                    .WithItemId(this.testItems[2].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg)
             }.ConvertAll(e => new ItemPriceModel
@@ -777,18 +777,18 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemPrice>
             { 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[0].itemID)
+                    .WithItemId(this.testItems[0].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg)
                     .WithUomId(this.unknownUomId),
                     
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[1].itemID)
+                    .WithItemId(this.testItems[1].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg),
 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[2].itemID)
+                    .WithItemId(this.testItems[2].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg)
             }.ConvertAll(e => new ItemPriceModel
@@ -830,18 +830,18 @@ namespace PushController.Tests.Controller.UdmUpdateServiceTests
             var testEntities = new List<ItemPrice>
             { 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[0].itemID)
+                    .WithItemId(this.testItems[0].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg)
                     .WithUomId(this.unknownUomId),
                     
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[1].itemID)
+                    .WithItemId(this.testItems[1].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg),
 
                 new TestItemPriceBuilder()
-                    .WithItemId(this.testItems[2].itemID)
+                    .WithItemId(this.testItems[2].ItemId)
                     .WithLocaleId(this.testLocale.localeID)
                     .WithItemPriceTypeId(ItemPriceTypes.Reg)
             }.ConvertAll(e => new ItemPriceModel

@@ -1,0 +1,244 @@
+﻿@model OOSCommon.DataContext.REGION
+@{
+    ViewBag.Title = "Custom Report";
+    ViewBag.MinDate = DateTime.Now.AddYears(-1);
+}
+
+@(Html.Telerik().ScriptRegistrar().OnDocumentReady(@<text>
+
+    $("#ddlRegions").change(function () {
+        var regionId = $(this).val();
+        $.getJSON("/CustomReport/LoadStoresByRegion", { regionId: regionId },
+            function (GetStores) {
+                var select = $("#lbStores");
+                select.empty();
+                select.append($('<option/>', { value: 0, text: "(all stores)" }));
+                $.each(GetStores, function (index, itemData) {
+                    select.append($('<option/>', { value: itemData.Value, text: itemData.Text }));
+                });
+            });
+    });
+
+    $("#lbTeams").change(function () {
+        var regionName = $("#ddlRegions option:selected").text();
+        var storeNumbers = '';
+        $('#lbStores option:selected').each(function (i) {
+            storeNumbers = storeNumbers + $(this).val() + ',';
+        });
+        var teamNames = '';
+        $('#lbTeams option:selected').each(function (i) {
+            teamNames = teamNames + $(this).val() + ','; 
+        });
+        $.getJSON("/CustomReport/LoadSubTeamsByTeam", { regionName: regionName, storeNumbers: storeNumbers, teamNames: teamNames },
+            function (GetSubteams) {
+                var listSubteam = $("#lbSubteams");
+                listSubteam.empty();
+                listSubteam.append($('<option/>', { value: 0, text: "(all subteams)" }));
+                $.each(GetSubteams, function (index, itemData) {
+                    listSubteam.append($('<option/>', { value: itemData.Value, text: itemData.Text }));
+                });
+            });
+        });
+
+    $('#selectedEndDate').change(function () {
+        var date = $(this).val();
+        var arrDate = date.split("/");
+        var today = new Date();
+        useDate = new Date(arrDate[2], arrDate[1] - 1, arrDate[0]);
+        var startdate = $('#selectedStartDate').val();
+        var startarrDate = startdate.split("/");
+        var starttoday = new Date();
+        startuseDate = new Date(startarrDate[2], startarrDate[1] - 1, startarrDate[0]);
+        if (useDate < startuseDate) {
+            alert('End date cannot be less than Start Date'); $(this).val('');
+        }
+    });
+
+    $('#formSubmit').submit(function () {
+        // Region selection
+        var regionName = $("#ddlRegions option:selected").text();
+        $('#selectedRegion').val(regionName);
+        // Store selection
+        var storeNumbers = '';
+        $('#lbStores option:selected').each(function (i) {
+            storeNumbers = storeNumbers + $(this).val() + ',';
+        });
+        $('#selectedStores').val(storeNumbers);
+
+        // Team selection
+        var teams = '';
+        $('#lbTeams option:selected').each(function (i) {
+            teams = teams + $(this).val() + ',';
+        });
+        $('#selectedTeams').val(teams);
+
+        // SubTeam selection
+        var subteams = '';
+        $('#lbSubteams option:selected').each(function (i) {
+            subteams = subteams + $(this).val() + ',';
+        });
+        $('#selectedSubTeams').val(subteams);
+    });
+
+    $('#ddlRegions').first().focus();
+
+        var tabindex = 1;
+        $('input,select').each(function () {
+            if (this.type != "hidden") {
+                var $input = $(this); $input.attr("tabindex", tabindex); tabindex++;
+            }
+        }); 
+
+</text>))
+
+<style type="text/css">
+    table
+    {
+        border:0px none transparent;
+        border-collapse: collapse;
+        padding:0;
+    }
+    table td
+    {
+        border:0px none transparent;
+        border-collapse: collapse;
+        padding:6px 6px 6px 6px;
+    }
+</style>
+
+<table class="CleanTable" style="width:auto;">
+    <tr class="CleanTable">
+        <td align="left" valign="top" class="CleanTable" style="width:240px;">
+            <h2>CUSTOM REPORT</h2>
+            <p>
+                Use the CTRL key to search<br />
+                multiple stores, teams, or<br /> 
+                subteams.
+            </p>
+        </td>
+        <td align="left" valign="top" class="CleanTable">
+@using (Html.BeginForm("Create", "CustomReport", FormMethod.Post, new { defaultbutton = "GetReport", id = "formSubmit" }))
+{ 
+    <input type="hidden" id="selectedRegion" name="selectedRegion" value="" />
+    <input type="hidden" id="selectedStores" name="selectedStores" value="" />
+    <input type="hidden" id="selectedTeams" name="selectedTeams" value="" />
+    <input type="hidden" id="selectedSubTeams" name="selectedSubTeams" value="" />
+    @Html.Hidden("clientTodayDate", DateTime.Now.ToShortDateString())
+    
+    @Html.ValidationSummary(true)
+    
+    
+    <div class="InfoPanel">
+        <table >
+            <tr>
+                <td align="left" valign="top">From</td>
+                <td align="left" valign="top">
+                    @(Html.Telerik().DatePicker()
+                        .Effects(e => e.Slide())
+                        .ButtonTitle("Select expiration date")
+                        .Format("MM/dd/yyyy")
+                        .Name("selectedStartDate")
+                        .ShowButton(true)
+                        .Min(DateTime.Now.AddYears(-1))
+                        .Max(DateTime.Now)
+                        .Value(DateTime.Now.AddDays(-7))
+                        .HtmlAttributes(new { id = "DatePicker_wrapper" })
+                    )
+                </td>
+                <td align="left" valign="top" style="padding-left:6px;">to</td>
+                <td align="left" valign="top">
+                    @(Html.Telerik().DatePicker()
+                        .Effects(e => e.Slide())
+                        .ButtonTitle("Select expiration date")
+                        .Format("MM/dd/yyyy")
+                        .Name("selectedEndDate")
+                        .ShowButton(true)
+                        .Min(DateTime.Now.AddYears(-1))
+                        .Max(DateTime.Now)
+                        .Value(DateTime.Now)
+                        .HtmlAttributes(new { id = "DatePicker_wrapper" })
+                    )
+                </td>
+            </tr>
+        </table>
+        <div style="height:20px;"></div>
+        <table>
+            <tr>
+                <td align="left" valign="top" style="width:125px;">Region</td>
+                <td align="left" valign="top">
+                    @if (ViewBag.MyRegion != null)
+                    {
+                        @ViewBag.MyRegion
+                    }
+                    @if (ViewBag.MyRegion == null && ViewBag.MyRegions != null)
+                    {
+                        @Html.DropDownListFor(
+                            Model => Model.REGION_NAME,
+                            new SelectList(ViewBag.MyRegions as System.Collections.IEnumerable, "ID", "REGION_ABBR"),
+                            "Select a Region", new { id = "ddlRegions", style = "width:200px;" })
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td align="left" valign="top">Store</td>
+                <td align="left" valign="top">
+                    @if (ViewBag.MyStore != null)
+                    {
+                        @ViewBag.MyStore
+                    }
+                    @if (ViewBag.MyStore == null && ViewBag.MyStores != null)
+                    {
+                        @Html.ListBoxFor(
+                            Model => Model.REGION_ABBR,
+                            new SelectList((IEnumerable<SelectListItem>)ViewBag.MyStores, "Value", "Text"),
+                            new { id = "lbStores", style = "width:200px;height:250px;" })
+                    }
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="height:16px;"></div>
+    <div class="InfoPanel">
+        <table>
+            <tr>
+                <td align="left" valign="top" style="width:125px;">Team</td>
+                <td align="left" valign="top">
+                    @if (ViewBag.MyTeams != null)
+                    {
+                        @Html.ListBoxFor(
+                            Model => Model.IS_VISIBLE,
+                            new SelectList(ViewBag.MyTeams as System.Collections.IEnumerable, "Key", "Value"),
+                                    new { id = "lbTeams", style = "width:200px;height:170px;" })
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td align="left" valign="top">Subteam</td>
+                <td align="left" valign="top">
+                    @Html.ListBoxFor(
+                        Model => Model.KNOWN_OOS_MAP,
+                        new SelectList(Enumerable.Empty<SelectListItem>(), "Key", "Value"),
+                        new { id = "lbSubteams", style = "width:200px;height:170px;" })
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="height:16px;"></div>
+    <center>
+        <table >
+            <tr>
+                <td colspan="2" align="center" valign="top">
+                    <input type="submit" id="GetReport" name="GetReport" value="Generate Report"/>
+                </td>
+            </tr>
+            <tr>
+                <td align="left" valign="top" colspan="2">
+                    <div id="resultContainer"><h2>@ViewBag.Message</h2></div>
+                </td>
+            </tr>
+        </table>
+    </center>
+}
+        </td>
+    </tr>
+</table>

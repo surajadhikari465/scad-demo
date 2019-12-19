@@ -1,11 +1,5 @@
-﻿@using Infragistics.Web.Mvc
-@model Icon.Web.Mvc.Models.PluRequestEditViewModel
+﻿@model Icon.Web.Mvc.Models.PluRequestEditViewModel
 
-@(Html.Infragistics().Loader()
-    .ScriptPath(Url.Content("~/Scripts/Infragistics/js/"))
-    .CssPath(Url.Content("~/Content/Infragistics/css/"))
-    .Render()
-)
 
 @using (Html.BeginForm("Edit", "PluRequest", FormMethod.Post, new { @class = "begin-form" }))
 {
@@ -19,72 +13,50 @@
         @Html.HiddenFor(model => Model.NationalPLU)
         @Html.HiddenFor(model => Model.MerchandiseHierarchyClassId)
 
-        <div class="row">
-            @Html.LabelFor(model => Model.BrandName, new { @class = "col-md-3 form-label" })
-            <div>
-                @Html.TextBoxFor(model => Model.BrandName, new { @class = "col-md-6 form-input .ui-autocomplete", data_icon_autocomplete = @Url.Action("BrandAutocomplete") })
-            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => Model.BrandName, new { @class = "form-label" })
+            @Html.TextBoxFor(model => Model.BrandName, new { @class = "form-control form-input .ui-autocomplete", data_icon_autocomplete = @Url.Action("BrandAutocomplete") })
         </div>
-        <div class="row">
-            @Html.LabelFor(model => Model.ProductDescription, new { @class = "col-md-3 form-label" })
-            <div>
-                @Html.TextBoxFor(model => Model.ProductDescription, new { @class = "col-md-6 form-input" })
-                @Html.ValidationMessageFor(model => Model.ProductDescription, null, new { @class = "col-md-4 form-property-val" })
-            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => Model.ProductDescription, new { @class = "form-label" })
+            @Html.TextBoxFor(model => Model.ProductDescription, new { @class = "form-control form-input" })
+            @Html.ValidationMessageFor(model => Model.ProductDescription, null, new { @class = "form-property-val" })
         </div>
-        <div class="row">
-            @Html.LabelFor(model => Model.PosDescription, new { @class = "col-md-3 form-label" })
-            <div>
-                @Html.TextBoxFor(model => Model.PosDescription, new { @class = "col-md-6 form-input" })
-                @Html.ValidationMessageFor(model => Model.PosDescription, null, new { @class = "col-md-4 form-property-val" })
-            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => Model.PosDescription, new { @class = "form-label" })
+            @Html.TextBoxFor(model => Model.PosDescription, new { @class = "form-control form-input" })
+            @Html.ValidationMessageFor(model => Model.PosDescription, null, new { @class = "form-property-val" })
         </div>
-        <div class="row">
-            @Html.LabelFor(model => Model.PackageUnit, new { @class = "col-md-3 form-label" })
-            <div>
-                @Html.TextBoxFor(model => Model.PackageUnit, new { @class = "col-md-6 form-input" })
-                @Html.ValidationMessageFor(model => Model.PackageUnit, null, new { @class = "col-md-4 form-property-val" })
-            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => Model.PackageUnit, new { @class = "form-label" })
+            @Html.TextBoxFor(model => Model.PackageUnit, new { @class = "form-control form-input" })
+            @Html.ValidationMessageFor(model => Model.PackageUnit, null, new { @class = "form-property-val" })       
         </div>
-        <div class="row">
-            @Html.LabelFor(model => Model.RetailSize, new { @class = "col-md-3 form-label" })
-            <div>
-                @Html.TextBoxFor(model => Model.RetailSize, new { @class = "col-md-6 form-input" })
-                @Html.ValidationMessageFor(model => Model.RetailSize, null, new { @class = "col-md-4 form-property-val" })
-            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => Model.RetailSize, new { @class = "form-label" })
+            @Html.TextBoxFor(model => Model.RetailSize, new { @class = "form-control form-input" })
+            @Html.ValidationMessageFor(model => Model.RetailSize, null, new { @class = "form-property-val" })
         </div>
-        <div class="row">
-            @Html.LabelFor(model => Model.RetailUom, new { @class = "col-md-3 form-label" })
-            <div>
-                @Html.DropDownListFor(model => Model.RetailUom, Model.RetailUoms, null, new { @class = "col-md-6 form-input" })
-            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => Model.RetailUom, new { @class = "form-label" })
+            @Html.DropDownListFor(model => Model.RetailUom, Model.RetailUoms, null, new { @class = "form-control form-input" })
         </div>
-       
-        <div class="row">
-            @Html.LabelFor(model => Model.SubTeamName, new { @class = "col-md-3 form-label" })
-            <div>
-                @Html.DropDownListFor(model => Model.FinancialHierarchyClassId, Model.FinanacialHierarchyClasses, "", new { @class = "col-md-6 form-input" })
-            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => Model.SubTeamName, new { @class = "form-label" })
+            @Html.DropDownListFor(model => Model.FinancialHierarchyClassId, Model.FinanacialHierarchyClasses, "", new { @class = "form-control form-input" })
         </div>
-        
-        <div class="row">
-            @Html.LabelFor(model => Model.NationalHierarchyName, new { @class = "col-md-3 form-label" })
-            <div>
-                @Html.DropDownListFor(model => Model.NationalHierarchyClassId, Model.NationalHierarchyClasses, "", new { @class = "col-md-6 form-input" })
-            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => Model.NationalHierarchyName, new { @class = "form-label" })
+            @Html.DropDownListFor(model => Model.NationalHierarchyClassId, Model.NationalHierarchyClasses, "", new { @class = "form-control form-input" })
         </div>
-        <div class="row">
-            @Html.LabelFor(model => Model.Note, new { @class = "col-md-3 form-label" })
-            <div>
-                @Html.TextBoxFor(model => Model.Note, new { @class = "col-md-6 form-input" })
-                @Html.ValidationMessageFor(model => Model.Note, null, new { @class = "col-md-4 form-property-val" })
-            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => Model.Note, new { @class = "form-label" })
+            @Html.TextBoxFor(model => Model.Note, new { @class = "form-control form-input" })
+            @Html.ValidationMessageFor(model => Model.Note, null, new { @class = "form-property-val" })
         </div>
-        <div class="row">
-            @Html.LabelFor(model => Model.RequestStatus, new { @class = "col-md-3 form-label" })
-            <div>
-                @Html.DropDownListFor(model => Model.RequestStatus, Model.Status, null, new { @class = "col-md-6 form-input" })
-            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => Model.RequestStatus, new { @class = "form-label" })
+            @Html.DropDownListFor(model => Model.RequestStatus, Model.Status, null, new { @class = "form-control form-input" })
         </div>    
     </fieldset>
 
@@ -93,7 +65,7 @@
             <div class="form-group">
                 @using (Html.BeginForm("Edit", "PluRequest", FormMethod.Post))
                 {
-                    <input type="submit" value="Save Changes" id="updateButton" class="btn btn-default" onclick="updateButtonClick()" />
+                    <input type="submit" value="Save Changes" id="updateButton" class="btn btn-light" onclick="updateButtonClick()" />
                 }
             </div>            
         </div>

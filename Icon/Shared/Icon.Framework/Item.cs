@@ -16,31 +16,27 @@ namespace Icon.Framework
     {
         public Item()
         {
-            this.ScanCode = new HashSet<ScanCode>();
+            this.ItemSignAttribute = new HashSet<ItemSignAttribute>();
             this.ItemHierarchyClass = new HashSet<ItemHierarchyClass>();
-            this.ItemTrait = new HashSet<ItemTrait>();
-            this.ItemPrice = new HashSet<ItemPrice>();
             this.ItemLink = new HashSet<ItemLink>();
             this.ItemLink1 = new HashSet<ItemLink>();
-            this.ItemSignAttribute = new HashSet<ItemSignAttribute>();
+            this.ItemPrice = new HashSet<ItemPrice>();
+            this.ItemTrait = new HashSet<ItemTrait>();
+            this.ScanCode = new HashSet<ScanCode>();
         }
     
-        public int itemID { get; set; }
-        public int itemTypeID { get; set; }
-        public int productKey { get; set; }
-        public bool hospitalityItem { get; set; }
-        public bool kitchenItem { get; set; }
-        public string kitchenDescription { get; set; }
-        public string imageURL { get; set; }
+        public int ItemId { get; set; }
+        public Nullable<int> ItemTypeId { get; set; }
+        public string ItemAttributesJson { get; set; }
     
-        public virtual ICollection<ScanCode> ScanCode { get; set; }
-        public virtual ItemType ItemType { get; set; }
-        public virtual ICollection<ItemHierarchyClass> ItemHierarchyClass { get; set; }
         public virtual PLUMap PLUMap { get; set; }
-        public virtual ICollection<ItemTrait> ItemTrait { get; set; }
-        public virtual ICollection<ItemPrice> ItemPrice { get; set; }
+        public virtual ICollection<ItemSignAttribute> ItemSignAttribute { get; set; }
+        public virtual ICollection<ItemHierarchyClass> ItemHierarchyClass { get; set; }
         public virtual ICollection<ItemLink> ItemLink { get; set; }
         public virtual ICollection<ItemLink> ItemLink1 { get; set; }
-        public virtual ICollection<ItemSignAttribute> ItemSignAttribute { get; set; }
+        public virtual ICollection<ItemPrice> ItemPrice { get; set; }
+        public virtual ICollection<ItemTrait> ItemTrait { get; set; }
+        public virtual ICollection<ScanCode> ScanCode { get; set; }
+        public virtual ItemType ItemType { get; set; }
     }
 }

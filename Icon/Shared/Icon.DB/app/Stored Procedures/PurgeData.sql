@@ -46,20 +46,21 @@ BEGIN
 	PRINT 'Copying OutOfSync error rows from infor.MessageArchiveProduct to infor.MessageArchiveOutOfSync'
 
 	INSERT INTO infor.MessageArchiveProductOutOfSync
-		   (ItemId
-           ,ScanCode
-           ,InforMessageId
-           ,Context
-           ,ErrorCode
-           ,ErrorDetails
-           ,InsertDate)
-	SELECT ItemId
-      ,ScanCode
-      ,InforMessageId
-      ,Context
-      ,ErrorCode
-      ,ErrorDetails
-      ,InsertDate
+		(ItemId
+		,ScanCode
+		,InforMessageId
+		,Context
+		,ErrorCode
+		,ErrorDetails
+		,InsertDate)
+	SELECT
+		ItemId
+		,ScanCode
+		,InforMessageId
+		,Context
+		,ErrorCode
+		,ErrorDetails
+		,InsertDate
 	FROM infor.MessageArchiveProduct
 	WHERE ErrorCode = 'OutOfSyncItemUpdateErrorCode'
 		AND InsertDate > @Today - 1
@@ -84,12 +85,11 @@ BEGIN
 
 			while (@count > 0)
 				begin
-					DELETE top(@count) FROM ' +
-					QUOTENAME(rp.[Server]) + '.' +
+					DELETE top(@count)' +
 					QUOTENAME(rp.[Database]) + '.' +
 					QUOTENAME(rp.[Schema]) + '.' +
 					QUOTENAME(rp.[Table]) +
-					' WHERE InsertDate < ' +
+					' WHERE ' + QUOTENAME(rp.[ReferenceColumn]) + ' < ' +
 					'DATEADD(d, -' +
 					convert(nvarchar(8), rp.DaysToKeep) +
 					', GETDATE())

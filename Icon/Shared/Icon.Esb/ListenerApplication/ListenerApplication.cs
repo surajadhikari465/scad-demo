@@ -71,7 +71,15 @@ namespace Icon.Esb.ListenerApplication
 
                     string connectionSuccessMessage = string.Format("The {0} on queue {1} connected successfully.", ListenerApplicationName, esbConnectionSettings.QueueName);
                     logger.Info(connectionSuccessMessage);
-                    emailClient.Send(connectionSuccessMessage, listenerApplicationSettings.EmailSubjectConnectionSuccess);
+
+                    try
+                    {
+                        emailClient.Send(connectionSuccessMessage, listenerApplicationSettings.EmailSubjectConnectionSuccess);
+                    }
+                    catch(Exception ex)
+                    {
+                         logger.Error($"Email alert fail: {connectionSuccessMessage}: {ex.Message}");
+                    }
                 }
                 catch (Exception ex)
                 {

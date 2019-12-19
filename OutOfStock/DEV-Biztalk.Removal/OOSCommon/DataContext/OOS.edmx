@@ -1,0 +1,1623 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="OOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="ApplicationConfig">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Value" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KNOWN_OOS_DETAIL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="REASON_ID" Type="int" />
+          <Property Name="SOURCE_ID" Type="int" />
+          <Property Name="STORE_ID" Type="int" />
+          <Property Name="VIN" Type="varchar" MaxLength="25" />
+          <Property Name="UPC" Type="varchar" MaxLength="25" />
+          <Property Name="NAT_UPC" Type="varchar" MaxLength="25" />
+          <Property Name="START_DATE" Type="datetime" />
+          <Property Name="END_DATE" Type="datetime" />
+          <Property Name="CREATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" />
+          <Property Name="LAST_UPDATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="LAST_UPDATED_DATE" Type="datetime" />
+          <Property Name="PS_TEAM" Type="varchar" MaxLength="25" />
+          <Property Name="PS_SUBTEAM" Type="varchar" MaxLength="25" />
+          <Property Name="KNOWN_OOS_HEADER_ID" Type="int" />
+          <Property Name="NOTES" Type="varchar" MaxLength="2000" />
+          <Property Name="ProductStatus" Type="varchar" MaxLength="200" />
+          <Property Name="ExpirationDate" Type="datetime" />
+          <Property Name="isDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KNOWN_OOS_HEADER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="LAST_UPDATED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="KNOWN_OOS_MAP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="REGION_ID" Type="int" Nullable="false" />
+          <Property Name="KNOWN_OOS_HEADER_ID" Type="int" />
+          <Property Name="VENDOR_KEY" Type="varchar" MaxLength="10" />
+          <Property Name="CREATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="LAST_UPDATED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="OutOfStockNofitication">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Message" Type="varchar(max)" Nullable="false" />
+          <Property Name="Expiration" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductStatus">
+          <Key>
+            <PropertyRef Name="UPC" />
+            <PropertyRef Name="Region" />
+          </Key>
+          <Property Name="UPC" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Region" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="VendorKey" Type="varchar" MaxLength="10" />
+          <Property Name="Vin" Type="varchar" MaxLength="25" />
+          <Property Name="Reason" Type="varchar" MaxLength="500" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="ProductStatus" Type="varchar" MaxLength="2000" />
+          <Property Name="ExpirationDate" Type="datetime" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REASON">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="REASON_DESCRIPTION" Type="varchar" MaxLength="500" />
+          <Property Name="CREATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" />
+          <Property Name="LAST_UPDATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="LAST_UPDATED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="REGION">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="REGION_ABBR" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="REGION_NAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IS_VISIBLE" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="TimeOffsetFromCentral" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REGION_MOVEMENT_QUERY">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="REGION_ID" Type="int" />
+          <Property Name="QUERY" Type="varchar" MaxLength="5000" />
+          <Property Name="CREATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="LAST_UPDATED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="REGION_ID" Type="int" Nullable="false" />
+          <Property Name="REPORT_DETAIL_ATTRIBUTE_TYPE_ID" Type="int" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="LAST_UPDATED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="RegionalAppConfiguration">
+          <Key>
+            <PropertyRef Name="RegionId" />
+          </Key>
+          <Property Name="RegionId" Type="int" Nullable="false" />
+          <Property Name="UseBiztalk" Type="bit" />
+          <Property Name="BiztalkServiceURI" Type="varchar" MaxLength="255" />
+          <Property Name="OOSServiceURI" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REPORT_DETAIL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="REPORT_HEADER_ID" Type="int" Nullable="false" />
+          <Property Name="REASON_ID" Type="int" />
+          <Property Name="LOCATION_ID" Type="int" />
+          <Property Name="VENDOR_KEY" Type="varchar" MaxLength="10" />
+          <Property Name="VIN" Type="varchar" MaxLength="25" />
+          <Property Name="PS_TEAM" Type="varchar" MaxLength="50" />
+          <Property Name="PS_SUBTEAM" Type="varchar" MaxLength="50" />
+          <Property Name="UPC" Type="varchar" MaxLength="25" />
+          <Property Name="NAT_UPC" Type="varchar" MaxLength="25" />
+          <Property Name="SOURCE_ID" Type="int" />
+          <Property Name="MOVEMENT" Type="decimal" Precision="9" Scale="3" />
+          <Property Name="EFF_COST" Type="decimal" Precision="28" Scale="3" />
+          <Property Name="EFF_PRICE" Type="decimal" Precision="28" Scale="3" />
+          <Property Name="EFF_PRICETYPE" Type="varchar" MaxLength="5" />
+          <Property Name="NOTES" Type="varchar" MaxLength="2000" />
+          <Property Name="CASE_SIZE" Type="decimal" Precision="28" Scale="4" />
+          <Property Name="CREATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="LAST_UPDATED_DATE" Type="datetime" />
+          <Property Name="SCAN_DATE" Type="datetime" />
+          <Property Name="BRAND" Type="varchar" MaxLength="50" />
+          <Property Name="LONG_DESCRIPTION" Type="varchar" MaxLength="50" />
+          <Property Name="ITEM_SIZE" Type="varchar" MaxLength="10" />
+          <Property Name="ITEM_UOM" Type="varchar" MaxLength="5" />
+          <Property Name="CATEGORY_NAME" Type="varchar" MaxLength="50" />
+          <Property Name="CLASS_NAME" Type="varchar" MaxLength="50" />
+          <Property Name="BRAND_NAME" Type="varchar" MaxLength="50" />
+          <Property Name="LASTDATEOFSALES" Type="datetime" />
+          <Property Name="DAYSOFMOVEMENT" Type="int" />
+        </EntityType>
+        <EntityType Name="REPORT_DETAIL_ATTRIBUTE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="REPORT_DETAIL_ID" Type="int" Nullable="false" />
+          <Property Name="REPORT_DETAIL_ATTRIBUTE_TYPE_ID" Type="int" Nullable="false" />
+          <Property Name="VALUE" Type="varchar" MaxLength="300" />
+          <Property Name="CREATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="LAST_UPDATED_DATE" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="REPORT_DETAIL_ATTRIBUTE_TYPE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="QUERY" Type="varchar" MaxLength="6000" />
+          <Property Name="CREATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="LAST_UPDATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="LAST_UPDATED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="REPORT_HEADER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="STORE_ID" Type="int" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="LAST_UPDATED_DATE" Type="datetime" />
+          <Property Name="LAST_UPDATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="PROCESSED_FLAG" Type="varchar" MaxLength="10" />
+          <Property Name="EXCLUDE_FLAG" Type="int" />
+          <Property Name="OffsetCorrectedCreateDate" Type="datetime" />
+          <Property Name="TimeOffsetFromCentral" Type="smallint" />
+        </EntityType>
+        <EntityType Name="ScansMissingVimData">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="Report_Header_Id" Type="int" Nullable="false" />
+          <Property Name="UPC" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="ScanCount" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SKUCount">
+          <Key>
+            <PropertyRef Name="idSKUCount" />
+          </Key>
+          <Property Name="idSKUCount" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="STORE_PS_BU" Type="int" Nullable="false" />
+          <Property Name="TEAM_ID" Type="int" Nullable="false" />
+          <Property Name="numberOfSKUs" Type="int" />
+        </EntityType>
+        <EntityType Name="SOURCE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SOURCE_DESCRIPTION" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="STATUS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="STATUS" Type="varchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="store">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PS_BU" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="STORE_ABBREVIATION" Type="varchar" MaxLength="10" />
+          <Property Name="STORE_NAME" Type="varchar" MaxLength="50" />
+          <Property Name="REGION_ID" Type="int" Nullable="false" />
+          <Property Name="STATUS_ID" Type="int" />
+          <Property Name="LAST_UPDATED_DATE" Type="datetime" />
+          <Property Name="LAST_UPDATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="CREATED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="Hidden" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TEAM_Interim">
+          <Key>
+            <PropertyRef Name="idTeam" />
+          </Key>
+          <Property Name="idTeam" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="teamName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="teamVIMId" Type="int" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastLogin" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Region" Type="varchar" MaxLength="5" />
+          <Property Name="RegionOverride" Type="varchar" MaxLength="5" />
+          <Property Name="Store" Type="varchar" MaxLength="5" />
+          <Property Name="StoreOverride" Type="varchar" MaxLength="5" />
+        </EntityType>
+        <Association Name="FK_RegionalAppConfiguration_Region_Id">
+          <End Role="REGION" Type="Self.REGION" Multiplicity="1" />
+          <End Role="RegionalAppConfiguration" Type="Self.RegionalAppConfiguration" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RegionalAppConfiguration">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="KNOWN_OOS_DETAIL_KNOWN_OOS_HEADER_FK">
+          <End Role="KNOWN_OOS_HEADER" Type="Self.KNOWN_OOS_HEADER" Multiplicity="0..1" />
+          <End Role="KNOWN_OOS_DETAIL" Type="Self.KNOWN_OOS_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KNOWN_OOS_HEADER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="KNOWN_OOS_DETAIL">
+              <PropertyRef Name="KNOWN_OOS_HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="KNOWN_OOS_MAP_KNOWN_OOS_HEADER_FK">
+          <End Role="KNOWN_OOS_HEADER" Type="Self.KNOWN_OOS_HEADER" Multiplicity="0..1" />
+          <End Role="KNOWN_OOS_MAP" Type="Self.KNOWN_OOS_MAP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KNOWN_OOS_HEADER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="KNOWN_OOS_MAP">
+              <PropertyRef Name="KNOWN_OOS_HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="KNOWN_OOS_MAP_REGION_ID_FK">
+          <End Role="REGION" Type="Self.REGION" Multiplicity="1" />
+          <End Role="KNOWN_OOS_MAP" Type="Self.KNOWN_OOS_MAP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="KNOWN_OOS_MAP">
+              <PropertyRef Name="REGION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="KNOWN_OOS_REASON_FK">
+          <End Role="REASON" Type="Self.REASON" Multiplicity="0..1" />
+          <End Role="KNOWN_OOS_DETAIL" Type="Self.KNOWN_OOS_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REASON">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="KNOWN_OOS_DETAIL">
+              <PropertyRef Name="REASON_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="KNOWN_OOS_SOURCE_FK">
+          <End Role="SOURCE" Type="Self.SOURCE" Multiplicity="0..1" />
+          <End Role="KNOWN_OOS_DETAIL" Type="Self.KNOWN_OOS_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SOURCE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="KNOWN_OOS_DETAIL">
+              <PropertyRef Name="SOURCE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="KNOWN_OOS_STORE_FK">
+          <End Role="store" Type="Self.store" Multiplicity="0..1" />
+          <End Role="KNOWN_OOS_DETAIL" Type="Self.KNOWN_OOS_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="store">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="KNOWN_OOS_DETAIL">
+              <PropertyRef Name="STORE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REGION_MOVEMENT_QUERY_FK">
+          <End Role="REGION" Type="Self.REGION" Multiplicity="0..1" />
+          <End Role="REGION_MOVEMENT_QUERY" Type="Self.REGION_MOVEMENT_QUERY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REGION_MOVEMENT_QUERY">
+              <PropertyRef Name="REGION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REGION_FK">
+          <End Role="REGION" Type="Self.REGION" Multiplicity="1" />
+          <End Role="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" Type="Self.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP">
+              <PropertyRef Name="REGION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REPORT_DETAIL_ATTRIBUTE_TYPE_FK">
+          <End Role="REPORT_DETAIL_ATTRIBUTE_TYPE" Type="Self.REPORT_DETAIL_ATTRIBUTE_TYPE" Multiplicity="1" />
+          <End Role="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" Type="Self.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REPORT_DETAIL_ATTRIBUTE_TYPE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP">
+              <PropertyRef Name="REPORT_DETAIL_ATTRIBUTE_TYPE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_ATTRIBUTE_TYPE_FK">
+          <End Role="REPORT_DETAIL_ATTRIBUTE_TYPE" Type="Self.REPORT_DETAIL_ATTRIBUTE_TYPE" Multiplicity="1" />
+          <End Role="REPORT_DETAIL_ATTRIBUTE" Type="Self.REPORT_DETAIL_ATTRIBUTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REPORT_DETAIL_ATTRIBUTE_TYPE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REPORT_DETAIL_ATTRIBUTE">
+              <PropertyRef Name="REPORT_DETAIL_ATTRIBUTE_TYPE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_FK">
+          <End Role="REPORT_DETAIL" Type="Self.REPORT_DETAIL" Multiplicity="1" />
+          <End Role="REPORT_DETAIL_ATTRIBUTE" Type="Self.REPORT_DETAIL_ATTRIBUTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REPORT_DETAIL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REPORT_DETAIL_ATTRIBUTE">
+              <PropertyRef Name="REPORT_DETAIL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REPORT_DETAIL_REASON_FK">
+          <End Role="REASON" Type="Self.REASON" Multiplicity="0..1" />
+          <End Role="REPORT_DETAIL" Type="Self.REPORT_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REASON">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REPORT_DETAIL">
+              <PropertyRef Name="REASON_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REPORT_DETAIL_REPORT_HEADER_FK">
+          <End Role="REPORT_HEADER" Type="Self.REPORT_HEADER" Multiplicity="1" />
+          <End Role="REPORT_DETAIL" Type="Self.REPORT_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REPORT_HEADER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REPORT_DETAIL">
+              <PropertyRef Name="REPORT_HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REPORT_DETAIL_SOURCE_FK">
+          <End Role="SOURCE" Type="Self.SOURCE" Multiplicity="0..1" />
+          <End Role="REPORT_DETAIL" Type="Self.REPORT_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SOURCE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REPORT_DETAIL">
+              <PropertyRef Name="SOURCE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REPORT_HEADER_STORE_FK">
+          <End Role="store" Type="Self.store" Multiplicity="1" />
+          <End Role="REPORT_HEADER" Type="Self.REPORT_HEADER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="store">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REPORT_HEADER">
+              <PropertyRef Name="STORE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="STORE_REGION_FK">
+          <End Role="REGION" Type="Self.REGION" Multiplicity="1" />
+          <End Role="store" Type="Self.store" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="store">
+              <PropertyRef Name="REGION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="STORE_STATUS_FK">
+          <End Role="STATUS" Type="Self.STATUS" Multiplicity="0..1" />
+          <End Role="store" Type="Self.store" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATUS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="store">
+              <PropertyRef Name="STATUS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="InsertOrUpdateScansMissingVimData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ReportHeaderId" Type="int" Mode="In" />
+          <Parameter Name="UPC" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="OOSModelStoreContainer">
+          <EntitySet Name="ApplicationConfig" EntityType="Self.ApplicationConfig" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KNOWN_OOS_DETAIL" EntityType="Self.KNOWN_OOS_DETAIL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KNOWN_OOS_HEADER" EntityType="Self.KNOWN_OOS_HEADER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KNOWN_OOS_MAP" EntityType="Self.KNOWN_OOS_MAP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OutOfStockNofitication" EntityType="Self.OutOfStockNofitication" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductStatus" EntityType="Self.ProductStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REASON" EntityType="Self.REASON" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REGION" EntityType="Self.REGION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REGION_MOVEMENT_QUERY" EntityType="Self.REGION_MOVEMENT_QUERY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" EntityType="Self.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RegionalAppConfiguration" EntityType="Self.RegionalAppConfiguration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REPORT_DETAIL" EntityType="Self.REPORT_DETAIL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REPORT_DETAIL_ATTRIBUTE" EntityType="Self.REPORT_DETAIL_ATTRIBUTE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REPORT_DETAIL_ATTRIBUTE_TYPE" EntityType="Self.REPORT_DETAIL_ATTRIBUTE_TYPE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REPORT_HEADER" EntityType="Self.REPORT_HEADER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScansMissingVimData" EntityType="Self.ScansMissingVimData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SKUCount" EntityType="Self.SKUCount" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SOURCE" EntityType="Self.SOURCE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="STATUS" EntityType="Self.STATUS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="store" EntityType="Self.store" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TEAM_Interim" EntityType="Self.TEAM_Interim" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_RegionalAppConfiguration_Region_Id" Association="Self.FK_RegionalAppConfiguration_Region_Id">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="RegionalAppConfiguration" EntitySet="RegionalAppConfiguration" />
+          </AssociationSet>
+          <AssociationSet Name="KNOWN_OOS_DETAIL_KNOWN_OOS_HEADER_FK" Association="Self.KNOWN_OOS_DETAIL_KNOWN_OOS_HEADER_FK">
+            <End Role="KNOWN_OOS_HEADER" EntitySet="KNOWN_OOS_HEADER" />
+            <End Role="KNOWN_OOS_DETAIL" EntitySet="KNOWN_OOS_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="KNOWN_OOS_MAP_KNOWN_OOS_HEADER_FK" Association="Self.KNOWN_OOS_MAP_KNOWN_OOS_HEADER_FK">
+            <End Role="KNOWN_OOS_HEADER" EntitySet="KNOWN_OOS_HEADER" />
+            <End Role="KNOWN_OOS_MAP" EntitySet="KNOWN_OOS_MAP" />
+          </AssociationSet>
+          <AssociationSet Name="KNOWN_OOS_MAP_REGION_ID_FK" Association="Self.KNOWN_OOS_MAP_REGION_ID_FK">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="KNOWN_OOS_MAP" EntitySet="KNOWN_OOS_MAP" />
+          </AssociationSet>
+          <AssociationSet Name="KNOWN_OOS_REASON_FK" Association="Self.KNOWN_OOS_REASON_FK">
+            <End Role="REASON" EntitySet="REASON" />
+            <End Role="KNOWN_OOS_DETAIL" EntitySet="KNOWN_OOS_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="KNOWN_OOS_SOURCE_FK" Association="Self.KNOWN_OOS_SOURCE_FK">
+            <End Role="SOURCE" EntitySet="SOURCE" />
+            <End Role="KNOWN_OOS_DETAIL" EntitySet="KNOWN_OOS_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="KNOWN_OOS_STORE_FK" Association="Self.KNOWN_OOS_STORE_FK">
+            <End Role="store" EntitySet="store" />
+            <End Role="KNOWN_OOS_DETAIL" EntitySet="KNOWN_OOS_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="REGION_MOVEMENT_QUERY_FK" Association="Self.REGION_MOVEMENT_QUERY_FK">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="REGION_MOVEMENT_QUERY" EntitySet="REGION_MOVEMENT_QUERY" />
+          </AssociationSet>
+          <AssociationSet Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REGION_FK" Association="Self.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REGION_FK">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" EntitySet="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" />
+          </AssociationSet>
+          <AssociationSet Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REPORT_DETAIL_ATTRIBUTE_TYPE_FK" Association="Self.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REPORT_DETAIL_ATTRIBUTE_TYPE_FK">
+            <End Role="REPORT_DETAIL_ATTRIBUTE_TYPE" EntitySet="REPORT_DETAIL_ATTRIBUTE_TYPE" />
+            <End Role="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" EntitySet="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" />
+          </AssociationSet>
+          <AssociationSet Name="REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_ATTRIBUTE_TYPE_FK" Association="Self.REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_ATTRIBUTE_TYPE_FK">
+            <End Role="REPORT_DETAIL_ATTRIBUTE_TYPE" EntitySet="REPORT_DETAIL_ATTRIBUTE_TYPE" />
+            <End Role="REPORT_DETAIL_ATTRIBUTE" EntitySet="REPORT_DETAIL_ATTRIBUTE" />
+          </AssociationSet>
+          <AssociationSet Name="REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_FK" Association="Self.REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_FK">
+            <End Role="REPORT_DETAIL" EntitySet="REPORT_DETAIL" />
+            <End Role="REPORT_DETAIL_ATTRIBUTE" EntitySet="REPORT_DETAIL_ATTRIBUTE" />
+          </AssociationSet>
+          <AssociationSet Name="REPORT_DETAIL_REASON_FK" Association="Self.REPORT_DETAIL_REASON_FK">
+            <End Role="REASON" EntitySet="REASON" />
+            <End Role="REPORT_DETAIL" EntitySet="REPORT_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="REPORT_DETAIL_REPORT_HEADER_FK" Association="Self.REPORT_DETAIL_REPORT_HEADER_FK">
+            <End Role="REPORT_HEADER" EntitySet="REPORT_HEADER" />
+            <End Role="REPORT_DETAIL" EntitySet="REPORT_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="REPORT_DETAIL_SOURCE_FK" Association="Self.REPORT_DETAIL_SOURCE_FK">
+            <End Role="SOURCE" EntitySet="SOURCE" />
+            <End Role="REPORT_DETAIL" EntitySet="REPORT_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="REPORT_HEADER_STORE_FK" Association="Self.REPORT_HEADER_STORE_FK">
+            <End Role="store" EntitySet="store" />
+            <End Role="REPORT_HEADER" EntitySet="REPORT_HEADER" />
+          </AssociationSet>
+          <AssociationSet Name="STORE_REGION_FK" Association="Self.STORE_REGION_FK">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="store" EntitySet="store" />
+          </AssociationSet>
+          <AssociationSet Name="STORE_STATUS_FK" Association="Self.STORE_STATUS_FK">
+            <End Role="STATUS" EntitySet="STATUS" />
+            <End Role="store" EntitySet="store" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OOSCommon.DataContext" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="OOSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="KNOWN_OOS_DETAIL" EntityType="OOSCommon.DataContext.KNOWN_OOS_DETAIL" />
+          <EntitySet Name="KNOWN_OOS_HEADER" EntityType="OOSCommon.DataContext.KNOWN_OOS_HEADER" />
+          <EntitySet Name="KNOWN_OOS_MAP" EntityType="OOSCommon.DataContext.KNOWN_OOS_MAP" />
+          <EntitySet Name="REASON" EntityType="OOSCommon.DataContext.REASON" />
+          <EntitySet Name="REGION" EntityType="OOSCommon.DataContext.REGION" />
+          <EntitySet Name="REGION_MOVEMENT_QUERY" EntityType="OOSCommon.DataContext.REGION_MOVEMENT_QUERY" />
+          <EntitySet Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" EntityType="OOSCommon.DataContext.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" />
+          <EntitySet Name="REPORT_DETAIL" EntityType="OOSCommon.DataContext.REPORT_DETAIL" />
+          <EntitySet Name="REPORT_DETAIL_ATTRIBUTE" EntityType="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE" />
+          <EntitySet Name="REPORT_DETAIL_ATTRIBUTE_TYPE" EntityType="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE_TYPE" />
+          <EntitySet Name="REPORT_HEADER" EntityType="OOSCommon.DataContext.REPORT_HEADER" />
+          <EntitySet Name="SKUCount" EntityType="OOSCommon.DataContext.SKUCount" />
+          <EntitySet Name="SOURCE" EntityType="OOSCommon.DataContext.SOURCE" />
+          <EntitySet Name="STATUS" EntityType="OOSCommon.DataContext.STATUS" />
+          <EntitySet Name="TEAM_Interim" EntityType="OOSCommon.DataContext.TEAM_Interim" />
+          <AssociationSet Name="KNOWN_OOS_DETAIL_KNOWN_OOS_HEADER_FK" Association="OOSCommon.DataContext.KNOWN_OOS_DETAIL_KNOWN_OOS_HEADER_FK">
+            <End Role="KNOWN_OOS_HEADER" EntitySet="KNOWN_OOS_HEADER" />
+            <End Role="KNOWN_OOS_DETAIL" EntitySet="KNOWN_OOS_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="KNOWN_OOS_REASON_FK" Association="OOSCommon.DataContext.KNOWN_OOS_REASON_FK">
+            <End Role="REASON" EntitySet="REASON" />
+            <End Role="KNOWN_OOS_DETAIL" EntitySet="KNOWN_OOS_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="KNOWN_OOS_SOURCE_FK" Association="OOSCommon.DataContext.KNOWN_OOS_SOURCE_FK">
+            <End Role="SOURCE" EntitySet="SOURCE" />
+            <End Role="KNOWN_OOS_DETAIL" EntitySet="KNOWN_OOS_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="KNOWN_OOS_MAP_KNOWN_OOS_HEADER_FK" Association="OOSCommon.DataContext.KNOWN_OOS_MAP_KNOWN_OOS_HEADER_FK">
+            <End Role="KNOWN_OOS_HEADER" EntitySet="KNOWN_OOS_HEADER" />
+            <End Role="KNOWN_OOS_MAP" EntitySet="KNOWN_OOS_MAP" />
+          </AssociationSet>
+          <AssociationSet Name="KNOWN_OOS_MAP_REGION_ID_FK" Association="OOSCommon.DataContext.KNOWN_OOS_MAP_REGION_ID_FK">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="KNOWN_OOS_MAP" EntitySet="KNOWN_OOS_MAP" />
+          </AssociationSet>
+          <AssociationSet Name="REPORT_DETAIL_REASON_FK" Association="OOSCommon.DataContext.REPORT_DETAIL_REASON_FK">
+            <End Role="REASON" EntitySet="REASON" />
+            <End Role="REPORT_DETAIL" EntitySet="REPORT_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="REGION_MOVEMENT_QUERY_FK" Association="OOSCommon.DataContext.REGION_MOVEMENT_QUERY_FK">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="REGION_MOVEMENT_QUERY" EntitySet="REGION_MOVEMENT_QUERY" />
+          </AssociationSet>
+          <AssociationSet Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REGION_FK" Association="OOSCommon.DataContext.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REGION_FK">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" EntitySet="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" />
+          </AssociationSet>
+          <AssociationSet Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REPORT_DETAIL_ATTRIBUTE_TYPE_FK" Association="OOSCommon.DataContext.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REPORT_DETAIL_ATTRIBUTE_TYPE_FK">
+            <End Role="REPORT_DETAIL_ATTRIBUTE_TYPE" EntitySet="REPORT_DETAIL_ATTRIBUTE_TYPE" />
+            <End Role="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" EntitySet="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" />
+          </AssociationSet>
+          <AssociationSet Name="REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_FK" Association="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_FK">
+            <End Role="REPORT_DETAIL" EntitySet="REPORT_DETAIL" />
+            <End Role="REPORT_DETAIL_ATTRIBUTE" EntitySet="REPORT_DETAIL_ATTRIBUTE" />
+          </AssociationSet>
+          <AssociationSet Name="REPORT_DETAIL_REPORT_HEADER_FK" Association="OOSCommon.DataContext.REPORT_DETAIL_REPORT_HEADER_FK">
+            <End Role="REPORT_HEADER" EntitySet="REPORT_HEADER" />
+            <End Role="REPORT_DETAIL" EntitySet="REPORT_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="REPORT_DETAIL_SOURCE_FK" Association="OOSCommon.DataContext.REPORT_DETAIL_SOURCE_FK">
+            <End Role="SOURCE" EntitySet="SOURCE" />
+            <End Role="REPORT_DETAIL" EntitySet="REPORT_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_ATTRIBUTE_TYPE_FK" Association="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_ATTRIBUTE_TYPE_FK">
+            <End Role="REPORT_DETAIL_ATTRIBUTE_TYPE" EntitySet="REPORT_DETAIL_ATTRIBUTE_TYPE" />
+            <End Role="REPORT_DETAIL_ATTRIBUTE" EntitySet="REPORT_DETAIL_ATTRIBUTE" />
+          </AssociationSet>
+          <EntitySet Name="ProductStatus" EntityType="OOSCommon.DataContext.ProductStatu" />
+          <EntitySet Name="ScansMissingVimDatas" EntityType="OOSCommon.DataContext.ScansMissingVimData" />
+          <FunctionImport Name="InsertOrUpdateScansMissingVimData">
+            <Parameter Name="ReportHeaderId" Mode="In" Type="Int32" />
+            <Parameter Name="UPC" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SummaryStoreDetail" ReturnType="Collection(OOSCommon.DataContext.SummaryStoreDetail_Result)">
+            <Parameter Name="psbu" Mode="In" Type="Int32" />
+            <Parameter Name="start" Mode="In" Type="DateTime" />
+            <Parameter Name="end" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="SummaryStoreHeaders" ReturnType="Collection(OOSCommon.DataContext.SummaryStoreHeaders_Result)">
+            <Parameter Name="region" Mode="In" Type="String" />
+            <Parameter Name="start" Mode="In" Type="DateTime" />
+            <Parameter Name="end" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="SummaryReportData" ReturnType="Collection(OOSCommon.DataContext.SummaryReportData_Result)">
+            <Parameter Name="start" Mode="In" Type="DateTime" />
+            <Parameter Name="end" Mode="In" Type="DateTime" />
+            <Parameter Name="region" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="ApplicationConfig" EntityType="OOSCommon.DataContext.ApplicationConfig" />
+          <EntitySet Name="STORE" EntityType="OOSCommon.DataContext.STORE" />
+          <AssociationSet Name="KNOWN_OOS_STORE_FK" Association="OOSCommon.DataContext.KNOWN_OOS_STORE_FK">
+            <End Role="store" EntitySet="STORE" />
+            <End Role="KNOWN_OOS_DETAIL" EntitySet="KNOWN_OOS_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="STORE_REGION_FK" Association="OOSCommon.DataContext.STORE_REGION_FK">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="store" EntitySet="STORE" />
+          </AssociationSet>
+          <AssociationSet Name="REPORT_HEADER_STORE_FK" Association="OOSCommon.DataContext.REPORT_HEADER_STORE_FK">
+            <End Role="store" EntitySet="STORE" />
+            <End Role="REPORT_HEADER" EntitySet="REPORT_HEADER" />
+          </AssociationSet>
+          <AssociationSet Name="STORE_STATUS_FK" Association="OOSCommon.DataContext.STORE_STATUS_FK">
+            <End Role="STATUS" EntitySet="STATUS" />
+            <End Role="store" EntitySet="STORE" />
+          </AssociationSet>
+          <EntitySet Name="OutOfStockNofitication" EntityType="OOSCommon.DataContext.OutOfStockNofitication" />
+          <EntitySet Name="Users" EntityType="OOSCommon.DataContext.Users" />
+          <EntitySet Name="RegionalAppConfiguration" EntityType="OOSCommon.DataContext.RegionalAppConfiguration" />
+          <AssociationSet Name="FK_RegionalAppConfiguration_Region_Id" Association="OOSCommon.DataContext.FK_RegionalAppConfiguration_Region_Id">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="RegionalAppConfiguration" EntitySet="RegionalAppConfiguration" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="KNOWN_OOS_DETAIL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="REASON_ID" Type="Int32" />
+          <Property Name="SOURCE_ID" Type="Int32" />
+          <Property Name="STORE_ID" Type="Int32" />
+          <Property Name="VIN" Type="String" MaxLength="25" Unicode="false" FixedLength="false" />
+          <Property Name="UPC" Type="String" MaxLength="25" Unicode="false" FixedLength="false" />
+          <Property Name="NAT_UPC" Type="String" MaxLength="25" Unicode="false" FixedLength="false" />
+          <Property Name="START_DATE" Type="DateTime" Precision="3" />
+          <Property Name="END_DATE" Type="DateTime" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="LAST_UPDATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LAST_UPDATED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="PS_TEAM" Type="String" MaxLength="25" Unicode="false" FixedLength="false" />
+          <Property Name="PS_SUBTEAM" Type="String" MaxLength="25" Unicode="false" FixedLength="false" />
+          <Property Name="KNOWN_OOS_HEADER_ID" Type="Int32" />
+          <Property Name="NOTES" Type="String" MaxLength="2000" Unicode="false" FixedLength="false" />
+          <Property Name="ProductStatus" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="ExpirationDate" Type="DateTime" Precision="3" />
+          <Property Name="isDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="KNOWN_OOS_HEADER" Relationship="OOSCommon.DataContext.KNOWN_OOS_DETAIL_KNOWN_OOS_HEADER_FK" FromRole="KNOWN_OOS_DETAIL" ToRole="KNOWN_OOS_HEADER" />
+          <NavigationProperty Name="REASON" Relationship="OOSCommon.DataContext.KNOWN_OOS_REASON_FK" FromRole="KNOWN_OOS_DETAIL" ToRole="REASON" />
+          <NavigationProperty Name="SOURCE" Relationship="OOSCommon.DataContext.KNOWN_OOS_SOURCE_FK" FromRole="KNOWN_OOS_DETAIL" ToRole="SOURCE" />
+          <NavigationProperty Name="STORE" Relationship="OOSCommon.DataContext.KNOWN_OOS_STORE_FK" FromRole="KNOWN_OOS_DETAIL" ToRole="store" />
+        </EntityType>
+        <EntityType Name="KNOWN_OOS_HEADER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LAST_UPDATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LAST_UPDATED_DATE" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="KNOWN_OOS_DETAIL" Relationship="OOSCommon.DataContext.KNOWN_OOS_DETAIL_KNOWN_OOS_HEADER_FK" FromRole="KNOWN_OOS_HEADER" ToRole="KNOWN_OOS_DETAIL" />
+          <NavigationProperty Name="KNOWN_OOS_MAP" Relationship="OOSCommon.DataContext.KNOWN_OOS_MAP_KNOWN_OOS_HEADER_FK" FromRole="KNOWN_OOS_HEADER" ToRole="KNOWN_OOS_MAP" />
+        </EntityType>
+        <EntityType Name="KNOWN_OOS_MAP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="REGION_ID" Type="Int32" Nullable="false" />
+          <Property Name="KNOWN_OOS_HEADER_ID" Type="Int32" />
+          <Property Name="VENDOR_KEY" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LAST_UPDATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LAST_UPDATED_DATE" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="KNOWN_OOS_HEADER" Relationship="OOSCommon.DataContext.KNOWN_OOS_MAP_KNOWN_OOS_HEADER_FK" FromRole="KNOWN_OOS_MAP" ToRole="KNOWN_OOS_HEADER" />
+          <NavigationProperty Name="REGION" Relationship="OOSCommon.DataContext.KNOWN_OOS_MAP_REGION_ID_FK" FromRole="KNOWN_OOS_MAP" ToRole="REGION" />
+        </EntityType>
+        <EntityType Name="REASON">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="REASON_DESCRIPTION" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="LAST_UPDATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LAST_UPDATED_DATE" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="KNOWN_OOS_DETAIL" Relationship="OOSCommon.DataContext.KNOWN_OOS_REASON_FK" FromRole="REASON" ToRole="KNOWN_OOS_DETAIL" />
+          <NavigationProperty Name="REPORT_DETAIL" Relationship="OOSCommon.DataContext.REPORT_DETAIL_REASON_FK" FromRole="REASON" ToRole="REPORT_DETAIL" />
+        </EntityType>
+        <EntityType Name="REGION">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="REGION_ABBR" Type="String" Nullable="false" MaxLength="5" Unicode="false" FixedLength="false" />
+          <Property Name="REGION_NAME" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="IS_VISIBLE" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="KNOWN_OOS_MAP" Relationship="OOSCommon.DataContext.KNOWN_OOS_MAP_REGION_ID_FK" FromRole="REGION" ToRole="KNOWN_OOS_MAP" />
+          <NavigationProperty Name="REGION_MOVEMENT_QUERY" Relationship="OOSCommon.DataContext.REGION_MOVEMENT_QUERY_FK" FromRole="REGION" ToRole="REGION_MOVEMENT_QUERY" />
+          <NavigationProperty Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" Relationship="OOSCommon.DataContext.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REGION_FK" FromRole="REGION" ToRole="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" />
+          <Property Name="TimeOffsetFromCentral" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="store" Relationship="OOSCommon.DataContext.STORE_REGION_FK" FromRole="REGION" ToRole="store" />
+          <NavigationProperty Name="RegionalAppConfiguration" Relationship="OOSCommon.DataContext.FK_RegionalAppConfiguration_Region_Id" FromRole="REGION" ToRole="RegionalAppConfiguration" />
+        </EntityType>
+        <EntityType Name="REGION_MOVEMENT_QUERY">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="REGION_ID" Type="Int32" />
+          <Property Name="QUERY" Type="String" MaxLength="5000" Unicode="false" FixedLength="false" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LAST_UPDATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LAST_UPDATED_DATE" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="REGION" Relationship="OOSCommon.DataContext.REGION_MOVEMENT_QUERY_FK" FromRole="REGION_MOVEMENT_QUERY" ToRole="REGION" />
+        </EntityType>
+        <EntityType Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="REGION_ID" Type="Int32" Nullable="false" />
+          <Property Name="REPORT_DETAIL_ATTRIBUTE_TYPE_ID" Type="Int32" Nullable="false" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LAST_UPDATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LAST_UPDATED_DATE" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="REGION" Relationship="OOSCommon.DataContext.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REGION_FK" FromRole="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" ToRole="REGION" />
+          <NavigationProperty Name="REPORT_DETAIL_ATTRIBUTE_TYPE" Relationship="OOSCommon.DataContext.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REPORT_DETAIL_ATTRIBUTE_TYPE_FK" FromRole="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" ToRole="REPORT_DETAIL_ATTRIBUTE_TYPE" />
+        </EntityType>
+        <EntityType Name="REPORT_DETAIL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="REPORT_HEADER_ID" Type="Int32" Nullable="false" />
+          <Property Name="REASON_ID" Type="Int32" />
+          <Property Name="LOCATION_ID" Type="Int32" />
+          <Property Name="VENDOR_KEY" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="VIN" Type="String" MaxLength="25" Unicode="false" FixedLength="false" />
+          <Property Name="PS_TEAM" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="PS_SUBTEAM" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="UPC" Type="String" MaxLength="25" Unicode="false" FixedLength="false" />
+          <Property Name="NAT_UPC" Type="String" MaxLength="25" Unicode="false" FixedLength="false" />
+          <Property Name="SOURCE_ID" Type="Int32" />
+          <Property Name="MOVEMENT" Type="Decimal" Precision="9" Scale="3" />
+          <Property Name="EFF_COST" Type="Decimal" Precision="28" Scale="3" />
+          <Property Name="EFF_PRICE" Type="Decimal" Precision="28" Scale="3" />
+          <Property Name="EFF_PRICETYPE" Type="String" MaxLength="5" Unicode="false" FixedLength="false" />
+          <Property Name="NOTES" Type="String" MaxLength="2000" Unicode="false" FixedLength="false" />
+          <Property Name="CASE_SIZE" Type="Decimal" Precision="28" Scale="4" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LAST_UPDATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LAST_UPDATED_DATE" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="REASON" Relationship="OOSCommon.DataContext.REPORT_DETAIL_REASON_FK" FromRole="REPORT_DETAIL" ToRole="REASON" />
+          <NavigationProperty Name="REPORT_DETAIL_ATTRIBUTE" Relationship="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_FK" FromRole="REPORT_DETAIL" ToRole="REPORT_DETAIL_ATTRIBUTE" />
+          <NavigationProperty Name="REPORT_HEADER" Relationship="OOSCommon.DataContext.REPORT_DETAIL_REPORT_HEADER_FK" FromRole="REPORT_DETAIL" ToRole="REPORT_HEADER" />
+          <NavigationProperty Name="SOURCE" Relationship="OOSCommon.DataContext.REPORT_DETAIL_SOURCE_FK" FromRole="REPORT_DETAIL" ToRole="SOURCE" />
+          <Property Type="DateTime" Name="SCAN_DATE" Precision="3" />
+          <Property Type="String" Name="BRAND" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="LONG_DESCRIPTION" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ITEM_SIZE" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ITEM_UOM" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CATEGORY_NAME" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CLASS_NAME" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="BRAND_NAME" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LASTDATEOFSALES" Precision="3" />
+          <Property Type="Int32" Name="DAYSOFMOVEMENT" />
+        </EntityType>
+        <EntityType Name="REPORT_DETAIL_ATTRIBUTE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="REPORT_DETAIL_ID" Type="Int32" Nullable="false" />
+          <Property Name="REPORT_DETAIL_ATTRIBUTE_TYPE_ID" Type="Int32" Nullable="false" />
+          <Property Name="VALUE" Type="String" MaxLength="300" Unicode="false" FixedLength="false" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LAST_UPDATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LAST_UPDATED_DATE" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="REPORT_DETAIL" Relationship="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_FK" FromRole="REPORT_DETAIL_ATTRIBUTE" ToRole="REPORT_DETAIL" />
+          <NavigationProperty Name="REPORT_DETAIL_ATTRIBUTE_TYPE" Relationship="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_ATTRIBUTE_TYPE_FK" FromRole="REPORT_DETAIL_ATTRIBUTE" ToRole="REPORT_DETAIL_ATTRIBUTE_TYPE" />
+        </EntityType>
+        <EntityType Name="REPORT_DETAIL_ATTRIBUTE_TYPE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="QUERY" Type="String" MaxLength="6000" Unicode="false" FixedLength="false" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LAST_UPDATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LAST_UPDATED_DATE" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" Relationship="OOSCommon.DataContext.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REPORT_DETAIL_ATTRIBUTE_TYPE_FK" FromRole="REPORT_DETAIL_ATTRIBUTE_TYPE" ToRole="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" />
+          <NavigationProperty Name="REPORT_DETAIL_ATTRIBUTE" Relationship="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_ATTRIBUTE_TYPE_FK" FromRole="REPORT_DETAIL_ATTRIBUTE_TYPE" ToRole="REPORT_DETAIL_ATTRIBUTE" />
+        </EntityType>
+        <EntityType Name="REPORT_HEADER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="STORE_ID" Type="Int32" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LAST_UPDATED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="LAST_UPDATED_BY" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="PROCESSED_FLAG" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="REPORT_DETAIL" Relationship="OOSCommon.DataContext.REPORT_DETAIL_REPORT_HEADER_FK" FromRole="REPORT_HEADER" ToRole="REPORT_DETAIL" />
+          <Property Type="Int32" Name="EXCLUDE_FLAG" />
+          <Property Name="OffsetCorrectedCreateDate" Type="DateTime" Precision="3" />
+          <Property Name="TimeOffsetFromCentral" Type="Int16" />
+          <NavigationProperty Name="STORE" Relationship="OOSCommon.DataContext.REPORT_HEADER_STORE_FK" FromRole="REPORT_HEADER" ToRole="store" />
+        </EntityType>
+        <EntityType Name="SKUCount">
+          <Key>
+            <PropertyRef Name="idSKUCount" />
+          </Key>
+          <Property Name="idSKUCount" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="STORE_PS_BU" Type="Int32" Nullable="false" />
+          <Property Name="TEAM_ID" Type="Int32" Nullable="false" />
+          <Property Name="numberOfSKUs" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SOURCE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SOURCE_DESCRIPTION" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="KNOWN_OOS_DETAIL" Relationship="OOSCommon.DataContext.KNOWN_OOS_SOURCE_FK" FromRole="SOURCE" ToRole="KNOWN_OOS_DETAIL" />
+          <NavigationProperty Name="REPORT_DETAIL" Relationship="OOSCommon.DataContext.REPORT_DETAIL_SOURCE_FK" FromRole="SOURCE" ToRole="REPORT_DETAIL" />
+        </EntityType>
+        <EntityType Name="STATUS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="STATUS1" Type="String" MaxLength="25" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="STORE" Relationship="OOSCommon.DataContext.STORE_STATUS_FK" FromRole="STATUS" ToRole="store" />
+        </EntityType>
+        <EntityType Name="TEAM_Interim">
+          <Key>
+            <PropertyRef Name="idTeam" />
+          </Key>
+          <Property Name="idTeam" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="teamName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="teamVIMId" Type="Int32" />
+        </EntityType>
+        <Association Name="KNOWN_OOS_DETAIL_KNOWN_OOS_HEADER_FK">
+          <End Role="KNOWN_OOS_HEADER" Type="OOSCommon.DataContext.KNOWN_OOS_HEADER" Multiplicity="0..1" />
+          <End Role="KNOWN_OOS_DETAIL" Type="OOSCommon.DataContext.KNOWN_OOS_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KNOWN_OOS_HEADER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="KNOWN_OOS_DETAIL">
+              <PropertyRef Name="KNOWN_OOS_HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="KNOWN_OOS_REASON_FK">
+          <End Role="REASON" Type="OOSCommon.DataContext.REASON" Multiplicity="0..1" />
+          <End Role="KNOWN_OOS_DETAIL" Type="OOSCommon.DataContext.KNOWN_OOS_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REASON">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="KNOWN_OOS_DETAIL">
+              <PropertyRef Name="REASON_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="KNOWN_OOS_SOURCE_FK">
+          <End Role="SOURCE" Type="OOSCommon.DataContext.SOURCE" Multiplicity="0..1" />
+          <End Role="KNOWN_OOS_DETAIL" Type="OOSCommon.DataContext.KNOWN_OOS_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SOURCE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="KNOWN_OOS_DETAIL">
+              <PropertyRef Name="SOURCE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="KNOWN_OOS_MAP_KNOWN_OOS_HEADER_FK">
+          <End Role="KNOWN_OOS_HEADER" Type="OOSCommon.DataContext.KNOWN_OOS_HEADER" Multiplicity="0..1" />
+          <End Role="KNOWN_OOS_MAP" Type="OOSCommon.DataContext.KNOWN_OOS_MAP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KNOWN_OOS_HEADER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="KNOWN_OOS_MAP">
+              <PropertyRef Name="KNOWN_OOS_HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="KNOWN_OOS_MAP_REGION_ID_FK">
+          <End Role="REGION" Type="OOSCommon.DataContext.REGION" Multiplicity="1" />
+          <End Role="KNOWN_OOS_MAP" Type="OOSCommon.DataContext.KNOWN_OOS_MAP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="KNOWN_OOS_MAP">
+              <PropertyRef Name="REGION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REPORT_DETAIL_REASON_FK">
+          <End Role="REASON" Type="OOSCommon.DataContext.REASON" Multiplicity="0..1" />
+          <End Role="REPORT_DETAIL" Type="OOSCommon.DataContext.REPORT_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REASON">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REPORT_DETAIL">
+              <PropertyRef Name="REASON_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REGION_MOVEMENT_QUERY_FK">
+          <End Role="REGION" Type="OOSCommon.DataContext.REGION" Multiplicity="0..1" />
+          <End Role="REGION_MOVEMENT_QUERY" Type="OOSCommon.DataContext.REGION_MOVEMENT_QUERY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REGION_MOVEMENT_QUERY">
+              <PropertyRef Name="REGION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REGION_FK">
+          <End Role="REGION" Type="OOSCommon.DataContext.REGION" Multiplicity="1" />
+          <End Role="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" Type="OOSCommon.DataContext.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP">
+              <PropertyRef Name="REGION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REPORT_DETAIL_ATTRIBUTE_TYPE_FK">
+          <End Role="REPORT_DETAIL_ATTRIBUTE_TYPE" Type="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE_TYPE" Multiplicity="1" />
+          <End Role="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" Type="OOSCommon.DataContext.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REPORT_DETAIL_ATTRIBUTE_TYPE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP">
+              <PropertyRef Name="REPORT_DETAIL_ATTRIBUTE_TYPE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_FK">
+          <End Role="REPORT_DETAIL" Type="OOSCommon.DataContext.REPORT_DETAIL" Multiplicity="1" />
+          <End Role="REPORT_DETAIL_ATTRIBUTE" Type="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REPORT_DETAIL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REPORT_DETAIL_ATTRIBUTE">
+              <PropertyRef Name="REPORT_DETAIL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REPORT_DETAIL_REPORT_HEADER_FK">
+          <End Role="REPORT_HEADER" Type="OOSCommon.DataContext.REPORT_HEADER" Multiplicity="1" />
+          <End Role="REPORT_DETAIL" Type="OOSCommon.DataContext.REPORT_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REPORT_HEADER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REPORT_DETAIL">
+              <PropertyRef Name="REPORT_HEADER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REPORT_DETAIL_SOURCE_FK">
+          <End Role="SOURCE" Type="OOSCommon.DataContext.SOURCE" Multiplicity="0..1" />
+          <End Role="REPORT_DETAIL" Type="OOSCommon.DataContext.REPORT_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SOURCE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REPORT_DETAIL">
+              <PropertyRef Name="SOURCE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_ATTRIBUTE_TYPE_FK">
+          <End Role="REPORT_DETAIL_ATTRIBUTE_TYPE" Type="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE_TYPE" Multiplicity="1" />
+          <End Role="REPORT_DETAIL_ATTRIBUTE" Type="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REPORT_DETAIL_ATTRIBUTE_TYPE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REPORT_DETAIL_ATTRIBUTE">
+              <PropertyRef Name="REPORT_DETAIL_ATTRIBUTE_TYPE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ProductStatu">
+          <Key>
+            <PropertyRef Name="UPC" />
+            <PropertyRef Name="Region" />
+          </Key>
+          <Property Type="String" Name="UPC" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ProductStatus" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ExpirationDate" Precision="3" />
+          <Property Type="String" Name="Region" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="VendorKey" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Vin" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Reason" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="StartDate" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="ScansMissingVimData">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="Report_Header_Id" Nullable="false" />
+          <Property Type="String" Name="UPC" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="ScanCount" Nullable="false" />
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <ComplexType Name="SummaryStoreDetail_Result">
+          <Property Type="String" Name="Subteam" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="ItemCount" Nullable="false" />
+          <Property Type="Int32" Name="ScanCount" Nullable="true" />
+          <Property Type="Decimal" Name="ScanPercent" Nullable="true" Precision="38" Scale="16" />
+        </ComplexType>
+        <ComplexType Name="SummaryStoreHeaders_Result">
+          <Property Type="String" Name="STORE_NAME" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="OOSCount" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="Decimal" Name="OOSPercentage" Nullable="true" Precision="37" Scale="19" />
+          <Property Type="Int32" Name="NumberOfScans" Nullable="false" />
+          <Property Type="Decimal" Name="ItemCountSum" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="String" Name="PS_BU" Nullable="false" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="SummaryReportData_Result">
+          <Property Type="Int64" Name="index" Nullable="true" />
+          <Property Type="String" Name="STORE_NAME" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PS_Team" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ps_subteam" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="cnt" Nullable="true" />
+          <Property Type="String" Name="ps_bu" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="type" Nullable="true" MaxLength="7" />
+          <Property Type="Int32" Name="parent" Nullable="true" />
+          <Property Type="Decimal" Name="OOSPercent" Nullable="false" Precision="29" Scale="11" />
+          <Property Type="Int32" Name="haschilren" Nullable="true" />
+          <Property Type="Int32" Name="itemcount" Nullable="true" />
+          <Property Type="Int32" Name="scanCount" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="ApplicationConfig">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="STORE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PS_BU" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="STORE_ABBREVIATION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="STORE_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="REGION_ID" Type="Int32" Nullable="false" />
+          <Property Name="STATUS_ID" Type="Int32" />
+          <Property Name="LAST_UPDATED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="LAST_UPDATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Hidden" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="KNOWN_OOS_DETAIL" Relationship="OOSCommon.DataContext.KNOWN_OOS_STORE_FK" FromRole="store" ToRole="KNOWN_OOS_DETAIL" />
+          <NavigationProperty Name="REGION" Relationship="OOSCommon.DataContext.STORE_REGION_FK" FromRole="store" ToRole="REGION" />
+          <NavigationProperty Name="REPORT_HEADER" Relationship="OOSCommon.DataContext.REPORT_HEADER_STORE_FK" FromRole="store" ToRole="REPORT_HEADER" />
+          <NavigationProperty Name="STATUS" Relationship="OOSCommon.DataContext.STORE_STATUS_FK" FromRole="store" ToRole="STATUS" />
+        </EntityType>
+        <Association Name="KNOWN_OOS_STORE_FK">
+          <End Type="OOSCommon.DataContext.STORE" Role="store" Multiplicity="0..1" />
+          <End Type="OOSCommon.DataContext.KNOWN_OOS_DETAIL" Role="KNOWN_OOS_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="store">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="KNOWN_OOS_DETAIL">
+              <PropertyRef Name="STORE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="STORE_REGION_FK">
+          <End Type="OOSCommon.DataContext.REGION" Role="REGION" Multiplicity="1" />
+          <End Type="OOSCommon.DataContext.STORE" Role="store" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="store">
+              <PropertyRef Name="REGION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REPORT_HEADER_STORE_FK">
+          <End Type="OOSCommon.DataContext.STORE" Role="store" Multiplicity="1" />
+          <End Type="OOSCommon.DataContext.REPORT_HEADER" Role="REPORT_HEADER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="store">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="REPORT_HEADER">
+              <PropertyRef Name="STORE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="STORE_STATUS_FK">
+          <End Type="OOSCommon.DataContext.STATUS" Role="STATUS" Multiplicity="0..1" />
+          <End Type="OOSCommon.DataContext.STORE" Role="store" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATUS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="store">
+              <PropertyRef Name="STATUS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="OutOfStockNofitication">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Expiration" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LastLogin" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Region" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="RegionOverride" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Store" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="StoreOverride" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="RegionalAppConfiguration">
+          <Key>
+            <PropertyRef Name="RegionId" />
+          </Key>
+          <Property Name="RegionId" Type="Int32" Nullable="false" />
+          <Property Name="UseBiztalk" Type="Boolean" />
+          <Property Name="BiztalkServiceURI" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="OOSServiceURI" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="REGION" Relationship="OOSCommon.DataContext.FK_RegionalAppConfiguration_Region_Id" FromRole="RegionalAppConfiguration" ToRole="REGION" />
+        </EntityType>
+        <Association Name="FK_RegionalAppConfiguration_Region_Id">
+          <End Type="OOSCommon.DataContext.REGION" Role="REGION" Multiplicity="1" />
+          <End Type="OOSCommon.DataContext.RegionalAppConfiguration" Role="RegionalAppConfiguration" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RegionalAppConfiguration">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OOSModelStoreContainer" CdmEntityContainer="OOSEntities">
+          <EntitySetMapping Name="KNOWN_OOS_DETAIL"><EntityTypeMapping TypeName="OOSCommon.DataContext.KNOWN_OOS_DETAIL"><MappingFragment StoreEntitySet="KNOWN_OOS_DETAIL">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="REASON_ID" ColumnName="REASON_ID" />
+            <ScalarProperty Name="SOURCE_ID" ColumnName="SOURCE_ID" />
+            <ScalarProperty Name="STORE_ID" ColumnName="STORE_ID" />
+            <ScalarProperty Name="VIN" ColumnName="VIN" />
+            <ScalarProperty Name="UPC" ColumnName="UPC" />
+            <ScalarProperty Name="NAT_UPC" ColumnName="NAT_UPC" />
+            <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+            <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+            <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+            <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+            <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+            <ScalarProperty Name="LAST_UPDATED_DATE" ColumnName="LAST_UPDATED_DATE" />
+            <ScalarProperty Name="PS_TEAM" ColumnName="PS_TEAM" />
+            <ScalarProperty Name="PS_SUBTEAM" ColumnName="PS_SUBTEAM" />
+            <ScalarProperty Name="KNOWN_OOS_HEADER_ID" ColumnName="KNOWN_OOS_HEADER_ID" />
+            <ScalarProperty Name="NOTES" ColumnName="NOTES" />
+            <ScalarProperty Name="ProductStatus" ColumnName="ProductStatus" />
+            <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+            <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="KNOWN_OOS_HEADER"><EntityTypeMapping TypeName="OOSCommon.DataContext.KNOWN_OOS_HEADER"><MappingFragment StoreEntitySet="KNOWN_OOS_HEADER">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+            <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+            <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+            <ScalarProperty Name="LAST_UPDATED_DATE" ColumnName="LAST_UPDATED_DATE" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="KNOWN_OOS_MAP"><EntityTypeMapping TypeName="OOSCommon.DataContext.KNOWN_OOS_MAP"><MappingFragment StoreEntitySet="KNOWN_OOS_MAP">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="REGION_ID" ColumnName="REGION_ID" />
+            <ScalarProperty Name="KNOWN_OOS_HEADER_ID" ColumnName="KNOWN_OOS_HEADER_ID" />
+            <ScalarProperty Name="VENDOR_KEY" ColumnName="VENDOR_KEY" />
+            <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+            <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+            <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+            <ScalarProperty Name="LAST_UPDATED_DATE" ColumnName="LAST_UPDATED_DATE" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="REASON"><EntityTypeMapping TypeName="OOSCommon.DataContext.REASON"><MappingFragment StoreEntitySet="REASON">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="REASON_DESCRIPTION" ColumnName="REASON_DESCRIPTION" />
+            <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+            <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+            <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+            <ScalarProperty Name="LAST_UPDATED_DATE" ColumnName="LAST_UPDATED_DATE" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="REGION"><EntityTypeMapping TypeName="OOSCommon.DataContext.REGION"><MappingFragment StoreEntitySet="REGION">
+            <ScalarProperty Name="TimeOffsetFromCentral" ColumnName="TimeOffsetFromCentral" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="REGION_ABBR" ColumnName="REGION_ABBR" />
+            <ScalarProperty Name="REGION_NAME" ColumnName="REGION_NAME" />
+            <ScalarProperty Name="IS_VISIBLE" ColumnName="IS_VISIBLE" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="REGION_MOVEMENT_QUERY"><EntityTypeMapping TypeName="OOSCommon.DataContext.REGION_MOVEMENT_QUERY"><MappingFragment StoreEntitySet="REGION_MOVEMENT_QUERY">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="REGION_ID" ColumnName="REGION_ID" />
+            <ScalarProperty Name="QUERY" ColumnName="QUERY" />
+            <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+            <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+            <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+            <ScalarProperty Name="LAST_UPDATED_DATE" ColumnName="LAST_UPDATED_DATE" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP"><EntityTypeMapping TypeName="OOSCommon.DataContext.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP"><MappingFragment StoreEntitySet="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="REGION_ID" ColumnName="REGION_ID" />
+            <ScalarProperty Name="REPORT_DETAIL_ATTRIBUTE_TYPE_ID" ColumnName="REPORT_DETAIL_ATTRIBUTE_TYPE_ID" />
+            <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+            <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+            <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+            <ScalarProperty Name="LAST_UPDATED_DATE" ColumnName="LAST_UPDATED_DATE" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="REPORT_DETAIL"><EntityTypeMapping TypeName="OOSCommon.DataContext.REPORT_DETAIL"><MappingFragment StoreEntitySet="REPORT_DETAIL">
+                <ScalarProperty Name="DAYSOFMOVEMENT" ColumnName="DAYSOFMOVEMENT" />
+                <ScalarProperty Name="LASTDATEOFSALES" ColumnName="LASTDATEOFSALES" />
+                <ScalarProperty Name="BRAND_NAME" ColumnName="BRAND_NAME" />
+                <ScalarProperty Name="CLASS_NAME" ColumnName="CLASS_NAME" />
+                <ScalarProperty Name="CATEGORY_NAME" ColumnName="CATEGORY_NAME" />
+                <ScalarProperty Name="ITEM_UOM" ColumnName="ITEM_UOM" />
+                <ScalarProperty Name="ITEM_SIZE" ColumnName="ITEM_SIZE" />
+                <ScalarProperty Name="LONG_DESCRIPTION" ColumnName="LONG_DESCRIPTION" />
+                <ScalarProperty Name="BRAND" ColumnName="BRAND" />
+                <ScalarProperty Name="SCAN_DATE" ColumnName="SCAN_DATE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="REPORT_HEADER_ID" ColumnName="REPORT_HEADER_ID" />
+            <ScalarProperty Name="REASON_ID" ColumnName="REASON_ID" />
+            <ScalarProperty Name="LOCATION_ID" ColumnName="LOCATION_ID" />
+            <ScalarProperty Name="VENDOR_KEY" ColumnName="VENDOR_KEY" />
+            <ScalarProperty Name="VIN" ColumnName="VIN" />
+            <ScalarProperty Name="PS_TEAM" ColumnName="PS_TEAM" />
+            <ScalarProperty Name="PS_SUBTEAM" ColumnName="PS_SUBTEAM" />
+            <ScalarProperty Name="UPC" ColumnName="UPC" />
+            <ScalarProperty Name="NAT_UPC" ColumnName="NAT_UPC" />
+            <ScalarProperty Name="SOURCE_ID" ColumnName="SOURCE_ID" />
+            <ScalarProperty Name="MOVEMENT" ColumnName="MOVEMENT" />
+            <ScalarProperty Name="EFF_COST" ColumnName="EFF_COST" />
+            <ScalarProperty Name="EFF_PRICE" ColumnName="EFF_PRICE" />
+            <ScalarProperty Name="EFF_PRICETYPE" ColumnName="EFF_PRICETYPE" />
+            <ScalarProperty Name="NOTES" ColumnName="NOTES" />
+            <ScalarProperty Name="CASE_SIZE" ColumnName="CASE_SIZE" />
+            <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+            <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+            <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+            <ScalarProperty Name="LAST_UPDATED_DATE" ColumnName="LAST_UPDATED_DATE" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="REPORT_DETAIL_ATTRIBUTE"><EntityTypeMapping TypeName="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE"><MappingFragment StoreEntitySet="REPORT_DETAIL_ATTRIBUTE">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="REPORT_DETAIL_ID" ColumnName="REPORT_DETAIL_ID" />
+            <ScalarProperty Name="REPORT_DETAIL_ATTRIBUTE_TYPE_ID" ColumnName="REPORT_DETAIL_ATTRIBUTE_TYPE_ID" />
+            <ScalarProperty Name="VALUE" ColumnName="VALUE" />
+            <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+            <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+            <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+            <ScalarProperty Name="LAST_UPDATED_DATE" ColumnName="LAST_UPDATED_DATE" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="REPORT_DETAIL_ATTRIBUTE_TYPE"><EntityTypeMapping TypeName="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE_TYPE"><MappingFragment StoreEntitySet="REPORT_DETAIL_ATTRIBUTE_TYPE">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+            <ScalarProperty Name="QUERY" ColumnName="QUERY" />
+            <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+            <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+            <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+            <ScalarProperty Name="LAST_UPDATED_DATE" ColumnName="LAST_UPDATED_DATE" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="REPORT_HEADER"><EntityTypeMapping TypeName="OOSCommon.DataContext.REPORT_HEADER"><MappingFragment StoreEntitySet="REPORT_HEADER">
+            <ScalarProperty Name="TimeOffsetFromCentral" ColumnName="TimeOffsetFromCentral" />
+                <ScalarProperty Name="OffsetCorrectedCreateDate" ColumnName="OffsetCorrectedCreateDate" />
+                <ScalarProperty Name="EXCLUDE_FLAG" ColumnName="EXCLUDE_FLAG" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="STORE_ID" ColumnName="STORE_ID" />
+            <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+            <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+            <ScalarProperty Name="LAST_UPDATED_DATE" ColumnName="LAST_UPDATED_DATE" />
+            <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+            <ScalarProperty Name="PROCESSED_FLAG" ColumnName="PROCESSED_FLAG" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="SKUCount"><EntityTypeMapping TypeName="OOSCommon.DataContext.SKUCount"><MappingFragment StoreEntitySet="SKUCount">
+            <ScalarProperty Name="idSKUCount" ColumnName="idSKUCount" />
+            <ScalarProperty Name="STORE_PS_BU" ColumnName="STORE_PS_BU" />
+            <ScalarProperty Name="TEAM_ID" ColumnName="TEAM_ID" />
+            <ScalarProperty Name="numberOfSKUs" ColumnName="numberOfSKUs" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="SOURCE"><EntityTypeMapping TypeName="OOSCommon.DataContext.SOURCE"><MappingFragment StoreEntitySet="SOURCE">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="SOURCE_DESCRIPTION" ColumnName="SOURCE_DESCRIPTION" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="STATUS"><EntityTypeMapping TypeName="OOSCommon.DataContext.STATUS"><MappingFragment StoreEntitySet="STATUS">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="STATUS1" ColumnName="STATUS" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="TEAM_Interim"><EntityTypeMapping TypeName="OOSCommon.DataContext.TEAM_Interim"><MappingFragment StoreEntitySet="TEAM_Interim">
+            <ScalarProperty Name="idTeam" ColumnName="idTeam" />
+            <ScalarProperty Name="teamName" ColumnName="teamName" />
+            <ScalarProperty Name="teamVIMId" ColumnName="teamVIMId" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ProductStatus">
+            <EntityTypeMapping TypeName="OOSCommon.DataContext.ProductStatu">
+              <MappingFragment StoreEntitySet="ProductStatus">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="Vin" ColumnName="Vin" />
+                <ScalarProperty Name="VendorKey" ColumnName="VendorKey" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+                <ScalarProperty Name="ProductStatus" ColumnName="ProductStatus" />
+                <ScalarProperty Name="UPC" ColumnName="UPC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScansMissingVimDatas">
+            <EntityTypeMapping TypeName="OOSCommon.DataContext.ScansMissingVimData">
+              <MappingFragment StoreEntitySet="ScansMissingVimData">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ScanCount" ColumnName="ScanCount" />
+                <ScalarProperty Name="UPC" ColumnName="UPC" />
+                <ScalarProperty Name="Report_Header_Id" ColumnName="Report_Header_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="InsertOrUpdateScansMissingVimData" FunctionName="OOSModel.Store.InsertOrUpdateScansMissingVimData" />
+          <EntitySetMapping Name="ApplicationConfig">
+            <EntityTypeMapping TypeName="OOSCommon.DataContext.ApplicationConfig">
+              <MappingFragment StoreEntitySet="ApplicationConfig">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STORE">
+            <EntityTypeMapping TypeName="OOSCommon.DataContext.STORE">
+              <MappingFragment StoreEntitySet="store">
+                <ScalarProperty Name="Hidden" ColumnName="Hidden" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="LAST_UPDATED_DATE" ColumnName="LAST_UPDATED_DATE" />
+                <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
+                <ScalarProperty Name="REGION_ID" ColumnName="REGION_ID" />
+                <ScalarProperty Name="STORE_NAME" ColumnName="STORE_NAME" />
+                <ScalarProperty Name="STORE_ABBREVIATION" ColumnName="STORE_ABBREVIATION" />
+                <ScalarProperty Name="PS_BU" ColumnName="PS_BU" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OutOfStockNofitication">
+            <EntityTypeMapping TypeName="OOSCommon.DataContext.OutOfStockNofitication">
+              <MappingFragment StoreEntitySet="OutOfStockNofitication">
+                <ScalarProperty Name="Expiration" ColumnName="Expiration" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="OOSCommon.DataContext.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="StoreOverride" ColumnName="StoreOverride" />
+                <ScalarProperty Name="Store" ColumnName="Store" />
+                <ScalarProperty Name="RegionOverride" ColumnName="RegionOverride" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RegionalAppConfiguration">
+            <EntityTypeMapping TypeName="OOSCommon.DataContext.RegionalAppConfiguration">
+              <MappingFragment StoreEntitySet="RegionalAppConfiguration">
+                <ScalarProperty Name="OOSServiceURI" ColumnName="OOSServiceURI" />
+                <ScalarProperty Name="BiztalkServiceURI" ColumnName="BiztalkServiceURI" />
+                <ScalarProperty Name="UseBiztalk" ColumnName="UseBiztalk" />
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="OOS" ZoomLevel="59">
+        <EntityTypeShape EntityType="OOSCommon.DataContext.KNOWN_OOS_DETAIL" Width="2.25" PointX="0.875" PointY="0.625" Height="5.634013671875" IsExpanded="true" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.KNOWN_OOS_HEADER" Width="2.25" PointX="0.5" PointY="7.5" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.KNOWN_OOS_MAP" Width="1.875" PointX="3.375" PointY="8.25" Height="2.9417936197916656" IsExpanded="true" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.REASON" Width="2" PointX="4.125" PointY="0.625" Height="2.5571907552083326" IsExpanded="true" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.REGION" Width="1.5" PointX="5.75" PointY="8.25" Height="2.5571907552083317" IsExpanded="true" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.REGION_MOVEMENT_QUERY" Width="2.75" PointX="8.375" PointY="8" Height="2.5571907552083317" IsExpanded="true" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" Width="3.125" PointX="7.25" PointY="11.375" Height="2.7494921874999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.REPORT_DETAIL" Width="1.875" PointX="13.875" PointY="1" Height="6.0186165364583317" IsExpanded="true" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE" Width="1.5" PointX="17.125" PointY="5.25" Height="2.9417936197916656" IsExpanded="true" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE_TYPE" Width="3" PointX="7.375" PointY="15.875" Height="2.7494921874999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.REPORT_HEADER" Width="1.75" PointX="11.125" PointY="3.625" Height="2.7494921874999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.SKUCount" Width="1.5" PointX="9.375" PointY="1.375" Height="1.787985026041667" IsExpanded="true" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.SOURCE" Width="1.5" PointX="12.25" PointY="13.25" Height="1.7879850260416657" IsExpanded="true" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.STATUS" Width="1.5" PointX="8.75" PointY="4.75" Height="1.5956835937499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.TEAM_Interim" Width="1.5" PointX="6.75" PointY="1.5" Height="1.59568359375" IsExpanded="true" />
+        <AssociationConnector Association="OOSCommon.DataContext.KNOWN_OOS_DETAIL_KNOWN_OOS_HEADER_FK" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.8125" PointY="7.5" />
+          <ConnectorPoint PointX="1.8125" PointY="6.259013671875" />
+        </AssociationConnector>
+        <AssociationConnector Association="OOSCommon.DataContext.KNOWN_OOS_REASON_FK" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.125" PointY="1.9035953776041663" />
+          <ConnectorPoint PointX="3.125" PointY="1.9035953776041663" />
+        </AssociationConnector>
+        <AssociationConnector Association="OOSCommon.DataContext.KNOWN_OOS_SOURCE_FK" ManuallyRouted="false">
+          <ConnectorPoint PointX="9.15625" PointY="6.125" />
+          <ConnectorPoint PointX="9.15625" PointY="3.5910953776041663" />
+          <ConnectorPoint PointX="3.125" PointY="3.5910953776041663" />
+        </AssociationConnector>
+        <AssociationConnector Association="OOSCommon.DataContext.KNOWN_OOS_MAP_KNOWN_OOS_HEADER_FK" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.75" PointY="9.0574446614583337" />
+          <ConnectorPoint PointX="3.375" PointY="9.0574446614583337" />
+        </AssociationConnector>
+        <AssociationConnector Association="OOSCommon.DataContext.KNOWN_OOS_MAP_REGION_ID_FK" ManuallyRouted="false">
+          <ConnectorPoint PointX="5.75" PointY="9.5285953776041659" />
+          <ConnectorPoint PointX="5.25" PointY="9.5285953776041659" />
+        </AssociationConnector>
+        <AssociationConnector Association="OOSCommon.DataContext.REPORT_DETAIL_REASON_FK" ManuallyRouted="false">
+          <ConnectorPoint PointX="6.125" PointY="1.15625" />
+          <ConnectorPoint PointX="13.875" PointY="1.15625" />
+        </AssociationConnector>
+        <AssociationConnector Association="OOSCommon.DataContext.REGION_MOVEMENT_QUERY_FK" ManuallyRouted="false">
+          <ConnectorPoint PointX="7.25" PointY="8.71875" />
+          <ConnectorPoint PointX="11.375" PointY="8.71875" />
+        </AssociationConnector>
+        <AssociationConnector Association="OOSCommon.DataContext.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REGION_FK" ManuallyRouted="false">
+          <ConnectorPoint PointX="7.25" PointY="10.028595377604166" />
+          <ConnectorPoint PointX="7.875" PointY="10.028595377604166" />
+        </AssociationConnector>
+        <AssociationConnector Association="OOSCommon.DataContext.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REPORT_DETAIL_ATTRIBUTE_TYPE_FK" ManuallyRouted="false">
+          <ConnectorPoint PointX="13.25" PointY="10.81224609375" />
+          <ConnectorPoint PointX="11" PointY="10.81224609375" />
+        </AssociationConnector>
+        <AssociationConnector Association="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_FK" ManuallyRouted="false">
+          <ConnectorPoint PointX="15.75" PointY="6.1343082682291659" />
+          <ConnectorPoint PointX="17.125" PointY="6.1343082682291659" />
+        </AssociationConnector>
+        <AssociationConnector Association="OOSCommon.DataContext.REPORT_DETAIL_REPORT_HEADER_FK" ManuallyRouted="false">
+          <ConnectorPoint PointX="12.875" PointY="4.99974609375" />
+          <ConnectorPoint PointX="13.875" PointY="4.99974609375" />
+        </AssociationConnector>
+        <AssociationConnector Association="OOSCommon.DataContext.REPORT_DETAIL_SOURCE_FK" ManuallyRouted="false">
+          <ConnectorPoint PointX="10.5" PointY="6.68724609375" />
+          <ConnectorPoint PointX="13.875" PointY="6.68724609375" />
+        </AssociationConnector>
+        <AssociationConnector Association="OOSCommon.DataContext.REPORT_DETAIL_ATTRIBUTE_REPORT_DETAIL_ATTRIBUTE_TYPE_FK" ManuallyRouted="false">
+          <ConnectorPoint PointX="16.25" PointY="10.99974609375" />
+          <ConnectorPoint PointX="17.875" PointY="10.99974609375" />
+          <ConnectorPoint PointX="17.875" PointY="8.1917936197916656" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="OOSCommon.DataContext.ProductStatu" Width="1.5" PointX="0.875" PointY="10.625" Height="2.7494921874999996" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.ScansMissingVimData" Width="1.5" PointX="3.75" PointY="12.375" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.ApplicationConfig" Width="1.5" PointX="12.375" PointY="9.75" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.STORE" Width="1.5" PointX="5.5" PointY="3.875" />
+        <AssociationConnector Association="OOSCommon.DataContext.KNOWN_OOS_STORE_FK" />
+        <AssociationConnector Association="OOSCommon.DataContext.STORE_REGION_FK" />
+        <AssociationConnector Association="OOSCommon.DataContext.REPORT_HEADER_STORE_FK" />
+        <AssociationConnector Association="OOSCommon.DataContext.STORE_STATUS_FK" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.OutOfStockNofitication" Width="1.5" PointX="0.75" PointY="14.75" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.Users" Width="1.5" PointX="14.375" PointY="9.75" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.RegionalAppConfiguration" Width="1.5" PointX="8" PointY="19.75" />
+        <AssociationConnector Association="OOSCommon.DataContext.FK_RegionalAppConfiguration_Region_Id" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

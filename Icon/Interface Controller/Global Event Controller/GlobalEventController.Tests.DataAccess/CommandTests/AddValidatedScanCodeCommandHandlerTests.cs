@@ -38,7 +38,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
 			// Then
 			IEnumerable<ValidatedScanCode> actualList = this.context.ValidatedScanCode.Where(vsc => scanCodes.Contains(vsc.ScanCode));
 			Assert.IsTrue(actualList.Count() == scanCodes.Count);
-			for(int i = 0; i < actualList.Count(); i++)
+			for (int i = 0; i < actualList.Count(); i++)
 			{
 				ValidatedScanCode expected = expectedList[i];
 				ValidatedScanCode actual = actualList.First(a => a.ScanCode == expected.ScanCode);
@@ -64,7 +64,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
 			this.context.SaveChanges();
 
 			// Then
-			for(int i = 0; i < existingValidated.Count; i++)
+			for (int i = 0; i < existingValidated.Count; i++)
 			{
 				ValidatedScanCode expectedExisting = expectedExistingValidated[i];
 				ValidatedScanCode actualExisting = this.context.ValidatedScanCode.First(vsc => vsc.ScanCode == expectedExisting.ScanCode);
@@ -73,7 +73,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
 
 			}
 
-			for(int i = 0; i < needValidation.Count; i++)
+			for (int i = 0; i < needValidation.Count; i++)
 			{
 				string expectedNeedValidation = needValidation[i];
 				ValidatedScanCode actualNeedValidation = this.context.ValidatedScanCode.First(vsc => vsc.ScanCode == expectedNeedValidation);
@@ -96,7 +96,7 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
 			this.context.SaveChanges();
 
 			// Then
-			for(int i = 0; i < needValidation.Count; i++)
+			for (int i = 0; i < needValidation.Count; i++)
 			{
 				string expected = needValidation[i];
 				ValidatedScanCode actual = this.context.ValidatedScanCode.First(vsc => vsc.ScanCode == expected);
@@ -132,10 +132,10 @@ namespace GlobalEventController.Tests.DataAccess.CommandTests
 			List<string> scanCodes = new List<string>();
 			scanCodes = this.context.ValidatedScanCode.Select(vsc => vsc.ScanCode).Take(maxRows).ToList();
 
-			if(scanCodes.Count == 0)
+			if (scanCodes.Count == 0)
 			{
 				List<ValidatedScanCode> validatedScanCodeList = new List<ValidatedScanCode>();
-				for(int i = 1; i < maxRows; i++)
+				for (int i = 1; i < maxRows; i++)
 				{
 					ValidatedScanCode validatedScanCode = new ValidatedScanCode();
 					validatedScanCode.ScanCode = "44995588667" + i.ToString();

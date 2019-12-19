@@ -3,7 +3,6 @@ using Icon.Framework;
 using Icon.Web.Common;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 
 namespace Icon.Web.DataAccess.Commands
@@ -11,10 +10,12 @@ namespace Icon.Web.DataAccess.Commands
     public class DeleteHierarchyClassCommandHandler : ICommandHandler<DeleteHierarchyClassCommand>
     {
         private IconContext context;
+        private AppSettings settings;
 
-        public DeleteHierarchyClassCommandHandler(IconContext context)
+        public DeleteHierarchyClassCommandHandler(IconContext context, AppSettings settings)
         {
             this.context = context;
+            this.settings = settings;
         }
 
         public void Execute(DeleteHierarchyClassCommand data)
@@ -60,7 +61,7 @@ namespace Icon.Web.DataAccess.Commands
         private void GenerateHierarchyDeleteEvents(int hierarchyClassId, string hierarchyClassName, string eventName)
         {
             int hierarchyClassDeleteEventId;
-            string[] hierarchyClassDeleteConfiguredRegions = ConfigurationManager.AppSettings["HierarchyClassDeleteEventConfiguredRegions"].Split(',');
+            string[] hierarchyClassDeleteConfiguredRegions = this.settings.HierarchyClassDeleteEventConfiguredRegions;
             var hierarchyDeleteEvents = new List<EventQueue>();
 
             hierarchyClassDeleteEventId = context.EventType.Single(et => et.EventName == eventName).EventId;

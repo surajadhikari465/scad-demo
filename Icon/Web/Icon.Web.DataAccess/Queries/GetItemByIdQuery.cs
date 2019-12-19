@@ -16,7 +16,7 @@ namespace Icon.Web.DataAccess.Queries
         public Item Search(GetItemByIdParameters parameters)
         {
             Item item = context.Item
-                .Single(i => i.itemID == parameters.ItemId);
+                .Single(i => i.ItemId == parameters.ItemId);
 
             // Reload entity in case it has been changed by a stored procedure.
             context.Entry<Item>(item).Reload();

@@ -1,0 +1,109 @@
+﻿#if __DESIGNER_DATA
+#error Do not define __DESIGNER_DATA.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<om:MetaModel MajorVersion="1" MinorVersion="3" Core="2b131234-7959-458d-834f-2dc0769ce683" ScheduleModel="66366196-361d-448d-976f-cab5e87496d2" xmlns:om="http://schemas.microsoft.com/BizTalk/2003/DesignerData">
+    <om:Element Type="Module" OID="36bd9fef-bcb2-4fbc-a482-ddaf006c892b">
+        <om:Property Name="ReportToAnalyst" Value="True" />
+        <om:Property Name="Name" Value="QuiverService.ICIX" />
+        <om:Property Name="Signal" Value="False" />
+        <om:Element Type="PortType" OID="0d90461d-0071-4739-bf09-5963cab4080b" ParentLink="Module_PortType">
+            <om:Property Name="Synchronous" Value="True" />
+            <om:Property Name="TypeModifier" Value="Internal" />
+            <om:Property Name="ReportToAnalyst" Value="True" />
+            <om:Property Name="AnalystComments" Value="&lt;wsdl:portType name=&quot;IService1&quot;/&gt;&#xD;&#xA;" />
+            <om:Property Name="Name" Value="IService1" />
+            <om:Property Name="Signal" Value="False" />
+            <om:Element Type="OperationDeclaration" OID="8ab8e134-522a-4bfb-a658-3de60c328ecf" ParentLink="PortType_OperationDeclaration">
+                <om:Property Name="OperationType" Value="RequestResponse" />
+                <om:Property Name="ReportToAnalyst" Value="True" />
+                <om:Property Name="AnalystComments" Value="&lt;wsdl:operation name=&quot;AddIncident&quot;/&gt;&#xD;&#xA;" />
+                <om:Property Name="Name" Value="AddIncident" />
+                <om:Property Name="Signal" Value="False" />
+                <om:Element Type="MessageRef" OID="f6f77167-6358-4c08-b731-876b376a8e9f" ParentLink="OperationDeclaration_RequestMessageRef">
+                    <om:Property Name="Ref" Value="QuiverService.ICIX.IService1_AddIncident_InputMessage" />
+                    <om:Property Name="ReportToAnalyst" Value="True" />
+                    <om:Property Name="AnalystComments" Value="&lt;wsdl:input message=&quot;http://tempuri.org/:IService1_AddIncident_InputMessage&quot;/&gt;&#xD;&#xA;Action=&quot;http://tempuri.org/IService1/AddIncident&quot;&#xD;&#xA;" />
+                    <om:Property Name="Name" Value="Request" />
+                    <om:Property Name="Signal" Value="False" />
+                </om:Element>
+                <om:Element Type="MessageRef" OID="69d2c1e3-7c98-4344-9e36-d91829084c73" ParentLink="OperationDeclaration_ResponseMessageRef">
+                    <om:Property Name="Ref" Value="QuiverService.ICIX.IService1_AddIncident_OutputMessage" />
+                    <om:Property Name="ReportToAnalyst" Value="True" />
+                    <om:Property Name="AnalystComments" Value="&lt;wsdl:output message=&quot;http://tempuri.org/:IService1_AddIncident_OutputMessage&quot;/&gt;&#xD;&#xA;Action=&quot;http://tempuri.org/IService1/AddIncidentResponse&quot;&#xD;&#xA;" />
+                    <om:Property Name="Name" Value="Response" />
+                    <om:Property Name="Signal" Value="False" />
+                </om:Element>
+            </om:Element>
+        </om:Element>
+        <om:Element Type="MultipartMessageType" OID="aae42378-d5a8-4879-9ce9-e29171cca5d2" ParentLink="Module_MessageType">
+            <om:Property Name="TypeModifier" Value="Internal" />
+            <om:Property Name="ReportToAnalyst" Value="True" />
+            <om:Property Name="AnalystComments" Value="&lt;wsdl:message name=&quot;IService1_AddIncident_InputMessage&quot;/&gt;&#xD;&#xA;" />
+            <om:Property Name="Name" Value="IService1_AddIncident_InputMessage" />
+            <om:Property Name="Signal" Value="False" />
+            <om:Element Type="PartDeclaration" OID="7fa71873-b6cf-4fac-8335-e37d3f8531b3" ParentLink="MultipartMessageType_PartDeclaration">
+                <om:Property Name="ClassName" Value="QuiverService.ICIX.Service1_tempuri_org.AddIncident" />
+                <om:Property Name="IsBodyPart" Value="True" />
+                <om:Property Name="ReportToAnalyst" Value="True" />
+                <om:Property Name="AnalystComments" Value="&lt;wsdl:part name=&quot;parameters&quot;/&gt;&#xD;&#xA;" />
+                <om:Property Name="Name" Value="parameters" />
+                <om:Property Name="Signal" Value="False" />
+            </om:Element>
+        </om:Element>
+        <om:Element Type="MultipartMessageType" OID="1d56a298-11b8-476b-a4c0-48711fe3d8cf" ParentLink="Module_MessageType">
+            <om:Property Name="TypeModifier" Value="Internal" />
+            <om:Property Name="ReportToAnalyst" Value="True" />
+            <om:Property Name="AnalystComments" Value="&lt;wsdl:message name=&quot;IService1_AddIncident_OutputMessage&quot;/&gt;&#xD;&#xA;" />
+            <om:Property Name="Name" Value="IService1_AddIncident_OutputMessage" />
+            <om:Property Name="Signal" Value="False" />
+            <om:Element Type="PartDeclaration" OID="5127d09a-b97b-4ee0-8d12-81d0505eca5c" ParentLink="MultipartMessageType_PartDeclaration">
+                <om:Property Name="ClassName" Value="QuiverService.ICIX.Service1_tempuri_org.AddIncidentResponse" />
+                <om:Property Name="IsBodyPart" Value="True" />
+                <om:Property Name="ReportToAnalyst" Value="True" />
+                <om:Property Name="AnalystComments" Value="&lt;wsdl:part name=&quot;parameters&quot;/&gt;&#xD;&#xA;" />
+                <om:Property Name="Name" Value="parameters" />
+                <om:Property Name="Signal" Value="False" />
+            </om:Element>
+        </om:Element>
+        <om:Element Type="ServiceDeclaration" OID="f1057337-70a2-4df0-97f7-9d9e1d405b1d" ParentLink="Module_ServiceDeclaration">
+            <om:Property Name="InitializedTransactionType" Value="False" />
+            <om:Property Name="IsInvokable" Value="True" />
+            <om:Property Name="TypeModifier" Value="Internal" />
+            <om:Property Name="ReportToAnalyst" Value="True" />
+            <om:Property Name="AnalystComments" Value="&lt;wsdl:service name=&quot;Service1&quot;/&gt;&#xD;&#xA;" />
+            <om:Property Name="Name" Value="Service1Client" />
+            <om:Property Name="Signal" Value="False" />
+            <om:Element Type="ServiceBody" OID="b08b4832-0928-4159-9869-de1c9227b88e" ParentLink="ServiceDeclaration_ServiceBody">
+                <om:Property Name="Signal" Value="False" />
+            </om:Element>
+        </om:Element>
+    </om:Element>
+</om:MetaModel>
+#endif // __DESIGNER_DATA
+[Microsoft.XLANGs.BaseTypes.BPELExportable(false)]
+module QuiverService.ICIX
+{
+    internal messagetype IService1_AddIncident_InputMessage
+    {
+        body Service1_tempuri_org.AddIncident parameters;
+    };
+    internal messagetype IService1_AddIncident_OutputMessage
+    {
+        body Service1_tempuri_org.AddIncidentResponse parameters;
+    };
+    internal porttype IService1
+    {
+        requestresponse AddIncident
+        {
+            IService1_AddIncident_InputMessage, IService1_AddIncident_OutputMessage
+        };
+    };
+    [Microsoft.XLANGs.BaseTypes.BPELExportable(false)]
+    internal service Service1Client
+    {
+        body ()
+        {
+        }
+    }
+}
+

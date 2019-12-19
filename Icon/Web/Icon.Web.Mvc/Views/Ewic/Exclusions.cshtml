@@ -1,5 +1,4 @@
-﻿@using Infragistics.Web.Mvc
-@model Icon.Web.Mvc.Models.EwicExclusionViewModel
+﻿@model Icon.Web.Mvc.Models.EwicExclusionViewModel
 
 @{
     ViewBag.Title = "Exclusions";
@@ -10,8 +9,8 @@
 
 <hr />
 
-<div class="page-section row">
-    @using (Html.BeginForm("AddExclusion", "Ewic", FormMethod.Post, new { @class = "begin-form col-md-6" }))
+<div class="page-section">
+    @using (Html.BeginForm("AddExclusion", "Ewic", FormMethod.Post, new { @class = "begin-form" }))
     {
         <fieldset>
             <legend>Add New Exclusion</legend>
@@ -19,13 +18,13 @@
                 <div class="form-group">
                     @Html.TextBoxFor(model => Model.NewExclusion, null, new { @class = "form-control", @id = "newExclusion" })
                 </div>
-                <input type="submit" value="Add Exclusion" class="btn btn-default" id="addButton" />
+                <input type="submit" value="Add Exclusion" class="btn btn-light inline-submit-button" id="addButton" />
                 @Html.ValidationMessageFor(model => model.NewExclusion, null, new { @class = "form-property-val" })
             </div>
         </fieldset>
     }
     
-    @using (Html.BeginForm("RemoveExclusion", "Ewic", FormMethod.Post, new { @class = "begin-form col-md-6" }))
+    @using (Html.BeginForm("RemoveExclusion", "Ewic", FormMethod.Post, new { @class = "begin-form" }))
     {
         <fieldset>
             <legend>Remove Existing Exclusion</legend>
@@ -33,7 +32,7 @@
                 <div class="form-group">
                     @Html.DropDownListFor(model => Model.RemovedExclusionSelectedId, Model.RemovableEwicExclusions, "--Select Exclusion--", new { @class = "form-control" })
                 </div>
-                <input type="submit" value="Remove Exclusion" class="btn btn-default" id="removeButton" />
+                <input type="submit" value="Remove Exclusion" class="btn btn-light inline-submit-button" id="removeButton" />
             </div>
         </fieldset>
     }

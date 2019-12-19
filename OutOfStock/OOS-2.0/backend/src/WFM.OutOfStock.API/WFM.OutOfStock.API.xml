@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WFM.OutOfStock.API</name>
+    </assembly>
+    <members>
+        <member name="M:WFM.OutOfStock.API.Controllers.ItemsController.SubmitList(WFM.OutOfStock.API.Domain.Request.UploadItemsRequest)">
+            <summary>
+            Submits a list of UPCs.
+            </summary>
+            <remarks>
+            Sample request:
+            
+                POST /api/products
+                {
+                    "name": "Sample List",
+                    "regionCode": "SW",
+                    "storeName": "Arbor Trails",
+                    "items": [
+                        "123456789123",
+                        "234567891234"
+                    ]
+                }
+            </remarks>
+            <param name="list">The list of items to submit.</param>
+            <response code="200">If the list has been submitted successfully.</response>
+            <response code="400">If the list fails validation.</response>
+            <response code="502">If a downstream communication failure occurs.</response>
+        </member>
+        <member name="M:WFM.OutOfStock.API.Controllers.StoresController.GetStoresByRegionCode(System.String)">
+            <summary>
+            Retrieves a list of stores within the specified region.
+            </summary>
+            <remarks>
+            Sample request:
+            
+                GET /api/stores/region/MW
+            </remarks>
+            <param name="regionCode">The two-letter region code.</param>
+            <returns>A list of stores and their business units.</returns>
+            <response code="200">An array of stores with their store number.</response>
+            <response code="400">If the specified region code does not exist.</response>
+            <response code="502">If a downstream communication failure occurs.</response>
+        </member>
+        <member name="T:WFM.OutOfStock.API.Services.Exceptions.ServiceCommunicationException">
+            <summary>
+            Composite exception type covering exceptions encountered relating to Out Of Stock WCF service communication
+            </summary>
+        </member>
+    </members>
+</doc>
