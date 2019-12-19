@@ -1,5 +1,6 @@
 ﻿BEGIN
 	DECLARE @designation INT
+	DECLARE @hierarchyId INT
 
 	IF NOT EXISTS (
 			SELECT 1
@@ -24,6 +25,11 @@
 			FROM trait
 			WHERE traitCode = 'GRD'
 			)
+	SET @hierarchyId = (
+			SELECT HIERARCHYID
+			FROM Hierarchy
+			WHERE hierarchyName = 'Brands'
+			)
 
 	BULK INSERT dbo.temp_BrandHierarchy
 	FROM '\\ODWD6801\Temp\IconConversion\BrandHierarchy.csv' WITH (
@@ -38,10 +44,11 @@
 	WITH SourceTableCTE
 	AS (
 		SELECT DISTINCT t.brand_name
-		    ,s.hierarchyClassID
+			,s.hierarchyClassID
 			,t.Designation
 		FROM dbo.temp_BrandHierarchy t
 		JOIN HierarchyClass s ON s.hierarchyClassName = t.brand_name
+		WHERE s.HIERARCHYID = @hierarchyId
 		)
 	MERGE HierarchyClassTrait AS target
 	USING SourceTableCTE AS source
@@ -70,8 +77,8 @@
 	FROM dbo.temp_BrandHierarchy t
 	WHERE t.brand_name NOT IN (
 			SELECT hc.hierarchyClassName
-	          FROM dbo.HierarchyClass hc
-			)			
+			FROM dbo.HierarchyClass hc
+			)
 
 	DROP TABLE dbo.temp_BrandHierarchy
 END
