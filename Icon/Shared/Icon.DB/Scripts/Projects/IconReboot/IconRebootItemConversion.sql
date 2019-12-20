@@ -1,6 +1,26 @@
 USE Icon
 GO
 
+--Disable item history if it's turned on
+IF (
+		SELECT temporal_type
+		FROM sys.tables
+		WHERE name = 'Item'
+			AND SCHEMA_NAME(schema_id) = 'dbo'
+		) <> 0
+BEGIN
+	PRINT 'Disabling item history'
+
+	ALTER TABLE dbo.Item
+
+	SET (SYSTEM_VERSIONING = OFF)
+
+END
+
+PRINT 'Dropping period'
+ALTER TABLE dbo.Item DROP PERIOD FOR SYSTEM_TIME;
+GO
+
 BEGIN TRY
 
 IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES t WHERE t.TABLE_SCHEMA = 'dbo' AND t.TABLE_NAME = 'ScanCodeBackup')
@@ -199,29 +219,12 @@ FROM '\\ODWD6801\Temp\IconConversion\im_item.csv' -- needs to be added with file
 	WITH (
 		FIRSTROW = 2
 		,FIELDTERMINATOR = ','
+		,CODEPAGE = '65001'
 		,ROWTERMINATOR = '\r'
 		,FORMAT = 'CSV'
 		);
 
-
---Disable item history if it's turned on
-IF (
-		SELECT temporal_type
-		FROM sys.tables
-		WHERE name = 'Item'
-			AND SCHEMA_NAME(schema_id) = 'dbo'
-		) <> 0
-BEGIN
-	PRINT 'Disabling item history'
-
-	ALTER TABLE dbo.Item
-
-	SET (SYSTEM_VERSIONING = OFF)
-END
-
-
 TRUNCATE TABLE dbo.ItemHistory
-
 
 PRINT 'Updating dbo.Item table...'
 
@@ -372,12 +375,16 @@ SET ItemAttributesJson = ISNULL((
 				,[Vegetarian Claim] AS VegetarianClaim
 				,NULLIF([WFM Eligible], 'No') AS WFMEligible
 				,NULLIF([Whole Trade], 'No') AS WholeTrade
+				,[ItemName] as RequestName
 			FROM temp_InforItemsFile f
 			WHERE f.ItemID = item.ItemId
 			FOR JSON PATH
 				,WITHOUT_ARRAY_WRAPPER
 			), '{}')
 
+
+UPDATE dbo.Item
+SET sysstarttimeutc =  IsNULL(ISNULL(JSON_VALUE(ItemAttributesJson,'$.ModifiedDateTimeUtc'),JSON_VALUE(ItemAttributesJson,'$."CreatedDateTimeUtc"')),SYSUTCDATETIME )
 
 UPDATE sc
 SET barcodeTypeID = b.BarcodeTypeId
@@ -515,9 +522,7 @@ INNER JOIN ItemTrait it ON i.itemID = it.itemID
 
 --Enable item history
 ALTER TABLE dbo.Item
-
 SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = dbo.ItemHistory));
-
 
 DROP TABLE dbo.temp_InforItemsFile
 
@@ -527,6 +532,10 @@ SET sc.barcodeTypeID = b.barcodeTypeID
 FROM dbo.ScanCode sc
 JOIN dbo.ScanCodeBackup b on sc.itemID = b.ItemID
 WHERE sc.barcodeTypeID IS NULL
+
+PRINT 'Enabling item history and period'
+ALTER TABLE dbo.Item ADD PERIOD FOR SYSTEM_TIME(SysStartTimeUtc, SysEndTimeUtc)
+ALTER TABLE dbo.Item SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = dbo.ItemHistory));
 
 IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES t WHERE t.TABLE_SCHEMA = 'dbo' AND t.TABLE_NAME = 'ScanCodeBackup')
 	DROP TABLE dbo.ScanCodeBackup

@@ -89,6 +89,53 @@ BEGIN
 	DBCC CHECKIDENT (AttributeGroup, RESEED, 0);
 END
 
+-- Create CRB trait code if it does not exist
+DECLARE @itemTraitgroupId INT = (
+		SELECT TraitGroupId
+		FROM TraitGroup
+		WHERE traitGroupCode = 'IA'
+		)
+
+IF NOT EXISTS (
+		SELECT 1
+		FROM [dbo].[Trait]
+		WHERE [traitCode] = 'CRB'
+		)
+BEGIN
+	INSERT INTO [dbo].[Trait] (
+		 [traitCode]
+		,[traitPattern]
+		,[traitDesc]
+		,[traitGroupID]
+		)
+	VALUES (
+		'CRB'
+		,''
+		,'Created By'
+		,@itemTraitgroupId
+		)
+END
+
+IF NOT EXISTS (
+		SELECT 1
+		FROM [dbo].[Trait]
+		WHERE [traitCode] = 'RQN'
+		)
+BEGIN
+	INSERT INTO [dbo].[Trait] (
+		 [traitCode]
+		,[traitPattern]
+		,[traitDesc]
+		,[traitGroupID]
+		)
+	VALUES (
+		'RQN'
+		,''
+		,'Request Name'
+		,@itemTraitgroupId
+		)
+END
+
 IF OBJECT_ID('dbo.IconRebootDataAfterParsingJson', 'U') IS NOT NULL
 	DROP TABLE dbo.IconRebootDataAfterParsingJson;
 
@@ -123,7 +170,9 @@ CREATE TABLE dbo.IconRebootDataAfterParsingJson (
 
 DECLARE @jsonData AS NVARCHAR(MAX)
 SELECT @jsonData = BulkColumn
-FROM OPENROWSET(BULK '\\ODWD6801\Temp\IconConversion\attributeConfigs.json', SINGLE_CLOB) AS j
+FROM OPENROWSET(BULK '\\ODWD6801\Temp\IconConversion\attributeConfigs.json' ,CODEPAGE = '65001', SINGLE_CLOB) 
+
+AS j
 
 SELECT *
 INTO #tmpParsedData
@@ -243,6 +292,17 @@ WHERE NOT EXISTS
 	FROM infor.HistoricalAttributes h
 	WHERE h.AttributeGuid = CAST(i.AttributeId as uniqueidentifier)
 )
+
+INSERT INTO infor.HistoricalAttributes (
+	AttributeName
+	,AttributeType
+	,AttributeGuid
+	)
+VALUES (
+	'RequestName'
+	,'ITEM'
+	,NEWID()
+	)
 
 SELECT substring(Name, CHARINDEX('(', Name) + 1, CHARINDEX(')', Name) - CHARINDEX('(', Name) - 1) AS range
 	,*
@@ -940,7 +1000,7 @@ VALUES
 	,NULL
 	,NULL
 	,'All'
-	,NULL -- TODO:  Add TraitCode
+	,'CRB'
 	,@dataTypeTextId
 	,(@maxDisplayOrder + 2)
 	,NULL
@@ -1031,6 +1091,47 @@ VALUES
 	,1
 	,'Department Sale'
 )
+
+INSERT INTO [dbo].[Attributes] (
+	[DisplayName]
+	,[AttributeName]
+	,[AttributeGroupId]
+	,[HasUniqueValues]
+	,[Description]
+	,[DefaultValue]
+	,[IsRequired]
+	,[SpecialCharactersAllowed]
+	,[TraitCode]
+	,[DataTypeId]
+	,[DisplayOrder]
+	,[InitialValue]
+	,[IncrementBy]
+	,[InitialMax]
+	,[DisplayType]
+	,[MaxLengthAllowed]
+	,[IsPickList]
+	,[XmlTraitDescription]
+	)
+SELECT 'Request Name'
+	,'RequestName'
+	,[AttributeGroupId]
+	,[HasUniqueValues]
+	,Null
+	,[DefaultValue]
+	,0
+	,[SpecialCharactersAllowed]
+	,'RQN'
+	,[DataTypeId]
+	,2000
+	,[InitialValue]
+	,[IncrementBy]
+	,[InitialMax]
+	,[DisplayType]
+	,[MaxLengthAllowed]
+	,[IsPickList]
+	,'Request Name'
+FROM Attributes
+WHERE attributename = 'productdescription'
 
 INSERT INTO [dbo].[PickListData] (
 			[AttributeId]
