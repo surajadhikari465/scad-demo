@@ -437,7 +437,11 @@ namespace Services.Extract
 
                 foreach (var file in files)
                 {
-                    client.UploadFile(File.OpenRead(file.FullName), file.Name);
+                    using (var fStream = File.OpenRead(file.FullName))
+                    {
+                        client.UploadFile(fStream, file.Name);
+                        fStream.Close();
+                    } 
                 }
             }
         }
@@ -448,22 +452,20 @@ namespace Services.Extract
             var credentials = credentialsCache.Credentials[credentialKey];
             if (credentials == null) throw new Exception($"Expected to find S3 Credentials for Key: {credentialKey} but they were null");
 
-            var client = new AmazonS3Client(awsAccessKeyId: credentials.AccessKey,
-                awsSecretAccessKey: credentials.SecretKey,
-                clientConfig: new AmazonS3Config() { ServiceURL = credentials.BucketRegion });
-
-            foreach (var fileInfo in files)
+            using (var client = new AmazonS3Client(credentials.AccessKey,credentials.SecretKey,new AmazonS3Config() {ServiceURL = credentials.BucketRegion}))
             {
-                PutObjectRequest request = new PutObjectRequest
+                foreach (var fileInfo in files)
                 {
-                    BucketName = credentials.BucketName,
-                    Key = $"{destinationDir}/{Path.GetFileName(fileInfo.Name)}",
-                    FilePath = fileInfo.FullName
-                };
+                    PutObjectRequest request = new PutObjectRequest
+                    {
+                        BucketName = credentials.BucketName,
+                        Key = $"{destinationDir}/{Path.GetFileName(fileInfo.Name)}",
+                        FilePath = fileInfo.FullName
+                    };
 
-                var response = client.PutObject(request);
+                    var response = client.PutObject(request);
+                }
             }
-            
         }
 
         
