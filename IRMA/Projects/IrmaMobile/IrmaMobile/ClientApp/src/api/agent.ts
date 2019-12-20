@@ -69,4 +69,17 @@ const PurchaseOrder = {
         })
 };
 
-export default { PurchaseOrder };
+const PurchaseOrderClose = {
+    getCurrencies: async (region: string) =>
+        await requests.get(`/${region}/purchaseorder/getCurrencies`),
+    getOrderInvoiceCharges: async (region: string, orderId: number) =>
+        await requests.get(
+            `/${region}/purchaseorder/getOrderInvoiceCharges?orderId=${orderId}`
+        ),
+    closeOrder: async (region: string, orderId: number, userId: number) =>
+        await requests.post(
+            `/${region}/purchaseorder/closeOrder`, {orderId, userId}
+        )
+};
+
+export default { PurchaseOrder, PurchaseOrderClose };

@@ -149,7 +149,18 @@ namespace IrmaMobile.Services
         public async Task<Result> ReceiveOrderAsync(string region, ReceiveOrderModel model)
         {
             var result = await MakeServiceRequest(region, client => client.ReceiveOrderItemAsync(model.Quantity, model.Weight, model.Date, model.Correction, model.OrderItemId, model.ReasonCodeId, model.PackSize, model.UserId));
+            return result;
+        }
 
+        public async Task<List<InvoiceCharge>> GetOrderInvoiceChargesAsync(string region, int orderId)
+        {
+            var result = await MakeServiceRequest(region, client => client.GetOrderInvoiceChargesAsync(orderId));
+            return result;
+        }
+
+        public async Task<Result> CloseOrder(string region, int orderId, int userId)
+        {
+            var result = await MakeServiceRequest(region, client => client.CloseOrderAsync(orderId, userId));
             return result;
         }
 

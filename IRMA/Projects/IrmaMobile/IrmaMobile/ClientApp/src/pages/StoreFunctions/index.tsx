@@ -23,9 +23,7 @@ const StoreFunctions:React.FC = () => {
     <div className="store-functions">
       <div className="page-title-wrapper">   
         <div className="message-container">
-          <h1>Scan Items</h1>
           <p>Set your subteam, then select a function</p>
-          <p>Having trouble? Enter the number manually by clicking the settings icon in the above toolbar</p>
         </div>
       </div>
       <div className="subteam-select">

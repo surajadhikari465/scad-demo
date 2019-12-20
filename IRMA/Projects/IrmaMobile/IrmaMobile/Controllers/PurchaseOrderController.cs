@@ -65,5 +65,28 @@ namespace IrmaMobile.Controllers
 
             return result;
         }
+
+        [ProducesResponseType(200)]
+        [HttpGet]
+        public async Task<List<InvoiceCharge>> GetOrderInvoiceCharges([FromRoute]string region, [FromQuery]int orderId)
+        {
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(PurchaseOrderController)}.{nameof(GetOrderInvoiceCharges)}");
+            
+            var result = await service.GetOrderInvoiceChargesAsync(region, orderId);
+
+            return result;
+        }
+
+        [ProducesResponseType(200)]
+        [HttpPost]
+        public async Task<Result> CloseOrder([FromRoute]string region, [FromBody]CloseOrderModel model)
+        {
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(PurchaseOrderController)}.{nameof(CloseOrder)}");
+
+            var result = await service.CloseOrder(region, model.OrderId, model.UserId); 
+
+            return result;
+        }
+
     }
 }

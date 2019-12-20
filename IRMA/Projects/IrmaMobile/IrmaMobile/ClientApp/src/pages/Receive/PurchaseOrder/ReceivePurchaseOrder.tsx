@@ -11,13 +11,17 @@ import { OrderDetails } from "./types/OrderDetails";
 const ReceivePurchaseOrder: React.FC = () => {
     // @ts-ignore
     const { state, dispatch } = useContext(AppContext);
-    const { storeNumber, region, listedOrders, purchaseOrderUpc } = state;
+    const { storeNumber, region, listedOrders, purchaseOrderUpc, purchaseOrderNumber } = state;
     let selectedPo = null;
 
     useEffect(() => {
+        setMenuItems()
+    }, [dispatch]);
+
+    const setMenuItems = () => {
         const newMenuItems = [
             { id: 1, order: 0, text: "Refused Items", path: "#", disabled: true } as IMenuItem,
-            { id: 2, order: 1, text: "Invoice Data", path: "#", disabled: false } as IMenuItem,
+            { id: 2, order: 1, text: "Invoice Data", path: `/receive/purchaseorder/close/${purchaseOrderNumber}`, disabled: purchaseOrderNumber === '' } as IMenuItem,
             { id: 3, order: 2, text: "Receiving List", path: "#", disabled: false } as IMenuItem,
             { id: 4, order: 3, text: "Order Info", path: "#", disabled: false } as IMenuItem,
             { id: 5, order: 4, text: "Clear Screen", path: "#", disabled: false } as IMenuItem,
@@ -25,7 +29,7 @@ const ReceivePurchaseOrder: React.FC = () => {
          ] as IMenuItem[];
 
         dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems });
-    }, [dispatch]);
+    }
 
     const handleSubmit = async (purchaseOrderNum: number, upc: string, closeOrderList: boolean = false) => {
         try {
@@ -33,6 +37,7 @@ const ReceivePurchaseOrder: React.FC = () => {
             dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: upc });
             dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: purchaseOrderNum });
             dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
+            setMenuItems();
 
             if (closeOrderList) {
                 dispatch({ type: types.SETLISTEDORDERS, listedOrders: [] });
