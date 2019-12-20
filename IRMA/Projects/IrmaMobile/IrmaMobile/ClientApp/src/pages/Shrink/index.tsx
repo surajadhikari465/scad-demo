@@ -3,7 +3,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import { BarcodeScanner } from '@wfm/mobile';
 import './styles.scss';
 import { AppContext, types } from "../../store";
-import { BASE_URL } from '../../constants';
 import LoadingComponent from '../../layout/LoadingComponent';
 import { ETIME } from 'constants';
 import { Config } from '../../config';
@@ -65,7 +64,7 @@ const Shrink:React.FC = () => {
     const setUpc = (value?:any) =>{  
       let upc = value && typeof value !== 'object' ? value: shrinkState.upcValue;
       setIsLoading(true);
-      fetch(`${BASE_URL}/${region}/storeitems?storeNo=${storeNumber}&subteamNo=${subteamNo}&scanCode=${upc}`)
+      fetch(`${Config.baseUrl}/${region}/storeitems?storeNo=${storeNumber}&subteamNo=${subteamNo}&scanCode=${upc}`)
       .then(res => res.json())
       .then((result) => setShrinkItem(result, upc))
       .finally(() => setIsLoading(false))
