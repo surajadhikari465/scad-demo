@@ -263,7 +263,7 @@
                             .DateInputFormat("yyyy-MM-dd")
                             .ID("ItemAttributes[" + attribute.AttributeName + "]")
                             .InputName("ItemAttributes[" + attribute.AttributeName + "]")
-                            .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : "")
+                            .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? DateTime.Parse(Model.ItemAttributes[attribute.AttributeName]).ToString() : "")
                             .ValidatorOptions(o => o.Required(attribute.IsRequired))
                             .ReadOnly(attribute.IsReadOnly)
                             .Render())
