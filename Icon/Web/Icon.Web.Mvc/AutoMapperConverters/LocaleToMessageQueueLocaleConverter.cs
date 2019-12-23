@@ -26,7 +26,7 @@ namespace Icon.Web.Mvc.AutoMapperConverters
             result.SodiumWarningRequired = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.SodiumWarningRequired)?.traitValue == "1";
 
 			LocaleTrait sodiumWarning = source.LocaleTrait.SingleOrDefault(lt => lt.traitID == Traits.SodiumWarningRequired);
-            destination.SodiumWarningRequired = sodiumWarning == null ? (bool?)null : sodiumWarning.traitValue == "1";
+            result.SodiumWarningRequired = sodiumWarning == null ? (bool?)null : sodiumWarning.traitValue == "1";
 
 			LocaleAddress localeAddress = source.LocaleAddress.FirstOrDefault();
             if (localeAddress != null)
