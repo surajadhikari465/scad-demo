@@ -70,7 +70,7 @@ BEGIN
 			-- Add new Tax HierarchyClasses
 			----------------------------------------------------------------------
 			INSERT dbo.HierarchyClass ([hierarchyLevel], [hierarchyID], [hierarchyParentClassID], [hierarchyClassName])
-				OUTPUT INSERTED.hierarchyClassID, NULL, INSERTED.hierarchyClassName, CASE WHEN LEN(INSERTED.hierarchyClassName) <= 50 THEN 1 ELSE 0 END
+				OUTPUT INSERTED.hierarchyClassID, NULL, INSERTED.hierarchyClassName, 1
 					INTO @NewTaxHierarchyClasses (hierarchyClassID, cchHierarchyClassID, hierarchyClassName, insertTaxAbbr)
 			SELECT	1,
 					@TaxHierarchyID,
