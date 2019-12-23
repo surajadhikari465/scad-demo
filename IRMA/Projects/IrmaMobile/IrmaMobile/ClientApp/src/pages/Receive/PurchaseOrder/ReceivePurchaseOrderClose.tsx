@@ -114,10 +114,10 @@ const ReceivePurchaseOrderClose: React.FC<IProps> = ({ match }) => {
                 </div>
                 <div style={{backgroundColor: 'lightgrey', border: '1px solid black'}}>
                     <Form.Group inline>
-                        <Form.Field><label style={{textAlign: 'right', width: '85px'}}>Invoice #:</label><Input disabled={radioSelection === radioOptions.None} value={purchaseOrderNumber} transparent style={{backgroundColor: 'white', border: '1px solid black'}}/></Form.Field>
+                        <Form.Field><label style={{textAlign: 'right', width: '85px'}}>Invoice #:</label><Input disabled={radioSelection === radioOptions.None} transparent style={{backgroundColor: 'white', border: '1px solid black'}}/></Form.Field>
                         <select disabled={radioSelection === radioOptions.None} style={{marginTop: '10px', backgroundColor: 'white', width: '100px', border: '1px solid black'}}>
                             {currencies.map(c => <option key={c.key} value={c.value}>{c.text}</option>)}</select>
-                        <Form.Field ><label style={{textAlign: 'right', width: '80px'}}>Date:</label> <Input disabled={radioSelection === radioOptions.None} max={new Date().toISOString().split("T")[0]}
+                        <Form.Field ><label style={{textAlign: 'right', width: '80px'}}>Date:</label> <Input disabled={radioSelection === radioOptions.None} max={new Date().toISOString().split("T")[0]} 
                                     type="date"
                                     style={{width: '155px', border: '1px solid black'}}
                                     value={selectedDate}
