@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Contact]
 (
-    [ContactId] INT NOT NULL CONSTRAINT pk_Contact PRIMARY KEY, 
+    [ContactId] INT NOT NULL IDENTITY CONSTRAINT pk_Contact PRIMARY KEY, 
     [ContactTypeId] INT NOT NULL CONSTRAINT fk_Contact_ContactType FOREIGN KEY REFERENCES dbo.ContactType(ContactTypeId), 
     [ContactName] NVARCHAR(255) NOT NULL,
     [Email] NVARCHAR(255) NOT NULL,

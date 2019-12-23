@@ -787,6 +787,7 @@
     <Build Include="dbo\Tables\Contact.sql" />
     <Build Include="dbo\Tables\ContactType.sql" />
     <Build Include="dbo\Tables\HierarchyContact.sql" />
+    <None Include="Scripts\PopulateData\PopulateContactType_24426.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
