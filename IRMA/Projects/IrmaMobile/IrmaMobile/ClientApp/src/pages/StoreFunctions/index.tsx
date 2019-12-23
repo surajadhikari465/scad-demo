@@ -1,21 +1,28 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import './styles.scss';
 import { AppContext, types, ITeam } from "../../store";
-import {Link} from "react-router-dom";
 
-const StoreFunctions:React.FC = () => {
+interface StoreFunctionsProps {
+  history: any;
+}
+
+const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
     // @ts-ignore 
     const {state, dispatch} = useContext(AppContext);
+    // @ts-ignore 
+    const [isSelected, setSelected] = useState(false)
     const {subteams, subteam} = state;
-    const handleClick = () =>{
-      if(!subteam){
+    const {history} = props;
+    const handleClick = (e:any) =>{
+      if(!isSelected){
         alert('Please select a subteam');
         return false;
       }
-      return true;
+      else history.push(`/${e.target.value}`);
     }
     const setSubteam = (value:any) =>{
       const subteam: any = state.subteams.filter((subteam: ITeam)=> value === subteam.subteamName.trim())[0];
+      setSelected(true);
       dispatch({ type: types.SETSUBTEAM , subteam: subteam });  
       dispatch({ type: types.SETSUBTEAMNO, subteamNo:subteam.subteamNo });
     }
@@ -33,12 +40,13 @@ const StoreFunctions:React.FC = () => {
           // @ts-ignore 
             <option key={team.subteamNo}>{team.subteamName}</option>
           )}
+          
         </select>
       </div>
       <div className="subteam-buttons">
-        <button className="wfmButton" onClick={handleClick}>{subteam ? <Link to={'/shrink'}>Shrink</Link>:'Shrink'}</button>
-        <button className="wfmButton" onClick={handleClick}><Link to={'/transfer'}>Transfer</Link></button>
-        <button className="wfmButton" onClick={handleClick}>{subteam ? <Link to={'/receive'}>Receive</Link>:'Receive'}</button>
+        <button className="wfm-btn" value="shrink" onClick={handleClick}>Shrink</button>
+        <button className="wfm-btn" value="transfer" onClick={handleClick}>Transfer</button>
+        <button className="wfm-btn" value="receive" onClick={handleClick}>Receive</button>
       </div>
     </div>)
   }

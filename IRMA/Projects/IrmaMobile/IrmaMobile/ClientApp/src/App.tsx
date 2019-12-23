@@ -17,7 +17,6 @@ import ReceiveDocument from './pages/Receive/Document/ReceiveDocument';
 import ReceivePurchaseOrder from './pages/Receive/PurchaseOrder/ReceivePurchaseOrder';
 import { ToastContainer } from 'react-toastify';
 import MainMenu from './layout/MainMenu';
-import ReceivePurchaseOrderClose from './pages/Receive/PurchaseOrder/ReceivePurchaseOrderClose';
 
 
 const App: React.FC = () => { 
@@ -51,7 +50,6 @@ const App: React.FC = () => {
               <Route exact path="/receive" component={Receive} />
               <Route exact path="/receive/Document" component={ReceiveDocument} />
               <Route exact path="/receive/PurchaseOrder" component={ReceivePurchaseOrder} />
-              <Route exact path="/receive/PurchaseOrder/Close/:purchaseOrderNumber" component={ReceivePurchaseOrderClose} />
             </Switch>
           </div>
         </Router>

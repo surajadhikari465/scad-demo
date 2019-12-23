@@ -46,7 +46,6 @@ const RegionSelect:React.FC<RegionProps> = (props) => {
     const selectRegion = (e:any) =>{
       dispatch({ type: types.SETREGION, region: e.detail.value });    
     }
-
     if(isLoading) {
       return ( <LoadingComponent content="Loading stores..."/> )
     }
@@ -61,7 +60,7 @@ const RegionSelect:React.FC<RegionProps> = (props) => {
         </div>
       </div>  
       <div className="region-select">
-        <WfmButton onClick={getStores}>Select Region</WfmButton>
+        <WfmButton disabled={state.region===''} onClick={getStores}>Select Region</WfmButton>
       </div>
     </div>)
     

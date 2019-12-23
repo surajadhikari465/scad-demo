@@ -4,7 +4,6 @@ import { BarcodeScanner } from '@wfm/mobile';
 import './styles.scss';
 import { AppContext, types } from "../../store";
 import LoadingComponent from '../../layout/LoadingComponent';
-import { ETIME } from 'constants';
 import { Config } from '../../config';
 
 
@@ -14,7 +13,7 @@ const initialState = {
   retailUnitName: null,
   packageUnitAbbreviation: null,
   quantity: 0,
-  skipConfirm: false,
+  skipConfirm: true,
   identifier: null,
   queued: 0,
   upcValue: ''
@@ -31,7 +30,7 @@ const Shrink:React.FC = () => {
     useEffect(() => {
       BarcodeScanner.registerHandler(function(data:any){
         try{
-          setUpc(data);
+          setUpc(parseInt(data, 10));
         }catch(ex){
           alert(ex.message)
         }
@@ -46,7 +45,7 @@ const Shrink:React.FC = () => {
     }
     const setIsLoading = (result: boolean) => {
       dispatch({ type: types.SETISLOADING, isLoading: result })
-  }
+    }
     const setShrinkItem = (result:any, upc: any) =>{
         let shrinkItems:any = [];
         let shrinkItem = [];
@@ -56,9 +55,9 @@ const Shrink:React.FC = () => {
           shrinkItem = shrinkItems.filter((item: any) => item.identifier === result.identifier);
         }
         if(shrinkItem.length > 0){
-          setShrinkState({...shrinkState, ...result, upcValue:upc, queued: shrinkItem[0].quantity});
+          setShrinkState({...shrinkState, ...result, upcValue:upc, quantity:1, queued: shrinkItem[0].quantity});
         }else{
-          setShrinkState({...shrinkState, ...result, upcValue:upc,  queued: 0});
+          setShrinkState({...shrinkState, ...result, upcValue:upc, quantity:1, queued: 0});
         }
     }
     const setUpc = (value?:any) =>{  
@@ -70,8 +69,7 @@ const Shrink:React.FC = () => {
       .finally(() => setIsLoading(false))
     }
     const setQty = (e:any) =>{
-      const newQty = +(shrinkState.queued) + +(e.target.value);
-      setShrinkState({...shrinkState, quantity: newQty });
+      setShrinkState({...shrinkState, quantity: e.target.value });
     }
     const skipConfirm = (e:any) =>{
       setShrinkState({...shrinkState, skipConfirm: !shrinkState.skipConfirm});
@@ -85,8 +83,8 @@ const Shrink:React.FC = () => {
     }
     const save = (e:any) =>{
       const { isSelected, skipConfirm, queued, ...shrinkItem} = shrinkState;
-      let shrinkItems: any = [];
-      
+      shrinkItem.quantity =  +(shrinkState.queued) + +(shrinkState.quantity)
+      let shrinkItems: any = [];    
       if(localStorage.getItem("shrinkItems") !== null){
         // @ts-ignore
         shrinkItems = JSON.parse(localStorage.getItem("shrinkItems"));
@@ -115,7 +113,7 @@ const Shrink:React.FC = () => {
             <div className="shrink-buttons">
               {shrinkTypes.map((shrinkType:string)=>
                 // @ts-ignore 
-                <button key={shrinkType.shrinkSubTypeId} value={shrinkType.shrinkSubTypeMember} onClick={(e)=> setShrinkType(e.target.value)}>{shrinkType.shrinkSubTypeMember}</button>
+                <button className="wfm-btn" key={shrinkType.shrinkSubTypeId} value={shrinkType.shrinkSubTypeMember} onClick={(e)=> setShrinkType(e.target.value)}>{shrinkType.shrinkSubTypeMember}</button>
               )}
             </div>
           </div>): (
@@ -139,7 +137,7 @@ const Shrink:React.FC = () => {
                 {
                   shrinkState.itemDescription && 
                   <div className='description'>
-                    <label>Description:</label>
+                    <label>Desc:</label>
                     <span>{shrinkState.itemDescription}</span>
                   </div>
                 }  
@@ -147,7 +145,7 @@ const Shrink:React.FC = () => {
               <section className='entry-section'>
                 <div className='input-line'>
                   <label>Qty:</label>
-                  <input className='qty-input' type='number' min="0" step="1" onChange={setQty} ref={qtyInput}></input>
+                  <input className='qty-input' type='number' min="0" step="1" onChange={setQty} defaultValue={shrinkState.quantity} ref={qtyInput}></input>
                   {
                     shrinkState.packageUnitAbbreviation && 
                     <label className='qty-type'>Retail: {shrinkState.packageUnitAbbreviation}</label>
@@ -156,7 +154,7 @@ const Shrink:React.FC = () => {
                 {   
                   shrinkState.retailUnitName && 
                   <div className='description'>
-                    <label>Description:</label>
+                    <label>UOM:</label>
                     <span>{shrinkState.retailUnitName}</span>
                   </div>
                 } 
@@ -164,14 +162,14 @@ const Shrink:React.FC = () => {
               <section className='entry-section queued-section'>
                 <h1>Queued: {shrinkState.queued}</h1>
                 <div>
-                  <input onClick={skipConfirm} type="checkbox"/>
+                  <input onClick={skipConfirm} type="checkbox" defaultChecked={true}/>
                   <label>Skip Confirm</label>
                 </div>
               </section>
               <section className='entry-section'>
                 <div className='shrink-buttons'>
-                  <button onClick={clear}>Clear</button>
-                  <button disabled={shrinkState.quantity===0 || shrinkState.identifier === null} onClick={save}>Save</button>
+                  <button className="wfm-btn" onClick={clear}>Clear</button>
+                  <button className="wfm-btn" disabled={shrinkState.quantity===0 || shrinkState.identifier === null} onClick={save}>Save</button>
                 </div>
               </section>
             </div>)

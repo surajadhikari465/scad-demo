@@ -50,7 +50,7 @@ const StoreSelect:React.FC = () => {
       </div>
     </div>  
     <div className="store-select">
-        <WfmButton onClick={getSubteams}>Select Store</WfmButton>
+        <WfmButton disabled={state.store===''} onClick={getSubteams}>Select Store</WfmButton>
       </div>
   </div>)
 }

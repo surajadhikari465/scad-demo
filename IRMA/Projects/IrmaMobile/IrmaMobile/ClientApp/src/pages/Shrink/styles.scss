@@ -15,9 +15,6 @@
         line-height: 1.4;
         display: flex;
         flex-direction: column;
-        label{
-            line-height: 2.8;
-        }
         .shrink-buttons{   
             margin: 20px auto;
             display: flex;
@@ -46,6 +43,7 @@
             height: 100px;
             label{
                 margin-right: 15px;
+                line-height: 2.2;
             }
             .upc-input{
                 width: 76%;
@@ -54,7 +52,7 @@
                 display: flex;
                 margin-left: 6%;
                 margin-right: 6%;
-                line-height: 0;
+                line-height: 2;
             }
             .qty-input{
                 max-width: 100px;
@@ -64,11 +62,10 @@
             }
             .description{
                 display: flex;
-                margin: 10px 0 0 6%;
-                line-height: 2.8;
+                margin: 20px 0 0 6%;
                 text-align: left;
                 span{
-                    width: 100px;
+                    width: 90%;
                 }
             }    
             .shrink-buttons{
