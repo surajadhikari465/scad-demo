@@ -2,21 +2,21 @@
 	DECLARE @designation INT
 	DECLARE @hierarchyId INT
 
-	IF NOT EXISTS (
+	IF EXISTS (
 			SELECT 1
 			FROM INFORMATION_SCHEMA.TABLES
 			WHERE TABLE_SCHEMA = 'dbo'
 				AND TABLE_NAME = 'temp_BrandHierarchy'
 			)
-	BEGIN
+
+			DROP TABLE dbo.temp_BrandHierarchy
+	BEGIN	
 		CREATE TABLE dbo.temp_BrandHierarchy (
 			[brand_name] NVARCHAR(255) NULL
 			,[brand_abbreviation] NVARCHAR(255) NULL
 			,[Designation] NVARCHAR(255) NULL
 			)
-	END
-
-	TRUNCATE TABLE dbo.temp_BrandHierarchy
+	END		
 
 	PRINT 'Inserting Infor Items into temp_BrandHierarchy table...'
 
@@ -41,9 +41,20 @@
 			,CODEPAGE = '65001'
 			);
 
+	ALTER TABLE dbo.temp_BrandHierarchy ADD [ID] INT identity (1,1)
+
+	DELETE E
+	FROM dbo.temp_BrandHierarchy E
+	LEFT JOIN (
+		SELECT max(ID) ID
+		FROM dbo.temp_BrandHierarchy
+		GROUP BY brand_name
+		) T ON E.ID = T.ID
+	WHERE T.ID IS NULL;
+
 	WITH SourceTableCTE
 	AS (
-		SELECT DISTINCT t.brand_name
+		SELECT t.brand_name
 			,s.hierarchyClassID
 			,t.Designation
 		FROM dbo.temp_BrandHierarchy t
@@ -79,6 +90,6 @@
 			SELECT hc.hierarchyClassName
 			FROM dbo.HierarchyClass hc
 			)
-
-	DROP TABLE dbo.temp_BrandHierarchy
+	
+		DROP TABLE dbo.temp_BrandHierarchy	
 END
