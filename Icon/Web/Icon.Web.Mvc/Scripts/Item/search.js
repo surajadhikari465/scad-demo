@@ -136,6 +136,7 @@ window.addEventListener('load', function () {
         state: {
             attributes: [],
             hierarchyClasses: [],
+            merchandiseHierarchyTraits: [],
             pickListData: [],
             hierarchyClassesLoaded: [],
             pickListDataLoaded: [],
@@ -401,6 +402,22 @@ window.addEventListener('load', function () {
                                 enableDeleteRow: false,
                                 editMode: hasWriteAccess ? 'row' : 'none',
                                 editRowEnding: function (evt, ui) {
+
+                                    let merchandiseHierarchyClassId = ui.values["MerchandiseHierarchyClassId"];
+                                    let hierarchyTraits = searchViewModel.merchandiseHierarchyTraits.find(x => x.HierarchyClassId == merchandiseHierarchyClassId);
+
+                                    if (hierarchyTraits.ProhibitDiscount != null) {
+                                        ui.values["ProhibitDiscount"] = hierarchyTraits.ProhibitDiscount;
+                                    }
+
+                                    if (hierarchyTraits.FinancialHierarchyClassId != null) {
+                                        ui.values["FinancialHierarchyClassId"] = hierarchyTraits.FinancialHierarchyClassId;
+                                    }
+
+                                    if (hierarchyTraits.ItemType != null) {
+                                        ui.values["ItemTypeDescription"] = hierarchyTraits.ItemType;
+                                    }
+
                                     if (evt.key === "Enter" || $(evt.toElement).attr("data-localeid") === "doneLabel"
                                         || $(evt.toElement).attr("data-localeid") === "cancelLabel"
                                         || (evt.key === undefined && evt.toElement === undefined)) {
@@ -926,31 +943,48 @@ window.addEventListener('load', function () {
 
         // when the page loads there should only be one element (scan code) on the page with this class. 
         let scanCodeElement = document.getElementsByClassName("attributes-search-value");
-        if (scanCodeElement != null && scanCodeElement != undefined) {
+        if (scanCodeElement != null && scanCodeElement != undefined && scanCodeElement.length > 0) {
             scanCodeElement[0].focus();
         }
         console.log('enableSearchIfAllDataIsLoaded');
     }
 
-    loadHierarchies().then(() => enableSearchIfAllDataIsLoaded());
+    let loadWriteAccess = () => {
+        $.getJSON(window.location.origin + '/Item/HasWriteAccess')
+            .done(function (data) {
+                hasWriteAccess = data;
+            }).fail(function (data) {
+                console.log('fail');
+                console.log(data);
+            });
+    }
 
+    let loadAttributes = () => {
+        $.getJSON(window.location.origin + '/Attribute/All')
+            .done(function (data) {
+                searchViewModel.init(data.Attributes);
+                window.searchViewModel = searchViewModel;
+            }).fail(function (data) {
+                console.log('fail');
+                console.log(data);
+            });
+    }
 
-    $.getJSON(window.location.origin + '/Item/HasWriteAccess')
-        .done(function (data) {
-            hasWriteAccess = data;
-        }).fail(function (data) {
-            console.log('fail');
-            console.log(data);
-        });
+    let loadMerchandiseHierarchyTraits = () => {
+        $.getJSON(window.location.origin + '/HierarchyClass/MerchandiseHierarchyTraits')
+            .done(function (data) {
+                searchViewModel.merchandiseHierarchyTraits = data;
+            }).fail(function (data) {
+                console.log('fail');
+                console.log(data);
+            });
+    }
 
-    $.getJSON(window.location.origin + '/Attribute/All')
-        .done(function (data) {
-            searchViewModel.init(data.Attributes);
-            window.searchViewModel = searchViewModel;
-        }).fail(function (data) {
-            console.log('fail');
-            console.log(data);
-        });
+    loadHierarchies()
+        .then(() => loadAttributes())
+        .then(() => loadMerchandiseHierarchyTraits())
+        .then(() => loadWriteAccess())
+        .then(() => enableSearchIfAllDataIsLoaded());
 
     $(document).keydown(function (e) {
         if (e.which == 13) {

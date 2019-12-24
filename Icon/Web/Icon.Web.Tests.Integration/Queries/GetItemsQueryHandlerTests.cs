@@ -139,7 +139,7 @@ namespace Icon.Web.Tests.Integration.Queries
             var item = itemTestHelper.CreateDefaultTestItem();
             item.ItemAttributesJson = "{\"Inactive\":\"False\"}";
             itemTestHelper.SaveItem(item);
- 
+
             parameters.ItemAttributeJsonParameters = new List<ItemSearchCriteria>()
             {
                 new ItemSearchCriteria("ItemId",AttributeSearchOperator.ContainsAll, item.ItemId.ToString())
@@ -278,7 +278,7 @@ namespace Icon.Web.Tests.Integration.Queries
             //Given
             var item = itemTestHelper.CreateDefaultTestItem();
             itemTestHelper.SaveItem(item);
-           
+
             parameters.ItemAttributeJsonParameters = new List<ItemSearchCriteria>()
             {
                 new ItemSearchCriteria("Brands", AttributeSearchOperator.ExactlyMatchesAll,itemTestHelper.TestHierarchyClasses["Brands"].Last().HierarchyName)
@@ -399,7 +399,7 @@ namespace Icon.Web.Tests.Integration.Queries
             //Given
             var item = itemTestHelper.CreateDefaultTestItem();
             itemTestHelper.SaveItem(item);
-     
+
             parameters.ItemAttributeJsonParameters = new List<ItemSearchCriteria>()
             {
                 new ItemSearchCriteria("Financial", AttributeSearchOperator.ExactlyMatchesAll, itemTestHelper.TestHierarchyClasses["Financial"].Last().HierarchyClassName)
@@ -419,7 +419,7 @@ namespace Icon.Web.Tests.Integration.Queries
             //Given
             var item = itemTestHelper.CreateDefaultTestItem();
             itemTestHelper.SaveItem(item);
-       
+
             parameters.ItemAttributeJsonParameters = new List<ItemSearchCriteria>()
             {
                 new ItemSearchCriteria("National",AttributeSearchOperator.ContainsAll,$@"""{item.National}""")
@@ -459,12 +459,12 @@ namespace Icon.Web.Tests.Integration.Queries
         {
             //Given
             var item = itemTestHelper.CreateDefaultTestItem();
-            item.ItemAttributesJson = JsonConvert.SerializeObject(new 
-            { TestAttribute = "Test", Inactive="false" });
+            item.ItemAttributesJson = JsonConvert.SerializeObject(new
+            { TestAttribute = "Test", Inactive = "false" });
             itemTestHelper.SaveItem(item);
             parameters.ItemAttributeJsonParameters = new List<ItemSearchCriteria>()
             {
-                new ItemSearchCriteria("TestAttribute", AttributeSearchOperator.ExactlyMatchesAll, "Test" ) 
+                new ItemSearchCriteria("TestAttribute", AttributeSearchOperator.ExactlyMatchesAll, "Test" )
             };
 
             //When
@@ -1200,7 +1200,7 @@ namespace Icon.Web.Tests.Integration.Queries
                     });
                 items.Add(itemTestHelper.SaveItem(item));
             }
-        
+
             parameters.ItemAttributeJsonParameters = new List<ItemSearchCriteria>()
             {
                 new ItemSearchCriteria("ScanCode",AttributeSearchOperator.ExactlyMatchesAll, "0000000000")

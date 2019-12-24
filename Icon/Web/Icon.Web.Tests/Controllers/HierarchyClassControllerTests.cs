@@ -34,6 +34,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<ControllerContext> mockContext;
         private HierarchyClassController controller;
         private Mock<IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>>> mockGetHierarchyClassesQueryHandler;
+        private Mock<IQueryHandler<GetMerchandiseHierarchyClassTraitsParameters, IEnumerable<MerchandiseHierarchyClassTrait>>> mockGetMerchandiseHierarchyTraitsQueryHandler;
         private Mock<IDonutCacheManager> mockCacheManager;
 
         [TestInitialize]
@@ -47,6 +48,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             this.mockUpdateManager = new Mock<IManagerHandler<UpdateHierarchyClassManager>>();
             this.mockContext = new Mock<ControllerContext>();
             this.mockGetHierarchyClassesQueryHandler = new Mock<IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>>>();
+            this.mockGetMerchandiseHierarchyTraitsQueryHandler = new Mock<IQueryHandler<GetMerchandiseHierarchyClassTraitsParameters, IEnumerable<MerchandiseHierarchyClassTrait>>>();
             this.mockCacheManager = new Mock<IDonutCacheManager>();
 
             this.controller = new HierarchyClassController(mockLogger.Object,
@@ -56,6 +58,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockAddManager.Object,
                 mockUpdateManager.Object,
                 mockGetHierarchyClassesQueryHandler.Object,
+                mockGetMerchandiseHierarchyTraitsQueryHandler.Object,
                 mockCacheManager.Object);
 
             mockContext.SetupGet(c => c.HttpContext.User.Identity.Name).Returns("Test User");
@@ -71,7 +74,7 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             // When.
             ViewResult nonZeroResult = controller.Create(1, 1) as ViewResult;
-            
+
             // Then.
             Assert.IsNotNull(nonZeroResult);
         }
@@ -119,10 +122,10 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             HierarchyClassViewModel expectedModel = new HierarchyClassViewModel();
             var dropDown = financialHierarchy.FirstOrDefault().HierarchyClass.Select(hc => new SelectListItem
-                {
-                    Value = hc.hierarchyClassID.ToString(),
-                    Text = hc.hierarchyClassName
-                }).ToList();
+            {
+                Value = hc.hierarchyClassID.ToString(),
+                Text = hc.hierarchyClassName
+            }).ToList();
             expectedModel.SubTeamList = dropDown.OrderBy(st => st.Value);
 
             // When.
@@ -143,7 +146,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         public void Create_InvalidParameters_MethodShouldRedirectToIndex()
         {
             // Given.
-            
+
             // When.
             var nullParentIdResult = controller.Create(null, 1) as RedirectToRouteResult;
             var negativeHierarchyIdResult = controller.Create(1, -1) as RedirectToRouteResult;
@@ -163,7 +166,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         public void Create_ValidModelState_CommandShouldBeExecutedAndHierarchyCacheShouldBeCleared()
         {
             // Given.
-          
+
             List<Hierarchy> subTeams = new List<Hierarchy>
             {
                 new Hierarchy
@@ -310,7 +313,7 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             // When.
             controller.Create(viewModel);
-            
+
             // Then.
             mockLogger.Verify(logger => logger.Error(It.IsAny<string>()), Times.Once);
         }
@@ -702,7 +705,7 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             // When.
             ViewResult result = controller.Delete(viewModel) as ViewResult;
-            
+
             // Then.
             Assert.IsNotNull(result.ViewData["ErrorMessage"]);
         }
@@ -762,10 +765,10 @@ namespace Icon.Web.Tests.Unit.Controllers
         public void Edit_UserNameIsPopulated_ShouldPassUserNameToManager()
         {
             //When
-            controller.Edit(new HierarchyClassViewModel() 
-                { 
-                    HierarchyClassName = "Test" 
-                });
+            controller.Edit(new HierarchyClassViewModel()
+            {
+                HierarchyClassName = "Test"
+            });
 
             //Then
             mockUpdateManager.Verify(m => m.Execute(It.Is<UpdateHierarchyClassManager>(man => man.UserName == "Test User")));
@@ -849,7 +852,7 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             // Then.
             Assert.AreEqual(0, model.Count);
-            this.mockGetHierarchyClassesQueryHandler.Verify(x => x.Search(It.IsAny<GetHierarchyClassesParameters>()),Times.Never);
+            this.mockGetHierarchyClassesQueryHandler.Verify(x => x.Search(It.IsAny<GetHierarchyClassesParameters>()), Times.Never);
         }
 
         /// <summary>
@@ -864,7 +867,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             this.mockContext.SetupGet(m => m.HttpContext.Request.QueryString).Returns(queryString);
             controller.ControllerContext = mockContext.Object;
 
-            IEnumerable<HierarchyClassModel> hierarchyClasses = new List<HierarchyClassModel>() { this.GetFakeHierarchyClassModel()};
+            IEnumerable<HierarchyClassModel> hierarchyClasses = new List<HierarchyClassModel>() { this.GetFakeHierarchyClassModel() };
 
             var hierarchy = this.GetFakeHierarchy();
 
@@ -883,12 +886,12 @@ namespace Icon.Web.Tests.Unit.Controllers
         {
             List<Hierarchy> hierarchy = new List<Hierarchy>();
             hierarchy.Add(new Hierarchy
-                {
-                    hierarchyID = 5,
-                    hierarchyName = HierarchyNames.Merchandise,
-                    HierarchyClass = new List<HierarchyClass> { GetFakeHierarchyClass() },
-                    HierarchyPrototype = GetFakeHierarchyPrototypeList()
-                });
+            {
+                hierarchyID = 5,
+                hierarchyName = HierarchyNames.Merchandise,
+                HierarchyClass = new List<HierarchyClass> { GetFakeHierarchyClass() },
+                HierarchyPrototype = GetFakeHierarchyPrototypeList()
+            });
             return hierarchy;
         }
 
@@ -925,13 +928,13 @@ namespace Icon.Web.Tests.Unit.Controllers
                 hierarchyParentClassID = null,
                 hierarchyLevel = HierarchyLevels.Gs1Brick,
                 hierarchyClassName = "Fake Hierarchy Class Name",
-                Hierarchy = new Hierarchy 
-                    { 
-                        hierarchyID = 1, 
-                        hierarchyName = HierarchyNames.Merchandise, 
-                        HierarchyPrototype = GetFakeHierarchyPrototypeList()
-                    },
-                HierarchyPrototype = new HierarchyPrototype { hierarchyID = 1, hierarchyLevel = 1, hierarchyLevelName = "Level1", itemsAttached = true}
+                Hierarchy = new Hierarchy
+                {
+                    hierarchyID = 1,
+                    hierarchyName = HierarchyNames.Merchandise,
+                    HierarchyPrototype = GetFakeHierarchyPrototypeList()
+                },
+                HierarchyPrototype = new HierarchyPrototype { hierarchyID = 1, hierarchyLevel = 1, hierarchyLevelName = "Level1", itemsAttached = true }
             };
 
             return hierarchyClass;

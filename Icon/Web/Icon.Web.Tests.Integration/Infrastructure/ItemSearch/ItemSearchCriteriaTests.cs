@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Icon.Web.Tests.Integration.Infrastructure
+namespace Icon.Web.Tests.Integration.Queries
 {
     [TestClass]
     public class ItemSearchCriteriaTests
@@ -244,5 +244,14 @@ namespace Icon.Web.Tests.Integration.Infrastructure
             Assert.AreEqual(0, criteria.Values.Count);
         }
 
+        [TestMethod]
+        public void SearchCriteria_DuplicateValuesSubmitted_DuplicatesRemoved()
+        {
+            // When 
+            ItemSearchCriteria criteria = new ItemSearchCriteria("ScanCode", AttributeSearchOperator.ContainsAny, $@"4011 4012 4011");
+
+            // Then
+            Assert.AreEqual(2, criteria.Values.Count);
+        }
     }
 }

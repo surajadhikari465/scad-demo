@@ -445,6 +445,7 @@
     <Compile Include="Models\ManufacturerExportViewModel.cs" />
     <Compile Include="Models\ManufacturerViewModel.cs" />
     <Compile Include="Models\MerchTaxMappingIndexViewModel.cs" />
+    <Compile Include="Models\MerchandiseHierarchyClassTraitViewModel.cs" />
     <Compile Include="Models\NullableBooleanComboBoxValuesViewModel.cs" />
     <Compile Include="Models\PickListViewModel.cs" />
     <Compile Include="Models\PluCategoryGridViewModel.cs" />

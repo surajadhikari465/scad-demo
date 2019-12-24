@@ -125,7 +125,7 @@ namespace Icon.Web.DataAccess.Infrastructure.ItemSearch
                         }
                     }
                 }
-                return response;
+                return response.Distinct().ToList();
             };
      
             return processItemIdLogic(replaceCharactersInStringWithBackTickAndReplaceSpacesWithCarot(this.Sanitize(values)));

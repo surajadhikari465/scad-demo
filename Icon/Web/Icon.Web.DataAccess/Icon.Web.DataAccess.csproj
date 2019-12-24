@@ -392,6 +392,7 @@
     <Compile Include="Infrastructure\HierarchyClassTraitUpdateException.cs" />
     <Compile Include="Infrastructure\IManagerHandler.cs" />
     <Compile Include="Infrastructure\MessageQueueException.cs" />
+    <Compile Include="Models\MerchandiseHierarchyClassTrait.cs" />
     <Compile Include="Models\AttributeCharacterSetModel.cs" />
     <Compile Include="Models\AttributeListModel.cs" />
     <Compile Include="Models\AttributeInforModel.cs" />
@@ -508,6 +509,8 @@
     <Compile Include="Queries\GetItemsQueryHandler.cs" />
     <Compile Include="Queries\GetManufacturersQuery.cs" />
     <Compile Include="Queries\GetManufacturersParameters.cs" />
+    <Compile Include="Queries\GetMerchandiseHierarchyClassTraitsParameters.cs" />
+    <Compile Include="Queries\GetMerchandiseHierarchyClassTraitsQuery.cs" />
     <Compile Include="Queries\GetPickListByAttributeParameters.cs" />
     <Compile Include="Queries\GetCharacterSetsByAttributeQuery.cs" />
     <Compile Include="Queries\GetDataTypeQuery.cs" />
