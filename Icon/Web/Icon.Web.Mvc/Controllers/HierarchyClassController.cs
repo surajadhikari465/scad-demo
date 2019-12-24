@@ -34,6 +34,7 @@ namespace Icon.Web.Controllers
         private IManagerHandler<UpdateHierarchyClassManager> updateManager;
         private IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler;
         private IQueryHandler<GetMerchandiseHierarchyClassTraitsParameters, IEnumerable<MerchandiseHierarchyClassTrait>> getMerchandiseHierarchyTraitsQueryHandler;
+        private IconWebAppSettings settings;
 
         private IDonutCacheManager cacheManager;
         public HierarchyClassController(ILogger logger,
@@ -44,7 +45,8 @@ namespace Icon.Web.Controllers
             IManagerHandler<UpdateHierarchyClassManager> updateManager,
             IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler,
             IQueryHandler<GetMerchandiseHierarchyClassTraitsParameters, IEnumerable<MerchandiseHierarchyClassTrait>> getMerchandiseHierarchyTraitsQueryHandler,
-            IDonutCacheManager cacheManager)
+            IDonutCacheManager cacheManager,
+            IconWebAppSettings settings)
         {
             this.logger = logger;
             this.hierarchyQuery = hierarchyQuery;
@@ -55,6 +57,7 @@ namespace Icon.Web.Controllers
             this.getHierarchyClassesQueryHandler = getHierarchyClassesQueryHandler;
             this.getMerchandiseHierarchyTraitsQueryHandler = getMerchandiseHierarchyTraitsQueryHandler;
             this.cacheManager = cacheManager;
+            this.settings = settings;
 
         }
 
@@ -375,7 +378,10 @@ namespace Icon.Web.Controllers
 
             var command = new DeleteHierarchyClassManager
             {
-                DeletedHierarchyClass = deletedHierarchyClass
+                DeletedHierarchyClass = deletedHierarchyClass,
+                EnableHierarchyMessages =
+                (deletedHierarchyClass.hierarchyID == Hierarchies.Manufacturer && settings.IsManufacturerHierarchyMessage)
+                || (deletedHierarchyClass.hierarchyID != Hierarchies.Manufacturer) ? true : false
             };
 
             try

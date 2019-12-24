@@ -36,6 +36,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>>> mockGetHierarchyClassesQueryHandler;
         private Mock<IQueryHandler<GetMerchandiseHierarchyClassTraitsParameters, IEnumerable<MerchandiseHierarchyClassTrait>>> mockGetMerchandiseHierarchyTraitsQueryHandler;
         private Mock<IDonutCacheManager> mockCacheManager;
+        private IconWebAppSettings settings;
 
         [TestInitialize]
         public void Initialize()
@@ -50,7 +51,8 @@ namespace Icon.Web.Tests.Unit.Controllers
             this.mockGetHierarchyClassesQueryHandler = new Mock<IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>>>();
             this.mockGetMerchandiseHierarchyTraitsQueryHandler = new Mock<IQueryHandler<GetMerchandiseHierarchyClassTraitsParameters, IEnumerable<MerchandiseHierarchyClassTrait>>>();
             this.mockCacheManager = new Mock<IDonutCacheManager>();
-
+            settings = new IconWebAppSettings();
+            
             this.controller = new HierarchyClassController(mockLogger.Object,
                 mockGetHierarchyQuery.Object,
                 mockHierarchyClassQuery.Object,
@@ -59,7 +61,11 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockUpdateManager.Object,
                 mockGetHierarchyClassesQueryHandler.Object,
                 mockGetMerchandiseHierarchyTraitsQueryHandler.Object,
-                mockCacheManager.Object);
+                mockCacheManager.Object,
+                new IconWebAppSettings()
+                {
+                    IsManufacturerHierarchyMessage = true
+                });
 
             mockContext.SetupGet(c => c.HttpContext.User.Identity.Name).Returns("Test User");
             controller.ControllerContext = mockContext.Object;

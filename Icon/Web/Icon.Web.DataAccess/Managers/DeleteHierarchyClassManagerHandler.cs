@@ -14,7 +14,7 @@ namespace Icon.Web.DataAccess.Managers
         private ICommandHandler<DeleteHierarchyClassCommand> deleteHierarchyClassHandler;
         private ICommandHandler<AddHierarchyClassMessageCommand> addHierarchyClassMessageHandler;
         private IMapper mapper;
-        
+
         public DeleteHierarchyClassManagerHandler(
             IconContext context,
             ICommandHandler<DeleteHierarchyClassCommand> deleteHierarchyClassHandler,
@@ -32,17 +32,20 @@ namespace Icon.Web.DataAccess.Managers
             using (var transaction = this.context.Database.BeginTransaction())
             {
                 DeleteHierarchyClassCommand deleteHierarchyClassCommand = mapper.Map<DeleteHierarchyClassCommand>(data);
-
                 try
                 {
-                    //Creating the message first because when removing an entity from the context some of the nullable properties will be wiped
-                    AddHierarchyClassMessageCommand addHierarchyClassMessageCommand = new AddHierarchyClassMessageCommand
+                    if (data.EnableHierarchyMessages)
                     {
-                        ClassNameChange = true,
-                        DeleteMessage = true,
-                        HierarchyClass = deleteHierarchyClassCommand.DeletedHierarchyClass
-                    };
-                    addHierarchyClassMessageHandler.Execute(addHierarchyClassMessageCommand);
+                        //Creating the message first because when removing an entity from the context some of the nullable properties will be wiped
+                        AddHierarchyClassMessageCommand addHierarchyClassMessageCommand =
+                            new AddHierarchyClassMessageCommand
+                            {
+                                ClassNameChange = true,
+                                DeleteMessage = true,
+                                HierarchyClass = deleteHierarchyClassCommand.DeletedHierarchyClass
+                            };
+                        addHierarchyClassMessageHandler.Execute(addHierarchyClassMessageCommand);
+                    }
 
                     deleteHierarchyClassHandler.Execute(deleteHierarchyClassCommand);
 
