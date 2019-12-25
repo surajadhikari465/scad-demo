@@ -278,7 +278,6 @@ namespace Icon.Web.Mvc.Controllers
         /// <summary>
         /// If Icon is disabled, users cannot edit brand name or brand abbreviation, even if they are part of WriteAccess setting.
         /// If Icon is enabled, users can only edit brand name and brand abbreviation if they are part of WriteAccess setting.
-        /// Regardless of Icon disabled setting, users can edit brand traits if they are part of WriteTraitAccess setting.
         /// </summary>
         /// <returns>Enums.WriteAccess value
         /// None if user has no access to edit anything
