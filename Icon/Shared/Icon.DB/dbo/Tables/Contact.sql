@@ -13,5 +13,5 @@
     [Country] NVARCHAR(255) NULL,
     [PhoneNumber1] NVARCHAR(30) NULL,
     [PhoneNumber2] NVARCHAR(30) NULL,
-    [WebsiteURL] NVARCHAR(30) NULL,
+    [WebsiteURL] NVARCHAR(255) NULL,
 )
