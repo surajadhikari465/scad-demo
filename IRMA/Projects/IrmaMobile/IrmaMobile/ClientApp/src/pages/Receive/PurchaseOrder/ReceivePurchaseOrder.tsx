@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useContext, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
 import agent from "../../../api/agent";
 import CurrentLocation from "../../../layout/CurrentLocation";
@@ -14,11 +14,7 @@ const ReceivePurchaseOrder: React.FC = () => {
     const { storeNumber, region, listedOrders, purchaseOrderUpc, purchaseOrderNumber } = state;
     let selectedPo = null;
 
-    useEffect(() => {
-        setMenuItems()
-    }, [dispatch]);
-
-    const setMenuItems = () => {
+    const setMenuItems = useCallback(() => {
         const newMenuItems = [
             { id: 1, order: 0, text: "Refused Items", path: "#", disabled: true } as IMenuItem,
             { id: 2, order: 1, text: "Invoice Data", path: `/receive/purchaseorder/close/${purchaseOrderNumber}`, disabled: purchaseOrderNumber === '' } as IMenuItem,
@@ -29,9 +25,19 @@ const ReceivePurchaseOrder: React.FC = () => {
          ] as IMenuItem[];
 
         dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems });
-    }
+    }, [purchaseOrderNumber, dispatch])
+
+    useEffect(() => {
+        setMenuItems()
+    }, [setMenuItems, dispatch]);
 
     const handleSubmit = async (purchaseOrderNum: number, upc: string, closeOrderList: boolean = false) => {
+        //int32 max...
+        if(purchaseOrderNum > 2147483647) {
+            toast.error(`The PO # value is too large. Please enter a smaller value`);
+            return;
+        }
+        
         try {
             dispatch({ type: types.SETISLOADING, isLoading: true });
             dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: upc });
@@ -46,11 +52,7 @@ const ReceivePurchaseOrder: React.FC = () => {
             if (purchaseOrderNum) {
                 var order = await agent.PurchaseOrder.detailsFromPurchaseOrderNumber(region, purchaseOrderNum);
 
-                if (!order) { 
-                    toast.error(`The PO # value is too large. Please enter a smaller value`);
-                    return;
-                } 
-                else if(order.orderHeader_ID === 0) {
+                if(order.orderHeader_ID === 0) {
                     toast.error(`PO #${purchaseOrderNum} not found`);
                     return;
                 }

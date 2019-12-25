@@ -12,6 +12,7 @@ import { ReasonCode } from "../types/ReasonCode";
 import ReceivePurchaseOrderReasonCodeModal from "./ReceivePurchaseOrderReasonCodeModal";
 import "./styles.scss";
 import { toast } from "react-toastify";
+import { WfmButton } from "@wfm/ui-react";
 
 const ReceivePurchaseOrderDetails: React.FC = () => {
     // @ts-ignore
@@ -24,7 +25,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 region
             );
 
-            const mappedReasonCodes = reasonCodes.map((code: ReasonCode) => ({
+            const mappedReasonCodes = reasonCodes && reasonCodes.map((code: ReasonCode) => ({
                 key: code.reasonCodeID,
                 text: code.reasonCodeAbbreviation,
                 value: code.reasonCodeID
@@ -151,22 +152,22 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 <Grid
                     columns={2}
                     celled
-                    style={{ height: "25%", marginBottom: "0px" }}
+                    style={{ height: "15%", marginBottom: "0px" }}
                 >
                     <Grid.Row>
-                        <Grid.Column width={6} textAlign="right">
+                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} width={6} textAlign="right">
                             Package:
                         </Grid.Column>
-                        <Grid.Column textAlign="left">
+                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} textAlign="left">
                             {orderDetails.PkgWeight} /{" "}
                             {orderDetails.PkgQuantity} {orderDetails.Uom}
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Grid.Column width={6} textAlign="right">
+                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} width={6} textAlign="right">
                             Subteam:
                         </Grid.Column>
-                        <Grid.Column textAlign="left">
+                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} textAlign="left">
                             {orderDetails.Subteam
                                 ? orderDetails.IsReturnOrder
                                     ? "(C)"
@@ -176,18 +177,18 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Grid.Column width={6} textAlign="right">
+                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} width={6} textAlign="right">
                             Vendor:
                         </Grid.Column>
-                        <Grid.Column textAlign="left">
+                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} textAlign="left">
                             {orderDetails.Vendor}
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Grid.Column width={6} textAlign="right">
+                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} width={6} textAlign="right">
                             Order UOM:
                         </Grid.Column>
-                        <Grid.Column textAlign="left">
+                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} textAlign="left">
                             {orderDetails.OrderUom}
                         </Grid.Column>
                     </Grid.Row>
@@ -196,15 +197,16 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 <Grid columns={2}>
                     <Grid.Column style={{ paddingTop: "0px" }}>
                         <Grid columns={2} celled>
-                            <Grid.Row style={{ height: "5%" }}>
+                            <Grid.Row>
                                 <Grid.Column
+                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
                                     verticalAlign="middle"
                                     width={8}
                                     textAlign="right"
                                 >
                                     Quantity:
                                 </Grid.Column>
-                                <Grid.Column textAlign="left">
+                                <Grid.Column textAlign="left" style={{paddingTop: '5px', paddingBottom: '5px'}}>
                                     <Input
                                         type="number"
                                         name="Quantity"
@@ -224,10 +226,11 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                     verticalAlign="middle"
                                     width={8}
                                     textAlign="right"
+                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
                                 >
                                     Weight:
                                 </Grid.Column>
-                                <Grid.Column textAlign="left">
+                                <Grid.Column textAlign="left" style={{paddingTop: '5px', paddingBottom: '5px'}}>
                                     <Input
                                         type="number"
                                         name="Weight"
@@ -247,6 +250,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                     width={8}
                                     textAlign="right"
                                     verticalAlign="middle"
+                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
                                 >
                                     <button
                                         type="button"
@@ -256,7 +260,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                         Code:
                                     </button>
                                 </Grid.Column>
-                                <Grid.Column textAlign="left">
+                                <Grid.Column textAlign="left" style={{paddingTop: '5px', paddingBottom: '5px'}}>
                                     <Dropdown
                                         fluid
                                         selection
@@ -275,14 +279,16 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                             <Grid.Row color="grey">
                                 <Grid.Column
                                     verticalAlign="middle"
-                                    width={7}
+                                    width={8}
                                     textAlign="right"
+                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
                                 >
                                     Ordered:
                                 </Grid.Column>
                                 <Grid.Column
                                     verticalAlign="middle"
                                     textAlign="left"
+                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
                                 >
                                     {orderDetails.QtyOrdered}
                                 </Grid.Column>
@@ -290,8 +296,9 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                             <Grid.Row color="grey">
                                 <Grid.Column
                                     verticalAlign="middle"
-                                    width={7}
+                                    width={8}
                                     textAlign="right"
+                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
                                 >
                                     <div style={{ color: "red" }}>
                                         Received:
@@ -300,6 +307,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                 <Grid.Column
                                     verticalAlign="middle"
                                     textAlign="left"
+                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
                                 >
                                     <div style={{ color: "red" }}>
                                         {orderDetails.QtyReceived}
@@ -309,14 +317,16 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                             <Grid.Row color="grey">
                                 <Grid.Column
                                     verticalAlign="middle"
-                                    width={7}
+                                    width={8}
                                     textAlign="right"
+                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
                                 >
                                     Qty:
                                 </Grid.Column>
                                 <Grid.Column
                                     verticalAlign="middle"
                                     textAlign="left"
+                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
                                 >
                                     {orderDetails.EInvQty}
                                 </Grid.Column>
@@ -325,10 +335,10 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                     </Grid.Column>
                 </Grid>
 
-                <span style={{ display: "flex", alignItems: "center" }}>
-                    <button className="wfmButton" onClick={receiveOrderClick}>
+                <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <WfmButton onClick={receiveOrderClick}>
                         Receive
-                    </button>
+                    </WfmButton>
                 </span>
             </Fragment>
         );

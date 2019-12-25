@@ -74,12 +74,26 @@ const PurchaseOrderClose = {
         await requests.get(`/${region}/purchaseorder/getCurrencies`),
     getOrderInvoiceCharges: async (region: string, orderId: number) =>
         await requests.get(
-            `/${region}/purchaseorder/getOrderInvoiceCharges?orderId=${orderId}`
+            `/${region}/purchaseorder/orderInvoiceCharges?orderId=${orderId}`
         ),
     closeOrder: async (region: string, orderId: number, userId: number) =>
         await requests.post(
             `/${region}/purchaseorder/closeOrder`, {orderId, userId}
-        )
+        ),
+    getAllocatedInvoiceCharges: async (region: string) => 
+        await requests.get(`/${region}/purchaseorder/allocatedInvoiceCharges`),
+    getNonallocatedInvoiceCharges: async (region: string, orderId: number) => 
+        await requests.get(`/${region}/purchaseorder/nonallocatedInvoiceCharges?orderId=${orderId}`),
+    addInvoiceCharge: async (region: string, OrderId: number, SacType: number, Description: string, SubteamGlAccount: number, Allowance: boolean, ChargeValue: number) =>
+        await requests.post(`/${region}/purchaseorder/addinvoicecharge`, {
+            OrderId,
+            SacType,
+            Description,
+            SubteamGlAccount,
+            Allowance,
+            ChargeValue
+        }),
+    removeInvoiceCharge: async (region: string, chargeId: number) => await requests.post(`/${region}/purchaseorder/removeinvoicecharge`, {ChargeId: chargeId})
 };
 
 export default { PurchaseOrder, PurchaseOrderClose };

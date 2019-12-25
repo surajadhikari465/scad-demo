@@ -16,6 +16,10 @@ namespace IrmaMobile.Services
         Task<List<ReasonCode>> GetReasonCodesAsync(string region);
         Task<Result> ReceiveOrderAsync(string region, ReceiveOrderModel model);
         Task<List<InvoiceCharge>> GetOrderInvoiceChargesAsync(string region, int orderId);
-        Task<Result> CloseOrder(string region, int orderId, int userId);
+        Task<Result> CloseOrderAsync(string region, int orderId, int userId);
+        Task<List<InvoiceCharge>> GetAllocatedInvoiceChargesAsync(string region);
+        Task<List<ListsSubteam>> GetNonallocatedInvoiceChargesAsync(string region, int orderId);
+        Task<Result> AddInvoiceChargeAsync(string region, InvoiceChargeModel model);
+        Task<Result> RemoveInvoiceChargeAsync(string region, int chargeId);
     }
 }

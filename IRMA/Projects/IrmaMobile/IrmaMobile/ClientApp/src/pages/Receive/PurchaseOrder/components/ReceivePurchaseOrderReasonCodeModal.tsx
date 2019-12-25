@@ -14,7 +14,7 @@ const ReceivePurchaseOrderReasonCodeModal: React.FC = () => {
 
     return (
         <Fragment>
-            <Modal open={modalOpen} onClose={close}>
+            <Modal open={modalOpen} onClose={close} closeIcon>
                 <Modal.Header>Reason Code Descriptions</Modal.Header>
                 <Modal.Content>
                     <Grid columns={2} celled>

@@ -158,16 +158,37 @@ namespace IrmaMobile.Services
             return result;
         }
 
-        public async Task<Result> CloseOrder(string region, int orderId, int userId)
+        public async Task<Result> CloseOrderAsync(string region, int orderId, int userId)
         {
             var result = await MakeServiceRequest(region, client => client.CloseOrderAsync(orderId, userId));
             return result;
         }
 
+        public async Task<List<InvoiceCharge>> GetAllocatedInvoiceChargesAsync(string region)
+        {
+            var result = await MakeServiceRequest(region, client => client.GetAllocatedChargesAsync());
+            return result;
+        }
+
+        public async Task<List<ListsSubteam>> GetNonallocatedInvoiceChargesAsync(string region, int orderId)
+        {
+            var result = await MakeServiceRequest(region, client => client.GetGLAccountSubteamsAsync(orderId));
+            return result;
+        }
+
+        public async Task<Result> AddInvoiceChargeAsync(string region, InvoiceChargeModel model) {
+            var result = await MakeServiceRequest(region, client => client.AddInvoiceChargeAsync(model.OrderId, model.SacType, model.Description, model.SubteamGlAccount, model.Allowance, model.ChargeValue)); 
+            return result;
+        }
+
+        public async Task<Result> RemoveInvoiceChargeAsync(string region, int chargeId) {
+            var result = await MakeServiceRequest(region, client => client.RemoveInvoiceChargeAsync(chargeId)); 
+            return result;
+        }
 
         // Following best practices for handling WCF ServiceClient lifecycle as documented here:
         // https://docs.microsoft.com/en-us/dotnet/framework/wcf/samples/use-close-abort-release-wcf-client-resources
-        private async Task<T> MakeServiceRequest<T>(string region, Func<IGateway, Task<T>> request)
+        private async Task<T> MakeServiceRequest<T>(string region, Func<IGateway, Task<T>> request) 
         {
             var serviceClient = new GatewayClient(
                 new BasicHttpBinding(BasicHttpSecurityMode.None),

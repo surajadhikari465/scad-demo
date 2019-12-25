@@ -147,9 +147,6 @@ export const reducer = (state: any, action: any) => {
         case types.SETPURCHASEORDERNUMBER: {
           return { ...state, purchaseOrderNumber: action.purchaseOrderNumber };
         }
-        case types.SETSUBTEAMNO: {
-          return { ...state, subteamNo: action.subteamNo };
-        }  
         case types.SETMENUITEMS: {
           return { ...state, menuItems: action.menuItems }; 
         }

@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from 'react'
-import { Modal, Icon, Form, Button } from 'semantic-ui-react'
+import { Modal, Icon } from 'semantic-ui-react'
+import { WfmButton } from '@wfm/ui-react'
 
 interface IProps {
     invoiceDate: string;
@@ -11,7 +12,7 @@ const ReceivePurchaseOrderCloseModal: React.FC<IProps> = ({invoiceDate, handleCl
 
     return (
         <Fragment>
-            <Modal open={open} trigger={<button className="wfmButton" onClick={() => {setOpen(true)}}>Close Invoice</button>}>
+            <Modal open={open} trigger={<WfmButton className="wfmButton" onClick={() => {setOpen(true)}}>Close Invoice</WfmButton>}>
                 <Modal.Header>Confirm Close Order</Modal.Header>
                 <Modal.Content image>
                     <Icon wrapped name='question circle' size='huge'/>
@@ -19,7 +20,10 @@ const ReceivePurchaseOrderCloseModal: React.FC<IProps> = ({invoiceDate, handleCl
                         <div style={{textAlign: 'center'}}>
                             <p>Invoice Date: {invoiceDate}</p>
                             <p>Close this order?</p>
-                            <Form.Group inline><Button onClick={handleClose}>OK</Button><Button onClick={() => {setOpen(false)}}>Cancel</Button></Form.Group>
+                            <Modal.Actions>
+                                <WfmButton onClick={handleClose}>OK</WfmButton>
+                                <WfmButton onClick={() => {setOpen(false)}}>Cancel</WfmButton>
+                            </Modal.Actions>
                         </div>
                     </Modal.Description>
                 </Modal.Content>
