@@ -43,10 +43,11 @@ namespace GlobalEventController.Controller.EventOperations
         public void BulkProcessEvents()
         {
             //Filter Queued Events to Item Event Types. In case of multiple events for the same item the last item will processed.
-            var nutritionQueuedEvents = this.queues.QueuedEvents.Where(x => hsEventIDs.Contains(x.EventId))
-                                                                                        .GroupBy(x => new { x.EventMessage, Region = x.RegionCode ?? String.Empty })
-                                                                                        .Select(x => x.MaxBy(y => y.QueueId))
-                                                                                        .ToArray();
+            var nutritionQueuedEvents = this.queues.QueuedEvents
+                .Where(x => hsEventIDs.Contains(x.EventId))
+                .GroupBy(x => new { x.EventMessage, Region = x.RegionCode ?? String.Empty })
+                .Select(x => x.MaxBy(y => y.QueueId))
+                .ToArray();
 
             if (!nutritionQueuedEvents.Any())
             {
