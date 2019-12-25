@@ -51,6 +51,7 @@ namespace Icon.Web.DataAccess.Managers
                     UpdateManufacturerCommand command = mapper.Map<UpdateManufacturerCommand>(data);
                     updateManufacturerCommandHandler.Execute(command);
                 }
+
                 if (data.IsManufacturerHierarchyMessage)
                 {
                     addManufacturerMessageCommandHandler.Execute(new AddManufacturerMessageCommand()
@@ -60,9 +61,10 @@ namespace Icon.Web.DataAccess.Managers
                         ZipCode = data.ZipCode,
                         ArCustomerId = data.ArCustomerId
                     });
-                    UpdateManufacturerHierarchyClassTraitsCommand updateHierarchyClassTraitCommand = mapper.Map<UpdateManufacturerHierarchyClassTraitsCommand>(data);
-                    updateHierarchyClassTraitsCommandHandler.Execute(updateHierarchyClassTraitCommand);
                 }
+
+                UpdateManufacturerHierarchyClassTraitsCommand updateHierarchyClassTraitCommand = mapper.Map<UpdateManufacturerHierarchyClassTraitsCommand>(data);
+                updateHierarchyClassTraitsCommandHandler.Execute(updateHierarchyClassTraitCommand);
             }
             catch (DuplicateValueException ex)
             {
