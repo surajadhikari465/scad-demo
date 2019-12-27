@@ -10,13 +10,12 @@
 			)
 
 			DROP TABLE dbo.temp_BrandHierarchy
-	BEGIN	
+		
 		CREATE TABLE dbo.temp_BrandHierarchy (
 			[brand_name] NVARCHAR(255) NULL
 			,[brand_abbreviation] NVARCHAR(255) NULL
 			,[Designation] NVARCHAR(255) NULL
-			)
-	END		
+			)			
 
 	PRINT 'Inserting Infor Items into temp_BrandHierarchy table...'
 
@@ -89,6 +88,7 @@
 	WHERE t.brand_name NOT IN (
 			SELECT hc.hierarchyClassName
 			FROM dbo.HierarchyClass hc
+			WHERE hc.hierarchyID = @hierarchyId
 			)
 	
 		DROP TABLE dbo.temp_BrandHierarchy	
