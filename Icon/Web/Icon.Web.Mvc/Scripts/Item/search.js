@@ -668,6 +668,8 @@ window.addEventListener('load', function () {
                         headerText: attribute.DisplayName,
                         key: attribute.AttributeName,
                         dataType: "date",
+                        dateDisplayType: "utc",
+                        enableUTCDates: true,
                         format: "yyyy-MM-dd",
                         width: attribute.GridColumnWidth
                     });
