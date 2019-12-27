@@ -56,15 +56,6 @@ namespace Icon.Web.Mvc.Extensions
             return agencies.Select(b => new CertificationAgencyViewModel(b)).ToList();
         }
 
-        public static List<PluRequestViewModel> ToViewModels(this List<PLURequest> pluRequests)
-        {
-            return pluRequests.Select(pluRequest => new PluRequestViewModel(pluRequest)).ToList();
-        }
-
-        public static List<PluRequestChangeHistoryViewModel> ToViewModels(this List<PLURequestChangeHistory> pluRequests)
-        {
-            return pluRequests.Select(pluRequest => new PluRequestChangeHistoryViewModel(pluRequest)).ToList();
-        }
         /// <summary>
         /// Builds a string representation of the HierarchyClass that is passed in. The HierarchyClass is expected to be the leaf node of
         /// the hierarchy.

@@ -1,8 +1,0 @@
-﻿CREATE TABLE [app].[PLURequestChangeType](
-	[pluRequestChangeTypeID] [int] IDENTITY(1,1) NOT NULL,
-	[ChangeTypeDescription] [varchar](50) NOT NULL,
- CONSTRAINT [PK_PLURequestChangeType] PRIMARY KEY CLUSTERED 
-(
-	[pluRequestChangeTypeID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]
-) ON [PRIMARY]

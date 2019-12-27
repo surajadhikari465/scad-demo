@@ -349,10 +349,7 @@
     <Build Include="Schemas\app.sql" />
     <Build Include="Schemas\IConInterfaceUser.sql" />
     <Build Include="app\Stored Procedures\GetScanCodesNotReadyToValidate.sql" />
-    <Build Include="app\Tables\PLUCategory.sql" />
-    <Build Include="app\Stored Procedures\GetAvailablePlusForCategory.sql" />
     <Build Include="app\Stored Procedures\MarkUnsentMessagesAsInProcess.sql" />
-    <Build Include="app\Tables\PluSequence.sql" />
     <Build Include="app\Stored Procedures\AddOrUpdateBrands.sql" />
     <Build Include="app\User Defined Types\ESBMessageIdType.sql" />
     <None Include="ReplicationOnly\GetItemChanges.sql" />
@@ -370,10 +367,6 @@
     <None Include="Scripts\Projects\Regional On-Boarding\Icon DB - Subscriptions Cleanup.sql" />
     <None Include="Scripts\Projects\Regional On-Boarding\Icon DB - Subteam Events Cleanup for Onboarding.sql" />
     <Build Include="ewic\Tables\Mapping.sql" />
-    <Build Include="app\Tables\PluRequest.sql" />
-    <Build Include="app\Tables\PluRequestChangeType.sql" />
-    <Build Include="app\Tables\PluRequestChangeHistory.sql" />
-    <Build Include="app\Stored Procedures\GetPLURequestBySearchParams.sql" />
     <Build Include="mammoth\Tables\EventQueue.sql" />
     <Build Include="mammoth\Tables\EventType.sql" />
     <Build Include="mammoth\Stored Procedures\UpdateEventQueueAsInProcess.sql" />
@@ -480,7 +473,6 @@
     <Build Include="app\User Defined Types\CertificationAgencyImportType.sql" />
     <Build Include="app\User Defined Types\IntList.sql" />
     <None Include="Scripts\PostRefresh\Populate RetentionPolicy.sql" />
-    <Build Include="app\Stored Procedures\GetAvailableScanCodesByCategory.sql" />
     <Build Include="vim\Tables\EventQueue.sql" />
     <Build Include="vim\Tables\EventType.sql" />
     <Build Include="Schemas\vim.sql" />

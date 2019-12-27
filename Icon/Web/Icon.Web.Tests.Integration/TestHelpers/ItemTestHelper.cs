@@ -141,7 +141,20 @@ namespace Icon.Web.Tests.Integration.TestHelpers
             {
                 ItemTypeId = itemType.ItemTypeId,
                 ItemTypeCode = itemType.ItemTypeCode,
-                ItemAttributesJson = @"{""Inactive"":""false"",""testAttribute"":""1""}",
+                ItemAttributesJson = "{\"CreatedBy\":\"ICON\"," +
+                    "\"CreatedDateTimeUtc\":\"2014-06-06T13:25:38.22Z\"," +
+                    "\"CustomerFriendlyDescription\":\"Test Update Item Command Description\"," +
+                    "\"FoodStampEligible\":\"false\"," +
+                    "\"ItemPack\":\"1\"," +
+                    "\"Inactive\":\"false\"," +
+                    "\"ModifiedBy\":\"1013359@wholefoods.com\"," +
+                    "\"ModifiedDateTimeUtc\":\"2018-09-06T12:05:00.133975Z\"," +
+                    "\"POSDescription\":\"Test Update Item Command Description\"," +
+                    "\"POSScaleTare\":\"0\"," +
+                    "\"ProductDescription\":\"Test Update Item Command Description\"," +
+                    "\"ProhibitDiscount\":\"false\"," +
+                    "\"RetailSize\":\"1\"," +
+                    "\"UOM\":\"EA\"}",
                 ScanCode = TestScanCode,
                 ScanCodeTypeId = TestScanCodesTypes.First().ScanCodeTypeId,
                 BarcodeTypeId = TestBarcodeTypes.First().BarcodeTypeId,
@@ -155,14 +168,14 @@ namespace Icon.Web.Tests.Integration.TestHelpers
                 Brands = TestHierarchyClasses["Brands"].First().HierarchyLineage,
                 Tax = TestHierarchyClasses["Tax"].First().HierarchyLineage,
                 Financial = TestHierarchyClasses["Financial"].First().HierarchyLineage,
-                National= TestHierarchyClasses["National"].First().HierarchyLineage,
+                National = TestHierarchyClasses["National"].First().HierarchyLineage,
                 Manufacturer = TestHierarchyClasses["Manufacturer"].First().HierarchyLineage,
             };
         }
 
         public ItemDbModel SaveItem(ItemDbModel item)
         {
-                var itemId = dbConnection.QueryFirst<int>(@"
+            var itemId = dbConnection.QueryFirst<int>(@"
                 INSERT INTO dbo.Item(itemTypeID, ItemAttributesJson)
                 VALUES (@ItemTypeId, @ItemAttributesJson)
 
@@ -180,10 +193,10 @@ namespace Icon.Web.Tests.Integration.TestHelpers
                        (@newItemId, @ManufacturerHierarchyClassId)
 
                 SELECT @newItemId",
-                    item);
-                item.ItemId = itemId;
+                item);
+            item.ItemId = itemId;
 
-                return item;
+            return item;
         }
 
         public void CreateItemNutrition(ItemDbModel item)
@@ -194,7 +207,7 @@ namespace Icon.Web.Tests.Integration.TestHelpers
 
         public void UpdateItem(ItemDbModel item)
         {
-             dbConnection.Query(@"
+            dbConnection.Query(@"
                 UPDATE dbo.Item
                 SET ItemAttributesJSON=@ItemAttributesJSON
                 WHERE
@@ -216,10 +229,13 @@ namespace Icon.Web.Tests.Integration.TestHelpers
                 SET hierarchyClassId = @newItemHierarchyClassId
                 WHERE
                 ItemId = @itemId
-                AND hierarchyClassId=@originalItemHierarchyClassId;", 
-                new { itemId=itemId,
+                AND hierarchyClassId=@originalItemHierarchyClassId;",
+                new
+                {
+                    itemId = itemId,
                     originalItemHierarchyClassId = originalItemHierarchyClassId,
-                    newItemHierarchyClassId = newItemHierarchyClassId });
+                    newItemHierarchyClassId = newItemHierarchyClassId
+                });
         }
     }
 }

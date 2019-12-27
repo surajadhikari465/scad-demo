@@ -1,6 +1,8 @@
 ﻿using Icon.Common.DataAccess;
+using Icon.Framework;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Managers;
+using Icon.Web.DataAccess.Queries;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
@@ -13,17 +15,14 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         private AddItemManagerHandler managerHandler;
         private AddItemManager manager;
         private Mock<ICommandHandler<AddItemCommand>> mockAddItemCommandHandler;
-        private Mock<ICommandHandler<PublishItemUpdatesCommand>> mockPublishItemUpdatesCommandHandler;
 
         [TestInitialize]
         public void Initialize()
         {
             mockAddItemCommandHandler = new Mock<ICommandHandler<AddItemCommand>>();
-            mockPublishItemUpdatesCommandHandler = new Mock<ICommandHandler<PublishItemUpdatesCommand>>();
 
             managerHandler = new AddItemManagerHandler(
-                mockAddItemCommandHandler.Object,
-                mockPublishItemUpdatesCommandHandler.Object);
+                mockAddItemCommandHandler.Object);
 
             manager = new AddItemManager();
         }
@@ -41,7 +40,7 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
             manager.TaxHierarchyClassId = 6;
             manager.ManufacturerHierarchyClassId = 7;
             manager.BarCodeTypeId = 1;
-            manager.ItemTypeCode = "Rtl";
+            manager.ItemTypeId = ItemTypes.RetailSale;
 
             //When
             managerHandler.Execute(manager);
@@ -54,13 +53,10 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
                     && c.MerchandiseHierarchyClassId == manager.MerchandiseHierarchyClassId
                     && c.NationalHierarchyClassId == manager.NationalHierarchyClassId
                     && c.SelectedBarCodeTypeId == manager.BarCodeTypeId
-                    && c.ItemTypeCode == manager.ItemTypeCode
+                    && c.ItemTypeId == manager.ItemTypeId
                     && c.ScanCode == manager.ScanCode
                     && c.TaxHierarchyClassId == manager.TaxHierarchyClassId
                     && c.ManufacturerHierarchyClassId == manager.ManufacturerHierarchyClassId)));
-            mockPublishItemUpdatesCommandHandler.Verify(m => m.Execute(It.Is<PublishItemUpdatesCommand>(
-                c => c.ScanCodes.Count == 1
-                    && c.ScanCodes.Contains(manager.ScanCode))));
         }
     }
 }

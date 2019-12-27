@@ -1,4 +1,3 @@
-using Icon.Common.Models;
 using Icon.Common.Validators;
 using Icon.Common.Validators.ItemAttributes;
 
@@ -38,8 +37,6 @@ namespace Icon.Web.Mvc.App_Start
     using SimpleInjector;
     using SimpleInjector.Integration.Web;
     using SimpleInjector.Integration.Web.Mvc;
-    using System;
-    using System.Collections.Generic;
     using System.Configuration;
     using System.Data;
     using System.Data.SqlClient;
@@ -55,12 +52,10 @@ namespace Icon.Web.Mvc.App_Start
             container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
             container.Register<IconContext>(() => GetIconContext(), Lifestyle.Scoped);
-            container.Register<IDbProvider, SqlDbProvider>(Lifestyle.Scoped);
+            container.RegisterSingleton<IDbProvider, SqlDbProvider>();
             container.Register<IConnectionBuilder>(() => new ConnectionBuilder("Icon"), Lifestyle.Scoped);
             container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString), Lifestyle.Scoped);
 
-            container.RegisterDecorator(typeof(ICommandHandler<>), typeof(DbProviderCommandHandlerDecorator<>));
-            container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(DbProviderQueryHandlerDecorator<,>));
             container.RegisterDecorator<IManagerHandler<AddItemManager>, RetryUniqueConstraintManagerHandlerDecorator<AddItemManager>>(Lifestyle.Transient);
             container.Register(typeof(ICommandHandler<>), typeof(AddAddressCommand).Assembly);
             container.Register(typeof(IQueryHandler<,>), typeof(GetAffinitySubBricksParameters).Assembly);
@@ -69,12 +64,9 @@ namespace Icon.Web.Mvc.App_Start
             container.Register(typeof(ISpreadsheetImporter<>), typeof(ISpreadsheetImporter<>).Assembly);
             container.Register(typeof(ISerializer<>), typeof(ISerializer<>).Assembly);
             container.RegisterSingleton<ILogger>(() => new NLogLoggerSingleton(typeof(NLogLoggerSingleton)));
-            container.Register<IPluSpreadsheetImporter, PluSpreadsheetImporter>(Lifestyle.Transient);
             container.Register<IExcelExporterService, ExcelExporterService>(Lifestyle.Transient);
             container.Register<IGenericQuery, GenericGetDbSet>(Lifestyle.Transient);
             container.Register<IRegionalItemCatalogFactory, RegionalItemCatalogFactory>();
-            container.Register<IObjectValidator<AddPluRequestManager>, AddPluRequestManagerValidator>(Lifestyle.Transient);
-            container.Register<IObjectValidator<UpdatePluRequestManager>, UpdatePluRequestManagerValidator>(Lifestyle.Transient);
             container.Register<IObjectValidator<AddEwicExclusionManager>, AddEwicExclusionManagerValidator>(Lifestyle.Transient);
             container.Register<IObjectValidator<AddEwicMappingManager>, AddEwicMappingManagerValidator>(Lifestyle.Transient);
             container.Register<IMessageProducer, EwicMessageProducer>(Lifestyle.Singleton);
@@ -116,6 +108,8 @@ namespace Icon.Web.Mvc.App_Start
             container.RegisterDecorator(typeof(ICommandHandler<AddBrandCommand>), typeof(AddBrandMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<BrandCommand>), typeof(UpdateBrandMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<BulkImportCommand<BulkImportBrandModel>>), typeof(BulkImportBrandMammothEventDecorator));
+            container.RegisterDecorator(typeof(ICommandHandler<AddItemCommand>), typeof(DapperTransactionCommandHandlerDecorator<AddItemCommand>));
+            container.RegisterDecorator(typeof(ICommandHandler<UpdateItemCommand>), typeof(DapperTransactionCommandHandlerDecorator<UpdateItemCommand>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<BrandManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<ManufacturerManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddEwicExclusionManager>));
@@ -128,8 +122,10 @@ namespace Icon.Web.Mvc.App_Start
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<DeleteNationalHierarchyManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddAttributeManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<UpdateAttributeManager>));
-            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddItemManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<BulkItemUploadManager>));
+
+            container.RegisterDecorator(typeof(ICommandHandler<>), typeof(DbProviderCommandHandlerDecorator<>)); // moving to bottom so that connections are build before transactions
+            container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(DbProviderQueryHandlerDecorator<,>));
 
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandlerDecorator<BulkImportCommand<BulkImportBrandModel>>));
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandlerDecorator<BulkImportCommand<BulkImportItemModel>>));

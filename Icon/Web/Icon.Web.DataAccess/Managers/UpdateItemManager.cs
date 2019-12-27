@@ -13,6 +13,6 @@ namespace Icon.Web.DataAccess.Managers
         public int NationalHierarchyClassId { get; set; }
         public int ManufacturerHierarchyClassId { get; set; }
         public Dictionary<string, string> ItemAttributes { get; set; } = new Dictionary<string, string>();
-        public string ItemTypeCode { get; set; }
+        public int ItemTypeId { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Icon.Web.Tests.Integration.Queries
+namespace Icon.Web.Tests.Integration.Infrastructure
 {
     [TestClass]
     public class ItemSearchCriteriaTests

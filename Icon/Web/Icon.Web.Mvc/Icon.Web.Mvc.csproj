@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -83,10 +84,10 @@
       <HintPath>..\packages\Elmah.Mvc.2.1.2\lib\net40\Elmah.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentValidation.8.5.0\lib\net45\FluentValidation.dll</HintPath>
@@ -117,7 +118,7 @@
       <HintPath>..\packages\Icon.Ewic.Transmission.2019.5.15.2\lib\net46\Icon.Ewic.Transmission.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2019.11.13.3\lib\net472\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2019.12.6.1\lib\net472\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -126,7 +127,7 @@
       <HintPath>..\packages\Icon.RenewableContext.2019.5.14.2\lib\net472\Icon.RenewableContext.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Shared.DataAccess.Dapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Shared.DataAccess.Dapper.2019.7.1.1\lib\net46\Icon.Shared.DataAccess.Dapper.dll</HintPath>
+      <HintPath>..\packages\Icon.Shared.DataAccess.Dapper.2019.12.16.3\lib\net472\Icon.Shared.DataAccess.Dapper.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Olap.DataProvider.Adomd.Mvc, Version=5.19.1.22, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <HintPath>..\packages\IgniteUI.MVC.19.1.22\lib\net451\Infragistics.Olap.DataProvider.Adomd.Mvc.dll</HintPath>
@@ -142,8 +143,8 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="MoreLinq, Version=3.2.0.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
-      <HintPath>..\packages\morelinq.3.2.0\lib\net451\MoreLinq.dll</HintPath>
+    <Reference Include="MoreLinq, Version=3.3.1.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.3.3.1\lib\net451\MoreLinq.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -286,7 +287,6 @@
     <Compile Include="Controllers\ScanCodeTypeController.cs" />
     <Compile Include="Controllers\VenueController.cs" />
     <Compile Include="Controllers\SupportController.cs" />
-    <Compile Include="Controllers\PluRequestController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\FailedHierarchyMessageController.cs" />
@@ -296,7 +296,6 @@
     <Compile Include="Controllers\FailedProductMessageController.cs" />
     <Compile Include="Controllers\FailedProductSelectionGroupMessageController.cs" />
     <Compile Include="Controllers\NationalClassController.cs" />
-    <Compile Include="Controllers\PluAssignmentController.cs" />
     <Compile Include="Controllers\PluCategoryController.cs" />
     <Compile Include="Controllers\GlobalEventController.cs" />
     <Compile Include="Controllers\GlobalPosPushController.cs" />
@@ -309,7 +308,6 @@
     <Compile Include="Controllers\RegionalPosPushController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\HierarchyController.cs" />
-    <Compile Include="Controllers\PluMappingController.cs" />
     <Compile Include="Controllers\TraitController.cs" />
     <Compile Include="Excel\Columns\ItemColumns.cs" />
     <Compile Include="Excel\Columns\NewItemColumns.cs" />
@@ -388,7 +386,6 @@
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Importers\BaseItemSpreadsheetImporter.cs" />
     <Compile Include="Importers\BrandSpreadsheetImporter.cs" />
-    <Compile Include="Importers\IPluSpreadsheetImporter.cs" />
     <Compile Include="InfragisticsHelpers\IInfragisticsHelper.cs" />
     <Compile Include="InfragisticsHelpers\InfragisticsHelper.cs" />
     <Compile Include="Models\ActionEnum.cs" />
@@ -448,13 +445,6 @@
     <Compile Include="Models\MerchandiseHierarchyClassTraitViewModel.cs" />
     <Compile Include="Models\NullableBooleanComboBoxValuesViewModel.cs" />
     <Compile Include="Models\PickListViewModel.cs" />
-    <Compile Include="Models\PluCategoryGridViewModel.cs" />
-    <Compile Include="Models\PluCategoryViewModel.cs" />
-    <Compile Include="Models\PluRequestCreateViewModel.cs" />
-    <Compile Include="Models\PluRequestEditViewModel.cs" />
-    <Compile Include="Models\PluRequestSearchViewModel.cs" />
-    <Compile Include="Models\PluRequestChangeHistoryViewModel.cs" />
-    <Compile Include="Models\PluRequestViewModel.cs" />
     <Compile Include="Models\MerchTaxMappingEditModel.cs" />
     <Compile Include="Models\MerchTaxMappingViewModel.cs" />
     <Compile Include="Models\MerchTaxMappingNewModel.cs" />
@@ -463,7 +453,6 @@
     <Compile Include="Models\NationalClassGridViewModel.cs" />
     <Compile Include="Models\NationalClassViewModel.cs" />
     <Compile Include="Models\ItemSpreadsheetModel.cs" />
-    <Compile Include="Models\PluAssignmentSearchViewModel.cs" />
     <Compile Include="Models\BarcodeTypeGridViewModel.cs" />
     <Compile Include="Models\BarcodeTypeViewModel.cs" />
     <Compile Include="Models\ProductSelectionGroupCreateViewModel.cs" />
@@ -523,11 +512,8 @@
     <Compile Include="Utility\ItemHistory\ItemHistoryBuilder.cs" />
     <Compile Include="Utility\ViewHelpers.cs" />
     <Compile Include="Utility\ViewModelHelpers.cs" />
-    <Compile Include="Models\PluSearchViewModel.cs" />
     <Compile Include="Importers\ISpreadsheetImporter.cs" />
     <Compile Include="Importers\ItemSpreadsheetImporter.cs" />
-    <Compile Include="Importers\PluSpreadsheetImporter.cs" />
-    <Compile Include="Models\BulkPluMappingViewModel.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
@@ -544,7 +530,6 @@
     <Compile Include="Models\HierarchySearchViewModel.cs" />
     <Compile Include="Models\ItemViewModel.cs" />
     <Compile Include="Models\IrmaItemSearchViewModel.cs" />
-    <Compile Include="Models\PluMappingViewModel.cs" />
     <Compile Include="Models\ItemSearchViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\AttributeViewModelValidator.cs" />
@@ -1691,10 +1676,6 @@
     <Content Include="Content\Infragistics\css\structure\fonts\jquery-ui.eot" />
     <Content Include="Content\Infragistics\css\README.md" />
     <Content Include="Content\Infragistics\css\README.ja.md" />
-    <Content Include="Scripts\esm\popper.min.js.map" />
-    <Content Include="Scripts\esm\popper.js.map" />
-    <Content Include="Scripts\esm\popper-utils.min.js.map" />
-    <Content Include="Scripts\esm\popper-utils.js.map" />
     <Content Include="Scripts\bootstrap.min.js.map" />
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
@@ -1705,6 +1686,11 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Scripts\index.js.flow" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1712,13 +1698,15 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.0.js" />
     <Content Include="Scripts\jquery-ui-1.12.0.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\knockout-3.5.1.debug.js" />
+    <Content Include="Scripts\knockout-3.5.1.js" />
     <Content Include="Scripts\knockout.mapping-latest.debug.js" />
     <Content Include="Scripts\knockout.mapping-latest.js" />
     <Content Include="Scripts\Manufacturer\manufacturer-create.js" />
@@ -1733,6 +1721,69 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\src\index.js" />
+    <Content Include="Scripts\src\methods\defaults.js" />
+    <Content Include="Scripts\src\methods\destroy.js" />
+    <Content Include="Scripts\src\methods\disableEventListeners.js" />
+    <Content Include="Scripts\src\methods\enableEventListeners.js" />
+    <Content Include="Scripts\src\methods\placements.js" />
+    <Content Include="Scripts\src\methods\update.js" />
+    <Content Include="Scripts\src\modifiers\applyStyle.js" />
+    <Content Include="Scripts\src\modifiers\arrow.js" />
+    <Content Include="Scripts\src\modifiers\computeStyle.js" />
+    <Content Include="Scripts\src\modifiers\flip.js" />
+    <Content Include="Scripts\src\modifiers\hide.js" />
+    <Content Include="Scripts\src\modifiers\index.js" />
+    <Content Include="Scripts\src\modifiers\inner.js" />
+    <Content Include="Scripts\src\modifiers\keepTogether.js" />
+    <Content Include="Scripts\src\modifiers\offset.js" />
+    <Content Include="Scripts\src\modifiers\preventOverflow.js" />
+    <Content Include="Scripts\src\modifiers\shift.js" />
+    <Content Include="Scripts\src\utils\clockwise.js" />
+    <Content Include="Scripts\src\utils\computeAutoPlacement.js" />
+    <Content Include="Scripts\src\utils\debounce.js" />
+    <Content Include="Scripts\src\utils\find.js" />
+    <Content Include="Scripts\src\utils\findCommonOffsetParent.js" />
+    <Content Include="Scripts\src\utils\findIndex.js" />
+    <Content Include="Scripts\src\utils\getBordersSize.js" />
+    <Content Include="Scripts\src\utils\getBoundaries.js" />
+    <Content Include="Scripts\src\utils\getBoundingClientRect.js" />
+    <Content Include="Scripts\src\utils\getClientRect.js" />
+    <Content Include="Scripts\src\utils\getFixedPositionOffsetParent.js" />
+    <Content Include="Scripts\src\utils\getOffsetParent.js" />
+    <Content Include="Scripts\src\utils\getOffsetRect.js" />
+    <Content Include="Scripts\src\utils\getOffsetRectRelativeToArbitraryNode.js" />
+    <Content Include="Scripts\src\utils\getOppositePlacement.js" />
+    <Content Include="Scripts\src\utils\getOppositeVariation.js" />
+    <Content Include="Scripts\src\utils\getOuterSizes.js" />
+    <Content Include="Scripts\src\utils\getParentNode.js" />
+    <Content Include="Scripts\src\utils\getPopperOffsets.js" />
+    <Content Include="Scripts\src\utils\getReferenceNode.js" />
+    <Content Include="Scripts\src\utils\getReferenceOffsets.js" />
+    <Content Include="Scripts\src\utils\getRoot.js" />
+    <Content Include="Scripts\src\utils\getRoundedOffsets.js" />
+    <Content Include="Scripts\src\utils\getScroll.js" />
+    <Content Include="Scripts\src\utils\getScrollParent.js" />
+    <Content Include="Scripts\src\utils\getStyleComputedProperty.js" />
+    <Content Include="Scripts\src\utils\getSupportedPropertyName.js" />
+    <Content Include="Scripts\src\utils\getViewportOffsetRectRelativeToArtbitraryNode.js" />
+    <Content Include="Scripts\src\utils\getWindow.js" />
+    <Content Include="Scripts\src\utils\getWindowSizes.js" />
+    <Content Include="Scripts\src\utils\includeScroll.js" />
+    <Content Include="Scripts\src\utils\index.js" />
+    <Content Include="Scripts\src\utils\isBrowser.js" />
+    <Content Include="Scripts\src\utils\isFixed.js" />
+    <Content Include="Scripts\src\utils\isFunction.js" />
+    <Content Include="Scripts\src\utils\isIE.js" />
+    <Content Include="Scripts\src\utils\isModifierEnabled.js" />
+    <Content Include="Scripts\src\utils\isModifierRequired.js" />
+    <Content Include="Scripts\src\utils\isNumeric.js" />
+    <Content Include="Scripts\src\utils\isOffsetContainer.js" />
+    <Content Include="Scripts\src\utils\removeEventListeners.js" />
+    <Content Include="Scripts\src\utils\runModifiers.js" />
+    <Content Include="Scripts\src\utils\setAttributes.js" />
+    <Content Include="Scripts\src\utils\setStyles.js" />
+    <Content Include="Scripts\src\utils\setupEventListeners.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
@@ -1766,8 +1817,11 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+    <Content Include="Views\Manufacturer\Create.cshtml" />
+    <Content Include="Views\Item\_ReadOnlyAttributesPartial.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper.js.flow" />
     <Content Include="Scripts\umd\popper-utils.min.js.map" />
     <Content Include="Scripts\umd\popper-utils.js.map" />
     <Content Include="Scripts\README.md" />
@@ -1775,8 +1829,6 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Manufacturer\Create.cshtml" />
-    <Content Include="Views\Item\_ReadOnlyAttributesPartial.cshtml" />
     <None Include="Web.2016.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1849,18 +1901,10 @@
     <Content Include="Views\IrmaItem\_IrmaItemSearchOptionsPartial.cshtml" />
     <Content Include="Views\BulkItemImport\Index.cshtml" />
     <Content Include="Views\BulkItemImport\_SelectSpreadsheetPartial.cshtml" />
-    <Content Include="Views\BulkPluMapping\Index.cshtml" />
-    <Content Include="Views\BulkPluMapping\_SelectSpreadsheetPartial.cshtml" />
     <Content Include="Views\Hierarchy\Index.cshtml" />
     <Content Include="Views\Hierarchy\_HierarchyViewPartial.cshtml" />
     <Content Include="Views\Shared\_HeaderPartial.cshtml" />
-    <Content Include="Views\PluMapping\Index.cshtml" />
-    <Content Include="Views\PluMapping\_PluMapSearchOptionsPartial.cshtml" />
-    <Content Include="Views\PluMapping\_PluMapSearchResultsPartial.cshtml" />
     <Content Include="Views\BulkItemImport\_InvalidSpreadsheetTypePartial.cshtml" />
-    <Content Include="Views\BulkPluMapping\Import.cshtml" />
-    <Content Include="Views\BulkPluMapping\_InvalidSpreadsheetTypePartial.cshtml" />
-    <Content Include="Views\PluMapping\Edit.cshtml" />
     <Content Include="Views\Trait\Index.cshtml" />
     <Content Include="Views\Store\CreateStore.cshtml" />
     <Content Include="Views\Store\Index.cshtml" />
@@ -1884,10 +1928,6 @@
     <Content Include="Views\Brand\Create.cshtml" />
     <Content Include="Views\Brand\Edit.cshtml" />
     <Content Include="Views\PluCategory\Index.cshtml" />
-    <Content Include="Views\PluCategory\Create.cshtml" />
-    <Content Include="Views\PluAssignment\_PluSearchOptionsPartial.cshtml" />
-    <Content Include="Views\PluAssignment\_PluSearchResultsPartial.cshtml" />
-    <Content Include="Views\PluAssignment\Index.cshtml" />
     <Content Include="Views\BulkBrandImport\Index.cshtml" />
     <Content Include="Views\BulkBrandImport\Import.cshtml" />
     <Content Include="Views\BulkBrandImport\_InvalidSpreadsheetTypePartial.cshtml" />
@@ -1898,18 +1938,10 @@
     <Content Include="Views\FailedHierarchyMessage\Index.cshtml" />
     <Content Include="Views\FailedLocaleMessage\Index.cshtml" />
     <Content Include="Views\FailedProductSelectionGroupMessage\Index.cshtml" />
-    <Content Include="Views\PluCategory\Delete.cshtml" />
     <Content Include="Views\NationalClass\Index.cshtml" />
     <Content Include="Views\Ewic\Exclusions.cshtml" />
     <Content Include="Views\Ewic\Mappings.cshtml" />
     <Content Include="Views\Ewic\MappingDetail.cshtml" />
-    <Content Include="Views\PluRequest\_PluRequestSearchOptionsPartial.cshtml" />
-    <Content Include="Views\PluRequest\Index.cshtml" />
-    <Content Include="Views\PluRequest\_PluRequestSearchResultsPartial.cshtml" />
-    <Content Include="Views\PluRequest\Edit.cshtml" />
-    <Content Include="Views\PluRequest\Create.cshtml" />
-    <Content Include="Views\PluRequest\_SinglePluRequestDetailsPartial.cshtml" />
-    <Content Include="Views\PluRequest\_PluRequestEditInputPartial.cshtml" />
     <Content Include="Views\Shared\_ItemSearchResults.cshtml" />
     <Content Include="Views\CertificationAgency\Index.cshtml" />
     <Content Include="Views\CertificationAgency\Create.cshtml" />
@@ -2054,7 +2086,10 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\IgniteUI.19.1.39\build\IgniteUI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\IgniteUI.19.1.39\build\IgniteUI.targets'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
   </Target>
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

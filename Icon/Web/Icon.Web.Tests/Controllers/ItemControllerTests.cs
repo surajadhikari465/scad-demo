@@ -574,7 +574,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             //Then
             Assert.IsNotNull(result);
             Assert.AreEqual("Detail", result.RouteValues["action"]);
-            mockAddItemManagerHandler.Verify(x => x.Execute(It.Is<AddItemManager>(m => m.ItemTypeCode == "RTL")));
+            mockAddItemManagerHandler.Verify(x => x.Execute(It.Is<AddItemManager>(m => m.ItemTypeId == ItemTypes.Ids["RTL"])));
             mockAddItemManagerHandler.Verify(x => x.Execute(It.Is<AddItemManager>(m => m.FinancialHierarchyClassId == 1)));
             mockAddItemManagerHandler.Verify(x => x.Execute(It.Is<AddItemManager>(m => m.ItemAttributes.ContainsKey(Constants.Attributes.ProhibitDiscount))));
             mockAddItemManagerHandler.Verify(x => x.Execute(It.Is<AddItemManager>(m => m.MerchandiseHierarchyClassId == testItemModel.MerchandiseHierarchyClassId)));

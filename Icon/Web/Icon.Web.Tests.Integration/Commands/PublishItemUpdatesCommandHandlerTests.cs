@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Icon.Shared.DataAccess.Dapper.DbProviders;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.Tests.Integration.TestHelpers;
@@ -15,6 +16,7 @@ namespace Icon.Web.Tests.Integration.Commands
     {
         private PublishItemUpdatesCommandHandler commandHandler;
         private PublishItemUpdatesCommand command;
+        private IDbProvider db;
         private SqlConnection dbConnection;
         private TransactionScope transaction;
         private ItemTestHelper itemTestHelper;
@@ -25,8 +27,10 @@ namespace Icon.Web.Tests.Integration.Commands
         public void Initialize()
         {
             transaction = new TransactionScope();
+            db = new SqlDbProvider();
             dbConnection = SqlConnectionBuilder.CreateIconConnection();
-            commandHandler = new PublishItemUpdatesCommandHandler(dbConnection);
+            this.db.Connection = dbConnection;
+            commandHandler = new PublishItemUpdatesCommandHandler(this.db);
             command = new PublishItemUpdatesCommand();
 
             itemTestHelper = new ItemTestHelper();

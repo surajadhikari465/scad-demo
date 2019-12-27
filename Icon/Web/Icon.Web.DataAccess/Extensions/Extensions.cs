@@ -185,39 +185,5 @@ namespace Icon.Web.DataAccess.Extensions
                 context.SaveChanges();
             }
         }
-
-        public static bool ContainsDuplicatePluCategoryName(this IEnumerable<PLUCategory> pluCategoryList, int? pluCategoryId, string pluCategoryName, long beginRange, long endRange)
-        {
-            if (pluCategoryId == null)
-            {
-                return pluCategoryList.Any(pc => pc.PluCategoryName.Equals(pluCategoryName, StringComparison.CurrentCultureIgnoreCase));
-            }
-            else
-            {
-                return pluCategoryList.Any(pc =>
-                    pc.PluCategoryID != pluCategoryId && pc.PluCategoryName.Equals(pluCategoryName, StringComparison.CurrentCultureIgnoreCase));
-            }
-        }
-
-        public static bool ContainsDuplicatePluCategoryRange(this IEnumerable<PLUCategory> pluCategoryList, int? pluCategoryId, string pluCategoryName, long beginRange, long endRange)
-        {
-            if (pluCategoryId == null)
-            {
-                return pluCategoryList.Any(pc => endRange >= Convert.ToInt64(pc.BeginRange) && beginRange <= Convert.ToInt64(pc.EndRange));
-            }
-            else
-            {
-                return pluCategoryList.Any(pc =>
-                    pc.PluCategoryID != pluCategoryId && endRange >= Convert.ToInt64(pc.BeginRange) && beginRange <= Convert.ToInt64(pc.EndRange));
-            }
-        }
-
-        public static void SortPluCategoriesByBeginRange(this List<PLUCategory> pluCategoryList)
-        {
-            pluCategoryList.Sort(delegate(PLUCategory x, PLUCategory y)
-                {
-                    return Convert.ToInt64(x.BeginRange) > Convert.ToInt64(y.BeginRange) ? 1 : Convert.ToInt64(x.BeginRange) < Convert.ToInt64(y.BeginRange) ? -1 : 0;
-                });
-        }
     }
 }

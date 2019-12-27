@@ -13,7 +13,8 @@ namespace Icon.Web.DataAccess.Commands
         public int ManufacturerHierarchyClassId { get; set; }
 
         public Dictionary<string, string> ItemAttributes { get; set; } = new Dictionary<string, string>();
+        public int ItemTypeId { get; set; }
         public string ItemTypeCode { get; set; }
-        
+        public string ScanCode { get; set; }
     }
 }

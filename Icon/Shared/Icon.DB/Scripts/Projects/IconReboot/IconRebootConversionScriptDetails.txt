@@ -1,0 +1,28 @@
+====================================
+Icon Reboot Conversion Script order
+
+This document details the order in which we should
+run the Icon Reboot conversion scripts when loading
+the Infor IM files. 
+====================================
+
+Run the scripts in following order:
+
+1) Run IconRebootAttributesConversionUsingJsonFile.Sql (~5 minutes or less)
+This script will convert attributes from Infor to Icon. Script will insert data into “dbo.Attributes” table and some other related tables. 
+
+2) Run IconRebootItemConversion.sql (~10 minutes or less)
+This script will convert items from Infor to Icon. 
+
+3) Run IconRebootHierarchyClassTraitConversion.sql (1 second)
+This scripts inserts data into “HierarchyClassTrait” Table.
+
+4) Run IconRebootPopulateBarcodeTypeRangePool.sql (15-20 minutes)
+This script inserts the barcode type ranges in the BarcodeTypeRangePool table.
+
+5) Run IconRebootInforItemHistoryConversion.Sql (~30 minutes)
+This script inserts data into “infor.ItemHistory” table.
+
+4) Run CreateMessageQueueRecordForAllItems.sql (~n minutes)
+This script will create records in message queue table for all items.
+Before running this script make sure R10 is not in receiving system. After this script 953k messages will be send to downstream systems.

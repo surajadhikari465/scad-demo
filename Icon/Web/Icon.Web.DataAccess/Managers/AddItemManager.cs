@@ -12,7 +12,7 @@ namespace Icon.Web.DataAccess.Managers
         public int NationalHierarchyClassId { get; set; }
         public int ManufacturerHierarchyClassId { get; set; }
         public Dictionary<string, string> ItemAttributes { get; set; }
-        public string ItemTypeCode { get; set; }
+        public int ItemTypeId { get; set; }
         public int? BarCodeTypeId { get; set; }
         public string ScanCode { get; set; }
 

@@ -250,7 +250,7 @@ namespace Icon.Web.Controllers
                 MerchHierarchyClassId = manager.MerchandiseHierarchyClassId,
             });
             manager.FinancialHierarchyClassId = merchDependentItemPropertiesModel.FinancialHierarcyClassId;
-            manager.ItemTypeCode = MerchToItemTypeCodeMapper.GetItemTypeCode(merchDependentItemPropertiesModel.NonMerchandiseTraitValue);
+            manager.ItemTypeId = ItemTypes.Ids[MerchToItemTypeCodeMapper.GetItemTypeCode(merchDependentItemPropertiesModel.NonMerchandiseTraitValue)];
             manager.ItemAttributes = model.ItemViewModel.ItemAttributes.Where(i => !string.IsNullOrWhiteSpace(i.Value)).ToDictionary(i => i.Key, i => i.Value);
             manager.ItemAttributes[Constants.Attributes.ProhibitDiscount] = merchDependentItemPropertiesModel.ProhibitDiscount.ToString().ToLower();
             manager.ItemAttributes[Constants.Attributes.ModifiedBy] = User.Identity.Name;
@@ -356,7 +356,7 @@ namespace Icon.Web.Controllers
                 });
 
                 manager.FinancialHierarchyClassId = merchDependentItemPropertiesModel.FinancialHierarcyClassId;
-                manager.ItemTypeCode = MerchToItemTypeCodeMapper.GetItemTypeCode(merchDependentItemPropertiesModel.NonMerchandiseTraitValue);
+                manager.ItemTypeId = ItemTypes.Ids[MerchToItemTypeCodeMapper.GetItemTypeCode(merchDependentItemPropertiesModel.NonMerchandiseTraitValue)];
                 manager.ItemAttributes = itemCreateViewModel.ItemAttributes.Where(i => !string.IsNullOrWhiteSpace(i.Value)).ToDictionary(i => i.Key, i => i.Value);
                 manager.ItemAttributes.Add(Constants.Attributes.ProhibitDiscount, merchDependentItemPropertiesModel.ProhibitDiscount.ToString().ToLower());
                 manager.ItemAttributes[Constants.Attributes.CreatedBy] = User.Identity.Name;

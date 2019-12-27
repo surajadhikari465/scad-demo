@@ -1,4 +1,5 @@
 ﻿using Icon.Common.DataAccess;
+using Icon.Shared.DataAccess.Dapper.DbProviders;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace Icon.Web.DataAccess.Managers
                     NationalHierarchyClassId = data.NationalHierarchyClassId,
                     TaxHierarchyClassId = data.TaxHierarchyClassId,
                     ManufacturerHierarchyClassId = data.ManufacturerHierarchyClassId,
-                    ItemTypeCode = data.ItemTypeCode
+                    ItemTypeId = data.ItemTypeId
                 });
             publishItemUpdatesCommandHandler.Execute(
                 new PublishItemUpdatesCommand
