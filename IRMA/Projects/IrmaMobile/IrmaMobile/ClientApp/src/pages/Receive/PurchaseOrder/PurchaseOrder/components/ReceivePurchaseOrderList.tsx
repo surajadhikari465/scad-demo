@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { Grid, Segment } from "semantic-ui-react";
-import { ListedOrder } from "../types/ListedOrder";
+import { ListedOrder } from "../../types/ListedOrder";
 import "./styles.scss"
 
 interface IProps {

@@ -14,10 +14,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AppContext, reducer, initialState, types } from "./store";
 import Receive from './pages/Receive/Index';
 import ReceiveDocument from './pages/Receive/Document/ReceiveDocument';
-import ReceivePurchaseOrder from './pages/Receive/PurchaseOrder/ReceivePurchaseOrder';
+import ReceivePurchaseOrder from './pages/Receive/PurchaseOrder/PurchaseOrder/ReceivePurchaseOrder';
 import { ToastContainer } from 'react-toastify';
 import MainMenu from './layout/MainMenu';
-import ReceivePurchaseOrderClose from './pages/Receive/PurchaseOrder/ReceivePurchaseOrderClose';
+import InvoiceData from './pages/Receive/PurchaseOrder/InvoiceData/InvoiceData';
 
 
 const App: React.FC = () => { 
@@ -50,8 +50,8 @@ const App: React.FC = () => {
               <Route exact path="/shrink" component={Shrink} />
               <Route exact path="/receive" component={Receive} />
               <Route exact path="/receive/Document" component={ReceiveDocument} />
-              <Route exact path="/receive/PurchaseOrder" component={ReceivePurchaseOrder} />
-              <Route exact path="/receive/PurchaseOrder/close/:purchaseOrderNumber" component={ReceivePurchaseOrderClose} />
+              <Route exact path="/receive/PurchaseOrder/:openOrderInformation?" component={ReceivePurchaseOrder} />
+              <Route exact path="/receive/InvoiceData/:purchaseOrderNumber" component={InvoiceData} />
             </Switch>
           </div>
         </Router>

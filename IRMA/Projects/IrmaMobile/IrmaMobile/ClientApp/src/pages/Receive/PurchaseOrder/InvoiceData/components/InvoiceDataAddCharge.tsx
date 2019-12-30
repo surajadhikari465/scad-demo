@@ -1,8 +1,8 @@
 import React, { Fragment, useState, useEffect, useContext, FormEvent, SyntheticEvent, ChangeEvent } from 'react'
 import { Modal, Dropdown, Form, CheckboxProps, DropdownProps, Divider, Input, Container, InputOnChangeData } from 'semantic-ui-react'
 import { WfmButton } from '@wfm/ui-react'
-import agent from '../../../../api/agent'
-import { AppContext } from '../../../../store'
+import agent from '../../../../../api/agent'
+import { AppContext } from '../../../../../store'
 
 interface IProps {
     orderId: number;
@@ -10,7 +10,7 @@ interface IProps {
     disabled: boolean;
 }
 
-const ReceivePurchaseOrderCloseAddCharge: React.FC<IProps> = ({ orderId, handleAddCharge, disabled }) => {
+const InvoiceDataAddCharge: React.FC<IProps> = ({ orderId, handleAddCharge, disabled }) => {
     enum radioOptions {
         Allocated,
         Nonallocated,
@@ -123,12 +123,11 @@ const ReceivePurchaseOrderCloseAddCharge: React.FC<IProps> = ({ orderId, handleA
             const allowanceIndicator = allocatedCharges.filter((ch: any) => ch.elementName === charge)[0].isAllowance;
 
             if(allowanceIndicator === -1) {
-                setAmount(amount * -1);
                 allowance = true;
             }
         }
 
-        handleAddCharge(sacType, description, subteamGLAccount, amount, allowance); 
+        handleAddCharge(sacType, description, subteamGLAccount, (allowance ? amount * -1 : amount), allowance); 
         handleClose();
     }
 
@@ -163,7 +162,7 @@ const ReceivePurchaseOrderCloseAddCharge: React.FC<IProps> = ({ orderId, handleA
                         </Container>
                     </Modal.Content>
                     <Modal.Actions>
-                        <WfmButton disabled={charge === '' || amount === 0} onClick={handleOkClick}>OK</WfmButton>
+                        <WfmButton disabled={charge === '' || amount === 0} onClick={handleOkClick} style={{marginRight: '40px'}} >OK</WfmButton>
                         <WfmButton onClick={handleClose}>Cancel</WfmButton>
                     </Modal.Actions>
                 </Modal>
@@ -171,4 +170,4 @@ const ReceivePurchaseOrderCloseAddCharge: React.FC<IProps> = ({ orderId, handleA
     )
 }
 
-export default ReceivePurchaseOrderCloseAddCharge;
+export default InvoiceDataAddCharge;

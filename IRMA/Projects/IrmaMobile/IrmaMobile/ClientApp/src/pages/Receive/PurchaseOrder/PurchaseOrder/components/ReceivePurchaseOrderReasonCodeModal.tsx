@@ -1,7 +1,7 @@
 import React, { useContext, Fragment } from "react";
 import { Modal, Grid } from "semantic-ui-react";
-import { ReasonCode } from "../types/ReasonCode";
-import { AppContext, types } from "../../../../store";
+import { ReasonCode } from "../../types/ReasonCode";
+import { AppContext, types } from "../../../../../store";
 
 const ReceivePurchaseOrderReasonCodeModal: React.FC = () => {
     // @ts-ignore

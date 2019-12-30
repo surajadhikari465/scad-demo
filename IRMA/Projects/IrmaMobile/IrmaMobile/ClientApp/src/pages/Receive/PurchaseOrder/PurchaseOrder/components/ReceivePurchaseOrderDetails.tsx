@@ -3,21 +3,27 @@ import React, {
     Fragment,
     SyntheticEvent,
     useContext,
-    useEffect
+    useEffect,
+    useState
 } from "react";
-import { Dropdown, Grid, Input, Segment } from "semantic-ui-react";
-import agent from "../../../../api/agent";
-import { AppContext, types } from "../../../../store";
-import { ReasonCode } from "../types/ReasonCode";
+import { Dropdown, Grid, Input, Segment, Button } from "semantic-ui-react";
+import agent from "../../../../../api/agent";
+import { AppContext, types } from "../../../../../store";
+import { ReasonCode } from "../../types/ReasonCode";
 import ReceivePurchaseOrderReasonCodeModal from "./ReceivePurchaseOrderReasonCodeModal";
 import "./styles.scss";
 import { toast } from "react-toastify";
 import { WfmButton } from "@wfm/ui-react";
+import { QuantityAddMode } from "../../types/QuantityAddMode";
+import ReceivePurchaseOrderDetailsQtyModal from "./ReceivePurchaseOrderDetailsQtyModal";
 
 const ReceivePurchaseOrderDetails: React.FC = () => {
     // @ts-ignore
     const { state, dispatch } = useContext(AppContext);
     const { orderDetails, region, mappedReasonCodes } = state;
+    const [receivingOrder, setReceivingOrder] = useState<boolean>(false);
+    const [showQtyModal, setShowQtyModal] = useState<boolean>(false);
+    let quantityMode: QuantityAddMode = QuantityAddMode.None;
 
     useEffect(() => {
         const loadReasonCodes = async () => {
@@ -81,20 +87,42 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 return;
             }
 
-            var result = await agent.PurchaseOrder.receiveOrder(
-                region,
-                orderDetails.Quantity,
-                orderDetails.Weight,
-                new Date(),
-                false,
-                orderDetails.OrderItemId,
-                orderDetails.Code,
-                0,
-                1
-            );
+            if(orderDetails.QtyReceived !== 0 && quantityMode === QuantityAddMode.None) {
+                setShowQtyModal(true);
+                return;
+            }
 
-            if (result && result.status) {
-                toast.success("Receive PO Successful");
+            const quantity: number = quantityMode === QuantityAddMode.AddTo ? orderDetails.Quantity + orderDetails.QtyReceived : orderDetails.Quantity;
+
+            try {
+                setReceivingOrder(true);
+                var result = await agent.PurchaseOrder.receiveOrder(
+                    region,
+                    quantity,
+                    orderDetails.Weight,
+                    new Date(),
+                    false,
+                    orderDetails.OrderItemId,
+                    orderDetails.Code,
+                    0,
+                    1
+                );
+
+                if (result && result.status) {
+                    if(quantityMode === QuantityAddMode.AddTo) {
+                        toast.success("Quantity Added");
+                    } else if (quantityMode === QuantityAddMode.Overwrite) {
+                        toast.success("Quantity Overwritten");
+                    } else {
+                        toast.success("Receive PO Successful");
+                    }
+
+                    quantityMode = QuantityAddMode.None;
+                    dispatch({type: types.SETORDERDETAILS, orderDetails: {...orderDetails, QtyReceived: quantity}})
+                }
+            }
+            finally {
+                setReceivingOrder(false);
             }
         }
     };
@@ -137,9 +165,21 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
         }
     };
 
+    const handleQuantityDecision = async (decision: QuantityAddMode) => {
+        quantityMode = decision;
+        setShowQtyModal(false);
+
+        if(decision === QuantityAddMode.None) {
+            toast.info("Quantity not saved");
+        } else {
+            await receiveOrderClick();
+        }
+    }
+
     if (orderDetails) {
         return (
             <Fragment>
+                <ReceivePurchaseOrderDetailsQtyModal handleQuantityDecision={handleQuantityDecision} open={showQtyModal}/>
                 <ReceivePurchaseOrderReasonCodeModal />
                 <Segment
                     inverted
@@ -260,8 +300,9 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                         Code:
                                     </button>
                                 </Grid.Column>
-                                <Grid.Column textAlign="left" style={{paddingTop: '5px', paddingBottom: '5px'}}>
+                                <Grid.Column textAlign="left" style={{padding: '5px'}}>
                                     <Dropdown
+                                        style={{paddingRight: '0px', paddingLeft: '0px', verticalAlign: 'middle'}}
                                         fluid
                                         selection
                                         item
@@ -336,9 +377,9 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 </Grid>
 
                 <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <WfmButton onClick={receiveOrderClick}>
+                    <Button style={{backgroundColor: 'transparent'}} disabled={receivingOrder} loading={receivingOrder} as={WfmButton} onClick={receiveOrderClick}>
                         Receive
-                    </WfmButton>
+                    </Button>
                 </span>
             </Fragment>
         );

@@ -1,14 +1,15 @@
 import React, { FormEvent, Fragment, useContext, useEffect, useState, useCallback } from "react";
 import { RouteComponentProps } from "react-router";
 import { Button, CheckboxProps, Form, Grid, Input } from "semantic-ui-react";
-import agent from "../../../api/agent";
-import LoadingComponent from "../../../layout/LoadingComponent";
-import { AppContext } from "../../../store";
-import ReceivePurchaseOrderCloseAddCharge from "./components/ReceivePurchaseOrderCloseAddCharge";
-import ReceivePurchaseOrderCloseModal from "./components/ReceivePurchaseOrderCloseModal";
-import ReceivePurchaseOrderCloseRemoveCharge from "./components/ReceivePurchaseOrderCloseRemoveCharge";
-import Charge from "./types/Charge";
+import agent from "../../../../api/agent";
+import LoadingComponent from "../../../../layout/LoadingComponent";
+import { AppContext } from "../../../../store";
+import InvoiceDataAddCharge from "./components/InvoiceDataAddCharge";
+import InvoiceDataCloseModal from "./components/InvoiceDataCloseModal";
+import InvoiceDataRemoveCharge from "./components/InvoiceDataRemoveCharge";
+import Charge from "../types/Charge";
 import { toast } from "react-toastify";
+import dateFormat from 'dateformat'
 
 interface RouteParams {
     purchaseOrderNumber: string;
@@ -16,7 +17,7 @@ interface RouteParams {
 
 interface IProps extends RouteComponentProps<RouteParams> {}
 
-const ReceivePurchaseOrderClose: React.FC<IProps> = ({ match }) => {
+const InvoiceData: React.FC<IProps> = ({ match }) => {
     const { state } = useContext(AppContext);
     const { region } = state
 
@@ -29,7 +30,7 @@ const ReceivePurchaseOrderClose: React.FC<IProps> = ({ match }) => {
     const [radioSelection, setRadioSelection] = useState(radioOptions.Invoice);
     const { purchaseOrderNumber } = match.params;
     const [selectedDate, setSelectedDate] = useState(
-        new Date().toISOString().split("T")[0]
+        dateFormat(new Date(), "mm/dd/yyyy")
     );
     const [charges, setCharges] = useState<Charge[]>([]);
     const [isLoadingCharges, setIsLoadingCharges] = useState<boolean>(false);
@@ -149,7 +150,7 @@ const ReceivePurchaseOrderClose: React.FC<IProps> = ({ match }) => {
                         <Form.Field><label style={{textAlign: 'right', width: '83px'}}>Invoice #:</label><Input disabled={radioSelection === radioOptions.None} transparent style={{backgroundColor: 'white', border: '1px solid black', width: '100px'}}/></Form.Field>
                         <select disabled={radioSelection === radioOptions.None} style={{ marginLeft: '50px', marginTop: '10px', backgroundColor: 'white', width: '90px', border: '1px solid black'}}>
                             {currencies.map(c => <option key={c.key} value={c.value}>{c.text}</option>)}</select>
-                        <Form.Field ><label style={{textAlign: 'right', width: '80px'}}>Date:</label> <Input disabled={radioSelection === radioOptions.None} max={new Date().toISOString().split("T")[0]} 
+                        <Form.Field ><label style={{textAlign: 'right', width: '80px'}}>Date:</label> <Input disabled={radioSelection === radioOptions.None} max={dateFormat(new Date(), "mm/dd/yyyy")} 
                                     type="date"
                                     style={{width: '155px', border: '1px solid black'}}
                                     value={selectedDate}
@@ -176,13 +177,13 @@ const ReceivePurchaseOrderClose: React.FC<IProps> = ({ match }) => {
                     <div style={{backgroundColor: 'grey', border: '1px solid black'}}>
                         <Grid columns="equal">
                             <Grid.Column textAlign="center" floated='left' style={{marginTop: '10px', marginBottom: '10px'}}>
-                                <ReceivePurchaseOrderCloseAddCharge disabled={radioSelection === radioOptions.None} handleAddCharge={handleAddCharge} orderId={parseInt(purchaseOrderNumber)}/>
+                                <InvoiceDataAddCharge disabled={radioSelection === radioOptions.None} handleAddCharge={handleAddCharge} orderId={parseInt(purchaseOrderNumber)}/>
                             </Grid.Column>
                             <Grid.Column textAlign="center" verticalAlign="middle" style={{fontWeight: 'bold', fontSize: '16px'}}>
                                 Charges
                             </Grid.Column>
                             <Grid.Column textAlign="center" floated='right' style={{marginTop: '10px', marginBottom: '10px'}}>
-                                <ReceivePurchaseOrderCloseRemoveCharge disabled={radioSelection === radioOptions.None} handleRemoveCharge={handleRemoveCharge} charges={charges}/>
+                                <InvoiceDataRemoveCharge disabled={radioSelection === radioOptions.None} handleRemoveCharge={handleRemoveCharge} charges={charges}/>
                             </Grid.Column>
                         </Grid>
                     </div>
@@ -211,11 +212,11 @@ const ReceivePurchaseOrderClose: React.FC<IProps> = ({ match }) => {
             </Form>
 
             <div style={{position: 'absolute', bottom: '5px', width: '100%', textAlign: 'center'}}>
-                <ReceivePurchaseOrderCloseModal invoiceDate={selectedDate} handleClose={closeOrder}/>
+                <InvoiceDataCloseModal invoiceDate={selectedDate} handleClose={closeOrder}/>
             </div>
 
         </Fragment>
     );
 };
 
-export default ReceivePurchaseOrderClose;
+export default InvoiceData;

@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, ChangeEvent } from "react";
 import { Grid, Form, Button, Input } from "semantic-ui-react";
-import { AppContext, types } from "../../../../store";
+import { AppContext, types } from "../../../../../store";
 
 interface IProps {
     handleSubmit: (poNum: number, upc: string) => any;

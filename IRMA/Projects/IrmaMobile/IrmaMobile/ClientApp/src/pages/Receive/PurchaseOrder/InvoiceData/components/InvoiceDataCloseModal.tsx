@@ -7,7 +7,7 @@ interface IProps {
     handleClose: () => any;
 }
 
-const ReceivePurchaseOrderCloseModal: React.FC<IProps> = ({invoiceDate, handleClose}) => {
+const InvoiceDataCloseModal: React.FC<IProps> = ({invoiceDate, handleClose}) => {
     const [open, setOpen] = useState<boolean>(false)
 
     return (
@@ -32,4 +32,4 @@ const ReceivePurchaseOrderCloseModal: React.FC<IProps> = ({invoiceDate, handleCl
     )
 }
 
-export default ReceivePurchaseOrderCloseModal
+export default InvoiceDataCloseModal
