@@ -87,21 +87,9 @@ namespace Icon.Web.DataAccess.Managers
                     throw new Exception("The manufacturer name is missing.");
                 }
 
-                bool isTrimmed = (data.Manufacturer.hierarchyClassName.Length >= Constants.ManufacturerNameMaxLength);
-
                 if (context.HierarchyClass.Any(x => x.hierarchyID == Hierarchies.Manufacturer && x.hierarchyClassID != data.Manufacturer.hierarchyClassID && String.Compare(x.hierarchyClassName, data.Manufacturer.hierarchyClassName, true) == 0))
                 {
                     throw new DuplicateValueException($"The manufacturer {data.Manufacturer.hierarchyClassName} already exists.");
-                }
-
-                if (isTrimmed)
-                {
-                    var manufacturerName = data.Manufacturer.hierarchyClassName.Substring(0, Constants.ManufacturerNameMaxLength);
-
-                    if (context.HierarchyClass.Any(x => x.Hierarchy.hierarchyName == HierarchyNames.Manufacturer && x.hierarchyClassName.StartsWith(manufacturerName, true, System.Globalization.CultureInfo.InvariantCulture)))
-                    {
-                        throw new DuplicateValueException($"Manufacturer name trimmed to {Constants.ManufacturerNameMaxLength} characters {manufacturerName} already exists. Change the manufacturer name so that the first {Constants.ManufacturerNameMaxLength} characters are unique.");
-                    }
                 }
             }
         }
