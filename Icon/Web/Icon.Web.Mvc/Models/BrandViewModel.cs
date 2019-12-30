@@ -43,9 +43,15 @@ namespace Icon.Web.Mvc.Models
         public string BrandHashKey { get; set; }
         public string TraitHashKey { get; set; }
 
-        public BrandViewModel() { }
+        private bool isContactEnabled;
+        public bool IsContactViewEnabled { get { return isContactEnabled && HierarchyClassId > 0; }}
 
-        public BrandViewModel(BrandModel brand)
+        public BrandViewModel(bool enableContactView = false)
+        {
+           this.isContactEnabled = enableContactView; 
+        }
+
+        public BrandViewModel(BrandModel brand, bool enableContactView = true)
         {
             base.HierarchyClassId = brand.HierarchyClassId;
             base.HierarchyId = brand.HierarchyId;
@@ -57,6 +63,7 @@ namespace Icon.Web.Mvc.Models
             ParentCompany = brand.ParentCompany;
             ZipCode = brand.ZipCode;
             Locality = brand.Locality;
+            this.isContactEnabled = enableContactView;
         }
     }
 }

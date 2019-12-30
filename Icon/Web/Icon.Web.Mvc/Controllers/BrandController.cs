@@ -53,7 +53,7 @@ namespace Icon.Web.Mvc.Controllers
         // GET: Brand
         public ActionResult Index()
         {
-            return View(new BrandViewModel() { UserWriteAccess = GetWriteAccess() });
+            return View(new BrandViewModel(this.settings.IsContactViewEnabled) { UserWriteAccess = GetWriteAccess() });
         }
 
         // GET: Brand/Create
@@ -136,7 +136,7 @@ namespace Icon.Web.Mvc.Controllers
             var traits = brand.HierarchyClassTrait.ToArray();
             var brands = GetBrandList();
 
-            var viewModel = new BrandViewModel
+            var viewModel = new BrandViewModel(this.settings.IsContactViewEnabled)
                 {
                     BrandName = brand.hierarchyClassName,
                     BrandAbbreviation = traits.SingleOrDefault(x => x.traitID == Traits.BrandAbbreviation)?.traitValue.Trim(),
@@ -229,8 +229,6 @@ namespace Icon.Web.Mvc.Controllers
             return View(viewModel);
         }
 
-
-
         [GridDataSourceAction]
         public ActionResult All()
         {
@@ -297,7 +295,6 @@ namespace Icon.Web.Mvc.Controllers
 
             return userAccess;
         }
-
 
         string[] GetBrandList()
         {

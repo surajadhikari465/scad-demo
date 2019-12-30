@@ -8,6 +8,7 @@ namespace Icon.Web.Mvc.Utility
         public string ReadAccessGroups { get; set; }
         public string AdminAccessGroups { get; set; }
         public bool IsManufacturerHierarchyMessage { get; set; }
+        public bool IsContactViewEnabled { get; set; }
         
         public static IconWebAppSettings CreateSettingsFromConfig()
         {
@@ -16,7 +17,8 @@ namespace Icon.Web.Mvc.Utility
                 WriteAccessGroups = AppSettingsAccessor.GetStringSetting("WriteAccess",false),
                 ReadAccessGroups = AppSettingsAccessor.GetStringSetting("ReadAccess",false),
                 AdminAccessGroups = AppSettingsAccessor.GetStringSetting("AdminAccess",false),
-                IsManufacturerHierarchyMessage = AppSettingsAccessor.GetBoolSetting("EnableManufacturerHierarchyMessages", false)
+                IsManufacturerHierarchyMessage = AppSettingsAccessor.GetBoolSetting("EnableManufacturerHierarchyMessages", false),
+                IsContactViewEnabled = AppSettingsAccessor.GetBoolSetting("ContactViewEnabled", false)
             };
         }
     }

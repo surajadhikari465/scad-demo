@@ -164,6 +164,8 @@
     <Compile Include="Commands\AddAttributeMessageCommandHandler.cs" />
     <Compile Include="Commands\AddBrandCommand.cs" />
     <Compile Include="Commands\AddBrandCommandHandler.cs" />
+    <Compile Include="Commands\AddUpdateContactCommand.cs" />
+    <Compile Include="Commands\AddUpdateContactCommandHandler.cs" />
     <Compile Include="Commands\UpdateManufacturerCommand.cs" />
     <Compile Include="Commands\AddManufacturerCommand.cs" />
     <Compile Include="Commands\UpdateManufacturerCommandHandler.cs" />
@@ -325,6 +327,8 @@
     <Compile Include="Managers\AddNationalHierarchyManagerHandler.cs" />
     <Compile Include="Managers\AddCertificationAgencyManager.cs" />
     <Compile Include="Managers\AddCertificationAgencyManagerHandler.cs" />
+    <Compile Include="Managers\AddUpdateContactManager.cs" />
+    <Compile Include="Managers\AddUpdateContactManagerHandler.cs" />
     <Compile Include="Managers\BulkItemUploadManager.cs" />
     <Compile Include="Managers\BulkItemUploadManagerHandler.cs" />
     <Compile Include="Managers\DeleteNationalHierarchyManager.cs" />
@@ -382,6 +386,8 @@
     <Compile Include="Infrastructure\IManagerHandler.cs" />
     <Compile Include="Infrastructure\MessageQueueException.cs" />
     <Compile Include="Models\AddItemsType.cs" />
+    <Compile Include="Models\ContactModel.cs" />
+    <Compile Include="Models\ContactTypeModel.cs" />
     <Compile Include="Models\MerchandiseHierarchyClassTrait.cs" />
     <Compile Include="Models\AttributeCharacterSetModel.cs" />
     <Compile Include="Models\AttributeListModel.cs" />
@@ -466,6 +472,10 @@
     <Compile Include="Queries\GetAvailableScanCodeForBarcodeTypeQuery.cs" />
     <Compile Include="Queries\GetBulkUploadByIdParameters.cs" />
     <Compile Include="Queries\GetBulkUploadByIdQueryHandler.cs" />
+    <Compile Include="Queries\GetContactsParameters.cs" />
+    <Compile Include="Queries\GetContactsQuery.cs" />
+    <Compile Include="Queries\GetContactTypesParameters.cs" />
+    <Compile Include="Queries\GetContactTypesQuery.cs" />
     <Compile Include="Queries\GetInforAttributesQueryHandler.cs" />
     <Compile Include="Queries\GetAttributesQueryHandler.cs" />
     <Compile Include="Queries\DoesScanCodeExistParameters.cs" />

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 using Icon.Common.Models;
+using Icon.Common;
 
 namespace Icon.Web.Mvc.Extensions
 {
@@ -38,7 +39,19 @@ namespace Icon.Web.Mvc.Extensions
 
         public static List<BrandViewModel> ToViewModels(this List<BrandModel> brands)
         {
-            return brands.Select(b => new BrandViewModel(b)).ToList();
+            var isContactViewAllowed = AppSettingsAccessor.GetBoolSetting("EnableContactView", false);
+            return brands.Select(b => new BrandViewModel(b, isContactViewAllowed)).ToList();
+        }
+
+        public static List<ContactViewModel> ToViewModels(this List<ContactModel> contacts)
+        {
+            var isContactViewAllowed = AppSettingsAccessor.GetBoolSetting("EnableContactView", false);
+            return contacts.Select(x => new ContactViewModel(x)).ToList();
+        }
+
+        public static List<ContactTypeViewModel> ToViewModels(this List<ContactTypeModel> contactTypes)
+        {
+            return contactTypes.Select(x => new ContactTypeViewModel(x)).ToList();
         }
 
         public static List<ManufacturerViewModel> ToViewModels(this List<ManufacturerModel> manufacturer)
