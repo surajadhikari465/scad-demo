@@ -10,5 +10,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Repositories
         Task<List<MessageQueueItemModel>> DequeueMessageQueueRecords(int batchSize = 1);
 
         Task AddMessageQueueHistoryRecords(List<MessageQueueItemArchive> history);
+
+        Task AddDeadLetterMessageQueueRecord(MessageDeadLetterQueue messageDeadLetterQueue);
     }
 }

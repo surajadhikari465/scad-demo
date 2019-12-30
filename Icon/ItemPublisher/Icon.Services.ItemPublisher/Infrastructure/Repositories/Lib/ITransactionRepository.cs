@@ -7,5 +7,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Repositories
         void CommitTransaction();
 
         void RollbackTransaction();
+
+        bool TransactionActive { get; }
     }
 }

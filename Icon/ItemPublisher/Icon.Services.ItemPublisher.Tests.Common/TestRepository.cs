@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Icon.Services.ItemPublisher.Repositories.Entities;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -507,6 +508,19 @@ namespace Icon.Services.Newitem.Test.Common
                    null,
                    this.connectionHelper.ProviderFactory.Provider.Transaction);
         }
+        public async Task<MessageDeadLetterQueue> SelectLatestInsertedDeadLeatterRecord()
+        {
+            string json = await this.connectionHelper.ProviderFactory.Provider.Connection.QueryFirstAsync<string>($@"SELECT
+                    TOP(1)
+                   [JsonObject]
+                   FROM [esb].[MessageDeadLetterQueue]
+                   ORDER BY MessageDeadLetterQueueId DESC",
+                   null,
+                   this.connectionHelper.ProviderFactory.Provider.Transaction);
+
+            return JsonConvert.DeserializeObject<MessageDeadLetterQueue>(json);
+        }
+
 
         public string SelectAttributeSql()
         {

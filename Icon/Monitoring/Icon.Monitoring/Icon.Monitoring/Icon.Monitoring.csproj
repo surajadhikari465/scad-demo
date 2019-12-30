@@ -165,8 +165,11 @@
     <Compile Include="Monitors\MammothPrimeAffinityControllerMonitor.cs" />
     <Compile Include="Monitors\PushControllerMonitor.cs" />
     <Compile Include="Monitors\TimedControllerMonitor.cs" />
+    <Compile Include="Monitors\DeadLetterMonitor.cs" />
     <Compile Include="Monitors\VIMLocaleControllerMonitor.cs" />
     <Compile Include="Monitors\TLogConJobMonitor.cs" />
+    <Compile Include="Service\DateService.cs" />
+    <Compile Include="Service\IDateService.cs" />
     <Compile Include="Service\IMonitorService.cs" />
     <Compile Include="Service\MonitorService.cs" />
     <Compile Include="Monitors\IMonitor.cs" />

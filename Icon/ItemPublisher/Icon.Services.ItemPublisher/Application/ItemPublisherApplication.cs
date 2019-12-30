@@ -8,7 +8,7 @@ namespace Icon.Services.ItemPublisher.Application
     public class ItemPublisherApplication : IItemPublisherApplication
     {
         private readonly System.Timers.Timer timer;
-        private readonly IItemPublisherService itmePublisherService;
+        private readonly IItemPublisherService itemPublisherService;
         private readonly ILogger<ItemPublisherApplication> logger;
         private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1);
         private readonly ServiceSettings serviceSettings;
@@ -16,7 +16,7 @@ namespace Icon.Services.ItemPublisher.Application
         public ItemPublisherApplication(IItemPublisherService itmePublisherService, ILogger<ItemPublisherApplication> logger, ServiceSettings serviceSettings)
         {
             this.logger = logger;
-            this.itmePublisherService = itmePublisherService;
+            this.itemPublisherService = itmePublisherService;
             this.serviceSettings = serviceSettings;
             this.timer = new System.Timers.Timer(this.serviceSettings.TimerIntervalInMilliseconds);
             this.timer.Elapsed += Timer_Elapsed;
@@ -30,7 +30,7 @@ namespace Icon.Services.ItemPublisher.Application
                 {
                     this.logger.Debug("Semaphore waiting");
                     await this.semaphore.WaitAsync();
-                    await this.itmePublisherService.Process(this.serviceSettings.BatchSize);
+                    await this.itemPublisherService.Process(this.serviceSettings.BatchSize);
                 }
                 catch (Exception ex)
                 {

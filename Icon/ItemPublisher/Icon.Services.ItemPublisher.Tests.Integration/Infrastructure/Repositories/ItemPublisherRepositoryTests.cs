@@ -70,6 +70,23 @@ namespace Icon.Services.ItemPublisher.Repositories.Tests
             Assert.AreEqual(DateTime.Parse("1900-01-01"), entity.InsertDateUTC);
         }
 
+        [TestMethod]
+        public async Task AddDeadLetterMessage_WasRecordAdded_RecordIsAdded()
+        {
+            // Given.
+            TestRepository testRepository = new TestRepository(this.connHelper);
+            ItemPublisherRepository repository = new ItemPublisherRepository(this.connHelper.ProviderFactory, new MessageQueueItemModelBuilder(new ItemMapper()));
+
+            // When.
+            await repository.AddDeadLetterMessageQueueRecord(new MessageDeadLetterQueue("exception", new List<int>{1}));
+            var result = await testRepository.SelectLatestInsertedDeadLeatterRecord();
+
+            // Then.
+            Assert.AreEqual("exception", result.Exception);
+            Assert.AreEqual(1, result.ItemIds[0]);
+            Assert.AreEqual("GlobalItem", result.MessageType);
+        }
+
         /// <summary>
         /// Tests that MessageQueueItem records will dequeue
         /// </summary>

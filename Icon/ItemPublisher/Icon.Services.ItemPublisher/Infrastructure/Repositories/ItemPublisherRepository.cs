@@ -117,5 +117,22 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Repositories
 
             return response;
         }
+
+        public async Task AddDeadLetterMessageQueueRecord(MessageDeadLetterQueue messageDeadLetterQueue)
+        {
+            string query = $@"INSERT INTO [esb].[MessageDeadLetterQueue]
+            ([JsonObject])
+            VALUES
+            (@JsonObject)";
+            var parameters = new
+            {
+                JsonObject = JsonConvert.SerializeObject(messageDeadLetterQueue)
+            };
+
+            CommandDefinition command = new CommandDefinition(query, parameters, this.DbProviderFactory.Provider.Transaction);
+
+            await this.DbProviderFactory.Provider.Connection.ExecuteAsync(command);
+            
+        }
     }
 }

@@ -14,13 +14,14 @@ namespace Icon.Monitoring.Common.Opsgenie
             this.settings = settings;
         }
 
-       public OpsgenieResponse TriggerAlert(string message, string description = "", Dictionary<string, string> details = null)
+        public OpsgenieResponse TriggerAlert(string message, string description = "", Dictionary<string, string> details = null)
         {
+            
             OpsGenieAlertSender opsGenieAlertSender = new OpsGenieAlertSender();
 
-          var opsgenieResponse=   opsGenieAlertSender.CreateOpsgenieAlert(this.settings.IntegrationKey, this.settings.OpsGenieUri,
-                                                     message, description, details);
- 
+            var opsgenieResponse = opsGenieAlertSender.CreateOpsgenieAlert(this.settings.IntegrationKey, this.settings.OpsGenieUri,
+                                                       message, description, details);
+
             return opsgenieResponse;
         }
     }

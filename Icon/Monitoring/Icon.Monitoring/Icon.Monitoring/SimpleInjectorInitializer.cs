@@ -42,7 +42,6 @@
             container.Register(typeof(IQueryHandler<,>), new[] { dataAccessAssembly }, Lifestyle.Singleton);
             container.Register(typeof(IQueryByRegionHandler<,>), new[] { dataAccessAssembly }, Lifestyle.Singleton);
             container.Register(typeof(IQueryHandlerMammoth<,>), new[] { dataAccessAssembly }, Lifestyle.Singleton);
-
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(IconCommandHandlerDecorator<>), Lifestyle.Singleton);
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(IconQueryHandlerDecorator<,>), Lifestyle.Singleton);
             container.RegisterDecorator(typeof(IQueryByRegionHandler<,>), typeof(IrmaQueryHandlerDecorator<,>), Lifestyle.Singleton);
@@ -60,6 +59,7 @@
             container.RegisterSingleton<IMonitorCache, MonitorCache>();
 
             container.RegisterSingleton<IMonitorService, MonitorService>();
+            container.RegisterSingleton<IDateService, DateService>();
             container.RegisterSingleton<IMonitorSettings>(() => MonitorSettings.CreateFromConfig());
             var monitors = GetMonitorsRegisteredInAppConfig();
             container.Collection.Register(typeof(IMonitor), monitors);

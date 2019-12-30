@@ -10,6 +10,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Icon.Services.ItemPublisher.Services.Tests
@@ -197,8 +198,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
 
         /// <summary>
         /// Tests that if a SQL exception occurs that the app does not crash and attempts to retry with polly.
-        /// This tests sets up a SQLException to occur and verifies the call to process does not return within 10 seconds because it should
-        /// retry forever.
+        /// This tests sets up a SQLException to occur and verifies the call to process retries and eventually stops after 10 seconds.
         /// </summary>
         /// <returns></returns>
         [TestMethod]
@@ -232,22 +232,46 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             ItemPublisherService service = new ItemPublisherService(mockRepository.Object, mockLogger.Object, new ServiceSettings(), mockItemProcessor.Object);
 
             // When.
-            int timeout = 10000;
-            var task = service.Process(1);
+            var startTime = Stopwatch.StartNew();
+            service.Process(1).Wait();
+            var elapsedMS = startTime.ElapsedMilliseconds;
 
-            // Then
-            if (await Task.WhenAny(task, Task.Delay(timeout)) == task)
-            {
-                Assert.Fail("The task completed and it should not have. It should have continued to retry forever");
-            }
+            // Then.
+            Assert.IsTrue(elapsedMS > 9999 && elapsedMS < 15000);
         }
 
-        /// <summary>
-        /// Tests that any exception besides SqlException is thrown up
-        /// </summary>
-        /// <returns></returns>
         [TestMethod]
-        public async Task Process_GeneralExceptionOccurs_ProcessShouldThrowException()
+        public async Task Process_ESBFailureOccurred_RecordsShouldBeSentToDeadLetterQueue()
+        {
+            // Given.
+            Mock<IItemPublisherRepository> mockRepository = new Mock<IItemPublisherRepository>();
+            Mock<ILogger<ItemPublisherService>> mockLogger = new Mock<ILogger<ItemPublisherService>>();
+            Mock<IItemProcessor> mockItemProcessor = new Mock<IItemProcessor>();
+            mockItemProcessor.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(true));
+            mockItemProcessor.Setup(x => x.ProcessRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Throws(new Exception("ESB exception"));
+
+            mockRepository.Setup(x => x.DequeueMessageQueueRecords(It.IsAny<int>())).Returns(Task.FromResult(new List<MessageQueueItemModel>()
+            {
+                new MessageQueueItemModel()
+                {
+                    Item=new ItemModel()
+                    {
+                        ItemId=1
+                    }
+                }
+            }));
+
+            ItemPublisherService service = new ItemPublisherService(mockRepository.Object, mockLogger.Object, new ServiceSettings(), mockItemProcessor.Object);
+
+            // When
+            await service.Process(1);
+
+            // Then
+            mockRepository.Verify(x => x.AddDeadLetterMessageQueueRecord(It.IsAny<MessageDeadLetterQueue>()));
+        }
+
+        [TestMethod]
+        public async Task Process_DatabaseFailureOccurred_RecordsShouldBeSentToDeadLetterQueue()
         {
             // Given.
             Mock<IItemPublisherRepository> mockRepository = new Mock<IItemPublisherRepository>();
@@ -255,21 +279,15 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             Mock<IItemProcessor> mockItemProcessor = new Mock<IItemProcessor>();
             mockItemProcessor.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(true));
 
-            mockRepository.Setup(x => x.DequeueMessageQueueRecords(It.IsAny<int>())).Throws(new Exception(("test")));
+            mockRepository.Setup(x => x.DequeueMessageQueueRecords(It.IsAny<int>())).Throws(new Exception("Exception from the database"));
 
             ItemPublisherService service = new ItemPublisherService(mockRepository.Object, mockLogger.Object, new ServiceSettings(), mockItemProcessor.Object);
 
-            try
-            {
-                // When
-                await service.Process(1);
-                // Then
-                Assert.Fail("An exception that is not handled by the Polly retry logic should have been thrown up");
-            }
-            catch (Exception)
-            {
-                // Pass
-            }
+            // When
+            await service.Process(1);
+
+            // Then
+            mockRepository.Verify(x => x.AddDeadLetterMessageQueueRecord(It.IsAny<MessageDeadLetterQueue>()));
         }
     }
 }

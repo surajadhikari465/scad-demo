@@ -146,9 +146,10 @@
     <Compile Include="Infrastructure\Esb\MessageBuilding\ITraitMessageBuilder.cs" />
     <Compile Include="Infrastructure\Esb\Communication\SystemListBuilder.cs" />
     <Compile Include="Infrastructure\Esb\MessageBuilding\TraitMessageBuilder.cs" />
+    <Compile Include="Infrastructure\Repositories\Entities\MessageDeadLetterQueue.cs" />
     <Compile Include="Services\IItemProcessor.cs" />
     <Compile Include="Services\ItemProcessor.cs" />
-    <Compile Include="Services\ServiceSettings.cs" />
+    <Compile Include="ServiceSettings.cs" />
     <Compile Include="Infrastructure\Esb\MessageBuilding\BuildMessageResult.cs" />
     <Compile Include="Infrastructure\Esb\Communication\EsbHeaderBuilder.cs" />
     <Compile Include="Infrastructure\Esb\MessageBuilding\EsbMessageBuilder.cs" />

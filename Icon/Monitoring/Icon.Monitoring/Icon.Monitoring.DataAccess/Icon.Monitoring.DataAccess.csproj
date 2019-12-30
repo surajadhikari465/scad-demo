@@ -125,6 +125,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetApiMessageUnprocessedRowCountParameters.cs" />
     <Compile Include="Queries\GetApiMessageUnprocessedRowCountQuery.cs" />
+    <Compile Include="Queries\GetIconDeadLetterParameters.cs" />
     <Compile Include="Queries\GetInStockOldestUnprocessedRecordDateByQueueTableParameters.cs" />
     <Compile Include="Queries\GetInStockOldestUnprocessedRecordDateByQueueTableQuery.cs" />
     <Compile Include="Queries\GetItemMovementTableRowCountParameters.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Queries\GetMammothItemLocaleChangeQueueIdQuery.cs" />
     <Compile Include="Queries\GetMammothItemLocaleChangeQueueIdQueryParameters.cs" />
     <Compile Include="Queries\GetMammothJobScheduleParameters.cs" />
+    <Compile Include="Queries\GetIconDeadLetterQuery.cs" />
     <Compile Include="Queries\GetMammothJobScheduleQuery.cs" />
     <Compile Include="Queries\GetMammothPriceChangeQueueIdQuery.cs" />
     <Compile Include="Queries\GetMammothPriceChangeQueueIdQueryParameters.cs" />
