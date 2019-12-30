@@ -41,11 +41,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA1|AnyCPU'">
     <OutputPath>bin\QA1\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Perf1|AnyCPU'">
-    <OutputPath>bin\Perf1\</OutputPath>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test1|AnyCPU'">
     <OutputPath>bin\Test1\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Perf|AnyCPU'">
+    <OutputPath>bin\Perf\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -204,9 +204,8 @@
       <IsTransformFile>true</IsTransformFile>
       <SubType>Designer</SubType>
     </None>
-    <None Include="App.Perf1.config">
+    <None Include="App.Perf.config">
       <DependentUpon>App.config</DependentUpon>
-      <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.QA1.config">
       <DependentUpon>App.config</DependentUpon>
