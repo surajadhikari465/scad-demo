@@ -9,17 +9,19 @@ namespace Icon.Web.Mvc.Validators
         {
             RuleFor(vm => vm.ContactTypeId)
                 .NotEmpty()
-                .WithMessage("Contact Type is required.");
+                .WithMessage("Please select a Contact Type.");
 
             RuleFor(vm => vm.ContactName)
                 .NotEmpty()
+                .WithMessage("Please enter a Name.")
                 .MaximumLength(255)
-                .WithMessage("Contact Name is required and shouldn't exceed 255 characters.");
+                .WithMessage("Name can't exceed 255 characters.");
 
             RuleFor(vm => vm.Email)
                 .NotEmpty()
+                .WithMessage("Please enter an Email.")
                 .MaximumLength(255)
-                .WithMessage("Contact Email is required.");
+                .WithMessage("Email can't exceed 255 chraracters.");
             
             RuleFor(vm => vm.Title)
                 .MaximumLength(255)
