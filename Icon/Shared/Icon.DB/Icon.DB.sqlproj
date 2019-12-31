@@ -147,6 +147,7 @@
     <Folder Include="Storage" />
     <Folder Include="extract" />
     <Folder Include="extract\Stored Procedures" />
+    <Folder Include="Scripts\Projects\IconReboot\Audit" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Party.sql" />
@@ -843,6 +844,8 @@
     <Build Include="extract\Stored Procedures\LocationHierarchy.sql" />
     <None Include="Scripts\PopulateData\24848_AddAppIdForExtractService.sql" />
     <Build Include="app\User Defined Types\ContactInputType.sql" />
+    <None Include="Scripts\Projects\IconReboot\Audit\IconLegacy_Items.sql" />
+    <None Include="Scripts\Projects\IconReboot\Audit\Attributes.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />
