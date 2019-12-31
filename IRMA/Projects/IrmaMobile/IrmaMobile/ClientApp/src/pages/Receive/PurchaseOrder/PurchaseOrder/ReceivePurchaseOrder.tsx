@@ -109,6 +109,14 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                         PkgWeight: orderItem.package_Desc1,
                         PkgQuantity: orderItem.package_Desc2,
                         OrderUom: orderItem.orderUOMAbbr,
+                        InvoiceCost: order.invoiceCost,
+                        InvoiceFreight: order.invoiceFreight,
+                        InvoiceNumber: order.invoiceNumber,
+                        AdjustedReceivedCost: order.adjustedReceivedCost,
+                        OrderedCost: order.orderedCost,
+                        OrderTypeId: order.orderType_Id,
+                        EInvId: order.einvoiceID,
+                        EInvRequired: order.einvoiceRequired
                     }
 
                     var orderInformation: OrderInformation = {

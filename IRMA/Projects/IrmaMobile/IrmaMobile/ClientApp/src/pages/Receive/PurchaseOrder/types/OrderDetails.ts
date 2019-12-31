@@ -14,4 +14,12 @@ export interface OrderDetails {
     PkgWeight: number;
     PkgQuantity: number;
     OrderUom: string;
+    InvoiceCost: number;
+    InvoiceFreight: number;
+    InvoiceNumber: string;
+    AdjustedReceivedCost: number;
+    OrderedCost: number;
+    OrderTypeId: number;
+    EInvId: number,
+    EInvRequired: boolean;
 }

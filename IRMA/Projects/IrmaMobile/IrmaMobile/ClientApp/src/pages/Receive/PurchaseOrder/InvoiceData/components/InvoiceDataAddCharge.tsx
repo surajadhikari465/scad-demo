@@ -1,8 +1,9 @@
-import React, { Fragment, useState, useEffect, useContext, FormEvent, SyntheticEvent, ChangeEvent } from 'react'
+import React, { Fragment, useState, useEffect, useContext, FormEvent, SyntheticEvent, ChangeEvent, useCallback } from 'react'
 import { Modal, Dropdown, Form, CheckboxProps, DropdownProps, Divider, Input, Container, InputOnChangeData } from 'semantic-ui-react'
 import { WfmButton } from '@wfm/ui-react'
 import agent from '../../../../../api/agent'
 import { AppContext } from '../../../../../store'
+import LoadingComponent from '../../../../../layout/LoadingComponent'
 
 interface IProps {
     orderId: number;
@@ -24,6 +25,7 @@ const InvoiceDataAddCharge: React.FC<IProps> = ({ orderId, handleAddCharge, disa
     const [nonAllocatedOptions, setNonallocatedOptions] = useState([]);
     const [nonAllocatedCharges, setNonallocatedCharges] = useState<any>([]);
     const [radioSelection, setRadioSelection] = useState<radioOptions>(radioOptions.None);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [charge, setCharge] = useState<string>("");
     const [amount, setAmount] = useState<number>(0);
@@ -31,9 +33,10 @@ const InvoiceDataAddCharge: React.FC<IProps> = ({ orderId, handleAddCharge, disa
     const { state } = useContext(AppContext);
     const { region } = state;
 
-    useEffect(() => {
-        async function loadCharges() {
-            const allocatedCharges = await agent.PurchaseOrderClose.getAllocatedInvoiceCharges(region);
+    const loadCharges = useCallback(async () => {
+        try {
+            setIsLoading(true);
+            const allocatedCharges = await agent.InvoiceData.getAllocatedInvoiceCharges(region);
             if(allocatedCharges) {
                 setAllocatedCharges(allocatedCharges);
                 setAllocatedOptions(allocatedCharges.map((charge: any) => { 
@@ -41,7 +44,7 @@ const InvoiceDataAddCharge: React.FC<IProps> = ({ orderId, handleAddCharge, disa
                 }))
             }
 
-            const nonAllocatedCharges = await agent.PurchaseOrderClose.getNonallocatedInvoiceCharges(region, orderId);
+            const nonAllocatedCharges = await agent.InvoiceData.getNonallocatedInvoiceCharges(region, orderId);
             if(nonAllocatedCharges) {
                 setNonallocatedCharges(nonAllocatedCharges);
                 setNonallocatedOptions(nonAllocatedCharges.map((charge: any) => {
@@ -49,11 +52,14 @@ const InvoiceDataAddCharge: React.FC<IProps> = ({ orderId, handleAddCharge, disa
                 }))
             }
         }
-
-        if(nonAllocatedOptions.length === 0 || allocatedOptions.length === 0) {
-            loadCharges();
+        finally {
+            setIsLoading(false);
         }
-    }, [radioSelection, allocatedOptions.length, nonAllocatedOptions.length, orderId, region])
+    }, [orderId, region]);
+
+    useEffect(() => {
+        loadCharges();
+    }, [loadCharges])
 
     const loadDropdown = (val: radioOptions) => {
         switch(val)
@@ -133,6 +139,8 @@ const InvoiceDataAddCharge: React.FC<IProps> = ({ orderId, handleAddCharge, disa
 
     return (
         <Fragment>
+            {open && isLoading ?
+                <LoadingComponent content="Loading types..."/> :
                 <Modal onClose={handleClose} open={open} trigger={<WfmButton disabled={disabled} onClick={() => {setOpen(true)}}>Add</WfmButton>}>
                     <Modal.Header>Add Invoice Charge</Modal.Header>
                     <Modal.Content>
@@ -166,6 +174,7 @@ const InvoiceDataAddCharge: React.FC<IProps> = ({ orderId, handleAddCharge, disa
                         <WfmButton onClick={handleClose}>Cancel</WfmButton>
                     </Modal.Actions>
                 </Modal>
+            }
         </Fragment>
     )
 }

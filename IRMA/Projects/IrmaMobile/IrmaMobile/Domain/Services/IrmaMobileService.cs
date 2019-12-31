@@ -181,10 +181,18 @@ namespace IrmaMobile.Services
             return result;
         }
 
-        public async Task<Result> RemoveInvoiceChargeAsync(string region, int chargeId) {
+        public async Task<Result> RemoveInvoiceChargeAsync(string region, int chargeId) 
+        {
             var result = await MakeServiceRequest(region, client => client.RemoveInvoiceChargeAsync(chargeId)); 
             return result;
         }
+
+        public async Task<List<Currency>> GetCurrenciesAsync(string region)
+        {
+            var result = await MakeServiceRequest(region, client => client.GetCurrenciesAsync()); 
+            return result;
+        }
+
 
         // Following best practices for handling WCF ServiceClient lifecycle as documented here:
         // https://docs.microsoft.com/en-us/dotnet/framework/wcf/samples/use-close-abort-release-wcf-client-resources

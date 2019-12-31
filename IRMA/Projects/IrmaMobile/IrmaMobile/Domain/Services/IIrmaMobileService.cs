@@ -21,5 +21,6 @@ namespace IrmaMobile.Services
         Task<List<ListsSubteam>> GetNonallocatedInvoiceChargesAsync(string region, int orderId);
         Task<Result> AddInvoiceChargeAsync(string region, InvoiceChargeModel model);
         Task<Result> RemoveInvoiceChargeAsync(string region, int chargeId);
+        Task<List<Currency>> GetCurrenciesAsync(string region);
     }
 }

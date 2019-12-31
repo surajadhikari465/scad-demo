@@ -73,9 +73,9 @@ const PurchaseOrder = {
         ),
 };
 
-const PurchaseOrderClose = {
+const InvoiceData = {
     getCurrencies: async (region: string) =>
-        await requests.get(`/${region}/invoicedata/getCurrencies`),
+        await requests.get(`/${region}/invoicedata/Currencies`),
     getOrderInvoiceCharges: async (region: string, orderId: number) =>
         await requests.get(
             `/${region}/invoicedata/orderInvoiceCharges?orderId=${orderId}`
@@ -84,16 +84,16 @@ const PurchaseOrderClose = {
         await requests.get(`/${region}/invoicedata/allocatedInvoiceCharges`),
     getNonallocatedInvoiceCharges: async (region: string, orderId: number) => 
         await requests.get(`/${region}/invoicedata/nonallocatedInvoiceCharges?orderId=${orderId}`),
-    addInvoiceCharge: async (region: string, OrderId: number, SacType: number, Description: string, SubteamGlAccount: number, Allowance: boolean, ChargeValue: number) =>
+    addInvoiceCharge: async (region: string, orderId: number, sacType: number, description: string, subteamGlAccount: number, allowance: boolean, chargeValue: number) =>
         await requests.post(`/${region}/invoicedata/addinvoicecharge`, {
-            OrderId,
-            SacType,
-            Description,
-            SubteamGlAccount,
-            Allowance,
-            ChargeValue
+            OrderId: orderId,
+            SacType: sacType,
+            Description: description,
+            SubteamGlAccount: subteamGlAccount,
+            Allowance: allowance,
+            ChargeValue: chargeValue
         }),
-    removeInvoiceCharge: async (region: string, chargeId: number) => await requests.post(`/${region}/invoicedata/removeinvoicecharge`, {ChargeId: chargeId})
+    removeInvoiceCharge: async (region: string, chargeId: number) => await requests.post(`/${region}/invoicedata/removeinvoicecharge`, {ChargeId: chargeId}),
 };
 
-export default { PurchaseOrder, PurchaseOrderClose };
+export default { PurchaseOrder, InvoiceData };

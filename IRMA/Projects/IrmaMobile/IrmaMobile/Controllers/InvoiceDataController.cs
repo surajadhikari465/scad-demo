@@ -76,5 +76,16 @@ namespace IrmaMobile.Controllers
 
             return result;
         }
+
+        [ProducesResponseType(200)]
+        [HttpGet]
+        public async Task<List<Currency>> Currencies([FromRoute]string region)
+        {
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(InvoiceDataController)}.{nameof(Currencies)}");
+            
+            var result = await service.GetCurrenciesAsync(region);
+
+            return result;
+        }
     }
 }
