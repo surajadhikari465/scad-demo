@@ -86,17 +86,20 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                 var orderItem = null;
                 if(orderItemsFiltered.length === 1) {
                     orderItem = orderItemsFiltered[0];
-                }
+                } else {
+                    if (upc) {
+                        toast.error(`${upc} not found in PO #${purchaseOrderNum}`);
+                        return;
+                    }
 
-                if (!orderItem) {
-                    toast.error(`${upc} not found in PO #${purchaseOrderNum}`);
+                    orderItem = {} as any;
                 }
 
                 try {
                     var orderDetails: OrderDetails = {
                         Description: orderItem.item_Description,
                         Quantity: 0,
-                        Weight: orderItem.total_Weight,
+                        Weight: orderItem.total_Weight, 
                         Uom: orderItem.packageUnitAbbr,
                         Code: orderItem.receivingDiscrepancyReasonCodeID,
                         QtyOrdered: orderItem.quantityOrdered,
@@ -116,7 +119,8 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                         OrderedCost: order.orderedCost,
                         OrderTypeId: order.orderType_Id,
                         EInvId: order.einvoiceID,
-                        EInvRequired: order.einvoiceRequired
+                        EInvRequired: order.einvoiceRequired,
+                        ItemLoaded: orderItem.item_Key
                     }
 
                     var orderInformation: OrderInformation = {

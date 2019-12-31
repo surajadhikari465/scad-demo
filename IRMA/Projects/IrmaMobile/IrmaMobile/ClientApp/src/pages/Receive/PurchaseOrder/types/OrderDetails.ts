@@ -22,4 +22,5 @@ export interface OrderDetails {
     OrderTypeId: number;
     EInvId: number,
     EInvRequired: boolean;
+    ItemLoaded: boolean;
 }

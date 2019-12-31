@@ -182,6 +182,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 <ReceivePurchaseOrderDetailsQtyModal handleQuantityDecision={handleQuantityDecision} open={showQtyModal}/>
                 <ReceivePurchaseOrderReasonCodeModal />
                 <Segment
+                    disabled={!orderDetails.ItemLoaded}
                     inverted
                     color="teal"
                     textAlign="center"
@@ -199,7 +200,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                             Package:
                         </Grid.Column>
                         <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} textAlign="left">
-                            {orderDetails.PkgWeight} /{" "}
+                            {orderDetails.PkgWeight} {orderDetails.ItemLoaded ? "/ " : ""}
                             {orderDetails.PkgQuantity} {orderDetails.Uom}
                         </Grid.Column>
                     </Grid.Row>
@@ -258,6 +259,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                         value={orderDetails.Quantity}
                                         fluid
                                         size="small"
+                                        disabled={!orderDetails.ItemLoaded}
                                     />
                                 </Grid.Column>
                             </Grid.Row>
@@ -281,6 +283,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                         }
                                         value={orderDetails.Weight}
                                         fluid
+                                        disabled={!orderDetails.ItemLoaded}
                                         size="small"
                                     ></Input>
                                 </Grid.Column>
@@ -309,6 +312,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                         options={mappedReasonCodes}
                                         name="Code"
                                         onChange={handleDropdownChange}
+                                        disabled={!orderDetails.ItemLoaded}
                                         value={orderDetails.Code}
                                     />
                                 </Grid.Column>
@@ -377,7 +381,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 </Grid>
 
                 <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Button style={{backgroundColor: 'transparent'}} disabled={receivingOrder} loading={receivingOrder} as={WfmButton} onClick={receiveOrderClick}>
+                    <Button style={{backgroundColor: 'transparent'}} disabled={receivingOrder || !orderDetails.ItemLoaded} loading={receivingOrder} as={WfmButton} onClick={receiveOrderClick}>
                         Receive
                     </Button>
                 </span>
