@@ -65,12 +65,19 @@ namespace Icon.Web.Mvc.Controllers
         {
             if(!this.settings.IsContactViewEnabled)
             {
-                //return View();
+                TempData["Message"] = "Contact view is currently disabled.";
+                return RedirectToAction("Disabled", "Contact");
+            }
+            
+            var viewModel = GetHierarchyClass(hierarchyClassId);
+
+            if(viewModel.HierarchyId != Hierarchies.Brands && viewModel.HierarchyId != Hierarchies.Manufacturer)
+            {
+                TempData["Message"] = $"Selected hierarchy class does not support Contact Management. HierarchyClassId = {hierarchyClassId}";;
                 return RedirectToAction("Disabled", "Contact");
             }
 
             ViewBag.UserWriteAccess = GetWriteAccess();
-            var viewModel = GetHierarchyClass(hierarchyClassId);
             return View(viewModel);
         }
 
@@ -90,21 +97,25 @@ namespace Icon.Web.Mvc.Controllers
         [WriteAccessAuthorize]
         public ActionResult Manage(int hierarchyClassId, int contactId)
         {
+            var hierarchy = GetHierarchyClass(hierarchyClassId);
+            if(hierarchy.HierarchyId != Hierarchies.Brands && hierarchy.HierarchyId != Hierarchies.Manufacturer)
+            {
+                TempData["Message"] = $"Selected hierarchy class does not support Contact Management. HierarchyClassId = {hierarchyClassId}";;
+                return RedirectToAction("Disabled", "Contact");
+            }
+
             ContactViewModel viewModel = contactId <= 0
-                ? null
+                ? EmptyViewModel(hierarchyClassId)
                 : GetContacts(hierarchyClassId).Where(x => x.ContactId == contactId).FirstOrDefault();
 
             if(viewModel == null)
-            { 
-              viewModel = EmptyViewModel(hierarchyClassId);
+            {
+              TempData["Message"] = $"Mismatched HierarchyClassId <{hierarchyClassId}> and ContactId <{contactId}>.";
+              return RedirectToAction("Disabled", "Contact");
             }
 
             ViewBag.UserWriteAccess = GetWriteAccess();
-            if(viewModel.ContactTypes == null)
-            {
-                viewModel.ContactTypes = GetContactTypes();
-            }
-
+            viewModel.ContactTypes = GetContactTypes();
 
             return View(viewModel);
         }
@@ -115,6 +126,7 @@ namespace Icon.Web.Mvc.Controllers
         public ActionResult Manage(ContactViewModel viewModel)
         {
             var isOK = ModelState.IsValid;
+            ViewBag.UserWriteAccess = GetWriteAccess();
             
             if(GetWriteAccess() != Enums.WriteAccess.Full)
             {
@@ -132,14 +144,25 @@ namespace Icon.Web.Mvc.Controllers
                 if(String.IsNullOrEmpty(viewModel.ContactName) || String.IsNullOrEmpty(viewModel.Email) || !emailRegex.IsMatch(viewModel.Email))
                 {
                     isOK = false;
-                    ViewData["ErrorMessage"] = "Contact Name and valid Email are requred.";
+                    ViewData["ErrorMessage"] = "Contact Name and valid Email are required.";
+                }
+                else if(viewModel.ContactId <= 0) //Check if Contact already exists
+                {
+                    var contact = GetContacts(viewModel.HierarchyClassId)
+                        .Where(x => x.ContactTypeId == viewModel.ContactTypeId && String.Compare(x.Email, viewModel.Email, StringComparison.CurrentCultureIgnoreCase) == 0)
+                        .FirstOrDefault();
+
+                    if(contact != null)
+                    {
+                        isOK = false;
+                        ViewData["ErrorMessage"] = $"Contact with the same Contact Type and Email already exists. Existing Contact Name is {contact.ContactName}";   
+                    }
                 }
             }
 
             if(!isOK)
             {
                 viewModel.ContactTypes =  GetContactTypes();
-                ViewBag.UserWriteAccess = GetWriteAccess();
                 return View(viewModel);
             }
 
@@ -172,9 +195,11 @@ namespace Icon.Web.Mvc.Controllers
             {
                 this.contactManagerHandler.Execute(manager);
                 ModelState.Clear();
-                ViewData["SuccessMessage"] = $"Contact {viewModel.ContactName} has been successfully added";
-                return RedirectToAction("Contact", "Contact", new { hierarchyClassId = viewModel.HierarchyClassId });   
+                ViewData["SuccessMessage"] = String.Format("Contact {0} has been successfully {1}.", viewModel.ContactName, viewModel.ContactId > 0 ? "updated" : "added");
+                //return RedirectToAction("Contact", "Contact", new { hierarchyClassId = viewModel.HierarchyClassId });   
                 //return View(EmptyViewModel(viewModel.HierarchyClassId));
+                viewModel.ContactTypes = GetContactTypes();
+                return View(viewModel);
             }
             catch (CommandException ex)
             {
@@ -182,7 +207,6 @@ namespace Icon.Web.Mvc.Controllers
                 exLogger.LogException(ex, this.GetType(), MethodBase.GetCurrentMethod());
                 ViewData["ErrorMessage"] = ex.Message;
                 viewModel.ContactTypes = GetContactTypes();
-                ViewBag.UserWriteAccess = GetWriteAccess();
                 return View(viewModel);
             }
         }
@@ -195,7 +219,6 @@ namespace Icon.Web.Mvc.Controllers
                 {
                     ContactId = 0,
                     HierarchyClassId = hierarchyClassId,
-                    ContactName = "New Contact"
                 };
 
             viewModel.HierarchyName = hierarchy.HierarchyLevelName;

@@ -50,10 +50,10 @@
         })
         .Features(features =>
         {
-        features.Paging().PageSize(25);
-        features.Sorting().Inherit(true);
-        features.Filtering().Inherit(true);
-
+            features.Paging().PageSize(25);
+            features.Sorting().Inherit(true);
+            features.Filtering().Inherit(true);
+            features.Resizing();
         })
         .DataSourceUrl(Url.Action("ContactAll", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, null))
         .DataBind()

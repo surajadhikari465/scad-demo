@@ -14,7 +14,7 @@ namespace Icon.Web.Mvc.Validators
             RuleFor(vm => vm.ContactName)
                 .NotEmpty()
                 .MaximumLength(255)
-                .WithMessage("Contact Name is required.");
+                .WithMessage("Contact Name is required and shouldn't exceed 255 characters.");
 
             RuleFor(vm => vm.Email)
                 .NotEmpty()
@@ -51,11 +51,11 @@ namespace Icon.Web.Mvc.Validators
 
             RuleFor(vm => vm.PhoneNumber1)
                 .MaximumLength(30)
-                .WithMessage("Phone number can't exceed 255 chraracters.");
+                .WithMessage("Phone number can't exceed 30 chraracters.");
 
             RuleFor(vm => vm.PhoneNumber2)
                 .MaximumLength(30)
-                .WithMessage("PhoneNumber can't exceed 255 chraracters.");
+                .WithMessage("PhoneNumber can't exceed 30 chraracters.");
 
             RuleFor(vm => vm.WebsiteURL)
                 .MaximumLength(255)

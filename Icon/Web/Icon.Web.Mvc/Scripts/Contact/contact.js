@@ -2,14 +2,20 @@
     $(":submit").removeAttr("disabled");
 
     $('form').submit(function () {
-        $(this).validate();
+        if ($('#msgBlock') == null && $('#divBlock') == null) {
+            $(this).validate();
 
-        if ($(this).valid()) {
-            $(':submit', this).attr('disabled', true).val('Processing...');
-            $('#divBlock').show();
+            if ($(this).valid()) {
+                $(':submit', this).attr('disabled', true).val('Processing...');
+                $('#divBlock').show();
+            }
         }
     });
 });
+
+function closeDialog() {
+    $('#msgBlock').remove();
+}
 
 $(window).keydown(function(e) {
     if (e.keyCode == 13) {
