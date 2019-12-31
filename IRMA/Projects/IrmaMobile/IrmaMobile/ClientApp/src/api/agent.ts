@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { Config } from "../config";
+import { async } from "q";
 
 axios.defaults.baseURL = Config.baseUrl;
 
@@ -96,4 +97,22 @@ const InvoiceData = {
     removeInvoiceCharge: async (region: string, chargeId: number) => await requests.post(`/${region}/invoicedata/removeinvoicecharge`, {ChargeId: chargeId}),
 };
 
-export default { PurchaseOrder, InvoiceData };
+const Shrink = {
+    shrinkItemSubmit: async(region: string, ItemKey: any, StoreNo: any, SubteamNo: any, ShrinkSubTypeId: any, AdjustmentId: any, AdjustmentReason: any, CreatedByUserId: any, UserName: any, InventoryAdjustmentCodeAbbreviation:any, Quantity:any, Weight: any) =>{
+        await requests.post(`/${region}/shrinkadjustments`, {
+                ItemKey,
+                StoreNo,
+                SubteamNo,
+                ShrinkSubTypeId,
+                AdjustmentId,
+                AdjustmentReason,
+                CreatedByUserId,
+                UserName,
+                InventoryAdjustmentCodeAbbreviation,
+                Quantity,
+                Weight
+            })
+        }
+};
+
+export default { PurchaseOrder, InvoiceData, Shrink };

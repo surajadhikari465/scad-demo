@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import './styles.scss';
+import { Modal } from 'semantic-ui-react'
 import { AppContext, types, ITeam } from "../../store";
 
 interface StoreFunctionsProps {
@@ -9,16 +10,18 @@ interface StoreFunctionsProps {
 const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
     // @ts-ignore 
     const {state, dispatch} = useContext(AppContext);
-    // @ts-ignore 
-    const [isSelected, setSelected] = useState(false)
-    const {subteams, subteam} = state;
+    const [isSelected, setSelected] = useState(false);
+    const [alertIsOpen, setAlertOpen] = useState(false);
+    const {subteams} = state;
     const {history} = props;
     const handleClick = (e:any) =>{
       if(!isSelected){
-        alert('Please select a subteam');
-        return false;
+        setAlertOpen(true);
       }
       else history.push(`/${e.target.value}`);
+    }
+    const toggleAlert = (e:any) =>{
+        setAlertOpen(!alertIsOpen);
     }
     const setSubteam = (value:any) =>{
       const subteam: any = state.subteams.filter((subteam: ITeam)=> value === subteam.subteamName.trim())[0];
@@ -48,6 +51,14 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
         <button className="wfm-btn" value="transfer" onClick={handleClick}>Transfer</button>
         <button className="wfm-btn" value="receive" onClick={handleClick}>Receive</button>
       </div>
+      <Modal
+          open={alertIsOpen}
+          header='IRMA Mobile'
+          content='Please select a subteam'
+          actions={['OK']}
+          onActionClick={toggleAlert}
+
+        />
     </div>)
   }
 

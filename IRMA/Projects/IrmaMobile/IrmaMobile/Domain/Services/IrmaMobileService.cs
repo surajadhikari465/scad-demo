@@ -125,7 +125,7 @@ namespace IrmaMobile.Services
 
         public async Task<Order> GetPurchaseOrderAsync(string region, long poNum)
         {
-            if(poNum > int.MaxValue)
+            if (poNum > int.MaxValue)
             {
                 return null;
             }
@@ -176,14 +176,15 @@ namespace IrmaMobile.Services
             return result;
         }
 
-        public async Task<Result> AddInvoiceChargeAsync(string region, InvoiceChargeModel model) {
-            var result = await MakeServiceRequest(region, client => client.AddInvoiceChargeAsync(model.OrderId, model.SacType, model.Description, model.SubteamGlAccount, model.Allowance, model.ChargeValue)); 
+        public async Task<Result> AddInvoiceChargeAsync(string region, InvoiceChargeModel model)
+        {
+            var result = await MakeServiceRequest(region, client => client.AddInvoiceChargeAsync(model.OrderId, model.SacType, model.Description, model.SubteamGlAccount, model.Allowance, model.ChargeValue));
             return result;
         }
 
-        public async Task<Result> RemoveInvoiceChargeAsync(string region, int chargeId) 
+        public async Task<Result> RemoveInvoiceChargeAsync(string region, int chargeId)
         {
-            var result = await MakeServiceRequest(region, client => client.RemoveInvoiceChargeAsync(chargeId)); 
+            var result = await MakeServiceRequest(region, client => client.RemoveInvoiceChargeAsync(chargeId));
             return result;
         }
 
@@ -193,10 +194,29 @@ namespace IrmaMobile.Services
             return result;
         }
 
+        public async Task<bool> AddShrinkAdjustment(string region, ShrinkAdjustmentModel shrinkAdjustmentModel)
+        {
+            return await MakeServiceRequest(
+                region,
+                client => client.AddShrinkAdjustmentAsync(new Shrink
+                {
+                    AdjustmentID = shrinkAdjustmentModel.AdjustmentId,
+                    AdjustmentReason = shrinkAdjustmentModel.AdjustmentReason,
+                    CreatedByUserID = 1, //TODO: set this to an actual value when we implement authentication. shrinkAdjustmentModel.CreatedByUserId,
+                    InventoryAdjustmentCodeAbbreviation = shrinkAdjustmentModel.InventoryAdjustmentCodeAbbreviation,
+                    ItemKey = shrinkAdjustmentModel.ItemKey,
+                    Quantity = shrinkAdjustmentModel.Quantity,
+                    ShrinkSubTypeId = shrinkAdjustmentModel.ShrinkSubTypeId,
+                    StoreNo = shrinkAdjustmentModel.StoreNo,
+                    SubteamNo = shrinkAdjustmentModel.SubteamNo,
+                    UserName = null,//TODO: set this to an actual value when we implement authentication. shrinkAdjustmentModel.UserName,
+                    Weight = shrinkAdjustmentModel.Weight
+                }));
+        }
 
         // Following best practices for handling WCF ServiceClient lifecycle as documented here:
         // https://docs.microsoft.com/en-us/dotnet/framework/wcf/samples/use-close-abort-release-wcf-client-resources
-        private async Task<T> MakeServiceRequest<T>(string region, Func<IGateway, Task<T>> request) 
+        private async Task<T> MakeServiceRequest<T>(string region, Func<IGateway, Task<T>> request)
         {
             var serviceClient = new GatewayClient(
                 new BasicHttpBinding(BasicHttpSecurityMode.None),

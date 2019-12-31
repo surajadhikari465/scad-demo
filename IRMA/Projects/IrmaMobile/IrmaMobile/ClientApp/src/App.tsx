@@ -3,6 +3,7 @@ import StoreFunctions from './pages/StoreFunctions';
 import RegionSelect from './pages/RegionSelect';
 import StoreSelect from './pages/StoreSelect';
 import Shrink from './pages/Shrink';
+import ReviewShrink from './pages/Shrink/ReviewShrink';
 import {
   BrowserRouter as Router,
   Switch,
@@ -48,6 +49,7 @@ const App: React.FC = () => {
               <Route exact path="/store" component={StoreSelect} />
               <Route exact path="/functions" component={StoreFunctions} />
               <Route exact path="/shrink" component={Shrink} />
+              <Route exact path="/shrink/review" component={ReviewShrink} />
               <Route exact path="/receive" component={Receive} />
               <Route exact path="/receive/Document" component={ReceiveDocument} />
               <Route exact path="/receive/PurchaseOrder/:openOrderInformation?" component={ReceivePurchaseOrder} />

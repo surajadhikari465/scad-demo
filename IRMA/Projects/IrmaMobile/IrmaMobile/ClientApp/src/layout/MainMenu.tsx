@@ -10,7 +10,6 @@ interface IProps {
 const MainMenu: React.FC<IProps> = ({ disabled }) => {
     const { state } = useContext(AppContext);
     const { menuItems } = state;
-
     return (
         <Dropdown icon="bars" slot="start" disabled={disabled}>
             <Dropdown.Menu>

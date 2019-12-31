@@ -1,0 +1,14 @@
+
+.ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover {
+    background: rgba(0,40,20,0.5);
+}
+
+.shrink-buttons{
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    button{
+        width:30%;
+    }
+}

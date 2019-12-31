@@ -12,7 +12,7 @@ interface IIntitialState {
   subteams: ITeam[];
   subteam: ITeam;
   subteamNo: string;
-  shrinkType: string;
+  shrinkType: IShrinkType;
   shrinkTypes: any[],
   isLoading: boolean;
   orderDetails: OrderDetails | null;
@@ -39,6 +39,14 @@ export interface ITeam {
   subteamName: string;
 }
 
+export interface IShrinkType{
+  shrinkType: string;  
+  abbreviation: string;
+  shrinkSubTypeId: null | number;
+  inventoryAdjustmentCodeId: null | number;
+  reasonCode: null | number;
+}
+
 interface IStore {
   storeNo: string;
   name: string;
@@ -58,7 +66,7 @@ export const initialState = {
     subteams: [],
     subteam: {subteamName:'', subteamNo:''},
     subteamNo:'',
-    shrinkType: "",
+    shrinkType: {shrinkType:'', abbreviation:'', shrinkSubTypeId:null, inventoryAdjustmentCodeId: null, reasonCode: null},
     shrinkTypes: [],
     isLoading: false,
     orderDetails: null,

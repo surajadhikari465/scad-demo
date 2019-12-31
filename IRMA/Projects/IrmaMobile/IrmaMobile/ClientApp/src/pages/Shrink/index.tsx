@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 // @ts-ignore 
 import { BarcodeScanner } from '@wfm/mobile';
 import './styles.scss';
-import { AppContext, types } from "../../store";
+import { AppContext, types, IMenuItem } from "../../store";
 import LoadingComponent from '../../layout/LoadingComponent';
 import { Config } from '../../config';
 
@@ -25,6 +25,9 @@ const Shrink:React.FC = () => {
     const {state, dispatch} = useContext(AppContext);
     const {isLoading} = state;
     const {subteam, region, storeNumber, subteamNo, shrinkTypes, shrinkType, store} = state;
+    const newMenuItems = [
+      { id: 1, order: 0, text: "Review", path: "/shrink/review", disabled: false } as IMenuItem,
+   ] as IMenuItem[];
     let textInput:any = React.createRef<HTMLInputElement>();
     let qtyInput:any = React.createRef<HTMLInputElement>();
     useEffect(() => {
@@ -35,13 +38,14 @@ const Shrink:React.FC = () => {
           alert(ex.message)
         }
       });
+      dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems});
       return () => {
         //unmount and unregister handler
       };
     }, [shrinkState]);
     const setShrinkType = (value:any) =>{
       setShrinkState({...shrinkState, isSelected:true});
-      dispatch({ type: 'SETSHRINKTYPE', shrinkType:value });
+      dispatch({ type: 'SETSHRINKTYPE', shrinkType:JSON.parse(value) });
     }
     const setIsLoading = (result: boolean) => {
       dispatch({ type: types.SETISLOADING, isLoading: result })
@@ -113,12 +117,12 @@ const Shrink:React.FC = () => {
             <div className="shrink-buttons">
               {shrinkTypes.map((shrinkType:string)=>
                 // @ts-ignore 
-                <button className="wfm-btn" key={shrinkType.shrinkSubTypeId} value={shrinkType.shrinkSubTypeMember} onClick={(e)=> setShrinkType(e.target.value)}>{shrinkType.shrinkSubTypeMember}</button>
+                <button className="wfm-btn" key={shrinkType.shrinkSubTypeId} value={JSON.stringify(shrinkType)} onClick={(e)=> setShrinkType(e.target.value)}>{shrinkType.shrinkSubTypeMember}</button>
               )}
             </div>
           </div>): (
             <div className='shrink-container shrink-form'>
-              <header className='shrink-type-header'><span>IRMA Shrink: {shrinkType}</span></header>
+              <header className='shrink-type-header'><span>IRMA Shrink: {shrinkType.shrinkType}</span></header>
               <div></div>
               <section className='entry-section'>
                 <div className='input-line'>
@@ -148,14 +152,14 @@ const Shrink:React.FC = () => {
                   <input className='qty-input' type='number' min="0" step="1" onChange={setQty} defaultValue={shrinkState.quantity} ref={qtyInput}></input>
                   {
                     shrinkState.packageUnitAbbreviation && 
-                    <label className='qty-type'>Retail: {shrinkState.packageUnitAbbreviation}</label>
+                    <label className='qty-type'>Retail: {shrinkState.retailUnitName}</label>
                   }
                 </div>
                 {   
                   shrinkState.retailUnitName && 
                   <div className='description'>
                     <label>UOM:</label>
-                    <span>{shrinkState.retailUnitName}</span>
+                    <span>{shrinkState.packageUnitAbbreviation}</span>
                   </div>
                 } 
               </section>
