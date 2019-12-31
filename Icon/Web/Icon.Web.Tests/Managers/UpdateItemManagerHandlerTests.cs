@@ -13,17 +13,13 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         private UpdateItemManagerHandler managerHandler;
         private UpdateItemManager manager;
         private Mock<ICommandHandler<UpdateItemCommand>> mockUpdateItemCommandHandler;
-        private Mock<ICommandHandler<PublishItemUpdatesCommand>> mockPublishItemUpdatesCommandHandler;
 
         [TestInitialize]
         public void Initialize()
         {
             mockUpdateItemCommandHandler = new Mock<ICommandHandler<UpdateItemCommand>>();
-            mockPublishItemUpdatesCommandHandler = new Mock<ICommandHandler<PublishItemUpdatesCommand>>();
 
-            managerHandler = new UpdateItemManagerHandler(
-                mockUpdateItemCommandHandler.Object,
-                mockPublishItemUpdatesCommandHandler.Object);
+            managerHandler = new UpdateItemManagerHandler(mockUpdateItemCommandHandler.Object);
 
             manager = new UpdateItemManager();
         }
@@ -35,6 +31,7 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
             manager.BrandsHierarchyClassId = 1;
             manager.FinancialHierarchyClassId = 2;
             manager.ItemAttributes = new Dictionary<string, string>();
+            manager.ItemAttributes.Add("ProductDescription","TestProductDescription");
             manager.ItemId = 3;
             manager.MerchandiseHierarchyClassId = 4;
             manager.NationalHierarchyClassId = 5;
@@ -53,9 +50,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
                     && c.MerchandiseHierarchyClassId == manager.MerchandiseHierarchyClassId
                     && c.NationalHierarchyClassId == manager.NationalHierarchyClassId
                     && c.TaxHierarchyClassId == manager.TaxHierarchyClassId)));
-            mockPublishItemUpdatesCommandHandler.Verify(m => m.Execute(It.Is<PublishItemUpdatesCommand>(
-                c => c.ScanCodes.Count == 1
-                    && c.ScanCodes.Contains(manager.ScanCode))));
         }
     }
 }
