@@ -998,7 +998,7 @@ VALUES
 	,0
 	,'User who created the item'
 	,NULL
-	,NULL
+	,0
 	,'All'
 	,'CRB'
 	,@dataTypeTextId
@@ -1016,12 +1016,12 @@ VALUES
 	,'CreatedDateTimeUtc'
 	,@attributeGroupId
 	,0
-	,'Date & Time of when the item was created.'
+	,'Read Only Date & Time of when the item was created.'
 	,NULL
-	,NULL
-	,NULL
+	,0
+	,'All'
 	,'INS'
-	,@dataTypeDateId
+	,@dataTypeTextId
 	,(@maxDisplayOrder + 3)
 	,NULL
 	,NULL
@@ -1038,7 +1038,7 @@ VALUES
 	,0
 	,'User who last modified the item.'
 	,NULL
-	,NULL
+	,0
 	,'All'
 	,'USR'
 	,@dataTypeTextId
@@ -1058,10 +1058,10 @@ VALUES
 	,0
 	,'DateTime when item was last modified.'
 	,NULL
-	,NULL
+	,0
 	,'All'
 	,'MOD'
-	,@dataTypeDateId
+	,@dataTypeTextId
 	,(@maxDisplayOrder + 5)
 	,NULL
 	,NULL
@@ -1078,7 +1078,7 @@ VALUES
 	,0
 	,'Indicates if an item is a department sale item'
 	,NULL
-	,NULL
+	,0
 	,'All'
 	,'DPT'
 	,@dataTypeTextId
@@ -1212,6 +1212,15 @@ RAISERROR ('Setting ReadOnly property on AttributesWebConfiguration...', 0, 1) W
 UPDATE dbo.AttributesWebConfiguration
 SET IsReadOnly = 1
 WHERE AttributeId IN (SELECT AttributeId FROM dbo.Attributes WHERE AttributeName IN ('ProhibitDiscount','CreatedBy','CreatedDateTimeUtc','ModifiedBy','ModifiedDateTimeUtc'))
+
+-- Make sure the AttributesWebConfiguration.CharacterSetRegexPattern matches the special characters allowed.
+RAISERROR ('Setting CharacterSetRegexPattern property on AttributesWebConfiguration...', 0, 1) WITH NOWAIT
+UPDATE awc
+SET CharacterSetRegexPattern = '^.*$'
+FROM AttributesWebConfiguration awc
+JOIN Attributes a on awc.AttributeId = a.AttributeId
+WHERE a.AttributeName IN ('CreatedBy','CreatedDateTimeUtc','ModifiedBy','ModifiedDateTimeUtc')
+	AND a.SpecialCharactersAllowed = 'All'
 
 --Set IsReadOnly for Nutrition attributes
 RAISERROR ('Setting ReadOnly property on AttributesWebConfiguration for nutrition attributes...', 0, 1) WITH NOWAIT

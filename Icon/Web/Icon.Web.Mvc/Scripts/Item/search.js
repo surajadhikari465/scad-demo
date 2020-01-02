@@ -668,7 +668,7 @@ window.addEventListener('load', function () {
                         headerText: attribute.DisplayName,
                         key: attribute.AttributeName,
                         dataType: "date",
-                        dateDisplayType: "utc",
+                        dateDisplayType: "local",
                         enableUTCDates: true,
                         format: "yyyy-MM-dd",
                         width: attribute.GridColumnWidth

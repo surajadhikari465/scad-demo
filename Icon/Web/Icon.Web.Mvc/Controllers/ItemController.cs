@@ -47,7 +47,6 @@ namespace Icon.Web.Controllers
         private IManagerHandler<UpdateItemManager> updateItemManagerHandler;
         private IInfragisticsHelper infragisticsHelper;
         private IQueryHandler<GetItemPropertiesFromMerchHierarchyParameters, MerchDependentItemPropertiesModel> getItemPropertiesFromMerchQueryHandler;
-        private IQueryHandler<DoesScanCodeExistParameters, bool> doesScanCodeExistQueryHandler;
         private IManagerHandler<AddItemManager> addItemManagerHandler;
         private IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypeQueryHandler;
         private IExcelExporterService exporterService;
@@ -75,7 +74,6 @@ namespace Icon.Web.Controllers
             IInfragisticsHelper infragisticsHelper,
             IManagerHandler<AddItemManager> addItemManagerHandler,
             IQueryHandler<GetItemPropertiesFromMerchHierarchyParameters, MerchDependentItemPropertiesModel> getItemPropertiesFromMerchQueryHandler,
-            IQueryHandler<DoesScanCodeExistParameters, bool> doesScanCodeExistQueryHandler,
             IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypeQueryHandler,
             IQueryHandler<GetBulkUploadStatusParameters, List<BulkUploadStatusModel>> getBulkItemUploadStatusQueryHandler,
             IQueryHandler<GetBulkUploadErrorsPrameters, List<BulkUploadErrorModel>> getBulkUploadErrorsQueryHandler,
@@ -101,7 +99,6 @@ namespace Icon.Web.Controllers
             this.addItemManagerHandler = addItemManagerHandler;
             this.getItemHistoryQueryHandler = getItemHistoryQueryHandler;
             this.getItemPropertiesFromMerchQueryHandler = getItemPropertiesFromMerchQueryHandler;
-            this.doesScanCodeExistQueryHandler = doesScanCodeExistQueryHandler;
             this.getBarcodeTypeQueryHandler = getBarcodeTypeQueryHandler;
             this.exporterService = exporterService;
             this.itemAttributesValidatorFactory = itemAttributesValidatorFactory;

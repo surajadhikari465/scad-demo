@@ -89,7 +89,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockUpdateItemManagerHandler = new Mock<IManagerHandler<UpdateItemManager>>();
             mockInfragisticsHelper = new Mock<IInfragisticsHelper>();
             mockGetItemPropertiesFromMerchQueryHandler = new Mock<IQueryHandler<GetItemPropertiesFromMerchHierarchyParameters, MerchDependentItemPropertiesModel>>();
-            mockDoesScanCodeExistQueryHandler = new Mock<IQueryHandler<DoesScanCodeExistParameters, bool>>();
             mockAddItemManagerHandler = new Mock<IManagerHandler<AddItemManager>>();
             mockGetBarcodeTypeQueryHandler = new Mock<IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>>>();
             mockExcelExporterService = new Mock<IExcelExporterService>();
@@ -123,7 +122,6 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockInfragisticsHelper.Object,
                 mockAddItemManagerHandler.Object,
                 mockGetItemPropertiesFromMerchQueryHandler.Object,
-                mockDoesScanCodeExistQueryHandler.Object,
                 mockGetBarcodeTypeQueryHandler.Object,
                 mockGetBulkItemUploadStatusQueryHandler.Object,
                 mockGetBulkUploadErrorsQueryHandler.Object,
