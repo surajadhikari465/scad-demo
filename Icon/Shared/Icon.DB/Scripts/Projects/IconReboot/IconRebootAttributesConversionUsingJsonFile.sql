@@ -131,7 +131,7 @@ BEGIN
 	VALUES (
 		'RQN'
 		,''
-		,'Request Name'
+		,'Request Number'
 		,@itemTraitgroupId
 		)
 END
@@ -299,7 +299,7 @@ INSERT INTO infor.HistoricalAttributes (
 	,AttributeGuid
 	)
 VALUES (
-	'RequestName'
+	'RequestNumber'
 	,'ITEM'
 	,NEWID()
 	)
@@ -1112,8 +1112,8 @@ INSERT INTO [dbo].[Attributes] (
 	,[IsPickList]
 	,[XmlTraitDescription]
 	)
-SELECT 'Request Name'
-	,'RequestName'
+SELECT 'Request Number'
+	,'RequestNumber'
 	,[AttributeGroupId]
 	,[HasUniqueValues]
 	,Null
@@ -1129,7 +1129,7 @@ SELECT 'Request Name'
 	,[DisplayType]
 	,[MaxLengthAllowed]
 	,[IsPickList]
-	,'Request Name'
+	,'Request Number'
 FROM Attributes
 WHERE attributename = 'productdescription'
 

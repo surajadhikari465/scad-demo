@@ -375,7 +375,7 @@ SET ItemAttributesJson = ISNULL((
 				,[Vegetarian Claim] AS VegetarianClaim
 				,NULLIF([WFM Eligible], 'No') AS WFMEligible
 				,NULLIF([Whole Trade], 'No') AS WholeTrade
-				,[ItemName] as RequestName
+				,[ItemName] as RequestNumber
 			FROM temp_InforItemsFile f
 			WHERE f.ItemID = item.ItemId
 			FOR JSON PATH
