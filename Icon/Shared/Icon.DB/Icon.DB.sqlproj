@@ -783,6 +783,7 @@
     <Build Include="app\Stored Procedures\GetContactList.sql" />
     <Build Include="app\Stored Procedures\AddUpdateContact.sql" />
     <Build Include="app\Stored Procedures\GetContactTypes.sql" />
+    <None Include="Scripts\Projects\IconReboot\IconRebootConversionCreateMessageQueueForManufactureBrandHierarchy.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
