@@ -52,7 +52,9 @@ namespace Services.Extract.Infrastructure.Esb
             Factory.SetCertificateStoreType(EMSSSLStoreType.EMSSSL_STORE_TYPE_FILE, storeInfo);
 
             Connection = Factory.CreateConnection(Settings.JmsUsername, Settings.JmsPassword);
-            Connection.ClientID = AppSettingsAccessor.GetStringSetting("ListenerApplicationName", "Icon Extract Service");
+            //Client ID needs to be unique in TIBCO so appending a GUID to the end of the name so that multiple instances don't cause errors
+            var clientId = AppSettingsAccessor.GetStringSetting("ListenerApplicationName", "Icon Extract Service") + "-" + Guid.NewGuid();
+            Connection.ClientID = clientId;
             Session = Connection.CreateSession(false, Settings.SessionMode);
             Destination = Session.CreateQueue(Settings.QueueName);
             Consumer = Session.CreateConsumer(Destination);

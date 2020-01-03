@@ -7,6 +7,12 @@ using Services.Extract.Infrastructure.Esb;
 using SimpleInjector;
 using OpsgenieAlert;
 using Services.Extract.Credentials;
+using Icon.Common.DataAccess;
+using Services.Extract.DataAccess.Commands;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using SimpleInjector.Diagnostics;
 
 namespace Services.Extract
 {
@@ -27,8 +33,17 @@ namespace Services.Extract
             container.RegisterSingleton<ISFtpCredentialsCache, SFtpCredentialsCache>();
             container.RegisterSingleton<IS3CredentialsCache, S3CredentialsCache>();
             container.Register<ICredentialsCacheManager, CredentialsCacheManager>();
-
+            container.Register(typeof(ICommandHandler<>), typeof(UpdateJobLastRunEndCommand).Assembly);
+            container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString));
+            
+            
             container.Register<ExtractService>();
+
+            container.GetRegistration(typeof(IDbConnection))
+                .Registration
+                .SuppressDiagnosticWarning(
+                    DiagnosticType.DisposableTransientComponent,
+                    "Dispose not needed");
 
             container.Verify();
             return container;

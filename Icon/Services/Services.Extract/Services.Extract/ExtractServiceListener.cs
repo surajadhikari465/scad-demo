@@ -1,4 +1,5 @@
 ﻿using System;
+using Icon.Common.DataAccess;
 using Icon.Common.Email;
 using Icon.Esb;
 using Icon.Esb.ListenerApplication;
@@ -6,6 +7,7 @@ using Icon.Esb.Subscriber;
 using Icon.Logging;
 using OpsgenieAlert;
 using Services.Extract.Credentials;
+using Services.Extract.DataAccess.Commands;
 using Services.Extract.Models;
 
 namespace Services.Extract
@@ -14,6 +16,7 @@ namespace Services.Extract
     {
         private readonly ILogger<ExtractJobRunner> ExtractJobLogger;
         private readonly IOpsgenieAlert OpsGenieAlert;
+        private readonly ICommandHandler<UpdateJobLastRunEndCommand> updateJobLastRunEndCommandHandler;
         private readonly ICredentialsCacheManager CredentialsCacheManager;
 
         public ExtractServiceListener(
@@ -24,11 +27,13 @@ namespace Services.Extract
             ILogger<ExtractServiceListener> serviceLogger,
             ILogger<ExtractJobRunner> extractJoblogger,
             ICredentialsCacheManager credentialsCacheManager,
-            IOpsgenieAlert opsGenieAlert
+            IOpsgenieAlert opsGenieAlert,
+            ICommandHandler<UpdateJobLastRunEndCommand> updateJobLastRunEndCommandHandler
         ) : base(listenerApplicationSettings, esbConnectionSettings, subscriber, emailClient, serviceLogger)
         {
             ExtractJobLogger = extractJoblogger;
             OpsGenieAlert = opsGenieAlert;
+            this.updateJobLastRunEndCommandHandler = updateJobLastRunEndCommandHandler;
             CredentialsCacheManager = credentialsCacheManager;
         }
 
@@ -48,7 +53,22 @@ namespace Services.Extract
                 logger.Error($"Job Failed: {jobSchedule.JobName}");
                 logger.Error(ex.Message);
             }
-
+            finally
+            {
+                try
+                {
+                    updateJobLastRunEndCommandHandler.Execute(new UpdateJobLastRunEndCommand
+                    {
+                        JobScheduleId = jobSchedule.JobScheduleId,
+                        LastRunEndDateTime = DateTime.UtcNow
+                    });
+                }
+                catch(Exception ex)
+                {
+                    logger.Error($"Failed to update LastRunEndDateTimeUtc: {jobSchedule.JobName}");
+                    logger.Error(ex.Message);
+                }
+            }
         }
     }
 }
