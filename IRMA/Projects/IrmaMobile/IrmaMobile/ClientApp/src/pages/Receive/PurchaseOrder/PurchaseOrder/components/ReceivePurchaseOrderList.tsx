@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { Grid, Segment } from "semantic-ui-react";
 import { ListedOrder } from "../../types/ListedOrder";
 import "./styles.scss"
+import dateFormat from 'dateformat'
 
 interface IProps {
     orders: ListedOrder[];
@@ -31,7 +32,7 @@ const ReceivePurchaseOrderList: React.FC<IProps> = ({ orders, upc, poSelected })
                     <Grid.Row key={order.PoNum}>
                         <Grid.Column style={{fontWeight: 'bold'}}><button className="link-button" onClick={purchaseOrderClicked}>{order.PoNum}</button></Grid.Column>
                         <Grid.Column>{order.OrderCost}</Grid.Column>
-                        <Grid.Column>{(new Date(order.ExpectedDate)).toLocaleDateString()}</Grid.Column>
+                        <Grid.Column style={{fontSize: '12px'}}>{dateFormat(order.ExpectedDate, "mm/dd/yyyy")}</Grid.Column>
                         <Grid.Column>{order.Subteam}</Grid.Column>
                         <Grid.Column textAlign='center'>{order.EInv ? "Y" : "N"}</Grid.Column>
                     </Grid.Row>

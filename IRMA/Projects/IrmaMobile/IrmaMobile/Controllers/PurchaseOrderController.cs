@@ -50,7 +50,7 @@ namespace IrmaMobile.Controllers
         {
             logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(PurchaseOrderController)}.{nameof(ReasonCodes)}");
 
-            var result = await service.GetReasonCodesAsync(region);
+            var result = await service.GetReasonCodesAsync(region, "RD");
 
             return result;
         }

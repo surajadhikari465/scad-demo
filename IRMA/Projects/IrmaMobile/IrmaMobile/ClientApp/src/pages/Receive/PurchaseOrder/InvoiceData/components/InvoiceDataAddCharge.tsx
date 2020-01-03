@@ -123,12 +123,12 @@ const InvoiceDataAddCharge: React.FC<IProps> = ({ orderId, handleAddCharge, disa
         const sacType = radioSelection === radioOptions.Allocated ? 1 : 2
         const description = charge;
         const subteamGLAccount = radioSelection === radioOptions.Nonallocated ? nonAllocatedCharges.filter((ch: any) => ch.subteamName === charge)[0].subteamNo : -1
-        let allowance = false;
+        var allowance = false;
 
         if(radioSelection === radioOptions.Allocated && allocatedCharges) {
             const allowanceIndicator = allocatedCharges.filter((ch: any) => ch.elementName === charge)[0].isAllowance;
 
-            if(allowanceIndicator === -1) {
+            if(allowanceIndicator === '-1') {
                 allowance = true;
             }
         }
@@ -141,7 +141,7 @@ const InvoiceDataAddCharge: React.FC<IProps> = ({ orderId, handleAddCharge, disa
         <Fragment>
             {open && isLoading ?
                 <LoadingComponent content="Loading types..."/> :
-                <Modal onClose={handleClose} open={open} trigger={<WfmButton disabled={disabled} onClick={() => {setOpen(true)}}>Add</WfmButton>}>
+                <Modal closeOnDimmerClick={false} onClose={handleClose} open={open} trigger={<WfmButton disabled={disabled} onClick={() => {setOpen(true)}}>Add</WfmButton>}>
                     <Modal.Header>Add Invoice Charge</Modal.Header>
                     <Modal.Content>
                         <Form style={{position: 'relative', left: '15%'}}>
@@ -165,7 +165,7 @@ const InvoiceDataAddCharge: React.FC<IProps> = ({ orderId, handleAddCharge, disa
                         <Divider/>
                         <Container textAlign='right'>
                             <Form onSubmit={handleOkClick}>
-                                <Input type='number' placeholder='Value' value={amount.toString()} onChange={handleAmountChange} />
+                                <Input type='number' step="any" placeholder='Value' value={amount.toString()} onChange={handleAmountChange} />
                             </Form>
                         </Container>
                     </Modal.Content>

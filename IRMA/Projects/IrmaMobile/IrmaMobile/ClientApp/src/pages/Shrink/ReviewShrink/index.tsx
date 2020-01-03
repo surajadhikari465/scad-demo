@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import { AppContext } from "../../../store";
 import agent from '../../../api/agent';
 import ReactTable from 'react-table';
-import 'react-table/react-table.css';
 import './styles.scss';
 
 

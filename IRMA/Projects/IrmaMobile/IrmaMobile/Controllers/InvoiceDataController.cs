@@ -87,5 +87,27 @@ namespace IrmaMobile.Controllers
 
             return result;
         }
+
+        [ProducesResponseType(200)]
+        [HttpGet]
+        public async Task<List<ReasonCode>> RefuseCodes(string region)
+        {
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(InvoiceDataController)}.{nameof(RefuseCodes)}");
+
+            var result = await service.GetReasonCodesAsync(region, "RR");
+
+            return result;
+        }
+
+        [ProducesResponseType(200)]
+        [HttpPost]
+        public async Task<Result> RefuseOrder([FromRoute]string region, [FromBody]RefuseOrderModel model)
+        { 
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(InvoiceDataController)}.{nameof(RefuseOrder)}");
+
+            var result = await service.RefuseOrderAsync(region, model.OrderId, model.UserId, model.ReasonCodeId); 
+
+            return result;
+        }
     }
 }

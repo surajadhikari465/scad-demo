@@ -19,15 +19,15 @@ const ReceivePurchaseOrderReasonCodeModal: React.FC = () => {
                 <Modal.Content>
                     <Grid columns={2} celled>
                         <Grid.Row color="grey">
-                            <Grid.Column width={5}>Abbreviation</Grid.Column>
-                            <Grid.Column width={11}>Description</Grid.Column>
+                            <Grid.Column width={4}>Code</Grid.Column>
+                            <Grid.Column width={12}>Description</Grid.Column>
                         </Grid.Row>
                         {reasonCodes.map((code: ReasonCode) => (
                             <Grid.Row key={code.reasonCodeAbbreviation}>
-                                <Grid.Column width={5}>
+                                <Grid.Column width={4}>
                                     {code.reasonCodeAbbreviation}
                                 </Grid.Column>
-                                <Grid.Column width={11}>
+                                <Grid.Column width={12}>
                                     {code.reasonCodeDescription}
                                 </Grid.Column>
                             </Grid.Row>

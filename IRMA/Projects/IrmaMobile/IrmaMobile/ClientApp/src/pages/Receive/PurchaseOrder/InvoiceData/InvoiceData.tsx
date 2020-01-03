@@ -5,11 +5,12 @@ import agent from "../../../../api/agent";
 import LoadingComponent from "../../../../layout/LoadingComponent";
 import { AppContext } from "../../../../store";
 import InvoiceDataAddCharge from "./components/InvoiceDataAddCharge";
-import InvoiceDataCloseModal from "./components/InvoiceDataCloseModal";
 import InvoiceDataRemoveCharge from "./components/InvoiceDataRemoveCharge";
 import Charge from "../types/Charge";
 import { toast } from "react-toastify";
 import dateFormat from 'dateformat'
+import InvoiceDataRefuseCodes from "./components/InvoiceDataRefuseCodes";
+import ConfirmModal from "../../../../layout/ConfirmModal";
 
 interface RouteParams {
     purchaseOrderNumber: string;
@@ -40,8 +41,10 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
     );
     const [charges, setCharges] = useState<Charge[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [showRefuseConfirm, setShowRefuseConfirm] = useState<boolean>(false);
+    const [refuseCode, setRefuseCode] = useState<string>('');
+    const [refuseCodeId, setRefuseCodeId] = useState<number>(-1);
     const [loadingMessage, setLoadingMessage] = useState("");
-    // const currencies = [{ key: 0, text: "USD", value: "USD" }];
 
     const [currencies, setCurrencies] = useState<Currency[]>([])
     const [invoiceNumber, setInvoiceNumber] = useState<number|string|undefined>();
@@ -71,7 +74,9 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                 existingCharges.forEach((charge: any) => {
                     switch(charge.sacType){
                         case "Allocated":
-                            allocatedCharges += charge.chargeValue;
+                            if(charge.isAllowance === 'False'){
+                                allocatedCharges += charge.chargeValue;
+                            }
                             break;
                         case "Not Allocated":
                             nonAllocatedCharges += charge.chargeValue;
@@ -202,8 +207,27 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
         setInvoiceNumber(parseInt(data.value));
     }
 
+    const handleSelectRefuse = (code: string, id: number) => {
+        setRefuseCode(code);
+        setRefuseCodeId(id);
+        setShowRefuseConfirm(true);
+    }
+
+    const handleConfirmRefuse = async () => {
+        const result = await agent.InvoiceData.refuseOrder(region, parseInt(purchaseOrderNumber), 1, refuseCodeId)
+
+        if(result.status) {
+            toast.info('Order Refused')
+        } else {
+            toast.error(`Error when refusing order: ${result.errorMessage}`)
+        }
+    }
+
     return (
         <Fragment>
+            <ConfirmModal handleConfirmClose={handleConfirmRefuse} setOpenExternal={setShowRefuseConfirm} showTriggerButton={false} 
+                            openExternal={showRefuseConfirm} headerText='Invoice Data' cancelButtonText='No' confirmButtonText='Yes' 
+                            lineOne={`Refuse PO ${purchaseOrderNumber} with Reason Code ${refuseCode}?`} />
             <Form>
                 <div style={{position: "relative", left: "20%"}}>
                     <Form.Group inline style={{marginTop: '10px'}}>
@@ -229,7 +253,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                 </div>
                 <div style={{backgroundColor: 'lightgrey', border: '1px solid black'}}>
                     <Form.Group inline>
-                        <Form.Field><label style={{textAlign: 'right', width: '83px'}}>Invoice #:</label><Input type='number' disabled={(orderDetails && orderDetails.EInvRequired) || radioSelection === radioOptions.None} value={invoiceNumber} onChange={handleInvoiceChange} transparent style={{backgroundColor: 'white', border: '1px solid black', width: '100px'}}/></Form.Field>
+                        <Form.Field><label style={{textAlign: 'right', width: '83px'}}>Invoice #:</label><Input type='number' disabled={(orderDetails && orderDetails.EInvRequired) || radioSelection === radioOptions.None} value={invoiceNumber || ""} onChange={handleInvoiceChange} transparent style={{backgroundColor: 'white', border: '1px solid black', width: '100px'}}/></Form.Field>
                         <select disabled={radioSelection === radioOptions.None} style={{ marginLeft: '50px', marginTop: '10px', backgroundColor: 'white', width: '90px', border: '1px solid black'}}>
                             {currencies && currencies.map(c => <option key={c.key} value={c.value}>{c.text}</option>)}</select>
                         <Form.Field ><label style={{textAlign: 'right', width: '80px'}}>Date:</label> <Input disabled={(orderDetails && orderDetails.EInvRequired) || radioSelection === radioOptions.None} max={dateFormat(new Date(), "yyyy-mm-dd")} 
@@ -241,15 +265,15 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                                     }}/></Form.Field>
                         <Grid>
                             <Grid.Column width={9}>
-                                <Form.Field style={{marginTop: '5px'}}><label style={{textAlign: 'right', width: '80px'}}>Inv. Total:</label> <Input value={invoiceTotal} disabled={(orderDetails && orderDetails.EInvRequired) || radioSelection === radioOptions.None} transparent type='number' style={{width: '80px', backgroundColor: 'white', border: '1px solid black'}}/></Form.Field>
-                                <Form.Field style={{marginTop: '5px'}}><label style={{textAlign: 'right', width: '80px'}}>Charges:</label> <Input value={invoiceCharges} disabled={radioSelection === radioOptions.None} type='number' style={{width: '80px', backgroundColor: 'lightgreen', border: '1px solid black'}} transparent/></Form.Field>
-                                <Form.Field style={{marginTop: '5px'}}><label style={{textAlign: 'right', width: '80px'}}>{orderDetails ? orderDetails.Subteam : "<Undefined SUBTEAM>"}:</label> <Input value={subteamTotal} disabled={radioSelection === radioOptions.None} type='number' style={{width: '80px', backgroundColor: 'lightgreen', border: '1px solid black'}} transparent/></Form.Field>
-                                <Form.Field style={{marginTop: '5px'}}><label style={{textAlign: 'right', width: '80px'}}>Difference:</label> <Input value={difference} disabled={radioSelection === radioOptions.None} type='number' style={{width: '80px', backgroundColor: 'lightgreen', border: '1px solid black'}} transparent/></Form.Field>
+                                <Form.Field style={{marginTop: '5px'}}><label style={{textAlign: 'right', width: '80px'}}>Inv. Total:</label> <Input value={invoiceTotal.toFixed(2)} disabled={(orderDetails && orderDetails.EInvRequired) || radioSelection === radioOptions.None} transparent type='number' style={{width: '80px', backgroundColor: 'white', border: '1px solid black'}}/></Form.Field>
+                                <Form.Field style={{marginTop: '5px'}}><label style={{textAlign: 'right', width: '80px'}}>Charges:</label> <Input value={invoiceCharges.toFixed(2)} disabled={radioSelection === radioOptions.None} type='number' style={{width: '80px', backgroundColor: 'lightgreen', border: '1px solid black'}} transparent/></Form.Field>
+                                <Form.Field style={{marginTop: '5px'}}><label style={{textAlign: 'right', width: '80px'}}>{orderDetails ? orderDetails.Subteam : "<Undefined SUBTEAM>"}:</label> <Input value={subteamTotal.toFixed(2)} disabled={radioSelection === radioOptions.None} type='number' style={{width: '80px', backgroundColor: 'lightgreen', border: '1px solid black'}} transparent/></Form.Field>
+                                <Form.Field style={{marginTop: '5px'}}><label style={{textAlign: 'right', width: '80px'}}>Difference:</label> <Input value={difference.toFixed(2)} disabled={radioSelection === radioOptions.None} type='number' style={{width: '80px', backgroundColor: 'lightgreen', border: '1px solid black'}} transparent/></Form.Field>
                             </Grid.Column>
                             <Grid.Column width={7}>
                                 <div style={{marginTop: '10px', marginRight: '20px', border: '1px solid black'}}>
                                     <Button disabled={orderDetails ? orderDetails.EInvId === 0 : false} style={{margin: '10px', backgroundColor:'lightgreen'}}>Reparse eInv</Button>
-                                    <Button style={{margin: '10px', backgroundColor:'lightgreen'}}>Refuse Order</Button>
+                                    <InvoiceDataRefuseCodes handleSelectRefuse={handleSelectRefuse}/>
                                 </div>
                             </Grid.Column>
                         </Grid>
@@ -293,7 +317,8 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             </Form>
 
             <div style={{position: 'absolute', bottom: '5px', width: '100%', textAlign: 'center'}}>
-                <InvoiceDataCloseModal invoiceDate={selectedDate} handleClose={closeOrder}/>
+                <ConfirmModal triggerButtonText="Close Invoice" handleConfirmClose={closeOrder} lineOne={`Invoice Date: ${dateFormat(new Date(selectedDate), 'mm/dd/yyyy')}`} 
+                                lineTwo="Close this order?" headerText='Invoice Data' confirmButtonText="OK" cancelButtonText="Cancel"/>
             </div>
 
         </Fragment>

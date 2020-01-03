@@ -140,9 +140,9 @@ namespace IrmaMobile.Services
             return orders;
         }
 
-        public async Task<List<ReasonCode>> GetReasonCodesAsync(string region)
+        public async Task<List<ReasonCode>> GetReasonCodesAsync(string region, string codeType)
         {
-            var reasonCodes = await MakeServiceRequest(region, client => client.GetReasonCodesByTypeAsync("RD"));
+            var reasonCodes = await MakeServiceRequest(region, client => client.GetReasonCodesByTypeAsync(codeType));
             return reasonCodes;
         }
 
@@ -194,6 +194,13 @@ namespace IrmaMobile.Services
             return result;
         }
 
+        public async Task<List<ListsReasonCode>> GetRefuseItemCodesAsync(string region)
+        {
+            var result = await MakeServiceRequest(region, client => client.GetRefusedItemsReasonCodesAsync()); 
+            return result;
+        }
+
+
         public async Task<bool> AddShrinkAdjustment(string region, ShrinkAdjustmentModel shrinkAdjustmentModel)
         {
             return await MakeServiceRequest(
@@ -213,6 +220,13 @@ namespace IrmaMobile.Services
                     Weight = shrinkAdjustmentModel.Weight
                 }));
         }
+
+        public async Task<Result> RefuseOrderAsync(string region, int orderId, int userId, int reasonCodeId)
+        {
+            var result = await MakeServiceRequest(region, client => client.RefuseReceivingAsync(orderId, userId, reasonCodeId)); 
+            return result;
+        }
+
 
         // Following best practices for handling WCF ServiceClient lifecycle as documented here:
         // https://docs.microsoft.com/en-us/dotnet/framework/wcf/samples/use-close-abort-release-wcf-client-resources
