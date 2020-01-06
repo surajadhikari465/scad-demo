@@ -11,7 +11,7 @@
     <div id="divLinks">
         @if(Model != null && String.Compare(ViewBag.UserWriteAccess.ToString(), Icon.Web.Common.Enums.WriteAccess.Full.ToString(), true) == 0)
         {
-            <span style="margin-right: 10px">@Html.ActionLink("Back to Contacts", "Contact", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, null) &nbsp&nbsp&nbsp&nbsp&nbsp  @Html.ActionLink("Add New Contact", "Manage", "Contact", new { hierarchyClassId = Model.HierarchyClassId, contactId = 0 }, null)</span>
+            <span style="margin-right: 10px">@Html.ActionLink("Back to Contacts", "Contact", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, null) &nbsp&nbsp&nbsp&nbsp&nbsp  @Html.ActionLink("Add New Contact", "Manage", "Contact", new { hierarchyClassId = Model.HierarchyClassId, contactId = 0 }, null) &nbsp&nbsp&nbsp&nbsp&nbsp  @Html.ActionLink("Manage Contact Types", "ManageType", "Contact")</span>
         }
         else
         {
@@ -40,7 +40,8 @@
         <div id="fieldset">
             <div class="form-group">
                 @Html.LabelFor(model => model.ContactTypeId, htmlAttributes: new { @class = "control-label" })
-                @Html.DropDownListFor(model => model.ContactTypeId, new SelectList(Model.ContactTypes.Select(x => new { value = x.ContactTypeId, text = x.ContactTypeName }), "value", "text"), "", new { @class = "form-control" })
+                <button id="btnAdd" type="button" class="btn btn-link" style="margin-left:235px" onclick="openContactType()">Add New Contact Type</button>
+                @Html.DropDownListFor(model => model.ContactTypeId, new SelectList(Model.ContactTypes.Select(x => new { value = x.ContactTypeId, text = x.ContactTypeName }), "value", "text"), "", new { @class = "form-control", @id = "ddlType" })
                 @Html.ValidationMessageFor(model => model.ContactTypeId, "", new { @class = "text-danger" })
             </div>
 
@@ -152,7 +153,7 @@
         if (ViewData["SuccessMessage"] != null || ViewData["ErrorMessage"] != null)
         {
             <div id="msgBlock" class="block">
-                <div id="msgDialog" style="min-height:10px; max-height:350px; max-width:450px; width:450px; position:absolute; left:50%; top:50%; transform: translate(-50%, -50%); background-color:whitesmoke; border:1px solid black">
+                <div id="msgDialog" style="max-height:350px; max-width:450px; width:450px; position:absolute; left:50%; top:50%; transform: translate(-50%, -50%); background-color:whitesmoke; border:1px solid black">
                     @{string bgrColor = (@ViewData["ErrorMessage"] != null ? "lightcoral" : "lightgreen");}
                     @{var message = (@ViewData["ErrorMessage"] != null ? @ViewData["ErrorMessage"] : @ViewData["SuccessMessage"]);}
 
@@ -188,12 +189,21 @@
     }
 </div>
 
-<div id="divBlock" class="block" style="display: none;">
+<div id="divBlock" class="block" style="display:none;">
     <div class="block-message">
         <img src="\Content\Infragistics\css\structure\images\igLoadingSmall.gif" style="max-width: 35px; max-height: 35px; margin: 25px 0 0 10px;" />
         <label class="block-label">Please wait... <br /> &nbsp Processing request...</label>
     </div>
 </div>
+
+<div id="dialogContactType" title="Contact Type" style="display:none" >
+    <div class="form-group" style="max-height:300px; box-sizing:border-box;">
+        <label>Contact Type Name*</label>
+        <input type="text" id="contactTypeName" class="form-control" value="" maxlength="255" />
+        <label id="dlgMsg" />
+    </div>
+</div>
+
 
 @section scripts
 {

@@ -20,6 +20,8 @@ namespace Icon.Web.Mvc.Validators
             RuleFor(vm => vm.Email)
                 .NotEmpty()
                 .WithMessage("Please enter an Email.")
+                .Matches(@"^([\w-]+\.)*?[\w-]+@[\w-]+\.([\w-]+\.)*?[\w]+$")
+                .WithMessage("Email is invalid.")
                 .MaximumLength(255)
                 .WithMessage("Email can't exceed 255 chraracters.");
             

@@ -10,8 +10,6 @@ using Icon.Common.DataAccess;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
-using Icon.Web.DataAccess.Infrastructure;
-using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Extensions;
@@ -22,6 +20,7 @@ using Icon.Web.Mvc.Models;
 using Infragistics.Web.Mvc;
 using Icon.Web.Mvc.Utility;
 using Icon.Web.DataAccess.Extensions;
+using Icon.Web.DataAccess.Commands;
 
 namespace Icon.Web.Mvc.Controllers
 {
@@ -30,24 +29,30 @@ namespace Icon.Web.Mvc.Controllers
         private ILogger logger;
         private IconWebAppSettings settings;
         private IDonutCacheManager cacheManager;
-        private IManagerHandler<AddUpdateContactManager> contactManagerHandler;
         private IQueryHandler<GetContactsParameters, List<ContactModel>> getContactsQuery;
         private IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> getHierarchyClassQuery;
         private IQueryHandler<GetContactTypesParameters, List<ContactTypeModel>> getContactTypesQuery;
+        private ICommandHandler<AddUpdateContactCommand> handlerAddUpdateContact;
+        private ICommandHandler<AddUpdateContactTypeCommand> handlerAddUpdateContactType;
+        private ICommandHandler<DeleteContactTypeCommand> handlerDeleteContactType;
 
         public ContactController(
             ILogger logger,
             IQueryHandler<GetContactsParameters, List<ContactModel>> getContactsQuery,
             IQueryHandler<GetContactTypesParameters, List<ContactTypeModel>> getContactTypesQuery,
             IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> getHierarchyClassQuery,
-            IManagerHandler<AddUpdateContactManager> contactManagerHandler,
+            ICommandHandler<AddUpdateContactCommand> handlerAddUpdateContact,
+            ICommandHandler<AddUpdateContactTypeCommand> handlerAddUpdateContactType,
+            ICommandHandler<DeleteContactTypeCommand> handlerDeleteContactType,
             IconWebAppSettings settings,
             IDonutCacheManager cacheManager)
         {
             this.logger = logger;
             this.settings = settings;
             this.cacheManager = cacheManager;
-            this.contactManagerHandler = contactManagerHandler;
+            this.handlerAddUpdateContact = handlerAddUpdateContact;
+            this.handlerAddUpdateContactType = handlerAddUpdateContactType;
+            this.handlerDeleteContactType = handlerDeleteContactType;
             this.getContactsQuery = getContactsQuery;
             this.getContactTypesQuery = getContactTypesQuery;
             this.getHierarchyClassQuery = getHierarchyClassQuery;
@@ -73,7 +78,7 @@ namespace Icon.Web.Mvc.Controllers
 
             if(viewModel.HierarchyId != Hierarchies.Brands && viewModel.HierarchyId != Hierarchies.Manufacturer)
             {
-                TempData["Message"] = $"Selected hierarchy class does not support Contact Management. HierarchyClassId = {hierarchyClassId}";;
+                TempData["Message"] = $"Selected hierarchy class does not support Contact Management. HierarchyClassId = {hierarchyClassId}";
                 return RedirectToAction("Disabled", "Contact");
             }
 
@@ -90,6 +95,13 @@ namespace Icon.Web.Mvc.Controllers
         public ActionResult ContactAll(int hierarchyClassId)
         {
             var viewModels = GetContacts(hierarchyClassId);
+            return View(viewModels.AsQueryable());
+        }
+
+        [GridDataSourceAction]
+        public ActionResult ContactTypeAll()
+        {
+            var viewModels = GetContactTypes(true);
             return View(viewModels.AsQueryable());
         }
 
@@ -141,15 +153,17 @@ namespace Icon.Web.Mvc.Controllers
                 viewModel.ContactName = viewModel.ContactName == null ? String.Empty : regEx.Replace(viewModel.ContactName.Trim().Replace('\t', '\0'), " ");
                 viewModel.Email = viewModel.Email == null ? String.Empty : viewModel.Email.Replace(" ", String.Empty);
 
-                if(String.IsNullOrEmpty(viewModel.ContactName) || String.IsNullOrEmpty(viewModel.Email) || !emailRegex.IsMatch(viewModel.Email))
+                if(viewModel.ContactTypeId <= 0 || String.IsNullOrEmpty(viewModel.ContactName) || String.IsNullOrEmpty(viewModel.Email) || !emailRegex.IsMatch(viewModel.Email))
                 {
                     isOK = false;
-                    ViewData["ErrorMessage"] = "Contact Name and valid Email are required.";
+                    ViewData["ErrorMessage"] = "Contact Type, Name and valid Email are required.";
                 }
-                else if(viewModel.ContactId <= 0) //Check if Contact already exists
-                {
-                    var contact = GetContacts(viewModel.HierarchyClassId)
-                        .Where(x => x.ContactTypeId == viewModel.ContactTypeId && String.Compare(x.Email, viewModel.Email, StringComparison.CurrentCultureIgnoreCase) == 0)
+            }
+
+            if(isOK) //Check if the same Contact already exists
+            {
+                var contact = GetContacts(viewModel.HierarchyClassId)
+                        .Where(x => x.ContactId != viewModel.ContactId && x.ContactTypeId == viewModel.ContactTypeId && String.Compare(x.Email, viewModel.Email, StringComparison.CurrentCultureIgnoreCase) == 0)
                         .FirstOrDefault();
 
                     if(contact != null)
@@ -157,7 +171,6 @@ namespace Icon.Web.Mvc.Controllers
                         isOK = false;
                         ViewData["ErrorMessage"] = $"Contact with the same Contact Type and Email already exists. Existing Contact Name is {contact.ContactName}";   
                     }
-                }
             }
 
             if(!isOK)
@@ -166,7 +179,7 @@ namespace Icon.Web.Mvc.Controllers
                 return View(viewModel);
             }
 
-            var manager = new AddUpdateContactManager
+            var command = new AddUpdateContactCommand()
             {
                 Contacts = new List<ContactModel>()
                     {
@@ -193,7 +206,7 @@ namespace Icon.Web.Mvc.Controllers
 
             try
             {
-                this.contactManagerHandler.Execute(manager);
+                this.handlerAddUpdateContact.Execute(command);
                 ModelState.Clear();
                 ViewData["SuccessMessage"] = String.Format("Contact {0} has been successfully {1}.", viewModel.ContactName, viewModel.ContactId > 0 ? "updated" : "added");
                 //return RedirectToAction("Contact", "Contact", new { hierarchyClassId = viewModel.HierarchyClassId });   
@@ -208,6 +221,82 @@ namespace Icon.Web.Mvc.Controllers
                 ViewData["ErrorMessage"] = ex.Message;
                 viewModel.ContactTypes = GetContactTypes();
                 return View(viewModel);
+            }
+        }
+
+        public ActionResult ManageType()
+        {
+            ViewBag.UserWriteAccess = GetWriteAccess();
+            return View();
+        }
+
+        [HttpPost]
+        [WriteAccessAuthorize]
+        public ActionResult AddUpdateContactType(string contactTypeName, int contactTypeId = 0, bool isArchived = false)
+        {
+            try
+            {
+                var regEx = new Regex( @"\s+", RegexOptions.Compiled);
+                contactTypeName = contactTypeName == null ? string.Empty : regEx.Replace(contactTypeName.Trim(), " ");
+
+                if(String.IsNullOrEmpty(contactTypeName))
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                    return Json("Contact Type Name is not specified.");
+                }
+
+                if(GetWriteAccess() != Enums.WriteAccess.Full)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return Json("You don't have write privileges to add or update Contact Type.");
+                }
+
+                if(GetContactTypes(true).Any(x => x.ContactTypeId != contactTypeId && String.Compare(x.ContactTypeName.Replace(" ", String.Empty), contactTypeName.Replace(" ", String.Empty), true) == 0))
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Conflict;
+                    return Json("Contact Type already exists.");
+                }
+
+                var command = new AddUpdateContactTypeCommand()
+                {
+                    ContactTypes = new List<ContactTypeModel>()
+                    {
+                        new ContactTypeModel(){ ContactTypeId = contactTypeId, ContactTypeName = contactTypeName, Archived = isArchived }
+                    }
+                };
+
+                this.handlerAddUpdateContactType.Execute(command);
+                var contactType = GetContactTypes(true).Where(x => String.Compare(x.ContactTypeName, contactTypeName, true) == 0).Single();
+                Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                return Json(new { success = true, responseText = "Contact Type has been successfully added.", ContactTypeId = contactType.ContactTypeId, ContactTypeName = contactType.ContactTypeName }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.ExpectationFailed;
+                return Json(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [WriteAccessAuthorize]
+        public ActionResult DeleteContactType(int contactTypeId)
+        {
+            try
+            {
+                if(GetWriteAccess() != Enums.WriteAccess.Full)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return Json("You don’t have sufficient privileges to complete selected action.");
+                }
+
+                this.handlerDeleteContactType.Execute(new DeleteContactTypeCommand(){ ContactTypeIds = new List<int>(){ contactTypeId } });
+                Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                return Json(new { success = true, responseText = "Contact type(s) has been deleted." }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.ExpectationFailed;
+                return Json(ex.Message);
             }
         }
 
@@ -239,9 +328,9 @@ namespace Icon.Web.Mvc.Controllers
             return getContactsQuery.Search(new GetContactsParameters(){ HierarchyClassId = hierarchyClassId }).ToViewModels();
         }
 
-        private List<ContactTypeViewModel> GetContactTypes()
+        private List<ContactTypeViewModel> GetContactTypes(bool includeArchived = false)
         {
-            return getContactTypesQuery.Search(new GetContactTypesParameters()).ToViewModels();
+            return getContactTypesQuery.Search(new GetContactTypesParameters() { IncludeArchived = includeArchived }).ToViewModels();
         }
 
         private Enums.WriteAccess GetWriteAccess()

@@ -783,6 +783,8 @@
     <Build Include="app\Stored Procedures\GetContactList.sql" />
     <Build Include="app\Stored Procedures\AddUpdateContact.sql" />
     <Build Include="app\Stored Procedures\GetContactTypes.sql" />
+    <Build Include="app\Stored Procedures\AddUpdateContactType.sql" />
+    <Build Include="app\Stored Procedures\DeleteContactType.sql" />
     <None Include="Scripts\Projects\IconReboot\IconRebootConversionCreateMessageQueueForManufactureBrandHierarchy.sql" />
   </ItemGroup>
   <ItemGroup>
@@ -847,6 +849,7 @@
     <Build Include="app\User Defined Types\ContactInputType.sql" />
     <None Include="Scripts\Projects\IconReboot\Audit\IconLegacy_Items.sql" />
     <None Include="Scripts\Projects\IconReboot\Audit\Attributes.sql" />
+    <Build Include="app\User Defined Types\ContactTypeInputType.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

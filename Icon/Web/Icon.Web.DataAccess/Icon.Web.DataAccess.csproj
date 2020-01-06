@@ -166,6 +166,10 @@
     <Compile Include="Commands\AddBrandCommandHandler.cs" />
     <Compile Include="Commands\AddUpdateContactCommand.cs" />
     <Compile Include="Commands\AddUpdateContactCommandHandler.cs" />
+    <Compile Include="Commands\AddUpdateContactTypeCommand.cs" />
+    <Compile Include="Commands\AddUpdateContactTypeCommandHandler.cs" />
+    <Compile Include="Commands\DeleteContactTypeCommand.cs" />
+    <Compile Include="Commands\DeleteContactTypeCommandHandler.cs" />
     <Compile Include="Commands\UpdateManufacturerCommand.cs" />
     <Compile Include="Commands\AddManufacturerCommand.cs" />
     <Compile Include="Commands\UpdateManufacturerCommandHandler.cs" />
@@ -327,8 +331,6 @@
     <Compile Include="Managers\AddNationalHierarchyManagerHandler.cs" />
     <Compile Include="Managers\AddCertificationAgencyManager.cs" />
     <Compile Include="Managers\AddCertificationAgencyManagerHandler.cs" />
-    <Compile Include="Managers\AddUpdateContactManager.cs" />
-    <Compile Include="Managers\AddUpdateContactManagerHandler.cs" />
     <Compile Include="Managers\BulkItemUploadManager.cs" />
     <Compile Include="Managers\BulkItemUploadManagerHandler.cs" />
     <Compile Include="Managers\DeleteNationalHierarchyManager.cs" />

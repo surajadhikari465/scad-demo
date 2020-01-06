@@ -1,6 +1,6 @@
 ﻿--Formatted with PoorSQL
 CREATE PROCEDURE [app].[AddUpdateContact]
-    @contact app.ContactInputType READONLY
+	@contact app.ContactInputType READONLY
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -9,8 +9,22 @@ BEGIN
 		DROP TABLE #contact;
 
 	WITH cte AS (
-		SELECT c.*
-			,Row_Number() OVER (
+		SELECT c.ContactId,
+			c.HierarchyClassId,
+			c.ContactTypeId,
+			c.ContactName,
+			c.Email,
+			c.Title,
+			c.AddressLine1,
+			c.AddressLine2,
+			c.City,
+			c.State,
+			c.ZipCode,
+			c.Country,
+			c.PhoneNumber1,
+			c.PhoneNumber2,
+			c.WebsiteURL,
+			Row_Number() OVER (
 				PARTITION BY c.ContactId
 				,c.HierarchyClassID
 				,c.ContactTypeId

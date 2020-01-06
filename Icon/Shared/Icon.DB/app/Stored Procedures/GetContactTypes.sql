@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [app].[GetContactTypes]
-    @isIncludeArchived bit = NULL
+    @includeArchived bit = NULL
 AS
     SELECT ContactTypeId, ContactTypeName, Archived
     FROM dbo.ContactType
-    WHERE Archived = IsNull(@isIncludeArchived, 0);
+    WHERE Archived = IsNull(@includeArchived, 0) OR @includeArchived = 1;

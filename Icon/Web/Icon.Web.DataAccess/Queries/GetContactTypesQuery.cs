@@ -1,23 +1,24 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using Icon.Common.DataAccess;
-using Icon.Framework;
 using Icon.Web.DataAccess.Models;
+using Dapper;
+using System.Data;
 
 namespace Icon.Web.DataAccess.Queries
 {
     public class GetContactTypesQuery : IQueryHandler<GetContactTypesParameters, List<ContactTypeModel>>
     {
-        private readonly IconContext context;
+        private readonly IDbConnection db;
 
-        public GetContactTypesQuery(IconContext context)
+        public GetContactTypesQuery(IDbConnection db)
         {
-            this.context = context;
+            this.db = db;
         }
 
         public List<ContactTypeModel> Search(GetContactTypesParameters parameters)
         {
-            return this.context.Database.SqlQuery<ContactTypeModel>("EXEC app.GetContactTypes")
+            return this.db.Query<ContactTypeModel>($"EXEC app.GetContactTypes @includeArchived={parameters.IncludeArchived}")
                 .OrderBy(x => x.ContactTypeName)
                 .ToList();
         }

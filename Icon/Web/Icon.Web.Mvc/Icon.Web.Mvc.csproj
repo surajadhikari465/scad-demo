@@ -897,6 +897,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\CertificationAgency\CertificationAgency-create.js" />
     <Content Include="Scripts\CertificationAgency\CertificationAgency-edit.js" />
+    <Content Include="Scripts\Contact\contact-type.js" />
     <Content Include="Scripts\Contact\contact.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
@@ -1840,6 +1841,7 @@
     <Content Include="Views\Contact\Index.cshtml" />
     <Content Include="Views\Contact\Manage.cshtml" />
     <Content Include="Views\Contact\Disabled.cshtml" />
+    <Content Include="Views\Contact\ManageType.cshtml" />
     <None Include="Web.2016.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

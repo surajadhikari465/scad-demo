@@ -1,0 +1,66 @@
+﻿@using Icon.Web.Mvc.Utility
+@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.ContactTypeViewModel
+
+@{
+    ViewBag.Title = "Manage Contact Type";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{Html.RenderPartial("_HeaderPartial", "Contact Type Management");}
+
+<div class="page-section">
+    @{bool isWriteAccess = !(String.Compare(ViewBag.UserWriteAccess.ToString(), Icon.Web.Common.Enums.WriteAccess.Full.ToString(), true) == 0);}
+
+    @(Html.Infragistics().Grid<Icon.Web.Mvc.Models.ContactTypeViewModel>()
+        .ID("contactGrid")
+        .PrimaryKey("ContactTypeId")
+        .AvgRowHeight("10px")
+        .Height("700px")
+        .Width("100%")
+        .AutoGenerateColumns(false)
+        .Columns(columns =>
+        {
+            columns.For(c => c.ContactTypeId).HeaderText("Contact ID").DataType("number").Width("1%").Hidden(true);
+            columns.For(c => c.ContactTypeName).HeaderText("Contact Type Name").DataType("string").Width("25%");
+            columns.Unbound("Action").Template("&nbsp&nbsp&nbsp&nbsp <input type='button' class='btn btn-link' value='Edit' onclick='editType(${ContactTypeId}, ${Archived})' /> &nbsp&nbsp&nbsp&nbsp <input type='button' class='btn btn-link' value='Delete' style='color:darkred;' onclick='deleteType(${ContactTypeId})' /> &nbsp&nbsp&nbsp&nbsp <input type='button' class='btn btn-link' value=${IsDisabled} onclick='archiveType(${ContactTypeId}, ${Archived})' />").Width("10%").HeaderText("").Hidden(@isWriteAccess);
+
+        })
+        .Features(features =>
+        {
+            features.Paging().PageSize(25);
+            features.Sorting().Inherit(true);
+            features.Filtering().Inherit(true);
+            features.Resizing();
+        })
+        .DataSourceUrl(Url.Action("ContactTypeAll", "Contact"))
+        .DataBind()
+        .Render())
+</div>
+
+<div id="dlgConfirm" title="User Confirmation Requierd" style="display:none;">
+    <div style="max-height:300px; box-sizing:border-box;">
+        <p id="dlgType" />
+        <p id="dlgTypeMsg" />
+    </div>
+</div>
+
+<div id="dialogContactType" title="Contact Type" style="display:none">
+    <div class="form-group" style="max-height:450px; box-sizing:border-box;">
+        <label>Contact Type Name*</label>
+        <input type="text" id="contactTypeName" class="form-control" value="" maxlength="255" />
+        <!-- Hide check box for now but we might need it later. Java script is using it  -->
+        @*<br /> 
+        <label style="display:inline; margin-right:10px;">Archive Contact Type</label>*@
+        <input type="checkbox" id="cbArchive" class="form-check" style="vertical-align:middle; display:inline;" hidden />
+    </div>
+
+
+    <label id="dlgMsg" />
+</div>
+
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/Contact/contact-type.js")
+}
