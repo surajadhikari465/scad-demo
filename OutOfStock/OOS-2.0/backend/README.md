@@ -1,31 +1,11 @@
-List-O-Matic Mobile Backend
+Out of Stock Mobile Backend
 ====================
 
-This repository hosts the ASP.NET Core Web API consumed by the WFM Mobile hosted List-O-Matic application. 
+This repository hosts the ASP.NET Core Web API consumed by the WFM Mobile hosted Out of Stock application. 
 
 Introduction
 ------------
-This API does not directly interact with the List-O-Matic database, and instead serves only as a proxy to existing List-O-Matic WCF services.
-
-![Service Interaction](./docs/img/service-interaction.png "Service Interaction")
-
-The SCMPA/SCMSE team has no intention to take ownership of the legacy List-O-Matic WCF service. This is owned, managed and supported by the Global IT Business Intelligence team, lead by [Tania Lincoln](mailto:tania.lincoln@wholefoods.com).
-
-This solution was architected in this way for several reasons:
-- **Increased control via abstraction**
-  - By abstracting away from the existing legacy WCF service, we have the control to define and potentially later alter the service contract between the new List-O-Matic Mobile UI and this API.
-  - For instance, the existing legacy service does not implement any authentication mechanism, which is a notable security risk. Abstraction allows this API to align with organizational AuthN and AuthZ practices without requiring changes to  legacy services.
-  - Additionally, we gain the ability to optimize API calls to match non-functional requirements.
-- **Speed to market**
-  - This light-touch approach allows us to deliver at an accelerated pace, matching that required by the WFM Mobile program.
-- **Side-by-side support**
-  - As this solution requires no changes to legacy services, the legacy List-O-Matic WinCE mobile app remains functional and can be used side-by-side with the new Honeywell Android app.
-- **No appetite for feature development**
-  - The business has expressed that at present, there is no appetite to increase the featureset of List-O-Matic. This is due to a heavy reliance/integration with SMORe, a reporting solution slated for decommissioning in FY20/21.
-- **Business logic parity**
-  - By utilizing existing legacy services, we guarantee parity in the core business logic being invoked. 
-
----------------
+This API does not directly interact with the Out of Stock database, and instead serves only as a proxy to existing Out of Stock WCF services.
 
 Development
 -----------
@@ -37,7 +17,7 @@ Development
 
 ### Build & Debug
 1. Open the solution in Visual Studio
-2. Select either "Docker" or "WFM.Listomatic.API" from the profiles dropdown
+2. Select either "Docker" or "WFM.OutOfStock.API" from the profiles dropdown
 3. Hit start.
 4. Make sure you accept and confirm any certificate installation prompts you receive. 
 
@@ -71,46 +51,30 @@ TBC.
 Deployment
 ----------
 
-This project is packaged as a Docker container and hosted as a service in a dedicated AWS Fargate cluster.
+Deployment
+---
+OOS Mobile is designed to run in AWS as a docker containerized application in an ECS cluster. Steps to deploy the application involve
 
-### Build the container:
+1. Building the docker image
+2. Pushing the docker image to the AWS ECR docker repository
+3. Contacting Cloud Ops team to update the deployed task definition in the AWS ECS Cluster with the latest pushed image
 
-`docker build -t wfmlistomaticapi:test -f "./src/WFM.Listomatic.API/Dockerfile" "./src"`
+Below is the Powershell script used to push the build and push the images. You will need AWS CLI installed and the AWS Access Key ID and AWS Secret Key. The CLI can be downloaded and the access keys can be obtained from the Cloud Ops team if needed.
 
-- *<!> This command assumes current path is repository root*
-- *<!> Replace `{tag}` with your desired tag for the container image (e.g. `test`)*
+Note: the following scripts assume that the full path to the Dockerfiles are under "C:\dev\SCAD". You may need to change this path based on your own location to the SCAD repo.
 
-### Run the container:
+### DEV AWS Build
 
-`docker run -d -p {desired_port}:80 --name {container_name} wfmlistomaticapi:{tag}`
+#### Backend
+docker build -f "C:\dev\SCAD\OutOfStock\OOS-2.0\backend\src\WFM.OutOfStock.API\Dockerfile" -t 144478307378.dkr.ecr.us-east-1.amazonaws.com/oos-mobile-backend-ecr-repo 'C:\dev\SCAD\OutOfStock\OOS-2.0\backend\src\'
+aws configure set aws_access_key_id **{AWS Access Key ID}**
+aws configure set aws_secret_access_key **{AWS Access Secret Key}**
+Invoke-Expression -Command (aws ecr get-login --no-include-email)
+docker push 144478307378.dkr.ecr.us-east-1.amazonaws.com/oos-mobile-backend-ecr-repo
 
-- *<!> Replace `{desired_port}` with your desired port (e.g. `41235`)*
-- *<!> Replace `{container_name}` with your desired container instance name (e.g. `lom-api-test`)*
-- *<!> Replace `{tag}` with the tag you used in the build step (e.g. `test`)*
-
-### Check the containers logs:
-
-`docker logs --tail {container_id}`
-- *<!> Replace {container_id} with the id that was output by docker from the previous run step*
-
-### Check the API is up:
-
-Browse to `http://localhost:{desired_port}/swagger`.
-- *<!> Replace `{desired_port}` with the port you used in the earlier run step*
-
-### Stop and remove the container instance:
-
-`docker stop {container_id}; docker rm {container_id}`
-- *<!> Replace {container_id} with the id that was output by docker from the previous run step*
-
----------------
-
-Environments
-------------
-
-| Environment | Mobile UI URL | Mobile Backend URL | Legacy Web URL | Legacy Service URL |
-| ----------- | ------------- | ------------------ | -------------- | ------------------ |
-| DEV         | https://d2nmqgei6s5fdg.cloudfront.net/ | TBC | http://listomaticdev/listomatic/home.aspx | http://cewp5029.wfm.pvt/listomaticserviceDEV/Service.svc |
-| TST         | TBC           | TBC                | http://listomatictst/listomatic/home.aspx| http://cewp5029.wfm.pvt/listomaticserviceTST/Service.svc |
-| QA          | TBC           | TBC                | http://listomaticqa/listomatic/home.aspx| http://cewp5029.wfm.pvt/listomaticserviceQA/Service.svc |
-| PRD         | TBC           | TBC                | http://listomatic/listomatic/home.aspx| http://cewp5029.wfm.pvt/listomaticservice/Service.svc |
+#### Frontend
+docker build -f "C:\dev\SCAD\OutOfStock\OOS-2.0\frontend\Dockerfile" -t 144478307378.dkr.ecr.us-east-1.amazonaws.com/oos-mobile-frontend-ecr-repo 'C:\dev\SCAD\OutOfStock\OOS-2.0\frontend\'
+aws configure set aws_access_key_id **{AWS Access Key ID}**
+aws configure set aws_secret_access_key **{AWS Access Secret Key}**
+Invoke-Expression -Command (aws ecr get-login --no-include-email)
+docker push 144478307378.dkr.ecr.us-east-1.amazonaws.com/oos-mobile-frontend-ecr-repo
