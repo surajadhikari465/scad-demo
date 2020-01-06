@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
+using Icon.Common;
 
 namespace Icon.Web.Mvc.Controllers
 {
@@ -51,6 +52,7 @@ namespace Icon.Web.Mvc.Controllers
         // GET: Manufacturer
         public ActionResult Index()
         {
+            ViewBag.IsContactViewAllowed = settings.IsContactViewEnabled;
             return View(new ManufacturerViewModel() { UserWriteAccess = GetWriteAccess() });
         }
 
@@ -120,6 +122,7 @@ namespace Icon.Web.Mvc.Controllers
 
         private ManufacturerViewModel EmptyViewModel()
         {
+            ViewBag.IsContactViewAllowed = settings.IsContactViewEnabled;
             return new ManufacturerViewModel
             {
                 HierarchyId = -1,
@@ -151,6 +154,7 @@ namespace Icon.Web.Mvc.Controllers
         [WriteAccessAuthorize]
         public ActionResult Edit(int hierarchyClassId)
         {
+            ViewBag.IsContactViewAllowed = settings.IsContactViewEnabled;
             var manufacturer = getHierarchyClassQuery.Search(new GetHierarchyClassByIdParameters() { HierarchyClassId = hierarchyClassId });
 
             if (manufacturer.hierarchyID != Hierarchies.Manufacturer)

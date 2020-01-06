@@ -7,6 +7,27 @@
 
 @{Html.RenderPartial("_HeaderPartial", "Manufacturer Management");}
 
+@if (Model != null && (Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full)
+{
+    if(ViewBag.IsContactViewAllowed != null && ViewBag.IsContactViewAllowed)
+    {
+    <div>
+        @Html.ActionLink("Back to Manufacturers", "Index") &nbsp&nbsp&nbsp&nbsp&nbsp @Html.ActionLink("Add New Manufacturer", "Create") &nbsp&nbsp&nbsp&nbsp&nbsp @Html.ActionLink("Manage Contacts", "Contact", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, null)
+    </div>
+    }
+    else
+    { 
+        <div>
+            @Html.ActionLink("Back to Manufacturers", "Index") &nbsp&nbsp&nbsp&nbsp&nbsp @Html.ActionLink("Add New Manufacturer", "Create")
+        </div>
+    }
+}
+else
+{
+    <div class="form-footer">
+        @Html.ActionLink("Back to Manufacturers", "Index")
+    </div>
+}
 
 <div class="page-section">
     @using (Html.BeginForm("Edit", "Manufacturer", FormMethod.Post, new { @class = "begin-form" }))
@@ -59,19 +80,6 @@
         </div>
     }
 </div>
-
-@if (Model != null && (Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full)
-{
-    <div class="form-footer">
-        @Html.ActionLink("Back to Manufacturers", "Index") | @Html.ActionLink("Add New Manufacturer", "Create")
-    </div>
-}
-else
-{
-    <div class="form-footer">
-        @Html.ActionLink("Back to Manufacturers", "Index")
-    </div>
-}
 
 <div id="divBlock" class="block" style="display: none;">
     <div class="block-message">
