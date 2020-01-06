@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Linq;
 using Icon.Common.Models;
 using Icon.Common;
+using System.Text.RegularExpressions;
 
 namespace Icon.Web.Mvc.Exporters
 {
@@ -237,7 +238,7 @@ namespace Icon.Web.Mvc.Exporters
             int count = 0;
             foreach (SpreadsheetColumn<ExportItemModel> spreadsheetColumn in spreadsheetColumns.OrderBy(x => x.Index))
             {
-                columnHeaders[count] = spreadsheetColumn.HeaderTitle.Replace(" ", "");
+                columnHeaders[count] = Regex.Replace(spreadsheetColumn.HeaderTitle, @"[^0-9a-zA-Z]+", "");
                 count++;
             }
 
