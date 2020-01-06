@@ -1341,6 +1341,10 @@ UPDATE dbo.barcodetype
 SET ScalePLU = 1
 WHERE BarcodeType LIKE '%Scale PLU%'
 
+UPDATE Attributes
+SET XmlTraitDescription = 'WFM Eligible'
+WHERE displayname = 'wfm eligible'
+
 -- IsSpecialTransform is a flag we use to determine if we should use attribute transformation when sending to the ESB.
 -- When this is enabled we will send 0/1 for Yes/No and there are other exceptions.
 -- Eventually when the rest of the company settles on the same data types this column will be deprecated.

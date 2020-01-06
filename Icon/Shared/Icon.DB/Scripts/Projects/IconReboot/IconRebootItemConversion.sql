@@ -1,6 +1,5 @@
 USE Icon
 GO
-
 --Disable item history if it's turned on
 IF (
 		SELECT temporal_type
@@ -17,8 +16,26 @@ BEGIN
 
 END
 
+--Disable ItemHierarchyClass history if it's turned on
+IF (
+		SELECT temporal_type
+		FROM sys.tables
+		WHERE name = 'ItemHierarchyClass'
+			AND SCHEMA_NAME(schema_id) = 'dbo'
+		) <> 0
+BEGIN
+	PRINT 'Disabling ItemHierarchyClass history'
+
+	ALTER TABLE dbo.ItemHierarchyClass
+
+	SET (SYSTEM_VERSIONING = OFF)
+
+END
+
+
 PRINT 'Dropping period'
 ALTER TABLE dbo.Item DROP PERIOD FOR SYSTEM_TIME;
+ALTER TABLE dbo.ItemHierarchyClass DROP PERIOD FOR SYSTEM_TIME
 GO
 
 BEGIN TRY
@@ -29,13 +46,17 @@ BEGIN
 END
 
 
-IF NOT EXISTS (
+IF EXISTS (
 		SELECT 1
 		FROM INFORMATION_SCHEMA.TABLES
 		WHERE TABLE_SCHEMA = 'dbo'
 			AND TABLE_NAME = 'temp_InforItemsFile'
 		)
 BEGIN
+
+  DROP TABLE dbo.temp_InforItemsFile 
+END
+
 	CREATE TABLE dbo.temp_InforItemsFile (
 		[ItemID] INT NULL
 		,[ItemName] NVARCHAR(255) NULL
@@ -107,6 +128,7 @@ BEGIN
 		,[Item Weight] NVARCHAR(255) NULL
 		,[Item Width] NVARCHAR(255) NULL
 		,[IX One Brand] NVARCHAR(255) NULL
+		,[IX One ID] NVARCHAR(255) NULL
 		,[Juice Content] NVARCHAR(255) NULL
 		,[Kitchen Description] NVARCHAR(255) NULL
 		,[Kitchen Item] NVARCHAR(255) NULL
@@ -120,7 +142,8 @@ BEGIN
 		,[Made In House] NVARCHAR(255) NULL
 		,[Made with Organic Grapes] NVARCHAR(255) NULL
 		,[Manufacturer] NVARCHAR(255) NULL
-		,[MSC] NVARCHAR(255) NULL
+		,[Manufacturer Item Number] NVARCHAR(255) NULL
+		,[MSC] NVARCHAR(255) NULL 
 		,[Multipurpose] NVARCHAR(255) NULL
 		,[Natural Claim] NVARCHAR(255) NULL
 		,[Non-GMO] NVARCHAR(255) NULL
@@ -190,8 +213,6 @@ BEGIN
 	CREATE NONCLUSTERED INDEX IX_ItemId ON dbo.temp_InforItemsFile (itemId)
 
 	CREATE NONCLUSTERED INDEX IX_ItemTypeId ON dbo.temp_InforItemsFile ([Item Type])
-END
-
 
 IF NOT EXISTS (
 		SELECT 1
@@ -384,7 +405,7 @@ SET ItemAttributesJson = ISNULL((
 
 
 UPDATE dbo.Item
-SET sysstarttimeutc =  IsNULL(ISNULL(JSON_VALUE(ItemAttributesJson,'$.ModifiedDateTimeUtc'),JSON_VALUE(ItemAttributesJson,'$."CreatedDateTimeUtc"')),SYSUTCDATETIME )
+SET sysstarttimeutc =  IsNULL(ISNULL(JSON_VALUE(ItemAttributesJson,'$.ModifiedDateTimeUtc'),JSON_VALUE(ItemAttributesJson,'$."CreatedDateTimeUtc"')),SYSUTCDATETIME() )
 
 UPDATE sc
 SET barcodeTypeID = b.BarcodeTypeId
@@ -506,7 +527,11 @@ FROM dbo.item i
 INNER JOIN #tmpItems t ON t.itemId = i.ItemId
 INNER JOIN ItemType it ON t.itemTypeCode = it.itemTypeCode
 
-
+UPDATE ihc
+SET sysstarttimeutc = i.SysStartTimeUtc
+FROM dbo.ItemHierarchyClass ihc
+INNER JOIN Item i
+ON i.ItemId = ihc.ItemId
 
 -- update all items to have a DepartmentSale attribute with a value of yes if the item has the the department sale(DPT) trait 
 -- assigned through ItemTrait.
@@ -520,10 +545,6 @@ INNER JOIN ItemTrait it ON i.itemID = it.itemID
 		WHERE traitCode = 'DPT'
 		)
 
---Enable item history
-ALTER TABLE dbo.Item
-SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = dbo.ItemHistory));
-
 DROP TABLE dbo.temp_InforItemsFile
 
 -- Update bar code type id on ScanCode table from the backup if there are any records with a NULL value:
@@ -536,6 +557,9 @@ WHERE sc.barcodeTypeID IS NULL
 PRINT 'Enabling item history and period'
 ALTER TABLE dbo.Item ADD PERIOD FOR SYSTEM_TIME(SysStartTimeUtc, SysEndTimeUtc)
 ALTER TABLE dbo.Item SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = dbo.ItemHistory));
+
+ALTER TABLE dbo.ItemHierarchyClass ADD PERIOD FOR SYSTEM_TIME(SysStartTimeUtc, SysEndTimeUtc)
+ALTER TABLE dbo.ItemHierarchyClass SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = dbo.ItemHierarchyClassHistory));
 
 IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES t WHERE t.TABLE_SCHEMA = 'dbo' AND t.TABLE_NAME = 'ScanCodeBackup')
 	DROP TABLE dbo.ScanCodeBackup
