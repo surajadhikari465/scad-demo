@@ -23,6 +23,7 @@ interface IIntitialState {
   purchaseOrderUpc: string;
   purchaseOrderNumber: string;
   menuItems: IMenuItem[];
+  showShrinkHeader: boolean;
 }
 
 export interface IMenuItem {
@@ -43,6 +44,7 @@ export interface IShrinkType{
   shrinkType: string;  
   abbreviation: string;
   shrinkSubTypeId: null | number;
+  shrinkSubTypeMember: string;
   inventoryAdjustmentCodeId: null | number;
   reasonCode: null | number;
 }
@@ -66,7 +68,7 @@ export const initialState = {
     subteams: [],
     subteam: {subteamName:'', subteamNo:''},
     subteamNo:'',
-    shrinkType: {shrinkType:'', abbreviation:'', shrinkSubTypeId:null, inventoryAdjustmentCodeId: null, reasonCode: null},
+    shrinkType: {shrinkType:'', abbreviation:'', shrinkSubTypeMember: '', shrinkSubTypeId:null, inventoryAdjustmentCodeId: null, reasonCode: null},
     shrinkTypes: [],
     isLoading: false,
     orderDetails: null,
@@ -76,7 +78,8 @@ export const initialState = {
     listedOrders: [],
     purchaseOrderUpc: "",
     purchaseOrderNumber: "",
-    menuItems: []
+    menuItems: [],
+    showShrinkHeader: true
 } as IIntitialState;
 
 export const types = {
@@ -97,7 +100,8 @@ export const types = {
     SETLISTEDORDERS: "SETLISTEDORDERS",
     SETPURCHASEORDERUPC: "SETPURCHASEORDERUPC",
     SETPURCHASEORDERNUMBER: "SETPURCHASEORDERNUMBER",
-    SETMENUITEMS: "SETMENUITEMS"
+    SETMENUITEMS: "SETMENUITEMS",
+    SHOWSHRINKHEADER: "SHOWSHRINKHEADER"
 };
 
 export const AppContext = React.createContext({ state: initialState });
@@ -157,6 +161,9 @@ export const reducer = (state: any, action: any) => {
         }
         case types.SETMENUITEMS: {
           return { ...state, menuItems: action.menuItems }; 
+        }
+        case types.SHOWSHRINKHEADER: {
+          return { ...state, showShrinkHeader: action.showShrinkHeader }; 
         }
         default:
             return state;

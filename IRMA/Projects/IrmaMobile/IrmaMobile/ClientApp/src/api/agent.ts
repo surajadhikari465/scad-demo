@@ -10,7 +10,7 @@ axios.interceptors.response.use(undefined, error => {
     return Promise.reject(error.message + "\n" + error.stack);
 });
 
-const responseBody = async (response: AxiosResponse) => await response.data;
+const responseBody = async (response: AxiosResponse) =>( await response.data);
 
 const requests = {
     get: async (url: string) =>
@@ -31,6 +31,11 @@ const requests = {
         await axios.put(url, body).then(responseBody),
     del: async (url: string) => await axios.delete(url).then(responseBody)
 };
+
+const RegionSelect = {
+    getStores: async(region:string) => await requests.get(`/${region}/stores/`),
+    getShrinkSubtypes: async(region:string) => await requests.get(`/${region}/shrinksubtypes/`)
+};   
 
 const PurchaseOrder = {
     detailsFromPurchaseOrderNumber: async (
@@ -105,7 +110,7 @@ const InvoiceData = {
 };
 
 const Shrink = {
-    shrinkItemSubmit: async(region: string, ItemKey: any, StoreNo: any, SubteamNo: any, ShrinkSubTypeId: any, AdjustmentId: any, AdjustmentReason: any, CreatedByUserId: any, UserName: any, InventoryAdjustmentCodeAbbreviation:any, Quantity:any, Weight: any) =>{
+    shrinkItemSubmit: async(region: string, ItemKey: any, StoreNo: any, SubteamNo: any, ShrinkSubTypeId: any, AdjustmentId: any, AdjustmentReason: any, CreatedByUserId: any, UserName: any, InventoryAdjustmentCodeAbbreviation:any, Quantity:any, Weight: any) =>
         await requests.post(`/${region}/shrinkadjustments`, {
                 ItemKey,
                 StoreNo,
@@ -119,7 +124,7 @@ const Shrink = {
                 Quantity,
                 Weight
             })
-        }
+        
 };
 
-export default { PurchaseOrder, InvoiceData, Shrink };
+export default { RegionSelect, PurchaseOrder, InvoiceData, Shrink };

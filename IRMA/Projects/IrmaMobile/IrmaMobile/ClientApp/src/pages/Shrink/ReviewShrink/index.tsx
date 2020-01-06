@@ -1,12 +1,15 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { AppContext } from "../../../store";
+import React, { Fragment, useContext, useState, useEffect } from 'react';
+import { AppContext, types } from "../../../store";
+import CurrentLocation from "../../../layout/CurrentLocation";
 import agent from '../../../api/agent';
 import ReactTable from 'react-table';
 import './styles.scss';
+import { toast } from 'react-toastify';
 
 
 const ReviewShrink:React.FC = () => {
-    const {state} = useContext(AppContext);
+    // @ts-ignore
+    const {state, dispatch} = useContext(AppContext);
     const [shrinkItems, setShrinkItems] = useState<[] | any>([]);
     const [selected, setSelected] = useState();
     useEffect(() => {
@@ -14,38 +17,56 @@ const ReviewShrink:React.FC = () => {
             // @ts-ignore
            let localShrinkItems = JSON.parse(localStorage.getItem("shrinkItems"));
            setShrinkItems(localShrinkItems);
-        }    
+        }   
+        dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false }); 
     }, []);
     const update = ()=>{
       if(shrinkItems.length === 0){
         alert('There are no Shrink Items to Update');
       }
     }
-    const upload = ()=>{
+    const setIsLoading = (result: boolean) => {
+        dispatch({ type: types.SETISLOADING, isLoading: result })
+    }
+    const upload = async()=> {
       if(shrinkItems.length === 0){
         alert('There are no Shrink Items to Upload');
       }
-      
+      setIsLoading(true);
       for(let i=0; i<shrinkItems.length;i++){
         let weight = shrinkItems[i].costedByWeight ? shrinkItems[i].quantity: 0;
-        agent.Shrink.shrinkItemSubmit(
-          state.region, 
-          shrinkItems[i].itemKey, 
-          state.storeNumber, 
-          state.subteamNo, 
-          state.shrinkType.shrinkSubTypeId,
-          state.shrinkType.inventoryAdjustmentCodeId,
-          state.shrinkType.abbreviation+','+state.shrinkType.shrinkType,
-          0,
-          null,
-          state.shrinkType.abbreviation,
-          shrinkItems[i].quantity,
-          weight
-          );
+        try {
+          var result = await agent.Shrink.shrinkItemSubmit(
+            state.region, 
+            shrinkItems[i].itemKey, 
+            state.storeNumber, 
+            state.subteamNo, 
+            state.shrinkType.shrinkSubTypeId,
+            state.shrinkType.inventoryAdjustmentCodeId,
+            state.shrinkType.abbreviation+','+state.shrinkType.shrinkType,
+            1,
+            null,
+            state.shrinkType.abbreviation,
+            shrinkItems[i].quantity,
+            weight
+            );
+          if(result){
+            toast.success("Shrink Item Uploaded");
+          }else{
+            toast.error(`Shrink Item ${shrinkItems[i].identifier} Failed to Upload`);
+          }
+        }
+        finally {
+          setIsLoading(false);
+          localStorage.removeItem("shrinkItems");
+        }
       }
+      
     }
     const remove = ()=>{
-      if(selected===undefined){
+      if(shrinkItems.length === 0){
+        alert('There are no Shrink Items to Remove');
+      } else if(selected===undefined){
         alert('Please Select an Item');
       }
       else{
@@ -74,27 +95,29 @@ const ReviewShrink:React.FC = () => {
           },
           {
             Header: 'Qty',
-            accessor: "quantity"
+            accessor: "quantity",
+            width: 40
           },
           {
             Header: 'SubType',
-            accessor: "retailSubteamName"
+            accessor: "shrinkType"
           }
         ],
         [],
 
       )
-
     return (  
+      <Fragment>
+        <CurrentLocation/>
         <div className='review-shrink-page'>
             <section className='entry-section'>
                 <ReactTable
                     data={data}
                     columns={columns}
-                    defaultPageSize={20}
                     style={{
-                        height: "480px" 
+                        height: "400px" 
                     }}
+                    showPagination={false}
                     className="-striped -highlight"
                     getTrProps={(state:any, rowInfo: any) => ({
                       onClick:select.bind(null, rowInfo)
@@ -104,11 +127,12 @@ const ReviewShrink:React.FC = () => {
             <section className='entry-section'>
                 <div className='shrink-buttons'>
                   <button className="wfm-btn" onClick={update}>Update</button>
-                  <button className="wfm-btn" onClick={upload}>Upload</button>
                   <button className="wfm-btn" onClick={remove}>Remove</button>
+                  <button className="wfm-btn upload-btn" onClick={upload}>Upload</button>
                 </div>
               </section>
         </div>
+        </Fragment>
     )
 };
 

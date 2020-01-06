@@ -1,8 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { Fragment, useContext, useState, useEffect } from 'react';
 // @ts-ignore 
 import { BarcodeScanner } from '@wfm/mobile';
 import './styles.scss';
 import { AppContext, types, IMenuItem } from "../../store";
+import CurrentLocation from "../../layout/CurrentLocation";
 import LoadingComponent from '../../layout/LoadingComponent';
 import { Config } from '../../config';
 
@@ -16,7 +17,10 @@ const initialState = {
   skipConfirm: true,
   identifier: null,
   queued: 0,
-  upcValue: ''
+  upcValue: '',
+  shrinkType:'',
+  packageDesc1:'',
+  packageDesc2:''
 };
 
 const Shrink:React.FC = () => {
@@ -24,7 +28,7 @@ const Shrink:React.FC = () => {
     // @ts-ignore 
     const {state, dispatch} = useContext(AppContext);
     const {isLoading} = state;
-    const {subteam, region, storeNumber, subteamNo, shrinkTypes, shrinkType, store} = state;
+    const {subteam, region, storeNumber, subteamNo, shrinkTypes, shrinkType} = state;
     const newMenuItems = [
       { id: 1, order: 0, text: "Review", path: "/shrink/review", disabled: false } as IMenuItem,
    ] as IMenuItem[];
@@ -39,6 +43,7 @@ const Shrink:React.FC = () => {
         }
       });
       dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems});
+      dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: true }); 
       return () => {
         //unmount and unregister handler
       };
@@ -87,6 +92,7 @@ const Shrink:React.FC = () => {
     }
     const save = (e:any) =>{
       const { isSelected, skipConfirm, queued, ...shrinkItem} = shrinkState;
+      shrinkItem.shrinkType = shrinkType.shrinkType;
       shrinkItem.quantity =  +(shrinkState.queued) + +(shrinkState.quantity)
       let shrinkItems: any = [];    
       if(localStorage.getItem("shrinkItems") !== null){
@@ -108,9 +114,10 @@ const Shrink:React.FC = () => {
     if(isLoading) {
       return ( <LoadingComponent content="Loading Item..."/> )
     }
-    return (    
+    return (   
+      <Fragment>
+      <CurrentLocation/> 
       <div className="shrink-page">
-        <header className='region-store-header'><span>Region: {region}</span><span>Store: {store}</span></header>
         {!shrinkState.isSelected ?
           (<div className='shrink-container'>
             <h1>Subteam:{subteam.subteamName}</h1>
@@ -122,8 +129,6 @@ const Shrink:React.FC = () => {
             </div>
           </div>): (
             <div className='shrink-container shrink-form'>
-              <header className='shrink-type-header'><span>IRMA Shrink: {shrinkType.shrinkType}</span></header>
-              <div></div>
               <section className='entry-section'>
                 <div className='input-line'>
                   <label>UPC</label>       
@@ -159,7 +164,7 @@ const Shrink:React.FC = () => {
                   shrinkState.retailUnitName && 
                   <div className='description'>
                     <label>UOM:</label>
-                    <span>{shrinkState.packageUnitAbbreviation}</span>
+                  <span>{shrinkState.packageDesc1}/{shrinkState.packageDesc2} {shrinkState.packageUnitAbbreviation}</span>
                   </div>
                 } 
               </section>
@@ -179,6 +184,7 @@ const Shrink:React.FC = () => {
             </div>)
         }
       </div>
+      </Fragment>
     )
   }
 

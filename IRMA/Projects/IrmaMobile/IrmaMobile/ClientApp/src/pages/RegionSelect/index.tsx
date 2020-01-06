@@ -1,7 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import './styles.scss';
 import { AppContext, types } from "../../store";
-import { Config } from '../../config';
+import agent from '../../api/agent';
+import { toast } from "react-toastify";
 import LoadingComponent from '../../layout/LoadingComponent';
 import {WfmButton, WfmToggleGroup} from '@wfm/ui-react';
 
@@ -16,7 +17,7 @@ const RegionSelect:React.FC<RegionProps> = (props) => {
      // @ts-ignore 
     const {state, dispatch} = useContext(AppContext);
     const {isLoading} = state;
-    const setStores = (result:any) =>{
+    const setStores = (result:any) =>{;
       dispatch({ type: 'SETSTORES', stores:result });  
     }
 
@@ -30,17 +31,31 @@ const RegionSelect:React.FC<RegionProps> = (props) => {
     const setShrinkTypes = (result: any) => {
         dispatch({ type: types.SETSHRINKTYPES, shrinkTypes: result });
     }
-    const getStores=()=>{
+    const getStores= async() =>{
       const {region} = state;
-      setIsLoading(true);
-      fetch(`${Config.baseUrl}/${region}/stores/`)
-      .then(res => res.json())
-      .then(result =>  {setStores(result)})
-      .then(()=>history.push('/store') )
-        .finally(() => setIsLoading(false))
-        fetch(`${Config.baseUrl}/${region}/shrinksubtypes/`)
-            .then(res => res.json())
-            .then(result => { setShrinkTypes(result) })
+      try {
+        setIsLoading(true);
+        var stores: any = await agent.RegionSelect.getStores(region);
+        var shrinkSubTypes: any = await agent.RegionSelect.getShrinkSubtypes(region);
+        if(!stores) {
+          toast.error("Store could not be loaded. Try again.");
+          return;
+        }
+        if(!shrinkSubTypes) {
+          toast.error("Shrink Types could not be loaded. Try again.");
+          return;
+        }
+        try {
+          setStores(stores);
+          setShrinkTypes(shrinkSubTypes);
+        }catch(err) {
+          toast.error("Unable to Set Stores")
+        }
+      }
+      finally {
+        history.push('/store');
+        setIsLoading(false);
+      }
     }
 
     const selectRegion = (e:any) =>{

@@ -32,6 +32,7 @@ const StoreSelect:React.FC = () => {
   }
 
   const selectStore = (e:any) =>{
+    localStorage.removeItem('shrinkItems');
     dispatch({ type: types.SETSTORE, store: e.detail.name });
     dispatch({ type: types.SETSTORENUMBER, storeNumber: e.detail.storeNo });        
   }  
