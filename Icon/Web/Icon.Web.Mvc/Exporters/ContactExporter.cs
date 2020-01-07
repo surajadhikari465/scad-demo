@@ -157,8 +157,7 @@ namespace Icon.Web.Mvc.Exporters
                 PhoneNumber1 = c.PhoneNumber1,
                 PhoneNumber2 = c.PhoneNumber2,
                 WebsiteURL = c.WebsiteURL
-            })
-                .ToList();
+            }).OrderBy(c => c.HierarchyName).ThenBy(c => c.HierarchyClassName).ToList();
 
             return exportContact;
         }
