@@ -1188,6 +1188,28 @@ VALUES
 	(SELECT CharacterSetId from CharacterSets WHERE Name = 'WHITESPACE')
 )
 
+DECLARE @requestNumberAttributeId INT
+DECLARE @productDescriptionAttributeId INT
+
+SET @requestNumberAttributeId = (
+		SELECT AttributeId
+		FROM Attributes
+		WHERE AttributeName = 'RequestNumber'
+		)
+SET @productDescriptionAttributeId = (
+		SELECT AttributeId
+		FROM Attributes
+		WHERE AttributeName = 'ProductDescription'
+		)
+
+INSERT INTO dbo.AttributeCharacterSets (
+	[AttributeId]
+	,[CharacterSetId]
+	)
+SELECT @requestNumberAttributeId
+	,CharacterSetId
+FROM CharacterSets
+WHERE AttributeId = @productDescriptionAttributeId
 
 RAISERROR ('Inserting into dbo.AttributesWebConfiguration table...', 0, 1) WITH NOWAIT
 INSERT INTO dbo.AttributesWebConfiguration (
