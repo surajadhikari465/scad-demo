@@ -13,6 +13,7 @@ BEGIN
 	WHERE traitcode = 'ncc'
 
 	SELECT sc.scancode
+		,i.ProductDescription
 		,ihc.itemid
 		,hcFam.hierarchyClassID AS 'FAMILY_ID'
 		,hcFam.hierarchyClassName AS 'FAMILY_DESC'
@@ -43,6 +44,8 @@ BEGIN
 		AND hctCat.traitID = @ncctrait
 	INNER JOIN HierarchyClassTrait hctFam ON hctFam.hierarchyClassID = hcFam.hierarchyClassID
 		AND hctFam.traitID = @ncctrait
+	INNER JOIN Item i on ihc.itemID = i.ItemId
 	WHERE hcFam.HIERARCHYID = @NationalHierarchyId
+	
 END
 GO
