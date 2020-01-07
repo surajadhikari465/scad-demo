@@ -9,6 +9,13 @@
 
 @{Html.RenderPartial("_HeaderPartial", "Contact Type Management");}
 
+    <div id="divLinks">
+        @if (ViewHelpers.HasWriteAccess(Request, User))
+        {
+            <button id="btnAdd" type="button" class="btn btn-link" onclick="editType(0, false)">Add New Contact Type</button>
+        }
+    </div>
+
 <div class="page-section">
     @{bool isWriteAccess = !(String.Compare(ViewBag.UserWriteAccess.ToString(), Icon.Web.Common.Enums.WriteAccess.Full.ToString(), true) == 0);}
 

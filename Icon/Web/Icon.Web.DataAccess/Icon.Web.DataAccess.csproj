@@ -168,6 +168,8 @@
     <Compile Include="Commands\AddUpdateContactCommandHandler.cs" />
     <Compile Include="Commands\AddUpdateContactTypeCommand.cs" />
     <Compile Include="Commands\AddUpdateContactTypeCommandHandler.cs" />
+    <Compile Include="Commands\DeleteContactCommand.cs" />
+    <Compile Include="Commands\DeleteContactCommandHandler.cs" />
     <Compile Include="Commands\DeleteContactTypeCommand.cs" />
     <Compile Include="Commands\DeleteContactTypeCommandHandler.cs" />
     <Compile Include="Commands\UpdateManufacturerCommand.cs" />

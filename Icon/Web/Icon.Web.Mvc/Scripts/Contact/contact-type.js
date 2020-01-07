@@ -1,5 +1,5 @@
 ﻿function editType(contactTypeId, archived) {
-    let name = $('#contactGrid').igGrid('getCellValue', contactTypeId, 'ContactTypeName');
+    let name = contactTypeId <= 0 ? '' : $('#contactGrid').igGrid('getCellValue', contactTypeId, 'ContactTypeName');
     $("#dlgMsg").text('');
 
     $("#dialogContactType").dialog({
@@ -8,9 +8,12 @@
         width: 450,
         modal: true,
         closeOnEscape: true,
+        show: { effect: "slide", duration: 300 },
+        hide: { effect: "fade", duration: 300 },
         open: function () {
             $("#contactTypeName").val(name);
             $("#contactTypeName").prop('disabled', false);
+            $("#contactTypeName").focus();
             
             $("#cbArchive").prop('checked', archived);
             $(".ui-dialog-titlebar-close").hide();
@@ -54,7 +57,7 @@
                             $("#dlgMsg").text(response.responseText);
                             */
                             $(refDialog).dialog("close");
-                            let grd = $('#contactGrid');
+                            var grd = $('#contactGrid');
                             grd.igGrid('dataBind');
                         },
                         error:
@@ -92,6 +95,8 @@ function deleteType(contactTypeId) {
         width: 450,
         modal: true,
         closeOnEscape: true,
+        show: { effect: "drop", duration: 300 },
+        hide: { effect: "fade", duration: 300 },
         open: function () {
             $(".ui-dialog-titlebar-close").hide();
             $(".ui-dialog-title").text("User Confirmation Required");
@@ -106,6 +111,7 @@ function deleteType(contactTypeId) {
                 id: 'dlgDelete',
                 text: 'Delete',
                 click: function () {
+                    let refDialog = this; //Ref to dialog so we can close it on success
                     $(".ui-dialog-buttonset").hide();
                     $(".ui-dialog-titlebar-close").hide();
                     $(".ui-dialog-buttonset").children().hide();
@@ -121,14 +127,21 @@ function deleteType(contactTypeId) {
                         contentType: 'application/json; charset=utf-8',
 
                         success: function (response) {
+                            /* //Keep the code below if we decide to show confirmation
                             $(".ui-dialog-titlebar").css("background-color", response.success ? "lightGreen" : "red");
                             $(".ui-dialog-title").text("System Information");
                             $(".ui-dialog-buttonset").show();
                             $('#dlgCancel').text('Close').show();
-                            $("#dlgTypeMsg").text(response.responseText);
+                            $("#dlgTypeMsg").text(response.responseText);*/
 
+                            /*Full grid update with POST if full refresh needed
                             var grd = $('#contactGrid');
-                            grd.igGrid('dataBind');
+                            grd.igGrid('dataBind');*/
+
+                            var grd = $('#contactGrid').data('igGrid'); //remove deleted record from UI without POST
+                            grd.dataSource.deleteRow(contactTypeId);
+                            grd.commit();
+                            $(refDialog).dialog("close");
                         },
                         error:
                             function (xhr, status, error) {

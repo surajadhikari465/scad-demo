@@ -34,6 +34,7 @@ namespace Icon.Web.Mvc.Controllers
         private IQueryHandler<GetContactTypesParameters, List<ContactTypeModel>> getContactTypesQuery;
         private ICommandHandler<AddUpdateContactCommand> handlerAddUpdateContact;
         private ICommandHandler<AddUpdateContactTypeCommand> handlerAddUpdateContactType;
+        private ICommandHandler<DeleteContactCommand> handlerDeleteContact;
         private ICommandHandler<DeleteContactTypeCommand> handlerDeleteContactType;
         private IExcelExporterService excelExporterService;
 
@@ -44,6 +45,7 @@ namespace Icon.Web.Mvc.Controllers
             IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> getHierarchyClassQuery,
             ICommandHandler<AddUpdateContactCommand> handlerAddUpdateContact,
             ICommandHandler<AddUpdateContactTypeCommand> handlerAddUpdateContactType,
+            ICommandHandler<DeleteContactCommand> handlerDeleteContact,
             ICommandHandler<DeleteContactTypeCommand> handlerDeleteContactType,
             IconWebAppSettings settings,
             IDonutCacheManager cacheManager,
@@ -54,6 +56,7 @@ namespace Icon.Web.Mvc.Controllers
             this.cacheManager = cacheManager;
             this.handlerAddUpdateContact = handlerAddUpdateContact;
             this.handlerAddUpdateContactType = handlerAddUpdateContactType;
+            this.handlerDeleteContact = handlerDeleteContact;
             this.handlerDeleteContactType = handlerDeleteContactType;
             this.getContactsQuery = getContactsQuery;
             this.getContactTypesQuery = getContactTypesQuery;
@@ -272,6 +275,29 @@ namespace Icon.Web.Mvc.Controllers
                 var contactType = GetContactTypes(true).Where(x => String.Compare(x.ContactTypeName, contactTypeName, true) == 0).Single();
                 Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
                 return Json(new { success = true, responseText = "Contact Type has been successfully added.", ContactTypeId = contactType.ContactTypeId, ContactTypeName = contactType.ContactTypeName }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)System.Net.HttpStatusCode.ExpectationFailed;
+                return Json(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [WriteAccessAuthorize]
+        public ActionResult DeleteContact(int contactId)
+        {
+            try
+            {
+                if(GetWriteAccess() != Enums.WriteAccess.Full)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return Json("You don’t have sufficient privileges to complete selected action.");
+                }
+
+                this.handlerDeleteContact.Execute(new DeleteContactCommand(){ ContactIds = new List<int>(){ contactId } });
+                Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+                return Json(new { success = true, responseText = "Contact has been deleted." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

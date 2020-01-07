@@ -786,6 +786,7 @@
     <Build Include="app\Stored Procedures\AddUpdateContactType.sql" />
     <Build Include="app\Stored Procedures\DeleteContactType.sql" />
     <None Include="Scripts\Projects\IconReboot\IconRebootConversionCreateMessageQueueForManufactureBrandHierarchy.sql" />
+    <Build Include="app\Stored Procedures\DeleteContact.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
