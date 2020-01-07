@@ -105,5 +105,14 @@ namespace Icon.Web.Mvc.Exporters
 
             return exporter;
         }
+
+        public ContactExporter GetContactExporter()
+        {
+            ContactExporter exporter = new ContactExporter();
+            exporter.ExportModel = exportModel;
+
+            return exporter;
+        }
+
     }
 }

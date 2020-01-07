@@ -14,13 +14,20 @@
     @Html.HiddenFor(model => model.HierarchyClassId)
 
     <div id="divLinks">
-        @*@Html.ActionLink("Export Contacts", "Export", "Contact", null, new { @class = "btn btn-light" })*@
+
         @if (ViewHelpers.HasWriteAccess(Request, User))
         {
             <span style="margin-right: 10px">@Html.ActionLink("Back To " + Model.HierarchyLevelName + "s", "Index", Model.HierarchyLevelName)</span>
-            <span style="margin-right: 10px">@Html.ActionLink("Back To " + Model.HierarchyLevelName, "Edit", Model.HierarchyLevelName, new { hierarchyClassId = Model.HierarchyClassId }, null)</span>
-            <span style="margin-right: 10px">@Html.ActionLink("Add New Contact", "Manage", "Contact", new { hierarchyClassId = Model.HierarchyClassId, contactId = 0 }, null)</span>
+            <span style="margin-right: 10px">@Html.ActionLink("Back To Edit", "Edit", Model.HierarchyLevelName, new {hierarchyClassId = Model.HierarchyClassId}, null)</span>
+            <span style="margin-right: 10px">@Html.ActionLink("Add New Contact", "Manage", "Contact", new {hierarchyClassId = Model.HierarchyClassId, contactId = 0}, null)</span>
         }
+        
+        <span style="margin-right: 10px">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Export</a>
+            <ul class="dropdown-menu bg-light">
+                <li class="nav-item">@Html.ActionLink("Export All Contacts", "Export", "Contact", null, new {@class = "text-nowrap"})</li>
+                <li class="nav-item">@Html.ActionLink("Export Specific " + Model.HierarchyClassName, "Export", "Contact", new {hierarchyClassId = Model.HierarchyClassId}, new {@class = "text-nowrap"})</li>
+            </ul></span>
     </div>
 
     @(Html.Infragistics().Grid<Icon.Web.Mvc.Models.ContactViewModel>()

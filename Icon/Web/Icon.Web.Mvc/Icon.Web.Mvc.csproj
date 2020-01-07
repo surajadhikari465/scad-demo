@@ -273,6 +273,8 @@
     <Compile Include="Controllers\AttributeController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\ManufacturerController.cs" />
+    <Compile Include="Exporters\BaseContactExporter.cs" />
+    <Compile Include="Exporters\ContactExporter.cs" />
     <Compile Include="Exporters\Items\BarcodeTypeExporter.cs" />
     <Compile Include="Exporters\BaseAttributeExporter.cs" />
     <Compile Include="Exporters\Attributes\AttributeExporter.cs" />
@@ -404,6 +406,7 @@
     <Compile Include="Models\ConfigurationSearchViewModel.cs" />
     <Compile Include="Models\ConfigurationViewModel.cs" />
     <Compile Include="Models\ContactTypeViewModel.cs" />
+    <Compile Include="Models\ContactExportViewModel.cs" />
     <Compile Include="Models\ContactViewModel.cs" />
     <Compile Include="Models\CountryViewModel.cs" />
     <Compile Include="Models\ErrorModel.cs" />
@@ -503,6 +506,7 @@
       <DependentUpon>Store.resx</DependentUpon>
     </Compile>
     <Compile Include="Utility\AttributesHelper.cs" />
+    <Compile Include="Utility\ContactHelper.cs" />
     <Compile Include="Utility\DonutCacheManager.cs" />
     <Compile Include="Utility\ExportItemColumnNameMapper.cs" />
     <Compile Include="Utility\IAttributesHelper.cs" />

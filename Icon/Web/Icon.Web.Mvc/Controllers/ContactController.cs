@@ -35,6 +35,7 @@ namespace Icon.Web.Mvc.Controllers
         private ICommandHandler<AddUpdateContactCommand> handlerAddUpdateContact;
         private ICommandHandler<AddUpdateContactTypeCommand> handlerAddUpdateContactType;
         private ICommandHandler<DeleteContactTypeCommand> handlerDeleteContactType;
+        private IExcelExporterService excelExporterService;
 
         public ContactController(
             ILogger logger,
@@ -45,7 +46,8 @@ namespace Icon.Web.Mvc.Controllers
             ICommandHandler<AddUpdateContactTypeCommand> handlerAddUpdateContactType,
             ICommandHandler<DeleteContactTypeCommand> handlerDeleteContactType,
             IconWebAppSettings settings,
-            IDonutCacheManager cacheManager)
+            IDonutCacheManager cacheManager,
+            IExcelExporterService excelExporterService)
         {
             this.logger = logger;
             this.settings = settings;
@@ -56,6 +58,7 @@ namespace Icon.Web.Mvc.Controllers
             this.getContactsQuery = getContactsQuery;
             this.getContactTypesQuery = getContactTypesQuery;
             this.getHierarchyClassQuery = getHierarchyClassQuery;
+            this.excelExporterService = excelExporterService;
         }
 
         // GET: Contact
@@ -337,6 +340,39 @@ namespace Icon.Web.Mvc.Controllers
         {
             bool hasWriteAccess = this.settings.WriteAccessGroups.Split(',').Any(x => this.HttpContext.User.IsInRole(x.Trim()));
             return hasWriteAccess ? Enums.WriteAccess.Full : Enums.WriteAccess.None;
+        }
+
+        public void Export(int hierarchyClassId = 0)
+        {
+            List<ContactExportViewModel> contacts = getContactsQuery.Search(new GetContactsParameters() { HierarchyClassId = hierarchyClassId })
+                .ToViewModels()
+                .Select(c => new ContactExportViewModel() 
+                {
+                    HierarchyName = c.HierarchyName,
+                    HierarchyClassId = c.HierarchyClassId,
+                    HierarchyClassName = c.HierarchyClassName,
+                    ContactId = c.ContactId,
+                    ContactTypeName = c.ContactTypeName,
+                    ContactName = c.ContactName,
+                    Email = c.Email,
+                    Title = c.Title,
+                    AddressLine1 = c.AddressLine1,
+                    AddressLine2 = c.AddressLine2,
+                    City = c.City,
+                    State = c.State,
+                    ZipCode = c.ZipCode,
+                    Country = c.Country,
+                    PhoneNumber1 = c.PhoneNumber1,
+                    PhoneNumber2 = c.PhoneNumber2,
+                    WebsiteURL = c.WebsiteURL
+                })
+                .ToList();
+
+            var contactExporter = excelExporterService.GetContactExporter();
+            contactExporter.ExportData = contacts;
+            contactExporter.Export();
+
+            ExcelHelper.SendForDownload(Response, contactExporter.ExportModel.ExcelWorkbook, contactExporter.ExportModel.ExcelWorkbook.CurrentFormat, "Contact");
         }
     }
 }
