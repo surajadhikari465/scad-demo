@@ -227,6 +227,11 @@ namespace IrmaMobile.Services
             return result;
         }
 
+        public async Task<Result> ReparseEInvoiceAsync(string region, int eInvId)
+        {
+            var result = await MakeServiceRequest(region, client => client.ReparseEinvoiceAsync(eInvId)); 
+            return result;
+        }
 
         // Following best practices for handling WCF ServiceClient lifecycle as documented here:
         // https://docs.microsoft.com/en-us/dotnet/framework/wcf/samples/use-close-abort-release-wcf-client-resources

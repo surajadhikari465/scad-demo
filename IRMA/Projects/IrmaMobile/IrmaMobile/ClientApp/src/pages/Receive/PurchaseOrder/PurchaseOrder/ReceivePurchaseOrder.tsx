@@ -6,10 +6,10 @@ import { AppContext, types, IMenuItem } from "../../../../store";
 import ReceivePurchaseOrderDetails from "./components/ReceivePurchaseOrderDetails";
 import ReceivePurchaseOrderList from "./components/ReceivePurchaseOrderList";
 import ReceivePoSearch from "./components/ReceivePurchaseOrderSearch";
-import { OrderDetails } from "../types/OrderDetails";
 import { RouteComponentProps, useHistory } from "react-router-dom";
 import OrderInformationModal from "../OrderInformation/OrderInformationModal";
 import OrderInformation from "../types/OrderInformation";
+import orderUtil from "../util/Order"
 
 interface RouteParams {
     openOrderInformation: string;
@@ -79,49 +79,13 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                     return;
                 }
 
-                var orderItemsFiltered = order.orderItems.filter(
-                    (oi: any) => oi.identifier === upc
-                );
-
-                var orderItem = null;
-                if(orderItemsFiltered.length === 1) {
-                    orderItem = orderItemsFiltered[0];
-                } else {
-                    if (upc) {
-                        toast.error(`${upc} not found in PO #${purchaseOrderNum}`);
-                        return;
-                    }
-
-                    orderItem = {} as any;
+                if (upc && !orderUtil.OrderHasUpc(order, upc)) {
+                    toast.error(`${upc} not found in PO #${purchaseOrderNum}`);
+                    return;
                 }
 
                 try {
-                    var orderDetails: OrderDetails = {
-                        Description: orderItem.item_Description,
-                        Quantity: 0,
-                        Weight: orderItem.total_Weight, 
-                        Uom: orderItem.packageUnitAbbr,
-                        Code: orderItem.receivingDiscrepancyReasonCodeID,
-                        QtyOrdered: orderItem.quantityOrdered,
-                        QtyReceived: orderItem.quantityReceived,
-                        EInvQty: orderItem.eInvoiceQuantity,
-                        IsReturnOrder: order.return_Order,
-                        Subteam: order.transfer_To_SubTeamName,
-                        Vendor: order.companyName,
-                        OrderItemId: orderItem.orderItem_ID,
-                        PkgWeight: orderItem.package_Desc1,
-                        PkgQuantity: orderItem.package_Desc2,
-                        OrderUom: orderItem.orderUOMAbbr,
-                        InvoiceCost: order.invoiceCost,
-                        InvoiceFreight: order.invoiceFreight,
-                        InvoiceNumber: order.invoiceNumber,
-                        AdjustedReceivedCost: order.adjustedReceivedCost,
-                        OrderedCost: order.orderedCost,
-                        OrderTypeId: order.orderType_Id,
-                        EInvId: order.einvoiceID,
-                        EInvRequired: order.einvoiceRequired,
-                        ItemLoaded: orderItem.item_Key
-                    }
+                    var orderDetails = orderUtil.MapOrder(order, upc);
 
                     var orderInformation: OrderInformation = {
                         buyer: order.createdByName,
@@ -144,7 +108,6 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                     storeNumber
                 );
 
-                //Map ordersRaw -> orders
                 const orders = ordersRaw.map((order: any) => (
                     {
                         PoNum: order.orderHeader_ID,

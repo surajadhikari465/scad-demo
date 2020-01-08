@@ -106,7 +106,8 @@ const InvoiceData = {
             OrderId: orderId,
             UserId: userId,
             ReasonCodeId: reasonCodeId    
-        })
+        }),
+    reparseEInvoice: async (region: string, eInvId: number) => requests.post(`/${region}/invoicedata/reparseEInvoice`, { EInvId: eInvId })
 };
 
 const Shrink = {

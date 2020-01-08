@@ -1,0 +1,64 @@
+import { OrderDetails } from "../types/OrderDetails";
+
+const orderUtil = {
+    OrderHasUpc: (order: any, upc: string): boolean => {
+        var orderItemsFiltered = order.orderItems.filter(
+            (oi: any) => oi.identifier === upc
+        );
+    
+        const result = orderItemsFiltered.length === 1;
+    
+        return result;
+    },
+    MapOrder: (order: any, upc: string = ""): OrderDetails => {
+        var orderItemsFiltered = order.orderItems.filter(
+            (oi: any) => oi.identifier === upc
+        );
+    
+        var orderItem = null;
+        if(orderItemsFiltered.length === 1) {
+            orderItem = orderItemsFiltered[0];
+        } else {
+            orderItem = {} as any;
+        }
+    
+        var orderDetails: OrderDetails = {
+            Description: orderItem.item_Description,
+            Quantity: 0,
+            Weight: orderItem.total_Weight, 
+            Uom: orderItem.packageUnitAbbr,
+            Code: orderItem.receivingDiscrepancyReasonCodeID,
+            QtyOrdered: orderItem.quantityOrdered,
+            QtyReceived: orderItem.quantityReceived,
+            EInvQty: orderItem.eInvoiceQuantity,
+            IsReturnOrder: order.return_Order,
+            Subteam: order.transfer_To_SubTeamName,
+            Vendor: order.companyName,
+            OrderItemId: orderItem.orderItem_ID,
+            PkgWeight: orderItem.package_Desc1,
+            PkgQuantity: orderItem.package_Desc2,
+            OrderUom: orderItem.orderUOMAbbr,
+            InvoiceCost: order.invoiceCost,
+            InvoiceFreight: order.invoiceFreight,
+            InvoiceNumber: order.invoiceNumber,
+            AdjustedReceivedCost: order.adjustedReceivedCost,
+            OrderedCost: order.orderedCost,
+            OrderTypeId: order.orderType_Id,
+            EInvId: order.einvoiceID,
+            EInvRequired: order.einvoiceRequired,
+            ItemLoaded: orderItem.item_Key,
+            CurrencyId: order.currencyID,
+            InvoiceDate: order.invoiceDate,
+            VendorDocDate: order.vendorDocDate,
+            VendorDocId: order.vendorDocID
+        }
+    
+        return orderDetails;
+    }
+}
+
+
+
+
+
+export default orderUtil;

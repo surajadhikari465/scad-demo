@@ -17,10 +17,14 @@ export interface OrderDetails {
     InvoiceCost: number;
     InvoiceFreight: number;
     InvoiceNumber: string;
+    InvoiceDate: string;
+    VendorDocDate: Date;
+    VendorDocId: number;
     AdjustedReceivedCost: number;
     OrderedCost: number;
     OrderTypeId: number;
     EInvId: number,
     EInvRequired: boolean;
     ItemLoaded: boolean;
+    CurrencyId: number;
 }

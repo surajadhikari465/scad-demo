@@ -109,5 +109,16 @@ namespace IrmaMobile.Controllers
 
             return result;
         }
+
+        [ProducesResponseType(200)]
+        [HttpPost]
+        public async Task<Result> ReparseEInvoice([FromRoute]string region, [FromBody]ReparseEInvoiceModel model )
+        { 
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(InvoiceDataController)}.{nameof(RefuseOrder)}");
+
+            var result = await service.ReparseEInvoiceAsync(region, model.EInvId); 
+
+            return result;
+        }
     }
 }
