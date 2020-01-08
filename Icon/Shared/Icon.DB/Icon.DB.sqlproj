@@ -832,7 +832,6 @@
     <None Include="Scripts\PopulateData\PopulateBulkItemUploadStatus.sql" />
     <None Include="Scripts\Projects\IconReboot\IconRebootInforItemHistoryConversion.sql" />
     <None Include="Scripts\PopulateData\AddItemPublisherToAppTable.sql" />
-    <None Include="Scripts\Projects\IconReboot\DeploymentSteps.docx" />
     <Build Include="esb\Tables\MessageQueueAttribute.sql" />
     <None Include="Scripts\PopulateData\PopulateAttributeMessageType.sql" />
     <None Include="Scripts\PopulateData\AddAttributePublisherAppId.sql" />
@@ -851,6 +850,7 @@
     <None Include="Scripts\Projects\IconReboot\Audit\IconLegacy_Items.sql" />
     <None Include="Scripts\Projects\IconReboot\Audit\Attributes.sql" />
     <Build Include="app\User Defined Types\ContactTypeInputType.sql" />
+    <None Include="Scripts\Projects\IconReboot\DeploymentSteps.docx" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

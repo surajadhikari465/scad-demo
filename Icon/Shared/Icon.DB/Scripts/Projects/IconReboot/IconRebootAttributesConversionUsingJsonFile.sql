@@ -170,9 +170,7 @@ CREATE TABLE dbo.IconRebootDataAfterParsingJson (
 
 DECLARE @jsonData AS NVARCHAR(MAX)
 SELECT @jsonData = BulkColumn
-FROM OPENROWSET(BULK '\\ODWD6801\Temp\IconConversion\attributeConfigs.json' ,CODEPAGE = '65001', SINGLE_CLOB) 
-
-AS j
+FROM OPENROWSET(BULK '\\ODWD6801\Temp\IconConversion\im_attributes.json', CODEPAGE = '65001', SINGLE_CLOB) AS j
 
 SELECT *
 INTO #tmpParsedData

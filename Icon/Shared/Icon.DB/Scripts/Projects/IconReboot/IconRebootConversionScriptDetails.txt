@@ -1,28 +1,28 @@
-====================================
-Icon Reboot Conversion Script order
-
-This document details the order in which we should
-run the Icon Reboot conversion scripts when loading
-the Infor IM files. 
-====================================
-
 Run the scripts in following order:
+a.	IconRebootInforItemHistoryConversion.Sql (~30 minutes)
+	i.	NOTE: This script inserts data into “infor.ItemHistory” table.
+	ii.	Kick this off first and no need to wait for it to finish before starting next script.  
 
-1) Run IconRebootAttributesConversionUsingJsonFile.Sql (~5 minutes or less)
-This script will convert attributes from Infor to Icon. Script will insert data into “dbo.Attributes” table and some other related tables. 
+1.	IconRebootAttributesConversionUsingJsonFile.Sql (~5 minute or less)
+	a.	This script will convert attributes from Infor to Icon. Script will insert data into “dbo.Attributes” table and some other related tables. 
 
-2) Run IconRebootItemConversion.sql (~10 minutes or less)
-This script will convert items from Infor to Icon. 
+2.	IconRebootItemConversion.sql (~10 minutes or less)
+	a.	This script will convert items from Infor to Icon.
 
-3) Run IconRebootHierarchyClassTraitConversion.sql (1 second)
-This scripts inserts data into “HierarchyClassTrait” Table.
+3.	IconRebootPopulateBrandHierarchy.Sql (~1 minutes)
+	a.	Loads Brand traits from file provided by data team
 
-4) Run IconRebootPopulateBarcodeTypeRangePool.sql (15-20 minutes)
-This script inserts the barcode type ranges in the BarcodeTypeRangePool table.
+4.	Run IconRebootHierarchyClassTraitConversion.sql (1 second)
+	a.	This scripts inserts data into “HierarchyClassTrait” Table, populating the merchandise hierarchy defaults (e.g. Prohibit Discount, Item Type, and SubTeam)
 
-5) Run IconRebootInforItemHistoryConversion.Sql (~30 minutes)
-This script inserts data into “infor.ItemHistory” table.
+5.	IconRebootPopulateBarcodeTypeRangePool.Sql (10-20 minutes)
+	a.	This script populates the barcode ranges.
 
-4) Run CreateMessageQueueRecordForAllItems.sql (~n minutes)
-This script will create records in message queue table for all items.
-Before running this script make sure R10 is not in receiving system. After this script 953k messages will be send to downstream systems.
+WAIT!  DevOps needs to update configs for Hierarchy Api Controller before running step 6 so we do NOT send to R10.
+6.	IconRebootConversionCreateMessageQueueForManufactureBrandHierarchy.SQL
+	a.	This script will create message queue records for Brand and Manufacturer Hierarchy. API controller will process these records.
+
+WAIT!  DevOps needs to update configs on Item Publisher before running step 7 so we do NOT send to R10.
+7.	IconConversionCreateMessageQueueRecordForAllItems
+	a.	This script will create records in esb.MessageQueueItem table for all items.
+

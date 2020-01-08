@@ -168,6 +168,7 @@ END
 		,[POS Scale Tare] NVARCHAR(255) NULL
 		,[Premium Body Care] NVARCHAR(255) NULL
 		,[Price Line] NVARCHAR(255) NULL
+		,[Price Line Description] NVARCHAR(255) NULL
 		,[Prime] NVARCHAR(255) NULL
 		,[Prime Now Eligible] NVARCHAR(255) NULL
 		,[Private Label] NVARCHAR(255) NULL
@@ -356,6 +357,7 @@ SET ItemAttributesJson = ISNULL((
 				,[POS Scale Tare] AS POSScaleTare
 				,NULLIF([Premium Body Care], 'No') AS PremiumBodyCare
 				,[Price Line] AS PriceLine
+				,[Price Line Description] AS PriceLineDescription
 				,[Prime] AS Prime
 				,[Prime Now Eligible] AS PrimeNowEligible
 				,[Private Label] AS PrivateLabel
