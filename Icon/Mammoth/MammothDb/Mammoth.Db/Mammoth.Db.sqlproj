@@ -813,7 +813,7 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\AppLogArchiveRetentionPolicy.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\AddMammothAuditApp.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\Deduplicate_ItemAttributesLocale_Tables.sql" />
-	<None Include="Scripts\PostDeploymentScripts\Archive\Truncate_IRMA_Price_Tables_14897.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\Truncate_IRMA_Price_Tables_14897.sql" />
     <Build Include="dbo\Stored Procedures\DeleteItemAttributesExt.sql" />
     <Build Include="dbo\User Defined Types\HierarchyNationalClassType.sql" />
     <Build Include="dbo\Stored Procedures\AddOrUpdateHierarchyNationalCategory.sql" />
@@ -824,7 +824,7 @@
     <Build Include="dbo\Stored Procedures\AuditGPMMessageSequence.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\Reset5NutritionValues_23879.sql" />
     <None Include="Scripts\PreDeploymentScripts\23389_Delete_Job_CopyGpmDataForAudit.sql" />
-    <None Include="Scripts\PreDeploymentScripts\Archive\DeduplicateScanCodes_QA_PROD.sql" />
+    <None Include="Scripts\PreDeploymentScripts\DeduplicateScanCodes_QA_PROD.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

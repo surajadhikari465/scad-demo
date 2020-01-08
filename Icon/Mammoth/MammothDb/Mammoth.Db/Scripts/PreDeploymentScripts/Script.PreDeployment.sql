@@ -14,3 +14,4 @@
 
 -- EXAMPLE :r .\TruncateItemLocaleStagingTable.sql -- 2018.02.27
 :r .\23389_Delete_Job_CopyGpmDataForAudit.sql -- 2019.10.08
+:r .\DeduplicateScanCodes_QA_PROD.sql -- 2020.01.08
