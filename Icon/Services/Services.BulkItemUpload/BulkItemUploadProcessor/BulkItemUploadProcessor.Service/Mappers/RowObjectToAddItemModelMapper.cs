@@ -46,8 +46,10 @@ namespace BulkItemUploadProcessor.Service.Mappers
             var merchIndex = columnHeaders.First(c => c.Name == HierarchyNames.Merchandise).ColumnIndex;
             var taxIndex = columnHeaders.First(c => c.Name == HierarchyNames.Tax).ColumnIndex;
             var nationalIndex = columnHeaders.First(c => c.Name == HierarchyNames.National).ColumnIndex;
-            var manufacturerIndex = columnHeaders.First(c => c.Name == ManufacturerHierarchyName).ColumnIndex;
 
+            var manufacturer = columnHeaders.FirstOrDefault(c => c.Name == ManufacturerHierarchyName);
+            int manufacturerIndex = manufacturer != null ? manufacturer.ColumnIndex:-1;
+       
             //Convert RowObjects into AddItemModels
             var rowObjectDictionary = rowObjects.Select(r => new
             {
