@@ -391,7 +391,7 @@ FROM
             {
                 if (this.IsAttributeHierarchy(criteria.AttributeName))
                 {
-                    sb.Append(HierarchySelectQueries[criteria.AttributeName].Replace("{{whereClause}}", this.BuildSingleWhereClause(criteria)));
+                    sb.Append(HierarchySelectQueries[criteria.AttributeName].Replace("{{whereClause}}", $"({this.BuildSingleWhereClause(criteria)})"));
                 }
             }
 

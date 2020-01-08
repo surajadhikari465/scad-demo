@@ -190,6 +190,83 @@ namespace Icon.Web.Tests.Integration.Infrastructure
         }
 
         [TestMethod]
+        public void BuildHierarchyTempTableInclude_ExactlyAnyFinancial_SurroundsWithParentheses()
+        {
+            // Given.
+            ItemQueryBuilder builder = new ItemQueryBuilder();
+
+            // When.
+            string response = builder.BuildHierarchyTempTableInclude(new List<ItemSearchCriteria>()
+            {
+                new ItemSearchCriteria("Financial",AttributeSearchOperator.ExactlyMatchesAny,"Value19 Value20"),
+            });
+
+            // Then.
+            Assert.IsTrue(response.Contains("WHERE h.hierarchyName = 'Financial' AND (hc.hierarchyClassName = 'Value19' OR hc.hierarchyClassName = 'Value20')"),
+                $"Failed with actual: {response}, expected to contain: WHERE h.hierarchyName = 'Financial' AND (hc.hierarchyClassName = 'Value19' OR hc.hierarchyClassName = 'Value20')");   
+        }
+
+        [TestMethod]
+        public void BuildHierarchyTempTableInclude_FinancialExactlyMatchesAll_SurroundsWithParentheses()
+        {
+            // Given.
+            ItemQueryBuilder builder = new ItemQueryBuilder();
+
+            // When.
+            string response = builder.BuildHierarchyTempTableInclude(new List<ItemSearchCriteria>()
+            {
+                new ItemSearchCriteria("Financial",AttributeSearchOperator.ExactlyMatchesAll,"Value19 Value20"),
+            });
+
+            // Then.
+            Assert.IsTrue(response.Contains("WHERE h.hierarchyName = 'Financial' AND (hc.hierarchyClassName = 'Value19 Value20')"),
+                $"Failed with actual: {response}, expected to contain: WHERE h.hierarchyName = 'Financial' AND (hc.hierarchyClassName = 'Value19 Value20')");
+
+        }
+
+        [TestMethod]
+        public void BuildHierarchyTempTableInclude_NationalAndMerchExactlyMatchesAny_SurroundsWithParentheses()
+        {
+            // Given.
+            ItemQueryBuilder builder = new ItemQueryBuilder();
+
+            // When.
+            string response = builder.BuildHierarchyTempTableInclude(new List<ItemSearchCriteria>()
+            {
+                new ItemSearchCriteria("National",AttributeSearchOperator.ExactlyMatchesAny,"Value19 Value20"),
+                new ItemSearchCriteria("Merchandise",AttributeSearchOperator.ExactlyMatchesAny,"Value21 Value22")
+            });
+
+            // Then.
+            Assert.IsTrue(response.Contains("cte_National WHERE (hierarchyLineage = 'Value19' OR hierarchyLineage = 'Value20')"),
+                $"Failed with actual: {response}, expected to contain: WHERE (hierarchyLineage = 'Value19' OR hierarchyLineage = 'Value20')");
+            Assert.IsTrue(response.Contains("cte_Merchandise WHERE (hierarchyLineage = 'Value21' OR hierarchyLineage = 'Value22')"),
+                $"Failed with actual: {response}, expected to contain: cte_Merchandise WHERE (hierarchyLineage = 'Value21' OR hierarchyLineage = 'Value22')");
+
+        }
+
+        [TestMethod]
+        public void BuildHierarchyTempTableInclude_NationalAndMerchExactlyMatchesAll_SurroundsWithParentheses()
+        {
+            // Given.
+            ItemQueryBuilder builder = new ItemQueryBuilder();
+
+            // When.
+            string response = builder.BuildHierarchyTempTableInclude(new List<ItemSearchCriteria>()
+            {
+                new ItemSearchCriteria("National",AttributeSearchOperator.ExactlyMatchesAll,"Value19 Value20"),
+                new ItemSearchCriteria("Merchandise",AttributeSearchOperator.ExactlyMatchesAll,"Value21 Value22"),
+            });
+
+            // Then.
+            Assert.IsTrue(response.Contains("cte_National WHERE (hierarchyLineage = 'Value19 Value20')"),
+                $"Failed with actual: {response}, expected to contain: cte_National WHERE (hc.hierarchyLineage = 'Value19 Value20')");
+            Assert.IsTrue(response.Contains("cte_Merchandise WHERE (hierarchyLineage = 'Value21 Value22')"),
+                $"Failed with actual: {response}, expected to contain: cte_Merchandise WHERE (hc.hierarchyLineage = 'Value21 Value22')");
+
+        }
+
+        [TestMethod]
         public void BuildHierarchyJoinClause()
         {
             // Given.
