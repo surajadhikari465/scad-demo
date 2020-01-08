@@ -7,17 +7,17 @@ using Icon.Web.DataAccess.Models;
 
 namespace Icon.Web.DataAccess.Queries
 {
-    public class GetBulkUploadStatusQuery : IQueryHandler<GetBulkUploadStatusParameters, List<BulkUploadStatusModel>>
+    public class GetBulkItemUploadStatusQuery : IQueryHandler<GetBulkItemUploadStatusParameters, List<BulkItemUploadStatusModel>>
     {
         private readonly IconContext context;
 
 
-        public GetBulkUploadStatusQuery(IconContext context)
+        public GetBulkItemUploadStatusQuery(IconContext context)
         {
             this.context = context;
         }
 
-        public List<BulkUploadStatusModel> Search(GetBulkUploadStatusParameters parameters)
+        public List<BulkItemUploadStatusModel> Search(GetBulkItemUploadStatusParameters parameters)
         {
             var query = $@"
                 SELECT TOP {parameters.RowCount} 
@@ -29,10 +29,10 @@ namespace Icon.Web.DataAccess.Queries
 	                s.STATUS,
                     b.Message
                 FROM BulkItemUpload b
-                INNER JOIN BulkItemUploadStatus s ON b.StatusId = s.Id
+                INNER JOIN BulkUploadStatus s ON b.StatusId = s.Id
                 ORDER BY BulkItemUploadId DESC";
 
-            var data = this.context.Database.SqlQuery<BulkUploadStatusModel>(query).ToList();
+            var data = this.context.Database.SqlQuery<BulkItemUploadStatusModel>(query).ToList();
             return data;
         }
     }

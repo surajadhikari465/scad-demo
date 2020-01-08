@@ -281,7 +281,7 @@
     <Compile Include="Exporters\ManufacturerExporter.cs" />
     <Compile Include="Exporters\NationalClassExporter.cs" />
     <Compile Include="Models\AttributeDisplayModel.cs" />
-    <Compile Include="Models\BulkItemUploadResultModel.cs" />
+    <Compile Include="Models\BulkUploadResultModel.cs" />
     <Compile Include="Controllers\BulkScanCodeController.cs" />
     <Compile Include="Controllers\EwicController.cs" />
     <Compile Include="Controllers\ItemTypeController.cs" />
@@ -901,7 +901,8 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\CertificationAgency\CertificationAgency-create.js" />
     <Content Include="Scripts\CertificationAgency\CertificationAgency-edit.js" />
-    <Content Include="Scripts\Contact\contact-type.js" />
+    <Content Include="Scripts\Contact\bulkupload.js" />
+    <Content Include="Scripts\Contact\bulkuploaderrors.js" />
     <Content Include="Scripts\Contact\contact.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
@@ -1846,6 +1847,7 @@
     <Content Include="Views\Contact\Manage.cshtml" />
     <Content Include="Views\Contact\Disabled.cshtml" />
     <Content Include="Views\Contact\ManageType.cshtml" />
+    <Content Include="Views\Contact\BulkUpload.cshtml" />
     <None Include="Web.2016.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

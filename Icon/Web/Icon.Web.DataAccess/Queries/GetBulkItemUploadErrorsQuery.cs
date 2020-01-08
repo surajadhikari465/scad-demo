@@ -9,7 +9,7 @@ using Icon.Web.DataAccess.Models;
 
 namespace Icon.Web.DataAccess.Queries
 {
-    public class GetBulkItemUploadErrorsQuery : IQueryHandler<GetBulkUploadErrorsPrameters, List<BulkUploadErrorModel>>
+    public class GetBulkItemUploadErrorsQuery : IQueryHandler<GetBulkItemUploadErrorsPrameters, List<BulkUploadErrorModel>>
     {
         private readonly IconContext context;
 
@@ -19,7 +19,7 @@ namespace Icon.Web.DataAccess.Queries
             this.context = context;
         }
 
-        public List<BulkUploadErrorModel> Search(GetBulkUploadErrorsPrameters parameters)
+        public List<BulkUploadErrorModel> Search(GetBulkItemUploadErrorsPrameters parameters)
         {
 
             SqlParameter bulkItemUploadId = new SqlParameter("@BulkItemUploadId", SqlDbType.Int);

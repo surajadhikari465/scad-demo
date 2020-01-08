@@ -24,79 +24,84 @@
                     @Html.ActionLink("Home", "Index", "Home", null, new { @class = "navbar-brand" })
                 </div>
                 <div class="navbar-collapse collapse">
-                    <ul class="navbar-nav">
+					<ul class="navbar-nav">
 
-                        <li class="dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Items</a>
-                            <ul class="dropdown-menu bg-dark">
-                                <li class="nav-item">@Html.ActionLink("Search", "Index", "Item", null, new { @class = "nav-link text-nowrap" })</li>
-                                @if (ViewHelpers.HasWriteAccess(Request, User))
-                                {
-                                    <li class="nav-item">@Html.ActionLink("Add New Item", "Create", "Item", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Bulk Upload", "BulkUpload", "Item", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Download New Item Template", "ItemTemplateNewExporter", "Item", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Clear Icon Cache", "ClearCache", "HierarchyClass", null, new { @class = "nav-link text-nowrap" })</li>
-                                }
-                            </ul>
-                        </li>
+						<li class="dropdown">
+							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Items</a>
+							<ul class="dropdown-menu bg-dark">
+								<li class="nav-item">@Html.ActionLink("Search", "Index", "Item", null, new { @class = "nav-link text-nowrap" })</li>
+								@if (ViewHelpers.HasWriteAccess(Request, User))
+								{
+									<li class="nav-item">@Html.ActionLink("Add New Item", "Create", "Item", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Bulk Upload", "BulkUpload", "Item", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Download New Item Template", "ItemTemplateNewExporter", "Item", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Clear Icon Cache", "ClearCache", "HierarchyClass", null, new { @class = "nav-link text-nowrap" })</li>
+								}
+							</ul>
+						</li>
 
-                        <li class="dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Hierarchies</a>
-                            <ul class="dropdown-menu bg-dark">
-                                <li class="nav-item">@Html.ActionLink("Brand", "Index", "Brand", null, new { @class = "nav-link text-nowrap" })</li>
-                                <li class="nav-item">@Html.ActionLink("Financial", "Index", "Financial", null, new { @class = "nav-link text-nowrap" })</li>
-                                <li class="nav-item">@Html.ActionLink("National Class", "Index", "NationalClass", null, new { @class = "nav-link text-nowrap" })</li>
-                                <li class="nav-item">@Html.ActionLink("Merchandise", "Index", "Hierarchy", new { SelectedHierarchyId = 1 }, new { @class = "nav-link text-nowrap" })</li>
-                                <li class="nav-item">@Html.ActionLink("Tax", "Index", "Hierarchy", new { SelectedHierarchyId = 3 }, new { @class = "nav-link text-nowrap" })</li>
-                                <li class="nav-item">@Html.ActionLink("Manufacturer", "Index", "Manufacturer", null, new { @class = "nav-link text-nowrap" })</li>
-                            </ul>
-                        </li>
+						<li class="dropdown">
+							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Hierarchies</a>
+							<ul class="dropdown-menu bg-dark">
+								<li class="nav-item">@Html.ActionLink("Brand", "Index", "Brand", null, new { @class = "nav-link text-nowrap" })</li>
+								<li class="nav-item">@Html.ActionLink("Financial", "Index", "Financial", null, new { @class = "nav-link text-nowrap" })</li>
+								<li class="nav-item">@Html.ActionLink("National Class", "Index", "NationalClass", null, new { @class = "nav-link text-nowrap" })</li>
+								<li class="nav-item">@Html.ActionLink("Merchandise", "Index", "Hierarchy", new { SelectedHierarchyId = 1 }, new { @class = "nav-link text-nowrap" })</li>
+								<li class="nav-item">@Html.ActionLink("Tax", "Index", "Hierarchy", new { SelectedHierarchyId = 3 }, new { @class = "nav-link text-nowrap" })</li>
+								<li class="nav-item">@Html.ActionLink("Manufacturer", "Index", "Manufacturer", null, new { @class = "nav-link text-nowrap" })</li>
+							</ul>
+						</li>
 
-                        <li>@Html.ActionLink("Attributes", "Index", "Attribute", null, new { @class = "nav-link text-nowrap" })</li>
+						<li>@Html.ActionLink("Attributes", "Index", "Attribute", null, new { @class = "nav-link text-nowrap" })</li>
 
-                        @if (ViewHelpers.HasWriteAccess(Request, User))
-                        {
-                            <li>@Html.ActionLink("Stores", "Index", "Store", null, new { @class = "nav-link" })</li>
-                            <li>@Html.ActionLink("Barcode Types", "Index", "PluCategory", null, new { @class = "nav-link text-nowrap" })</li>
-                            <li class="dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">eWIC</a>
-                                <ul class="dropdown-menu bg-dark">
-                                    <li class="nav-item">@Html.ActionLink("Exclusions", "Exclusions", "Ewic", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Mappings", "Mappings", "Ewic", null, new { @class = "nav-link text-nowrap" })</li>
-                                </ul>
-                            </li>
+						@if (ViewHelpers.HasWriteAccess(Request, User))
+						{
+							<li>@Html.ActionLink("Stores", "Index", "Store", null, new { @class = "nav-link" })</li>
+							<li>@Html.ActionLink("Barcode Types", "Index", "PluCategory", null, new { @class = "nav-link text-nowrap" })</li>
+							<li class="dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">eWIC</a>
+								<ul class="dropdown-menu bg-dark">
+									<li class="nav-item">@Html.ActionLink("Exclusions", "Exclusions", "Ewic", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Mappings", "Mappings", "Ewic", null, new { @class = "nav-link text-nowrap" })</li>
+								</ul>
+							</li>
 
 
-                        }
+						}
 
-                        @if (ViewHelpers.DisplayAdminLink(Request, User))
-                        {
-                            <li class="dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Admin</a>
-                                <ul class="dropdown-menu bg-dark">
-                                    <li class="nav-item">@Html.ActionLink("Refresh Items", "Items", "RefreshData", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Refresh Attributes", "Attributes", "RefreshData", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Refresh Hierarchy Classes", "Hierarchy", "RefreshData", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Refresh Locales", "Locales", "RefreshData", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Global Events", "Index", "GlobalEvent", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Global POS Push", "Index", "GlobalPOSPush", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Regional Events", "Index", "RegionalEvent", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Regional POS Push", "Index", "RegionalPosPush", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Message History", "Index", "MessageHistory", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Product Selection Groups", "Index", "ProductSelectionGroup", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Failed Hierarchy Messages", "Index", "FailedHierarchyMessage", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Failed Item Locale Messages", "Index", "FailedItemLocaleMessage", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Failed Locale Messages", "Index", "FailedLocaleMessage", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Failed Price Messages", "Index", "FailedPriceMessage", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Failed Product Messages", "Index", "FailedProductMessage", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Failed Product Selection Group Messages", "Index", "FailedProductSelectionGroupMessage", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Delete Hierarchy Class", "ChooseHierarchyClass", "Support", null, new { @class = "nav-link text-nowrap" })</li>
-                                    <li class="nav-item">@Html.ActionLink("Configuration", "Index", "Configuration", null, new { @class = "nav-link text-nowrap" })</li>
-                                </ul>
-                            </li>
-                        }
+						@if (@System.Configuration.ConfigurationManager.AppSettings["EnableBulkContactUpload"].ToString().ToLower() == "true" && ViewHelpers.HasWriteAccess(Request, User) && ViewHelpers.DisplayAdminLink(Request, User))
+						{
+							<li>@Html.ActionLink("Contacts", "BulkUpload", "Contact", null, new { @class = "nav-link" })</li>
+						}
 
-                    </ul>
+						@if (ViewHelpers.DisplayAdminLink(Request, User))
+						{
+							<li class="dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Admin</a>
+								<ul class="dropdown-menu bg-dark">
+									<li class="nav-item">@Html.ActionLink("Refresh Items", "Items", "RefreshData", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Refresh Attributes", "Attributes", "RefreshData", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Refresh Hierarchy Classes", "Hierarchy", "RefreshData", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Refresh Locales", "Locales", "RefreshData", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Global Events", "Index", "GlobalEvent", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Global POS Push", "Index", "GlobalPOSPush", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Regional Events", "Index", "RegionalEvent", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Regional POS Push", "Index", "RegionalPosPush", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Message History", "Index", "MessageHistory", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Product Selection Groups", "Index", "ProductSelectionGroup", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Failed Hierarchy Messages", "Index", "FailedHierarchyMessage", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Failed Item Locale Messages", "Index", "FailedItemLocaleMessage", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Failed Locale Messages", "Index", "FailedLocaleMessage", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Failed Price Messages", "Index", "FailedPriceMessage", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Failed Product Messages", "Index", "FailedProductMessage", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Failed Product Selection Group Messages", "Index", "FailedProductSelectionGroupMessage", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Delete Hierarchy Class", "ChooseHierarchyClass", "Support", null, new { @class = "nav-link text-nowrap" })</li>
+									<li class="nav-item">@Html.ActionLink("Configuration", "Index", "Configuration", null, new { @class = "nav-link text-nowrap" })</li>
+								</ul>
+							</li>
+						}
+
+					</ul>
                     <ul class="navbar-nav ml-auto">
                         <li class="navbar-text">Hello, @User.Identity.Name!</li>
                     </ul>

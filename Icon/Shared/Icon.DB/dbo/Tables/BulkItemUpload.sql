@@ -10,7 +10,7 @@
     [UploadedBy] NVARCHAR(MAX) NOT NULL,
 	[StatusId] INT NOT NULL
 		CONSTRAINT DF_BulkItemUpload_StatusID DEFAULT (0)
-		CONSTRAINT FK_BulkItemUpload_StatusID FOREIGN KEY REFERENCES BulkItemUploadStatus (Id), 
+		CONSTRAINT FK_BulkItemUpload_StatusID FOREIGN KEY REFERENCES BulkUploadStatus (Id), 
 	TotalRows INT NULL,
 	CurrentRow INT NULL,
     [Message] NVARCHAR(500) NULL

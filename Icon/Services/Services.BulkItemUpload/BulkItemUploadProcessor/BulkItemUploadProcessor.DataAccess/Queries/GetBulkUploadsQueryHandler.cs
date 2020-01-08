@@ -17,7 +17,7 @@ namespace BulkItemUploadProcessor.DataAccess.Queries
         public IEnumerable<BulkItemUploadInformation> Search(GetBulkUploadsParameters parameters)
         {
             var query = @"
-                DECLARE @processingId INT = (SELECT TOP 1 Id FROM dbo.BulkItemUploadStatus WHERE Status = 'Processing')
+                DECLARE @processingId INT = (SELECT TOP 1 Id FROM dbo.BulkUploadStatus WHERE Status = 'Processing')
 
                 UPDATE BulkItemUpload
                 SET StatusId = @processingId

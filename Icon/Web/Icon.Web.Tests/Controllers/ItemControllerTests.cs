@@ -57,14 +57,14 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>>> mockGetBarcodeTypeQueryHandler;
         private Mock<IExcelExporterService> mockExcelExporterService;
         private Mock<IManagerHandler<BulkItemUploadManager>> mockBulkItemUploadManagerHandler;
-        private Mock<IQueryHandler<GetBulkUploadByIdParameters, BulkUploadStatusModel>> mockGetBulkUploadByIdQueryHandler;
+        private Mock<IQueryHandler<GetBulkItemUploadByIdParameters, BulkItemUploadStatusModel>> mockGetBulkUploadByIdQueryHandler;
 
-        private Mock<IQueryHandler<GetBulkUploadErrorsPrameters, List<BulkUploadErrorModel>>> mockGetBulkUploadErrorsQueryHandler;
+        private Mock<IQueryHandler<GetBulkItemUploadErrorsPrameters, List<BulkUploadErrorModel>>> mockGetBulkUploadErrorsQueryHandler;
         private Mock<IQueryHandler<GetItemHistoryParameters, IEnumerable<ItemHistoryDbModel>>> mockGetItemHistoryQueryHandler;
         private Mock<IQueryHandler<GetItemInforHistoryParameters, IEnumerable<ItemInforHistoryDbModel>>> mockGetInforItemHistoryQueryHandler;
         private Mock<IItemHistoryBuilder> mockItemHistoryBuilder;
         private Mock<IQueryHandler<GetItemHierarchyClassHistoryParameters, ItemHierarchyClassHistoryAllModel>> mockItemHierarchyHistoryQueryHandler;
-        private Mock<IQueryHandler<GetBulkUploadStatusParameters, List<BulkUploadStatusModel>>> mockGetBulkItemUploadStatusQueryHandler;
+        private Mock<IQueryHandler<GetBulkItemUploadStatusParameters, List<BulkItemUploadStatusModel>>> mockGetBulkUploadStatusQueryHandler;
         private Mock<IHistoryModelTransformer> mockHistoryModelTransformer;
         private string top = "20";
         private string skip = "10";
@@ -97,9 +97,9 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockItemHistoryBuilder = new Mock<IItemHistoryBuilder>();
             mockHistoryModelTransformer = new Mock<IHistoryModelTransformer>();
             mockItemHierarchyHistoryQueryHandler = new Mock<IQueryHandler<GetItemHierarchyClassHistoryParameters, ItemHierarchyClassHistoryAllModel>>();
-            mockGetBulkItemUploadStatusQueryHandler = new Mock<IQueryHandler<GetBulkUploadStatusParameters, List<BulkUploadStatusModel>>>();
-            mockGetBulkUploadErrorsQueryHandler = new Mock<IQueryHandler<GetBulkUploadErrorsPrameters, List<BulkUploadErrorModel>>>();
-            mockGetBulkUploadByIdQueryHandler = new Mock<IQueryHandler<GetBulkUploadByIdParameters, BulkUploadStatusModel>>();
+            mockGetBulkUploadStatusQueryHandler = new Mock<IQueryHandler<GetBulkItemUploadStatusParameters, List<BulkItemUploadStatusModel>>>();
+            mockGetBulkUploadErrorsQueryHandler = new Mock<IQueryHandler<GetBulkItemUploadErrorsPrameters, List<BulkUploadErrorModel>>>();
+            mockGetBulkUploadByIdQueryHandler = new Mock<IQueryHandler<GetBulkItemUploadByIdParameters, BulkItemUploadStatusModel>>();
             context = new Mock<ControllerContext>();
             session = new MockHttpSessionStateBase();
             fakeHttpContext = new Mock<HttpContextBase>();
@@ -123,7 +123,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockAddItemManagerHandler.Object,
                 mockGetItemPropertiesFromMerchQueryHandler.Object,
                 mockGetBarcodeTypeQueryHandler.Object,
-                mockGetBulkItemUploadStatusQueryHandler.Object,
+                mockGetBulkUploadStatusQueryHandler.Object,
                 mockGetBulkUploadErrorsQueryHandler.Object,
                 mockExcelExporterService.Object,
                 mockItemAttributesValidatorFactory.Object,

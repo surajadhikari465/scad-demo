@@ -114,7 +114,7 @@
     }
 
 
-    function getBulkItemUploadStatusData(rowCount) {
+    function getBulkUploadStatusData(rowCount) {
 
         $.ajax({
             dataType: "json",
@@ -140,7 +140,7 @@
     }
 
     function refreshGrid(rowCount) {
-        getBulkItemUploadStatusData(rowCount);
+        getBulkUploadStatusData(rowCount);
     }
 
     function initialize() {

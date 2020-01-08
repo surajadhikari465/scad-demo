@@ -43,7 +43,7 @@ namespace Icon.Web.Controllers
         private IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler;
         private IQueryHandler<GetItemHistoryParameters, IEnumerable<ItemHistoryDbModel>> getItemHistoryQueryHandler;
         private IQueryHandler<GetItemHierarchyClassHistoryParameters, ItemHierarchyClassHistoryAllModel> getItemHierarchyHistoryQueryHandler;
-        private IQueryHandler<GetBulkUploadErrorsPrameters, List<BulkUploadErrorModel>> getBulkUploadErrorsQueryHandler;
+        private IQueryHandler<GetBulkItemUploadErrorsPrameters, List<BulkUploadErrorModel>> getBulkUploadErrorsQueryHandler;
         private IManagerHandler<UpdateItemManager> updateItemManagerHandler;
         private IInfragisticsHelper infragisticsHelper;
         private IQueryHandler<GetItemPropertiesFromMerchHierarchyParameters, MerchDependentItemPropertiesModel> getItemPropertiesFromMerchQueryHandler;
@@ -53,9 +53,9 @@ namespace Icon.Web.Controllers
         private IManagerHandler<BulkItemUploadManager> bulkItemUploadManagerHandler;
         private IItemAttributesValidatorFactory itemAttributesValidatorFactory;
         private IItemHistoryBuilder itemHistoryBuilder;
-        private IQueryHandler<GetBulkUploadStatusParameters, List<BulkUploadStatusModel>> getBulkItemUploadStatusQueryHandler;
+        private IQueryHandler<GetBulkItemUploadStatusParameters, List<BulkItemUploadStatusModel>> getBulkUploadStatusQueryHandler;
         private IQueryHandler<GetItemInforHistoryParameters, IEnumerable<ItemInforHistoryDbModel>> getItemInforHistoryQueryHandler;
-        private IQueryHandler<GetBulkUploadByIdParameters, BulkUploadStatusModel> getBulkUploadByIdQueryHandler;
+        private IQueryHandler<GetBulkItemUploadByIdParameters, BulkItemUploadStatusModel> getBulkUploadByIdQueryHandler;
 
         private IHistoryModelTransformer historyModelTransformer;
         private readonly IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler;
@@ -69,14 +69,14 @@ namespace Icon.Web.Controllers
             IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>> getAttributesQueryHandler,
             IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeInforModel>>, IEnumerable<AttributeInforModel>> getInforAttributesQueryHandler,
             IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler,
-            IQueryHandler<GetBulkUploadByIdParameters, BulkUploadStatusModel> getBulkUploadByIdQueryHandler,
+            IQueryHandler<GetBulkItemUploadByIdParameters, BulkItemUploadStatusModel> getBulkUploadByIdQueryHandler,
             IManagerHandler<UpdateItemManager> updateItemManagerHandler,
             IInfragisticsHelper infragisticsHelper,
             IManagerHandler<AddItemManager> addItemManagerHandler,
             IQueryHandler<GetItemPropertiesFromMerchHierarchyParameters, MerchDependentItemPropertiesModel> getItemPropertiesFromMerchQueryHandler,
             IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypeQueryHandler,
-            IQueryHandler<GetBulkUploadStatusParameters, List<BulkUploadStatusModel>> getBulkItemUploadStatusQueryHandler,
-            IQueryHandler<GetBulkUploadErrorsPrameters, List<BulkUploadErrorModel>> getBulkUploadErrorsQueryHandler,
+            IQueryHandler<GetBulkItemUploadStatusParameters, List<BulkItemUploadStatusModel>> getBulkUploadStatusQueryHandler,
+            IQueryHandler<GetBulkItemUploadErrorsPrameters, List<BulkUploadErrorModel>> getBulkUploadErrorsQueryHandler,
             IExcelExporterService exporterService,
             IItemAttributesValidatorFactory itemAttributesValidatorFactory,
             IManagerHandler<BulkItemUploadManager> bulkItemUploadManagerHandler,
@@ -105,7 +105,7 @@ namespace Icon.Web.Controllers
             this.bulkItemUploadManagerHandler = bulkItemUploadManagerHandler;
             this.getItemHierarchyHistoryQueryHandler = getItemHierarchyHistoryQueryHandler;
             this.itemHistoryBuilder = itemHistoryBuilder;
-            this.getBulkItemUploadStatusQueryHandler = getBulkItemUploadStatusQueryHandler;
+            this.getBulkUploadStatusQueryHandler = getBulkUploadStatusQueryHandler;
             this.getItemInforHistoryQueryHandler = getItemInforHistoryQueryHandler;
             this.historyModelTransformer = historyModelTransformer;
             this.getItemsByIdHandler = getItemsByIdHandler;
@@ -618,7 +618,7 @@ namespace Icon.Web.Controllers
         [HttpGet]
         public ActionResult BulkUploadStatus(int rowCount)
         {
-            var data = this.getBulkItemUploadStatusQueryHandler.Search(new GetBulkUploadStatusParameters() { RowCount = rowCount });
+            var data = this.getBulkUploadStatusQueryHandler.Search(new GetBulkItemUploadStatusParameters() { RowCount = rowCount });
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
@@ -627,13 +627,14 @@ namespace Icon.Web.Controllers
         public ActionResult BulkUpload()
         {
             BulkUploadViewModel bulkUploadViewModel = new BulkUploadViewModel();
-            return View(bulkUploadViewModel);
+			ViewData["BulkUploadType"] = "Item";
+			return View(bulkUploadViewModel);
         }
 
         [HttpGet]
         public ActionResult BulkUploadErrors(int Id)
         {
-            var model = getBulkUploadByIdQueryHandler.Search(new GetBulkUploadByIdParameters {BulkItemUploadId = Id});
+            var model = getBulkUploadByIdQueryHandler.Search(new GetBulkItemUploadByIdParameters {BulkItemUploadId = Id});
 
             return View(model);
         }
@@ -641,7 +642,7 @@ namespace Icon.Web.Controllers
         [HttpGet]
         public ActionResult GetBulkUploadErrors(int Id)
         {
-            var parameters = new GetBulkUploadErrorsPrameters() {BulkItemUploadId = Id};
+            var parameters = new GetBulkItemUploadErrorsPrameters() {BulkItemUploadId = Id};
             var data = this.getBulkUploadErrorsQueryHandler.Search(parameters);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
@@ -665,7 +666,7 @@ namespace Icon.Web.Controllers
 
                         if (uploadedFile == null)
                         {
-                            var result = new BulkItemUploadResultModel { Result = "Error", Message = "No file selected" };
+                            var result = new BulkUploadResultModel { Result = "Error", Message = "No file selected" };
                             return Json(result);
                         }
 
@@ -698,25 +699,25 @@ namespace Icon.Web.Controllers
                             };
                             bulkItemUploadManagerHandler.Execute(manager);
                             var successMessage = $"File name: {uploadedFileName} uploaded successfully.";
-                            var result = new BulkItemUploadResultModel { Result = "Success", Message = successMessage };
+                            var result = new BulkUploadResultModel { Result = "Success", Message = successMessage };
                             return Json(result);
                         }
                         catch (Exception ex)
                         {
-                            var result = new BulkItemUploadResultModel { Result = "Error", Message = $"Error occurred. Error details: {ex.Message}" };
+                            var result = new BulkUploadResultModel { Result = "Error", Message = $"Error occurred. Error details: {ex.Message}" };
                             return Json(result);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    var result = new BulkItemUploadResultModel { Result = "Error", Message = $"Error occurred. Error details: {ex.Message}" };
+                    var result = new BulkUploadResultModel { Result = "Error", Message = $"Error occurred. Error details: {ex.Message}" };
                     return Json(result);
                 }
             }
             else
             {
-                var result = new BulkItemUploadResultModel { Result = "Error", Message = "No files selected" };
+                var result = new BulkUploadResultModel { Result = "Error", Message = "No files selected" };
 
                 return Json(result);
             }

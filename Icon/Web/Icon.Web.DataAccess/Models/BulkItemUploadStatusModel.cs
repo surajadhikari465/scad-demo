@@ -2,7 +2,7 @@
 
 namespace Icon.Web.DataAccess.Models
 {
-    public class BulkUploadStatusModel
+    public class BulkItemUploadStatusModel
     {
         public int BulkItemUploadId { get; set; }
         public string FileName { get; set; }

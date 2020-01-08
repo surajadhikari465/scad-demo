@@ -4,7 +4,8 @@ using Icon.Web.DataAccess.Models;
 
 namespace Icon.Web.DataAccess.Queries
 {
-    public class GetBulkUploadStatusParameters : IQuery<List<BulkUploadStatusModel>> {
-     public int RowCount { get; set; }
+    public class GetBulkItemUploadErrorsPrameters : IQuery<List<BulkUploadErrorModel>>
+    {
+        public int BulkItemUploadId { get; set; }
     }
 }

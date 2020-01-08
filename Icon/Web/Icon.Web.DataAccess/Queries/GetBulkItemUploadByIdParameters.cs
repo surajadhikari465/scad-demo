@@ -3,7 +3,7 @@ using Icon.Web.DataAccess.Models;
 
 namespace Icon.Web.DataAccess.Queries
 {
-    public class GetBulkUploadByIdParameters : IQuery<BulkUploadStatusModel>
+    public class GetBulkItemUploadByIdParameters : IQuery<BulkItemUploadStatusModel>
     {
         public int BulkItemUploadId { get; set; }
     }
