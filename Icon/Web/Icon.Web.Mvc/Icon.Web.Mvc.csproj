@@ -903,6 +903,7 @@
     <Content Include="Scripts\CertificationAgency\CertificationAgency-edit.js" />
     <Content Include="Scripts\Contact\bulkupload.js" />
     <Content Include="Scripts\Contact\bulkuploaderrors.js" />
+    <Content Include="Scripts\Contact\contact-type.js" />
     <Content Include="Scripts\Contact\contact.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
