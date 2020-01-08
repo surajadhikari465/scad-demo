@@ -2,14 +2,12 @@
     $(":submit").removeAttr("disabled");
 
     $('form').submit(function () {
-        if ($('#msgBlock') == null && $('#divBlock') == null) {
             $(this).validate();
 
             if ($(this).valid()) {
                 $(':submit', this).attr('disabled', true).val('Processing...');
                 $('#divBlock').show();
             }
-        }
     });
 });
 
@@ -27,9 +25,15 @@ $(window).keydown(function(e) {
         switch (String.fromCharCode(e.which).toLowerCase()) {
             case 's':
                 e.preventDefault();
+
                 var element = $(':focus'); //Focused control
                 if (element != null) $(':focus').blur(); //Remove focuse to force saving changes
-                $("#btnSubmit").click();
+
+                let isDisabled = $('#btnSubmit').is(':disabled');
+                let isBlock = $('#msgBlock') == null ? false : $('#msgBlock').is(':visible');
+                if (!isDisabled && !isBlock) {
+                    $("#btnSubmit").click();
+                }
                 break;
         }
     }

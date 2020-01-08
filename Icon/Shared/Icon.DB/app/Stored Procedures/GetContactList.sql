@@ -30,5 +30,5 @@ BEGIN
 	JOIN ContactType ct ON ct.ContactTypeId = c.ContactTypeId
 	JOIN dbo.HierarchyClass hc ON hc.hierarchyClassID = c.HierarchyClassID
 	JOIN dbo.Hierarchy h ON h.HIERARCHYID = hc.HIERARCHYID
-	WHERE c.HierarchyClassId = IsNull(@hierarchyClassID, c.HierarchyClassId);
+	WHERE IsNull(ct.Archived, 0) = 0 AND c.HierarchyClassId = IsNull(@hierarchyClassID, c.HierarchyClassId);
 END

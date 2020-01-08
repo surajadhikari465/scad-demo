@@ -5,189 +5,198 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@{Html.RenderPartial("_HeaderPartial", "Contact Management");}
+@*@{Html.RenderPartial("_HeaderPartial", "Contact Management");}*@
 
-<div class="page-section">
-    <div id="divLinks">
-        @if(Model != null && String.Compare(ViewBag.UserWriteAccess.ToString(), Icon.Web.Common.Enums.WriteAccess.Full.ToString(), true) == 0)
-        {
-            <span style="margin-right: 10px">@Html.ActionLink("Back to Contacts", "Contact", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, null) &nbsp&nbsp&nbsp&nbsp&nbsp @Html.ActionLink("Add New Contact", "Manage", "Contact", new { hierarchyClassId = Model.HierarchyClassId, contactId = 0 }, null) &nbsp&nbsp&nbsp&nbsp&nbsp  @Html.ActionLink("Manage Contact Types", "ManageType", "Contact")</span>
-        }
-        else
-        {
-            @Html.ActionLink("Back to Contacts", "Contact", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, null)
-        }
-    </div>
-
-    @using (Html.BeginForm("Manage", "Contact", FormMethod.Post, new { @class = "begin-form" }))
+<div id="divLinks">
+    @if (Model != null && String.Compare(ViewBag.UserWriteAccess.ToString(), Icon.Web.Common.Enums.WriteAccess.Full.ToString(), true) == 0)
     {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true)
-
-        @Html.HiddenFor(model => model.ContactId)
-        @Html.HiddenFor(model => model.HierarchyClassId)
-        @Html.HiddenFor(model => model.HierarchyName);
-        @Html.HiddenFor(model => model.HierarchyClassName);
-
-        bool isWriteAccess = (Model != null && String.Compare(ViewBag.UserWriteAccess.ToString(), Icon.Web.Common.Enums.WriteAccess.Full.ToString(), true) == 0);
-        <br />
-        <h4>@(Model.ContactId > 0 ? "Edit Contact" : "New Contact")</h4>
-        <br />
-        <span style="font-size:large; color:gray">@Model.HierarchyName :&nbsp&nbsp&nbsp <span style="font-weight:bolder; color:darkgray">@Model.HierarchyClassName</span></span>
-        <br />
-        <br />
-
-        <div id="fieldset">
-            <div class="form-group">
-                @Html.LabelFor(model => model.ContactTypeId, htmlAttributes: new { @class = "control-label" })
-                <button id="btnAdd" type="button" class="btn btn-link" style="margin-left:235px" onclick="openContactType()">Add New Contact Type</button>
-                @Html.DropDownListFor(model => model.ContactTypeId, new SelectList(Model.ContactTypes.Select(x => new { value = x.ContactTypeId, text = x.ContactTypeName }), "value", "text"), "", new { @class = "form-control", @id = "ddlType" })
-                @Html.ValidationMessageFor(model => model.ContactTypeId, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ContactName, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.ContactName, @isWriteAccess
-                    ? (object)new { htmlAttributes = new { @class = "form-control", maxlength = 255 } }
-                    : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.ContactName, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Email, @isWriteAccess
-                    ? (object)new { htmlAttributes = new { @class = "form-control", maxlength = 255 } }
-                    : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Title, @isWriteAccess
-                    ? (object)new { htmlAttributes = new { @class = "form-control", maxlength = 255 } }
-                    : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.AddressLine1, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.AddressLine1, @isWriteAccess
-                    ? (object)new { htmlAttributes = new { @class = "form-control", maxlength = 255 } }
-                    : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.AddressLine1, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.AddressLine2, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.AddressLine2, @isWriteAccess
-                    ? (object)new { htmlAttributes = new { @class = "form-control", maxlength = 255 } }
-                    : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.AddressLine2, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.City, @isWriteAccess
-                    ? (object)new { htmlAttributes = new { @class = "form-control", maxlength = 255 } }
-                    : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.State, @isWriteAccess
-                    ? (object)new { htmlAttributes = new { @class = "form-control", maxlength = 255 } }
-                    : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.ZipCode, @isWriteAccess
-                    ? (object)new { htmlAttributes = new { @class = "form-control", maxlength = 15 } }
-                    : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Country, @isWriteAccess
-                    ? (object)new { htmlAttributes = new { @class = "form-control", maxlength = 255 } }
-                    : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.PhoneNumber1, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.PhoneNumber1, @isWriteAccess
-                    ? (object)new { htmlAttributes = new { @class = "form-control", maxlength = 30 } }
-                    : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.PhoneNumber1, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.PhoneNumber2, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.PhoneNumber2, @isWriteAccess
-                    ? (object)new { htmlAttributes = new { @class = "form-control", maxlength = 30 } }
-                    : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.PhoneNumber2, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.WebsiteURL, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.WebsiteURL, @isWriteAccess
-                    ? (object)new { htmlAttributes = new { @class = "form-control", } }
-                    : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                @Html.ValidationMessageFor(model => model.WebsiteURL, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        if (@isWriteAccess)
-        {
-            string btnText = (Model.ContactId > 0 ? "Update" : "Create");
-            <div class="form-group" style="height:125px">
-                <input type="submit" value=@btnText id="btnSubmit" class="btn btn-light form-submit" />
-            </div>
-        }
-
-        if (ViewData["SuccessMessage"] != null || ViewData["ErrorMessage"] != null)
-        {
-            <div id="msgBlock" class="block">
-                <div id="msgDialog" style="max-height:350px; max-width:450px; width:450px; position:absolute; left:50%; top:50%; transform: translate(-50%, -50%); background-color:whitesmoke; border:1px solid black">
-                    @{string bgrColor = (@ViewData["ErrorMessage"] != null ? "lightcoral" : "lightgreen");}
-                    @{var message = (@ViewData["ErrorMessage"] != null ? @ViewData["ErrorMessage"] : @ViewData["SuccessMessage"]);}
-
-                    <div style="display:flex; align-items:center; height:25px; max-height:25px; background-color:@bgrColor;">
-                        <label style="padding-left:5px; width:inherit; font-weight:bolder;">Contact Info</label>
-                    </div>
-
-                    <div style="min-height:50px; max-height:190px; padding:5px 0px 5px 5px; overflow-y:auto; overflow-x:hidden; margin:auto;">
-                        @message
-                    </div>
-
-                    <div class="row justify-content-md-center" style="display:flex; min-height:35px; max-height:35px; padding:5px;">
-                        @if (ViewData["SuccessMessage"] != null)
-                        {
-                            <div class="col-md-4">
-                                @Html.ActionLink("Back to Contacts", "Contact", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, null)
-                            </div>
-
-                            <div class="col-md-4">
-                                @Html.ActionLink("Add New Contact", "Manage", "Contact", new { hierarchyClassId = Model.HierarchyClassId, contactId = 0 }, null)
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-md-4">
-                                <button type="button" class="btn btn-link" onclick="closeDialog()">Close</button>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
-        }
+        <span style="margin-right: 10px">@Html.ActionLink("Back to Contacts", "Contact", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, null) &nbsp&nbsp&nbsp&nbsp&nbsp  @Html.ActionLink("Add New Contact", "Manage", "Contact", new { hierarchyClassId = Model.HierarchyClassId, contactId = 0 }, null) &nbsp&nbsp&nbsp&nbsp&nbsp  @Html.ActionLink("Manage Contact Types", "ManageType", "Contact")</span>
+    }
+    else
+    {
+        @Html.ActionLink("Back to Contacts", "Contact", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, null)
     }
 </div>
+
+@using (Html.BeginForm("Manage", "Contact", FormMethod.Post, new { @class = "begin-form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(model => model.ContactId)
+    @Html.HiddenFor(model => model.HierarchyClassId)
+    @Html.HiddenFor(model => model.HierarchyName);
+    @Html.HiddenFor(model => model.HierarchyClassName);
+
+    <div class="container">
+        @{bool isWriteAccessX = (Model != null && String.Compare(ViewBag.UserWriteAccess.ToString(), Icon.Web.Common.Enums.WriteAccess.Full.ToString(), true) == 0);}
+
+        <div class="py-5 text-center">
+            <h2>Contact Management</h2>
+            <p class="lead">@(Model.ContactId > 0 ? "Edit Contact" : "New Contact")</p>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-10 order-md-1">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(model => model.ContactTypeId, htmlAttributes: new { @class = "control-label text-warning" })
+                        <div class="input-group-append">
+                            @Html.DropDownListFor(model => model.ContactTypeId, new SelectList(Model.ContactTypes.Select(x => new { value = x.ContactTypeId, text = x.ContactTypeName }), "value", "text"), "", new { @class = "form-control text-dark", @id = "ddlType" })
+                            <button id="btnAdd" type="button" class="input-group-text btn" data-toggle="tooltip" title="Add Contact Type" tabindex="-1" onclick="openContactType()">+</button>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ContactTypeId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label text-danger text-muted" })
+                        @Html.EditorFor(model => model.Title, @isWriteAccessX
+                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
+                            : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(model => model.ContactName, htmlAttributes: new { @class = "control-label text-warning" })
+                        @Html.EditorFor(model => model.ContactName, @isWriteAccessX
+                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
+                            : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.ContactName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label text-warning" })
+                        @Html.EditorFor(model => model.Email, @isWriteAccessX
+                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
+                            : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(model => model.AddressLine1, htmlAttributes: new { @class = "control-label text-muted" })
+                        @Html.EditorFor(model => model.AddressLine1, @isWriteAccessX
+                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
+                            : new { htmlAttributes = new { @class = "form-control col-md-12", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.AddressLine1, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(model => model.AddressLine2, htmlAttributes: new { @class = "control-label text-muted" })
+                        @Html.EditorFor(model => model.AddressLine2, @isWriteAccessX
+                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
+                            : new { htmlAttributes = new { @class = "form-control col-md-12", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.AddressLine2, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label text-muted" })
+                        @Html.EditorFor(model => model.City, @isWriteAccessX
+                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
+                            : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label text-muted" })
+                        @Html.EditorFor(model => model.State, @isWriteAccessX
+                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
+                            : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "control-label text-muted" })
+                        @Html.EditorFor(model => model.ZipCode, @isWriteAccessX
+                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 15 } }
+                            : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label text-muted" })
+                        @Html.EditorFor(model => model.Country, @isWriteAccessX
+                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
+                            : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(model => model.PhoneNumber1, htmlAttributes: new { @class = "control-label text-muted" })
+                        @Html.EditorFor(model => model.PhoneNumber1, @isWriteAccessX
+                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 30 } }
+                            : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.PhoneNumber1, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(model => model.PhoneNumber2, htmlAttributes: new { @class = "control-label text-muted" })
+                        @Html.EditorFor(model => model.PhoneNumber2, @isWriteAccessX
+                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 30 } }
+                            : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.PhoneNumber2, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.WebsiteURL, htmlAttributes: new { @class = "control-label text-muted" })
+                    @Html.EditorFor(model => model.WebsiteURL, @isWriteAccessX
+                        ? (object)new { htmlAttributes = new { @class = "form-control col-md-12 text-dark", } }
+                        : new { htmlAttributes = new { @class = "form-control col-md-12", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.WebsiteURL, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @*<input type="button" value=@(Model.ContactId > 0 ? "Update" : "Create") id="btnSubmit" class="btn btn-primary" onclick="submitContact()" />*@
+                    <input type="submit" value=@(Model.ContactId > 0 ? "Update" : "Create") id="btnSubmit" class="btn btn-primary form-submit" />
+                </div>
+
+
+                @if (ViewData["SuccessMessage"] != null || ViewData["ErrorMessage"] != null)
+                 {
+                    <div id="msgBlock" class="block">
+                        @{string bgColor = (@ViewData["ErrorMessage"] != null ? "bg-danger" : "bg-success");}
+                        @{var message = (@ViewData["ErrorMessage"] != null ? @ViewData["ErrorMessage"] : @ViewData["SuccessMessage"]);}
+
+                        <div class="ui-dialog ui-widget ui-widget-content ui-front" role="dialog" tabindex="-1" style="max-height:220px; width:450px; max-width:450px; position:absolute; left:50%; top:50%; transform: translate(-50%, -50%);">
+                            <div class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle; @bgColor">
+                                <span id="ui-id-1" class="ui-dialog-title">System Info</span><button type="button" class="ui-dialog-titlebar-close" style="display: none;"></button>
+                            </div>
+
+                            <div style="max-height:100px; box-sizing:border-box; overflow-y:auto; overflow-x:no-display">
+                                <label id="dlgMessage" style="margin:5px 0px 0px 5px">@message</label>
+                            </div>
+
+                            <hr />
+
+                            <div class="clearfix bg-gray-light" style="margin: 3px 5px 5px 5px;">
+                                @if (ViewData["SuccessMessage"] != null)
+                                { 
+                                    @Html.ActionLink("Back to Contacts", "Contact", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, new { @class = "float-left" })
+                                    @Html.ActionLink("Add New Contact", "Manage", "Contact", new { hierarchyClassId = Model.HierarchyClassId, contactId = 0 }, new { @class = "float-right" })
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn float-right" onclick="closeDialog()">Close</button>  
+                                }
+                            </div>
+                        </div>
+                    </div>
+                 }
+            </div>
+        </div>
+    </div>
+}
 
 <div id="divBlock" class="block" style="display:none;">
     <div class="block-message">
@@ -196,13 +205,14 @@
     </div>
 </div>
 
-<div id="dialogContactType" title="Contact Type" style="display:none" >
+<div id="dialogContactType" title="Contact Type" style="display:none">
     <div class="form-group" style="max-height:300px; box-sizing:border-box;">
         <label>Contact Type Name*</label>
         <input type="text" id="contactTypeName" class="form-control" value="" maxlength="255" />
         <label id="dlgMsg" />
     </div>
 </div>
+
 
 @section scripts
 {
