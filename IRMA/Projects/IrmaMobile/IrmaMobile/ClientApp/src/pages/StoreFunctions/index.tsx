@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import './styles.scss';
-import { Modal } from 'semantic-ui-react'
+import { Modal } from 'semantic-ui-react';
 import { AppContext, types, ITeam } from "../../store";
 
 interface StoreFunctionsProps {

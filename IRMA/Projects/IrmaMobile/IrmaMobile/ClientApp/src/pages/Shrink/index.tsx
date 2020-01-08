@@ -3,6 +3,7 @@ import React, { Fragment, useContext, useState, useEffect } from 'react';
 import { BarcodeScanner } from '@wfm/mobile';
 import './styles.scss';
 import { AppContext, types, IMenuItem } from "../../store";
+import { Modal } from 'semantic-ui-react';
 import CurrentLocation from "../../layout/CurrentLocation";
 import LoadingComponent from '../../layout/LoadingComponent';
 import { Config } from '../../config';
@@ -29,6 +30,7 @@ const Shrink:React.FC = () => {
     const {state, dispatch} = useContext(AppContext);
     const {isLoading} = state;
     const {subteam, region, storeNumber, subteamNo, shrinkTypes, shrinkType} = state;
+    const [alert, setAlert] = useState({open:false, alertMessage:''});
     const newMenuItems = [
       { id: 1, order: 0, text: "Review", path: "/shrink/review", disabled: false } as IMenuItem,
    ] as IMenuItem[];
@@ -39,11 +41,13 @@ const Shrink:React.FC = () => {
         try{
           setUpc(parseInt(data, 10));
         }catch(ex){
-          alert(ex.message)
+          setAlert({open:true, alertMessage: ex.message});
         }
       });
       dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems});
-      dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: true }); 
+      if(shrinkState.isSelected){
+        dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: true }); 
+      }
       return () => {
         //unmount and unregister handler
       };
@@ -69,12 +73,19 @@ const Shrink:React.FC = () => {
           setShrinkState({...shrinkState, ...result, upcValue:upc, quantity:1, queued: 0});
         }
     }
+    const toggleAlert = (e:any) =>{
+        setAlert({open:!alert.open, alertMessage: alert.alertMessage});
+    }
     const setUpc = (value?:any) =>{  
       let upc = value && typeof value !== 'object' ? value: shrinkState.upcValue;
       setIsLoading(true);
       fetch(`${Config.baseUrl}/${region}/storeitems?storeNo=${storeNumber}&subteamNo=${subteamNo}&scanCode=${upc}`)
       .then(res => res.json())
-      .then((result) => setShrinkItem(result, upc))
+      .then((result) => {
+        if(result.itemKey === 0 && result.itemDescription === null){
+          setAlert({open:true, alertMessage: 'Item not found'});
+        } else setShrinkItem(result, upc);
+       })
       .finally(() => setIsLoading(false))
     }
     const setQty = (e:any) =>{
@@ -85,14 +96,14 @@ const Shrink:React.FC = () => {
     }
     const clear = () =>{
       qtyInput.current.value = '';
-      setShrinkState({...initialState, isSelected:true});
+      setShrinkState({...initialState, isSelected:true, skipConfirm: shrinkState.skipConfirm});
     }
     const setUpcValue = (e:any) =>{
-      setShrinkState({...initialState, upcValue: e.target.value, isSelected:true});
+      setShrinkState({...initialState, upcValue: e.target.value, isSelected:true, skipConfirm: shrinkState.skipConfirm});
     }
     const save = (e:any) =>{
       const { isSelected, skipConfirm, queued, ...shrinkItem} = shrinkState;
-      shrinkItem.shrinkType = shrinkType.shrinkType;
+      shrinkItem.shrinkType = shrinkType.shrinkSubTypeMember;
       shrinkItem.quantity =  +(shrinkState.queued) + +(shrinkState.quantity)
       let shrinkItems: any = [];    
       if(localStorage.getItem("shrinkItems") !== null){
@@ -107,7 +118,7 @@ const Shrink:React.FC = () => {
       }
       localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems))
       if(!shrinkState.skipConfirm){
-        window.alert('Shrink Item Saved');
+        setAlert({open:true, alertMessage: 'Shrink Item Saved'});
       }
       clear();
     }
@@ -171,7 +182,7 @@ const Shrink:React.FC = () => {
               <section className='entry-section queued-section'>
                 <h1>Queued: {shrinkState.queued}</h1>
                 <div>
-                  <input onClick={skipConfirm} type="checkbox" defaultChecked={true}/>
+                  <input onClick={skipConfirm} type="checkbox" defaultChecked={shrinkState.skipConfirm}/>
                   <label>Skip Confirm</label>
                 </div>
               </section>
@@ -184,6 +195,13 @@ const Shrink:React.FC = () => {
             </div>)
         }
       </div>
+      <Modal
+          open={alert.open}
+          header='IRMA Mobile'
+          content={alert.alertMessage}
+          actions={['OK']}
+          onActionClick={toggleAlert}
+        />
       </Fragment>
     )
   }

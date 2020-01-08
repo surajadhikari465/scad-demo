@@ -1,7 +1,4 @@
 
-.ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover {
-    background: rgba(0,40,20,0.5);
-}
 
 .review-shrink-page{
     margin-top:14px;
@@ -18,4 +15,15 @@
             width:94%;
         }
     }
+    .ReactTable{
+        .rt-thead{
+            margin-right:10px;
+        }
+        .rt-th  {
+            text-align: left;
+        }
+    }
+    .ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover {
+        background: rgba(0,40,20,0.5);
+    }    
 }
