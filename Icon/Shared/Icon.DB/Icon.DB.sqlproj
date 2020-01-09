@@ -791,6 +791,7 @@
     <Build Include="dbo\Tables\BulkContactUploadData.sql" />
     <Build Include="dbo\Tables\BulkContactUploadErrors.sql" />
     <Build Include="dbo\StoredProcedures\AddBulkContactUpload.sql" />
+    <Build Include="esb\Tables\MessageDeadLetterQueue.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
