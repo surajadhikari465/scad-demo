@@ -5,8 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*@{Html.RenderPartial("_HeaderPartial", "Contact Management");}*@
-
 <div id="divLinks">
     @if (Model != null && String.Compare(ViewBag.UserWriteAccess.ToString(), Icon.Web.Common.Enums.WriteAccess.Full.ToString(), true) == 0)
     {
@@ -31,7 +29,7 @@
     <div class="container">
         @{bool isWriteAccessX = (Model != null && String.Compare(ViewBag.UserWriteAccess.ToString(), Icon.Web.Common.Enums.WriteAccess.Full.ToString(), true) == 0);}
 
-        <div class="py-5 text-center">
+        <div class="text-center">
             <h2>Contact Management</h2>
             <p class="lead">@(Model.ContactId > 0 ? "Edit Contact" : "New Contact")</p>
         </div>
@@ -40,8 +38,8 @@
         <div class="row">
             <div class="col-md-10 order-md-1">
                 <div class="row">
-                    <div class="col-md-6 mb-3">
-                        @Html.LabelFor(model => model.ContactTypeId, htmlAttributes: new { @class = "control-label text-warning" })
+                    <div class="col-md-6 mb-2">
+                        @Html.LabelFor(model => model.ContactTypeId, htmlAttributes: new { @class = "control-label text-warning mb-0" })
                         <div class="input-group-append">
                             @Html.DropDownListFor(model => model.ContactTypeId, new SelectList(Model.ContactTypes.Select(x => new { value = x.ContactTypeId, text = x.ContactTypeName }), "value", "text"), "", new { @class = "form-control text-dark", @id = "ddlType" })
                             <button id="btnAdd" type="button" class="input-group-text btn" data-toggle="tooltip" title="Add Contact Type" tabindex="-1" onclick="openContactType()">+</button>
@@ -49,44 +47,44 @@
                         @Html.ValidationMessageFor(model => model.ContactTypeId, "", new { @class = "text-danger" })
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label text-danger text-muted" })
+                    <div class="col-md-6 mb-2">
+                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label text-danger text-muted mb-0" })
                         @Html.EditorFor(model => model.Title, @isWriteAccessX
-                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
+                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 }}
                             : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6 mb-3">
-                        @Html.LabelFor(model => model.ContactName, htmlAttributes: new { @class = "control-label text-warning" })
+                    <div class="col-md-6 mb-2">
+                        @Html.LabelFor(model => model.ContactName, htmlAttributes: new { @class = "control-label text-warning mb-0" })
                         @Html.EditorFor(model => model.ContactName, @isWriteAccessX
-                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
+                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255, placeholder = "Enter Contact Name..." }}
                             : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.ContactName, "", new { @class = "text-danger" })
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label text-warning" })
+                    <div class="col-md-6 mb-2">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label text-warning mb-0" })
                         @Html.EditorFor(model => model.Email, @isWriteAccessX
-                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
+                            ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255, placeholder = "Enter Email..." }}
                             : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6 mb-3">
-                        @Html.LabelFor(model => model.AddressLine1, htmlAttributes: new { @class = "control-label text-muted" })
+                    <div class="col-md-6 mb-2">
+                        @Html.LabelFor(model => model.AddressLine1, htmlAttributes: new { @class = "control-label text-muted mb-0" })
                         @Html.EditorFor(model => model.AddressLine1, @isWriteAccessX
                             ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
                             : new { htmlAttributes = new { @class = "form-control col-md-12", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.AddressLine1, "", new { @class = "text-danger" })
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        @Html.LabelFor(model => model.AddressLine2, htmlAttributes: new { @class = "control-label text-muted" })
+                    <div class="col-md-6 mb-2">
+                        @Html.LabelFor(model => model.AddressLine2, htmlAttributes: new { @class = "control-label text-muted mb-0" })
                         @Html.EditorFor(model => model.AddressLine2, @isWriteAccessX
                             ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
                             : new { htmlAttributes = new { @class = "form-control col-md-12", @readonly = "readonly" } })
@@ -95,16 +93,16 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6 mb-3">
-                        @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label text-muted" })
+                    <div class="col-md-6 mb-2">
+                        @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label text-muted mb-0" })
                         @Html.EditorFor(model => model.City, @isWriteAccessX
                             ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
                             : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label text-muted" })
+                    <div class="col-md-6 mb-2">
+                        @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label text-muted mb-0" })
                         @Html.EditorFor(model => model.State, @isWriteAccessX
                             ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
                             : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
@@ -113,16 +111,16 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6 mb-3">
-                        @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "control-label text-muted" })
+                    <div class="col-md-6 mb-2">
+                        @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "control-label text-muted mb-0" })
                         @Html.EditorFor(model => model.ZipCode, @isWriteAccessX
                             ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 15 } }
                             : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label text-muted" })
+                    <div class="col-md-6 mb-2">
+                        @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label text-muted mb-0" })
                         @Html.EditorFor(model => model.Country, @isWriteAccessX
                             ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 255 } }
                             : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
@@ -131,16 +129,16 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6 mb-3">
-                        @Html.LabelFor(model => model.PhoneNumber1, htmlAttributes: new { @class = "control-label text-muted" })
+                    <div class="col-md-6 mb-2">
+                        @Html.LabelFor(model => model.PhoneNumber1, htmlAttributes: new { @class = "control-label text-muted mb-0" })
                         @Html.EditorFor(model => model.PhoneNumber1, @isWriteAccessX
                             ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 30 } }
                             : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.PhoneNumber1, "", new { @class = "text-danger" })
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        @Html.LabelFor(model => model.PhoneNumber2, htmlAttributes: new { @class = "control-label text-muted" })
+                    <div class="col-md-6 mb-2">
+                        @Html.LabelFor(model => model.PhoneNumber2, htmlAttributes: new { @class = "control-label text-muted mb-0" })
                         @Html.EditorFor(model => model.PhoneNumber2, @isWriteAccessX
                             ? (object)new { htmlAttributes = new { @class = "form-control text-dark", maxlength = 30 } }
                             : new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
@@ -148,16 +146,15 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    @Html.LabelFor(model => model.WebsiteURL, htmlAttributes: new { @class = "control-label text-muted" })
+                <div class="mb-2">
+                    @Html.LabelFor(model => model.WebsiteURL, htmlAttributes: new { @class = "control-label text-muted mb-0" })
                     @Html.EditorFor(model => model.WebsiteURL, @isWriteAccessX
                         ? (object)new { htmlAttributes = new { @class = "form-control col-md-12 text-dark", } }
                         : new { htmlAttributes = new { @class = "form-control col-md-12", @readonly = "readonly" } })
                     @Html.ValidationMessageFor(model => model.WebsiteURL, "", new { @class = "text-danger" })
                 </div>
-
-                <div class="mb-3">
-                    @*<input type="button" value=@(Model.ContactId > 0 ? "Update" : "Create") id="btnSubmit" class="btn btn-primary" onclick="submitContact()" />*@
+                
+                <div>
                     <input type="submit" value=@(Model.ContactId > 0 ? "Update" : "Create") id="btnSubmit" class="btn btn-primary form-submit" />
                 </div>
 

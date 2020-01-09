@@ -68,7 +68,7 @@
                                 $(".ui-dialog-buttonset").show();
                                 $('#dlgSave').show();
                                 $('#dlgCancel').show();
-                                $("#dlgMsg").text(JSON.parse(xhr.responseText));
+                                $("#dlgTypeMsg").text(JSON.parse(xhr.responseText));
                             }
                     });
                 }
