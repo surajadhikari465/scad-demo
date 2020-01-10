@@ -9,22 +9,21 @@ namespace Icon.Web.Mvc.Exporters
     public class ContactExporter : BaseContactExporter<ContactExportViewModel>
     {
         private const int HierarchyNameIndex = 0;
-        private const int HierarchyClassIdIndex = 1;
-        private const int HierarchyClassNameIndex = 2;
-        private const int ContactIdIndex = 3;
-        private const int ContactTypeNameIndex = 4;
-        private const int ContactNameIndex = 5;
-        private const int EmailIndex = 6;
-        private const int TitleIndex = 7;
-        private const int AddressLine1Index = 8;
-        private const int AddressLine2Index = 9;
-        private const int CityIndex = 10;
-        private const int StateIndex = 11;
-        private const int ZipCodeIndex = 12;
-        private const int CountryIndex = 13;
-        private const int PhoneNumber1Index = 14;
-        private const int PhoneNumber2Index = 15;
-        private const int WebsiteURLIndex = 16;
+        private const int HierarchyClassNameIndex = 1;
+        private const int ContactIdIndex = 2;
+        private const int ContactTypeNameIndex = 3;
+        private const int ContactNameIndex = 4;
+        private const int EmailIndex = 5;
+        private const int TitleIndex = 6;
+        private const int AddressLine1Index = 7;
+        private const int AddressLine2Index = 8;
+        private const int CityIndex = 9;
+        private const int StateIndex = 10;
+        private const int ZipCodeIndex = 11;
+        private const int CountryIndex = 12;
+        private const int PhoneNumber1Index = 13;
+        private const int PhoneNumber2Index = 14;
+        private const int WebsiteURLIndex = 15;
 
         ContactExportViewModel contactModel = new ContactExportViewModel();
 
@@ -36,19 +35,13 @@ namespace Icon.Web.Mvc.Exporters
                 2000,
                 HorizontalCellAlignment.Left,
                 (row, contact) => row.Cells[HierarchyNameIndex].Value = contact.HierarchyName);
-            
-
-            AddSpreadsheetColumn(HierarchyClassIdIndex,
-                ContactHelper.ContactColumnNames.HierarchyClassId,
-                2000,
-                HorizontalCellAlignment.Left,
-                (row, contact) => row.Cells[HierarchyClassIdIndex].Value = contact.HierarchyClassId);
+          
 
             AddSpreadsheetColumn(HierarchyClassNameIndex,
                 ContactHelper.ContactColumnNames.HierarchyClassName,
                 2000,
                 HorizontalCellAlignment.Left,
-                (row, contact) => row.Cells[HierarchyClassNameIndex].Value = contact.HierarchyClassName);
+                (row, contact) => row.Cells[HierarchyClassNameIndex].Value = string.Format("{0}|{1}", contact.HierarchyClassName, contact.HierarchyClassId ));
 
             AddSpreadsheetColumn(ContactIdIndex,
                 ContactHelper.ContactColumnNames.ContactId,
