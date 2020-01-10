@@ -6,6 +6,7 @@ using AttributePublisher.Services;
 using Esb.Core.MessageBuilders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 
 namespace AttributePublisher.Tests.Unit.Operations
@@ -33,6 +34,8 @@ namespace AttributePublisher.Tests.Unit.Operations
         public void BuildMessageOperation_Execute_BuildsMessageGivenModels()
         {
             //Given 
+            var messageID = Guid.NewGuid().ToString();
+
             var parameters = new AttributePublisherServiceParameters
             {
                 Attributes = new List<AttributeModel>
@@ -42,7 +45,7 @@ namespace AttributePublisher.Tests.Unit.Operations
             };
             mockMessageBuilder.Setup(m => m.BuildMessage(It.IsAny<List<AttributeModel>>()))
                 .Returns("Test");
-            mockMessageHeaderBuilder.Setup(m => m.BuildHeader())
+            mockMessageHeaderBuilder.Setup(m => m.BuildHeader(It.IsAny<string>()))
                 .Returns(new Dictionary<string, string> { { "Test", "Test" } });
 
             //When

@@ -1,6 +1,7 @@
 ﻿using AttributePublisher.MessageBuilders;
 using AttributePublisher.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace AttributePublisher.Tests.Unit.MessageBuilders
 {
@@ -21,13 +22,15 @@ namespace AttributePublisher.Tests.Unit.MessageBuilders
         public void AttributeMessageHeaderBuilder_BuildHeader_ReturnsMessageHeaders()
         {
             //When
-            var result = messageHeaderBuilder.BuildHeader();
+            var messageID = Guid.NewGuid().ToString();
+            var result = messageHeaderBuilder.BuildHeader(messageID);
 
             //Then
-            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(4, result.Count);
             Assert.AreEqual(result["nonReceivingSysName"], "Test");
             Assert.AreEqual(result["TransactionType"], AttributePublisherResources.MessageTransactionType);
             Assert.AreEqual(result["Source"], AttributePublisherResources.MessageSource);
+            Assert.AreEqual(result["MessageID"], messageID);
         }
     }
 }

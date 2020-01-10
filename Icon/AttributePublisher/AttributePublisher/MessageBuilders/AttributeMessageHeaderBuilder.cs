@@ -8,6 +8,7 @@ namespace AttributePublisher.MessageBuilders
         private const string NonReceivingSysName = "nonReceivingSysName";
         private const string TransactionType = "TransactionType";
         private const string Source = "Source";
+        private const string MessageID = "MessageID";
 
         private AttributePublisherServiceSettings settings;
 
@@ -16,13 +17,14 @@ namespace AttributePublisher.MessageBuilders
             this.settings = settings;
         }
 
-        public Dictionary<string, string> BuildHeader()
+        public Dictionary<string, string> BuildHeader(string messageID)
         {
             return new Dictionary<string, string>
             {
                 { NonReceivingSysName, settings.NonReceivingSystems },
                 { TransactionType, AttributePublisherResources.MessageTransactionType },
-                { Source, AttributePublisherResources.MessageSource }
+                { Source, AttributePublisherResources.MessageSource },
+                { MessageID, messageID},
             };
         }
     }

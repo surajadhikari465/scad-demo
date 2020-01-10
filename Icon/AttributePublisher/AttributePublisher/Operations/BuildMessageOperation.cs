@@ -33,14 +33,15 @@ namespace AttributePublisher.Operations
             foreach (var attributes in parameters.Attributes.Batch(settings.RecordsPerMessage))
             {
                 string messageText = messageBuilder.BuildMessage(attributes.ToList());
+                var messageID = Guid.NewGuid().ToString();
 
                 parameters.AttributeMessages.Add(
                     new AttributeMessageModel
                     {
                         Attributes = attributes.ToList(),
-                        MessageId = Guid.NewGuid().ToString(),
+                        MessageId = messageID,
                         Message = messageText,
-                        MessageHeaders = messageHeaderBuilder.BuildHeader(),
+                        MessageHeaders = messageHeaderBuilder.BuildHeader(messageID),
                     });
             }
         }

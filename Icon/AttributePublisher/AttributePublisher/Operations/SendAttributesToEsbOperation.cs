@@ -18,7 +18,7 @@ namespace AttributePublisher.Operations
         {
             foreach (var message in parameters.AttributeMessages)
             {
-                producer.Send(message.Message, message.MessageId, message.MessageHeaders);
+                producer.Send(message.Message, message.MessageHeaders);
             }
         }
     }

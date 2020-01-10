@@ -4,6 +4,6 @@ namespace AttributePublisher.MessageBuilders
 {
     public interface IMessageHeaderBuilder
     {
-        Dictionary<string, string> BuildHeader();
+        Dictionary<string, string> BuildHeader(string messageID);
     }
 }
