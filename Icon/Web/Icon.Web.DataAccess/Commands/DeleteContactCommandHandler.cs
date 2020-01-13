@@ -22,7 +22,7 @@ namespace Icon.Web.DataAccess.Commands
             .ToDataTable(); //TYPE app.IntList
 
             this.db.Connection.Query<int>(sql: "app.DeleteContact",
-                                          param: new { ids = tvp },
+                                          param: new { userName = data.UserName, ids = tvp },
                                           transaction: this.db.Transaction,
                                           commandType: System.Data.CommandType.StoredProcedure);
         }

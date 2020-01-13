@@ -201,6 +201,7 @@ namespace Icon.Web.Mvc.Controllers
 
 			var command = new AddUpdateContactCommand()
 			{
+				UserName = User.Identity.Name,
 				Contacts = new List<ContactModel>()
 					{
 						new ContactModel()
@@ -417,7 +418,7 @@ namespace Icon.Web.Mvc.Controllers
 					return Json("You don’t have sufficient privileges to complete selected action.");
 				}
 
-				this.handlerDeleteContact.Execute(new DeleteContactCommand() { ContactIds = new List<int>() { contactId } });
+				this.handlerDeleteContact.Execute(new DeleteContactCommand() { UserName = User.Identity.Name, ContactIds = new List<int>() { contactId } });
 				Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
 				return Json(new { success = true, responseText = "Contact has been deleted." }, JsonRequestBehavior.AllowGet);
 			}

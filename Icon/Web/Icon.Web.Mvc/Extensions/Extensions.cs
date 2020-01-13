@@ -39,8 +39,7 @@ namespace Icon.Web.Mvc.Extensions
 
         public static List<BrandViewModel> ToViewModels(this List<BrandModel> brands)
         {
-            var isContactViewAllowed = AppSettingsAccessor.GetBoolSetting("EnableContactView", false);
-            return brands.Select(b => new BrandViewModel(b, isContactViewAllowed)).ToList();
+            return brands.Select(b => new BrandViewModel(b)).ToList();
         }
 
         public static List<ContactViewModel> ToViewModels(this List<ContactModel> contacts)

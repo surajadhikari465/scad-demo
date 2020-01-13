@@ -53,7 +53,8 @@ namespace Icon.Web.Mvc.Controllers
         // GET: Brand
         public ActionResult Index()
         {
-            return View(new BrandViewModel(this.settings.IsContactViewEnabled) { UserWriteAccess = GetWriteAccess() });
+            ViewBag.IsContactViewAllowed = this.settings.IsContactViewEnabled;
+            return View(new BrandViewModel() { UserWriteAccess = GetWriteAccess() });
         }
 
         // GET: Brand/Create
@@ -136,7 +137,7 @@ namespace Icon.Web.Mvc.Controllers
             var traits = brand.HierarchyClassTrait.ToArray();
             var brands = GetBrandList();
 
-            var viewModel = new BrandViewModel(this.settings.IsContactViewEnabled)
+            var viewModel = new BrandViewModel()
                 {
                     BrandName = brand.hierarchyClassName,
                     BrandAbbreviation = traits.SingleOrDefault(x => x.traitID == Traits.BrandAbbreviation)?.traitValue.Trim(),
@@ -154,6 +155,7 @@ namespace Icon.Web.Mvc.Controllers
             viewModel.BrandHashKey = CalculateHashKey(viewModel.BrandName, viewModel.BrandAbbreviation);
             viewModel.TraitHashKey = CalculateHashKey(viewModel.BrandAbbreviation, viewModel.Designation, viewModel.ZipCode, viewModel.Locality, viewModel.ParentCompany); 
 
+            ViewBag.IsContactViewAllowed = this.settings.IsContactViewEnabled;
             return View(viewModel);
         }
 
@@ -226,6 +228,7 @@ namespace Icon.Web.Mvc.Controllers
 
             this.cacheManager.ClearCacheForController("HierarchyClass");
 
+            ViewBag.IsContactViewAllowed = this.settings.IsContactViewEnabled;
             return View(viewModel);
         }
 

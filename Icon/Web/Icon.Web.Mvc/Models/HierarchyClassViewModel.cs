@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.Common;
+using System.Linq;
 
 namespace Icon.Web.Mvc.Models
 {
@@ -68,6 +69,7 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = "SubBrick Code")]
         [MaxLength(255)]
         public string SubBrickCode { get; set; }
+        public string ContactLastUpdatedBy { get; private set; }
 
         public HierarchyClassViewModel()
         {
@@ -106,6 +108,9 @@ namespace Icon.Web.Mvc.Models
             NonMerchandiseTrait = HierarchyClassAccessor.GetNonMerchandiseTrait(hierarchyClass);
             ProhibitDiscount = HierarchyClassAccessor.GetProhibitDiscount(hierarchyClass);
             SubBrickCode = HierarchyClassAccessor.GetSubBrickCode(hierarchyClass);
+            ContactLastUpdatedBy = hierarchyClass.HierarchyClassTrait
+                .Where(x => String.Compare(x.Trait.traitCode, "HCU", true) == 0)
+                .FirstOrDefault() ? .traitValue;
         }
 
         public HierarchyClassViewModel(HierarchyClassModel hierarchyClassModel)

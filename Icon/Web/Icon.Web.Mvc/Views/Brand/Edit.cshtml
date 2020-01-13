@@ -1,4 +1,5 @@
-﻿@model Icon.Web.Mvc.Models.BrandViewModel
+﻿@using Icon.Web.Mvc.Utility
+@model Icon.Web.Mvc.Models.BrandViewModel
 
 @{
     ViewBag.Title = "Edit Brand";
@@ -9,7 +10,7 @@
 
 @if (Model != null && (Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full)
 {
-    if (Model.IsContactViewEnabled)
+    if(ViewBag.IsContactViewAllowed != null && ViewBag.IsContactViewAllowed)
     {
         <div>
             @Html.ActionLink("Back to Brands", "Index") &nbsp&nbsp&nbsp @Html.ActionLink("Add New Brand", "Create") &nbsp&nbsp&nbsp @Html.ActionLink("Manage Contacts", "Contact", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, null)
@@ -154,14 +155,14 @@ else
         </div>
 
         <div class="validation-section page-subsection">
-            @if(ViewData["SuccessMessage"] != null)
+            @if (ViewData["SuccessMessage"] != null)
             {
                 <div class="alert alert-success alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <strong>@ViewData["SuccessMessage"].ToString()</strong>
                 </div>
             }
-            @if(ViewData["ErrorMessage"] != null)
+            @if (ViewData["ErrorMessage"] != null)
             {
                 <div class="alert alert-danger alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>

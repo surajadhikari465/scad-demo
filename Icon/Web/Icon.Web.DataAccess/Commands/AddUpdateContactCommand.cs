@@ -5,6 +5,7 @@ namespace Icon.Web.DataAccess.Commands
 {
     public class AddUpdateContactCommand
     {
+       public string UserName { get; set; }
        public List<ContactModel> Contacts { get; set; } 
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System.Linq;
-using System.Collections.Generic;
 using Dapper;
 using Icon.Shared.DataAccess.Dapper.DbProviders;
 using Icon.Common.DataAccess;
-using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Extensions;
 
 namespace Icon.Web.DataAccess.Commands
@@ -41,7 +39,7 @@ namespace Icon.Web.DataAccess.Commands
             .ToDataTable(); //TYPE app.ContactInputType
 
             this.db.Connection.Query<int>(sql: "app.AddUpdateContact",
-                                          param: new { contact = tvp },
+                                          param: new { userName = data.UserName, contact = tvp },
                                           transaction: this.db.Transaction,
                                           commandType: System.Data.CommandType.StoredProcedure);
         }
