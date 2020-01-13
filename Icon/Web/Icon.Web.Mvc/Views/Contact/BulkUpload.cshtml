@@ -1,91 +1,97 @@
 ﻿@model Icon.Web.Mvc.Models.BulkUploadViewModel
+@using Icon.Web.Mvc.Utility
+
 @{
-	ViewBag.Title = "Bulk Upload";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Bulk Upload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @{Html.RenderPartial("_HeaderPartial", "Bulk Upload");}
 
 <style type="text/css">
-	.gridCenter {
-		text-align: center
-	}
+    .gridCenter {
+        text-align: center
+    }
 </style>
 
 @using (Html.BeginForm("BulkUpload", "Contact", null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "begin-form" }))
 {
-	@Html.AntiForgeryToken()
-	@Html.ValidationSummary(true)
-	<div id="uploadDiv">
-		@if (ViewData["SuccessMessage"] != null)
-		{
-			<div class="alert alert-success alert-dismissable">
-				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				<strong>@ViewData["SuccessMessage"].ToString()</strong>
-			</div>
-		}
-		@if (ViewData["ErrorMessages"] != null)
-		{
-			<div class="alert alert-danger alert-dismissable">
-				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				<ul>
-					@foreach (var message in (List<string>)ViewData["ErrorMessages"])
-					{
-						<li>@Html.Raw(message)</li>
-					}
-				</ul>
-			</div>
-		}
-	</div>
-	<fieldset>
-		<legend>Download blank bulk contact edit template.</legend>
-		@Html.ActionLink("Download blank contact template", "ContactTemplateNewExporter", "Contact", null, null)
-	</fieldset>
-	<fieldset>
-		<legend>Select a spreadsheet to import.</legend>
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div id="uploadDiv">
+        @if (ViewData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <strong>@ViewData["SuccessMessage"].ToString()</strong>
+            </div>
+        }
+        @if (ViewData["ErrorMessages"] != null)
+        {
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <ul>
+                    @foreach (var message in (List<string>)ViewData["ErrorMessages"])
+                    {
+                        <li>@Html.Raw(message)</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+    <fieldset>
+        <legend>Download blank bulk contact edit template.</legend>
+        @if (ViewHelpers.HasWriteAccess(Request, User))
+        {
+            @Html.ActionLink("Download blank contact template", "ContactTemplateNewExporter", "Contact", null, new { @class = "text-nowrap" })
+        }
+    </fieldset>
 
-		@Html.LabelFor(model => Model.ExcelAttachment)
-		<input type="file" id="ExcelAttachment" name="ExcelAttachment" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
-		<p class="help-block">Only the Excel .xlsx file format is currently supported.</p>
+    <fieldset>
+        <legend>Select a spreadsheet to import.</legend>
 
-	</fieldset>
+        @Html.LabelFor(model => Model.ExcelAttachment)
+        <input type="file" id="ExcelAttachment" name="ExcelAttachment" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+        <p class="help-block">Only the Excel .xlsx file format is currently supported.</p>
 
-	<input type="button" value="Upload Spreadsheet" id="uploadButton" class="btn btn-light form-submit" />
+    </fieldset>
+
+    <input type="button" value="Upload Spreadsheet" id="uploadButton" class="btn btn-light form-submit" />
 
 }
 
 <div>
 
-	<div>
-		@Html.Label("Number of rows to display:")
-		@Html.DropDownList("gridRowCount", new List<SelectListItem>()
-			{
-				new SelectListItem() { Value = "25", Text = "25" },
-				new SelectListItem() { Value = "50", Text = "50" },
-				new SelectListItem() { Value = "100", Text = "100", Selected = true},
-				new SelectListItem() { Value = "500", Text = "500" }
-			}, new { @class = "form-control" })
-	</div>
+    <div>
+        @Html.Label("Number of rows to display:")
+        @Html.DropDownList("gridRowCount", new List<SelectListItem>()
+            {
+                new SelectListItem() { Value = "25", Text = "25" },
+                new SelectListItem() { Value = "50", Text = "50" },
+                new SelectListItem() { Value = "100", Text = "100", Selected = true},
+                new SelectListItem() { Value = "500", Text = "500" }
+            }, new { @class = "form-control" })
+    </div>
 
-	<div>
-		@Html.Label("Refresh Interval (in seconds):")
-		@Html.DropDownList("refreshInterval", new List<SelectListItem>()
-		  {
-			  new SelectListItem() { Value = "10", Text = "10" },
-			  new SelectListItem() { Value = "30", Text = "30", Selected = true},
-			  new SelectListItem() { Value = "60", Text = "60" },
-			  new SelectListItem() { Value = "300", Text = "300" }
-		  }, new { @class = "form-control" })
-	</div>
-	<table id="bulkUploadStatusGrid" />
+    <div>
+        @Html.Label("Refresh Interval (in seconds):")
+        @Html.DropDownList("refreshInterval", new List<SelectListItem>()
+          {
+              new SelectListItem() { Value = "10", Text = "10" },
+              new SelectListItem() { Value = "30", Text = "30", Selected = true},
+              new SelectListItem() { Value = "60", Text = "60" },
+              new SelectListItem() { Value = "300", Text = "300" }
+          }, new { @class = "form-control" })
+    </div>
+    <table id="bulkUploadStatusGrid" />
 </div>
 
 @if (ViewData["BulkUploadType"].ToString() == "Item")
 {
-	@Scripts.Render("~/Scripts/Item/bulkupload.js")
+    @Scripts.Render("~/Scripts/Item/bulkupload.js")
 }
 
 @if (ViewData["BulkUploadType"].ToString() == "Contact")
 {
-	@Scripts.Render("~/Scripts/Contact/bulkupload.js")
+    @Scripts.Render("~/Scripts/Contact/bulkupload.js")
 }

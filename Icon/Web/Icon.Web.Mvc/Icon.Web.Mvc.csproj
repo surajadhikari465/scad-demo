@@ -273,8 +273,8 @@
     <Compile Include="Controllers\AttributeController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\ManufacturerController.cs" />
-    <Compile Include="Exporters\BaseContactExporter.cs" />
-    <Compile Include="Exporters\ContactExporter.cs" />
+    <Compile Include="Exporters\BaseNewContactExporter.cs" />
+    <Compile Include="Exporters\ContactNewTemplateExporter.cs" />
     <Compile Include="Exporters\Items\BarcodeTypeExporter.cs" />
     <Compile Include="Exporters\BaseAttributeExporter.cs" />
     <Compile Include="Exporters\Attributes\AttributeExporter.cs" />

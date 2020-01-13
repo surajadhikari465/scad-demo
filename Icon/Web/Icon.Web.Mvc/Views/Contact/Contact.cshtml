@@ -12,14 +12,12 @@
         @Html.HiddenFor(model => model.HierarchyClassId)
 
         <div id="divLinks">
-
-            <span style="margin-right: 10px">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Export</a>
-                <ul class="dropdown-menu bg-light">
-                    <li class="nav-item">@Html.ActionLink("All Contacts", "Export", "Contact", null, new { @class = "text-nowrap" })</li>
-                    <li class="nav-item">@Html.ActionLink("Current Contacts", "Export", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, new { @class = "text-nowrap" })</li>
-                </ul>
-            </span>
+        
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-right: 10px">Export</a>
+            <ul class="dropdown-menu bg-light">
+                <li class="nav-item">@Html.ActionLink("All Contacts", "Export", "Contact", new { hierarchyClassId = 0}, new { @class = "text-nowrap" })</li>
+                <li class="nav-item">@Html.ActionLink("Current Contacts", "Export", "Contact", new { hierarchyClassId = Model.HierarchyClassId  }, new { @class = "text-nowrap" })</li>
+            </ul>
 
             @if (ViewHelpers.HasWriteAccess(Request, User))
             {

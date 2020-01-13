@@ -48,16 +48,16 @@ namespace Icon.Web.Tests.Unit.Exporters
         }
 
         [TestMethod]
-        public void GetContactExporter_NoError_ShouldReturnContactExporter()
+        public void GetContactBlankTemplateExporter_NoError_ShouldReturnContactExporter()
         {
             // Given.
             exporterService = new ExcelExporterService();
 
             // When.
-            var contactExporter = exporterService.GetContactExporter();
+            var contactBlankExporter = exporterService.GetContactBlankTemplateExporter();
 
             // Then.
-            Assert.IsInstanceOfType(contactExporter, typeof(ContactExporter));
+            Assert.IsInstanceOfType(contactBlankExporter, typeof(ContactNewTemplateExporter));
         }
     }
 }

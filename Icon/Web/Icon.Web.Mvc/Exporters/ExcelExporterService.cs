@@ -18,6 +18,8 @@ namespace Icon.Web.Mvc.Exporters
         private IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler;
         private IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>> getAttributesQueryHandler;
         private IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypeQueryHandler;
+        private IQueryHandler<GetContactsParameters, List<ContactModel>> getContactsQuery;
+        private IQueryHandler<GetContactTypesParameters, List<ContactTypeModel>> getContactTypeQuery;
         private ExcelExportModel exportModel = new ExcelExportModel(WorkbookFormat.Excel2007);
         private SqlConnection connection;
 
@@ -105,14 +107,19 @@ namespace Icon.Web.Mvc.Exporters
 
             return exporter;
         }
-
-        public ContactExporter GetContactExporter()
+        
+        public ContactNewTemplateExporter GetContactBlankTemplateExporter()
         {
-            ContactExporter exporter = new ContactExporter();
-            exporter.ExportModel = exportModel;
+            connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString);
+            getHierarchyClassesQueryHandler = new GetHierarchyClassesQueryHandler(connection);
+            getContactsQuery = new GetContactsQuery(connection);
+            getContactTypeQuery = new GetContactTypesQuery(connection);
+            ContactNewTemplateExporter contactTemplateNewExporter = new ContactNewTemplateExporter(getHierarchyClassesQueryHandler, getContactsQuery, getContactTypeQuery);
+            contactTemplateNewExporter.ExportModel = exportModel;
 
-            return exporter;
+            contactTemplateNewExporter.AddSpreadsheetColumns();
+
+            return contactTemplateNewExporter;
         }
-
     }
 }

@@ -14,6 +14,6 @@ namespace Icon.Web.Mvc.Exporters
         ItemNewTemplateExporter GetItemTemplateNewExporter(List<string> selectedColumnNames = null, bool exportAllAttributes = false, bool exportNewItemTemplate = false);
         NationalClassExporter GetNationalClassExporter();
         AttributeExporter GetAttributeExporter();
-        ContactExporter GetContactExporter();
+        ContactNewTemplateExporter GetContactBlankTemplateExporter();
     }
 }
