@@ -3,7 +3,7 @@ import React, { Fragment, useContext, useState, useEffect } from 'react';
 import { BarcodeScanner } from '@wfm/mobile';
 import './styles.scss';
 import { AppContext, types, IMenuItem } from "../../store";
-import { Modal } from 'semantic-ui-react';
+import { Modal, Button, Header } from 'semantic-ui-react';
 import CurrentLocation from "../../layout/CurrentLocation";
 import LoadingComponent from '../../layout/LoadingComponent';
 import { Config } from '../../config';
@@ -21,7 +21,8 @@ const initialState = {
   upcValue: '',
   shrinkType:'',
   packageDesc1:'',
-  packageDesc2:''
+  packageDesc2:'',
+  dupItem:[]
 };
 
 const Shrink:React.FC = () => {
@@ -30,7 +31,7 @@ const Shrink:React.FC = () => {
     const {state, dispatch} = useContext(AppContext);
     const {isLoading} = state;
     const {subteam, region, storeNumber, subteamNo, shrinkTypes, shrinkType} = state;
-    const [alert, setAlert] = useState({open:false, alertMessage:''});
+    const [alert, setAlert] = useState({open:false, alertMessage:'', type: 'default'});
     const newMenuItems = [
       { id: 1, order: 0, text: "Review", path: "/shrink/review", disabled: false } as IMenuItem,
    ] as IMenuItem[];
@@ -41,7 +42,7 @@ const Shrink:React.FC = () => {
         try{
           setUpc(parseInt(data, 10));
         }catch(ex){
-          setAlert({open:true, alertMessage: ex.message});
+          setAlert({open:true, alertMessage: ex.message, type: 'default'});
         }
       });
       dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems});
@@ -60,6 +61,16 @@ const Shrink:React.FC = () => {
       dispatch({ type: types.SETISLOADING, isLoading: result })
     }
     const setShrinkItem = (result:any, upc: any) =>{
+        let dupItem = dupItemCheck(result);
+        if(dupItem.length > 0){
+          // @ts-ignore
+          setShrinkState({...shrinkState, ...result, upcValue:upc, dupItem});
+          setAlert({open: true, alertMessage: `${dupItem[0].quantity} of this item already queued in this session. Tap Add, Overwrite or Cancel`, type: 'prevScanned'});
+        } else {
+          setShrinkState({...shrinkState, ...result, upcValue:upc, quantity:1, dupItem});
+        }
+    }
+    const dupItemCheck = (result:any)=>{
         let shrinkItems:any = [];
         let shrinkItem = [];
         if(localStorage.getItem('shrinkItems')){
@@ -67,14 +78,23 @@ const Shrink:React.FC = () => {
           shrinkItems = JSON.parse(localStorage.getItem('shrinkItems'));
           shrinkItem = shrinkItems.filter((item: any) => item.identifier === result.identifier);
         }
-        if(shrinkItem.length > 0){
-          setShrinkState({...shrinkState, ...result, upcValue:upc, quantity:1, queued: shrinkItem[0].quantity});
-        }else{
-          setShrinkState({...shrinkState, ...result, upcValue:upc, quantity:1, queued: 0});
-        }
+        return shrinkItem;
+    }
+    const add = (e:any) => {
+        setAlert({...alert, open:false});
+        // @ts-ignore
+        setShrinkState({...shrinkState, queued: shrinkState.dupItem[0].quantity, quantity:1});
+    }
+    const overwrite = (e:any) => {
+        setAlert({...alert, open:false});
+        setShrinkState({...shrinkState, quantity:1, queued: 0});
+    }
+    const cancel = (e:any) => {
+        setAlert({...alert, open: false});
+        clear();
     }
     const toggleAlert = (e:any) =>{
-        setAlert({open:!alert.open, alertMessage: alert.alertMessage});
+        setAlert({open:!alert.open, alertMessage: alert.alertMessage,type: 'default'});
     }
     const setUpc = (value?:any) =>{  
       let upc = value && typeof value !== 'object' ? value: shrinkState.upcValue;
@@ -83,7 +103,7 @@ const Shrink:React.FC = () => {
       .then(res => res.json())
       .then((result) => {
         if(result.itemKey === 0 && result.itemDescription === null){
-          setAlert({open:true, alertMessage: 'Item not found'});
+          setAlert({open:true, alertMessage: 'Item not found',type: 'default'});
         } else setShrinkItem(result, upc);
        })
       .finally(() => setIsLoading(false))
@@ -102,7 +122,7 @@ const Shrink:React.FC = () => {
       setShrinkState({...initialState, upcValue: e.target.value, isSelected:true, skipConfirm: shrinkState.skipConfirm});
     }
     const save = (e:any) =>{
-      const { isSelected, skipConfirm, queued, ...shrinkItem} = shrinkState;
+      const { isSelected, skipConfirm, queued, dupItem, ...shrinkItem} = shrinkState;
       shrinkItem.shrinkType = shrinkType.shrinkSubTypeMember;
       shrinkItem.quantity =  +(shrinkState.queued) + +(shrinkState.quantity)
       let shrinkItems: any = [];    
@@ -118,7 +138,7 @@ const Shrink:React.FC = () => {
       }
       localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems))
       if(!shrinkState.skipConfirm){
-        setAlert({open:true, alertMessage: 'Shrink Item Saved'});
+        setAlert({open:true, alertMessage: 'Shrink Item Saved', type: 'default'});
       }
       clear();
     }
@@ -165,7 +185,7 @@ const Shrink:React.FC = () => {
               <section className='entry-section'>
                 <div className='input-line'>
                   <label>Qty:</label>
-                  <input className='qty-input' type='number' min="0" step="1" onChange={setQty} defaultValue={shrinkState.quantity} ref={qtyInput}></input>
+                  <input className='qty-input' type='number' min="0" step="1" onChange={setQty} value={shrinkState.quantity} ref={qtyInput}></input>
                   {
                     shrinkState.packageUnitAbbreviation && 
                     <label className='qty-type'>Retail: {shrinkState.retailUnitName}</label>
@@ -197,11 +217,24 @@ const Shrink:React.FC = () => {
       </div>
       <Modal
           open={alert.open}
-          header='IRMA Mobile'
-          content={alert.alertMessage}
-          actions={['OK']}
           onActionClick={toggleAlert}
-        />
+      >   
+        <Header content='IRMA Mobile' />
+        <Modal.Content>
+          {alert.alertMessage}
+        </Modal.Content>
+        <Modal.Actions>
+          {alert.type==='default' ? (
+            <Button onClick={toggleAlert}> OK </Button>
+          ):(
+          <Fragment>
+            <Button onClick={add}> Add </Button>
+            <Button onClick={overwrite}> Overwrite </Button>
+            <Button onClick={cancel}> Cancel </Button>
+          </Fragment>
+          )}
+        </Modal.Actions>
+      </Modal>
       </Fragment>
     )
   }

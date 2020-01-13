@@ -1,6 +1,4 @@
-import React, { Fragment, useContext, useState, useEffect } from 'react';
-import { AppContext, types } from "../../../store";
-
+import React, { Fragment } from 'react';
 
 const UpdateShrink:React.FC = () => {
     return (  
