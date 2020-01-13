@@ -46,6 +46,8 @@ namespace Icon.Web.Mvc.Models
         private bool isContactEnabled;
         public bool IsContactViewEnabled { get { return isContactEnabled && HierarchyClassId > 0; }}
 
+        public BrandViewModel() { }
+
         public BrandViewModel(bool enableContactView = false)
         {
            this.isContactEnabled = enableContactView; 
