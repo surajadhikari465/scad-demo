@@ -64,8 +64,10 @@ const ReviewShrink:React.FC = () => {
             shrinkItems[i].quantity,
             weight
             );
-          if(!result){
-            toast.error(`Shrink Item ${shrinkItems[i].identifier} Failed to Upload`);
+          if(result){
+            toast.success("Shrink Item Uploaded");
+          }else{
+            toast.error(`Shrink Item ${shrinkItems[i].identifier} Failed to Upload`, { autoClose: false });
           }
         }
         finally {

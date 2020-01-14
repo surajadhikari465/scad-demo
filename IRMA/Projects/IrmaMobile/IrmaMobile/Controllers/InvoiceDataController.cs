@@ -114,9 +114,31 @@ namespace IrmaMobile.Controllers
         [HttpPost]
         public async Task<Result> ReparseEInvoice([FromRoute]string region, [FromBody]ReparseEInvoiceModel model )
         { 
-            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(InvoiceDataController)}.{nameof(RefuseOrder)}");
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(InvoiceDataController)}.{nameof(ReparseEInvoice)}");
 
             var result = await service.ReparseEInvoiceAsync(region, model.EInvId); 
+
+            return result;
+        }
+
+        [ProducesResponseType(200)]
+        [HttpPost]
+        public async Task<Result> CloseOrder([FromRoute]string region, [FromBody]CloseInvoiceModel model )
+        { 
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(InvoiceDataController)}.{nameof(CloseOrder)}");
+
+            var result = await service.CloseOrderAsync(region, model.OrderId, model.UserId); 
+
+            return result;
+        }
+
+        [ProducesResponseType(200)]
+        [HttpPost]
+        public async Task<Result> UpdateOrderBeforeClosing([FromRoute]string region, [FromBody]UpdateOrderBeforeClosingModel model )
+        { 
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(InvoiceDataController)}.{nameof(UpdateOrderBeforeClosing)}");
+
+            var result = await service.UpdateOrderBeforeClosingAsync(region, model); 
 
             return result;
         }

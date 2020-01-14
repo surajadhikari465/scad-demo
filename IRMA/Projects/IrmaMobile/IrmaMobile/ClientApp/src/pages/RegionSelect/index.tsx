@@ -38,18 +38,18 @@ const RegionSelect:React.FC<RegionProps> = (props) => {
         var stores: any = await agent.RegionSelect.getStores(region);
         var shrinkSubTypes: any = await agent.RegionSelect.getShrinkSubtypes(region);
         if(!stores) {
-          toast.error("Store could not be loaded. Try again.");
+          toast.error("Store could not be loaded. Try again.", { autoClose: false });
           return;
         }
         if(!shrinkSubTypes) {
-          toast.error("Shrink Types could not be loaded. Try again.");
+          toast.error("Shrink Types could not be loaded. Try again.", { autoClose: false });
           return;
         }
         try {
           setStores(stores);
           setShrinkTypes(shrinkSubTypes);
         }catch(err) {
-          toast.error("Unable to Set Stores")
+          toast.error("Unable to Set Stores", { autoClose: false })
         }
       }
       finally {

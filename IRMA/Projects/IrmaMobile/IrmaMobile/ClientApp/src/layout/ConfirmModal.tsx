@@ -41,6 +41,8 @@ const ConfirmModal: React.FC<IProps> = ({ handleConfirmClose, lineOne, lineTwo, 
             setOpenExternal(false);
         }
 
+        setOpen(false);
+
         if(handleConfirmClose) {
             handleConfirmClose();
         }

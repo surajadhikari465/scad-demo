@@ -22,7 +22,7 @@ const ReceivePurchaseOrderReasonCodeModal: React.FC = () => {
                             <Grid.Column width={4}>Code</Grid.Column>
                             <Grid.Column width={12}>Description</Grid.Column>
                         </Grid.Row>
-                        {reasonCodes.map((code: ReasonCode) => (
+                        {reasonCodes && reasonCodes.map((code: ReasonCode) => (
                             <Grid.Row key={code.reasonCodeAbbreviation}>
                                 <Grid.Column width={4}>
                                     {code.reasonCodeAbbreviation}

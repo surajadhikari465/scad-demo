@@ -26,5 +26,6 @@ namespace IrmaMobile.Services
         Task<List<ListsReasonCode>> GetRefuseItemCodesAsync(string region);
         Task<Result> RefuseOrderAsync(string region, int orderId, int userId, int reasonCodeId);
         Task<Result> ReparseEInvoiceAsync(string region, int eInvId);
+        Task<Result> UpdateOrderBeforeClosingAsync(string region, UpdateOrderBeforeClosingModel model);
     }
 }

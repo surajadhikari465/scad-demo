@@ -83,7 +83,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
     const receiveOrderClick = async () => {
         if (orderDetails) {
             if (orderDetails.Code === -1) {
-                toast.error("Please enter a Reason Code");
+                toast.error("Please enter a Reason Code", { autoClose: false });
                 return;
             }
 

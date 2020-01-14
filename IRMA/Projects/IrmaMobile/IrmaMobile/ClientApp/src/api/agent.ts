@@ -10,7 +10,7 @@ axios.interceptors.response.use(undefined, error => {
     return Promise.reject(error.message + "\n" + error.stack);
 });
 
-const responseBody = async (response: AxiosResponse) =>( await response.data);
+const responseBody = async (response: AxiosResponse) =>( await response.data );
 
 const requests = {
     get: async (url: string) =>
@@ -28,8 +28,19 @@ const requests = {
                 console.log(e);
             }),
     put: async (url: string, body: {}) =>
-        await axios.put(url, body).then(responseBody),
-    del: async (url: string) => await axios.delete(url).then(responseBody)
+        await axios
+            .put(url, body)
+            .then(responseBody)
+            .catch(e => {
+                console.log(e);
+            }),
+    del: async (url: string) => 
+        await axios
+            .delete(url)
+            .then(responseBody)
+            .catch(e => {
+                console.log(e);
+            })
 };
 
 const RegionSelect = {
@@ -71,11 +82,7 @@ const PurchaseOrder = {
             reasonCodeId,
             packSize,
             userId
-        }),
-    closeOrder: async (region: string, orderId: number, userId: number) =>
-        await requests.post(
-            `/${region}/purchaseorder/closeOrder`, {orderId, userId}
-        ),
+        })
 };
 
 const InvoiceData = {
@@ -107,7 +114,20 @@ const InvoiceData = {
             UserId: userId,
             ReasonCodeId: reasonCodeId    
         }),
-    reparseEInvoice: async (region: string, eInvId: number) => requests.post(`/${region}/invoicedata/reparseEInvoice`, { EInvId: eInvId })
+    reparseEInvoice: async (region: string, eInvId: number) => requests.post(`/${region}/invoicedata/reparseEInvoice`, { EInvId: eInvId }),
+    closeOrder: async (region: string, orderId: number, userId: number) => requests.post(`/${region}/invoicedata/closeorder`, { OrderId: orderId, UserId: userId }),
+    updateOrderBeforeClosing: async (region: string, orderId: number, invoiceNumber: string, invoiceDate: Date, invoiceCost: number, vendorDocId: string, vendorDocDate: Date, subteamNo: number, partialShipment: boolean) => 
+        await requests.post(`/${region}/invoicedata/updateorderbeforeclosing`, 
+        {
+            OrderId: orderId,
+            InvoiceNumber: invoiceNumber,
+            InvoiceDate: invoiceDate,
+            InvoiceCost: invoiceCost,
+            VendorDocId: vendorDocId,
+            VendorDocDate: vendorDocDate,
+            SubteamNo: subteamNo,
+            PartialShipment: partialShipment
+        })
 };
 
 const Shrink = {

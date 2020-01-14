@@ -158,12 +158,6 @@ namespace IrmaMobile.Services
             return result;
         }
 
-        public async Task<Result> CloseOrderAsync(string region, int orderId, int userId)
-        {
-            var result = await MakeServiceRequest(region, client => client.CloseOrderAsync(orderId, userId));
-            return result;
-        }
-
         public async Task<List<InvoiceCharge>> GetAllocatedInvoiceChargesAsync(string region)
         {
             var result = await MakeServiceRequest(region, client => client.GetAllocatedChargesAsync());
@@ -232,6 +226,21 @@ namespace IrmaMobile.Services
             var result = await MakeServiceRequest(region, client => client.ReparseEinvoiceAsync(eInvId)); 
             return result;
         }
+
+        public async Task<Result> CloseOrderAsync(string region, int orderId, int userId)
+        {
+            var result = await MakeServiceRequest(region, client => client.CloseOrderAsync(orderId, userId)); 
+            return result;
+        }
+
+        public async Task<Result> UpdateOrderBeforeClosingAsync(string region, UpdateOrderBeforeClosingModel model)
+        {
+            var result = await MakeServiceRequest(region, client => client.UpdateOrderBeforeCloseAsync(model.OrderId, model.InvoiceNumber, 
+                                                    model.InvoiceDate, model.InvoiceCost, model.VendorDocId, model.VendorDocDate, 
+                                                    model.SubteamNo, model.PartialShipment));
+            return result;
+        }
+
 
         // Following best practices for handling WCF ServiceClient lifecycle as documented here:
         // https://docs.microsoft.com/en-us/dotnet/framework/wcf/samples/use-close-abort-release-wcf-client-resources
