@@ -794,7 +794,6 @@
     <None Include="Scripts\PopulateData\24776_AddHierarchyContactTrait.sql" />
     <None Include="Scripts\Jobs\Icon . Data History Purge.sql" />
     <None Include="Scripts\Jobs\Icon . Map BusinessUnit to Region.sql" />
-    <None Include="Scripts\PopulateData\AddEmailNotifyOperatorForJobs.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
