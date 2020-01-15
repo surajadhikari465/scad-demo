@@ -81,13 +81,13 @@ namespace Icon.ApiController.Controller.HistoryProcessors
                     ProcessResponse(messageSent, message);
                 }
 
-                logger.Info("Ending the main processing loop.  Now preparing to retrieve a new set of unsent messages.");
+                logger.Debug("Ending the main processing loop.  Now preparing to retrieve a new set of unsent messages.");
 
                 MarkUnsentMessagesAsInProcess();
                 messagesReadyToSend = GetUnsentMessages();
             }
 
-            logger.Info("Ending the MessageHistory processor.  No further unsent messages were found.");
+            logger.Debug("Ending the MessageHistory processor.  No further unsent messages were found.");
         }
 
         private void EnsureNonReceivingSystemPropertiesAreSet(MessageHistory message,

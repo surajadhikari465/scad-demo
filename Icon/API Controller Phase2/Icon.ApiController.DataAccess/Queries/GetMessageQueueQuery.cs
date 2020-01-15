@@ -46,7 +46,7 @@ namespace Icon.ApiController.DataAccess.Queries
                 }
                 else
                 {
-                    logger.Info(string.Format("Found 0 queued messages marked by controller {0} and ready for processing.", ControllerType.Instance));
+                    logger.Debug(string.Format("Found 0 queued messages marked by controller {0} and ready for processing.", ControllerType.Instance));
                 }
 
                 return messagesReadyForProcessing;

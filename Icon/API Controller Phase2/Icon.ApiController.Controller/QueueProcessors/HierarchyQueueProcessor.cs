@@ -135,13 +135,13 @@ namespace Icon.ApiController.Controller.QueueProcessors
                     }
                 }
 
-                logger.Info("Ending the main processing loop.  Now preparing to retrieve a new set of queued messages.");
+                logger.Debug("Ending the main processing loop.  Now preparing to retrieve a new set of queued messages.");
 
                 MarkQueuedMessagesAsInProcess();
                 messagesReadyToProcess = GetQueuedMessages();
             }
 
-            logger.Info("Ending the Hierarchy queue processor.  No further queued messages were found in Ready status.");
+            logger.Debug("Ending the Hierarchy queue processor.  No further queued messages were found in Ready status.");
 
             producer.Dispose();
 
