@@ -11,12 +11,12 @@ namespace IrmaMobile.Controllers
 {
     [Route("api/{region}/[controller]/[Action]")]
     [ApiController]
-    public class ReceivingListController : ControllerBase
+    public class DocumentController : ControllerBase
     {
         private IIrmaMobileService service;
-        private readonly ILogger<ReceivingListController> logger;
+        private readonly ILogger<DocumentController> logger;
 
-        public ReceivingListController(IIrmaMobileService service, ILogger<ReceivingListController> logger)
+        public DocumentController(IIrmaMobileService service, ILogger<DocumentController> logger)
         {
             this.service = service;
             this.logger = logger;
@@ -24,11 +24,11 @@ namespace IrmaMobile.Controllers
 
         [ProducesResponseType(200)]
         [HttpGet]
-        public async Task<List<OrderItem>> ReceivingListEinvoiceExceptions([FromRoute]string region, [FromQuery]int orderId)
+        public async Task<List<DSDVendor>> Vendors([FromRoute]string region, [FromQuery]int storeNo)
         {
-            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(ReceivingListController)}.{nameof(ReceivingListEinvoiceExceptions)}");
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(DocumentController)}.{nameof(Vendors)}");
             
-            var result = await service.GetReceivingListEinvoiceExceptionsAsync(region, orderId);
+            var result = await service.GetVendorsAsync(region, storeNo);
 
             return result;
         }

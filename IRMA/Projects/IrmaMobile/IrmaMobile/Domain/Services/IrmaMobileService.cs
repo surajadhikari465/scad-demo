@@ -253,6 +253,12 @@ namespace IrmaMobile.Services
             return result;
         }
 
+        public async Task<List<DSDVendor>> GetVendorsAsync(string region, int storeNo)
+        {
+            var result = await MakeServiceRequest(region, client => client.GetDSDVendorsAsync(storeNo)); 
+            return result;
+        }
+
         // Following best practices for handling WCF ServiceClient lifecycle as documented here:
         // https://docs.microsoft.com/en-us/dotnet/framework/wcf/samples/use-close-abort-release-wcf-client-resources
         private async Task<T> MakeServiceRequest<T>(string region, Func<IGateway, Task<T>> request)

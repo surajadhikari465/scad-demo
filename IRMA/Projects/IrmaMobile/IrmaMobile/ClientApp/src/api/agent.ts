@@ -137,6 +137,11 @@ const ReceivingList = {
 
 }
 
+const Document = {
+    getVendors: async (region: string, storeNo: number) => await requests.get(`/${region}/document/vendors?storeNo=${storeNo}`)
+
+}
+
 const Shrink = {
     shrinkItemSubmit: async(region: string, ItemKey: any, StoreNo: any, SubteamNo: any, ShrinkSubTypeId: any, AdjustmentId: any, AdjustmentReason: any, CreatedByUserId: any, UserName: any, InventoryAdjustmentCodeAbbreviation:any, Quantity:any, Weight: any) =>
         await requests.post(`/${region}/shrinkadjustments`, {
@@ -155,4 +160,4 @@ const Shrink = {
         
 };
 
-export default { RegionSelect, PurchaseOrder, InvoiceData, Shrink, ReceivingList };
+export default { RegionSelect, PurchaseOrder, InvoiceData, Shrink, ReceivingList, Document };
