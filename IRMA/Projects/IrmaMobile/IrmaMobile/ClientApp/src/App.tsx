@@ -20,6 +20,8 @@ import ReceivePurchaseOrder from './pages/Receive/PurchaseOrder/PurchaseOrder/Re
 import { ToastContainer } from 'react-toastify';
 import MainMenu from './layout/MainMenu';
 import InvoiceData from './pages/Receive/PurchaseOrder/InvoiceData/InvoiceData';
+import ReceivingList from './pages/Receive/PurchaseOrder/ReceivingList/ReceivingList';
+import ReceivingListClosePartial from './pages/Receive/PurchaseOrder/ReceivingList/components/ReceivingListClosePartial';
 
 
 const App: React.FC = () => { 
@@ -56,6 +58,8 @@ const App: React.FC = () => {
               <Route exact path="/receive/Document" component={ReceiveDocument} />
               <Route exact path="/receive/PurchaseOrder/:openOrderInformation?" component={ReceivePurchaseOrder} />
               <Route exact path="/receive/InvoiceData/:purchaseOrderNumber" component={InvoiceData} />
+              <Route exact path="/receive/List/:purchaseOrderNumber" component={ReceivingList} />
+              <Route exact path="/receive/List/:purchaseOrderNumber/closePartial" component={ReceivingListClosePartial} />
             </Switch>
           </div>
         </Router>

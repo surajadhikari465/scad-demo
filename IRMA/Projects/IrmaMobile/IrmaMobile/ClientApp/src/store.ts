@@ -54,7 +54,7 @@ interface IStore {
   name: string;
 }
 
-interface IMappedReasonCode {
+export interface IMappedReasonCode {
   key: number;
   text: string;
   value: string;

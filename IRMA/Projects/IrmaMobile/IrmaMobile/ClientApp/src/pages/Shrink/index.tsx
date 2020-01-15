@@ -6,7 +6,7 @@ import { AppContext, types, IMenuItem } from "../../store";
 import { Modal, Button, Header } from 'semantic-ui-react';
 import CurrentLocation from "../../layout/CurrentLocation";
 import LoadingComponent from '../../layout/LoadingComponent';
-import { Config } from '../../config';
+import Config from '../../config';
 
 
 const initialState = {

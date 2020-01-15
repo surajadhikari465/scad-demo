@@ -5,7 +5,7 @@ import {
   useHistory
 } from "react-router-dom";
 import './styles.scss';
-import { Config } from '../../config';
+import Config from '../../config';
 import LoadingComponent from '../../layout/LoadingComponent';
 
 const StoreSelect:React.FC = () => {

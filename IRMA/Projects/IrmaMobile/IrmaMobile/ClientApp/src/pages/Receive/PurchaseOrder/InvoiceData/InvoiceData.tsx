@@ -14,6 +14,7 @@ import ConfirmModal from "../../../../layout/ConfirmModal";
 import orderUtil from "../util/Order";
 import isMinDate from "../util/MinDate";
 import { useHistory } from "react-router-dom";
+import Config from "../../../../config";
 
 interface RouteParams {
     purchaseOrderNumber: string;
@@ -240,7 +241,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                 return;
             }
 
-            var result = await agent.InvoiceData.closeOrder(region, parseInt(purchaseOrderNumber), 1)
+            var result = await agent.InvoiceData.closeOrder(region, parseInt(purchaseOrderNumber), Config.userId)
 
             if(result && result.status) {
                 toast.info('Order Closed', { autoClose: false });
@@ -335,7 +336,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
     }
 
     const handleConfirmRefuse = async () => {
-        const result = await agent.InvoiceData.refuseOrder(region, parseInt(purchaseOrderNumber), 1, refuseCodeId)
+        const result = await agent.InvoiceData.refuseOrder(region, parseInt(purchaseOrderNumber), Config.userId, refuseCodeId)
 
         if(result.status) {
             toast.info('Order Refused')

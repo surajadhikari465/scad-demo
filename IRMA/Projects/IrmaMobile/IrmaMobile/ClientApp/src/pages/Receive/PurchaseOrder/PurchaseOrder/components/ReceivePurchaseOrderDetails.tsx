@@ -16,6 +16,8 @@ import { toast } from "react-toastify";
 import { WfmButton } from "@wfm/ui-react";
 import { QuantityAddMode } from "../../types/QuantityAddMode";
 import ReceivePurchaseOrderDetailsQtyModal from "./ReceivePurchaseOrderDetailsQtyModal";
+import Config from "../../../../../config";
+import OrderItem from "../../types/OrderItem";
 
 const ReceivePurchaseOrderDetails: React.FC = () => {
     // @ts-ignore
@@ -105,7 +107,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                     orderDetails.OrderItemId,
                     orderDetails.Code,
                     0,
-                    1
+                    Config.userId
                 );
 
                 if (result && result.status) {
@@ -118,7 +120,8 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                     }
 
                     quantityMode = QuantityAddMode.None;
-                    dispatch({type: types.SETORDERDETAILS, orderDetails: {...orderDetails, QtyReceived: quantity}})
+                    orderDetails.OrderItems.filter((oi: OrderItem) => oi.OrderItemId === orderDetails.OrderItemId)[0].QtyReceived = quantity;
+                    dispatch({type: types.SETORDERDETAILS, orderDetails: {...orderDetails, QtyReceived: quantity, OrderItems: orderDetails.OrderItems}});
                 }
             }
             finally {

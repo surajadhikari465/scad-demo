@@ -16,23 +16,28 @@ import { WfmButton } from '@wfm/ui-react'
 
 interface IProps {
     handleConfirmClose?: () => any;             //optional: function to be called upon the confirm button being clicked
+    handleCancelClose?: () => any;              //optional: function to be called upon the cancel button being clicked
     lineOne?: string;                           //optional: first line of text
     lineTwo?: string;                           //optional: second line of text
     headerText: string;                         //optional: text to be shown at the top of the modal
     confirmButtonText: string;                  //optional: text to be shown on the confirm (left) button
     cancelButtonText: string;                   //optional: text to be shown on the cancel (right) button
     triggerButtonText?: string;                 //optional: text to be shown on the external button that opens the modal
-    showTriggerButton?: boolean;                 //optional, default true: whether or not to generate an external WfmButton for the user to click to open the modal
-    openExternal?: boolean;                      //required: state used to tell the modal to be visible or not. Must be same state variable that is attached to setOpenExternal
-    setOpenExternal?: (state: boolean) => any;   //required: the useState setter used to control openExternal
+    showTriggerButton?: boolean;                //optional, default true: whether or not to generate an external WfmButton for the user to click to open the modal
+    openExternal?: boolean;                     //required: state used to tell the modal to be visible or not. Must be same state variable that is attached to setOpenExternal
+    setOpenExternal?: (state: boolean) => any;  //required: the useState setter used to control openExternal
 }
 
-const ConfirmModal: React.FC<IProps> = ({ handleConfirmClose, lineOne, lineTwo, confirmButtonText, cancelButtonText, triggerButtonText, showTriggerButton = true, openExternal = false, setOpenExternal, headerText}) => {
+const ConfirmModal: React.FC<IProps> = ({ handleConfirmClose, lineOne, lineTwo, confirmButtonText, cancelButtonText, triggerButtonText, showTriggerButton = true, openExternal = false, setOpenExternal, headerText, handleCancelClose }) => {
     const [open, setOpen] = useState<boolean>(false)
     
     const handleCancelClick = () => {
         if(setOpenExternal) {
             setOpenExternal(false);
+        }
+
+        if(handleCancelClose) {
+            handleCancelClose();
         }
     }
 

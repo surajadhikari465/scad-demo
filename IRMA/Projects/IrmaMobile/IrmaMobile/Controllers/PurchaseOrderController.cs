@@ -71,9 +71,20 @@ namespace IrmaMobile.Controllers
         [HttpPost]
         public async Task<Result> CloseOrder([FromRoute]string region, [FromBody]CloseOrderModel model)
         {
-            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(InvoiceDataController)}.{nameof(CloseOrder)}");
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(PurchaseOrderController)}.{nameof(CloseOrder)}");
 
             var result = await service.CloseOrderAsync(region, model.OrderId, model.UserId); 
+
+            return result;
+        }
+
+        [ProducesResponseType(200)]
+        [HttpPost]
+        public async Task<Result> ReopenOrder([FromRoute]string region, [FromBody]ReopenOrderModel model)
+        {
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(PurchaseOrderController)}.{nameof(ReopenOrder)}");
+
+            var result = await service.ReopenOrderAsync(region, model.OrderId); 
 
             return result;
         }

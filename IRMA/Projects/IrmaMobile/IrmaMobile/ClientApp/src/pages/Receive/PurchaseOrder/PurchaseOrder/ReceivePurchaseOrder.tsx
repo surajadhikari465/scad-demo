@@ -13,6 +13,8 @@ import orderUtil from "../util/Order"
 import isMinDate from "../util/MinDate";
 // @ts-ignore 
 import { BarcodeScanner } from '@wfm/mobile';
+import ConfirmModal from "../../../../layout/ConfirmModal";
+import LoadingComponent from "../../../../layout/LoadingComponent";
 
 interface RouteParams {
     openOrderInformation: string;
@@ -28,12 +30,14 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     const { openOrderInformation } = match.params;
     const [orderInformation, setOrderInformation] = useState<OrderInformation>({} as OrderInformation);
     let history = useHistory();
+    const [openPartial, setOpenPartial] = useState<boolean>(false);
+    const [isReopening, setIsReopening] = useState<boolean>(false);
 
     const setMenuItems = useCallback(() => {
         const newMenuItems = [
             { id: 1, order: 0, text: "Refused Items", path: "#", disabled: true } as IMenuItem,
             { id: 2, order: 1, text: "Invoice Data", path: `/receive/invoicedata/${purchaseOrderNumber}`, disabled: purchaseOrderNumber === '' } as IMenuItem,
-            { id: 3, order: 2, text: "Receiving List", path: "#", disabled: false } as IMenuItem,
+            { id: 3, order: 2, text: "Receiving List", path: `/receive/List/${purchaseOrderNumber}`, disabled: false } as IMenuItem,
             { id: 4, order: 3, text: "Order Info", path: `/receive/purchaseorder/open`, disabled: purchaseOrderNumber === '' } as IMenuItem,
             { id: 5, order: 4, text: "Clear Screen", path: "#", disabled: false } as IMenuItem,
             { id: 6, order: 5, text: "Review", path: "#", disabled: false } as IMenuItem,
@@ -77,7 +81,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                 var order = await agent.PurchaseOrder.detailsFromPurchaseOrderNumber(region, purchaseOrderNum);
 
                 if(!order) {
-                    toast.error("PO could not be loaded. Try again.", { autoClose: false });
+                    toast.error("PO could not be loaded. Please try again.", { autoClose: false });
                     return;
                 }
 
@@ -86,10 +90,8 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                     return;
                 }
 
-                if(!isMinDate(order.closeDate)) {
-                    toast.error(`PO ${purchaseOrderNum} is already closed. To review or reopen a closed order, please use the IRMA client.`, { autoClose: false });
-                    dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
-                    dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
+                if(!order.sentDate || isMinDate(order.sentDate)) {
+                    toast.error(`PO #${purchaseOrderNum} has not yet been sent. Please try again.`, { autoClose: false });
                     return;
                 }
 
@@ -100,6 +102,18 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
 
                 try {
                     var orderDetails = orderUtil.MapOrder(order, upc);
+
+                    if(!isMinDate(orderDetails.CloseDate)) {
+                        if(!orderDetails.PartialShipment){
+                            toast.error(`PO ${purchaseOrderNum} is already closed. To review or reopen a closed order, please use the IRMA client.`, { autoClose: false });
+                            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
+                            dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
+                            return;
+                        } else {
+                            setOpenPartial(true);
+                            return;
+                        }
+                    }
 
                     var orderInformation: OrderInformation = {
                         buyer: order.createdByName,
@@ -149,14 +163,43 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
         history.goBack();
     }
 
+    const handleReopenPartial = async () => {
+        try{
+            setIsReopening(true);
+            const result = await agent.PurchaseOrder.reopenOrder(region, parseInt(purchaseOrderNumber));
+
+            if(result && result.status) {
+                toast.info('The order has been reopened');
+            } else {
+                toast.error(`Error reopening the order: ${(result && result.errorMessage) || 'No message given'}`);
+            }
+        } 
+        finally {
+            setIsReopening(false);
+        }
+    }
+
+    const handleReopenCancel = () => {
+        dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
+        dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
+        dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
+    }
+
     return (
         <Fragment>
-            <OrderInformationModal handleOnClose={handleOnCloseOrderInformation} orderInformation={orderInformation} open={openOrderInformation === 'open'} />
-            <CurrentLocation />
-            <div style={{marginTop: '10px', padding: '0px'}}>
-                <ReceivePoSearch handleSubmit={loadPurchaseOrder}/>
-            </div>
-            <ReceivePurchaseOrderDetails/>
+            {isReopening ? <LoadingComponent content="Reopening order..." /> :
+            <Fragment>
+                <ConfirmModal handleCancelClose={handleReopenCancel} handleConfirmClose={handleReopenPartial} setOpenExternal={setOpenPartial} showTriggerButton={false} 
+                                    openExternal={openPartial} headerText='Receiving List' cancelButtonText='No' confirmButtonText='Yes' 
+                                    lineOne={'This order was closed as a partial shipment. Re-open the order now to scan more items?'} /> 
+                <OrderInformationModal handleOnClose={handleOnCloseOrderInformation} orderInformation={orderInformation} open={openOrderInformation === 'open'} />
+                <CurrentLocation />
+                <div style={{marginTop: '10px', padding: '0px'}}>
+                    <ReceivePoSearch handleSubmit={loadPurchaseOrder}/>
+                </div>
+                <ReceivePurchaseOrderDetails/>
+            </Fragment>
+            }
         </Fragment>
     );
 };

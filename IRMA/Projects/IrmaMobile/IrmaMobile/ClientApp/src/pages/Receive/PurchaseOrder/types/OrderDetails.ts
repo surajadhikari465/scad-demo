@@ -1,3 +1,5 @@
+import OrderItem from "./OrderItem";
+
 export interface OrderDetails {
     OrderId: number
     Description: string;
@@ -31,4 +33,5 @@ export interface OrderDetails {
     CurrencyId: number;
     CloseDate: Date;
     PartialShipment: boolean;
+    OrderItems: OrderItem[];
 }

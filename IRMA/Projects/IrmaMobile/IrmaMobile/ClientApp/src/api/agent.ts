@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
-import { Config } from "../config";
+import Config from "../config";
 
 axios.defaults.baseURL = Config.baseUrl;
 
@@ -82,7 +82,8 @@ const PurchaseOrder = {
             reasonCodeId,
             packSize,
             userId
-        })
+        }),
+    reopenOrder: async (region: string, orderId: number) => await requests.post(`/${region}/PurchaseOrder/ReopenOrder`, { OrderId: orderId })
 };
 
 const InvoiceData = {
@@ -114,9 +115,9 @@ const InvoiceData = {
             UserId: userId,
             ReasonCodeId: reasonCodeId    
         }),
-    reparseEInvoice: async (region: string, eInvId: number) => requests.post(`/${region}/invoicedata/reparseEInvoice`, { EInvId: eInvId }),
-    closeOrder: async (region: string, orderId: number, userId: number) => requests.post(`/${region}/invoicedata/closeorder`, { OrderId: orderId, UserId: userId }),
-    updateOrderBeforeClosing: async (region: string, orderId: number, invoiceNumber: string, invoiceDate: Date, invoiceCost: number, vendorDocId: string, vendorDocDate: Date, subteamNo: number, partialShipment: boolean) => 
+    reparseEInvoice: async (region: string, eInvId: number) => await requests.post(`/${region}/invoicedata/reparseEInvoice`, { EInvId: eInvId }),
+    closeOrder: async (region: string, orderId: number, userId: number) => await requests.post(`/${region}/invoicedata/closeorder`, { OrderId: orderId, UserId: userId }),
+    updateOrderBeforeClosing: async (region: string, orderId: number, invoiceNumber: string, invoiceDate: Date|undefined, invoiceCost: number, vendorDocId: string, vendorDocDate: Date|undefined, subteamNo: number, partialShipment: boolean) => 
         await requests.post(`/${region}/invoicedata/updateorderbeforeclosing`, 
         {
             OrderId: orderId,
@@ -129,6 +130,12 @@ const InvoiceData = {
             PartialShipment: partialShipment
         })
 };
+
+const ReceivingList = {
+    getReceivingListEinvoiceExceptions: async (region: string, orderId: number) => 
+        await requests.get(`/${region}/receivinglist/ReceivingListEinvoiceExceptions?orderId=${orderId}`),
+
+}
 
 const Shrink = {
     shrinkItemSubmit: async(region: string, ItemKey: any, StoreNo: any, SubteamNo: any, ShrinkSubTypeId: any, AdjustmentId: any, AdjustmentReason: any, CreatedByUserId: any, UserName: any, InventoryAdjustmentCodeAbbreviation:any, Quantity:any, Weight: any) =>
@@ -148,4 +155,4 @@ const Shrink = {
         
 };
 
-export default { RegionSelect, PurchaseOrder, InvoiceData, Shrink };
+export default { RegionSelect, PurchaseOrder, InvoiceData, Shrink, ReceivingList };

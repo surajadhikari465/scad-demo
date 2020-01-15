@@ -1,4 +1,5 @@
 import { OrderDetails } from "../types/OrderDetails";
+import OrderItem from "../types/OrderItem";
 
 const orderUtil = {
     OrderHasUpc: (order: any, upc: string): boolean => {
@@ -34,7 +35,7 @@ const orderUtil = {
             EInvQty: orderItem.eInvoiceQuantity,
             IsReturnOrder: order.return_Order,
             Subteam: order.transfer_To_SubTeamName,
-            SubteamNo: order.transfer_SubTeam,
+            SubteamNo: order.transfer_To_SubTeam,
             Vendor: order.companyName,
             OrderItemId: orderItem.orderItem_ID,
             PkgWeight: orderItem.package_Desc1,
@@ -54,10 +55,26 @@ const orderUtil = {
             VendorDocDate: order.vendorDocDate,
             VendorDocId: order.vendorDocID,
             CloseDate: order.closeDate,
-            PartialShipment: order.partialShipment
+            PartialShipment: order.partialShipment,
+            OrderItems: order.orderItems.map((oi: any) => {
+                return orderUtil.MapOrderItem(oi);
+            })
         }
     
         return orderDetails;
+    },
+    MapOrderItem: (oi: any): OrderItem => {
+        return {
+            OrderItemId: oi.orderItem_ID,
+            QtyOrdered: oi.quantityOrdered,
+            QtyReceived: oi.quantityReceived,
+            eInvoiceQty: oi.eInvoiceQuantity,
+            Upc: oi.identifier,
+            Description: oi.item_Description,
+            Weight: oi.total_Weight,
+            eInvoiceWeight: oi.eInvoiceWeight,
+            Code: oi.receivingDiscrepancyReasonCodeID
+        } as OrderItem
     }
 }
 
