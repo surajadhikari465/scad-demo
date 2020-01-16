@@ -5,6 +5,7 @@ namespace Icon.Web.Mvc.Validators
     public static class ValidationMessages
     {
         public const string TraitCodeUnique = "An attribute already exists with the same trait code. Trait codes must be unique.";
+        public const string XmlTraitDescriptionUnique = "Entered display name cannot be used. It is utilized already by downstream systems.";
         public const string DisplayNameUnique = "An attribute already exists with the same display name. Display names must be unique.";
         public const string ValidNumberOfDigits = "Must have enough decimals for the specified maximum number value.";
         public const string SelectCharacterSets = "At least one option for allowable characters must be selected.";

@@ -37,8 +37,8 @@ namespace Icon.Web.Tests.Unit.Validators
             mockAttributesHelper = new Mock<IAttributesHelper>();
 
             validator = new AttributeViewModelValidator(
-                mockGetAttributesQueryHandler.Object, 
-                mockGetItemsQueryHandler.Object, 
+                mockGetAttributesQueryHandler.Object,
+                mockGetItemsQueryHandler.Object,
                 mockGetAttributeByAttributeIdQuery.Object,
                 mockDoesAttributeExistOnItemsQueryHandler.Object,
                 mockAttributesHelper.Object);
@@ -227,7 +227,7 @@ namespace Icon.Web.Tests.Unit.Validators
 
             //Then
             Assert.IsFalse(result.IsValid);
-            Assert.IsTrue(result.Errors.Any(e => e.ErrorMessage == "The length of 'Trait Code' must be 3 characters or fewer. You entered "  + length+" characters."));
+            Assert.IsTrue(result.Errors.Any(e => e.ErrorMessage == "The length of 'Trait Code' must be 3 characters or fewer. You entered " + length + " characters."));
         }
 
         [TestMethod]
@@ -270,6 +270,28 @@ namespace Icon.Web.Tests.Unit.Validators
             //Then
             Assert.IsFalse(result.IsValid);
             Assert.IsTrue(result.Errors.Any(e => e.ErrorMessage == "An attribute already exists with the same trait code. Trait codes must be unique."));
+        }
+
+        [TestMethod]
+        public void Validate_XmlTraitDescriptionAlreadyExists_InvalidResult()
+        {
+            //Given
+            viewModel.AttributeId = 2;
+            viewModel.DisplayName = "Tst";
+            viewModel.TraitCode = "Tst";
+
+            mockGetAttributesQueryHandler.Setup(m => m.Search(It.IsAny<EmptyQueryParameters<IEnumerable<AttributeModel>>>()))
+                .Returns(new List<AttributeModel>
+                {
+                    new AttributeModel { AttributeId = 1, XmlTraitDescription = "Tst" }
+                });
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsFalse(result.IsValid);
+            Assert.IsTrue(result.Errors.Any(e => e.ErrorMessage == "Entered display name cannot be used. It is utilized already by downstream systems."));
         }
 
         [TestMethod]
@@ -1115,8 +1137,8 @@ namespace Icon.Web.Tests.Unit.Validators
             var result = validator.Validate(viewModel);
 
             //Then
-           Assert.IsFalse(result.IsValid);
-           Assert.AreEqual(ValidationMessages.CurrentMinimumNumberMustBeLessThanNewMinimumNumber, result.Errors.Single().ErrorMessage);
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(ValidationMessages.CurrentMinimumNumberMustBeLessThanNewMinimumNumber, result.Errors.Single().ErrorMessage);
         }
 
         [TestMethod]

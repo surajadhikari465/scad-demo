@@ -48,6 +48,10 @@ namespace Icon.Web.Mvc.Validators
                 .Must((vm, n) => IsUniqueTraitCode(vm))
                 .WithMessage(ValidationMessages.TraitCodeUnique);
 
+            RuleFor(vm => vm.XmlTraitDescription)
+               .Must((vm, n) => IsUniqueXmlTraitDescription(vm))
+               .WithMessage(ValidationMessages.XmlTraitDescriptionUnique);
+
             RuleFor(vm => vm.DisplayName)
                 .NotEmpty();
 
@@ -219,6 +223,15 @@ namespace Icon.Web.Mvc.Validators
             return attributes
                 .Where(a => a.AttributeId != attributeViewModel.AttributeId)
                 .All(a => a.TraitCode != attributeViewModel.TraitCode);
+        }
+
+        // attribute DisplayName is stored in xmltraitdescription field
+        private bool IsUniqueXmlTraitDescription(AttributeViewModel attributeViewModel)
+        {
+            var attributes = getAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>());
+            return attributes
+                .Where(a => a.AttributeId != attributeViewModel.AttributeId)
+                .All(a => a.XmlTraitDescription != attributeViewModel.DisplayName);
         }
 
         private bool IsUniqueDisplayName(AttributeViewModel attributeViewModel)
