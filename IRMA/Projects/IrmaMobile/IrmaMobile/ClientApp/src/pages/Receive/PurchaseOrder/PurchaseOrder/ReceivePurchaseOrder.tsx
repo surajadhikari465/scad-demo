@@ -190,7 +190,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
             {isReopening ? <LoadingComponent content="Reopening order..." /> :
             <Fragment>
                 <ConfirmModal handleCancelClose={handleReopenCancel} handleConfirmClose={handleReopenPartial} setOpenExternal={setOpenPartial} showTriggerButton={false} 
-                                    openExternal={openPartial} headerText='Receiving List' cancelButtonText='No' confirmButtonText='Yes' 
+                                    openExternal={openPartial} headerText='Receive' cancelButtonText='No' confirmButtonText='Yes' 
                                     lineOne={'This order was closed as a partial shipment. Re-open the order now to scan more items?'} /> 
                 <OrderInformationModal handleOnClose={handleOnCloseOrderInformation} orderInformation={orderInformation} open={openOrderInformation === 'open'} />
                 <CurrentLocation />

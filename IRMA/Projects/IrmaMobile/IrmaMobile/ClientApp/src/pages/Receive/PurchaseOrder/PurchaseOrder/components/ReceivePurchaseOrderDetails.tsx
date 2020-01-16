@@ -18,14 +18,18 @@ import { QuantityAddMode } from "../../types/QuantityAddMode";
 import ReceivePurchaseOrderDetailsQtyModal from "./ReceivePurchaseOrderDetailsQtyModal";
 import Config from "../../../../../config";
 import OrderItem from "../../types/OrderItem";
+import ConfirmModal from "../../../../../layout/ConfirmModal";
 
 const ReceivePurchaseOrderDetails: React.FC = () => {
     // @ts-ignore
     const { state, dispatch } = useContext(AppContext);
-    const { orderDetails, region, mappedReasonCodes } = state;
+    const { orderDetails, region, mappedReasonCodes, purchaseOrderUpc } = state;
     const [receivingOrder, setReceivingOrder] = useState<boolean>(false);
     const [showQtyModal, setShowQtyModal] = useState<boolean>(false);
-    let quantityMode: QuantityAddMode = QuantityAddMode.None;
+    const [showHighQtyModal, setShowHighQtyModal] = useState<boolean>(false);
+    let overrideHighQty: boolean = false;
+    // let quantityMode: QuantityAddMode = QuantityAddMode.None;
+    const [quantityMode, setQuantityMode] = useState<QuantityAddMode>(QuantityAddMode.None);
 
     useEffect(() => {
         const loadReasonCodes = async () => {
@@ -52,7 +56,12 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.currentTarget;
 
-        if(!isNaN(parseInt(value))) {
+        if(value === "" && purchaseOrderUpc !== "") {
+            dispatch({
+                type: types.SETORDERDETAILS,
+                orderDetails: { ...orderDetails, [name]: 0 }
+            });
+        } else if(!isNaN(parseInt(value))) {
             dispatch({
                 type: types.SETORDERDETAILS,
                 orderDetails: { ...orderDetails, [name]: parseInt(value) }
@@ -89,12 +98,22 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 return;
             }
 
-            if(orderDetails.QtyReceived !== 0 && quantityMode === QuantityAddMode.None) {
+            if(orderDetails.Quantity === 0) {
+                toast.error("Please enter a quantity of at least 1.", { autoClose: false });
+                return;
+            }
+
+            if(!overrideHighQty && orderDetails.QtyReceived !== 0 && quantityMode === QuantityAddMode.None) {
                 setShowQtyModal(true);
                 return;
             }
 
             const quantity: number = quantityMode === QuantityAddMode.AddTo ? orderDetails.Quantity + orderDetails.QtyReceived : orderDetails.Quantity;
+
+            if(!overrideHighQty && quantity > orderDetails.QtyOrdered) {
+                setShowHighQtyModal(true);
+                return;
+            }
 
             try {
                 setReceivingOrder(true);
@@ -119,13 +138,14 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                         toast.success("Receive PO Successful");
                     }
 
-                    quantityMode = QuantityAddMode.None;
                     orderDetails.OrderItems.filter((oi: OrderItem) => oi.OrderItemId === orderDetails.OrderItemId)[0].QtyReceived = quantity;
                     dispatch({type: types.SETORDERDETAILS, orderDetails: {...orderDetails, QtyReceived: quantity, OrderItems: orderDetails.OrderItems}});
                 }
             }
             finally {
                 setReceivingOrder(false);
+                overrideHighQty = false;
+                setQuantityMode(QuantityAddMode.None);
             }
         }
     };
@@ -168,20 +188,36 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
         }
     };
 
+    useEffect(() => {
+        const receiveClick = async () => {
+            await receiveOrderClick();
+        }
+
+        if(quantityMode !== QuantityAddMode.None) {
+            receiveClick();        
+        }
+    }, [quantityMode])
+
     const handleQuantityDecision = async (decision: QuantityAddMode) => {
-        quantityMode = decision;
         setShowQtyModal(false);
+        setQuantityMode(decision);
 
         if(decision === QuantityAddMode.None) {
             toast.info("Quantity not saved");
-        } else {
-            await receiveOrderClick();
         }
     }
 
+    const handleHighQtyConfirmClick = async () => {
+        overrideHighQty = true;
+        await receiveOrderClick();
+    }
+
     if (orderDetails) {
-        return (
+        return ( //orderDetails.Quantity > orderDetails.QtyReceived
             <Fragment>
+                <ConfirmModal handleConfirmClose={handleHighQtyConfirmClick} setOpenExternal={setShowHighQtyModal} showTriggerButton={false} 
+                                    openExternal={showHighQtyModal} headerText='Verify Quantity' cancelButtonText='No' confirmButtonText='Yes' 
+                                    lineOne={`Quantity Received (${quantityMode === QuantityAddMode.AddTo ? orderDetails.Quantity + orderDetails.QtyReceived : orderDetails.Quantity}) is greater than Quantity Ordered (${orderDetails.QtyOrdered}). Continue?`} /> 
                 <ReceivePurchaseOrderDetailsQtyModal handleQuantityDecision={handleQuantityDecision} open={showQtyModal}/>
                 <ReceivePurchaseOrderReasonCodeModal />
                 <Segment
@@ -239,7 +275,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 </Grid>
 
                 <Grid columns={2}>
-                    <Grid.Column style={{ paddingTop: "0px" }}>
+                    <Grid.Column style={{ paddingTop: "0px", paddingBottom: '0px' }}>
                         <Grid columns={2} celled>
                             <Grid.Row>
                                 <Grid.Column
@@ -259,7 +295,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                         onFocus={(event: any) =>
                                             event.target.select()
                                         }
-                                        value={orderDetails.Quantity}
+                                        value={orderDetails.ItemLoaded ? orderDetails.Quantity : ''}
                                         fluid
                                         size="small"
                                         disabled={!orderDetails.ItemLoaded}
@@ -322,7 +358,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                             </Grid.Row>
                         </Grid>
                     </Grid.Column>
-                    <Grid.Column stretched style={{ paddingTop: "0px" }}>
+                    <Grid.Column stretched style={{ paddingTop: "0px", paddingBottom: '0px' }}>
                         <Grid celled columns={2}>
                             <Grid.Row color="grey">
                                 <Grid.Column
