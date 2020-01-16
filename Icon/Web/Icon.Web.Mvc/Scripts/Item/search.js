@@ -668,12 +668,12 @@ window.addEventListener('load', function () {
                         headerText: attribute.DisplayName,
                         key: attribute.AttributeName,
                         dataType: "date",
-                        dateDisplayType: "local",
+                        dateDisplayType: "utc",
                         enableUTCDates: true,
                         format: "yyyy-MM-dd",
                         width: attribute.GridColumnWidth
                     });
-                } else {
+                } else {;
                     columnSettings.push({
                         headerText: attribute.DisplayName,
                         key: attribute.AttributeName,
@@ -686,7 +686,13 @@ window.addEventListener('load', function () {
             }
         },
         saveColumnSettings: function (columns) {
-            let columnsJson = JSON.stringify(columns);
+            columns.forEach(function (element) {
+                if (element.dataType === 'date') {
+                    element.dateDisplayType = 'utc';
+                }
+            });
+
+            let columnsJson = JSON.stringify(columns); 
             window.localStorage.setItem(columnsKey, columnsJson);
             this.setSession();
         },
