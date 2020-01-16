@@ -43,8 +43,9 @@
               columns.For(c => c.ParentCompany).HeaderText("Parent Company").DataType("string").Width("10%");
               columns.For(c => c.ZipCode).HeaderText("Zip Code").DataType("string").Width("10%");
               columns.For(c => c.Locality).HeaderText("Locality").DataType("string").Width("10%");
-              columns.Unbound("ActionEdit").Template("&nbsp&nbsp&nbsp&nbsp <a href='/Brand/Edit?hierarchyClassId=${HierarchyClassId}'>Edit</a>").Width("10%").HeaderText("").Hidden(Model == null ? true : ((int)Model.UserWriteAccess) == 0);
-              columns.Unbound("ActionDelete").Template("&nbsp&nbsp&nbsp&nbsp&nbsp <a href='/HierarchyClass/Delete?hierarchyClassId=${HierarchyClassId}'>Delete</a>").Width("10%").HeaderText("").Hidden(Model == null ? true : !((Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full));
+              columns.Unbound("ActionEdit").Template("&nbsp&nbsp&nbsp&nbsp <a href='/Brand/Edit?hierarchyClassId=${HierarchyClassId}'>Edit</a>").Width("5%").HeaderText("").Hidden(Model == null ? true : ((int)Model.UserWriteAccess) == 0);
+              //columns.Unbound("ActionDelete").Template("&nbsp&nbsp&nbsp&nbsp&nbsp <a href='/HierarchyClass/Delete?hierarchyClassId=${HierarchyClassId}'>Delete</a>").Width("10%").HeaderText("").Hidden(Model == null ? true : !((Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full));
+              columns.Unbound("ActionDelete").Template("&nbsp&nbsp&nbsp&nbsp&nbsp <input type='button' class='btn btn-link' value='Delete' style='color:darkred;' onclick='deleteHC(${HierarchyClassId})' />").Width("8%").HeaderText("").Hidden(Model == null ? true : !((Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full));
             })
             .Features(features =>
             {
@@ -61,7 +62,24 @@
 
 </div>
 
+<div id="dlgConfirm" title="User Confirmation Required" style="display:none;">
+    <div style="max-height:300px; box-sizing:border-box;">
+        <p id="dlgInfo" />
+        <p id="dlgMsg" />
+
+        <hr />
+        <div id="finePrint" class="fine-print text-info">
+            <span>In order to delete the following requirement must be met:</span>
+            <ul>
+                <li>Brand should not have any item associated to it.</li>
+                <li>Brand should not have Contact associated to it. </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 @section scripts
 {
+    @Scripts.Render("~/Scripts/Brand/brand-index.js")
     @Scripts.Render("~/Scripts/jquery.fileDownload.js")
 }

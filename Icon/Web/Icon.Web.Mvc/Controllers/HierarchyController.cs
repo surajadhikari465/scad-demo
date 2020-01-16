@@ -179,15 +179,22 @@ namespace Icon.Web.Controllers
 
         private Enums.WriteAccess GetWriteAccess()
         {
-            bool hasWriteAccess = this.settings.WriteAccessGroups.Split(',').Any(x => this.HttpContext.User.IsInRole(x.Trim()));
-            var userAccess = Enums.WriteAccess.None;
-
-            if (hasWriteAccess)
+            try
             {
-                userAccess = Enums.WriteAccess.Full;
-            }
+                bool hasWriteAccess = this.settings.WriteAccessGroups.Split(',').Any(x => this.HttpContext.User.IsInRole(x.Trim()));
+                var userAccess = Enums.WriteAccess.None;
 
-            return userAccess;
+                if (hasWriteAccess)
+                {
+                    userAccess = Enums.WriteAccess.Full;
+                }
+
+                return userAccess;
+            }
+            catch
+            {
+                return Enums.WriteAccess.None;
+            }
         }
     }
 }

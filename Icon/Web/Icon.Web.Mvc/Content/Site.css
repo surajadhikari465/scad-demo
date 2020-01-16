@@ -446,3 +446,8 @@ td {
     font-weight: bold;
     margin: 15px 0 0 15px
 }
+
+.fine-print{
+    font-size: smaller;
+    font-style:italic;
+}

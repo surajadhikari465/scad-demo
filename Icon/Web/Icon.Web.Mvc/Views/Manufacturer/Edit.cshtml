@@ -11,9 +11,9 @@
 {
     if(ViewBag.IsContactViewAllowed != null && ViewBag.IsContactViewAllowed)
     {
-    <div>
-        @Html.ActionLink("Back to Manufacturers", "Index") &nbsp&nbsp&nbsp&nbsp&nbsp @Html.ActionLink("Add New Manufacturer", "Create") &nbsp&nbsp&nbsp&nbsp&nbsp @Html.ActionLink("Manage Contacts", "Contact", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, null)
-    </div>
+        <div>
+            @Html.ActionLink("Back to Manufacturers", "Index") &nbsp&nbsp&nbsp&nbsp&nbsp @Html.ActionLink("Add New Manufacturer", "Create") &nbsp&nbsp&nbsp&nbsp&nbsp @Html.ActionLink("Manage Contacts", "Contact", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, null)
+        </div>
     }
     else
     { 
@@ -24,9 +24,18 @@
 }
 else
 {
-    <div class="form-footer">
-        @Html.ActionLink("Back to Manufacturers", "Index")
-    </div>
+    if(ViewBag.IsContactViewAllowed != null && ViewBag.IsContactViewAllowed)
+    {
+        <div>
+            @Html.ActionLink("Back to Manufacturers", "Index") &nbsp&nbsp&nbsp&nbsp&nbsp @Html.ActionLink("Manage Contacts", "Contact", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, null)
+        </div>
+    }
+    else
+    {
+        <div class="form-footer">
+            @Html.ActionLink("Back to Manufacturers", "Index")
+        </div>
+    }
 }
 
 <div class="page-section">

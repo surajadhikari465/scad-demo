@@ -34,6 +34,7 @@ namespace Icon.Web.Controllers
         private IManagerHandler<UpdateHierarchyClassManager> updateManager;
         private IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler;
         private IQueryHandler<GetMerchandiseHierarchyClassTraitsParameters, IEnumerable<MerchandiseHierarchyClassTrait>> getMerchandiseHierarchyTraitsQueryHandler;
+        private IQueryHandler<GetContactsParameters, List<ContactModel>> getContactsQuery;
         private IconWebAppSettings settings;
 
         private IDonutCacheManager cacheManager;
@@ -45,6 +46,7 @@ namespace Icon.Web.Controllers
             IManagerHandler<UpdateHierarchyClassManager> updateManager,
             IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler,
             IQueryHandler<GetMerchandiseHierarchyClassTraitsParameters, IEnumerable<MerchandiseHierarchyClassTrait>> getMerchandiseHierarchyTraitsQueryHandler,
+            IQueryHandler<GetContactsParameters, List<ContactModel>> getContactsQuery,
             IDonutCacheManager cacheManager,
             IconWebAppSettings settings)
         {
@@ -56,9 +58,9 @@ namespace Icon.Web.Controllers
             this.updateManager = updateManager;
             this.getHierarchyClassesQueryHandler = getHierarchyClassesQueryHandler;
             this.getMerchandiseHierarchyTraitsQueryHandler = getMerchandiseHierarchyTraitsQueryHandler;
+            this.getContactsQuery = getContactsQuery;
             this.cacheManager = cacheManager;
             this.settings = settings;
-
         }
 
         //
@@ -78,7 +80,7 @@ namespace Icon.Web.Controllers
 
             if (hierarchyClassId == 0 || hierarchyClassId < 1)
             {
-                return RedirectToAction("Index", "Hierarchy", new { SelectedHeirachyId = hierarchyClass.hierarchyID });
+                return RedirectToAction("Index", "Hierarchy", new { SelectedHeirachyId = hierarchyClassId });
             }
 
             if (hierarchyClass.hierarchyID == Hierarchies.Brands)
@@ -373,6 +375,14 @@ namespace Icon.Web.Controllers
             if (deletedHierarchyClass.HierarchyClass1.Count > 0)
             {
                 ViewData["ErrorMessage"] = "Error: This hierarchy class contains subclasses, so it cannot be deleted.";
+                return View(viewModel);
+            }
+
+            // Make sure there's no contacts.
+            if((viewModel.HierarchyId == Hierarchies.Brands || viewModel.HierarchyId == Hierarchies.Manufacturer)
+                    && getContactsQuery.Search(new GetContactsParameters() { HierarchyClassId = deletedHierarchyClass.hierarchyClassID }).Any())
+            {
+                ViewData["ErrorMessage"] = "Error: This hierarchy class has contacts, so it cannot be deleted till all contacts are removed first.";
                 return View(viewModel);
             }
 

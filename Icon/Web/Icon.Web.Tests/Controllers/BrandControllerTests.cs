@@ -41,6 +41,8 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<ControllerContext> mockControllerContext;
         private Mock<IIdentity> mockIdentity;
         private string userName;
+        private Mock<IManagerHandler<DeleteHierarchyClassManager>> mockDeleteHierarchyClassManager;
+        private Mock<IQueryHandler<GetContactsParameters, List<ContactModel>>> mockGetContactsQuery;
 
         [TestInitialize]
         public void Initialize()
@@ -50,6 +52,8 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockGetBrandsQuery = new Mock<IQueryHandler<GetBrandsParameters, List<BrandModel>>>();
             mockGetHierarchyClassQuery = new Mock<IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass>>();
             mockBrandManagerHandler = new Mock<IManagerHandler<BrandManager>>();
+            mockDeleteHierarchyClassManager = new Mock<IManagerHandler<DeleteHierarchyClassManager>>();
+            mockGetContactsQuery = new Mock<IQueryHandler<GetContactsParameters, List<ContactModel>>>();
             mockExcelExporterService = new Mock<IExcelExporterService>();
             settings = new IconWebAppSettings();
             mockControllerContext = new Mock<ControllerContext>();
@@ -65,7 +69,9 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockBrandManagerHandler.Object,
                 mockExcelExporterService.Object,
                 settings,
-                mockCacheManager.Object);
+                mockCacheManager.Object,
+                mockDeleteHierarchyClassManager.Object,
+                mockGetContactsQuery.Object);
 
             transaction = context.Database.BeginTransaction();
 

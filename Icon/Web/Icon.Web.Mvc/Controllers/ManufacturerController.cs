@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
-using Icon.Common;
+using System;
 
 namespace Icon.Web.Mvc.Controllers
 {
@@ -30,6 +30,8 @@ namespace Icon.Web.Mvc.Controllers
         private readonly IExcelExporterService excelExporterService;
         private IDonutCacheManager cacheManager;
         private IconWebAppSettings settings;
+        private IManagerHandler<DeleteHierarchyClassManager> deleteHierarchyClass;
+        private IQueryHandler<GetContactsParameters, List<ContactModel>> getContactsQuery;
 
         public ManufacturerController(ILogger logger,
             IQueryHandler<GetManufacturersParameters, List<ManufacturerModel>> getManufacturersQuery,
@@ -37,7 +39,9 @@ namespace Icon.Web.Mvc.Controllers
             IManagerHandler<ManufacturerManager> manufacturerManagerHandler,
             IExcelExporterService excelExporterService,
             IDonutCacheManager cacheManager,
-            IconWebAppSettings settings
+            IconWebAppSettings settings,
+            IManagerHandler<DeleteHierarchyClassManager> deleteHierarchyClass,
+            IQueryHandler<GetContactsParameters, List<ContactModel>> getContactsQuery
             )
         {
             this.logger = logger;
@@ -47,6 +51,8 @@ namespace Icon.Web.Mvc.Controllers
             this.manufacturerManagerHandler = manufacturerManagerHandler;
             this.excelExporterService = excelExporterService;
             this.cacheManager = cacheManager;
+            this.deleteHierarchyClass = deleteHierarchyClass;
+            this.getContactsQuery = getContactsQuery;
         }
 
         // GET: Manufacturer
@@ -119,6 +125,64 @@ namespace Icon.Web.Mvc.Controllers
                 return View(EmptyViewModel());
             }
         }
+
+        [HttpPost]
+        [WriteAccessAuthorize]
+        public ActionResult Delete(int hcId)
+        {
+            try
+            {
+                if(GetWriteAccess() != Enums.WriteAccess.Full)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Unauthorized;
+                    return Json("You don’t have sufficient privileges to complete selected action.");
+                }
+
+                var errList = new List<string>();
+
+                var hcDeleted = getHierarchyClassQuery.Search(new GetHierarchyClassByIdParameters { HierarchyClassId = hcId });
+
+                // Make sure the node is not attached to any items.
+                if(hcDeleted.ItemHierarchyClass.Count > 0)
+                {
+                    errList.Add("linked to items");
+                }
+    
+                // Make sure the node does not have any children.
+                if(hcDeleted.HierarchyClass1.Count > 0)
+                {
+                    errList.Add("contains subclasses");
+                }
+
+                // Make sure there's no contacts.
+                if(getContactsQuery.Search(new GetContactsParameters() { HierarchyClassId = hcId }).Any())
+                {
+                    errList.Add("has associated contacts");
+                }
+
+                if(errList.Count() > 0)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return Json($"Cannot be deleted for the following reason(s): { string.Join(", ", errList) }.");
+                }  
+
+                var command = new DeleteHierarchyClassManager
+                {
+                    DeletedHierarchyClass = hcDeleted,
+                    EnableHierarchyMessages = (hcDeleted.hierarchyID == Hierarchies.Manufacturer && settings.IsManufacturerHierarchyMessage)
+                };
+
+                deleteHierarchyClass.Execute(command);
+                this.cacheManager.ClearCacheForController("HierarchyClass");
+				Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+				return Json(new { success = true, responseText = $"Successfully deleted {hcDeleted.hierarchyClassName}" }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				Response.StatusCode = (int)System.Net.HttpStatusCode.ExpectationFailed;
+				return Json(ex.Message);
+			}
+		}
 
         private ManufacturerViewModel EmptyViewModel()
         {

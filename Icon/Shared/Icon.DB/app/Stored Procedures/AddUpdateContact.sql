@@ -34,8 +34,8 @@ BEGIN
 				,c.ContactTypeId
 				,c.Email ORDER BY c.ContactId DESC) rowId
 		FROM @contact c
-		JOIN ContactType ct ON ct.ContactTypeId = c.ContactTypeId
-		JOIN HierarchyClass hc ON hc.hierarchyClassID = c.HierarchyClassID)
+		JOIN dbo.ContactType ct ON ct.ContactTypeId = c.ContactTypeId
+		JOIN dbo.HierarchyClass hc ON hc.hierarchyClassID = c.HierarchyClassID)
 	SELECT *
 	INTO #contact
 	FROM cte

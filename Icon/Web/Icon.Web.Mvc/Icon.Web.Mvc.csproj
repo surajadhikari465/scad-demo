@@ -1723,6 +1723,7 @@
     <Content Include="Scripts\knockout.mapping-latest.js" />
     <Content Include="Scripts\Manufacturer\manufacturer-create.js" />
     <Content Include="Scripts\Manufacturer\manufacturer-edit.js" />
+    <Content Include="Scripts\Manufacturer\manufacturer-index.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\National\national-create-edit.js" />
     <Content Include="Scripts\popper-utils.js" />

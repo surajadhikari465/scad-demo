@@ -26,6 +26,8 @@ namespace Icon.Web.DataAccess.Commands
 
                 var deletedHierarchyClass = context.HierarchyClass.Find(data.DeletedHierarchyClass.hierarchyClassID);
 
+                context.Database.ExecuteSqlCommand($"DELETE FROM dbo.Contact WHERE HierarchyClassID = {deletedHierarchyClass.hierarchyClassID}");
+
                 if (deletedHierarchyClass.HierarchyClassTrait.Count > 0)
                 {
                     context.HierarchyClassTrait.RemoveRange(deletedHierarchyClass.HierarchyClassTrait);

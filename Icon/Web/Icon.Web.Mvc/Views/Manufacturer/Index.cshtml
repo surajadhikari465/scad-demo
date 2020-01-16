@@ -40,7 +40,8 @@
                 columns.For(c => c.ZipCode).HeaderText("ZIP Code").DataType("string").Width("10%");
                 columns.For(c => c.ArCustomerId).HeaderText("AR Customer ID").DataType("string").Width("15%");
                 columns.Unbound("ActionEdit").Template("&nbsp&nbsp&nbsp&nbsp <a href='/Manufacturer/Edit?hierarchyClassId=${HierarchyClassId}'>Edit</a>").Width("10%").HeaderText("");
-                columns.Unbound("ActionDelete").Template("&nbsp&nbsp&nbsp&nbsp&nbsp <a href='/HierarchyClass/Delete?hierarchyClassId=${HierarchyClassId}'>Delete</a>").Width("10%").HeaderText("");
+                //columns.Unbound("ActionDelete").Template("&nbsp&nbsp&nbsp&nbsp&nbsp <a href='/HierarchyClass/Delete?hierarchyClassId=${HierarchyClassId}'>Delete</a>").Width("10%").HeaderText("");
+                columns.Unbound("ActionDelete").Template("&nbsp&nbsp&nbsp&nbsp&nbsp <input type='button' class='btn btn-link' value='Delete' style='color:darkred;' onclick='deleteHC(${HierarchyClassId})' />").Width("8%").HeaderText("").Hidden(Model == null ? true : !((Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full));
             })
             .Features(features =>
             {
@@ -57,7 +58,24 @@
 
 </div>
 
+<div id="dlgConfirm" title="User Confirmation Required" style="display:none;">
+    <div style="max-height:300px; box-sizing:border-box;">
+        <p id="dlgInfo" />
+        <p id="dlgMsg" />
+
+        <hr />
+        <div id="finePrint" class="fine-print text-info">
+            <span>In order to delete the following requirement must be met:</span>
+            <ul>
+                <li>Manufacturer should not have any item associated to it.</li>
+                <li>Manufacturer should not have Contact associated to it. </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 @section scripts
 {
     @Scripts.Render("~/Scripts/jquery.fileDownload.js")
+    @Scripts.Render("~/Scripts/Manufacturer/manufacturer-index.js")
 }

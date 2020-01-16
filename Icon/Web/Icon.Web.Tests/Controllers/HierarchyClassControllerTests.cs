@@ -37,6 +37,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IQueryHandler<GetMerchandiseHierarchyClassTraitsParameters, IEnumerable<MerchandiseHierarchyClassTrait>>> mockGetMerchandiseHierarchyTraitsQueryHandler;
         private Mock<IDonutCacheManager> mockCacheManager;
         private IconWebAppSettings settings;
+        private Mock<IQueryHandler<GetContactsParameters, List<ContactModel>>> mockGetContactsQuery;
 
         [TestInitialize]
         public void Initialize()
@@ -51,6 +52,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             this.mockGetHierarchyClassesQueryHandler = new Mock<IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>>>();
             this.mockGetMerchandiseHierarchyTraitsQueryHandler = new Mock<IQueryHandler<GetMerchandiseHierarchyClassTraitsParameters, IEnumerable<MerchandiseHierarchyClassTrait>>>();
             this.mockCacheManager = new Mock<IDonutCacheManager>();
+            this.mockGetContactsQuery = new Mock<IQueryHandler<GetContactsParameters, List<ContactModel>>>();
             settings = new IconWebAppSettings();
             
             this.controller = new HierarchyClassController(mockLogger.Object,
@@ -61,6 +63,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockUpdateManager.Object,
                 mockGetHierarchyClassesQueryHandler.Object,
                 mockGetMerchandiseHierarchyTraitsQueryHandler.Object,
+                mockGetContactsQuery.Object,
                 mockCacheManager.Object,
                 new IconWebAppSettings()
                 {
@@ -589,6 +592,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             // Given.
             mockHierarchyClassQuery.Setup(q => q.Search(It.IsAny<GetHierarchyClassByIdParameters>())).Returns(GetFakeHierarchyClass());
             mockGetHierarchyQuery.Setup(q => q.Search(It.IsAny<GetHierarchyParameters>())).Returns(GetFakeHierarchyWithSubclasses());
+            mockGetContactsQuery.Setup(q => q.Search(It.IsAny<GetContactsParameters>())).Returns(new List<ContactModel>());
 
             var viewModel = new HierarchyClassViewModel
             {

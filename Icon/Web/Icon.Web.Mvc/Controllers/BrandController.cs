@@ -32,6 +32,9 @@ namespace Icon.Web.Mvc.Controllers
         private IExcelExporterService excelExporterService;
         private IDonutCacheManager cacheManager;
         private IconWebAppSettings settings;
+        private IManagerHandler<DeleteHierarchyClassManager> deleteHierarchyClass;
+        private IQueryHandler<GetContactsParameters, List<ContactModel>> getContactsQuery;
+
         public BrandController(
             ILogger logger,
             IQueryHandler<GetBrandsParameters, List<BrandModel>> getBrandsQuery,
@@ -39,7 +42,9 @@ namespace Icon.Web.Mvc.Controllers
             IManagerHandler<BrandManager> updateBrandManagerHandler,
             IExcelExporterService excelExporterService,
             IconWebAppSettings settings,
-            IDonutCacheManager cacheManager)
+            IDonutCacheManager cacheManager,
+            IManagerHandler<DeleteHierarchyClassManager> deleteHierarchyClass,
+            IQueryHandler<GetContactsParameters, List<ContactModel>> getContactsQuery)
         {
             this.logger = logger;
             this.getBrandsQuery = getBrandsQuery;
@@ -48,6 +53,8 @@ namespace Icon.Web.Mvc.Controllers
             this.excelExporterService = excelExporterService;
             this.settings = settings;
             this.cacheManager = cacheManager;
+            this.deleteHierarchyClass = deleteHierarchyClass;
+            this.getContactsQuery = getContactsQuery;
         }
 
         // GET: Brand
@@ -119,6 +126,64 @@ namespace Icon.Web.Mvc.Controllers
                 return View(EmptyViewModel());
             }
         }
+
+        [HttpPost]
+        [WriteAccessAuthorize]
+        public ActionResult Delete(int hcId)
+        {
+            try
+            {
+                if(GetWriteAccess() != Enums.WriteAccess.Full)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Unauthorized;
+                    return Json("You don’t have sufficient privileges to complete selected action.");
+                }
+
+                var errList = new List<string>();
+
+                var hcDeleted = getHierarchyClassQuery.Search(new GetHierarchyClassByIdParameters { HierarchyClassId = hcId });
+
+                // Make sure the node is not attached to any items.
+                if(hcDeleted.ItemHierarchyClass.Count > 0)
+                {
+                    errList.Add("linked to items");
+                }
+    
+                // Make sure the node does not have any children.
+                if(hcDeleted.HierarchyClass1.Count > 0)
+                {
+                    errList.Add("contains subclasses");
+                }
+
+                // Make sure there's no contacts.
+                if(getContactsQuery.Search(new GetContactsParameters() { HierarchyClassId = hcId }).Any())
+                {
+                    errList.Add("has associated conatcts");
+                }
+
+                if(errList.Count() > 0)
+                {
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                    return Json($"Cannot be deleted for the following reason(s): { string.Join(", ", errList) }.");
+                }  
+
+                var command = new DeleteHierarchyClassManager
+                {
+                    DeletedHierarchyClass = hcDeleted,
+                    EnableHierarchyMessages = true,
+                };
+
+                deleteHierarchyClass.Execute(command);
+                this.cacheManager.ClearCacheForController("HierarchyClass");
+				Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+				return Json(new { success = true, responseText = $"Successfully deleted {hcDeleted.hierarchyClassName}" }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				Response.StatusCode = (int)System.Net.HttpStatusCode.ExpectationFailed;
+				return Json(ex.Message);
+			}
+		}
 
         // GET: Brand/Edit/5
         [WriteAccessAuthorize]

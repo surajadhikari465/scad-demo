@@ -1,45 +1,6 @@
-﻿var brandExportList = [];
-
-$(document).ready(function () {
-    $('#export').click(function () {
-        hierarcyClassExportList = [];
-
-        buildBrandExportList($('#brandGrid').data('igGrid').dataSource.data());
-
-        $.fileDownload('/Excel/BrandExport', {
-            httpMethod: 'POST',
-            data: { "brands": JSON.stringify(brandExportList) },
-            datatype: 'json',
-        });
-    });
-});
-
-function buildBrandExportList(igGridBrandData) {
-    for (var i = 0; i < igGridBrandData.length; i++) {
-
-        var brandExportModel = {
-            BrandName: igGridBrandData[i].BrandName,
-            BrandAbbreviation: igGridBrandData[i].BrandAbbreviation
-        };
-
-        brandExportList.push(brandExportModel);
-        brandExportModel.BrandName += '|' + igGridBrandData[i].HierarchyClassId;
-    }
-}
-
-// Helper function to allow toggling of the 'disabled' CSS class.
-jQuery.fn.extend({
-    disable: function (state) {
-        return this.each(function () {
-            var $this = $(this);
-            $this.toggleClass('disabled', state);
-        });
-    }
-});
-
-function deleteHC(hcId) {
-    $("#dlgInfo").html('Brand: <span style="color:black; font-weight:bolder">' + $('#brandGrid').igGrid('getCellValue', hcId, 'BrandName') + '</span>');
-    $("#dlgMsg").text('Are you sure you would like to delete brand?');
+﻿function deleteHC(hcId) {
+    $("#dlgInfo").html('Manufacturer: <span style="color:black; font-weight:bolder">' + $('#manufacturerGrid').igGrid('getCellValue', hcId, 'ManufacturerName') + '</span>');
+    $("#dlgMsg").text('Are you sure you would like to delete manufacturer?');
 
     $("#dlgConfirm").dialog({
         resizable: false,
@@ -71,7 +32,7 @@ function deleteHC(hcId) {
                     $("#dlgMsg").html('<div class="clearfix"><span class="float-left text-danger">Deleting...</span> <span class="spinner-border spinner-border-sm float-right" role="status"/></div>');
 
                     var request = $.ajax({
-                        url: '/Brand/Delete',
+                        url: '/Manufacturer/Delete',
                         type: 'POST',
                         data: "{ 'hcId' : '" + hcId + "' }",
                         cache: false,
@@ -79,7 +40,7 @@ function deleteHC(hcId) {
 
                         success: function (response) {
                             $(refDialog).dialog("close"); //Comment this line if confirmation is shown
-                            let grd = $('#brandGrid').data('igGrid'); //Remove deleted record from UI without POST
+                            let grd = $('#manufacturerGrid').data('igGrid'); //Remove deleted record from UI without POST
                             grd.dataSource.deleteRow(hcId);
                             grd.commit();
                         },
