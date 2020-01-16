@@ -27,22 +27,27 @@ const initialState = {
 
 const Shrink:React.FC = () => {
     const [shrinkState, setShrinkState] = useState(initialState);
-    // @ts-ignore 
-    const {state, dispatch} = useContext(AppContext);
+    const {state, dispatch} = useContext<any>(AppContext);
     const {isLoading} = state;
     const {subteam, region, storeNumber, subteamNo, shrinkTypes, shrinkType} = state;
-    const [alert, setAlert] = useState({open:false, alertMessage:'', type: 'default'});
+    const [alert, setAlert] = useState<any>({open:false, alertMessage:'', type: 'default', header: 'IRMA Mobile', confirmAction:()=> {}, cancelAction:()=> {}});
+    const [warningOverride, setWarningOverride] = useState<boolean>(false);
     const newMenuItems = [
       { id: 1, order: 0, text: "Review", path: "/shrink/review", disabled: false } as IMenuItem,
    ] as IMenuItem[];
     let textInput:any = React.createRef<HTMLInputElement>();
     let qtyInput:any = React.createRef<HTMLInputElement>();
+
     useEffect(() => {
       BarcodeScanner.registerHandler(function(data:any){
         try{
           setUpc(parseInt(data, 10));
         }catch(ex){
-          setAlert({open:true, alertMessage: ex.message, type: 'default'});
+          setAlert({...alert, 
+            open:true, 
+            alertMessage: ex.message, 
+            type: 'default', 
+            header:'Scan'});
         }
       });
       dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems});
@@ -52,23 +57,53 @@ const Shrink:React.FC = () => {
       return () => {
         //unmount and unregister handler
       };
-    }, [shrinkState]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [shrinkState, dispatch]);
+
+    const setUpc = (value?:any) =>{  
+      let upc = value && typeof value !== 'object' ? value: shrinkState.upcValue;
+      setIsLoading(true);
+      fetch(`${Config.baseUrl}/${region}/storeitems?storeNo=${storeNumber}&subteamNo=${subteamNo}&scanCode=${upc}`)
+      .then(res => res.json())
+      .then((result) => {
+        if(result.itemKey === 0 && result.itemDescription === null){
+          setAlert({...alert, 
+            open:true, 
+            alertMessage: 'Item not found',
+            type: 'default', 
+            header:'Irma Mobile'});
+        } else { 
+          if(result.retailSubteamName !== subteam.subteamName && warningOverride === false){
+            setAlert({...alert, 
+              open:true, 
+              alertMessage: `This is a ${result.retailSubteamName} item and you are shrinking it to ${subteam.subteamName}. Are you sure you want to to do this?`,
+              type: 'confirm', 
+              header:'Subteam Mismatch', 
+              confirmAction: confirmAdd, 
+              cancelAction: cancel});
+          } 
+          setShrinkItem(result, upc);
+        }
+       })
+      .finally(() => setIsLoading(false))
+    }
+
     const setShrinkType = (value:any) =>{
       setShrinkState({...shrinkState, isSelected:true});
       dispatch({ type: 'SETSHRINKTYPE', shrinkType:JSON.parse(value) });
     }
+
     const setIsLoading = (result: boolean) => {
       dispatch({ type: types.SETISLOADING, isLoading: result })
     }
-    const setShrinkItem = (result:any, upc: any) =>{
-        let dupItem = dupItemCheck(result);
-        if(dupItem.length > 0){
-          // @ts-ignore
-          setShrinkState({...shrinkState, ...result, upcValue:upc, dupItem});
-          setAlert({open: true, alertMessage: `${dupItem[0].quantity} of this item already queued in this session. Tap Add, Overwrite or Cancel`, type: 'prevScanned'});
-        } else {
-          setShrinkState({...shrinkState, ...result, upcValue:upc, quantity:1, dupItem});
-        }
+   const setShrinkItem = (result:any, upc: any) =>{
+      let dupItem = dupItemCheck(result);
+      if(dupItem.length > 0){
+        // @ts-ignore
+        setShrinkState({...shrinkState, ...result, upcValue:upc,queued: dupItem[0].quantity, quantity:1, dupItem});
+      } else {
+        setShrinkState({...shrinkState, ...result, upcValue:upc, quantity:1, dupItem});
+      }
     }
     const dupItemCheck = (result:any)=>{
         let shrinkItems:any = [];
@@ -80,34 +115,28 @@ const Shrink:React.FC = () => {
         }
         return shrinkItem;
     }
-    const add = (e:any) => {
-        setAlert({...alert, open:false});
-        // @ts-ignore
-        setShrinkState({...shrinkState, queued: shrinkState.dupItem[0].quantity, quantity:1});
-    }
-    const overwrite = (e:any) => {
-        setAlert({...alert, open:false});
-        setShrinkState({...shrinkState, quantity:1, queued: 0});
-    }
-    const cancel = (e:any) => {
-        setAlert({...alert, open: false});
-        clear();
-    }
     const toggleAlert = (e:any) =>{
-        setAlert({open:!alert.open, alertMessage: alert.alertMessage,type: 'default'});
+        setAlert({...alert, 
+          open:!alert.open, 
+          alertMessage: alert.alertMessage,
+          type: 'default', 
+          header:'Irma Mobile'});
     }
-    const setUpc = (value?:any) =>{  
-      let upc = value && typeof value !== 'object' ? value: shrinkState.upcValue;
-      setIsLoading(true);
-      fetch(`${Config.baseUrl}/${region}/storeitems?storeNo=${storeNumber}&subteamNo=${subteamNo}&scanCode=${upc}`)
-      .then(res => res.json())
-      .then((result) => {
-        if(result.itemKey === 0 && result.itemDescription === null){
-          setAlert({open:true, alertMessage: 'Item not found',type: 'default'});
-        } else setShrinkItem(result, upc);
-       })
-      .finally(() => setIsLoading(false))
+    const confirmAllItems = (e:any) => {
+        setWarningOverride(true);
+        setAlert({...alert, 
+          open: false, 
+          cancelAction: cancel});
     }
+    const confirmAdd = (e:any) => {
+      setAlert({open:true, 
+        header: 'Warning Override', 
+        type: 'confirm', 
+        alertMessage:'Do this for all items in this session?', 
+        confirmAction: confirmAllItems, 
+        cancelAction: cancel.bind(e, false)});
+    }
+    
     const setQty = (e:any) =>{
       setShrinkState({...shrinkState, quantity: e.target.value });
     }
@@ -115,7 +144,6 @@ const Shrink:React.FC = () => {
       setShrinkState({...shrinkState, skipConfirm: !shrinkState.skipConfirm});
     }
     const clear = () =>{
-      qtyInput.current.value = '';
       setShrinkState({...initialState, isSelected:true, skipConfirm: shrinkState.skipConfirm});
     }
     const setUpcValue = (e:any) =>{
@@ -126,19 +154,63 @@ const Shrink:React.FC = () => {
       shrinkItem.shrinkType = shrinkType.shrinkSubTypeMember;
       shrinkItem.quantity =  +(shrinkState.queued) + +(shrinkState.quantity)
       let shrinkItems: any = [];    
+
       if(localStorage.getItem("shrinkItems") !== null){
         // @ts-ignore
         shrinkItems = JSON.parse(localStorage.getItem("shrinkItems"));
       }
-      if(shrinkItems.filter((item: any) => item.identifier === shrinkItem.identifier).length > 0){
-        let localShrinkItems = shrinkItems.filter((item: any) => item.identifier !== shrinkItem.identifier);
-        shrinkItems = [ ...localShrinkItems, shrinkItem]
+      
+      if(shrinkState.dupItem.length > 0){
+        // if dup item found, replace the shrink Item with a new quantity
+        
+        setAlert({...alert, 
+          open: true, 
+          // @ts-ignore
+          alertMessage: `${shrinkState.dupItem[0].quantity} of this item already queued in this session. Tap Add, Overwrite or Cancel`, 
+          type: 'prevScanned', 
+          header: 'Previously Scanned Item', 
+          cancelAction: cancel});
       } else {
+        // else add a new shrink Item
         shrinkItems.push(shrinkItem);
+        saveItems(shrinkItems);
       }
-      localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems))
+    }
+    const getShrinkItems = (quantity: number) => {
+      const { isSelected, skipConfirm, queued, dupItem, ...shrinkItem} = shrinkState;
+      shrinkItem.shrinkType = shrinkType.shrinkSubTypeMember;
+      shrinkItem.quantity =  quantity;
+       // @ts-ignore
+      let shrinkItems = JSON.parse(localStorage.getItem("shrinkItems"));
+      let localShrinkItems = shrinkItems.filter((item: any) => item.identifier !== shrinkItem.identifier);
+      return [ ...localShrinkItems, shrinkItem];
+    }
+    const add = (e:any) => {
+      setAlert({...alert, open:false});
+       // @ts-ignore
+      let shrinkItems:[] = getShrinkItems(+(shrinkState.queued) + +(shrinkState.quantity));
+      saveItems(shrinkItems);
+    }
+    const overwrite = (e:any) => {
+      setAlert({...alert, open:false});
+       // @ts-ignore
+      let shrinkItems:[] = getShrinkItems(shrinkState.quantity);
+      saveItems(shrinkItems);
+    }
+    const cancel = (clearData=true, e:any) => {
+        setAlert({...alert, open: false});
+        if(clearData){
+          clear(); 
+        }
+    }
+    const saveItems = (shrinkItems: []) => {
+      localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems));
       if(!shrinkState.skipConfirm){
-        setAlert({open:true, alertMessage: 'Shrink Item Saved', type: 'default'});
+        setAlert({...alert, 
+          open:true, 
+          alertMessage: 'Shrink Item Saved', 
+          type: 'default', 
+          header:'Irma Mobile'});
       }
       clear();
     }
@@ -217,20 +289,24 @@ const Shrink:React.FC = () => {
       </div>
       <Modal
           open={alert.open}
-          onActionClick={toggleAlert}
       >   
-        <Header content='IRMA Mobile' />
+        <Header content={alert.header} />
         <Modal.Content>
           {alert.alertMessage}
         </Modal.Content>
         <Modal.Actions>
           {alert.type==='default' ? (
             <Button onClick={toggleAlert}> OK </Button>
+          ): alert.type==='confirm' ? (
+            <Fragment>
+              <Button onClick={alert.confirmAction}> Yes </Button>
+              <Button onClick={alert.cancelAction}> No </Button>
+            </Fragment>
           ):(
           <Fragment>
             <Button onClick={add}> Add </Button>
             <Button onClick={overwrite}> Overwrite </Button>
-            <Button onClick={cancel}> Cancel </Button>
+            <Button onClick={alert.cancelAction}> Cancel </Button>
           </Fragment>
           )}
         </Modal.Actions>

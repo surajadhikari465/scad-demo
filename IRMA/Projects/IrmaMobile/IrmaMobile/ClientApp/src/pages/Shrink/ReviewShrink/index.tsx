@@ -10,7 +10,6 @@ import ReactTable from 'react-table';
 import './styles.scss';
 import { toast } from 'react-toastify';
 
-
 const ReviewShrink:React.FC = () => {
     // @ts-ignore
     const {state, dispatch} = useContext(AppContext);
@@ -26,7 +25,7 @@ const ReviewShrink:React.FC = () => {
            setShrinkItems(localShrinkItems);
         }   
         dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false }); 
-    }, []);
+    }, [dispatch]);
     const update = ()=>{
       if(shrinkItems.length === 0){
         setAlert({open:true, alertMessage: 'There are no Shrink Items to Update'});
@@ -36,7 +35,6 @@ const ReviewShrink:React.FC = () => {
         else{
         setConfirm({open:true, message: 'Do you want to update the Quantity/Subtype for the Selected UPC?', onConfirm: ()=>{history.push('/shrink/update')}});
         }
-        
       }
     }
     const setIsLoading = (result: boolean) => {
@@ -47,6 +45,7 @@ const ReviewShrink:React.FC = () => {
         setAlert({open:true, alertMessage: 'There are no Shrink Items to Upload'});
       }
       setIsLoading(true);
+      let succeededItems = 0;
       for(let i=0; i<shrinkItems.length;i++){
         let weight = shrinkItems[i].costedByWeight ? shrinkItems[i].quantity: 0;
         try {
@@ -64,20 +63,20 @@ const ReviewShrink:React.FC = () => {
             shrinkItems[i].quantity,
             weight
             );
-          if(result){
-            toast.success("Shrink Item Uploaded");
-          }else{
-            toast.error(`Shrink Item ${shrinkItems[i].identifier} Failed to Upload`, { autoClose: false });
+          if(!result || result === undefined){
+            toast.error(`Shrink Item ${shrinkItems[i].identifier} Failed to Upload`);
+          } else {
+            succeededItems+=1;
           }
         }
         finally {
-          if(i  === shrinkItems.length-1){
-            toast.success("Shrink Items Uploaded");
-          }
           setIsLoading(false);
           localStorage.removeItem("shrinkItems");
           history.push('/shrink')
         }
+      }
+      if(succeededItems === shrinkItems.length){
+        toast.success("Shrink Items Uploaded");
       }
     }
     const close = () => {
