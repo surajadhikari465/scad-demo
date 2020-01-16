@@ -3368,6 +3368,7 @@
     <Build Include="Schema\amz\amz.sql" />
     <None Include="Scripts\Other\Gpm765Conversion_CancelTprScript.sql" />
     <None Include="Scripts\Other\RemoveFTPForClosedStores.sql" />
+    <None Include="Scripts\PostDeploy\PBI29079_AddNewShrinkTypeAndGL.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">

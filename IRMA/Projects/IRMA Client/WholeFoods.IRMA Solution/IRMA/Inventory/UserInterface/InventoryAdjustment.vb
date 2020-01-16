@@ -27,10 +27,11 @@ Friend Class frmInventoryAdjustment
     Private _isPackageUnit As Boolean
     Private _isDistributionCenter As Boolean
     Private _isStore As Boolean
-
+    
     Private _isSoldAsEachCostedByWeightItem As Boolean = False
     Private _itemIdentifier As String = ""
 
+    Dim hashSetReason As New HashSet(Of String)(new String(){"SM-Samples", "SP-Spoilage","FB-Food Bank", "IL-Needs Approval-Inventory Loss" }, StringComparer.InvariantCultureIgnoreCase)
     Dim dtShrinkSubtypes As New System.Data.DataTable
     Const col_ShrinkSubtype_ID As String = "ShrinkSubtype_ID"
     Const col_ShrinkReasonCode As String = "ReasonCodeDescription"
@@ -253,9 +254,8 @@ Friend Class frmInventoryAdjustment
         'behave this way, so we're handling the +/- here based on the user input.
 
         Dim _reason As String = cmbReason.SelectedItem.ToString()
-        Dim _allowSubtract As Boolean = True
-
-        If (_reason = "SM-Samples" Or _reason = "SP-Spoilage" Or _reason = "FB-Food Bank") Then _allowSubtract = False
+        Dim _allowSubtract As Boolean = IIf(hashSetReason.Contains(_reason), False, True)
+        
         If (_allowSubtract = True And optSubtract.Checked = True) Then
             _quantity = _quantity * -1
             _weight = _weight * -1
@@ -554,8 +554,9 @@ Friend Class frmInventoryAdjustment
         '4.2 feature to dissassociate retail UOM with costed-by-weight flag
         'Enabled Units when a costed by weight item is sold in retail as each
         Dim _reason As String = cmbReason.SelectedItem.ToString()
+
         If Me._costedByWeight Then
-            If (_reason = "SM-Samples" Or _reason = "SP-Spoilage" Or _reason = "FB-Food Bank") And Me._isSoldAsEachCostedByWeightItem Then
+            If hashSetReason.Contains(_reason) And Me._isSoldAsEachCostedByWeightItem Then
                 Me.optUnits.Enabled = True
             Else
                 Me.optUnits.Enabled = False
@@ -564,7 +565,7 @@ Friend Class frmInventoryAdjustment
         End If
 
         ' en/dis-able the shrink subtype combo box based on the main adjustment type
-        If (_reason = "SM-Samples" Or _reason = "SP-Spoilage" Or _reason = "FB-Food Bank") Then
+        If hashSetReason.Contains(_reason) Then
             Me.cmbShrinkSubtype.Enabled = True
         Else
             Me.cmbShrinkSubtype.SelectedIndex = -1
@@ -797,6 +798,7 @@ Friend Class frmInventoryAdjustment
         Dim idxFoodBank As Integer = cmbReason.FindString("FB-Food Bank")
         Dim idxSamples As Integer = cmbReason.FindString("SM-Samples")
         Dim idxSpoilage As Integer = cmbReason.FindString("SP-Spoilage")
+        Dim idxInventoryLoss As Integer = cmbReason.FindString("IL-Needs Approval-Inventory Loss")
 
 
         ' the subtype control was bound with a data table having the same schema as the dbo.ShrinkSubtype table
@@ -809,6 +811,8 @@ Friend Class frmInventoryAdjustment
             cmbReason.SelectedIndex = idxFoodBank
         ElseIf (shrinkSubtype_Desc).StartsWith("Sampling", StringComparison.CurrentCultureIgnoreCase) Then
             cmbReason.SelectedIndex = idxSamples
+        ElseIf (shrinkSubtype_Desc).StartsWith("Needs Approval", StringComparison.CurrentCultureIgnoreCase) Then
+            cmbReason.SelectedIndex = idxInventoryLoss
         Else
             cmbReason.SelectedIndex = idxSpoilage
         End If

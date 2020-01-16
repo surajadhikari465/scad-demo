@@ -18,3 +18,4 @@ Post-Deployment Script Template
 :r PBI25271-RemoveInforOrdering.sql -- 2019.10.22
 :r "23903 - AddNonScaleExtraTextToEIM/AddNonScaleExtraTextToEIM.sql" --2019.11.20
 :r PBI27833-GenerateEmailWhenPosPushJobFails.sql --2019.12.05
+:r PBI29079_AddNewShrinkTypeAndGL.sql --2020.01.15
