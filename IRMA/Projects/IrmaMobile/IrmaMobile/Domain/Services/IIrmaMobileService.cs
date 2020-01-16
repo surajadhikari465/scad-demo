@@ -30,5 +30,6 @@ namespace IrmaMobile.Services
         Task<List<OrderItem>> GetReceivingListEinvoiceExceptionsAsync(string region, int orderId);
         Task<Result> ReopenOrderAsync(string region, int orderId);
         Task<List<DSDVendor>> GetVendorsAsync(string region, int storeNo);
+        Task<bool> IsDuplicateReceivingDocumentInvoiceNumberAsync(string region, string invoiceNumber, int vendorId);
     }
 }

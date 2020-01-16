@@ -22,14 +22,22 @@ import MainMenu from './layout/MainMenu';
 import InvoiceData from './pages/Receive/PurchaseOrder/InvoiceData/InvoiceData';
 import ReceivingList from './pages/Receive/PurchaseOrder/ReceivingList/ReceivingList';
 import ReceivingListClosePartial from './pages/Receive/PurchaseOrder/ReceivingList/components/ReceivingListClosePartial';
+import TransferHome from './pages/Transfer/Index';
 
 
 const App: React.FC = () => { 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { menuItems } = state;
+  const { menuItems, Title } = state;
 
   useEffect(() => {
     dispatch({ type: types.SETMENUITEMS, menuItems: [] });
+  }, []);
+
+  useEffect(() => {
+    dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
+    return () => {
+      dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
+    };
   }, []);
 
   return (
@@ -40,7 +48,7 @@ const App: React.FC = () => {
       <AppContext.Provider value={{ state, dispatch }}> 
         <Router>
           <wfm-toolbar>
-            IRMA Mobile
+            {Title === '' ? "IRMA Mobile" : Title}
               <wfm-button slot="end">
                 <FontAwesomeIcon icon={faCog} />
               </wfm-button>
@@ -60,6 +68,7 @@ const App: React.FC = () => {
               <Route exact path="/receive/InvoiceData/:purchaseOrderNumber" component={InvoiceData} />
               <Route exact path="/receive/List/:purchaseOrderNumber" component={ReceivingList} />
               <Route exact path="/receive/List/:purchaseOrderNumber/closePartial" component={ReceivingListClosePartial} />
+              <Route exact path="/transfer" component={TransferHome} />
             </Switch>
           </div>
         </Router>

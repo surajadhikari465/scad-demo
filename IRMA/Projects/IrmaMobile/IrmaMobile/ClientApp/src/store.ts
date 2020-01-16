@@ -24,6 +24,8 @@ interface IIntitialState {
   purchaseOrderNumber: string;
   menuItems: IMenuItem[];
   showShrinkHeader: boolean;
+  TransferData: ITransferData | undefined;
+  Title: string;
 }
 
 export interface IMenuItem {
@@ -49,7 +51,7 @@ export interface IShrinkType{
   reasonCode: null | number;
 }
 
-interface IStore {
+export interface IStore {
   storeNo: string;
   name: string;
 }
@@ -58,6 +60,15 @@ export interface IMappedReasonCode {
   key: number;
   text: string;
   value: string;
+}
+
+export interface ITransferData {
+  FromStoreNo: number;
+  FromSubteamNo: number;
+  ToStoreNo: number;
+  ToSubteamNo: number;
+  ProductType: number;
+  ExpectedDate: Date;
 }
 
 export const initialState = {
@@ -79,7 +90,9 @@ export const initialState = {
     purchaseOrderUpc: "",
     purchaseOrderNumber: "",
     menuItems: [],
-    showShrinkHeader: true
+    showShrinkHeader: true,
+    TransferData: undefined,
+    Title: ''
 } as IIntitialState;
 
 export const types = {
@@ -101,7 +114,9 @@ export const types = {
     SETPURCHASEORDERUPC: "SETPURCHASEORDERUPC",
     SETPURCHASEORDERNUMBER: "SETPURCHASEORDERNUMBER",
     SETMENUITEMS: "SETMENUITEMS",
-    SHOWSHRINKHEADER: "SHOWSHRINKHEADER"
+    SHOWSHRINKHEADER: "SHOWSHRINKHEADER",
+    SETTRANSFERDATA: "SETTRANSFERDATA",
+    SETTITLE: "SETTITLE"
 };
 
 export const AppContext = React.createContext({ state: initialState });
@@ -164,6 +179,12 @@ export const reducer = (state: any, action: any) => {
         }
         case types.SHOWSHRINKHEADER: {
           return { ...state, showShrinkHeader: action.showShrinkHeader }; 
+        }
+        case types.SETTRANSFERDATA: {
+          return { ...state, TransferData: action.TransferData };
+        }
+        case types.SETTITLE: {
+          return { ...state, Title: action.Title };
         }
         default:
             return state;

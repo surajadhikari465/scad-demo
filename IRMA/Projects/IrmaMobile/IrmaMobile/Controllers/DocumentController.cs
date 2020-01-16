@@ -32,5 +32,16 @@ namespace IrmaMobile.Controllers
 
             return result;
         }
+
+        [ProducesResponseType(200)]
+        [HttpGet]
+        public async Task<bool> IsDuplicateReceivingDocumentInvoiceNumber([FromRoute]string region, [FromQuery]string invoiceNumber, [FromQuery]int vendorId)
+        {
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(DocumentController)}.{nameof(IsDuplicateReceivingDocumentInvoiceNumber)}");
+            
+            var result = await service.IsDuplicateReceivingDocumentInvoiceNumberAsync(region, invoiceNumber, vendorId);
+
+            return result;
+        }
     }
 }

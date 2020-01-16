@@ -202,6 +202,13 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
         getOrderInvoiceCharges();
     }, [getOrderInvoiceCharges])
 
+    useEffect(() => {
+        dispatch({ type: types.SETTITLE, Title: 'Invoice Data' });
+        return () => {
+          dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
+        };
+      }, [dispatch]);
+
     const getCurrencies = useCallback(async () => {
         const allCurrencies = await agent.InvoiceData.getCurrencies(region);
         setCurrencies(allCurrencies && allCurrencies.map((c: any) => { 
@@ -352,7 +359,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
 
         try {
             setIsLoading(true);
-            setLoadingMessage('Reparsing EInvoice...');
+            setLoadingMessage('Reparsing eInvoice...');
 
             var result = await agent.InvoiceData.reparseEInvoice(region, orderDetails.EInvId);
 
@@ -368,7 +375,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             dispatch({ type: types.SETORDERDETAILS, orderDetails: reparsedOrderDetails });
         }
         finally {
-            setIsLoading(true);
+            setIsLoading(false);
         }
     }
 

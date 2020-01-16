@@ -138,8 +138,9 @@ const ReceivingList = {
 }
 
 const Document = {
-    getVendors: async (region: string, storeNo: number) => await requests.get(`/${region}/document/vendors?storeNo=${storeNo}`)
-
+    getVendors: async (region: string, storeNo: number) => await requests.get(`/${region}/document/vendors?storeNo=${storeNo}`),
+    isDuplicateReceivingDocumentInvoiceNumber: async (region: string, invoiceNumber: string, vendorId: number) => 
+        await requests.get(`/${region}/document/isDuplicateReceivingDocumentInvoiceNumber?invoiceNumber=${invoiceNumber}&vendorId=${vendorId}`)
 }
 
 const Shrink = {

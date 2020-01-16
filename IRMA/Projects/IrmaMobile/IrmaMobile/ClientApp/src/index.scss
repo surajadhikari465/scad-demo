@@ -54,3 +54,7 @@ h1, h2, h3, h4 {
   font-family: "CircularStd";
 }
 
+.ui.dropdown .menu {
+  max-height: 250px!important;
+  /* This makes the semantic-ui dropdown menu larger than 3 items */
+}

@@ -259,12 +259,18 @@ namespace IrmaMobile.Services
             return result;
         }
 
+        public async Task<bool> IsDuplicateReceivingDocumentInvoiceNumberAsync(string region, string invoiceNumber, int vendorId)
+        {
+            var result = await MakeServiceRequest(region, client => client.IsDuplicateReceivingDocumentInvoiceNumberAsync(invoiceNumber, vendorId)); 
+            return result;
+        }
+
         // Following best practices for handling WCF ServiceClient lifecycle as documented here:
         // https://docs.microsoft.com/en-us/dotnet/framework/wcf/samples/use-close-abort-release-wcf-client-resources
         private async Task<T> MakeServiceRequest<T>(string region, Func<IGateway, Task<T>> request)
         {
             var serviceClient = new GatewayClient(
-                new BasicHttpBinding(BasicHttpSecurityMode.None),
+                new BasicHttpBinding(BasicHttpSecurityMode.None) { MaxReceivedMessageSize=int.MaxValue },
                 new EndpointAddress(serviceUris[region]));
 
             try
@@ -298,7 +304,7 @@ namespace IrmaMobile.Services
         private async Task MakeServiceRequest(string region, Func<IGateway, Task> request)
         {
             var serviceClient = new GatewayClient(
-                new BasicHttpBinding(BasicHttpSecurityMode.None),
+                new BasicHttpBinding(BasicHttpSecurityMode.None) { MaxReceivedMessageSize = int.MaxValue },
                 new EndpointAddress(serviceUris[region]));
 
             try
