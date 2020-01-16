@@ -11,6 +11,7 @@ BEGIN
 	SELECT @region AS REGION
 		,PS_Vendor_ID
 		,CompanyName
+		,ActiveVendor
 	FROM Vendor
 END
 GO

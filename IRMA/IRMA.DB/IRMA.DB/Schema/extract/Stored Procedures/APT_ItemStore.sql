@@ -13,15 +13,14 @@ BEGIN
 		,s.BusinessUnit_ID
 		,si.Authorized
 		,siv.DiscontinueItem
-		,i.Deleted_Item
+		,i.Deleted_Item 
 	FROM Item i
 	INNER JOIN ItemIdentifier ii ON ii.Item_Key = i.Item_Key
 	INNER JOIN StoreItem si ON si.Item_Key = i.Item_Key
 	INNER JOIN Store s ON s.Store_No = si.Store_No
 	INNER JOIN StoreItemVendor siv ON siv.Item_Key = i.Item_Key
 		AND siv.Store_No = si.Store_No
-	WHERE ii.Deleted_Identifier = 0
-		AND ii.Remove_Identifier = 0
+	WHERE ii.Remove_Identifier = 0
 		AND (
 			s.WFM_Store = 1
 			OR s.Mega_Store = 1

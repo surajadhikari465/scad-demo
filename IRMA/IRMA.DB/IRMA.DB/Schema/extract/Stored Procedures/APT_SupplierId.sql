@@ -13,6 +13,7 @@ BEGIN
 		,s.BusinessUnit_ID
 		,v.PS_Vendor_ID
 		,siv.PrimaryVendor
+		,v.ActiveVendor
 	FROM ItemIdentifier ii
 	INNER JOIN StoreItemVendor siv ON siv.Item_Key = ii.Item_Key
 	INNER JOIN Store s ON s.Store_No = siv.Store_No
