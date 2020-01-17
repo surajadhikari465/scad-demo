@@ -105,6 +105,7 @@ export default function LinkedGroupsRow(props: LinkGroupsRowProps) {
                                 isRowSelectable={isRowSelectable}
                                 rowSelection='multiple'
                                 colResizeDefault='shift'
+                                suppressRowClickSelection = {true}
                                 onRowSelected={onRowSelected}
                                 modules={AllCommunityModules}>
 
