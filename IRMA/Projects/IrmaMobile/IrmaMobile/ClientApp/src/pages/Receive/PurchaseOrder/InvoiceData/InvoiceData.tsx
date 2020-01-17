@@ -373,6 +373,9 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             var reparsedOrderDetails = orderUtil.MapOrder(order);
 
             dispatch({ type: types.SETORDERDETAILS, orderDetails: reparsedOrderDetails });
+            setInvoiceNumberEdited(false);
+            setInvoiceDateEdited(false);
+            setInvoiceTotalEdited(false);
         }
         finally {
             setIsLoading(false);
