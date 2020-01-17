@@ -162,8 +162,10 @@ namespace Icon.Web.Mvc.Controllers
 
                 if(errList.Count() > 0)
                 {
-                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
-                    return Json($"Cannot be deleted for the following reason(s): { string.Join(", ", errList) }.");
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                    var msg = $"Cannot be deleted for the following reason(s): { string.Join(", ", errList) }.";
+                    Response.StatusDescription = msg;
+                    return Json(msg, JsonRequestBehavior.AllowGet);
                 }  
 
                 var command = new DeleteHierarchyClassManager

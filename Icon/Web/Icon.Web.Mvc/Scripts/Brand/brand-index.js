@@ -68,7 +68,8 @@ function deleteHC(hcId) {
                     $(".ui-dialog-titlebar-close").hide();
                     $(".ui-dialog-buttonset").children().hide();
                     $(".ui-dialog-title").text("Processing Request...");
-                    $("#dlgMsg").html('<div class="clearfix"><span class="float-left text-danger">Deleting...</span> <span class="spinner-border spinner-border-sm float-right" role="status"/></div>');
+                    $("#dlgMsg").html('Deleting Brand...');
+                    $("#msgSpinner").show();
 
                     var request = $.ajax({
                         url: '/Brand/Delete',
@@ -89,7 +90,16 @@ function deleteHC(hcId) {
                                 $(".ui-dialog-title").text("System Information:");
                                 $(".ui-dialog-buttonset").show();
                                 $('#dlgCancel').show();
-                                $("#dlgMsg").text(JSON.parse(xhr.responseText));
+                                $("#msgSpinner").hide();
+                                try {
+                                    $("#dlgMsg").html(JSON.parse(xhr.responseText));
+                                }
+                                catch (err) {
+                                    if (err != null) {
+                                        $("#dlgMsg").html(error);
+                                    }
+                                    else { $("#dlgMsg").html('Failed to delete'); }
+                                }
                             }
                     });
                 }
