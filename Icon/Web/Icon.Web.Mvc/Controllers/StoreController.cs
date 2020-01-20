@@ -424,7 +424,7 @@ namespace Icon.Web.Controllers
 			viewModel.StorePosTypes.First().Selected = true;
 			viewModel.EwicAgencies = this.eWicAgencies.Select(a => new SelectListItem { Value = a.AgencyId, Text = a.AgencyId });
 			viewModel.CurrencyTypes = this.currencies?.Select(c => new SelectListItem { Value = c.currencyTypeID.ToString(), Text = c.currencyTypeCode });
-			viewModel.LiquorLicenseTypes = new string[] { "Beer", "Spirit", "Wine" }.Select((x, i) => new SelectListItem { Value = i.ToString(), Text = x });
+			viewModel.LiquorLicenseTypes = new string[] { "Beer", "Spirit", "Wine" }.Select((x) => new SelectListItem { Value = x, Text = x });
 			return viewModel;
 		}
 	}
