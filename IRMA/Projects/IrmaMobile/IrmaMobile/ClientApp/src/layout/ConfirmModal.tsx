@@ -25,10 +25,11 @@ interface IProps {
     triggerButtonText?: string;                 //optional: text to be shown on the external button that opens the modal
     showTriggerButton?: boolean;                //optional, default true: whether or not to generate an external WfmButton for the user to click to open the modal
     openExternal?: boolean;                     //required: state used to tell the modal to be visible or not. Must be same state variable that is attached to setOpenExternal
+    noGreyClick?: boolean;                      //optional: if true, the user cannot close the modal by clicking the grey area
     setOpenExternal?: (state: boolean) => any;  //required: the useState setter used to control openExternal
 }
 
-const ConfirmModal: React.FC<IProps> = ({ handleConfirmClose, lineOne, lineTwo, confirmButtonText, cancelButtonText, triggerButtonText, showTriggerButton = true, openExternal = false, setOpenExternal, headerText, handleCancelClose }) => {
+const ConfirmModal: React.FC<IProps> = ({ noGreyClick= false, handleConfirmClose, lineOne, lineTwo, confirmButtonText, cancelButtonText, triggerButtonText, showTriggerButton = true, openExternal = false, setOpenExternal, headerText, handleCancelClose }) => {
     const [open, setOpen] = useState<boolean>(false)
     
     const handleCancelClick = () => {
@@ -55,7 +56,7 @@ const ConfirmModal: React.FC<IProps> = ({ handleConfirmClose, lineOne, lineTwo, 
 
     return (
         <Fragment>
-            <Modal open={open || openExternal} onClose={handleCancelClick} trigger={showTriggerButton && <WfmButton onClick={() => {setOpen(true)}}>{triggerButtonText}</WfmButton>}>
+            <Modal closeOnDimmerClick={noGreyClick} open={open || openExternal} onClose={handleCancelClick} trigger={showTriggerButton && <WfmButton onClick={() => {setOpen(true)}}>{triggerButtonText}</WfmButton>}>
                 <Modal.Header>{headerText}</Modal.Header>
                 <Modal.Content>
                     <Modal.Description>

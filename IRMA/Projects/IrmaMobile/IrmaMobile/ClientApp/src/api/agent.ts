@@ -143,6 +143,10 @@ const Document = {
         await requests.get(`/${region}/document/isDuplicateReceivingDocumentInvoiceNumber?invoiceNumber=${invoiceNumber}&vendorId=${vendorId}`)
 }
 
+const Transfer = {
+    getSubteamByProductType: async (region: string, productTypeId: number) => await requests.get(`/${region}/transfer/subteamByProductType?productTypeId=${productTypeId}`)
+}
+
 const Shrink = {
     shrinkItemSubmit: async(region: string, ItemKey: any, StoreNo: any, SubteamNo: any, ShrinkSubTypeId: any, AdjustmentId: any, AdjustmentReason: any, CreatedByUserId: any, UserName: any, InventoryAdjustmentCodeAbbreviation:any, Quantity:any, Weight: any) =>
         await requests.post(`/${region}/shrinkadjustments`, {
@@ -161,4 +165,4 @@ const Shrink = {
         
 };
 
-export default { RegionSelect, PurchaseOrder, InvoiceData, Shrink, ReceivingList, Document };
+export default { RegionSelect, PurchaseOrder, InvoiceData, Shrink, ReceivingList, Document, Transfer };

@@ -25,7 +25,6 @@ interface IIntitialState {
   purchaseOrderNumber: string;
   menuItems: IMenuItem[];
   showShrinkHeader: boolean;
-  TransferData: ITransferData | undefined;
   Title: string;
 }
 
@@ -63,15 +62,6 @@ export interface IMappedReasonCode {
   value: string;
 }
 
-export interface ITransferData {
-  FromStoreNo: number;
-  FromSubteamNo: number;
-  ToStoreNo: number;
-  ToSubteamNo: number;
-  ProductType: number;
-  ExpectedDate: Date;
-}
-
 export const initialState = {
     region: "",
     stores: [],
@@ -93,7 +83,6 @@ export const initialState = {
     purchaseOrderNumber: "",
     menuItems: [],
     showShrinkHeader: true,
-    TransferData: undefined,
     Title: ''
 } as IIntitialState;
 
@@ -118,7 +107,6 @@ export const types = {
     SETPURCHASEORDERNUMBER: "SETPURCHASEORDERNUMBER",
     SETMENUITEMS: "SETMENUITEMS",
     SHOWSHRINKHEADER: "SHOWSHRINKHEADER",
-    SETTRANSFERDATA: "SETTRANSFERDATA",
     SETTITLE: "SETTITLE"
 };
 
@@ -185,9 +173,6 @@ export const reducer = (state: any, action: any) => {
         }
         case types.SHOWSHRINKHEADER: {
           return { ...state, showShrinkHeader: action.showShrinkHeader }; 
-        }
-        case types.SETTRANSFERDATA: {
-          return { ...state, TransferData: action.TransferData };
         }
         case types.SETTITLE: {
           return { ...state, Title: action.Title };
