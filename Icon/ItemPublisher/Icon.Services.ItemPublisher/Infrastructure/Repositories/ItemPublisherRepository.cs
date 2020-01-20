@@ -82,10 +82,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Repositories
         /// </summary>
         /// <param name="batchSize"></param>
         /// <returns></returns>
-        public async Task<List<MessageQueueItemModel>> DequeueMessageQueueRecords(int batchSize = 1)
+        public async Task<List<MessageQueueItemModel>> GetMessageItemModels(List<MessageQueueItem> messageQueueItems)
         {
-            IEnumerable<MessageQueueItem> messageQueueItems = await this.DbProviderFactory.Provider.Connection.QueryAsync<MessageQueueItem>($@"exec [esb].[DequeueMessageQueueItem] {batchSize}", null, DbProviderFactory.Provider.Transaction);
-
             List<MessageQueueItemModel> response = new List<MessageQueueItemModel>();
 
             var itemIds = (from item in messageQueueItems
@@ -133,6 +131,13 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Repositories
 
             await this.DbProviderFactory.Provider.Connection.ExecuteAsync(command);
             
+        }
+
+        public async Task<List<MessageQueueItem>> DequeueMessageQueueItems(int batchSize = 1)
+        {
+            IEnumerable<MessageQueueItem> messageQueueItems = await this.DbProviderFactory.Provider.Connection.QueryAsync<MessageQueueItem>($@"exec [esb].[DequeueMessageQueueItem] {batchSize}", null, DbProviderFactory.Provider.Transaction);
+
+            return messageQueueItems.ToList();
         }
     }
 }

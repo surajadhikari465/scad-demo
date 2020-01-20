@@ -92,7 +92,7 @@ namespace Icon.Services.ItemPublisher.Repositories.Tests
         /// </summary>
         /// <returns></returns>
         [TestMethod]
-        public async Task DequeueMessageQueueRecords_DidMessageDequeue_MessageIsDequeued()
+        public async Task GetMessageItemModels_DidMessageDequeue_MessageIsDequeued()
         {
             TestRepository testRepository = new TestRepository(this.connHelper);
 
@@ -108,7 +108,7 @@ namespace Icon.Services.ItemPublisher.Repositories.Tests
 
             int id = await testRepository.InsertMessageQueueItem(itemId);
 
-            List<MessageQueueItemModel> records = await repository.DequeueMessageQueueRecords();
+            List<MessageQueueItemModel> records = await repository.GetMessageItemModels(new List<MessageQueueItem> { new MessageQueueItem { ItemId = itemId } });
 
             Assert.IsTrue(records.Count > 0);
 
@@ -120,11 +120,9 @@ namespace Icon.Services.ItemPublisher.Repositories.Tests
         /// </summary>
         /// <returns></returns>
         [TestMethod]
-        public async Task DequeueMessageQueueRecords_DuplicateItemId_MessageIsDequeuedAndDuplicateIsIgnored()
+        public async Task GetMessageItemModels_DuplicateItemId_MessageIsDequeuedAndDuplicateIsIgnored()
         {
             TestRepository testRepository = new TestRepository(this.connHelper);
-
-            await connHelper.ProviderFactory.Provider.Connection.ExecuteAsync("TRUNCATE TABLE esb.MessageQueueItem", null, this.connHelper.ProviderFactory.Transaction);
 
             ItemPublisherRepository repository = new ItemPublisherRepository(this.connHelper.ProviderFactory, new MessageQueueItemModelBuilder(new ItemMapper()));
 
@@ -134,10 +132,7 @@ namespace Icon.Services.ItemPublisher.Repositories.Tests
             await testRepository.InsertHierarchy("test");
             await testRepository.InsertNutrition("TEST");
 
-            await testRepository.InsertMessageQueueItem(itemId);
-            await testRepository.InsertMessageQueueItem(itemId);
-
-            List<MessageQueueItemModel> records = await repository.DequeueMessageQueueRecords();
+            List<MessageQueueItemModel> records = await repository.GetMessageItemModels(new List<MessageQueueItem> { new MessageQueueItem { ItemId = itemId } });
 
             Assert.AreEqual(1, records.Count);
         }

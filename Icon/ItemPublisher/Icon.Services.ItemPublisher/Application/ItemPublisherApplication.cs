@@ -10,7 +10,6 @@ namespace Icon.Services.ItemPublisher.Application
         private readonly System.Timers.Timer timer;
         private readonly IItemPublisherService itemPublisherService;
         private readonly ILogger<ItemPublisherApplication> logger;
-        private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1);
         private readonly ServiceSettings serviceSettings;
 
         public ItemPublisherApplication(IItemPublisherService itmePublisherService, ILogger<ItemPublisherApplication> logger, ServiceSettings serviceSettings)
@@ -24,27 +23,18 @@ namespace Icon.Services.ItemPublisher.Application
 
         private async void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (this.semaphore.CurrentCount > 0)
+            this.timer.Stop();
+            try
             {
-                try
-                {
-                    this.logger.Debug("Semaphore waiting");
-                    await this.semaphore.WaitAsync();
-                    await this.itemPublisherService.Process(this.serviceSettings.BatchSize);
-                }
-                catch (Exception ex)
-                {
-                    this.logger.Error(ex.ToString());
-                }
-                finally
-                {
-                    this.semaphore.Release();
-                    this.logger.Debug("Semaphore released");
-                }
+                await this.itemPublisherService.Process(this.serviceSettings.BatchSize);
             }
-            else
+            catch (Exception ex)
             {
-                this.logger.Debug("Semaphore Available Count < 1. Exiting.");
+                logger.Error("Unexpected error occurred in Item Publisher: " + ex.ToString());
+            }
+            finally
+            {
+                this.timer.Start();
             }
         }
 

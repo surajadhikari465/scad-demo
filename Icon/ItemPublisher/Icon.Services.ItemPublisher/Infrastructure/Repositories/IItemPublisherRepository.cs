@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 
 namespace Icon.Services.ItemPublisher.Infrastructure.Repositories
 {
-    public interface IItemPublisherRepository : ITransactionRepository
+    public interface IItemPublisherRepository
     {
-        Task<List<MessageQueueItemModel>> DequeueMessageQueueRecords(int batchSize = 1);
+        Task<List<MessageQueueItemModel>> GetMessageItemModels(List<MessageQueueItem> messageQueueItems);
 
         Task AddMessageQueueHistoryRecords(List<MessageQueueItemArchive> history);
 
         Task AddDeadLetterMessageQueueRecord(MessageDeadLetterQueue messageDeadLetterQueue);
+
+        Task<List<MessageQueueItem>> DequeueMessageQueueItems(int batchSize = 1);
     }
 }

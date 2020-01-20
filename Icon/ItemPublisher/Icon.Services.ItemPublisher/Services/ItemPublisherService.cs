@@ -20,7 +20,7 @@ namespace Icon.Services.ItemPublisher.Services
         private readonly ILogger<ItemPublisherService> logger;
         private readonly ServiceSettings serviceSettings;
         private readonly IItemProcessor itemProcessor;
-        private AsyncRetryPolicy policy = null; 
+        private AsyncRetryPolicy policy = null;
 
         public ItemPublisherService(IItemPublisherRepository repository,
             ILogger<ItemPublisherService> logger,
@@ -50,7 +50,7 @@ namespace Icon.Services.ItemPublisher.Services
         /// <returns></returns>
         public async Task Process(int batchSize)
         {
-             await this.ProcessInternal(batchSize);
+            await this.ProcessInternal(batchSize);
         }
 
         /// <summary>
@@ -70,77 +70,67 @@ namespace Icon.Services.ItemPublisher.Services
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
             int recordCount = 0;
             List<MessageQueueItemModel> records = new List<MessageQueueItemModel>();
+            List<MessageQueueItem> messageQueueItems = new List<MessageQueueItem>();
 
-            try
-            {
-                this.logger.Info($"Processing records. {DateTime.UtcNow}.");
-
-                await this.policy.ExecuteAsync(async token =>
-                {
-                    // continueExecution determines if in this iteration of the timer we will check the queue table
-                    // for more records after processing this batch. If an error occurs we stop processing.
-                    bool continueExecution = true;
-
-                    while (continueExecution)
-                    {
-                        // read a set of records in a transaction
-                        this.repository.BeginTransaction();
-
-                        records = await this.DequeueRecords(batchSize);
-                        recordCount += records.Count;
-
-                        if (records.Count > 0)
-                        {
-                            bool success = await this.ProcessRecordsAndReturnSuccess(records);
-                            if(!success)
-                            {
-                                // an error occurred somewhere in the process. We don't know exactly what it is so just throw up an exception so the process will retry.
-                                throw new Exception("Unable to process records");
-                            }
-
-                            // everything succeeded so commit the transaction and re-enter the loop to read more records.
-                            this.repository.CommitTransaction();
-                            continueExecution = true;
-                        }
-                        else
-                        {
-                            // there were no records to process so commit our open transaction and exit the loop
-                            this.repository.CommitTransaction();
-                            continueExecution = false;
-                        }
-                    }
-                }, CancellationToken.None);
-
-            }
-            catch (Exception ex)
+            do
             {
                 try
                 {
-                    this.logger.Error(ex.ToString());
-                    // if we had an exception and we retried and still get an exception dump the items and exception to the dead letter queue
-                    var deadLetterMessage = new MessageDeadLetterQueue(ex.ToString(), records.Select(x => x.Item.ItemId).ToList());
-                    await this.repository.AddDeadLetterMessageQueueRecord(deadLetterMessage);
-                    
-                    if (this.repository.TransactionActive)
+                    this.logger.Info($"Processing records. {DateTime.UtcNow}.");
+
+                    messageQueueItems.Clear();
+                    messageQueueItems = await this.repository.DequeueMessageQueueItems(batchSize);
+
+                    try
                     {
-                        // there isn't a situation where we don't want to commit
-                        this.repository.CommitTransaction();
+                        if (messageQueueItems.Any())
+                        {
+                            await this.policy.ExecuteAsync(async token =>
+                            {
+                                records = await this.GetMessageQueueItemModels(messageQueueItems);
+                                recordCount = records.Count;
+
+                                bool success = await this.ProcessRecordsAndReturnSuccess(records);
+                                if (!success)
+                                {
+                                    // an error occurred somewhere in the process. We don't know exactly what it is so just throw up an exception so the process will retry.
+                                    throw new Exception("Unable to process records");
+                                }
+                            }, CancellationToken.None);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        try
+                        {
+                            this.logger.Error(ex.ToString());
+                            // if we had an exception and we retried and still get an exception dump the items and exception to the dead letter queue
+                            if (messageQueueItems.Any())
+                            {
+                                var deadLetterMessage = new MessageDeadLetterQueue(ex.ToString(), messageQueueItems.Select(x => x.ItemId).ToList());
+                                await this.repository.AddDeadLetterMessageQueueRecord(deadLetterMessage);
+                            }
+                        }
+                        catch (Exception dex)
+                        {
+                            this.logger.Error(dex.ToString());
+                        }
+                    }
+                    finally
+                    {
+                        this.logger.Info($"Processing complete. {stopwatch.Elapsed.TotalSeconds} seconds elapsed. {recordCount} records processed.");
                     }
                 }
-                catch(Exception dex)
+                catch (Exception ex)
                 {
-                    this.logger.Error(dex.ToString());
+                    this.logger.Error($"Failed to dequeue pending messages {DateTime.UtcNow}. Error: {ex.ToString()}");                    
                 }
-            }
-            finally
-            {
-                this.logger.Info($"Processing complete. {stopwatch.Elapsed.TotalSeconds} seconds elapsed. {recordCount} records processed.");
-            }
+            } while (messageQueueItems.Any());            
         }
 
         // Calls ths Item Processor and if errors are returned tell the process to not continue.
         // Returns true if succeeded otherwise false.
-        private async Task<bool> ProcessRecordsAndReturnSuccess(List<MessageQueueItemModel>  records)
+        private async Task<bool> ProcessRecordsAndReturnSuccess(List<MessageQueueItemModel> records)
         {
             List<EsbSendResult> response = new List<EsbSendResult>();
 
@@ -167,9 +157,9 @@ namespace Icon.Services.ItemPublisher.Services
         }
 
         // dequeue records and tell the process to not contiue if no records are found. Otherwise return the records.
-        private async Task<List<MessageQueueItemModel>> DequeueRecords (int batchSize)
+        private async Task<List<MessageQueueItemModel>> GetMessageQueueItemModels(List<MessageQueueItem> messageQueueItems)
         {
-            List<MessageQueueItemModel> records = await this.repository.DequeueMessageQueueRecords(batchSize);
+            List<MessageQueueItemModel> records = await this.repository.GetMessageItemModels(messageQueueItems);
             this.logger.Debug($"{records.Count} queue records found");
             return records;
         }

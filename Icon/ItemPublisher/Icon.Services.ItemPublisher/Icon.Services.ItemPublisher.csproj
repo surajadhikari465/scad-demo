@@ -172,7 +172,6 @@
     <Compile Include="Infrastructure\Repositories\Entities\Item.cs" />
     <Compile Include="Infrastructure\Repositories\Entities\HierarchyCacheItem.cs" />
     <Compile Include="Infrastructure\Repositories\Entities\ProductSelectionGroup.cs" />
-    <Compile Include="Infrastructure\Repositories\Lib\ITransactionRepository.cs" />
     <Compile Include="Services\EsbService.cs" />
     <Compile Include="Services\IEsbService.cs" />
     <Compile Include="Infrastructure\Models\MessageQueueItemModel.cs" />
