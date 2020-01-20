@@ -19,6 +19,31 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
     
     useEffect(() => {
       let shrinkItems = [];
+
+      const deleteSession = () =>{
+          localStorage.removeItem('shrinkItems');
+          dispatch({ type: types.SETSHRINKITEMS, shrinkItems: [] }); 
+          setAlert({...alert, 
+            open:false
+          });
+      }
+
+      const close = (remove=true) =>{
+        setAlert({...alert, 
+          open:false
+        });
+        if(remove) {
+          setAlert({...alert, 
+            open:true, 
+            alertMessage: 'Are you sure you want to delete you saved Session?', 
+            type: 'confirm', 
+            header:'Delete Session?',
+            confirmAction: deleteSession
+          });
+          
+        } 
+      } 
+
       if(localStorage.getItem('shrinkItems')){
         // @ts-ignore
         shrinkItems = JSON.parse(localStorage.getItem('shrinkItems'));
@@ -33,17 +58,8 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
           confirmAction: close.bind(undefined, false)
           });
       }
-    }, []);
-
-    const close = (remove=true) =>{
-      setAlert({...alert, 
-        open:false
-      });
-      if(remove) {
-        localStorage.removeItem('shrinkItems');
-        dispatch({ type: types.SETSHRINKITEMS, shrinkItems: [] }); 
-      } 
-    }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch]);
 
     const handleClick = (e:any) =>{
       if(!isSelected){

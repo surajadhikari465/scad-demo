@@ -7,7 +7,6 @@ import BasicModal from '../../layout/BasicModal';
 import CurrentLocation from "../../layout/CurrentLocation";
 import LoadingComponent from '../../layout/LoadingComponent';
 import Config from '../../config';
-import { Modal, Header, Button } from 'semantic-ui-react';
 
 
 const initialState = {
@@ -58,7 +57,37 @@ const Shrink:React.FC = () => {
       return () => {
         //unmount and unregister handler
       };
-    }, [shrinkState]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [shrinkState, dispatch]);
+    const setUpc = (value?:any) =>{  
+      let upc = value && typeof value !== 'object' ? value: shrinkState.upcValue;
+      setIsLoading(true);
+      fetch(`${Config.baseUrl}/${region}/storeitems?storeNo=${storeNumber}&subteamNo=${subteamNo}&scanCode=${upc}`)
+      .then(res => res.json())
+      .then((result) => {
+        if(result.itemKey === 0 && result.itemDescription === null){
+          setAlert({...alert, 
+            open:true, 
+            alertMessage: 'Item not found',
+            type: 'default', 
+            header:'Irma Mobile'});
+        } else { 
+          let alreadyScanned = state.shrinkItems.filter((item:any) => result.retailSubteamName === item.retailSubteamName).length > 0 ? true : false;
+          if(result.retailSubteamName !== subteam.subteamName && warningOverride === false && !alreadyScanned){
+            setAlert({...alert, 
+              open:true, 
+              alertMessage: `This is a ${result.retailSubteamName} item and you are shrinking it to ${subteam.subteamName}. Are you sure you want to to do this?`,
+              type: 'confirm', 
+              header:'Subteam Mismatch', 
+              confirmAction: confirmAdd, 
+              cancelAction: cancel.bind(undefined, true, false)});
+          } 
+          setShrinkItem(result, upc);
+        }
+       })
+      .finally(() => setIsLoading(false))
+    }
+
     const setShrinkType = (value:any) =>{
       setShrinkState({...shrinkState, isSelected:true});
       dispatch({ type: 'SETSHRINKTYPE', shrinkType:JSON.parse(value) });
@@ -86,34 +115,21 @@ const Shrink:React.FC = () => {
         }
         return shrinkItem;
     }
-    const add = (e:any) => {
-        setAlert({...alert, open:false});
-        // @ts-ignore
-        setShrinkState({...shrinkState, queued: shrinkState.dupItem[0].quantity, quantity:1});
+
+    const confirmAllItems = (e:any) => {
+        setWarningOverride(true);
+        setAlert({...alert, 
+          open: false});
     }
-    const overwrite = (e:any) => {
-        setAlert({...alert, open:false});
-        setShrinkState({...shrinkState, quantity:1, queued: 0});
+    const confirmAdd = (e:any) => {
+      setAlert({open:true, 
+        header: 'Warning Override', 
+        type: 'confirm', 
+        alertMessage:'Do this for all items in this session?', 
+        confirmAction: confirmAllItems, 
+        cancelAction: cancel.bind(undefined, false, false)});
     }
-    const cancel = (e:any) => {
-        setAlert({...alert, open: false});
-        clear();
-    }
-    const toggleAlert = (e:any) =>{
-        setAlert({open:!alert.open, alertMessage: alert.alertMessage,type: 'default'});
-    }
-    const setUpc = (value?:any) =>{  
-      let upc = value && typeof value !== 'object' ? value: shrinkState.upcValue;
-      setIsLoading(true);
-      fetch(`${Config.baseUrl}/${region}/storeitems?storeNo=${storeNumber}&subteamNo=${subteamNo}&scanCode=${upc}`)
-      .then(res => res.json())
-      .then((result) => {
-        if(result.itemKey === 0 && result.itemDescription === null){
-          setAlert({open:true, alertMessage: 'Item not found',type: 'default'});
-        } else setShrinkItem(result, upc);
-       })
-      .finally(() => setIsLoading(false))
-    }
+    
     const setQty = (e:any) =>{
       setShrinkState({...shrinkState, quantity: e.target.value });
     }
@@ -139,14 +155,59 @@ const Shrink:React.FC = () => {
         // @ts-ignore
         shrinkItems = JSON.parse(localStorage.getItem("shrinkItems"));
       }
-      if(shrinkItems.filter((item: any) => item.identifier === shrinkItem.identifier).length > 0){
-        let localShrinkItems = shrinkItems.filter((item: any) => item.identifier !== shrinkItem.identifier);
-        shrinkItems = [ ...localShrinkItems, shrinkItem]
+      
+      if(shrinkState.dupItem.length > 0){
+        // if dup item found, replace the shrink Item with a new quantity
+        setAlert({...alert, 
+          open: true, 
+          // @ts-ignore
+          alertMessage: `${shrinkState.dupItem[0].quantity} of this item already queued in this session. Tap Add, Overwrite or Cancel`, 
+          type: 'prevScanned', 
+          header: 'Previously Scanned Item', 
+          cancelAction: cancel.bind(undefined, false, true)});
       } else {
         // else add a new shrink Item
         shrinkItems.push(shrinkItem);
+        saveItems(shrinkItems);
       }
-      localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems))
+    }
+    const getShrinkItems = (quantity: number) => {
+      const { isSelected, skipConfirm, queued, dupItem, ...shrinkItem} = shrinkState;
+      shrinkItem.shrinkType = shrinkType.shrinkSubTypeMember;
+      shrinkItem.quantity =  quantity;
+       // @ts-ignore
+      let shrinkItems = JSON.parse(localStorage.getItem("shrinkItems"));
+      let localShrinkItems = shrinkItems.filter((item: any) => item.identifier !== shrinkItem.identifier);
+      return [ ...localShrinkItems, shrinkItem];
+    }
+    const add = (e:any) => {
+      setAlert({...alert, open:false});
+       // @ts-ignore
+      let shrinkItems:[] = getShrinkItems(+(shrinkState.queued) + +(shrinkState.quantity));
+      saveItems(shrinkItems);
+    }
+    const overwrite = (e:any) => {
+      setAlert({...alert, open:false});
+       // @ts-ignore
+      let shrinkItems:[] = getShrinkItems(shrinkState.quantity);
+      saveItems(shrinkItems);
+    }
+    const cancel = ( clearData=true, cancelledAlert=true ,e:any) => {
+        setAlert({...alert, open: false});
+        if(clearData){
+          clearRetainUPC(); 
+        }
+        if(cancelledAlert){
+          setAlert({...alert, 
+            open:true, 
+            header: 'Shrink Save Cancelled', 
+            type: 'default', 
+            alertMessage:`Shrink for ${shrinkState.upcValue} UPC was not saved`});
+        }
+    }
+    const saveItems = (shrinkItems: []) => {
+      dispatch({ type: types.SETSHRINKITEMS, shrinkItems: shrinkItems }); 
+      localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems));
       if(!shrinkState.skipConfirm){
         setAlert({...alert, 
           open:true, 
@@ -229,26 +290,7 @@ const Shrink:React.FC = () => {
             </div>)
         }
       </div>
-      <Modal
-          open={alert.open}
-          onActionClick={toggleAlert}
-      >   
-        <Header content='IRMA Mobile' />
-        <Modal.Content>
-          {alert.alertMessage}
-        </Modal.Content>
-        <Modal.Actions>
-          {alert.type==='default' ? (
-            <Button onClick={toggleAlert}> OK </Button>
-          ):(
-          <Fragment>
-            <Button onClick={add}> Add </Button>
-            <Button onClick={overwrite}> Overwrite </Button>
-            <Button onClick={cancel}> Cancel </Button>
-          </Fragment>
-          )}
-        </Modal.Actions>
-      </Modal>
+      <BasicModal alert={alert} add={add} overwrite={overwrite} setAlert={setAlert}/>
       </Fragment>
     )
   }
