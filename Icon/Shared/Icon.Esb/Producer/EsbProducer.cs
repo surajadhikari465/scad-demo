@@ -37,6 +37,10 @@ namespace Icon.Esb.Producer
 
             producer.Send(textMessage);
         }
+        public void SetTibcoClientId(string clientId)
+        {
+            connection.ClientID = clientId;
+        }
 
         public override void OpenConnection()
         {

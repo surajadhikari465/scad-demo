@@ -39,6 +39,11 @@ namespace Icon.Esb.Producer
             this.Settings = settings;
         }
 
+        public void SetTibcoClientId(string clientId)
+        {
+            connection.ClientID = clientId;
+        }
+
         public void Dispose()
         {
             if (session != null && !session.IsClosed)
@@ -96,6 +101,7 @@ namespace Icon.Esb.Producer
 
             producer.Send(textMessage);
         }
+
 
         private X509Certificate GetEsbCert()
         {

@@ -6,5 +6,6 @@ namespace Icon.Esb.Producer
     {
         void Send(string message, Dictionary<string, string> messageProperties = null);
         void Send(string message, string messageId, Dictionary<string, string> messageProperties = null);
+        void SetTibcoClientId(string clientId);
     }
 }

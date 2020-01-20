@@ -37,7 +37,10 @@ namespace Icon.Esb.Subscriber
                 handler(sender, message);
             }
         }
-
+        public void SetTibcoClientId(string clientId)
+        {
+            connection.ClientID = clientId;
+        }
         internal void HandleMessage(Message message)
         {
             EsbMessageEventArgs esbMessage = new EsbMessageEventArgs

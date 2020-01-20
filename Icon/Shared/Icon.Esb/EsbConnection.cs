@@ -112,6 +112,7 @@ namespace Icon.Esb
 
             if (connection != null && !connection.IsClosed)
             {
+                connection.ExceptionHandler -= ConnectionExceptionHandler;
                 connection.Close();
             }
 
