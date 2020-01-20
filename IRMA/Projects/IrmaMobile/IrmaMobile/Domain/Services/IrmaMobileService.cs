@@ -210,7 +210,7 @@ namespace IrmaMobile.Services
                     ShrinkSubTypeId = shrinkAdjustmentModel.ShrinkSubTypeId,
                     StoreNo = shrinkAdjustmentModel.StoreNo,
                     SubteamNo = shrinkAdjustmentModel.SubteamNo,
-                    UserName = null,//TODO: set this to an actual value when we implement authentication. shrinkAdjustmentModel.UserName,
+                    UserName = "",//TODO: set this to an actual value when we implement authentication. shrinkAdjustmentModel.UserName,
                     Weight = shrinkAdjustmentModel.Weight
                 }));
         }

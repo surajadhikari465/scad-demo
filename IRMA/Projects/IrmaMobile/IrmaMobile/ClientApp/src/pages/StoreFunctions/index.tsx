@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import './styles.scss';
 import { Modal } from 'semantic-ui-react';
-import { AppContext, types, ITeam } from "../../store";
+import BasicModal from '../../layout/BasicModal';
+import { AppContext, types} from "../../store";
 
 interface StoreFunctionsProps {
   history: any;
@@ -12,8 +13,38 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
     const {state, dispatch} = useContext(AppContext);
     const [isSelected, setSelected] = useState(false);
     const [alertIsOpen, setAlertOpen] = useState(false);
+    const [alert, setAlert] = useState<any>({open:false, alertMessage:'', type: 'default', header: 'IRMA Mobile', confirmAction:()=> {}});
     const {subteams} = state;
     const {history} = props;
+    
+    useEffect(() => {
+      let shrinkItems = [];
+      if(localStorage.getItem('shrinkItems')){
+        // @ts-ignore
+        shrinkItems = JSON.parse(localStorage.getItem('shrinkItems'));
+      }
+      if(shrinkItems.length > 0){
+        setAlert({...alert, 
+          open:true, 
+          alertMessage: 'Would you like to reload your previous Session? Clicking No will delete the old session.', 
+          type: 'confirm', 
+          header:'Previous Session Exists',
+          cancelAction: close.bind(undefined, true),
+          confirmAction: close.bind(undefined, false)
+          });
+      }
+    }, []);
+
+    const close = (remove=true) =>{
+      setAlert({...alert, 
+        open:false
+      });
+      if(remove) {
+        localStorage.removeItem('shrinkItems');
+        dispatch({ type: types.SETSHRINKITEMS, shrinkItems: [] }); 
+      } 
+    }
+
     const handleClick = (e:any) =>{
       if(!isSelected){
         setAlertOpen(true);
@@ -24,10 +55,9 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
         setAlertOpen(!alertIsOpen);
     }
     const setSubteam = (value:any) =>{
-      const subteam: any = state.subteams.filter((subteam: ITeam)=> value === subteam.subteamName.trim())[0];
       setSelected(true);
-      dispatch({ type: types.SETSUBTEAM , subteam: subteam });  
-      dispatch({ type: types.SETSUBTEAMNO, subteamNo:subteam.subteamNo });
+      dispatch({ type: types.SETSUBTEAM , subteam: JSON.parse(value) });  
+      dispatch({ type: types.SETSUBTEAMNO, subteamNo:JSON.parse(value).subteamNo });
     }
     return (
     <div className="store-functions">
@@ -41,7 +71,7 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
           <option>--Select Subteam--</option>
           {subteams.map(team =>
           // @ts-ignore 
-            <option key={team.subteamNo}>{team.subteamName}</option>
+            <option key={team.subteamNo} value={JSON.stringify(team)}>{team.subteamName}</option>
           )}
           
         </select>
@@ -59,6 +89,7 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
           onActionClick={toggleAlert}
 
         />
+      <BasicModal alert={alert} setAlert={setAlert}/>  
     </div>)
   }
 

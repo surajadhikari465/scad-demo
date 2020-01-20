@@ -48,6 +48,7 @@ const ReviewShrink:React.FC = () => {
       let succeededItems = 0;
       for(let i=0; i<shrinkItems.length;i++){
         let weight = shrinkItems[i].costedByWeight ? shrinkItems[i].quantity: 0;
+        let quantity = shrinkItems[i].costedByWeight ? 0: shrinkItems[i].quantity;
         try {
           var result = await agent.Shrink.shrinkItemSubmit(
             state.region, 
@@ -56,11 +57,11 @@ const ReviewShrink:React.FC = () => {
             state.subteamNo, 
             state.shrinkType.shrinkSubTypeId,
             state.shrinkType.inventoryAdjustmentCodeId,
-            state.shrinkType.abbreviation+','+state.shrinkType.shrinkType,
+            state.shrinkType.shrinkType,
             1,
-            null,
+            '',
             state.shrinkType.abbreviation,
-            shrinkItems[i].quantity,
+            quantity,
             weight
             );
           if(!result || result === undefined){

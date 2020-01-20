@@ -14,6 +14,7 @@ interface IIntitialState {
   subteamNo: string;
   shrinkType: IShrinkType;
   shrinkTypes: any[],
+  shrinkItems: any[],
   isLoading: boolean;
   orderDetails: OrderDetails | null;
   mappedReasonCodes: IMappedReasonCode[];
@@ -81,6 +82,7 @@ export const initialState = {
     subteamNo:'',
     shrinkType: {shrinkType:'', abbreviation:'', shrinkSubTypeMember: '', shrinkSubTypeId:null, inventoryAdjustmentCodeId: null, reasonCode: null},
     shrinkTypes: [],
+    shrinkItems: [],
     isLoading: false,
     orderDetails: null,
     mappedReasonCodes: [],
@@ -105,6 +107,7 @@ export const types = {
     SETSUBTEAMNO: "SETSUBTEAMNO",
     SETSHRINKTYPE: "SETSHRINKTYPE",
     SETSHRINKTYPES: "SETSHRINKTYPES",
+    SETSHRINKITEMS: "SETSHRINKITEMS",
     SETISLOADING: "SETISLOADING",
     SETORDERDETAILS: "SETORDERDETAILS",
     SETMAPPEDREASONCODES: "SETMAPPEDREASONCODES",
@@ -149,6 +152,9 @@ export const reducer = (state: any, action: any) => {
         }
         case types.SETSHRINKTYPES: {
           return { ...state, shrinkTypes: action.shrinkTypes };
+        }
+        case types.SETSHRINKITEMS: {
+          return { ...state, shrinkItems: action.shrinkItems };
         }
         case types.SETISLOADING: {
             return { ...state, isLoading: action.isLoading };
