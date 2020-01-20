@@ -7,6 +7,7 @@ import BasicModal from '../../layout/BasicModal';
 import CurrentLocation from "../../layout/CurrentLocation";
 import LoadingComponent from '../../layout/LoadingComponent';
 import Config from '../../config';
+import { Modal, Header, Button } from 'semantic-ui-react';
 
 
 const initialState = {
