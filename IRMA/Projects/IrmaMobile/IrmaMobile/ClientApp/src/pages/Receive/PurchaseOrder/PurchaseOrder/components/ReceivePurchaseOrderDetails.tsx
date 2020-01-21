@@ -147,6 +147,9 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 setReceivingOrder(false);
                 overrideHighQty.current = false;
                 quantityMode.current = QuantityAddMode.None;
+
+                dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
+                dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
             }
         }
     }
@@ -195,6 +198,8 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
 
         if(decision === QuantityAddMode.None) {
             toast.info("Quantity not saved");
+            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
+            dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
         } else {
             await receiveOrder();
         }

@@ -39,7 +39,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
             { id: 2, order: 1, text: "Invoice Data", path: `/receive/invoicedata/${purchaseOrderNumber}`, disabled: purchaseOrderNumber === '' } as IMenuItem,
             { id: 3, order: 2, text: "Receiving List", path: `/receive/List/${purchaseOrderNumber}`, disabled: false } as IMenuItem,
             { id: 4, order: 3, text: "Order Info", path: `/receive/purchaseorder/open`, disabled: purchaseOrderNumber === '' } as IMenuItem,
-            { id: 5, order: 4, text: "Clear Screen", path: "#", disabled: false } as IMenuItem,
+            { id: 5, order: 4, text: "Clear Screen", path: "/receive/PurchaseOrder/clearscreen", disabled: false } as IMenuItem,
             { id: 6, order: 5, text: "Review", path: "#", disabled: false } as IMenuItem,
             { id: 7, order: 6, text: "Exit Receive", path: "/functions", disabled: false } as IMenuItem,
          ] as IMenuItem[];
