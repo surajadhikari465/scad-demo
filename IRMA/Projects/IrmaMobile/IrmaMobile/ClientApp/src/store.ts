@@ -3,6 +3,9 @@ import { OrderDetails } from "./pages/Receive/PurchaseOrder/types/OrderDetails";
 import { ReasonCode } from "./pages/Receive/PurchaseOrder/types/ReasonCode";
 import { ListedOrder } from "./pages/Receive/PurchaseOrder/types/ListedOrder";
 import { DropdownItemProps } from "semantic-ui-react";
+import createPersistedReducer from 'use-persisted-reducer';
+
+export const usePersistedReducer = createPersistedReducer('state');
 
 interface IIntitialState {
   region: string;

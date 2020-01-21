@@ -29,7 +29,8 @@
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.2",
     "styled-components": "^4.4.1",
-    "typescript": "^3.7.3"
+    "typescript": "^3.7.3",
+    "use-persisted-reducer": "^2.1.0"
   },
   "scripts": {
     "start:development": "env-cmd -f .env.development react-scripts start",
