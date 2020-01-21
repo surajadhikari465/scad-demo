@@ -1,6 +1,8 @@
 USE Icon
 GO
 
+SET NOCOUNT ON;
+
 IF OBJECT_ID('dbo.[IconRebootTraitCodesData]', 'U') IS NOT NULL
 	DROP TABLE dbo.[IconRebootTraitCodesData];
 
@@ -1189,32 +1191,24 @@ VALUES
 DECLARE @requestNumberAttributeId INT
 DECLARE @productDescriptionAttributeId INT
 
-SET @requestNumberAttributeId = (
-		SELECT AttributeId
-		FROM Attributes
-		WHERE AttributeName = 'RequestNumber'
-		)
-SET @productDescriptionAttributeId = (
-		SELECT AttributeId
-		FROM Attributes
-		WHERE AttributeName = 'ProductDescription'
-		)
+SET @requestNumberAttributeId = (SELECT AttributeId FROM Attributes WHERE AttributeName = 'RequestNumber')
+SET @productDescriptionAttributeId = (SELECT AttributeId FROM Attributes WHERE AttributeName = 'ProductDescription')
 
 INSERT INTO dbo.AttributeCharacterSets (
 	[AttributeId]
-	,[CharacterSetId]
-	)
-SELECT @requestNumberAttributeId
+	,[CharacterSetId])
+SELECT
+	@requestNumberAttributeId
 	,CharacterSetId
-FROM CharacterSets
+FROM dbo.AttributeCharacterSets
 WHERE AttributeId = @productDescriptionAttributeId
 
 RAISERROR ('Inserting into dbo.AttributesWebConfiguration table...', 0, 1) WITH NOWAIT
 INSERT INTO dbo.AttributesWebConfiguration (
 	AttributeId
-	,GridColumnWidth
-	)
-SELECT AttributeId
+	,GridColumnWidth)
+SELECT
+	AttributeId
 	,200
 FROM Attributes
 WHERE AttributeId NOT IN (SELECT AttributeId FROM dbo.AttributesWebConfiguration)
@@ -1226,6 +1220,12 @@ RAISERROR ('Updating display order for attributes that don''t have one...', 0, 1
 UPDATE dbo.Attributes
 SET @maxDisplayOrder = DisplayOrder = @maxDisplayOrder + 1
 WHERE DisplayOrder IS NULL
+
+-- customer friendly description needs to be required for R10 purposes
+RAISERROR ('Updating customer friendly description to be required...', 0, 1) WITH NOWAIT
+UPDATE dbo.Attributes
+SET IsRequired = 1
+WHERE TraitCode = 'CFD'
 
 --Set ReadOnly on attributes that should not be edited directly by a user through Icon Web
 RAISERROR ('Setting ReadOnly property on AttributesWebConfiguration...', 0, 1) WITH NOWAIT
@@ -1357,10 +1357,12 @@ BEGIN
 END
 
 --Update dbo.BarCodetype Table Set flag to 1 for Scale Plu
+RAISERROR ('Updating BarCodeType table for ScalePlu flag...', 0, 1) WITH NOWAIT
 UPDATE dbo.barcodetype
 SET ScalePLU = 1
 WHERE BarcodeType LIKE '%Scale PLU%'
 
+RAISERROR ('Updating WFM Eligible XML Trait Description...', 0, 1) WITH NOWAIT
 UPDATE Attributes
 SET XmlTraitDescription = 'WFM Eligible'
 WHERE displayname = 'wfm eligible'
@@ -1369,6 +1371,7 @@ WHERE displayname = 'wfm eligible'
 -- When this is enabled we will send 0/1 for Yes/No and there are other exceptions.
 -- Eventually when the rest of the company settles on the same data types this column will be deprecated.
 -- We only want to apply this special transformation to attributes that are know to othe consumers which is this list. 
+RAISERROR ('Lastly setting IsSpecialTransform to true for specific trait codes for ESB publishing...', 0, 1) WITH NOWAIT
 UPDATE dbo.Attributes 
 SET IsSpecialTransform=1
 WHERE TraitCode IN
@@ -1506,3 +1509,5 @@ WHERE TraitCode IN
 'VAR',
 'BES',
 'LEX')
+
+RAISERROR ('Script complete...', 0, 1) WITH NOWAIT

@@ -1,22 +1,23 @@
 Run the scripts in following order:
-a.	IconRebootInforItemHistoryConversion.Sql (~30 minutes)
-	i.	NOTE: This script inserts data into “infor.ItemHistory” table.
-	ii.	Kick this off first and no need to wait for it to finish before starting next script.  
-
 1.	IconRebootAttributesConversionUsingJsonFile.Sql (~5 minute or less)
 	a.	This script will convert attributes from Infor to Icon. Script will insert data into “dbo.Attributes” table and some other related tables. 
+	b.  Reference to directory and file is on line 175
 
 2.	IconRebootItemConversion.sql (~10 minutes or less)
 	a.	This script will convert items from Infor to Icon.
+	b.  Reference to directory and file is on line 212
 
 3.	IconRebootPopulateBrandHierarchy.Sql (~1 minutes)
 	a.	Loads Brand traits from file provided by data team
+	b.  Reference to directory and file is on line 34
 
 4.	Run IconRebootHierarchyClassTraitConversion.sql (1 second)
 	a.	This scripts inserts data into “HierarchyClassTrait” Table, populating the merchandise hierarchy defaults (e.g. Prohibit Discount, Item Type, and SubTeam)
+	b.  Reference to directory and file is on line 17
 
 5.	IconRebootPopulateBarcodeTypeRangePool.Sql (10-20 minutes)
 	a.	This script populates the barcode ranges.
+	b.  There is no file loaded with this script
 
 WAIT!  DevOps needs to update configs for Hierarchy Api Controller before running step 6 so we do NOT send to R10.
 6.	IconRebootConversionCreateMessageQueueForManufactureBrandHierarchy.SQL
@@ -26,3 +27,7 @@ WAIT!  DevOps needs to update configs on Item Publisher before running step 7 so
 7.	IconConversionCreateMessageQueueRecordForAllItems
 	a.	This script will create records in esb.MessageQueueItem table for all items.
 
+To Be Run at the end since we won't receive this file until the following day (according to SCMPA team)
+8.	IconRebootInforItemHistoryConversion.Sql (~30 minutes)
+	i.	NOTE: This script inserts data into “infor.ItemHistory” table.
+	ii.	Kick this off first and no need to wait for it to finish before starting next script.  

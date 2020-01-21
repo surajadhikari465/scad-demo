@@ -1,35 +1,22 @@
 USE Icon
 GO
+
+SET NOCOUNT ON;
+
 --Disable item history if it's turned on
-IF (
-		SELECT temporal_type
-		FROM sys.tables
-		WHERE name = 'Item'
-			AND SCHEMA_NAME(schema_id) = 'dbo'
-		) <> 0
+IF (SELECT temporal_type FROM sys.tables WHERE name = 'Item' AND SCHEMA_NAME(schema_id) = 'dbo') <> 0
 BEGIN
 	PRINT 'Disabling item history'
-
 	ALTER TABLE dbo.Item
-
 	SET (SYSTEM_VERSIONING = OFF)
-
 END
 
 --Disable ItemHierarchyClass history if it's turned on
-IF (
-		SELECT temporal_type
-		FROM sys.tables
-		WHERE name = 'ItemHierarchyClass'
-			AND SCHEMA_NAME(schema_id) = 'dbo'
-		) <> 0
+IF (SELECT temporal_type FROM sys.tables WHERE name = 'ItemHierarchyClass' AND SCHEMA_NAME(schema_id) = 'dbo') <> 0
 BEGIN
 	PRINT 'Disabling ItemHierarchyClass history'
-
 	ALTER TABLE dbo.ItemHierarchyClass
-
 	SET (SYSTEM_VERSIONING = OFF)
-
 END
 
 
@@ -45,15 +32,8 @@ BEGIN
 	RAISERROR('ScanCodeBackup is missing which means you need to run the attribute conversion script again before running this script', 15, 10)
 END
 
-
-IF EXISTS (
-		SELECT 1
-		FROM INFORMATION_SCHEMA.TABLES
-		WHERE TABLE_SCHEMA = 'dbo'
-			AND TABLE_NAME = 'temp_InforItemsFile'
-		)
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'temp_InforItemsFile')
 BEGIN
-
   DROP TABLE dbo.temp_InforItemsFile 
 END
 
@@ -212,245 +192,231 @@ END
 		);
 
 	CREATE NONCLUSTERED INDEX IX_ItemId ON dbo.temp_InforItemsFile (itemId)
-
 	CREATE NONCLUSTERED INDEX IX_ItemTypeId ON dbo.temp_InforItemsFile ([Item Type])
 
-IF NOT EXISTS (
-		SELECT 1
-		FROM INFORMATION_SCHEMA.TABLES
-		WHERE TABLE_SCHEMA = 'dbo'
-			AND TABLE_NAME = 'temp_ItemManufactureHierarchy'
-		)
+IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'temp_ItemManufactureHierarchy')
 BEGIN
-	CREATE TABLE dbo.temp_ItemManufactureHierarchy (
-		[ItemID] INT NULL
-		,[Manufacturer] NVARCHAR(255) NULL
-		,
-		)
+	CREATE TABLE dbo.temp_ItemManufactureHierarchy
+	(
+		[ItemID] INT NULL,
+		[Manufacturer] NVARCHAR(255) NULL
+	)
 END
 
 TRUNCATE TABLE dbo.temp_ItemManufactureHierarchy
-
 TRUNCATE TABLE dbo.temp_InforItemsFile
-
 
 PRINT 'Inserting Infor Items into InforItemFile table...'
 
 BULK INSERT dbo.temp_InforItemsFile
 FROM '\\ODWD6801\Temp\IconConversion\im_item.csv' -- needs to be added with file path and filename. Currently C:\TEMP\IconConversion\infor_im_prod_item_20190520.csv
-	WITH (
-		FIRSTROW = 2
-		,FIELDTERMINATOR = ','
+	WITH (FIRSTROW = 2
 		,CODEPAGE = '65001'
-		,ROWTERMINATOR = '\r'
-		,FORMAT = 'CSV'
-		);
+		,ROWTERMINATOR = '0x0A'
+		,FORMAT = 'CSV');
 
 TRUNCATE TABLE dbo.ItemHistory
 
 PRINT 'Updating dbo.Item table...'
-
 UPDATE dbo.Item
 SET ItemAttributesJson = ISNULL((
-			SELECT [365 Eligible] AS [365Eligible]
-				,[ABF] AS ABF
-				,[Accessory] AS Accessory
-				,[Age/Gender] AS AgeGender
-				,NULLIF([Air Chilled], 'No') AS AirChilled
-				,[Alcohol By Volume] AS AlcoholByVolume
-				,[Allocated] AS Allocated
-				,[Animal Welfare Rating] AS AnimalWelfareRating
-				,[Appellation] AS Appellation
-				,[Beer Style] AS BeerStyle
-				,NULLIF([Biodynamic], 'No') AS Biodynamic
-				,[Blackhawk Commission Dollar] AS BlackhawkCommissionDollar
-				,[Blackhawk Commission Percent] AS BlackhawkCommissionPercent
-				,[Casein Free] AS CaseinFree
-				,[Category Management] AS CategoryManagement
-				,[Cheese Attribute: Milk Type] AS CheeseAttributeMilkType
-				,[Country of Origin] AS CountryofOrigin
-				,[Cube] AS [Cube]
-				,[Created By] AS CreatedBy
-				,[Created On] AS CreatedDateTimeUtc
-				,[Customer Friendly Description] AS CustomerFriendlyDescription
-				,[Data Source] AS DataSource
-				,[Delivery System] AS DeliverySystem
-				,[Dimensions Data Source] AS DimensionsDataSource
-				,[Disposable] AS Disposable
-				,[Drained Weight] AS DrainedWeight
-				,[Drained Weight UOM] AS DrainedWeightUOM
-				,NULLIF([Dry Aged], 'No') AS DryAged
-				,[Eco-Scale Rating] AS EcoScaleRating
-				,NULLIF([EStore Eligible], 'No') AS EStoreEligible
-				,NULLIF([EStore Nutrition Required], 'No') AS EStoreNutritionRequired
-				,[Exclusive (Date)] AS ExclusiveDate
-				,[Exclusive (Yes/No)] AS ExclusiveYesNo
-				,[Fair Trade Certified] AS FairTradeCertified
-				,[Fair Trade Claim] AS FairTradeClaim
-				,[Fat Free Claim] AS FatFreeClaim
-				,[Flex Sign Text] AS FlexSignText
-				,CASE 
-					WHEN UPPER([Food Stamp Eligible]) = 'TRUE'
-						THEN 'true'
-					ELSE 'false'
-					END AS FoodStampEligible
-				,[Fragrance Free] AS FragranceFree
-				,NULLIF([Free Range], 'No') AS FreeRange
-				,[Fresh or Frozen] AS FreshorFrozen
-				,[Global Pricing Program] AS GlobalPricingProgram
-				,[Gluten Free] AS GlutenFree
-				,[Gluten Free Claim] AS GlutenFreeClaim
-				,[GMO Transparency] AS GMOTransparency
-				,[Good Better Best] AS GoodBetterBest
-				,NULLIF([Grass Fed], 'No') AS GrassFed
-				,[Halal] AS Halal
-				,[Hemp] AS Hemp
-				,[Homeopathic] AS Homeopathic
-				,[Hormone Free Claim] AS HormoneFreeClaim
-				,NULLIF([Hospitality Item], 'No') AS HospitalityItem
-				,[Image Map] AS ImageMap
-				,[Item Depth] AS ItemDepth
-				,[Item Height] AS ItemHeight
-				,[Item Pack] AS ItemPack
-				,CASE 
-					WHEN UPPER(f.[Item Status]) = 'HIDDEN'
-						THEN 'true'
-					ELSE 'false'
-					END AS Inactive
-				,[Item Weight] AS ItemWeight
-				,[Item Width] AS ItemWidth
-				,[IX One Brand] AS IXOneBrand
-				,[Juice Content] AS JuiceContent
-				,[Kitchen Description] AS KitchenDescription
-				,NULLIF([Kitchen Item], 'No') AS KitchenItem
-				,[Kosher] AS Kosher
-				,[Kosher Claim] AS KosherClaim
-				,[Labeling] AS Labeling
-				,[Line] AS Line
-				,[Line Extension] AS LineExtension
-				,[Local Loan Producer] AS LocalLoanProducer
-				,[Low Fat Claim] AS LowFatClaim
-				,NULLIF([Made In House], 'No') AS MadeInHouse
-				,[Made with Organic Grapes] AS MadewithOrganicGrapes
-				,COALESCE([Modified By], [Created By]) AS ModifiedBy
-				,COALESCE([Modified On], [Created On]) AS ModifiedDateTimeUtc
-				,NULLIF([MSC], 'No') AS Msc
-				,[Multipurpose] AS Multipurpose
-				,[Natural Claim] AS NaturalClaim
-				,[Non-GMO] AS NonGMO
-				,[Non GMO Claim] AS NonGMOClaim
-				,[No Sulfites] AS NoSulfites
-				,[Notes] AS Notes
-				,[Nutrition Required] AS NutritionRequired
-				,[Organic] AS Organic
-				,[Organic Claim] AS OrganicClaim
-				,[Organic Personal Care] AS OrganicPersonalCare
-				,[Other 3P Eligible] AS Other3PEligible
-				,[Package Group] AS PackageGroup
-				,[Package Group Type] AS PackageGroupType
-				,[Packaging Type] AS PackagingType
-				,[Paleo] AS Paleo
-				,[Paleo Claim] AS PaleoClaim
-				,NULLIF([Pasture Raised], 'No') AS PastureRaised
-				,[PMD Verified] AS PMDVerified
-				,[POS Description] AS POSDescription
-				,[POS Scale Tare] AS POSScaleTare
-				,NULLIF([Premium Body Care], 'No') AS PremiumBodyCare
-				,[Price Line] AS PriceLine
-				,[Price Line Description] AS PriceLineDescription
-				,[Prime] AS Prime
-				,[Prime Now Eligible] AS PrimeNowEligible
-				,[Private Label] AS PrivateLabel
-				,[Product Flavor or Type] AS ProductFlavororType
-				,[Product Description] AS ProductDescription
-				,CASE 
-					WHEN UPPER([Prohibit Discount]) = 'TRUE'
-						THEN 'true'
-					ELSE 'false'
-					END AS ProhibitDiscount
-				,[Rainforest Alliance] AS RainforestAlliance
-				,NULLIF([Raw], 'No') AS Raw
-				,[Refrigerated or Shelf Stable] AS RefrigeratedorShelfStable
-				,[Regional Local Item] AS RegionalLocalItem
-				,[Rennet] AS Rennet
-				,[Retail Size] AS RetailSize
-				,[SCO Item Tare Group] AS SCOItemTareGroup
-				,[Seafood: Wild Or Farm Raised] AS SeafoodWildOrFarmRaised
-				,[Seasonal In and Out/Gifting] AS SeasonalInandOutGifting
-				,[Shelf Life] AS ShelfLife
-				,[Skin Type] AS SkinType
-				,[SKU] AS SKU
-				,[Smithsonian Bird Friendly] AS SmithsonianBirdFriendly
-				,[Smoked] AS Smoked
-				,[Sold Hot or Cold] AS SoldHotorCold
-				,[Travel Size/Single Use/Kit] AS TravelSizeSingleUseKit
-				,[Tray Depth] AS TrayDepth
-				,[Tray Height] AS TrayHeight
-				,[Tray Width] AS TrayWidth
-				,[UOM] AS UOM
-				,[URL1] AS URL1
-				,[Value Added] AS ValueAdded
-				,[Variant Size] AS VariantSize
-				,[Varietal] AS Varietal
-				,[Vegan] AS Vegan
-				,[Vegan Claim] AS VeganClaim
-				,NULLIF([Vegetarian], 'No') AS Vegetarian
-				,[Vegetarian Claim] AS VegetarianClaim
-				,NULLIF([WFM Eligible], 'No') AS WFMEligible
-				,NULLIF([Whole Trade], 'No') AS WholeTrade
-				,[ItemName] as RequestNumber
-			FROM temp_InforItemsFile f
-			WHERE f.ItemID = item.ItemId
-			FOR JSON PATH
-				,WITHOUT_ARRAY_WRAPPER
-			), '{}')
+	SELECT [365 Eligible] AS [365Eligible]
+		,[ABF] AS ABF
+		,[Accessory] AS Accessory
+		,[Age/Gender] AS AgeGender
+		,NULLIF([Air Chilled], 'No') AS AirChilled
+		,[Alcohol By Volume] AS AlcoholByVolume
+		,[Allocated] AS Allocated
+		,[Animal Welfare Rating] AS AnimalWelfareRating
+		,[Appellation] AS Appellation
+		,[Beer Style] AS BeerStyle
+		,NULLIF([Biodynamic], 'No') AS Biodynamic
+		,[Blackhawk Commission Dollar] AS BlackhawkCommissionDollar
+		,[Blackhawk Commission Percent] AS BlackhawkCommissionPercent
+		,[Casein Free] AS CaseinFree
+		,[Category Management] AS CategoryManagement
+		,[Cheese Attribute: Milk Type] AS CheeseAttributeMilkType
+		,[Country of Origin] AS CountryofOrigin
+		,[Cube] AS [Cube]
+		,[Created By] AS CreatedBy
+		,[Created On] AS CreatedDateTimeUtc
+		,[Customer Friendly Description] AS CustomerFriendlyDescription
+		,[Data Source] AS DataSource
+		,[Delivery System] AS DeliverySystem
+		,[Dimensions Data Source] AS DimensionsDataSource
+		,[Disposable] AS Disposable
+		,[Drained Weight] AS DrainedWeight
+		,[Drained Weight UOM] AS DrainedWeightUOM
+		,NULLIF([Dry Aged], 'No') AS DryAged
+		,[Eco-Scale Rating] AS EcoScaleRating
+		,NULLIF([EStore Eligible], 'No') AS EStoreEligible
+		,NULLIF([EStore Nutrition Required], 'No') AS EStoreNutritionRequired
+		,[Exclusive (Date)] AS ExclusiveDate
+		,[Exclusive (Yes/No)] AS ExclusiveYesNo
+		,[Fair Trade Certified] AS FairTradeCertified
+		,[Fair Trade Claim] AS FairTradeClaim
+		,[Fat Free Claim] AS FatFreeClaim
+		,[Flex Sign Text] AS FlexSignText
+		,CASE 
+			WHEN UPPER([Food Stamp Eligible]) = 'TRUE'
+				THEN 'true'
+			ELSE 'false'
+			END AS FoodStampEligible
+		,[Fragrance Free] AS FragranceFree
+		,NULLIF([Free Range], 'No') AS FreeRange
+		,[Fresh or Frozen] AS FreshorFrozen
+		,[Global Pricing Program] AS GlobalPricingProgram
+		,[Gluten Free] AS GlutenFree
+		,[Gluten Free Claim] AS GlutenFreeClaim
+		,[GMO Transparency] AS GMOTransparency
+		,[Good Better Best] AS GoodBetterBest
+		,NULLIF([Grass Fed], 'No') AS GrassFed
+		,[Halal] AS Halal
+		,[Hemp] AS Hemp
+		,[Homeopathic] AS Homeopathic
+		,[Hormone Free Claim] AS HormoneFreeClaim
+		,NULLIF([Hospitality Item], 'No') AS HospitalityItem
+		,[Image Map] AS ImageMap
+		,[Item Depth] AS ItemDepth
+		,[Item Height] AS ItemHeight
+		,[Item Pack] AS ItemPack
+		,CASE 
+			WHEN UPPER(f.[Item Status]) = 'HIDDEN'
+				THEN 'true'
+			ELSE 'false'
+			END AS Inactive
+		,[Item Weight] AS ItemWeight
+		,[Item Width] AS ItemWidth
+		,[IX One Brand] AS IXOneBrand
+		,[IX One ID] AS IXOneID
+		,[Juice Content] AS JuiceContent
+		,[Kitchen Description] AS KitchenDescription
+		,NULLIF([Kitchen Item], 'No') AS KitchenItem
+		,[Kosher] AS Kosher
+		,[Kosher Claim] AS KosherClaim
+		,[Labeling] AS Labeling
+		,[Line] AS Line
+		,[Line Extension] AS LineExtension
+		,[Local Loan Producer] AS LocalLoanProducer
+		,[Low Fat Claim] AS LowFatClaim
+		,NULLIF([Made In House], 'No') AS MadeInHouse
+		,[Made with Organic Grapes] AS MadewithOrganicGrapes
+		,COALESCE([Modified By], [Created By]) AS ModifiedBy
+		,COALESCE([Modified On], [Created On]) AS ModifiedDateTimeUtc
+		,NULLIF([MSC], 'No') AS MSC
+		,[Multipurpose] AS Multipurpose
+		,[Natural Claim] AS NaturalClaim
+		,[Non-GMO] AS NonGMO
+		,[Non GMO Claim] AS NonGMOClaim
+		,[No Sulfites] AS NoSulfites
+		,[Notes] AS Notes
+		,[Nutrition Required] AS NutritionRequired
+		,[Organic] AS Organic
+		,[Organic Claim] AS OrganicClaim
+		,[Organic Personal Care] AS OrganicPersonalCare
+		,[Other 3P Eligible] AS Other3PEligible
+		,[Package Group] AS PackageGroup
+		,[Package Group Type] AS PackageGroupType
+		,[Packaging Type] AS PackagingType
+		,[Paleo] AS Paleo
+		,[Paleo Claim] AS PaleoClaim
+		,NULLIF([Pasture Raised], 'No') AS PastureRaised
+		,[PMD Verified] AS PMDVerified
+		,[POS Description] AS POSDescription
+		,[POS Scale Tare] AS POSScaleTare
+		,NULLIF([Premium Body Care], 'No') AS PremiumBodyCare
+		,[Price Line] AS PriceLine
+		,[Price Line Description] AS PriceLineDescription
+		,[Prime] AS Prime
+		,[Prime Now Eligible] AS PrimeNowEligible
+		,[Private Label] AS PrivateLabel
+		,[Product Flavor or Type] AS ProductFlavororType
+		,[Product Description] AS ProductDescription
+		,CASE 
+			WHEN UPPER([Prohibit Discount]) = 'TRUE'
+				THEN 'true'
+			ELSE 'false'
+			END AS ProhibitDiscount
+		,[Rainforest Alliance] AS RainforestAlliance
+		,NULLIF([Raw], 'No') AS Raw
+		,[Refrigerated or Shelf Stable] AS RefrigeratedorShelfStable
+		,[Regional Local Item] AS RegionalLocalItem
+		,[Rennet] AS Rennet
+		,[Retail Size] AS RetailSize
+		,[SCO Item Tare Group] AS SCOItemTareGroup
+		,[Seafood: Wild Or Farm Raised] AS SeafoodWildOrFarmRaised
+		,[Seasonal In and Out/Gifting] AS SeasonalInandOutGifting
+		,[Shelf Life] AS ShelfLife
+		,[Skin Type] AS SkinType
+		,[SKU] AS SKU
+		,[Smithsonian Bird Friendly] AS SmithsonianBirdFriendly
+		,[Smoked] AS Smoked
+		,[Sold Hot or Cold] AS SoldHotorCold
+		,[Travel Size/Single Use/Kit] AS TravelSizeSingleUseKit
+		,[Tray Depth] AS TrayDepth
+		,[Tray Height] AS TrayHeight
+		,[Tray Width] AS TrayWidth
+		,[UOM] AS UOM
+		,[URL1] AS URL1
+		,[Value Added] AS ValueAdded
+		,[Variant Size] AS VariantSize
+		,[Varietal] AS Varietal
+		,[Vegan] AS Vegan
+		,[Vegan Claim] AS VeganClaim
+		,NULLIF([Vegetarian], 'No') AS Vegetarian
+		,[Vegetarian Claim] AS VegetarianClaim
+		,NULLIF([WFM Eligible], 'No') AS WFMEligible
+		,NULLIF([Whole Trade], 'No') AS WholeTrade
+		,[ItemName] as RequestNumber
+	FROM temp_InforItemsFile f
+	WHERE f.ItemID = item.ItemId
+	FOR JSON PATH
+		,WITHOUT_ARRAY_WRAPPER
+	), '{}')
 
-
+-- Set the SysStartTimeUtc equal to the ModifiedOn which comes from Infor file
+PRINT 'Updating Item.SysStartTimeUtc column with the date coming from Infor...'
 UPDATE dbo.Item
-SET sysstarttimeutc =  IsNULL(ISNULL(JSON_VALUE(ItemAttributesJson,'$.ModifiedDateTimeUtc'),JSON_VALUE(ItemAttributesJson,'$."CreatedDateTimeUtc"')),SYSUTCDATETIME() )
+SET SysStartTimeUtc =  IsNULL(ISNULL(JSON_VALUE(ItemAttributesJson,'$.ModifiedDateTimeUtc'),JSON_VALUE(ItemAttributesJson,'$."CreatedDateTimeUtc"')),SYSUTCDATETIME() )
 
+-- Update ScanCode table with the proper barcode type reference
+PRINT 'Updating ScanCode table with proper barcode type mapping...'
 UPDATE sc
 SET barcodeTypeID = b.BarcodeTypeId
 FROM ScanCode sc
 INNER JOIN temp_InforItemsFile f ON f.ItemID = sc.ItemId
 INNER JOIN dbo.BarcodeType b ON f.BarcodeType = b.BarcodeType
 
+-- Insert Manufacturer values into temp table
+PRINT 'Inserting manufacturer data into hierarchy tables...'
 INSERT INTO dbo.temp_ItemManufactureHierarchy (
 	[ItemID]
-	,[Manufacturer]
-	)
-SELECT ItemID
+	,[Manufacturer])
+SELECT
+	ItemID
 	,[Manufacturer]
 FROM temp_InforItemsFile f
 WHERE [Manufacturer] IS NOT NULL
 	AND [Manufacturer] != '' AND [Manufacturer] != '#N/A' 
 
 DECLARE @ManufactureHierarchyId INT
+SET @ManufactureHierarchyId = (SELECT hierarchyID FROM Hierarchy WHERE hierarchyName = 'Manufacturer')
 
-SET @ManufactureHierarchyId = (
-		SELECT HIERARCHYID
-		FROM Hierarchy
-		WHERE hierarchyName = 'Manufacturer'
-		)
-
-IF NOT EXISTS (
-		SELECT 1
-		FROM [dbo].[HierarchyPrototype]
-		WHERE [hierarchyID] = @ManufactureHierarchyId
-		)
+IF NOT EXISTS (SELECT 1 FROM [dbo].[HierarchyPrototype] WHERE [hierarchyID] = @ManufactureHierarchyId)
 BEGIN
 	INSERT INTO [dbo].[HierarchyPrototype] (
 		[hierarchyID]
 		,[hierarchyLevel]
 		,[hierarchyLevelName]
-		,[itemsAttached]
-		)
-	SELECT @ManufactureHierarchyId
+		,[itemsAttached])
+	SELECT
+		@ManufactureHierarchyId
 		,1
 		,'Manufacturer'
 		,1
 END
 
+-- Delete any records associated to Manufacturer (there should be none but done in case the DB wasn't refreshed)
 DELETE [dbo].[HierarchyClassTrait]
 WHERE [hierarchyClassID] IN (
 		SELECT [hierarchyClassID]
@@ -468,34 +434,36 @@ WHERE [hierarchyClassID] IN (
 DELETE [dbo].[HierarchyClass]
 WHERE [hierarchyID] = @ManufactureHierarchyId
 
+-- Insert records into HierarchyClass and ItemHierarchyClass
 INSERT INTO [dbo].[HierarchyClass] (
 	[hierarchyLevel]
 	,[hierarchyID]
 	,[hierarchyParentClassID]
-	,[hierarchyClassName]
-	)
-SELECT DISTINCT 1
+	,[hierarchyClassName])
+SELECT DISTINCT
+	1
 	,@ManufactureHierarchyId
 	,NULL
-	,[Manufacturer]
+	,UPPER([Manufacturer]) -- GDT wants these to be upper case
 FROM dbo.temp_ItemManufactureHierarchy
 
 INSERT INTO [dbo].[ItemHierarchyClass] (
 	[itemID]
 	,[hierarchyClassID]
-	,[localeID]
-	)
-SELECT im.[ItemID]
+	,[localeID])
+SELECT
+	im.[ItemID]
 	,[hierarchyClassID]
 	,1
 FROM dbo.temp_ItemManufactureHierarchy im
 INNER JOIN [HierarchyClass] h ON im.Manufacturer = h.hierarchyClassName
-	AND h.HIERARCHYID = @ManufactureHierarchyId
+	AND h.hierarchyID = @ManufactureHierarchyId
 INNER JOIN Item i ON i.ItemId = im.ItemID
 
 -- This block is for updating the item type. The item type comes over from Infor in the format 'Blackhawk Fee'
 -- and we have to convert it with this case statment into a code and then into an item type id and then update all of
 -- the items
+PRINT 'Updating Item with proper ItemTypeID...'
 IF OBJECT_ID('tempdb..#tmpItems') IS NOT NULL
 	DROP TABLE #tmpItems
 
@@ -529,14 +497,16 @@ FROM dbo.item i
 INNER JOIN #tmpItems t ON t.itemId = i.ItemId
 INNER JOIN ItemType it ON t.itemTypeCode = it.itemTypeCode
 
+-- Matching the modified date for ItemHierarchyClass to match the Item modified date.
+PRINT 'Updating ItemHierarchyClass.SysStartTimeUtc...'
 UPDATE ihc
-SET sysstarttimeutc = i.SysStartTimeUtc
+SET SysStartTimeUtc = i.SysStartTimeUtc
 FROM dbo.ItemHierarchyClass ihc
-INNER JOIN Item i
-ON i.ItemId = ihc.ItemId
+INNER JOIN Item i ON i.ItemId = ihc.ItemId
 
 -- update all items to have a DepartmentSale attribute with a value of yes if the item has the the department sale(DPT) trait 
 -- assigned through ItemTrait.
+PRINT 'Updating Items that need to have Department Sale values...'
 UPDATE Item
 SET ItemAttributesJson = JSON_MODIFY(i.ItemAttributesJson,'$.DepartmentSale', CASE WHEN TraitValue = 1 THEN 'Yes' ELSE 'No' END)
 FROM Item i
@@ -544,19 +514,19 @@ INNER JOIN ItemTrait it ON i.itemID = it.itemID
 	AND it.traitid IN (
 		SELECT traitid
 		FROM trait
-		WHERE traitCode = 'DPT'
-		)
-
-DROP TABLE dbo.temp_InforItemsFile
+		WHERE traitCode = 'DPT')
 
 -- Update bar code type id on ScanCode table from the backup if there are any records with a NULL value:
+IF EXISTS (SELECT 1 FROM ScanCode WHERE barcodeTypeID IS NULL)
+BEGIN
 UPDATE sc
-SET sc.barcodeTypeID = b.barcodeTypeID
-FROM dbo.ScanCode sc
-JOIN dbo.ScanCodeBackup b on sc.itemID = b.ItemID
-WHERE sc.barcodeTypeID IS NULL
+	SET sc.barcodeTypeID = b.barcodeTypeID
+	FROM dbo.ScanCode sc
+	JOIN dbo.ScanCodeBackup b on sc.itemID = b.ItemID
+	WHERE sc.barcodeTypeID IS NULL
+END
 
-PRINT 'Enabling item history and period'
+PRINT 'Enabling system versioning on Item and ItemHierarchyClass...'
 ALTER TABLE dbo.Item ADD PERIOD FOR SYSTEM_TIME(SysStartTimeUtc, SysEndTimeUtc)
 ALTER TABLE dbo.Item SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = dbo.ItemHistory));
 
@@ -566,10 +536,13 @@ ALTER TABLE dbo.ItemHierarchyClass SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = 
 IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES t WHERE t.TABLE_SCHEMA = 'dbo' AND t.TABLE_NAME = 'ScanCodeBackup')
 	DROP TABLE dbo.ScanCodeBackup
 
+DROP TABLE dbo.temp_InforItemsFile
+DROP TABLE dbo.temp_ItemManufactureHierarchy
+
 END TRY
 BEGIN CATCH
-PRINT 'Error Occurred'
-SELECT   
-    ERROR_NUMBER() AS ErrorNumber  
-    ,ERROR_MESSAGE() AS ErrorMessage;
+	PRINT 'Error Occurred'
+	SELECT   
+		ERROR_NUMBER() AS ErrorNumber  
+		,ERROR_MESSAGE() AS ErrorMessage;
 END CATCH

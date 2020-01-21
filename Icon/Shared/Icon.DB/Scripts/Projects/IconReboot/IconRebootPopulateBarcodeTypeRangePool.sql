@@ -1,8 +1,14 @@
-﻿
+﻿USE Icon
+GO
+
+SET NOCOUNT ON;
+
 DECLARE @barcodeTypeId int
 DECLARE @beginRange bigint
 DECLARE @endRange bigint
 DECLARE @scalePLU bit
+
+PRINT 'Begin Updating BarcodeTypeRangePool with all available ranges...';
 
 DECLARE cursorBarCodeType CURSOR
 FOR SELECT 
@@ -51,5 +57,8 @@ END
 CLOSE cursorBarCodeType
 DEALLOCATE cursorBarCodeType
 
+PRINT 'Updating all assigned Scan Codes in the BarcodeTypeRangePool...';
 UPDATE [dbo].[BarcodeTypeRangePool] SET Assigned=1,AssignedDateTimeUtc=SYSUTCDATETIME()
 WHERE scanCode in (SELECT scanCode from dbo.ScanCode s WHERE s.scanCode = [dbo].[BarcodeTypeRangePool].scanCode)
+
+PRINT 'Finished BarcodeTypeRangePool script...';

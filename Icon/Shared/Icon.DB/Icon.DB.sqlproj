@@ -855,6 +855,7 @@
     <None Include="Scripts\Projects\IconReboot\Audit\Attributes.sql" />
     <Build Include="app\User Defined Types\ContactTypeInputType.sql" />
     <None Include="Scripts\Projects\IconReboot\DeploymentSteps.docx" />
+    <None Include="Scripts\PopulateData\UpdateDeprecatedSubTeams.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />
