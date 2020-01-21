@@ -10,9 +10,10 @@ const ReceivePurchaseOrderDetailsClearScreen: React.FC = () => {
     useEffect(() => {
         dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
         dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
+        dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
 
         history.goBack();
-    }, [dispatch])
+    }, [dispatch, history])
     
     return (
         <div>

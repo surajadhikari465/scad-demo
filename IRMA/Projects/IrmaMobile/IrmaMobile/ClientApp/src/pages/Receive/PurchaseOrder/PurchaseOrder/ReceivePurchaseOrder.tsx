@@ -59,6 +59,13 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
         }
     }, [setMenuItems, dispatch]);
 
+    useEffect(() => {
+        dispatch({ type: types.SETTITLE, Title: 'Receive' });
+        return () => {
+          dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
+        };
+      }, [dispatch]);
+
     const loadPurchaseOrder = async (purchaseOrderNum: number, upc: string, closeOrderList: boolean = false) => {
         //int32 max...
         if(purchaseOrderNum > 2147483647) {

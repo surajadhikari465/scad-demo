@@ -3,7 +3,7 @@ import { RouteComponentProps } from "react-router";
 import { Button, CheckboxProps, Form, Grid, Input, InputOnChangeData } from "semantic-ui-react";
 import agent from "../../../../api/agent";
 import LoadingComponent from "../../../../layout/LoadingComponent";
-import { AppContext, types } from "../../../../store";
+import { AppContext, types, IMenuItem } from "../../../../store";
 import InvoiceDataAddCharge from "./components/InvoiceDataAddCharge";
 import InvoiceDataRemoveCharge from "./components/InvoiceDataRemoveCharge";
 import Charge from "../types/Charge";
@@ -62,6 +62,22 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
     const [invoiceTotal, setInvoiceTotal] = useState<number>(0);
     const [nonAllocatedCharges, setNonAllocatedCharges] = useState<number>(0);
     const [invoiceTotalEdited, setInvoiceTotalEdited] = useState<boolean>(false);
+
+    const setMenuItems = useCallback(() => {
+        const newMenuItems = [
+            { id: 1, order: 1, text: "Receive Order", path: `/receive/purchaseorder/`, disabled: false } as IMenuItem,
+         ] as IMenuItem[];
+
+        dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems });
+    }, [dispatch])
+
+    useEffect(() => {
+        setMenuItems()
+
+        return () => {
+            dispatch({ type: types.SETMENUITEMS, menuItems: [] });
+        }
+    }, [setMenuItems, dispatch]);
 
     const loadValuesAndState = useCallback(() => {
         if(charges) {
