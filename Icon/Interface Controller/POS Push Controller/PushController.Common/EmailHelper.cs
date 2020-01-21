@@ -16,28 +16,28 @@ namespace PushController.Common
         {
             return EmailClientSettings.CreateFromConfig();
         }
+        // PBI 25931-Icon POS Push Error - Incorrect Sale Start and End Dates email alerts disabled.
+        //public static string BuildMessageBodyForInvalidSaleDates(string errorMessage, List<IConPOSPushPublish> invalidSaleDateRecords)
+        //{
+        //    var messageBody = new StringBuilder();
 
-        public static string BuildMessageBodyForInvalidSaleDates(string errorMessage, List<IConPOSPushPublish> invalidSaleDateRecords)
-        {
-            var messageBody = new StringBuilder();
+        //    BuildMessageHeader(errorMessage, messageBody);
 
-            BuildMessageHeader(errorMessage, messageBody);
+        //    messageBody.AppendLine(String.Format("<table {0}>", tableStyle));
+        //    messageBody.AppendLine(String.Format("<tr {0}><th {0}>Identifier</th><th {0}>Store Number</th><th {0}>Business Unit</th><th {0}>Sale Price</th><th {0}>Sale Start Date</th><th {0}>Sale End Date</th></tr>", tableStyle));
 
-            messageBody.AppendLine(String.Format("<table {0}>", tableStyle));
-            messageBody.AppendLine(String.Format("<tr {0}><th {0}>Identifier</th><th {0}>Store Number</th><th {0}>Business Unit</th><th {0}>Sale Price</th><th {0}>Sale Start Date</th><th {0}>Sale End Date</th></tr>", tableStyle));
+        //    foreach (var invalidRecord in invalidSaleDateRecords)
+        //    {
+        //        messageBody.AppendLine(String.Format("<tr {0}><td {0}>{1}</td><td {0}>{2}</td><td {0}>{3}</td><td {0}>{4}</td><td {0}>{5}</td><td {0}>{6}</td></tr>", tableStyle,
+        //            invalidRecord.Identifier, invalidRecord.Store_No, invalidRecord.BusinessUnit_ID, invalidRecord.Sale_Price, invalidRecord.Sale_Start_Date.Value.ToShortDateString(), invalidRecord.Sale_End_Date.Value.ToShortDateString()));
+        //    }
 
-            foreach (var invalidRecord in invalidSaleDateRecords)
-            {
-                messageBody.AppendLine(String.Format("<tr {0}><td {0}>{1}</td><td {0}>{2}</td><td {0}>{3}</td><td {0}>{4}</td><td {0}>{5}</td><td {0}>{6}</td></tr>", tableStyle,
-                    invalidRecord.Identifier, invalidRecord.Store_No, invalidRecord.BusinessUnit_ID, invalidRecord.Sale_Price, invalidRecord.Sale_Start_Date.Value.ToShortDateString(), invalidRecord.Sale_End_Date.Value.ToShortDateString()));
-            }
+        //    messageBody.AppendLine("</table>");
 
-            messageBody.AppendLine("</table>");
+        //    BuildMessageFooter(String.Empty, messageBody);
 
-            BuildMessageFooter(String.Empty, messageBody);
-
-            return messageBody.ToString();
-        }
+        //    return messageBody.ToString();
+        //}
 
         public static string BuildMessageBodyForUnhandledException(string errorMessage, string exceptionText)
         {

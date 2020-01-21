@@ -228,9 +228,9 @@
   <data name="InvalidSaleDatesEmailMessage" xml:space="preserve">
     <value>The following items have a sale start date that occurs after the sale end date and cannot be transmitted to R10:</value>
   </data>
-  <data name="InvalidSaleDatesEmailSubject" xml:space="preserve">
+  <!--<data name="InvalidSaleDatesEmailSubject" xml:space="preserve">
     <value>POS Push Error - Incorrect Sale Start and End Dates</value>
-  </data>
+  </data>-->
   <data name="ItemSubscriptionDeleteFailureEmailMessage" xml:space="preserve">
     <value>Item scubscription could not be marked as deleted for the following items:</value>
   </data>

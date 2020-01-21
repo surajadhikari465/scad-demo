@@ -140,18 +140,18 @@ namespace PushController.Controller.PosDataConverters
         {
             string regionalConnectionString = ConnectionBuilder.GetConnection(invalidSaleDateRecords[0].RegionCode);
             globalContext = new GlobalIrmaContext(contextProvider.GetRegionalContext(regionalConnectionString), regionalConnectionString);
+            // PBI 25931-Icon POS Push Error - Incorrect Sale Start and End Dates email alerts disabled.
+            //try
+            //{
+            //    SendInvalidSaleDateRecordsNotification(invalidSaleDateRecords);
+            //}
+            //catch (Exception ex)
+            //{
+            //    var exceptionHandler = new ExceptionHandler<IrmaPushDataConverter>(this.logger);
 
-            try
-            {
-                SendInvalidSaleDateRecordsNotification(invalidSaleDateRecords);
-            }
-            catch (Exception ex)
-            {
-                var exceptionHandler = new ExceptionHandler<IrmaPushDataConverter>(this.logger);
-
-                string message = "A failure occurred while attempting to send the invalid sale dates alert email.";
-                exceptionHandler.HandleException(message, ex, this.GetType(), MethodBase.GetCurrentMethod());
-            }
+            //    string message = "A failure occurred while attempting to send the invalid sale dates alert email.";
+            //    exceptionHandler.HandleException(message, ex, this.GetType(), MethodBase.GetCurrentMethod());
+            //}
 
             var command = new UpdatePublishTableDatesCommand
             {
@@ -164,37 +164,38 @@ namespace PushController.Controller.PosDataConverters
             updatePublishTableDatesCommandHandler.Execute(command);
         }
 
-        private void SendInvalidSaleDateRecordsNotification(List<IConPOSPushPublish> invalidSaleDateRecords)
-        {
-            string errorSubject = Resource.InvalidSaleDatesEmailSubject;
-            string errorMessage = Resource.InvalidSaleDatesEmailMessage;
-            string emailHost = ConfigurationManager.AppSettings["EmailHost"].ToString();
-            string emailPort = ConfigurationManager.AppSettings["EmailPort"].ToString();
-            string emailSender = ConfigurationManager.AppSettings["Sender"].ToString();
-            string emailBody = EmailHelper.BuildMessageBodyForInvalidSaleDates(errorMessage, invalidSaleDateRecords);
-            string[] emailRecipients = GetEmailRecipientsForInvalidSaleDateRecords();
-            
-            emailClient.Send(emailBody, errorSubject, emailRecipients);
-        }
+        // PBI 25931-Icon POS Push Error - Incorrect Sale Start and End Dates email alerts disabled.
+        //private void SendInvalidSaleDateRecordsNotification(List<IConPOSPushPublish> invalidSaleDateRecords)
+        //{
+        //    string errorSubject = Resource.InvalidSaleDatesEmailSubject;
+        //    string errorMessage = Resource.InvalidSaleDatesEmailMessage;
+        //    string emailHost = ConfigurationManager.AppSettings["EmailHost"].ToString();
+        //    string emailPort = ConfigurationManager.AppSettings["EmailPort"].ToString();
+        //    string emailSender = ConfigurationManager.AppSettings["Sender"].ToString();
+        //    string emailBody = EmailHelper.BuildMessageBodyForInvalidSaleDates(errorMessage, invalidSaleDateRecords);
+        //    string[] emailRecipients = GetEmailRecipientsForInvalidSaleDateRecords();
 
-        private string[] GetEmailRecipientsForInvalidSaleDateRecords()
-        {
-            Dictionary<string, string> appConfigKeysList = new Dictionary<string, string>();
-            var query = new GetAppConfigKeysQuery
-            {
-                Context = globalContext.Context,
-                ApplicationName = "POS PUSH JOB"
-            };
+        //    emailClient.Send(emailBody, errorSubject, emailRecipients);
+        //}
 
-            var appCongfigKeysResult = getAppConfigKeysQueryHandler.Execute(query);
+        //private string[] GetEmailRecipientsForInvalidSaleDateRecords()
+        //{
+        //    Dictionary<string, string> appConfigKeysList = new Dictionary<string, string>();
+        //    var query = new GetAppConfigKeysQuery
+        //    {
+        //        Context = globalContext.Context,
+        //        ApplicationName = "POS PUSH JOB"
+        //    };
 
-            foreach (var element in appCongfigKeysResult)
-            {
-                appConfigKeysList.Add(element.Key, element.Value);
-            }
+        //    var appCongfigKeysResult = getAppConfigKeysQueryHandler.Execute(query);
 
-            return appConfigKeysList.ContainsKey("primaryErrorNotification") ? new string[] { appConfigKeysList["primaryErrorNotification"] } : ConfigurationManager.AppSettings["Recipients"].Split(',');
-        }
+        //    foreach (var element in appCongfigKeysResult)
+        //    {
+        //        appConfigKeysList.Add(element.Key, element.Value);
+        //    }
+
+        //    return appConfigKeysList.ContainsKey("primaryErrorNotification") ? new string[] { appConfigKeysList["primaryErrorNotification"] } : ConfigurationManager.AppSettings["Recipients"].Split(',');
+        //}
 
         private void ProcessFailedConversionRecords(List<IConPOSPushPublish> failedConversionRecords)
         {

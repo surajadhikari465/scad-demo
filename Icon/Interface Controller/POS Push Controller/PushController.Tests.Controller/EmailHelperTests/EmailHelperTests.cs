@@ -26,30 +26,30 @@ namespace PushController.Tests.Controller.EmailHelperTests
 
             emailClient = new EmailClient(emailClientSettings);
         }
+        // PBI 25931-Icon POS Push Error - Incorrect Sale Start and End Dates email alerts disabled.
+        //[TestMethod]
+        //public void BuildMessageBodyForInvalidSaleDates_WithValidParameters_EmailShouldBeSentSuccessfully()
+        //{
+        //    // Given.
+        //    var invalidSaleDateRecords = new List<IConPOSPushPublish>
+        //    {
+        //        new TestIconPosPushPublishBuilder()
+        //            .WithStoreNumber(113).WithIdentifier("11111").WithSaleEndDate(DateTime.Now).WithSaleStartDate(DateTime.Now.AddDays(1)).WithChangeType(Constants.IrmaPushChangeTypes.NonRegularPriceChange).WithSalePrice(1.99m),
+        //        new TestIconPosPushPublishBuilder()
+        //            .WithStoreNumber(113).WithIdentifier("22222").WithSaleEndDate(DateTime.Now).WithSaleStartDate(DateTime.Now.AddDays(1)).WithChangeType(Constants.IrmaPushChangeTypes.NonRegularPriceChange).WithSalePrice(1.99m),
+        //        new TestIconPosPushPublishBuilder()
+        //            .WithStoreNumber(113).WithIdentifier("33333").WithSaleEndDate(DateTime.Now).WithSaleStartDate(DateTime.Now.AddDays(1)).WithChangeType(Constants.IrmaPushChangeTypes.NonRegularPriceChange).WithSalePrice(1.99m),
+        //    };
 
-        [TestMethod]
-        public void BuildMessageBodyForInvalidSaleDates_WithValidParameters_EmailShouldBeSentSuccessfully()
-        {
-            // Given.
-            var invalidSaleDateRecords = new List<IConPOSPushPublish>
-            {
-                new TestIconPosPushPublishBuilder()
-                    .WithStoreNumber(113).WithIdentifier("11111").WithSaleEndDate(DateTime.Now).WithSaleStartDate(DateTime.Now.AddDays(1)).WithChangeType(Constants.IrmaPushChangeTypes.NonRegularPriceChange).WithSalePrice(1.99m),
-                new TestIconPosPushPublishBuilder()
-                    .WithStoreNumber(113).WithIdentifier("22222").WithSaleEndDate(DateTime.Now).WithSaleStartDate(DateTime.Now.AddDays(1)).WithChangeType(Constants.IrmaPushChangeTypes.NonRegularPriceChange).WithSalePrice(1.99m),
-                new TestIconPosPushPublishBuilder()
-                    .WithStoreNumber(113).WithIdentifier("33333").WithSaleEndDate(DateTime.Now).WithSaleStartDate(DateTime.Now.AddDays(1)).WithChangeType(Constants.IrmaPushChangeTypes.NonRegularPriceChange).WithSalePrice(1.99m),
-            };
+        //    string message = EmailHelper.BuildMessageBodyForInvalidSaleDates("The following items have the sale start date after the sale end date:", invalidSaleDateRecords);
+        //    string subject = "POS Push Controller Automated Test - Incorrect Sale Start and End Dates";
 
-            string message = EmailHelper.BuildMessageBodyForInvalidSaleDates("The following items have the sale start date after the sale end date:", invalidSaleDateRecords);
-            string subject = "POS Push Controller Automated Test - Incorrect Sale Start and End Dates";
+        //    // When.
+        //    emailClient.Send(message, subject);
 
-            // When.
-            emailClient.Send(message, subject);
-
-            // Then.
-            // Test will pass as long as the email sends successfully.  You've got mail!
-        }
+        // Then.
+        // Test will pass as long as the email sends successfully.  You've got mail!
+        // }
 
         [TestMethod]
         public void BuildMessageBodyForUnhandledException_WithValidParameters_EmailShouldBeSentSuccessfully()

@@ -88,15 +88,6 @@ namespace PushController.Controller {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to POS Push Error - Incorrect Sale Start and End Dates.
-        /// </summary>
-        internal static string InvalidSaleDatesEmailSubject {
-            get {
-                return ResourceManager.GetString("InvalidSaleDatesEmailSubject", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to IRMAPush entities could not be created for the following items:.
         /// </summary>
         internal static string IrmaPushEntityBuildFailureEmailMessage {
