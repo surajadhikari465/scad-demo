@@ -26,9 +26,17 @@ namespace Vim.Locale.Controller.Services
         {
             logger.Info(String.Format("Processing {0} VIM Locale Events.", data.Count));
 
-            AddOrUpdate(Uris.StoreAddOrUpdateUri, data);
+            MarkInvalid(data.Where(d=> d.StoreModel == null));
+            AddOrUpdate(Uris.StoreAddOrUpdateUri, data.Where(d => d.StoreModel !=null));
         }
 
+        private void MarkInvalid(IEnumerable<LocaleEventModel> invalidData)
+        {
+            foreach (var localeEventModel in invalidData)
+            {
+                localeEventModel.ErrorMessage = "Missing Store Model information";
+            }
+        }
         private void AddOrUpdate(string uri, IEnumerable<LocaleEventModel> localeEvents)
         {
             if (localeEvents.Any())
