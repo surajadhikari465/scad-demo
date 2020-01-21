@@ -44,7 +44,7 @@ const ReceivingListLineItem: React.FC<IProps> = ({ orderItem }) => {
 
     return (
         <Fragment>  
-            <div  style={{backgroundColor: 'lightgrey'}}>
+            <div style={{backgroundColor: 'lightgrey'}}>
                 <Grid style={{marginTop: '0px', paddingRight: '0px', maxWidth: '100%'}} columns={4}>
                     <Grid.Column style={{color: 'blue', fontWeight: 'bold'}} width={2}>UPC:</Grid.Column>
                     <Grid.Column width={4}>{orderItem.Upc}</Grid.Column>
@@ -53,7 +53,7 @@ const ReceivingListLineItem: React.FC<IProps> = ({ orderItem }) => {
                 </Grid>
             </div> 
             <Grid style={{marginTop: '0px', marginRight: '0px'}}>
-                <Grid.Row fluid style={{paddingTop: '0px', paddingBottom: '0px'}} columns={6} color='teal'>
+                <Grid.Row style={{paddingTop: '0px', paddingBottom: '0px'}} columns={6} color='teal'>
                     <Grid.Column textAlign='center' width={2}>Ord</Grid.Column>
                     <Grid.Column textAlign='center' width={3}>Recd</Grid.Column>
                     <Grid.Column textAlign='center' width={2}>eQty</Grid.Column>

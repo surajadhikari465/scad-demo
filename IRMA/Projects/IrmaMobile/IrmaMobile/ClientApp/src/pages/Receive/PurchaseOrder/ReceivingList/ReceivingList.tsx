@@ -88,7 +88,7 @@ const ReceivingList: React.FC<IProps> = ({ match }) => {
     const panes = [
         {
             menuItem: 'Inv. Mismatch',
-            render: () => <Tab.Pane attached='top' style={{padding: '0px', height: '480px', overflow: 'auto'}}>{orderDetails && orderDetails.OrderItems.filter((oi: OrderItem) => (orderDetails.EInvId > 0 && oi.QtyReceived !== oi.eInvoiceQty && (oi.QtyReceived + oi.eInvoiceQty) > 0) || (orderDetails.EInvId === 0 && oi.QtyReceived !== oi.QtyOrdered)).map((oi: OrderItem) => (<ReceivingListLineItem orderItem={oi} />))}</Tab.Pane>
+            render: () => <Tab.Pane attached='top' style={{padding: '0px', height: '480px', overflow: 'auto'}}>{orderDetails && orderDetails.OrderItems.filter((oi: OrderItem) => (orderDetails.EInvId > 0 && oi.QtyReceived !== oi.eInvoiceQty && (oi.QtyReceived + oi.eInvoiceQty) > 0) || (orderDetails.EInvId === 0 && oi.QtyReceived !== oi.QtyOrdered)).map((oi: OrderItem) => (<ReceivingListLineItem key={oi.OrderItemId} orderItem={oi} />))}</Tab.Pane>
         },
         {
             menuItem: 'eInv. Exception',

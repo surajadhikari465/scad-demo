@@ -15,6 +15,7 @@ import orderUtil from "../util/Order";
 import isMinDate from "../util/MinDate";
 import { useHistory } from "react-router-dom";
 import Config from "../../../../config";
+import OrderItem from "../types/OrderItem";
 
 interface RouteParams {
     purchaseOrderNumber: string;
@@ -62,6 +63,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
     const [invoiceTotal, setInvoiceTotal] = useState<number>(0);
     const [nonAllocatedCharges, setNonAllocatedCharges] = useState<number>(0);
     const [invoiceTotalEdited, setInvoiceTotalEdited] = useState<boolean>(false);
+    const [canCloseOrder, setCanCloseOrder] = useState<boolean>(false);
 
     const setMenuItems = useCallback(() => {
         const newMenuItems = [
@@ -78,6 +80,12 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             dispatch({ type: types.SETMENUITEMS, menuItems: [] });
         }
     }, [setMenuItems, dispatch]);
+
+    useEffect(() => {
+        if(orderDetails) {
+            setCanCloseOrder(orderDetails.OrderItems.filter((oi: OrderItem) => oi.QtyReceived > 0).length > 0);
+        }
+    }, [orderDetails, setCanCloseOrder])
 
     const loadValuesAndState = useCallback(() => {
         if(charges) {
@@ -509,7 +517,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
 
                 <div style={{position: 'absolute', bottom: '5px', width: '100%', textAlign: 'center'}}>
                     <ConfirmModal triggerButtonText="Close Order" handleConfirmClose={closeOrder} lineOne={`Invoice Date: ${dateFormat(new Date(), 'mm/dd/yyyy')}`} 
-                                    lineTwo="Close this order?" headerText='Invoice Data' confirmButtonText="OK" cancelButtonText="Cancel"/>
+                                    lineTwo="Close this order?" headerText='Invoice Data' confirmButtonText="OK" cancelButtonText="Cancel" enableButton={canCloseOrder}/>
                 </div>
             </Fragment>
             }

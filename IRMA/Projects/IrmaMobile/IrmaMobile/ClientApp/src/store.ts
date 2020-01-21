@@ -86,7 +86,7 @@ export const initialState = {
     purchaseOrderNumber: "",
     menuItems: [],
     showShrinkHeader: true,
-    Title: ''
+    Title: 'IRMA Mobile'
 } as IIntitialState;
 
 export const types = {
