@@ -181,6 +181,7 @@
     <Folder Include="Scripts\Projects" />
     <Folder Include="Scripts\Projects\GPM" />
     <Folder Include="Scripts\Projects\365Conversion" />
+    <Folder Include="OneTimeScripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LocaleAttributes_SO.sql">
@@ -825,6 +826,7 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\Reset5NutritionValues_23879.sql" />
     <None Include="Scripts\PreDeploymentScripts\23389_Delete_Job_CopyGpmDataForAudit.sql" />
     <None Include="Scripts\PreDeploymentScripts\DeduplicateScanCodes_QA_PROD.sql" />
+    <None Include="OneTimeScripts\DeleteItemsFromMammothNotInIcon.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
