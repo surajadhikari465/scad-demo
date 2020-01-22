@@ -20,3 +20,8 @@ BEGIN
 	INNER JOIN Item i ON i.Item_Key = ii.Item_Key
 	INNER JOIN ValidatedScanCode vsc ON ii.Identifier = vsc.Scancode
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[extract].[ItemAttribute] TO [IConInterface]
+    AS [dbo];
+GO
