@@ -12,11 +12,11 @@ BEGIN
 	IF (object_id('tempdb..#brands') IS NOT NULL)
 		DROP TABLE #brands;
 
-	SET @brandAbbreviationTraitId = (SELECT traitID	FROM Trait WHERE traitDesc = 'Brand Abbreviation');
-	SET @desegnationID = (SELECT traitID FROM Trait	WHERE traitDesc = 'Designation');
-	SET @parentCompanyID = (SELECT traitID FROM Trait WHERE traitDesc = 'Parent Company');
-	SET @zipCodeID = (SELECT traitID FROM Trait	WHERE traitCode = 'ZIP');
-	SET @localityID = (SELECT traitID	FROM Trait WHERE traitDesc = 'Locality');
+	SET @brandAbbreviationTraitId = (SELECT traitID	FROM dbo.Trait WHERE traitDesc = 'Brand Abbreviation');
+	SET @desegnationID = (SELECT traitID FROM dbo.Trait	WHERE traitDesc = 'Designation');
+	SET @parentCompanyID = (SELECT traitID FROM dbo.Trait WHERE traitDesc = 'Parent Company');
+	SET @zipCodeID = (SELECT traitID FROM dbo.Trait	WHERE traitCode = 'ZIP');
+	SET @localityID = (SELECT traitID	FROM dbo.Trait WHERE traitDesc = 'Locality');
 
 	SELECT bhv.hierarchyClassID
 		,hct.traitValue AS BrandAbbreviation
@@ -25,8 +25,8 @@ BEGIN
 		,cast(NULL AS VARCHAR(255)) AS ZipCode
 		,cast(NULL AS VARCHAR(255)) AS Locality
 	INTO #brands
-	FROM BrandHierarchyView bhv
-	LEFT JOIN HierarchyClassTrait hct ON hct.hierarchyClassID = bhv.hierarchyClassID
+	FROM dbo.BrandHierarchyView bhv
+	LEFT JOIN dbo.HierarchyClassTrait hct ON hct.hierarchyClassID = bhv.hierarchyClassID
 		AND hct.traitID = @brandAbbreviationTraitId
 
 	CREATE INDEX ix_id ON #brands (HierarchyClassID);
@@ -34,25 +34,25 @@ BEGIN
 	UPDATE b
 	SET Designation = hct.traitValue
 	FROM #brands b
-	LEFT JOIN HierarchyClassTrait hct ON hct.hierarchyClassID = b.hierarchyClassID
+	LEFT JOIN dbo.HierarchyClassTrait hct ON hct.hierarchyClassID = b.hierarchyClassID
 	WHERE hct.traitID = @desegnationID;
 
 	UPDATE b
 	SET ParentCompany = hct.traitValue
 	FROM #brands b
-	LEFT JOIN HierarchyClassTrait hct ON hct.hierarchyClassID = b.hierarchyClassID
+	LEFT JOIN dbo.HierarchyClassTrait hct ON hct.hierarchyClassID = b.hierarchyClassID
 	WHERE hct.traitID = @parentCompanyID;
 
 	UPDATE b
 	SET ZipCode = hct.traitValue
 	FROM #brands b
-	LEFT JOIN HierarchyClassTrait hct ON hct.hierarchyClassID = b.hierarchyClassID
+	LEFT JOIN dbo.HierarchyClassTrait hct ON hct.hierarchyClassID = b.hierarchyClassID
 	WHERE hct.traitID = @zipCodeID;
 
 	UPDATE b
 	SET Locality = hct.traitValue
 	FROM #brands b
-	LEFT JOIN HierarchyClassTrait hct ON hct.hierarchyClassID = b.hierarchyClassID
+	LEFT JOIN dbo.HierarchyClassTrait hct ON hct.hierarchyClassID = b.hierarchyClassID
 	WHERE hct.traitID = @localityID;
 
 	SELECT bhv.hierarchyClassID AS HierarchyClassID
@@ -65,7 +65,7 @@ BEGIN
 		,hct.Locality
 		,hct.ParentCompany
 		,hct.ZipCode
-	FROM BrandHierarchyView bhv
+	FROM dbo.BrandHierarchyView bhv
 	INNER JOIN #brands hct ON hct.hierarchyClassID = bhv.hierarchyClassID
 	ORDER BY bhv.hierarchyClassName;
 
