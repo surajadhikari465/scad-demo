@@ -31,6 +31,11 @@ namespace Icon.Services.ItemPublisher.Infrastructure
             public const string ProhibitDiscountItems = "Prohibit_Discount_Items";
         }
 
+        public static class TraitCodes
+        {
+            public const string UomTraitCode = "RUM";
+        }
+
         public const string RetailSaleTypeCodeDescription = "Retail Sale";
         public const string RetailSaleTypeCode = "RTL";
         public const string NonRetailSaleTypeCode = "NRT";

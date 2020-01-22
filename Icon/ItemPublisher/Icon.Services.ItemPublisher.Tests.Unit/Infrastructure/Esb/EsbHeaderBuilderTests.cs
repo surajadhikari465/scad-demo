@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 
 namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
@@ -14,12 +15,13 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
         {
             // Given.
             EsbHeaderBuilder builder = new EsbHeaderBuilder();
+            string messageId = Guid.NewGuid().ToString();
 
             // When.
-            Dictionary<string, string> result = builder.BuildMessageHeader(new List<string>() { });
+            Dictionary<string, string> result = builder.BuildMessageHeader(new List<string>() { }, messageId);
 
             // Then.
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(result["IconMessageID"]));
+            Assert.AreEqual(messageId, result["IconMessageID"]);
             Assert.AreEqual("Icon", result["Source"]);
             Assert.AreEqual("Global Item", result["TransactionType"]);
             Assert.AreEqual("", result["nonReceivingSysName"]);
@@ -30,12 +32,13 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
         {
             // Given.
             EsbHeaderBuilder builder = new EsbHeaderBuilder();
+            string messageId = Guid.NewGuid().ToString();
 
             // When.
-            Dictionary<string, string> result = builder.BuildMessageHeader(new List<string>() { "R10" });
+            Dictionary<string, string> result = builder.BuildMessageHeader(new List<string>() { "R10" }, messageId);
 
             // Then.
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(result["IconMessageID"]));
+            Assert.AreEqual(messageId, result["IconMessageID"]);
             Assert.AreEqual("Icon", result["Source"]);
             Assert.AreEqual("Global Item", result["TransactionType"]);
             Assert.AreEqual("R10", result["nonReceivingSysName"]);

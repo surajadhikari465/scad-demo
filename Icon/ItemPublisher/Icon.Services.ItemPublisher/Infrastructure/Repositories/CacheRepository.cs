@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Icon.Services.ItemPublisher.Infrastructure.Repositories.Entities;
 using Icon.Services.ItemPublisher.Repositories.Entities;
 using System.Collections.Generic;
 using System.Linq;
@@ -140,6 +141,15 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Repositories
                 WHERE HierarchyName=@HierarchyName",
                 new { HierarchyName = name },
                 this.DbProviderFactory.Provider.Transaction);
+        }
+
+        public async Task<Dictionary<string, string>> GetUoms()
+        {
+            string sql = "SELECT uomID, uomCode, uomName FROM dbo.UOM";
+            var uoms = await this.DbProviderFactory.Provider.Connection
+                .QueryAsync<Uom>(sql, transaction: this.DbProviderFactory.Provider.Transaction);
+            Dictionary<string, string> uomLookup = uoms.ToDictionary(u => u.UomCode, k => k.UomName);
+            return uomLookup;
         }
     }
 }

@@ -15,5 +15,6 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Repositories
         Task<Attributes> GetSingleAttribute(string attributeName);
 
         Task<HierarchyCacheItem> GetSingleHierarchy(string name);
+        Task<Dictionary<string, string>> GetUoms();
     }
 }

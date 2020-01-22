@@ -41,7 +41,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
                     this.producer = this.esbConnectionFactory.CreateProducer();
                 }
 
-                headers = this.esbHeaderBuilder.BuildMessageHeader(nonReceivingSystems);
+                headers = this.esbHeaderBuilder.BuildMessageHeader(nonReceivingSystems, messageId.ToString());
                 producer.Send(request, headers);
                 return new EsbSendResult(true, string.Empty, request, headers, messageId);
             }

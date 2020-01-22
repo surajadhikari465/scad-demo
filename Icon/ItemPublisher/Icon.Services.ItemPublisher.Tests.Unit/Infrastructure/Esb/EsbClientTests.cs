@@ -44,7 +44,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<IEsbProducer> producerMock = new Mock<IEsbProducer>();
             producerMock.Setup(x => x.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new Exception("Any ESB Exception"));
             esbConnectionFactoryMock.Setup(x => x.CreateProducer(It.IsAny<bool>())).Returns(producerMock.Object);
-            headerBuilderMock.Setup(x => x.BuildMessageHeader(It.IsAny<List<string>>())).Returns(new Dictionary<string, string>() { });
+            headerBuilderMock.Setup(x => x.BuildMessageHeader(It.IsAny<List<string>>(), It.IsAny<string>())).Returns(new Dictionary<string, string>() { });
             EsbClient client = new EsbClient(esbConnectionFactoryMock.Object, headerBuilderMock.Object);
 
             // When.

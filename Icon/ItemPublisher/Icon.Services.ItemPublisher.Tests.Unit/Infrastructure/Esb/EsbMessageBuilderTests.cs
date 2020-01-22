@@ -30,7 +30,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             serviceCacheMock.Setup(x => x.AttributeFromCache(It.IsAny<string>())).Returns(Task.FromResult<Attributes>(
              new Attributes()
@@ -78,7 +79,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             hierarchyValuesParserMock.Setup(x => x.ParseHierarchyClassIdForContract(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns("999999998");
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
             serviceCacheMock.Setup(x => x.AttributeFromCache(It.IsAny<string>())).Returns(Task.FromResult<Attributes>(
               new Attributes()
               {
@@ -132,7 +134,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             serviceCacheMock.Setup(x => x.AttributeFromCache(It.IsAny<string>())).Returns(Task.FromResult<Attributes>(null));
 
@@ -165,7 +168,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             serviceCacheMock.Setup(x => x.AttributeFromCache(It.IsAny<string>())).Returns(Task.FromResult<Attributes>(
             new Attributes()
@@ -205,7 +209,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
 
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             serviceCacheMock.Setup(x => x.AttributeFromCache(It.IsAny<string>())).Returns(Task.FromResult<Attributes>(
                 new Attributes()
@@ -295,7 +300,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             hierarchyValuesParserMock.Setup(x => x.ParseHierarchyClassIdForContract(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(expectedHierarchyClassId.ToString());
             hierarchyValuesParserMock.Setup(x => x.ParseHierarchyNameForContract(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(expectedHierarchyClassName);
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             this.testDataFactory.Hierarchy = new List<Hierarchy>
             {
@@ -372,7 +378,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             hierarchyValuesParserMock.Setup(x => x.ParseHierarchyNameForContract(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(expectedHierarchyClassName);
             hierarchyValuesParserMock.Setup(x => x.ParseHierarchyClassIdForContract(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(expectedHierarchyClassId.ToString());
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             this.testDataFactory.Hierarchy = new List<Hierarchy>
             {
@@ -451,7 +458,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             hierarchyValuesParserMock.Setup(x => x.ParseHierarchyClassIdForContract(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(expectedHierarchyClassId.ToString());
             hierarchyValuesParserMock.Setup(x => x.ParseHierarchyNameForContract(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(expectedHierarchyClassName);
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
             this.testDataFactory.Hierarchy = new List<Hierarchy>
             {
                 new Hierarchy()
@@ -528,7 +536,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             hierarchyValuesParserMock.Setup(x => x.ParseHierarchyClassIdForContract(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(expectedHierarchyClassId.ToString());
             hierarchyValuesParserMock.Setup(x => x.ParseHierarchyNameForContract(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(expectedHierarchyClassName);
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
             this.testDataFactory.Hierarchy = new List<Hierarchy>
             {
                 new Hierarchy()
@@ -587,7 +596,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             hierarchyValuesParserMock.Setup(x => x.ParseHierarchyClassIdForContract(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(expectedHierarchyClassId.ToString());
             hierarchyValuesParserMock.Setup(x => x.ParseHierarchyNameForContract(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(expectedHierarchyClassName);
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             this.testDataFactory.Hierarchy = new List<Hierarchy>
             {
@@ -659,7 +669,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             var productSelectionGroups = new ConcurrentDictionary<int, ProductSelectionGroup>();
             productSelectionGroups[1] = new ProductSelectionGroup()
@@ -716,7 +727,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             var productSelectionGroups = new ConcurrentDictionary<int, ProductSelectionGroup>();
             productSelectionGroups[1] = new ProductSelectionGroup()
@@ -783,7 +795,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             string expectedFoodStampPsgName = ItemPublisherConstants.ProductSelectionGroups.FoodStamp;
             string expectedProhibitDiscountPsgName = "Prohibit_Discount_Name";
@@ -854,7 +867,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             string expectedFoodStampPsgName = ItemPublisherConstants.ProductSelectionGroups.FoodStamp;
             string expectedProhibitDiscountPsgName = "Prohibit_Discount_Name";
@@ -924,7 +938,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             string expectedFoodStampPsgName = ItemPublisherConstants.ProductSelectionGroups.FoodStamp;
             string expectedProhibitDiscountPsgName = "Prohibit_Discount_Name";
@@ -994,7 +1009,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             string expectedFoodStampPsgName = ItemPublisherConstants.ProductSelectionGroups.FoodStamp;
             string expectedProhibitDiscountPsgName = "Prohibit_Discount_Name";
@@ -1064,7 +1080,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             string expectedFoodStampPsgName = ItemPublisherConstants.ProductSelectionGroups.FoodStamp;
             string expectedProhibitDiscountPsgName = "Prohibit_Discount_Name";
@@ -1163,7 +1180,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             string expectedFoodStampPsgName = ItemPublisherConstants.ProductSelectionGroups.FoodStamp;
             string expectedProhibitDiscountPsgName = "Prohibit_Discount_Name";
@@ -1261,7 +1279,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             string expectedMerchPsg = "Unit_Test_MerchId_PSG";
             int? expectedHierarchyClassId = 345234;
@@ -1344,7 +1363,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             string expectedMerchPsg = "Unit_Test_MerchId_PSG";
             int? expectedHierarchyClassId = 345234;
@@ -1427,7 +1447,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             var productSelectionGroup = new ProductSelectionGroup()
             {
@@ -1470,7 +1491,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             var productSelectionGroup = new ProductSelectionGroup()
             {
@@ -1510,7 +1532,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             var productSelectionGroup = new ProductSelectionGroup()
             {
@@ -1544,7 +1567,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             Action<string> processLogger = (message) =>
             {
@@ -1633,7 +1657,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             Action<string> processLogger = (message) =>
             {
@@ -1666,7 +1691,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             Nutrition nutrition = new Nutrition()
             {
@@ -1689,7 +1715,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             // When.
             bool result = builder.IsNutritionRemoved(null);
@@ -1707,7 +1734,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             Nutrition nutrition = new Nutrition()
             {
@@ -1730,7 +1758,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             Action<string> processLogger = (message) =>
             {
@@ -1757,8 +1786,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
             valueFormatterMock.Setup(x => x.FormatValueForMessage(It.IsAny<Attributes>(), It.IsAny<string>())).Returns("B");
-
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, new TraitMessageBuilder(), hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, new TraitMessageBuilder(), hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             serviceCacheMock.Setup(x => x.AttributeFromCache(It.IsAny<string>())).Returns(Task.FromResult<Attributes>(
                new Attributes()
@@ -1805,7 +1834,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<IEsbServiceCache> serviceCacheMock = new Mock<IEsbServiceCache>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, new TraitMessageBuilder(), hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, new TraitMessageBuilder(), hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             serviceCacheMock.Setup(x => x.AttributeFromCache(It.IsAny<string>())).Returns(Task.FromResult<Attributes>(
                new Attributes()
@@ -2100,7 +2130,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
             valueFormatterMock.Setup(x => x.FormatValueForMessage(It.IsAny<Attributes>(), It.IsAny<string>())).Returns("B");
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, new TraitMessageBuilder(), hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, new TraitMessageBuilder(), hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             serviceCacheMock.Setup(x => x.AttributeFromCache(It.IsAny<string>())).Returns(Task.FromResult<Attributes>(
                new Attributes()
@@ -2143,9 +2174,10 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<IEsbServiceCache> serviceCacheMock = new Mock<IEsbServiceCache>();
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            valueFormatterMock.Setup(x => x.FormatValueForMessage(It.IsAny<Attributes>(), It.IsAny<string>())).Returns("true");
 
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, new TraitMessageBuilder(), hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            valueFormatterMock.Setup(x => x.FormatValueForMessage(It.IsAny<Attributes>(), It.IsAny<string>())).Returns("true");
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, new TraitMessageBuilder(), hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             serviceCacheMock.Setup(x => x.AttributeFromCache(It.IsAny<string>())).Returns(Task.FromResult<Attributes>(
                     new Attributes()
@@ -2196,8 +2228,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
             Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
             valueFormatterMock.Setup(x => x.FormatValueForMessage(It.IsAny<Attributes>(), It.IsAny<string>())).Returns(string.Empty);
-
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, new TraitMessageBuilder(), hierarchyValuesParserMock.Object, valueFormatterMock.Object, new ServiceSettings());
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, new TraitMessageBuilder(), hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
             serviceCacheMock.Setup(x => x.AttributeFromCache(It.IsAny<string>())).Returns(Task.FromResult<Attributes>(
                     new Attributes()
@@ -2237,6 +2269,61 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             // Then.
             Assert.AreEqual(0, result.Count);
             valueFormatterMock.Verify(x => x.FormatValueForMessage(It.IsAny<Attributes>(), It.IsAny<string>()), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task BuildTraitFromAttribute_TraitCodeIsRUM_UomCodeAndNameBuilt()
+        {
+            // Given.
+            string expectedValue = "OZ";
+            string expectedUomCode = "OZ";
+            string expectedUomName = "OUNCES";
+
+            Mock<ILogger<EsbMessageBuilder>> loggerMock = new Mock<ILogger<EsbMessageBuilder>>();
+            Mock<IEsbServiceCache> serviceCacheMock = new Mock<IEsbServiceCache>();
+            Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
+            Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
+            valueFormatterMock.Setup(x => x.FormatValueForMessage(It.IsAny<Attributes>(), It.IsAny<string>())).Returns(expectedValue);
+            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
+            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, new TraitMessageBuilder(), hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
+
+            serviceCacheMock.Setup(x => x.AttributeFromCache(It.IsAny<string>())).Returns(Task.FromResult<Attributes>(
+               new Attributes()
+               {
+                   AttributeId = 1,
+                   AttributeName = "UOM",
+                   AttributeDisplayName = "UOM",
+                   Description = "Description",
+                   TraitCode = "RUM",
+                   XmlTraitDescription = "Retail UOM"
+               }));
+
+            serviceCacheMock.Setup(x => x.HierarchyFromCache(It.IsAny<string>())).Returns(Task.FromResult<HierarchyCacheItem>(
+                 new HierarchyCacheItem()
+                 {
+                     HierarchyId = 1,
+                     HierarchyName = "test"
+                 }));
+
+            uomMapperMock.Setup(u => u.GetEsbUomCode(It.Is<string>(s => s.Equals(expectedUomCode)))).Returns(WfmUomCodeEnumType.OZ);
+
+            Action<string> processLogger = (message) =>
+            {
+            };
+
+            var nutrition = new Nutrition()
+            {
+            };
+            // When.
+            List<TraitType> result = await builder.BuildTraits(new Dictionary<string, string>() { { "UOM", "OZ" } }, nutrition, processLogger);
+
+            // Then.
+            Assert.AreEqual(expectedValue, result.First().type.value.First().value);
+            Assert.AreEqual("Retail UOM", result.First().type.description);
+            Assert.IsNotNull(result.First().type.value.FirstOrDefault()?.uom.code);
+            Assert.IsNotNull(result.First().type.value.FirstOrDefault()?.uom.codeSpecified);
+            Assert.IsNotNull(result.First().type.value.FirstOrDefault()?.uom.name);
+            Assert.IsNotNull(result.First().type.value.FirstOrDefault()?.uom.nameSpecified);
         }
     }
 }

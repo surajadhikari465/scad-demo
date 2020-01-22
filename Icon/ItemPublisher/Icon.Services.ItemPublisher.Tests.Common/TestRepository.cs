@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Icon.Services.ItemPublisher.Infrastructure.Repositories.Entities;
 using Icon.Services.ItemPublisher.Repositories.Entities;
 using Newtonsoft.Json;
 using System;
@@ -647,6 +648,21 @@ namespace Icon.Services.Newitem.Test.Common
                     dataTypeName = dataTypeName
                 },
                 connectionHelper.ProviderFactory.Transaction);
+        }
+
+        public async Task InsertUom(string uomCode, string uomName)
+        {
+            string sql = @"INSERT INTO dbo.UOM (uomID, uomCode, uomName) VALUES (@uomID, @uomCode, @uomName)";
+            await this.connectionHelper.ProviderFactory.Provider.Connection
+                .ExecuteAsync(
+                    sql,
+                    new
+                    {
+                        uomID = 1000,
+                        uomCode = uomCode,
+                        uomName = uomName
+                    },
+                    transaction: this.connectionHelper.ProviderFactory.Transaction);
         }
     }
 }

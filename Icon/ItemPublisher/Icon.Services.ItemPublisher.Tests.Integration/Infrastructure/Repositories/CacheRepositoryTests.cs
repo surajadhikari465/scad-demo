@@ -140,5 +140,23 @@ namespace Icon.Services.ItemPublisher.Repositories.Tests
             // Then.
             Assert.IsTrue(response.Count > 0);
         }
+
+        [TestMethod]
+        public async Task GetUoms_UomsExists_RecordsReturned()
+        {
+            // Given
+            string expectedKey = "TU";
+            string expectedValue = "Test Uom";
+            TestRepository testRepository = new TestRepository(this.connHelper);
+            await testRepository.InsertUom(expectedKey, expectedValue);
+            CacheRepository repository = new CacheRepository(connHelper.ProviderFactory);
+
+            // When
+            Dictionary<string, string> uoms = await repository.GetUoms();
+
+            // Then
+            Assert.IsTrue(uoms.ContainsKey(expectedKey));
+            Assert.AreEqual(expectedValue, uoms[expectedKey]);
+        }
     }
 }

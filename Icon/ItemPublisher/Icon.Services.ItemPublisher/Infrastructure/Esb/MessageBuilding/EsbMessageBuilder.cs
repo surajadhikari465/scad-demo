@@ -1,6 +1,7 @@
 ﻿using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Logging;
 using Icon.Services.ItemPublisher.Infrastructure.Models;
+using Icon.Services.ItemPublisher.Infrastructure.Models.Mappers;
 using Icon.Services.ItemPublisher.Repositories.Entities;
 using Icon.Services.ItemPublisher.Services;
 using System;
@@ -22,6 +23,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
         private readonly ITraitMessageBuilder traitMessageBuilder;
         private readonly IHierarchyValueParser hierarchyNameParser;
         private readonly IValueFormatter valueFormatter;
+        private readonly IUomMapper uomMapper;
         private readonly ServiceSettings serviceSettings;
         private const string DELETED = "Deleted";
 
@@ -30,6 +32,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
             ITraitMessageBuilder traitMessageBuilder,
             IHierarchyValueParser hierarchyValuesParser,
             IValueFormatter valueFormatter,
+            IUomMapper uomMapper,
             Services.ServiceSettings serviceSettings)
         {
             this.logger = logger;
@@ -37,6 +40,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
             this.traitMessageBuilder = traitMessageBuilder;
             this.hierarchyNameParser = hierarchyValuesParser;
             this.valueFormatter = valueFormatter;
+            this.uomMapper = uomMapper;
             this.serviceSettings = serviceSettings;
         }
 
@@ -442,9 +446,22 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
                             {
                                 value = formattedAttributeValue
                             }
-                       }
+                        }
                     }
                 };
+
+                // UOM is the only trait that requires the uom type otherwise R10 will not receive the message
+                if (cacheItem.TraitCode == ItemPublisherConstants.TraitCodes.UomTraitCode)
+                {
+                    var uomType = new Contracts.UomType
+                    {
+                        code = this.uomMapper.GetEsbUomCode(formattedAttributeValue),
+                        codeSpecified = true,
+                        name = this.uomMapper.GetEsbUomDescription(formattedAttributeValue),
+                        nameSpecified = true
+                    };
+                    traitType.type.value.FirstOrDefault().uom = uomType;
+                }
 
                 response.Add(traitType);
             }

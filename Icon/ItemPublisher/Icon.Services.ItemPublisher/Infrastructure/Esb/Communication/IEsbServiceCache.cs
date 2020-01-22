@@ -12,6 +12,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
 
         ConcurrentDictionary<int, ProductSelectionGroup> ProductSelectionGroupCache { get; }
 
+        ConcurrentDictionary<string,string> UomCache { get; }
+
         bool CacheLoaded { get; }
     }
 }

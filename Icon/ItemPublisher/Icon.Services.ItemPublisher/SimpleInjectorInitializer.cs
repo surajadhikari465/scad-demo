@@ -42,6 +42,7 @@ namespace Icon.Services.ItemPublisher.Application
             container.Register<IItemProcessor, ItemProcessor>();
             container.Register<IHierarchyValueParser, HierarchyValueParser>();
             container.Register<IValueFormatter, ValueFormatter>();
+            container.Register<IUomMapper, UomMapper>();
 
             container.Register<ServiceSettings>(() =>
             {

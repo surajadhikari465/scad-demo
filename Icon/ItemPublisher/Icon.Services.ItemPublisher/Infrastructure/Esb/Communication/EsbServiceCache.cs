@@ -18,6 +18,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
         private ConcurrentDictionary<string, Attributes> attributesCache = new ConcurrentDictionary<string, Attributes>();
         private ConcurrentDictionary<string, HierarchyCacheItem> hierarchyCache = new ConcurrentDictionary<string, HierarchyCacheItem>();
         public ConcurrentDictionary<int, ProductSelectionGroup> ProductSelectionGroupCache { get; private set; } = new ConcurrentDictionary<int, ProductSelectionGroup>();
+        public ConcurrentDictionary<string, string> UomCache { get; private set; } = new ConcurrentDictionary<string, string>();
         private readonly System.Timers.Timer timer;
 
         public bool CacheLoaded { get; private set; } = false;
@@ -47,6 +48,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
             Task loadAttributes = this.LoadAttributes();
             Task loadHierarchies = this.LoadHierarchies();
             Task loadProductSelectionGroups = this.LoadProductSelectionGroups();
+            Task loadUom = this.LoadUomCache();
             await Task.WhenAll(new[] { loadAttributes, loadHierarchies, loadProductSelectionGroups });
             this.CacheLoaded = true;
         }
@@ -66,6 +68,11 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
         private async Task LoadProductSelectionGroups()
         {
             this.ProductSelectionGroupCache = new ConcurrentDictionary<int, ProductSelectionGroup>(await this.cacheRepository.GetProductSelectionGroups());
+        }
+
+        private async Task LoadUomCache()
+        {
+            this.UomCache = new ConcurrentDictionary<string, string>(await this.cacheRepository.GetUoms());
         }
 
         public async Task<Attributes> AttributeFromCache(string attributeName)

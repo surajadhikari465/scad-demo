@@ -15,11 +15,11 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
         /// </summary>
         /// <param name="nonReceivingSystemsProduct"></param>
         /// <returns></returns>
-        public Dictionary<string, string> BuildMessageHeader(List<string> nonReceivingSystemsProduct)
+        public Dictionary<string, string> BuildMessageHeader(List<string> nonReceivingSystemsProduct, string messageId)
         {
             var messageProperties = new Dictionary<string, string>
             {
-               { "IconMessageID", Guid.NewGuid().ToString()},
+               { "IconMessageID", messageId},
                { "Source", "Icon" },
                { "TransactionType", "Global Item" }
             };
