@@ -1,0 +1,51 @@
+.update-shrink-page{
+    display:flex;
+    flex-flow: row wrap;
+   
+    padding-top: 30px;
+    h3{
+        font-weight:800;
+        width:100%;
+        margin: 0 40px;
+    }
+    label{
+        font-weight: 600;
+        margin-right: 10px;
+    }
+    section{
+        margin: 30px 40px;
+        width: 100%;
+        line-height:2.5;
+    }
+    select{
+        width: 60%;
+        height: 24px;
+    }
+    .quantity-info{
+        input{
+            margin-left: 10px;
+            height: 30px;
+            width: 50px;
+        }
+    }
+    .update-buttons{
+        width: 100%;
+        margin:0 auto;
+        text-align: center;
+        display: flex;
+        justify-content: space-evenly;
+        button{
+            width: 150px;
+        }
+        a{
+            color:white;
+        }
+    }
+    .initial-quantity{
+        color:red;
+    }
+    .subtype-info{
+        line-height: 3;
+        font-size: 16px;
+    }
+}

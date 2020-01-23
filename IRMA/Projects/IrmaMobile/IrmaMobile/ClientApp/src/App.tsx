@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useReducer } from 'react';
 import StoreFunctions from './pages/StoreFunctions';
 import RegionSelect from './pages/RegionSelect';
 import StoreSelect from './pages/StoreSelect';
@@ -13,7 +13,7 @@ import {
 import { faCog } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { AppContext, reducer, initialState, usePersistedReducer } from "./store";
+import { AppContext, reducer, initialState } from "./store";
 import Receive from './pages/Receive/Index';
 import ReceiveDocument from './pages/Receive/Document/ReceiveDocument';
 import ReceivePurchaseOrder from './pages/Receive/PurchaseOrder/PurchaseOrder/ReceivePurchaseOrder';
@@ -27,7 +27,7 @@ import ReceivePurchaseOrderDetailsClearScreen from './pages/Receive/PurchaseOrde
 
 
 const App: React.FC = () => { 
-  const [state, dispatch] = usePersistedReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
   const { menuItems, Title } = state;
 
   return (

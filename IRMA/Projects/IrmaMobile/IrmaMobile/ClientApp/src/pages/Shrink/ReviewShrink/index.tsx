@@ -43,41 +43,44 @@ const ReviewShrink:React.FC = () => {
     const upload = async()=> {
       if(shrinkItems.length === 0){
         setAlert({open:true, alertMessage: 'There are no Shrink Items to Upload'});
-      }
-      setIsLoading(true);
-      let succeededItems = 0;
-      for(let i=0; i<shrinkItems.length;i++){
-        let weight = shrinkItems[i].costedByWeight ? shrinkItems[i].quantity: 0;
-        let quantity = shrinkItems[i].costedByWeight ? 0: shrinkItems[i].quantity;
-        try {
-          var result = await agent.Shrink.shrinkItemSubmit(
-            state.region, 
-            shrinkItems[i].itemKey, 
-            state.storeNumber, 
-            state.subteamNo, 
-            state.shrinkType.shrinkSubTypeId,
-            state.shrinkType.inventoryAdjustmentCodeId,
-            state.shrinkType.shrinkType,
-            1,
-            '',
-            state.shrinkType.abbreviation,
-            quantity,
-            weight
-            );
-          if(!result || result === undefined){
-            toast.error(`Shrink Item ${shrinkItems[i].identifier} Failed to Upload`);
-          } else {
-            succeededItems+=1;
+      }else{
+        setIsLoading(true);
+        let succeededItems = 0;
+        console.log(shrinkItems);
+        for(let i=0; i<shrinkItems.length;i++){
+          let weight = shrinkItems[i].costedByWeight ? shrinkItems[i].quantity: 0;
+          let quantity = shrinkItems[i].costedByWeight ? 0: shrinkItems[i].quantity;
+          try {
+            var result = await agent.Shrink.shrinkItemSubmit(
+              state.region, 
+              shrinkItems[i].itemKey, 
+              state.storeNumber, 
+              state.subteamNo, 
+              state.shrinkType.shrinkSubTypeId,
+              state.shrinkType.inventoryAdjustmentCodeId,
+              state.shrinkType.shrinkType,
+              1,
+              '',
+              state.shrinkType.abbreviation,
+              quantity,
+              weight
+              );
+            if(!result || result === undefined){
+              toast.error(`Shrink Item ${shrinkItems[i].identifier} Failed to Upload`);
+            } else {
+              succeededItems+=1;
+            }
+          }
+          finally {
+            setIsLoading(false);
+            localStorage.removeItem("shrinkItems");
+            localStorage.removeItem('sessionSubType');
+            history.push('/shrink')
           }
         }
-        finally {
-          setIsLoading(false);
-          localStorage.removeItem("shrinkItems");
-          history.push('/shrink')
+        if(succeededItems === shrinkItems.length){
+          toast.success("Shrink Items Uploaded");
         }
-      }
-      if(succeededItems === shrinkItems.length){
-        toast.success("Shrink Items Uploaded");
       }
     }
     const close = () => {
@@ -110,7 +113,8 @@ const ReviewShrink:React.FC = () => {
         setAlert({open:!alert.open, alertMessage: alert.alertMessage});
     }
     const select = (rowInfo:any) =>{
-        setSelected(rowInfo.original.identifier)
+        setSelected(rowInfo.original.identifier);
+        dispatch({ type: types.SETSELECTEDSHRINKITEM, selectedShrinkItem: rowInfo.original });
     }
     const data = shrinkItems;
     const columns = React.useMemo(

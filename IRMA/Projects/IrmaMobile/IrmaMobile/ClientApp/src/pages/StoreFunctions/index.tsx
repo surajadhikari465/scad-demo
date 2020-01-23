@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import './styles.scss';
 import { Modal } from 'semantic-ui-react';
 import BasicModal from '../../layout/BasicModal';
@@ -16,56 +16,60 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
     const [alert, setAlert] = useState<any>({open:false, alertMessage:'', type: 'default', header: 'IRMA Mobile', confirmAction:()=> {}});
     const {subteams} = state;
     const {history} = props;
-    
-    useEffect(() => {
-      let shrinkItems = [];
 
-      const deleteSession = () =>{
-          localStorage.removeItem('shrinkItems');
-          dispatch({ type: types.SETSHRINKITEMS, shrinkItems: [] }); 
-          setAlert({...alert, 
-            open:false
-          });
-      }
+    const deleteSession = () =>{
+      localStorage.removeItem('shrinkItems');
+      localStorage.removeItem('sessionSubType');
+      dispatch({ type: types.SETSHRINKITEMS, shrinkItems: [] }); 
+      dispatch({ type: types.SETSHRINKTYPE, shrinkType: {} }); 
+      setAlert({...alert, 
+        open:false
+      });
+      history.push('/shrink');
+    }
 
-      const close = (remove=true) =>{
+    const deleteWarning = () =>{
         setAlert({...alert, 
-          open:false
+          open:true, 
+          alertMessage: 'Are you sure you want to delete you saved Session?', 
+          type: 'confirm', 
+          header:'Delete Session?',
+          confirmAction: deleteSession
         });
-        if(remove) {
-          setAlert({...alert, 
-            open:true, 
-            alertMessage: 'Are you sure you want to delete you saved Session?', 
-            type: 'confirm', 
-            header:'Delete Session?',
-            confirmAction: deleteSession
-          });
-          
-        } 
-      } 
+    }
 
-      if(localStorage.getItem('shrinkItems')){
-        // @ts-ignore
-        shrinkItems = JSON.parse(localStorage.getItem('shrinkItems'));
-      }
-      if(shrinkItems.length > 0){
+    const confirm = () =>{
+      setAlert({...alert, 
+        open:false
+      });
+      history.push('/shrink');
+    }
+    
+    const checkLocalStorage = () =>{
         setAlert({...alert, 
           open:true, 
           alertMessage: 'Would you like to reload your previous Session? Clicking No will delete the old session.', 
           type: 'confirm', 
           header:'Previous Session Exists',
-          cancelAction: close.bind(undefined, true),
-          confirmAction: close.bind(undefined, false)
+          cancelAction: deleteWarning,
+          confirmAction: confirm
           });
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch]);
+    }
 
     const handleClick = (e:any) =>{
       if(!isSelected){
         setAlertOpen(true);
       }
-      else history.push(`/${e.target.value}`);
+      else {
+        let shrinkItems = [];
+        if(localStorage.getItem('shrinkItems')){
+          // @ts-ignore
+          shrinkItems = JSON.parse(localStorage.getItem('shrinkItems'));
+        }
+        if(shrinkItems.length > 0 && e.target.value === 'shrink'){
+          checkLocalStorage();
+        } else history.push(`/${e.target.value}`);
+      }
     }
     const toggleAlert = (e:any) =>{
         setAlertOpen(!alertIsOpen);

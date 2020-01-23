@@ -3,9 +3,6 @@ import { OrderDetails } from "./pages/Receive/PurchaseOrder/types/OrderDetails";
 import { ReasonCode } from "./pages/Receive/PurchaseOrder/types/ReasonCode";
 import { ListedOrder } from "./pages/Receive/PurchaseOrder/types/ListedOrder";
 import { DropdownItemProps } from "semantic-ui-react";
-import createPersistedReducer from 'use-persisted-reducer';
-
-export const usePersistedReducer = createPersistedReducer('state');
 
 interface IIntitialState {
   region: string;
@@ -17,6 +14,7 @@ interface IIntitialState {
   subteamNo: string;
   shrinkType: IShrinkType;
   shrinkTypes: any[],
+  selectedShrinkItem: ISelectedShrink,
   shrinkItems: any[],
   isLoading: boolean;
   orderDetails: OrderDetails | null;
@@ -43,6 +41,17 @@ export interface IMenuItem {
 export interface ITeam {
   subteamNo: string;
   subteamName: string;
+}
+
+export interface ISelectedShrink {
+  identifier:any; 
+  quantity:number; 
+  signDescription:string;
+  packageDesc1:string;
+  packageDesc2:string;
+  packageUnitAbbreviation: string;
+  shrinkType: string;
+  costedByWeight: boolean;
 }
 
 export interface IShrinkType{
@@ -74,6 +83,7 @@ export const initialState = {
     subteam: {subteamName:'', subteamNo:''},
     subteamNo:'',
     shrinkType: {shrinkType:'', abbreviation:'', shrinkSubTypeMember: '', shrinkSubTypeId:null, inventoryAdjustmentCodeId: null, reasonCode: null},
+    selectedShrinkItem: {identifier:'', quantity:0, signDescription:'', packageDesc1:'', packageDesc2:'', packageUnitAbbreviation:'', shrinkType:'', costedByWeight:false},
     shrinkTypes: [],
     shrinkItems: [],
     isLoading: false,
@@ -100,6 +110,7 @@ export const types = {
     SETSHRINKTYPE: "SETSHRINKTYPE",
     SETSHRINKTYPES: "SETSHRINKTYPES",
     SETSHRINKITEMS: "SETSHRINKITEMS",
+    SETSELECTEDSHRINKITEM: "SETSELECTEDSHRINKITEM",
     SETISLOADING: "SETISLOADING",
     SETORDERDETAILS: "SETORDERDETAILS",
     SETMAPPEDREASONCODES: "SETMAPPEDREASONCODES",
@@ -146,6 +157,9 @@ export const reducer = (state: any, action: any) => {
         }
         case types.SETSHRINKITEMS: {
           return { ...state, shrinkItems: action.shrinkItems };
+        }
+        case types.SETSELECTEDSHRINKITEM: {
+          return { ...state, selectedShrinkItem: action.selectedShrinkItem };
         }
         case types.SETISLOADING: {
             return { ...state, isLoading: action.isLoading };

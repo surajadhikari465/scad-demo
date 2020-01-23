@@ -22,7 +22,8 @@ const initialState = {
   shrinkType:'',
   packageDesc1:'',
   packageDesc2:'',
-  dupItem:[]
+  dupItem:[],
+  costedByWeight: false
 };
 
 const Shrink:React.FC = () => {
@@ -40,25 +41,45 @@ const Shrink:React.FC = () => {
 
     useEffect(() => {
       BarcodeScanner.registerHandler(function(data:any){
-        try{
-          setUpc(parseInt(data, 10));
-        }catch(ex){
-          setAlert({...alert, 
-            open:true, 
-            alertMessage: ex.message, 
-            type: 'default', 
-            header:'Scan'});
+        if(shrinkState.isSelected===true){
+          try{
+            setUpc(parseInt(data, 10));
+          }catch(ex){
+            setAlert({...alert, 
+              open:true, 
+              alertMessage: ex.message, 
+              type: 'default', 
+              header:'Scan'});
+          }
         }
       });
       dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems});
+      // @ts-ignore
+      let localShrinkItems = [];
+      if(localStorage.getItem("shrinkItems") !== null){
+        // @ts-ignore
+       localShrinkItems = JSON.parse(localStorage.getItem("shrinkItems"));
+      }  
+      if(localStorage.getItem("sessionSubType") !== null){
+        // @ts-ignore
+        let subteam = JSON.parse(localStorage.getItem("sessionSubType"));
+        dispatch({ type: types.SETSUBTEAM,subteam: subteam});
+      }  
+      if( localShrinkItems.length > 0){
+        shrinkState.isSelected = true;
+      } 
+
       if(shrinkState.isSelected){
         dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: true }); 
       }
       return () => {
         //unmount and unregister handler
+        shrinkState.isSelected = false;
+        dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shrinkState, dispatch]);
+
     const setUpc = (value?:any) =>{  
       let upc = value && typeof value !== 'object' ? value: shrinkState.upcValue;
       setIsLoading(true);
@@ -129,7 +150,11 @@ const Shrink:React.FC = () => {
         confirmAction: confirmAllItems, 
         cancelAction: cancel.bind(undefined, false, false)});
     }
-    
+    const checkQty = (e:any) =>{
+      if(shrinkState.costedByWeight && (e.charCode < 48 || e.charCode > 57)){
+          e.preventDefault();
+      }
+    }
     const setQty = (e:any) =>{
       setShrinkState({...shrinkState, quantity: e.target.value });
     }
@@ -208,6 +233,7 @@ const Shrink:React.FC = () => {
     const saveItems = (shrinkItems: []) => {
       dispatch({ type: types.SETSHRINKITEMS, shrinkItems: shrinkItems }); 
       localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems));
+      localStorage.setItem("sessionSubType", JSON.stringify(state.subteam));
       if(!shrinkState.skipConfirm){
         setAlert({...alert, 
           open:true, 
@@ -217,6 +243,7 @@ const Shrink:React.FC = () => {
       }
       clear();
     }
+    console.log(shrinkState);
     if(isLoading) {
       return ( <LoadingComponent content="Loading Item..."/> )
     }
@@ -260,7 +287,14 @@ const Shrink:React.FC = () => {
               <section className='entry-section'>
                 <div className='input-line'>
                   <label>Qty:</label>
-                  <input className='qty-input' type='number' min="0" step="1" onChange={setQty} value={shrinkState.quantity} ref={qtyInput}></input>
+                  <input className='qty-input' 
+                        type='number' 
+                        min="0" 
+                        step={shrinkState.costedByWeight ? 1:'any'}
+                        onKeyPress={checkQty} 
+                        onChange={setQty}
+                        value={shrinkState.quantity} 
+                        ref={qtyInput}></input>
                   {
                     shrinkState.packageUnitAbbreviation && 
                     <label className='qty-type'>Retail: {shrinkState.retailUnitName}</label>
