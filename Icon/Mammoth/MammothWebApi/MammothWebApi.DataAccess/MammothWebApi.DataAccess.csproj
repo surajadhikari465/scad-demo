@@ -158,7 +158,6 @@
     <Compile Include="Models\DataMonster\SearchItemModel.cs" />
     <Compile Include="Models\Financial_SubTeam.cs" />
     <Compile Include="Models\ItemNutritionAttributes.cs" />
-    <Compile Include="Models\PrimePsgItemDataModel.cs" />
     <Compile Include="Models\ItemLocale_Supplier.cs" />
     <Compile Include="Models\StagingItemLocaleSupplierDeleteModel.cs" />
     <Compile Include="Models\StagingItemLocaleSupplierModel.cs" />
@@ -214,8 +213,6 @@
     <Compile Include="Queries\GetItemsQuery.cs" />
     <Compile Include="Queries\GetItemsBySearchCriteriaQueryHandler.cs" />
     <Compile Include="Queries\GetItemsQueryHandler.cs" />
-    <Compile Include="Queries\GetPrimePsgItemDataByScanCodeQuery.cs" />
-    <Compile Include="Queries\GetPrimePsgItemDataByScanCodeQueryHandler.cs" />
     <Compile Include="Queries\GetLocalesByBusinessUnitsQuery.cs" />
     <Compile Include="Queries\GetLocalesByBusinessUnitsQueryHandler.cs" />
     <Compile Include="Queries\GetPricesByScanCodeAndStoreQueryHandler.cs" />

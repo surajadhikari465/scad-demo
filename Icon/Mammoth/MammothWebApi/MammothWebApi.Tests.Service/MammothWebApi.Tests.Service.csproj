@@ -104,9 +104,6 @@
     <Reference Include="Mammoth.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.Logging.2018.3.13.2\lib\net46\Mammoth.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Mammoth.PrimeAffinity.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.PrimeAffinity.Library.2019.7.8.1\lib\net46\Mammoth.PrimeAffinity.Library.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -161,8 +158,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Decorators\PrimeAffinityPsgDeletePriceServiceDecoratorTests.cs" />
-    <Compile Include="Decorators\PrimeAffinityPsgAddPriceServiceDecoratorTests.cs" />
     <Compile Include="Decorators\RetryCommandHandlerDecoratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

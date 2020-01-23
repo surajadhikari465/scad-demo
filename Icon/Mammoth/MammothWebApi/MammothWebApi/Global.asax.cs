@@ -1,5 +1,4 @@
-﻿using Esb.Core.MessageBuilders;
-using Esb.Core.Serializer;
+﻿using Esb.Core.Serializer;
 using Icon.Esb;
 using Icon.Esb.Factory;
 using Icon.Esb.Schemas.Wfm.Contracts;
@@ -7,11 +6,6 @@ using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.DataAccess.DbProviders;
 using Mammoth.Common.Email;
 using Mammoth.Logging;
-using Mammoth.PrimeAffinity.Library.Commands;
-using Mammoth.PrimeAffinity.Library.Esb;
-using Mammoth.PrimeAffinity.Library.MessageBuilders;
-using Mammoth.PrimeAffinity.Library.Processors;
-using MammothWebApi.BackgroundJobs;
 using MammothWebApi.Common;
 using MammothWebApi.DataAccess.Commands;
 using MammothWebApi.DataAccess.Models;
@@ -20,8 +14,6 @@ using MammothWebApi.DataAccess.Settings;
 using MammothWebApi.Email;
 using MammothWebApi.Service.Decorators;
 using MammothWebApi.Service.Services;
-using Quartz;
-using Quartz.Impl;
 using SimpleInjector;
 using SimpleInjector.Integration.WebApi;
 using SimpleInjector.Lifestyles;
@@ -49,9 +41,6 @@ namespace MammothWebApi
             container.RegisterSingleton<IServiceSettings>(() => ServiceSettings.CreateFromConfig());
             container.RegisterSingleton<IEmailClient>(() => EmailClient.CreateFromConfig());
             container.Register<IDbProvider, SqlDbProvider>(Lifestyle.Scoped);
-            container.Register<IPrimeAffinityPsgSettings, PrimeAffinityPsgSettings>(Lifestyle.Scoped);
-            container.Register(() => PrimeAffinityPsgProcessorSettings.Load());
-            container.Register(() => PrimeAffinityMessageBuilderSettings.Load());
 
             // Services
             container.Register(typeof(IUpdateService<>), new[] { typeof(IUpdateService<>).Assembly }, Lifestyle.Scoped);
@@ -62,24 +51,12 @@ namespace MammothWebApi
 
             // Data Access
             var dataAccessAssembly = Assembly.Load("MammothWebApi.DataAccess");
-            var primeAffinityLibraryAssembly = Assembly.GetAssembly(typeof(ArchivePrimeAffinityMessageCommandHandler));
-            container.Register(typeof(ICommandHandler<>), new[] { dataAccessAssembly, primeAffinityLibraryAssembly }, Lifestyle.Scoped);
             container.Register(typeof(IQueryHandler<,>), new[] { dataAccessAssembly }, Lifestyle.Scoped);
             container.RegisterDecorator<ICommandHandler<CancelAllSalesCommand>, RetryCommandHandlerDecorator<CancelAllSalesCommand>>(Lifestyle.Scoped);
             container.Register(() => DataAccessSettings.Load(), Lifestyle.Scoped);
-
-            //PrimeAffinity
-            container.Register<IMessageBuilder<PrimeAffinityMessageBuilderParameters>, PrimeAffinityMessageBuilder>();
-            container.Register<IPrimeAffinityPsgProcessor<PrimeAffinityPsgProcessorParameters>, PrimeAffinityPsgProcessor>();
-            container.Register<IEsbConnectionFactory>(() => new EsbConnectionFactory { Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("R10") });
-            container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString), Lifestyle.Scoped);
-            container.Register<ISerializer<items>, Serializer<items>>();
-            container.Register<IEsbConnectionCacheFactory, EsbConnectionCacheFactory>();
+            container.Register(typeof(ICommandHandler<>), new[] { dataAccessAssembly }, Lifestyle.Scoped);
 
             // Decorators  
-            container.RegisterDecorator(typeof(IUpdateService<AddUpdatePrice>), typeof(PrimeAffinityPsgAddPriceServiceDecorator));
-            container.RegisterDecorator(typeof(IUpdateService<DeletePrice>), typeof(PrimeAffinityPsgDeletePriceServiceDecorator));
-            container.RegisterDecorator(typeof(IUpdateService<CancelAllSales>), typeof(PrimeAffinityPsgCancelAllSalesPriceServiceDecorator));
             container.RegisterDecorator(typeof(IUpdateService<>), typeof(DbConnectionServiceDecorator<>));
             container.RegisterDecorator<IQueryHandler<GetItemNutritionAttributesByItemIdQuery, IEnumerable<ItemNutritionAttributes>>, DbConnectionQueryHandlerDecorator<GetItemNutritionAttributesByItemIdQuery, IEnumerable<ItemNutritionAttributes>>>();
             container.RegisterDecorator<IQueryHandler<GetAllBusinessUnitsQuery, List<int>>, DbConnectionQueryHandlerDecorator<GetAllBusinessUnitsQuery, List<int>>>();
@@ -93,34 +70,16 @@ namespace MammothWebApi
             container.RegisterDecorator<IQueryHandler<GetItemsBySearchCriteriaQuery, IEnumerable<ItemDetail>>,
                DbConnectionQueryHandlerDecorator<GetItemsBySearchCriteriaQuery, IEnumerable<ItemDetail>>>(Lifestyle.Scoped);
 
-            container.Register<ReconnectToEsbJob>();
-
             container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
             container.Verify();
 
             GlobalConfiguration.Configuration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
-            EsbConnectionCache.EsbConnectionSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("R10");
-            EsbConnectionCache.InitializeConnectionFactoryAndConnection();
-            ScheduleEsbReconnectJob(container);
+
+       
         }
 
-        private void ScheduleEsbReconnectJob(Container container)
-        {
-            IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler().Result;
-            scheduler.JobFactory = new JobFactory(container);
-            scheduler.Start();
-
-            IJobDetail job = JobBuilder.Create<ReconnectToEsbJob>().Build();
-
-            ITrigger trigger = TriggerBuilder.Create()
-                .WithSimpleSchedule(
-                    s => s.WithIntervalInSeconds(3)
-                        .RepeatForever())
-                .Build();
-
-            scheduler.ScheduleJob(job, trigger);
-        }
+       
     }
 }

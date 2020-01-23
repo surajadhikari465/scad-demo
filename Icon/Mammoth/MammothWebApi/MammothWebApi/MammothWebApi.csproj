@@ -104,9 +104,6 @@
     <Reference Include="Mammoth.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.Logging.2018.3.13.2\lib\net46\Mammoth.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Mammoth.PrimeAffinity.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.PrimeAffinity.Library.2019.7.8.1\lib\net46\Mammoth.PrimeAffinity.Library.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MoreLinq, Version=3.0.0.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
       <HintPath>..\packages\morelinq.3.0.0\lib\net451\MoreLinq.dll</HintPath>
@@ -215,7 +212,6 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BackgroundJobs\JobFactory.cs" />
-    <Compile Include="BackgroundJobs\ReconnectToEsbJob.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\ItemLocaleController.cs" />
     <Compile Include="Controllers\ItemNutritionController.cs" />
