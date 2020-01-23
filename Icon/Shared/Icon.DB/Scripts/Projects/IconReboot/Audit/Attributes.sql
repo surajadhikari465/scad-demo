@@ -1,18 +1,20 @@
 ﻿SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
+SET NOCOUNT ON;
+
 --Create temp tables for picklists and character sets
 IF OBJECT_ID('tempdb..#pickLists') IS NOT NULL DROP TABLE #pickLists
 CREATE TABLE #pickLists
 (
 	AttributeId INT,
-	PickListValues NVARCHAR(4000)
+	PickListValues NVARCHAR(max)
 )
 
 IF OBJECT_ID('tempdb..#characterSets') IS NOT NULL DROP TABLE #characterSets
 CREATE TABLE #characterSets
 (
 	AttributeId INT,
-	CharacterSets NVARCHAR(4000)
+	CharacterSets NVARCHAR(max)
 )
 
 INSERT INTO #pickLists(AttributeId, PickListValues)
@@ -43,7 +45,11 @@ FETCH NEXT FROM pick_list_cursor INTO @AttributeId, @PickListValue
 WHILE @@FETCH_STATUS = 0
 BEGIN
 	UPDATE #pickLists
-	SET PickListValues = PickListValues + ', ' + '''' + REPLACE(@PickListValue, '''', '\''') + ''''
+	SET PickListValues = 
+		CASE 
+			WHEN @PickListValue LIKE '%''%' THEN PickListValues + ', ' + '"' + @PickListValue + '"'
+			ELSE PickListValues + ', ''' + @PickListValue + ''''
+		END
 	WHERE AttributeId = @AttributeId
 
 	FETCH NEXT FROM pick_list_cursor INTO @AttributeId, @PickListValue

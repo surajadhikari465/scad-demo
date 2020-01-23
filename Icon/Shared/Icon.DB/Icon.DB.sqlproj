@@ -794,6 +794,14 @@
     <None Include="Scripts\PopulateData\24776_AddHierarchyContactTrait.sql" />
     <None Include="Scripts\Jobs\Icon . Data History Purge.sql" />
     <None Include="Scripts\Jobs\Icon . Map BusinessUnit to Region.sql" />
+    <None Include="Scripts\Projects\IconReboot\Audit\Tax.sql" />
+    <None Include="Scripts\Projects\IconReboot\Audit\Item.sql" />
+    <None Include="Scripts\Projects\IconReboot\Audit\Manufacturer.sql" />
+    <None Include="Scripts\Projects\IconReboot\Audit\Merchandise.sql" />
+    <None Include="Scripts\Projects\IconReboot\Audit\MerchDefaults.sql" />
+    <None Include="Scripts\Projects\IconReboot\Audit\National.sql" />
+    <None Include="Scripts\Projects\IconReboot\Audit\Financial.sql" />
+    <None Include="Scripts\Projects\IconReboot\Audit\Brands.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

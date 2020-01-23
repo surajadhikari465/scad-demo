@@ -212,7 +212,6 @@ BULK INSERT dbo.temp_InforItemsFile
 FROM '\\ODWD6801\Temp\IconConversion\im_item.csv' -- needs to be added with file path and filename. Currently C:\TEMP\IconConversion\infor_im_prod_item_20190520.csv
 	WITH (FIRSTROW = 2
 		,CODEPAGE = '65001'
-		,ROWTERMINATOR = '0x0A'
 		,FORMAT = 'CSV');
 
 TRUNCATE TABLE dbo.ItemHistory
