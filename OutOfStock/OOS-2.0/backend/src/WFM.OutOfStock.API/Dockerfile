@@ -17,4 +17,9 @@ RUN dotnet publish "WFM.OutOfStock.API.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "WFM.OutOfStock.API.dll"]
+#Setting the ARG at build time to the environment we are building this image for. Defaults to Development
+ARG ENV=Development
+#Setting the ENV2 variable to the ARG ENV concatenated with the "--environment" flag to pass to dotnet so when we call docker run
+#it will run the website with the appropriate environment. For example, by default this will result in "--environment=Development"
+ENV ENV2=--environment=$ENV
+ENTRYPOINT dotnet WFM.OutOfStock.API.dll $ENV2

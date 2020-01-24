@@ -64,6 +64,15 @@
                 }
               ]
             },
+            //Adding this specifically because the Docker image fails to build when passing "production" as the environment argument. This is a workaround for the moment.
+            "prod": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
             "qa": {
               "fileReplacements": [
                 {
@@ -85,6 +94,14 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.test.ts"
+                }
+              ]
+            },
+            "perf": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.perf.ts"
                 }
               ]
             }

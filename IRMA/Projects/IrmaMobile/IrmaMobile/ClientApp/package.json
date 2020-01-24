@@ -33,12 +33,20 @@
     "use-persisted-reducer": "^2.1.0"
   },
   "scripts": {
-    "start:development": "env-cmd -f .env.development react-scripts start",
     "start:localtesting": "env-cmd -f .env.localtesting react-scripts start",
+    "start:development": "env-cmd -f .env.development react-scripts start",
+    "start:test": "env-cmd -f .env.test react-scripts start",
+    "start:qa": "env-cmd -f .env.qa react-scripts start",
+    "start:perf": "env-cmd -f .env.perf react-scripts start",
+    "start:production": "env-cmd -f .env.production react-scripts start",
     "start": "env-cmd -f .env react-scripts start",
     "build": "react-scripts build",
     "build:localtesting": "env-cmd -f .env.localtesting react-scripts build",
     "build:development": "env-cmd -f .env.development react-scripts build",
+    "build:test": "env-cmd -f .env.test react-scripts build",
+    "build:qa": "env-cmd -f .env.qa react-scripts build",
+    "build:perf": "env-cmd -f .env.perf react-scripts build",
+    "build:production": "env-cmd -f .env.production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
