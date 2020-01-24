@@ -30,5 +30,6 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\24848_AddAppIdForExtractService.sql -- 2019-12-15 24848
 :r .\Scripts\PopulateData\PopulateContactType_24426.sql --2019-12-20
 :r .\Scripts\PopulateData\24776_AddHierarchyContactTrait.sql --2020-01-09
+:r .\Scripts\PopulateData\UpdateDeprecatedSubTeams.sql --2020-01-24 30580
 -- Always run this security script and make it the last entry in this script.
 :r .\Security\Icon.Security.sql
