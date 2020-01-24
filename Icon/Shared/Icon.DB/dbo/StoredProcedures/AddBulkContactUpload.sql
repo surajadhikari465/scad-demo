@@ -2,6 +2,7 @@
 	@fileName NVARCHAR(150)
 	,@fileContent VARBINARY(Max)
 	,@uploadedBy NVARCHAR(100)
+	,@totalRecords INT
 	)
 AS
 BEGIN
@@ -12,10 +13,14 @@ BEGIN
 	INSERT INTO dbo.BulkContactUpload (
 		FileName
 		,UploadedBy
+		,TotalRows
+		,StatusId
 		)
 	VALUES (
 		@fileName
 		,@uploadedBy
+		,@totalRecords
+		,(SELECT ID FROM dbo.BulkUploadStatus WHERE Status = 'Complete')
 		)
 
 	SET @maxUploadId = (

@@ -486,6 +486,8 @@
     <Compile Include="Queries\GetBulkContactUploadStatusQuery.cs" />
     <Compile Include="Queries\GetBulkItemUploadByIdParameters.cs" />
     <Compile Include="Queries\GetBulkItemUploadByIdQueryHandler.cs" />
+    <Compile Include="Queries\GetContactEligibleHCQuery.cs" />
+    <Compile Include="Queries\GetContactEligibleHCParameters.cs" />
     <Compile Include="Queries\GetContactsParameters.cs" />
     <Compile Include="Queries\GetContactsQuery.cs" />
     <Compile Include="Queries\GetContactTypesParameters.cs" />

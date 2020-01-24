@@ -56,8 +56,8 @@
 
     </fieldset>
 
-    <input type="button" value="Upload Spreadsheet" id="uploadButton" class="btn btn-light form-submit" />
-
+    @*<input type="button" value="Upload Spreadsheet" id="uploadButton" class="btn btn-light form-submit" />*@
+    <input type="button" value="Upload Spreadsheet" id="uploadButton" class="btn btn-light" onclick="uploadFile()" />
 }
 
 <div>
@@ -85,6 +85,20 @@
     </div>
     <table id="bulkUploadStatusGrid" />
 </div>
+
+
+<div id="dlgConfirm" title="User Confirmation Required" style="display:none;">
+    <div style="max-height:500px; box-sizing:border-box;">
+        <p id="dlgInfo">File: <span id="fileName"></span></p>
+        <p id="dlgMsg" />
+        <ul id="ulList"></ul>
+        <hr />
+        <div id="finePrint" class="fine-print text-info">
+            <span>File will be processed after validation is completed.</span>
+        </div>
+    </div>
+</div>
+
 
 @if (ViewData["BulkUploadType"].ToString() == "Item")
 {

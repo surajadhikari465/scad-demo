@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
+using Icon.Web.DataAccess.Models;
 
 namespace Icon.Web.Controllers
 {
@@ -21,16 +22,19 @@ namespace Icon.Web.Controllers
         private IQueryHandler<GetHierarchyParameters, List<Hierarchy>> hierarchyQuery;
         private IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> hierarchyClassQuery;
         private IManagerHandler<DeleteHierarchyClassManager> deleteClassManagerHandler;
+        private IQueryHandler<GetContactsParameters, List<ContactModel>> getContactsQuery;
 
         public SupportController(ILogger logger,
             IQueryHandler<GetHierarchyParameters, List<Hierarchy>> hierarchyQuery,
             IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> hierarchyClassQuery,
-            IManagerHandler<DeleteHierarchyClassManager> deleteHierarchyClass)
+            IManagerHandler<DeleteHierarchyClassManager> deleteHierarchyClass,
+            IQueryHandler<GetContactsParameters, List<ContactModel>> getContactsQuery)
         {
             this.logger = logger;
             this.hierarchyQuery = hierarchyQuery;
             this.hierarchyClassQuery = hierarchyClassQuery;
             this.deleteClassManagerHandler = deleteHierarchyClass;
+            this.getContactsQuery = getContactsQuery;
         }
 
         //
@@ -142,6 +146,16 @@ namespace Icon.Web.Controllers
                     deletedHierarchyClass.hierarchyClassName + ")";
                 TempData["ErrorMessage"] = hierarchyWithSubclassesMsg;
                 logger.Warn(hierarchyWithSubclassesMsg);
+                return View(viewModel);
+            }
+
+            // Make sure there's no contacts.
+            if((viewModel.HierarchyId == Hierarchies.Brands || viewModel.HierarchyId == Hierarchies.Manufacturer)
+                    && getContactsQuery.Search(new GetContactsParameters() { HierarchyClassId = deletedHierarchyClass.hierarchyClassID }).Any())
+            {
+                var msg = "Error: This hierarchy class has contacts, so it cannot be deleted till all contacts are removed first.";
+                TempData["ErrorMessage"] = msg;
+                logger.Warn(msg);
                 return View(viewModel);
             }
 

@@ -18,8 +18,10 @@ using Icon.Web.Mvc.Models;
 using Infragistics.Web.Mvc;
 using Icon.Web.Mvc.Utility;
 using System.IO;
+using System.Data;
 using Icon.Web.DataAccess.Commands;
 using Infragistics.Documents.Excel;
+using Newtonsoft.Json;
 
 namespace Icon.Web.Mvc.Controllers
 {
@@ -31,6 +33,7 @@ namespace Icon.Web.Mvc.Controllers
         private IQueryHandler<GetContactsParameters, List<ContactModel>> getContactsQuery;
         private IQueryHandler<GetHierarchyClassByIdParameters, HierarchyClass> getHierarchyClassQuery;
         private IQueryHandler<GetContactTypesParameters, List<ContactTypeModel>> getContactTypesQuery;
+        private IQueryHandler<GetContactEligibleHCParameters, HashSet<int>> getContactEligibleHCQuery;
         private ICommandHandler<AddUpdateContactCommand> handlerAddUpdateContact;
         private ICommandHandler<AddUpdateContactTypeCommand> handlerAddUpdateContactType;
         private ICommandHandler<DeleteContactCommand> handlerDeleteContact;
@@ -40,6 +43,22 @@ namespace Icon.Web.Mvc.Controllers
         private IQueryHandler<GetBulkContactUploadStatusParameters, List<BulkContactUploadStatusModel>> getBulkUploadStatusQueryHandler;
         private IQueryHandler<GetBulkContactUploadByIdParameters, BulkItemUploadStatusModel> getBulkUploadByIdQueryHandler;
         private ICommandHandler<BulkContactUploadCommand> bulkUploadCommandHandler;
+        private Regex emailRegex = new Regex(@"^([\w-]+\.)*?[\w-]+@[\w-]+\.([\w-]+\.)*?[\w]+$", RegexOptions.Compiled);
+
+        const string sngl_space = " ";
+        Regex rgxSpace = new Regex(@"\s+", RegexOptions.Compiled);
+        Regex rgxNRT = new Regex(@"[\n\r\t]", RegexOptions.Compiled); //New Line & Tab
+        public enum UploadStatus { None, InProcess, ValidationFailed, Validated, LoadFailed, Loaded, OK}
+
+        class UploadInfo
+        {
+            public enum StatusCode { None, InProcess, ValidationFailed, Validated, LoadFailed, Loaded, OK}
+            
+            public StatusCode Code { get; set; }
+            public int TotatlRecords { get; set; }
+            public string ErrorMessage { get; set; }
+            public Dictionary<string, int> ValidationCounts { get; set; }
+        }
 
         public ContactController(
             ILogger logger,
@@ -50,6 +69,7 @@ namespace Icon.Web.Mvc.Controllers
             ICommandHandler<AddUpdateContactTypeCommand> handlerAddUpdateContactType,
             ICommandHandler<DeleteContactCommand> handlerDeleteContact,
             ICommandHandler<DeleteContactTypeCommand> handlerDeleteContactType,
+            IQueryHandler<GetContactEligibleHCParameters, HashSet<int>> getContactEligibleHCQuery,
             IconWebAppSettings settings,
             IDonutCacheManager cacheManager,
             IExcelExporterService excelExporterService,
@@ -73,6 +93,7 @@ namespace Icon.Web.Mvc.Controllers
             this.getBulkUploadErrorsQueryHandler = getBulkUploadErrorsQueryHandler;
             this.getBulkUploadByIdQueryHandler = getBulkUploadByIdQueryHandler;
             this.bulkUploadCommandHandler = bulkUploadCommandHandler;
+            this.getContactEligibleHCQuery = getContactEligibleHCQuery;
         }
 
         // GET: Contact
@@ -166,11 +187,10 @@ namespace Icon.Web.Mvc.Controllers
             if (isOK)
             {
                 var regEx = new Regex(@"\s+", RegexOptions.Compiled);
-                var emailRegex = new Regex(@"^([\w-]+\.)*?[\w-]+@[\w-]+\.([\w-]+\.)*?[\w]+$", RegexOptions.Compiled);
                 viewModel.ContactName = viewModel.ContactName == null ? String.Empty : regEx.Replace(viewModel.ContactName.Trim().Replace('\t', '\0'), " ");
                 viewModel.Email = viewModel.Email == null ? String.Empty : viewModel.Email.Replace(" ", String.Empty);
 
-                if (viewModel.ContactTypeId <= 0 || String.IsNullOrEmpty(viewModel.ContactName) || String.IsNullOrEmpty(viewModel.Email) || !emailRegex.IsMatch(viewModel.Email))
+                if (viewModel.ContactTypeId <= 0 || String.IsNullOrEmpty(viewModel.ContactName) || String.IsNullOrEmpty(viewModel.Email) || !this.emailRegex.IsMatch(viewModel.Email))
                 {
                     isOK = false;
                     ViewData["ErrorMessage"] = "Contact Type, Name and valid Email are required.";
@@ -278,23 +298,29 @@ namespace Icon.Web.Mvc.Controllers
         [WriteAccessAuthorize]
         public ActionResult UploadFiles()
         {
-            // Checking no of files injected in Request object  
-            if (Request.Files.Count > 0)
+            if(Request.Files == null || Request.Files.Count == 0)
             {
-                var uploadedFileName = string.Empty;
+                Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+                Response.StatusDescription = "No file(s) selected";
+                return Json(JsonConvert.SerializeObject(new { message = Response.StatusDescription }), JsonRequestBehavior.AllowGet); 
+            }
+            else
+            {
                 var uploadedFileType = Request.Form["fileType"];
+                var uploadedFileName = string.Empty;
+
                 try
                 {
                     //  Get all files from Request object  
                     HttpFileCollectionBase files = Request.Files;
-                    for (int i = 0; i < files.Count; i++)
+                    for(int i = 0; i < files.Count; i++)
                     {
                         var uploadedFile = files[i];
 
                         if (uploadedFile == null)
                         {
-                            var result = new BulkUploadResultModel { Result = "Error", Message = "No file selected" };
-                            return Json(result);
+                            Response.StatusDescription = "No file selected";
+                            return Json(JsonConvert.SerializeObject(new { message = Response.StatusDescription }), JsonRequestBehavior.AllowGet);
                         }
 
                         // Checking for Internet Explorer  
@@ -310,45 +336,179 @@ namespace Icon.Web.Mvc.Controllers
 
                         var binaryReader = new BinaryReader(uploadedFile.InputStream);
                         var uploadedData = binaryReader.ReadBytes(uploadedFile.ContentLength);
+                        var info = ProcessFile(uploadedFile.InputStream);
 
-                        try
-                        {
-                            bulkUploadCommandHandler.Execute(new BulkContactUploadCommand()
-                            {
-                                BulkContactUploadModel = new BulkContactUploadModel
-                                {
-                                    FileName = uploadedFileName,
-                                    FileContent = uploadedData,
-                                    UploadedBy = User.Identity.Name
-                                }
-                            });
-
-                            var successMessage = $"File name: {uploadedFileName} uploaded successfully.";
-                            var result = new BulkUploadResultModel { Result = "Success", Message = successMessage };
-                            return Json(result);
+                        if(info.Code != UploadInfo.StatusCode.Loaded)
+                        { 
+                            Response.StatusCode = (int)System.Net.HttpStatusCode.ExpectationFailed;
+                            Response.StatusDescription = info.Code == UploadInfo.StatusCode.ValidationFailed 
+                                ? "File validaition failed. See validaition error(s) with failed records count below."
+                                : $"File process failed. {info.ErrorMessage}";
+                            var obj = JsonConvert.SerializeObject( new { message = Response.StatusDescription, validation = info.ValidationCounts.Select(x => new {key = x.Key, value = x.Value}).ToArray() });
+                            return Json(obj, JsonRequestBehavior.AllowGet);
                         }
-                        catch (Exception ex)
-                        {
-                            var result = new BulkUploadResultModel { Result = "Error", Message = $"Error occurred. Error details: {ex.Message}" };
-                            return Json(result);
+                        else
+                        { 
+                            try
+                            {
+                                Response.StatusCode = (int)System.Net.HttpStatusCode.OK;
+
+                                bulkUploadCommandHandler.Execute(new BulkContactUploadCommand()
+                                {
+                                    BulkContactUploadModel = new BulkContactUploadModel
+                                    {
+                                        FileName = uploadedFileName,
+                                        FileContent = uploadedData,
+                                        UploadedBy = User.Identity.Name,
+                                        TotalRecords = info.TotatlRecords
+                                    }
+                                });
+
+                                Response.StatusDescription ="File processed successfully.";
+                            }
+                            catch (Exception ex)
+                            {
+                                Response.StatusDescription = $"File processed successfully but failed to store uploaded file: {rgxSpace.Replace(rgxNRT.Replace(ex.Message, sngl_space), sngl_space).Trim()}";
+                            }
+
+                            return Json(Response.StatusDescription, JsonRequestBehavior.AllowGet);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    var result = new BulkUploadResultModel { Result = "Error", Message = $"Error occurred. Error details: {ex.Message}" };
-                    return Json(result);
+                    Response.StatusCode = (int)System.Net.HttpStatusCode.ExpectationFailed;
+                    Response.StatusDescription = ex.Message;
+                    return Json(JsonConvert.SerializeObject(new { message = Response.StatusDescription }), JsonRequestBehavior.AllowGet);
                 }
-            }
-            else
-            {
-                var result = new BulkUploadResultModel { Result = "Error", Message = "No files selected" };
-
-                return Json(result);
             }
 
             return null;
         }
+
+        private UploadInfo ProcessFile(Stream inputStream)
+        {
+            var Info = new UploadInfo() { Code = UploadInfo.StatusCode.InProcess };
+
+            var flds = new Icon.Web.Mvc.Excel.Field[]
+                {
+                    new Icon.Web.Mvc.Excel.Field("ContactId", typeof(int), 0, true),
+                    new Icon.Web.Mvc.Excel.Field("HierarchyClassName", typeof(string), null, true),
+                    new Icon.Web.Mvc.Excel.Field("Email", typeof(string), null, true, emailRegex, true),
+                    new Icon.Web.Mvc.Excel.Field("ContactName", typeof(string), null, false),
+                    new Icon.Web.Mvc.Excel.Field("ContactType", typeof(string), null, false),
+                    new Icon.Web.Mvc.Excel.Field("Title", typeof(string), null, false),
+                    new Icon.Web.Mvc.Excel.Field("AddressLine1", typeof(string), null, false),
+                    new Icon.Web.Mvc.Excel.Field("AddressLine2", typeof(string), null, false),
+                    new Icon.Web.Mvc.Excel.Field("City", typeof(string), null, false),
+                    new Icon.Web.Mvc.Excel.Field("State", typeof(string), null, false),
+                    new Icon.Web.Mvc.Excel.Field("ZipCode", typeof(string), null, false),
+                    new Icon.Web.Mvc.Excel.Field("Country", typeof(string), null, false),
+                    new Icon.Web.Mvc.Excel.Field("PhoneNumber1", typeof(string), null, false),
+                    new Icon.Web.Mvc.Excel.Field("PhoneNumber2", typeof(string), null, false),
+                    new Icon.Web.Mvc.Excel.Field("WebsiteURL", typeof(string), null, false, null, true),
+                };
+
+            try
+            {
+                int id;
+                var contactList = new List<ContactModel>();
+                
+                var contactTypes = GetContactTypes().ToDictionary(x => x.ContactTypeName, x => x.ContactTypeId);
+                var eligableIds = this.getContactEligibleHCQuery.Search(new GetContactEligibleHCParameters()).ToHashSet();
+
+                int GetHCID(Icon.Web.Mvc.Excel.ExcelReader rdr)
+                {
+                    try 
+	                {	        
+                        int hcId;
+                        const char pipe = '|';
+                        
+                        return rdr["HierarchyClassName"] == null
+                            ? 0
+                            : int.TryParse(rdr["HierarchyClassName"].ToString().Split(pipe).Last().Trim(), out hcId) && eligableIds.Contains(hcId)
+                                ? hcId
+                                : 0; 
+	                }
+	                catch
+                    {
+                        return 0;
+	                }
+                }
+
+                using(var rdr = new Icon.Web.Mvc.Excel.ExcelReader(inputStream, "Contact", flds))
+                {
+                    if(rdr.IsEmpty) throw new Exception("Contact worksheet is empty.");
+
+                    while(rdr.Read())
+                    {
+                        contactList.Add(new ContactModel()
+                        {
+                            AddressLine1 = rdr["AddressLine1"]?.ToString(),
+                            AddressLine2 = rdr["AddressLine2"]?.ToString(),
+                            City = rdr["City"]?.ToString(),
+                            ContactId = (int)rdr["ContactId"],
+                            ContactTypeId = rdr["ContactType"] == null ? 0 : contactTypes.TryGetValue(rdr["ContactType"].ToString(), out id) ? id : 0,
+                            Country = rdr["Country"]?.ToString(),
+                            ContactName = rdr["ContactName"]?.ToString(),
+                            Email = rdr["Email"]?.ToString(),
+                            HierarchyClassId = GetHCID(rdr),
+                            PhoneNumber1 = rdr["PhoneNumber1"]?.ToString(),
+                            PhoneNumber2 = rdr["PhoneNumber2"]?.ToString(),
+                            State = rdr["State"]?.ToString(),
+                            Title = rdr["Title"]?.ToString(),
+                            WebsiteURL = rdr["WebsiteURL"]?.ToString(),
+                            ZipCode = rdr["ZipCode"]?.ToString()
+                        });
+                    }
+
+                    Info.TotatlRecords = rdr.RecordsAffected;
+                }
+                
+                Info.ValidationCounts = new List<KeyValuePair<string, int>>()
+                {
+                    new KeyValuePair<string, int>("Address Line 1 exceeding max length of 255", contactList.Where(x => x.AddressLine1 != null && x.AddressLine1.Length > 255).Count()),
+                    new KeyValuePair<string, int>("Address Line 2 exceeding max length of 255", contactList.Where(x => x.AddressLine2 != null && x.AddressLine2.Length > 255).Count()),
+                    new KeyValuePair<string, int>("City exceeding max length of 255", contactList.Where(x => x.City != null && x.City.Length > 255).Count()),
+                    new KeyValuePair<string, int>("Contact Name exceeding max length of 255", contactList.Where(x => x.ContactName != null && x.ContactName.Length > 255).Count()),
+                    new KeyValuePair<string, int>("Country exceeding max length of 255", contactList.Where(x => x.Country != null && x.Country.Length > 255).Count()),
+                    new KeyValuePair<string, int>("Invalid Contact Type", contactList.Where(x => x.ContactTypeId <= 0).Count()),
+                    new KeyValuePair<string, int>("Invalid Email", contactList.Where(x => x.Email == null).Count()),
+                    new KeyValuePair<string, int>("Invalid Hierarchy", contactList.Where(x => x.HierarchyClassId <= 0).Count()),
+                    new KeyValuePair<string, int>("Phone Number 1 exceeding max length of 30", contactList.Where(x => x.PhoneNumber1 != null && x.PhoneNumber1.Length > 30).Count()),
+                    new KeyValuePair<string, int>("Phone Number 2 exceeding max length of 30", contactList.Where(x => x.PhoneNumber2 != null && x.PhoneNumber2.Length > 30).Count()),
+                    new KeyValuePair<string, int>("State exceeding max length of 255", contactList.Where(x => x.State != null && x.State.Length > 255).Count()),
+                    new KeyValuePair<string, int>("Title exceeding max length of 255", contactList.Where(x => x.Title != null && x.Title.Length > 255).Count()),
+                    new KeyValuePair<string, int>("Website URL exceeding max length of 255", contactList.Where(x => x.WebsiteURL != null && x.WebsiteURL.Length > 255).Count()),
+                    new KeyValuePair<string, int>("Zip Code exceeding max length of 15", contactList.Where(x => x.ZipCode != null && x.ZipCode.Length > 15).Count())
+                }
+                .Where(x => x.Value > 0).ToDictionary(x => x.Key, x => x.Value);
+
+                Info.Code = Info.ValidationCounts.Any() ? UploadInfo.StatusCode.ValidationFailed : UploadInfo.StatusCode.Validated;
+               
+                if(Info.Code == UploadInfo.StatusCode.Validated)
+                {
+                    try
+                    {
+                        AddUpdateContact(contactList);
+                        Info.Code = UploadInfo.StatusCode.Loaded;
+                    }
+                    catch (Exception ex)
+                    {
+                        Info.ErrorMessage = rgxSpace.Replace(rgxNRT.Replace(ex.Message, sngl_space), sngl_space).Trim();
+                        Info.Code = UploadInfo.StatusCode.LoadFailed;
+                    }
+                }
+
+                return Info;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+
 
         public ActionResult ManageType()
         {
@@ -536,6 +696,17 @@ namespace Icon.Web.Mvc.Controllers
             document.SetCurrentFormat(excelFormat);
             document.Save(Response.OutputStream);
             Response.End();
+        }
+
+        private void AddUpdateContact(List<ContactModel> contactList)
+        {
+            var command = new AddUpdateContactCommand()
+			    {
+			        UserName = User.Identity.Name,
+			        Contacts = contactList
+			    };
+
+            this.handlerAddUpdateContact.Execute(command);  
         }
     }
 }

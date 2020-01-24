@@ -20,7 +20,8 @@ namespace Icon.Web.DataAccess.Commands
 				{
 					fileName = data.BulkContactUploadModel.FileName,
 					fileContent = data.BulkContactUploadModel.FileContent,
-					uploadedBy = data.BulkContactUploadModel.UploadedBy
+					uploadedBy = data.BulkContactUploadModel.UploadedBy,
+                    @totalRecords = data.BulkContactUploadModel.TotalRecords
 				},
 				transaction: this.db.Transaction,
 				commandType: System.Data.CommandType.StoredProcedure);

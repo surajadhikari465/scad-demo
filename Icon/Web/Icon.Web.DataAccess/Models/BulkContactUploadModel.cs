@@ -5,6 +5,6 @@
 		public string FileName { get; set; }
 		public byte[] FileContent { get; set; }
 		public string UploadedBy { get; set; }
-
+        public int TotalRecords { get; set; }
 	}
 }

@@ -92,7 +92,7 @@ BEGIN
 		,c2.WebsiteURL
 	FROM #contact c2
 	LEFT JOIN dbo.Contact c ON c.ContactId = c2.ContactId
-	WHERE c.ContactId IS NULL;
+	WHERE c2.ContactId = 0 AND c.ContactId IS NULL;
 
 	UPDATE hct
 	SET traitValue = @traitValue

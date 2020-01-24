@@ -57,7 +57,7 @@
             columns.For(c => c.Country).HeaderText("Country").DataType("string").Width("5%");
             columns.For(c => c.PhoneNumber1).HeaderText("Phone 1").DataType("string").Width("5%");
             columns.For(c => c.PhoneNumber2).HeaderText("Phone 2").DataType("string").Width("5%");
-            columns.For(c => c.WebsiteURL).HeaderText("Phone 1").DataType("string").Width("5%");
+            columns.For(c => c.WebsiteURL).HeaderText("Website URL").DataType("string").Width("5%");
             columns.Unbound("Action").Template("&nbsp&nbsp&nbsp&nbsp <a href='/Contact/Manage?hierarchyClassId=${HierarchyClassId}&amp;ContactId=${ContactId}' class='btn btn-link'>Edit</a> &nbsp&nbsp&nbsp&nbsp <input type='button' class='btn btn-link' value='Delete' style='color:darkred;' onclick='deleteContact(${ContactId})' />").Width("15%").HeaderText("").Hidden(Model == null ? true : (ViewBag.UserWriteAccess != Icon.Web.Common.Enums.WriteAccess.Full));
             })
             .Features(features =>

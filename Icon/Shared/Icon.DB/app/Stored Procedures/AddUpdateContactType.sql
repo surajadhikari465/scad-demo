@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[AddUpdateContactType]
+﻿CREATE PROCEDURE [app].[AddUpdateContactType]
 	@contact app.ContactTypeInputType READONLY
 AS
 BEGIN
