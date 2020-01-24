@@ -14,7 +14,13 @@ namespace Icon.Esb.Producer
         private Session session;
         private Destination destination;
         private MessageProducer producer;
-
+        
+        public string ClientId
+        {
+            get => connection.ClientID;
+            set => connection.ClientID = value;
+        }
+    
         public EsbConnectionSettings Settings { get; set; }
 
         public bool IsConnected
@@ -39,10 +45,6 @@ namespace Icon.Esb.Producer
             this.Settings = settings;
         }
 
-        public void SetTibcoClientId(string clientId)
-        {
-            connection.ClientID = clientId;
-        }
 
         public void Dispose()
         {

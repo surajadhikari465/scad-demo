@@ -9,6 +9,7 @@ using WebSupport.DataAccess;
 using WebSupport.DataAccess.Models;
 using WebSupport.DataAccess.Queries;
 using WebSupport.EsbProducerFactory;
+using WebSupport.Managers;
 using WebSupport.MessageBuilders;
 using WebSupport.Models;
 
@@ -22,6 +23,7 @@ namespace WebSupport.Services
         private IQueryHandler<GetGpmPricesParameters, List<GpmPrice>> getGpmPricesQuery;
         private IQueryHandler<DoesScanCodeExistParameters, bool> doesScanCodeExistQuery;
         private IQueryHandler<DoesStoreExistParameters, bool> doesStoreExistQuery;
+        private IClientIdManager clientIdManager;
 
         public RefreshPriceService(
             ILogger logger,
@@ -29,7 +31,8 @@ namespace WebSupport.Services
             IPriceRefreshMessageBuilderFactory priceRefreshMessageBuilderFactory,
             IQueryHandler<GetGpmPricesParameters, List<GpmPrice>> getGpmPricesQuery,
             IQueryHandler<DoesScanCodeExistParameters, bool> doesScanCodeExistQuery,
-            IQueryHandler<DoesStoreExistParameters, bool> doesStoreExistQuery)
+            IQueryHandler<DoesStoreExistParameters, bool> doesStoreExistQuery,
+            IClientIdManager clientIdManager)
         {
             this.logger = logger;
             this.priceRefreshEsbProducerFactory = priceRefreshEsbProducerFactory;
@@ -37,6 +40,7 @@ namespace WebSupport.Services
             this.getGpmPricesQuery = getGpmPricesQuery;
             this.doesScanCodeExistQuery = doesScanCodeExistQuery;
             this.doesStoreExistQuery = doesStoreExistQuery;
+            this.clientIdManager = clientIdManager;
         }
 
         public RefreshPriceResponse RefreshPrices(
@@ -164,6 +168,7 @@ namespace WebSupport.Services
                 using (IEsbProducer esbProducer = priceRefreshEsbProducerFactory.CreateEsbProducer(system, region))
                 {
                     esbProducer.OpenConnection();
+                    esbProducer.ClientId = clientIdManager.GetClientId();
                     esbProducer.Send(
                         message,
                         messageProperties);

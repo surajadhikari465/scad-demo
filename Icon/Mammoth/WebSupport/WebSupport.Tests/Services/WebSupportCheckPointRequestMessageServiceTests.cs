@@ -13,6 +13,7 @@ using WebSupport.DataAccess.Models;
 using WebSupport.DataAccess.Queries;
 using WebSupport.DataAccess.Commands;
 using WebSupport.EsbProducerFactory;
+using WebSupport.Managers;
 using WebSupport.MessageBuilders;
 using WebSupport.Models;
 using WebSupport.Services;
@@ -33,6 +34,8 @@ namespace WebSupport.Tests.Services
         private Mock<IQueryHandler<GetCheckPointMessageParameters, IEnumerable<CheckPointMessageModel>>> mockGetCheckpointMessageQuery;
         private Mock<ICommandHandler<ArchiveCheckpointMessageCommandParameters>> mockArchiveCheckpointMessageQuery;
         private Mock<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>> mockSearchScanCodes;
+        private IClientIdManager ClientIdManager;
+        private Mock<EsbConnection> mockEsbConnection;
 
         [TestInitialize]
         public void Initialize()
@@ -45,9 +48,14 @@ namespace WebSupport.Tests.Services
             mockGetCheckpointMessageQuery = new Mock<IQueryHandler<GetCheckPointMessageParameters, IEnumerable<CheckPointMessageModel>>>();
             mockArchiveCheckpointMessageQuery = new Mock<ICommandHandler<ArchiveCheckpointMessageCommandParameters>>();
             mockSearchScanCodes = new Mock<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>>();
+            ClientIdManager = new Managers.ClientIdManager();
+            ClientIdManager.Initialize("WebSupportTests");
+            mockEsbConnection = new Mock<EsbConnection>();
 
-            mockEsbConnectionFactory.Setup(f => f.CreateProducer(fakeEsbSettings))
-                .Returns(mockEsbProducer.Object);
+            mockEsbProducer.SetupGet(s => s.ClientId).Returns(ClientIdManager.GetClientId()).Verifiable();
+            mockEsbConnectionFactory.Setup(f => f.CreateProducer(fakeEsbSettings)).Returns(mockEsbProducer.Object);
+
+
 
             service = new WebSupportCheckPointRequestMessageService(
                 mockLogger.Object,
@@ -56,7 +64,8 @@ namespace WebSupport.Tests.Services
                 mockRequestMessageBuilder.Object,
                 mockGetCheckpointMessageQuery.Object,
                 mockArchiveCheckpointMessageQuery.Object,
-	            mockSearchScanCodes.Object);
+	            mockSearchScanCodes.Object,
+                ClientIdManager);
         }
 
         [TestMethod]

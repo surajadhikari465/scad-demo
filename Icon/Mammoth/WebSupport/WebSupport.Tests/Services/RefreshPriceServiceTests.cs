@@ -8,8 +8,10 @@ using System.Collections.Generic;
 using WebSupport.DataAccess.Models;
 using WebSupport.DataAccess.Queries;
 using WebSupport.EsbProducerFactory;
+using WebSupport.Managers;
 using WebSupport.MessageBuilders;
 using WebSupport.Services;
+
 
 namespace WebSupport.Tests.Services
 {
@@ -29,6 +31,7 @@ namespace WebSupport.Tests.Services
         private List<string> testScanCodes;
         private Mock<IMessageBuilder<List<GpmPrice>>> messageBuilder;
         private Mock<IEsbProducer> producer;
+        private IClientIdManager clientIdManager;
 
         [TestInitialize]
         public void Initialize()
@@ -39,6 +42,8 @@ namespace WebSupport.Tests.Services
             getGpmPricesQuery = new Mock<IQueryHandler<GetGpmPricesParameters, List<GpmPrice>>>();
             doesScanCodeExistQuery = new Mock<IQueryHandler<DoesScanCodeExistParameters, bool>>();
             doesStoreExistQuery = new Mock<IQueryHandler<DoesStoreExistParameters, bool>>();
+            clientIdManager = new ClientIdManager();
+            clientIdManager.Initialize("WebSupportTests");
 
             service = new RefreshPriceService(
                 logger.Object,
@@ -46,7 +51,8 @@ namespace WebSupport.Tests.Services
                 priceRefreshMessageBuilderFactory.Object,
                 getGpmPricesQuery.Object,
                 doesScanCodeExistQuery.Object,
-                doesStoreExistQuery.Object);
+                doesStoreExistQuery.Object,
+                clientIdManager);
 
             testRegion = "FL";
             testSystems = new List<string> { "R10" };

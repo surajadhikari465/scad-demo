@@ -17,6 +17,7 @@ namespace WebSupport.Tests.EsbProducerFactory
         [TestInitialize]
         public void Initialize()
         {
+
             factory = new PriceRefreshEsbProducerFactory();
         }
 

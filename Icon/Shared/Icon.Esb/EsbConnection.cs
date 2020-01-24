@@ -12,6 +12,11 @@ namespace Icon.Esb
         protected Session session = null;
         protected Destination destination = null;
 
+        public string ClientId
+        {
+            get => connection.ClientID;
+            set => connection.ClientID = value;
+        }
         public EsbConnectionSettings Settings { get; set; }
 
         public event EventHandler<EMSException> ExceptionHandlers;

@@ -1,4 +1,7 @@
-﻿[assembly: WebActivatorEx.PostApplicationStartMethod(typeof(WebSupport.App_Start.SimpleInjectorInitializer), "Initialize")]
+﻿using Icon.Common;
+using WebSupport.Managers;
+
+[assembly: WebActivatorEx.PostApplicationStartMethod(typeof(WebSupport.App_Start.SimpleInjectorInitializer), "Initialize")]
 
 namespace WebSupport.App_Start
 {
@@ -49,6 +52,12 @@ namespace WebSupport.App_Start
         private static void InitializeContainer(Container container)
         {
             // TODO: Have reviewed by someone for lifetime management.
+
+            container.RegisterSingleton<IClientIdManager>(() => {
+                var client = new Managers.ClientIdManager();
+                client.Initialize(AppSettingsAccessor.GetStringSetting("AppName", "WebSupport"));
+                return client;
+            });
             container.RegisterSingleton<ILogger>(() => new NLogLoggerSingleton(typeof(NLogLoggerSingleton)));
             container.Register<IIrmaContextFactory, IrmaContextFactory>(Lifestyle.Scoped);
             container.Register(typeof(ICommandHandler<>), new[] { Assembly.Load("WebSupport.DataAccess") }, Lifestyle.Scoped);
@@ -78,7 +87,8 @@ namespace WebSupport.App_Start
                 container.GetInstance<IMessageBuilder<PriceResetMessageBuilderModel>>(),
                 container.GetInstance<IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>>>(),
                 container.GetInstance<ICommandHandler<SaveSentMessageCommand>>(),
-                container.GetInstance<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>>());
+                container.GetInstance<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>>(),
+                container.GetInstance<IClientIdManager>());
         }
 
         private static WebSupportCheckPointRequestMessageService CreateCheckPointRequestMessageService(Container container)
@@ -90,7 +100,8 @@ namespace WebSupport.App_Start
                 container.GetInstance<IMessageBuilder<CheckPointRequestBuilderModel>>(),
                 container.GetInstance<IQueryHandler<GetCheckPointMessageParameters, IEnumerable<CheckPointMessageModel>>>(),
                 container.GetInstance<ICommandHandler<ArchiveCheckpointMessageCommandParameters>>(),
-                container.GetInstance<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>>()
+                container.GetInstance<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>>(), 
+                container.GetInstance<IClientIdManager>()
                 );
         }
 

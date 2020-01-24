@@ -15,6 +15,11 @@ namespace WebSupport.EsbProducerFactory
         protected Session session = null;
         protected Destination destination = null;
         private MessageProducer producer;
+        
+        string IEsbConnection.ClientId { 
+            get => connection.ClientID;
+            set => connection.ClientID = value;
+        }
 
         public NonJndiEsbProducer(EsbConnectionSettings settings)
         {
@@ -37,6 +42,8 @@ namespace WebSupport.EsbProducerFactory
                 }
             }
         }
+
+        
 
         public event EventHandler<EMSException> ExceptionHandlers;
 
@@ -71,6 +78,8 @@ namespace WebSupport.EsbProducerFactory
             producer = session.CreateProducer(destination);
             producer.DeliveryMode = DeliveryMode.PERSISTENT;
         }
+
+        
 
         protected virtual void CreateDestination()
         {

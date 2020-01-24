@@ -20,7 +20,12 @@ namespace Icon.Esb.Subscriber
 
         public void BeginListening()
         {
+            BeginListening("");
+        }
+        public void BeginListening(string clientId)
+        {
             consumer.MessageHandler += messagConsumer_MessageHandler;
+            connection.ClientID = clientId;
             connection.Start();
         }
 

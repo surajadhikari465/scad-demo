@@ -44,8 +44,11 @@ namespace Icon.Esb.ListenerApplication
         /// </summary>
         public void Run()
         {
+
+            var clientId = $"{ListenerApplicationName}.{System.Environment.MachineName}.{Guid.NewGuid().ToString()}";
+
             listeningTimer = new Timer(
-                (x) => BeginListening(),
+                (x) => BeginListening(clientId),
                 null,
                 TimeSpan.FromSeconds(0),
                 TimeSpan.FromSeconds(esbConnectionSettings.ReconnectDelay));
@@ -55,7 +58,7 @@ namespace Icon.Esb.ListenerApplication
         /// Opens a connection to the ESB, sets up MessageHandlers and ExceptionHandlers, and also 
         /// logs and notifies a successful connection was made.
         /// </summary>
-        private void BeginListening()
+        private void BeginListening(string clientId)
         {
             if (!IsConnected)
             {

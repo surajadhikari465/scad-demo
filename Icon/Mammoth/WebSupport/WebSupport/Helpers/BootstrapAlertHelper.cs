@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WebSupport.Helpers
+﻿namespace WebSupport.Helpers
 {
     public static class BootstrapAlertHelper
     {

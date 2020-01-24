@@ -10,6 +10,7 @@ using System.Linq;
 using WebSupport.DataAccess.Commands;
 using WebSupport.DataAccess.Models;
 using WebSupport.DataAccess.Queries;
+using WebSupport.Managers;
 using WebSupport.Models;
 using WebSupport.ViewModels;
 
@@ -22,6 +23,7 @@ namespace WebSupport.Services
         private IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>> getPriceResetPricesQuery;
         private ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler;
         private IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>> searchScanCodes;
+        private IClientIdManager clientIdManager;
 
         public EsbConnectionSettings Settings { get; set; }
 
@@ -31,7 +33,8 @@ namespace WebSupport.Services
             IMessageBuilder<PriceResetMessageBuilderModel> priceResetMessageBuilder,
             IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>> getPriceResetPricesQuery,
             ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler,
-            IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>> searchScanCodes)
+            IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>> searchScanCodes,
+            IClientIdManager clientIdManager)
         {
             this.esbConnectionFactory = esbConnectionFactory;
             this.Settings = settings;
@@ -39,6 +42,7 @@ namespace WebSupport.Services
             this.getPriceResetPricesQuery = getPriceResetPricesQuery;
             this.saveSentMessageCommandHandler = saveSentMessageCommandHandler;
             this.searchScanCodes = searchScanCodes;
+            this.clientIdManager = clientIdManager;
         }
 
         public EsbServiceResponse Send(PriceResetRequestViewModel request)
@@ -73,6 +77,7 @@ namespace WebSupport.Services
                     using (var producer = esbConnectionFactory.CreateProducer(Settings))
                     {
                         producer.OpenConnection();
+                        producer.ClientId = clientIdManager.GetClientId();
                         foreach (var priceGroup in priceResetPrices.GroupBy(p => new { p.BusinessUnitId, p.ItemId, p.ScanCode }))
                         {
                             var sequenceId = priceGroup.First().SequenceId;
