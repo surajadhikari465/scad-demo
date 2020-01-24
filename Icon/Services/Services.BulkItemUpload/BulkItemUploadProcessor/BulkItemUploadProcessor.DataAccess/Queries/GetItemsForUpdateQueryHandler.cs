@@ -27,10 +27,11 @@ namespace BulkItemUploadProcessor.DataAccess.Queries
 
                 SELECT 
                     i.ItemId, 
-                    i.ScanCode, 
+                    s.ScanCode, 
                     i.ItemAttributesJson 
-                FROM ItemView i
-                JOIN #scanCodes sc ON i.ScanCode = sc.ScanCode",
+                FROM Item i
+				JOIN ScanCode s on i.itemid =  s.itemID
+                JOIN #scanCodes sc ON s.ScanCode = sc.ScanCode",
                 new
                 {
                     ScanCodes = parameters.ScanCodes
