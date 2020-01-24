@@ -83,6 +83,7 @@ const Shrink:React.FC = () => {
     const setUpc = (value?:any) =>{  
       let upc = value && typeof value !== 'object' ? value: shrinkState.upcValue;
       setIsLoading(true);
+
       fetch(`${Config.baseUrl}/${region}/storeitems?storeNo=${storeNumber}&subteamNo=${subteamNo}&scanCode=${upc}`)
       .then(res => res.json())
       .then((result) => {
@@ -156,7 +157,7 @@ const Shrink:React.FC = () => {
       }
     }
     const setQty = (e:any) =>{
-      setShrinkState({...shrinkState, quantity: e.target.value });
+      setShrinkState({...shrinkState, quantity: parseInt(e.target.value) });
     }
     const skipConfirm = (e:any) =>{
       setShrinkState({...shrinkState, skipConfirm: !shrinkState.skipConfirm});
@@ -171,29 +172,43 @@ const Shrink:React.FC = () => {
       setShrinkState({...initialState, upcValue: e.target.value, isSelected:true, skipConfirm: shrinkState.skipConfirm});
     }
     const save = (e:any) =>{
-      const { isSelected, skipConfirm, queued, dupItem, ...shrinkItem} = shrinkState;
-      shrinkItem.shrinkType = shrinkType.shrinkSubTypeMember;
-      shrinkItem.quantity =  +(shrinkState.queued) + +(shrinkState.quantity)
-      let shrinkItems: any = [];    
-
-      if(localStorage.getItem("shrinkItems") !== null){
-        // @ts-ignore
-        shrinkItems = JSON.parse(localStorage.getItem("shrinkItems"));
-      }
-      
-      if(shrinkState.dupItem.length > 0){
-        // if dup item found, replace the shrink Item with a new quantity
+      if(shrinkState.quantity>999){
         setAlert({...alert, 
-          open: true, 
+          open:true, 
+          alertMessage: 'Quantity cannot be greater than 999',
+          type: 'default', 
+          header:'Scan Shrink'}); 
+      }else if(shrinkState.quantity===0){
+        setAlert({...alert, 
+          open:true, 
+          alertMessage: 'Quantity cannot be 0',
+          type: 'default', 
+          header:'Scan Shrink'});
+      }else{
+        const { isSelected, skipConfirm, queued, dupItem, ...shrinkItem} = shrinkState;
+        shrinkItem.shrinkType = shrinkType.shrinkSubTypeMember;
+        shrinkItem.quantity =  +(shrinkState.queued) + +(shrinkState.quantity)
+        let shrinkItems: any = [];    
+     
+        if(localStorage.getItem("shrinkItems") !== null){
           // @ts-ignore
-          alertMessage: `${shrinkState.dupItem[0].quantity} of this item already queued in this session. Tap Add, Overwrite or Cancel`, 
-          type: 'prevScanned', 
-          header: 'Previously Scanned Item', 
-          cancelAction: cancel.bind(undefined, false, true)});
-      } else {
-        // else add a new shrink Item
-        shrinkItems.push(shrinkItem);
-        saveItems(shrinkItems);
+          shrinkItems = JSON.parse(localStorage.getItem("shrinkItems"));
+        }
+      
+        if(shrinkState.dupItem.length > 0){
+          // if dup item found, replace the shrink Item with a new quantity
+          setAlert({...alert, 
+            open: true, 
+            // @ts-ignore
+            alertMessage: `${shrinkState.dupItem[0].quantity} of this item already queued in this session. Tap Add, Overwrite or Cancel`, 
+            type: 'prevScanned', 
+            header: 'Previously Scanned Item', 
+            cancelAction: cancel.bind(undefined, false, true)});
+        } else {
+          // else add a new shrink Item
+          shrinkItems.push(shrinkItem);
+          saveItems(shrinkItems);
+        }
       }
     }
     const getShrinkItems = (quantity: number) => {
@@ -243,7 +258,7 @@ const Shrink:React.FC = () => {
       }
       clear();
     }
-    console.log(shrinkState);
+
     if(isLoading) {
       return ( <LoadingComponent content="Loading Item..."/> )
     }
@@ -293,7 +308,8 @@ const Shrink:React.FC = () => {
                         step={shrinkState.costedByWeight ? 1:'any'}
                         onKeyPress={checkQty} 
                         onChange={setQty}
-                        value={shrinkState.quantity} 
+                        maxLength={3}
+                        value={shrinkState.quantity.toString()} 
                         ref={qtyInput}></input>
                   {
                     shrinkState.packageUnitAbbreviation && 
@@ -318,7 +334,7 @@ const Shrink:React.FC = () => {
               <section className='entry-section'>
                 <div className='shrink-buttons'>
                   <button className="wfm-btn" onClick={clear}>Clear</button>
-                  <button className="wfm-btn" disabled={shrinkState.quantity===0 || shrinkState.identifier === null} onClick={save}>Save</button>
+                  <button className="wfm-btn" disabled={shrinkState.identifier === null} onClick={save}>Save</button>
                 </div>
               </section>
             </div>)

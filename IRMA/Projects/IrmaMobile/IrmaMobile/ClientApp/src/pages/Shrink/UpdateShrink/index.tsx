@@ -1,6 +1,7 @@
 import React, { Fragment, useContext, useState } from 'react';
 import { Link } from "react-router-dom";
 import { AppContext, types } from "../../../store";
+import BasicModal from '../../../layout/BasicModal';
 import './styles.scss';
 
 interface UpdateShrinkProps {
@@ -11,6 +12,7 @@ const UpdateShrink:React.FC<UpdateShrinkProps> = (props) => {
     // @ts-ignore
     const {state, dispatch} = useContext(AppContext);
     const {selectedShrinkItem} = state;
+    const [alert, setAlert] = useState<any>({open:false, alertMessage:'', type: 'default', header: 'IRMA Mobile', confirmAction:()=> {}, cancelAction:()=> {}});
     const [initialQuantity] = useState(selectedShrinkItem.quantity);
     const [shrinkType] = useState(selectedShrinkItem.shrinkType);
     const {history} = props;
@@ -22,12 +24,25 @@ const UpdateShrink:React.FC<UpdateShrinkProps> = (props) => {
       let shrinkType = e.target.value;
       dispatch({ type: types.SETSELECTEDSHRINKITEM, selectedShrinkItem: {...selectedShrinkItem, shrinkType} });
     }
- 
     const update = () =>{
-      let shrinkItems = state.shrinkItems.map((shrinkItem:any)=>shrinkItem.identifier === selectedShrinkItem.identifier? selectedShrinkItem: shrinkItem);
-      dispatch({ type: types.SETSHRINKITEMS, shrinkItems: shrinkItems }); 
-      localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems));
-      history.push('/shrink/review');
+      if(selectedShrinkItem.quantity>999){
+        setAlert({...alert, 
+          open:true, 
+          alertMessage: 'Quantity cannot be greater than 999',
+          type: 'default', 
+          header:'Update Shrink'});
+      }else if(selectedShrinkItem.quantity===0){
+        setAlert({...alert, 
+          open:true, 
+          alertMessage: 'Quantity cannot be 0',
+          type: 'default', 
+          header:'Update Shrink'});
+      } else {
+        let shrinkItems = state.shrinkItems.map((shrinkItem:any)=>shrinkItem.identifier === selectedShrinkItem.identifier? selectedShrinkItem: shrinkItem);
+        dispatch({ type: types.SETSHRINKITEMS, shrinkItems: shrinkItems }); 
+        localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems));
+        history.push('/shrink/review');
+      }
     }
     const checkQty = (e:any) =>{
       if(selectedShrinkItem.costedByWeight && (e.charCode < 48 || e.charCode > 57)){
@@ -58,11 +73,12 @@ const UpdateShrink:React.FC<UpdateShrinkProps> = (props) => {
             <div>
               <label>New Quantity:</label>
               <input type='number' 
-                    defaultValue={selectedShrinkItem.quantity.toString()} 
+                    value={selectedShrinkItem.quantity.toString()} 
                     min="1" 
+                    maxLength={3}
                     step={selectedShrinkItem.costedByWeight ? 1:'any'}
                     onKeyPress={checkQty}  
-                    onInput={updateQuantity}/>
+                    onChange={updateQuantity}/>
             </div>
             <div>
               <label>UOM:</label>
@@ -84,6 +100,7 @@ const UpdateShrink:React.FC<UpdateShrinkProps> = (props) => {
             <button className="wfm-btn" onClick={update}>Update</button>
           </div>
         </div>
+        <BasicModal alert={alert} setAlert={setAlert}/>  
       </Fragment>
     )
 };
