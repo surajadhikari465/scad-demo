@@ -32,5 +32,6 @@ namespace IrmaMobile.Services
         Task<List<DSDVendor>> GetVendorsAsync(string region, int storeNo);
         Task<bool> IsDuplicateReceivingDocumentInvoiceNumberAsync(string region, string invoiceNumber, int vendorId);
         Task<List<ListsSubteam>> GetSubteamByProductTypeAsync(string region, int productTypeId);
+        Task<StoreItem> GetTransferItemAsync(string region, string upc, int productType, int storeNo, int vendorId, int subteam, int supplyTeam);
     }
 }

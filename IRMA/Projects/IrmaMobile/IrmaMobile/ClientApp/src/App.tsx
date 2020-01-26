@@ -24,6 +24,7 @@ import ReceivingList from './pages/Receive/PurchaseOrder/ReceivingList/Receiving
 import ReceivingListClosePartial from './pages/Receive/PurchaseOrder/ReceivingList/components/ReceivingListClosePartial';
 import TransferHome from './pages/Transfer/Index';
 import ReceivePurchaseOrderDetailsClearScreen from './pages/Receive/PurchaseOrder/PurchaseOrder/components/ReceivePurchaseOrderDetailsClearScreen';
+import TransferScan from './pages/Transfer/Scan/TransferScan';
 
 
 const App: React.FC = () => { 
@@ -59,7 +60,8 @@ const App: React.FC = () => {
               <Route exact path="/receive/InvoiceData/:purchaseOrderNumber" component={InvoiceData} />
               <Route exact path="/receive/List/:purchaseOrderNumber" component={ReceivingList} />
               <Route exact path="/receive/List/:purchaseOrderNumber/closePartial" component={ReceivingListClosePartial} />
-              <Route exact path="/transfer" component={TransferHome} />
+              <Route exact path="/transfer/index/:comingFromScan?" component={TransferHome} />
+              <Route exact path="/transfer/scan" component={TransferScan} />
             </Switch>
           </div>
         </Router>

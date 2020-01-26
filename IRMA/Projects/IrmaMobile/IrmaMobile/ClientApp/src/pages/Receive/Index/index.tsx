@@ -26,7 +26,7 @@ const Receive: React.FC = () => {
                 <button style={{height: '80px', width: '100%'}} className='wfmButton receive-button'><Link to='/receive/PurchaseOrder'>Receive PO</Link></button>
             </Segment>
             <Segment vertical basic>
-                <button disabled style={{height: '80px', backgroundColor: 'grey', width: '100%'}} className='wfmButton receive-button'>Receiving Document</button>
+                <button disabled style={{height: '80px', backgroundColor: 'grey', width: '100%'}} className='receive-button'>Receiving Document</button>
             </Segment>
             <Segment vertical basic>
                 <button style={{height: '80px', width: '100%'}} className='wfmButton receive-button' onClick={() => history.goBack()}>Cancel</button>

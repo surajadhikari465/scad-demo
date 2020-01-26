@@ -71,6 +71,15 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
         } else history.push(`/${e.target.value}`);
       }
     }
+
+    const handleTransferClick = () => {
+      if(!isSelected) {
+        setAlertOpen(true);
+      } else {
+        history.push('/transfer/index/');
+      }
+    }
+
     const toggleAlert = (e:any) =>{
         setAlertOpen(!alertIsOpen);
     }
@@ -98,7 +107,7 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
       </div>
       <div className="subteam-buttons">
         <button className="wfm-btn" value="shrink" onClick={handleClick}>Shrink</button>
-        <button className="wfm-btn" value="transfer" onClick={handleClick}>Transfer</button>
+        <button className="wfm-btn" value="transfer" onClick={handleTransferClick}>Transfer</button>
         <button className="wfm-btn" value="receive" onClick={handleClick}>Receive</button>
       </div>
       <Modal

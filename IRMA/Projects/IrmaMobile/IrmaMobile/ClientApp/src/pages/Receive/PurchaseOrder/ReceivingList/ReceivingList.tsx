@@ -47,7 +47,7 @@ const ReceivingList: React.FC<IProps> = ({ match }) => {
         const newMenuItems = [
             { id: 0, order: 0, text: "Invoice Data", path: `/receive/invoicedata/${purchaseOrderNumber}`, disabled: false } as IMenuItem,
             { id: 1, order: 1, text: "Partial Shipment", path: `/receive/List/${purchaseOrderNumber}/closePartial`, disabled: !enablePartialShipment} as IMenuItem,
-            { id: 2, order: 2, text: "Exit Receive", path: "/functions", disabled: false } as IMenuItem,
+            { id: 2, order: 2, text: "Receive Order", path: "/receive/purchaseorder", disabled: false } as IMenuItem,
             ] as IMenuItem[];
 
         dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems });

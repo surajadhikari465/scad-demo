@@ -40,7 +40,6 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
             { id: 3, order: 2, text: "Receiving List", path: `/receive/List/${purchaseOrderNumber}`, disabled: purchaseOrderNumber === '' } as IMenuItem,
             { id: 4, order: 3, text: "Order Info", path: `/receive/purchaseorder/open`, disabled: purchaseOrderNumber === '' } as IMenuItem,
             { id: 5, order: 4, text: "Clear Screen", path: "/receive/PurchaseOrder/clearscreen", disabled: false } as IMenuItem,
-            { id: 6, order: 5, text: "Review", path: "#", disabled: false } as IMenuItem,
             { id: 7, order: 6, text: "Exit Receive", path: "/functions", disabled: false } as IMenuItem,
          ] as IMenuItem[];
 
@@ -48,11 +47,17 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     }, [purchaseOrderNumber, dispatch])
 
     useEffect(() => {
-        setMenuItems()
-
         BarcodeScanner.registerHandler((data: any) => {
             dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: data });
           });
+
+        return () => {
+            BarcodeScanner.scanHandler = () => {};
+        }
+    }, [dispatch]);
+
+    useEffect(() => {
+        setMenuItems()
 
         return () => {
             dispatch({ type: types.SETMENUITEMS, menuItems: [] });

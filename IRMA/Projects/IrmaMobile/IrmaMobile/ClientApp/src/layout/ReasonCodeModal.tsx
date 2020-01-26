@@ -1,9 +1,9 @@
 import React, { useContext, Fragment } from "react";
 import { Modal, Grid } from "semantic-ui-react";
-import { ReasonCode } from "../../types/ReasonCode";
-import { AppContext, types } from "../../../../../store";
+import { ReasonCode } from "../pages/Receive/PurchaseOrder/types/ReasonCode";
+import { AppContext, types } from "../store";
 
-const ReceivePurchaseOrderReasonCodeModal: React.FC = () => {
+const ReasonCodeModal: React.FC = () => {
     // @ts-ignore
     const { state, dispatch } = useContext(AppContext);
     const { modalOpen, reasonCodes } = state;
@@ -39,4 +39,4 @@ const ReceivePurchaseOrderReasonCodeModal: React.FC = () => {
     );
 };
 
-export default ReceivePurchaseOrderReasonCodeModal;
+export default ReasonCodeModal;

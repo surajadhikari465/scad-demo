@@ -144,7 +144,10 @@ const Document = {
 }
 
 const Transfer = {
-    getSubteamByProductType: async (region: string, productTypeId: number) => await requests.get(`/${region}/transfer/subteamByProductType?productTypeId=${productTypeId}`)
+    getSubteamByProductType: async (region: string, productTypeId: number) => await requests.get(`/${region}/transfer/subteamByProductType?productTypeId=${productTypeId}`),
+    getTransferItem: async (region: string, upc: string, productType: number, storeNo: number, vendorId: number, subteam: number, supplyTeam: number) => 
+        await requests.get(`/${region}/transfer/transferItem?upc=${upc}&productType=${productType}&storeNo=${storeNo}&vendorId=${vendorId}&subteam=${subteam}&supplyTeam=${supplyTeam}`),
+    getReasonCodes: async (region: string) => await requests.get(`${region}/transfer/reasonCodes`)
 }
 
 const Shrink = {

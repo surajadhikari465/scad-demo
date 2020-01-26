@@ -32,5 +32,27 @@ namespace IrmaMobile.Controllers
 
             return result;
         }
+
+        [ProducesResponseType(200)]
+        [HttpGet]
+        public async Task<StoreItem> TransferItem([FromRoute]string region, [FromQuery]string upc, [FromQuery]int productType, [FromQuery]int storeNo, [FromQuery]int vendorId, [FromQuery]int subteam, [FromQuery]int supplyTeam)
+        {
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(TransferController)}.{nameof(TransferItem)}");
+            
+            var result = await service.GetTransferItemAsync(region, upc, productType, storeNo, vendorId, subteam, supplyTeam);
+
+            return result;
+        }
+
+        [ProducesResponseType(200)]
+        [HttpGet]
+        public async Task<List<ReasonCode>> ReasonCodes(string region)
+        {
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(TransferController)}.{nameof(ReasonCodes)}");
+
+            var result = await service.GetReasonCodesAsync(region, "CA");
+
+            return result;
+        }
     }
 }

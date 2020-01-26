@@ -11,7 +11,7 @@ import { Dropdown, Grid, Input, Segment, Button } from "semantic-ui-react";
 import agent from "../../../../../api/agent";
 import { AppContext, types } from "../../../../../store";
 import { ReasonCode } from "../../types/ReasonCode";
-import ReceivePurchaseOrderReasonCodeModal from "./ReceivePurchaseOrderReasonCodeModal";
+import ReasonCodeModal from "../../../../../layout/ReasonCodeModal";
 import "./styles.scss";
 import { toast } from "react-toastify";
 import { WfmButton } from "@wfm/ui-react";
@@ -217,7 +217,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                     openExternal={showHighQtyModal} headerText='Verify Quantity' cancelButtonText='No' confirmButtonText='Yes' 
                                     lineOne={`Quantity Received (${quantityMode.current === QuantityAddMode.AddTo ? orderDetails.Quantity + orderDetails.QtyReceived : orderDetails.Quantity}) is greater than Quantity Ordered (${orderDetails.QtyOrdered}). Continue?`} /> 
                 <ReceivePurchaseOrderDetailsQtyModal handleQuantityDecision={handleQuantityDecision} open={showQtyModal}/>
-                <ReceivePurchaseOrderReasonCodeModal />
+                <ReasonCodeModal />
                 <Segment
                     disabled={!orderDetails.ItemLoaded}
                     inverted

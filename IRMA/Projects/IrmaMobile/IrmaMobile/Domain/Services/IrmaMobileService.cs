@@ -265,12 +265,17 @@ namespace IrmaMobile.Services
             return result;
         }
 
+        public async Task<StoreItem> GetTransferItemAsync(string region, string upc, int productType, int storeNo, int vendorId, int subteam, int supplyTeam)
+        {
+            var result = await MakeServiceRequest(region, client => client.GetTransferItemAsync(0, upc, productType, storeNo, vendorId, subteam, supplyTeam)); 
+            return result;
+        }
+
         public async Task<List<ListsSubteam>> GetSubteamByProductTypeAsync(string region, int productTypeId)
         {
             var result = await MakeServiceRequest(region, client => client.GetSubteamByProductTypeAsync(productTypeId)); 
             return result;
         }
-
 
         // Following best practices for handling WCF ServiceClient lifecycle as documented here:
         // https://docs.microsoft.com/en-us/dotnet/framework/wcf/samples/use-close-abort-release-wcf-client-resources
