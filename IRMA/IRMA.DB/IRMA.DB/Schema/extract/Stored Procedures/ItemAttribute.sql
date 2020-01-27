@@ -16,6 +16,7 @@ BEGIN
 		,i.Retail_Sale AS RETAIL_SALE
 		,ii.deleted_identifier AS DELETED
 		,i.Price_Required AS PRICE_REQUIRED
+		,vsc.InsertDate As INSERT_DATE
 	FROM ItemIdentifier ii
 	INNER JOIN Item i ON i.Item_Key = ii.Item_Key
 	INNER JOIN ValidatedScanCode vsc ON ii.Identifier = vsc.Scancode
