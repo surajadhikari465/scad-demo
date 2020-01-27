@@ -1,7 +1,5 @@
-﻿using Icon.Framework;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
-using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Transactions;
 

@@ -29,6 +29,7 @@ namespace Icon.Esb.R10Listener
         {
             this.saveR10MessageResponseCommandHandler = saveR10MessageResponseCommandHandler;
             this.messageParser = messageParser;
+            
         }
 
         public override void HandleMessage(object sender, EsbMessageEventArgs args)
