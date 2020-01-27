@@ -64,14 +64,18 @@ namespace Icon.Web.Mvc.Excel
                 }
 
                 IsDefault = String.IsNullOrWhiteSpace(val);
-                if(!IsDefault && (validationRgx == null || validationRgx.IsMatch(val)))
+                if(!IsDefault)
                 {
                     if(isRemoveSpaces)
                     {
                         val = val.Replace(sngl_space, String.Empty);
                     }
-                    internalVal = isConversionRequired ? Convert.ChangeType(val, fldType) : val;
-                    IsDefault = (internalVal == null);
+
+                    if(validationRgx == null || validationRgx.IsMatch(val))
+                    {
+                        internalVal = isConversionRequired ? Convert.ChangeType(val, fldType) : val;
+                        IsDefault = (internalVal == null);
+                    }
                 }
             }
             catch

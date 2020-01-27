@@ -13,7 +13,7 @@
 					formatter: statusFormatter
 				},
 				{ headerText: "Uploaded At", key: "FileUploadTime", dataType: "date", format: "MM-dd-yyyy hh:mm:ss tt", width: "200px" },
-				{ headerText: "Message", key: "Message", dataType: "string", width: "300px" },
+				//{ headerText: "Message", key: "Message", dataType: "string", width: "300px" },
 			],
 			features: [{
 				name: "Resizing",
@@ -235,25 +235,23 @@ function uploadFile() {
                                 //grd.commit();
                             },
                             error:
-                                function (xhr, status, error) {//(xhr, status, error) {
+                                function (xhr, status, error) {
                                     $(".ui-dialog-titlebar").css("background-color", "red");
                                     $(".ui-dialog-title").text("System Information:");
                                     $(".ui-dialog-buttonset").show();
                                     $('#dlgCancel').show();
-                                    let obj = JSON.parse(JSON.parse(xhr.responseText));
 
                                     try {
-                                        $("#dlgMsg").html(obj.message);
+                                        $("#dlgMsg").text(error);
                                     }
                                     catch (err) {
-                                        if (err != null) {
-                                            $("#dlgMsg").html(error);
-                                        }
-                                        else { $("#dlgMsg").html('Failed to upload and proces file'); }
+                                        $("#dlgMsg").text('Failed to upload and proces file');
                                     };
 
                                     try {
                                         let liItems = [];
+                                        let obj = JSON.parse(JSON.parse(xhr.responseText));
+                                        
                                         let ar = obj.validation;
                                         if (ar !== null) {
                                             $.each(ar, function (i, item) {

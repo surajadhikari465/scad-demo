@@ -14,6 +14,13 @@
     }
 </style>
 
+<div id="divLinks">
+    @if (ViewHelpers.HasWriteAccess(Request, User))
+    {
+        @Html.ActionLink("Download blank contact template", "ContactTemplateNewExporter", "Contact", null, new { @class = "text-nowrap" })
+    }
+</div>
+
 @using (Html.BeginForm("BulkUpload", "Contact", null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "begin-form" }))
 {
     @Html.AntiForgeryToken()
@@ -39,13 +46,6 @@
             </div>
         }
     </div>
-    <fieldset>
-        <legend>Download blank bulk contact edit template.</legend>
-        @if (ViewHelpers.HasWriteAccess(Request, User))
-        {
-            @Html.ActionLink("Download blank contact template", "ContactTemplateNewExporter", "Contact", null, new { @class = "text-nowrap" })
-        }
-    </fieldset>
 
     <fieldset>
         <legend>Select a spreadsheet to import.</legend>

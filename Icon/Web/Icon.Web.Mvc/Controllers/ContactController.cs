@@ -298,6 +298,10 @@ namespace Icon.Web.Mvc.Controllers
         [WriteAccessAuthorize]
         public ActionResult UploadFiles()
         {
+            //To prevent IIS from hijacking custom response or add the line below to web config file in <system.webServer> section
+            //<httpErrors errorMode="DetailedLocalOnly" existingResponse="PassThrough"/>
+            Response.TrySkipIisCustomErrors = true; 
+
             if(Request.Files == null || Request.Files.Count == 0)
             {
                 Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
@@ -344,7 +348,7 @@ namespace Icon.Web.Mvc.Controllers
                             Response.StatusDescription = info.Code == UploadInfo.StatusCode.ValidationFailed 
                                 ? "File validaition failed. See validaition error(s) with failed records count below."
                                 : $"File process failed. {info.ErrorMessage}";
-                            var obj = JsonConvert.SerializeObject( new { message = Response.StatusDescription, validation = info.ValidationCounts.Select(x => new {key = x.Key, value = x.Value}).ToArray() });
+                            var obj = JsonConvert.SerializeObject( new { validation = info.ValidationCounts.Select(x => new {key = x.Key, value = x.Value}).ToArray() });
                             return Json(obj, JsonRequestBehavior.AllowGet);
                         }
                         else
