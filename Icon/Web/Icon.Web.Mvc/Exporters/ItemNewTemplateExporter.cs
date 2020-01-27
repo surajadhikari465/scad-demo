@@ -56,7 +56,6 @@ namespace Icon.Web.Mvc.Exporters
                 }
 
                 base.AddRows(results);
-                base.CreateReadOnlyExcelValidationRule(BarcodeType);
             }
         }
 
@@ -68,6 +67,7 @@ namespace Icon.Web.Mvc.Exporters
 
         protected override void CreateExcelValidationRules()
         {
+            base.CreateReadOnlyExcelValidationRule(BarcodeType);
             base.CreateHierarchyListRuleExcelValidationRule(HierarchyNames.Brands, NewItemExcelHelper.NewExcelExportColumnNames.Brand, base.brandHierarchyClassDictionary.Values.Count);
             base.CreateHierarchyListRuleExcelValidationRule(HierarchyNames.Merchandise, NewItemExcelHelper.NewExcelExportColumnNames.Merchandise, base.merchandiseHierarchyClassDictionary.Values.Count);
             base.CreateHierarchyListRuleExcelValidationRule(HierarchyNames.Tax, NewItemExcelHelper.NewExcelExportColumnNames.Tax, base.taxHierarchyClassesDictionary.Values.Count);
@@ -84,17 +84,17 @@ namespace Icon.Web.Mvc.Exporters
             {
                 foreach (var item in this.attributeList.Where(x => x != null))
                 {
-                    if (item.PickListData != null && item.PickListData.Any())
+                    if (item.IsReadOnly)
+                    {
+                        base.CreateReadOnlyExcelValidationRule(item.DisplayName);
+                    }
+                    else if (item.PickListData != null && item.PickListData.Any())
                     {
                         base.CreateListRuleExcelValidationRule(item.DisplayName, item.AttributeName, item.PickListData.Count());
                     }
                     else if(item.DataTypeName.Equals(Constants.DataTypeNames.Boolean, StringComparison.OrdinalIgnoreCase))
                     {
                         base.CreateListRuleExcelValidationRule(item.DisplayName, item.AttributeName, item.IsRequired ? BooleanValidationRequiredCount : BooleanValidationNonRequiredCount);
-                    }
-                    else if (item.IsReadOnly)
-                    {
-                        base.CreateReadOnlyExcelValidationRule(item.AttributeName);
                     }
                 }
             }

@@ -23,6 +23,10 @@ namespace Icon.Web.Mvc.Exporters
         protected const string RemovePickListValue = "REMOVE";
         private const string JsonTrue = "true";
         private const string JsonFalse = "false";
+        private const string CreatedOnAttributeName = "CreatedDateTimeUtc";
+        private const string ModifiedOnAttributeName = "ModifiedDateTimeUtc";
+        private const string CreatedOnColumnName = "CreatedOn";
+        private const string ModifiedOnColumnName = "ModifiedOn";
 
         public List<T> ExportData { get; set; }
         public ExcelExportModel ExportModel { get; set; }
@@ -233,14 +237,12 @@ namespace Icon.Web.Mvc.Exporters
         internal void AddRows(IEnumerable<Dictionary<string, object>> results)
         {
             int row = 1;
-            String[] columnHeaders = new String[spreadsheetColumns.Count()];
-
-            int count = 0;
-            foreach (SpreadsheetColumn<ExportItemModel> spreadsheetColumn in spreadsheetColumns.OrderBy(x => x.Index))
-            {
-                columnHeaders[count] = Regex.Replace(spreadsheetColumn.HeaderTitle, @"[^0-9a-zA-Z]+", "");
-                count++;
-            }
+            List<string> columnHeaders = spreadsheetColumns
+                .OrderBy(x => x.Index)
+                .Select(c => Regex.Replace(c.HeaderTitle, @"[^0-9a-zA-Z]+", ""))
+                .ToList();
+            bool containsCreatedOnColumnHeader = columnHeaders.Contains(CreatedOnColumnName);
+            bool containsModifiedOnColumnHeader = columnHeaders.Contains(ModifiedOnColumnName);
 
             foreach (Dictionary<string, object> result in results)
             {
@@ -254,6 +256,19 @@ namespace Icon.Web.Mvc.Exporters
                     else
                         itemsWorksheet.Rows[row].Cells[col].Value = string.Empty;
                     col++;
+                }
+
+                //Created On and Modified On are handled differently than the other attributes. Hardcoding setting them here if they exist
+                if (containsCreatedOnColumnHeader && result.ContainsKey(CreatedOnAttributeName))
+                {
+                    var index = columnHeaders.IndexOf(CreatedOnColumnName);
+                    itemsWorksheet.Rows[row].Cells[index].Value = result[CreatedOnAttributeName];
+                }
+
+                if (containsModifiedOnColumnHeader && result.ContainsKey(ModifiedOnAttributeName))
+                {
+                    var index = columnHeaders.IndexOf(ModifiedOnColumnName);
+                    itemsWorksheet.Rows[row].Cells[index].Value = result[ModifiedOnAttributeName];
                 }
 
                 row = row + 1;
