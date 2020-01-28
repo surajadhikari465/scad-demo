@@ -1,20 +1,15 @@
-﻿@model Icon.Web.Mvc.Models.BulkUploadViewModel
+﻿@*@model Icon.Web.Mvc.Models.BulkUploadViewModel*@
 @using Icon.Web.Mvc.Utility
+@using Infragistics.Web.Mvc
 
 @{
     ViewBag.Title = "Bulk Upload";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@{Html.RenderPartial("_HeaderPartial", "Bulk Upload");}
+@*@{Html.RenderPartial("_HeaderPartial", "Bulk Upload");}*@
 
-<style type="text/css">
-    .gridCenter {
-        text-align: center
-    }
-</style>
-
-<div id="divLinks">
+<div id="divLink">
     @if (ViewHelpers.HasWriteAccess(Request, User))
     {
         @Html.ActionLink("Download blank contact template", "ContactTemplateNewExporter", "Contact", null, new { @class = "text-nowrap" })
@@ -25,72 +20,52 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-    <div id="uploadDiv">
-        @if (ViewData["SuccessMessage"] != null)
-        {
-            <div class="alert alert-success alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                <strong>@ViewData["SuccessMessage"].ToString()</strong>
+
+    <div class="container col-10">
+        <div class="text-center py-3">
+            <h2>Contact Management</h2>
+            <p class="lead">Bulk Upload</p>
+        </div>
+
+        <div class="input-group mb-1">
+            <div class="custom-file">
+                <input accept=".xlsx" type="file" class="custom-file-input" id="inputGroupFile">
+                <label class="custom-file-label" id="inputFileName" for="inputGroupFile"></label>
             </div>
-        }
-        @if (ViewData["ErrorMessages"] != null)
-        {
-            <div class="alert alert-danger alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                <ul>
-                    @foreach (var message in (List<string>)ViewData["ErrorMessages"])
-                    {
-                        <li>@Html.Raw(message)</li>
-                    }
-                </ul>
+            <div class="input-group-append">
+                <span class="input-group-text btn-primary" id="uploadFile" onclick="uploadFile()">Upload</span>
             </div>
-        }
+        </div>
+
+        <p class="text-muted fine-print">*Only the Excel .xlsx file format is currently supported.</p>
+
+        <div>
+            <label class="text-muted">File upload history</label>
+            <table id="bulkUploadStatusGrid" style="height:25px;" />
+        </div>
+        
     </div>
-
-    <fieldset>
-        <legend>Select a spreadsheet to import.</legend>
-
-        @Html.LabelFor(model => Model.ExcelAttachment)
-        <input type="file" id="ExcelAttachment" name="ExcelAttachment" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
-        <p class="help-block">Only the Excel .xlsx file format is currently supported.</p>
-
-    </fieldset>
-
-    @*<input type="button" value="Upload Spreadsheet" id="uploadButton" class="btn btn-light form-submit" />*@
-    <input type="button" value="Upload Spreadsheet" id="uploadButton" class="btn btn-light" onclick="uploadFile()" />
 }
 
-<div>
-
-    <div>
-        @Html.Label("Number of rows to display:")
-        @Html.DropDownList("gridRowCount", new List<SelectListItem>()
-            {
-                new SelectListItem() { Value = "25", Text = "25" },
-                new SelectListItem() { Value = "50", Text = "50" },
-                new SelectListItem() { Value = "100", Text = "100", Selected = true},
-                new SelectListItem() { Value = "500", Text = "500" }
-            }, new { @class = "form-control" })
-    </div>
-
+@*<div>
     <div>
         @Html.Label("Refresh Interval (in seconds):")
-        @Html.DropDownList("refreshInterval", new List<SelectListItem>()
-          {
-              new SelectListItem() { Value = "10", Text = "10" },
-              new SelectListItem() { Value = "30", Text = "30", Selected = true},
-              new SelectListItem() { Value = "60", Text = "60" },
-              new SelectListItem() { Value = "300", Text = "300" }
-          }, new { @class = "form-control" })
+        @Html.DropDownList("refreshInterval", new List<SelectListItem>
+            ()
+            {
+            new SelectListItem() { Value = "10", Text = "10" },
+            new SelectListItem() { Value = "30", Text = "30", Selected = true},
+            new SelectListItem() { Value = "60", Text = "60" },
+            new SelectListItem() { Value = "300", Text = "300" }
+            }, new { @class = "form-control" })
     </div>
     <table id="bulkUploadStatusGrid" />
-</div>
-
+</div>*@
 
 <div id="dlgConfirm" title="User Confirmation Required" style="display:none;">
     <div style="max-height:500px; box-sizing:border-box;">
         <p id="dlgInfo">File: <span id="fileName"></span></p>
-        <p id="dlgMsg" />
+        <p id="dlgMsg"/>
         <ul id="ulList"></ul>
         <hr />
         <div id="finePrint" class="fine-print text-info">

@@ -1,18 +1,21 @@
 ﻿$(function () {
 	function setupGrid() {
-		$("#bulkUploadStatusGrid").igGrid({
+        $("#bulkUploadStatusGrid").igGrid({
+            primaryKey: "BulkContactUploadId",
+            height: "520px",
+            rowHeight: "5px",
 			columns: [
-				{ headerText: "ID", key: "BulkContactUploadId", dataType: "number", width: "50px" },
-				{ headerText: "Name", key: "FileName", dataType: "string", width: "500px" },
-				{ headerText: "UploadedBy", key: "UploadedBy", dataType: "string", width: "150px" },
+                { headerText: "ID", key: "BulkContactUploadId", dataType: "number", width: "3%", hidden: true },
+				{ headerText: "File Name", key: "FileName", dataType: "string", width: "45%" },
+				{ headerText: "UploadedBy", key: "UploadedBy", dataType: "string", width: "25%" },
 				{
 					headerText: "Status",
 					key: "Status",
 					dataType: "string",
-					width: "150px",
+					width: "10%",
 					formatter: statusFormatter
 				},
-				{ headerText: "Uploaded At", key: "FileUploadTime", dataType: "date", format: "MM-dd-yyyy hh:mm:ss tt", width: "200px" },
+				{ headerText: "Uploaded At", key: "FileUploadTime", dataType: "date", format: "MM-dd-yyyy hh:mm:ss tt", width: "20%" },
 				//{ headerText: "Message", key: "Message", dataType: "string", width: "300px" },
 			],
 			features: [{
@@ -34,53 +37,13 @@
 			{
 				name: "Paging",
 				type: "local",
-				pageSize: 50
+                pageSize: 10,
+                hidden: true
 			}
 			]
 		});
 	}
 
-/*    
-	function setupUploadButton() {
-        $('#uploadButton').click(function () {
-			if (window.FormData !== undefined) {
-				var fileUpload = $("#ExcelAttachment").get(0);
-				var files = fileUpload.files;
-
-				// Create FormData object  
-				var fileData = new FormData();
-
-				// Looping over all files and add it to FormData object  
-				for (var i = 0; i < files.length; i++) {
-					fileData.append(files[i].name, files[i]);
-				}
-
-				$.ajax({
-					url: '/Contact/UploadFiles',
-					type: "POST",
-					contentType: false, // Not to set any content header  
-					processData: false, // Not to process data  
-					data: fileData,
-					success: function (d) {
-						if (d.Result === "Success") {
-							console.log(d);
-							alertSuccess(d.Message);
-							$("#ExcelAttachment").val('');
-						} else {
-							alertError(d.Message);
-						}
-					},
-					error: function (err) {
-						alert(err.statusText);
-					}
-				});
-
-			} else {
-				alert("FormData is not supported.");
-			}
-		});
-	}
-*/
 	function fileTypeFormatter(val) {
 		if (val === 'false')
 			return '<img src="/Content/Images/plus-square.svg" style="width: 16px; height: 16px;" />';
@@ -104,64 +67,90 @@
 		$("#uploadDiv").append('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>' + message + '</strong></div>');
 	}
 
+	//function getBulkUploadStatusData(rowCount) {
+	//	$.ajax({
+	//		dataType: "json",
+	//		url: "/Contact/BulkUploadStatus?rowCount=" + rowCount,
+	//		data: { rows: rowCount }
+	//	}).done(function (data) {
+	//		var grid = $("#bulkUploadStatusGrid");
+	//		//grid.Rows.Refresh(data);
+	//		grid.igGrid("dataSourceObject", data).igGrid("dataBind");
+	//	});
+	//}
 
-	function getBulkUploadStatusData(rowCount) {
+	//function refreshIntervalChanged() {
+	//	let timeInSeconds = $("#refreshInterval").val();
+	//	let pageSize = $("#bulkUploadStatusGrid").igGridPaging("option", "pageSize");
+	//	let rowCount = $("#gridRowCount").val();
+	//	setInterval(function () { refreshGrid(rowCount); }, timeInSeconds * 1000);
+	//}
 
-		$.ajax({
-			dataType: "json",
-			url: "/Contact/BulkUploadStatus?rowCount=" + rowCount,
-			data: { rows: rowCount }
-		}).done(function (data) {
-			var grid = $("#bulkUploadStatusGrid");
-			//grid.Rows.Refresh(data);
-			grid.igGrid("dataSourceObject", data).igGrid("dataBind");
-		});
-	}
+	//function getRecords(value) {
+	//	let numberOfRecordsToBeFetched = $("#gridRowCount").val();
+	//	refreshGrid(numberOfRecordsToBeFetched);
+	//}
 
-	function refreshIntervalChanged() {
-		let timeInSeconds = $("#refreshInterval").val();
-		let pageSize = $("#bulkUploadStatusGrid").igGridPaging("option", "pageSize");
-		let rowCount = $("#gridRowCount").val();
-		setInterval(function () { refreshGrid(rowCount); }, timeInSeconds * 1000);
-	}
-
-	function getRecords(value) {
-		let numberOfRecordsToBeFetched = $("#gridRowCount").val();
-		refreshGrid(numberOfRecordsToBeFetched);
-	}
-
-	function refreshGrid(rowCount) {
+    function refreshGrid(rowCount) {
 		getBulkUploadStatusData(rowCount);
 	}
 
 	function initialize() {
 		setupGrid();
-		//setupUploadButton();
 		refreshGrid(100);
 	}
 
-	initialize();
+    initialize();
 
-	$('#refreshInterval').change(function () {
-		refreshIntervalChanged();
-	});
-	$('#gridRowCount').change(function () {
-		getRecords();
-    });
+    //$('#refreshInterval').change(function () {
+    //    refreshIntervalChanged();
+    //});
+
+    $('#inputGroupFile').change(
+        function (e) {
+            let fileExt = ['xlsx'];
+
+            if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExt) == -1) {
+                $('#inputGroupFile').val('');
+                alert('Unsupported file type has been selected. Supported files types are: ' + fileExt.join(', '));
+            }
+            else {
+                $('#inputFileName').text(e.target.files[0].name);
+            }
+        });
 });
 
+
+function getBulkUploadStatusData(rowCount) {
+    $.ajax({
+        dataType: "json",
+        url: "/Contact/BulkUploadStatus?rowCount=" + rowCount,
+        data: { rows: rowCount }
+    }).done(function (data) {
+        var grid = $("#bulkUploadStatusGrid");
+        grid.igGrid("dataSourceObject", data).igGrid("dataBind");
+    });
+}
 
 function uploadFile() {
     if (window.FormData !== undefined) {
         let isRefresh = false;
-        let fileUpload = $("#ExcelAttachment").get(0);
+        let fileUpload = $("#inputGroupFile").get(0);
         let files = fileUpload.files;
-
         let isSelected = files.length > 0 ? true : false;
 
         if (isSelected == true) {
-            $("#fileName").text($("#ExcelAttachment").val().split('\\').pop());
-            $("#dlgMsg").text('Are you sure you would like to upload file?');
+            let fName = $("#inputGroupFile").val().split('\\').pop();
+            $("#fileName").text($("#inputGroupFile").val().split('\\').pop());
+
+            let fileExt = ['xlsx'];
+            if ($.inArray(fName.split('.').pop().toLowerCase(), fileExt) == -1) {
+                isSelected = false
+                $("#dlgMsg").text('Unsupported file type has been selected. Supported files types are: ' + fileExt.join(', '));
+            }
+            else {
+                $("#dlgMsg").text('Are you sure you would like to upload file?');
+            }
         }
         else {
             $("#fileName").text('Not selected');
@@ -208,7 +197,7 @@ function uploadFile() {
                         $(".ui-dialog-titlebar-close").hide();
                         $(".ui-dialog-buttonset").children().hide();
                         $(".ui-dialog-title").text("Processing Request...");
-                        $("#dlgMsg").html('Uploading file... &nbsp<span class="spinner-border float-right ml-auto text-primary" role="status" aria-hidden="true" style="color: red" />');
+                        $("#dlgMsg").html('Uploading file... &nbsp<span class="spinner-border float-right ml-auto text-info" role="status" aria-hidden="true" />');
 
                         var request = $.ajax({
                             url: '/Contact/UploadFiles',
@@ -218,10 +207,13 @@ function uploadFile() {
                             data: fileData,
 
                             success: function (response) {
+                                $('#inputGroupFile').val('');
+                                $('#inputFileName').text('');
                                 $(".ui-dialog-titlebar").css("background-color", "lightGreen");
                                 $(".ui-dialog-title").text("System Information");
                                 $(".ui-dialog-buttonset").show();
                                 $('#dlgCancel').text('Close').show();
+                                $("#dlgMsg").html('');
                                 $("#dlgMsg").text(response);
                                 isRefresh = true;
 
@@ -240,6 +232,7 @@ function uploadFile() {
                                     $(".ui-dialog-title").text("System Information:");
                                     $(".ui-dialog-buttonset").show();
                                     $('#dlgCancel').show();
+                                    $("#dlgMsg").html('');
 
                                     try {
                                         $("#dlgMsg").text(error);
@@ -274,10 +267,11 @@ function uploadFile() {
                     id: 'dlgCancel',
                     text: 'Cancel',
                     click: function () {
-                        $(this).dialog("close");
                         if (isRefresh) {
-                            window.location.reload();
+                            //window.location.reload();   //Reload page
+                            getBulkUploadStatusData(100); //Update grid
                         }
+                        $(this).dialog("close");
                     },
                 }
             }

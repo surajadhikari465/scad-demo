@@ -41,6 +41,15 @@ BEGIN
 	FROM cte
 	WHERE rowId = 1;
 
+    --Find existing records to match new one
+	UPDATE ct
+	SET ContactId = c.ContactId
+	FROM #contact ct
+	JOIN dbo.Contact c ON c.HierarchyClassID = ct.HierarchyClassId
+	  AND c.ContactTypeId = ct.ContactTypeId
+	  AND c.Email = ct.Email
+	WHERE ct.ContactId = 0; 
+
 	UPDATE c
 	SET ContactTypeId = c2.ContactTypeId
 		,HierarchyClassID = c2.HierarchyClassID
