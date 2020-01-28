@@ -59,6 +59,11 @@ namespace Icon.Esb.Tests.Email
         {
             //Given
             ConfigurationManager.AppSettings.Set("Recipients", "rec1@recipients.com,rec2@recipients.com,rec3@recipients.com");
+            ConfigurationManager.AppSettings.Set("SendEmails", "true");
+            ConfigurationManager.AppSettings.Set("EmailHost", "wfm.pvt");
+            ConfigurationManager.AppSettings.Set("EmailPort", "21");
+            ConfigurationManager.AppSettings.Set("Sender", "test@test.com");
+            
 
             //When
             EmailClientSettings settings = new EmailClientSettings();

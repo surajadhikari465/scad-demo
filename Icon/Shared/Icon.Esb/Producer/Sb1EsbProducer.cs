@@ -59,7 +59,7 @@ namespace Icon.Esb.Producer
             }
         }
 
-        public void OpenConnection()
+        public void OpenConnection(string clientId)
         {
             EMSSSLFileStoreInfo storeInfo = new EMSSSLFileStoreInfo();
             storeInfo.SetSSLPassword(Settings.SslPassword.ToCharArray());
@@ -70,6 +70,8 @@ namespace Icon.Esb.Producer
             factory.SetCertificateStoreType(EMSSSLStoreType.EMSSSL_STORE_TYPE_FILE, storeInfo);
 
             connection = factory.CreateConnection(Settings.JmsUsername, Settings.JmsPassword);
+            connection.ClientID = clientId;
+
             session = connection.CreateSession(false, Settings.SessionMode);
             destination = session.CreateQueue(Settings.QueueName);
             producer = session.CreateProducer(destination);

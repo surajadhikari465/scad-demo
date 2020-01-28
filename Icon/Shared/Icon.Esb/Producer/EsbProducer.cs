@@ -39,9 +39,9 @@ namespace Icon.Esb.Producer
             producer.Send(textMessage);
         }
 
-        public override void OpenConnection()
+        public override void OpenConnection(string clientId)
         {
-            base.OpenConnection();
+            base.OpenConnection(clientId);
             producer = session.CreateProducer(destination);
             producer.DeliveryMode = DeliveryMode.PERSISTENT;
         }

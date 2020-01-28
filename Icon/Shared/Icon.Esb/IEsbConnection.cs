@@ -9,6 +9,6 @@ namespace Icon.Esb
         EsbConnectionSettings Settings { get; }
         bool IsConnected { get; }
         event EventHandler<EMSException> ExceptionHandlers;
-        void OpenConnection();
+        void OpenConnection(string clientId);
     }
 }

@@ -167,8 +167,8 @@ namespace WebSupport.Services
                             };
                 using (IEsbProducer esbProducer = priceRefreshEsbProducerFactory.CreateEsbProducer(system, region))
                 {
-                    esbProducer.OpenConnection();
-                    esbProducer.ClientId = clientIdManager.GetClientId();
+                    esbProducer.OpenConnection(clientIdManager.GetClientId());
+
                     esbProducer.Send(
                         message,
                         messageProperties);

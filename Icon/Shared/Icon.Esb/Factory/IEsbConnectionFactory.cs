@@ -10,7 +10,7 @@ namespace Icon.Esb.Factory
         IEsbSubscriber CreateSubscriber();
         IEsbSubscriber CreateSubscriber(EsbConnectionSettings settings);
 
-        IEsbProducer CreateProducer(bool openConnection = true);
+        IEsbProducer CreateProducer(string clientId,bool openConnection = true);
         IEsbProducer CreateProducer(EsbConnectionSettings settings);
     }
 }

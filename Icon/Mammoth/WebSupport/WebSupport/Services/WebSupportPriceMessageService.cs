@@ -76,8 +76,7 @@ namespace WebSupport.Services
                     List<string> errors = new List<string>();
                     using (var producer = esbConnectionFactory.CreateProducer(Settings))
                     {
-                        producer.OpenConnection();
-                        producer.ClientId = clientIdManager.GetClientId();
+                        producer.OpenConnection(clientIdManager.GetClientId());
                         foreach (var priceGroup in priceResetPrices.GroupBy(p => new { p.BusinessUnitId, p.ItemId, p.ScanCode }))
                         {
                             var sequenceId = priceGroup.First().SequenceId;

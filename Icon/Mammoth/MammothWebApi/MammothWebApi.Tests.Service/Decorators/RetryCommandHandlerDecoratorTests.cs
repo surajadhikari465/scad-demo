@@ -2,9 +2,9 @@
 using Mammoth.Logging;
 using MammothWebApi.DataAccess.Settings;
 using MammothWebApi.Service.Decorators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MammothWebApi.Tests.Service.Decorators
 {

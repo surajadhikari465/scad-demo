@@ -40,7 +40,7 @@ namespace Icon.Esb
             this.Settings = settings;
         }
 
-        public virtual void OpenConnection()
+        public virtual void OpenConnection(string clientId)
         {
             LookupContext lookupContext = CreateLookupContext();
 
@@ -48,6 +48,8 @@ namespace Icon.Esb
             factory.SetTargetHostName(Settings.TargetHostName);
 
             connection = factory.CreateConnection(Settings.JmsUsername, Settings.JmsPassword);
+            connection.ClientID = clientId;
+
             session = connection.CreateSession(false, Settings.SessionMode);
             CreateDestination();
 

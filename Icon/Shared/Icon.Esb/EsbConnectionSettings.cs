@@ -22,6 +22,7 @@ namespace Icon.Esb
         public StoreName CertificateStoreName { get; set; }
         public StoreLocation CertificateStoreLocation { get; set; }
         public int ReconnectDelay { get; set; }
+        public string ClientId { get; set; }
 
         public virtual void LoadFromConfig(string queueConfigName = "QueueName")
         {
@@ -41,6 +42,10 @@ namespace Icon.Esb
 
             QueueName = AppSettingsAccessor.GetStringSetting(queueConfigName, false);
             SessionMode = AppSettingsAccessor.GetEnumSetting<SessionMode>("SessionMode", false);
+
+            var clientIdPrefix = AppSettingsAccessor.GetStringSetting("ClientId", "NoClientIdConfigured");
+            var computedClientId = $"{clientIdPrefix}.{System.Environment.MachineName}.{Guid.NewGuid()}";
+            ClientId = computedClientId.Substring(0, Math.Min(computedClientId.Length,255));
         }
 
         public virtual void LoadFromNamedConfig(string connectionName)

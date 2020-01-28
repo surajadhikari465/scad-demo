@@ -17,12 +17,12 @@ namespace Icon.Esb.Factory
             return new EsbSubscriber(settings);
         }
 
-        public IEsbProducer CreateProducer(bool openConnection = true)
+        public IEsbProducer CreateProducer(string clientId, bool openConnection = true)
         {
             var producer = new EsbProducer(Settings);
             if(openConnection)
             {
-                producer.OpenConnection();
+                producer.OpenConnection(clientId);
             }
             return producer;
         }

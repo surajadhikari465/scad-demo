@@ -26,7 +26,7 @@ namespace WebSupport.Services
         private IQueryHandler<GetCheckPointMessageParameters, IEnumerable<CheckPointMessageModel>> GetCheckPointMessageQuery;
         private ICommandHandler<ArchiveCheckpointMessageCommandParameters> archiveCheckpointMessageCommandHandler;
 		private IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>> searchScanCodes;
-        private IClientIdManager ClientIdManager;
+        private IClientIdManager clientIdManager;
 
         public WebSupportCheckPointRequestMessageService(
             ILogger logger,
@@ -45,7 +45,7 @@ namespace WebSupport.Services
             this.GetCheckPointMessageQuery = GetCheckPointMessageQuery;
             this.archiveCheckpointMessageCommandHandler = archiveCheckpointMessageCommandHandler;
 			this.searchScanCodes = searchScanCodes;
-            this.ClientIdManager = clientIdManager;
+            this.clientIdManager = clientIdManager;
         }
 
         public EsbConnectionSettings Settings { get; set; }
@@ -106,8 +106,7 @@ namespace WebSupport.Services
 
                                 using (var esbProducer = esbConnectionFactory.CreateProducer(Settings))
                                 {
-                                    esbProducer.OpenConnection();
-                                    esbProducer.ClientId = ClientIdManager.GetClientId();
+                                    esbProducer.OpenConnection(clientIdManager.GetClientId());
                                     esbProducer.Send(message, messageId.ToString(), messageProperties);
                                 }
 

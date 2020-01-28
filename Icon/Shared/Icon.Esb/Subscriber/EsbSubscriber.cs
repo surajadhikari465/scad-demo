@@ -12,9 +12,9 @@ namespace Icon.Esb.Subscriber
 
         public EsbSubscriber(EsbConnectionSettings settings) : base(settings) { }
 
-        public override void OpenConnection()
+        public override void OpenConnection(string clientId)
         {
-            base.OpenConnection();
+            base.OpenConnection(clientId);
             consumer = session.CreateConsumer(destination);
         }
 

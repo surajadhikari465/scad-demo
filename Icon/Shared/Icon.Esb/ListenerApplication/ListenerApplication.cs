@@ -39,13 +39,14 @@ namespace Icon.Esb.ListenerApplication
         }
 
         /// <summary>
-        /// Starts the Listener applcation. Begins a infinite polling mechanism that will attempt to reconnect the
+        /// Starts the Listener application. Begins a infinite polling mechanism that will attempt to reconnect the
         /// Listener if it has been disconnected from the ESB.
         /// </summary>
         public void Run()
         {
 
-            var clientId = $"{ListenerApplicationName}.{System.Environment.MachineName}.{Guid.NewGuid().ToString()}";
+            var computedClientId = $"{ListenerApplicationName}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
+            var clientId = computedClientId.Substring(Math.Min(computedClientId.Length, 255));
 
             listeningTimer = new Timer(
                 (x) => BeginListening(clientId),
@@ -67,12 +68,13 @@ namespace Icon.Esb.ListenerApplication
                     subscriber.MessageReceived -= HandleMessage;
                     subscriber.ExceptionHandlers -= HandleEsbException;
                     subscriber.Dispose();
-                    subscriber.OpenConnection();
+                    subscriber.OpenConnection(clientId);
                     subscriber.MessageReceived += HandleMessage;
                     subscriber.ExceptionHandlers += HandleEsbException;
                     subscriber.BeginListening();
 
-                    string connectionSuccessMessage = string.Format("The {0} on queue {1} connected successfully.", ListenerApplicationName, esbConnectionSettings.QueueName);
+                    var connectionSuccessMessage =
+                        $"App: {ListenerApplicationName} Queue: {esbConnectionSettings.QueueName} ClientId: {clientId} connected successfully.";
                     logger.Info(connectionSuccessMessage);
 
                     try
@@ -86,7 +88,8 @@ namespace Icon.Esb.ListenerApplication
                 }
                 catch (Exception ex)
                 {
-                    string connectionFailueMessage = string.Format("An error occurred in {0} when trying to connect to {1}.  Exception details: {2}", ListenerApplicationName, esbConnectionSettings.QueueName, ex.ToString());
+                    string connectionFailueMessage =
+                        $"An error occurred in {ListenerApplicationName} when trying to connect to {esbConnectionSettings.QueueName}. ClientId: {clientId}  Exception details: {ex.ToString()}";
                     LogAndNotifyError(connectionFailueMessage);
                 }
             }
