@@ -151,13 +151,12 @@ const Shrink:React.FC = () => {
         confirmAction: confirmAllItems, 
         cancelAction: cancel.bind(undefined, false, false)});
     }
-    const checkQty = (e:any) =>{
-      if(shrinkState.costedByWeight && (e.charCode < 48 || e.charCode > 57)){
-          e.preventDefault();
-      }
-    }
     const setQty = (e:any) =>{
-      setShrinkState({...shrinkState, quantity: parseInt(e.target.value) });
+      let quantity = parseFloat(e.target.value);
+      if(!shrinkState.costedByWeight){
+        setShrinkState({...shrinkState, quantity: e.target.value.replace(/[^\w\s]|_/g, "")});
+      }
+      else setShrinkState({...shrinkState, quantity: quantity});
     }
     const skipConfirm = (e:any) =>{
       setShrinkState({...shrinkState, skipConfirm: !shrinkState.skipConfirm});
@@ -169,7 +168,8 @@ const Shrink:React.FC = () => {
       setShrinkState({...initialState, upcValue: shrinkState.upcValue, ...skipConfirm, isSelected:true  });
     }
     const setUpcValue = (e:any) =>{
-      setShrinkState({...initialState, upcValue: e.target.value, isSelected:true, skipConfirm: shrinkState.skipConfirm});
+      let value = e.target.value;
+      setShrinkState({...initialState, upcValue: value.replace(/[^\w\s]|_/g, ""), isSelected:true, skipConfirm: shrinkState.skipConfirm});
     }
     const save = (e:any) =>{
       if(shrinkState.quantity>999){
@@ -184,12 +184,17 @@ const Shrink:React.FC = () => {
           alertMessage: 'Quantity cannot be 0',
           type: 'default', 
           header:'Scan Shrink'});
-      }else{
+      }else if(isNaN(shrinkState.quantity)){
+        setAlert({...alert, 
+          open:true, 
+          alertMessage: 'Please enter a numeric value for the Quantity',
+          type: 'default', 
+          header:'Update Shrink'});
+        }else{
         const { isSelected, skipConfirm, queued, dupItem, ...shrinkItem} = shrinkState;
         shrinkItem.shrinkType = shrinkType.shrinkSubTypeMember;
         shrinkItem.quantity =  +(shrinkState.queued) + +(shrinkState.quantity)
         let shrinkItems: any = [];    
-     
         if(localStorage.getItem("shrinkItems") !== null){
           // @ts-ignore
           shrinkItems = JSON.parse(localStorage.getItem("shrinkItems"));
@@ -258,7 +263,12 @@ const Shrink:React.FC = () => {
       }
       clear();
     }
-
+    const clearInvalid= (e:any) =>{
+      //android behavior fix, to stop invalid punctuation 
+      if(e.target.value === ''){
+        e.target.value = '';
+      }
+    }
     if(isLoading) {
       return ( <LoadingComponent content="Loading Item..."/> )
     }
@@ -286,8 +296,9 @@ const Shrink:React.FC = () => {
                     min="0" 
                     step="1"
                     value={shrinkState.upcValue}
+                    onKeyPress={clearInvalid}
                     onChange={setUpcValue}
-                    onKeyPress={(e)=> e.key === 'Enter' ? setUpc() : ''}
+                    onKeyDown={(e)=> e.key === 'Enter' ? setUpc() : ''}
                     ref={textInput}/>        
                   <button className='submit-upc' onClick={setUpc}>>></button>
                 </div>
@@ -304,10 +315,9 @@ const Shrink:React.FC = () => {
                   <label>Qty:</label>
                   <input className='qty-input' 
                         type='number' 
-                        min="0" 
-                        step={shrinkState.costedByWeight ? 1:'any'}
-                        onKeyPress={checkQty} 
+                        min="0"  
                         onChange={setQty}
+                        onKeyPress={clearInvalid}
                         maxLength={3}
                         value={shrinkState.quantity.toString()} 
                         ref={qtyInput}></input>

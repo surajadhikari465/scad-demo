@@ -17,8 +17,11 @@ const UpdateShrink:React.FC<UpdateShrinkProps> = (props) => {
     const [shrinkType] = useState(selectedShrinkItem.shrinkType);
     const {history} = props;
     const updateQuantity = (e:any) =>{
-      let quantity = parseInt(e.target.value);
-      dispatch({ type: types.SETSELECTEDSHRINKITEM, selectedShrinkItem: {...selectedShrinkItem, quantity} });
+      let quantity = parseFloat(e.target.value);
+      if(!selectedShrinkItem.costedByWeight){
+        dispatch({ type: types.SETSELECTEDSHRINKITEM, selectedShrinkItem: {...selectedShrinkItem, quantity: e.target.value.replace(/[^\w\s]|_/g, "")} });
+      }
+      else dispatch({ type: types.SETSELECTEDSHRINKITEM, selectedShrinkItem: {...selectedShrinkItem, quantity} });
     }
     const changeSubtype = (e:any) =>{
       let shrinkType = e.target.value;
@@ -28,25 +31,32 @@ const UpdateShrink:React.FC<UpdateShrinkProps> = (props) => {
       if(selectedShrinkItem.quantity>999){
         setAlert({...alert, 
           open:true, 
-          alertMessage: 'Quantity cannot be greater than 999',
+          alertMessage:`${selectedShrinkItem.costedByWeight? 'Weight':'Quantity'} cannot be greater than 999`,
           type: 'default', 
           header:'Update Shrink'});
       }else if(selectedShrinkItem.quantity===0){
         setAlert({...alert, 
           open:true, 
-          alertMessage: 'Quantity cannot be 0',
+          alertMessage: `${selectedShrinkItem.costedByWeight? 'Weight':'Quantity'} cannot be 0`,
           type: 'default', 
           header:'Update Shrink'});
-      } else {
+      } else if(isNaN(selectedShrinkItem.quantity)){
+        setAlert({...alert, 
+          open:true, 
+          alertMessage: `Please enter a numeric value for the ${selectedShrinkItem.costedByWeight? 'Weight':'Quantity'}`,
+          type: 'default', 
+          header:'Update Shrink'});
+      }else {
         let shrinkItems = state.shrinkItems.map((shrinkItem:any)=>shrinkItem.identifier === selectedShrinkItem.identifier? selectedShrinkItem: shrinkItem);
         dispatch({ type: types.SETSHRINKITEMS, shrinkItems: shrinkItems }); 
         localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems));
         history.push('/shrink/review');
       }
     }
-    const checkQty = (e:any) =>{
-      if(selectedShrinkItem.costedByWeight && (e.charCode < 48 || e.charCode > 57)){
-          e.preventDefault();
+    const clearInvalid = (e:any) =>{
+      //android behavior fix, to stop invalid punctuation 
+      if(e.target.value === ''){
+        e.target.value = '';
       }
     }
     const {shrinkTypes} = state;
@@ -67,17 +77,17 @@ const UpdateShrink:React.FC<UpdateShrinkProps> = (props) => {
           </section>
           <section className='quantity-info'>
             <div>
-              <label>Quantity Recorded:</label>
+              <label>{`${selectedShrinkItem.costedByWeight ?'Weight Recorded':'Quantity Recorded:'}`}</label>
               <span className="initial-quantity">{initialQuantity}</span>
             </div>
             <div>
-              <label>New Quantity:</label>
+              <label>{`${selectedShrinkItem.costedByWeight ?'New Weight:':'New Quantity:'}`}</label>
               <input type='number' 
                     value={selectedShrinkItem.quantity.toString()} 
                     min="1" 
                     maxLength={3}
-                    step={selectedShrinkItem.costedByWeight ? 1:'any'}
-                    onKeyPress={checkQty}  
+                    step={selectedShrinkItem.costedByWeight ? 'any': 1}
+                    onKeyPress={clearInvalid}
                     onChange={updateQuantity}/>
             </div>
             <div>

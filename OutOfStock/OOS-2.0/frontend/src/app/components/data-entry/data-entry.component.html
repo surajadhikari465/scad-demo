@@ -6,7 +6,7 @@
     </wfm-button>
   </wfm-toolbar>
   <div class="data_container"> 
-    <input type="number" min="0" #upc_input pattern=" 0+\.[0-9]*[1-9][0-9]*$"  autofocus (keyup.enter)="addUPCEntry(upc_input.value)"  onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" oninput="validity.valid">
+    <input type="number" min="0" #upc_input  autofocus (keyup.enter)="addUPCEntry(upc_input.value)"  (keyup)="checkUPCEntry($event)" (oninput)="validity.valid">
     <wfm-button color="secondary" (click)="addUPCEntry(upc_input.value)" flex>Add Item</wfm-button>
   </div>
 </div>

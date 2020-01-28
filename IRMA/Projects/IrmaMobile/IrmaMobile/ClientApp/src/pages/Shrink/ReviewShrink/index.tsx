@@ -46,7 +46,6 @@ const ReviewShrink:React.FC = () => {
       }else{
         setIsLoading(true);
         let succeededItems = 0;
-        console.log(shrinkItems);
         for(let i=0; i<shrinkItems.length;i++){
           let weight = shrinkItems[i].costedByWeight ? shrinkItems[i].quantity: 0;
           let quantity = shrinkItems[i].costedByWeight ? 0: shrinkItems[i].quantity;

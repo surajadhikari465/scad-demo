@@ -12,6 +12,14 @@ export class DataEntryComponent implements OnInit {
   constructor(private modalController: ModalController) { }
 
   ngOnInit() {}
+  
+  checkUPCEntry(e){
+    let value = e.target.value;
+    if(value === ''){
+      e.target.value = '';
+    } else e.target.value = value.replace(/[^\w\s]|_/g, "");
+  }
+
 
   addUPCEntry(value){
     if(isNaN(value)){
