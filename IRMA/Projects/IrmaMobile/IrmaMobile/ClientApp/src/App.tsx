@@ -13,7 +13,7 @@ import {
 import { faCog } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { AppContext, reducer, initialState } from "./store";
+import { AppContext, reducer, initialState, usePersistedReducer } from "./store";
 import Receive from './pages/Receive/Index';
 import ReceiveDocument from './pages/Receive/Document/ReceiveDocument';
 import ReceivePurchaseOrder from './pages/Receive/PurchaseOrder/PurchaseOrder/ReceivePurchaseOrder';

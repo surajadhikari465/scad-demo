@@ -3,6 +3,10 @@ import { OrderDetails } from "./pages/Receive/PurchaseOrder/types/OrderDetails";
 import { ReasonCode } from "./pages/Receive/PurchaseOrder/types/ReasonCode";
 import { ListedOrder } from "./pages/Receive/PurchaseOrder/types/ListedOrder";
 import { DropdownItemProps } from "semantic-ui-react";
+// @ts-ignore
+import createPersistedReducer from './scripts/use-persisted-reducer';
+
+export const usePersistedReducer = createPersistedReducer('state');
 
 interface IIntitialState {
   region: string;

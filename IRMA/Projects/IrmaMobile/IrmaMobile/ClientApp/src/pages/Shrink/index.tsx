@@ -154,7 +154,7 @@ const Shrink:React.FC = () => {
     const setQty = (e:any) =>{
       let quantity = parseFloat(e.target.value);
       if(!shrinkState.costedByWeight){
-        setShrinkState({...shrinkState, quantity: e.target.value.replace(/[^\w\s]|_/g, "")});
+        setShrinkState({...shrinkState, quantity: parseInt(e.target.value.replace(/[^\w\s]|_/g, ""))});
       }
       else setShrinkState({...shrinkState, quantity: quantity});
     }
@@ -193,7 +193,7 @@ const Shrink:React.FC = () => {
         }else{
         const { isSelected, skipConfirm, queued, dupItem, ...shrinkItem} = shrinkState;
         shrinkItem.shrinkType = shrinkType.shrinkSubTypeMember;
-        shrinkItem.quantity =  +(shrinkState.queued) + +(shrinkState.quantity)
+        shrinkItem.quantity = parseFloat((+(shrinkState.queued) + +(shrinkState.quantity)).toPrecision(4));
         let shrinkItems: any = [];    
         if(localStorage.getItem("shrinkItems") !== null){
           // @ts-ignore
@@ -228,7 +228,7 @@ const Shrink:React.FC = () => {
     const add = (e:any) => {
       setAlert({...alert, open:false});
        // @ts-ignore
-      let shrinkItems:[] = getShrinkItems(+(shrinkState.queued) + +(shrinkState.quantity));
+      let shrinkItems:[] = getShrinkItems(parseFloat((+(shrinkState.queued) + +(shrinkState.quantity)).toPrecision(4)));
       saveItems(shrinkItems);
     }
     const overwrite = (e:any) => {

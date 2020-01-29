@@ -19,7 +19,7 @@ const UpdateShrink:React.FC<UpdateShrinkProps> = (props) => {
     const updateQuantity = (e:any) =>{
       let quantity = parseFloat(e.target.value);
       if(!selectedShrinkItem.costedByWeight){
-        dispatch({ type: types.SETSELECTEDSHRINKITEM, selectedShrinkItem: {...selectedShrinkItem, quantity: e.target.value.replace(/[^\w\s]|_/g, "")} });
+        dispatch({ type: types.SETSELECTEDSHRINKITEM, selectedShrinkItem: {...selectedShrinkItem, quantity: parseInt(e.target.value.replace(/[^\w\s]|_/g, ""))} });
       }
       else dispatch({ type: types.SETSELECTEDSHRINKITEM, selectedShrinkItem: {...selectedShrinkItem, quantity} });
     }
