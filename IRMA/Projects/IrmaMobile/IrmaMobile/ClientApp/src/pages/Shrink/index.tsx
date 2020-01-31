@@ -43,7 +43,7 @@ const Shrink:React.FC = () => {
       BarcodeScanner.registerHandler(function(data:any){
         if(shrinkState.isSelected===true){
           try{
-            setUpc(parseInt(data, 10));
+            setUpc(parseInt(data, 10), true);
           }catch(ex){
             setAlert({...alert, 
               open:true, 
@@ -80,7 +80,7 @@ const Shrink:React.FC = () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shrinkState, dispatch]);
 
-    const setUpc = (value?:any) =>{  
+    const setUpc = (value?:any, scan:boolean = false) =>{  
       let upc = value && typeof value !== 'object' ? value: shrinkState.upcValue;
       setIsLoading(true);
 
@@ -104,7 +104,11 @@ const Shrink:React.FC = () => {
               confirmAction: confirmAdd, 
               cancelAction: cancel.bind(undefined, true, false)});
           } 
-          setShrinkItem(result, upc);
+          let quantity = shrinkState.quantity;
+          if(scan){
+            quantity+=1;
+          } else quantity = 1;
+          setShrinkItem(result, upc, quantity);
         }
        })
       .finally(() => setIsLoading(false))
@@ -115,17 +119,19 @@ const Shrink:React.FC = () => {
       dispatch({ type: 'SETSHRINKTYPE', shrinkType:JSON.parse(value) });
     }
 
-    const setIsLoading = (result: boolean) => {
-      dispatch({ type: types.SETISLOADING, isLoading: result })
-    }
-   const setShrinkItem = (result:any, upc: any) =>{
+   
+   const setShrinkItem = (result:any, upc: any, quantity:any) =>{
       let dupItem = dupItemCheck(result);
       if(dupItem.length > 0){
         // @ts-ignore
-        setShrinkState({...shrinkState, ...result, upcValue:upc,queued: dupItem[0].quantity, quantity:1, dupItem});
+        setShrinkState({...shrinkState, ...result, upcValue:upc,queued: dupItem[0].quantity, quantity, dupItem});
       } else {
-        setShrinkState({...shrinkState, ...result, upcValue:upc, quantity:1, dupItem});
+        setShrinkState({...shrinkState, ...result, upcValue:upc, quantity, dupItem});
       }
+    }
+
+    const setIsLoading = (result: boolean) => {
+      dispatch({ type: types.SETISLOADING, isLoading: result })
     }
     const dupItemCheck = (result:any)=>{
         let shrinkItems:any = [];
