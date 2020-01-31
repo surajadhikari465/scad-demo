@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import LoadingComponent from '../../layout/LoadingComponent';
 import {WfmButton, WfmToggleGroup} from '@wfm/ui-react';
 
-const REGION_LIST = ['SP', 'MW', 'MA', 'SW', 'SO', 'NC', 'RM', 'NE', 'NA', 'FL', 'PN', 'EU'];
+const REGION_LIST = ['FL', 'MA', 'MW', 'NA', 'NC', 'NE', 'PN', 'RM', 'SO', 'SP', 'SW', 'EU'];
 // @ts-ignore 
 interface RegionProps {
   history: any;

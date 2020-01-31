@@ -11,6 +11,7 @@ import ITransferItem from '../types/ITransferItem';
 import { toast } from 'react-toastify';
 import ReasonCodeModal from '../../../layout/ReasonCodeModal';
 import { ReasonCode } from '../../Receive/PurchaseOrder/types/ReasonCode';
+import BasicModal from '../../../layout/BasicModal';
 
 const TransferScan: React.FC = () => {
     //@ts-ignore
@@ -32,20 +33,21 @@ const TransferScan: React.FC = () => {
     const [vendorCost, setVendorCost] = useState();
     const [adjustedCost, setAdjustedCost] = useState<number>(0);
     const [reasonCode, setReasonCode] = useState(-1);
+    const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { }, cancelAction: () => { } });
 
     useEffect(() => {
         dispatch({ type: types.SETTITLE, Title: 'Transfer Scan' });
         return () => {
-          dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
+            dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
         };
-      }, [dispatch]);
+    }, [dispatch]);
 
     const setMenuItems = useCallback(() => {
         const newMenuItems = [
             { id: 1, order: 0, text: "Delete Order", path: "/transfer/scan/delete", disabled: true } as IMenuItem,
             { id: 2, order: 1, text: "Save Order", path: `/transfer/scan/save`, disabled: true } as IMenuItem,
             { id: 3, order: 2, text: "Back", path: `/transfer/index/true`, disabled: false } as IMenuItem,
-         ] as IMenuItem[];
+        ] as IMenuItem[];
 
         dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems });
     }, [dispatch]);
@@ -82,19 +84,19 @@ const TransferScan: React.FC = () => {
         setIsLoading(true);
 
         try {
-            if(transferData) {
+            if (transferData) {
                 const filteredItems = transferData.Items.filter((item: ITransferItem) => item.Upc === upc);
                 let loadingItem = undefined;
 
-                if(filteredItems.length === 0) {
-                    const itemRaw = await agent.Transfer.getTransferItem(region, upc, transferData.ProductType, transferData.FromStoreNo, transferData.FromStoreVendorId, transferData.FromSubteamNo, transferData.SupplyType); 
-                    
-                    if(!itemRaw) {
+                if (filteredItems.length === 0) {
+                    const itemRaw = await agent.Transfer.getTransferItem(region, upc, transferData.ProductType, transferData.FromStoreNo, transferData.FromStoreVendorId, transferData.FromSubteamNo, transferData.SupplyType);
+
+                    if (!itemRaw) {
                         toast.error('Error loading item. Please try again.', { autoClose: false });
                         setUpc('');
                         return;
                     }
-                    
+
                     loadingItem = {
                         AdjustedCost: 0, //don't know what this is
                         AdjustedReason: '', //don't know what this is
@@ -113,20 +115,20 @@ const TransferScan: React.FC = () => {
                     setQueuedQuantity(0);
                 } else {
                     loadingItem = filteredItems[0];
-                    
+
                     setQueuedQuantity(loadingItem.Quantity);
                 }
 
                 setItem(loadingItem);
 
                 setDescription(loadingItem.Description);
-                
+
                 setQuantity(1);
 
                 setVendorPack(loadingItem.VendorPack);
                 setRetail(loadingItem.RetailUom)
-                
-                if(loadingItem.VendorCost === 0) {
+
+                if (loadingItem.VendorCost === 0) {
                     toast.info("The cost for this item is 0.00, or it could not be determined. If this is incorrect, please enter the Adjusted Cost for the item.", { autoClose: false });
                     setVendorCost('0');
                     setCostLabel('Adjusted Cost:');
@@ -134,7 +136,7 @@ const TransferScan: React.FC = () => {
                     setVendorCost(loadingItem.VendorCost);
                     setCostLabel('Vendor Cost:');
                 }
-            } 
+            }
         }
         finally {
             setIsLoading(false);
@@ -143,22 +145,22 @@ const TransferScan: React.FC = () => {
 
     useEffect(() => {
         BarcodeScanner.registerHandler((data: any) => {
-            if(upc === data) {
+            if (upc === data) {
                 setQuantity((q: any) => q + 1);
                 return;
             } else {
                 setUpc(data);
                 setSearchFlag(true);
             }
-          });
+        });
 
         return () => {
-            BarcodeScanner.scanHandler = () => {};
-        }      
+            BarcodeScanner.scanHandler = () => { };
+        }
     });
 
     useEffect(() => {
-        if(searchFlag) {
+        if (searchFlag) {
             upcSearch();
             setSearchFlag(false);
         }
@@ -166,13 +168,13 @@ const TransferScan: React.FC = () => {
 
     useEffect(() => {
         const rawData = localStorage.getItem("transferData");
-        if(rawData !== null) {
+        if (rawData !== null) {
             setTransferData(JSON.parse(rawData) as ITransferData);
         }
-    }, [setTransferData]); 
+    }, [setTransferData]);
 
     const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
-        setQuantity(parseInt(value));
+            setQuantity(parseInt(value));
     }
 
     const handleAdjustedCostChange = (event: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
@@ -188,23 +190,40 @@ const TransferScan: React.FC = () => {
     }
 
     const handleSave = () => {
-        if(!transferData || !item) {
+        if (!transferData || !item) {
             toast.error('No data to save.', { autoClose: false });
-            return; 
+            return;
         }
 
-        const filteredItems = transferData.Items.filter((item: ITransferItem) => item.Upc === upc);
-        if(filteredItems.length === 0){
-            transferData.Items.push(item);
+        if(isNaN(quantity)) {
+            setAlert({
+                ...alert,
+                open: true,
+                alertMessage: `Quantity must be a valid number.`,
+                type: 'default',
+                header: 'Invalid Quantity'
+            });
         } else {
-            transferData.Items = [...transferData.Items.filter((item: ITransferItem) => item.Upc !== upc), { ...filteredItems[0], Quantity: quantity }];
-            alert("I need add to/overwrite/cancel logic");
+            const filteredItems = transferData.Items.filter((i: ITransferItem) => i.Upc === item.Upc);
+            if (filteredItems.length === 0) {
+                transferData.Items.push(item);
+
+                localStorage.setItem("transferData", JSON.stringify(transferData));
+
+                clearScreen();
+
+                toast.info(`Transfer for UPC ${item.Upc} saved successfully with quantity of ${quantity}.`);
+            } else {
+                setAlert({
+                    ...alert,
+                    open: true,
+                    alertMessage: `${queuedQuantity} of this item already queued in this session. Tap Add, Overwrite or Cancel`,
+                    type: 'prevScanned',
+                    header: 'Previously Scanned Item',
+                    cancelAction: cancel.bind(undefined, true)
+                });
+            }
         }
-
-        localStorage.setItem("transferData", JSON.stringify(transferData));
-
-        toast.info(`Transfer for UPC ${upc} saved successfully with quantity of ${quantity}.`);
-        clearScreen();
     }
 
     const clearScreen = () => {
@@ -227,123 +246,151 @@ const TransferScan: React.FC = () => {
     }
 
     const handleReasonCodeChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-        if(data && data.value) {
+        if (data && data.value) {
             setReasonCode(parseInt(data.value.toString()));
         }
     }
 
-    const handleReviewClick = () => 
-    {
+    const handleReviewClick = () => {
         alert("This opens the review screen. I need logic");
         //history.push('/transfer/review');
+    }
+
+    const add = () => {
+        setAlert({ ...alert, open: false });
+        if (transferData && item) {
+            const filteredItems = transferData.Items.filter((i: ITransferItem) => i.Upc === item.Upc);
+            filteredItems[0].Quantity += quantity;
+            localStorage.setItem("transferData", JSON.stringify(transferData));
+
+            clearScreen();
+        }
+    }
+
+    const overwrite = () => {
+        setAlert({ ...alert, open: false });
+        if (transferData && item) {
+            const filteredItems = transferData.Items.filter((i: ITransferItem) => i.Upc === item.Upc);
+            filteredItems[0].Quantity = quantity;
+            localStorage.setItem("transferData", JSON.stringify(transferData));
+
+            clearScreen();
+        }
+    }
+
+    const cancel = () => {
+        setAlert({ ...alert, open: false });
+
+        clearScreen();
     }
 
     return (
         <Fragment>
             {isLoading ? <LoadingComponent content='Loading item...' />
-            :
-            <Fragment>
-                <ReasonCodeModal />
-                <Grid style={{marginTop: '5px'}}>
-                    <Grid.Row>
-                        <Grid.Column width={4} verticalAlign='middle' textAlign='right'>
-                            UPC:
+                :
+                <Fragment>
+                    <ReasonCodeModal />
+                    <Grid style={{ marginTop: '5px' }}>
+                        <Grid.Row>
+                            <Grid.Column width={4} verticalAlign='middle' textAlign='right'>
+                                UPC:
                         </Grid.Column>
-                        <Grid.Column width={8} style={{padding: '0px'}}>
-                            <Input onFocus={(event: any) => event.target.select()} type='number' placeholder='UPC' value={upc || ''} onChange={handleUpcChange} fluid/>
+                            <Grid.Column width={8} style={{ padding: '0px' }}>
+                                <Input onFocus={(event: any) => event.target.select()} type='number' placeholder='UPC' value={upc || ''} onChange={handleUpcChange} fluid />
+                            </Grid.Column>
+                            <Grid.Column width={2}>
+                                <Button className='wfmButton' onClick={upcSearchClick}>>></Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column verticalAlign='middle' textAlign='right' width={4}>
+                                Desc:
                         </Grid.Column>
-                        <Grid.Column width={2}>
-                            <Button className='wfmButton' onClick={upcSearchClick}>>></Button>
+                            <Grid.Column width={12} style={{ padding: '0px' }}>
+                                {description}
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column verticalAlign='middle' textAlign='right' width={4}>
+                                Quantity:
                         </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column verticalAlign='middle' textAlign='right' width={4}>
-                            Desc:
+                            <Grid.Column width={3} style={{ padding: '0px' }}>
+                                <Input onFocus={(event: any) => event.target.select()} type='number' placeholder='Qty' value={quantity} onChange={handleQuantityChange} fluid />
+                            </Grid.Column>
+                            <Grid.Column width={2} verticalAlign='middle' textAlign='right'>
+                                Retail:
                         </Grid.Column>
-                        <Grid.Column width={12} style={{padding: '0px'}}>
-                            {description}
+                            <Grid.Column width={2} verticalAlign='middle' textAlign='left' style={{ fontWeight: 'bold' }}>
+                                {retail}
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column verticalAlign='middle' textAlign='right' width={4}>
+                                Vendor Pack:
                         </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column verticalAlign='middle' textAlign='right' width={4}>
-                            Quantity:
-                        </Grid.Column>
-                        <Grid.Column width={3} style={{padding: '0px'}}>
-                            <Input onFocus={(event: any) => event.target.select()} type='number' placeholder='Qty' value={quantity} onChange={handleQuantityChange} fluid/>
-                        </Grid.Column>
-                        <Grid.Column width={2} verticalAlign='middle' textAlign='right'>
-                            Retail:
-                        </Grid.Column>
-                        <Grid.Column width={2} verticalAlign='middle' textAlign='left' style={{fontWeight: 'bold'}}>
-                            {retail}
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column verticalAlign='middle' textAlign='right' width={4}>
-                            Vendor Pack:
-                        </Grid.Column>
-                        <Grid.Column width={10} verticalAlign='middle' textAlign='left' style={{fontWeight: 'bold', padding: '0px'}}>
-                            {vendorPack}
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column verticalAlign='middle' textAlign='right' width={4}>
-                            {costLabel}
-                        </Grid.Column>
-                        <Grid.Column width={4} verticalAlign='middle' textAlign='left' style={{fontWeight: 'bold', paddingLeft: '0px'}}>
-                            {parseFloat(vendorCost) === 0 ? 
-                                <Input onFocus={(event: any) => event.target.select()} fluid value={adjustedCost} onChange={handleAdjustedCostChange} placeholder='Adjusted Cost'/>
-                                :
-                                vendorCost
-                            }
-                        </Grid.Column>
-                        {
-                            parseFloat(vendorCost) === 0 ? 
-                            <Fragment>
-                                <Grid.Column width={2} verticalAlign='middle'>
-                                    <button
-                                            type="button"
-                                            className="link-button"
-                                            onClick={reasonCodeClick}
-                                        >
-                                            Reason:
+                            <Grid.Column width={10} verticalAlign='middle' textAlign='left' style={{ fontWeight: 'bold', padding: '0px' }}>
+                                {vendorPack}
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column verticalAlign='middle' textAlign='right' width={4}>
+                                {costLabel}
+                            </Grid.Column>
+                            <Grid.Column width={4} verticalAlign='middle' textAlign='left' style={{ fontWeight: 'bold', paddingLeft: '0px' }}>
+                                {parseFloat(vendorCost) === 0 ?
+                                    <Input onFocus={(event: any) => event.target.select()} fluid value={adjustedCost} onChange={handleAdjustedCostChange} placeholder='Adjusted Cost' />
+                                    :
+                                    vendorCost
+                                }
+                            </Grid.Column>
+                            {
+                                parseFloat(vendorCost) === 0 ?
+                                    <Fragment>
+                                        <Grid.Column width={2} verticalAlign='middle'>
+                                            <button
+                                                type="button"
+                                                className="link-button"
+                                                onClick={reasonCodeClick}
+                                            >
+                                                Reason:
                                         </button>
-                                </Grid.Column>
-                                <Grid.Column textAlign="left" style={{padding: '5px'}} width={4}>
-                                    <Dropdown
-                                        style={{paddingRight: '0px', marginLeft: '25px', paddingLeft: '0px', verticalAlign: 'middle'}}
-                                        fluid
-                                        selection
-                                        item
-                                        options={mappedReasonCodes}
-                                        name="Code"
-                                        onChange={handleReasonCodeChange}
-                                        value={reasonCode}
-                                    />
-                                </Grid.Column>
-                            </Fragment>
-                            : <div/>
-                        }
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column width={8} verticalAlign='middle' textAlign='left' style={{fontWeight: 'bold'}}>
-                            <Segment color='grey' inverted>Queued: {queuedQuantity}</Segment>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column textAlign='center' width={8}>
-                            <Button className='wfmButton' fluid onClick={clearScreen}>Clear</Button>
-                        </Grid.Column>
-                        <Grid.Column textAlign='center' width={8}>
-                            <Button className='wfmButton' fluid onClick={handleSave}>Save</Button>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-                <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Button className='wfmButton' style={{width:'100%', marginTop: '50px'}} onClick={handleReviewClick}>Review</Button>
-                </span>
-            </Fragment>
+                                        </Grid.Column>
+                                        <Grid.Column textAlign="left" style={{ padding: '5px' }} width={4}>
+                                            <Dropdown
+                                                style={{ paddingRight: '0px', marginLeft: '25px', paddingLeft: '0px', verticalAlign: 'middle' }}
+                                                fluid
+                                                selection
+                                                item
+                                                options={mappedReasonCodes}
+                                                name="Code"
+                                                onChange={handleReasonCodeChange}
+                                                value={reasonCode}
+                                            />
+                                        </Grid.Column>
+                                    </Fragment>
+                                    : <div />
+                            }
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column width={8} verticalAlign='middle' textAlign='left' style={{ fontWeight: 'bold' }}>
+                                <Segment color='grey' inverted>Queued: {queuedQuantity}</Segment>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column textAlign='center' width={8}>
+                                <Button className='wfmButton' fluid onClick={clearScreen}>Clear</Button>
+                            </Grid.Column>
+                            <Grid.Column textAlign='center' width={8}>
+                                <Button className='wfmButton' fluid onClick={handleSave}>Save</Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                    <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <Button className='wfmButton' style={{ width: '100%', marginTop: '50px' }} onClick={handleReviewClick}>Review</Button>
+                    </span>
+                </Fragment>
             }
+            <BasicModal alert={alert} add={add} overwrite={overwrite} setAlert={setAlert} />
         </Fragment>
     )
 }
