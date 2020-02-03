@@ -174,9 +174,18 @@
                             </StartDate>
                             <xsl:choose>
                                 <xsl:when test="upper-case(pfx10:Action) = &quot;DELETE&quot;">
-                                    <EndDate>
-                                        <xsl:value-of select="tib:create-dateTime(tib:get-year-from-dateTime(current-dateTime()), tib:get-month-from-dateTime(current-dateTime()), tib:get-day-from-dateTime(current-dateTime()), 0 , 0, 0)"/>
-                                    </EndDate>
+                                    <xsl:choose>
+                                        <xsl:when test="pfx10:EndDate &lt; current-date()">
+                                            <EndDate>
+                                                <xsl:value-of select="tib:add-to-dateTime(pfx10:EndDate, 0, 0, 0, -23, -59, -59)"/>
+                                            </EndDate>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <EndDate>
+                                                <xsl:value-of select="tib:create-dateTime(tib:get-year-from-dateTime(current-dateTime()), tib:get-month-from-dateTime(current-dateTime()), tib:get-day-from-dateTime(current-dateTime()), 0 , 0, 0)"/>
+                                            </EndDate>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
                                 </xsl:when>
                                 <xsl:when test="(exists(pfx10:EndDate) and string-length(pfx10:EndDate) > 0)">
                                     <EndDate>
