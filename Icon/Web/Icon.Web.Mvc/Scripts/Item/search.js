@@ -195,7 +195,7 @@ window.addEventListener('load', function () {
             attributesSearchValue.classList.add("attributes-search-value");
             attributesSearchValue.setAttribute('associatedAttributesComboBox', attributesComboBox.id);
             attributesSearchValue.addEventListener('input', this.setCheckBoxEnabled)
- 
+
             let removeAttributeButton = document.createElement('button');
             removeAttributeButton.id = "removeAttributeButton" + idSuffix;
             removeAttributeButton.classList.add("btn");
@@ -212,7 +212,7 @@ window.addEventListener('load', function () {
             addAttributeButton.style.backgroundColor = 'white';
             addAttributeButton.style.padding = '0';
             addAttributeButton.style.marginLeft = '5px';
-            addAttributeButton.style.color ='green';
+            addAttributeButton.style.color = 'green';
             addAttributeButton.addEventListener('click', this.addAttribute.bind(this, listItem));
             addAttributeButton.innerHTML = '<i class="fa fa-plus-circle"></i>';
 
@@ -280,7 +280,7 @@ window.addEventListener('load', function () {
             this.searchParameterViewModels.push(searchParameterViewModel);
         },
         setAttributesSearchValue: function (comboBoxOption, attributesSearchValue, searchParameterViewModel) {
-            return  $(attributesSearchValue).igTextEditor({
+            return $(attributesSearchValue).igTextEditor({
                 inputName: comboBoxOption.value,
                 width: "300px",
                 valueChanged: function (evt, ui) {
@@ -353,11 +353,11 @@ window.addEventListener('load', function () {
                             $('#searchError').html('An error occurred. Please try to narrow your search.');
                             if ($("#grid").igGrid() != undefined) {
                                 $("#grid").igGrid('destroy');
-                          
+
                             }
                             $('#resetColumnsButton').hide();
                             $('#ExportLink').hide();
-                            
+
                         },
                         features: [
                             {
@@ -391,6 +391,19 @@ window.addEventListener('load', function () {
                                 columnChooserHeight: 600,
                                 columnChooserContainment: "window",
                                 columnHidden: (evt, ui) => self.saveColumnSettings(ui.owner.grid.options.columns),
+                                columnSettings: (function () {
+                                    let columnHiddenSettings = [];
+
+                                columnSettings.filter(s => s.hidden == true).forEach(function (element) {
+                                        columnHiddenSettings.push({
+                                            columnKey: element.key,
+                                            allowHiding: true,
+                                            hidden: true
+                                      });
+                                   });
+                                    return columnHiddenSettings;
+                                })(),
+
                                 columnShown: (evt, ui) => self.saveColumnSettings(ui.owner.grid.options.columns)
                             }, {
                                 name: "Resizing",
@@ -557,7 +570,19 @@ window.addEventListener('load', function () {
                     if (self.view.resetColumnsButton.hidden) {
                         self.view.resetColumnsButton.hidden = false;
                     }
-                    self.saveColumnSettings($("#grid").igGrid("option", "columns"));
+
+                    var columns = $("#grid").igGrid("option", "columns");
+                    var features = $("#grid").igGrid("option", "features");
+                    var hiddenColumnList = features.find(f => f.name == 'Hiding').columnSettings;
+
+                    if (typeof (hiddenColumnList) !== undefined && hiddenColumnList !== null)
+                        {
+                            hiddenColumnList.filter(s => s.hidden == true).forEach(function (element) {
+                                columns.find(c => c.columnKey === element.columnKey).hidden = true;
+                            });
+                        }
+
+                    self.saveColumnSettings(columns);
                 })
                 .fail(function (data) {
                     console.log(data);
@@ -568,12 +593,12 @@ window.addEventListener('load', function () {
                 let columnSettings = JSON.parse(localStorage.getItem(columnsKey));
                 for (let attribute of this.state.attributes.sort(this.compareAttributesByDisplayOrder)) {
                     if (!columnSettings.some(c => c.key === attribute.AttributeName)) {
-                            columnSettings.push({
-                                headerText: attribute.DisplayName,
-                                key: attribute.AttributeName,
-                                dataType: utilityFunctions.getColumnDataType(attribute),
-                                width: attribute.GridColumnWidth
-                            });
+                        columnSettings.push({
+                            headerText: attribute.DisplayName,
+                            key: attribute.AttributeName,
+                            dataType: utilityFunctions.getColumnDataType(attribute),
+                            width: attribute.GridColumnWidth
+                        });
                     }
                 }
                 return utilityFunctions.applyFormatters(columnSettings);
@@ -662,26 +687,26 @@ window.addEventListener('load', function () {
                     width: "200px"
                 });
 
-            for(let attribute of this.state.attributes.sort(this.compareAttributesByDisplayOrder)) {
-                if (attribute.DataTypeName === 'Date') {
-                    columnSettings.push({
-                        headerText: attribute.DisplayName,
-                        key: attribute.AttributeName,
-                        dataType: "date",
-                        dateDisplayType: "utc",
-                        enableUTCDates: true,
-                        format: "yyyy-MM-dd",
-                        width: attribute.GridColumnWidth
-                    });
-                } else {;
-                    columnSettings.push({
-                        headerText: attribute.DisplayName,
-                        key: attribute.AttributeName,
-                        dataType: utilityFunctions.getColumnDataType(attribute),
-                        width: attribute.GridColumnWidth
-                    });
+                for (let attribute of this.state.attributes.sort(this.compareAttributesByDisplayOrder)) {
+                    if (attribute.DataTypeName === 'Date') {
+                        columnSettings.push({
+                            headerText: attribute.DisplayName,
+                            key: attribute.AttributeName,
+                            dataType: "date",
+                            dateDisplayType: "utc",
+                            enableUTCDates: true,
+                            format: "yyyy-MM-dd",
+                            width: attribute.GridColumnWidth
+                        });
+                    } else {
+                        columnSettings.push({
+                            headerText: attribute.DisplayName,
+                            key: attribute.AttributeName,
+                            dataType: utilityFunctions.getColumnDataType(attribute),
+                            width: attribute.GridColumnWidth
+                        });
+                    }
                 }
-            }
                 return utilityFunctions.applyFormatters(columnSettings);
             }
         },
@@ -692,7 +717,7 @@ window.addEventListener('load', function () {
                 }
             });
 
-            let columnsJson = JSON.stringify(columns); 
+            let columnsJson = JSON.stringify(columns);
             window.localStorage.setItem(columnsKey, columnsJson);
             this.setSession();
         },
@@ -753,7 +778,7 @@ window.addEventListener('load', function () {
                 return 0;
             }
         },
-    
+
         loadPickListData: function () {
             return new Promise((resolve, reject) => {
                 let self = searchViewModel;
@@ -764,7 +789,7 @@ window.addEventListener('load', function () {
                 resolve();
             });
         },
-        attributeComboBoxOptions:[],
+        attributeComboBoxOptions: [],
         operatorComboBoxOptions: [{
             displayName: "Contains(ANY)",
             value: searchOperators.ContainsAny
@@ -854,7 +879,7 @@ window.addEventListener('load', function () {
                     return 0;
             });
         },
-        resetColumns: function (){
+        resetColumns: function () {
             this.view.igGrid.igGrid("destroy");
             localStorage.removeItem(columnsKey);
             this.search();
@@ -886,7 +911,7 @@ window.addEventListener('load', function () {
         }
     }
 
-    let loadHierarchies = ()  => {
+    let loadHierarchies = () => {
         return new Promise((resolve, reject) => {
             let self = searchViewModel;
 
