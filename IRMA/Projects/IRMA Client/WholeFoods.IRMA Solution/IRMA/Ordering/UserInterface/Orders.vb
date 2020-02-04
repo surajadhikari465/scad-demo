@@ -774,14 +774,21 @@ Friend Class frmOrders
 
         If gbBuyer Or gbPOAccountant Then
             SQLOpenRS(m_rsOrder, "EXEC GetOrderStatus " & m_lOrderHeader_ID, DAO.RecordsetTypeEnum.dbOpenSnapshot, DAO.RecordsetOptionEnum.dbSQLPassThrough)
-            If Not IsDBNull(m_rsOrder.Fields("CloseDate").Value) Then
-                MsgBox("This order is closed and cannot be deleted.", MsgBoxStyle.Information, "Delete Order")
-                m_rsOrder.Close()
-                logger.Info("cmdDeleteOrder_Click " & " This order is closed and cannot be deleted!")
-                logger.Debug("cmdDeleteOrder_Click Exit")
-                Exit Sub
-            End If
-            m_rsOrder.Close()
+			If Not IsDBNull(m_rsOrder.Fields("CloseDate").Value) Then
+				MsgBox("This order is closed and cannot be deleted.", MsgBoxStyle.Information, "Delete Order")
+				m_rsOrder.Close()
+				logger.Info("cmdDeleteOrder_Click " & " This order is closed and cannot be deleted!")
+				logger.Debug("cmdDeleteOrder_Click Exit")
+				Exit Sub
+			End If
+			If Not IsDBNull(m_rsOrder.Fields("Einvoice_ID").Value) Then
+				MsgBox("This order has an e-invoice attached and cannot be deleted.", MsgBoxStyle.Information, "Delete Order")
+				m_rsOrder.Close()
+				logger.Info("cmdDeleteOrder_Click " & " This order has an e-invoice attached and cannot be deleted!")
+				logger.Debug("cmdDeleteOrder_Click Exit")
+				Exit Sub
+			End If
+			m_rsOrder.Close()
         End If
 
         If frmDeletePOReasons.ShowDialog() = Windows.Forms.DialogResult.Yes Then
