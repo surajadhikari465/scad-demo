@@ -12,8 +12,10 @@ const UpdateShrink:React.FC<UpdateShrinkProps> = (props) => {
     // @ts-ignore
     const {state, dispatch} = useContext(AppContext);
     const {selectedShrinkItem} = state;
+
     const [alert, setAlert] = useState<any>({open:false, alertMessage:'', type: 'default', header: 'IRMA Mobile', confirmAction:()=> {}, cancelAction:()=> {}});
     const [initialQuantity] = useState(selectedShrinkItem.quantity);
+    const [initialShrinkType] = useState(selectedShrinkItem.shrinkType);
     const [shrinkType] = useState(selectedShrinkItem.shrinkType);
     const {history} = props;
     const updateQuantity = (e:any) =>{
@@ -47,7 +49,7 @@ const UpdateShrink:React.FC<UpdateShrinkProps> = (props) => {
           type: 'default', 
           header:'Update Shrink'});
       }else {
-        let shrinkItems = state.shrinkItems.map((shrinkItem:any)=>shrinkItem.identifier === selectedShrinkItem.identifier? selectedShrinkItem: shrinkItem);
+        let shrinkItems = state.shrinkItems.map((shrinkItem:any)=>shrinkItem.identifier === selectedShrinkItem.identifier && initialShrinkType === shrinkItem.shrinkType? selectedShrinkItem: shrinkItem);
         dispatch({ type: types.SETSHRINKITEMS, shrinkItems: shrinkItems }); 
         localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems));
         history.push('/shrink/review');

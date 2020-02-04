@@ -1,4 +1,4 @@
-import React, { Fragment, useReducer } from 'react';
+import React, { Fragment } from 'react';
 import StoreFunctions from './pages/StoreFunctions';
 import RegionSelect from './pages/RegionSelect';
 import StoreSelect from './pages/StoreSelect';
@@ -28,7 +28,7 @@ import TransferScan from './pages/Transfer/Scan/TransferScan';
 
 
 const App: React.FC = () => { 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = usePersistedReducer(reducer, initialState);
   const { menuItems, Title } = state;
 
   return (

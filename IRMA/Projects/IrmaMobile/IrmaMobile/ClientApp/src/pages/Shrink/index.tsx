@@ -33,9 +33,7 @@ const Shrink:React.FC = () => {
     const {subteam, region, storeNumber, subteamNo, shrinkTypes, shrinkType} = state;
     const [alert, setAlert] = useState<any>({open:false, alertMessage:'', type: 'default', header: 'IRMA Mobile', confirmAction:()=> {}, cancelAction:()=> {}});
     const [warningOverride, setWarningOverride] = useState<boolean>(false);
-    const newMenuItems = [
-      { id: 1, order: 0, text: "Review", path: "/shrink/review", disabled: false } as IMenuItem,
-   ] as IMenuItem[];
+
     let textInput:any = React.createRef<HTMLInputElement>();
     let qtyInput:any = React.createRef<HTMLInputElement>();
 
@@ -53,23 +51,13 @@ const Shrink:React.FC = () => {
           }
         }
       });
-      dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems});
-      // @ts-ignore
-      let localShrinkItems = [];
-      if(localStorage.getItem("shrinkItems") !== null){
-        // @ts-ignore
-       localShrinkItems = JSON.parse(localStorage.getItem("shrinkItems"));
-      }  
-      if(localStorage.getItem("sessionSubType") !== null){
-        // @ts-ignore
-        let subteam = JSON.parse(localStorage.getItem("sessionSubType"));
-        dispatch({ type: types.SETSUBTEAM,subteam: subteam});
-      }  
-      if( localShrinkItems.length > 0){
-        shrinkState.isSelected = true;
-      } 
+     
+      if(state.subteamSession.isPrevSession){
+        dispatch({ type: types.SETSHRINKTYPE, shrinkType: state.subteamSession.sessionShrinkType});
+        dispatch({ type: types.SETSUBTEAM, subteam: state.subteamSession.sessionSubteam});
+      }
 
-      if(shrinkState.isSelected){
+      if(shrinkState.isSelected || state.subteamSession.isPrevSession){
         dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: true }); 
       }
       return () => {
@@ -80,6 +68,32 @@ const Shrink:React.FC = () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shrinkState, dispatch]);
 
+    useEffect(() => {
+      const changeSubtype = ()=>{
+        dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: {...state.subteamSession, forceSubteamSelection: true}}); 
+      }
+
+      const newMenuItems = shrinkState.isSelected || state.subteamSession.isPrevSession ? [
+        { id: 1, order: 0, path: "#", text: "Clear", onClick:()=>{setAlert({...alert, 
+          open:true, 
+          alertMessage: 'Would you like to delete the current session?', 
+          type: 'confirm',  
+          header:'Scan',
+          confirmAction: confirmDeleteSession,
+          cancelAction: cancel.bind(undefined, false, false)
+        })} } as IMenuItem,
+        
+        { id: 2, order: 1, text: "Exit Shrink", path: "/functions", disabled: false } as IMenuItem,
+        { id: 3, order: 2, text: "Change Subtype",  path: "#", onClick:changeSubtype, disabled: false } as IMenuItem,
+        { id: 4, order: 3, text: "Review", path: "/shrink/review", disabled: false } as IMenuItem,
+      ] as IMenuItem[] : [
+        { id: 1, order: 0, text: "Cancel", path: "/functions", disabled: false } as IMenuItem,
+      ] as IMenuItem[];
+
+      dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems});
+      
+    }, [shrinkState, dispatch]);
+ 
     const setUpc = (value?:any, scan:boolean = false) =>{  
       let upc = value && typeof value !== 'object' ? value: shrinkState.upcValue;
       setIsLoading(true);
@@ -93,7 +107,13 @@ const Shrink:React.FC = () => {
             alertMessage: 'Item not found',
             type: 'default', 
             header:'Irma Mobile'});
-        } else { 
+        } else if(!subteam.isUnrestricted && result.retailSubteamName !== subteam.subteamName){
+          setAlert({...alert, 
+            open:true, 
+            alertMessage: `This is a ${result.retailSubteamName} and you cannot shrink it to ${subteam.subteamName}. ${subteam.subteamName} is restricted to same-subteam items.`,
+            type: 'default', 
+            header:'Subteam Mismatch'});
+        }else { 
           let alreadyScanned = state.shrinkItems.filter((item:any) => result.retailSubteamName === item.retailSubteamName).length > 0 ? true : false;
           if(result.retailSubteamName !== subteam.subteamName && warningOverride === false && !alreadyScanned){
             setAlert({...alert, 
@@ -115,8 +135,11 @@ const Shrink:React.FC = () => {
     }
 
     const setShrinkType = (value:any) =>{
+      let shrinkType = JSON.parse(value);
+      console.log(shrinkType);
       setShrinkState({...shrinkState, isSelected:true});
-      dispatch({ type: 'SETSHRINKTYPE', shrinkType:JSON.parse(value) });
+      dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: {...state.subteamSession, forceSubteamSelection: false, sessionShrinkType: shrinkType}}); 
+      dispatch({ type: 'SETSHRINKTYPE', shrinkType });
     }
 
    
@@ -139,7 +162,7 @@ const Shrink:React.FC = () => {
         if(localStorage.getItem('shrinkItems')){
           // @ts-ignore
           shrinkItems = JSON.parse(localStorage.getItem('shrinkItems'));
-          shrinkItem = shrinkItems.filter((item: any) => item.identifier === result.identifier);
+          shrinkItem = shrinkItems.filter((item: any) => item.identifier === result.identifier && state.shrinkType.shrinkSubTypeMember === item.shrinkType);
         }
         return shrinkItem;
     }
@@ -156,6 +179,11 @@ const Shrink:React.FC = () => {
         alertMessage:'Do this for all items in this session?', 
         confirmAction: confirmAllItems, 
         cancelAction: cancel.bind(undefined, false, false)});
+    }
+    const confirmDeleteSession = (e:any) =>{
+      localStorage.clear();
+      setAlert({...alert, 
+        open: false});
     }
     const setQty = (e:any) =>{
       let quantity = parseFloat(e.target.value);
@@ -200,12 +228,13 @@ const Shrink:React.FC = () => {
         const { isSelected, skipConfirm, queued, dupItem, ...shrinkItem} = shrinkState;
         shrinkItem.shrinkType = shrinkType.shrinkSubTypeMember;
         shrinkItem.quantity = parseFloat((+(shrinkState.queued) + +(shrinkState.quantity)).toPrecision(4));
-        let shrinkItems: any = [];    
+        let shrinkItems: any = [];
+
         if(localStorage.getItem("shrinkItems") !== null){
           // @ts-ignore
           shrinkItems = JSON.parse(localStorage.getItem("shrinkItems"));
         }
-      
+
         if(shrinkState.dupItem.length > 0){
           // if dup item found, replace the shrink Item with a new quantity
           setAlert({...alert, 
@@ -228,7 +257,7 @@ const Shrink:React.FC = () => {
       shrinkItem.quantity =  quantity;
        // @ts-ignore
       let shrinkItems = JSON.parse(localStorage.getItem("shrinkItems"));
-      let localShrinkItems = shrinkItems.filter((item: any) => item.identifier !== shrinkItem.identifier);
+      let localShrinkItems = shrinkItems.filter((item: any) => item.identifier !== shrinkItem.identifier || item.shrinkType !== state.shrinkType.shrinkSubTypeMember);
       return [ ...localShrinkItems, shrinkItem];
     }
     const add = (e:any) => {
@@ -259,7 +288,7 @@ const Shrink:React.FC = () => {
     const saveItems = (shrinkItems: []) => {
       dispatch({ type: types.SETSHRINKITEMS, shrinkItems: shrinkItems }); 
       localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems));
-      localStorage.setItem("sessionSubType", JSON.stringify(state.subteam));
+      dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: {...state.subteamSession, sessionShrinkType: state.shrinkType, sessionSubteam: state.subteam}}); 
       if(!shrinkState.skipConfirm){
         setAlert({...alert, 
           open:true, 
@@ -282,7 +311,7 @@ const Shrink:React.FC = () => {
       <Fragment>
       <CurrentLocation/> 
       <div className="shrink-page">
-        {!shrinkState.isSelected ?
+        {(!state.subteamSession.isPrevSession && !shrinkState.isSelected) || state.subteamSession.forceSubteamSelection ?
           (<div className='shrink-container'>
             <h1>Subteam:{subteam.subteamName}</h1>
             <div className="shrink-buttons">

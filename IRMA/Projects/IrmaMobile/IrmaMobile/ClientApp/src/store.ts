@@ -2,9 +2,7 @@ import React from "react";
 import { OrderDetails } from "./pages/Receive/PurchaseOrder/types/OrderDetails";
 import { ReasonCode } from "./pages/Receive/PurchaseOrder/types/ReasonCode";
 import { ListedOrder } from "./pages/Receive/PurchaseOrder/types/ListedOrder";
-import { DropdownItemProps } from "semantic-ui-react";
-// @ts-ignore
-import createPersistedReducer from './scripts/use-persisted-reducer';
+import createPersistedReducer from "./scripts/use-persisted-reducer";
 
 export const usePersistedReducer = createPersistedReducer('state');
 
@@ -16,6 +14,7 @@ interface IIntitialState {
   subteams: ITeam[];
   subteam: ITeam;
   subteamNo: string;
+  subteamSession: ISubteamSession;
   shrinkType: IShrinkType;
   shrinkTypes: any[],
   selectedShrinkItem: ISelectedShrink,
@@ -39,7 +38,14 @@ export interface IMenuItem {
   text: string;
   path: string;
   disabled: boolean;
-  onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, data: DropdownItemProps) => void;
+  onClick: any;
+}
+
+export interface ISubteamSession {
+  isPrevSession: boolean;
+  sessionShrinkType: string;
+  sessionSubteam: string;
+  forceSubteamSelection?: boolean;
 }
 
 export interface ITeam {
@@ -85,6 +91,7 @@ export const initialState = {
     storeNumber: "",
     subteams: [],
     subteam: {subteamName:'', subteamNo:''},
+    subteamSession: {isPrevSession:false, sessionShrinkType: '', sessionSubteam:'', forceSubteamSelection: true},
     subteamNo:'',
     shrinkType: {shrinkType:'', abbreviation:'', shrinkSubTypeMember: '', shrinkSubTypeId:null, inventoryAdjustmentCodeId: null, reasonCode: null},
     selectedShrinkItem: {identifier:'', quantity:0, signDescription:'', packageDesc1:'', packageDesc2:'', packageUnitAbbreviation:'', shrinkType:'', costedByWeight:false},
@@ -110,6 +117,7 @@ export const types = {
     SETSTORENUMBER: "SETSTORENUMBER",
     SETSUBTEAMS: "SETSUBTEAMS",
     SETSUBTEAM: "SETSUBTEAM",
+    SETSUBTEAMSESSION: "SETSUBTEAMSESSION",
     SETSUBTEAMNO: "SETSUBTEAMNO",
     SETSHRINKTYPE: "SETSHRINKTYPE",
     SETSHRINKTYPES: "SETSHRINKTYPES",
@@ -150,6 +158,9 @@ export const reducer = (state: any, action: any) => {
         case types.SETSUBTEAM: {
             return { ...state, subteam: action.subteam };
         }
+        case types.SETSUBTEAMSESSION: {
+          return { ...state, subteamSession: action.subteamSession };
+      }
         case types.SETSUBTEAMNO: {
           return { ...state, subteamNo: action.subteamNo };
         }

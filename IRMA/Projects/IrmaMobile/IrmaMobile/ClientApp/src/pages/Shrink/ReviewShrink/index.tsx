@@ -1,5 +1,5 @@
-import React, { Fragment, useContext, useState, useEffect } from 'react';
-import { AppContext, types } from "../../../store";
+import React, { Fragment, useContext, useState, useEffect, useCallback } from 'react';
+import { AppContext, types, IMenuItem } from "../../../store";
 import { Modal, Confirm } from 'semantic-ui-react'
 import CurrentLocation from "../../../layout/CurrentLocation";
 import agent from '../../../api/agent';
@@ -18,6 +18,23 @@ const ReviewShrink:React.FC = () => {
     const [alert, setAlert] = useState({open:false, alertMessage:''});
     const [confirm, setConfirm] = useState({open:false, message:'', onConfirm: ()=>{}});
     let history = useHistory();
+
+    const setMenuItems = useCallback(() => {
+      const newMenuItems = [
+        { id: 1, order: 0, text: "Back", path: "/shrink", disabled: false } as IMenuItem
+      ] as IMenuItem[];
+
+      dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems });
+    }, [dispatch]);
+
+    useEffect(() => {
+        setMenuItems();
+
+        return () => {
+            dispatch({ type: types.SETMENUITEMS, menuItems: [] });
+        }
+    }, [setMenuItems, dispatch]);
+
     useEffect(() => {
         if(localStorage.getItem("shrinkItems") !== null){
             // @ts-ignore
@@ -26,6 +43,7 @@ const ReviewShrink:React.FC = () => {
         }   
         dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false }); 
     }, [dispatch]);
+
     const update = ()=>{
       if(shrinkItems.length === 0){
         setAlert({open:true, alertMessage: 'There are no Shrink Items to Update'});
@@ -79,6 +97,7 @@ const ReviewShrink:React.FC = () => {
         }
         if(succeededItems === shrinkItems.length){
           toast.success("Shrink Items Uploaded");
+          dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: {...state.subteamSession, forceSubteamSelection: false, isPrevSession: false}}); 
         }
       }
     }
