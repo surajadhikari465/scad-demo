@@ -2277,7 +2277,6 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             // Given.
             string expectedValue = "OZ";
             string expectedUomCode = "OZ";
-            string expectedUomName = "OUNCES";
 
             Mock<ILogger<EsbMessageBuilder>> loggerMock = new Mock<ILogger<EsbMessageBuilder>>();
             Mock<IEsbServiceCache> serviceCacheMock = new Mock<IEsbServiceCache>();

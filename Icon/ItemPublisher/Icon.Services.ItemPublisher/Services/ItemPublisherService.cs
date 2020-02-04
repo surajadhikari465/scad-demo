@@ -50,6 +50,7 @@ namespace Icon.Services.ItemPublisher.Services
         /// <returns></returns>
         public async Task Process(int batchSize)
         {
+            
             await this.ProcessInternal(batchSize);
         }
 

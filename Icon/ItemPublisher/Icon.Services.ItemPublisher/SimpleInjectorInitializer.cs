@@ -12,6 +12,7 @@ using Icon.Services.ItemPublisher.Services;
 using Icon.Shared.DataAccess.Dapper.ConnectionBuilders;
 using SimpleInjector;
 using System.Configuration;
+using Icon.Services.ItemPublisher.Infrastructure.Esb.Communication;
 
 namespace Icon.Services.ItemPublisher.Application
 {
@@ -26,7 +27,7 @@ namespace Icon.Services.ItemPublisher.Application
             container.Register<IProviderFactory>(() =>
             {
                 return new ProviderFactory(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString);
-            });
+            }, Lifestyle.Singleton);
             container.Register<IMessageQueueItemModelBuilder, MessageQueueItemModelBuilder>();
             container.Register<IItemMapper, ItemMapper>();
             container.Register<IItemPublisherRepository, ItemPublisherRepository>();
@@ -35,8 +36,8 @@ namespace Icon.Services.ItemPublisher.Application
             container.Register<IEsbService, EsbService>();
             container.Register<IEsbMessageBuilder, EsbMessageBuilder>();
             container.Register<IEsbHeaderBuilder, EsbHeaderBuilder>();
-            container.Register<IEsbServiceCache, EsbServiceCache>();
-            container.Register<ICacheRepository, CacheRepository>();
+            container.Register<IEsbServiceCache, EsbServiceCache>(Lifestyle.Singleton);
+            container.Register<ICacheRepository, CacheRepository>(Lifestyle.Singleton);
             container.Register<ITraitMessageBuilder, TraitMessageBuilder>();
             container.Register<ISystemListBuilder, SystemListBuilder>();
             container.Register<IItemProcessor, ItemProcessor>();
@@ -44,7 +45,7 @@ namespace Icon.Services.ItemPublisher.Application
             container.Register<IValueFormatter, ValueFormatter>();
             container.Register<IUomMapper, UomMapper>();
 
-            container.Register<ServiceSettings>(() =>
+            container.Register(() =>
             {
                 var settings = new ServiceSettings();
                 settings.LoadSettings();

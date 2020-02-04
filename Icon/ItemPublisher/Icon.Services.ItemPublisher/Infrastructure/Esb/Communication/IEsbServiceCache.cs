@@ -15,5 +15,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
         ConcurrentDictionary<string,string> UomCache { get; }
 
         bool CacheLoaded { get; }
+        Task RefreshCache();
+
     }
 }

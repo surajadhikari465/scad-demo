@@ -35,13 +35,13 @@ namespace Icon.Services.ItemPublisher.Services
         /// <summary>
         /// How often the cache will refresh
         /// </summary>
-        public int TimerIntervalCacheRefreshInMilliseconds { get; set; }
+        //public int TimerIntervalCacheRefreshInMilliseconds { get; set; }
 
         public void LoadSettings()
         {
             this.BatchSize = AppSettingsAccessor.GetIntSetting("BatchSize");
             this.TimerIntervalInMilliseconds = AppSettingsAccessor.GetIntSetting("TimerIntervalInSeconds") * 1000;
-            this.TimerIntervalCacheRefreshInMilliseconds = AppSettingsAccessor.GetIntSetting("TimerIntervalCacheRefreshInSeconds") * 1000;
+            //this.TimerIntervalCacheRefreshInMilliseconds = AppSettingsAccessor.GetIntSetting("TimerIntervalCacheRefreshInSeconds") * 1000;
             this.NonReceivingSystemsProduct = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsProductCSV", false).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
             this.AllReceivingSystemsProduct = AppSettingsAccessor.GetStringSetting("AllReceivingSystemsProductCSV", false).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
             this.IncludeManufacturerHierarchy = AppSettingsAccessor.GetBoolSetting("IncludeManufacturerHierarchy");

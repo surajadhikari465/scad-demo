@@ -1,10 +1,10 @@
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
 using Icon.Services.ItemPublisher.Infrastructure.Repositories;
 using Icon.Services.ItemPublisher.Repositories.Entities;
 using Icon.Services.ItemPublisher.Services;
-using System.Collections.Concurrent;
-using System.Threading.Tasks;
 
-namespace Icon.Services.ItemPublisher.Infrastructure.Esb
+namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Communication
 {
     /// <summary>
     /// EsbServiceCache is a class that manages the cache of database records our
@@ -13,43 +13,29 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
     /// </summary>
     public class EsbServiceCache : IEsbServiceCache
     {
-        private ServiceSettings serviceSettings;
+        
         private ICacheRepository cacheRepository;
         private ConcurrentDictionary<string, Attributes> attributesCache = new ConcurrentDictionary<string, Attributes>();
         private ConcurrentDictionary<string, HierarchyCacheItem> hierarchyCache = new ConcurrentDictionary<string, HierarchyCacheItem>();
         public ConcurrentDictionary<int, ProductSelectionGroup> ProductSelectionGroupCache { get; private set; } = new ConcurrentDictionary<int, ProductSelectionGroup>();
         public ConcurrentDictionary<string, string> UomCache { get; private set; } = new ConcurrentDictionary<string, string>();
-        private readonly System.Timers.Timer timer;
+        
 
         public bool CacheLoaded { get; private set; } = false;
 
-        public EsbServiceCache(ServiceSettings serviceSettings, ICacheRepository cacheRepository)
+        public EsbServiceCache(ICacheRepository cacheRepository)
         {
-            this.serviceSettings = serviceSettings;
             this.cacheRepository = cacheRepository;
-            this.timer = new System.Timers.Timer(this.serviceSettings.TimerIntervalCacheRefreshInMilliseconds);
-            this.timer.Elapsed += Timer_Elapsed;
-            this.timer.Start();
-
-            // it's ok that this isn't awaited. We will check the CacheLoaded var to know if the cache is ready to use or not.
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            this.Load();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
-        private async void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            await this.Load();
-        }
-
-        private async Task Load()
+        public async Task RefreshCache()
         {
             this.CacheLoaded = false;
             Task loadAttributes = this.LoadAttributes();
             Task loadHierarchies = this.LoadHierarchies();
             Task loadProductSelectionGroups = this.LoadProductSelectionGroups();
             Task loadUom = this.LoadUomCache();
-            await Task.WhenAll(new[] { loadAttributes, loadHierarchies, loadProductSelectionGroups });
+            await Task.WhenAll(new[] { loadAttributes, loadHierarchies, loadProductSelectionGroups, loadUom });
             this.CacheLoaded = true;
         }
 

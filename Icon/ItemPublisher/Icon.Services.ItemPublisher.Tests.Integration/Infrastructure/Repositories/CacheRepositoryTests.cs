@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Icon.Services.ItemPublisher.Tests.Common;
 
 namespace Icon.Services.ItemPublisher.Repositories.Tests
 {

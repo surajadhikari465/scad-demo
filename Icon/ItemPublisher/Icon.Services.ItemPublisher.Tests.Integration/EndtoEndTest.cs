@@ -3,6 +3,7 @@ using Icon.Services.ItemPublisher.Repositories.Entities;
 using Icon.Services.Newitem.Test.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
+using Icon.Services.ItemPublisher.Tests.Common;
 
 namespace Icon.Services.ItemPublisher.IntegrationTests
 {

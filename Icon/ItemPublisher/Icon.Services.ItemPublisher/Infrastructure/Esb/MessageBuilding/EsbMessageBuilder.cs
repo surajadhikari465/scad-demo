@@ -49,10 +49,17 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
         /// </summary>
         public bool CacheLoaded
         {
+           
             get
             {
+                var cacheRefreshResults = this.RefreshCache().ContinueWith(t => t).Result;
                 return this.esbServiceCache.CacheLoaded;
             }
+        }
+
+        public  async Task RefreshCache()
+        {
+            await this.esbServiceCache.RefreshCache();
         }
 
         public async Task<BuildMessageResult> BuildItem(List<MessageQueueItemModel> models, bool isDepartmentSale)

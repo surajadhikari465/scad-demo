@@ -4,6 +4,7 @@ using Icon.Services.ItemPublisher.Infrastructure.Esb;
 using Icon.Services.ItemPublisher.Infrastructure.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Icon.Services.ItemPublisher.Services
@@ -39,7 +40,8 @@ namespace Icon.Services.ItemPublisher.Services
         {
             get
             {
-                return this.esbService.ReadyForProcessing;
+
+               return this.esbService.ReadyForProcessing;
             }
         }
 

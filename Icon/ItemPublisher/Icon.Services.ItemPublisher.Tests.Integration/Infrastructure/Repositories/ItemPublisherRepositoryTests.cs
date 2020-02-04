@@ -1,17 +1,18 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Dapper;
 using Icon.Services.ItemPublisher.Infrastructure.Models;
 using Icon.Services.ItemPublisher.Infrastructure.Models.Builders;
 using Icon.Services.ItemPublisher.Infrastructure.Models.Mappers;
 using Icon.Services.ItemPublisher.Infrastructure.Repositories;
 using Icon.Services.ItemPublisher.Repositories.Entities;
+using Icon.Services.ItemPublisher.Tests.Common;
 using Icon.Services.Newitem.Test.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Icon.Services.ItemPublisher.Repositories.Tests
+namespace Icon.Services.ItemPublisher.Tests.Integration.Infrastructure.Repositories
 {
     [TestClass()]
     public class ItemPublisherRepositoryTests
@@ -56,7 +57,7 @@ namespace Icon.Services.ItemPublisher.Repositories.Tests
                     false)});
 
             // When.
-            Entities.MessageQueueItemArchive entity = await testRepository.SelectLatestInsertedRecord();
+            ItemPublisher.Repositories.Entities.MessageQueueItemArchive entity = await testRepository.SelectLatestInsertedRecord();
 
             // Then.
             Assert.IsNotNull(entity);

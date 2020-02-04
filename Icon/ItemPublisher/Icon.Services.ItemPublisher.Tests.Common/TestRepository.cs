@@ -1,12 +1,12 @@
-﻿using Dapper;
-using Icon.Services.ItemPublisher.Infrastructure.Repositories.Entities;
-using Icon.Services.ItemPublisher.Repositories.Entities;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
+using Icon.Services.ItemPublisher.Repositories.Entities;
+using Icon.Services.Newitem.Test.Common;
+using Newtonsoft.Json;
 
-namespace Icon.Services.Newitem.Test.Common
+namespace Icon.Services.ItemPublisher.Tests.Common
 {
     /// <summary>
     /// This class contains all of the helper methods needed to verify changes or to put mock data in the database
