@@ -125,7 +125,7 @@ namespace Icon.ApiController.Controller.QueueProcessors
 
             logger.Debug("Ending the PSG queue processor.  No further queued messages were found in Ready status.");
 
-            producer.Dispose();
+            
 
             monitorData.EndTime = DateTime.UtcNow;
             if (shouldRecordMonitorData)

@@ -17,6 +17,7 @@ namespace Icon.ApiController.Common
         public string NonReceivingSystemsPrice { get; set; }
         public string NonReceivingSystemsProduct { get; set; }
         public string NonReceivingSystemsHierarchy { get; set; }
+        public string ControllerType { get; set; }
         public bool EnableNationalHierarchy { get; set; }
         public bool EnableHospitalityKitchenItem { get; set; }
         public bool EnableHospitalityHospitalityItem { get; set; }
@@ -31,6 +32,7 @@ namespace Icon.ApiController.Common
             {
                 Source = source,
                 Instance = instance,
+                ControllerType = AppSettingsAccessor.GetStringSetting("ControllerType", string.Empty),
                 QueueLookAhead = AppSettingsAccessor.GetIntSetting("QueueLookAhead", 1000),
                 MiniBulkLimitItemLocale = AppSettingsAccessor.GetIntSetting("MiniBulkLimitItemLocale", 100),
                 MiniBulkLimitPrice = AppSettingsAccessor.GetIntSetting("MiniBulkLimitPrice", 100),

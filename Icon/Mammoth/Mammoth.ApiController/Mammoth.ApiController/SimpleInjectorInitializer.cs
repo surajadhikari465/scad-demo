@@ -17,7 +17,6 @@ using Mammoth.ApiController.QueueProcessors;
 using Mammoth.ApiController.QueueReaders;
 using Mammoth.Framework;
 using SimpleInjector;
-using SimpleInjector.Diagnostics;
 using System;
 using System.Collections.Generic;
 using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
@@ -34,7 +33,7 @@ namespace Mammoth.ApiController
             container.Register<ILogger<Serializer<Contracts.items>>, NLogLogger<Serializer<Contracts.items>>>();
             container.RegisterSingleton<IDbContextFactory<MammothContext>, MammothContextFactory>();
             container.RegisterSingleton(() => ApiControllerSettings.CreateFromConfig("Mammoth", instance));
-            container.Register<IEsbProducer>(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("ItemQueueName")));
+            container.Register<IEsbProducer>(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("ItemQueueName")), Lifestyle.Singleton);
             container.Register<IQueueReader<MessageQueuePrice, Contracts.items>, MammothPriceQueueReader>();
             container.Register<IQueueReader<MessageQueueItemLocale, Contracts.items>, MammothItemLocaleQueueReader>();
             container.RegisterSingleton<ILogger>(() => new NLogLoggerSingleton(typeof(NLogLoggerSingleton)));
@@ -61,10 +60,6 @@ namespace Mammoth.ApiController
             
             RegisterQueueProcessorImplementation(container, controllerType, instance);
 
-            Registration registration = container.GetRegistration(typeof(IEsbProducer)).Registration;
-
-            registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent,
-                "IEsbProducer is disposed of by the code.");
 
             return container;
         }
@@ -80,7 +75,8 @@ namespace Mammoth.ApiController
                     container.Register<IQueueProcessor, MammothPriceQueueProcessor>();
                     break;
                 default:
-                    throw new ArgumentException(string.Format("No type implementation exists for controller type argument {0}", controllerType));
+                    throw new ArgumentException(
+                        $"No type implementation exists for controller type argument {controllerType}");
             }
         }
     }

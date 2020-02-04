@@ -1,4 +1,5 @@
-﻿using Icon.ApiController.Common;
+﻿using System;
+using Icon.ApiController.Common;
 using Icon.ApiController.Controller.Monitoring;
 using Icon.ApiController.Controller.QueueProcessors;
 using Icon.ApiController.Controller.QueueReaders;
@@ -26,8 +27,10 @@ namespace Icon.ApiController.Controller.ControllerBuilders
             var emailClient = new EmailClient(EmailHelper.BuildEmailClientSettings()); 
             var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("ProductSelectionGroupQueueName"));
             var settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
+            var computedClientId = $"{settings.Source}ApiController.Type-{settings.ControllerType}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
+            var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
 
-            producer.OpenConnection();
+            producer.OpenConnection(clientId);
 
             IconDbContextFactory iconContextFactory = new IconDbContextFactory();
 

@@ -8,6 +8,7 @@ using Icon.Esb.Producer;
 using Icon.Logging;
 using System;
 using System.Collections.Generic;
+using Topshelf.Configurators;
 
 namespace Mammoth.ApiController.QueueProcessors
 {
@@ -96,7 +97,7 @@ namespace Mammoth.ApiController.QueueProcessors
 
             logger.Info("Ending the queue processor.  No further queued messages were found in Ready status.");
 
-            producer.Dispose();
+            
         }
 
         private TMessageHistory BuildMessageFromMiniBulk(TContract miniBulk, List<TMessageQueue> messagesReadyToSerialize)
@@ -235,7 +236,9 @@ namespace Mammoth.ApiController.QueueProcessors
         {
             if (!producer.IsConnected)
             {
-                producer.OpenConnection();
+                var computedClientId = $"{settings.Source}ApiController.Type-{settings.ControllerType}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
+                var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
+                producer.OpenConnection(clientId);
             }
         }
 

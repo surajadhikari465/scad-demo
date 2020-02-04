@@ -48,7 +48,7 @@ namespace Icon.ApiController.Tests
             // Then.
             mockEmailClient.Verify(e => e.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
             mockQueueProcessor.Verify(p => p.ProcessMessageQueue(), Times.Never);
-            mockProducer.Verify(p => p.Dispose(), Times.Once);
+            
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace Icon.ApiController.Tests
 
             // Then.
             mockEmailClient.Verify(e => e.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
-            mockProducer.Verify(p => p.Dispose(), Times.Once);
+            
         }
 
         [TestMethod]

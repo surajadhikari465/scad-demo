@@ -1,11 +1,11 @@
-﻿using Icon.ApiController.Common;
+﻿using System;
+using Icon.ApiController.Common;
 using Icon.ApiController.Controller.Monitoring;
 using Icon.ApiController.Controller.QueueProcessors;
 using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
-using Icon.RenewableContext;
 using Icon.Common.Email;
 using Icon.Esb;
 using Icon.Esb.Producer;
@@ -26,11 +26,13 @@ namespace Icon.ApiController.Controller.ControllerBuilders
             var emailClient = new EmailClient(EmailHelper.BuildEmailClientSettings());
             var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("HierarchyQueueName"));
             var settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
+            var computedClientId = $"{settings.Source}ApiController.Type-{settings.ControllerType}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
+            var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
+
 
             IconDbContextFactory iconContextFactory = new IconDbContextFactory();
 
-            producer.OpenConnection();
-
+            producer.OpenConnection(clientId);
             var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Hierarchy, producer, iconContextFactory);
 
             var queueProcessorLogger = new NLogLoggerInstance<HierarchyQueueProcessor>(instance);

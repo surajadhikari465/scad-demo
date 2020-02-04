@@ -57,12 +57,6 @@ namespace Icon.ApiController.Controller
                     exceptionLogger.LogException(message, mailEx, this.GetType(), MethodBase.GetCurrentMethod());
                 }
 
-                //Dispose of the producer connection on an exception so that it doesn't stay open on the ESB.
-                if(producer.IsConnected)
-                {
-                    producer.Dispose();
-                }
-
                 return;
             }
 
@@ -90,13 +84,6 @@ namespace Icon.ApiController.Controller
                 }
 
                 return;
-            }
-            finally
-            {
-                if (producer.IsConnected)
-                {
-                    producer.Dispose();
-                }
             }
         }
     }

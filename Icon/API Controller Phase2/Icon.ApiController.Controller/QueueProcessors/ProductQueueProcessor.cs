@@ -135,7 +135,7 @@ namespace Icon.ApiController.Controller.QueueProcessors
 
             logger.Debug("Ending the Product queue processor.  No further queued messages were found in Ready status.");
 
-            producer.Dispose();
+            
 
             monitorData.EndTime = DateTime.UtcNow;
             if (shouldRecordMonitorData)

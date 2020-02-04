@@ -627,7 +627,7 @@ namespace Icon.ApiController.Tests.QueueReaders
             Assert.IsNotNull(localeType);
             Assert.AreEqual(Contracts.LocaleCodeType.STR, localeTypeCode);
             Assert.AreEqual(Contracts.LocaleDescType.Store, localeTypeDesc);
-            Assert.AreEqual(3, localeTraits.Length);
+            Assert.AreEqual(4, localeTraits.Length);
             Assert.AreEqual(storeAbbreviation, storeAbbreviation);
             Assert.AreEqual(phoneNumber, phoneNumber);
 			Assert.AreEqual(currencyCode, currencyCode);
@@ -993,7 +993,7 @@ namespace Icon.ApiController.Tests.QueueReaders
             Assert.IsNotNull(localeType);
             Assert.AreEqual(Contracts.LocaleCodeType.STR, localeTypeCode);
             Assert.AreEqual(Contracts.LocaleDescType.Store, localeTypeDesc);
-            Assert.AreEqual(3, localeTraits.Length);
+            Assert.AreEqual(4, localeTraits.Length);
             Assert.AreEqual(storeAbbreviation, storeAbbreviation);
             Assert.AreEqual(phoneNumber, phoneNumber);
 			Assert.AreEqual(currencyCode, currencyCode);

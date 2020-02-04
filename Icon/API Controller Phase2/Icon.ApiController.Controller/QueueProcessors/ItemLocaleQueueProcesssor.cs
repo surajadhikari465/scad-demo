@@ -5,7 +5,6 @@ using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
-using Icon.RenewableContext;
 using Icon.Common.DataAccess;
 using Icon.Esb.Producer;
 using Icon.Framework;
@@ -90,9 +89,7 @@ namespace Icon.ApiController.Controller.QueueProcessors
                 businessUnit = GetNextAvailableBusinessUnit(typeof(MessageQueueItemLocale).Name, settings.Instance);
             }
 
-            logger.Debug("Ending the ItemLocale queue processor.  No further queued messages were found in Ready status.");
-
-            producer.Dispose();
+            logger.Info("Ending the ItemLocale queue processor.  No further queued messages were found in Ready status.");
         }
 
         private void ProcessMessageQueue(int? businessUnit)

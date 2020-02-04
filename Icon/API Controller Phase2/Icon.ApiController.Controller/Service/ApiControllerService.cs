@@ -1,14 +1,12 @@
 ﻿namespace Icon.ApiController.Controller.Service
 {
-    using Icon.ApiController.Common;
-    using Icon.ApiController.Controller;
-    using Icon.ApiController.Controller.ControllerBuilders;
-    using Icon.Common;
-    using Icon.Logging;
+    using Common;
+    using Controller;
+    using ControllerBuilders;
+    using Logging;
     using System;
     using System.Configuration;
     using System.Diagnostics;
-    using System.Linq;
     using System.Threading;
     using System.Timers;
 
@@ -21,16 +19,18 @@
         private TimeSpan startTime;
         private TimeSpan endTime;
         private readonly int controllerInstanceID;
+        private ApiControllerBase apiController;
 
         private static string sSource;
         private static string sLog;
         private static string sEvent;
+        
 
         public ApiControllerService()
         {
           try
           {
-            int.TryParse(ConfigurationManager.AppSettings["ControllerInstanceId"], out this.controllerInstanceID);
+            int.TryParse(ConfigurationManager.AppSettings["ControllerInstanceId"], out controllerInstanceID);
             controllerType = ConfigurationManager.AppSettings["ControllerType"].ToString();
             int.TryParse(ConfigurationManager.AppSettings["MaintenanceDay"], out dayOfTheWeek);
 
@@ -46,47 +46,50 @@
             endTime = new TimeSpan(timeStamp.Hour, timeStamp.Minute, 0);
 
             //Validate config settings
-            if(this.controllerInstanceID < 1)
+            if(controllerInstanceID < 1)
                 throw new Exception("Please provide an integer greater than zero to be used as the unique instance ID.");
-            if(this.controllerInstanceID < 1 || string.IsNullOrEmpty(controllerType))
+            if(controllerInstanceID < 1 || string.IsNullOrEmpty(controllerType))
                 throw new Exception("Both the controller type argument and the instance ID argument are required.");
             if(!StartupOptions.ValidArgs.Contains(controllerType))
-                throw new Exception(string.Format("Invalid argument specified.  The valid arguments are: {0}", string.Join(",", StartupOptions.ValidArgs)));
+                throw new Exception($"Invalid argument specified.  The valid arguments are: {string.Join(",", StartupOptions.ValidArgs)}");
 
-            //Initilize timer if all settings have been validated
+
+            logger = new NLogLoggerInstance<Program>(ControllerType.Instance.ToString());
+            apiController = ControllerProvider.GetController(controllerType);
+
+
+                //Initilize timer if all settings have been validated
             int runInterval;
             int.TryParse(ConfigurationManager.AppSettings["RunInterval"], out runInterval);
-            this.timer = new System.Timers.Timer(runInterval > 0 ? runInterval : 30000); //Use default interval == 30000 in case if config setting is missing or invalid
+            timer = new System.Timers.Timer(runInterval > 0 ? runInterval : 30000); //Use default interval == 30000 in case if config setting is missing or invalid
           }
           catch(Exception ex) { logger.Error(ex.Message); }
         }
         public void Start()
         {
-          if(this.timer == null) return;
-          this.timer.Elapsed += RunService;
-          this.timer.Start();
+          if(timer == null) return;
+          timer.Elapsed += RunService;
+          timer.Start();
 		}
 
         private void RunService(object sender, ElapsedEventArgs e)
         {
-            this.timer.Stop();
+            timer.Stop();
             var now = DateTime.Now;
 
             if(now.DayOfWeek == (DayOfWeek)dayOfTheWeek && now.TimeOfDay >= startTime && now.TimeOfDay <= endTime)
             {
                 //logger.Info(string.Format("API Controller exited because the it is in the maintenance window. Type: {0} - Instance: {1} - CurrentTime: {2}", controllerType, controllerInstanceIdArgs, DateTime.Now.ToString()));
-                this.timer.Start();
+                timer.Start();
                 return;
             }
 
-            ControllerType.Instance = this.controllerInstanceID;
-            logger = new NLogLoggerInstance<Program>(ControllerType.Instance.ToString());
+            ControllerType.Instance = controllerInstanceID;
+            
 
             try
             {
-                var apiController = ControllerProvider.GetController(controllerType);
-
-                logger.Info(string.Format("Starting API Controller Phase 2 - Type: {0} - Instance: {1}.", ControllerType.Type, ControllerType.Instance));
+                logger.Info($"Starting API Controller Phase 2 - Type: {ControllerType.Type} - Instance: {ControllerType.Instance}.");
 
                 if (apiController != null)
                 {
@@ -97,7 +100,7 @@
                 // to appear in the wrong order in the database.  This brief nap will add enough of a delay to prevent that.
                 Thread.Sleep(100);
 
-                logger.Info(string.Format("Shutting down API Controller Phase 2 - Type: {0} - Instance: {1}.", ControllerType.Type, ControllerType.Instance));
+                logger.Info($"Shutting down API Controller Phase 2 - Type: {ControllerType.Type} - Instance: {ControllerType.Instance}.");
 
                 //clearing cache at end of process since it is now a service and these are not released.
                 Cache.financialSubteamToHierarchyClassId.Clear();

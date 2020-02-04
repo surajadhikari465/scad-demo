@@ -8,9 +8,6 @@ namespace Icon.ApiController
 
     class Program
     {
-        //private static ILogger<Program> logger = new NLogLogger<Program>();
-        //private static IRenewableContext<IconContext> iconContextFactory;
-
         static void Main(string[] args)
         {
             string apiDescription = ConfigurationManager.AppSettings["ApiDescription"].ToString();

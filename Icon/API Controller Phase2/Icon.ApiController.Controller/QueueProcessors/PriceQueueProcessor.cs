@@ -92,7 +92,6 @@ namespace Icon.ApiController.Controller.QueueProcessors
 
             logger.Info("Ending the Price queue processor.  No further queued messages were found in Ready status.");
 
-            producer.Dispose();
         }
 
         private void ProcessMessageQueue(int? businessUnit)

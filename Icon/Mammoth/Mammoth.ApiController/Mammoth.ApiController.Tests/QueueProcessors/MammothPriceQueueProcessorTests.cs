@@ -88,7 +88,6 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
             mockUpdateMessageHistoryCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>()), Times.Once);
             mockSetProcessedDataCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateMessageQueueProcessedDateCommand<MessageQueuePrice>>()), Times.Once);
             mockProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
-            mockProducer.Verify(m => m.Dispose(), Times.Once);
         }
 
         [TestMethod]
@@ -119,7 +118,7 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
             mockUpdateMessageHistoryCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>()), Times.Once);
             mockSetProcessedDataCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateMessageQueueProcessedDateCommand<MessageQueuePrice>>()), Times.Once);
             mockProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
-            mockProducer.Verify(m => m.Dispose(), Times.Once);
+            
             mockSaveToMessageHistoryCommandHandler.Verify(m => 
                 m.Execute(It.Is<SaveToMessageHistoryCommand<MessageHistory>>(data=>
                             data.Message.MessageTypeId == MessageTypes.Price)),

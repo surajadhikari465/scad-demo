@@ -1,4 +1,6 @@
-﻿namespace Mammoth.ApiController.Service
+﻿using SimpleInjector;
+
+namespace Mammoth.ApiController.Service
 {
     using Icon.ApiController.Controller;
     using Icon.Common;
@@ -16,9 +18,13 @@
         private int dayOfTheWeek = 0;
         private TimeSpan startTime;
         private TimeSpan endTime;
+        private Container container;
+        private int instance;
+        private NLogLogger logger;
 
         public ApiControllerService()
         {
+            logger = new NLogLogger(typeof(Program));
             int runInterval = AppSettingsAccessor.GetIntSetting("RunInterval");
             this.timer = new System.Timers.Timer(runInterval);
             controllerInstanceIdArgs = ConfigurationManager.AppSettings["ControllerInstanceId"].ToString();
@@ -39,6 +45,14 @@
 
             startTime = new TimeSpan(startHour, startMin, 0);
             endTime = new TimeSpan(endHour, endMin, 0);
+
+            if (!int.TryParse(controllerInstanceIdArgs, out instance) || instance < 1)
+            {
+                logger.Error("Please provide an integer greater than zero to be used as the unique instance ID.");
+                throw new Exception("Please provide an integer greater than zero to be used as the unique instance ID.");
+            }
+            container = SimpleInjectorInitializer.InitializeContainer(instance, controllerType);
+
         }
         public void Start()
         {
@@ -47,8 +61,7 @@
         }
 
         private void RunService(object sender, ElapsedEventArgs e)
-        {
-            var logger = new NLogLogger(typeof(Program));
+        {   
             this.timer.Stop();
             
             if (DateTime.Now.DayOfWeek == (DayOfWeek)dayOfTheWeek
@@ -71,16 +84,9 @@
                 return;
             }
 
-            int instance;
-            if (!int.TryParse(controllerInstanceIdArgs, out instance) || instance < 1)
-            {
-                logger.Error("Please provide an integer greater than zero to be used as the unique instance ID.");
-                return;
-            }
-
             try
             {
-                SimpleInjectorInitializer.InitializeContainer(instance, controllerType).GetInstance<ApiControllerBase>().Execute();
+                container.GetInstance<ApiControllerBase>().Execute();
             }
             catch (Exception ex)
             {
