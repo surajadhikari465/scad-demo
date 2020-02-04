@@ -360,6 +360,7 @@ MZ      2019-11-21  PBI23903        Added NonScale Extra Text to EIM
 					@Scale_ScaleUOMUnit_ID = Scale_ScaleUOMUnit_ID,
 					@Scale_FixedWeight = Scale_FixedWeight,
 					@ForceTare = ForceTare,
+					@Scale_ByCount = Scale_ByCount,
 					@Scale_Alternate_Tare_ID = Scale_Alternate_Tare_ID,
 					@Scale_EatBy_ID = Scale_EatBy_ID,
 					@Scale_Grade_ID = Scale_Grade_ID,
