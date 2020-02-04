@@ -37,7 +37,9 @@ namespace IconWebApi
 
 			container.RegisterDecorator<IQueryHandler<GetLocalesQuery, IEnumerable<GenericLocale>>, 
 				DbConnectionQueryHandlerDecorator<GetLocalesQuery, IEnumerable<GenericLocale>>>(Lifestyle.Scoped);
-			container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
+            container.RegisterDecorator<IQueryHandler<GetContactsByHierarchyClassIdsQuery, IEnumerable<AssociatedContact>>,
+                DbConnectionQueryHandlerDecorator<GetContactsByHierarchyClassIdsQuery, IEnumerable<AssociatedContact>>>(Lifestyle.Scoped);
+            container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
 			container.Verify();
 
 			GlobalConfiguration.Configuration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);

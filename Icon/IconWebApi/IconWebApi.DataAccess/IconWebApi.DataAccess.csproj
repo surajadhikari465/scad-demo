@@ -77,9 +77,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AssociatedContacts.cs" />
     <Compile Include="Models\GenericLocale.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\GetContactsByHierarchyClassIdsQuery.cs" />
     <Compile Include="Queries\GetLocalesQuery.cs" />
+    <Compile Include="Queries\GetContactsByHierarchyClassIdsQueryHandler.cs" />
     <Compile Include="Queries\GetLocalesQueryHandler.cs" />
   </ItemGroup>
   <ItemGroup>

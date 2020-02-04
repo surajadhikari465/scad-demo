@@ -149,6 +149,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\HierarchyControllerTest.cs" />
     <Compile Include="ModelBuilders\TestGenericLocaleBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\LocaleControllerTest.cs" />
