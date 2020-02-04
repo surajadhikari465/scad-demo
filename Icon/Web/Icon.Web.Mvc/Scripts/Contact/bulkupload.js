@@ -44,12 +44,12 @@
 		});
 	}
 
-	function fileTypeFormatter(val) {
-		if (val === 'false')
-			return '<img src="/Content/Images/plus-square.svg" style="width: 16px; height: 16px;" />';
-		else
-			return '<img src="/Content/Images/edit.svg" style="width: 16px; height: 16px;" />';
-	}
+	//function fileTypeFormatter(val) {
+	//	if (val === 'false')
+	//		return '<img src="/Content/Images/plus-square.svg" style="width: 16px; height: 16px;" />';
+	//	else
+	//		return '<img src="/Content/Images/edit.svg" style="width: 16px; height: 16px;" />';
+	//}
 
 	function statusFormatter(val, record) {
 
@@ -57,14 +57,6 @@
 			return "<a href='/Contact/BulkUploaderrors?Id=" + record.BulkContactUploadId + "'>Error</a>";
 		else
 			return val;
-	}
-
-	function alertSuccess(message) {
-		$("#uploadDiv").append('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true" >&times;</button ><strong>' + message + '</strong></div >');
-	}
-
-	function alertError(message) {
-		$("#uploadDiv").append('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>' + message + '</strong></div>');
 	}
 
 	//function getBulkUploadStatusData(rowCount) {
@@ -97,7 +89,7 @@
 
 	function initialize() {
 		setupGrid();
-		refreshGrid(100);
+		refreshGrid(1000);
 	}
 
     initialize();
@@ -175,6 +167,12 @@ function uploadFile() {
             hide: { effect: "fade", duration: 300 },
             open: function () {
                 $('ul').empty();
+                $("#dlgLink").hide();
+                $("#dlgFYI").show();
+
+                $('#progress').hide();
+                $('.progress-bar').css('width', '0%');
+
                 $(".ui-dialog-titlebar-close").hide();
                 $(".ui-dialog-title").text("User Confirmation Required");
 
@@ -192,14 +190,36 @@ function uploadFile() {
                     id: 'dlgUpload',
                     text: 'Upload',
                     click: function () {
-                        let refDialog = this; //Ref to dialog so we can close it on success
+                        let bar = $('.progress-bar');
+                        $('#progress').show();
                         $(".ui-dialog-buttonset").hide();
                         $(".ui-dialog-titlebar-close").hide();
                         $(".ui-dialog-buttonset").children().hide();
                         $(".ui-dialog-title").text("Processing Request...");
+                        
                         $("#dlgMsg").html('Uploading file... &nbsp<span class="spinner-border float-right ml-auto text-info" role="status" aria-hidden="true" />');
 
                         var request = $.ajax({
+                            xhr: function () {
+                                var xhr = new window.XMLHttpRequest();
+
+                                xhr.upload.addEventListener("progress", function (evt) {
+                                    if (evt.lengthComputable) {
+                                        var percentComplete = parseInt((evt.loaded / evt.total) * 100);
+                                        bar.css('width', percentComplete + '%');
+
+                                        if (percentComplete >= 100) {
+                                            //bar.css('width', '100%');
+                                            $('#progress').hide();
+                                            $("#dlgMsg").html('File uploaded. Validating data... Please wait... &nbsp<span class="spinner-border float-right ml-auto text-info" role="status" aria-hidden="true" />');
+                                        }
+
+                                    }
+                                }, false);
+
+                                return xhr;
+                            },
+
                             url: '/Contact/UploadFiles',
                             type: 'POST',
                             contentType: false, // Not to set any content header  
@@ -215,16 +235,8 @@ function uploadFile() {
                                 $('#dlgCancel').text('Close').show();
                                 $("#dlgMsg").html('');
                                 $("#dlgMsg").text(response);
+                                $('#progress').hide();
                                 isRefresh = true;
-
-                                //$(refDialog).dialog("close"); //Comment this line if confirmation is shown
-                                /*//Full grid update with POST if full refresh needed
-                                //let grd = $('#bulkUploadStatusGrid');
-                                //grd.igGrid('dataBind');*/
-
-                                //let grd = $('#contactGrid').data('igGrid'); //remove deleted record from UI without POST
-                                //grd.dataSource.deleteRow(contactId);
-                                //grd.commit();
                             },
                             error:
                                 function (xhr, status, error) {
@@ -233,6 +245,8 @@ function uploadFile() {
                                     $(".ui-dialog-buttonset").show();
                                     $('#dlgCancel').show();
                                     $("#dlgMsg").html('');
+                                    $("#dlgFYI").hide();
+                                    $('#progress').hide();
 
                                     try {
                                         $("#dlgMsg").text(error);
@@ -256,6 +270,9 @@ function uploadFile() {
                                         };
 
                                         $('#ulList').append.apply($('#ulList'), liItems);
+
+                                        $("#dlgLink").attr("href", '/Contact/DownloadRefFile?fileName=' + obj.fileName);
+                                        $("#dlgLink").show();
                                     }
                                     catch{}
                                 }
@@ -269,7 +286,7 @@ function uploadFile() {
                     click: function () {
                         if (isRefresh) {
                             //window.location.reload();   //Reload page
-                            getBulkUploadStatusData(100); //Update grid
+                            getBulkUploadStatusData(1000); //Update grid
                         }
                         $(this).dialog("close");
                     },

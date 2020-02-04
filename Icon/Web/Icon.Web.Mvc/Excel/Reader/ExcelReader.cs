@@ -21,6 +21,7 @@ namespace Icon.Web.Mvc.Excel
 
         public int Depth => 0;
         public int FieldCount => Fields == null ? -1 : Fields.Length;
+        public int RowIndex => rowEnumerator == null || rowEnumerator.Current == null ? -1 : (int)rowEnumerator.Current.RowIndex.Value;
         public bool IsClosed => doc == null;
         public bool IsEmpty { get; private set; }
         public int RecordsAffected  { get; private set; }
@@ -50,7 +51,7 @@ namespace Icon.Web.Mvc.Excel
             IsEmpty = false;
             this.Fields = fields;
             this.SourceTable = sourceWorksheet;
-            this.doc = SpreadsheetDocument.Open(inputStream, false);
+            this.doc = SpreadsheetDocument.Open(inputStream, true);
 
             var sheet = doc.WorkbookPart.Workbook.Sheets.Cast<Sheet>().Where(x => x.Name == this.SourceTable).FirstOrDefault();
             if (sheet == null)
@@ -68,7 +69,7 @@ namespace Icon.Web.Mvc.Excel
                 int id;
                 this.rowEnumerator.MoveNext();
                 var headerRow = this.rowEnumerator.Current;
-                this.stringValues = doc.WorkbookPart.SharedStringTablePart.SharedStringTable.ChildElements.Select(x => x.InnerText).ToArray();//.ToDictionary<int, string>((x, i) => x => i, x => x );
+                this.stringValues = doc.WorkbookPart.SharedStringTablePart.SharedStringTable.ChildElements.Select(x => x.InnerText).ToArray();
 
                 for (int i = 0; i < headerRow.Elements<Cell>().Count(); i++)
                 {
@@ -156,7 +157,6 @@ namespace Icon.Web.Mvc.Excel
             this.stringValues = null;
             if(this.rowEnumerator != null) this.rowEnumerator.Dispose();
             this.wsData = null;
-            if(doc != null) doc.Close();
             doc = null;
         }
 
@@ -183,6 +183,74 @@ namespace Icon.Web.Mvc.Excel
             }
 
             return false;
+        }
+
+
+        private Row GetHeader(params string[] values)
+        {
+            Row row = new Row();
+            foreach(var val in values)
+            {
+                row.AppendChild(new Cell(){ CellValue = new CellValue(val), DataType = CellValues.String});
+            }
+            return row;
+        }
+
+        public void SetErrorLinks(Hyperlinks links)
+        {
+            const string Contact_Validation = "ContactValidation"; 
+            WorksheetPart wsPart = null;
+            var sheet = doc.WorkbookPart.Workbook.Sheets.Cast<Sheet>()
+                .Where(x => String.Compare(x.Name, Contact_Validation, true) == 0)
+                .FirstOrDefault();
+
+            if(sheet != null)
+            {
+                wsPart = (WorksheetPart)doc.WorkbookPart.GetPartById(sheet.Id);
+                sheet.Remove();
+                doc.WorkbookPart.DeletePart(wsPart);
+                wsPart = null;
+            }
+
+            var ws = new Worksheet();
+            var sheetData = new SheetData();
+            wsPart = doc.WorkbookPart.AddNewPart<WorksheetPart>();
+
+            var columns = new DocumentFormat.OpenXml.Spreadsheet.Columns();
+            columns.Append(new Column(){ Min = 1, Max = 1, Width = 20, CustomWidth = true});
+            columns.Append(new Column(){ Min = 2, Max = 2, Width = 100, CustomWidth = true  });
+            ws.Append(columns);
+
+            sheetData.AppendChild(GetHeader("Ref Link", "Validation Message"));
+            foreach(Hyperlink hl in links)
+            {
+                var run = new Run()
+                {
+                    RunProperties = new RunProperties(new Color(){ Rgb = new HexBinaryValue(){ Value = "0000FF" }}, new Underline(){ Val = UnderlineValues.Single }),
+                    Text = new Text( hl.Display)
+                };
+
+                var r = new Row(new Cell(new InlineString(run)){ DataType = CellValues.InlineString },
+                                new Cell(){ CellValue = new CellValue(hl.Tooltip), DataType = CellValues.String });
+
+                sheetData.AppendChild(r);
+            }
+
+            ws.Append(sheetData, links);
+            wsPart.Worksheet = ws;
+
+            var sheets = doc.WorkbookPart.Workbook.GetFirstChild<Sheets>();
+            string relationshipId = doc.WorkbookPart.GetIdOfPart(wsPart);
+
+            //Get a unique ID for the new worksheet.
+            uint sheetId = sheets.Elements<Sheet>().Count() > 0
+                ? sheets.Elements<Sheet>().Select(s => s.SheetId.Value).Max() + 1
+                : 1;
+
+            //Append the new worksheet and associate it with the workbook.
+            var wsContactValidation = new Sheet() { Id = relationshipId, SheetId = sheetId, Name = Contact_Validation };
+            sheets.Append(wsContactValidation);
+            doc.Save();
         }
 
         private string ToExcelColumn(int inx)

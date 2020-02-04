@@ -221,6 +221,7 @@
     <Compile Include="Decorators\UpdateItemProhibitDiscountHierarchyClassTraitDecoratorTests.cs" />
     <Compile Include="Decorators\UpdateItemSubTeamHierarchyClassTraitDecoratorTests.cs" />
     <Compile Include="Decorators\UpdateItemTypeHierarchyClassTraitDecoratorTests.cs" />
+    <Compile Include="Excel\ExcelReaderTests.cs" />
     <Compile Include="Excel\Services\ItemExcelServiceTests.cs" />
     <Compile Include="Infrastructure\ItemSearch\ItemQueryBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -275,6 +276,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="TestDocs\Contact.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TestDocs\Items_10000.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

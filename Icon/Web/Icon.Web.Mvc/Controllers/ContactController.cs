@@ -109,7 +109,7 @@ namespace Icon.Web.Mvc.Controllers
             if (!this.settings.IsContactViewEnabled)
             {
                 TempData["Message"] = "Contact view is currently disabled.";
-                return RedirectToAction("Disabled", "Contact");
+                return RedirectToAction("FYI", "Contact");
             }
 
             var viewModel = GetHierarchyClass(hierarchyClassId);
@@ -117,14 +117,14 @@ namespace Icon.Web.Mvc.Controllers
             if (viewModel.HierarchyId != Hierarchies.Brands && viewModel.HierarchyId != Hierarchies.Manufacturer)
             {
                 TempData["Message"] = $"Selected hierarchy class does not support Contact Management. HierarchyClassId = {hierarchyClassId}";
-                return RedirectToAction("Disabled", "Contact");
+                return RedirectToAction("FYI", "Contact");
             }
 
             ViewBag.UserWriteAccess = GetWriteAccess();
             return View(viewModel);
         }
 
-        public ActionResult Disabled()
+        public ActionResult FYI()
         {
             return View();
         }
@@ -294,6 +294,23 @@ namespace Icon.Web.Mvc.Controllers
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public ActionResult DownloadRefFile(string fileName)
+        {
+            var cache = System.Runtime.Caching.MemoryCache.Default;
+            if(cache.Contains(fileName))
+            { 
+                var data = cache[fileName] as byte[];
+                SendForDownload(new MemoryStream(data), fileName);
+                return Json("OK", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                TempData["Message"] = $"Requested file not found: {fileName}.";
+                return RedirectToAction("FYI", "Contact");
+            }
+        }
+
         [HttpPost]
         [WriteAccessAuthorize]
         public ActionResult UploadFiles()
@@ -312,6 +329,7 @@ namespace Icon.Web.Mvc.Controllers
             {
                 var uploadedFileType = Request.Form["fileType"];
                 var uploadedFileName = string.Empty;
+                char[] trimChar = new char[]{'.', ' '};
 
                 try
                 {
@@ -339,16 +357,22 @@ namespace Icon.Web.Mvc.Controllers
                         }
 
                         var binaryReader = new BinaryReader(uploadedFile.InputStream);
-                        var uploadedData = binaryReader.ReadBytes(uploadedFile.ContentLength);
-                        var info = ProcessFile(uploadedFile.InputStream);
+                        var strm = new MemoryStream();
+                        strm.Write(binaryReader.ReadBytes(uploadedFile.ContentLength), 0, uploadedFile.ContentLength);
+                        strm.Position = 0;
+                        var info = ProcessFile(strm);
 
                         if(info.Code != UploadInfo.StatusCode.Loaded)
                         { 
+                            var refFileName = String.Format("Ref_{0}_{1}", DateTime.Now.ToString("yyyyMMdd_hhmmss"), uploadedFileName);
+                            var cache = System.Runtime.Caching.MemoryCache.Default;
+                            cache.Add(refFileName, strm.ToArray(), new System.Runtime.Caching.CacheItemPolicy(){ AbsoluteExpiration = DateTime.Now.AddMinutes(2) });
+
                             Response.StatusCode = (int)System.Net.HttpStatusCode.ExpectationFailed;
                             Response.StatusDescription = info.Code == UploadInfo.StatusCode.ValidationFailed 
                                 ? "File validaition failed. See validaition error(s) with failed records count below."
                                 : $"File process failed. {info.ErrorMessage}";
-                            var obj = JsonConvert.SerializeObject( new { validation = info.ValidationCounts.Select(x => new {key = x.Key, value = x.Value}).ToArray() });
+                            var obj = JsonConvert.SerializeObject( new { fileName = refFileName, validation = info.ValidationCounts.Select(x => new {key = x.Key.Trim(trimChar), value = x.Value}).ToArray() });
                             return Json(obj, JsonRequestBehavior.AllowGet);
                         }
                         else
@@ -362,7 +386,7 @@ namespace Icon.Web.Mvc.Controllers
                                     BulkContactUploadModel = new BulkContactUploadModel
                                     {
                                         FileName = uploadedFileName,
-                                        FileContent = uploadedData,
+                                        FileContent = strm.ToArray(),
                                         UploadedBy = User.Identity.Name,
                                         TotalRecords = info.TotatlRecords
                                     }
@@ -416,7 +440,18 @@ namespace Icon.Web.Mvc.Controllers
             try
             {
                 int id;
+                bool isInvalid = false;
+                string linkMessage = null;
                 var contactList = new List<ContactModel>();
+                var links = new DocumentFormat.OpenXml.Spreadsheet.Hyperlinks();
+                const string max15 = "{0} exceeding max length of 15. ";
+                const string max30 = "{0} exceeding max length of 30. ";
+                const string max255 = "{0} exceeding max length of 255. ";
+                const string invalidEmail = "Invalid Email. ";
+                const string invalidHierarchy = "Invalid Hierarchy. ";
+                const string invalidType = "Invalid Contact Type. ";
+                const string missingName = "Contact Name is missing. ";
+
                 
                 var contactTypes = GetContactTypes().ToDictionary(x => x.ContactTypeName, x => x.ContactTypeId);
                 var eligableIds = this.getContactEligibleHCQuery.Search(new GetContactEligibleHCParameters()).ToHashSet();
@@ -446,7 +481,9 @@ namespace Icon.Web.Mvc.Controllers
 
                     while(rdr.Read())
                     {
-                        contactList.Add(new ContactModel()
+                        linkMessage = String.Empty;
+                        
+                        var contact = new ContactModel()
                         {
                             AddressLine1 = rdr["AddressLine1"]?.ToString(),
                             AddressLine2 = rdr["AddressLine2"]?.ToString(),
@@ -463,32 +500,73 @@ namespace Icon.Web.Mvc.Controllers
                             Title = rdr["Title"]?.ToString(),
                             WebsiteURL = rdr["WebsiteURL"]?.ToString(),
                             ZipCode = rdr["ZipCode"]?.ToString()
-                        });
+                        };
+
+                        linkMessage = String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}",
+                            contact.ContactTypeId <= 0 ? invalidType : String.Empty,
+                            contact.HierarchyClassId <= 0 ? invalidHierarchy : String.Empty,
+                            String.IsNullOrEmpty(contact.Email) ? invalidEmail : String.Empty,
+                            String.IsNullOrEmpty(contact.ContactName) ? missingName : (contact.ContactName.Length > 255 ? String.Format(max255, "Contact Name") : String.Empty),
+                            contact.AddressLine1 != null && contact.AddressLine1.Length > 255 ? String.Format(max255, "Address Line 1") : String.Empty,
+                            contact.AddressLine2 != null && contact.AddressLine2.Length > 255 ? String.Format(max255, "Address Line 2") : String.Empty,
+                            contact.City != null && contact.City.Length > 255 ? String.Format(max255, "City") : String.Empty,
+                            contact.Country != null && contact.Country.Length > 255 ? String.Format(max255, "Country") : String.Empty,
+                            contact.PhoneNumber1 != null && contact.PhoneNumber1.Length > 30 ? String.Format(max30, "Phone Number 1") : String.Empty,
+                            contact.PhoneNumber2 != null && contact.PhoneNumber2.Length > 30 ? String.Format(max30, "Phone Number 2") : String.Empty,
+                            contact.State != null && contact.State.Length > 255 ? String.Format(max255, "State") : String.Empty,
+                            contact.Title != null && contact.Title.Length > 255 ? String.Format(max255, "Title") : String.Empty,
+                            contact.WebsiteURL != null && contact.WebsiteURL.Length > 255 ? String.Format(max255, "Website URL") : String.Empty,
+                            contact.ZipCode != null && contact.ZipCode.Length > 15 ? String.Format(max15, "Zip Code") : String.Empty
+                        ).Trim();
+
+                        if(!String.IsNullOrEmpty(linkMessage))
+                        {
+                            links.Append(new DocumentFormat.OpenXml.Spreadsheet.Hyperlink(){ Reference = $"A{links.Count() + 2}", Location = $"Contact!A{rdr.RowIndex}", Display = $"Ref ID: {rdr.RowIndex}", Tooltip = linkMessage });
+
+                            if(!isInvalid)
+                            {
+                                isInvalid = true;
+                                contactList.Clear();
+                            }
+
+                            contactList.Add(contact); //Keep invalid contacts only if at least one is found
+                        }
+                        else
+                        {
+                            if(!isInvalid)
+                            {
+                                contactList.Add(contact); //Keep valid contacts only
+                            }
+                        }
                     }
 
                     Info.TotatlRecords = rdr.RecordsAffected;
+                    if(links.Any())
+                    {
+                        rdr.SetErrorLinks(links);
+                    }
                 }
                 
                 Info.ValidationCounts = new List<KeyValuePair<string, int>>()
                 {
-                    new KeyValuePair<string, int>("Address Line 1 exceeding max length of 255", contactList.Where(x => x.AddressLine1 != null && x.AddressLine1.Length > 255).Count()),
-                    new KeyValuePair<string, int>("Address Line 2 exceeding max length of 255", contactList.Where(x => x.AddressLine2 != null && x.AddressLine2.Length > 255).Count()),
-                    new KeyValuePair<string, int>("City exceeding max length of 255", contactList.Where(x => x.City != null && x.City.Length > 255).Count()),
-                    new KeyValuePair<string, int>("Contact Name exceeding max length of 255", contactList.Where(x => x.ContactName != null && x.ContactName.Length > 255).Count()),
-                    new KeyValuePair<string, int>("Country exceeding max length of 255", contactList.Where(x => x.Country != null && x.Country.Length > 255).Count()),
-                    new KeyValuePair<string, int>("Invalid Contact Type", contactList.Where(x => x.ContactTypeId <= 0).Count()),
-                    new KeyValuePair<string, int>("Invalid Email", contactList.Where(x => x.Email == null).Count()),
-                    new KeyValuePair<string, int>("Invalid Hierarchy", contactList.Where(x => x.HierarchyClassId <= 0).Count()),
-                    new KeyValuePair<string, int>("Phone Number 1 exceeding max length of 30", contactList.Where(x => x.PhoneNumber1 != null && x.PhoneNumber1.Length > 30).Count()),
-                    new KeyValuePair<string, int>("Phone Number 2 exceeding max length of 30", contactList.Where(x => x.PhoneNumber2 != null && x.PhoneNumber2.Length > 30).Count()),
-                    new KeyValuePair<string, int>("State exceeding max length of 255", contactList.Where(x => x.State != null && x.State.Length > 255).Count()),
-                    new KeyValuePair<string, int>("Title exceeding max length of 255", contactList.Where(x => x.Title != null && x.Title.Length > 255).Count()),
-                    new KeyValuePair<string, int>("Website URL exceeding max length of 255", contactList.Where(x => x.WebsiteURL != null && x.WebsiteURL.Length > 255).Count()),
-                    new KeyValuePair<string, int>("Zip Code exceeding max length of 15", contactList.Where(x => x.ZipCode != null && x.ZipCode.Length > 15).Count())
+                    new KeyValuePair<string, int>(String.Format(max255, "Address Line 1"), contactList.Where(x => x.AddressLine1 != null && x.AddressLine1.Length > 255).Count()),
+                    new KeyValuePair<string, int>(String.Format(max255, "Address Line 2"), contactList.Where(x => x.AddressLine2 != null && x.AddressLine2.Length > 255).Count()),
+                    new KeyValuePair<string, int>(String.Format(max255, "City"), contactList.Where(x => x.City != null && x.City.Length > 255).Count()),
+                    new KeyValuePair<string, int>(String.Format(max255, "Contact Name"), contactList.Where(x => x.ContactName != null && x.ContactName.Length > 255).Count()),
+                    new KeyValuePair<string, int>(String.Format(max255, "Country"), contactList.Where(x => x.Country != null && x.Country.Length > 255).Count()),
+                    new KeyValuePair<string, int>(invalidType, contactList.Where(x => x.ContactTypeId <= 0).Count()),
+                    new KeyValuePair<string, int>(invalidEmail, contactList.Where(x => x.Email == null).Count()),
+                    new KeyValuePair<string, int>(invalidHierarchy, contactList.Where(x => x.HierarchyClassId <= 0).Count()),
+                    new KeyValuePair<string, int>(String.Format(max30, "Phone Number 1"), contactList.Where(x => x.PhoneNumber1 != null && x.PhoneNumber1.Length > 30).Count()),
+                    new KeyValuePair<string, int>(String.Format(max30, "Phone Number 2"), contactList.Where(x => x.PhoneNumber2 != null && x.PhoneNumber2.Length > 30).Count()),
+                    new KeyValuePair<string, int>(String.Format(max255, "State"), contactList.Where(x => x.State != null && x.State.Length > 255).Count()),
+                    new KeyValuePair<string, int>(String.Format(max255, "Title"), contactList.Where(x => x.Title != null && x.Title.Length > 255).Count()),
+                    new KeyValuePair<string, int>(String.Format(max255, "Website URL"), contactList.Where(x => x.WebsiteURL != null && x.WebsiteURL.Length > 255).Count()),
+                    new KeyValuePair<string, int>(String.Format(max15, "Zip Code"), contactList.Where(x => x.ZipCode != null && x.ZipCode.Length > 15).Count())
                 }
                 .Where(x => x.Value > 0).ToDictionary(x => x.Key, x => x.Value);
 
-                Info.Code = Info.ValidationCounts.Any() ? UploadInfo.StatusCode.ValidationFailed : UploadInfo.StatusCode.Validated;
+                Info.Code = isInvalid ? UploadInfo.StatusCode.ValidationFailed : UploadInfo.StatusCode.Validated;
                
                 if(Info.Code == UploadInfo.StatusCode.Validated)
                 {
@@ -511,8 +589,6 @@ namespace Icon.Web.Mvc.Controllers
                 throw;
             }
         }
-
-
 
         public ActionResult ManageType()
         {
@@ -699,6 +775,16 @@ namespace Icon.Web.Mvc.Controllers
             Response.SetCookie(new HttpCookie("fileDownload", "true") { Path = "/" });
             document.SetCurrentFormat(excelFormat);
             document.Save(Response.OutputStream);
+            Response.End();
+        }
+
+        private void SendForDownload(Stream fileStream, string name)
+        {
+            Response.Clear();
+            Response.AppendHeader("content-disposition", "attachment; filename=" + name);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.SetCookie(new HttpCookie("fileDownload", "true") { Path = "/" });
+            fileStream.CopyTo(Response.OutputStream);
             Response.End();
         }
 

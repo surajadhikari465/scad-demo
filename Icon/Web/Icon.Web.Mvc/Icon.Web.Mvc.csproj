@@ -1860,7 +1860,7 @@
     <Content Include="Views\Contact\Contact.cshtml" />
     <Content Include="Views\Contact\Index.cshtml" />
     <Content Include="Views\Contact\Manage.cshtml" />
-    <Content Include="Views\Contact\Disabled.cshtml" />
+    <Content Include="Views\Contact\FYI.cshtml" />
     <Content Include="Views\Contact\ManageType.cshtml" />
     <Content Include="Views\Contact\BulkUpload.cshtml" />
     <None Include="Web.2016.config">

@@ -68,9 +68,14 @@
         <p id="dlgMsg"/>
         <ul id="ulList"></ul>
         <hr />
-        <div id="finePrint" class="fine-print text-info">
-            <span>File will be processed after validation is completed.</span>
+        <div id="finePrint">
+            <span id="dlgFYI" class="fine-print text-info">File will be processed after validation is completed.</span>
+            <div id="progress" class="progress">
+                <div id="prgBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <a id="dlgLink" href='/Contact/DownloadRefFile'>Download Reference File</a>
         </div>
+
     </div>
 </div>
 
