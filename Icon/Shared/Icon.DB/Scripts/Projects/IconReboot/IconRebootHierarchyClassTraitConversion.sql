@@ -14,7 +14,7 @@ CREATE TABLE dbo.temp_InforHierarchyDefaults
 DECLARE @print nvarchar(255) = 'Inserting Infor Hierarchy ''Configuration'' from file into temp_InforHierarchyDefaults table... ' + CAST(SYSUTCDATETIME() as nvarchar);
 RAISERROR(@print,0,1) WITH NOWAIT;
 BULK INSERT dbo.temp_InforHierarchyDefaults
-FROM '\\ODWD6801\Temp\IconConversion\infor_im_merch_defaults.txt' -- needs to be added with file path and filename. Currently C:\TEMP\IconConversion\infor_im_merchandise_defaults_tilda.txt
+FROM 'E:\sql_temp_01\IconRebootShare\infor_im_merch_defaults.txt' -- needs to be added with file path and filename. Currently C:\TEMP\IconConversion\infor_im_merchandise_defaults_tilda.txt
 WITH
 (
 	FIRSTROW = 2,

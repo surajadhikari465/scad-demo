@@ -17,7 +17,7 @@ SET @designation = (SELECT traitid FROM trait WHERE traitCode = 'GRD')
 SET @hierarchyId = (SELECT hierarchyID FROM Hierarchy WHERE hierarchyName = 'Brands')
 
 BULK INSERT dbo.temp_BrandHierarchy
-FROM '\\ODWD6801\Temp\IconConversion\BrandHierarchy.csv' WITH (
+FROM 'E:\sql_temp_01\IconRebootShare\BrandDesignation.csv' WITH (
 		FIRSTROW = 2
 		,FIELDTERMINATOR = ','
 		,DATAFILETYPE = 'char'

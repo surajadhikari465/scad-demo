@@ -24,7 +24,7 @@ WAIT!  DevOps needs to update configs for Hierarchy Api Controller before runnin
 	a.	This script will create message queue records for Brand and Manufacturer Hierarchy. API controller will process these records.
 
 WAIT!  DevOps needs to update configs on Item Publisher before running step 7 so we do NOT send to R10.
-7.	IconConversionCreateMessageQueueRecordForAllItems
+7.	IconRebootConversionCreateMessageQueueItems.sql
 	a.	This script will create records in esb.MessageQueueItem table for all items.
 
 To Be Run at the end since we won't receive this file until the following day (according to SCMPA team)

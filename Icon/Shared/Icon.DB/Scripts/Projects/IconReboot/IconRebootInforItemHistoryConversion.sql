@@ -18,7 +18,7 @@ END
 TRUNCATE TABLE dbo.temp_InforItemHistoryFile 
 
 BULK INSERT dbo.temp_InforItemHistoryFile
-FROM '\\ODWD6801\Temp\IconConversion\InforItemHistory.json' -- needs to be added with file path and filename. Currently C:\TEMP\IconConversion\infor_im_prod_item_20190520.csv
+FROM 'E:\sql_temp_01\IconRebootShare\InforItemHistory.json' -- needs to be added with file path and filename. Currently C:\TEMP\IconConversion\infor_im_prod_item_20190520.csv
 WITH
 (
 	ROWTERMINATOR = '0x0a'

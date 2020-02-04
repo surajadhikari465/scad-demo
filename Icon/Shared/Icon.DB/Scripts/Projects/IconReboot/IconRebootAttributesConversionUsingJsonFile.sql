@@ -172,7 +172,7 @@ CREATE TABLE dbo.IconRebootDataAfterParsingJson (
 
 DECLARE @jsonData AS NVARCHAR(MAX)
 SELECT @jsonData = BulkColumn
-FROM OPENROWSET(BULK '\\ODWD6801\Temp\IconConversion\im_attributes.json', CODEPAGE = '65001', SINGLE_CLOB) AS j
+FROM OPENROWSET(BULK 'E:\sql_temp_01\IconRebootShare\im_attributes.json', CODEPAGE = '65001', SINGLE_CLOB) AS j
 
 SELECT *
 INTO #tmpParsedData
@@ -817,109 +817,6 @@ RAISERROR ('Inserting into IconRebootTraitCodesData table...', 0, 1) WITH NOWAIT
 IF EXISTS (SELECT 1 FROM IconRebootTraitCodesData)
 	DELETE FROM IconRebootTraitCodesData
 
-DECLARE @nutritionAttributeGroupId INT = (
-		SELECT TOP 1 AttributeGroupId
-		FROM AttributeGroup
-		WHERE AttributeGroupName = 'Nutrition'
-		)
-DECLARE @dataTypeTextId INT = (
-		SELECT TOP 1 DataTypeId
-		FROM datatype
-		WHERE DataType = 'Text'
-		)
-
-RAISERROR ('Inserting nutrition traits into dbo.Attributes table...', 0, 1) WITH NOWAIT
-INSERT INTO [dbo].[Attributes] (
-	[DisplayName]
-	,[AttributeName]
-	,[AttributeGroupId]
-	,[HasUniqueValues]
-	,[Description]
-	,[DefaultValue]
-	,[IsRequired]
-	,[SpecialCharactersAllowed]
-	,[TraitCode]
-	,[DataTypeId]
-	,[DisplayOrder]
-	,[InitialValue]
-	,[IncrementBy]
-	,[InitialMax]
-	,[DisplayType]
-	,[MaxLengthAllowed]
-	,[IsPickList]
-	,[XmlTraitDescription]
-	,[AttributeGuid]
-	)
-SELECT traitDesc
-	,Replace(traitDesc, ' ', '')
-	,@nutritionAttributeGroupId
-	,0
-	,traitDesc
-	,NULL
-	,0
-	,NULL
-	,traitCode
-	,@dataTypeTextId
-	,NULL
-	,NULL
-	,NULL
-	,NULL
-	,NULL
-	,NULL
-	,0
-	,traitDesc
-	,@AttributeId
-FROM trait
-WHERE traitcode IN (
-		'RCN'
-		,'ALR'
-		,'ING'
-		,'HSH'
-		,'PUF'
-		,'MUF'
-		,'PTW'
-		,'PTP'
-		,'DFP'
-		,'SBF'
-		,'ISF'
-		,'SAL'
-		,'OCH'
-		,'PPT'
-		,'BCN'
-		,'VTD'
-		,'VTE'
-		,'THM'
-		,'RFN'
-		,'NAC'
-		,'VB6'
-		,'FLT'
-		,'B12'
-		,'BTN'
-		,'PAD'
-		,'PPH'
-		,'IDN'
-		,'MGM'
-		,'ZNC'
-		,'CPR'
-		,'TSF'
-		,'O6F'
-		,'O3F'
-		,'STR'
-		,'CHR'
-		,'CHM'
-		,'VTK'
-		,'MGE'
-		,'MBD'
-		,'SLM'
-		,'TFW'
-		,'CTF'
-		,'CSF'
-		,'SPC'
-		,'SSD'
-		,'SPP'
-		,'SUT'
-		,'SWT')
-
 RAISERROR ('Updating ProductSelectionGroup table...', 0, 1) WITH NOWAIT
 UPDATE ps
 SET AttributeId = a.AttributeId
@@ -950,7 +847,13 @@ DECLARE @maxDisplayOrder INT = (
 		SELECT MAX(DisplayOrder)
 		FROM Attributes
 		);
+DECLARE @dataTypeTextId INT = (
+		SELECT TOP 1 DataTypeId
+		FROM datatype
+		WHERE DataType = 'Text'
+		)
 
+RAISERROR ('Adding special attributes [Inactive, CreatedBy, CreatedOn, ModifiedBy, and ModifiedOn]...', 0, 1) WITH NOWAIT
 INSERT INTO [dbo].[Attributes] (
 	[DisplayName]
 	,[AttributeName]
@@ -1133,60 +1036,37 @@ SELECT 'Request Number'
 FROM Attributes
 WHERE attributename = 'productdescription'
 
-INSERT INTO [dbo].[PickListData] (
-			[AttributeId]
-			,[PickListValue]
-			)
-VALUES  (
-(SELECT AttributeId from dbo.Attributes where AttributeName = 'DepartmentSale')
-,'No'
-)
-
-INSERT INTO [dbo].[PickListData] (
-			[AttributeId]
-			,[PickListValue]
-			)
-VALUES  (
-(SELECT AttributeId from dbo.Attributes where AttributeName = 'DepartmentSale')
-,'Yes'
-)
-
-INSERT INTO dbo.AttributeCharacterSets (
-[AttributeId]
-,[CharacterSetId])
-VALUES
-(
-	(SELECT AttributeId From Attributes where AttributeName = 'DepartmentSale'),
-	(SELECT CharacterSetId from CharacterSets WHERE Name = 'UPPERCASE')
-)
-
-INSERT INTO dbo.AttributeCharacterSets (
-[AttributeId]
-,[CharacterSetId])
-VALUES
-(
-	(SELECT AttributeId From Attributes where AttributeName = 'DepartmentSale'),
-	(SELECT CharacterSetId from CharacterSets WHERE Name = 'LOWERCASE')
-)
+-- Update Package Group to be a number data type
+RAISERROR ('Updating Package Group as a number data type and with number data...', 0, 1) WITH NOWAIT
+DECLARE @numericDataType int = (SELECT DataTypeId FROM DataType WHERE DataType = 'Number')
+UPDATE Attributes
+SET
+	SpecialCharactersAllowed = NULL,
+	DataTypeId = @numericDataType,
+	DisplayType = NULL,
+	MaxLengthAllowed = NULL,
+	MinimumNumber = 111,
+	MaximumNumber = 9999999999999,
+	NumberOfDecimals = 0
+WHERE AttributeName = 'PackageGroup'
 
 
-INSERT INTO dbo.AttributeCharacterSets (
-[AttributeId]
-,[CharacterSetId])
-VALUES
-(
-	(SELECT AttributeId From Attributes where AttributeName = 'DepartmentSale'),
-	(SELECT CharacterSetId from CharacterSets WHERE Name = 'NUMERIC')
-)
+-- Add Department Sale Data
+RAISERROR ('Inserting Department Sale data...', 0, 1) WITH NOWAIT
+INSERT INTO [dbo].[PickListData] ([AttributeId],[PickListValue])
+VALUES ((SELECT AttributeId from dbo.Attributes where AttributeName = 'DepartmentSale'),'Yes')
 
-INSERT INTO dbo.AttributeCharacterSets (
-[AttributeId]
-,[CharacterSetId])
-VALUES
-(
-	(SELECT AttributeId From Attributes where AttributeName = 'DepartmentSale'),
-	(SELECT CharacterSetId from CharacterSets WHERE Name = 'WHITESPACE')
-)
+INSERT INTO dbo.AttributeCharacterSets ([AttributeId],[CharacterSetId])
+VALUES ((SELECT AttributeId From Attributes where AttributeName = 'DepartmentSale'),(SELECT CharacterSetId from CharacterSets WHERE Name = 'UPPERCASE'))
+
+INSERT INTO dbo.AttributeCharacterSets ([AttributeId],[CharacterSetId])
+VALUES ((SELECT AttributeId From Attributes where AttributeName = 'DepartmentSale'),(SELECT CharacterSetId from CharacterSets WHERE Name = 'LOWERCASE'))
+
+INSERT INTO dbo.AttributeCharacterSets ([AttributeId],[CharacterSetId])
+VALUES ((SELECT AttributeId From Attributes where AttributeName = 'DepartmentSale'),(SELECT CharacterSetId from CharacterSets WHERE Name = 'NUMERIC'))
+
+INSERT INTO dbo.AttributeCharacterSets ([AttributeId],[CharacterSetId])
+VALUES ((SELECT AttributeId From Attributes where AttributeName = 'DepartmentSale'),(SELECT CharacterSetId from CharacterSets WHERE Name = 'WHITESPACE'))
 
 DECLARE @requestNumberAttributeId INT
 DECLARE @productDescriptionAttributeId INT
@@ -1194,9 +1074,8 @@ DECLARE @productDescriptionAttributeId INT
 SET @requestNumberAttributeId = (SELECT AttributeId FROM Attributes WHERE AttributeName = 'RequestNumber')
 SET @productDescriptionAttributeId = (SELECT AttributeId FROM Attributes WHERE AttributeName = 'ProductDescription')
 
-INSERT INTO dbo.AttributeCharacterSets (
-	[AttributeId]
-	,[CharacterSetId])
+RAISERROR ('Inserting Request Number data...', 0, 1) WITH NOWAIT
+INSERT INTO dbo.AttributeCharacterSets ([AttributeId],[CharacterSetId])
 SELECT
 	@requestNumberAttributeId
 	,CharacterSetId
@@ -1258,7 +1137,6 @@ WHERE DataTypeId = 1
 	AND ISNULL(SpecialCharactersAllowed, '') = ''
 
 IF OBJECT_ID('tempdb..#characterSetRegexPattern') IS NOT NULL DROP TABLE #characterSetRegexPattern
-GO
 
 --Build the CharacterSetRegexPattern on Attributes from CharacterSet so that the regex pattern can be used to validate items
 DECLARE @UpperCasePattern NVARCHAR(3) = 'A-Z'
@@ -1340,8 +1218,6 @@ SET CharacterSetRegexPattern =
 FROM dbo.AttributesWebConfiguration awc
 JOIN #characterSetRegexPattern c ON awc.AttributeId = c.AttributeId
 
-GO
-
 -- TODO: this is a temporary fix to remove the duplicate CountryofOrigin attribute that keeps getting converted twice and breaking everything. 
 -- We're deleting the record that does not have pick list data.
 delete FROM dbo.Attributes
@@ -1366,6 +1242,102 @@ RAISERROR ('Updating WFM Eligible XML Trait Description...', 0, 1) WITH NOWAIT
 UPDATE Attributes
 SET XmlTraitDescription = 'WFM Eligible'
 WHERE displayname = 'wfm eligible'
+
+RAISERROR ('Inserting nutrition traits into dbo.Attributes table...', 0, 1) WITH NOWAIT
+DECLARE @nutritionAttributeGroupId INT = (
+		SELECT TOP 1 AttributeGroupId
+		FROM AttributeGroup
+		WHERE AttributeGroupName = 'Nutrition')
+INSERT INTO [dbo].[Attributes] (
+	[DisplayName]
+	,[AttributeName]
+	,[AttributeGroupId]
+	,[HasUniqueValues]
+	,[Description]
+	,[DefaultValue]
+	,[IsRequired]
+	,[SpecialCharactersAllowed]
+	,[TraitCode]
+	,[DataTypeId]
+	,[DisplayOrder]
+	,[InitialValue]
+	,[IncrementBy]
+	,[InitialMax]
+	,[DisplayType]
+	,[MaxLengthAllowed]
+	,[IsPickList]
+	,[XmlTraitDescription]
+	,[AttributeGuid]
+	)
+SELECT traitDesc
+	,Replace(traitDesc, ' ', '')
+	,@nutritionAttributeGroupId
+	,0
+	,traitDesc
+	,NULL
+	,0
+	,NULL
+	,traitCode
+	,@dataTypeTextId
+	,NULL
+	,NULL
+	,NULL
+	,NULL
+	,NULL
+	,NULL
+	,0
+	,traitDesc
+	,@AttributeId
+FROM trait
+WHERE traitcode IN (
+		'RCN'
+		,'ALR'
+		,'ING'
+		,'HSH'
+		,'PUF'
+		,'MUF'
+		,'PTW'
+		,'PTP'
+		,'DFP'
+		,'SBF'
+		,'ISF'
+		,'SAL'
+		,'OCH'
+		,'PPT'
+		,'BCN'
+		,'VTD'
+		,'VTE'
+		,'THM'
+		,'RFN'
+		,'NAC'
+		,'VB6'
+		,'FLT'
+		,'B12'
+		,'BTN'
+		,'PAD'
+		,'PPH'
+		,'IDN'
+		,'MGM'
+		,'ZNC'
+		,'CPR'
+		,'TSF'
+		,'O6F'
+		,'O3F'
+		,'STR'
+		,'CHR'
+		,'CHM'
+		,'VTK'
+		,'MGE'
+		,'MBD'
+		,'SLM'
+		,'TFW'
+		,'CTF'
+		,'CSF'
+		,'SPC'
+		,'SSD'
+		,'SPP'
+		,'SUT'
+		,'SWT')
 
 -- IsSpecialTransform is a flag we use to determine if we should use attribute transformation when sending to the ESB.
 -- When this is enabled we will send 0/1 for Yes/No and there are other exceptions.
