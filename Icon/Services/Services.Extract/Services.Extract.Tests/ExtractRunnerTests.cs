@@ -195,7 +195,7 @@ namespace Services.Extract.Tests
             sw.Stop();
         }
 
-        [Ignore("Not a real test. Used to execute runner in debug environment.")]
+        //[Ignore("Not a real test. Used to execute runner in debug environment.")]
         [TestMethod]
         public void IconTest()
         {
@@ -213,8 +213,9 @@ namespace Services.Extract.Tests
                 ConcatenateOutputFiles = false, 
                 Destination = new Destination
                 {
-                    Type = "file", 
-                    Path = @"c:\temp\1\"
+                    Type = "s3", 
+                    CredentialsKey = "s3DART",
+                    Path = @"inbound/scad/irma"
                 }
             };
             
