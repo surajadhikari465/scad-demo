@@ -55,12 +55,17 @@ const UpdateShrink:React.FC<UpdateShrinkProps> = (props) => {
         history.push('/shrink/review');
       }
     }
+
+    /**
+     * android behavior fix, 
+     * to stop invalid punctuation 
+     */
     const clearInvalid = (e:any) =>{
-      //android behavior fix, to stop invalid punctuation 
       if(e.target.value === ''){
         e.target.value = '';
       }
     }
+
     const {shrinkTypes} = state;
     return (  
       <Fragment>
@@ -102,7 +107,6 @@ const UpdateShrink:React.FC<UpdateShrinkProps> = (props) => {
             <select defaultValue={shrinkType} onChange={changeSubtype}>
               <option>--Select Sub Type--</option>
               {shrinkTypes.map(team =>
-              // @ts-ignore 
                 <option key={team.shrinkSubTypeId} value={team.shrinkSubTypeMember}>{team.shrinkSubTypeMember}</option>
               )}
             </select>

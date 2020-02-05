@@ -68,7 +68,7 @@ const ReviewShrink:React.FC = () => {
           let weight = shrinkItems[i].costedByWeight ? shrinkItems[i].quantity: 0;
           let quantity = shrinkItems[i].costedByWeight ? 0: shrinkItems[i].quantity;
           try {
-            var result = await agent.Shrink.shrinkItemSubmit(
+            var result = await agent.Shrink.submitShrinkItems(
               state.region, 
               shrinkItems[i].itemKey, 
               state.storeNumber, 

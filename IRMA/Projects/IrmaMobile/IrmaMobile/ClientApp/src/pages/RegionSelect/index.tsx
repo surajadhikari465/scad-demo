@@ -23,6 +23,10 @@ const RegionSelect:React.FC<RegionProps> = (props) => {
 
     useEffect(() => {
       dispatch({ type: types.SETMENUITEMS, menuItems: [] });
+      dispatch({ type: types.SETREGION, region:''});
+      dispatch({ type: types.SETSTORE, store:''});
+      dispatch({ type: types.TOGGLECOG, showCog: false }); 
+      dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
     }, [dispatch]);
 
     const setIsLoading = (result: boolean) => {

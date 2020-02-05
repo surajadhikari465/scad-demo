@@ -28,8 +28,10 @@ interface IIntitialState {
   purchaseOrderUpc: string;
   purchaseOrderNumber: string;
   menuItems: IMenuItem[];
+  settingsItems: IMenuItem[];
   showShrinkHeader: boolean;
   Title: string;
+  showCog: boolean;
 }
 
 export interface IMenuItem {
@@ -106,8 +108,10 @@ export const initialState = {
     purchaseOrderUpc: "",
     purchaseOrderNumber: "",
     menuItems: [],
+    settingsItems: [],
     showShrinkHeader: true,
-    Title: 'IRMA Mobile'
+    Title: 'IRMA Mobile',
+    showCog: false
 } as IIntitialState;
 
 export const types = {
@@ -132,8 +136,10 @@ export const types = {
     SETPURCHASEORDERUPC: "SETPURCHASEORDERUPC",
     SETPURCHASEORDERNUMBER: "SETPURCHASEORDERNUMBER",
     SETMENUITEMS: "SETMENUITEMS",
+    SETSETTINGSITEMS: "SETSETTINGSITEMS",
     SHOWSHRINKHEADER: "SHOWSHRINKHEADER",
-    SETTITLE: "SETTITLE"
+    SETTITLE: "SETTITLE",
+    TOGGLECOG: "TOGGLECOG"
 };
 
 export const AppContext = React.createContext({ state: initialState });
@@ -203,11 +209,17 @@ export const reducer = (state: any, action: any) => {
         case types.SETMENUITEMS: {
           return { ...state, menuItems: action.menuItems }; 
         }
+        case types.SETSETTINGSITEMS: {
+          return { ...state, settingsItems: action.settingsItems }; 
+        }
         case types.SHOWSHRINKHEADER: {
           return { ...state, showShrinkHeader: action.showShrinkHeader }; 
         }
         case types.SETTITLE: {
           return { ...state, Title: action.Title };
+        }
+        case types.TOGGLECOG: {
+          return { ...state, showCog: action.showCog };
         }
         default:
             return state;

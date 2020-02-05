@@ -10,9 +10,6 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import { faCog } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import { AppContext, reducer, initialState, usePersistedReducer } from "./store";
 import Receive from './pages/Receive/Index';
 import ReceiveDocument from './pages/Receive/Document/ReceiveDocument';
@@ -29,8 +26,7 @@ import TransferScan from './pages/Transfer/Scan/TransferScan';
 
 const App: React.FC = () => { 
   const [state, dispatch] = usePersistedReducer(reducer, initialState);
-  const { menuItems, Title } = state;
-
+  const { menuItems, settingsItems, Title } = state;
   return (
     <Fragment>
       <ToastContainer position="bottom-right" />
@@ -40,10 +36,8 @@ const App: React.FC = () => {
         <Router>
           <wfm-toolbar>
             {Title === '' ? "IRMA Mobile" : Title}
-              <wfm-button slot="end">
-                <FontAwesomeIcon icon={faCog} />
-              </wfm-button>
-              <MainMenu disabled={menuItems && menuItems.length === 0}/>
+              <MainMenu disabled={menuItems && menuItems.length === 0} menuItems={menuItems} icon="bars" slot="start"/>
+              <MainMenu disabled={!state.showCog} style={!state.showCog?{visibility:'hidden'}:{}} menuItems={settingsItems} icon="cog" slot="end"/>
           </wfm-toolbar>
           <div className="App">
             <Switch>

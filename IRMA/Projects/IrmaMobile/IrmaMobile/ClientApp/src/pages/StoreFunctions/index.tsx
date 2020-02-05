@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import './styles.scss';
 import { Modal } from 'semantic-ui-react';
 import BasicModal from '../../layout/BasicModal';
-import { AppContext, types} from "../../store";
+import { AppContext, types, IMenuItem } from "../../store";
 
 interface StoreFunctionsProps {
   history: any;
@@ -16,6 +16,18 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
     const [alert, setAlert] = useState<any>({open:false, alertMessage:'', type: 'default', header: 'IRMA Mobile', confirmAction:()=> {}});
     const {subteams} = state;
     const {history} = props;
+
+    useEffect(() => {
+      dispatch({ type: types.TOGGLECOG, showCog: true }); 
+      const settingsItems = [
+        { id: 1, order: 0, text: "Change Store", path: "/", disabled: false } as IMenuItem
+      ] as IMenuItem[];
+
+      dispatch({ type: types.SETSETTINGSITEMS, settingsItems: settingsItems });
+      return () => {
+        dispatch({ type: types.TOGGLECOG, showCog: false }); 
+      };
+    }, [dispatch]); 
 
     const deleteSession = () =>{
       localStorage.removeItem('shrinkItems');

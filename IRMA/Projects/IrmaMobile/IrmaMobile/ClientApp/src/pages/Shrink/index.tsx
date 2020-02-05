@@ -70,7 +70,8 @@ const Shrink:React.FC = () => {
 
     useEffect(() => {
       const changeSubtype = ()=>{
-        dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: {...state.subteamSession, forceSubteamSelection: true}}); 
+        dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: {...state.subteamSession, forceSubteamSelection: true}});
+        dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });  
       }
 
       const newMenuItems = shrinkState.isSelected || state.subteamSession.isPrevSession ? [
@@ -92,7 +93,7 @@ const Shrink:React.FC = () => {
 
       dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems});
       
-    }, [shrinkState, dispatch]);
+    }, [shrinkState, dispatch, alert]);
  
     const setUpc = (value?:any, scan:boolean = false) =>{  
       let upc = value && typeof value !== 'object' ? value: shrinkState.upcValue;
@@ -136,7 +137,6 @@ const Shrink:React.FC = () => {
 
     const setShrinkType = (value:any) =>{
       let shrinkType = JSON.parse(value);
-      console.log(shrinkType);
       setShrinkState({...shrinkState, isSelected:true});
       dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: {...state.subteamSession, forceSubteamSelection: false, sessionShrinkType: shrinkType}}); 
       dispatch({ type: 'SETSHRINKTYPE', shrinkType });
@@ -146,7 +146,6 @@ const Shrink:React.FC = () => {
    const setShrinkItem = (result:any, upc: any, quantity:any) =>{
       let dupItem = dupItemCheck(result);
       if(dupItem.length > 0){
-        // @ts-ignore
         setShrinkState({...shrinkState, ...result, upcValue:upc,queued: dupItem[0].quantity, quantity, dupItem});
       } else {
         setShrinkState({...shrinkState, ...result, upcValue:upc, quantity, dupItem});
@@ -236,7 +235,7 @@ const Shrink:React.FC = () => {
         }
 
         if(shrinkState.dupItem.length > 0){
-          // if dup item found, replace the shrink Item with a new quantity
+          // if duplicate item found, replace the shrink Item with a new quantity
           setAlert({...alert, 
             open: true, 
             // @ts-ignore
@@ -262,14 +261,12 @@ const Shrink:React.FC = () => {
     }
     const add = (e:any) => {
       setAlert({...alert, open:false});
-       // @ts-ignore
-      let shrinkItems:[] = getShrinkItems(parseFloat((+(shrinkState.queued) + +(shrinkState.quantity)).toPrecision(4)));
+      let shrinkItems:any[] = getShrinkItems(parseFloat((+(shrinkState.queued) + +(shrinkState.quantity)).toPrecision(4)));
       saveItems(shrinkItems);
     }
     const overwrite = (e:any) => {
       setAlert({...alert, open:false});
-       // @ts-ignore
-      let shrinkItems:[] = getShrinkItems(shrinkState.quantity);
+      let shrinkItems:any[] = getShrinkItems(shrinkState.quantity);
       saveItems(shrinkItems);
     }
     const cancel = ( clearData=true, cancelledAlert=true ,e:any) => {
@@ -285,7 +282,7 @@ const Shrink:React.FC = () => {
             alertMessage:`Shrink for ${shrinkState.upcValue} UPC was not saved`});
         }
     }
-    const saveItems = (shrinkItems: []) => {
+    const saveItems = (shrinkItems: any[]) => {
       dispatch({ type: types.SETSHRINKITEMS, shrinkItems: shrinkItems }); 
       localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems));
       dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: {...state.subteamSession, sessionShrinkType: state.shrinkType, sessionSubteam: state.subteam}}); 
@@ -334,8 +331,8 @@ const Shrink:React.FC = () => {
                     onKeyPress={clearInvalid}
                     onChange={setUpcValue}
                     onKeyDown={(e)=> e.key === 'Enter' ? setUpc() : ''}
-                    ref={textInput}/>        
-                  <button className='submit-upc' onClick={setUpc}>>></button>
+                    ref={textInput}/>     
+                    <button className='submit-upc wfmButton' onClick={setUpc}>>></button>   
                 </div>
                 {
                   shrinkState.itemDescription && 
