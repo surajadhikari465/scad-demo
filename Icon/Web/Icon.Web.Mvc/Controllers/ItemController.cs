@@ -179,7 +179,8 @@ namespace Icon.Web.Controllers
             var transactions = infragisticsHelper.LoadTransactions<JObject>(HttpContext.Request.Form);
             var row = transactions.Single().row;
 
-            var dictionary = row.ToObject<Dictionary<string, string>>();
+            var dictionary = row.ToObject<Dictionary<string, object>>()
+                .ToDictionary(x => x.Key, x => (x.Value != null && x.Value is DateTime ? (x.Value as DateTime?).Value.ToUniversalTime().ToString() : x.Value?.ToString()));
 
             ItemEditViewModel model = new ItemEditViewModel()
             {
