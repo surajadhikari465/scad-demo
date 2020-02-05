@@ -454,6 +454,8 @@ SELECT AttributeId
 	,specialCharacters
 	,DisplayOrder
 FROM dbo.IconRebootDataAfterParsingJson
+ORDER BY Name  -- make sure Cursor data is ordered so records for an attribute are always together. Fixes countryof origin issue.
+
 
 OPEN IconRebootDataAfterParsingJsonCursor
 
@@ -1217,13 +1219,6 @@ SET CharacterSetRegexPattern =
 	END
 FROM dbo.AttributesWebConfiguration awc
 JOIN #characterSetRegexPattern c ON awc.AttributeId = c.AttributeId
-
--- TODO: this is a temporary fix to remove the duplicate CountryofOrigin attribute that keeps getting converted twice and breaking everything. 
--- We're deleting the record that does not have pick list data.
-delete FROM dbo.Attributes
-where attributeId in (SELECT attributeId from Attributes wHERE AttributeGuid = '633873B1-03B3-4E28-8093-8F06BFE44BCF')
-AND NOT EXISTS (SELECT * FROM dbo.PickListData pld where pld.AttributeId = dbo.Attributes.AttributeId)
-
 
 IF NOT EXISTS (SELECT 1 FROM dbo.[Hierarchy] WHERE [hierarchyName] = 'Manufacturer')
 BEGIN
