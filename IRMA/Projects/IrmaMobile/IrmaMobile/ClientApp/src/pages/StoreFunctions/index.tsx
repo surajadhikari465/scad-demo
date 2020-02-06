@@ -24,6 +24,8 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
       ] as IMenuItem[];
 
       dispatch({ type: types.SETSETTINGSITEMS, settingsItems: settingsItems });
+      dispatch({ type: types.SETMENUITEMS, menuItems: []});
+
       return () => {
         dispatch({ type: types.TOGGLECOG, showCog: false }); 
       };

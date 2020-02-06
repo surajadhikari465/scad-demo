@@ -75,7 +75,7 @@ const Shrink:React.FC = () => {
       }
 
       const newMenuItems = shrinkState.isSelected || state.subteamSession.isPrevSession ? [
-        { id: 1, order: 0, path: "#", text: "Clear", onClick:()=>{setAlert({...alert, 
+        { id: 1, order: 0, path: "#", text: "Clear Session", onClick:()=>{setAlert({...alert, 
           open:true, 
           alertMessage: 'Would you like to delete the current session?', 
           type: 'confirm',  
