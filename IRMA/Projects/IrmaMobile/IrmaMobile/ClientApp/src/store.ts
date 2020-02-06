@@ -113,6 +113,7 @@ export const initialState = {
     purchaseOrderUpc: "",
     purchaseOrderNumber: "",
     menuItems: [],
+    settingsItems: [],
     showShrinkHeader: true,
     Title: 'IRMA Mobile',
     transferData: null,
@@ -141,6 +142,7 @@ export const types = {
     SETLISTEDORDERS: "SETLISTEDORDERS",
     SETPURCHASEORDERUPC: "SETPURCHASEORDERUPC",
     SETPURCHASEORDERNUMBER: "SETPURCHASEORDERNUMBER",
+    SETSETTINGSITEMS: "SETSETTINGSITEMS",
     SETMENUITEMS: "SETMENUITEMS",
     SHOWSHRINKHEADER: "SHOWSHRINKHEADER",
     SETTITLE: "SETTITLE",
@@ -216,11 +218,17 @@ export const reducer = (state: any, action: any) => {
         case types.SETMENUITEMS: {
             return { ...state, menuItems: action.menuItems };
         }
+        case types.SETSETTINGSITEMS: {
+            return { ...state, settingsItems: action.settingsItems };
+        }
         case types.SHOWSHRINKHEADER: {
             return { ...state, showShrinkHeader: action.showShrinkHeader };
         }
         case types.SETTITLE: {
             return { ...state, Title: action.Title };
+        }
+        case types.TOGGLECOG: {
+            return { ...state, showCog: action.showCog };
         }
         default:
             return state;
