@@ -5654,6 +5654,10 @@ Partial Public Class StoreItem
     Private vendorCostFieldSpecified As Boolean
     
     Private vendorPackField As String
+
+    Private adjustedCostField As Decimal
+
+    Private adjustedCostFieldSpecified As Boolean
     
     '''<remarks/>
     <System.Xml.Serialization.XmlElementAttribute(Order:=0)>  _
@@ -6524,6 +6528,7 @@ Partial Public Class StoreItem
         End Set
     End Property
     
+    
     '''<remarks/>
     <System.Xml.Serialization.XmlElementAttribute(IsNullable:=true, Order:=45)>  _
     Public Property vendorPack() As String
@@ -6534,7 +6539,30 @@ Partial Public Class StoreItem
             Me.vendorPackField = value
         End Set
     End Property
+
+    '''<remarks/>
+    <System.Xml.Serialization.XmlElementAttribute(Order:=46)> _
+    Public Property adjustedCost() As Decimal
+        Get
+            Return Me.adjustedCostField
+        End Get
+        Set(ByVal value As Decimal)
+            Me.adjustedCostField = value
+        End Set
+    End Property
+
+    '''<remarks/>
+    <System.Xml.Serialization.XmlIgnoreAttribute()> _
+    Public Property adjustedCostSpecified() As Boolean
+        Get
+            Return Me.adjustedCostFieldSpecified
+        End Get
+        Set(ByVal value As Boolean)
+            Me.adjustedCostFieldSpecified = value
+        End Set
+    End Property
 End Class
+
 
 '''<remarks/>
 <System.CodeDom.Compiler.GeneratedCodeAttribute("NetCFSvcUtil", "3.5.0.0"),  _

@@ -669,10 +669,19 @@ Public Class TransferScan
                         txtQty.MaxLength = 3
                     End If
 
-                    If myItem.vendorCost <= 0 Then
+                    If myItem.vendorCost <= 0 And myItem.adjustedCost <= 0 Then
                         Messages.ZeroCostItem()
                         lblItemCost.Text = "0"
                         txtItemCost.Text = "0"
+                        lblCost.Text = "Adjusted Cost:"
+                        lblItemCost.Visible = False
+                        txtItemCost.Visible = True
+                        lnlReason.Visible = True
+                        cmbReason.Visible = True
+
+                    ElseIf myItem.vendorCost <= 0 Then
+                        lblItemCost.Text = "0"
+                        txtItemCost.Text = myItem.adjustedCost
                         lblCost.Text = "Adjusted Cost:"
                         lblItemCost.Visible = False
                         txtItemCost.Visible = True

@@ -53,6 +53,7 @@ BEGIN
 		@SourcePONumber     int,
 		@IsCostedByWeight	bit,
 		@Cost				money,
+		@HostedCost         money,
 		@Cost_Unit_ID		int,
 		@Retail_Unit_ID     int,
 		@Package_Desc1	    decimal(9,4),
@@ -78,7 +79,7 @@ BEGIN
 						WHERE  
 							Deleted_Identifier		= 0
                             AND Remove_Identifier	= 0
-                            AND Identifier			= @Identifier)  
+                            AND Identifier			= @Identifier)						
 	
 	IF @UseAvgCost = 1
 		BEGIN
@@ -145,6 +146,10 @@ BEGIN
 			-- now convert cost to Unit UOM
 			SELECT @Cost = dbo.fn_CostConversion(@Cost, @Cost_Unit_ID, CASE WHEN @IsCostedByWeight = 1 THEN @PoundID ELSE @UnitID END, @Package_Desc1, @Package_Desc2, @Package_Unit_ID)
 		END
+		
+		--Calculate hosted cost
+         IF @Cost IS NULL OR @Cost = 0
+	     SELECT @HostedCost = (CONVERT(MONEY, (dbo.fn_GetCurrentNetCost(@Item_Key, @VendStore_No) / dbo.fn_GetCurrentVendorPackage_Desc1(@Item_Key, @VendStore_No))))
     
     SELECT    
 		I.Item_Key ,
@@ -152,6 +157,11 @@ BEGIN
         ISNULL(IOR.Item_Description, I.Item_Description) AS Item_Description ,
         @Vendor_ID AS Vendor_ID,
         ISNULL(@Cost,0) AS Vendor_Cost,
+		CASE 
+		WHEN IsNULL(@Cost, 0) = 0
+			THEN IsNULL(@HostedCost, 0)
+		ELSE 0
+		END AS Adjusted_Cost,	
         RTRIM(CAST(CAST(ISNULL(ISNULL(@Package_Desc1, IOR.Package_Desc1), I.Package_Desc1) AS INT) AS VARCHAR(14))) + ' / ' + RTRIM(CAST(CAST(ISNULL(ISNULL(@Package_Desc2, IOR.Package_Desc2),I.Package_Desc2) AS INT) AS VARCHAR(14))) + ' ' + RTRIM(PU.Unit_Name) AS VendorPack,
         ISNULL(RU.Weight_Unit, 0) AS Sold_By_Weight ,
         RTRIM(VU.Unit_Name) AS Vendor_Unit_Name ,

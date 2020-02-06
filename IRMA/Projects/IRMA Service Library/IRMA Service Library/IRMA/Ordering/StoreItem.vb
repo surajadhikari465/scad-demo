@@ -96,6 +96,8 @@ Namespace IRMA
         Public Property StoreVendorID As Integer
         <DataMember()>
         Public Property IsItemAuthorized As Boolean
+        <DataMember()>
+        Public Property adjustedCost() As Decimal
 
         Public Sub New()
 
@@ -222,6 +224,9 @@ Namespace IRMA
                 End If
                 If dt.Columns.Contains("IsItemAuthorized") Then
                     Me.IsItemAuthorized = dt.Rows(0).Item("IsItemAuthorized")
+                End If
+                If dt.Columns.Contains("Adjusted_Cost") Then
+                    Me.adjustedCost = dt.Rows(0).Item("Adjusted_Cost")
                 End If
             End If
         End Sub
