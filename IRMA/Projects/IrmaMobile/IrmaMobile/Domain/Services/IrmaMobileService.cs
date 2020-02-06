@@ -37,9 +37,9 @@ namespace IrmaMobile.Services
             return subteams;
         }
 
-        public async Task<List<StoreModel>> GetStoresAsync(string region)
+        public async Task<List<StoreModel>> GetStoresAsync(string region, bool useVendorIdAsStoreNo)
         {
-            var serviceStores = await MakeServiceRequest(region, client => client.GetStoresAsync(false));
+            var serviceStores = await MakeServiceRequest(region, client => client.GetStoresAsync(useVendorIdAsStoreNo));
             var subteams = serviceStores.Select(s => new StoreModel
             {
                 Name = s.StoreName,
@@ -275,6 +275,36 @@ namespace IrmaMobile.Services
         {
             var result = await MakeServiceRequest(region, client => client.GetSubteamByProductTypeAsync(productTypeId)); 
             return result;
+        }
+
+        public async Task<CreateTransferOrderResult> CreateTransferOrder(string region, TransferOrderModel transferOrder)
+        {
+            var result = await MakeServiceRequest(region, client => client.CreateTransferOrderAsync(new Order
+            {
+                CreatedBy = transferOrder.CreatedBy,
+                ProductType_ID = transferOrder.ProductTypeId,
+                OrderType_Id = transferOrder.OrderTypeId,
+                Vendor_ID = transferOrder.VendorId,
+                Transfer_SubTeam = transferOrder.TransferSubTeamNo,
+                ReceiveLocation_ID = transferOrder.ReceiveLocationId,
+                PurchaseLocation_ID = transferOrder.PurchaseLocationId,
+                Transfer_To_SubTeam = transferOrder.TransferToSubTeam,
+                SupplyTransferToSubTeam = transferOrder.SupplyTransferToSubTeam,
+                Fax_Order = transferOrder.FaxOrder,
+                Expected_Date = transferOrder.ExpectedDate,
+                Return_Order = transferOrder.ReturnOrder,
+                FromQueue = transferOrder.FromQueue,
+                DSDOrder = transferOrder.DsdOrder,
+                OrderItems = transferOrder.OrderItems.Select(oi => new OrderItem
+                {
+                    QuantityOrdered = oi.QuantityOrdered,
+                    Item_Key = oi.ItemKey,
+                    QuantityUnit = oi.QuantityUnit,
+                    AdjustedCost = oi.AdjustedCost,
+                    ReasonCodeDetailID = oi.ReasonCodeDetailId
+                }).ToList()
+            }));
+            return new CreateTransferOrderResult { IrmaPoNumber = result.IRMA_PONumber };
         }
 
         // Following best practices for handling WCF ServiceClient lifecycle as documented here:

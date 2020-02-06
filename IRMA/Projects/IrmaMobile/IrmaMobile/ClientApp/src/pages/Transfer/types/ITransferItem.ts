@@ -8,7 +8,7 @@ interface ITransferItem {
     VendorPack: string;
     VendorCost: number;
     AdjustedCost: number;
-    AdjustedReason: string;
+    AdjustedReason: number;
     Description: string;
     SoldByWeight: boolean;
 }

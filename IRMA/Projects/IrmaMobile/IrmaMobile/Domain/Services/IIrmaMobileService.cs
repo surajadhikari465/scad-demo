@@ -7,7 +7,7 @@ namespace IrmaMobile.Services
 {
     public interface IIrmaMobileService
     {
-        Task<List<StoreModel>> GetStoresAsync(string region);
+        Task<List<StoreModel>> GetStoresAsync(string region, bool useVendorIdAsStoreNo);
         Task<List<SubteamModel>> GetSubteamsAsync(string region);
         Task<List<ShrinkSubTypeModel>> GetShrinkSubTypesAsync(string region);
         Task<StoreItemModel> GetStoreItemAsync(string region, int storeNo, int subteamNo, int? userId, string scanCode);
@@ -33,5 +33,6 @@ namespace IrmaMobile.Services
         Task<bool> IsDuplicateReceivingDocumentInvoiceNumberAsync(string region, string invoiceNumber, int vendorId);
         Task<List<ListsSubteam>> GetSubteamByProductTypeAsync(string region, int productTypeId);
         Task<StoreItem> GetTransferItemAsync(string region, string upc, int productType, int storeNo, int vendorId, int subteam, int supplyTeam);
+        Task<CreateTransferOrderResult> CreateTransferOrder(string region, TransferOrderModel transferOrder);
     }
 }

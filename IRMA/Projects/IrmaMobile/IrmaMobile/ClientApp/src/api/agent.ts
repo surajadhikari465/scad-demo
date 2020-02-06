@@ -1,6 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import Config from "../config";
+import ITransferOrder from '../pages/Transfer/types/ITransferOrder'
+import { IStore } from "../store";
 
 axios.defaults.baseURL = Config.baseUrl;
 
@@ -10,7 +12,7 @@ axios.interceptors.response.use(undefined, error => {
     return Promise.reject(error.message + "\n" + error.stack);
 });
 
-const responseBody = async (response: AxiosResponse) =>( await response.data );
+const responseBody = async (response: AxiosResponse) => (await response.data);
 
 const requests = {
     get: async (url: string) =>
@@ -34,7 +36,7 @@ const requests = {
             .catch(e => {
                 console.log(e);
             }),
-    del: async (url: string) => 
+    del: async (url: string) =>
         await axios
             .delete(url)
             .then(responseBody)
@@ -44,9 +46,9 @@ const requests = {
 };
 
 const RegionSelect = {
-    getStores: async(region:string) => await requests.get(`/${region}/stores/`),
-    getShrinkSubtypes: async(region:string) => await requests.get(`/${region}/shrinksubtypes/`)
-};   
+    getStores: async (region: string, useVendorIdAsStoreNo: boolean = false) => await requests.get(`/${region}/stores?useVendorIdAsStoreNo=${useVendorIdAsStoreNo}`) as IStore[],
+    getShrinkSubtypes: async (region: string) => await requests.get(`/${region}/shrinksubtypes/`)
+};
 
 const PurchaseOrder = {
     detailsFromPurchaseOrderNumber: async (
@@ -93,9 +95,9 @@ const InvoiceData = {
         await requests.get(
             `/${region}/invoicedata/orderInvoiceCharges?orderId=${orderId}`
         ),
-    getAllocatedInvoiceCharges: async (region: string) => 
+    getAllocatedInvoiceCharges: async (region: string) =>
         await requests.get(`/${region}/invoicedata/allocatedInvoiceCharges`),
-    getNonallocatedInvoiceCharges: async (region: string, orderId: number) => 
+    getNonallocatedInvoiceCharges: async (region: string, orderId: number) =>
         await requests.get(`/${region}/invoicedata/nonallocatedInvoiceCharges?orderId=${orderId}`),
     addInvoiceCharge: async (region: string, orderId: number, sacType: number, description: string, subteamGlAccount: number, allowance: boolean, chargeValue: number) =>
         await requests.post(`/${region}/invoicedata/addinvoicecharge`, {
@@ -106,66 +108,66 @@ const InvoiceData = {
             Allowance: allowance,
             ChargeValue: chargeValue
         }),
-    removeInvoiceCharge: async (region: string, chargeId: number) => await requests.post(`/${region}/invoicedata/removeinvoicecharge`, {ChargeId: chargeId}),
+    removeInvoiceCharge: async (region: string, chargeId: number) => await requests.post(`/${region}/invoicedata/removeinvoicecharge`, { ChargeId: chargeId }),
     getRefuseCodes: async (region: string) => await requests.get(`/${region}/invoicedata/refusecodes`),
-    refuseOrder: async (region: string, orderId: number, userId: number, reasonCodeId: number) => 
+    refuseOrder: async (region: string, orderId: number, userId: number, reasonCodeId: number) =>
         await requests.post(`/${region}/invoicedata/refuseorder`,
-        {
-            OrderId: orderId,
-            UserId: userId,
-            ReasonCodeId: reasonCodeId    
-        }),
+            {
+                OrderId: orderId,
+                UserId: userId,
+                ReasonCodeId: reasonCodeId
+            }),
     reparseEInvoice: async (region: string, eInvId: number) => await requests.post(`/${region}/invoicedata/reparseEInvoice`, { EInvId: eInvId }),
     closeOrder: async (region: string, orderId: number, userId: number) => await requests.post(`/${region}/invoicedata/closeorder`, { OrderId: orderId, UserId: userId }),
-    updateOrderBeforeClosing: async (region: string, orderId: number, invoiceNumber: string, invoiceDate: Date|undefined, invoiceCost: number, vendorDocId: string, vendorDocDate: Date|undefined, subteamNo: number, partialShipment: boolean) => 
-        await requests.post(`/${region}/invoicedata/updateorderbeforeclosing`, 
-        {
-            OrderId: orderId,
-            InvoiceNumber: invoiceNumber,
-            InvoiceDate: invoiceDate,
-            InvoiceCost: invoiceCost,
-            VendorDocId: vendorDocId,
-            VendorDocDate: vendorDocDate,
-            SubteamNo: subteamNo,
-            PartialShipment: partialShipment
-        })
+    updateOrderBeforeClosing: async (region: string, orderId: number, invoiceNumber: string, invoiceDate: Date | undefined, invoiceCost: number, vendorDocId: string, vendorDocDate: Date | undefined, subteamNo: number, partialShipment: boolean) =>
+        await requests.post(`/${region}/invoicedata/updateorderbeforeclosing`,
+            {
+                OrderId: orderId,
+                InvoiceNumber: invoiceNumber,
+                InvoiceDate: invoiceDate,
+                InvoiceCost: invoiceCost,
+                VendorDocId: vendorDocId,
+                VendorDocDate: vendorDocDate,
+                SubteamNo: subteamNo,
+                PartialShipment: partialShipment
+            })
 };
 
 const ReceivingList = {
-    getReceivingListEinvoiceExceptions: async (region: string, orderId: number) => 
+    getReceivingListEinvoiceExceptions: async (region: string, orderId: number) =>
         await requests.get(`/${region}/receivinglist/ReceivingListEinvoiceExceptions?orderId=${orderId}`),
 
 }
 
 const Document = {
     getVendors: async (region: string, storeNo: number) => await requests.get(`/${region}/document/vendors?storeNo=${storeNo}`),
-    isDuplicateReceivingDocumentInvoiceNumber: async (region: string, invoiceNumber: string, vendorId: number) => 
+    isDuplicateReceivingDocumentInvoiceNumber: async (region: string, invoiceNumber: string, vendorId: number) =>
         await requests.get(`/${region}/document/isDuplicateReceivingDocumentInvoiceNumber?invoiceNumber=${invoiceNumber}&vendorId=${vendorId}`)
 }
 
 const Transfer = {
     getSubteamByProductType: async (region: string, productTypeId: number) => await requests.get(`/${region}/transfer/subteamByProductType?productTypeId=${productTypeId}`),
-    getTransferItem: async (region: string, upc: string, productType: number, storeNo: number, vendorId: number, subteam: number, supplyTeam: number) => 
+    getTransferItem: async (region: string, upc: string, productType: number, storeNo: number, vendorId: number, subteam: number, supplyTeam: number) =>
         await requests.get(`/${region}/transfer/transferItem?upc=${upc}&productType=${productType}&storeNo=${storeNo}&vendorId=${vendorId}&subteam=${subteam}&supplyTeam=${supplyTeam}`),
-    getReasonCodes: async (region: string) => await requests.get(`${region}/transfer/reasonCodes`)
+    getReasonCodes: async (region: string) => await requests.get(`${region}/transfer/reasonCodes`),
+    createTransferOrder: async (region: string, transferOrder: ITransferOrder) => await requests.post(`/${region}/transfer/createtransferorder`, transferOrder)
 }
 
 const Shrink = {
     submitShrinkItems: async(region: string, ItemKey: any, StoreNo: any, SubteamNo: any, ShrinkSubTypeId: any, AdjustmentId: any, AdjustmentReason: any, CreatedByUserId: any, UserName: any, InventoryAdjustmentCodeAbbreviation:any, Quantity:any, Weight: any) =>
         await requests.post(`/${region}/shrinkadjustments`, {
-                ItemKey,
-                StoreNo,
-                SubteamNo,
-                ShrinkSubTypeId,
-                AdjustmentId,
-                AdjustmentReason,
-                CreatedByUserId,
-                UserName,
-                InventoryAdjustmentCodeAbbreviation,
-                Quantity,
-                Weight
-            })
-        
+            ItemKey,
+            StoreNo,
+            SubteamNo,
+            ShrinkSubTypeId,
+            AdjustmentId,
+            AdjustmentReason,
+            CreatedByUserId,
+            UserName,
+            InventoryAdjustmentCodeAbbreviation,
+            Quantity,
+            Weight
+        })
 };
 
 export default { RegionSelect, PurchaseOrder, InvoiceData, Shrink, ReceivingList, Document, Transfer };

@@ -25,11 +25,11 @@ namespace IrmaMobile.Controllers
         // GET: api/SubTeam/FL
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(200)]
-        public async Task<List<StoreModel>> Get(string region)
+        public async Task<List<StoreModel>> Get(string region, [FromQuery] bool useVendorIdAsStoreNo = false)
         {
             logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(StoresController)}.{nameof(Get)}");
 
-            return await service.GetStoresAsync(region);
+            return await service.GetStoresAsync(region, useVendorIdAsStoreNo);
         }
     }
 }

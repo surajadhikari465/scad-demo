@@ -22,6 +22,9 @@ import ReceivingListClosePartial from './pages/Receive/PurchaseOrder/ReceivingLi
 import TransferHome from './pages/Transfer/Index';
 import ReceivePurchaseOrderDetailsClearScreen from './pages/Receive/PurchaseOrder/PurchaseOrder/components/ReceivePurchaseOrderDetailsClearScreen';
 import TransferScan from './pages/Transfer/Scan/TransferScan';
+import TransferReview from './pages/Transfer/Review/TransferReview';
+import TransferLineItemDetails from './pages/Transfer/LineItemDetails/TransferLineItemDetails';
+import TransferUpdate from './pages/Transfer/Update/TransferUpdate';
 
 
 const App: React.FC = () => { 
@@ -41,6 +44,8 @@ const App: React.FC = () => {
           </wfm-toolbar>
           <div className="App">
             <Switch>
+              
+              {/* <Route exact path="/" component={TransferReview} /> */}
               <Route exact path="/" component={RegionSelect} />
               <Route exact path="/store" component={StoreSelect} />
               <Route exact path="/functions" component={StoreFunctions} />
@@ -56,6 +61,9 @@ const App: React.FC = () => {
               <Route exact path="/receive/List/:purchaseOrderNumber/closePartial" component={ReceivingListClosePartial} />
               <Route exact path="/transfer/index/:comingFromScan?" component={TransferHome} />
               <Route exact path="/transfer/scan" component={TransferScan} />
+              <Route exact path="/transfer/review" component={TransferReview} />
+              <Route exact path="/transfer/viewDetails" component={TransferLineItemDetails} />
+              <Route exact path="/transfer/update" component={TransferUpdate} />
             </Switch>
           </div>
         </Router>

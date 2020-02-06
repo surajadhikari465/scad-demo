@@ -17,7 +17,7 @@ interface ITransferData {
 
     CreatedBy: number;
     ExpectedDate: Date;
-    
+
     Items: ITransferItem[];
   }
 

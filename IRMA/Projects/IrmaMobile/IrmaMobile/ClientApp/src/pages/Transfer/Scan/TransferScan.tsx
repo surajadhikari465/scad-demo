@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect, useContext, useCallback } from 'react'
-import { AppContext, types, IMenuItem } from '../../../store'
+import { AppContext, types, IMenuItem, IStore } from '../../../store'
 import LoadingComponent from '../../../layout/LoadingComponent';
-import { Grid, Input, Button, Segment, InputOnChangeData, Dropdown, DropdownProps } from 'semantic-ui-react';
+import { Grid, Input, Button, Segment, InputOnChangeData, Dropdown, DropdownProps, ItemGroup } from 'semantic-ui-react';
 import './styles.scss';
 // @ts-ignore 
 import { BarcodeScanner } from '@wfm/mobile';
@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import ReasonCodeModal from '../../../layout/ReasonCodeModal';
 import { ReasonCode } from '../../Receive/PurchaseOrder/types/ReasonCode';
 import BasicModal from '../../../layout/BasicModal';
+import { useHistory } from 'react-router-dom';
 
 const TransferScan: React.FC = () => {
     //@ts-ignore
@@ -32,8 +33,9 @@ const TransferScan: React.FC = () => {
     const [vendorPack, setVendorPack] = useState();
     const [vendorCost, setVendorCost] = useState();
     const [adjustedCost, setAdjustedCost] = useState<number>(0);
-    const [reasonCode, setReasonCode] = useState(-1);
+    const [reasonCode, setReasonCode] = useState(0);
     const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { }, cancelAction: () => { } });
+    let history = useHistory();
 
     useEffect(() => {
         dispatch({ type: types.SETTITLE, Title: 'Transfer Scan' });
@@ -44,13 +46,21 @@ const TransferScan: React.FC = () => {
 
     const setMenuItems = useCallback(() => {
         const newMenuItems = [
-            { id: 1, order: 0, text: "Delete Order", path: "/transfer/scan/delete", disabled: true } as IMenuItem,
-            { id: 2, order: 1, text: "Save Order", path: `/transfer/scan/save`, disabled: true } as IMenuItem,
+            { id: 1, order: 0, text: "Delete Order", path: "/transfer/index/:comingFromScan?", disabled: false, onClick:handleDeleteOrderClick } as IMenuItem,
+            { id: 2, order: 1, text: "Save Order", path: `/transfer/index/:comingFromScan?`, disabled: false, onClick:handleSaveOrderClick } as IMenuItem,
             { id: 3, order: 2, text: "Back", path: `/transfer/index/true`, disabled: false } as IMenuItem,
         ] as IMenuItem[];
 
         dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems });
     }, [dispatch]);
+
+    const handleDeleteOrderClick = () => {
+        localStorage.removeItem('transferData');
+    };
+    
+    const handleSaveOrderClick = () => {
+        localStorage.setItem('transferData', JSON.stringify(transferData));
+    };
 
     useEffect(() => {
         setMenuItems()
@@ -90,29 +100,50 @@ const TransferScan: React.FC = () => {
 
                 if (filteredItems.length === 0) {
                     const itemRaw = await agent.Transfer.getTransferItem(region, upc, transferData.ProductType, transferData.FromStoreNo, transferData.FromStoreVendorId, transferData.FromSubteamNo, transferData.SupplyType);
-
-                    if (!itemRaw) {
-                        toast.error('Error loading item. Please try again.', { autoClose: false });
+                    
+                    if (!itemRaw || itemRaw.itemKey <= 0) {
+                        toast.error('Item not found.', { autoClose: false });
+                        setUpc('');
+                        return;
+                    }
+                    if(itemRaw.GLAcct = 0 && transferData.ProductType !== 1) {
+                        if(transferData.ProductType === 2) {
+                            toast.error(`This item cannot be transferred because it's from subteam ${itemRaw.RetailSubteamName}, which doesn't have a GL Packaging Account set up yet.`, { autoClose: false });
+                        } else {
+                            toast.error(`This item cannot be transferred because it's from subteam ${itemRaw.RetailSubteamName}, which doesn't have a GL Supplies Account set up yet.`, { autoClose: false });
+                        }
                         setUpc('');
                         return;
                     }
 
                     loadingItem = {
-                        AdjustedCost: 0, //don't know what this is
-                        AdjustedReason: '', //don't know what this is
+                        AdjustedCost: 0,
+                        AdjustedReason: -1,
                         Description: itemRaw.itemDescription,
                         ItemKey: itemRaw.itemKey,
                         Quantity: 1,
                         RetailUom: itemRaw.retailUnitName,
                         RetailUomId: itemRaw.retailUnitId,
                         SoldByWeight: itemRaw.soldByWeight,
-                        TotalCost: 0, //don't know what this is
+                        TotalCost: 0,
                         Upc: upc,
                         VendorCost: itemRaw.vendorCost,
                         VendorPack: itemRaw.vendorPack
                     } as ITransferItem;
 
                     setQueuedQuantity(0);
+
+                    if(!transferData.FromStoreVendorId || transferData.FromStoreVendorId === 0) {
+                        transferData.FromStoreVendorId = itemRaw.vendorID;
+                        localStorage.setItem('transferData', JSON.stringify(transferData));
+                        setTransferData({...transferData, FromStoreVendorId: itemRaw.vendorID});
+                        console.log(transferData);
+                    }
+                    if((!transferData.SupplyType || transferData.SupplyType === 0) && transferData.ProductType !== 1) {
+                        transferData.SupplyType = itemRaw.retailSubteamNo;
+                        localStorage.setItem('transferData', JSON.stringify(transferData));
+                        setTransferData({...transferData, SupplyType: itemRaw.retailSubteamNo});
+                    }
                 } else {
                     loadingItem = filteredItems[0];
 
@@ -174,7 +205,7 @@ const TransferScan: React.FC = () => {
     }, [setTransferData]);
 
     const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
-            setQuantity(parseInt(value));
+        setQuantity(parseInt(value));
     }
 
     const handleAdjustedCostChange = (event: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
@@ -186,7 +217,9 @@ const TransferScan: React.FC = () => {
     }
 
     const upcSearchClick = async () => {
-        await upcSearch();
+        if(upc !== null && upc !== '') {
+            await upcSearch();
+        }
     }
 
     const handleSave = () => {
@@ -195,7 +228,7 @@ const TransferScan: React.FC = () => {
             return;
         }
 
-        if(isNaN(quantity)) {
+        if (isNaN(quantity)) {
             setAlert({
                 ...alert,
                 open: true,
@@ -206,6 +239,11 @@ const TransferScan: React.FC = () => {
         } else {
             const filteredItems = transferData.Items.filter((i: ITransferItem) => i.Upc === item.Upc);
             if (filteredItems.length === 0) {
+                item.TotalCost = item.VendorCost !== 0 ? quantity * item.VendorCost : quantity * adjustedCost;
+                item.AdjustedCost = adjustedCost;
+                item.AdjustedReason = reasonCode;
+                item.Quantity = quantity;
+
                 transferData.Items.push(item);
 
                 localStorage.setItem("transferData", JSON.stringify(transferData));
@@ -252,8 +290,7 @@ const TransferScan: React.FC = () => {
     }
 
     const handleReviewClick = () => {
-        alert("This opens the review screen. I need logic");
-        //history.push('/transfer/review');
+        history.push('/transfer/review');
     }
 
     const add = () => {

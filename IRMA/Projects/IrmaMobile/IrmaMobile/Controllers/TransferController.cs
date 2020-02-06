@@ -54,5 +54,16 @@ namespace IrmaMobile.Controllers
 
             return result;
         }
+
+        [ProducesResponseType(200)]
+        [HttpPost]
+        public async Task<CreateTransferOrderResult> CreateTransferOrder(string region, [FromBody] TransferOrderModel transferOrder)
+        {
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(TransferController)}.{nameof(CreateTransferOrder)}");
+
+            var result = await service.CreateTransferOrder(region, transferOrder);
+
+            return result;
+        }
     }
 }
