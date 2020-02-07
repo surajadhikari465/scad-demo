@@ -293,16 +293,38 @@ WHERE NOT EXISTS
 	WHERE h.AttributeGuid = CAST(i.AttributeId as uniqueidentifier)
 )
 
-INSERT INTO infor.HistoricalAttributes (
-	AttributeName
-	,AttributeType
-	,AttributeGuid
+IF NOT EXISTS(SELECT AttributeName FROM infor.HistoricalAttributes WHERE AttributeName ='Name')
+BEGIN
+	INSERT INTO infor.HistoricalAttributes (
+		AttributeName
+		,AttributeType
+		,AttributeGuid
+		)
+	VALUES (
+		'Name'
+		,'ITEM'
+		,NEWID()
 	)
-VALUES (
-	'RequestNumber'
-	,'ITEM'
-	,NEWID()
-	)
+END
+
+IF NOT EXISTS(SELECT AttributeName FROM infor.HistoricalAttributes WHERE AttributeName ='Validated')
+BEGIN
+	INSERT INTO infor.HistoricalAttributes (
+		AttributeName
+		,AttributeType
+		,AttributeGuid
+		)
+	VALUES (
+		'Validated'
+		,'ITEM'
+		,NEWID()
+		)
+END
+
+UPDATE [infor].[HistoricalAttributes]
+SET attributename = substring(attributename, 0, len(attributename) - 35)
+WHERE AttributeType = 'REFERENCE_DATA'
+	AND LEN(attributename) > 35
 
 SELECT substring(Name, CHARINDEX('(', Name) + 1, CHARINDEX(')', Name) - CHARINDEX('(', Name) - 1) AS range
 	,*
