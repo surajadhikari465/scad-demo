@@ -9,6 +9,7 @@ import Config from '../../../config';
 import ConfirmModal from '../../../layout/ConfirmModal';
 import { useHistory, RouteComponentProps } from 'react-router-dom';
 import ITransferData from '../types/ITransferData';
+import LoadingComponent from '../../../layout/LoadingComponent';
 
 interface RouteParams {
     comingFromScan: string;
@@ -19,7 +20,7 @@ interface IProps extends RouteComponentProps<RouteParams> { }
 const TransferHome: React.FC<IProps> = ({ match }) => {
     //@ts-ignore
     const { state, dispatch } = useContext(AppContext);
-    const { subteams, stores, region, subteamNo, storeNumber } = state;
+    const { subteams, stores, region, subteamNo, storeNumber, transferToStores } = state;
     const { comingFromScan } = match.params;
 
     const [subteamsMapped, setSubteamsMapped] = useState<any>([]);
@@ -37,7 +38,7 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
     const [productType, setProductType] = useState<number>(1);
     const [supplyType, setSupplyType] = useState<number>(-1);
     const [expectedDate, setExpectedDate] = useState<string>(dateFormat(new Date(), "yyyy-mm-dd"));
-    const [toStores, setToStores] = useState<IStore[]>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     let history = useHistory();
 
@@ -48,32 +49,39 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
         };
     }, [dispatch]);
 
-    const setMenuItems = useCallback(() => {
+    useEffect(() => {
         const newMenuItems = [
-            { id: 1, order: 0, text: "New Order", path: "#", disabled: false, onClick: handleNewOrderOnClick } as IMenuItem,
+            { id: 1, order: 0, text: "New Order", path: "/transfer/newOrder", disabled: false } as IMenuItem,
             { id: 2, order: 1, text: "Exit Transfer", path: `/functions`, disabled: false } as IMenuItem,
         ] as IMenuItem[];
-
         dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems });
-    }, [dispatch]);
-
-    useEffect(() => {
-        setMenuItems()
 
         return () => {
             dispatch({ type: types.SETMENUITEMS, menuItems: [] });
         }
-    }, [setMenuItems, dispatch]);
+    }, [dispatch]);
 
     useEffect(() => {
         const loadToStores = async () => {
-            const storesWithVendorIds = await agent.RegionSelect.getStores(region, true);
-            setToStores(storesWithVendorIds);
-            const storeName = stores.find(s => s.storeNo === storeNumber)?.name;
-            setToStore(parseFloat(storesWithVendorIds.find(s => s.name === storeName)!.storeNo));
+            setIsLoading(true);
+            try {
+                const storesWithVendorIds = await agent.RegionSelect.getStores(region, true);
+                dispatch({ type: types.SETTRANSFERTOSTORES, transferToStores: storesWithVendorIds });
+                const storeName = stores.find(s => s.storeNo === storeNumber)?.name;
+                setToStore(parseFloat(storesWithVendorIds!.find(s => s.name === storeName)!.storeNo));
+            } catch (error) {
+                toast.error(error);
+                console.error(error);
+            } finally{
+                setIsLoading(false);
+            }
         }
         loadToStores();
-    }, [])
+
+        return (() => {
+            dispatch({ type: types.SETTRANSFERTOSTORES, transferToStores: [] });
+        })
+    }, [dispatch, region, storeNumber, stores])
 
     const productTypesMapped = [
         { key: 1, value: 1, text: 'Product' },
@@ -81,20 +89,8 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
         { key: 3, value: 3, text: 'Other Supplies' },
     ]
 
-    const handleNewOrderOnClick = () => {
-        localStorage.removeItem('transferData');
-        setFromStore(parseInt(storeNumber));
-        setFromSubteam(parseInt(subteamNo));
-        setToStore(parseInt(storeNumber));
-        setToSubteam(parseInt(subteamNo));
-        setProductType(1);
-        setExpectedDate(dateFormat(new Date(), "yyyy-mm-dd"));
-    }
-
     const goToReview = useCallback(() => {
-        alert("I should be going to the review screen. Instead, I will be going to Transfer Scan");
-        history.push('/transfer/scan');
-        // history.push('/transfer/review');
+        history.push('/transfer/review');
     }, [history]);
 
     const loadSavedSession = useCallback(() => {
@@ -163,10 +159,10 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
     }, [stores])
 
     useEffect(() => {
-        if (toStores) {
-            setToStoresMapped(toStores.map((store: IStore) => { return { key: store.storeNo, value: store.storeNo, text: store.name }; }))
+        if (transferToStores) {
+            setToStoresMapped(transferToStores.map((store: IStore) => { return { key: store.storeNo, value: store.storeNo, text: store.name }; }))
         }
-    }, [toStores])
+    }, [transferToStores])
 
     const handleCreatePoClick = () => {
         if (fromStore === -1) {
@@ -187,7 +183,7 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
         } else if (productType === 3 && supplyType === -1) {
             toast.error('Please set Supply Type', { autoClose: false });
             return;
-        } else if (fromStore === toStore && fromSubteam === toSubteam) {
+        } else if (stores.find(s => parseInt(s.storeNo) === fromStore)?.name === transferToStores?.find(s => parseInt(s.storeNo) === toStore)?.name && fromSubteam === toSubteam) {
             toast.error('From Store/Subteam cannot be the same as To Store/Subteam', { autoClose: false });
             return;
         }
@@ -278,47 +274,55 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
         setShowConfirmDelete(true);
     }
 
-    return (
-        <Fragment>
-            <ConfirmModal handleConfirmClose={goToReview} handleCancelClose={confirmDelete} setOpenExternal={setShowSaved} showTriggerButton={false} noGreyClick={true}
-                openExternal={showSaved} headerText='Previous Session Exists' cancelButtonText='No' confirmButtonText='Yes'
-                lineOne={`Would you like to reload your previous Order Session? (From ${savedTransferData?.FromStoreName}/${savedTransferData?.FromSubteamName} to ${savedTransferData?.ToStoreName}/${savedTransferData?.ToSubteamName})`}
-                lineTwo={'Clicking No will delete the old session.'} />
-            <ConfirmModal handleConfirmClose={clearSavedSession} handleCancelClose={() => { history.goBack(); }} setOpenExternal={setShowConfirmDelete} showTriggerButton={false} noGreyClick={true}
-                openExternal={showConfirmDelete} headerText='Delete Session?' cancelButtonText='No' confirmButtonText='Yes'
-                lineOne={`Are you sure you want to delete your saved Order? (From ${savedTransferData?.FromStoreName}/${savedTransferData?.FromSubteamName} to ${savedTransferData?.ToStoreName}/${savedTransferData?.ToSubteamName})`} />
-            <div style={{ marginTop: '20px', marginLeft: '5px', marginRight: '5px' }}>
-                <Header style={{ padding: '0px', paddingLeft: '5px', backgroundColor: 'lightgrey' }} as='h5' attached='top'>From</Header>
-                <Segment attached>
-                    <Dropdown selection placeholder='Store' fluid options={storesMapped} value={fromStore} onChange={handleFromStoreChange}></Dropdown>
-                    <Dropdown selection placeholder='Subteam' style={{ marginTop: '10px' }} fluid options={subteamsMapped} value={fromSubteam} onChange={handleFromSubteamChange}></Dropdown>
-                </Segment>
-            </div>
-            <div style={{ marginTop: '15px', marginLeft: '5px', marginRight: '5px' }}>
-                <Header style={{ padding: '0px', paddingLeft: '5px', backgroundColor: 'lightgrey' }} as='h5' attached='top'>To</Header>
-                <Segment attached>
-                    <Dropdown selection placeholder='Store' fluid options={toStoresMapped} value={toStore} onChange={handleToStoreChange}></Dropdown>
-                    <Dropdown selection placeholder='Subteam' style={{ marginTop: '10px' }} fluid options={subteamsMapped} value={toSubteam} onChange={handleToSubteamChange}></Dropdown>
-                </Segment>
-            </div>
-            <div style={{ marginTop: '5px', marginLeft: '5px', marginRight: '5px' }}>
-                <Form.Dropdown selection label='Product Type' fluid options={productTypesMapped} value={productType} onChange={handleProductTypeChange}></Form.Dropdown>
-            </div>
-            {productType === 3 ?
-                <div style={{ height: '57px', marginTop: '5px', marginLeft: '5px', marginRight: '5px' }}>
-                    <Form.Dropdown selection label='Supply Type' fluid options={supplyTypesMapped} onChange={handleSupplyTypeChange} value={supplyType}></Form.Dropdown>
+    if (isLoading) {
+        return (
+            <Fragment>
+                <LoadingComponent content="Loading..." />
+            </Fragment>)
+    }
+    else {
+        return (
+            <Fragment>
+                <ConfirmModal handleConfirmClose={goToReview} handleCancelClose={confirmDelete} setOpenExternal={setShowSaved} showTriggerButton={false} noGreyClick={true}
+                    openExternal={showSaved} headerText='Previous Session Exists' cancelButtonText='No' confirmButtonText='Yes'
+                    lineOne={`Would you like to reload your previous Order Session? (From ${savedTransferData?.FromStoreName}/${savedTransferData?.FromSubteamName} to ${savedTransferData?.ToStoreName}/${savedTransferData?.ToSubteamName})`}
+                    lineTwo={'Clicking No will delete the old session.'} />
+                <ConfirmModal handleConfirmClose={clearSavedSession} handleCancelClose={() => { history.goBack(); }} setOpenExternal={setShowConfirmDelete} showTriggerButton={false} noGreyClick={true}
+                    openExternal={showConfirmDelete} headerText='Delete Session?' cancelButtonText='No' confirmButtonText='Yes'
+                    lineOne={`Are you sure you want to delete your saved Order? (From ${savedTransferData?.FromStoreName}/${savedTransferData?.FromSubteamName} to ${savedTransferData?.ToStoreName}/${savedTransferData?.ToSubteamName})`} />
+                <div style={{ marginTop: '20px', marginLeft: '5px', marginRight: '5px' }}>
+                    <Header style={{ padding: '0px', paddingLeft: '5px', backgroundColor: 'lightgrey' }} as='h5' attached='top'>From</Header>
+                    <Segment attached>
+                        <Dropdown selection placeholder='Store' fluid options={storesMapped} value={fromStore} onChange={handleFromStoreChange}></Dropdown>
+                        <Dropdown selection placeholder='Subteam' style={{ marginTop: '10px' }} fluid options={subteamsMapped} value={fromSubteam} onChange={handleFromSubteamChange}></Dropdown>
+                    </Segment>
                 </div>
-                :
-                <div style={{ height: '57px', marginTop: '5px' }} />
-            }
-            <div style={{ marginTop: '5px', marginLeft: '5px', marginRight: '5px' }}>
-                <Form.Input type='date' value={expectedDate} onChange={handleExpectedDateChange} min={dateFormat(new Date(), "UTC:yyyy-mm-dd")} label='Expected Date' fluid></Form.Input>
-            </div>
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <WfmButton style={{ marginTop: '10px' }} onClick={handleCreatePoClick}>Create PO</WfmButton>
-            </span>
-        </Fragment>
-    )
+                <div style={{ marginTop: '15px', marginLeft: '5px', marginRight: '5px' }}>
+                    <Header style={{ padding: '0px', paddingLeft: '5px', backgroundColor: 'lightgrey' }} as='h5' attached='top'>To</Header>
+                    <Segment attached>
+                        <Dropdown selection placeholder='Store' fluid options={toStoresMapped} value={toStore} onChange={handleToStoreChange}></Dropdown>
+                        <Dropdown selection placeholder='Subteam' style={{ marginTop: '10px' }} fluid options={subteamsMapped} value={toSubteam} onChange={handleToSubteamChange}></Dropdown>
+                    </Segment>
+                </div>
+                <div style={{ marginTop: '5px', marginLeft: '5px', marginRight: '5px' }}>
+                    <Form.Dropdown selection label='Product Type' fluid options={productTypesMapped} value={productType} onChange={handleProductTypeChange}></Form.Dropdown>
+                </div>
+                {productType === 3 ?
+                    <div style={{ height: '57px', marginTop: '5px', marginLeft: '5px', marginRight: '5px' }}>
+                        <Form.Dropdown selection label='Supply Type' fluid options={supplyTypesMapped} onChange={handleSupplyTypeChange} value={supplyType}></Form.Dropdown>
+                    </div>
+                    :
+                    <div style={{ height: '57px', marginTop: '5px' }} />
+                }
+                <div style={{ marginTop: '5px', marginLeft: '5px', marginRight: '5px' }}>
+                    <Form.Input type='date' value={expectedDate} onChange={handleExpectedDateChange} min={dateFormat(new Date(), "UTC:yyyy-mm-dd")} label='Expected Date' fluid></Form.Input>
+                </div>
+                <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <WfmButton style={{ marginTop: '10px' }} onClick={handleCreatePoClick}>Create PO</WfmButton>
+                </span>
+            </Fragment>
+        )
+    }
 }
 
 export default TransferHome;

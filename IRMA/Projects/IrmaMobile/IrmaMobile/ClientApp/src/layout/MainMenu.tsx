@@ -18,7 +18,6 @@ const MainMenu: React.FC<IProps> = ({ disabled, icon, slot, menuItems, style }) 
         backgroundColor: 'rgb(248,248,255)',
         right: slot ==='end'? 0:'auto',
         left: slot === 'start' ? 0 :'auto'
-
     }
 
     return (

@@ -1,11 +1,11 @@
-import React, { Fragment, useState, useContext, useEffect, useCallback } from "react";
-import { AppContext, ITeam, IStore, types, IMenuItem } from "../../../store";
-import { Header, Segment, Form, InputOnChangeData, DropdownProps, Grid } from "semantic-ui-react";
+import React, { Fragment, useState, useContext, useEffect } from "react";
+import { AppContext, types } from "../../../store";
+import { Grid } from "semantic-ui-react";
 import dateFormat from "dateformat";
 import { toast } from "react-toastify";
 import agent from "../../../api/agent";
 import ITransferData from "../types/ITransferData";
-import { useHistory, RouteComponentProps } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import ReactTable from "react-table";
 import CurrentLocation from "../../../layout/CurrentLocation";
 import ITransferItem from "../types/ITransferItem";
@@ -126,7 +126,7 @@ const TransferReview: React.FC = () => {
       let po = result.irmaPoNumber;
       toast.success(`PO# ${po} created successfully.`, { autoClose: false });
       localStorage.removeItem('transferData');
-      history.push('/transfer/index/:comingFromScan?');
+      history.push('/transfer/index/false');
     } catch (error) {
       setIsLoading(false);
       toast.error('Error sending transfer order.', { autoClose: false });
@@ -141,7 +141,8 @@ const TransferReview: React.FC = () => {
       },
       {
         Header: "QTY",
-        accessor: "Quantity"
+        accessor: "Quantity",
+        width: 40
       },
       {
         Header: "DESC",
@@ -188,21 +189,21 @@ const TransferReview: React.FC = () => {
             />
           </Grid.Row>
           <Grid.Row columns={"equal"} style={{ paddingTop: "0px", paddingBottom: "0px" }}>
-            <Grid.Column style={{ padding: "0px" }}>
+            <Grid.Column style={{ padding: "1px" }}>
               <button className="wfm-btn" style={{ width: "100%" }} disabled={selectedTransferItem === null || selectedTransferItem === undefined} onClick={handleViewDetailsClick}>View Details</button>
             </Grid.Column>
-            <Grid.Column style={{ padding: "0px" }}>
+            <Grid.Column style={{ padding: "1px" }}>
               <button className="wfm-btn" style={{ width: "100%" }} disabled={selectedTransferItem === null || selectedTransferItem === undefined} onClick={handleUpdateClick}>Update</button>
             </Grid.Column>
-            <Grid.Column style={{ padding: "0px" }}>
+            <Grid.Column style={{ padding: "1px" }}>
               <button className="wfm-btn" style={{ width: "100%" }} disabled={selectedTransferItem === null || selectedTransferItem === undefined} onClick={handleRemoveClick}>Remove</button>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row columns={"equal"} style={{ paddingTop: "0px", paddingBottom: "0px" }}>
-            <Grid.Column style={{ padding: "0px" }}>
+          <Grid.Row columns={"equal"} style={{ paddingTop: "1px", paddingBottom: "0px" }}>
+            <Grid.Column style={{ padding: "1px" }}>
               <button className="wfm-btn" style={{ width: "100%" }} onClick={handleAddLineItemClick}>Add Line Item</button>
             </Grid.Column>
-            <Grid.Column style={{ padding: "0px" }}>
+            <Grid.Column style={{ padding: "1px" }}>
               <button className="wfm-btn" style={{ width: "100%" }} disabled={transferData.Items.length === 0} onClick={handleSendClick}>Send</button>
             </Grid.Column>
           </Grid.Row>

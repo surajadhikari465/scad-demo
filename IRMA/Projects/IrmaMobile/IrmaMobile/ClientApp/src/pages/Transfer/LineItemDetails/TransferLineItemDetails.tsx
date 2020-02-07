@@ -1,20 +1,15 @@
-import React, { useState, useEffect, Fragment, useContext } from 'react'
-import { AppContext, types, IMenuItem } from '../../../store'
-import { Grid, Input, Button, Segment, InputOnChangeData, Dropdown, DropdownProps } from 'semantic-ui-react';
-import ITransferData from '../types/ITransferData';
-import agent from '../../../api/agent';
+import React, { useState, Fragment, useContext } from 'react'
+import { AppContext, } from '../../../store'
+import { Grid, Input, Button, Segment } from 'semantic-ui-react';
 import ITransferItem from '../types/ITransferItem';
-import { toast } from 'react-toastify';
 import ReasonCodeModal from '../../../layout/ReasonCodeModal';
-import { ReasonCode } from '../../Receive/PurchaseOrder/types/ReasonCode';
-import BasicModal from '../../../layout/BasicModal';
-import { useHistory, RouteComponentProps } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const TransferLineItemDetails: React.FC = () => {
     //@ts-ignore
-    const { state, dispatch } = useContext(AppContext);
-    const [transferLineItem, setTransferLineItem] = useState<ITransferItem>(state.transferLineItem!);
-    const [unitCost, setUnitCost] = useState<number>(transferLineItem.VendorCost !== 0 ? transferLineItem.VendorCost : transferLineItem.AdjustedCost);
+    const { state } = useContext(AppContext);
+    const [transferLineItem] = useState<ITransferItem>(state.transferLineItem!);
+    const [unitCost] = useState<number>(transferLineItem.VendorCost !== 0 ? transferLineItem.VendorCost : transferLineItem.AdjustedCost);
     let history = useHistory();
     const handleCancelClick = () => {
         history.push('/transfer/review');

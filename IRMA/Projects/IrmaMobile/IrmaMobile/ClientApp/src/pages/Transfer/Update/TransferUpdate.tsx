@@ -1,15 +1,15 @@
 import React, { useState, useContext, Fragment } from "react";
 import ITransferItem from "../types/ITransferItem";
 import ITransferData from "../types/ITransferData";
-import { AppContext, ITeam, IStore, types, IMenuItem } from "../../../store";
-import { Link, useHistory } from "react-router-dom";
+import { AppContext } from "../../../store";
+import { useHistory } from "react-router-dom";
 import BasicModal from "../../../layout/BasicModal";
 
 const TransferUpdate: React.FC = () => {
   //@ts-ignore
-  const { state, dispatch } = useContext(AppContext);
-  const [transferData, setTransferData] = useState<ITransferData>(state.transferData!);
-  const [transferItem, setTransferItem] = useState<ITransferItem>(state.transferLineItem!);
+  const { state } = useContext(AppContext);
+  const [transferData] = useState<ITransferData>(state.transferData!);
+  const [transferItem] = useState<ITransferItem>(state.transferLineItem!);
   const [newQuantity, setNewQuanity] = useState<number>(1);
   let history = useHistory();
   const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { }, cancelAction: () => { } });
@@ -49,10 +49,10 @@ const TransferUpdate: React.FC = () => {
         header: 'Update Transfer'
       });
     } else {
-      const totalCost = transferItem.VendorCost !== 0 ?  newQuantity * transferItem.VendorCost : newQuantity * transferItem.AdjustedCost;
-      const newTransferItem = {...transferItem, Quantity: newQuantity, TotalCost: totalCost };
+      const totalCost = transferItem.VendorCost !== 0 ? newQuantity * transferItem.VendorCost : newQuantity * transferItem.AdjustedCost;
+      const newTransferItem = { ...transferItem, Quantity: newQuantity, TotalCost: totalCost };
       const transferItemIndex = transferData.Items.findIndex(i => i.Upc === transferItem.Upc);
-      const newTransferData = {...transferData};
+      const newTransferData = { ...transferData };
       newTransferData.Items[transferItemIndex] = newTransferItem;
       localStorage.setItem('transferData', JSON.stringify(newTransferData));
       history.push('/transfer/review');
@@ -105,9 +105,7 @@ const TransferUpdate: React.FC = () => {
           </div>
         </section>
         <div className="update-buttons">
-          <button className="wfm-btn">
-            <Link to="/transfer/review">Cancel</Link>
-          </button>
+          <button className="wfm-btn" onClick={() => history.goBack()}>Cancel</button>
           <button className="wfm-btn" onClick={handleUpdateClick}>Update</button>
         </div>
       </div>

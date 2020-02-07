@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect, useContext, useCallback } from 'react'
-import { AppContext, types, IMenuItem, IStore } from '../../../store'
+import { AppContext, types, IMenuItem } from '../../../store'
 import LoadingComponent from '../../../layout/LoadingComponent';
-import { Grid, Input, Button, Segment, InputOnChangeData, Dropdown, DropdownProps, ItemGroup } from 'semantic-ui-react';
+import { Grid, Input, Button, Segment, InputOnChangeData, Dropdown, DropdownProps } from 'semantic-ui-react';
 import './styles.scss';
 // @ts-ignore 
 import { BarcodeScanner } from '@wfm/mobile';
@@ -46,21 +46,13 @@ const TransferScan: React.FC = () => {
 
     const setMenuItems = useCallback(() => {
         const newMenuItems = [
-            { id: 1, order: 0, text: "Delete Order", path: "/transfer/index/:comingFromScan?", disabled: false, onClick:handleDeleteOrderClick } as IMenuItem,
-            { id: 2, order: 1, text: "Save Order", path: `/transfer/index/:comingFromScan?`, disabled: false, onClick:handleSaveOrderClick } as IMenuItem,
+            { id: 1, order: 0, text: "Delete Order", path: "/transfer/scan/deleteOrder", disabled: false } as IMenuItem,
+            { id: 2, order: 1, text: "Save Order", path: `/transfer/scan/saveOrder`, disabled: false } as IMenuItem,
             { id: 3, order: 2, text: "Back", path: `/transfer/index/true`, disabled: false } as IMenuItem,
         ] as IMenuItem[];
 
         dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems });
     }, [dispatch]);
-
-    const handleDeleteOrderClick = () => {
-        localStorage.removeItem('transferData');
-    };
-    
-    const handleSaveOrderClick = () => {
-        localStorage.setItem('transferData', JSON.stringify(transferData));
-    };
 
     useEffect(() => {
         setMenuItems()
@@ -100,14 +92,14 @@ const TransferScan: React.FC = () => {
 
                 if (filteredItems.length === 0) {
                     const itemRaw = await agent.Transfer.getTransferItem(region, upc, transferData.ProductType, transferData.FromStoreNo, transferData.FromStoreVendorId, transferData.FromSubteamNo, transferData.SupplyType);
-                    
+
                     if (!itemRaw || itemRaw.itemKey <= 0) {
                         toast.error('Item not found.', { autoClose: false });
                         setUpc('');
                         return;
                     }
-                    if(itemRaw.GLAcct = 0 && transferData.ProductType !== 1) {
-                        if(transferData.ProductType === 2) {
+                    if (itemRaw.GLAcct === 0 && transferData.ProductType !== 1) {
+                        if (transferData.ProductType === 2) {
                             toast.error(`This item cannot be transferred because it's from subteam ${itemRaw.RetailSubteamName}, which doesn't have a GL Packaging Account set up yet.`, { autoClose: false });
                         } else {
                             toast.error(`This item cannot be transferred because it's from subteam ${itemRaw.RetailSubteamName}, which doesn't have a GL Supplies Account set up yet.`, { autoClose: false });
@@ -133,16 +125,15 @@ const TransferScan: React.FC = () => {
 
                     setQueuedQuantity(0);
 
-                    if(!transferData.FromStoreVendorId || transferData.FromStoreVendorId === 0) {
+                    if (!transferData.FromStoreVendorId || transferData.FromStoreVendorId === 0) {
                         transferData.FromStoreVendorId = itemRaw.vendorID;
                         localStorage.setItem('transferData', JSON.stringify(transferData));
-                        setTransferData({...transferData, FromStoreVendorId: itemRaw.vendorID});
-                        console.log(transferData);
+                        setTransferData({ ...transferData, FromStoreVendorId: itemRaw.vendorID });
                     }
-                    if((!transferData.SupplyType || transferData.SupplyType === 0) && transferData.ProductType !== 1) {
+                    if ((!transferData.SupplyType || transferData.SupplyType === 0) && transferData.ProductType !== 1) {
                         transferData.SupplyType = itemRaw.retailSubteamNo;
                         localStorage.setItem('transferData', JSON.stringify(transferData));
-                        setTransferData({...transferData, SupplyType: itemRaw.retailSubteamNo});
+                        setTransferData({ ...transferData, SupplyType: itemRaw.retailSubteamNo });
                     }
                 } else {
                     loadingItem = filteredItems[0];
@@ -217,7 +208,7 @@ const TransferScan: React.FC = () => {
     }
 
     const upcSearchClick = async () => {
-        if(upc !== null && upc !== '') {
+        if (upc !== null && upc !== '') {
             await upcSearch();
         }
     }
@@ -228,13 +219,29 @@ const TransferScan: React.FC = () => {
             return;
         }
 
-        if (isNaN(quantity)) {
+        if (isNaN(quantity) || quantity <= 0) {
             setAlert({
                 ...alert,
                 open: true,
                 alertMessage: `Quantity must be a valid number.`,
                 type: 'default',
                 header: 'Invalid Quantity'
+            });
+        } else if (vendorCost === 0 && (isNaN(adjustedCost) || adjustedCost <= 0)) {
+            setAlert({
+                ...alert,
+                open: true,
+                alertMessage: `An adjusted cost needs to be entered with a reason.  Please select a valid number.`,
+                type: 'default',
+                header: 'Missing Adjusted Cost'
+            });
+        } else if (vendorCost === 0 && (isNaN(reasonCode) || reasonCode <= 0)) {
+            setAlert({
+                ...alert,
+                open: true,
+                alertMessage: `An adjusted cost needs to be entered with a reason.  Please select a reason code.`,
+                type: 'default',
+                header: 'Missing Adjusted Cost Reason'
             });
         } else {
             const filteredItems = transferData.Items.filter((i: ITransferItem) => i.Upc === item.Upc);

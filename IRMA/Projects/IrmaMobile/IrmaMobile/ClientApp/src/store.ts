@@ -5,7 +5,6 @@ import { ListedOrder } from "./pages/Receive/PurchaseOrder/types/ListedOrder";
 import createPersistedReducer from "./scripts/use-persisted-reducer";
 import ITransferItem from "./pages/Transfer/types/ITransferItem";
 import ITransferData from "./pages/Transfer/types/ITransferData";
-import { stat } from "fs";
 
 export const usePersistedReducer = createPersistedReducer('state');
 
@@ -37,6 +36,7 @@ interface IIntitialState {
     transferData: ITransferData | null;
     transferLineItem: ITransferItem | null;
     showCog: boolean;
+    transferToStores: IStore[] | null;
 }
 
 export interface IMenuItem {
@@ -118,7 +118,8 @@ export const initialState = {
     Title: 'IRMA Mobile',
     transferData: null,
     transferLineItem: null,
-    showCog: false
+    showCog: false,
+    transferToStores: null
 } as IIntitialState;
 
 export const types = {
@@ -148,7 +149,8 @@ export const types = {
     SETTITLE: "SETTITLE",
     SETTRANSFERDATA: "SETTRANSFERDATA",
     SETTRANSFERLINEITEM: "SETTRANSFERLINEITEM",
-    TOGGLECOG: "TOGGLECOG"
+    TOGGLECOG: "TOGGLECOG",
+    SETTRANSFERTOSTORES: "SETTRANSFERTOSTORES"
 };
 
 export const AppContext = React.createContext({ state: initialState });
@@ -229,6 +231,12 @@ export const reducer = (state: any, action: any) => {
         }
         case types.TOGGLECOG: {
             return { ...state, showCog: action.showCog };
+        }
+        case types.SETTRANSFERTOSTORES: {
+            return { ...state, transferToStores: action.transferToStores };
+        }
+        case types.SETTRANSFERLINEITEM: {
+            return { ...state, transferLineItem: action.transferLineItem };
         }
         default:
             return state;
