@@ -154,19 +154,19 @@ const Transfer = {
 }
 
 const Shrink = {
-    submitShrinkItems: async(region: string, ItemKey: any, StoreNo: any, SubteamNo: any, ShrinkSubTypeId: any, AdjustmentId: any, AdjustmentReason: any, CreatedByUserId: any, UserName: any, InventoryAdjustmentCodeAbbreviation:any, Quantity:any, Weight: any) =>
+    submitShrinkItems: async(region: string, itemKey: any, storeNo: any, subteamNo: any, shrinkSubTypeId: any, adjustmentId: any, adjustmentReason: any, createdByUserId: any, userName: any, inventoryAdjustmentCodeAbbreviation:any, quantity:any, weight: any) =>
         await requests.post(`/${region}/shrinkadjustments`, {
-            ItemKey,
-            StoreNo,
-            SubteamNo,
-            ShrinkSubTypeId,
-            AdjustmentId,
-            AdjustmentReason,
-            CreatedByUserId,
-            UserName,
-            InventoryAdjustmentCodeAbbreviation,
-            Quantity,
-            Weight
+                itemKey,
+                storeNo,
+                subteamNo,
+                shrinkSubTypeId,
+                adjustmentId,
+                adjustmentReason,
+                createdByUserId,
+                userName,
+                inventoryAdjustmentCodeAbbreviation,
+                quantity,
+                weight
         })
 };
 

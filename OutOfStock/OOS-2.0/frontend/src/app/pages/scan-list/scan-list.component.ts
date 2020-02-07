@@ -37,14 +37,15 @@ export class ScanListComponent implements OnInit {
   ngOnInit(){
     const self = this;
     BarcodeScanner.registerHandler(function(data:any){
-      
-      try{
-        self.addWfmItem(data)
-      }catch(ex){
-        alert(ex.message)
+      const allowScan = this.appService.getScan();
+      if(allowScan){
+        try{
+          self.addWfmItem(data)
+        }catch(ex){
+          alert(ex.message)
+        }
       }
     })
-
     this.wfmRegion = this.appService.currentRegion();
     this.wfmStore = this.appService.currentStore();
     if(localStorage.getItem('items')){

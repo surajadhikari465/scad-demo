@@ -18,11 +18,11 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
     const {history} = props;
 
     useEffect(() => {
-      dispatch({ type: types.TOGGLECOG, showCog: true }); 
       const settingsItems = [
         { id: 1, order: 0, text: "Change Store", path: "/", disabled: false } as IMenuItem
       ] as IMenuItem[];
 
+      dispatch({ type: types.TOGGLECOG, showCog: true }); 
       dispatch({ type: types.SETSETTINGSITEMS, settingsItems: settingsItems });
       dispatch({ type: types.SETMENUITEMS, menuItems: []});
 

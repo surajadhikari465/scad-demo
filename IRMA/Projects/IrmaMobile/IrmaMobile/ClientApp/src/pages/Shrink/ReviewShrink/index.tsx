@@ -2,6 +2,7 @@ import React, { Fragment, useContext, useState, useEffect, useCallback } from 'r
 import { AppContext, types, IMenuItem } from "../../../store";
 import { Modal, Confirm } from 'semantic-ui-react'
 import CurrentLocation from "../../../layout/CurrentLocation";
+import LoadingComponent from "../../../layout/LoadingComponent";
 import agent from '../../../api/agent';
 import {
   useHistory
@@ -15,6 +16,7 @@ const ReviewShrink:React.FC = () => {
     const {state, dispatch} = useContext(AppContext);
     const [shrinkItems, setShrinkItems] = useState<[] | any>([]);
     const [selected, setSelected] = useState();
+    const {isLoading} = state;
     const [alert, setAlert] = useState({open:false, alertMessage:''});
     const [confirm, setConfirm] = useState({open:false, message:'', onConfirm: ()=>{}});
     let history = useHistory();
@@ -157,6 +159,9 @@ const ReviewShrink:React.FC = () => {
         ],
         [],
       )
+    if(isLoading) {
+      return ( <LoadingComponent content="Uploading Items..."/> )
+    }
     return (  
       <Fragment>
         <CurrentLocation/>

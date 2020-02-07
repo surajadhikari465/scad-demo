@@ -26,6 +26,7 @@ export class StoresComponent {
 
   saveStore(selectedStore: Store){
     this.appService.saveItem('wfmStore', selectedStore);
+    this.appService.toggleScan();
     this.router.navigateByUrl('/list');
   }
 

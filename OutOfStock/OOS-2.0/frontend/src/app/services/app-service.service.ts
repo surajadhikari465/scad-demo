@@ -7,20 +7,18 @@ import { WFM_REGION, WFM_STORE } from 'src/app/constants';
 import { environment } from '../../environments/environment';
 
 const BASE_URL = environment.baseURL;
-
+let allowScan = false;
 @Injectable({
   providedIn: 'root'
 })
 export class AppService {
   constructor(private http: HttpClient){}
-
   // API SERVICES
   submitListItems(wfmScanItems: string[]): Observable<any>{
     const url = `${BASE_URL}/items`;
 
     const wfmRegionId = this.currentRegion();
     const wfmStoreName = this.currentStore().name;
-
 
     if(!wfmScanItems){
       throw new Error('submitListItems requires scan items');
@@ -56,5 +54,13 @@ export class AppService {
 
   currentRegion(): string {
     return this.getItem(WFM_REGION);
+  }
+
+  toggleScan() { 
+    allowScan = !allowScan;
+  }
+
+  getScan(): boolean { 
+    return allowScan;
   }
 }
