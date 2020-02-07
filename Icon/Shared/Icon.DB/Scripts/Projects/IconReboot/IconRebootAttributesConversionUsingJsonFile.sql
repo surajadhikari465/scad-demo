@@ -1074,6 +1074,11 @@ SET
 	NumberOfDecimals = 0
 WHERE AttributeName = 'PackageGroup'
 
+RAISERROR ('Removing Character Sets for Package Group since they don''t apply anymore...', 0, 1) WITH NOWAIT
+DELETE acs
+FROM AttributeCharacterSets acs
+JOIN Attributes a on acs.AttributeId = a.AttributeId
+WHERE a.AttributeName = 'PackageGroup'
 
 -- Add Department Sale Data
 RAISERROR ('Inserting Department Sale data...', 0, 1) WITH NOWAIT
