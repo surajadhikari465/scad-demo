@@ -320,6 +320,12 @@ BEGIN
 		,NEWID()
 		)
 END
+ELSE
+BEGIN
+   UPDATE infor.HistoricalAttributes
+   SET AttributeName = 'Validated'
+   WHERE AttributeName = 'validated'
+END
 
 UPDATE [infor].[HistoricalAttributes]
 SET attributename = substring(attributename, 0, len(attributename) - 35)
