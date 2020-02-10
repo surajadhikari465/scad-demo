@@ -8,7 +8,7 @@ BEGIN
 
 	DECLARE @traitId INT = (SELECT traitID FROM dbo.Trait WHERE traitCode = 'HCU'),
 			@dateNow DATETIME = GetDate();
-	DECLARE @traitValue NVARCHAR(256) = 'Last updated by ' + IsNull(@userName, 'Unknown') + FORMAT (@dateNow, ' on MM-dd-yyyy'' at ''hh:mm:ss');
+	DECLARE @traitValue NVARCHAR(256) = 'Last updated by ' + IsNull(@userName, 'Unknown') + FORMAT (@dateNow, ' on MM-dd-yyyy'' at ''hh:mm:ss tt');
 
 	IF (object_id('tempdb..#contact') IS NOT NULL) DROP TABLE #contact;
 

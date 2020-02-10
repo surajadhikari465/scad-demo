@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -607,20 +608,17 @@ namespace Icon.Web.Mvc.Controllers
 
                 if (String.IsNullOrEmpty(contactTypeName))
                 {
-                    Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
-                    return Json("Contact Type Name is not specified.");
+                    return RequestError("Contact Type Name is not specified.", HttpStatusCode.BadRequest);
                 }
 
                 if (GetWriteAccess() != Enums.WriteAccess.Full)
                 {
-                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
-                    return Json("You don't have write privileges to add or update Contact Type.");
+                    return RequestError("You don't have write privileges to add or update Contact Type.", HttpStatusCode.Forbidden);
                 }
 
                 if (GetContactTypes(true).Any(x => x.ContactTypeId != contactTypeId && String.Compare(x.ContactTypeName.Replace(" ", String.Empty), contactTypeName.Replace(" ", String.Empty), true) == 0))
                 {
-                    Response.StatusCode = (int)System.Net.HttpStatusCode.Conflict;
-                    return Json("Contact Type already exists.");
+                    return RequestError("Contact Type already exists.", HttpStatusCode.Conflict);
                 }
 
                 var command = new AddUpdateContactTypeCommand()
@@ -638,8 +636,7 @@ namespace Icon.Web.Mvc.Controllers
             }
             catch (Exception ex)
             {
-                Response.StatusCode = (int)System.Net.HttpStatusCode.ExpectationFailed;
-                return Json(ex.Message);
+                return RequestError(ex.Message, HttpStatusCode.ExpectationFailed);
             }
         }
 
@@ -651,8 +648,7 @@ namespace Icon.Web.Mvc.Controllers
             {
                 if (GetWriteAccess() != Enums.WriteAccess.Full)
                 {
-                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
-                    return Json("You don’t have sufficient privileges to complete selected action.");
+                    return RequestError("You don’t have sufficient privileges to complete selected action.", HttpStatusCode.Forbidden);
                 }
 
 				this.handlerDeleteContact.Execute(new DeleteContactCommand() { UserName = User.Identity.Name, ContactIds = new List<int>() { contactId } });
@@ -661,8 +657,7 @@ namespace Icon.Web.Mvc.Controllers
 			}
 			catch (Exception ex)
 			{
-				Response.StatusCode = (int)System.Net.HttpStatusCode.ExpectationFailed;
-				return Json(ex.Message);
+				return RequestError(ex.Message, HttpStatusCode.ExpectationFailed);
 			}
 		}
 
@@ -674,8 +669,7 @@ namespace Icon.Web.Mvc.Controllers
             {
                 if (GetWriteAccess() != Enums.WriteAccess.Full)
                 {
-                    Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
-                    return Json("You don’t have sufficient privileges to complete selected action.");
+                    return RequestError("You don’t have sufficient privileges to complete selected action.", HttpStatusCode.Forbidden);
                 }
 
                 this.handlerDeleteContactType.Execute(new DeleteContactTypeCommand() { ContactTypeIds = new List<int>() { contactTypeId } });
@@ -684,8 +678,7 @@ namespace Icon.Web.Mvc.Controllers
             }
             catch (Exception ex)
             {
-                Response.StatusCode = (int)System.Net.HttpStatusCode.ExpectationFailed;
-                return Json(ex.Message);
+                return RequestError(ex.Message, HttpStatusCode.ExpectationFailed);
             }
         }
 
@@ -797,6 +790,17 @@ namespace Icon.Web.Mvc.Controllers
 			    };
 
             this.handlerAddUpdateContact.Execute(command);  
+        }
+
+        private ActionResult RequestError(string errMessage, HttpStatusCode statusCode)
+        {
+            //To prevent IIS from hijacking custom response or add the line below to web config file in <system.webServer> section
+            //<httpErrors errorMode="DetailedLocalOnly" existingResponse="PassThrough"/>
+            Response.TrySkipIisCustomErrors = true; 
+
+            Response.StatusCode = (int)statusCode;
+            Response.StatusDescription = errMessage;
+            return Json(errMessage);
         }
     }
 }

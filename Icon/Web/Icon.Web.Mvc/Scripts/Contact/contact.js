@@ -148,7 +148,7 @@ function openContactType() {
 }
 
 function deleteContact(contactId) {
-    $("#dlgContact").html('Contact Type: <span style="color:black; font-weight:bolder">' + $('#contactGrid').igGrid('getCellValue', contactId, 'ContactName') + '</span>');
+    $("#dlgContact").html('Contact: <span style="color:black; font-weight:bolder">' + $('#contactGrid').igGrid('getCellValue', contactId, 'ContactName') + '</span>');
     $("#dlgMsg").text('Are you sure you would like to delete contact?');
 
     $("#dlgConfirm").dialog({

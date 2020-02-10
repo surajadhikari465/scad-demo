@@ -38,7 +38,6 @@
                     $("#contactTypeName").prop('disabled', true);
                     $(".ui-dialog-buttonset").hide();
                     $(".ui-dialog-titlebar-close").hide();
-                    $(".ui-dialog-buttonset").children().hide();
                     $(".ui-dialog-title").text("Processing Request...");
 
                     var request = $.ajax({
@@ -66,9 +65,12 @@
                                 $(".ui-dialog-titlebar").css("background-color", "red");
                                 $(".ui-dialog-title").text("System Information:");
                                 $(".ui-dialog-buttonset").show();
-                                $('#dlgSave').show();
-                                $('#dlgCancel').show();
-                                $("#dlgTypeMsg").text(JSON.parse(xhr.responseText));
+                                try {
+                                    $("#dlgMsg").text(JSON.parse(xhr.responseText));
+                                }
+                                catch (err) {
+                                    $("#dlgMsg").text('Request failed: ' + error); 
+                                }
                             }
                     });
                 }
@@ -116,7 +118,7 @@ function deleteType(contactTypeId) {
                     $(".ui-dialog-titlebar-close").hide();
                     $(".ui-dialog-buttonset").children().hide();
                     $(".ui-dialog-title").text("Processing Request...");
-                    $("#dlgMsg").html('Deleting Contact Type... &nbsp<span class="spinner-border float-right ml-auto text-primary" role="status" aria-hidden="true" style="color: red" />');
+                    $("#dlgTypeMsg").html('Deleting Contact Type... &nbsp<span class="spinner-border float-right ml-auto text-primary" role="status" aria-hidden="true" style="color: red" />');
 
                     let contactUrl = '/Contact/DeleteContactType';
                     var request = $.ajax({
@@ -149,7 +151,14 @@ function deleteType(contactTypeId) {
                                 $(".ui-dialog-title").text("System Information:");
                                 $(".ui-dialog-buttonset").show();
                                 $('#dlgCancel').show();
-                                $("#dlgTypeMsg").text(JSON.parse(xhr.responseText));
+                                $("#dlgTypeMsg").html('');
+
+                                try {
+                                    $("#dlgTypeMsg").text(JSON.parse(xhr.responseText));
+                                }
+                                catch (err) {
+                                    $("#dlgTypeMsg").text('Request failed: ' + error);
+                                }
                             }
                     });
                 }
@@ -229,8 +238,14 @@ function archiveType(contactTypeId, archived) {
                                 $(".ui-dialog-title").text("System Information:");
                                 $(".ui-dialog-buttonset").show();
                                 $('#dlgCancel').show();
-                                $('#dlgCancel').show();
-                                $("#dlgTypeMsg").text(JSON.parse(xhr.responseText));
+                                $("#dlgTypeMsg").html('');
+
+                                try {
+                                    $("#dlgTypeMsg").text(JSON.parse(xhr.responseText));
+                                }
+                                catch (err) {
+                                    $("#dlgTypeMsg").text('Request failed: ' + error);
+                                }
                             }
                     });
                 }

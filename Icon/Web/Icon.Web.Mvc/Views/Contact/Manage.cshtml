@@ -42,7 +42,9 @@
                         @Html.LabelFor(model => model.ContactTypeId, htmlAttributes: new { @class = "control-label text-warning mb-0" })
                         <div class="input-group-append">
                             @Html.DropDownListFor(model => model.ContactTypeId, new SelectList(Model.ContactTypes.Select(x => new { value = x.ContactTypeId, text = x.ContactTypeName }), "value", "text"), "", new { @class = "form-control text-dark", @id = "ddlType" })
-                            <button id="btnAdd" type="button" class="input-group-text btn" data-toggle="tooltip" title="Add Contact Type" tabindex="-1" onclick="openContactType()">+</button>
+                            
+                            @*FYI: The button below allows to create ContactType interactivly on the same page. Disabled for now by GDT request. Keep it for now we might need it*@
+                            @*<button id="btnAdd" type="button" class="input-group-text btn" data-toggle="tooltip" title="Add Contact Type" tabindex="-1" onclick="openContactType()">+</button>*@
                         </div>
                         @Html.ValidationMessageFor(model => model.ContactTypeId, "", new { @class = "text-danger" })
                     </div>

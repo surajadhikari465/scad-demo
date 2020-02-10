@@ -69,7 +69,7 @@
 
 						}
 
-						@if (@System.Configuration.ConfigurationManager.AppSettings["EnableBulkContactUpload"].ToString().ToLower() == "true" && ViewHelpers.HasWriteAccess(Request, User) && ViewHelpers.DisplayAdminLink(Request, User))
+						@if (@System.Configuration.ConfigurationManager.AppSettings["EnableBulkContactUpload"].ToString().ToLower() == "true" && ViewHelpers.HasWriteAccess(Request, User))
 						{
 							<li>@Html.ActionLink("Contacts", "BulkUpload", "Contact", null, new { @class = "nav-link" })</li>
 						}
