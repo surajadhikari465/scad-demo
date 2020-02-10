@@ -12,7 +12,6 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
   // @ts-ignore
   const { state, dispatch } = useContext(AppContext);
   const { selectedShrinkItem } = state;
-
   const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { }, cancelAction: () => { } });
   const [initialQuantity] = useState(selectedShrinkItem.quantity);
   const [initialShrinkType] = useState(selectedShrinkItem.shrinkType);

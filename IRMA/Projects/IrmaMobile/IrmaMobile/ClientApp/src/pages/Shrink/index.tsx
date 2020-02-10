@@ -29,6 +29,7 @@ const initialState = {
 const Shrink:React.FC = () => {
     const [shrinkState, setShrinkState] = useState(initialState);
     const {state, dispatch} = useContext<any>(AppContext);
+    const {subteamSession} = state;
     const {isLoading} = state;
     const {subteam, region, storeNumber, subteamNo, shrinkTypes, shrinkType} = state;
     const [alert, setAlert] = useState<any>({open:false, alertMessage:'', type: 'default', header: 'IRMA Mobile', confirmAction:()=> {}, cancelAction:()=> {}});
@@ -36,7 +37,6 @@ const Shrink:React.FC = () => {
 
     let textInput:any = React.createRef<HTMLInputElement>();
     let qtyInput:any = React.createRef<HTMLInputElement>();
-
     useEffect(() => {
       BarcodeScanner.registerHandler(function(data:any){
         if(shrinkState.isSelected===true){
@@ -67,14 +67,12 @@ const Shrink:React.FC = () => {
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shrinkState, dispatch]);
-
     useEffect(() => {
       const changeSubtype = ()=>{
         dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: {...state.subteamSession, forceSubteamSelection: true}});
         dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });  
       }
-
-      const newMenuItems = shrinkState.isSelected || state.subteamSession.isPrevSession ? [
+      const newMenuItems = (shrinkState.isSelected || state.subteamSession.isPrevSession ) && !state.subteamSession.forceSubteamSelection ? [
         { id: 1, order: 0, path: "#", text: "Clear Session", onClick:()=>{setAlert({...alert, 
           open:true, 
           alertMessage: 'Would you like to delete the current session?', 
@@ -93,7 +91,7 @@ const Shrink:React.FC = () => {
 
       dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems});
       
-    }, [shrinkState, dispatch, alert]);
+    }, [shrinkState, dispatch, alert, subteamSession]);
  
     const setUpc = (value?:any, scan:boolean = false) =>{  
       let upc = value && typeof value !== 'object' ? value: shrinkState.upcValue;
@@ -180,9 +178,19 @@ const Shrink:React.FC = () => {
         cancelAction: cancel.bind(undefined, false, false)});
     }
     const confirmDeleteSession = (e:any) =>{
-      localStorage.clear();
-      setAlert({...alert, 
-        open: false});
+      if(localStorage.getItem('shrinkItems')?.length == null){
+        setAlert({...alert, 
+          open:true, 
+          alertMessage: 'No session exists.',
+          type: 'default', 
+          header:'Scan Shrink'});
+      } else {
+        localStorage.clear();
+        setShrinkState({...shrinkState, isSelected:false});
+        dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: {...state.subteamSession, isPrevSession: false}})
+        setAlert({...alert, 
+          open: false});
+      }
     }
     const setQty = (e:any) =>{
       let quantity = parseFloat(e.target.value);
@@ -285,7 +293,7 @@ const Shrink:React.FC = () => {
     const saveItems = (shrinkItems: any[]) => {
       dispatch({ type: types.SETSHRINKITEMS, shrinkItems: shrinkItems }); 
       localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems));
-      dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: {...state.subteamSession, sessionShrinkType: state.shrinkType, sessionSubteam: state.subteam}}); 
+      dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: {...state.subteamSession, sessionShrinkType: state.shrinkType, sessionSubteam: state.subteam, isPrevSession: true}}); 
       if(!shrinkState.skipConfirm){
         setAlert({...alert, 
           open:true, 
