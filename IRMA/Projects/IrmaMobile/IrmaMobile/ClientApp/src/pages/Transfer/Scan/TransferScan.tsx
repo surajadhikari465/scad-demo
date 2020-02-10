@@ -107,9 +107,9 @@ const TransferScan: React.FC = () => {
                         setUpc('');
                         return;
                     }
-
+                   
                     loadingItem = {
-                        AdjustedCost: 0,
+                        AdjustedCost: itemRaw.adjustedCost,
                         AdjustedReason: -1,
                         Description: itemRaw.itemDescription,
                         ItemKey: itemRaw.itemKey,
@@ -149,12 +149,17 @@ const TransferScan: React.FC = () => {
 
                 setVendorPack(loadingItem.VendorPack);
                 setRetail(loadingItem.RetailUom)
-
-                if (loadingItem.VendorCost === 0) {
+                
+                if ((loadingItem.VendorCost === 0) && (loadingItem.AdjustedCost === 0)) {                    
                     toast.info("The cost for this item is 0.00, or it could not be determined. If this is incorrect, please enter the Adjusted Cost for the item.", { autoClose: false });
                     setVendorCost('0');
                     setCostLabel('Adjusted Cost:');
-                } else {
+                } else if (loadingItem.VendorCost === 0) {                    
+                    setVendorCost('0');
+                    setAdjustedCost(loadingItem.AdjustedCost);
+                    setCostLabel('Adjusted Cost:');
+                }
+                else {                    
                     setVendorCost(loadingItem.VendorCost);
                     setCostLabel('Vendor Cost:');
                 }
@@ -200,7 +205,9 @@ const TransferScan: React.FC = () => {
     }
 
     const handleAdjustedCostChange = (event: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
-        setAdjustedCost(parseInt(value));
+        if (value) {
+            setAdjustedCost(parseFloat(value));
+        }
     }
 
     const handleUpcChange = (event: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
@@ -280,9 +287,9 @@ const TransferScan: React.FC = () => {
         setVendorCost('');
         setCostLabel('Vendor Cost:');
         setQueuedQuantity('');
-        setItem(undefined);
+        setItem(undefined);        
     }
-
+    
     const reasonCodeClick = () => {
         dispatch({
             type: types.SETMODALOPEN,
@@ -380,10 +387,10 @@ const TransferScan: React.FC = () => {
                             <Grid.Column verticalAlign='middle' textAlign='right' width={4}>
                                 {costLabel}
                             </Grid.Column>
-                            <Grid.Column width={4} verticalAlign='middle' textAlign='left' style={{ fontWeight: 'bold', paddingLeft: '0px' }}>
+                            <Grid.Column width={4} verticalAlign='middle' textAlign='left' style={{ fontWeight: 'bold', paddingLeft: '0px' }}>                                
                                 {parseFloat(vendorCost) === 0 ?
-                                    <Input onFocus={(event: any) => event.target.select()} fluid value={adjustedCost} onChange={handleAdjustedCostChange} placeholder='Adjusted Cost' />
-                                    :
+                                    <Input type='number' onFocus={(event: any) => event.target.select()} fluid value={adjustedCost} onChange={handleAdjustedCostChange} />
+                                    :                                    
                                     vendorCost
                                 }
                             </Grid.Column>

@@ -53,5 +53,6 @@ namespace IrmaMobile.Domain.Models
         public string RetailUnitName { get; set; }
         public decimal VendorCost { get; set; }
         public string VendorPack { get; set; }
+        public decimal AdjustedCost { get; set; }
     }
 }

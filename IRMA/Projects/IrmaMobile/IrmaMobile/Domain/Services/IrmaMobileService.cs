@@ -119,7 +119,8 @@ namespace IrmaMobile.Services
                 VendorPack = serviceStoreItem.vendorPack,
                 VendorUnitId = serviceStoreItem.VendorUnitId,
                 VendorUnitName = serviceStoreItem.VendorUnitName,
-                WfmItem = serviceStoreItem.WFMItem
+                WfmItem = serviceStoreItem.WFMItem,
+                AdjustedCost = serviceStoreItem.adjustedCost
             };
         }
 

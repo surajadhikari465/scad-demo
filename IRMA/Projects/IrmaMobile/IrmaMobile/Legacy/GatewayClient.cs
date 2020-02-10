@@ -2260,7 +2260,9 @@ namespace IrmaMobile.Legacy
         private decimal vendorCostField;
         
         private string vendorPackField;
-        
+
+        private decimal adjustedCostField;
+
         [System.Runtime.Serialization.DataMemberAttribute()]
         public decimal AvgCost
         {
@@ -2856,6 +2858,19 @@ namespace IrmaMobile.Legacy
             set
             {
                 this.vendorPackField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public decimal adjustedCost
+        {
+            get
+            {
+                return this.adjustedCostField;
+            }
+            set
+            {
+                this.adjustedCostField = value;
             }
         }
     }
