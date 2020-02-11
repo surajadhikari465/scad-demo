@@ -14,8 +14,8 @@ Public Class SlawItemRefresh
     InitializeComponent()
     RefreshType = argRefreshType
     RefreshService = New ItemIdentifierRefreshService()
-    Me.Text = String.Format("Slaw {0} Refresh", If(RefreshType = ItemRefreshType.ItemLocale, "Item Locale", "Price"))
-  End Sub
+        Me.Text = String.Format("Mammoth {0} Refresh", If(RefreshType = ItemRefreshType.ItemLocale, "Item Locale", "Price"))
+    End Sub
 
   Private Sub RefreshItemsBtn_Click(sender As Object, e As EventArgs) Handles RefreshItemsBtn.Click
     Dim identifiers As List(Of ItemRefreshModel) = ItemIdentifiersTextBox.Lines() _

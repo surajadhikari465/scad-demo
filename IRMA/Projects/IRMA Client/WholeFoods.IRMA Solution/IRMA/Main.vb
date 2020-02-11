@@ -1065,6 +1065,7 @@ me_exit:
         IconItemRefreshMenuItem.Enabled = gbItemAdministrator
         SupportRestoreDeleteItemToolStripMenuItem.Enabled = gbSupportUser
         SupportDeleteItemFromPlumCorpChgQueueTmp.Enabled = gbSystemConfigurationAdministrator
+        SlawPriceMenuItem.Enabled = InstanceDataDAO.IsFlagActive("GlobalPriceManagement") And Not InstanceDataDAO.FlagHasNoStoreOverrides("GlobalPriceManagement")
 
         '######################
         ' Admin Menu access
@@ -1204,7 +1205,7 @@ me_exit:
             Return True
         Else
             dv.RowFilter = "MenuName = '" & sMenuName & "'"
-            If dv.Count > 0 Then row = dv.Item(0)
+        If dv.Count > 0 Then row = dv.Item(0)
 
             If Not row Is Nothing Then
                 Return CBool(row("Visible"))
