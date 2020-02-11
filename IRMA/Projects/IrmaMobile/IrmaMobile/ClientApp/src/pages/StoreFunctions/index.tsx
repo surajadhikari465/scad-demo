@@ -1,7 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { Fragment, useContext, useState, useEffect } from 'react';
 import './styles.scss';
 import { Modal } from 'semantic-ui-react';
 import BasicModal from '../../layout/BasicModal';
+import CurrentLocation from "../../layout/CurrentLocation";
 import { AppContext, types, IMenuItem } from "../../store";
 
 interface StoreFunctionsProps {
@@ -25,6 +26,7 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
       dispatch({ type: types.TOGGLECOG, showCog: true }); 
       dispatch({ type: types.SETSETTINGSITEMS, settingsItems: settingsItems });
       dispatch({ type: types.SETMENUITEMS, menuItems: []});
+      dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
 
       return () => {
         dispatch({ type: types.TOGGLECOG, showCog: false }); 
@@ -105,37 +107,40 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
       dispatch({ type: types.SETSUBTEAMNO, subteamNo:JSON.parse(value).subteamNo });
     }
     return (
-    <div className="store-functions">
-      <div className="page-title-wrapper">   
-        <div className="message-container">
-          <p>Set your subteam, then select a function</p>
+    <Fragment>
+      <CurrentLocation/> 
+      <div className="store-functions">
+        <div className="page-title-wrapper">   
+          <div className="message-container">
+            <p>Set your subteam, then select a function</p>
+          </div>
         </div>
-      </div>
-      <div className="subteam-select">
-        <select onChange={(e)=> setSubteam(e.target.value)} >
-          <option>--Select Subteam--</option>
-          {subteams.map(team =>
-          // @ts-ignore 
-            <option key={team.subteamNo} value={JSON.stringify(team)}>{team.subteamName}</option>
-          )}
-          
-        </select>
-      </div>
-      <div className="subteam-buttons">
-        <button className="wfm-btn" value="shrink" onClick={handleClick}>Shrink</button>
-        <button className="wfm-btn" value="transfer" onClick={handleTransferClick}>Transfer</button>
-        <button className="wfm-btn" value="receive" onClick={handleClick}>Receive</button>
-      </div>
-      <Modal
-          open={alertIsOpen}
-          header='IRMA Mobile'
-          content='Please select a subteam'
-          actions={['OK']}
-          onActionClick={toggleAlert}
+        <div className="subteam-select">
+          <select onChange={(e)=> setSubteam(e.target.value)} >
+            <option>--Select Subteam--</option>
+            {subteams.map(team =>
+            // @ts-ignore 
+              <option key={team.subteamNo} value={JSON.stringify(team)}>{team.subteamName}</option>
+            )}
+            
+          </select>
+        </div>
+        <div className="subteam-buttons">
+          <button className="wfm-btn" value="shrink" onClick={handleClick}>Shrink</button>
+          <button className="wfm-btn" value="transfer" onClick={handleTransferClick}>Transfer</button>
+          <button className="wfm-btn" value="receive" onClick={handleClick}>Receive</button>
+        </div>
+        <Modal
+            open={alertIsOpen}
+            header='IRMA Mobile'
+            content='Please select a subteam'
+            actions={['OK']}
+            onActionClick={toggleAlert}
 
-        />
-      <BasicModal alert={alert} setAlert={setAlert}/>  
-    </div>)
+          />
+        <BasicModal alert={alert} setAlert={setAlert}/>  
+      </div>
+    </Fragment>)
   }
 
   export default StoreFunctions;
