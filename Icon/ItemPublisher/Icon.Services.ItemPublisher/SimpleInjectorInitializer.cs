@@ -12,6 +12,7 @@ using Icon.Services.ItemPublisher.Services;
 using Icon.Shared.DataAccess.Dapper.ConnectionBuilders;
 using SimpleInjector;
 using System.Configuration;
+using Icon.Common;
 using Icon.Services.ItemPublisher.Infrastructure.Esb.Communication;
 
 namespace Icon.Services.ItemPublisher.Application
@@ -23,6 +24,11 @@ namespace Icon.Services.ItemPublisher.Application
             Container container = new Container();
 
             container.Register(typeof(ILogger<>), typeof(NLogLogger<>));
+            container.RegisterSingleton<IClientIdManager>(() => {
+                var client = new ClientIdManager();
+                client.Initialize(AppSettingsAccessor.GetStringSetting("AppName", "ItemPublisher"));
+                return client;
+            });
             container.Register<IConnectionBuilder>(() => new ConnectionBuilder("Icon"), Lifestyle.Singleton);
             container.Register<IProviderFactory>(() =>
             {

@@ -3,6 +3,7 @@ using Icon.Esb.Producer;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Icon.Services.ItemPublisher.Infrastructure.Esb.Communication;
 
 namespace Icon.Services.ItemPublisher.Infrastructure.Esb
 {
@@ -14,11 +15,13 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
         private IEsbConnectionFactory esbConnectionFactory;
         private IEsbHeaderBuilder esbHeaderBuilder;
         private IEsbProducer producer;
+        private IClientIdManager clientIdManager;
 
-        public EsbClient(IEsbConnectionFactory esbConnectionFactory, IEsbHeaderBuilder esbHeaderBuilder)
+        public EsbClient(IEsbConnectionFactory esbConnectionFactory, IEsbHeaderBuilder esbHeaderBuilder, IClientIdManager clientIdManager)
         {
             this.esbConnectionFactory = esbConnectionFactory;
             this.esbHeaderBuilder = esbHeaderBuilder;
+            this.clientIdManager = clientIdManager;
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -38,7 +41,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
             {
                 if (this.producer == null || !this.producer.IsConnected)
                 {
-                    this.producer = this.esbConnectionFactory.CreateProducer();
+                    this.producer = this.esbConnectionFactory.CreateProducer(clientIdManager.GetClientId());
                 }
 
                 headers = this.esbHeaderBuilder.BuildMessageHeader(nonReceivingSystems, messageId.ToString());
@@ -47,9 +50,11 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
             }
             catch (Exception ex)
             {
+                this.producer?.Dispose();
                 this.producer = null;
                 return new EsbSendResult(false, "Error Occurred", request, headers, messageId, null, ex);
             }
+
         }
     }
 }

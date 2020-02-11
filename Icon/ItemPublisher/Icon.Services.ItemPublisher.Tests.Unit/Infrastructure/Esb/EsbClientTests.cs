@@ -5,6 +5,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Icon.Services.ItemPublisher.Infrastructure.Esb.Communication;
 
 namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
 {
@@ -14,15 +15,17 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
         [TestMethod]
         public async Task SendMessage_SuccessfulRequest_ShouldReturnSuccess()
         {
+
             // Given.
             Mock<IEsbConnectionFactory> esbConnectionFactoryMock = new Mock<IEsbConnectionFactory>();
             Mock<IEsbHeaderBuilder> headerBuilderMock = new Mock<IEsbHeaderBuilder>();
+            Mock<IClientIdManager> clientIdMangerMock = new Mock<IClientIdManager>();
 
             Mock<IEsbProducer> producerMock = new Mock<IEsbProducer>();
             producerMock.Setup(x => x.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
-            esbConnectionFactoryMock.Setup(x => x.CreateProducer(It.IsAny<bool>())).Returns(producerMock.Object);
-
-            EsbClient client = new EsbClient(esbConnectionFactoryMock.Object, headerBuilderMock.Object);
+            esbConnectionFactoryMock.Setup(x => x.CreateProducer(It.IsAny<string>(), It.IsAny<bool>())).Returns(producerMock.Object);
+            clientIdMangerMock.Setup(x => x.GetClientId()).Returns($"clientid");
+            EsbClient client = new EsbClient(esbConnectionFactoryMock.Object, headerBuilderMock.Object, clientIdMangerMock.Object);
 
             // When.
             EsbSendResult result = await client.SendMessage("request", new List<string>() { });
@@ -42,10 +45,13 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<IEsbConnectionFactory> esbConnectionFactoryMock = new Mock<IEsbConnectionFactory>();
             Mock<IEsbHeaderBuilder> headerBuilderMock = new Mock<IEsbHeaderBuilder>();
             Mock<IEsbProducer> producerMock = new Mock<IEsbProducer>();
+            Mock<IClientIdManager> clientIdMangerMock = new Mock<IClientIdManager>();
+
             producerMock.Setup(x => x.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new Exception("Any ESB Exception"));
-            esbConnectionFactoryMock.Setup(x => x.CreateProducer(It.IsAny<bool>())).Returns(producerMock.Object);
+            esbConnectionFactoryMock.Setup(x => x.CreateProducer(It.IsAny<string>(), It.IsAny<bool>())).Returns(producerMock.Object);
             headerBuilderMock.Setup(x => x.BuildMessageHeader(It.IsAny<List<string>>(), It.IsAny<string>())).Returns(new Dictionary<string, string>() { });
-            EsbClient client = new EsbClient(esbConnectionFactoryMock.Object, headerBuilderMock.Object);
+            clientIdMangerMock.Setup(x => x.GetClientId()).Returns($"clientid");
+            EsbClient client = new EsbClient(esbConnectionFactoryMock.Object, headerBuilderMock.Object, clientIdMangerMock.Object);
 
             // When.
             EsbSendResult result = await client.SendMessage("request", new List<string>() { });
