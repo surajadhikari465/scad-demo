@@ -7,8 +7,8 @@ import BasicModal from "../../../layout/BasicModal";
 
 const TransferUpdate: React.FC = () => {
   //@ts-ignore
-  const { state } = useContext(AppContext);
-  const [transferData] = useState<ITransferData>(state.transferData!);
+  const { state, dispatch } = useContext(AppContext);
+  const [transferData] = useState<ITransferData>(JSON.parse(localStorage.getItem('transferData')!));
   const [transferItem] = useState<ITransferItem>(state.transferLineItem!);
   const [newQuantity, setNewQuanity] = useState<number>(1);
   let history = useHistory();

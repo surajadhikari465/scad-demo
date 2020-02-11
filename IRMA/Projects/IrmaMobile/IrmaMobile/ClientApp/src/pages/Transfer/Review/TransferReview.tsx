@@ -13,6 +13,8 @@ import ITransferOrderItem from "../types/ITransferOrderItem";
 import LoadingComponent from "../../../layout/LoadingComponent";
 import BasicModal from "../../../layout/BasicModal";
 import ITransferOrder from "../types/ITransferOrder";
+import '../styles.scss';
+import { WfmButton } from "@wfm/ui-react";
 
 const TransferReview: React.FC = () => {
   //@ts-ignore
@@ -179,7 +181,7 @@ const TransferReview: React.FC = () => {
               data={data}
               columns={columns}
               style={{
-                height: "300px"
+                height: "280px"
               }}
               showPagination={false}
               className="-striped -highlight"
@@ -190,21 +192,21 @@ const TransferReview: React.FC = () => {
           </Grid.Row>
           <Grid.Row columns={"equal"} style={{ paddingTop: "0px", paddingBottom: "0px" }}>
             <Grid.Column style={{ padding: "1px" }}>
-              <button className="wfm-btn" style={{ width: "100%" }} disabled={selectedTransferItem === null || selectedTransferItem === undefined} onClick={handleViewDetailsClick}>View Details</button>
+              <WfmButton flex='true' style={{ width: "100%" }} disabled={selectedTransferItem === null || selectedTransferItem === undefined} onClick={handleViewDetailsClick}>View Details</WfmButton>
             </Grid.Column>
             <Grid.Column style={{ padding: "1px" }}>
-              <button className="wfm-btn" style={{ width: "100%" }} disabled={selectedTransferItem === null || selectedTransferItem === undefined} onClick={handleUpdateClick}>Update</button>
+              <WfmButton flex='true' style={{ width: "100%" }} disabled={selectedTransferItem === null || selectedTransferItem === undefined} onClick={handleUpdateClick}>Update</WfmButton>
             </Grid.Column>
             <Grid.Column style={{ padding: "1px" }}>
-              <button className="wfm-btn" style={{ width: "100%" }} disabled={selectedTransferItem === null || selectedTransferItem === undefined} onClick={handleRemoveClick}>Remove</button>
+              <WfmButton flex='true' style={{ width: "100%" }} disabled={selectedTransferItem === null || selectedTransferItem === undefined} onClick={handleRemoveClick}>Remove</WfmButton>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={"equal"} style={{ paddingTop: "1px", paddingBottom: "0px" }}>
             <Grid.Column style={{ padding: "1px" }}>
-              <button className="wfm-btn" style={{ width: "100%" }} onClick={handleAddLineItemClick}>Add Line Item</button>
+              <WfmButton flex='true' style={{ width: "100%" }} onClick={handleAddLineItemClick}>Add Line Item</WfmButton>
             </Grid.Column>
             <Grid.Column style={{ padding: "1px" }}>
-              <button className="wfm-btn" style={{ width: "100%" }} disabled={transferData.Items.length === 0} onClick={handleSendClick}>Send</button>
+              <WfmButton  flex='true' style={{ width: "100%" }} disabled={transferData.Items.length === 0} onClick={handleSendClick}>Send</WfmButton>
             </Grid.Column>
           </Grid.Row>
         </Grid>

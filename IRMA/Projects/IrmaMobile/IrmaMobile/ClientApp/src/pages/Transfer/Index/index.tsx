@@ -318,7 +318,7 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
                     <Form.Input type='date' value={expectedDate} onChange={handleExpectedDateChange} min={dateFormat(new Date(), "UTC:yyyy-mm-dd")} label='Expected Date' fluid></Form.Input>
                 </div>
                 <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <WfmButton style={{ marginTop: '10px' }} onClick={handleCreatePoClick}>Create PO</WfmButton>
+                    <WfmButton flex='true' style={{ marginTop: '10px', marginLeft: '5px', marginRight: '5px' }} onClick={handleCreatePoClick}>Create PO</WfmButton>
                 </span>
             </Fragment>
         )

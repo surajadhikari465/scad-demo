@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify'
 
 const TransferScanSaveOrder: React.FC = () => {
     // @ts-ignore
@@ -7,12 +8,11 @@ const TransferScanSaveOrder: React.FC = () => {
 
     useEffect(() => {
         history.push('/transfer/index/true');
+        toast.success('Order saved.');
     }, [history])
-    
+
     return (
-        <div>
-            
-        </div>
+        <div></div>
     )
 }
 

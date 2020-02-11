@@ -9,94 +9,98 @@ interface StoreFunctionsProps {
   history: any;
 }
 
-const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
-    // @ts-ignore 
-    const {state, dispatch} = useContext(AppContext);
-    const [isSelected, setSelected] = useState(false);
-    const [alertIsOpen, setAlertOpen] = useState(false);
-    const [alert, setAlert] = useState<any>({open:false, alertMessage:'', type: 'default', header: 'IRMA Mobile', confirmAction:()=> {}});
-    const {subteams} = state;
-    const {history} = props;
+const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
+  // @ts-ignore 
+  const { state, dispatch } = useContext(AppContext);
+  const [isSelected, setSelected] = useState(false);
+  const [alertIsOpen, setAlertOpen] = useState(false);
+  const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { } });
+  const { subteams } = state;
+  const { history } = props;
 
-    useEffect(() => {
-      const settingsItems = [
-        { id: 1, order: 0, text: "Change Store", path: "/", disabled: false } as IMenuItem
-      ] as IMenuItem[];
+  useEffect(() => {
+    const settingsItems = [
+      { id: 1, order: 0, text: "Change Store", path: "/", disabled: false } as IMenuItem
+    ] as IMenuItem[];
 
       dispatch({ type: types.TOGGLECOG, showCog: true }); 
       dispatch({ type: types.SETSETTINGSITEMS, settingsItems: settingsItems });
       dispatch({ type: types.SETMENUITEMS, menuItems: []});
       dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
 
-      return () => {
-        dispatch({ type: types.TOGGLECOG, showCog: false }); 
-      };
-    }, [dispatch]); 
+    return () => {
+      dispatch({ type: types.TOGGLECOG, showCog: false });
+    };
+  }, [dispatch]);
 
-    const deleteSession = () =>{
-      localStorage.removeItem('shrinkItems');
-      localStorage.removeItem('sessionSubType');
-      dispatch({ type: types.SETSHRINKITEMS, shrinkItems: [] }); 
-      dispatch({ type: types.SETSHRINKTYPE, shrinkType: {} }); 
-      dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: {...state.subteamSession, isPrevSession: false}});
-      setAlert({...alert, 
-        open:false
-      });
-      history.push('/shrink');
-    }
+  const deleteSession = () => {
+    localStorage.removeItem('shrinkItems');
+    localStorage.removeItem('sessionSubType');
+    dispatch({ type: types.SETSHRINKITEMS, shrinkItems: [] });
+    dispatch({ type: types.SETSHRINKTYPE, shrinkType: {} });
+    dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: { ...state.subteamSession, isPrevSession: false } });
+    setAlert({
+      ...alert,
+      open: false
+    });
+    history.push('/shrink');
+  }
 
-    const deleteWarning = () =>{
-        setAlert({...alert, 
-          open:true, 
-          alertMessage: 'Are you sure you want to delete you saved Session?', 
-          type: 'confirm', 
-          header:'Delete Session?',
-          confirmAction: deleteSession
-        });
-    }
+  const deleteWarning = () => {
+    setAlert({
+      ...alert,
+      open: true,
+      alertMessage: 'Are you sure you want to delete you saved Session?',
+      type: 'confirm',
+      header: 'Delete Session?',
+      confirmAction: deleteSession
+    });
+  }
 
-    const confirm = () =>{
-      setAlert({...alert, 
-        open:false
-      });
-      dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: {...state.subteamSession, isPrevSession: true}}); 
-      history.push('/shrink');
-    }
-    
-    const checkLocalStorage = () =>{
-        setAlert({...alert, 
-          open:true, 
-          alertMessage: 'Would you like to reload your previous Session? Clicking No will delete the old session.', 
-          type: 'confirm', 
-          header:'Previous Session Exists',
-          cancelAction: deleteWarning,
-          confirmAction: confirm
-          });
-    }
+  const confirm = () => {
+    setAlert({
+      ...alert,
+      open: false
+    });
+    dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: { ...state.subteamSession, isPrevSession: true } });
+    history.push('/shrink');
+  }
 
-    const handleClick = (e:any) =>{
-      if(!isSelected){
-        setAlertOpen(true);
+  const checkLocalStorage = () => {
+    setAlert({
+      ...alert,
+      open: true,
+      alertMessage: 'Would you like to reload your previous Session? Clicking No will delete the old session.',
+      type: 'confirm',
+      header: 'Previous Session Exists',
+      cancelAction: deleteWarning,
+      confirmAction: confirm
+    });
+  }
+
+  const handleClick = (e: any) => {
+    if (!isSelected) {
+      setAlertOpen(true);
+    }
+    else {
+      let shrinkItems = [];
+      if (localStorage.getItem('shrinkItems')) {
+        // @ts-ignore
+        shrinkItems = JSON.parse(localStorage.getItem('shrinkItems'));
       }
-      else {
-        let shrinkItems = [];
-        if(localStorage.getItem('shrinkItems')){
-          // @ts-ignore
-          shrinkItems = JSON.parse(localStorage.getItem('shrinkItems'));
-        }
-        if(shrinkItems.length > 0 && e.target.value === 'shrink'){
-          checkLocalStorage();
-        } else history.push(`/${e.target.value}`);
-      }
+      if (shrinkItems.length > 0 && e.target.value === 'shrink') {
+        checkLocalStorage();
+      } else history.push(`/${e.target.value}`);
     }
+  }
 
-    const handleTransferClick = () => {
-      if(!isSelected) {
-        setAlertOpen(true);
-      } else {
-        history.push('/transfer/index/');
-      }
+  const handleTransferClick = () => {
+    if (!isSelected) {
+      setAlertOpen(true);
+    } else {
+      history.push('/transfer/index/');
     }
+  }
 
     const toggleAlert = (e:any) =>{
         setAlertOpen(!alertIsOpen);
@@ -143,4 +147,4 @@ const StoreFunctions:React.FC<StoreFunctionsProps> = (props) => {
     </Fragment>)
   }
 
-  export default StoreFunctions;
+export default StoreFunctions;

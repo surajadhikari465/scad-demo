@@ -90,55 +90,54 @@ const TransferScan: React.FC = () => {
                 const filteredItems = transferData.Items.filter((item: ITransferItem) => item.Upc === upc);
                 let loadingItem = undefined;
 
+                const itemRaw = await agent.Transfer.getTransferItem(region, upc, transferData.ProductType, transferData.FromStoreNo, transferData.FromStoreVendorId, transferData.FromSubteamNo, transferData.SupplyType);
+
+                if (!itemRaw || itemRaw.itemKey <= 0) {
+                    toast.error('Item not found.', { autoClose: false });
+                    setUpc('');
+                    clearScreen();
+                    return;
+                }
+                if (itemRaw.GLAcct === 0 && transferData.ProductType !== 1) {
+                    if (transferData.ProductType === 2) {
+                        toast.error(`This item cannot be transferred because it's from subteam ${itemRaw.RetailSubteamName}, which doesn't have a GL Packaging Account set up yet.`, { autoClose: false });
+                    } else {
+                        toast.error(`This item cannot be transferred because it's from subteam ${itemRaw.RetailSubteamName}, which doesn't have a GL Supplies Account set up yet.`, { autoClose: false });
+                    }
+                    setUpc('');
+                    return;
+                }
+
+                loadingItem = {
+                    AdjustedCost: itemRaw.adjustedCost,
+                    AdjustedReason: -1,
+                    Description: itemRaw.itemDescription,
+                    ItemKey: itemRaw.itemKey,
+                    Quantity: 1,
+                    RetailUom: itemRaw.retailUnitName,
+                    RetailUomId: itemRaw.retailUnitId,
+                    SoldByWeight: itemRaw.soldByWeight,
+                    TotalCost: 0,
+                    Upc: upc,
+                    VendorCost: itemRaw.vendorCost,
+                    VendorPack: itemRaw.vendorPack
+                } as ITransferItem;
+
+                if (!transferData.FromStoreVendorId || transferData.FromStoreVendorId === 0) {
+                    transferData.FromStoreVendorId = itemRaw.vendorID;
+                    localStorage.setItem('transferData', JSON.stringify(transferData));
+                    setTransferData({ ...transferData, FromStoreVendorId: itemRaw.vendorID });
+                }
+                if ((!transferData.SupplyType || transferData.SupplyType === 0) && transferData.ProductType !== 1) {
+                    transferData.SupplyType = itemRaw.retailSubteamNo;
+                    localStorage.setItem('transferData', JSON.stringify(transferData));
+                    setTransferData({ ...transferData, SupplyType: itemRaw.retailSubteamNo });
+                }
+
                 if (filteredItems.length === 0) {
-                    const itemRaw = await agent.Transfer.getTransferItem(region, upc, transferData.ProductType, transferData.FromStoreNo, transferData.FromStoreVendorId, transferData.FromSubteamNo, transferData.SupplyType);
-
-                    if (!itemRaw || itemRaw.itemKey <= 0) {
-                        toast.error('Item not found.', { autoClose: false });
-                        setUpc('');
-                        return;
-                    }
-                    if (itemRaw.GLAcct === 0 && transferData.ProductType !== 1) {
-                        if (transferData.ProductType === 2) {
-                            toast.error(`This item cannot be transferred because it's from subteam ${itemRaw.RetailSubteamName}, which doesn't have a GL Packaging Account set up yet.`, { autoClose: false });
-                        } else {
-                            toast.error(`This item cannot be transferred because it's from subteam ${itemRaw.RetailSubteamName}, which doesn't have a GL Supplies Account set up yet.`, { autoClose: false });
-                        }
-                        setUpc('');
-                        return;
-                    }
-                   
-                    loadingItem = {
-                        AdjustedCost: itemRaw.adjustedCost,
-                        AdjustedReason: -1,
-                        Description: itemRaw.itemDescription,
-                        ItemKey: itemRaw.itemKey,
-                        Quantity: 1,
-                        RetailUom: itemRaw.retailUnitName,
-                        RetailUomId: itemRaw.retailUnitId,
-                        SoldByWeight: itemRaw.soldByWeight,
-                        TotalCost: 0,
-                        Upc: upc,
-                        VendorCost: itemRaw.vendorCost,
-                        VendorPack: itemRaw.vendorPack
-                    } as ITransferItem;
-
                     setQueuedQuantity(0);
-
-                    if (!transferData.FromStoreVendorId || transferData.FromStoreVendorId === 0) {
-                        transferData.FromStoreVendorId = itemRaw.vendorID;
-                        localStorage.setItem('transferData', JSON.stringify(transferData));
-                        setTransferData({ ...transferData, FromStoreVendorId: itemRaw.vendorID });
-                    }
-                    if ((!transferData.SupplyType || transferData.SupplyType === 0) && transferData.ProductType !== 1) {
-                        transferData.SupplyType = itemRaw.retailSubteamNo;
-                        localStorage.setItem('transferData', JSON.stringify(transferData));
-                        setTransferData({ ...transferData, SupplyType: itemRaw.retailSubteamNo });
-                    }
                 } else {
-                    loadingItem = filteredItems[0];
-
-                    setQueuedQuantity(loadingItem.Quantity);
+                    setQueuedQuantity(filteredItems[0].Quantity);
                 }
 
                 setItem(loadingItem);
@@ -148,18 +147,18 @@ const TransferScan: React.FC = () => {
                 setQuantity(1);
 
                 setVendorPack(loadingItem.VendorPack);
-                setRetail(loadingItem.RetailUom)
-                
-                if ((loadingItem.VendorCost === 0) && (loadingItem.AdjustedCost === 0)) {                    
+                setRetail(loadingItem.RetailUom);
+                setAdjustedCost(loadingItem.AdjustedCost);
+
+                if ((loadingItem.VendorCost === 0) && (loadingItem.AdjustedCost === 0)) {
                     toast.info("The cost for this item is 0.00, or it could not be determined. If this is incorrect, please enter the Adjusted Cost for the item.", { autoClose: false });
                     setVendorCost('0');
                     setCostLabel('Adjusted Cost:');
-                } else if (loadingItem.VendorCost === 0) {                    
+                } else if (loadingItem.VendorCost === 0) {
                     setVendorCost('0');
-                    setAdjustedCost(loadingItem.AdjustedCost);
                     setCostLabel('Adjusted Cost:');
                 }
-                else {                    
+                else {
                     setVendorCost(loadingItem.VendorCost);
                     setCostLabel('Vendor Cost:');
                 }
@@ -205,9 +204,7 @@ const TransferScan: React.FC = () => {
     }
 
     const handleAdjustedCostChange = (event: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
-        if (value) {
-            setAdjustedCost(parseFloat(value));
-        }
+        setAdjustedCost(parseFloat(value));
     }
 
     const handleUpcChange = (event: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
@@ -234,7 +231,7 @@ const TransferScan: React.FC = () => {
                 type: 'default',
                 header: 'Invalid Quantity'
             });
-        } else if (vendorCost === 0 && (isNaN(adjustedCost) || adjustedCost <= 0)) {
+        } else if (vendorCost === '0' && (isNaN(adjustedCost) || adjustedCost <= 0)) {
             setAlert({
                 ...alert,
                 open: true,
@@ -242,7 +239,7 @@ const TransferScan: React.FC = () => {
                 type: 'default',
                 header: 'Missing Adjusted Cost'
             });
-        } else if (vendorCost === 0 && (isNaN(reasonCode) || reasonCode <= 0)) {
+        } else if (vendorCost === '0' && (isNaN(reasonCode) || reasonCode <= 0)) {
             setAlert({
                 ...alert,
                 open: true,
@@ -287,9 +284,9 @@ const TransferScan: React.FC = () => {
         setVendorCost('');
         setCostLabel('Vendor Cost:');
         setQueuedQuantity('');
-        setItem(undefined);        
+        setItem(undefined);
     }
-    
+
     const reasonCodeClick = () => {
         dispatch({
             type: types.SETMODALOPEN,
@@ -313,7 +310,7 @@ const TransferScan: React.FC = () => {
             const filteredItems = transferData.Items.filter((i: ITransferItem) => i.Upc === item.Upc);
             filteredItems[0].Quantity += quantity;
             localStorage.setItem("transferData", JSON.stringify(transferData));
-
+            toast.info(`Transfer for UPC ${item.Upc} saved successfully with quantity of ${filteredItems[0].Quantity}.`);
             clearScreen();
         }
     }
@@ -324,7 +321,7 @@ const TransferScan: React.FC = () => {
             const filteredItems = transferData.Items.filter((i: ITransferItem) => i.Upc === item.Upc);
             filteredItems[0].Quantity = quantity;
             localStorage.setItem("transferData", JSON.stringify(transferData));
-
+            toast.info(`Transfer for UPC ${item.Upc} saved successfully with quantity of ${filteredItems[0].Quantity}.`);
             clearScreen();
         }
     }
@@ -366,7 +363,7 @@ const TransferScan: React.FC = () => {
                                 Quantity:
                         </Grid.Column>
                             <Grid.Column width={3} style={{ padding: '0px' }}>
-                                <Input onFocus={(event: any) => event.target.select()} type='number' placeholder='Qty' value={quantity} onChange={handleQuantityChange} fluid />
+                                <Input type='number' placeholder='Qty' value={quantity} onChange={handleQuantityChange} fluid />
                             </Grid.Column>
                             <Grid.Column width={2} verticalAlign='middle' textAlign='right'>
                                 Retail:
@@ -387,10 +384,10 @@ const TransferScan: React.FC = () => {
                             <Grid.Column verticalAlign='middle' textAlign='right' width={4}>
                                 {costLabel}
                             </Grid.Column>
-                            <Grid.Column width={4} verticalAlign='middle' textAlign='left' style={{ fontWeight: 'bold', paddingLeft: '0px' }}>                                
+                            <Grid.Column width={4} verticalAlign='middle' textAlign='left' style={{ fontWeight: 'bold', paddingLeft: '0px' }}>
                                 {parseFloat(vendorCost) === 0 ?
-                                    <Input type='number' onFocus={(event: any) => event.target.select()} fluid value={adjustedCost} onChange={handleAdjustedCostChange} />
-                                    :                                    
+                                    <Input type='number' fluid value={adjustedCost} onChange={handleAdjustedCostChange} />
+                                    :
                                     vendorCost
                                 }
                             </Grid.Column>
@@ -398,13 +395,7 @@ const TransferScan: React.FC = () => {
                                 parseFloat(vendorCost) === 0 ?
                                     <Fragment>
                                         <Grid.Column width={2} verticalAlign='middle'>
-                                            <button
-                                                type="button"
-                                                className="link-button"
-                                                onClick={reasonCodeClick}
-                                            >
-                                                Reason:
-                                        </button>
+                                            <button type="button" className="link-button" onClick={reasonCodeClick}>Reason:</button>
                                         </Grid.Column>
                                         <Grid.Column textAlign="left" style={{ padding: '5px' }} width={4}>
                                             <Dropdown
