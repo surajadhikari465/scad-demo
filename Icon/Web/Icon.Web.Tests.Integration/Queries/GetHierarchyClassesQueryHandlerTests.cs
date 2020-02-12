@@ -42,10 +42,30 @@ namespace Icon.Web.Tests.Integration.Queries
             testHierarchyName = "Brands";
             hierarchyClassModels = connection.Query<HierarchyClassModel>(
                     @"DECLARE @hierarchyId INT = (SELECT TOP 1 hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = @HierarchyName)
-                      INSERT INTO dbo.HierarchyClass(hierarchyID, hierarchyClassName, hierarchyLevel)
-                      VALUES (@hierarchyId, 'BrandTestClass1', 1),
-                          (@hierarchyId, 'BrandTestClass2', 1),
-                          (@hierarchyId, 'BrandTestClass3', 1)
+                     DECLARE @hierarchyClassId INT
+                     INSERT INTO dbo.HierarchyClass(hierarchyID, hierarchyClassName, hierarchyLevel)
+                      VALUES (@hierarchyId, 'BrandTestClass1', 1)
+
+                      SET @hierarchyClassId = SCOPE_IDENTITY()
+                      
+                     INSERT INTO dbo.HierarchyClassTrait([traitId],[hierarchyClassID],[uomID],[traitValue])
+                     VALUES(66, @hierarchyClassId,Null, 'Test1')
+
+                     INSERT INTO dbo.HierarchyClass(hierarchyID, hierarchyClassName, hierarchyLevel)
+                     VALUES (@hierarchyId, 'BrandTestClass2', 1)
+
+                     SET @hierarchyClassId = SCOPE_IDENTITY()
+                      
+                     INSERT INTO dbo.HierarchyClassTrait([traitId],[hierarchyClassID],[uomID],[traitValue])
+                     VALUES(66, @hierarchyClassId,Null, 'Test2')
+
+                     INSERT INTO dbo.HierarchyClass(hierarchyID, hierarchyClassName, hierarchyLevel)
+                     VALUES (@hierarchyId, 'BrandTestClass3', 1)
+
+                     SET @hierarchyClassId = SCOPE_IDENTITY()
+
+                     INSERT INTO dbo.HierarchyClassTrait([traitId],[hierarchyClassID],[uomID],[traitValue])
+                     VALUES(66, @hierarchyClassId,Null, 'Test3')
 
                       SELECT hierarchyID AS HierarchyId,
                           hierarchyClassID AS HierarchyClassId,
@@ -57,6 +77,7 @@ namespace Icon.Web.Tests.Integration.Queries
                       WHERE hierarchyID = @hierarchyId
                       AND hierarchyClassName like '%BrandTestClass%'
                       ORDER BY hierarchyClassID",
+
                     new { HierarchyName = testHierarchyName })
                 .ToList();
             parameters.HierarchyId = connection.QueryFirst<int>("SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = @HierarchyName", new { HierarchyName = testHierarchyName });
@@ -146,7 +167,7 @@ namespace Icon.Web.Tests.Integration.Queries
                     new { HierarchyName = testHierarchyName })
                 .ToList();
             parameters.HierarchyId = connection.QueryFirst<int>("SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = @HierarchyName", new { HierarchyName = testHierarchyName });
-          
+
             //When
             var results = queryHandler.Search(parameters).Where(hc => hc.HierarchyClassName.Contains("FinancialTestClass")).ToList();
 
@@ -224,11 +245,11 @@ namespace Icon.Web.Tests.Integration.Queries
             FROM[dbo].[MerchandiseHierarchyView]
             WHERE hierarchyID = @hierarchyId
             AND hierarchyClassName like '%MerchandiseTestClass%'
-            ORDER BY hierarchyClassID", new {HierarchyName = testHierarchyName})
+            ORDER BY hierarchyClassID", new { HierarchyName = testHierarchyName })
                 .ToList();
             parameters.HierarchyId = connection.QueryFirst<int>(
                 "SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = @HierarchyName",
-                new {HierarchyName = testHierarchyName});
+                new { HierarchyName = testHierarchyName });
 
             //When
             var results = queryHandler.Search(parameters).Where(hc => hc.HierarchyClassName.Contains("MerchandiseTestClass")).ToList();
@@ -241,7 +262,7 @@ namespace Icon.Web.Tests.Integration.Queries
             Assert.AreEqual(hierarchyClassModels[0].HierarchyId, resultHierarchyClass.HierarchyId);
             Assert.AreEqual(hierarchyClassModels[0].HierarchyLevel, resultHierarchyClass.HierarchyLevel);
             Assert.AreEqual(hierarchyClassModels[0].HierarchyLineage, resultHierarchyClass.HierarchyLineage);
-            Assert.AreEqual(hierarchyClassModels[0].HierarchyParentClassId,resultHierarchyClass.HierarchyParentClassId);
+            Assert.AreEqual(hierarchyClassModels[0].HierarchyParentClassId, resultHierarchyClass.HierarchyParentClassId);
 
         }
 
@@ -263,11 +284,11 @@ namespace Icon.Web.Tests.Integration.Queries
             FROM[dbo].[NationalClassHierarchyView]
             WHERE hierarchyID = @hierarchyId
             AND hierarchyClassName like '%NationalTestClass%'
-            ORDER BY hierarchyClassID", new {HierarchyName = testHierarchyName})
+            ORDER BY hierarchyClassID", new { HierarchyName = testHierarchyName })
                 .ToList();
             parameters.HierarchyId = connection.QueryFirst<int>(
                 "SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = @HierarchyName",
-                new {HierarchyName = testHierarchyName});
+                new { HierarchyName = testHierarchyName });
 
             //When
             var results = queryHandler.Search(parameters).Where(hc => hc.HierarchyClassName.Contains("NationalTestClass")).ToList();
@@ -302,7 +323,7 @@ namespace Icon.Web.Tests.Integration.Queries
                   ORDER BY hierarchyClassID",
                 new { HierarchyName = testHierarchyName })
                 .ToList();
-            
+
             parameters.HierarchyId = connection.QueryFirst<int>("SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = @HierarchyName", new { HierarchyName = testHierarchyName });
             parameters.HierarchyLineageFilter = "TestClass";
 
@@ -368,8 +389,8 @@ namespace Icon.Web.Tests.Integration.Queries
         {
             //Given
             testHierarchyName = "Brands";
-             hierarchyClassModels = connection.Query<HierarchyClassModel>(
-                    @"DECLARE @hierarchyId INT = (SELECT TOP 1 hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = @HierarchyName)
+            hierarchyClassModels = connection.Query<HierarchyClassModel>(
+                   @"DECLARE @hierarchyId INT = (SELECT TOP 1 hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = @HierarchyName)
                       INSERT INTO dbo.HierarchyClass(hierarchyID, hierarchyClassName, hierarchyLevel)
                       VALUES (@hierarchyId, 'TestClass1', 1),
                           (@hierarchyId, 'TestClass2', 1),
@@ -382,8 +403,8 @@ namespace Icon.Web.Tests.Integration.Queries
                       FROM [dbo].[BrandHierarchyView]
                       WHERE hierarchyID = @hierarchyId
                       ORDER BY hierarchyClassID",
-                    new { HierarchyName = testHierarchyName })
-                    .ToList();
+                   new { HierarchyName = testHierarchyName })
+                   .ToList();
             parameters.HierarchyId = connection.QueryFirst<int>("SELECT hierarchyID FROM dbo.Hierarchy WHERE hierarchyName = @HierarchyName", new { HierarchyName = testHierarchyName });
             parameters.HierarchyClassId = hierarchyClassModels[0].HierarchyClassId;
 
@@ -476,7 +497,7 @@ namespace Icon.Web.Tests.Integration.Queries
 
                      INSERT INTO dbo.HierarchyClassTrait([traitId],[hierarchyClassID],[uomID],[traitValue])
                      VALUES(49, @hierarchyClassId,Null, @hierarchyClassId)",
-                    new {HierarchyName = testHierarchyName})
+                    new { HierarchyName = testHierarchyName })
                 .ToList();
 
         }
@@ -510,7 +531,7 @@ namespace Icon.Web.Tests.Integration.Queries
 
                       INSERT INTO dbo.HierarchyClassTrait([traitId],[hierarchyClassID],[uomID],[traitValue])
                      VALUES(69, @hierarchyClassId,Null, @hierarchyClassId)",
-                    new {HierarchyName = testHierarchyName})
+                    new { HierarchyName = testHierarchyName })
                 .ToList();
         }
     }
