@@ -112,7 +112,7 @@ BEGIN
 		c.HierarchyClassID
 		,traitID
 		,traitValue)
-	SELECT c.HierarchyClassId
+	SELECT DISTINCT c.HierarchyClassId
 		,@traitId
 		,@traitValue
 	FROM #contact c
