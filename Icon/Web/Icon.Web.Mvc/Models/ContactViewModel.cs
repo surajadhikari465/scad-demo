@@ -40,7 +40,7 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = "State")]
         public string State { get; set; }
 
-        [Display(Name = "ZIP Code")]
+        [Display(Name = "Zip Code")]
         public string ZipCode { get; set; }
 
         [Display(Name = "Country")]

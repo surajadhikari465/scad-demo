@@ -37,7 +37,7 @@
             {
                 columns.For(c => c.HierarchyClassId).HeaderText("Manufacturer ID").DataType("number").Width("7%");
                 columns.For(c => c.ManufacturerName).HeaderText("Manufacturer Name").DataType("string").Width("25%");
-                columns.For(c => c.ZipCode).HeaderText("ZIP Code").DataType("string").Width("10%");
+                columns.For(c => c.ZipCode).HeaderText("Zip Code").DataType("string").Width("10%");
                 columns.For(c => c.ArCustomerId).HeaderText("AR Customer ID").DataType("string").Width("15%");
                 columns.Unbound("ActionEdit").Template("&nbsp&nbsp&nbsp&nbsp <a href='/Manufacturer/Edit?hierarchyClassId=${HierarchyClassId}'>Edit</a>").Width("10%").HeaderText("");
                 //columns.Unbound("ActionDelete").Template("&nbsp&nbsp&nbsp&nbsp&nbsp <a href='/HierarchyClass/Delete?hierarchyClassId=${HierarchyClassId}'>Delete</a>").Width("10%").HeaderText("");
