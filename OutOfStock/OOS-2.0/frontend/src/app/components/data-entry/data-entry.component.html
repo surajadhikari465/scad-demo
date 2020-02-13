@@ -5,8 +5,9 @@
       <wfm-icon name="times"></wfm-icon>
     </wfm-button>
   </wfm-toolbar>
-  <div class="data_container"> 
-    <input type="number" min="0" #upc_input  autofocus (keyup.enter)="addUPCEntry(upc_input.value)"  (keyup)="checkUPCEntry($event)" (oninput)="validity.valid">
+  <div class="data_container">
+    <input type="number" min="0" #upc_input autofocus (keyup.enter)="addUPCEntry(upc_input.value)"
+      (keyup)="checkUPCEntry($event)" (oninput)="validity.valid">
     <wfm-button color="secondary" (click)="addUPCEntry(upc_input.value)" flex>Add Item</wfm-button>
   </div>
 </div>

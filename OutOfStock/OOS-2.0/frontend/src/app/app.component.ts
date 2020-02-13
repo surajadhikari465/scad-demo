@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from './services/app-service.service';
-import { Router } from '@angular/router';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +11,19 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private appService: AppService, private router: Router){}
+  constructor(private appService: AppService, private router: Router) {}
 
-  ngOnInit(){
+  ngOnInit() {
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event) => {this.processNavigationEvent(event);});
+    
     const wfmRegion = this.appService.currentRegion();
     const wfmStore = this.appService.currentStore();
 
     if(!wfmRegion){
+      
       this.router.navigateByUrl('/settings');
       return
     }
@@ -25,4 +33,14 @@ export class AppComponent implements OnInit {
       return
     }
   }
+
+  processNavigationEvent(event: any) {
+    if (event.url == "/list") 
+      this.appService.setScan(true)
+    else 
+    this.appService.setScan(false)
+  }
 }
+
+
+ 

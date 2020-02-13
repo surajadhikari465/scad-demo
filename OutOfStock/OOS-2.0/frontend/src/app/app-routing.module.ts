@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { NgModule, OnInit, Component } from '@angular/core';
+import { Routes, RouterModule, NavigationEnd, Router, NavigationStart } from '@angular/router';
 
 import { SettingsComponent } from './pages/settings/settings.component';
 import { ScanListComponent } from './pages/scan-list/scan-list.component';
@@ -10,15 +10,17 @@ const routes: Routes = [
   {
     path: 'settings',
     component: SettingsComponent,
-    children:[
-      { path: '', component: RegionsComponent},
-      { path: 'stores', component: StoresComponent}
-    ]},
+    children: [
+      { path: '', component: RegionsComponent },
+      { path: 'stores', component: StoresComponent }
+    ]
+  },
   {
     path: 'list',
     component: ScanListComponent
   },
-  { path: '',
+  {
+    path: '',
     redirectTo: '/settings',
     pathMatch: 'full'
   },
@@ -28,4 +30,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule { }

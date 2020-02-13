@@ -11,13 +11,13 @@ export class RegionsComponent {
 
   constructor(private appService: AppService, private router: Router) { }
 
-  ngOnInit(){
-    if(localStorage.getItem('wfmRegion') && localStorage.getItem('wfmStore')){
+  ngOnInit() {
+    if (localStorage.getItem('wfmRegion') && localStorage.getItem('wfmStore')) {
       this.router.navigateByUrl('/list');
-    }  
+    }
   }
 
-  setRegion(selectedRegion){
+  setRegion(selectedRegion) {
     this.appService.saveItem('wfmRegion', selectedRegion);
     this.router.navigateByUrl('/settings/stores');
   }

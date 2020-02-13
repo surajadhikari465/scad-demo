@@ -12,15 +12,15 @@ let allowScan = false;
   providedIn: 'root'
 })
 export class AppService {
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient) { }
   // API SERVICES
-  submitListItems(wfmScanItems: string[]): Observable<any>{
+  submitListItems(wfmScanItems: string[]): Observable<any> {
     const url = `${BASE_URL}/items`;
 
     const wfmRegionId = this.currentRegion();
     const wfmStoreName = this.currentStore().name;
 
-    if(!wfmScanItems){
+    if (!wfmScanItems) {
       throw new Error('submitListItems requires scan items');
     }
 
@@ -31,14 +31,14 @@ export class AppService {
     });
   }
 
-  getStoresByRegion(wfmRegionId: string): Observable<Store[]>{
-    const url =  `${BASE_URL}/stores/region/${wfmRegionId}`;
+  getStoresByRegion(wfmRegionId: string): Observable<Store[]> {
+    const url = `${BASE_URL}/stores/region/${wfmRegionId}`;
 
     return this.http.get<Store[]>(url);
   }
 
-  saveItem(key: string, value: any){
-    if(typeof(value) === 'object'){
+  saveItem(key: string, value: any) {
+    if (typeof (value) === 'object') {
       value = JSON.stringify(value)
     }
     localStorage.setItem(key, value);
@@ -55,17 +55,15 @@ export class AppService {
   currentRegion(): string {
     return this.getItem(WFM_REGION);
   }
-
-  toggleScanOff() { 
-    allowScan = false;
+  setScan(allowScanning: boolean) {
+    console.log("scanning", allowScanning);
+    allowScan = allowScanning;
   }
-
-  toggleScanOn() { 
-    allowScan = true;
-  }
-
-
-  getScan(): boolean { 
+  getScan(): boolean {
     return allowScan;
+  }
+
+  getEnvironment(): string {
+    return environment.name;
   }
 }

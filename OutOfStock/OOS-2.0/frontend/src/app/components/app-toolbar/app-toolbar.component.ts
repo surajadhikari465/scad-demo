@@ -1,5 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { MenuController } from '@wfm/ui-angular'
+import { MenuController, ModalController } from '@wfm/ui-angular'
+import { environment } from '../../../environments/environment'
+import { AlertModalComponent } from 'src/app/components/alert-modal/alert-modal.component';
 //import { PopoverController } from '@ionic/angular';
 
 import { AppSettingsComponent } from './app-settings/app-settings.component'
@@ -11,14 +13,39 @@ import { AppSettingsComponent } from './app-settings/app-settings.component'
 })
 export class AppToolbarComponent implements OnInit {
 
+  private tapCount: number;
+
   @Output() onMenuDismissed = new EventEmitter();
 
-  constructor(public menuController: MenuController) { }
+  constructor(public menuController: MenuController,
+    public modalController: ModalController) { }
   //constructor(public popoverController: PopoverController) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.tapCount = 0;
+  }
 
-  async presentMenu(ev: UIEvent){
+
+  tap() {
+    this.tapCount += 1;
+    if (this.tapCount >= 5) {
+      var msg = JSON.stringify(environment, null, 2);
+      this.displayModal("Environment Info", msg);
+      this.tapCount = 0;
+    }
+  }
+
+
+  async displayModal(title: string, message: string) {
+    const modal = await this.modalController.create({
+      component: AlertModalComponent,
+      componentProps: { title, message }
+    });
+
+    modal.present()
+  }
+
+  async presentMenu(ev: UIEvent) {
     //const menu = await this.popoverController.create({
     const menu = await this.menuController.create({
       event: ev,

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController } from '@wfm/ui-angular';
 import { AppService } from 'src/app/services/app-service.service'
-//import { PopoverController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-settings',
@@ -11,22 +11,22 @@ import { AppService } from 'src/app/services/app-service.service'
 })
 export class AppSettingsComponent {
 
-  constructor(private router: Router, private menuController: MenuController, private appService: AppService){}
+  constructor(private router: Router, private menuController: MenuController, private appService: AppService) { }
 
-  clearList(){
-    this.menuController.dismiss('clearList')
+  clearList() {
+      this.menuController.dismiss('clearList');
   }
 
-  changeStore(){
-    this.appService.toggleScanOff();
-    this.router.navigateByUrl('/settings')
+  changeStore() {
+
+      this.router.navigateByUrl('/settings');
     localStorage.removeItem('wfmRegion');
     localStorage.removeItem('wfmStore');
     localStorage.removeItem('items');
-    this.menuController.dismiss()
+    this.menuController.dismiss();
   }
 
-  manualDataEntry(){
-    this.menuController.dismiss('enterManualData')
+  manualDataEntry() {
+      this.menuController.dismiss('enterManualData');
   }
 }

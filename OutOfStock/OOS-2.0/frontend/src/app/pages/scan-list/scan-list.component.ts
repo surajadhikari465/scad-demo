@@ -5,7 +5,7 @@ import {
   ModalController as IonicModalController,
 } from '@ionic/angular';
 
-import { BarcodeScanner } from '@wfm/mobile';
+import { BarcodeScanner, IBarcodeScannedEvent } from '@wfm/mobile';
 
 import { AppService } from 'src/app/services/app-service.service'
 import { DataEntryComponent } from 'src/app/components/data-entry/data-entry.component'
@@ -30,61 +30,47 @@ export class ScanListComponent implements OnInit {
     public ionicModalController: IonicModalController,
     public modalController: ModalController,
     private ref: ChangeDetectorRef,
-  ){
+  ) {
     this.items = []
   }
 
-  ngOnInit(){
+  ngOnInit() {
     const self = this;
-    BarcodeScanner.registerHandler(function(data:any){
+    BarcodeScanner.registerHandler(function (data: IBarcodeScannedEvent) {
       const allowScan = self.appService.getScan();
-      if(allowScan){
-        try{
-          self.addWfmItem(data)
-        }catch(ex){
+      if (allowScan) {
+        try {
+          self.addWfmItem(data.Data)
+        } catch (ex) {
           alert(ex.message)
         }
       }
     })
     this.wfmRegion = this.appService.currentRegion();
     this.wfmStore = this.appService.currentStore();
-    if(localStorage.getItem('items')){
+    if (localStorage.getItem('items')) {
       this.items = JSON.parse(localStorage.getItem('items'));
-    }    
-
+    }
   }
 
-  executeMenuOption(option){
-    switch(option.data){
-      case 'clearList':{
+  executeMenuOption(option) {
+    switch (option.data) {
+      case 'clearList': {
         this.clearList();
         break;
       }
-      case 'enterManualData':{
+      case 'enterManualData': {
         this.openManualDataEntry();
         break;
       }
     }
   }
 
-  addWfmItem(itemUPC: string){
-    try{
-
-      // duplicate item check 
-      // not needed for out of stock
-      /*
-      const isDuplicateValue = this.items.find(v => v === itemUPC)
-      if(isDuplicateValue){
-        this.displayModal(
-          'Duplicate Value',
-          'This item has already been added to your list'
-        )
-        return
-      }
-      */
+  addWfmItem(itemUPC: string) {
+    try {
 
       let item = '0000000000000';
-      if(itemUPC.length <= 13){
+      if (itemUPC.length <= 13) {
         item = item.substring(0, item.length - itemUPC.length) + itemUPC;
       }
       else item = itemUPC;
@@ -99,24 +85,24 @@ export class ScanListComponent implements OnInit {
       this.ref.detectChanges()
 
       this.presentToast(`${itemUPC} added`)
-    }catch(ex){
-      alert(ex.message)
+    } catch (ex) {
+      console.log(ex.stacktrace)
     }
   }
 
-  removeItem(item: string){
+  removeItem(item: string) {
     const index = this.items.indexOf(item);
     this.items.splice(index, 1);
     localStorage.setItem('items', JSON.stringify(this.items));
     this.ref.detectChanges();
   }
 
-  clearList(){
+  clearList() {
     this.items = []
     localStorage.setItem('items', JSON.stringify(this.items));
   }
 
-  async openManualDataEntry(){
+  async openManualDataEntry() {
     const modal = await this.modalController.create({
       component: DataEntryComponent,
     });
@@ -124,7 +110,7 @@ export class ScanListComponent implements OnInit {
     // Get the value from the modal
     modal.onDidDismiss().then(value => {
       const { data, role } = value
-      if(data && role === 'submit'){
+      if (data && role === 'submit') {
         this.addWfmItem(data);
       }
     })
@@ -141,32 +127,32 @@ export class ScanListComponent implements OnInit {
     toast.present();
   }
 
-  displaySuccessModal(){
-    this.displayModal('Success','You successfully submitted your list!')
+  displaySuccessModal() {
+    this.displayModal('Success', 'You successfully submitted your list!')
   }
 
-  displayErrorModal(){
+  displayErrorModal() {
     this.displayModal('Error!', 'There was an error saving your list')
   }
 
-  async displayModal(title: string, message: string){
+  async displayModal(title: string, message: string) {
     const modal = await this.modalController.create({
       component: AlertModalComponent,
-      componentProps: {title, message}
+      componentProps: { title, message }
     });
 
     modal.present()
   }
 
-  submitListItems(){
-    this.appService.submitListItems( this.items)
-    .subscribe({
-      next:() => {
-        this.displaySuccessModal();
-        this.clearList()
-      },
-      error:() => this.displayErrorModal()
-    })
+  submitListItems() {
+    this.appService.submitListItems(this.items)
+      .subscribe({
+        next: () => {
+          this.displaySuccessModal();
+          this.clearList()
+        },
+        error: () => this.displayErrorModal()
+      })
   }
 
 }
