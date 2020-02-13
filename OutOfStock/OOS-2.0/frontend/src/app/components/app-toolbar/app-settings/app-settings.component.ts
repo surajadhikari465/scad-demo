@@ -18,7 +18,7 @@ export class AppSettingsComponent {
   }
 
   changeStore(){
-    this.appService.toggleScan();
+    this.appService.toggleScanOff();
     this.router.navigateByUrl('/settings')
     localStorage.removeItem('wfmRegion');
     localStorage.removeItem('wfmStore');

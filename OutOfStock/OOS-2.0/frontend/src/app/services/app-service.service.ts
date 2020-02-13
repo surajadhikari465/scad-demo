@@ -56,9 +56,14 @@ export class AppService {
     return this.getItem(WFM_REGION);
   }
 
-  toggleScan() { 
-    allowScan = !allowScan;
+  toggleScanOff() { 
+    allowScan = false;
   }
+
+  toggleScanOn() { 
+    allowScan = true;
+  }
+
 
   getScan(): boolean { 
     return allowScan;
