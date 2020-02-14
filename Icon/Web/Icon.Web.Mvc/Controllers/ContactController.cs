@@ -453,7 +453,7 @@ namespace Icon.Web.Mvc.Controllers
                 const string missingName = "Contact Name is missing. ";
 
                 
-                var contactTypes = GetContactTypes().ToDictionary(x => x.ContactTypeName, x => x.ContactTypeId);
+                var contactTypes = GetContactTypes(true).ToDictionary(x => x.ContactTypeName, x => x.ContactTypeId);
                 var eligableIds = this.getContactEligibleHCQuery.Search(new GetContactEligibleHCParameters()).ToHashSet();
 
                 int GetHCID(Icon.Web.Mvc.Excel.ExcelReader rdr)

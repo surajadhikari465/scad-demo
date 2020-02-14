@@ -66,7 +66,7 @@ namespace Icon.Web.Mvc.Models
             ContactName = model.ContactName;
             Email = model.Email;
             Title = model.Title;
-            AddressLine1 = model.AddressLine2;
+            AddressLine1 = model.AddressLine1;
             AddressLine2 = model.AddressLine2;
             City = model.City;
             State = model.State;
