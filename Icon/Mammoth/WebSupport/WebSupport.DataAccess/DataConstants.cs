@@ -31,8 +31,9 @@ namespace WebSupport.DataAccess
 			{
 				PriceResetConstants.Spice,
 				PriceResetConstants.SLAW,
-                PriceResetConstants.DataWarehouse
-            };
+				PriceResetConstants.DataWarehouse,
+				PriceResetConstants.Pricer
+			};
 
         /// <summary>
         /// Available external systems which may need to receive a price refresh
@@ -63,8 +64,9 @@ namespace WebSupport.DataAccess
 	{
 		public const string Spice = "Spice";
 		public const string SLAW = "SLAW";
-        public const string DataWarehouse = "DW";
-    }
+		public const string DataWarehouse = "DW";
+		public const string Pricer = "Pricer";
+	}
 
     public static class RegionNameConstants
     {
