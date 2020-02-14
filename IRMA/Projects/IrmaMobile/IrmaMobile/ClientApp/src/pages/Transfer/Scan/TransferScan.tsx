@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useContext, useCallback } from 'react'
+import React, { Fragment, useState, useEffect, useContext, useCallback, useRef } from 'react'
 import { AppContext, types, IMenuItem } from '../../../store'
 import LoadingComponent from '../../../layout/LoadingComponent';
 import { Grid, Input, Button, Segment, InputOnChangeData, Dropdown, DropdownProps } from 'semantic-ui-react';
@@ -20,7 +20,7 @@ const TransferScan: React.FC = () => {
     const { region, mappedReasonCodes } = state;
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState<string>('1');
     const [upc, setUpc] = useState();
     const [queuedQuantity, setQueuedQuantity] = useState();
     const [costLabel, setCostLabel] = useState('Vendor Cost:');
@@ -93,7 +93,7 @@ const TransferScan: React.FC = () => {
                 const itemRaw = await agent.Transfer.getTransferItem(region, upc, transferData.ProductType, transferData.FromStoreNo, transferData.FromStoreVendorId, transferData.FromSubteamNo, transferData.SupplyType);
 
                 if (!itemRaw || itemRaw.itemKey <= 0) {
-                    toast.error('Item not found.', { autoClose: false });
+                    toast.error('Item not found.');
                     setUpc('');
                     clearScreen();
                     return;
@@ -144,7 +144,7 @@ const TransferScan: React.FC = () => {
 
                 setDescription(loadingItem.Description);
 
-                setQuantity(1);
+                setQuantity('1');
 
                 setVendorPack(loadingItem.VendorPack);
                 setRetail(loadingItem.RetailUom);
@@ -199,8 +199,44 @@ const TransferScan: React.FC = () => {
         }
     }, [setTransferData]);
 
+    const handleQuantityOnKeyPress = (e: React.KeyboardEvent<Input>) => {
+        if (item) {
+            if (quantity !== null && quantity !== undefined) {
+                console.log('handleQuantityOnKeyPress ' + quantity);
+                if (item.SoldByWeight) {
+                    const floatRegEx = /^(\d{0,4}(\.\d{0,2})?|\.?\d{1,2})$/;
+                    if (!floatRegEx.test(quantity + e.key)) {
+                        console.log('preventCalled ' + quantity);
+                        e.preventDefault();
+                    }
+                } else {
+                    const intRegEx = /^\d{0,3}$/
+                    if (!intRegEx.test(quantity + e.key)) {
+                        e.preventDefault();
+                    }
+                }
+            }
+        }
+    }
+
     const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
-        setQuantity(parseInt(value));
+        if (item) {
+            console.log('handleQuantityChange ' + value);
+
+            if (item.SoldByWeight) {
+                //This floatRegEx and the one in handleQuantityOnKeyPress are used in conjunction to allow
+                //a user to enter a float up to 999.99. There is an issue where a user can't enter any numbers
+                //past the decimal if the user has already entered 3 digits i.e. 999. or 123.
+                //To get around this the handleQuantityOnKeyPress allows 4 digits left of the decimal
+                //while this regex allows 3. It's not a great solution so if someone can find a better way then change it.
+                //Blake Jones
+                const floatRegEx = /^(\d{0,3}(\.\d{0,2})?|\.?\d{1,2})$/;
+                if (floatRegEx.test(value))
+                    setQuantity(value);
+            } else {
+                setQuantity(value);
+            }
+        }
     }
 
     const handleAdjustedCostChange = (event: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
@@ -219,11 +255,12 @@ const TransferScan: React.FC = () => {
 
     const handleSave = () => {
         if (!transferData || !item) {
-            toast.error('No data to save.', { autoClose: false });
+            toast.error('No data to save.');
             return;
         }
 
-        if (isNaN(quantity) || quantity <= 0) {
+        const quantityNumber = item.SoldByWeight ? parseFloat(quantity) : parseInt(quantity);
+        if (quantityNumber <= 0) {
             setAlert({
                 ...alert,
                 open: true,
@@ -250,10 +287,10 @@ const TransferScan: React.FC = () => {
         } else {
             const filteredItems = transferData.Items.filter((i: ITransferItem) => i.Upc === item.Upc);
             if (filteredItems.length === 0) {
-                item.TotalCost = item.VendorCost !== 0 ? quantity * item.VendorCost : quantity * adjustedCost;
+                item.TotalCost = item.VendorCost !== 0 ? quantityNumber * item.VendorCost : quantityNumber * adjustedCost;
                 item.AdjustedCost = adjustedCost;
                 item.AdjustedReason = reasonCode;
-                item.Quantity = quantity;
+                item.Quantity = quantityNumber;
 
                 transferData.Items.push(item);
 
@@ -278,12 +315,14 @@ const TransferScan: React.FC = () => {
     const clearScreen = () => {
         setUpc('');
         setDescription('');
-        setQuantity(1);
+        setQuantity('1');
         setVendorPack('');
         setRetail('');
         setVendorCost('');
         setCostLabel('Vendor Cost:');
         setQueuedQuantity('');
+        setAdjustedCost(0);
+        setReasonCode(0);
         setItem(undefined);
     }
 
@@ -307,8 +346,12 @@ const TransferScan: React.FC = () => {
     const add = () => {
         setAlert({ ...alert, open: false });
         if (transferData && item) {
+            const quantityNumber = item.SoldByWeight ? parseFloat(quantity) : parseInt(quantity);
             const filteredItems = transferData.Items.filter((i: ITransferItem) => i.Upc === item.Upc);
-            filteredItems[0].Quantity += quantity;
+            filteredItems[0].Quantity += quantityNumber;
+            filteredItems[0].TotalCost = item.VendorCost !== 0 ? filteredItems[0].Quantity * item.VendorCost : filteredItems[0].Quantity * adjustedCost;
+            filteredItems[0].AdjustedCost = adjustedCost;
+            filteredItems[0].AdjustedReason = reasonCode;
             localStorage.setItem("transferData", JSON.stringify(transferData));
             toast.info(`Transfer for UPC ${item.Upc} saved successfully with quantity of ${filteredItems[0].Quantity}.`);
             clearScreen();
@@ -318,8 +361,12 @@ const TransferScan: React.FC = () => {
     const overwrite = () => {
         setAlert({ ...alert, open: false });
         if (transferData && item) {
+            const quantityNumber = item.SoldByWeight ? parseFloat(quantity) : parseInt(quantity);
             const filteredItems = transferData.Items.filter((i: ITransferItem) => i.Upc === item.Upc);
-            filteredItems[0].Quantity = quantity;
+            filteredItems[0].Quantity = quantityNumber;
+            filteredItems[0].TotalCost = item.VendorCost !== 0 ? quantityNumber * item.VendorCost : quantityNumber * adjustedCost;
+            filteredItems[0].AdjustedCost = adjustedCost;
+            filteredItems[0].AdjustedReason = reasonCode;
             localStorage.setItem("transferData", JSON.stringify(transferData));
             toast.info(`Transfer for UPC ${item.Upc} saved successfully with quantity of ${filteredItems[0].Quantity}.`);
             clearScreen();
@@ -363,7 +410,7 @@ const TransferScan: React.FC = () => {
                                 Quantity:
                         </Grid.Column>
                             <Grid.Column width={3} style={{ padding: '0px' }}>
-                                <Input type='number' placeholder='Qty' value={quantity} onChange={handleQuantityChange} fluid />
+                                <Input type='number' placeholder='Qty' value={quantity} onKeyPress={handleQuantityOnKeyPress} onChange={handleQuantityChange} fluid />
                             </Grid.Column>
                             <Grid.Column width={2} verticalAlign='middle' textAlign='right'>
                                 Retail:
