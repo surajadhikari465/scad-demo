@@ -130,11 +130,10 @@ namespace Icon.Web.Mvc.Controllers
             return View();
         }
 
-        [GridDataSourceAction]
         public ActionResult ContactAll(int hierarchyClassId)
         {
             var viewModels = GetContacts(hierarchyClassId);
-            return View(viewModels.AsQueryable());
+            return Json(new { data = viewModels.ToList() });
         }
 
         [GridDataSourceAction]

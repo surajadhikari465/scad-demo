@@ -21,7 +21,8 @@ namespace Icon.Web
                 "~/Scripts/infragistics/js/infragistics.lob.js",
                 "~/Scripts/infragistics/js/infragistics.dv.js",
                 "~/Scripts/modernizr-*",
-                "~/Scripts/respond.js"));
+                "~/Scripts/respond.js",
+                "~/Scripts/datatables.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/themes/base/jquery-ui.css")

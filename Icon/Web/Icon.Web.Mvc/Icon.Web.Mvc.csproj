@@ -573,12 +573,19 @@
     <Content Include="Content\datatables.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\Images\arr_close.png" />
+    <Content Include="Content\Images\arr_exp.png" />
     <Content Include="Content\Images\edit.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\plus-square.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Images\sort_asc.png" />
+    <Content Include="Content\Images\sort_asc_disabled.png" />
+    <Content Include="Content\Images\sort_both.png" />
+    <Content Include="Content\Images\sort_desc.png" />
+    <Content Include="Content\Images\sort_desc_disabled.png" />
     <Content Include="Content\Infragistics\css\structure\fonts\jquery-ui.svg" />
     <Content Include="Content\Infragistics\css\structure\images\icon_sprite.png" />
     <Content Include="Content\Infragistics\css\structure\images\igBrowserLogos.png" />

@@ -451,3 +451,56 @@ td {
     font-size: smaller;
     font-style:italic;
 }
+
+.compact-row tr td {
+    height: 20px
+}
+
+table.dataTable.display tbody tr.child {
+    background: whitesmoke;
+}
+
+table.dataTable.display tbody tr table tr:hover {
+    background: none;
+}
+
+table.dataTable.display tbody tr table tr:hover {
+    background: none;
+}
+
+.dataTables_filter input {
+    width: 300px;
+    border-color: lightgray;
+    border-radius: 7px;
+    background-color: whitesmoke;
+    padding-left: 7px;
+}
+
+.dataTables_page input {
+    width: 300px;
+    border-color: lightgray;
+    border-radius: 7px;
+    background-color: whitesmoke;
+    padding-left: 7px;
+}
+
+.dataTables_length select {
+    width: 75px;
+    border-color: lightgray;
+    border-radius: 7px;
+    background-color: whitesmoke;
+    padding-left: 7px;
+}
+
+td.details-control {
+    background: url('../Content/Images/arr_exp.png') no-repeat center center;
+    cursor: pointer;
+}
+
+tr.shown td.details-control {
+    background: url('../Content/Images/arr_close.png') no-repeat center center;
+}
+
+.action-control {
+    cursor: pointer;
+}
