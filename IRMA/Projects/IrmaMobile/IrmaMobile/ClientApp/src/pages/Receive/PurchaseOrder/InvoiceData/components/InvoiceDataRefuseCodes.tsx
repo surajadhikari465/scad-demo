@@ -10,10 +10,12 @@ interface IProps {
 
 const InvoiceDataRefuseCodes: React.FC<IProps> = ({ handleSelectRefuse }) => {
     const { state } = useContext(AppContext);
-    const { region } = state;
+    const { region, orderDetails } = state;
 
     const [data, setData] = useState([]);
     const [open, setOpen] = useState<boolean>(false);
+
+    let refuseDisabled = orderDetails?.OrderItems && orderDetails?.OrderItems.filter((item)=>item.QtyReceived !== 0).length > 0 ? true: false; 
 
     useEffect(() => {
         const getData = async () => {
@@ -48,7 +50,7 @@ const InvoiceDataRefuseCodes: React.FC<IProps> = ({ handleSelectRefuse }) => {
     
     return (
         <Fragment>
-            <Modal open={open} closeIcon onClose={() => setOpen(false)} trigger={<Button onClick={() => setOpen(true)} style={{margin: '10px', backgroundColor:'lightgreen'}}>Refuse Order</Button>}>
+            <Modal open={open} closeIcon onClose={() => setOpen(false)} trigger={<Button onClick={() => setOpen(true)} disabled={refuseDisabled} style={{margin: '10px', backgroundColor:'lightgreen'}}>Refuse Order</Button>}>
                 <Modal.Header>Choose Reason Code</Modal.Header>
                 <Modal.Content>
                     <ReactTable

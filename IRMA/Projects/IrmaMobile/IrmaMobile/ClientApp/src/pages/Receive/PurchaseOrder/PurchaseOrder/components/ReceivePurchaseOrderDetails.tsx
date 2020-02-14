@@ -149,7 +149,6 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 quantityMode.current = QuantityAddMode.None;
 
                 dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
-                dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
             }
         }
     }
