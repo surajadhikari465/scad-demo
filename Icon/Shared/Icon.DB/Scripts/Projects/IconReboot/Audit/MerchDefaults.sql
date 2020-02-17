@@ -6,7 +6,7 @@ DECLARE @nonMerchTrait int;
 
 DECLARE @prohibitDiscountName nvarchar(25) = 'Prohibit Discount';
 DECLARE @subTeam nvarchar(25) = 'Subteam';
-DECLARE @itemType nvarchar(25) = 'Item Type';
+DECLARE @nonMerchandiseTrait nvarchar(25) = 'Non-Merchandise Trait';
 
 SET @prohibitDiscountId = (SELECT traitID FROM Trait WHERE traitDesc = 'Prohibit Discount');
 SET @merchFinMappingId = (SELECT traitID FROM Trait WHERE traitDesc = 'Merch Fin Mapping');
@@ -48,7 +48,7 @@ SELECT
 	br.hierarchyClassID AS NodeCode,
 	brl.hierarchyLevelName AS LevelName,
 	br.hierarchyClassName AS NodeName,
-	@itemType AS ItemAttributeName,
+	@nonMerchandiseTrait AS ItemAttributeName,
 	hct.traitValue AS ItemAttributeDefaultValue
 FROM dbo.HierarchyClass br
 JOIN dbo.Hierarchy h on br.hierarchyID = h.hierarchyID
@@ -56,5 +56,4 @@ JOIN dbo.HierarchyPrototype brl on br.hierarchyID = brl.hierarchyID
 	AND br.hierarchyLevel = brl.hierarchyLevel
 JOIN dbo.HierarchyClassTrait hct on br.hierarchyClassID = hct.hierarchyClassID
 	AND hct.traitID = @nonMerchTrait
-JOIN dbo.ItemType it on hct.traitValue = it.itemTypeDesc
 WHERE h.hierarchyName = 'Merchandise'
