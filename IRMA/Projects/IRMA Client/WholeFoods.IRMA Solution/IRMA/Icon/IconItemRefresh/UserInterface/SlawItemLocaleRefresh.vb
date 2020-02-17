@@ -28,8 +28,8 @@ Public Class SlawItemRefresh
     End If
 
     Try
-      Dim request As ItemIdentifierRefreshRequest = New ItemIdentifierRefreshRequest(identifiers, "Slaw")
-      Dim response As ItemIdentifierRefreshResponse = Nothing
+            Dim request As ItemIdentifierRefreshRequest = New ItemIdentifierRefreshRequest(identifiers, "Mammoth")
+            Dim response As ItemIdentifierRefreshResponse = Nothing
 
       Select Case RefreshType
         Case ItemRefreshType.ItemLocale : response = RefreshService.RefreshSlawItemLocale(request)
@@ -38,8 +38,8 @@ Public Class SlawItemRefresh
       End Select
 
       If response.ItemRefreshResults.Any(Function(r) r.RefreshFailed) Then
-        Dim errorsWindow As IconItemRefreshErrors = New IconItemRefreshErrors(response.ItemRefreshResults.Where(Function(m) m.RefreshFailed).ToList(), "Slaw")
-        errorsWindow.ShowDialog()
+                Dim errorsWindow As IconItemRefreshErrors = New IconItemRefreshErrors(response.ItemRefreshResults.Where(Function(m) m.RefreshFailed).ToList(), "Mammoth")
+                errorsWindow.ShowDialog()
       Else
         MessageBox.Show("Refreshed all items successfully.", Me.Text)
       End If
