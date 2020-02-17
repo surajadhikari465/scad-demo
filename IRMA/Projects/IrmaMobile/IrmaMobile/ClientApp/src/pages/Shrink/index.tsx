@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useState, useEffect } from 'react';
 // @ts-ignore 
-import { BarcodeScanner } from '@wfm/mobile';
+import { BarcodeScanner, IBarcodeScannedEvent } from '@wfm/mobile';
 import './styles.scss';
 import { AppContext, types, IMenuItem } from "../../store";
 import BasicModal from '../../layout/BasicModal';
@@ -38,10 +38,10 @@ const Shrink:React.FC = () => {
     let textInput:any = React.createRef<HTMLInputElement>();
     let qtyInput:any = React.createRef<HTMLInputElement>();
     useEffect(() => {
-      BarcodeScanner.registerHandler(function(data:any){
+        BarcodeScanner.registerHandler(function (data: IBarcodeScannedEvent){
         if(shrinkState.isSelected===true){
           try{
-            setUpc(parseInt(data, 10), true);
+            setUpc(parseInt(data.Data, 10), true);
           }catch(ex){
             setAlert({...alert, 
               open:true, 

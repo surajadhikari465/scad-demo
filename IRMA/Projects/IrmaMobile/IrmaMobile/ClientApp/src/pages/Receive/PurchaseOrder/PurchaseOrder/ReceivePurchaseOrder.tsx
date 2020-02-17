@@ -12,7 +12,7 @@ import OrderInformation from "../types/OrderInformation";
 import orderUtil from "../util/Order"
 import isMinDate from "../util/MinDate";
 // @ts-ignore 
-import { BarcodeScanner } from '@wfm/mobile';
+import { BarcodeScanner, IBarcodeScannedEvent} from '@wfm/mobile';
 import ConfirmModal from "../../../../layout/ConfirmModal";
 import LoadingComponent from "../../../../layout/LoadingComponent";
 
@@ -47,8 +47,8 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     }, [purchaseOrderNumber, orderDetails, dispatch])
 
     useEffect(() => {
-        BarcodeScanner.registerHandler((data: any) => {
-            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: data });
+        BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
+            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: data.Data });
           });
 
         return () => {

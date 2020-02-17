@@ -4,7 +4,7 @@ import LoadingComponent from '../../../layout/LoadingComponent';
 import { Grid, Input, Button, Segment, InputOnChangeData, Dropdown, DropdownProps } from 'semantic-ui-react';
 import './styles.scss';
 // @ts-ignore 
-import { BarcodeScanner } from '@wfm/mobile';
+import { BarcodeScanner, IBarcodeScannedEvent } from '@wfm/mobile';
 import ITransferData from '../types/ITransferData';
 import agent from '../../../api/agent';
 import ITransferItem from '../types/ITransferItem';
@@ -170,12 +170,12 @@ const TransferScan: React.FC = () => {
     }, [region, transferData, upc]);
 
     useEffect(() => {
-        BarcodeScanner.registerHandler((data: any) => {
-            if (upc === data) {
+        BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
+            if (upc === data.Data) {
                 setQuantity((q: any) => q + 1);
                 return;
             } else {
-                setUpc(data);
+                setUpc(data.Data);
                 setSearchFlag(true);
             }
         });
