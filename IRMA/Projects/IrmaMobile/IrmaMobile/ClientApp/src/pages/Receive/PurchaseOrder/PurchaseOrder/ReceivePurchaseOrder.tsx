@@ -6,6 +6,8 @@ import { AppContext, types, IMenuItem } from "../../../../store";
 import ReceivePurchaseOrderDetails from "./components/ReceivePurchaseOrderDetails";
 import ReceivePurchaseOrderList from "./components/ReceivePurchaseOrderList";
 import ReceivePoSearch from "./components/ReceivePurchaseOrderSearch";
+import ConfirmModal from "../../../../layout/ConfirmModal";
+import LoadingComponent from "../../../../layout/LoadingComponent";
 import { RouteComponentProps, useHistory } from "react-router-dom";
 import OrderInformationModal from "../OrderInformation/OrderInformationModal";
 import OrderInformation from "../types/OrderInformation";
@@ -13,8 +15,7 @@ import orderUtil from "../util/Order"
 import isMinDate from "../util/MinDate";
 // @ts-ignore 
 import { BarcodeScanner, IBarcodeScannedEvent} from '@wfm/mobile';
-import ConfirmModal from "../../../../layout/ConfirmModal";
-import LoadingComponent from "../../../../layout/LoadingComponent";
+
 
 interface RouteParams {
     openOrderInformation: string;
@@ -25,7 +26,7 @@ interface IProps extends RouteComponentProps<RouteParams> {}
 const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     // @ts-ignore
     const { state, dispatch } = useContext(AppContext);
-    const { storeNumber, listedOrders, region, purchaseOrderUpc, purchaseOrderNumber, orderDetails } = state;
+    const { store, storeNumber, listedOrders, region, purchaseOrderUpc, purchaseOrderNumber, orderDetails } = state;
     let selectedPo = null;
     const { openOrderInformation } = match.params;
     const [orderInformation, setOrderInformation] = useState<OrderInformation>({} as OrderInformation);
@@ -85,6 +86,11 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
 
                 if(!order) {
                     toast.error("PO could not be loaded. Please try again.", { autoClose: false });
+                    return;
+                }
+
+                if(order.storeCompanyName !== store){
+                    toast.error( `PO ${purchaseOrderNum} is for ${order.storeCompanyName}. Please try again.`, { autoClose: false });
                     return;
                 }
 
