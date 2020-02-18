@@ -44,17 +44,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
          ] as IMenuItem[];
 
         dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems });
-    }, [purchaseOrderNumber, orderDetails, dispatch])
-
-    useEffect(() => {
-        BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
-            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: data.Data });
-          });
-
-        return () => {
-            BarcodeScanner.scanHandler = () => {};
-        }
-    }, [dispatch]);
+    }, [purchaseOrderNumber, orderDetails, dispatch]);
 
     useEffect(() => {
         setMenuItems()
@@ -71,7 +61,10 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
         };
       }, [dispatch]);
 
-    const loadPurchaseOrder = async (purchaseOrderNum: number, upc: string, closeOrderList: boolean = false) => {
+    const loadPurchaseOrder = async ( upc: string, purchaseOrderNum?: number | undefined, closeOrderList: boolean = false) => {
+        if(purchaseOrderNum === undefined){
+            purchaseOrderNum = parseInt(purchaseOrderNumber);
+        }
         //int32 max...
         if(purchaseOrderNum > 2147483647) {
             toast.error(`The PO # value is too large. Please enter a smaller value`, { autoClose: false });
@@ -80,8 +73,6 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
         
         try {
             dispatch({ type: types.SETISLOADING, isLoading: true });
-            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: upc });
-            dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: purchaseOrderNum });
             dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
             setMenuItems();
 
@@ -166,6 +157,17 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
             dispatch({ type: types.SETISLOADING, isLoading: false });
         }
     };
+
+    useEffect(() => {
+        BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
+            loadPurchaseOrder(data.Data);
+          });
+
+        return () => {
+            BarcodeScanner.scanHandler = () => {};
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if(listedOrders.length > 0 && !selectedPo) {
         return (<ReceivePurchaseOrderList upc={purchaseOrderUpc} orders={listedOrders} poSelected={loadPurchaseOrder}/>)

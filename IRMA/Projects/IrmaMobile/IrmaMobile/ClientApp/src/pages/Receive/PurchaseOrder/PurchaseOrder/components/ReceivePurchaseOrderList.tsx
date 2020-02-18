@@ -7,13 +7,14 @@ import dateFormat from 'dateformat'
 interface IProps {
     orders: ListedOrder[];
     upc: string;
-    poSelected: (poNum: number, upc: string, closeOrderList: boolean) => any;
+    poSelected: ( upc: string, poNum: number, closeOrderList: boolean) => any;
 }
 
 const ReceivePurchaseOrderList: React.FC<IProps> = ({ orders, upc, poSelected }) => {
-
+    console.log('orders', orders);
     const purchaseOrderClicked = (e: any) => {
-        poSelected(e.currentTarget.innerText, upc, true);
+        console.log('purchase order clicked');
+        poSelected(upc, e.currentTarget.innerText,true);
     }
 
     return (

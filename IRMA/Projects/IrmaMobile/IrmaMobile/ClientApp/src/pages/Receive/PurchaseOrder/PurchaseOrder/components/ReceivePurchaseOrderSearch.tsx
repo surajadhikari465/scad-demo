@@ -3,7 +3,7 @@ import { Grid, Form, Button, Input } from "semantic-ui-react";
 import { AppContext, types } from "../../../../../store";
 
 interface IProps {
-    handleSubmit: (poNum: number, upc: string) => any;
+    handleSubmit: (upc: string) => any;
 }
 
 const ReceivePurchaseOrderSearch: React.FC<IProps> = ({ handleSubmit }) => {
@@ -13,10 +13,9 @@ const ReceivePurchaseOrderSearch: React.FC<IProps> = ({ handleSubmit }) => {
 
     const handleSubmitFromPoBox = (event: any) => {
         const e = event.nativeEvent;
-        const purchaseOrderNum = e.target[0].value;
         const upc = e.target[1].value;
 
-        handleSubmit(purchaseOrderNum, upc);
+        handleSubmit(upc);
     };
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
