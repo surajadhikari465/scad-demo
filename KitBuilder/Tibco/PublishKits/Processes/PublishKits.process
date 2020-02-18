@@ -265,6 +265,11 @@ WHERE KitLocaleId = ?
                             <ns7:consumerInformation>
                                 <ns82:stockItemConsumerProductLabel>
                                     <xsl:if test="$Get-Kit-Caloric-Info/JSON/minimumCalories">
+                                        <ns9:caloriesCount>
+                                            <xsl:value-of select="$Get-Kit-Caloric-Info/JSON/minimumCalories"/>
+                                        </ns9:caloriesCount>
+                                    </xsl:if>
+                                    <xsl:if test="$Get-Kit-Caloric-Info/JSON/minimumCalories">
                                         <ns9:minCalories>
                                             <xsl:value-of select="$Get-Kit-Caloric-Info/JSON/minimumCalories"/>
                                         </ns9:minCalories>
@@ -278,11 +283,13 @@ WHERE KitLocaleId = ?
                             </ns7:consumerInformation>
                         </pfx6:base>
                         <pfx6:locale>
+                            <xsl:variable name="var2" select="$CurrentStoreId/pfx5:StoreId"/>
                             <ns72:id>
-                                <xsl:value-of select="$GroupEvents/pfx5:Events/pfx5:EventType[pfx5:StoreId=$CurrentStoreId/pfx5:StoreId]/pfx5:StoreBusinessUnitId"/>
+                                <xsl:value-of select="$GroupEvents/pfx5:Events/pfx5:EventType[pfx5:StoreId=$var2]/pfx5:StoreBusinessUnitId"/>
                             </ns72:id>
+                            <xsl:variable name="var3" select="$CurrentStoreId/pfx5:StoreId"/>
                             <ns72:name>
-                                <xsl:value-of select="$GroupEvents/pfx5:Events/pfx5:EventType[pfx5:StoreId=$CurrentStoreId/pfx5:StoreId]/pfx5:StoreName"/>
+                                <xsl:value-of select="$GroupEvents/pfx5:Events/pfx5:EventType[pfx5:StoreId=$var3]/pfx5:StoreName"/>
                             </ns72:name>
                             <ns72:type>
                                 <ns10:code>
@@ -310,8 +317,9 @@ WHERE KitLocaleId = ?
                                         </xsl:attribute>
                                         <xsl:for-each select="$Get-Kit-Caloric-Info/JSON/kitLinkGroupLocale[exclude=&quot;false&quot;]">
                                             <ns92:group>
+                                                <xsl:variable name="var4" select="$CurrentStoreId/pfx5:StoreId"/>
                                                 <ns92:id>
-                                                    <xsl:value-of select="concat(&quot;KBG_&quot;,kitLinkGroupLocaleId,&quot;_&quot;,$GroupEvents/pfx5:Events/pfx5:EventType[pfx5:StoreId=$CurrentStoreId/pfx5:StoreId]/pfx5:StoreBusinessUnitId )"/>
+                                                    <xsl:value-of select="concat(&quot;KBG_&quot;,kitLinkGroupLocaleId,&quot;_&quot;,$GroupEvents/pfx5:Events/pfx5:EventType[pfx5:StoreId=$var4]/pfx5:StoreBusinessUnitId )"/>
                                                 </ns92:id>
                                                 <xsl:if test="kitLinkGroup/linkGroup/groupDescription">
                                                     <ns92:description>
@@ -410,6 +418,49 @@ WHERE KitLocaleId = ?
                                                                         </ns14:amount>
                                                                     </xsl:if>
                                                                 </ns92:extraPrice>
+                                                                <ns92:item>
+                                                                    <pfx6:id>
+                                                                        <xsl:value-of select="itemId"/>
+                                                                    </pfx6:id>
+                                                                    <pfx6:base>
+                                                                        <ns7:type>
+                                                                            <ns8:code>
+                                                                                <xsl:value-of select="&quot;RTL&quot;"/>
+                                                                            </ns8:code>
+                                                                        </ns7:type>
+                                                                        <ns7:consumerInformation>
+                                                                            <ns82:stockItemConsumerProductLabel>
+                                                                                <xsl:if test="calories">
+                                                                                    <ns9:caloriesCount>
+                                                                                        <xsl:value-of select="calories"/>
+                                                                                    </ns9:caloriesCount>
+                                                                                </xsl:if>
+                                                                            </ns82:stockItemConsumerProductLabel>
+                                                                        </ns7:consumerInformation>
+                                                                    </pfx6:base>
+                                                                    <pfx6:locale>
+                                                                        <ns72:id>
+                                                                            <xsl:value-of select="$CurrentStoreId/pfx5:StoreId"/>
+                                                                        </ns72:id>
+                                                                        <xsl:variable name="var5" select="$CurrentStoreId/pfx5:StoreId"/>
+                                                                        <ns72:name>
+                                                                            <xsl:value-of select="$GroupEvents/pfx5:Events/pfx5:EventType[pfx5:StoreId=$var5]/pfx5:StoreName"/>
+                                                                        </ns72:name>
+                                                                        <ns72:type>
+                                                                            <ns10:code>
+                                                                                <xsl:value-of select="&quot;STR&quot;"/>
+                                                                            </ns10:code>
+                                                                            <ns10:description>
+                                                                                <xsl:value-of select="&quot;Store&quot;"/>
+                                                                            </ns10:description>
+                                                                        </ns72:type>
+                                                                        <ns72:storeItemAttributes>
+                                                                            <ns83:calorieDisplayMode>
+                                                                                <xsl:value-of select="&quot;Single&quot;"/>
+                                                                            </ns83:calorieDisplayMode>
+                                                                        </ns72:storeItemAttributes>
+                                                                    </pfx6:locale>
+                                                                </ns92:item>
                                                             </ns92:group>
                                                         </xsl:for-each>
                                                     </ns92:groups>
