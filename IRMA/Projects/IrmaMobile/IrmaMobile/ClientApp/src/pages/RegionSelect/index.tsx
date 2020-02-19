@@ -42,6 +42,9 @@ const RegionSelect:React.FC<RegionProps> = (props) => {
         var stores: any = await agent.RegionSelect.getStores(region);
         var shrinkSubTypes: any = await agent.RegionSelect.getShrinkSubtypes(region);
         if(!stores) {
+          dispatch({ type: types.SETREGION, region:''});
+          dispatch({ type: types.SETSTORE, store:''});
+          dispatch({ type: types.SETSTORES, store:[]});
           toast.error("Store could not be loaded. Try again.", { autoClose: false });
           return;
         }
@@ -57,7 +60,9 @@ const RegionSelect:React.FC<RegionProps> = (props) => {
         }
       }
       finally {
-        history.push('/store');
+        if(stores){
+          history.push('/store');
+        }
         setIsLoading(false);
       }
     }
