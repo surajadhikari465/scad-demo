@@ -12,7 +12,7 @@ interface IProps {
 const ReceivingListLineItem: React.FC<IProps> = ({ orderItem }) => {
     // @ts-ignore
     const { state } = useContext(AppContext);
-    const { mappedReasonCodes, region } = state;
+    const { mappedReasonCodes, region, user } = state;
 
     const [code, setCode] = useState<number>(parseInt(orderItem.Code));
 
@@ -30,7 +30,7 @@ const ReceivingListLineItem: React.FC<IProps> = ({ orderItem }) => {
                 orderItem.OrderItemId,
                 parseInt(orderItem.Code),
                 0,
-                Config.userId
+                user!.userId
             );
         }
     }

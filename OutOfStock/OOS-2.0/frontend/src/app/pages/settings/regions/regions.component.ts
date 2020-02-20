@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AppService } from 'src/app/services/app-service.service';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-regions',
@@ -21,5 +21,4 @@ export class RegionsComponent {
     this.appService.saveItem('wfmRegion', selectedRegion);
     this.router.navigateByUrl('/settings/stores');
   }
-
 }

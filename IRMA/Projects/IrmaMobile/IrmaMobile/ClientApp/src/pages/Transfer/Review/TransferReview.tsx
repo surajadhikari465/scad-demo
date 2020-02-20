@@ -19,7 +19,7 @@ import { WfmButton } from "@wfm/ui-react";
 const TransferReview: React.FC = () => {
   //@ts-ignore
   const { state, dispatch } = useContext(AppContext);
-  const { region } = state;
+  const { region, user } = state;
   const [transferData, setTransferData] = useState<ITransferData>(JSON.parse(localStorage.getItem("transferData")!));
   const [selectedTransferItem, setSelectedTransferItem] = useState<ITransferItem>();
   const [data, setData] = useState<ITransferItem[]>(transferData.Items);
@@ -93,7 +93,7 @@ const TransferReview: React.FC = () => {
   const handleSendClick = async () => {
     setIsLoading(true);
     let transferOrder = {
-      CreatedBy: 2,
+      CreatedBy: user!.userId,
       ProductTypeId: transferData.ProductType,
       OrderTypeId: 3,
       VendorId: transferData.FromStoreVendorId,
@@ -123,9 +123,10 @@ const TransferReview: React.FC = () => {
     }
 
     try {
-      setIsLoading(false);
       let result = await agent.Transfer.createTransferOrder(region, transferOrder);
-      let po = result.irmaPoNumber;
+      setIsLoading(false);
+      
+      let po = result.irmaPoNumber;      
       toast.success(`PO# ${po} created successfully.`, { autoClose: false });
       localStorage.removeItem('transferData');
       history.push('/transfer/index/false');

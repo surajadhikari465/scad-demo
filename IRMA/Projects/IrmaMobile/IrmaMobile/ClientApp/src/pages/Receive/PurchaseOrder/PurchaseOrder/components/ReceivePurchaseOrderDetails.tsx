@@ -25,7 +25,7 @@ import { Textfit } from 'react-textfit';
 const ReceivePurchaseOrderDetails: React.FC = () => {
     // @ts-ignore
     const { state, dispatch } = useContext(AppContext);
-    const { orderDetails, region, mappedReasonCodes, purchaseOrderUpc } = state;
+    const { orderDetails, region, mappedReasonCodes, purchaseOrderUpc, user } = state;
     const [receivingOrder, setReceivingOrder] = useState<boolean>(false);
     const [showQtyModal, setShowQtyModal] = useState<boolean>(false);
     const [showHighQtyModal, setShowHighQtyModal] = useState<boolean>(false);
@@ -57,12 +57,12 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.currentTarget;
 
-        if(value === "" && purchaseOrderUpc !== "") {
+        if (value === "" && purchaseOrderUpc !== "") {
             dispatch({
                 type: types.SETORDERDETAILS,
                 orderDetails: { ...orderDetails, [name]: 0 }
             });
-        } else if(!isNaN(parseInt(value))) {
+        } else if (!isNaN(parseInt(value))) {
             dispatch({
                 type: types.SETORDERDETAILS,
                 orderDetails: { ...orderDetails, [name]: parseInt(value) }
@@ -99,19 +99,19 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 return;
             }
 
-            if(orderDetails.Quantity === 0) {
+            if (orderDetails.Quantity === 0) {
                 toast.error("Please enter a quantity of at least 1.", { autoClose: false });
                 return;
             }
 
-            if(!overrideHighQty.current && orderDetails.QtyReceived !== 0 && quantityMode.current === QuantityAddMode.None) {
+            if (!overrideHighQty.current && orderDetails.QtyReceived !== 0 && quantityMode.current === QuantityAddMode.None) {
                 setShowQtyModal(true);
                 return;
             }
 
             const quantity: number = quantityMode.current === QuantityAddMode.AddTo ? orderDetails.Quantity + orderDetails.QtyReceived : orderDetails.Quantity;
 
-            if(!overrideHighQty.current && quantity > orderDetails.QtyOrdered) {
+            if (!overrideHighQty.current && quantity > orderDetails.QtyOrdered) {
                 setShowHighQtyModal(true);
                 return;
             }
@@ -127,11 +127,11 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                     orderDetails.OrderItemId,
                     orderDetails.Code,
                     0,
-                    Config.userId
+                    user!.userId
                 );
 
                 if (result && result.status) {
-                    if(quantityMode.current === QuantityAddMode.AddTo) {
+                    if (quantityMode.current === QuantityAddMode.AddTo) {
                         toast.success("Quantity Added");
                     } else if (quantityMode.current === QuantityAddMode.Overwrite) {
                         toast.success("Quantity Overwritten");
@@ -140,7 +140,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                     }
 
                     orderDetails.OrderItems.filter((oi: OrderItem) => oi.OrderItemId === orderDetails.OrderItemId)[0].QtyReceived = quantity;
-                    dispatch({type: types.SETORDERDETAILS, orderDetails: {...orderDetails, QtyReceived: quantity, OrderItems: orderDetails.OrderItems}});
+                    dispatch({ type: types.SETORDERDETAILS, orderDetails: { ...orderDetails, QtyReceived: quantity, OrderItems: orderDetails.OrderItems } });
                 }
             }
             finally {
@@ -195,7 +195,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
         setShowQtyModal(false);
         quantityMode.current = decision;
 
-        if(decision === QuantityAddMode.None) {
+        if (decision === QuantityAddMode.None) {
             toast.info("Quantity not saved");
             dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
             dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
@@ -210,12 +210,12 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
     }
 
     if (orderDetails) {
-        return ( 
+        return (
             <Fragment>
-                <ConfirmModal handleConfirmClose={handleHighQtyConfirmClick} setOpenExternal={setShowHighQtyModal} showTriggerButton={false} 
-                                    openExternal={showHighQtyModal} headerText='Verify Quantity' cancelButtonText='No' confirmButtonText='Yes' 
-                                    lineOne={`Quantity Received (${quantityMode.current === QuantityAddMode.AddTo ? orderDetails.Quantity + orderDetails.QtyReceived : orderDetails.Quantity}) is greater than Quantity Ordered (${orderDetails.QtyOrdered}). Continue?`} /> 
-                <ReceivePurchaseOrderDetailsQtyModal handleQuantityDecision={handleQuantityDecision} open={showQtyModal}/>
+                <ConfirmModal handleConfirmClose={handleHighQtyConfirmClick} setOpenExternal={setShowHighQtyModal} showTriggerButton={false}
+                    openExternal={showHighQtyModal} headerText='Verify Quantity' cancelButtonText='No' confirmButtonText='Yes'
+                    lineOne={`Quantity Received (${quantityMode.current === QuantityAddMode.AddTo ? orderDetails.Quantity + orderDetails.QtyReceived : orderDetails.Quantity}) is greater than Quantity Ordered (${orderDetails.QtyOrdered}). Continue?`} />
+                <ReceivePurchaseOrderDetailsQtyModal handleQuantityDecision={handleQuantityDecision} open={showQtyModal} />
                 <ReasonCodeModal />
                 <Segment
                     disabled={!orderDetails.ItemLoaded}
@@ -234,19 +234,19 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                     style={{ height: "15%", marginBottom: "0px" }}
                 >
                     <Grid.Row>
-                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} width={6} textAlign="right">
+                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} width={6} textAlign="right">
                             Package:
                         </Grid.Column>
-                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} textAlign="left">
+                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} textAlign="left">
                             {orderDetails.PkgWeight} {orderDetails.ItemLoaded ? "/ " : ""}
                             {orderDetails.PkgQuantity} {orderDetails.Uom}
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} width={6} textAlign="right">
+                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} width={6} textAlign="right">
                             Subteam:
                         </Grid.Column>
-                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} textAlign="left">
+                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} textAlign="left">
                             {orderDetails.Subteam
                                 ? orderDetails.IsReturnOrder
                                     ? "(C)"
@@ -256,18 +256,18 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} width={6} textAlign="right">
+                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} width={6} textAlign="right">
                             Vendor:
                         </Grid.Column>
-                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} textAlign="left">
+                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} textAlign="left">
                             {orderDetails.Vendor}
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} width={6} textAlign="right">
+                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} width={6} textAlign="right">
                             Order UOM:
                         </Grid.Column>
-                        <Grid.Column style={{paddingTop: '5px', paddingBottom: '5px'}} textAlign="left">
+                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} textAlign="left">
                             {orderDetails.OrderUom}
                         </Grid.Column>
                     </Grid.Row>
@@ -278,14 +278,14 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                         <Grid columns={2} celled>
                             <Grid.Row>
                                 <Grid.Column
-                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
+                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
                                     verticalAlign="middle"
                                     width={8}
                                     textAlign="right"
                                 >
                                     Quantity:
                                 </Grid.Column>
-                                <Grid.Column textAlign="left" style={{paddingTop: '5px', paddingBottom: '5px'}}>
+                                <Grid.Column textAlign="left" style={{ paddingTop: '5px', paddingBottom: '5px' }}>
                                     <Input
                                         type="number"
                                         name="Quantity"
@@ -306,11 +306,11 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                     verticalAlign="middle"
                                     width={8}
                                     textAlign="right"
-                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
+                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
                                 >
                                     Weight:
                                 </Grid.Column>
-                                <Grid.Column textAlign="left" style={{paddingTop: '5px', paddingBottom: '5px'}}>
+                                <Grid.Column textAlign="left" style={{ paddingTop: '5px', paddingBottom: '5px' }}>
                                     <Input
                                         type="number"
                                         name="Weight"
@@ -331,7 +331,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                     width={8}
                                     textAlign="right"
                                     verticalAlign="middle"
-                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
+                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
                                 >
                                     <button
                                         type="button"
@@ -341,9 +341,9 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                         Code:
                                     </button>
                                 </Grid.Column>
-                                <Grid.Column textAlign="left" style={{padding: '5px'}}>
+                                <Grid.Column textAlign="left" style={{ padding: '5px' }}>
                                     <Dropdown
-                                        style={{paddingRight: '0px', paddingLeft: '0px', verticalAlign: 'middle'}}
+                                        style={{ paddingRight: '0px', paddingLeft: '0px', verticalAlign: 'middle' }}
                                         fluid
                                         selection
                                         item
@@ -364,14 +364,14 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                     verticalAlign="middle"
                                     width={8}
                                     textAlign="right"
-                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
+                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
                                 >
                                     Ordered:
                                 </Grid.Column>
                                 <Grid.Column
                                     verticalAlign="middle"
                                     textAlign="left"
-                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
+                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
                                 >
                                     {orderDetails.QtyOrdered}
                                 </Grid.Column>
@@ -381,7 +381,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                     verticalAlign="middle"
                                     width={8}
                                     textAlign="right"
-                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
+                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
                                 >
                                     <div style={{ color: "red" }}>
                                         Received:
@@ -390,7 +390,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                 <Grid.Column
                                     verticalAlign="middle"
                                     textAlign="left"
-                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
+                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
                                 >
                                     <div style={{ color: "red" }}>
                                         {orderDetails.QtyReceived}
@@ -402,14 +402,14 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                     verticalAlign="middle"
                                     width={8}
                                     textAlign="right"
-                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
+                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
                                 >
                                     Qty:
                                 </Grid.Column>
                                 <Grid.Column
                                     verticalAlign="middle"
                                     textAlign="left"
-                                    style={{paddingTop: '5px', paddingBottom: '5px'}}
+                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
                                 >
                                     {orderDetails.EInvQty}
                                 </Grid.Column>
@@ -419,7 +419,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 </Grid>
 
                 <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Button style={{backgroundColor: 'transparent'}} disabled={receivingOrder || !orderDetails.ItemLoaded} loading={receivingOrder} as={WfmButton} onClick={receiveOrder}>
+                    <Button style={{ backgroundColor: 'transparent' }} disabled={receivingOrder || !orderDetails.ItemLoaded} loading={receivingOrder} as={WfmButton} onClick={receiveOrder}>
                         Receive
                     </Button>
                 </span>

@@ -20,7 +20,7 @@ interface IProps extends RouteComponentProps<RouteParams> { }
 const TransferHome: React.FC<IProps> = ({ match }) => {
     //@ts-ignore
     const { state, dispatch } = useContext(AppContext);
-    const { subteams, stores, region, subteamNo, storeNumber, transferToStores } = state;
+    const { subteams, stores, region, subteamNo, storeNumber, transferToStores, user } = state;
     const { comingFromScan } = match.params;
 
     const [subteamsMapped, setSubteamsMapped] = useState<any>([]);
@@ -66,13 +66,18 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
             setIsLoading(true);
             try {
                 const storesWithVendorIds = await agent.RegionSelect.getStores(region, true);
-                dispatch({ type: types.SETTRANSFERTOSTORES, transferToStores: storesWithVendorIds });
+                if(user!.telxonStoreLimit === -1 || user!.isSuperUser || user!.isCoordinator) {
+                    dispatch({ type: types.SETTRANSFERTOSTORES, transferToStores: storesWithVendorIds });
+                } else {
+                    const storeName = stores.find(s => s.storeNo === storeNumber)?.name;
+                    dispatch({ type: types.SETTRANSFERTOSTORES, transferToStores: storesWithVendorIds.filter(s => s.name === storeName) });
+                }
                 const storeName = stores.find(s => s.storeNo === storeNumber)?.name;
                 setToStore(parseFloat(storesWithVendorIds!.find(s => s.name === storeName)!.storeNo));
             } catch (error) {
                 toast.error(error);
                 console.error(error);
-            } finally{
+            } finally {
                 setIsLoading(false);
             }
         }
@@ -203,7 +208,7 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
             ToSubteamNo: toSubteam,
             ToSubteamName: subteamsMapped.filter((subteam: any) => subteam.key === toSubteam)[0].text.trim(),
 
-            CreatedBy: Config.userId,
+            CreatedBy: user!.userId,
             ExpectedDate: new Date(expectedDate),
 
             SelectedSupplySubteam: 0,

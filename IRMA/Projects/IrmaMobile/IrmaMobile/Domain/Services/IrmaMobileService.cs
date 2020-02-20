@@ -67,11 +67,10 @@ namespace IrmaMobile.Services
             return shrinkSubTypes;
         }
 
-        public async Task<StoreItemModel> GetStoreItemAsync(string region, int storeNo, int subteamNo, int? userId, string scanCode)
+        public async Task<StoreItemModel> GetStoreItemAsync(string region, int storeNo, int subteamNo, int userId, string scanCode)
         {
-            //TODO: update userId to not be hardcoded to 1 when we implement authentication
             // Send 0 for the ItemKey because it is ignored by the Legacy service
-            var serviceStoreItem = await MakeServiceRequest(region, client => client.GetStoreItemAsync(storeNo, subteamNo, 1, 0, scanCode));
+            var serviceStoreItem = await MakeServiceRequest(region, client => client.GetStoreItemAsync(storeNo, subteamNo, userId, 0, scanCode));
             return new StoreItemModel
             {
                 AverageCost = serviceStoreItem.AvgCost,
@@ -204,14 +203,14 @@ namespace IrmaMobile.Services
                 {
                     AdjustmentID = shrinkAdjustmentModel.AdjustmentId,
                     AdjustmentReason = shrinkAdjustmentModel.AdjustmentReason,
-                    CreatedByUserID = 1, //TODO: set this to an actual value when we implement authentication. shrinkAdjustmentModel.CreatedByUserId,
+                    CreatedByUserID = shrinkAdjustmentModel.CreatedByUserId,
                     InventoryAdjustmentCodeAbbreviation = shrinkAdjustmentModel.InventoryAdjustmentCodeAbbreviation,
                     ItemKey = shrinkAdjustmentModel.ItemKey,
                     Quantity = shrinkAdjustmentModel.Quantity,
                     ShrinkSubTypeId = shrinkAdjustmentModel.ShrinkSubTypeId,
                     StoreNo = shrinkAdjustmentModel.StoreNo,
                     SubteamNo = shrinkAdjustmentModel.SubteamNo,
-                    UserName = "",//TODO: set this to an actual value when we implement authentication. shrinkAdjustmentModel.UserName,
+                    UserName = shrinkAdjustmentModel.UserName,
                     Weight = shrinkAdjustmentModel.Weight
                 }));
         }
@@ -305,7 +304,35 @@ namespace IrmaMobile.Services
                     ReasonCodeDetailID = oi.ReasonCodeDetailId
                 }).ToList()
             }));
+
             return new CreateTransferOrderResult { IrmaPoNumber = result.IRMA_PONumber };
+        }
+
+        public async Task<UserModel> GetUser(string region, string userName)
+        {
+            var result = await MakeServiceRequest(region, client => client.GetUserRoleAsync(userName));
+            
+            if(result.Any())
+            {
+                var user = result.First();
+
+                return new UserModel
+                {
+                    IsAccountEnabled = user.IsAccountEnabled,
+                    IsBuyer = user.IsBuyer,
+                    IsCoordinator = user.IsCoordinator,
+                    IsDistributor = user.IsDistributor,
+                    IsShrink = user.IsShrink,
+                    IsSuperUser = user.IsSuperUser,
+                    TelxonStoreLimit = user.TelxonStoreLimit,
+                    UserId = user.UserID,
+                    UserName = userName
+                };
+            }
+            else
+            {
+                return null;
+            }
         }
 
         // Following best practices for handling WCF ServiceClient lifecycle as documented here:

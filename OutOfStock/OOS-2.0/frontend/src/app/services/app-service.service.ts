@@ -24,10 +24,14 @@ export class AppService {
       throw new Error('submitListItems requires scan items');
     }
 
+    const user = JSON.parse(localStorage.getItem('user'));
+
     return this.http.post(url, {
       regionCode: wfmRegionId,
       storeName: wfmStoreName,
-      items: wfmScanItems
+      items: wfmScanItems,
+      userName: user.samaccountname,
+      userEmail: user.email
     });
   }
 

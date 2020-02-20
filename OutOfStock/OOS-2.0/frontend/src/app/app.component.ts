@@ -3,6 +3,8 @@ import { AppService } from './services/app-service.service';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { LifecycleManager, AuthHandler } from '@wfm/mobile';
+import decode from 'jwt-decode';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +16,16 @@ export class AppComponent implements OnInit {
   constructor(private appService: AppService, private router: Router) {}
 
   ngOnInit() {
+    LifecycleManager.onReady(function () {
+      try {
+        AuthHandler.onTokenReceived(function (token: string) {
+          let decodedToken = decode(token);
+          this.appService.saveItem('user', decodedToken);
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    });
 
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)

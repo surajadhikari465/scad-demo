@@ -2,11 +2,11 @@ import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import Config from "../config";
 import ITransferOrder from '../pages/Transfer/types/ITransferOrder'
-import { IStore } from "../store";
+import { IStore, IUser } from "../store";
 
 axios.defaults.baseURL = Config.baseUrl;
 
-axios.interceptors.response.use(undefined, error => {
+axios.interceptors.response.use(undefined, (error: { message: string; stack: string; }) => {
     toast.error(`Error: ${error.message}`);
 
     return Promise.reject(error.message + "\n" + error.stack);
@@ -154,20 +154,24 @@ const Transfer = {
 }
 
 const Shrink = {
-    submitShrinkItems: async(region: string, itemKey: any, storeNo: any, subteamNo: any, shrinkSubTypeId: any, adjustmentId: any, adjustmentReason: any, createdByUserId: any, userName: any, inventoryAdjustmentCodeAbbreviation:any, quantity:any, weight: any) =>
+    submitShrinkItems: async (region: string, itemKey: any, storeNo: any, subteamNo: any, shrinkSubTypeId: any, adjustmentId: any, adjustmentReason: any, createdByUserId: any, userName: any, inventoryAdjustmentCodeAbbreviation: any, quantity: any, weight: any) =>
         await requests.post(`/${region}/shrinkadjustments`, {
-                itemKey,
-                storeNo,
-                subteamNo,
-                shrinkSubTypeId,
-                adjustmentId,
-                adjustmentReason,
-                createdByUserId,
-                userName,
-                inventoryAdjustmentCodeAbbreviation,
-                quantity,
-                weight
+            itemKey,
+            storeNo,
+            subteamNo,
+            shrinkSubTypeId,
+            adjustmentId,
+            adjustmentReason,
+            createdByUserId,
+            userName,
+            inventoryAdjustmentCodeAbbreviation,
+            quantity,
+            weight
         })
 };
 
-export default { RegionSelect, PurchaseOrder, InvoiceData, Shrink, ReceivingList, Document, Transfer };
+const User = {
+    getUser: async (region: string, userName: string) => await requests.get(`/${region}/users?userName=${userName}`) as IUser | null
+}
+
+export default { RegionSelect, PurchaseOrder, InvoiceData, Shrink, ReceivingList, Document, Transfer, User };

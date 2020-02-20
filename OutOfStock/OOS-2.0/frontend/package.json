@@ -22,6 +22,7 @@
     "@ionic/angular": "^4.11.10",
     "@wfm/mobile": "^0.1.29",
     "@wfm/ui-angular": "^0.1.9",
+    "jwt-decode": "^2.2.0",
     "lodash": "^4.17.15",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",

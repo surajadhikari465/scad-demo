@@ -13,5 +13,11 @@ namespace WFM.OutOfStock.API.Domain.Request
 
         [Required, ListItems]
         public string[] Items { get; set; }
+
+        [Required]
+        public string UserName { get; set; }
+
+        [Required]
+        public string UserEmail { get; set; }
     }
 }

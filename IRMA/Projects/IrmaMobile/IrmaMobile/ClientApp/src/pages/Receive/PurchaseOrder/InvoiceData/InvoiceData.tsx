@@ -32,7 +32,7 @@ interface Currency {
 const InvoiceData: React.FC<IProps> = ({ match }) => {
     //@ts-ignore
     const { state, dispatch } = useContext(AppContext);
-    const { orderDetails, region } = state;
+    const { orderDetails, region, user } = state;
     let history = useHistory();
 
     enum radioOptions {
@@ -272,7 +272,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                 return;
             }
 
-            var result = await agent.InvoiceData.closeOrder(region, parseInt(purchaseOrderNumber), Config.userId)
+            var result = await agent.InvoiceData.closeOrder(region, parseInt(purchaseOrderNumber), user!.userId)
 
             if(result && result.status) {
                 toast.info('Order Closed', { autoClose: false });
@@ -367,7 +367,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
     }
 
     const handleConfirmRefuse = async () => {
-        const result = await agent.InvoiceData.refuseOrder(region, parseInt(purchaseOrderNumber), Config.userId, refuseCodeId)
+        const result = await agent.InvoiceData.refuseOrder(region, parseInt(purchaseOrderNumber), user!.userId, refuseCodeId)
 
         if(result.status) {
             toast.info('Order Refused')

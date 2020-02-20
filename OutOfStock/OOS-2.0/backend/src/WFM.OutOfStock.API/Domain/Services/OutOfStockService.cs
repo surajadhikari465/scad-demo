@@ -36,8 +36,8 @@ namespace WFM.OutOfStock.API.Services
             string regionAbbrev = list.RegionCode;
             string storeAbbrev = list.StoreName;
             string[] upcs = list.Items;
-            string userName = Constants.UserName;
-            string userEmail = Constants.UserEmail;
+            string userName = list.UserName;
+            string userEmail = list.UserEmail;
             string sessionId = Guid.NewGuid().ToString();
 
             await MakeServiceRequest(client => client.ScanProductsByStoreAbbreviationAsync(scanDate, regionAbbrev, storeAbbrev, upcs, userName, userEmail, sessionId));

@@ -37,6 +37,7 @@ interface IIntitialState {
     transferLineItem: ITransferItem | null;
     showCog: boolean;
     transferToStores: IStore[] | null;
+    user: IUser | null;
 }
 
 export interface IMenuItem {
@@ -58,6 +59,9 @@ export interface ISubteamSession {
 export interface ITeam {
     subteamNo: string;
     subteamName: string;
+    subteamTypeId: number;
+    isFixedSpoilage: boolean;
+    isUnrestricted: boolean;
 }
 
 export interface ISelectedShrink {
@@ -91,13 +95,25 @@ export interface IMappedReasonCode {
     value: string;
 }
 
+export interface IUser {
+    userId: number,
+    userName: string,
+    isAccountEnabled: boolean,
+    isCoordinator: boolean,
+    isSuperUser: boolean,
+    isShrink: boolean,
+    isBuyer: boolean,
+    isDistributor: boolean,
+    telxonStoreLimit: number
+}
+
 export const initialState = {
     region: "",
     stores: [],
     store: "",
     storeNumber: "",
     subteams: [],
-    subteam: { subteamName: '', subteamNo: '' },
+    subteam: { subteamName: '', subteamNo: '', isFixedSpoilage: false, isUnrestricted: false, subteamTypeId: 0 },
     subteamSession: { isPrevSession: false, sessionShrinkType: '', sessionSubteam: '', forceSubteamSelection: true },
     subteamNo: '',
     shrinkType: { shrinkType: '', abbreviation: '', shrinkSubTypeMember: '', shrinkSubTypeId: null, inventoryAdjustmentCodeId: null, reasonCode: null },
@@ -119,7 +135,8 @@ export const initialState = {
     transferData: null,
     transferLineItem: null,
     showCog: false,
-    transferToStores: null
+    transferToStores: null,
+    user: null
 } as IIntitialState;
 
 export const types = {
@@ -150,7 +167,8 @@ export const types = {
     SETTRANSFERDATA: "SETTRANSFERDATA",
     SETTRANSFERLINEITEM: "SETTRANSFERLINEITEM",
     TOGGLECOG: "TOGGLECOG",
-    SETTRANSFERTOSTORES: "SETTRANSFERTOSTORES"
+    SETTRANSFERTOSTORES: "SETTRANSFERTOSTORES",
+    SETUSER: "SETUSER"
 };
 
 export const AppContext = React.createContext({ state: initialState });
@@ -237,6 +255,9 @@ export const reducer = (state: any, action: any) => {
         }
         case types.SETTRANSFERLINEITEM: {
             return { ...state, transferLineItem: action.transferLineItem };
+        }
+        case types.SETUSER: {
+            return { ...state, user: action.user };
         }
         default:
             return state;

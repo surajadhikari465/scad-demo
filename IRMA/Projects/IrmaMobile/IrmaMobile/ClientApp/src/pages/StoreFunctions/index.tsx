@@ -3,7 +3,7 @@ import './styles.scss';
 import { Modal } from 'semantic-ui-react';
 import BasicModal from '../../layout/BasicModal';
 import CurrentLocation from "../../layout/CurrentLocation";
-import { AppContext, types, IMenuItem } from "../../store";
+import { AppContext, types, IMenuItem, IUser, ITeam } from "../../store";
 
 interface StoreFunctionsProps {
   history: any;
@@ -15,7 +15,7 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
   const [isSelected, setSelected] = useState(false);
   const [alertIsOpen, setAlertOpen] = useState(false);
   const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { } });
-  const { subteams } = state;
+  const { subteams, user } = state;
   const { history } = props;
 
   useEffect(() => {
@@ -23,10 +23,10 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
       { id: 1, order: 0, text: "Change Store", path: "/", disabled: false } as IMenuItem
     ] as IMenuItem[];
 
-      dispatch({ type: types.TOGGLECOG, showCog: true }); 
-      dispatch({ type: types.SETSETTINGSITEMS, settingsItems: settingsItems });
-      dispatch({ type: types.SETMENUITEMS, menuItems: []});
-      dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
+    dispatch({ type: types.TOGGLECOG, showCog: true });
+    dispatch({ type: types.SETSETTINGSITEMS, settingsItems: settingsItems });
+    dispatch({ type: types.SETMENUITEMS, menuItems: [] });
+    dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
 
     return () => {
       dispatch({ type: types.TOGGLECOG, showCog: false });
@@ -67,10 +67,17 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
   }
 
   const checkLocalStorage = () => {
+    let shrinkUser;
+    let shrinkSubteam;
+    if (localStorage.getItem('shrinkUser'))
+      shrinkUser = JSON.parse(localStorage.getItem('shrinkUser')!) as IUser;
+    if (localStorage.getItem('shrinkSubteam'))
+      shrinkSubteam = JSON.parse(localStorage.getItem('shrinkSubteam')!) as ITeam;
+
     setAlert({
       ...alert,
       open: true,
-      alertMessage: 'Would you like to reload your previous Session? Clicking No will delete the old session.',
+      alertMessage: `Would you like to reload your previous Session? (${shrinkUser?.userName} for ${shrinkSubteam?.subteamName}) Clicking No will delete the old session.`,
       type: 'confirm',
       header: 'Previous Session Exists',
       cancelAction: deleteWarning,
@@ -85,12 +92,13 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
     else {
       let shrinkItems = [];
       if (localStorage.getItem('shrinkItems')) {
-        // @ts-ignore
-        shrinkItems = JSON.parse(localStorage.getItem('shrinkItems'));
+        shrinkItems = JSON.parse(localStorage.getItem('shrinkItems')!);
       }
       if (shrinkItems.length > 0 && e.target.value === 'shrink') {
         checkLocalStorage();
-      } else history.push(`/${e.target.value}`);
+      } else {
+        history.push(`/${e.target.value}`);
+      }
     }
   }
 
@@ -102,49 +110,50 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
     }
   }
 
-    const toggleAlert = (e:any) =>{
-        setAlertOpen(!alertIsOpen);
-    }
-    const setSubteam = (value:any) =>{
-      setSelected(true);
-      dispatch({ type: types.SETSUBTEAM , subteam: JSON.parse(value) });  
-      dispatch({ type: types.SETSUBTEAMNO, subteamNo:JSON.parse(value).subteamNo });
-    }
-    return (
+  const toggleAlert = (e: any) => {
+    setAlertOpen(!alertIsOpen);
+  }
+  const setSubteam = (value: any) => {
+    setSelected(true);
+    dispatch({ type: types.SETSUBTEAM, subteam: JSON.parse(value) });
+    dispatch({ type: types.SETSUBTEAMNO, subteamNo: JSON.parse(value).subteamNo });
+  }
+
+  return (
     <Fragment>
-      <CurrentLocation/> 
+      <CurrentLocation />
       <div className="store-functions">
-        <div className="page-title-wrapper">   
+        <div className="page-title-wrapper">
           <div className="message-container">
             <p>Set your subteam, then select a function</p>
           </div>
         </div>
         <div className="subteam-select">
-          <select onChange={(e)=> setSubteam(e.target.value)} >
+          <select onChange={(e) => setSubteam(e.target.value)} >
             <option>--Select Subteam--</option>
             {subteams.map(team =>
-            // @ts-ignore 
+              // @ts-ignore 
               <option key={team.subteamNo} value={JSON.stringify(team)}>{team.subteamName}</option>
             )}
-            
+
           </select>
         </div>
         <div className="subteam-buttons">
-          <button className="wfm-btn" value="shrink" onClick={handleClick}>Shrink</button>
-          <button className="wfm-btn" value="transfer" onClick={handleTransferClick}>Transfer</button>
-          <button className="wfm-btn" value="receive" onClick={handleClick}>Receive</button>
+          <button className="wfm-btn" value="shrink" onClick={handleClick} hidden={!user!.isShrink} disabled={!user!.isShrink}>Shrink</button>
+          <button className="wfm-btn" value="transfer" onClick={handleTransferClick} hidden={!user!.isDistributor} disabled={!user!.isDistributor}>Transfer</button>
+          <button className="wfm-btn" value="receive/PurchaseOrder" onClick={handleClick} hidden={!user!.isBuyer} disabled={!user!.isBuyer}>Receive</button>
         </div>
         <Modal
-            open={alertIsOpen}
-            header='IRMA Mobile'
-            content='Please select a subteam'
-            actions={['OK']}
-            onActionClick={toggleAlert}
+          open={alertIsOpen}
+          header='IRMA Mobile'
+          content='Please select a subteam'
+          actions={['OK']}
+          onActionClick={toggleAlert}
 
-          />
-        <BasicModal alert={alert} setAlert={setAlert}/>  
+        />
+        <BasicModal alert={alert} setAlert={setAlert} />
       </div>
     </Fragment>)
-  }
+}
 
 export default StoreFunctions;

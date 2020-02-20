@@ -18,7 +18,7 @@ const ReceivingListClosePartial: React.FC<IProps> = ({ match }) => {
     //@ts-ignore
     const { state, dispatch } = useContext(AppContext);
     const { purchaseOrderNumber } = match.params;
-    const { region, orderDetails } = state;
+    const { region, orderDetails, user } = state;
     const [open, setOpen] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -42,7 +42,7 @@ const ReceivingListClosePartial: React.FC<IProps> = ({ match }) => {
                 return;
             }
 
-            var result = await agent.InvoiceData.closeOrder(region, parseInt(purchaseOrderNumber), Config.userId)
+            var result = await agent.InvoiceData.closeOrder(region, parseInt(purchaseOrderNumber), user!.userId)
 
             if(result && result.status) {
                 toast.info('Order Partially Closed', { autoClose: false });

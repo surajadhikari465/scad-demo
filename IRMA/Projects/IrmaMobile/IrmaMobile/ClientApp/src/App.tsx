@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import StoreFunctions from './pages/StoreFunctions';
 import RegionSelect from './pages/RegionSelect';
 import StoreSelect from './pages/StoreSelect';
@@ -11,8 +11,6 @@ import {
   Route,
 } from "react-router-dom";
 import { AppContext, reducer, initialState, usePersistedReducer } from "./store";
-import Receive from './pages/Receive/Index';
-import ReceiveDocument from './pages/Receive/Document/ReceiveDocument';
 import ReceivePurchaseOrder from './pages/Receive/PurchaseOrder/PurchaseOrder/ReceivePurchaseOrder';
 import { ToastContainer } from 'react-toastify';
 import MainMenu from './layout/MainMenu';
@@ -28,11 +26,29 @@ import TransferUpdate from './pages/Transfer/Update/TransferUpdate';
 import TransferIndexNewOrder from './pages/Transfer/Index/components/TransferIndexNewOrder';
 import TransferScanDeleteOrder from './pages/Transfer/Scan/components/TransferScanDeleteOrder';
 import TransferScanSaveOrder from './pages/Transfer/Scan/components/TransferScanSaveOrder';
+//@ts-ignore
+import { LifecycleManager, AuthHandler } from '@wfm/mobile';
+//@ts-ignore
+import decode from 'jwt-decode';
 
 
 const App: React.FC = () => {
   const [state, dispatch] = usePersistedReducer(reducer, initialState);
   const { menuItems, settingsItems, Title } = state;
+
+  useEffect(() => {
+    LifecycleManager.onReady(function () {
+      try {
+        AuthHandler.onTokenReceived(function (token: string) {
+          let decodedToken = decode(token);
+          localStorage.setItem('authToken', JSON.stringify(decodedToken));
+        });
+      } catch (err) { 
+        console.error(err); 
+      }
+    });
+  }, []);
+
   return (
     <Fragment>
       <ToastContainer position="bottom-right" />
@@ -53,8 +69,6 @@ const App: React.FC = () => {
               <Route exact path="/shrink" component={Shrink} />
               <Route exact path="/shrink/review" component={ReviewShrink} />
               <Route exact path="/shrink/update" component={UpdateShrink} />
-              <Route exact path="/receive" component={Receive} />
-              <Route exact path="/receive/Document" component={ReceiveDocument} />
               <Route exact path="/receive/PurchaseOrder/clearscreen" component={ReceivePurchaseOrderDetailsClearScreen} />
               <Route exact path="/receive/PurchaseOrder/:openOrderInformation?" component={ReceivePurchaseOrder} />
               <Route exact path="/receive/InvoiceData/:purchaseOrderNumber" component={InvoiceData} />

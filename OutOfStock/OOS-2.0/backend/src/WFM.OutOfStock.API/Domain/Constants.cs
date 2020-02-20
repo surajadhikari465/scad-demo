@@ -17,8 +17,5 @@
             "EU",
             "CE"
         };
-
-        public static string UserName => "TempUserName";
-        public static string UserEmail => "TempUserEmail";
     }
 }

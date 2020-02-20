@@ -10,7 +10,7 @@ namespace IrmaMobile.Services
         Task<List<StoreModel>> GetStoresAsync(string region, bool useVendorIdAsStoreNo);
         Task<List<SubteamModel>> GetSubteamsAsync(string region);
         Task<List<ShrinkSubTypeModel>> GetShrinkSubTypesAsync(string region);
-        Task<StoreItemModel> GetStoreItemAsync(string region, int storeNo, int subteamNo, int? userId, string scanCode);
+        Task<StoreItemModel> GetStoreItemAsync(string region, int storeNo, int subteamNo, int userId, string scanCode);
         Task<Order> GetPurchaseOrderAsync(string region, long poNum);
         Task<List<Order>> GetPurchaseOrdersAsync(string region, string upc, int storeNumber);
         Task<List<ReasonCode>> GetReasonCodesAsync(string region, string codeType);
@@ -34,5 +34,6 @@ namespace IrmaMobile.Services
         Task<List<ListsSubteam>> GetSubteamByProductTypeAsync(string region, int productTypeId);
         Task<StoreItem> GetTransferItemAsync(string region, string upc, int productType, int storeNo, int vendorId, int subteam, int supplyTeam);
         Task<CreateTransferOrderResult> CreateTransferOrder(string region, TransferOrderModel transferOrder);
+        Task<UserModel> GetUser(string region, string userName);
     }
 }
