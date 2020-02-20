@@ -1027,7 +1027,7 @@
     <value>&amp;RGIS</value>
   </data>
   <data name="mnuFile_Export.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="mnuFile_Export.Text" xml:space="preserve">
     <value>&amp;Export</value>
@@ -1081,7 +1081,7 @@
     <value>False</value>
   </data>
   <data name="mnuFile_Import.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="mnuFile_Import.Text" xml:space="preserve">
     <value>&amp;Import </value>
@@ -1106,13 +1106,13 @@
 </value>
   </data>
   <data name="mnuFile_ProcessMonitor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="mnuFile_ProcessMonitor.Text" xml:space="preserve">
     <value>Process Monitor</value>
   </data>
   <data name="mnuFile_Exit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="mnuFile_Exit.Text" xml:space="preserve">
     <value>E&amp;xit</value>
@@ -1979,13 +1979,13 @@
     <value>&amp;New TGM View</value>
   </data>
   <data name="mnuTools_TGM.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="mnuTools_TGM.Text" xml:space="preserve">
     <value>&amp;TGM</value>
   </data>
   <data name="mnuTools_VendorList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="mnuTools_VendorList.Text" xml:space="preserve">
     <value>&amp;Vendor List</value>
@@ -1994,7 +1994,7 @@
     <value>False</value>
   </data>
   <data name="mnuTools_UnitConverter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="mnuTools_UnitConverter.Text" xml:space="preserve">
     <value>Unit Converter</value>
@@ -2054,7 +2054,7 @@
     <value>224, 26</value>
   </data>
   <data name="SlawPriceMenuItem.Text" xml:space="preserve">
-    <value>Price(IRMA)</value>
+    <value>Price (IRMA)</value>
   </data>
   <data name="SlawItemRefreshMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>360, 26</value>
@@ -2396,7 +2396,7 @@
     <value>System Configuration</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="mnuAdministration_IRMAConfiguration.Text" xml:space="preserve">
     <value>IRMA Configuration</value>
@@ -2423,7 +2423,7 @@
     <value>Store FTP Configuration</value>
   </data>
   <data name="mnuAdministration_POSInterface.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="mnuAdministration_POSInterface.Text" xml:space="preserve">
     <value>POS Interface</value>
@@ -2489,7 +2489,7 @@
     <value>Weekly Sales Rollup</value>
   </data>
   <data name="mnuAdministration_ScheduledJobs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="mnuAdministration_ScheduledJobs.Text" xml:space="preserve">
     <value>Scheduled Jobs</value>
@@ -2525,7 +2525,7 @@
     <value>Send Store To Mammoth</value>
   </data>
   <data name="mnuAdministration_Stores.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="mnuAdministration_Stores.Text" xml:space="preserve">
     <value>Stores</value>
@@ -2549,7 +2549,7 @@
     <value>Manage Users</value>
   </data>
   <data name="mnuAdministration_Users.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="mnuAdministration_Users.Text" xml:space="preserve">
     <value>Users</value>
