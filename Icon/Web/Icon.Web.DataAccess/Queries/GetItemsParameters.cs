@@ -8,7 +8,7 @@ namespace Icon.Web.DataAccess.Queries
     public class GetItemsParameters : IQuery<GetItemsResult>
     {
         public List<ItemSearchCriteria> ItemAttributeJsonParameters { get; set; } = new List<ItemSearchCriteria>();
-        public int Top { get; set; }
+        public int Top { get; set; } = 1;
         public int Skip { get; set; }
         public string OrderByValue { get; set; } = "ItemId";
         public string OrderByOrder { get; set; } = "ASC";
