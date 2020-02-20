@@ -38,6 +38,7 @@ interface IIntitialState {
     showCog: boolean;
     transferToStores: IStore[] | null;
     user: IUser | null;
+    shrinkAdjustmentReasons: IShrinkAdjustment[] | null;
 }
 
 export interface IMenuItem {
@@ -62,6 +63,13 @@ export interface ITeam {
     subteamTypeId: number;
     isFixedSpoilage: boolean;
     isUnrestricted: boolean;
+}
+
+export interface IShrinkAdjustment {
+    abbreviation: string;
+    adjustmentDescription: string; 
+    adjustmentID: number;
+    inventoryAdjustmentCodeID: number;
 }
 
 export interface ISelectedShrink {
@@ -136,7 +144,8 @@ export const initialState = {
     transferLineItem: null,
     showCog: false,
     transferToStores: null,
-    user: null
+    user: null,
+    shrinkAdjustmentReasons: null
 } as IIntitialState;
 
 export const types = {
@@ -167,7 +176,8 @@ export const types = {
     SETTRANSFERDATA: "SETTRANSFERDATA",
     SETTRANSFERLINEITEM: "SETTRANSFERLINEITEM",
     TOGGLECOG: "TOGGLECOG",
-    SETTRANSFERTOSTORES: "SETTRANSFERTOSTORES",
+    SETTRANSFERTOSTORES: "SETTRANSFERTOSTORES", 
+    SETSHRINKADJUSTMENTREASONS: "SETSHRINKADJUSTMENTREASONS",
     SETUSER: "SETUSER"
 };
 
@@ -258,6 +268,9 @@ export const reducer = (state: any, action: any) => {
         }
         case types.SETUSER: {
             return { ...state, user: action.user };
+        }
+        case types.SETSHRINKADJUSTMENTREASONS: {
+            return { ...state, shrinkAdjustmentReasons: action.shrinkAdjustmentReasons}
         }
         default:
             return state;

@@ -67,6 +67,15 @@ namespace IrmaMobile.Services
             return shrinkSubTypes;
         }
 
+        public async Task<List<ListsShrinkAdjustmentReason>> GetShrinkAdjustmentReasonsAsync(string region)
+        {
+            var serviceShrinkAdjustmentReasons =
+                await MakeServiceRequest(region, client => client.GetShrinkAdjustmentReasonsAsync());
+
+            return serviceShrinkAdjustmentReasons;
+        }
+
+        
         public async Task<StoreItemModel> GetStoreItemAsync(string region, int storeNo, int subteamNo, int userId, string scanCode)
         {
             // Send 0 for the ItemKey because it is ignored by the Legacy service

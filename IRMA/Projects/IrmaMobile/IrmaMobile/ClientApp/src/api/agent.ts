@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import Config from "../config";
 import ITransferOrder from '../pages/Transfer/types/ITransferOrder'
-import { IStore, IUser } from "../store";
+import { IStore, IUser,IShrinkAdjustment } from "../store";
 
 axios.defaults.baseURL = Config.baseUrl;
 
@@ -47,7 +47,8 @@ const requests = {
 
 const RegionSelect = {
     getStores: async (region: string, useVendorIdAsStoreNo: boolean = false) => await requests.get(`/${region}/stores?useVendorIdAsStoreNo=${useVendorIdAsStoreNo}`) as IStore[],
-    getShrinkSubtypes: async (region: string) => await requests.get(`/${region}/shrinksubtypes/`)
+    getShrinkSubtypes: async (region: string) => await requests.get(`/${region}/shrinksubtypes/`),
+    getShrinkAdjustmentReasons: async (region: string) =>  await requests.get(`/${region}/shrinkAdjustments/`) as IShrinkAdjustment[]
 };
 
 const PurchaseOrder = {

@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useState, useEffect, useCallback } from 'react';
-import { AppContext, types, IMenuItem } from "../../../store";
+import { AppContext, types, IMenuItem, IShrinkAdjustment } from "../../../store";
 import { Modal, Confirm } from 'semantic-ui-react'
 import CurrentLocation from "../../../layout/CurrentLocation";
 import LoadingComponent from "../../../layout/LoadingComponent";
@@ -58,6 +58,14 @@ const ReviewShrink: React.FC = () => {
       }
     }
   }
+
+  const findShrinkAjustmentIdByAbbreaviation = (shrinkAdjustments: IShrinkAdjustment[] | null,  abbreviation: string) :number => {
+      if (shrinkAdjustments == null) return 0;
+      var adjustment = shrinkAdjustments.find( a => a.abbreviation == abbreviation);
+      if (adjustment == undefined) return -1;
+      return adjustment.adjustmentID;
+  }
+
   const setIsLoading = (result: boolean) => {
     dispatch({ type: types.SETISLOADING, isLoading: result })
   }
@@ -77,7 +85,7 @@ const ReviewShrink: React.FC = () => {
             state.storeNumber,
             state.subteamNo,
             state.shrinkType.shrinkSubTypeId,
-            state.shrinkType.inventoryAdjustmentCodeId,
+            findShrinkAjustmentIdByAbbreaviation(state.shrinkAdjustmentReasons, state.shrinkType.abbreviation),
             state.shrinkType.shrinkType,
             user!.userId,
             user!.userName,

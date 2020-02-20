@@ -350,7 +350,7 @@ const Shrink: React.FC = () => {
       <div className="shrink-page">
         {(!state.subteamSession.isPrevSession && !shrinkState.isSelected) || state.subteamSession.forceSubteamSelection ?
           (<div className='shrink-container'>
-            <h1>Subteam:{subteam.subteamName}</h1>
+            <h1>Subteam: {subteam.subteamName}</h1>
             <div className="shrink-buttons">
               {shrinkTypes.map((shrinkType: string) =>
                 // @ts-ignore 
