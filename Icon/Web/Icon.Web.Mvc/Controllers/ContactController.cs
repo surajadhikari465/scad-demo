@@ -543,7 +543,7 @@ namespace Icon.Web.Mvc.Controllers
                     Info.TotatlRecords = rdr.RecordsAffected;
                     if(links.Any())
                     {
-                        rdr.SetErrorLinks(links);
+                        rdr.SetErrorLinks(links, "ContactValidation");
                     }
                 }
                 

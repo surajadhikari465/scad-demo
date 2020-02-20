@@ -21,7 +21,10 @@
             dataType: "json",
             url: "/Item/GetBulkUploadErrors?Id=" + id
         }).done(function(data) {
-            $("#errorsGrid").igGrid("dataSourceObject", data).igGrid("dataBind");
+            $("#errorsGrid").igGrid("dataSourceObject", data).igGrid("dataBind");            
+            if (data.length == 0) {               
+                $("#anch_BulkItemUploadId").addClass('disabled').removeAttr("href");
+            }
         });
     }
 

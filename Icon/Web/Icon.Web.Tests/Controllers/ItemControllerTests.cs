@@ -74,6 +74,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         private GenericPrincipal principal;
         private Mock<ControllerContext> controllerContext;
         private Mock<IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult>> mockGetItemsByIdHandler;
+        private Mock<IQueryHandler<GetBulkItemUploadErrorReportParameters, BulkItemUploadErrorExportModel>> mockGetBulkItemUploadErrorReportQueryHandler;
 
         [TestInitialize]
         public void Initialize()
@@ -107,6 +108,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             principal = new GenericPrincipal(fakeIdentity, null);
             controllerContext = new Mock<ControllerContext>();
             mockGetItemsByIdHandler = new Mock<IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult>>();
+            mockGetBulkItemUploadErrorReportQueryHandler = new Mock<IQueryHandler<GetBulkItemUploadErrorReportParameters, BulkItemUploadErrorExportModel>>();
 
             controller = new ItemController(
                 mockLogger.Object,
@@ -137,7 +139,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                 },
                 mockItemHistoryBuilder.Object,
                 mockHistoryModelTransformer.Object,
-                mockGetItemsByIdHandler.Object
+                mockGetItemsByIdHandler.Object,
+                mockGetBulkItemUploadErrorReportQueryHandler.Object
                 );
 
 

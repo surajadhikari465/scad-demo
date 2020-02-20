@@ -394,6 +394,7 @@
     <Compile Include="Models\AddItemsType.cs" />
     <Compile Include="Models\BulkContactUploadModel.cs" />
     <Compile Include="Models\BulkContactUploadStatusModel.cs" />
+    <Compile Include="Models\BulkItemUploadErrorExportModel.cs" />
     <Compile Include="Models\ContactModel.cs" />
     <Compile Include="Models\ContactTypeModel.cs" />
     <Compile Include="Models\MerchandiseHierarchyClassTrait.cs" />
@@ -469,6 +470,7 @@
     <Compile Include="Models\VenueModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\BulkItemUploadStatusModel.cs" />
+    <Compile Include="Queries\GetBulkItemUploadErrorReportParameters.cs" />
     <Compile Include="Queries\DoesAttributeExistOnItemsParameters.cs" />
     <Compile Include="Queries\DoesAttributeExistOnItemsQueryHandler.cs" />
     <Compile Include="Queries\GetAffinitySubBricksParameters.cs" />
@@ -486,6 +488,7 @@
     <Compile Include="Queries\GetBulkContactUploadStatusQuery.cs" />
     <Compile Include="Queries\GetBulkItemUploadByIdParameters.cs" />
     <Compile Include="Queries\GetBulkItemUploadByIdQueryHandler.cs" />
+    <Compile Include="Queries\GetBulkItemUploadErrorReportQueryHandler.cs" />
     <Compile Include="Queries\GetContactEligibleHCQuery.cs" />
     <Compile Include="Queries\GetContactEligibleHCParameters.cs" />
     <Compile Include="Queries\GetContactsParameters.cs" />

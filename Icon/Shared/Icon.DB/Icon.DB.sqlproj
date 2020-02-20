@@ -802,6 +802,7 @@
     <None Include="Scripts\Projects\IconReboot\Audit\National.sql" />
     <None Include="Scripts\Projects\IconReboot\Audit\Financial.sql" />
     <None Include="Scripts\Projects\IconReboot\Audit\Brands.sql" />
+    <Build Include="app\Stored Procedures\GetBulkItemUploadData.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

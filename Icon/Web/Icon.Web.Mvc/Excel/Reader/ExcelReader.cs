@@ -24,12 +24,17 @@ namespace Icon.Web.Mvc.Excel
         public int RowIndex => rowEnumerator == null || rowEnumerator.Current == null ? -1 : (int)rowEnumerator.Current.RowIndex.Value;
         public bool IsClosed => doc == null;
         public bool IsEmpty { get; private set; }
-        public int RecordsAffected  { get; private set; }
+        public int RecordsAffected{ get; private set; }
         public object this[int i] => GetValue(i);
         public object this[string name] => GetValue(GetOrdinal(name));
         public Field[] Fields { get; private set; }
         public string SourceTable { get; set; }
         public string FileName { get; private set; }
+
+        public ExcelReader(Stream inputStream)
+        {
+            this.doc = SpreadsheetDocument.Open(inputStream, true);
+        }
 
         public ExcelReader(Stream inputStream, string sourceWorksheet, Field[] fields)
         {
@@ -185,7 +190,6 @@ namespace Icon.Web.Mvc.Excel
             return false;
         }
 
-
         private Row GetHeader(params string[] values)
         {
             Row row = new Row();
@@ -196,12 +200,11 @@ namespace Icon.Web.Mvc.Excel
             return row;
         }
 
-        public void SetErrorLinks(Hyperlinks links)
+        public void SetErrorLinks(Hyperlinks links, string validationTableName)
         {
-            const string Contact_Validation = "ContactValidation"; 
             WorksheetPart wsPart = null;
             var sheet = doc.WorkbookPart.Workbook.Sheets.Cast<Sheet>()
-                .Where(x => String.Compare(x.Name, Contact_Validation, true) == 0)
+                .Where(x => String.Compare(x.Name, validationTableName, true) == 0)
                 .FirstOrDefault();
 
             if(sheet != null)
@@ -218,7 +221,7 @@ namespace Icon.Web.Mvc.Excel
 
             var columns = new DocumentFormat.OpenXml.Spreadsheet.Columns();
             columns.Append(new Column(){ Min = 1, Max = 1, Width = 20, CustomWidth = true});
-            columns.Append(new Column(){ Min = 2, Max = 2, Width = 100, CustomWidth = true  });
+            columns.Append(new Column(){ Min = 2, Max = 2, Width = 100, CustomWidth = true});
             ws.Append(columns);
 
             sheetData.AppendChild(GetHeader("Ref Link", "Validation Message"));
@@ -227,11 +230,11 @@ namespace Icon.Web.Mvc.Excel
                 var run = new Run()
                 {
                     RunProperties = new RunProperties(new Color(){ Rgb = new HexBinaryValue(){ Value = "0000FF" }}, new Underline(){ Val = UnderlineValues.Single }),
-                    Text = new Text( hl.Display)
+                    Text = new Text(hl.Display)
                 };
 
                 var r = new Row(new Cell(new InlineString(run)){ DataType = CellValues.InlineString },
-                                new Cell(){ CellValue = new CellValue(hl.Tooltip), DataType = CellValues.String });
+                                new Cell(){CellValue = new CellValue(hl.Tooltip), DataType = CellValues.String });
 
                 sheetData.AppendChild(r);
             }
@@ -248,8 +251,8 @@ namespace Icon.Web.Mvc.Excel
                 : 1;
 
             //Append the new worksheet and associate it with the workbook.
-            var wsContactValidation = new Sheet() { Id = relationshipId, SheetId = sheetId, Name = Contact_Validation };
-            sheets.Append(wsContactValidation);
+            var wsValidation = new Sheet() { Id = relationshipId, SheetId = sheetId, Name = validationTableName };
+            sheets.Append(wsValidation);
             doc.Save();
         }
 

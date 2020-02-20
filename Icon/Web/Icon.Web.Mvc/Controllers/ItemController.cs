@@ -1,18 +1,23 @@
 ﻿using Icon.Common;
 using Icon.Common.DataAccess;
+using Icon.Common.Models;
+using Icon.Common.Validators.ItemAttributes;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
 using Icon.Web.Common.Utility;
 using Icon.Web.DataAccess.Infrastructure;
+using Icon.Web.DataAccess.Infrastructure.ItemSearch;
 using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
+using Icon.Web.Mvc.Attributes;
 using Icon.Web.Mvc.Exporters;
 using Icon.Web.Mvc.Extensions;
 using Icon.Web.Mvc.InfragisticsHelpers;
 using Icon.Web.Mvc.Models;
 using Icon.Web.Mvc.Utility;
+using Icon.Web.Mvc.Utility.ItemHistory;
 using Infragistics.Documents.Excel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -23,12 +28,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
-using Icon.Common.Models;
-using Icon.Common.Validators.ItemAttributes;
 using Constants = Icon.Common.Constants;
-using Icon.Web.Mvc.Attributes;
-using Icon.Web.Mvc.Utility.ItemHistory;
-using Icon.Web.DataAccess.Infrastructure.ItemSearch;
 
 namespace Icon.Web.Controllers
 {
@@ -59,6 +59,7 @@ namespace Icon.Web.Controllers
 
         private IHistoryModelTransformer historyModelTransformer;
         private readonly IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler;
+        private IQueryHandler<GetBulkItemUploadErrorReportParameters, BulkItemUploadErrorExportModel> getBulkItemUploadErrorReportQueryHandler;       
 
         public ItemController(
             ILogger logger,
@@ -85,7 +86,8 @@ namespace Icon.Web.Controllers
             IconWebAppSettings settings,
             IItemHistoryBuilder itemHistoryBuilder,
             IHistoryModelTransformer historyModelTransformer,
-            IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler)
+            IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler,
+            IQueryHandler<GetBulkItemUploadErrorReportParameters, BulkItemUploadErrorExportModel> getBulkItemUploadErrorReportQueryHandler)
         {
             this.logger = logger;
             this.settings = settings;
@@ -111,6 +113,7 @@ namespace Icon.Web.Controllers
             this.getItemsByIdHandler = getItemsByIdHandler;
             this.getBulkUploadErrorsQueryHandler = getBulkUploadErrorsQueryHandler;
             this.getBulkUploadByIdQueryHandler = getBulkUploadByIdQueryHandler;
+            this.getBulkItemUploadErrorReportQueryHandler = getBulkItemUploadErrorReportQueryHandler;
         }
 
         public ActionResult Index()
@@ -141,7 +144,7 @@ namespace Icon.Web.Controllers
         {
             var getItemsParametersViewModel = Session["GetItemsParametersViewModel"] as GetItemsParametersViewModel;
 
-            if(getItemsParametersViewModel == null)
+            if (getItemsParametersViewModel == null)
             {
                 logger.Error($"sessionID={this.Session.SessionID}, getItemsParametersViewModel was null");
                 throw new Exception("Search parameters were not set");
@@ -150,7 +153,7 @@ namespace Icon.Web.Controllers
             {
                 logger.Debug($"sessionID={this.Session.SessionID}, getItemsParametersViewModel={JsonConvert.SerializeObject(getItemsParametersViewModel)}");
             }
-            
+
             int top = int.Parse(Request.QueryString["$top"]);
             int skip = int.Parse(Request.QueryString["$skip"]);
             string orderByValue = null;
@@ -525,7 +528,7 @@ namespace Icon.Web.Controllers
             var newItemTemplateExporter = exporterService.GetItemTemplateNewExporter(null, true, true);
             newItemTemplateExporter.Export();
 
-            SendForDownload(newItemTemplateExporter.ExportModel.ExcelWorkbook, newItemTemplateExporter.ExportModel.ExcelWorkbook.CurrentFormat, "NewItem", "IconImportTemplate_");
+            SendForDownload(newItemTemplateExporter.ExportModel.ExcelWorkbook, newItemTemplateExporter.ExportModel.ExcelWorkbook.CurrentFormat, "NewItem", "IconImportTemplate");
         }
 
         [HttpPost]
@@ -547,7 +550,7 @@ namespace Icon.Web.Controllers
         [HttpGet]
         public void ExportSelectedItems(bool exportAllAttributes)
         {
-            
+
             if (Session["SelectedExportList"] == null)
             {
                 logger.Debug($"sessionID={this.Session.SessionID}, SelectedExportList was null");
@@ -628,14 +631,14 @@ namespace Icon.Web.Controllers
         public ActionResult BulkUpload()
         {
             BulkUploadViewModel bulkUploadViewModel = new BulkUploadViewModel();
-			ViewData["BulkUploadType"] = "Item";
-			return View(bulkUploadViewModel);
+            ViewData["BulkUploadType"] = "Item";
+            return View(bulkUploadViewModel);
         }
 
         [HttpGet]
         public ActionResult BulkUploadErrors(int Id)
         {
-            var model = getBulkUploadByIdQueryHandler.Search(new GetBulkItemUploadByIdParameters {BulkItemUploadId = Id});
+            var model = getBulkUploadByIdQueryHandler.Search(new GetBulkItemUploadByIdParameters { BulkItemUploadId = Id });
 
             return View(model);
         }
@@ -724,6 +727,56 @@ namespace Icon.Web.Controllers
             }
 
             return null;
+        }
+
+        [HttpGet]
+        public ActionResult BulkUploadErrorReport(int Id)
+        {
+            try
+            {
+                var model = getBulkItemUploadErrorReportQueryHandler.Search(new GetBulkItemUploadErrorReportParameters { BulkItemUploadId = Id });
+                
+                    using (var mem = new MemoryStream())
+                    {
+                        try
+                        {
+                            mem.Write(model.bulkItemUploadModel.FileContent, 0, model.bulkItemUploadModel.FileContent.Length);
+
+                            using (var rdr = new Icon.Web.Mvc.Excel.ExcelReader(mem))
+                            {
+                                var links = new DocumentFormat.OpenXml.Spreadsheet.Hyperlinks();
+                                foreach (var link in model.bulkUploadErrorModels)
+                                {
+                                    links.Append(new DocumentFormat.OpenXml.Spreadsheet.Hyperlink() { Reference = $"A{links.Count() + 2}", Location = $"Items!A{link.RowId}", Display = $"Ref ID: {link.RowId}", Tooltip = link.Message });
+                                }
+                                rdr.SetErrorLinks(links, "ItemsValidation");
+                                SendForDownloadItem(mem, $"{Path.GetFileNameWithoutExtension(model.bulkItemUploadModel.FileName)}_Error.xlsx");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            var result = new BulkUploadResultModel { Result = "Error", Message = $"Error occurred. Error details: {ex.Message}" };
+                            return Json(result);
+                        }
+                    }               
+            }
+            catch (Exception ex)
+            {
+                var result = new BulkUploadResultModel { Result = "Error", Message = $"Error occurred. Error details: {ex.Message}" };
+                return Json(result);
+            }           
+            return Json("OK", JsonRequestBehavior.AllowGet);
+        }
+
+        private void SendForDownloadItem(Stream fileStream, string name)
+        {
+            fileStream.Position = 0;
+            Response.Clear();
+            Response.AppendHeader("content-disposition", "attachment; filename=" + name);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.SetCookie(new HttpCookie("fileDownload", "true") { Path = "/" });
+            fileStream.CopyTo(Response.OutputStream);
+            Response.End();
         }
 
         private ItemResultModel GetMultipleSearchResults(List<int> itemIds)

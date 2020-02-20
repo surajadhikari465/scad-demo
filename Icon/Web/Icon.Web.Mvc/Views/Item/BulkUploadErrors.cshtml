@@ -5,20 +5,24 @@
 }
 
 @{ var Id = Model.BulkItemUploadId; }
-
+    <style>
+        #anch_BulkItemUploadId.disabled {
+            color: black;
+        }
+    </style>
 
 @Html.ActionLink("<- back", "BulkUpload", "Item")
 
 @if (Id != null)
 {
-    <h4>Errors for  @Model.FileName</h4>
+    <h4>Errors for  @Html.ActionLink(@Model.FileName, "BulkUploadErrorReport", "Item", new { Id = Id }, new { id = "anch_BulkItemUploadId" })</h4>
     <h6>Uploaded by: @Model.UploadedBy On: @Model.FileUploadTime</h6>
-    <br/>
+    <br />
     if (!string.IsNullOrWhiteSpace(Model.Message))
     {
-        <h5>Spreadsheet Error: @Model.Message</h5>
+        <h5>Spreadsheet Error: @Model.Message </h5>
     }
-    <br/>
+    <br />
     <div id="errorsGrid">
 
     </div>
