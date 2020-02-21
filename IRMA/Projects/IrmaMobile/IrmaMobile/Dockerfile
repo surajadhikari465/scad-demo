@@ -1,11 +1,11 @@
 #Create base image using ASP.NET Core runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
 #Create build image for the backend using ASP.NET Core SDK image
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["IrmaMobile/IrmaMobile.csproj", "IrmaMobile/"]
 RUN dotnet restore "IrmaMobile/IrmaMobile.csproj"
