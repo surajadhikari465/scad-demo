@@ -2,9 +2,10 @@ import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import Config from "../config";
 import ITransferOrder from '../pages/Transfer/types/ITransferOrder'
-import { IStore, IUser,IShrinkAdjustment } from "../store";
+import { IStore, IUser, IShrinkAdjustment } from "../store";
 
 axios.defaults.baseURL = Config.baseUrl;
+axios.defaults.timeout = 60000; //1 minute
 
 axios.interceptors.response.use(undefined, (error: { message: string; stack: string; }) => {
     toast.error(`Error: ${error.message}`);

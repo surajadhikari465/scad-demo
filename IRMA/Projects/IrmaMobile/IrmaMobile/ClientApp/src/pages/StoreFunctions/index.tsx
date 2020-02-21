@@ -139,9 +139,9 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
           </select>
         </div>
         <div className="subteam-buttons">
-          <button className="wfm-btn" value="shrink" onClick={handleClick} hidden={!user!.isShrink} disabled={!user!.isShrink}>Shrink</button>
-          <button className="wfm-btn" value="transfer" onClick={handleTransferClick} hidden={!user!.isDistributor} disabled={!user!.isDistributor}>Transfer</button>
-          <button className="wfm-btn" value="receive/PurchaseOrder" onClick={handleClick} hidden={!user!.isBuyer} disabled={!user!.isBuyer}>Receive</button>
+          <button className="wfm-btn" value="shrink" onClick={handleClick} hidden={!user!.isShrink && !user!.isSuperUser && !user!.isCoordinator} disabled={!user!.isShrink && !user!.isSuperUser && !user!.isCoordinator}>Shrink</button>
+          <button className="wfm-btn" value="transfer" onClick={handleTransferClick} hidden={!user!.isDistributor && !user!.isSuperUser && !user!.isCoordinator} disabled={!user!.isDistributor && !user!.isSuperUser && !user!.isCoordinator}>Transfer</button>
+          <button className="wfm-btn" value="receive/PurchaseOrder" onClick={handleClick} hidden={!user!.isBuyer && !user!.isSuperUser && !user!.isCoordinator} disabled={!user!.isBuyer && !user!.isSuperUser && !user!.isCoordinator}>Receive</button>
         </div>
         <Modal
           open={alertIsOpen}
