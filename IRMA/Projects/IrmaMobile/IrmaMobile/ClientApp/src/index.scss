@@ -38,9 +38,11 @@ body {
 }
 
 html, body {
-  height: 100%;
   overflow: hidden;
   font-family: "CircularStd";
+}
+body{
+  height: 616px;
 }
 
 p:last-child, p:first-child{

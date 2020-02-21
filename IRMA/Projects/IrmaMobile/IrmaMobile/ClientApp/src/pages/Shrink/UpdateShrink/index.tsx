@@ -101,6 +101,7 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
               min="1"
               maxLength={3}
               step={selectedShrinkItem.costedByWeight ? 'any' : 1}
+              onKeyDown={(e:any)=> e.key === 'Enter' ? e.target.blur() : ''}
               onKeyPress={clearInvalid}
               onChange={updateQuantity} />
           </div>

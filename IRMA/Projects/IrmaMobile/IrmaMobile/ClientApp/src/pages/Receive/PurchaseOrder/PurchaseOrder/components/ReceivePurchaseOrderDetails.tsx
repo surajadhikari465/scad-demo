@@ -294,6 +294,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                         onFocus={(event: any) =>
                                             event.target.select()
                                         }
+                                        onKeyDown={(e:any)=> e.key === 'Enter' ? e.target.blur() : ''}
                                         value={orderDetails.ItemLoaded ? orderDetails.Quantity : ''}
                                         fluid
                                         size="small"
@@ -319,6 +320,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                         onFocus={(event: any) =>
                                             event.target.select()
                                         }
+                                        onKeyDown={(e:any)=> e.key === 'Enter' ? e.target.blur() : ''}
                                         value={orderDetails.Weight}
                                         fluid
                                         disabled={!orderDetails.ItemLoaded}
