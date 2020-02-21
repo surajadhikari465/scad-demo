@@ -166,6 +166,8 @@
     <Compile Include="Queries\DoesScanCodeExistQuery.cs" />
     <Compile Include="Queries\DoesStoreExistParameters.cs" />
     <Compile Include="Queries\DoesStoreExistQuery.cs" />
+    <Compile Include="Queries\GetPricesAll.cs" />
+    <Compile Include="Queries\GetPricesAllParameters.cs" />
     <Compile Include="Queries\GetCheckPointMessageParameters.cs" />
     <Compile Include="Queries\GetCheckPointMessageQuery.cs" />
     <Compile Include="Queries\GetExistingScanCodesParameters.cs" />

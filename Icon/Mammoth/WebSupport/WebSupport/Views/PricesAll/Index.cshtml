@@ -1,0 +1,142 @@
+﻿@using WebSupport.Helpers
+@using WebSupport.Models
+@model WebSupport.ViewModels.PricesAllViewModel
+
+@{
+    ViewBag.Title = "Send All GPM Prices";
+}
+
+<h3 class="text-center">@ViewBag.Title</h3>
+<br />
+<div class="row container-fluid">
+    @using (Html.BeginForm("Index", "PricesAll", null, FormMethod.Post, new { @class = "" }))
+    {
+        <div class="form-group">
+            <div class="col-sm-offset-0 col-sm-2">
+                @Html.LabelFor(m => m.RegionIndex, new { @class = "control-label" })
+            </div>
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.RegionIndex, Model.Regions, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RegionIndex, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-0 col-sm-2">
+                @Html.LabelFor(m => m.DownstreamSystems, new { @class = "control-label" })
+            </div>
+            <div class="col-sm-4">
+                @Html.ListBoxFor(m => m.DownstreamSystems, Model.Downstreams, new { @class = "form-control", size = Model.Downstreams.Count() })
+                @Html.ValidationMessageFor(model => model.DownstreamSystems, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-0 col-sm-2">
+                @Html.LabelFor(m => m.SelectedStores, new { @class = "control-label" })
+            </div>
+            <div class="col-sm-4">
+                <div id="storesDiv" class="hidden">
+                    <image src="@(Url.Content("~/Content/loading.gif"))" alt="Loading, please wait"></image>
+                </div>
+
+                @Html.ListBoxFor(m => m.SelectedStores, Model.Stores, new { @class = "form-control", size = "30px", id="Stores" })
+                @Html.ValidationMessageFor(model => model.SelectedStores, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <br/>
+        <div class="row"></div>
+        <br />
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-2">
+                <input type="submit" value="Send Messages" class="btn btn-primary form-submit col-md-offset-4" id="btnSubmit" />
+            </div>
+        </div>
+        <div class="row"></div>
+        <br />
+
+        if (TempData["Error"] != null)
+        {
+            <div class="form-group">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>@TempData["Error"]</strong>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Stores").removeAttr('multiple'); //Restrict selection to one store due to large amount of data
+
+            $('form').submit(function () {
+                $(this).validate();
+
+                if ($(this).valid()) {
+                    $(':submit', this).attr('disabled', true).val('Processing...');
+                }
+            });
+        });
+
+    var getStoresSuccessCallback = function (data, textStatus, xhr) {
+        let cnt = (data === null || data === undefined ? 0 : data.length);
+        let storesControl = $("#Stores");
+        storesControl.empty();
+
+        $.each(data,
+            function (index, store) {
+                storesControl.append(
+                    $("<option />",
+                        {
+                            value: store.BusinessUnit,
+                            text: store.BusinessUnit + ": " + store.Name
+                        }))
+            });
+        
+        if (cnt > 0) {
+            $('#btnSubmit').prop("disabled", false);
+        }
+        storesControl.fadeIn();
+    }
+
+    var getStoresErrorCallback = function (xhr, textStatus, errorThrown) {
+        responseHTML = $.parseHTML(xhr.responseText);
+
+        let errorInfo = "Failed to load store data for region.\n"
+            + "url: \"@(Url.Action("Stores", "PricesAll"))\"\n"
+            + "data: \"" + $("#RegionIndex :selected").text() + "\" (" + $("#RegionIndex").val() + ")\n"
+            + "call state: \"" + xhr.state() + "\".\n"
+            + "response: \"" + errorThrown + "\" (" + xhr.status + ")\n"
+            + "server error: \"" + $(responseHTML).find('h2').text() + "\"\n";
+        alert(errorInfo);
+
+        $("#Stores").empty();
+        $('#btnSubmit').prop("disabled", true);
+    }
+
+    $("#RegionIndex").change(function () {
+        $('#btnSubmit').prop("disabled", true);
+        let url = "@(Url.Action("Stores", "PricesAll"))";
+        let data = { regionIndex: $(this).val() };
+
+        let storesControl = $("#Stores");
+        let loadingDiv = $("#storesDiv");
+
+        storesControl.fadeOut();
+        storesControl.addClass("hidden");
+        loadingDiv.removeClass("hidden");
+
+        $.getJSON(url, data, getStoresSuccessCallback)
+            .fail(getStoresErrorCallback);
+
+        loadingDiv.addClass("hidden");
+        storesControl.removeClass("hidden");
+    });
+    </script>
+}

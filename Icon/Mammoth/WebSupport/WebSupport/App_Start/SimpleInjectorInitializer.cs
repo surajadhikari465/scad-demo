@@ -64,6 +64,7 @@ namespace WebSupport.App_Start
             container.Register(typeof(IQueryHandler<,>), new[] { Assembly.Load("WebSupport.DataAccess") }, Lifestyle.Scoped);
             container.Register<IEsbService<JobScheduleModel>>(() => CreateJobScheduleMessageService(container), Lifestyle.Scoped);
             container.Register<IEsbService<PriceResetRequestViewModel>>(() => CreatePriceResetMessageService(container), Lifestyle.Scoped);
+            container.Register<IEsbService<PricesAllViewModel>>(() => CreatePricesAllMessageService(container), Lifestyle.Scoped);
             container.Register<IEsbMultipleMessageService<CheckPointRequestViewModel>>(() => CreateCheckPointRequestMessageService(container), Lifestyle.Scoped);
             container.Register<IEsbConnectionFactory, EsbConnectionFactory>(Lifestyle.Scoped);
             container.Register<MammothContext>(Lifestyle.Scoped);
@@ -114,5 +115,16 @@ namespace WebSupport.App_Start
                 Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("Sb1EmsConnection")
             };
         }
-	}
+
+        private static WebSupportPriceAllMessageService CreatePricesAllMessageService(Container container)
+        {
+            return new WebSupportPriceAllMessageService(
+                container.GetInstance<IEsbConnectionFactory>(),
+                EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("EsbEmsConnection"),
+                container.GetInstance<IMessageBuilder<PriceResetMessageBuilderModel>>(),
+                container.GetInstance<IQueryHandler<GetPricesAllParameters, List<PriceResetPrice>>>(),
+                container.GetInstance<ICommandHandler<SaveSentMessageCommand>>(),
+                container.GetInstance<IClientIdManager>());
+        }
+    }
 }

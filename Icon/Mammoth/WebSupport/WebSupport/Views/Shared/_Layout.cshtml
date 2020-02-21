@@ -26,22 +26,23 @@
                     @Html.ActionLink("Mammoth Suite Support", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                 </div>
                 <div id="collapsibleMenu" class="collapse navbar-collapse">
-                  <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Create Events", "Index", "EventCreator")</li>
-                    <li>@Html.ActionLink("GPM Just In Time Price Refresh", "Index", "PriceRefresh")</li>
-                    <li>@Html.ActionLink("GPM Price Reset", "Index", "PriceReset")</li>
-                    <li>@Html.ActionLink("GPM Checkpoint Request", "Index", "CheckPointRequest")</li>
-                    <li>@Html.ActionLink("GPM Regional Status", "Index", "RegionGpmStatus")</li>
-                    <li>@Html.ActionLink("Manage Jobs", "Index", "ManageJobs")</li>
-                    <li>@Html.ActionLink("EPlum / ESL Load", "Index", "EPlumESLLoad")</li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">In Stock<b class="caret"></b></a>
-                      <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Requeue InStock Messages/Events", "Index", "MessageExport")</li>
-                        <li>@Html.ActionLink("Regenerate InStock Events", "Index", "RegenerateEvents")</li>
-                      </ul>
-                    </li>
-                  </ul>
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Create Events", "Index", "EventCreator")</li>
+                        <li>@Html.ActionLink("GPM Just In Time Price Refresh", "Index", "PriceRefresh")</li>
+                        <li>@Html.ActionLink("GPM Price Reset", "Index", "PriceReset")</li>
+                        <li>@Html.ActionLink("All GPM Prices", "Index", "PricesAll")</li>
+                        <li>@Html.ActionLink("GPM Checkpoint Request", "Index", "CheckPointRequest")</li>
+                        <li>@Html.ActionLink("GPM Regional Status", "Index", "RegionGpmStatus")</li>
+                        <li>@Html.ActionLink("Manage Jobs", "Index", "ManageJobs")</li>
+                        <li>@Html.ActionLink("EPlum / ESL Load", "Index", "EPlumESLLoad")</li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">In Stock<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Requeue InStock Messages/Events", "Index", "MessageExport")</li>
+                                <li>@Html.ActionLink("Regenerate InStock Events", "Index", "RegenerateEvents")</li>
+                            </ul>
+                        </li>
+                    </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#"><span class="glyphicon glyphicon-user"></span>Hello, @User.Identity.Name!</a></li>
                     </ul>
