@@ -123,6 +123,7 @@ const TransferReview: React.FC = () => {
     }
 
     try {
+      console.log(transferOrder);
       let result = await agent.Transfer.createTransferOrder(region, transferOrder);
       setIsLoading(false);
       

@@ -30,6 +30,7 @@ import TransferScanSaveOrder from './pages/Transfer/Scan/components/TransferScan
 import { LifecycleManager, AuthHandler } from '@wfm/mobile';
 //@ts-ignore
 import decode from 'jwt-decode';
+import Config from './config';
 
 
 const App: React.FC = () => {
@@ -37,16 +38,20 @@ const App: React.FC = () => {
   const { menuItems, settingsItems, Title } = state;
 
   useEffect(() => {
-    LifecycleManager.onReady(function () {
-      try {
-        AuthHandler.onTokenReceived(function (token: string) {
-          let decodedToken = decode(token);
-          localStorage.setItem('authToken', JSON.stringify(decodedToken));
-        });
-      } catch (err) { 
-        console.error(err); 
-      }
-    });
+    if (Config.useAuthToken) {
+      LifecycleManager.onReady(function () {
+        try {
+          AuthHandler.onTokenReceived(function (token: string) {
+            let decodedToken = decode(token);
+            localStorage.setItem('authToken', JSON.stringify(decodedToken));
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    } else {
+      localStorage.setItem('authToken', JSON.stringify(Config.fakeUser));
+    }
   }, []);
 
   return (

@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './styles.scss';
-import { AppContext, types,IUser, IShrinkAdjustment } from "../../store";
+import { AppContext, types, IUser, IShrinkAdjustment } from "../../store";
 import agent from '../../api/agent';
 import { toast } from "react-toastify";
 import LoadingComponent from '../../layout/LoadingComponent';
 import { WfmButton, WfmToggleGroup } from '@wfm/ui-react';
 import { stat } from 'fs';
+import Config from '../../config';
 
 const REGION_LIST = ['FL', 'MA', 'MW', 'NA', 'NC', 'NE', 'PN', 'RM', 'SO', 'SP', 'SW', 'EU'];
 // @ts-ignore 
@@ -39,10 +40,10 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 		dispatch({ type: types.SETSHRINKTYPES, shrinkTypes: result });
 	}
 
-	
-    const setShrinkAdjustmentReasons = (result: IShrinkAdjustment[]) => {
-        dispatch({ type: types.SETSHRINKADJUSTMENTREASONS, shrinkAdjustmentReasons: result });
-    }
+
+	const setShrinkAdjustmentReasons = (result: IShrinkAdjustment[]) => {
+		dispatch({ type: types.SETSHRINKADJUSTMENTREASONS, shrinkAdjustmentReasons: result });
+	}
 
 	const getStores = async (user: IUser) => {
 		const { region } = state;
@@ -51,7 +52,7 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 
 			const stores = await agent.RegionSelect.getStores(region);
 			const shrinkSubTypes = await agent.RegionSelect.getShrinkSubtypes(region);
-            const shrinkAdjustmentReasons: IShrinkAdjustment[] = await agent.RegionSelect.getShrinkAdjustmentReasons(region);
+			const shrinkAdjustmentReasons: IShrinkAdjustment[] = await agent.RegionSelect.getShrinkAdjustmentReasons(region);
 			if (!stores) {
 				dispatch({ type: types.SETREGION, region: '' });
 				dispatch({ type: types.SETSTORE, store: '' });
@@ -70,7 +71,7 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 					setStores(stores.filter(s => parseInt(s.storeNo) === user.telxonStoreLimit));
 				}
 				setShrinkTypes(shrinkSubTypes);
-                setShrinkAdjustmentReasons(shrinkAdjustmentReasons);
+				setShrinkAdjustmentReasons(shrinkAdjustmentReasons);
 			} catch (err) {
 				toast.error("Unable to Set Stores", { autoClose: false })
 			}

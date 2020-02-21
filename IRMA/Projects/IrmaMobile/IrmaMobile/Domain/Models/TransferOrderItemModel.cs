@@ -10,7 +10,7 @@ namespace IrmaMobile.Domain.Models
         public int QuantityOrdered { get; set; }
         public int ItemKey { get; set; }
         public int QuantityUnit { get; set; }
-        public int AdjustedCost { get; set; }
+        public decimal AdjustedCost { get; set; }
         public int ReasonCodeDetailId { get; set; }
     }
 }
