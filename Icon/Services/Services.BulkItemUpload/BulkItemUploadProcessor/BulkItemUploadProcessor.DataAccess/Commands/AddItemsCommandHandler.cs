@@ -25,7 +25,7 @@ namespace BulkItemUploadProcessor.DataAccess.Commands
             var upcBarcodeTypeId = dbConnection.QueryFirst<int>(
                 "SELECT TOP 1 BarcodeTypeId FROM dbo.BarcodeType WHERE BarcodeType = 'UPC'");
             var barcodeGroups = itemsCopy
-                .Where(i => i.ScanCode == null && i.BarCodeTypeId != upcBarcodeTypeId)
+                .Where(i => string.IsNullOrWhiteSpace(i.ScanCode) && i.BarCodeTypeId != upcBarcodeTypeId)
                 .GroupBy(i => i.BarCodeTypeId)
                 .ToList();
             var invalidItems = new List<ErrorItem<AddItemModel>>();
