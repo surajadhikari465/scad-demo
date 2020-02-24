@@ -60,9 +60,9 @@ const ReviewShrink: React.FC = () => {
   }
 
   const findShrinkAjustmentIdByAbbreaviation = (shrinkAdjustments: IShrinkAdjustment[] | null,  abbreviation: string) :number => {
-      if (shrinkAdjustments == null) return 0;
-      var adjustment = shrinkAdjustments.find( a => a.abbreviation == abbreviation);
-      if (adjustment == undefined) return -1;
+      if (shrinkAdjustments === null) return 0;
+      var adjustment = shrinkAdjustments.find( a => a.abbreviation === abbreviation);
+      if (adjustment === undefined) return -1;
       return adjustment.adjustmentID;
   }
 

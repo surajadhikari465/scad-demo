@@ -323,6 +323,8 @@ const Shrink: React.FC = () => {
   const saveItems = (shrinkItems: any[]) => {
     dispatch({ type: types.SETSHRINKITEMS, shrinkItems: shrinkItems });
     localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems));
+    localStorage.setItem("shrinkUser", JSON.stringify(user!));
+    localStorage.setItem("shrinkSubteam", JSON.stringify(subteam!));
     dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: { ...state.subteamSession, sessionShrinkType: state.shrinkType, sessionSubteam: state.subteam, isPrevSession: true } });
     if (!shrinkState.skipConfirm) {
       setAlert({

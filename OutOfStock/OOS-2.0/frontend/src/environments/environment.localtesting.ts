@@ -4,12 +4,9 @@
 
 export const environment = {
   production: false,
-  baseURL: 'http://localhost:5000/api', 
+  baseURL: 'http://192.168.137.23:5000/api', 
   name: 'local',
-  useAuthToken: false,
-  fakeUser: {
-    "samaccountname": 'Blake.Jones'
-  }
+  useAuthToken: true
 };
 
 /*
