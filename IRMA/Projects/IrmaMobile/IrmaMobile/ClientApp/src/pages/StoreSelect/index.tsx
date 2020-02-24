@@ -1,19 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { AppContext, types } from "../../store";
 import { WfmButton, WfmToggleGroup } from '@wfm/ui-react';
 import { useHistory } from "react-router-dom";
 import './styles.scss';
 import Config from '../../config';
 import LoadingComponent from '../../layout/LoadingComponent';
-import agent from '../../api/agent'
-import { toast } from 'react-toastify'
 
 const StoreSelect: React.FC = () => {
   // @ts-ignore 
   const { state, dispatch } = useContext(AppContext);
   const { isLoading } = state;
   let history = useHistory();
-  const [region] = useState(state.region);
 
   const setSubteams = (result: any) => {
     dispatch({ type: 'SETSUBTEAMS', subteams: result });

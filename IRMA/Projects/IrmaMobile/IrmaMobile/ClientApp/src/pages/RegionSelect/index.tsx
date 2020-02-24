@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
-import './styles.scss';
-import { AppContext, types, IUser, IShrinkAdjustment } from "../../store";
-import agent from '../../api/agent';
-import { toast } from "react-toastify";
-import LoadingComponent from '../../layout/LoadingComponent';
 import { WfmButton, WfmToggleGroup } from '@wfm/ui-react';
-import { stat } from 'fs';
-import Config from '../../config';
+import React, { useContext, useEffect, useState } from 'react';
+import { toast } from "react-toastify";
+import agent from '../../api/agent';
+import LoadingComponent from '../../layout/LoadingComponent';
+import { AppContext, IShrinkAdjustment, IUser, types } from "../../store";
+import './styles.scss';
 
 const REGION_LIST = ['FL', 'MA', 'MW', 'NA', 'NC', 'NE', 'PN', 'RM', 'SO', 'SP', 'SW', 'EU'];
 // @ts-ignore 
@@ -21,17 +19,13 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 	const { isLoading } = state;
 	const [loadingContent, setLoadingContent] = useState<string>("Loading stores...");
 
-	const setStores = (result: any) => {
-		dispatch({ type: 'SETSTORES', stores: result });
-	}
-
 	useEffect(() => {
-		dispatch({ type: types.SETMENUITEMS, menuItems: [] });
-		dispatch({ type: types.SETREGION, region: '' });
-		dispatch({ type: types.SETSTORE, store: '' });
-		dispatch({ type: types.TOGGLECOG, showCog: false });
-		dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
+		dispatch({ type: types.RESETSTATE });
 	}, [dispatch]);
+
+	const setStores = (result: any) => {
+		dispatch({ type: types.SETSTORES, stores: result });
+	}
 
 	const setIsLoading = (result: boolean) => {
 		dispatch({ type: types.SETISLOADING, isLoading: result })
@@ -39,7 +33,6 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 	const setShrinkTypes = (result: any) => {
 		dispatch({ type: types.SETSHRINKTYPES, shrinkTypes: result });
 	}
-
 
 	const setShrinkAdjustmentReasons = (result: IShrinkAdjustment[]) => {
 		dispatch({ type: types.SETSHRINKADJUSTMENTREASONS, shrinkAdjustmentReasons: result });

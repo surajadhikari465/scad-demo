@@ -178,13 +178,17 @@ export const types = {
     TOGGLECOG: "TOGGLECOG",
     SETTRANSFERTOSTORES: "SETTRANSFERTOSTORES", 
     SETSHRINKADJUSTMENTREASONS: "SETSHRINKADJUSTMENTREASONS",
-    SETUSER: "SETUSER"
+    SETUSER: "SETUSER",
+    RESETSTATE: "RESETSTATE"
 };
 
 export const AppContext = React.createContext({ state: initialState });
 
 export const reducer = (state: any, action: any) => {
     switch (action.type) {
+        case types.RESETSTATE: {
+            return initialState;
+        }
         case types.SETREGION: {
             return { ...state, region: action.region };
         }
@@ -270,7 +274,7 @@ export const reducer = (state: any, action: any) => {
             return { ...state, user: action.user };
         }
         case types.SETSHRINKADJUSTMENTREASONS: {
-            return { ...state, shrinkAdjustmentReasons: action.shrinkAdjustmentReasons}
+            return { ...state, shrinkAdjustmentReasons: action.shrinkAdjustmentReasons};
         }
         default:
             return state;
