@@ -20,7 +20,7 @@ BEGIN
 	INNER JOIN Store s ON s.Store_No = si.Store_No
 	INNER JOIN StoreItemVendor siv ON siv.Item_Key = i.Item_Key
 		AND siv.Store_No = si.Store_No
-	WHERE ii.Remove_Identifier = 0
+	WHERE ii.Remove_Identifier = 0 and ii.Deleted_Identifier = 0
 		AND (
 			s.WFM_Store = 1
 			OR s.Mega_Store = 1
