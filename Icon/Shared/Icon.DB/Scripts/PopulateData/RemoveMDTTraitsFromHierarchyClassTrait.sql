@@ -17,3 +17,4 @@ ELSE
 BEGIN
 	print '[' + convert(nvarchar, getdate(), 121) + '] ' + 'Already applied: ' + @scriptKey
 END
+GO
