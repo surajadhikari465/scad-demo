@@ -1,5 +1,4 @@
-﻿--PBI: 23063
-DECLARE @scriptKey VARCHAR(128) = '24848_PopulateLocaleHieararchyJob_ForExtractService';
+﻿DECLARE @scriptKey VARCHAR(128) = '24848_PopulateLocaleHieararchyJob_ForExtractService';
 
 IF(NOT EXISTS (SELECT 1 FROM app.PostDeploymentScriptHistory WHERE ScriptKey = @scriptKey))
 BEGIN

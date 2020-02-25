@@ -850,6 +850,7 @@
     <None Include="Scripts\PostDeploymentScripts\24848_PopulateLocaleHieararchyJob_ForExtractService.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\DeduplicateScanCodes_PERF.sql" />
     <None Include="Scripts\PostDeploymentScripts\30224_Create_IVL_Extract_JobScheudle.sql" />
+    <None Include="Scripts\PostDeploymentScripts\30224_Create_IVL_Item_Extract_JobSchedule.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

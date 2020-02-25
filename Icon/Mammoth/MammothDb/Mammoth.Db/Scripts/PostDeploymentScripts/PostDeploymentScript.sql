@@ -17,6 +17,8 @@ Post-Deployment Script Template
 :r .\22694_ExtractService_Jobs.sql -- 2019-11-17 PBI 22694
 :r .\25982_IRMAItemAttributeFileSentToS3.sql --2019-12-06
 :r .\24848_PopulateLocaleHieararchyJob_ForExtractService.sql -- 2019-12-12 24848
+:r .\30224_Create_IVL_Extract_JobScheudle.sql -- 2020-02-25 30224
+:r .\30224_Create_IVL_Item_Extract_JobSchedule.sql -- 2020-02-25 30224
 
 -- Run every time (add your script above; keep this at bottom, as last post-deploy script).
 :r ..\..\Security\SecurityGrants.sql
