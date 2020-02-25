@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" xmlns:ns4="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:ns3="http://services.wfm.com/Enterprise/DeadLetterException/V1" xmlns:ns0="http://www.tibco.com/schemas/ActivePriceQueuePublisher/SharedResources/Schemas/Application/Schema.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:ns5="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:pfx="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://schemas.wfm.com/Mammoth/JobSchedule.xsd" xmlns:pfx="http://www.tibco.com/CommonLE/Client/Schema/ClientInterface.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:ns="http://schemas.wfm.com/Mammoth/IrmaDbPrice.xsd" xmlns:ns0="http://www.tibco.com/schemas/ActivePriceQueuePublisher/SharedResources/Schemas/Application/Schema.xsd" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://schemas.wfm.com/Mammoth/ErrorMessage.xsd" xmlns:ns3="http://services.wfm.com/Enterprise/DeadLetterException/V1">
     <pd:name>Processes/JobSchedulerService.process</pd:name>
     <pd:startName>Timer</pd:startName>
     <pd:startX>0</pd:startX>
@@ -42,7 +42,13 @@
 	StartDateTimeUtc,
 	LastScheduledDateTimeUtc,
 	LastRunEndDateTimeUtc,
-	NextScheduledDateTimeUtc,
+	-- DatePart returns number of minutes off of UTC time. This is setup for Central time
+	CASE 
+		-- 6 hour difference when not in Daylight Savings
+		WHEN DATEPART(TZoffset, SYSDATETIMEOffSET()) = -420 THEN NextScheduledDateTimeUtc
+		-- 5 hour difference when in Daylight Savings
+		WHEN DATEPART(TZoffset, SYSDATETIMEOFFSET()) = -360 THEN DATEADD(hour, -1, NextScheduledDateTimeUtc)
+	END AS [NextSchedluedDateTimeUtc],
 	IntervalInSeconds,
 	Enabled,
 	Status,
