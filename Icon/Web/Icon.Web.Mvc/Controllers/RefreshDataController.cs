@@ -19,14 +19,15 @@ namespace Icon.Web.Mvc.Controllers
     {
         private ICommandHandler<PublishItemUpdatesCommand> publishItemUpdatesCommandHandler;
         private ICommandHandler<RefreshLocalesCommand> addLocaleMessagesCommandHandler;
-        private ICommandHandler<RefreshHierarchiesCommand> addHierarchiesCommandHandler;
+        private ICommandHandler<RefreshHierarchiesCommand> refreshHierarchiesCommandHandler;
         private ICommandHandler<RefreshAttributesCommand> publishAttributeQueueCommandHandler;
         private IQueryHandler<GetAttributeByAttributeIdParameters, AttributeModel> getAttributeByAttributeIdQuery;
         private ILogger logger;
         private IconWebAppSettings settings;
+
         public RefreshDataController(ICommandHandler<PublishItemUpdatesCommand> publishItemUpdatesCommandHandler,
             ICommandHandler<RefreshLocalesCommand> addLocaleMessagesCommandHandler,
-            ICommandHandler<RefreshHierarchiesCommand> addHierarchiesCommandHandler,
+            ICommandHandler<RefreshHierarchiesCommand> refreshHierarchiesCommandHandler,
             ICommandHandler<RefreshAttributesCommand> publishAttributeQueueCommandHandler,
             IQueryHandler<GetAttributeByAttributeIdParameters, AttributeModel> getAttributeByAttributeIdQuery,
             ILogger logger,
@@ -34,7 +35,7 @@ namespace Icon.Web.Mvc.Controllers
         {
             this.publishItemUpdatesCommandHandler = publishItemUpdatesCommandHandler;
             this.addLocaleMessagesCommandHandler = addLocaleMessagesCommandHandler;
-            this.addHierarchiesCommandHandler = addHierarchiesCommandHandler;
+            this.refreshHierarchiesCommandHandler = refreshHierarchiesCommandHandler;
             this.publishAttributeQueueCommandHandler = publishAttributeQueueCommandHandler;
             this.getAttributeByAttributeIdQuery = getAttributeByAttributeIdQuery;
             this.logger = logger;
@@ -188,7 +189,7 @@ namespace Icon.Web.Mvc.Controllers
                     .Select(id => int.Parse(id))
                     .ToList();
 
-                addHierarchiesCommandHandler.Execute(new RefreshHierarchiesCommand
+                refreshHierarchiesCommandHandler.Execute(new RefreshHierarchiesCommand
                 {
                     HierarchyClassIds = hierarchyClassIds,
                     IsManufacturerHierarchyMessage =settings.IsManufacturerHierarchyMessage

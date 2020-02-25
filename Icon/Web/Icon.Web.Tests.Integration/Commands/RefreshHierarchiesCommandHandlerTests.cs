@@ -1,4 +1,5 @@
 ﻿using Icon.Framework;
+using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -15,12 +16,14 @@ namespace Icon.Web.Tests.Integration.Commands
         private IconContext context;
         private DbContextTransaction transaction;
         private DateTime time;
+        private AppSettings settings;
 
         [TestInitialize]
         public void Initialize()
         {
             context = new IconContext();
-            refreshHierarchiesCommandHandler = new RefreshHierarchiesCommandHandler(context);
+            settings = new AppSettings();
+            refreshHierarchiesCommandHandler = new RefreshHierarchiesCommandHandler(context, settings);
             transaction = context.Database.BeginTransaction();
             time = DateTime.Now;
         }
@@ -58,6 +61,8 @@ namespace Icon.Web.Tests.Integration.Commands
         {
             // Given.
             int hierarchyClassId = 121173;
+            context.EventQueue.RemoveRange(context.EventQueue.Where(e => e.EventReferenceId == hierarchyClassId));
+            context.SaveChanges();
             RefreshHierarchiesCommand data = new RefreshHierarchiesCommand
             {
                 HierarchyClassIds = new List<int> { hierarchyClassId }
@@ -70,6 +75,8 @@ namespace Icon.Web.Tests.Integration.Commands
             var result = context.MessageQueueHierarchy.Where(mqh => mqh.HierarchyClassId == hierarchyClassId.ToString()).OrderByDescending(m => m.InsertDate).First();
             Assert.IsNotNull(result);
             Assert.IsTrue(result.InsertDate > time);
+            var queueEvent = context.EventQueue.Single(e => e.EventReferenceId == hierarchyClassId);
+            Assert.AreEqual(settings.HierarchyClassRefreshEventConfiguredRegions.Single(), queueEvent.RegionCode);
         }
 
         [TestMethod]
@@ -77,6 +84,8 @@ namespace Icon.Web.Tests.Integration.Commands
         {
             // Given.
             int hierarchyClassId = 40430;
+            context.EventQueue.RemoveRange(context.EventQueue.Where(e => e.EventReferenceId == hierarchyClassId));
+            context.SaveChanges();
             RefreshHierarchiesCommand data = new RefreshHierarchiesCommand
             {
                 HierarchyClassIds = new List<int> { hierarchyClassId }
@@ -89,6 +98,8 @@ namespace Icon.Web.Tests.Integration.Commands
             var result = context.MessageQueueHierarchy.Where(mqh => mqh.HierarchyClassId == hierarchyClassId.ToString()).OrderByDescending(m => m.InsertDate).First();
             Assert.IsNotNull(result);
             Assert.IsTrue(result.InsertDate > time);
+            var queueEvent = context.EventQueue.Single(e => e.EventReferenceId == hierarchyClassId);
+            Assert.AreEqual(settings.HierarchyClassRefreshEventConfiguredRegions.Single(), queueEvent.RegionCode);
         }
 
         [TestMethod]

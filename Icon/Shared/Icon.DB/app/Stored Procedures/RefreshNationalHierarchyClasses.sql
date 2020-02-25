@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [app].[RefreshNationalHierarchyClasses]
-	@classIds app.IntList readonly
+	@classIds app.IntList readonly,
+	@regions app.RegionAbbrType readonly 
 AS
 BEGIN
 	DECLARE @taskName NVARCHAR(20) = 'RefreshNationalClasses'
@@ -35,6 +36,10 @@ BEGIN
 			FROM dbo.Trait
 			WHERE traitCode = 'NCC'
 			)
+
+	SELECT RegionAbbr
+		INTO #tempRegions
+	FROM @regions
 
 	INSERT INTO app.MessageQueueHierarchy (
 		MessageTypeId
@@ -81,10 +86,10 @@ BEGIN
 	SELECT @nationalEventTypeId
 		,hc.hierarchyClassName
 		,hc.hierarchyClassId
-		,r.RegionCode
+		,r.RegionAbbr
 	FROM #ids ids
 	JOIN HierarchyClass hc ON ids.I = hc.hierarchyClassID
-	CROSS APPLY app.Regions r
+	CROSS APPLY #tempRegions r
 
 	PRINT '[' + convert(NVARCHAR, getdate(), 121) + '] ' + '[' + @taskName + '] ' + 'Successfully added National Hierarchy Classes to EventQueue...';
 	PRINT '[' + convert(NVARCHAR, getdate(), 121) + '] ' + '[' + @taskName + '] ' + 'Successfully refreshed National Hierarchy Classes...';

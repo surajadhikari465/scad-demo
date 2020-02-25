@@ -7,5 +7,6 @@ namespace Icon.Web.Common
         public string[] HierarchyClassAddEventConfiguredRegions => AppSettingsAccessor.GetStringSetting("HierarchyClassAddEventConfiguredRegions").Split(',');
         public string[] HierarchyClassUpdateEventConfiguredRegions => AppSettingsAccessor.GetStringSetting("HierarchyClassUpdateEventConfiguredRegions").Split(',');
         public string[] HierarchyClassDeleteEventConfiguredRegions => AppSettingsAccessor.GetStringSetting("HierarchyClassDeleteEventConfiguredRegions").Split(',');
+        public string[] HierarchyClassRefreshEventConfiguredRegions => AppSettingsAccessor.GetStringSetting("HierarchyClassRefreshEventConfiguredRegions").Split(',');
     }
 }

@@ -1,4 +1,6 @@
-﻿CREATE PROCEDURE [app].[RefreshBrands] @ids app.IntList readonly
+﻿CREATE PROCEDURE [app].[RefreshBrands] 
+	@ids app.IntList readonly,
+	@regions app.RegionAbbrType readonly 
 AS
 BEGIN
 	DECLARE @taskName NVARCHAR(20) = 'RefreshBrands'
@@ -76,6 +78,10 @@ BEGIN
 			FROM dbo.Trait
 			WHERE traitCode = 'PCO'
 			);
+	
+	SELECT RegionAbbr
+		INTO #tempRegions
+	FROM @regions
 
 	INSERT INTO app.MessageQueueHierarchy (
 		MessageTypeId
@@ -140,10 +146,10 @@ BEGIN
 	SELECT @brandEventTypeId
 		,hc.hierarchyClassName
 		,hc.hierarchyClassId
-		,r.RegionCode
+		,r.RegionAbbr
 	FROM @ids ids
 	INNER JOIN HierarchyClass hc ON ids.I = hc.hierarchyClassID
-	CROSS APPLY Regions r
+	CROSS APPLY #tempRegions r
 
 	PRINT '[' + convert(NVARCHAR, getdate(), 121) + '] ' + '[' + @taskName + '] ' + 'Successfully refreshed Brands...';
 END

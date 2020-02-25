@@ -1,6 +1,7 @@
 ﻿using Icon.Common;
 using Icon.Common.DataAccess;
 using Icon.Framework;
+using Icon.Web.Common;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,10 +14,12 @@ namespace Icon.Web.DataAccess.Commands
     public class RefreshHierarchiesCommandHandler : ICommandHandler<RefreshHierarchiesCommand>
     {
         private IconContext context;
+        private AppSettings settings;
 
-        public RefreshHierarchiesCommandHandler(IconContext context)
+        public RefreshHierarchiesCommandHandler(IconContext context, AppSettings settings)
         {
             this.context = context;
+            this.settings = settings;
         }
 
         public void Execute(RefreshHierarchiesCommand data)
@@ -28,8 +31,10 @@ namespace Icon.Web.DataAccess.Commands
             var merchandises = GetDataTableFromHierachyClassList(hierarchyClasses, Hierarchies.Merchandise);
             var manufacturer = GetDataTableFromHierachyClassList(hierarchyClasses, Hierarchies.Manufacturer);
 
-            if (brands.Rows.Count > 0) RefreshHierarchyClasses(brands, "EXEC app.RefreshBrands @ids");
-            if (nationals.Rows.Count > 0) RefreshHierarchyClasses(nationals, "EXEC app.RefreshNationalHierarchyClasses @ids");
+            var regions = settings.HierarchyClassRefreshEventConfiguredRegions.ToList();
+
+            if (brands.Rows.Count > 0) RefreshHierarchyClasses(brands, regions, "EXEC app.RefreshBrands @ids, @regions");
+            if (nationals.Rows.Count > 0) RefreshHierarchyClasses(nationals, regions, "EXEC app.RefreshNationalHierarchyClasses @ids, @regions");
             if (merchandises.Rows.Count > 0) RefreshHierarchyClasses(merchandises, "EXEC app.RefreshMerchandiseHierarchyClasses @ids");
             if (manufacturer.Rows.Count > 0 && data.IsManufacturerHierarchyMessage) RefreshHierarchyClasses(manufacturer, "EXEC app.RefreshManufacturerHierarchyClasses @ids");
         }
@@ -56,8 +61,21 @@ namespace Icon.Web.DataAccess.Commands
 
         private void RefreshHierarchyClasses(DataTable ids, string sql)
         {
-            SqlParameter inputType = GetIntListFromIdsDataTable(ids);
-            context.Database.ExecuteSqlCommand(sql, inputType);
+            SqlParameter hierarchyClassIds = GetIntListFromIdsDataTable(ids);
+            context.Database.ExecuteSqlCommand(sql, hierarchyClassIds);
+        }
+
+        private void RefreshHierarchyClasses(DataTable ids, List<string> regions, string sql)
+        {
+            SqlParameter hierarchyClassIds = GetIntListFromIdsDataTable(ids);
+            SqlParameter regionsParameter = new SqlParameter("regions", SqlDbType.Structured)
+            {
+                TypeName = "app.RegionAbbrType",
+                Value = regions
+                    .ConvertAll(r => new { RegionAbbr = r })
+                    .ToDataTable()
+            };
+            context.Database.ExecuteSqlCommand(sql, hierarchyClassIds, regionsParameter);
         }
 
         private SqlParameter GetIntListFromIdsDataTable(DataTable ids)
