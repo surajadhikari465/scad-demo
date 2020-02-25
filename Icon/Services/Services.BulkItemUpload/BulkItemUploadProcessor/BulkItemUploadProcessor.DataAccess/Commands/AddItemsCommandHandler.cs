@@ -65,13 +65,13 @@ namespace BulkItemUploadProcessor.DataAccess.Commands
             {
                 data.AddedItems = dbConnection.Query<ItemIdAndScanCode>(
                     "dbo.AddItems",
-                    new 
-                    { 
+                    new
+                    {
                         Items = itemsCopy
                             .Select(i => i)
                             .ToList()
                             .ToDataTable()
-                            .AsTableValuedParameter("dbo.AddItemsType") 
+                            .AsTableValuedParameter("dbo.AddItemsType")
                     },
                     commandType: CommandType.StoredProcedure)
                     .ToList();
