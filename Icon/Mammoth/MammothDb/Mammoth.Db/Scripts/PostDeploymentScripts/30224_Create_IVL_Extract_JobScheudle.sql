@@ -1,6 +1,6 @@
 ﻿DECLARE @ivl_scriptKey VARCHAR(128) = '30224_IVL_JobSchedule';
 
-IF(NOT EXISTS (SELECT 1 FROM app.PostDeploymentScriptHistory WHERE ScriptKey = @scriptKey))
+IF(NOT EXISTS (SELECT 1 FROM app.PostDeploymentScriptHistory WHERE ScriptKey = @ivl_scriptKey))
 BEGIN
 
 	DECLARE @ivl_jobname VARCHAR(100) = 'IRMA IVL'
@@ -66,10 +66,10 @@ BEGIN
 	END
 
 
-	INSERT INTO app.PostDeploymentScriptHistory (ScriptKey, RunTime) VALUES (@scriptKey ,GETDATE());
+	INSERT INTO app.PostDeploymentScriptHistory (ScriptKey, RunTime) VALUES (@ivl_scriptKey ,GETDATE());
 END
 ELSE
 BEGIN
-	PRINT '[' + convert(NVARCHAR, GetDate(), 121) + '] Script ' + @scriptKey + ' already applied.'
+	PRINT '[' + convert(NVARCHAR, GetDate(), 121) + '] Script ' + @ivl_scriptKey + ' already applied.'
 END
 GO
