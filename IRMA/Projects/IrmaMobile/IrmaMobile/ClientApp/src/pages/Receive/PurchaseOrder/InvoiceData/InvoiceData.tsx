@@ -275,8 +275,11 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             var result = await agent.InvoiceData.closeOrder(region, parseInt(purchaseOrderNumber), user!.userId)
 
             if(result && result.status) {
-                toast.info('Order Closed', { autoClose: false });
-
+                if(result && result.flag === true){
+                    toast.error(`WARNING: The order was closed but is now in Suspended state. The invoice associated with this order will not be uploaded to PeopleSoft until the order has been approved`, { autoClose: false })
+                } else {
+                    toast.info('Order Closed', { autoClose: false });
+                }
                 dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
                 dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
                 dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
