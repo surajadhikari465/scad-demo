@@ -5,7 +5,6 @@ import { WfmButton } from '@wfm/ui-react'
 import dateFormat from 'dateformat'
 import { toast } from 'react-toastify';
 import agent from '../../../api/agent';
-import Config from '../../../config';
 import ConfirmModal from '../../../layout/ConfirmModal';
 import { useHistory, RouteComponentProps } from 'react-router-dom';
 import ITransferData from '../types/ITransferData';

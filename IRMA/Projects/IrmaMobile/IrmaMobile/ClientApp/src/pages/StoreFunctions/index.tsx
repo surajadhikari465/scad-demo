@@ -3,7 +3,7 @@ import './styles.scss';
 import { Modal } from 'semantic-ui-react';
 import BasicModal from '../../layout/BasicModal';
 import CurrentLocation from "../../layout/CurrentLocation";
-import { AppContext, types, IMenuItem, IUser, ITeam } from "../../store";
+import { AppContext, types, IMenuItem } from "../../store";
 
 interface StoreFunctionsProps {
   history: any;
@@ -15,8 +15,9 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
   const [isSelected, setSelected] = useState(false);
   const [alertIsOpen, setAlertOpen] = useState(false);
   const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { } });
-  const { subteams, user } = state;
+  const { subteams, user, subteamSession } = state;
   const { history } = props;
+  let sessionIndex = subteamSession.findIndex((session:any) => session.sessionUser.userName === user?.userName);
 
   useEffect(() => {
     const settingsItems = [
@@ -38,7 +39,8 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
     localStorage.removeItem('sessionSubType');
     dispatch({ type: types.SETSHRINKITEMS, shrinkItems: [] });
     dispatch({ type: types.SETSHRINKTYPE, shrinkType: {} });
-    dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: { ...state.subteamSession, isPrevSession: false } });
+    subteamSession[sessionIndex] = { ...subteamSession[sessionIndex], isPrevSession: false };
+    dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
     setAlert({
       ...alert,
       open: false
@@ -62,22 +64,16 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
       ...alert,
       open: false
     });
-    dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: { ...state.subteamSession, isPrevSession: true } });
+    subteamSession[sessionIndex] = { ...subteamSession[sessionIndex], isPrevSession: true };
+    dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
     history.push('/shrink');
   }
 
   const checkLocalStorage = () => {
-    let shrinkUser;
-    let shrinkSubteam;
-    if (localStorage.getItem('shrinkUser'))
-      shrinkUser = JSON.parse(localStorage.getItem('shrinkUser')!) as IUser;
-    if (localStorage.getItem('shrinkSubteam'))
-      shrinkSubteam = JSON.parse(localStorage.getItem('shrinkSubteam')!) as ITeam;
-
     setAlert({
       ...alert,
       open: true,
-      alertMessage: `Would you like to reload your previous Session? (${shrinkUser?.userName} for ${shrinkSubteam?.subteamName}) Clicking No will delete the old session.`,
+      alertMessage: `Would you like to reload your previous Session? (${state.subteamSession[sessionIndex].sessionUser.userName} for ${state.subteamSession[sessionIndex].sessionSubteam.subteamName}) Clicking No will delete the old session.`,
       type: 'confirm',
       header: 'Previous Session Exists',
       cancelAction: deleteWarning,
@@ -91,8 +87,8 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
     }
     else {
       let shrinkItems = [];
-      if (localStorage.getItem('shrinkItems')) {
-        shrinkItems = JSON.parse(localStorage.getItem('shrinkItems')!);
+      if (subteamSession[sessionIndex].shrinkItems) {
+        shrinkItems = subteamSession[sessionIndex].shrinkItems;
       }
       if (shrinkItems.length > 0 && e.target.value === 'shrink') {
         checkLocalStorage();

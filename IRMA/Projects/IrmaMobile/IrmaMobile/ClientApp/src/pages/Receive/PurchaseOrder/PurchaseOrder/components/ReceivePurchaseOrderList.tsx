@@ -11,9 +11,7 @@ interface IProps {
 }
 
 const ReceivePurchaseOrderList: React.FC<IProps> = ({ orders, upc, poSelected }) => {
-    console.log('orders', orders);
     const purchaseOrderClicked = (e: any) => {
-        console.log('purchase order clicked');
         poSelected(upc, e.currentTarget.innerText,true);
     }
 

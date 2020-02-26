@@ -16,7 +16,7 @@ interface IIntitialState {
     subteams: ITeam[];
     subteam: ITeam;
     subteamNo: string;
-    subteamSession: ISubteamSession;
+    subteamSession: ISubteamSession[] | [] | any;
     shrinkType: IShrinkType;
     shrinkTypes: any[],
     selectedShrinkItem: ISelectedShrink,
@@ -52,8 +52,13 @@ export interface IMenuItem {
 
 export interface ISubteamSession {
     isPrevSession: boolean;
-    sessionShrinkType: string;
-    sessionSubteam: string;
+    sessionShrinkType: object | any;
+    sessionSubteam: object | any;
+    shrinkItems: any;
+    sessionStore: string;
+    sessionNumber: number;
+    sessionRegion: string;
+    sessionUser: object | any;
     forceSubteamSelection?: boolean;
 }
 
@@ -122,7 +127,7 @@ export const initialState = {
     storeNumber: "",
     subteams: [],
     subteam: { subteamName: '', subteamNo: '', isFixedSpoilage: false, isUnrestricted: false, subteamTypeId: 0 },
-    subteamSession: { isPrevSession: false, sessionShrinkType: '', sessionSubteam: '', forceSubteamSelection: true },
+    subteamSession: [],
     subteamNo: '',
     shrinkType: { shrinkType: '', abbreviation: '', shrinkSubTypeMember: '', shrinkSubTypeId: null, inventoryAdjustmentCodeId: null, reasonCode: null },
     selectedShrinkItem: { identifier: '', quantity: 0, signDescription: '', packageDesc1: '', packageDesc2: '', packageUnitAbbreviation: '', shrinkType: '', costedByWeight: false },
@@ -187,7 +192,7 @@ export const AppContext = React.createContext({ state: initialState });
 export const reducer = (state: any, action: any) => {
     switch (action.type) {
         case types.RESETSTATE: {
-            return initialState;
+            return {...initialState, subteamSession: state.subteamSession};
         }
         case types.SETREGION: {
             return { ...state, region: action.region };

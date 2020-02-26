@@ -9,10 +9,10 @@ const CurrentLocation: React.FC = () => {
     return (
         <Grid style={{marginTop: '-0.2rem'}}>
             <Grid.Row color="grey">
-                <Grid.Column className={region.length > 3 ? 'smalltext':''} style={{marginLeft: '5px'}} floated='left' width={4}>
+                <Grid.Column className={region.length > 2 ? 'smalltext':''} style={{marginLeft: '4px'}} floated='left' width={5}>
                     Region: {region}
                 </Grid.Column>
-                <Grid.Column className={subteam.subteamName.length + store.length + 3 > 20 ? 'smalltext':''} style={{marginRight: '5px', textAlign: 'right'}} floated='right' width={11}>
+                <Grid.Column className={subteam.subteamName.length + store.length + 3 > 15 ? 'smalltext':''} style={{marginRight: '5px', textAlign: 'right'}} floated='right' width={10}>
                     Store/Subteam: {store} {store && subteam ? "/" : ""} {subteam ? subteam.subteamName : ""}
                 </Grid.Column>
             </Grid.Row>

@@ -76,8 +76,8 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 	}
 
 	const handleSelectRegionClick = async () => {
-		const { region } = state;
-
+		const { region, subteamSession } = state;
+		
 		dispatch({ type: types.SETUSER, user: null })
 		setLoadingContent("Retrieving User information...");
 		setIsLoading(true);
@@ -94,6 +94,11 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 					setIsLoading(false);
 				} else {
 					dispatch({ type: types.SETUSER, user: user });
+					
+					if((subteamSession.filter((session: any) => session.sessionUser.userName === user.userName).length === 0)){
+						subteamSession.push({ shrinkItems:[], isPrevSession: false, sessionShrinkType: '', sessionSubteam: '', sessionStore:'', sessionRegion:'', sessionUser: user,forceSubteamSelection: true });
+					} 
+					dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
 					setLoadingContent("Loading Stores...");
 					getStores(user);
 				}
@@ -101,7 +106,7 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 				toast.error('Unable to load authorization token. Please reload the application and log back in.');
 				setIsLoading(false);
 			}
-		} catch (error) {
+		} catch (error) { 
 			toast.error("Unable to load user information. Please close and re-open the application.");
 			setIsLoading(false);
 		}

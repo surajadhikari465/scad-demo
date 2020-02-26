@@ -166,6 +166,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
 
     useEffect(() => {
         BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
+            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: data.Data });
             loadPurchaseOrder(data.Data);
           });
 

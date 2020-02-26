@@ -16,9 +16,10 @@ const ReviewShrink: React.FC = () => {
   const { state, dispatch } = useContext(AppContext);
   const [shrinkItems, setShrinkItems] = useState<[] | any>([]);
   const [selected, setSelected] = useState();
-  const { isLoading, user } = state;
+  const { isLoading, user, subteamSession } = state;
   const [alert, setAlert] = useState({ open: false, alertMessage: '' });
   const [confirm, setConfirm] = useState({ open: false, message: '', onConfirm: () => { } });
+  let sessionIndex = subteamSession.findIndex((session:any) => session.sessionUser.userName === user?.userName);
   let history = useHistory();
 
   const setMenuItems = useCallback(() => {
@@ -111,7 +112,8 @@ const ReviewShrink: React.FC = () => {
       if (succeededItems === shrinkItems.length) {
         toast.success("Shrink Items Uploaded");
         dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
-        dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: { ...state.subteamSession, sessionShrinkType: '', sessionSubteam: '', forceSubteamSelection: false, isPrevSession: false } });
+        subteamSession[sessionIndex] = { ...state.subteamSession[sessionIndex], shrinkItems:[], forceSubteamSelection: false, isPrevSession: false };
+        dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
       }
     }
   }
