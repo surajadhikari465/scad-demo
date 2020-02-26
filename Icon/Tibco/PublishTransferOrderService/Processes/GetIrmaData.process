@@ -312,9 +312,9 @@
 	fs.Store_Name as FromLocationName,
 	ts.BusinessUnit_ID as ToLocationNumber,
 	ts.Store_Name as ToLocationName,
-	oh.Transfer_SubTeam as FromSubTeam_No,
+	fst.SubDept_No as FromSubTeam_No,
 	fst.SubTeam_Name as FromSubTeam_Name,
-	oh.Transfer_To_SubTeam as ToSubTeam_No,
+	tst.SubDept_No as ToSubTeam_No,
 	tst.SubTeam_Name as ToSubTeam_Name,
 	Case
 		When oh.RefuseReceivingReasonID is not null Then 'Refused'

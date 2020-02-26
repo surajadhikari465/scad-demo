@@ -196,9 +196,9 @@
 	ih.ItemHistoryID as AdjustmentNumber,
 	s.BusinessUnit_ID LocationNumber, 
 	s.Store_Name as LocationName,
-	i.SubTeam_No as HostSubTeamNumber,
+	st.SubDept_No as HostSubTeamNumber,
 	st.SubTeam_Name as HostSubTeamName,
-	ih.SubTeam_No as SubTeamNumber,
+	ss.SubDept_No as SubTeamNumber,
     ss.SubTeam_Name as SubTeamName,
 	ii.Identifier as DefaultScanCode,
 	ih.AdjustmentReason as ReasonCode,
@@ -221,8 +221,7 @@ FROM dbo.ItemHistory as ih (NOLOCK)
 	JOIN SubTeam st (NOLOCK) on st.SubTeam_No = i.SubTeam_No
 	JOIN SubTeam ss (NOLOCK) on ss.SubTeam_No = ih.SubTeam_No
 	JOIN Users us (NOLOCK) on ih.CreatedBy = us.User_ID
-WHERE ii.Default_Identifier = 1 and ih.ItemHistoryID = ?
-</statement>
+WHERE ii.Default_Identifier = 1 and ih.ItemHistoryID = ?</statement>
             <wizardData/>
             <Prepared_Param_DataType>
                 <parameter>
