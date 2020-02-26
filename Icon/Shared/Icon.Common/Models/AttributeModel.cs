@@ -32,5 +32,6 @@ namespace Icon.Common.Models
         public IEnumerable<AttributeCharacterSetModel> CharacterSets { get; set; }
         public string CharacterSetRegexPattern { get; set; }
         public string XmlTraitDescription { get; set; }
+        public int? ItemCount { get; set; }
     }
 }
