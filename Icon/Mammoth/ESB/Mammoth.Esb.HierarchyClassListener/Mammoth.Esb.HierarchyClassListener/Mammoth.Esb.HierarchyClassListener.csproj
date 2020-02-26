@@ -102,7 +102,7 @@
       <HintPath>..\packages\Icon.Shared.DataAccess.Dapper.2018.8.16.3\lib\net46\Icon.Shared.DataAccess.Dapper.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.DataAccess.2019.3.20.1\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.DataAccess.2020.2.25.3\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
@@ -147,6 +147,8 @@
     <Compile Include="Commands\AddOrUpdateMerchandiseHierarchyLineageCommandHandler.cs" />
     <Compile Include="Commands\AddOrUpdateNationalHierarchyLineageCommand.cs" />
     <Compile Include="Commands\AddOrUpdateNationalHierarchyLineageCommandHandler.cs" />
+    <Compile Include="Commands\DeleteManufacturerCommandHandler.cs" />
+    <Compile Include="Commands\DeleteManufacturerParameter.cs" />
     <Compile Include="Commands\DeleteBrandsParameter.cs" />
     <Compile Include="Commands\DeleteHierarchyClassesParameter.cs" />
     <Compile Include="Commands\DeleteMerchandiseClassParameter.cs" />
@@ -169,6 +171,7 @@
     <Compile Include="Queries\GetItemsByBrandIdQueryHandler.cs" />
     <Compile Include="Queries\IGetAssociatedItemsParameter.cs" />
     <Compile Include="Services\AddOrUpdateHierarchyClassService.cs" />
+    <Compile Include="Services\DeleteManufacturerService.cs" />
     <Compile Include="Services\DeleteNationalClassService.cs" />
     <Compile Include="Services\ValidateItemAssociationForDeleteMerchandiseHierarchyDecorator.cs" />
     <Compile Include="Services\DeleteHierarchyClassValidationDecoratorBase.cs" />

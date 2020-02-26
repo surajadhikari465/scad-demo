@@ -20,6 +20,7 @@ namespace Mammoth.Esb.HierarchyClassListener
         private IHierarchyClassService<DeleteBrandRequest> deleteBrandsService;
         private IHierarchyClassService<DeleteMerchandiseClassRequest> deleteMerchandiseService;
         private IHierarchyClassService<DeleteNationalClassRequest> deleteNationalService;
+        private IHierarchyClassService<DeleteManufacturerRequest> deleteManufacturerService;
 
         public MammothHierarchyClassListener(ListenerApplicationSettings listenerApplicationSettings,
             EsbConnectionSettings esbConnectionSettings,
@@ -30,7 +31,8 @@ namespace Mammoth.Esb.HierarchyClassListener
             IHierarchyClassService<AddOrUpdateHierarchyClassRequest> hierarchyClassService,
             IHierarchyClassService<DeleteBrandRequest> deleteBrandsService,
             IHierarchyClassService<DeleteMerchandiseClassRequest> deleteMerchandiseService,
-            IHierarchyClassService<DeleteNationalClassRequest> deleteNationalService)
+            IHierarchyClassService<DeleteNationalClassRequest> deleteNationalService,
+            IHierarchyClassService<DeleteManufacturerRequest> deleteManufacturerService)
             : base(listenerApplicationSettings,
                   esbConnectionSettings,
                   subscriber,
@@ -42,6 +44,7 @@ namespace Mammoth.Esb.HierarchyClassListener
             this.deleteBrandsService = deleteBrandsService;
             this.deleteMerchandiseService = deleteMerchandiseService;
             this.deleteNationalService = deleteNationalService;
+            this.deleteManufacturerService = deleteManufacturerService;
         }
 
         public override void HandleMessage(object sender, EsbMessageEventArgs args)
@@ -85,6 +88,9 @@ namespace Mammoth.Esb.HierarchyClassListener
                                     break;
                                 case Hierarchies.CertificationAgencyManagement:
                                     throw new ArgumentException($"No handler specified for Delete {Hierarchies.Names.CertificationAgencyManagement} Hierarchy.");
+                                case Hierarchies.Manufacturer:
+                                    deleteManufacturerService.ProcessHierarchyClasses(new DeleteManufacturerRequest { HierarchyClasses = hierarchyClasses });
+                                    break;
                                 default:
                                     throw new ArgumentException($"No handler specified for Delete unknown hierarchy ID {hierarchyClasses.First().HierarchyClassId}.");
                             }

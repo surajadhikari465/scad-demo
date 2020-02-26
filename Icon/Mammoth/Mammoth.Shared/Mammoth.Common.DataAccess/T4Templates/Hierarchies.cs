@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace Mammoth.Common.DataAccess
 {
-	/// <summary>
-	/// dbo.Hierarchy auto generated Ids
-	/// </summary>
+    /// <summary>
+    /// dbo.Hierarchy auto generated Ids
+    /// </summary>
 
-	[GeneratedCode("TextTemplatingFileGenerator", "10")]
-	public static class Hierarchies
-	{
+    [GeneratedCode("TextTemplatingFileGenerator", "10")]
+    public static class Hierarchies
+    {
 		public const int Merchandise = 1;
 		public const int Brands = 2;
 		public const int Tax = 3;
@@ -20,7 +20,6 @@ namespace Mammoth.Common.DataAccess
 		public const int National = 6;
 		public const int CertificationAgencyManagement = 7;
 		public const int Manufacturer = 8;
-
 		private static Dictionary<string, int> idToNamesDictionary = new Dictionary<string, int>
 		{
 				{ "Merchandise", 1 },
@@ -44,7 +43,7 @@ namespace Mammoth.Common.DataAccess
 			public const string National = "National";
 			public const string CertificationAgencyManagement = "Certification Agency Management";
 			public const string Manufacturer = "Manufacturer";
-
+		
 		}
 	}
 }

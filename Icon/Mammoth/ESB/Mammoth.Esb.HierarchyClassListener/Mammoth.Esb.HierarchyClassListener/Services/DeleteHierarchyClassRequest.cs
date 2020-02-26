@@ -15,4 +15,8 @@ namespace Mammoth.Esb.HierarchyClassListener.Services
     {
         public List<HierarchyClassModel> HierarchyClasses { get; set; }
     }
+    public class DeleteManufacturerRequest : IHierarchyClassRequest
+    {
+        public List<HierarchyClassModel> HierarchyClasses { get; set; }
+    }
 }

@@ -123,5 +123,38 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                 Assert.AreEqual(hierarchyClasses[i].HierarchyId, actualHierarchyClasses[i].HierarchyID);
             }
         }
+
+        [TestMethod]
+        public void AddOrUpdateManufacturerHierarchyClassesCommand_Given5NewManufacturerHierarchyClasses_ShouldAddClasses()
+        {
+            //Given
+            var existingNum = dbProvider.Connection.Query<int>(
+               "select count(*) from dbo.HierarchyClass", transaction: dbProvider.Transaction).First();
+
+            List<HierarchyClassModel> hierarchyClasses = new List<HierarchyClassModel>
+            {
+                new HierarchyClassModel { HierarchyClassId = 1, HierarchyClassName = "Test HierarchyClass1", HierarchyId = Hierarchies.Manufacturer },
+                new HierarchyClassModel { HierarchyClassId = 2, HierarchyClassName = "Test HierarchyClass2", HierarchyId = Hierarchies.Manufacturer },
+                new HierarchyClassModel { HierarchyClassId = 3, HierarchyClassName = "Test HierarchyClass3", HierarchyId = Hierarchies.Manufacturer },
+                new HierarchyClassModel { HierarchyClassId = 4, HierarchyClassName = "Test HierarchyClass4", HierarchyId = Hierarchies.Manufacturer },
+                new HierarchyClassModel { HierarchyClassId = 5, HierarchyClassName = "Test HierarchyClass5", HierarchyId = Hierarchies.Manufacturer }
+            };
+            command.HierarchyClasses = hierarchyClasses;
+
+            //When
+            commandHandler.Execute(command);
+
+            //Then
+            var actualHierarchyClasses = dbProvider.Connection.Query<dynamic>("SELECT * FROM dbo.HierarchyClass",
+                null,
+                dbProvider.Transaction).ToList();
+            Assert.AreEqual(existingNum + 5, actualHierarchyClasses.Count);
+            for (int i = 0; i < hierarchyClasses.Count; i++)
+            {
+                Assert.AreEqual(hierarchyClasses[i].HierarchyClassId, actualHierarchyClasses[i].HierarchyClassID);
+                Assert.AreEqual(hierarchyClasses[i].HierarchyClassName, actualHierarchyClasses[i].HierarchyClassName);
+                Assert.AreEqual(hierarchyClasses[i].HierarchyId, actualHierarchyClasses[i].HierarchyID);
+            }
+        }
     }
 }

@@ -33,6 +33,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
         private Mock<IEsbSubscriber> mockSubscriber;
         private EsbMessageEventArgs eventArgs;
         private Mock<IEsbMessage> mockEsbMessage;
+        private Mock<IHierarchyClassService<DeleteManufacturerRequest>> mockDeleteManufacturerService;
 
         [TestInitialize]
         public void Initialize()
@@ -47,6 +48,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
             mockLogger = new Mock<ILogger<MammothHierarchyClassListener>>();
             mockMessageParser = new Mock<IMessageParser<List<HierarchyClassModel>>>();
             mockSubscriber = new Mock<IEsbSubscriber>();
+            mockDeleteManufacturerService = new Mock<IHierarchyClassService<DeleteManufacturerRequest>>();
 
             this.listener = new MammothHierarchyClassListener(listenerApplicationSettings,
                 esbConnectionSettings,
@@ -57,7 +59,8 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
                 mockAddOrUpdateHierarchyClassService.Object,
                 mockDeleteBrandService.Object,
                 mockDeleteMerchandiseService.Object,
-                mockDeleteNationalService.Object);
+                mockDeleteNationalService.Object,
+                mockDeleteManufacturerService.Object);
 
             mockEsbMessage = new Mock<IEsbMessage>();
             eventArgs = new EsbMessageEventArgs { Message = mockEsbMessage.Object };
@@ -259,6 +262,65 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
                 && r.HierarchyClasses[0].HierarchyClassId == brands[0].HierarchyClassId
                 && r.HierarchyClasses[0].HierarchyClassName == brands[0].HierarchyClassName
                 && r.HierarchyClasses[0].HierarchyId == brands[0].HierarchyId)), Times.Once);
+        }
+
+        [TestMethod]
+        public void HandleMessage_SuccessfulAddOrUpdateManufacturerMessage_ShouldAcknowledgeMessageAndNotLogError()
+        {
+            //Given
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+                .Returns(new List<HierarchyClassModel>
+                {
+                    new HierarchyClassModel
+                    {
+                        Action = ActionEnum.AddOrUpdate,
+                        HierarchyClassId = 1,
+                        HierarchyClassName = "test",
+                        HierarchyId = Hierarchies.Manufacturer
+                    }
+                });
+
+            //When
+            listener.HandleMessage(null, eventArgs);
+
+            //Then
+            mockEmailClient.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+            mockLogger.Verify(m => m.Error(It.IsAny<string>()), Times.Never);
+            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()), Times.Once);
+            mockAddOrUpdateHierarchyClassService.Verify(m => m.ProcessHierarchyClasses(It.IsAny<AddOrUpdateHierarchyClassRequest>()), Times.Once);
+            mockEsbMessage.Verify(m => m.Acknowledge(), Times.Once);
+        }
+
+        [TestMethod]
+        public void HandleMessage_MessageHasManufacturerDeletes_ShouldCallManufacturerDeleteService()
+        {
+            // Given
+            List<HierarchyClassModel> manufacturer = new List<HierarchyClassModel>();
+            manufacturer.Add(new HierarchyClassModel
+            {
+                Action = Icon.Esb.Schemas.Wfm.Contracts.ActionEnum.Delete,
+                HierarchyClassId = 4747454,
+                HierarchyClassName = "Manufacturer1",
+                HierarchyClassParentId = 0,
+                HierarchyId = Hierarchies.Manufacturer,
+                Timestamp = DateTime.UtcNow
+            });
+
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+                .Returns(manufacturer);
+
+            // When
+            listener.HandleMessage(null, eventArgs);
+
+            // Then
+            mockAddOrUpdateHierarchyClassService.Verify(ds => ds.ProcessHierarchyClasses(It.IsAny<AddOrUpdateHierarchyClassRequest>()), Times.Never);
+            mockDeleteBrandService.Verify(ds => ds.ProcessHierarchyClasses(It.IsAny<DeleteBrandRequest>()), Times.Never);
+            mockDeleteMerchandiseService.Verify(ds => ds.ProcessHierarchyClasses(It.IsAny<DeleteMerchandiseClassRequest>()), Times.Never);
+            mockDeleteNationalService.Verify(ds => ds.ProcessHierarchyClasses(It.IsAny<DeleteNationalClassRequest>()), Times.Never);
+            mockDeleteManufacturerService.Verify(ds => ds.ProcessHierarchyClasses(It.Is<DeleteManufacturerRequest>(r =>
+                r.HierarchyClasses[0].HierarchyClassId == manufacturer[0].HierarchyClassId
+                && r.HierarchyClasses[0].HierarchyClassName == manufacturer[0].HierarchyClassName
+                && r.HierarchyClasses[0].HierarchyId == manufacturer[0].HierarchyId)), Times.Once);
         }
     }
 }

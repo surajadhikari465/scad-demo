@@ -37,6 +37,7 @@ namespace Mammoth.Esb.HierarchyClassListener
             container.Register<IHierarchyClassService<DeleteBrandRequest>, DeleteBrandService>();
             container.Register<IHierarchyClassService<DeleteMerchandiseClassRequest>, DeleteMerchandiseClassService>();
             container.Register<IHierarchyClassService<DeleteNationalClassRequest>, DeleteNationalClassService>();
+            container.Register<IHierarchyClassService<DeleteManufacturerRequest>, DeleteManufacturerService>();
 
             container.Register<ICommandHandler<AddOrUpdateHierarchyClassesCommand>, AddOrUpdateHierarchyClassesCommandHandler>();
             container.Register<ICommandHandler<AddOrUpdateMerchandiseHierarchyLineageCommand>, AddOrUpdateMerchandiseHierarchyLineageCommandHandler>();
@@ -45,6 +46,7 @@ namespace Mammoth.Esb.HierarchyClassListener
             container.Register<ICommandHandler<DeleteBrandsParameter>, DeleteBrandsCommandHandler>();
             container.Register<ICommandHandler<DeleteMerchandiseClassParameter>, DeleteMerchandiseClassCommandHandler>();
             container.Register<ICommandHandler<DeleteNationalClassParameter>, DeleteNationalClassCommandHandler>();
+            container.Register<ICommandHandler<DeleteManufacturerParameter>, DeleteManufacturerCommandHandler>();
             container.Register<IQueryHandler<GetItemsByBrandIdParameter, IEnumerable<Item>>, GetItemsByBrandIdQueryHandler>();
             container.Register<IQueryHandler<GetItemsByMerchandiseHierarchyIdParameter, IEnumerable<Item>>, GetItemsByMerchandiseClassIdQueryHandler>();
             container.RegisterSingleton<IDbProvider, SqlDbProvider>();
