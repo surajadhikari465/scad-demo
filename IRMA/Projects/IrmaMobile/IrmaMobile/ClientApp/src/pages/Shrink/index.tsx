@@ -399,6 +399,7 @@ const Shrink: React.FC = () => {
                     onChange={setQty}
                     onKeyPress={clearInvalid}
                     maxLength={3}
+                    onKeyDown={(e:any)=> e.key === 'Enter' ? e.target.blur() : ''}
                     value={shrinkState.quantity.toString()}
                     ref={qtyInput}></input>
                   {
