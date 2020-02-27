@@ -40,7 +40,7 @@ BEGIN
 	  DECLARE @ScaleExtraTextId INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Scale Extra Text');
 	  DECLARE @CFSSendtoScale INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'CFS Send to Scale'); 
 	  DECLARE @ForceTare INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Force Tare'); 
-	  DECLARE @ShelfLife INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Shelf Life');
+	  DECLARE @ShelfLife INT = (SELECT AttributeID FROM Attributes WHERE AttributeCode = 'SHL'); -- This is the ItemLocale Shelf Life attribute as opposed to the Global Item Shelf Life attribute
 	  DECLARE @UnwrappedTareWeight INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Unwrapped Tare Weight');
 	  DECLARE @UseByEAB INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Use By EAB');
 	  DECLARE @WrappedTareWeight INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Wrapped Tare Weight'); 
