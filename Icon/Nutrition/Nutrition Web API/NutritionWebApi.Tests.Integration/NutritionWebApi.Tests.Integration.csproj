@@ -117,6 +117,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Commands\DeleteNutritionCommandHandlerTests.cs" />
     <Compile Include="Commands\UpdateNutritionItemCommandHandlerTests.cs" />
     <Compile Include="Controllers\NutritionControllerIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

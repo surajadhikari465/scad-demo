@@ -1,7 +1,8 @@
-﻿CREATE PROCEDURE [nutrition].[DeleteNutritionItems] @Plu nutrition.Plu readonly
+﻿CREATE PROCEDURE [nutrition].[DeleteNutritionItems]
+	@Plu nutrition.Plu readonly
 AS
 BEGIN
-	DECLARE @itemIDs app.UpdatedItemIDsType
+	DECLARE @itemIDs esb.MessageQueueItemIdsType
 	DECLARE @nutritionPlu TABLE (Plu VARCHAR(50));
 	DECLARE @eventTypeID INT = (
 			SELECT EventId
@@ -36,13 +37,15 @@ BEGIN
 	INNER JOIN @nutritionPlu np ON np.Plu = i.identifier
 
 	--Generate messages
-	INSERT INTO @itemIDs (itemID)
-	SELECT DISTINCT A.itemID
+	INSERT INTO @itemIDs (itemID, EsbReadyDateTimeUtc, InsertDateUtc)
+	SELECT DISTINCT
+		A.itemID,
+		SYSUTCDATETIME(),
+		SYSUTCDATETIME()
 	FROM ScanCode A
 	INNER JOIN @nutritionPlu B ON B.Plu = A.scanCode;
 
-	EXEC infor.GenerateItemUpdateMessages @updatedItemIDs = @itemIDs
-		,@isDeleteNutrition = 1;
+	EXEC esb.AddMessageQueueItem @MessageQueueItems = @itemIDs
 
 	SELECT Count(*) DeletedRecordCount
 	FROM @nutritionPlu;
