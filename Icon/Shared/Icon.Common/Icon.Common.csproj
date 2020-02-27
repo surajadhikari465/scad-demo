@@ -106,6 +106,7 @@
     <Compile Include="Email\EmailClientSettings.cs" />
     <Compile Include="Email\IEmailClient.cs" />
     <Compile Include="Models\AttributeCharacterSetModel.cs" />
+    <Compile Include="Models\AttributeItemCountModel.cs" />
     <Compile Include="Models\AttributeModel.cs" />
     <Compile Include="Models\CharacterSetModel.cs" />
     <Compile Include="Models\PickListModel.cs" />
