@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Transactions;
 using WebSupport.DataAccess.Queries;
+using System.Collections.Generic;
 
 namespace WebSupport.DataAccess.Test.Queries
 {
@@ -67,7 +68,7 @@ namespace WebSupport.DataAccess.Test.Queries
         {
             //Given
             parameters.BusinessUnitId = testBusinessUnitId.ToString();
-            parameters.ScanCode = testScanCode;
+            parameters.ScanCodes = new List<string>(){ testScanCode };
             parameters.Region = testRegion;
 
             decimal price = 100m;
@@ -113,7 +114,7 @@ namespace WebSupport.DataAccess.Test.Queries
         {
             //Given
             parameters.BusinessUnitId = testBusinessUnitId.ToString();
-            parameters.ScanCode = testScanCode;
+            parameters.ScanCodes =new List<string>(){ testScanCode };
             parameters.Region = testRegion;
 
             //When
@@ -128,7 +129,7 @@ namespace WebSupport.DataAccess.Test.Queries
         {
             //Given
             parameters.BusinessUnitId = testBusinessUnitId.ToString();
-            parameters.ScanCode = testScanCode;
+            parameters.ScanCodes = new List<string>(){ testScanCode };
             parameters.Region = testRegion;
 
             decimal price = 100m;
@@ -151,7 +152,7 @@ namespace WebSupport.DataAccess.Test.Queries
         {
             //Given
             parameters.BusinessUnitId = testBusinessUnitId.ToString();
-            parameters.ScanCode = testScanCode;
+            parameters.ScanCodes = new List<string>(){ testScanCode };
             parameters.Region = testRegion;
 
             decimal priceReg = 100m;
@@ -234,7 +235,7 @@ namespace WebSupport.DataAccess.Test.Queries
         {
             //Given
             parameters.BusinessUnitId = testBusinessUnitId.ToString();
-            parameters.ScanCode = testScanCode;
+            parameters.ScanCodes = new List<string>(){ testScanCode };
             parameters.Region = testRegion;
 
             decimal price = 100m;
@@ -259,7 +260,7 @@ namespace WebSupport.DataAccess.Test.Queries
         {
             //Given
             parameters.BusinessUnitId = testBusinessUnitId.ToString();
-            parameters.ScanCode = testScanCode;
+            parameters.ScanCodes = new List<string>(){ testScanCode };
             parameters.Region = testRegion;
 
             decimal priceReg = 100m;

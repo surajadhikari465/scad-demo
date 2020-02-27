@@ -119,6 +119,7 @@ namespace WebSupport.App_Start
         private static WebSupportPriceAllMessageService CreatePricesAllMessageService(Container container)
         {
             return new WebSupportPriceAllMessageService(
+                container.GetInstance<ILogger>(),
                 container.GetInstance<IEsbConnectionFactory>(),
                 EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("EsbEmsConnection"),
                 container.GetInstance<IMessageBuilder<PriceResetMessageBuilderModel>>(),

@@ -17,6 +17,7 @@ namespace WebSupport.Services
 {
     public class RefreshPriceService : IRefreshPriceService
     {
+        const string RefreshPrice = "RefreshPrice";
         private ILogger logger;
         private IPriceRefreshEsbProducerFactory priceRefreshEsbProducerFactory;
         private IPriceRefreshMessageBuilderFactory priceRefreshMessageBuilderFactory;
@@ -24,6 +25,11 @@ namespace WebSupport.Services
         private IQueryHandler<DoesScanCodeExistParameters, bool> doesScanCodeExistQuery;
         private IQueryHandler<DoesStoreExistParameters, bool> doesStoreExistQuery;
         private IClientIdManager clientIdManager;
+        private string selectedRegion;
+        private Dictionary<string, string> nonReceivingSystems;
+        private Dictionary<string, Esb.Core.MessageBuilders.IMessageBuilder<List<GpmPrice>>> messageBuilders;
+
+        public int InvalidScanCodeCount { get; private set; }
 
         public RefreshPriceService(
             ILogger logger,
@@ -55,35 +61,78 @@ namespace WebSupport.Services
             {
                 return response;
             }
+            
+            int batchId = 0;
+            int totalCnt = 0;
+            const int batchSize = 1000;
+            var isAllItems = scanCodes.Count == 1 && scanCodes[0] == "*";
+            int? itemId = isAllItems ? (int?)0 : null;
+
+            this.selectedRegion = region;
+            this.InvalidScanCodeCount = 0;
+            this.nonReceivingSystems = systems.ToDictionary(x => x, x => GetNonReceivingSystems(x), StringComparer.InvariantCultureIgnoreCase);
+            this.messageBuilders = systems.ToDictionary(x => x, x => priceRefreshMessageBuilderFactory.CreateMessageBuilder(x), StringComparer.InvariantCultureIgnoreCase);
+
+            logger.Info(JsonConvert.SerializeObject(
+                 new
+                 {
+                     Action = $"Begin {RefreshPrice}",
+                     Region = this.selectedRegion,
+                     System = String.Join(",", this.messageBuilders.Select(x => x.Key))
+                 }));
+
             foreach (var businessUnitId in businessUnitIds)
             {
                 if (StoreExistsInMammoth(businessUnitId))
                 {
-                    foreach (var scanCode in scanCodes)
+                    var parameter = new GetGpmPricesParameters
                     {
-                        if (ScanCodeExistsInMammoth(scanCode))
+                        Region = region,
+                        BusinessUnitId = businessUnitId,
+                        ItemId = itemId,
+                        ScanCodes = isAllItems ? new List<string>() : scanCodes.Take(batchSize).ToList()
+                    };
+
+                    while(true)
+                    {
+                        var prices = getGpmPricesQuery.Search(parameter);
+                        totalCnt += prices.Count();
+
+                        if(prices.Count == 0)
                         {
-                            var prices = GetPrices(region, businessUnitId, scanCode);
-                            if (prices.Count > 0)
-                            {
-                                try
-                                {
-                                    SendPriceRefreshMessage(region, systems, prices);
-                                }
-                                catch (Exception ex)
-                                {
-                                    response.Errors.Add($"Unable to refresh price for Business Unit:{businessUnitId} and Scan Code:{scanCode} because an unexpected error occurred while connecting to the ESB. Check logs and connection settings for more information.");
-                                    logger.Error($"Unable to refresh price for Business Unit:{businessUnitId} and Scan Code:{scanCode} because an unexpected error occurred while connecting to the ESB. Check logs and connection settings for more information. Error Details:{ex.ToString()}");
-                                }
-                            }
-                            else
-                            {
-                                response.Errors.Add($"Unable to refresh price for Business Unit:{businessUnitId} and Scan Code:{scanCode} because it does not exist in Mammoth.");
-                            }
+                            break;
                         }
                         else
                         {
-                            response.Errors.Add($"Unable to refresh Item:{scanCode} because it does not exist in Mammoth.");
+                            try
+                            { 
+                                SendPriceRefreshMessage(prices);
+                                logger.Info(JsonConvert.SerializeObject(
+                                    new
+                                    {
+                                        Action = $"Processing {RefreshPrice}",
+                                        Region = this.selectedRegion,
+                                        System = String.Join(",", this.messageBuilders.Select(x => x.Key)),
+                                        TotalRecords = totalCnt
+                                    }));
+                            }
+                            catch (Exception ex)
+                            {
+                                response.Errors.Add($"Unable to refresh price for Business Unit: {businessUnitId} because an unexpected error occurred while connecting to the ESB. Check logs and connection settings for more information.");
+                                logger.Error($"Unable to refresh price for Business Unit: {businessUnitId} because an unexpected error occurred while connecting to the ESB. Error: {ex.ToString()}");
+                            }
+                        }
+
+                        batchId++;
+                        if(isAllItems)
+                        {
+                            parameter.ItemId = prices.Max(x => x.ItemId);
+                        }
+                        else
+                        { 
+                            this.InvalidScanCodeCount += parameter.ScanCodes.Except(prices.Select(x => x.ScanCode)).Count();
+                            parameter.ScanCodes = scanCodes.Skip(batchId * batchSize).Take(batchSize).ToList();
+                            if(parameter.ScanCodes.Count == 0) break;
                         }
                     }
                 }
@@ -93,6 +142,14 @@ namespace WebSupport.Services
                 }
             }
 
+            logger.Info(JsonConvert.SerializeObject(
+                 new
+                 {
+                     Action = $"End {RefreshPrice}",
+                     Region = this.selectedRegion,
+                     System = String.Join(",", this.messageBuilders.Select(x => x.Key)),
+                     TotalRecords = totalCnt
+                 }));
             return response;
         }
 
@@ -135,54 +192,45 @@ namespace WebSupport.Services
             return doesScanCodeExistQuery.Search(new DoesScanCodeExistParameters { ScanCode = scanCode });
         }
 
-        private List<GpmPrice> GetPrices(string region, string businessUnitId, string scanCode)
+        private void SendPriceRefreshMessage(List<GpmPrice> prices)
         {
-            return getGpmPricesQuery.Search(
-                new GetGpmPricesParameters
-                {
-                    Region = region,
-                    BusinessUnitId = businessUnitId,
-                    ScanCode = scanCode
-                });
-        }
-
-        private void SendPriceRefreshMessage(string region, List<string> systems, List<GpmPrice> prices)
-        {
-            string patchFamilyId = prices[0].PatchFamilyId;
-            string sequenceId = prices[0].SequenceId;
-
-            foreach (var system in systems)
+            foreach(var builder in this.messageBuilders)
             {
-                var messageBuilder = priceRefreshMessageBuilderFactory.CreateMessageBuilder(system);
-                var message = messageBuilder.BuildMessage(prices);
-                Dictionary<string, string> messageProperties = new Dictionary<string, string>
-                            {
-                                { EsbConstants.TransactionTypeKey, EsbConstants.PriceTransactionTypeValue },
-                                { EsbConstants.TransactionIdKey, Guid.NewGuid().ToString() },
-                                { EsbConstants.CorrelationIdKey, patchFamilyId },
-                                { EsbConstants.SequenceIdKey, sequenceId },
-                                { EsbConstants.SourceKey, EsbConstants.MammothSourceValueName },
-                                { EsbConstants.NonReceivingSystemsKey, GetNonReceivingSystems(system) },
-                                { EsbConstants.PriceResetKey, EsbConstants.PriceResetFalseValue }
-                            };
-                using (IEsbProducer esbProducer = priceRefreshEsbProducerFactory.CreateEsbProducer(system, region))
+                var properties = new Dictionary<string, string>
+                {
+                    { EsbConstants.TransactionTypeKey, EsbConstants.PriceTransactionTypeValue },
+                    { EsbConstants.TransactionIdKey, null },
+                    { EsbConstants.CorrelationIdKey, null },
+                    { EsbConstants.SequenceIdKey, null },
+                    { EsbConstants.SourceKey, EsbConstants.MammothSourceValueName },
+                    { EsbConstants.NonReceivingSystemsKey, this.nonReceivingSystems[builder.Key] },
+                    { EsbConstants.PriceResetKey, EsbConstants.PriceResetFalseValue }
+                };  
+
+                using (IEsbProducer esbProducer = priceRefreshEsbProducerFactory.CreateEsbProducer(builder.Key, this.selectedRegion))
                 {
                     esbProducer.OpenConnection(clientIdManager.GetClientId());
 
-                    esbProducer.Send(
-                        message,
-                        messageProperties);
-                }
-                logger.Info(JsonConvert.SerializeObject(
-                    new
+                    foreach(var grp in prices.GroupBy(x => x.ItemId))
                     {
-                        Action = "RefreshPrice",
-                        Region = region,
-                        System = system,
-                        Prices = prices,
-                        MessageProperties = messageProperties,
-                        Message = message
-                    }));
+                        var priceList = grp.ToList();
+                        properties[EsbConstants.SourceKey] = priceList[0].SequenceId;
+                        properties[EsbConstants.CorrelationIdKey] = priceList[0].PatchFamilyId;
+                        properties[EsbConstants.TransactionIdKey] = Guid.NewGuid().ToString();
+
+                        var message = builder.Value.BuildMessage(priceList);
+                        esbProducer.Send(message, properties);
+
+                        logger.Debug(JsonConvert.SerializeObject(
+                            new
+                            {
+                                Action = RefreshPrice,
+                                Region = this.selectedRegion,
+                                System = builder.Key,
+                                Message = message
+                            }));
+                    }
+                }
             }
         }
 

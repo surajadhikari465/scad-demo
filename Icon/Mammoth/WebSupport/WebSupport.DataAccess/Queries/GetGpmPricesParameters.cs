@@ -8,6 +8,7 @@ namespace WebSupport.DataAccess.Queries
     {
         public string Region { get; set; }
         public string BusinessUnitId { get; set; }
-        public string ScanCode { get; set; }
+        public List<string> ScanCodes { get; set; }
+        public int? ItemId { get; set; }
     }
 }

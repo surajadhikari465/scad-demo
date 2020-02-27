@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using WebSupport.DataAccess.Queries;
 using WebSupport.DataAccess.TransferObjects;
@@ -53,6 +54,8 @@ namespace WebSupport.Controllers
         {
             try
             {
+                var code = HttpStatusCode.Created;
+                var message = String.Empty;
                 string region = StaticData.WholeFoodsRegions.ElementAt(viewModel.RegionIndex);
                 List<string> systems = StaticData
                     .JustInTimeDownstreamSystems
@@ -73,26 +76,30 @@ namespace WebSupport.Controllers
                 if (response.Errors != null && response.Errors.Count > 0)
                 {
                     TempData["Errors"] = response.Errors;
+                    code = HttpStatusCode.ExpectationFailed;
+                    message = String.Join(" ", response.Errors);
                 }
                 else
                 {
                     TempData["Success"] = true;
+                    code = HttpStatusCode.OK;
+                    var invalidScanCodeCount = (refreshPriceService as RefreshPriceService).InvalidScanCodeCount;
+                    message = String.Format("Messages has been successfully sent. {0}", invalidScanCodeCount > 0 ? $"Invalid Scan Code count: {invalidScanCodeCount}" : String.Empty);
                 }
 
                 logger.Info(JsonConvert.SerializeObject(new
                 {
                     PriceRefreshResponse = response
                 }));
+
+                return RequestInfo(code, message);
             }
             catch (Exception ex)
             {
                 TempData["Errors"] = $"Unexpected error occurred, check logs for more details. Error:{ex.Message}";
-                logger.Error(JsonConvert.SerializeObject(new
-                {
-                    Error = ex
-                }));
+                logger.Error(JsonConvert.SerializeObject(new { Error = ex }));
+                return RequestInfo(HttpStatusCode.BadRequest, ex.Message);
             }
-            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -115,6 +122,17 @@ namespace WebSupport.Controllers
             {
                 throw new ArgumentOutOfRangeException(nameof(regionCode), $"invalid region code {regionCode}");
             }
+        }
+
+        private ActionResult RequestInfo(HttpStatusCode statusCode, string errMessage)
+        {
+            //To prevent IIS from hijacking custom response or add the line below to web config file in <system.webServer> section
+            //<httpErrors errorMode="DetailedLocalOnly" existingResponse="PassThrough"/>
+            Response.TrySkipIisCustomErrors = true; 
+
+            Response.StatusCode = (int)statusCode;
+            Response.StatusDescription = errMessage.Replace(System.Environment.NewLine, " ").Trim();
+            return Json(Response.StatusDescription);
         }
     }
 }

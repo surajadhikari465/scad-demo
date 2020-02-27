@@ -4,6 +4,7 @@ using Icon.Common.DataAccess;
 using Icon.Esb;
 using Icon.Esb.Factory;
 using Icon.Esb.Producer;
+using Icon.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +14,16 @@ using WebSupport.DataAccess.Queries;
 using WebSupport.Managers;
 using WebSupport.Models;
 using WebSupport.ViewModels;
+using Newtonsoft.Json;
 
 namespace WebSupport.Services
 {
     public class WebSupportPriceAllMessageService : IEsbService<PricesAllViewModel>
     {
+        const string PriceReset = "PriceReset";
         private string[] targets;
         private string nonReceiving;
+        private ILogger logger;
         private IClientIdManager clientIdManager;
         private IEsbConnectionFactory esbConnection;
         private IMessageBuilder<PriceResetMessageBuilderModel> messageBuilder;
@@ -29,6 +33,7 @@ namespace WebSupport.Services
         public EsbConnectionSettings Settings { get; set; }
 
         public WebSupportPriceAllMessageService(
+            ILogger logger,
             IEsbConnectionFactory esbConnectionFactory,
             EsbConnectionSettings settings,
             IMessageBuilder<PriceResetMessageBuilderModel> messageBuilder,
@@ -36,6 +41,7 @@ namespace WebSupport.Services
             ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler,
             IClientIdManager clientIdManager)
         {
+            this.logger = logger;
             this.Settings = settings;
             this.esbConnection = esbConnectionFactory;
             this.messageBuilder = messageBuilder;

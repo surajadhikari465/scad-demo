@@ -39,3 +39,18 @@ textarea {
 td.wrap-ugly-text {
     word-break: break-all;
 }
+
+.fine-print {
+    font-size: smaller;
+    font-style: italic;
+}
+
+.confirm {
+    border: solid 1px black;
+    border-radius: 15px
+}
+
+.confirm-header {
+    border: solid 1px lightgray;
+    border-radius: 15px 15px 0px 0px
+}

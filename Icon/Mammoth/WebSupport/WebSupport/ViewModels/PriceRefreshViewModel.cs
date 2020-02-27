@@ -55,7 +55,7 @@ namespace WebSupport.ViewModels
 		[Required]
 		[Display(Name = "Scan Codes(s) or Item ID(s) (one per line)")]
 		[DataType(DataType.MultilineText)]
-		[RegularExpression(ValidationConstants.RegExForValidScanCode, ErrorMessage = ValidationConstants.ErrorMsgForInvalidScanCode)]
+		[RegularExpression(ValidationConstants.RegExForValidScanCodeWithWildCard, ErrorMessage = ValidationConstants.ErrorMsgForInvalidScanCodeWithWildCard)]
 		public string Items { get; set; }
 
 		public IEnumerable<SelectListItem> OptionsForRegion { get; set; }
