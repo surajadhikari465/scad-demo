@@ -83,8 +83,8 @@ const ReviewShrink: React.FC = () => {
           var result = await agent.Shrink.submitShrinkItems(
             state.region,
             shrinkItems[i].itemKey,
-            state.storeNumber,
-            state.subteamNo,
+            subteamSession[sessionIndex].sessionNumber,
+            subteamSession[sessionIndex].sessionSubteam?.subteamNo,
             state.shrinkType.shrinkSubTypeId,
             findShrinkAjustmentIdByAbbreaviation(state.shrinkAdjustmentReasons, state.shrinkType.abbreviation),
             state.shrinkType.shrinkType,

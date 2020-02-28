@@ -95,9 +95,9 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 					} else {
 						dispatch({ type: types.SETUSER, user: user });
 					
-						if((subteamSession.filter((session: any) => session.sessionUser.userName === user.userName).length === 0)){
-							subteamSession.push({ shrinkItems:[], isPrevSession: false, sessionShrinkType: '', sessionSubteam: '', sessionStore:'', sessionRegion:'', sessionUser: user,forceSubteamSelection: true });
-						} 
+						if ((subteamSession.filter((session: any) => session.sessionUser.userName === user.userName).length === 0)) {
+							subteamSession.push({ shrinkItems: [], isPrevSession: false, sessionShrinkType: '', sessionNumber: 0, sessionSubteam: undefined, sessionStore: '', sessionRegion: '', sessionUser: user, forceSubteamSelection: true });
+						}
 						dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
 						setLoadingContent("Loading Stores...");
 						getStores(user);

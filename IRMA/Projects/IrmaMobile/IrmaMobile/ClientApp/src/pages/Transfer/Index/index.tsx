@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useContext, useEffect, useCallback } from 'react'
-import { AppContext, types, IStore, IMenuItem, ITeam } from "../../../store";
+import { AppContext, types, IStore, IMenuItem, ISubTeam } from "../../../store";
 import { Header, Segment, Dropdown, Form, DropdownProps, InputOnChangeData } from 'semantic-ui-react'
 import { WfmButton } from '@wfm/ui-react'
 import dateFormat from 'dateformat'
@@ -140,7 +140,7 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
 
     useEffect(() => {
         if (subteams) {
-            setSubteamsMapped(subteams.map((subteam: ITeam) => { return { key: subteam.subteamNo, value: subteam.subteamNo, text: subteam.subteamName }; }));
+            setSubteamsMapped(subteams.map((subteam: ISubTeam) => { return { key: subteam.subteamNo, value: subteam.subteamNo, text: subteam.subteamName }; }));
         }
     }, [subteams]);
 

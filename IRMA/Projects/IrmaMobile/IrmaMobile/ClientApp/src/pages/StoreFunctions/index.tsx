@@ -71,7 +71,7 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
     setAlert({
       ...alert,
       open: true,
-      alertMessage: `Would you like to reload your previous Session? (${state.subteamSession[sessionIndex].sessionUser.userName} for ${state.subteamSession[sessionIndex].sessionSubteam.subteamName}) Clicking No will delete the old session.`,
+      alertMessage: `Would you like to reload your previous Session? (${state.subteamSession[sessionIndex].sessionUser.userName} for ${state.subteamSession[sessionIndex].sessionSubteam?.subteamName}) Clicking No will delete the old session.`,
       type: 'confirm',
       header: 'Previous Session Exists',
       cancelAction: deleteWarning,

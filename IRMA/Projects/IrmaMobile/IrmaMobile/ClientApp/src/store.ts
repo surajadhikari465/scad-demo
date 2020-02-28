@@ -13,10 +13,10 @@ interface IIntitialState {
     stores: IStore[];
     store: string;
     storeNumber: string;
-    subteams: ITeam[];
-    subteam: ITeam;
+    subteams: ISubTeam[];
+    subteam: ISubTeam;
     subteamNo: string;
-    subteamSession: ISubteamSession[] | [] | any;
+    subteamSession: ISubteamSession[];
     shrinkType: IShrinkType;
     shrinkTypes: any[],
     selectedShrinkItem: ISelectedShrink,
@@ -40,6 +40,9 @@ interface IIntitialState {
     shrinkAdjustmentReasons: IShrinkAdjustment[] | null;
 }
 
+const a = [] as ISubteamSession[]
+
+
 export interface IMenuItem {
     id: number;
     order: number;
@@ -52,7 +55,7 @@ export interface IMenuItem {
 export interface ISubteamSession {
     isPrevSession: boolean;
     sessionShrinkType: object | any;
-    sessionSubteam: object | any;
+    sessionSubteam?: ISubTeam;
     shrinkItems: any;
     sessionStore: string;
     sessionNumber: number;
@@ -61,7 +64,7 @@ export interface ISubteamSession {
     forceSubteamSelection?: boolean;
 }
 
-export interface ITeam {
+export interface ISubTeam {
     subteamNo: string;
     subteamName: string;
     subteamTypeId: number;
