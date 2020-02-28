@@ -75,9 +75,11 @@ Namespace WholeFoods.IRMA.ItemHosting.DataAccess
                 End If
             End Try
 
+            table.DefaultView.Sort = "Store_Name ASC"
+
             logger.Debug("GetStoreAndDCList Exit")
 
-            Return table
+            Return table.DefaultView.Table
         End Function
 
 
