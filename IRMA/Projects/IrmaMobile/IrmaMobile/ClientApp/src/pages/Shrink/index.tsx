@@ -60,7 +60,6 @@ const Shrink: React.FC = () => {
         dispatch({ type: types.SETSTORE, store: subteamSession[sessionIndex].sessionStore});
         dispatch({ type: types.SETSTORENUMBER, storeNumber: subteamSession[sessionIndex].sessionNumber.toString()});
         dispatch({ type: types.SETREGION, region: subteamSession[sessionIndex].sessionRegion});
-        dispatch({ type: types.SETSHRINKITEMS, shrinkItems: subteamSession[sessionIndex].shrinkItems });
       }
 
     if (shrinkState.isSelected || state.subteamSession[sessionIndex].isPrevSession) {
@@ -330,8 +329,6 @@ const Shrink: React.FC = () => {
   }
 
   const saveItems = (shrinkItems: any[]) => {
-    dispatch({ type: types.SETSHRINKITEMS, shrinkItems: shrinkItems });
-    localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems));
     subteamSession[sessionIndex] = { ...subteamSession[sessionIndex], shrinkItems: shrinkItems, sessionNumber: parseInt(state.storeNumber), sessionShrinkType: state.shrinkType, sessionSubteam: state.subteam, sessionStore: state.store, sessionRegion:state.region, isPrevSession: true };
 
     dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });

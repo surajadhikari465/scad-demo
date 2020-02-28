@@ -111,7 +111,7 @@ const ReviewShrink: React.FC = () => {
       if (succeededItems === shrinkItems.length) {
         toast.success("Shrink Items Uploaded");
         dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
-        subteamSession[sessionIndex] = { shrinkItems:[], isPrevSession: false, sessionShrinkType: '', sessionSubteam: '', sessionStore:'', sessionRegion:'', sessionUser: user, forceSubteamSelection: true };
+        subteamSession[sessionIndex] = { shrinkItems:[], isPrevSession: false, sessionShrinkType: '', sessionSubteam: undefined, sessionStore:'', sessionNumber: 0, sessionRegion:'', sessionUser: user, forceSubteamSelection: true };
         dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
       }
     }
