@@ -320,18 +320,39 @@ namespace BulkItemUploadProcessor.Service
 
         public bool IsUpcInBarcodeTypeRanges(string upc, List<BarcodeTypeModel> barcodeTypes)
         {
-            long upcLong;
-            bool returnVal = false;
-            if (long.TryParse(upc, out upcLong))
+            long upcLong = 0;
+
+            if (upc.Length == 11 && upc.EndsWith("00000") && upc.StartsWith("2"))
             {
-                returnVal = (from barcodeType in barcodeTypes.Where(b => b.BeginRange != null && b.EndRange != null)
-                             let beginRange = long.Parse(barcodeType.BeginRange)
-                             let endRange = long.Parse(barcodeType.EndRange)
-                             where upcLong >= beginRange && upcLong <= endRange
-                             select beginRange).Any();
+                return true;
             }
 
-            return returnVal;
+            if (long.TryParse(upc, out upcLong))
+            {
+                foreach (var barcodeType in barcodeTypes)
+                {
+                    long beginRange;
+                    long endRange;
+
+                    if (barcodeType.ScalePlu == true)
+                    {
+                        beginRange = long.Parse(barcodeType.BeginRange.Substring(0, barcodeType.BeginRange.Length - 5));
+                        endRange = long.Parse(barcodeType.EndRange.Substring(0, barcodeType.EndRange.Length - 5));
+                    }
+                    else
+                    {
+                        beginRange = long.Parse(barcodeType.BeginRange);
+                        endRange = long.Parse(barcodeType.EndRange);
+                    }
+
+                    if (upcLong >= beginRange && upcLong <= endRange)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

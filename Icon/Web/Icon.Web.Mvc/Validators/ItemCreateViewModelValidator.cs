@@ -116,6 +116,12 @@ namespace Icon.Web.Mvc.Validators
         private bool IsUpcInBarcodeTypeRanges(string upc)
         {
             long upcLong = 0;
+
+            if (upc.Length == 11 && upc.EndsWith("00000") && upc.StartsWith("2"))
+            {
+                return true;
+            }
+
             if (long.TryParse(upc, out upcLong))
             {
                 var barcodeTypes = getBarcodeTypeQueryHandler.Search(new GetBarcodeTypeParameters())
@@ -123,8 +129,20 @@ namespace Icon.Web.Mvc.Validators
 
                 foreach (var barcodeType in barcodeTypes)
                 {
-                    long beginRange = long.Parse(barcodeType.BeginRange);
-                    long endRange = long.Parse(barcodeType.EndRange);
+                    long beginRange;
+                    long endRange;
+
+                    if (barcodeType.ScalePlu == true)
+                    {
+                        beginRange = long.Parse(barcodeType.BeginRange.Substring(0,barcodeType.BeginRange.Length - 5));
+                        endRange = long.Parse(barcodeType.EndRange.Substring(0, barcodeType.EndRange.Length - 5));
+                    }
+                    else
+                    {
+                        beginRange = long.Parse(barcodeType.BeginRange);
+                        endRange = long.Parse(barcodeType.EndRange);
+                    }
+                   
                     if (upcLong >= beginRange && upcLong <= endRange)
                     {
                         return true;

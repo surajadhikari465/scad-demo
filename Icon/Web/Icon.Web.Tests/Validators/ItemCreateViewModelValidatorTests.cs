@@ -496,6 +496,81 @@ namespace Icon.Web.Tests.Unit.Validators
                 result.Errors.First().ErrorMessage);
         }
 
+        [TestMethod]
+        public void Validate_ScanCodeTypeIsUpcAndStartsWithTwoAndHasElevenDigitsAndEndsWithFiveZeroes_ErrorReturned()
+        {
+            //Given
+
+            itemCreateViewModel.ScanCodeType = Constants.Upc;
+            itemCreateViewModel.ScanCode = "21000000000";
+
+            itemCreateViewModel.BarcodeTypeId = getUpcBarcodeTypeId();
+
+            mockDoesScanCodeExistQueryHandler.Setup(m => m.Search(It.IsAny<DoesScanCodeExistParameters>()))
+                .Returns(false);
+
+            //When
+            var result = validator.Validate(itemCreateViewModel);
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(
+                 "'21000000000' exists in a Barcode Type range. Please enter a scan code not within a Barcode Type range.",
+                 result.Errors.First().ErrorMessage);
+        }
+
+        [TestMethod]
+        public void Validate_ScanCodeTypeIsUpcAndStartsWithTwoAndHasElevenDigitsDoesNotEndsWithFiveZeroes_NoErrorReturned()
+        {
+            //Given
+
+            itemCreateViewModel.ScanCodeType = Constants.Upc;
+            itemCreateViewModel.ScanCode = "21000000001";
+
+            itemCreateViewModel.BarcodeTypeId = getUpcBarcodeTypeId();
+
+            mockDoesScanCodeExistQueryHandler.Setup(m => m.Search(It.IsAny<DoesScanCodeExistParameters>()))
+                .Returns(false);
+
+            //When
+            var result = validator.Validate(itemCreateViewModel);
+            Assert.IsTrue(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_ScanCodeTypeIsUpcAndStartsWithTwoAndHasTwelveDigitsEndsWithFiveZeroes_NoErrorReturned()
+        {
+            //Given
+
+            itemCreateViewModel.ScanCodeType = Constants.Upc;
+            itemCreateViewModel.ScanCode = "214400600000";
+
+            itemCreateViewModel.BarcodeTypeId = getUpcBarcodeTypeId();
+
+            mockDoesScanCodeExistQueryHandler.Setup(m => m.Search(It.IsAny<DoesScanCodeExistParameters>()))
+                .Returns(false);
+
+            //When
+            var result = validator.Validate(itemCreateViewModel);
+            Assert.IsTrue(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_ScanCodeTypeIsUpcAndStartsWithTwoAndHasTwelveDigitsEndsWithSixZeroes_NoErrorReturned()
+        {
+            //Given
+
+            itemCreateViewModel.ScanCodeType = Constants.Upc;
+            itemCreateViewModel.ScanCode = "214407000000";
+
+            itemCreateViewModel.BarcodeTypeId = getUpcBarcodeTypeId();
+
+            mockDoesScanCodeExistQueryHandler.Setup(m => m.Search(It.IsAny<DoesScanCodeExistParameters>()))
+                .Returns(false);
+
+            //When
+            var result = validator.Validate(itemCreateViewModel);
+            Assert.IsTrue(result.IsValid);
+        }
+
         private int getUpcBarcodeTypeId()
         {
             context = new IconContext();

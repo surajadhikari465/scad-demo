@@ -23,6 +23,7 @@ namespace BulkItemUploadProcessor.DataAccess.Queries
                                   ,[BarcodeType]   
                                   ,[BeginRange]
                                   ,[EndRange]
+                                  ,[ScalePlu]
                                  FROM [dbo].[BarcodeType]").ToList();
         }
     }
