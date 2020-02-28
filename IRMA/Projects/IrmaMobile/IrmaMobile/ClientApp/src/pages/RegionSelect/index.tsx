@@ -75,41 +75,44 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 		}
 	}
 
-	const handleSelectRegionClick = async () => {
-		const { region, subteamSession } = state;
-		
-		dispatch({ type: types.SETUSER, user: null })
+	const handleSelectRegionClick = () => {
 		setLoadingContent("Retrieving User information...");
 		setIsLoading(true);
-		try {
-			const authToken = localStorage.getItem('authToken');
-			if (authToken) {
-				const parsedAuthToken = JSON.parse(authToken);
-				const user = await agent.User.getUser(region, parsedAuthToken.samaccountname);
-				if (!user) {
-					toast.error("You are not authorized to use this application for this region.  Please contact your Regional IRMA Security Admin.");
-					setIsLoading(false);
-				} else if (!user.isAccountEnabled) {
-					toast.error("Your IRMA account is disabled for this region.  Please contact your Regional IRMA Security Admin.");
-					setIsLoading(false);
-				} else {
-					dispatch({ type: types.SETUSER, user: user });
+		dispatch({ type: types.SETUSER, user: null })
+		const { region, subteamSession } = state;
+		const getUser = async () => {
+			try {
+				const authToken = localStorage.getItem('authToken');
+				if (authToken) {
+					const parsedAuthToken = JSON.parse(authToken);
+					const user = await agent.User.getUser(region, parsedAuthToken.samaccountname);
+					if (!user) {
+						toast.error("You are not authorized to use this application for this region.  Please contact your Regional IRMA Security Admin.");
+						setIsLoading(false);
+					} else if (!user.isAccountEnabled) {
+						toast.error("Your IRMA account is disabled for this region.  Please contact your Regional IRMA Security Admin.");
+						setIsLoading(false);
+					} else {
+						dispatch({ type: types.SETUSER, user: user });
 					
-					if((subteamSession.filter((session: any) => session.sessionUser.userName === user.userName).length === 0)){
-						subteamSession.push({ shrinkItems:[], isPrevSession: false, sessionShrinkType: '', sessionSubteam: '', sessionStore:'', sessionRegion:'', sessionUser: user,forceSubteamSelection: true });
-					} 
-					dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
-					setLoadingContent("Loading Stores...");
-					getStores(user);
+						if((subteamSession.filter((session: any) => session.sessionUser.userName === user.userName).length === 0)){
+							subteamSession.push({ shrinkItems:[], isPrevSession: false, sessionShrinkType: '', sessionSubteam: '', sessionStore:'', sessionRegion:'', sessionUser: user,forceSubteamSelection: true });
+						} 
+						dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
+						setLoadingContent("Loading Stores...");
+						getStores(user);
+					}
+				} else {
+					toast.error('Unable to load authorization token. Please reload the application and log back in.');
+					setIsLoading(false);
 				}
-			} else {
-				toast.error('Unable to load authorization token. Please reload the application and log back in.');
+			} catch (error) {
+				console.error(error);
+				toast.error("Unable to load user information. Please close and re-open the application.");
 				setIsLoading(false);
 			}
-		} catch (error) { 
-			toast.error("Unable to load user information. Please close and re-open the application.");
-			setIsLoading(false);
 		}
+		getUser();
 	}
 
 	const selectRegion = (e: any) => {
