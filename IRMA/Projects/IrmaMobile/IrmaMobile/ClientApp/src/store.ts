@@ -20,7 +20,6 @@ interface IIntitialState {
     shrinkType: IShrinkType;
     shrinkTypes: any[],
     selectedShrinkItem: ISelectedShrink,
-    shrinkItems: any[],
     isLoading: boolean;
     orderDetails: OrderDetails | null;
     mappedReasonCodes: IMappedReasonCode[];
@@ -132,7 +131,6 @@ export const initialState = {
     shrinkType: { shrinkType: '', abbreviation: '', shrinkSubTypeMember: '', shrinkSubTypeId: null, inventoryAdjustmentCodeId: null, reasonCode: null },
     selectedShrinkItem: { identifier: '', quantity: 0, signDescription: '', packageDesc1: '', packageDesc2: '', packageUnitAbbreviation: '', shrinkType: '', costedByWeight: false },
     shrinkTypes: [],
-    shrinkItems: [],
     isLoading: false,
     orderDetails: null,
     mappedReasonCodes: [],
@@ -164,7 +162,6 @@ export const types = {
     SETSUBTEAMNO: "SETSUBTEAMNO",
     SETSHRINKTYPE: "SETSHRINKTYPE",
     SETSHRINKTYPES: "SETSHRINKTYPES",
-    SETSHRINKITEMS: "SETSHRINKITEMS",
     SETSELECTEDSHRINKITEM: "SETSELECTEDSHRINKITEM",
     SETISLOADING: "SETISLOADING",
     SETORDERDETAILS: "SETORDERDETAILS",
@@ -223,9 +220,6 @@ export const reducer = (state: any, action: any) => {
         }
         case types.SETSHRINKTYPES: {
             return { ...state, shrinkTypes: action.shrinkTypes };
-        }
-        case types.SETSHRINKITEMS: {
-            return { ...state, shrinkItems: action.shrinkItems };
         }
         case types.SETSELECTEDSHRINKITEM: {
             return { ...state, selectedShrinkItem: action.selectedShrinkItem };

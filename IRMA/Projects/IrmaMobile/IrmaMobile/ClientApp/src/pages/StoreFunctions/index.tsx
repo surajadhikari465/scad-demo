@@ -35,11 +35,9 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
   }, [dispatch]);
 
   const deleteSession = () => {
-    localStorage.removeItem('shrinkItems');
     localStorage.removeItem('sessionSubType');
-    dispatch({ type: types.SETSHRINKITEMS, shrinkItems: [] });
     dispatch({ type: types.SETSHRINKTYPE, shrinkType: {} });
-    subteamSession[sessionIndex] = { ...subteamSession[sessionIndex], isPrevSession: false };
+    subteamSession[sessionIndex] = { ...subteamSession[sessionIndex], shrinkItems: [], isPrevSession: false };
     dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
     setAlert({
       ...alert,

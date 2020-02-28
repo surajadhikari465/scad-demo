@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useState } from 'react';
 import { Link } from "react-router-dom";
-import { AppContext, types } from "../../../store";
+import { AppContext, types, ISubteamSession } from "../../../store";
 import BasicModal from '../../../layout/BasicModal';
 import './styles.scss';
 
@@ -11,12 +11,14 @@ interface UpdateShrinkProps {
 const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
   // @ts-ignore
   const { state, dispatch } = useContext(AppContext);
-  const { selectedShrinkItem, user, subteam } = state;
+  const { selectedShrinkItem, user, subteam, subteamSession } = state;
   const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { }, cancelAction: () => { } });
   const [initialQuantity] = useState(selectedShrinkItem.quantity);
   const [initialShrinkType] = useState(selectedShrinkItem.shrinkType);
   const [shrinkType] = useState(selectedShrinkItem.shrinkType);
   const { history } = props;
+  const [sessionIndex] = useState<number>(subteamSession.findIndex((s: ISubteamSession) => s.sessionUser.userName === user?.userName));
+
   const updateQuantity = (e: any) => {
     let quantity = parseFloat(e.target.value);
     if (!selectedShrinkItem.costedByWeight) {
@@ -54,11 +56,9 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
         header: 'Update Shrink'
       });
     } else {
-      let shrinkItems = state.shrinkItems.map((shrinkItem: any) => shrinkItem.identifier === selectedShrinkItem.identifier && initialShrinkType === shrinkItem.shrinkType ? selectedShrinkItem : shrinkItem);
-      dispatch({ type: types.SETSHRINKITEMS, shrinkItems: shrinkItems });
-      localStorage.setItem("shrinkItems", JSON.stringify(shrinkItems));
-      localStorage.setItem('shrinkUser', JSON.stringify(user));
-      localStorage.setItem('shrinkSubteam', JSON.stringify(subteam));
+      let shrinkItems = state.subteamSession[sessionIndex].shrinkItems.map((shrinkItem: any) => shrinkItem.identifier === selectedShrinkItem.identifier && initialShrinkType === shrinkItem.shrinkType ? selectedShrinkItem : shrinkItem);
+      let subteamSessionCopy = { ...state.subteamSession[sessionIndex], shrinkItems: shrinkItems };
+      dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: [...state.subteamSession.slice(0, sessionIndex), subteamSessionCopy, ...state.subteamSession.slice(sessionIndex + 1)] });
       history.push('/shrink/review');
     }
   }
@@ -101,7 +101,7 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
               min="1"
               maxLength={3}
               step={selectedShrinkItem.costedByWeight ? 'any' : 1}
-              onKeyDown={(e:any)=> e.key === 'Enter' ? e.target.blur() : ''}
+              onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''}
               onKeyPress={clearInvalid}
               onChange={updateQuantity} />
           </div>

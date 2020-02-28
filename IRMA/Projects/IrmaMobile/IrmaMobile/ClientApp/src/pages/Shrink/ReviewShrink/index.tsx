@@ -39,9 +39,9 @@ const ReviewShrink: React.FC = () => {
   }, [setMenuItems, dispatch]);
 
   useEffect(() => {
-    if (localStorage.getItem("shrinkItems") !== null) {
+    if (subteamSession[sessionIndex].shrinkItems) {
       // @ts-ignore
-      let localShrinkItems = JSON.parse(localStorage.getItem("shrinkItems"));
+      let localShrinkItems = subteamSession[sessionIndex].shrinkItems;
       setShrinkItems(localShrinkItems);
     }
     dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
@@ -102,7 +102,6 @@ const ReviewShrink: React.FC = () => {
         }
         finally {
           setIsLoading(false);
-          localStorage.removeItem("shrinkItems");
           localStorage.removeItem('sessionSubType');
           localStorage.removeItem('shrinkUser');
           localStorage.removeItem('shrinkSubteam');
@@ -112,7 +111,7 @@ const ReviewShrink: React.FC = () => {
       if (succeededItems === shrinkItems.length) {
         toast.success("Shrink Items Uploaded");
         dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
-        subteamSession[sessionIndex] = { ...state.subteamSession[sessionIndex], shrinkItems:[], forceSubteamSelection: false, isPrevSession: false };
+        subteamSession[sessionIndex] = { shrinkItems:[], isPrevSession: false, sessionShrinkType: '', sessionSubteam: '', sessionStore:'', sessionRegion:'', sessionUser: user, forceSubteamSelection: true };
         dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
       }
     }
@@ -129,7 +128,8 @@ const ReviewShrink: React.FC = () => {
     setShrinkItems(newShrinkItems);
     setSelected(undefined);
     setConfirm({ open: false, message: '', onConfirm: () => { } });
-    localStorage.setItem("shrinkItems", JSON.stringify(newShrinkItems));
+    const subteamSessionCopy = {...subteamSession[sessionIndex], shrinkItems: newShrinkItems };
+    dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: [...subteamSession.slice(0, sessionIndex), subteamSessionCopy, ...subteamSession.slice(sessionIndex + 1)]})
   }
 
   const removeCheck = () => {
