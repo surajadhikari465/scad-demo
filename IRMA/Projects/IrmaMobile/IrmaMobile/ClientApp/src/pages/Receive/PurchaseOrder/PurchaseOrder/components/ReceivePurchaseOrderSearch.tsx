@@ -22,15 +22,9 @@ const ReceivePurchaseOrderSearch: React.FC<IProps> = ({ handleSubmit }) => {
         const { name, value } = event.currentTarget;
 
         if(name === 'purchaseOrderNumber') {
-            dispatch({
-                type: types.SETPURCHASEORDERNUMBER,
-                [name]: value
-            });
+            dispatch({ type: types.SETPURCHASEORDERNUMBER, [name]: value });
         } else {
-            dispatch({
-                type: types.SETPURCHASEORDERUPC,
-                [name]: value
-            });
+            dispatch({ type: types.SETPURCHASEORDERUPC, [name]: value });
         }
     };
 

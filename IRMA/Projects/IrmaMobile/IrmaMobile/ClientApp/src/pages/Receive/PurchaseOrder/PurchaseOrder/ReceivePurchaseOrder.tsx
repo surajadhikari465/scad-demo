@@ -14,14 +14,14 @@ import OrderInformation from "../types/OrderInformation";
 import orderUtil from "../util/Order"
 import isMinDate from "../util/MinDate";
 // @ts-ignore 
-import { BarcodeScanner, IBarcodeScannedEvent} from '@wfm/mobile';
+import { BarcodeScanner, IBarcodeScannedEvent } from '@wfm/mobile';
 
 
 interface RouteParams {
     openOrderInformation: string;
 }
 
-interface IProps extends RouteComponentProps<RouteParams> {}
+interface IProps extends RouteComponentProps<RouteParams> { }
 
 const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     // @ts-ignore
@@ -35,14 +35,20 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     const [isReopening, setIsReopening] = useState<boolean>(false);
 
     const setMenuItems = useCallback(() => {
+        const handleExitReceiveClick = () => {
+            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
+            dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
+            dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
+        }
+
         const newMenuItems = [
             { id: 1, order: 0, text: "Refused Items", path: "#", disabled: true } as IMenuItem,
             { id: 2, order: 1, text: "Invoice Data", path: `/receive/invoicedata/${purchaseOrderNumber}`, disabled: orderDetails === null } as IMenuItem,
             { id: 3, order: 2, text: "Receiving List", path: `/receive/List/${purchaseOrderNumber}`, disabled: orderDetails === null } as IMenuItem,
             { id: 4, order: 3, text: "Order Info", path: `/receive/purchaseorder/open`, disabled: orderDetails === null } as IMenuItem,
             { id: 5, order: 4, text: "Clear Screen", path: "/receive/PurchaseOrder/clearscreen", disabled: false } as IMenuItem,
-            { id: 7, order: 6, text: "Exit Receive", path: "/functions", disabled: false } as IMenuItem,
-         ] as IMenuItem[];
+            { id: 7, order: 6, text: "Exit Receive", path: "/functions", disabled: false, onClick: handleExitReceiveClick } as IMenuItem,
+        ] as IMenuItem[];
 
         dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems });
     }, [purchaseOrderNumber, orderDetails, dispatch]);
@@ -58,20 +64,20 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     useEffect(() => {
         dispatch({ type: types.SETTITLE, Title: 'Receive' });
         return () => {
-          dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
+            dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
         };
-      }, [dispatch]);
+    }, [dispatch]);
 
-    const loadPurchaseOrder = async ( upc: string, purchaseOrderNum?: number | undefined, closeOrderList: boolean = false) => {
-        if(purchaseOrderNum === undefined){
+    const loadPurchaseOrder = async (upc: string, purchaseOrderNum?: number | undefined, closeOrderList: boolean = false) => {
+        if (purchaseOrderNum === undefined) {
             purchaseOrderNum = parseInt(purchaseOrderNumber);
         }
         //int32 max...
-        if(purchaseOrderNum > 2147483647) {
+        if (purchaseOrderNum > 2147483647) {
             toast.error(`The PO # value is too large. Please enter a smaller value`, { autoClose: false });
             return;
         }
-        
+
         try {
             dispatch({ type: types.SETISLOADING, isLoading: true });
             dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
@@ -84,22 +90,22 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
             if (purchaseOrderNum) {
                 var order = await agent.PurchaseOrder.detailsFromPurchaseOrderNumber(region, purchaseOrderNum);
 
-                if(!order) {
+                if (!order) {
                     toast.error("PO could not be loaded. Please try again.", { autoClose: false });
                     return;
                 }
 
-                if(order.storeCompanyName !== store){
-                    toast.error( `PO ${purchaseOrderNum} is for ${order.storeCompanyName}. Please try again.`, { autoClose: false });
+                if (order.storeCompanyName !== store) {
+                    toast.error(`PO ${purchaseOrderNum} is for ${order.storeCompanyName}. Please try again.`, { autoClose: false });
                     return;
                 }
 
-                if(order.orderHeader_ID === 0) {
+                if (order.orderHeader_ID === 0) {
                     toast.error(`PO #${purchaseOrderNum} not found`, { autoClose: false });
                     return;
                 }
 
-                if(!order.sentDate || isMinDate(order.sentDate)) {
+                if (!order.sentDate || isMinDate(order.sentDate)) {
                     toast.error(`PO #${purchaseOrderNum} has not yet been sent. Please try again.`, { autoClose: false });
                     return;
                 }
@@ -112,8 +118,8 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                 try {
                     var orderDetails = orderUtil.MapOrder(order, upc);
 
-                    if(!isMinDate(orderDetails.CloseDate)) {
-                        if(!orderDetails.PartialShipment){
+                    if (!isMinDate(orderDetails.CloseDate)) {
+                        if (!orderDetails.PartialShipment) {
                             toast.error(`PO ${purchaseOrderNum} is already closed. To review or reopen a closed order, please use the IRMA client.`, { autoClose: false });
                             dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
                             dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
@@ -134,10 +140,10 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                     setOrderInformation(orderInformation);
 
                     dispatch({ type: types.SETORDERDETAILS, orderDetails: orderDetails });
-                } catch(err) {
+                } catch (err) {
                     toast.error("Unable to open PO", { autoClose: false })
                 }
-                        
+
             } else if (upc) {
                 var ordersRaw = await agent.PurchaseOrder.detailsFromUpc(
                     region,
@@ -168,16 +174,16 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
         BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
             dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: data.Data });
             loadPurchaseOrder(data.Data);
-          });
+        });
 
         return () => {
-            BarcodeScanner.scanHandler = () => {};
+            BarcodeScanner.scanHandler = () => { };
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if(listedOrders.length > 0 && !selectedPo) {
-        return (<ReceivePurchaseOrderList upc={purchaseOrderUpc} orders={listedOrders} poSelected={loadPurchaseOrder}/>)
+    if (listedOrders.length > 0 && !selectedPo) {
+        return (<ReceivePurchaseOrderList upc={purchaseOrderUpc} orders={listedOrders} poSelected={loadPurchaseOrder} />)
     }
 
     const handleOnCloseOrderInformation = () => {
@@ -185,16 +191,16 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     }
 
     const handleReopenPartial = async () => {
-        try{
+        try {
             setIsReopening(true);
             const result = await agent.PurchaseOrder.reopenOrder(region, parseInt(purchaseOrderNumber));
 
-            if(result && result.status) {
+            if (result && result.status) {
                 toast.info('The order has been reopened');
             } else {
                 toast.error(`Error reopening the order: ${(result && result.errorMessage) || 'No message given'}`);
             }
-        } 
+        }
         finally {
             setIsReopening(false);
         }
@@ -209,17 +215,17 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     return (
         <Fragment>
             {isReopening ? <LoadingComponent content="Reopening order..." /> :
-            <Fragment>
-                <ConfirmModal handleCancelClose={handleReopenCancel} handleConfirmClose={handleReopenPartial} setOpenExternal={setOpenPartial} showTriggerButton={false} 
-                                    openExternal={openPartial} headerText='Receive' cancelButtonText='No' confirmButtonText='Yes' 
-                                    lineOne={'This order was closed as a partial shipment. Re-open the order now to scan more items?'} /> 
-                <OrderInformationModal handleOnClose={handleOnCloseOrderInformation} orderInformation={orderInformation} open={openOrderInformation === 'open'} />
-                <CurrentLocation />
-                <div style={{marginTop: '10px', padding: '0px'}}>
-                    <ReceivePoSearch handleSubmit={loadPurchaseOrder}/>
-                </div>
-                <ReceivePurchaseOrderDetails/>
-            </Fragment>
+                <Fragment>
+                    <ConfirmModal handleCancelClose={handleReopenCancel} handleConfirmClose={handleReopenPartial} setOpenExternal={setOpenPartial} showTriggerButton={false}
+                        openExternal={openPartial} headerText='Receive' cancelButtonText='No' confirmButtonText='Yes'
+                        lineOne={'This order was closed as a partial shipment. Re-open the order now to scan more items?'} />
+                    <OrderInformationModal handleOnClose={handleOnCloseOrderInformation} orderInformation={orderInformation} open={openOrderInformation === 'open'} />
+                    <CurrentLocation />
+                    <div style={{ marginTop: '10px', padding: '0px' }}>
+                        <ReceivePoSearch handleSubmit={loadPurchaseOrder} />
+                    </div>
+                    <ReceivePurchaseOrderDetails />
+                </Fragment>
             }
         </Fragment>
     );
