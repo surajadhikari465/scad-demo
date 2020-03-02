@@ -142,5 +142,14 @@ namespace IrmaMobile.Controllers
 
             return result;
         }
+
+        [ProducesResponseType(200)]
+        [HttpGet]
+        public async Task UpdateOrderHeaderCosts([FromRoute]string region, [FromQuery]int orderId)
+        {
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(InvoiceDataController)}.{nameof(UpdateOrderHeaderCosts)}");
+
+            await service.UpdateOrderHeaderCosts(region, orderId);
+        }
     }
 }

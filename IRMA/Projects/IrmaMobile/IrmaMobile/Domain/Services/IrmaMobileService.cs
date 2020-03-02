@@ -317,6 +317,11 @@ namespace IrmaMobile.Services
             return new CreateTransferOrderResult { IrmaPoNumber = result.IRMA_PONumber };
         }
 
+        public async Task UpdateOrderHeaderCosts(string region, int orderHeaderId)
+        {
+            await MakeServiceRequest(region, client => client.UpdateOrderHeaderCostsAsync(orderHeaderId));
+        }
+
         public async Task<UserModel> GetUser(string region, string userName)
         {
             var result = await MakeServiceRequest(region, client => client.GetUserRoleAsync(userName));

@@ -132,7 +132,8 @@ const InvoiceData = {
                 VendorDocDate: vendorDocDate,
                 SubteamNo: subteamNo,
                 PartialShipment: partialShipment
-            })
+            }),
+    updateOrderHeaderCosts: async (region: string, orderId: number) => await requests.get(`/${region}/invoicedata/updateOrderHeaderCosts?orderId=${orderId}`)
 };
 
 const ReceivingList = {

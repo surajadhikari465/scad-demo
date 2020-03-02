@@ -36,5 +36,6 @@ namespace IrmaMobile.Services
         Task<StoreItem> GetTransferItemAsync(string region, string upc, int productType, int storeNo, int vendorId, int subteam, int supplyTeam);
         Task<CreateTransferOrderResult> CreateTransferOrder(string region, TransferOrderModel transferOrder);
         Task<UserModel> GetUser(string region, string userName);
+        Task UpdateOrderHeaderCosts(string region, int orderHeaderId);
     }
 }
