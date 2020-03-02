@@ -8,8 +8,7 @@ BEGIN
   INTO #hierarchyNational
   FROM @hierarchyNational t
   WHERE t.SubcategoryHCID IS NOT NULL
-    AND t.CategoryHCID IS NOT NULL
-    AND t.t.FamilyHCID IS NOT NULL;
+    AND t.CategoryHCID IS NOT NULL;
 
   IF(EXISTS(SELECT 1 FROM #hierarchyNational)) 
   BEGIN
