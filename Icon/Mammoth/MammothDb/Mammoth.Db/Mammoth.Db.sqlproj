@@ -852,6 +852,7 @@
     <None Include="Scripts\PreDeploymentScripts\Archive\DeduplicateScanCodes_PERF.sql" />
     <None Include="Scripts\PostDeploymentScripts\30224_Create_IVL_Extract_JobScheudle.sql" />
     <None Include="Scripts\PostDeploymentScripts\30224_Create_IVL_Item_Extract_JobSchedule.sql" />
+    <None Include="Scripts\PostDeploymentScripts\32371_CleanUp_Hierarchy_NationalClass_Table.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

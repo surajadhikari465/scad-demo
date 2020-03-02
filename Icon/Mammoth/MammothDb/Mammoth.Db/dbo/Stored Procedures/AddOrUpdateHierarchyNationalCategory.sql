@@ -7,7 +7,8 @@ BEGIN
   SELECT DISTINCT t.FamilyHCID, t.CategoryHCID
   INTO #hierarchyNational
   FROM @hierarchyNational t
-  WHERE t.CategoryHCID IS NOT NULL;
+  WHERE t.CategoryHCID IS NOT NULL
+    AND t.FamilyHCID IS NOT NULL;
 
   IF(EXISTS(SELECT 1 FROM #hierarchyNational)) 
   BEGIN
