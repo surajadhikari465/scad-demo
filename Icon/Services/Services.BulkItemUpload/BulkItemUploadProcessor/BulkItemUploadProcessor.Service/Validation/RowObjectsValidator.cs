@@ -168,7 +168,7 @@ namespace BulkItemUploadProcessor.Service.Validation
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"Unexpected error occurred while validating row. Error: {ex.Message}" });
                 }
@@ -193,12 +193,32 @@ namespace BulkItemUploadProcessor.Service.Validation
                 {
                     if (barcodeTypeId == upcBarcodeType.BarcodeTypeId)
                     {
+                        if (scanCode.Length == 11 && scanCode.EndsWith("00000") && scanCode.StartsWith("2"))
+                        {
+                            return new Tuple<bool, string>(false, $"'{scanCode}'exists in a Barcode Type range. Please enter a scan code not within a Barcode Type range.");
+                        }
+
                         var pluBarcodeTypes = barcodeTypes
                             .Where(b => b.BarcodeTypeId != upcBarcodeType.BarcodeTypeId)
-                            .Select(b => new { b.BarcodeType, BeginRange = long.Parse(b.BeginRange), EndRange = long.Parse(b.EndRange) });
+                            .Select(b => new { b.BarcodeType, b.BeginRange, b.EndRange, b.ScalePlu });
+
                         foreach (var pluBarcodeType in pluBarcodeTypes)
                         {
-                            if (longScanCode >= pluBarcodeType.BeginRange && longScanCode <= pluBarcodeType.EndRange)
+                            long beginRange;
+                            long endRange;
+
+                            if (pluBarcodeType.ScalePlu == true)
+                            {
+                                beginRange = long.Parse(pluBarcodeType.BeginRange.Substring(0, pluBarcodeType.BeginRange.Length - 5));
+                                endRange = long.Parse(pluBarcodeType.EndRange.Substring(0, pluBarcodeType.EndRange.Length - 5));
+                            }
+                            else
+                            {
+                                beginRange = long.Parse(pluBarcodeType.BeginRange);
+                                endRange = long.Parse(pluBarcodeType.EndRange);
+                            }
+
+                            if (longScanCode >= beginRange && longScanCode <= endRange)
                                 return new Tuple<bool, string>(false, $"Scan Code '{scanCode}' is marked as UPC but falls under {pluBarcodeType.BarcodeType} Barcode range.");
                         }
                         return new Tuple<bool, string>(true, null);
@@ -269,7 +289,7 @@ namespace BulkItemUploadProcessor.Service.Validation
                 {
                     scanCode = rowObjectDictionary.Cells[scanCodeIndex];
                 }
-               
+
                 if (!scanCodeValidator.Validate(scanCode))
                     errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{ScanCodeColumnHeader}' has invalid value. Scan Code is required, must be less than {Icon.Common.Constants.ScanCodeMaxLength} characters, must not start with 0, and must be numeric." });
 
@@ -285,7 +305,7 @@ namespace BulkItemUploadProcessor.Service.Validation
                         {
                             if (value == RemoveExcelValue)
                             {
-                                if(attributeColumn.IsRequired)
+                                if (attributeColumn.IsRequired)
                                 {
                                     errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{attributeColumn.ColumnHeader.Name}' is required and can't be removed." });
                                 }
