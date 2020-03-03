@@ -224,6 +224,9 @@
     <None Include="App.Test1.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
+    <None Include="App.QA.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
