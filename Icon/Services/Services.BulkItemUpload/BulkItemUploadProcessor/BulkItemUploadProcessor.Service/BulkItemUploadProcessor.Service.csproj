@@ -45,6 +45,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Perf|AnyCPU'">
     <OutputPath>bin\Perf\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|AnyCPU'">
+    <OutputPath>bin\QA\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
@@ -172,6 +178,9 @@
       <IsTransformFile>true</IsTransformFile>
     </None>
     <None Include="App.Perf.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
+    <None Include="App.QA.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
     <None Include="App.QA1.config">
