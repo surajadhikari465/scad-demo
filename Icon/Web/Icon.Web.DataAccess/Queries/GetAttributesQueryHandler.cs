@@ -68,7 +68,15 @@ namespace Icon.Web.DataAccess.Queries
                 FROM AttributeCharacterSets acs
                 JOIN CharacterSets cs ON acs.CharacterSetId = cs.CharacterSetId
                 JOIN Attributes a ON a.AttributeId = acs.AttributeId
-                WHERE a.AttributeGroupId <> @nutritionGroupId";
+                WHERE a.AttributeGroupId <> @nutritionGroupId;
+
+                SELECT 
+                     COUNT(1) AS ItemCount
+	                ,j.[Key] As AttributeName
+                FROM Item i
+                CROSS APPLY OPENJSON(ItemAttributesJson) j
+                WHERE j.[Value] IS NOT NULL
+                GROUP BY j.[Key]";
 
             var results = connection.QueryMultiple(sql);
             var attributes = results.Read<AttributeModel>()
@@ -83,12 +91,15 @@ namespace Icon.Web.DataAccess.Queries
                 },
                 "CharacterSetId")
                 .GroupBy(c => c.AttributeId);
+            var attributesCount = results.Read<AttributeItemCountModel>()
+               .ToList();
 
             attributes.ForEach(a =>
-                {
-                    a.PickListData = pickListDataGroups.FirstOrDefault(g => g.Key == a.AttributeId);
-                    a.CharacterSets = attributeCharacterSetGroups.FirstOrDefault(g => g.Key == a.AttributeId);
-                });
+            {
+                a.PickListData = pickListDataGroups.FirstOrDefault(g => g.Key == a.AttributeId);
+                a.CharacterSets = attributeCharacterSetGroups.FirstOrDefault(g => g.Key == a.AttributeId);
+                a.ItemCount = attributesCount.FirstOrDefault(g => g.AttributeName == a.AttributeName)?.ItemCount ?? 0;
+            });
 
             return attributes;
         }

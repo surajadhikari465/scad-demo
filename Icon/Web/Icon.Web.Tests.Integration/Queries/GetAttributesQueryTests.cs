@@ -25,7 +25,7 @@ namespace Icon.Web.Tests.Integration.Queries
         private int pickListSecondId;
         private int attributesWebConfigurationId;
         private int characterSetId;
-        private int attributeCharacterSetId;
+        private int attributeCharacterSetId;        
 
         [TestInitialize]
         public void InitializeData()
@@ -107,6 +107,20 @@ namespace Icon.Web.Tests.Integration.Queries
 			Assert.IsFalse(result.Any(x => x.AttributeGroupId == (int)groupId));
 			Assert.IsTrue(result.Count() > 0);
 		}
+
+        [TestMethod]
+        public void GetAttributesQuery_AttributeExists_ReturnsAttributesWithItemCount()
+        {
+            //When
+            var result = query.Search(parameters).Where(a => a.AttributeName.Equals("ABF")).FirstOrDefault().ItemCount;            
+            
+            var itemCount = connection.ExecuteScalar("SELECT COUNT(*) FROM Item i CROSS APPLY OPENJSON(ItemAttributesJson) j WHERE j.[key] = 'ABF' GROUP BY j.[Key]; ");
+
+            //Then         
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(itemCount);
+            Assert.AreEqual(itemCount, result);            
+        }
 
         private void StageData()
         {

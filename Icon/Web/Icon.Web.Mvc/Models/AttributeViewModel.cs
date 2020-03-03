@@ -60,7 +60,8 @@ namespace Icon.Web.Mvc.Models
         public string XmlTraitDescription { get; set; }
 
         public string AttributeGroupName { get; set; }
-
+        public int? ItemCount { get; set; }
+        
         public AttributeViewModel()
         {
         }
@@ -116,7 +117,8 @@ namespace Icon.Web.Mvc.Models
             this.TraitCode = model.TraitCode;
             this.DisplayType = model.DisplayType;
             this.AvailableCharacterSets = new List<CharacterSetModel>();
-            this.XmlTraitDescription = model.XmlTraitDescription;
+            this.XmlTraitDescription = model.XmlTraitDescription;            
+            this.ItemCount = model.ItemCount;
         }
     }
 }

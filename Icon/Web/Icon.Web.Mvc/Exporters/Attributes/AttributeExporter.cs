@@ -31,6 +31,7 @@ namespace Icon.Web.Mvc.Exporters
         private const int XmlTraitDescriptionIndex = 20;
         private const int PickListDataIndex = 21;
         private const int CharacterSetIndex = 22;
+        private const int ItemCountIndex = 23;
        
         AttributeViewModel attributeModel = new AttributeViewModel();
 
@@ -177,6 +178,12 @@ namespace Icon.Web.Mvc.Exporters
                 HorizontalCellAlignment.Left,
                 (row, attribute) => row.Cells[CharacterSetIndex].Value =
                     attribute.AvailableCharacterSets.Any()? "[" + string.Join(",", attribute.AvailableCharacterSets.Select(a => a.Name)) + "]" : "");
+
+            AddSpreadsheetColumn(ItemCountIndex,
+              AttributesHelper.AttributesColumnNames.ItemCount,
+               2000,
+               HorizontalCellAlignment.Left,
+               (row, attribute) => row.Cells[ItemCountIndex].Value = attribute.ItemCount);
         }
 
 
@@ -206,7 +213,8 @@ namespace Icon.Web.Mvc.Exporters
                 IsPickList = a.IsPickList,
                 XmlTraitDescription = a.XmlTraitDescription,
                 PickListData = a.PickListData,
-                AvailableCharacterSets = a.AvailableCharacterSets
+                AvailableCharacterSets = a.AvailableCharacterSets,
+                ItemCount = a.ItemCount
             })
                 .ToList();
 

@@ -30,6 +30,7 @@
         columns.For(c => c.DisplayName).HeaderText("Display Name").DataType("string").Width("25%");
         columns.For(c => c.Description).HeaderText("Attribute Description").DataType("string").Width("65%");
         columns.Unbound("ActionEdit").Template("&nbsp&nbsp&nbsp&nbsp <a href='/Attribute/Edit?attributeId=${AttributeId}'>Edit</a>").Width("10%").HeaderText("").Hidden(Model == null ? true : ((int)Model.UserWriteAccess) == 0);
+        columns.For(c => c.ItemCount).HeaderText("Item Count").DataType("number").Width("10%");
         })
         .Features(features =>
         {
