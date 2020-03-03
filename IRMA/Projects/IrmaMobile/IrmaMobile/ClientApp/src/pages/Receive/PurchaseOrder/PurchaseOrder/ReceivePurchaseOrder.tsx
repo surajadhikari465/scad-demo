@@ -26,12 +26,13 @@ interface IProps extends RouteComponentProps<RouteParams> { }
 const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     // @ts-ignore
     const { state, dispatch } = useContext(AppContext);
-    const { store, storeNumber, listedOrders, region, purchaseOrderUpc, purchaseOrderNumber, orderDetails } = state;
+    const { storeNumber, subteamNo, user, listedOrders, region, purchaseOrderUpc, purchaseOrderNumber, orderDetails } = state;
     let selectedPo = null;
     const { openOrderInformation } = match.params;
     const [orderInformation, setOrderInformation] = useState<OrderInformation>({} as OrderInformation);
     let history = useHistory();
     const [openPartial, setOpenPartial] = useState<boolean>(false);
+    const [costedByWeight, setCostedByWeight] = useState<boolean>(false);
     const [isReopening, setIsReopening] = useState<boolean>(false);
 
     const setMenuItems = useCallback(() => {
@@ -95,8 +96,8 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                     return;
                 }
 
-                if (order.storeCompanyName !== store) {
-                    toast.error(`PO ${purchaseOrderNum} is for ${order.storeCompanyName}. Please try again.`, { autoClose: false });
+                if(parseInt(order.store_No) !== parseInt(storeNumber)){
+                    toast.error( `PO ${purchaseOrderNum} is for ${order.storeCompanyName}. Please try again.`, { autoClose: false });
                     return;
                 }
 
@@ -139,6 +140,16 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
 
                     setOrderInformation(orderInformation);
 
+                    let storeItem = await agent.StoreItem.getStoreItem(
+                        region,
+                        storeNumber,
+                        subteamNo,
+                        user!.userId,
+                        upc
+                    );    
+
+                    setCostedByWeight(storeItem.costedByWeight)
+                    
                     dispatch({ type: types.SETORDERDETAILS, orderDetails: orderDetails });
                 } catch (err) {
                     toast.error("Unable to open PO", { autoClose: false })
@@ -172,7 +183,6 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
 
     useEffect(() => {
         BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
-            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: data.Data });
             loadPurchaseOrder(data.Data);
         });
 
@@ -215,17 +225,17 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     return (
         <Fragment>
             {isReopening ? <LoadingComponent content="Reopening order..." /> :
-                <Fragment>
-                    <ConfirmModal handleCancelClose={handleReopenCancel} handleConfirmClose={handleReopenPartial} setOpenExternal={setOpenPartial} showTriggerButton={false}
-                        openExternal={openPartial} headerText='Receive' cancelButtonText='No' confirmButtonText='Yes'
-                        lineOne={'This order was closed as a partial shipment. Re-open the order now to scan more items?'} />
-                    <OrderInformationModal handleOnClose={handleOnCloseOrderInformation} orderInformation={orderInformation} open={openOrderInformation === 'open'} />
-                    <CurrentLocation />
-                    <div style={{ marginTop: '10px', padding: '0px' }}>
-                        <ReceivePoSearch handleSubmit={loadPurchaseOrder} />
-                    </div>
-                    <ReceivePurchaseOrderDetails />
-                </Fragment>
+            <Fragment>
+                <ConfirmModal handleCancelClose={handleReopenCancel} handleConfirmClose={handleReopenPartial} setOpenExternal={setOpenPartial} showTriggerButton={false} 
+                                    openExternal={openPartial} headerText='Receive' cancelButtonText='No' confirmButtonText='Yes' 
+                                    lineOne={'This order was closed as a partial shipment. Re-open the order now to scan more items?'} /> 
+                <OrderInformationModal handleOnClose={handleOnCloseOrderInformation} orderInformation={orderInformation} open={openOrderInformation === 'open'} />
+                <CurrentLocation />
+                <div style={{marginTop: '10px', padding: '0px'}}>
+                    <ReceivePoSearch handleSubmit={loadPurchaseOrder}/>
+                </div>
+                <ReceivePurchaseOrderDetails costedByWeight={costedByWeight} />
+            </Fragment>
             }
         </Fragment>
     );

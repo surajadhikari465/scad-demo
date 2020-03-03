@@ -6,8 +6,7 @@ import { AppContext, types, IMenuItem } from "../../store";
 import BasicModal from '../../layout/BasicModal';
 import CurrentLocation from "../../layout/CurrentLocation";
 import LoadingComponent from '../../layout/LoadingComponent';
-import Config from '../../config';
-import { stat } from 'fs';
+import agent from "../../api/agent";
 
 
 const initialState = {
@@ -107,49 +106,56 @@ const Shrink: React.FC = () => {
 
   }, [shrinkState, dispatch, alert, state.subteamSession]);
 
-  const setUpc = (value?: any, scan: boolean = false) => {
+  const setUpc = async (value?: any, scan: boolean = false) => {
     let upc = value && typeof value !== 'object' ? value : shrinkState.upcValue;
     setIsLoading(true);
-    fetch(`${Config.baseUrl}/${region}/storeitems?storeNo=${storeNumber}&subteamNo=${subteamNo}&userId=${user!.userId}&scanCode=${upc}`)
-      .then(res => res.json())
-      .then((result) => {
-        if (result.itemKey === 0 && result.itemDescription === null) {
+    try {
+        let storeItem = await agent.StoreItem.getStoreItem(
+          region,
+          storeNumber,
+          subteamNo,
+          user!.userId,
+          upc
+      );    
+      
+      if (storeItem.itemKey === 0 && storeItem.itemDescription === null) {
+        setAlert({
+          ...alert,
+          open: true,
+          alertMessage: 'Item not found',
+          type: 'default',
+          header: 'Irma Mobile'
+        });
+      } else if (!subteam.isUnrestricted && storeItem.retailSubteamName !== subteam.subteamName) {
+        setAlert({
+          ...alert,
+          open: true,
+          alertMessage: `This is a ${storeItem.retailSubteamName} and you cannot shrink it to ${subteam.subteamName}. ${subteam.subteamName} is restricted to same-subteam items.`,
+          type: 'default',
+          header: 'Subteam Mismatch'
+        });
+      } else {
+        let alreadyScanned = state.subteamSession[sessionIndex].shrinkItems.filter((item: any) => storeItem.retailSubteamName === item.retailSubteamName).length > 0 ? true : false;
+        if (storeItem.retailSubteamName !== subteam.subteamName && warningOverride === false && !alreadyScanned) {
           setAlert({
             ...alert,
             open: true,
-            alertMessage: 'Item not found',
-            type: 'default',
-            header: 'Irma Mobile'
+            alertMessage: `This is a ${storeItem.retailSubteamName} item and you are shrinking it to ${subteam.subteamName}. Are you sure you want to to do this?`,
+            type: 'confirm',
+            header: 'Subteam Mismatch',
+            confirmAction: confirmAdd,
+            cancelAction: cancel.bind(undefined, true, false)
           });
-        } else if (!subteam.isUnrestricted && result.retailSubteamName !== subteam.subteamName) {
-          setAlert({
-            ...alert,
-            open: true,
-            alertMessage: `This is a ${result.retailSubteamName} and you cannot shrink it to ${subteam.subteamName}. ${subteam.subteamName} is restricted to same-subteam items.`,
-            type: 'default',
-            header: 'Subteam Mismatch'
-          });
-        } else {
-          let alreadyScanned = state.subteamSession[sessionIndex].shrinkItems.filter((item: any) => result.retailSubteamName === item.retailSubteamName).length > 0 ? true : false;
-          if (result.retailSubteamName !== subteam.subteamName && warningOverride === false && !alreadyScanned) {
-            setAlert({
-              ...alert,
-              open: true,
-              alertMessage: `This is a ${result.retailSubteamName} item and you are shrinking it to ${subteam.subteamName}. Are you sure you want to to do this?`,
-              type: 'confirm',
-              header: 'Subteam Mismatch',
-              confirmAction: confirmAdd,
-              cancelAction: cancel.bind(undefined, true, false)
-            });
-          }
-          let quantity = shrinkState.quantity;
-          if (scan) {
-            quantity += 1;
-          } else quantity = 1;
-          setShrinkItem(result, upc, quantity);
         }
-      })
-      .finally(() => setIsLoading(false))
+        let quantity = shrinkState.quantity;
+        if (scan) {
+          quantity += 1;
+        } else quantity = 1;
+        setShrinkItem(storeItem, upc, quantity);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const setShrinkType = (value: any) => {

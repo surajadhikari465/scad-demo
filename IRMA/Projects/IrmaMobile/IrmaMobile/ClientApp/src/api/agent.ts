@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import Config from "../config";
 import ITransferOrder from '../pages/Transfer/types/ITransferOrder'
-import { IStore, IUser, IShrinkAdjustment } from "../store";
+import { IStore, IUser, IShrinkAdjustment, IStoreItem } from "../store";
 
 axios.defaults.baseURL = Config.baseUrl;
 axios.defaults.timeout = 60000; //1 minute
@@ -51,6 +51,10 @@ const RegionSelect = {
     getShrinkSubtypes: async (region: string) => await requests.get(`/${region}/shrinksubtypes/`),
     getShrinkAdjustmentReasons: async (region: string) =>  await requests.get(`/${region}/shrinkAdjustments/`) as IShrinkAdjustment[]
 };
+
+const StoreItem = {
+    getStoreItem: async (region:string, storeNumber: number | string, subteamNo: number | string, userId: number, upc: string | number) => await requests.get(`/${region}/storeitems?storeNo=${storeNumber}&subteamNo=${subteamNo}&userId=${userId}&scanCode=${upc}`) as IStoreItem
+}
 
 const PurchaseOrder = {
     detailsFromPurchaseOrderNumber: async (
@@ -177,4 +181,4 @@ const User = {
     getUser: async (region: string, userName: string) => await requests.get(`/${region}/users?userName=${userName}`) as IUser | null
 }
 
-export default { RegionSelect, PurchaseOrder, InvoiceData, Shrink, ReceivingList, Document, Transfer, User };
+export default { RegionSelect, StoreItem, PurchaseOrder, InvoiceData, Shrink, ReceivingList, Document, Transfer, User };

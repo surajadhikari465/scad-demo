@@ -17,20 +17,25 @@ import { toast } from "react-toastify";
 import { WfmButton } from "@wfm/ui-react";
 import { QuantityAddMode } from "../../types/QuantityAddMode";
 import ReceivePurchaseOrderDetailsQtyModal from "./ReceivePurchaseOrderDetailsQtyModal";
-import Config from "../../../../../config";
 import OrderItem from "../../types/OrderItem";
 import ConfirmModal from "../../../../../layout/ConfirmModal";
 import { Textfit } from 'react-textfit';
 
-const ReceivePurchaseOrderDetails: React.FC = () => {
+interface IProps {
+    costedByWeight: boolean;
+}
+
+const ReceivePurchaseOrderDetails: React.FC<IProps> = ({costedByWeight}) => {
     // @ts-ignore
     const { state, dispatch } = useContext(AppContext);
-    const { orderDetails, region, mappedReasonCodes, purchaseOrderUpc, user } = state;
+    const { orderDetails, region, mappedReasonCodes, user } = state;
     const [receivingOrder, setReceivingOrder] = useState<boolean>(false);
     const [showQtyModal, setShowQtyModal] = useState<boolean>(false);
     const [showHighQtyModal, setShowHighQtyModal] = useState<boolean>(false);
     const overrideHighQty = useRef(false);
     const quantityMode = useRef(QuantityAddMode.None);
+    const [quantity, setQuantity] = useState<any>(1);
+    const [weight, setWeight] = useState<number | string>(orderDetails ? quantity * orderDetails?.PkgWeight : '');
 
     useEffect(() => {
         const loadReasonCodes = async () => {
@@ -54,26 +59,12 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
         loadReasonCodes();
     }, [dispatch, region]);
 
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.currentTarget;
+    useEffect(()=>{
+        if(orderDetails?.PkgWeight !== undefined){
+            setWeight(quantity * orderDetails?.PkgWeight);
+        }   
+    }, [orderDetails,quantity, setWeight])
 
-        if (value === "" && purchaseOrderUpc !== "") {
-            dispatch({
-                type: types.SETORDERDETAILS,
-                orderDetails: { ...orderDetails, [name]: 0 }
-            });
-        } else if (!isNaN(parseInt(value))) {
-            dispatch({
-                type: types.SETORDERDETAILS,
-                orderDetails: { ...orderDetails, [name]: parseInt(value) }
-            });
-        } else {
-            dispatch({
-                type: types.SETORDERDETAILS,
-                orderDetails: { ...orderDetails, [name]: value }
-            });
-        }
-    };
 
     const handleDropdownChange = (
         event: SyntheticEvent<HTMLElement, Event>,
@@ -99,7 +90,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 return;
             }
 
-            if (orderDetails.Quantity === 0) {
+            if (parseInt(quantity) === 0) {
                 toast.error("Please enter a quantity of at least 1.", { autoClose: false });
                 return;
             }
@@ -109,9 +100,9 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 return;
             }
 
-            const quantity: number = quantityMode.current === QuantityAddMode.AddTo ? orderDetails.Quantity + orderDetails.QtyReceived : orderDetails.Quantity;
+            const newQuantity: number = quantityMode.current === QuantityAddMode.AddTo ? quantity + orderDetails.QtyReceived : quantity;
 
-            if (!overrideHighQty.current && quantity > orderDetails.QtyOrdered) {
+            if (!overrideHighQty.current && newQuantity > orderDetails.QtyOrdered) {
                 setShowHighQtyModal(true);
                 return;
             }
@@ -120,7 +111,7 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                 setReceivingOrder(true);
                 var result = await agent.PurchaseOrder.receiveOrder(
                     region,
-                    quantity,
+                    newQuantity,
                     orderDetails.Weight,
                     new Date(),
                     false,
@@ -139,8 +130,8 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                         toast.success("Receive PO Successful");
                     }
 
-                    orderDetails.OrderItems.filter((oi: OrderItem) => oi.OrderItemId === orderDetails.OrderItemId)[0].QtyReceived = quantity;
-                    dispatch({ type: types.SETORDERDETAILS, orderDetails: { ...orderDetails, QtyReceived: quantity, OrderItems: orderDetails.OrderItems } });
+                    orderDetails.OrderItems.filter((oi: OrderItem) => oi.OrderItemId === orderDetails.OrderItemId)[0].QtyReceived = newQuantity;
+                    dispatch({ type: types.SETORDERDETAILS, orderDetails: { ...orderDetails, QtyReceived: newQuantity, OrderItems: orderDetails.OrderItems } });
                 }
             }
             finally {
@@ -289,13 +280,13 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                     <Input
                                         type="number"
                                         name="Quantity"
-                                        onChange={handleInputChange}
+                                        onChange={(e)=>setQuantity(parseInt(e.target.value))}
                                         onKeyPress={validateIntegerInput}
                                         onFocus={(event: any) =>
                                             event.target.select()
                                         }
                                         onKeyDown={(e:any)=> e.key === 'Enter' ? e.target.blur() : ''}
-                                        value={orderDetails.ItemLoaded ? orderDetails.Quantity : ''}
+                                        value={orderDetails?.ItemLoaded ? quantity: ''}
                                         fluid
                                         size="small"
                                         disabled={!orderDetails.ItemLoaded}
@@ -315,15 +306,15 @@ const ReceivePurchaseOrderDetails: React.FC = () => {
                                     <Input
                                         type="number"
                                         name="Weight"
-                                        onChange={handleInputChange}
+                                        onChange={(e)=>setWeight(parseFloat(e.target.value))}
                                         onKeyPress={validateDecimalInput}
                                         onFocus={(event: any) =>
                                             event.target.select()
                                         }
                                         onKeyDown={(e:any)=> e.key === 'Enter' ? e.target.blur() : ''}
-                                        value={orderDetails.Weight}
+                                        value={(orderDetails?.ItemLoaded  && costedByWeight )? weight: ''}
                                         fluid
-                                        disabled={!orderDetails.ItemLoaded}
+                                        disabled={!orderDetails.ItemLoaded || !costedByWeight}
                                         size="small"
                                     ></Input>
                                 </Grid.Column>

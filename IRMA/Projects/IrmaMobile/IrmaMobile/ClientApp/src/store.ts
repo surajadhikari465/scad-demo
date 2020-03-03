@@ -104,6 +104,17 @@ export interface IStore {
     name: string;
 }
 
+export interface IStoreItem {
+    averageCost: number;
+    itemKey: number;
+    itemDescription: string | null;
+    costedByWeight: boolean;
+    retailSubteamName: string | null;
+    retailSubteamNo: number;
+    storeNo: number;
+    isUnrestricted: boolean;
+}
+
 export interface IMappedReasonCode {
     key: number;
     text: string;
