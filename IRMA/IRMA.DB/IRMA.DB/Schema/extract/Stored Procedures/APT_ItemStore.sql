@@ -27,6 +27,9 @@ BEGIN
 			)
 		AND s.Internal = 1
 		AND siv.PrimaryVendor = 1
+		AND s.Manufacturer = 0
+		AND s.Store_No not in (SELECT Key_Value FROM [dbo].[fn_Parse_List]([dbo].[fn_GetAppConfigValue]('LabAndClosedStoreNo', 'IRMA CLIENT'), '|') ) 
+
 END
 GO
 GRANT EXECUTE
