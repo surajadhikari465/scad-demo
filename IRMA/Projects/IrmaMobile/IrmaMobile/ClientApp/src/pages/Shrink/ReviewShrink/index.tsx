@@ -3,7 +3,7 @@ import { AppContext, types, IMenuItem, IShrinkAdjustment } from "../../../store"
 import { Modal, Confirm } from 'semantic-ui-react'
 import CurrentLocation from "../../../layout/CurrentLocation";
 import LoadingComponent from "../../../layout/LoadingComponent";
-import agent from '../../../api/agent';
+import agent from "../../../api/agent";
 import {
   useHistory
 } from "react-router-dom";
@@ -16,7 +16,7 @@ const ReviewShrink: React.FC = () => {
   const { state, dispatch } = useContext(AppContext);
   const [shrinkItems, setShrinkItems] = useState<[] | any>([]);
   const [selected, setSelected] = useState();
-  const { isLoading, user, subteamSession } = state;
+  const { isLoading, user, subteamSession, shrinkTypes } = state;
   const [alert, setAlert] = useState({ open: false, alertMessage: '' });
   const [confirm, setConfirm] = useState({ open: false, message: '', onConfirm: () => { } });
   let sessionIndex = subteamSession.findIndex((session:any) => session.sessionUser.userName === user?.userName);
@@ -60,7 +60,7 @@ const ReviewShrink: React.FC = () => {
     }
   }
 
-  const findShrinkAjustmentIdByAbbreaviation = (shrinkAdjustments: IShrinkAdjustment[] | null,  abbreviation: string) :number => {
+  const findShrinkAjustmentIdByAbbreviation = (shrinkAdjustments: IShrinkAdjustment[] | null,  abbreviation: string) :number => {
       if (shrinkAdjustments === null) return 0;
       var adjustment = shrinkAdjustments.find( a => a.abbreviation === abbreviation);
       if (adjustment === undefined) return -1;
@@ -79,18 +79,19 @@ const ReviewShrink: React.FC = () => {
       for (let i = 0; i < shrinkItems.length; i++) {
         let weight = shrinkItems[i].costedByWeight ? shrinkItems[i].quantity : 0;
         let quantity = shrinkItems[i].costedByWeight ? 0 : shrinkItems[i].quantity;
+        let selectedShrinkType : any = shrinkTypes.filter((shrinkType)=>shrinkType.shrinkSubTypeMember === shrinkItems[i].shrinkType)[0];
         try {
           var result = await agent.Shrink.submitShrinkItems(
             state.region,
             shrinkItems[i].itemKey,
             subteamSession[sessionIndex].sessionNumber,
             subteamSession[sessionIndex].sessionSubteam?.subteamNo,
-            state.shrinkType.shrinkSubTypeId,
-            findShrinkAjustmentIdByAbbreaviation(state.shrinkAdjustmentReasons, state.shrinkType.abbreviation),
-            state.shrinkType.shrinkType,
+            selectedShrinkType.shrinkSubTypeId,
+            findShrinkAjustmentIdByAbbreviation(state.shrinkAdjustmentReasons, state.shrinkType.abbreviation),
+            selectedShrinkType.shrinkType,
             user!.userId,
             user!.userName,
-            state.shrinkType.abbreviation,
+            selectedShrinkType.abbreviation,
             quantity,
             weight
           );
