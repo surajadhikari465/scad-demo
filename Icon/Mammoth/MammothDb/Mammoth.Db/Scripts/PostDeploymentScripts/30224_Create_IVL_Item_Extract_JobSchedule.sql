@@ -15,7 +15,7 @@ BEGIN
 		  "includeHeaders": true,
 		  "source": "IRMA",
 		  "regions": [ "FL", "MA", "MW", "NA", "NC", "NE", "PN", "RM", "SO", "SP", "SW", "UK" ],
-		  "query": "select i.Item_Key, ii.Identifier, ii.Default_Identifier, ii.Deleted_Identifier, i.Deleted_Item from item i inner join ItemIdentifier ii on i.item_key = ii.Item_Key",
+		  "query": "set transaction isolation level read uncommitted; declare @region varchar(5); select @region = runmode from conversion_runmode; select @region as Region, i.Item_Key, ii.Identifier, ii.Default_Identifier, ii.Deleted_Identifier, i.Deleted_Item from item i inner join ItemIdentifier ii on i.item_key = ii.Item_Key;",
 		  "parameters": [],
 		  "outputFileName": "itemvendorlane_item_{source}_{date:yyyyMMdd}.csv",
 		  "delimiter": "|",
