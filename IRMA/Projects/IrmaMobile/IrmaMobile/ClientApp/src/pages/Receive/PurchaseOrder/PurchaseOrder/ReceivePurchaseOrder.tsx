@@ -171,7 +171,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                         EInv: order.einvoiceRequired
                     }
                 ))
-
+          
                 dispatch({ type: types.SETLISTEDORDERS, listedOrders: orders });
             } else {
                 toast.error("UPC and/or PO # required", { autoClose: false });
@@ -183,7 +183,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
 
     useEffect(() => {
         BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
-            loadPurchaseOrder(data.Data);
+            loadPurchaseOrder((parseInt(data.Data, 10)).toString());
         });
 
         return () => {

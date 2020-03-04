@@ -18,16 +18,6 @@ const ReceivePurchaseOrderSearch: React.FC<IProps> = ({ handleSubmit }) => {
         handleSubmit(upc);
     };
 
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.currentTarget;
-
-        if(name === 'purchaseOrderNumber') {
-            dispatch({ type: types.SETPURCHASEORDERNUMBER, [name]: value });
-        } else {
-            dispatch({ type: types.SETPURCHASEORDERUPC, [name]: value });
-        }
-    };
-
     return (
         <Fragment>
             <Form onSubmit={handleSubmitFromPoBox}>
@@ -42,7 +32,7 @@ const ReceivePurchaseOrderSearch: React.FC<IProps> = ({ handleSubmit }) => {
                                         placeholder="PO #"
                                         min={0}
                                         value={purchaseOrderNumber}
-                                        onChange={handleInputChange}
+                                        onChange={(e:ChangeEvent<HTMLInputElement>)=>dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: parseInt(e.target.value) })}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -52,7 +42,7 @@ const ReceivePurchaseOrderSearch: React.FC<IProps> = ({ handleSubmit }) => {
                                         placeholder="UPC"
                                         min={0}
                                         value={purchaseOrderUpc}
-                                        onChange={handleInputChange}
+                                        onChange={(e:ChangeEvent<HTMLInputElement>)=>dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: parseInt(e.target.value) })}
                                     />
                                 </Form.Field>
                             </Grid.Column>
