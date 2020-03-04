@@ -11,7 +11,8 @@
 	[REG_COST] [varchar](25) NULL,
 	[RETAIL_UOM] [varchar](25) NULL,
 	[RETAIL_PACK] [varchar](15) NULL,
-    [PRIMARY_VENDOR] [bit] NULL
+    [PRIMARY_VENDOR] [bit] NULL,
+    [GLOBAL_SUBTEAM] [int] NULL
 ) ON [PRIMARY];
 
 GO
