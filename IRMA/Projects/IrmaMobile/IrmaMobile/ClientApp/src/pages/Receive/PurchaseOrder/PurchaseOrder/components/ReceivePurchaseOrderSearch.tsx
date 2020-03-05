@@ -32,7 +32,7 @@ const ReceivePurchaseOrderSearch: React.FC<IProps> = ({ handleSubmit }) => {
                                         placeholder="PO #"
                                         min={0}
                                         value={purchaseOrderNumber}
-                                        onChange={(e:ChangeEvent<HTMLInputElement>)=>dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: parseInt(e.target.value) })}
+                                        onChange={(e:ChangeEvent<HTMLInputElement>)=>dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: parseInt(e.target.value).toString() })}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -42,7 +42,7 @@ const ReceivePurchaseOrderSearch: React.FC<IProps> = ({ handleSubmit }) => {
                                         placeholder="UPC"
                                         min={0}
                                         value={purchaseOrderUpc}
-                                        onChange={(e:ChangeEvent<HTMLInputElement>)=>dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: parseInt(e.target.value) })}
+                                        onChange={(e:ChangeEvent<HTMLInputElement>)=>dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: parseInt(e.target.value).toString() })}
                                     />
                                 </Form.Field>
                             </Grid.Column>

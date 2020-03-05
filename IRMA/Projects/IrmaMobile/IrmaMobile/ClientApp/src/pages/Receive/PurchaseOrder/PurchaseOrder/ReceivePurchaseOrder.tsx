@@ -40,6 +40,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
             dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
             dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
             dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
+            dispatch({ type: types.SETLISTEDORDERS, listedOrders: [] });
         }
 
         const newMenuItems = [
@@ -72,7 +73,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     const loadPurchaseOrder = async (upc: string, purchaseOrderNum?: number | undefined, closeOrderList: boolean = false) => {
         if (purchaseOrderNum === undefined) {
             purchaseOrderNum = parseInt(purchaseOrderNumber);
-        }
+        } 
         //int32 max...
         if (purchaseOrderNum > 2147483647) {
             toast.error(`The PO # value is too large. Please enter a smaller value`, { autoClose: false });
@@ -96,8 +97,8 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                     return;
                 }
 
-                if(parseInt(order.store_No) !== parseInt(storeNumber)){
-                    toast.error( `PO ${purchaseOrderNum} is for ${order.storeCompanyName}. Please try again.`, { autoClose: false });
+                if (parseInt(order.store_No) !== parseInt(storeNumber)) {
+                    toast.error(`PO ${purchaseOrderNum} is for ${order.storeCompanyName}. Please try again.`, { autoClose: false });
                     return;
                 }
 
@@ -146,10 +147,10 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                         subteamNo,
                         user!.userId,
                         upc
-                    );    
+                    );
 
                     setCostedByWeight(storeItem.costedByWeight)
-                    
+
                     dispatch({ type: types.SETORDERDETAILS, orderDetails: orderDetails });
                 } catch (err) {
                     toast.error("Unable to open PO", { autoClose: false })
@@ -164,14 +165,14 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
 
                 const orders = ordersRaw.map((order: any) => (
                     {
-                        PoNum: order.orderHeader_ID,
+                        PoNum: order.orderHeader_ID.toString(),
                         OrderCost: order.orderedCost,
                         ExpectedDate: order.expected_Date,
                         Subteam: order.subTeam_Name,
                         EInv: order.einvoiceRequired
                     }
                 ))
-          
+
                 dispatch({ type: types.SETLISTEDORDERS, listedOrders: orders });
             } else {
                 toast.error("UPC and/or PO # required", { autoClose: false });
@@ -191,10 +192,6 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    if (listedOrders.length > 0 && !selectedPo) {
-        return (<ReceivePurchaseOrderList upc={purchaseOrderUpc} orders={listedOrders} poSelected={loadPurchaseOrder} />)
-    }
 
     const handleOnCloseOrderInformation = () => {
         history.goBack();
@@ -222,23 +219,28 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
         dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
     }
 
-    return (
-        <Fragment>
-            {isReopening ? <LoadingComponent content="Reopening order..." /> :
+    if (listedOrders.length > 0 && !selectedPo) {
+        return (<ReceivePurchaseOrderList upc={purchaseOrderUpc} orders={listedOrders} poSelected={loadPurchaseOrder} />)
+    }
+    else {
+        return (
             <Fragment>
-                <ConfirmModal handleCancelClose={handleReopenCancel} handleConfirmClose={handleReopenPartial} setOpenExternal={setOpenPartial} showTriggerButton={false} 
-                                    openExternal={openPartial} headerText='Receive' cancelButtonText='No' confirmButtonText='Yes' 
-                                    lineOne={'This order was closed as a partial shipment. Re-open the order now to scan more items?'} /> 
-                <OrderInformationModal handleOnClose={handleOnCloseOrderInformation} orderInformation={orderInformation} open={openOrderInformation === 'open'} />
-                <CurrentLocation />
-                <div style={{marginTop: '10px', padding: '0px'}}>
-                    <ReceivePoSearch handleSubmit={loadPurchaseOrder}/>
-                </div>
-                <ReceivePurchaseOrderDetails costedByWeight={costedByWeight} />
+                {isReopening ? <LoadingComponent content="Reopening order..." /> :
+                    <Fragment>
+                        <ConfirmModal handleCancelClose={handleReopenCancel} handleConfirmClose={handleReopenPartial} setOpenExternal={setOpenPartial} showTriggerButton={false}
+                            openExternal={openPartial} headerText='Receive' cancelButtonText='No' confirmButtonText='Yes'
+                            lineOne={'This order was closed as a partial shipment. Re-open the order now to scan more items?'} />
+                        <OrderInformationModal handleOnClose={handleOnCloseOrderInformation} orderInformation={orderInformation} open={openOrderInformation === 'open'} />
+                        <CurrentLocation />
+                        <div style={{ marginTop: '10px', padding: '0px' }}>
+                            <ReceivePoSearch handleSubmit={loadPurchaseOrder} />
+                        </div>
+                        <ReceivePurchaseOrderDetails costedByWeight={costedByWeight} />
+                    </Fragment>
+                }
             </Fragment>
-            }
-        </Fragment>
-    );
+        );
+    }
 };
 
 export default ReceivePurchaseOrder;

@@ -131,7 +131,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({costedByWeight}) => {
                     }
 
                     orderDetails.OrderItems.filter((oi: OrderItem) => oi.OrderItemId === orderDetails.OrderItemId)[0].QtyReceived = newQuantity;
-                    dispatch({ type: types.SETORDERDETAILS, orderDetails: { ...orderDetails, QtyReceived: newQuantity, OrderItems: orderDetails.OrderItems } });
+                    dispatch({ type: types.SETORDERDETAILS, orderDetails: { ...orderDetails, QtyReceived: newQuantity, ItemLoaded: false, OrderItems: orderDetails.OrderItems } });
                 }
             }
             finally {
