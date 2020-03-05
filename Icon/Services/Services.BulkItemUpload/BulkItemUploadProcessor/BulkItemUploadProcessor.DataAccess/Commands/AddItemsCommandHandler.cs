@@ -79,9 +79,11 @@ namespace BulkItemUploadProcessor.DataAccess.Commands
             catch (Exception ex)
             {
                 invalidItems.AddRange(itemsCopy.Select(i => new ErrorItem<AddItemModel>(i, ex.Message)));
+                data.InvalidItems = invalidItems;
+                throw;
             }
 
-            data.InvalidItems = invalidItems;
+            
         }
     }
 }

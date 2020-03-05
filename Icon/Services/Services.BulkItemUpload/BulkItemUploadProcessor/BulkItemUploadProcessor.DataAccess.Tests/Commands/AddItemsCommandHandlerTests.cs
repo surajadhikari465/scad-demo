@@ -4,6 +4,7 @@ using Dapper;
 using Icon.Common;
 using Icon.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -243,6 +244,26 @@ namespace BulkItemUploadProcessor.DataAccess.Tests.Commands
             AssertScanCodesAreAssignedInBarcodeTypeRangePool(testBarcodeTypeId, testScanCodes.Take(2).ToList());
             AssertScanCodesAreAssignedInBarcodeTypeRangePool(testBarcodeTypeId2, new List<string> { testScanCodes[2], testScanCodes[3] });
             AssertScanCodesAreAssignedInBarcodeTypeRangePool(testBarcodeTypeId3, new List<string> { testScanCodes[4], testScanCodes[5] });
+        }
+
+        [TestMethod]
+        public void AddItems_ScanCodeOver13DigitsCausingException_ExceptionIsThrownAndInvalidItemsSet()
+        {
+            // Given
+            testScanCodes = new List<string> { "9994500000000012" };
+            expectedItems.Add(CreateTestItem(testScanCodes[0], testBarcodeTypeId, false, true));
+            command.Items = expectedItems;
+
+            // When
+            try
+            {
+                commandHandler.Execute(command);
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual(testScanCodes[0], command.InvalidItems[0].Item.ScanCode);
+                Assert.IsTrue(ex.Message.Contains("SQL"));
+            }
         }
 
         private void AssertItemDoesNotExist(string scanCode)
