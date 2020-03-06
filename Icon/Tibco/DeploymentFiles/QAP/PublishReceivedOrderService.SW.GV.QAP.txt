@@ -12,7 +12,7 @@ Connections/JDBC/IRMA/ConnectionString=jdbc:sqlserver://idq-sw\swq;DatabaseName=
 Connections/JDBC/IRMA/Username=TibcoDataWriter
 Connections/JDBC/IRMA/Password=#!Au7uqiI62/LDe3aF8jfOwK1jWdfv0lEPxbQmJOt40JKRW8YO2Br0OA==
 
-Connections/JMS/ESB/JndiContextUrl=ssl://PERF-ESB-EMS-1.wfm.pvt:27293,ssl://PERF-ESB-EMS-2.wfm.pvt:27293
+Connections/JMS/ESB/JndiContextUrl=ssl://PERF-ESB-EMS-1.wfm.pvt:27293,ssl://PERF-ESB-EMS-2.wfm.pvt:27293,ssl://PERF-ESB-EMS-3.wfm.pvt:27293,ssl://PERF-ESB-EMS-4.wfm.pvt:27293
 Connections/JMS/ESB/JndiUsername=jndiIconUser
 Connections/JMS/ESB/JndiPassword=#!CZL/0Wp3bdr3BfJGoAtgQclqkr1NAnZ8YGZF9ghcImlfv+u6DrKEKr0PTmychcaA
 Connections/JMS/ESB/SslPassword=#!WjCNIoABD5BfvkisL+DB9w==
