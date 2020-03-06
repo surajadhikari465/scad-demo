@@ -77,6 +77,7 @@ const Shrink: React.FC = () => {
   useEffect(() => {
     const changeSubtype = () => {
       subteamSession[sessionIndex] = { ...subteamSession[sessionIndex], forceSubteamSelection: true };
+      setShrinkState(initialState);
       dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
       dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
     }
