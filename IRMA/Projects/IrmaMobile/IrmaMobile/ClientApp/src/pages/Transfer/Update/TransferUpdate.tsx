@@ -10,16 +10,17 @@ const TransferUpdate: React.FC = () => {
   const { state } = useContext(AppContext);
   const [transferData] = useState<ITransferData>(JSON.parse(localStorage.getItem('transferData')!));
   const [transferItem] = useState<ITransferItem>(state.transferLineItem!);
-  const [newQuantity, setNewQuanity] = useState<number>(1);
+  const [newQuantity, setNewQuantity] = useState<number>(1);
   let history = useHistory();
   const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { }, cancelAction: () => { } });
 
   const updateQuantity = (e: any) => {
-    let quantity = parseFloat(e.target.value);
+    let quantity: any = parseFloat(e.target.value);
+   
     if (!transferItem.SoldByWeight) {
-      setNewQuanity(parseInt(e.target.value.replace(/[^\w\s]|_/g, "")));
+      setNewQuantity(parseInt(e.target.value.replace(/[^\w\s]|_/g, "")));
     } else {
-      setNewQuanity(quantity);
+      setNewQuantity(quantity);
     }
   }
 
@@ -63,6 +64,17 @@ const TransferUpdate: React.FC = () => {
     if (e.target.value === '') {
       e.target.value = '';
     }
+    let quantity = isNaN(newQuantity) ? 0: newQuantity;
+    if (transferItem.SoldByWeight) {
+      if((quantity + e.key).match(/\./g)!== null && (quantity + e.key).match(/\./g).length > 1){
+        e.preventDefault();
+      }
+    } else {
+        const intRegEx = /^\d{0,3}$/
+        if (!intRegEx.test(quantity + e.key)) {
+            e.preventDefault();
+        }
+    }
   }
 
   return (
@@ -93,8 +105,8 @@ const TransferUpdate: React.FC = () => {
               min="1"
               maxLength={3}
               step={transferItem.SoldByWeight ? "any" : 1}
-              onKeyPress={clearInvalid}
               onChange={updateQuantity}
+              onKeyPress={clearInvalid}
             />
           </div>
           <div>

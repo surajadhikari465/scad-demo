@@ -199,24 +199,30 @@ const TransferScan: React.FC = () => {
         }
     }, [setTransferData]);
 
-    const handleQuantityOnKeyPress = (e: React.KeyboardEvent<Input>) => {
+    const handleQuantityOnKeyPress = (e: any) => {   
+        
         if (item) {
             if (quantity !== null && quantity !== undefined) {
-                console.log('handleQuantityOnKeyPress ' + quantity);
                 if (item.SoldByWeight) {
                     const floatRegEx = /^(\d{0,4}(\.\d{0,2})?|\.?\d{1,2})$/;
                     if (!floatRegEx.test(quantity + e.key)) {
-                        console.log('preventCalled ' + quantity);
                         e.preventDefault();
                     }
                 } else {
                     const intRegEx = /^\d{0,3}$/
+
                     if (!intRegEx.test(quantity + e.key)) {
                         e.preventDefault();
                     }
                 }
             }
         }
+    }
+
+    const clearInvalid = (e: any) =>{
+        if (!item?.SoldByWeight) {
+            setQuantity(quantity.replace(/[^a-z0-9]/gi,''));
+        } 
     }
 
     const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
@@ -379,6 +385,7 @@ const TransferScan: React.FC = () => {
         clearScreen();
     }
 
+
     return (
         <Fragment>
             {isLoading ? <LoadingComponent content='Loading item...' />
@@ -391,7 +398,7 @@ const TransferScan: React.FC = () => {
                                 UPC:
                         </Grid.Column>
                             <Grid.Column width={8} style={{ padding: '0px' }}>
-                                <Input onFocus={(event: any) => event.target.select()} type='number' placeholder='UPC' value={upc || ''} onChange={handleUpcChange} fluid />
+                                <Input  type='number' placeholder='UPC' value={upc || ''} onChange={handleUpcChange} onKeyDown={(e:any) => e.key === 'Enter' ?  upcSearchClick() : '' } fluid />
                             </Grid.Column>
                             <Grid.Column width={2}>
                                 <Button className='wfmButton' onClick={upcSearchClick}>>></Button>
@@ -410,7 +417,7 @@ const TransferScan: React.FC = () => {
                                 Quantity:
                         </Grid.Column>
                             <Grid.Column width={3} style={{ padding: '0px' }}>
-                                <Input type='number' placeholder='Qty' value={quantity} onKeyPress={handleQuantityOnKeyPress} onChange={handleQuantityChange} fluid />
+                                <Input type='number' placeholder='Qty' value={quantity} onKeyPress={handleQuantityOnKeyPress} onChange={handleQuantityChange} onBlur={clearInvalid} onKeyDown={clearInvalid} fluid />
                             </Grid.Column>
                             <Grid.Column width={2} verticalAlign='middle' textAlign='right'>
                                 Retail:

@@ -140,7 +140,7 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
 
     useEffect(() => {
         if (subteams) {
-            setSubteamsMapped(subteams.map((subteam: ISubTeam) => { return { key: subteam.subteamNo, value: subteam.subteamNo, text: subteam.subteamName }; }));
+            setSubteamsMapped(subteams.map((subteam: ISubTeam, key:any) => { return { key , value: subteam.subteamNo, text: subteam.subteamName }; }));
         }
     }, [subteams]);
 
@@ -149,7 +149,7 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
             const supplyTypesRaw = await agent.Transfer.getSubteamByProductType(region, 3)
 
             if (supplyTypesRaw) {
-                setSupplyTypesMapped(supplyTypesRaw.map((type: any) => { return { key: type.subteamNo, value: type.subteamNo, text: type.subteamName } }))
+                setSupplyTypesMapped(supplyTypesRaw.map((type: any, key:any) => { return { key, value: type.subteamNo, text: type.subteamName } }))
             }
         }
 
@@ -158,13 +158,13 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
 
     useEffect(() => {
         if (stores) {
-            setStoresMapped(stores.map((store: IStore) => { return { key: store.storeNo, value: store.storeNo, text: store.name }; }))
+            setStoresMapped(stores.map((store: IStore, key:any) => { return { key, value: store.storeNo, text: store.name }; }))
         }
     }, [stores])
 
     useEffect(() => {
         if (transferToStores) {
-            setToStoresMapped(transferToStores.map((store: IStore) => { return { key: store.storeNo, value: store.storeNo, text: store.name }; }))
+            setToStoresMapped(transferToStores.map((store: IStore, key:any) => { return { key, value: store.storeNo, text: store.name }; }))
         }
     }, [transferToStores])
 
@@ -195,17 +195,17 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
         const transferData = {
             FromStoreVendorId: 0,
             FromStoreNo: fromStore,
-            FromStoreName: storesMapped.filter((store: any) => store.key === fromStore)[0].text.trim(),
+            FromStoreName: storesMapped.filter((store: any) => store.value === fromStore)[0].text.trim(),
             FromSubteamNo: fromSubteam,
-            FromSubteamName: subteamsMapped.filter((subteam: any) => subteam.key === fromSubteam)[0].text.trim(),
+            FromSubteamName: subteamsMapped.filter((subteam: any) => subteam.value === fromSubteam)[0].text.trim(),
 
             ProductType: productType,
             SupplyType: productType === 3 ? supplyType : 0,
 
             ToStoreNo: toStore,
-            ToStoreName: toStoresMapped.filter((store: any) => store.key === toStore)[0].text.trim(),
+            ToStoreName: toStoresMapped.filter((store: any) => store.value === toStore)[0].text.trim(),
             ToSubteamNo: toSubteam,
-            ToSubteamName: subteamsMapped.filter((subteam: any) => subteam.key === toSubteam)[0].text.trim(),
+            ToSubteamName: subteamsMapped.filter((subteam: any) => subteam.value === toSubteam)[0].text.trim(),
 
             CreatedBy: user!.userId,
             ExpectedDate: new Date(expectedDate),

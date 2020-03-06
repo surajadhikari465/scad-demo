@@ -11,7 +11,7 @@ interface UpdateShrinkProps {
 const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
   // @ts-ignore
   const { state, dispatch } = useContext(AppContext);
-  const { selectedShrinkItem, user, subteam, subteamSession } = state;
+  const { selectedShrinkItem, user, subteamSession } = state;
   const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { }, cancelAction: () => { } });
   const [initialQuantity] = useState(selectedShrinkItem.quantity);
   const [initialShrinkType] = useState(selectedShrinkItem.shrinkType);
@@ -68,8 +68,9 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
    * to stop invalid punctuation 
    */
   const clearInvalid = (e: any) => {
-    if (e.target.value === '') {
-      e.target.value = '';
+
+    if (!selectedShrinkItem.costedByWeight) {
+      dispatch({ type: types.SETSELECTEDSHRINKITEM, selectedShrinkItem: { ...selectedShrinkItem, quantity: parseInt(e.target.value.replace(/[^\w\s]|_/g, "")) } });
     }
   }
 
@@ -103,6 +104,7 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
               step={selectedShrinkItem.costedByWeight ? 'any' : 1}
               onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''}
               onKeyPress={clearInvalid}
+              onBlur={clearInvalid}
               onChange={updateQuantity} />
           </div>
           <div>
