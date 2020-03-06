@@ -25,7 +25,7 @@ namespace Icon.Web.DataAccess.Queries
 	                b.UploadedBy,
 	                s.STATUS,
                     b.Message,
-                    CASE WHEN IsNull(PercentageProcessed, 0) > 100 THEN 100 ELSE IsNull(PercentageProcessed, 0) END 0 AS PercentageProcessed
+                    CASE WHEN IsNull(PercentageProcessed, 0) > 100 THEN 100 ELSE IsNull(PercentageProcessed, 0) END AS PercentageProcessed
                 FROM BulkContactUpload b
                 INNER JOIN BulkUploadStatus s ON b.StatusId = s.Id
                 WHERE b.BulkContactUploadId = @Id";
