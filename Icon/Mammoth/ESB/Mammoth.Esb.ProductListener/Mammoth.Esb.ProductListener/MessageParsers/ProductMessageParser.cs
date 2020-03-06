@@ -52,7 +52,7 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
                 itemModel.GlobalAttributes.BrandHCID = GetHierarchyClassIntId(HierarchyNames.Brands, hierarchyClasses);
                 itemModel.GlobalAttributes.MessageTaxClassHCID = GetHierarchyClassStringId(HierarchyNames.Tax, hierarchyClasses);
                 itemModel.GlobalAttributes.PSNumber = GetHierarchyClassIntId(HierarchyNames.Financial, hierarchyClasses);
-                itemModel.GlobalAttributes.Desc_CustomerFriendly = GetTraitValue(Attributes.Codes.CustomerFriendlyDescription, traits);
+                itemModel.GlobalAttributes.Desc_CustomerFriendly = GetTraitValue(Common.DataAccess.Attributes.Codes.CustomerFriendlyDescription, traits);
                 itemModel.GlobalAttributes.ProhibitDiscount = GetBoolTraitValue(TraitCodes.ProhibitDiscount, traits);
 
                 // Global Sign Attributes

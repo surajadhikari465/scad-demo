@@ -19,8 +19,9 @@ namespace Mammoth.Esb.ProductListener.Tests
     public class ProductListenerTests
     {
         private AddOrUpdateProductsCommandHandler commandHandler;
-        private DeleteProductsExtendedAttributesCommandHandler commandDeleteHandler;
+        private DeleteProductsExtendedAttributesCommandHandler commandDeleteHandler;       
         private SqlDbProvider dbProvider;
+        private MessageArchiveCommandHandler commandMessageArchiveHandler;
 
         [TestInitialize]
         public void Initialize()
@@ -32,6 +33,7 @@ namespace Mammoth.Esb.ProductListener.Tests
 
             commandHandler = new AddOrUpdateProductsCommandHandler(dbProvider);
             commandDeleteHandler = new DeleteProductsExtendedAttributesCommandHandler(dbProvider);
+            commandMessageArchiveHandler = new MessageArchiveCommandHandler(dbProvider);
         }
 
         [TestCleanup]
@@ -50,7 +52,7 @@ namespace Mammoth.Esb.ProductListener.Tests
             Mock<IEsbMessage> message = new Mock<IEsbMessage>();
             message.Setup(m => m.MessageText).Returns(System.IO.File.ReadAllText("TestMessages/ItemsWithDuplicateScanCode.xml"));
             var args = new EsbMessageEventArgs() { Message = message.Object };
-            
+
             //When
             var mockCache = new Mock<IHierarchyClassCache>();
             var taxDictionary = new Dictionary<string, int>
@@ -59,8 +61,8 @@ namespace Mammoth.Esb.ProductListener.Tests
             };
             mockCache.Setup(m => m.GetTaxDictionary()).Returns(taxDictionary);
             var mapperCache = new HierarchyClassIdMapper(mockCache.Object);
-           
-            mapperCache.PopulateHierarchyClassDatabaseIds(new List<GlobalAttributesModel>(){ new GlobalAttributesModel(){ MessageTaxClassHCID = "9989000" }});
+
+            mapperCache.PopulateHierarchyClassDatabaseIds(new List<GlobalAttributesModel>() { new GlobalAttributesModel() { MessageTaxClassHCID = "9989000" } });
             var mockLogger = new Mock<Icon.Logging.ILogger<ProductListener>>();
 
             var listener = new ProductListener(
@@ -72,7 +74,8 @@ namespace Mammoth.Esb.ProductListener.Tests
                 messageParser: new ProductMessageParser(),
                 hierarchyClassIdMapper: mapperCache,
                 addOrUpdateProductsCommandHandler: commandHandler,
-                deleteProductsExtendedAttrCommandHandler: commandDeleteHandler);
+                deleteProductsExtendedAttrCommandHandler: commandDeleteHandler,
+                messageArchiveCommandHandler: commandMessageArchiveHandler);
 
             listener.HandleMessage(null, args);
 
@@ -90,8 +93,9 @@ namespace Mammoth.Esb.ProductListener.Tests
             Mock<IEsbMessage> message = new Mock<IEsbMessage>();
             message.Setup(m => m.MessageText).Returns(System.IO.File.ReadAllText("TestMessages/ItemsWithDuplicateScanCode.xml"));
             var args = new EsbMessageEventArgs() { Message = message.Object };
-            
+
             var mockAddUpdate = new Mock<ICommandHandler<AddOrUpdateProductsCommand>>();
+            var mockMessageArchive = new Mock<ICommandHandler<MessageArchiveCommand>>();
             mockAddUpdate.SetupSequence(x => x.Execute(It.IsAny<AddOrUpdateProductsCommand>()))
                 .Throws(new System.Exception())
                 .Throws(new System.Exception())
@@ -105,7 +109,7 @@ namespace Mammoth.Esb.ProductListener.Tests
             };
             mockCache.Setup(m => m.GetTaxDictionary()).Returns(taxDictionary);
             var mapperCache = new HierarchyClassIdMapper(mockCache.Object);
-            mapperCache.PopulateHierarchyClassDatabaseIds(new List<GlobalAttributesModel>(){ new GlobalAttributesModel(){ MessageTaxClassHCID = "9989000" }});
+            mapperCache.PopulateHierarchyClassDatabaseIds(new List<GlobalAttributesModel>() { new GlobalAttributesModel() { MessageTaxClassHCID = "9989000" } });
 
             //When
             var listener = new ProductListener(
@@ -117,10 +121,11 @@ namespace Mammoth.Esb.ProductListener.Tests
                 messageParser: new ProductMessageParser(),
                 hierarchyClassIdMapper: mapperCache,
                 addOrUpdateProductsCommandHandler: mockAddUpdate.Object,
-                deleteProductsExtendedAttrCommandHandler: mockDelete.Object);
+                deleteProductsExtendedAttrCommandHandler: mockDelete.Object,
+                messageArchiveCommandHandler: mockMessageArchive.Object);
 
             listener.HandleMessage(null, args);
-            
+
             //Then
             mockAddUpdate.Verify(x => x.Execute(It.IsAny<AddOrUpdateProductsCommand>()), Times.Exactly(3));
         }

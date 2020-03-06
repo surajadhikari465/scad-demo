@@ -19,7 +19,9 @@ Post-Deployment Script Template
 :r .\24848_PopulateLocaleHieararchyJob_ForExtractService.sql -- 2019-12-12 24848
 :r .\30224_Create_IVL_Extract_JobScheudle.sql -- 2020-02-25 30224
 :r .\30224_Create_IVL_Item_Extract_JobSchedule.sql -- 2020-02-25 30224
-:r .\32371_CleanUp_Hierarchy_NationalClass_Table.sql -- 2020-02-28 32371
+:r .\32371_CleanUp_Hierarchy_NationalClass_Table.sql -- 2020-02-28 3237
+:r .\30737_PopulateGlobalItemMessageType.sql --2020-03-06
+:r .\PopulateManufacturerHierarchy.sql --2020-02-24
 
 -- Run every time (add your script above; keep this at bottom, as last post-deploy script).
 :r ..\..\Security\SecurityGrants.sql

@@ -156,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Monitors\ApiControllerMonitor.cs" />
+    <Compile Include="Monitors\MessageArchiveMonitor.cs" />
     <Compile Include="Monitors\DvoBulkImportJobMonitor.cs" />
     <Compile Include="Monitors\GloConControllerMonitor.cs" />
     <Compile Include="Monitors\MammothExpiringTprServiceMonitor.cs" />

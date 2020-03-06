@@ -23,7 +23,10 @@ namespace Mammoth.Esb.ProductListener
         private AddOrUpdateProductsCommand addOrUpdateProductsCommand;
 		private ICommandHandler<DeleteProductsExtendedAttributesCommand> deleteProductsExtendedAttrCommandHandler;
 		private DeleteProductsExtendedAttributesCommand deleteProductsExtendedAttrCommand;
+        private ICommandHandler<MessageArchiveCommand> messageArchiveCommandHandler;
+        private MessageArchiveCommand messageArchiveCommand;
 
+        private const string NonReceivingSystemsProperty = "nonReceivingSysName";
         public ProductListener(ListenerApplicationSettings listenerApplicationSettings,
             EsbConnectionSettings esbConnectionSettings,
             IEsbSubscriber subscriber,
@@ -32,7 +35,8 @@ namespace Mammoth.Esb.ProductListener
             IMessageParser<List<ItemModel>> messageParser,
             IHierarchyClassIdMapper hierarchyClassIdMapper,
             ICommandHandler<AddOrUpdateProductsCommand> addOrUpdateProductsCommandHandler,
-			ICommandHandler<DeleteProductsExtendedAttributesCommand> deleteProductsExtendedAttrCommandHandler)
+			ICommandHandler<DeleteProductsExtendedAttributesCommand> deleteProductsExtendedAttrCommandHandler,
+            ICommandHandler<MessageArchiveCommand> messageArchiveCommandHandler)
             : base(listenerApplicationSettings, esbConnectionSettings, subscriber, emailClient, logger)
         {
             this.messageParser = messageParser;
@@ -41,6 +45,8 @@ namespace Mammoth.Esb.ProductListener
             this.addOrUpdateProductsCommand = new AddOrUpdateProductsCommand();
 			this.deleteProductsExtendedAttrCommandHandler = deleteProductsExtendedAttrCommandHandler;
 			this.deleteProductsExtendedAttrCommand = new DeleteProductsExtendedAttributesCommand();
+            this.messageArchiveCommandHandler = messageArchiveCommandHandler;
+            this.messageArchiveCommand = new MessageArchiveCommand();
         }
 
         public override void HandleMessage(object sender, EsbMessageEventArgs args)
@@ -59,7 +65,22 @@ namespace Mammoth.Esb.ProductListener
                 isSuccess = false;
                 LogAndNotifyErrorWithMessage(e, args);
             }
-
+            if (!isSuccess)
+            {
+                try
+                {
+                    messageArchiveCommand.MessageId = new Guid();
+                    List<string> lstnonReceivingSystemsProduct = new List<string>() { args.Message.GetProperty("nonReceivingSysName") };
+                    var header = BuildMessageHeader(lstnonReceivingSystemsProduct, messageArchiveCommand.MessageId.ToString());
+                    messageArchiveCommand.MessageHeadersJson = header.ToString();
+                    messageArchiveCommand.MessageBody = args.Message.MessageText;
+                    messageArchiveCommandHandler.Execute(messageArchiveCommand);
+                }
+                catch (Exception e)
+                {
+                    LogAndNotifyErrorWithMessage(e, args);
+                }
+            }
             AcknowledgeMessage(args);
             logger.Info($"{(isSuccess ? "Successfully" : "Error(s) in")} processed Message ID '{args.Message.GetProperty("IconMessageID")}'. Process times: {processCounter}.");
         }
@@ -88,7 +109,7 @@ namespace Mammoth.Esb.ProductListener
                 catch (Exception e)
                 {
                     isOK = false;
-                    LogAndNotifyErrorWithMessage(e, args);
+                    LogAndNotifyErrorWithMessage(e, args);                   
                     
                     if(items.Count > 1)
                     { 
@@ -101,6 +122,19 @@ namespace Mammoth.Esb.ProductListener
             }
 
             return isOK;
+        }
+        public Dictionary<string, string> BuildMessageHeader(List<string> nonReceivingSystemsProduct, string messageId)
+        {
+            var messageProperties = new Dictionary<string, string>
+            {
+               { "IconMessageID", messageId},
+               { "Source", "Icon" },
+               { "TransactionType", "Global Item" }               
+            };
+
+           messageProperties.Add(NonReceivingSystemsProperty, String.Join(",", nonReceivingSystemsProduct));
+
+            return messageProperties;
         }
     }
 }

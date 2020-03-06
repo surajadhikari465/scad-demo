@@ -832,7 +832,8 @@
     <None Include="Scripts\Projects\MoveBoiseStoreToNc\31786_MoveBoiseStoreToRMRollBackScript.sql" />
     <None Include="Scripts\Projects\MoveBoiseStoreToNc\ClonePricesForAStore.sql" />
     <None Include="Scripts\Projects\MoveBoiseStoreToNc\ClonePricesForAStoreRollBack.sql" />
-    <None Include="Scripts\PopulateScripts\PopulateManufacturerHierarchy.sql" />
+    <None Include="Scripts\PostDeploymentScripts\30737_PopulateGlobalItemMessageType.sql" />
+    <None Include="Scripts\PostDeploymentScripts\PopulateManufacturerHierarchy.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

@@ -128,6 +128,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetApiMessageUnprocessedRowCountParameters.cs" />
     <Compile Include="Queries\GetApiMessageUnprocessedRowCountQuery.cs" />
+    <Compile Include="Queries\GetMessageArchiveQuery.cs" />
+    <Compile Include="Queries\GetMessageArchiveParameters.cs" />
     <Compile Include="Queries\GetIconDeadLetterParameters.cs" />
     <Compile Include="Queries\GetInStockOldestUnprocessedRecordDateByQueueTableParameters.cs" />
     <Compile Include="Queries\GetInStockOldestUnprocessedRecordDateByQueueTableQuery.cs" />
