@@ -148,6 +148,7 @@
     <Folder Include="extract" />
     <Folder Include="extract\Stored Procedures" />
     <Folder Include="Scripts\Projects\IconReboot\Audit" />
+    <Folder Include="Scripts\Projects\BoiseScripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Party.sql" />
@@ -803,6 +804,8 @@
     <None Include="Scripts\Projects\IconReboot\Audit\Brands.sql" />
     <Build Include="app\Stored Procedures\GetBulkItemUploadData.sql" />
     <None Include="Scripts\PopulateData\DeleteInvalidEventQueueRecords.sql" />
+    <None Include="Scripts\Projects\BoiseScripts\33039_MoveMetroFromRMToNC.sql" />
+    <None Include="Scripts\Projects\BoiseScripts\33039_MoveMetroFromNCToRMRollBackScript.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
