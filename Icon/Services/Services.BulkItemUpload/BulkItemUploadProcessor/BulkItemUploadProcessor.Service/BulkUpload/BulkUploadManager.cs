@@ -119,11 +119,11 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             activeExcelData = excelWorksheetParser.Parse(fileContent);
         }
 
-        public void SetStatus(Enums.FileStatusEnum status, string message = "")
+        public void SetStatus(Enums.FileStatusEnum status, string message = "", int PercentageProcessed = 0)
         {
             VerifyActiveUpload();
 
-            var command = new SetStatusCommand { FileStatus = status, BulkItemUploadId = activeUpload.BulkItemUploadId, Message = message };
+            var command = new SetStatusCommand { FileStatus = status, BulkItemUploadId = activeUpload.BulkItemUploadId, Message = message, PercentageProcessed = PercentageProcessed };
             setStatusCommandHandler.Execute(command);
 
             logger.Info($"Setting Status: {message}");
@@ -139,20 +139,20 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             hierarchyCache.Refresh();
             merchItemPropertiesCache.Refresh();
             ClearErrors(activeUpload.BulkItemUploadId);
-            SetStatus(Enums.FileStatusEnum.Processing, "Validating Excel File");
+            SetStatus(Enums.FileStatusEnum.Processing, "Validating Excel File", 10);
             var result = excelWorkbookValidator.Validate(activeUpload, activeExcelData);
             if (!result.IsValid)
                 throw new InvalidOperationException(result.Error);
 
             var sheet = activeExcelData.Workbook.Worksheets[Constants.ItemWorksheetName];
 
-            SetStatus(Enums.FileStatusEnum.Processing, "Parsing Headers");
+            SetStatus(Enums.FileStatusEnum.Processing, "Parsing Headers", 20);
             headers = excelWorksheetHeadersParser.Parse(sheet);
 
-            SetStatus(Enums.FileStatusEnum.Processing, "Parsing Rows");
+            SetStatus(Enums.FileStatusEnum.Processing, "Parsing Rows", 30);
             rowData = excelRowParser.Parse(sheet, headers);
 
-            SetStatus(Enums.FileStatusEnum.Processing, "Validating Rows");
+            SetStatus(Enums.FileStatusEnum.Processing, "Validating Rows", 40);
             validationResponse = rowObjectsValidator.Validate(activeUpload.FileModeType, rowData, headers, attributeModels);
         }
 
@@ -163,7 +163,7 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
 
         public void Process()
         {
-            SetStatus(Enums.FileStatusEnum.Processing, "Processing Validated Data");
+            SetStatus(Enums.FileStatusEnum.Processing, "Processing Validated Data", 60);
             if (validationResponse.ValidRows.Any())
             {
                 if (activeUpload.FileModeType == Enums.FileModeTypeEnum.CreateNew)
@@ -180,12 +180,12 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
                 ProcessErrors(activeUpload.BulkItemUploadId, validationResponse.InvalidRows);
             }
 
-            SetStatus(validationResponse.InvalidRows.Any() ? Enums.FileStatusEnum.Error : Enums.FileStatusEnum.Complete, "Finished Processing");
+            SetStatus(validationResponse.InvalidRows.Any() ? Enums.FileStatusEnum.Error : Enums.FileStatusEnum.Complete, "Finished Processing", 100);
         }
 
         private void ProcessCreateNewUpload()
         {
-            SetStatus(Enums.FileStatusEnum.Processing, "Creating Items");
+            SetStatus(Enums.FileStatusEnum.Processing, "Creating Items", 80);
             var mapperResponse = addItemModelMapper.Map(validationResponse.ValidRows, headers, attributeModels, activeUpload.UploadedBy);
             var command = new AddItemsCommand
             {
@@ -219,7 +219,7 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
 
         private void ProcessUpdateUpload()
         {
-            SetStatus(Enums.FileStatusEnum.Processing, "Updating Items");
+            SetStatus(Enums.FileStatusEnum.Processing, "Updating Items", 80);
             var items = updateItemMapper.Map(validationResponse.ValidRows, headers, attributeModels, activeUpload.UploadedBy);
             updateItemsCommandHandler.Execute(new UpdateItemsCommand
             {
@@ -236,7 +236,7 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             if (invalidRows.Count == 0) return;
             logger.Info($"Items with Errors: {invalidRows.Count}");
 
-            SetStatus(Enums.FileStatusEnum.Processing, "Processing Errors");
+            SetStatus(Enums.FileStatusEnum.Processing, "Processing Errors", 90);
             var errors = from i in invalidRows
                          group i by i.RowId
                          into grouping

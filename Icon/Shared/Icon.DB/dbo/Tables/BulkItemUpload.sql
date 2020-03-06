@@ -13,6 +13,6 @@
 		CONSTRAINT FK_BulkItemUpload_StatusID FOREIGN KEY REFERENCES BulkUploadStatus (Id), 
 	TotalRows INT NULL,
 	CurrentRow INT NULL,
-    [Message] NVARCHAR(500) NULL
-		
+    [Message] NVARCHAR(500) NULL,
+	[PercentageProcessed]  INT NULL DEFAULT 0	 
 )

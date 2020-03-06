@@ -44,7 +44,7 @@ namespace BulkItemUploadProcessor.Service
                 foreach (var bulkItemUploadInformation in GetUploadsToProcess())
                 {
                     bulkUploadManager.SetActiveUpload(bulkItemUploadInformation);
-                    bulkUploadManager.SetStatus(FileStatusEnum.Processing);
+                    bulkUploadManager.SetStatus(FileStatusEnum.Processing, string.Empty,5);
                     bulkUploadManager.Validate();
                     bulkUploadManager.Process();
                 }

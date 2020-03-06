@@ -8,7 +8,6 @@ namespace BulkItemUploadProcessor.DataAccess.Commands
         public Enums.FileStatusEnum FileStatus { get; set; }
 
         public string Message { get; set; }
+        public int PercentageProcessed { get; set; }
     }
-
-
 }

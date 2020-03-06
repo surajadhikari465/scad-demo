@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
@@ -662,12 +663,11 @@ namespace Icon.Web.Controllers
                 var uploadedFileType = Request.Form["fileType"];
                 try
                 {
-                    //  Get all files from Request object  
+                    //  Get all files from Request object
                     HttpFileCollectionBase files = Request.Files;
                     for (int i = 0; i < files.Count; i++)
                     {
                         var uploadedFile = files[i];
-
                         if (uploadedFile == null)
                         {
                             var result = new BulkUploadResultModel { Result = "Error", Message = "No file selected" };
@@ -690,7 +690,6 @@ namespace Icon.Web.Controllers
 
                         try
                         {
-
                             var manager = new BulkItemUploadManager
                             {
                                 BulkItemUploadModel = new BulkItemUploadModel
@@ -702,28 +701,22 @@ namespace Icon.Web.Controllers
                                 }
                             };
                             bulkItemUploadManagerHandler.Execute(manager);
-                            var successMessage = $"File name: {uploadedFileName} uploaded successfully.";
-                            var result = new BulkUploadResultModel { Result = "Success", Message = successMessage };
-                            return Json(result);
+                            return RequestInfo($"File uploaded uploaded successfully and added to processing queue. You can monitor processing status in the grid.", HttpStatusCode.OK);
                         }
-                        catch (Exception ex)
+                        catch
                         {
-                            var result = new BulkUploadResultModel { Result = "Error", Message = $"Error occurred. Error details: {ex.Message}" };
-                            return Json(result);
+                            throw;
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    var result = new BulkUploadResultModel { Result = "Error", Message = $"Error occurred. Error details: {ex.Message}" };
-                    return Json(result);
+                    return RequestInfo($"Upload failed: {ex.Message}", HttpStatusCode.ExpectationFailed);
                 }
             }
             else
             {
-                var result = new BulkUploadResultModel { Result = "Error", Message = "No files selected" };
-
-                return Json(result);
+                return RequestInfo("No files have been selected", HttpStatusCode.BadRequest);
             }
 
             return null;
@@ -894,5 +887,15 @@ namespace Icon.Web.Controllers
             return userAccess;
         }
 
+        private ActionResult RequestInfo(string errMessage, HttpStatusCode statusCode)
+        {
+            //To prevent IIS from hijacking custom response or add the line below to web config file in <system.webServer> section
+            //<httpErrors errorMode="DetailedLocalOnly" existingResponse="PassThrough"/>
+            Response.TrySkipIisCustomErrors = true; 
+
+            Response.StatusCode = (int)statusCode;
+            Response.StatusDescription = errMessage;
+            return Json(errMessage);
+        }
     }
 }

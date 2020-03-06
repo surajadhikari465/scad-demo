@@ -11,5 +11,6 @@ namespace Icon.Web.DataAccess.Models
         public string UploadedBy { get; set; }
         public string Status { get; set; }
         public string Message { get; set; }
+        public int? PercentageProcessed { get; set; }
     }
 }
