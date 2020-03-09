@@ -15,6 +15,7 @@ import orderUtil from "../util/Order";
 import isMinDate from "../util/MinDate";
 import { useHistory } from "react-router-dom";
 import OrderItem from "../types/OrderItem";
+import BasicModal from "../../../../layout/BasicModal";
 
 interface RouteParams {
     purchaseOrderNumber: string;
@@ -63,6 +64,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
     const [nonAllocatedCharges, setNonAllocatedCharges] = useState<number>(0);
     const [invoiceTotalEdited, setInvoiceTotalEdited] = useState<boolean>(false);
     const [canCloseOrder, setCanCloseOrder] = useState<boolean>(false);
+    const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { }, cancelAction: () => { } });
 
     const setMenuItems = useCallback(() => {
         const newMenuItems = [
@@ -219,7 +221,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
         }));
     }, [setCurrencies, region])
 
-    const closeOrder = async () => {
+    const validateCloseOrder = () => {
         if (!orderDetails) {
             return;
         }
@@ -228,6 +230,24 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             toast.error("Please enter an invoice number", { autoClose: false });
             return;
         }
+
+        if (new Date(invoiceDate).getFullYear() < new Date().getFullYear()) {
+            setAlert({
+                ...alert,
+                open: true,
+                alertMessage: `You are attempting to close an invoice with a year other than the current year. Is the year accurate?`,
+                type: 'confirm',
+                confirmAction: () => { closeOrder(); },
+                cancelAction: () => { setAlert({ ...alert, open: false }); }
+            });
+        } else {
+            closeOrder();
+        }
+    }
+    
+    const closeOrder = async () => {
+        if (!orderDetails) { return; }
+        if (!invoiceNumber) { return; }
 
         try {
             setLoadingMessage("Closing Order...");
@@ -535,9 +555,9 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                             </Grid>
                         </div>
                     </Form>
-
+                    <BasicModal alert={alert} setAlert={setAlert} />
                     <div style={{ position: 'absolute', bottom: '5px', width: '100%', textAlign: 'center' }}>
-                        <ConfirmModal triggerButtonText="Close Order" handleConfirmClose={closeOrder} lineOne={`Invoice Date: ${dateFormat(new Date(), 'mm/dd/yyyy')}`}
+                        <ConfirmModal triggerButtonText="Close Order" handleConfirmClose={validateCloseOrder} lineOne={`Invoice Date: ${dateFormat(new Date(), 'mm/dd/yyyy')}`}
                             lineTwo="Close this order?" headerText='Invoice Data' confirmButtonText="OK" cancelButtonText="Cancel" enableButton={canCloseOrder} />
                     </div>
                 </Fragment>

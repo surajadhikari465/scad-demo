@@ -585,6 +585,12 @@ Public Class InvoiceData
                 Exit Sub
             End If
 
+            ' Prompt a user to confirm closing an invoice in a previous year
+            If DateTimePickerInvoiceDate.Value.Year < DateTime.Now.Year AndAlso MsgBox("You are attempting to close an invoice with a year other than the current year. Is the year accurate?", MsgBoxStyle.YesNo, "Invoice Date") = MsgBoxResult.No Then
+                DateTimePickerInvoiceDate.Focus()
+                Exit Sub
+            End If
+
             Dim msgResponse As MsgBoxResult = Messages.CloseOrder(DateTimePickerInvoiceDate.Value, enumDocumentType)
             If msgResponse = MsgBoxResult.Cancel Then
                 Exit Sub

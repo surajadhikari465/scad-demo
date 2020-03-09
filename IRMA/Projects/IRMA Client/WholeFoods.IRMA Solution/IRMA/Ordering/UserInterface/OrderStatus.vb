@@ -264,6 +264,11 @@ Friend Class frmOrderStatus
         Else
             ' Verify the order has not already been closed.
             If Not pbClosedOrder Then
+                ' Confirm date is not in the past year as this causes issues to metrics
+                If dtpSearchDate.DateTime.Year < DateTime.Now.Year AndAlso MsgBox("You are attempting to close an invoice with a year other than the current year. Is the year accurate?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "Verify Close Order") = MsgBoxResult.No Then
+                    Exit Sub
+                End If
+
                 ' Confirm the closure
                 If MsgBox(ResourcesOrdering.GetString("msg_ConfirmCloseOrder"), MsgBoxStyle.Question + MsgBoxStyle.YesNo, "Verify Close Order") = MsgBoxResult.Yes Then
                     logger.Info("cmdCloseOrder_Click - the user confirmed to close the order: OrderHeader_ID=" + glOrderHeaderID.ToString)
@@ -272,7 +277,6 @@ Friend Class frmOrderStatus
                         RefreshData()
                     End If
                 End If
-
             Else
                 ' The order has already been closed.  Prompt the user to re-open the order.
                 ' This can only be done if the order has not been uploaded to PeopleSoft.
@@ -662,38 +666,38 @@ Friend Class frmOrderStatus
         ' OR the user is a PO_Accountant and the order has not been UPLOADED yet, allowing these users to re-open a CLOSED, SUSPENDED, or APPROVED order
         ' OR the user is a receiver and the app-setting to allow receivers to reopen suspended POs prior to today is TRUE (TFS 2141)
         ' OR the order close date is today and the order has not been UPLOADED yet
-        SetActive(cmdCloseOrder, _
+        SetActive(cmdCloseOrder,
                     ((gbDistributor AndAlso (glStore_Limit = 0 OrElse glStore_Limit = plStore_No)) _
                             OrElse gbCoordinator _
                             OrElse gbAccountant) _
                     AndAlso ((Not pbClosedOrder) _
                                 OrElse gbPOAccountant _
                                 OrElse (gbDistributor AndAlso isPrevDayPOReopenAllowed) _
-                                OrElse DateDiff(Microsoft.VisualBasic.DateInterval.Day, dtCloseDate, SystemDateTime) = 0 _
+                                OrElse DateDiff(Microsoft.VisualBasic.DateInterval.Day, dtCloseDate, SystemDateTime) = 0
                             ) _
                     AndAlso (Not pbUploaded) _
                     AndAlso (IsNothing(ucReasonCode.Value)))
 
-        SetActive(lblReasonCode, _
+        SetActive(lblReasonCode,
                   ((gbDistributor AndAlso (glStore_Limit = 0 OrElse glStore_Limit = plStore_No) _
                     OrElse gbSuperUser OrElse gbCoordinator) _
                     AndAlso Not frmOrders.ItemsReceived _
                     AndAlso frmOrders.Sent _
-                    AndAlso Not pbClosedOrder)) 
+                    AndAlso Not pbClosedOrder))
 
-        SetActive(ucReasonCode, _
+        SetActive(ucReasonCode,
                   ((gbDistributor AndAlso (glStore_Limit = 0 OrElse glStore_Limit = plStore_No) _
                     OrElse gbSuperUser OrElse gbCoordinator) _
                     AndAlso Not frmOrders.ItemsReceived _
                     AndAlso frmOrders.Sent _
-                    AndAlso Not pbClosedOrder)) 
+                    AndAlso Not pbClosedOrder))
 
-        SetActive(btnRefuseReceiving, _
+        SetActive(btnRefuseReceiving,
                   ((gbDistributor AndAlso (glStore_Limit = 0 OrElse glStore_Limit = plStore_No) _
                     OrElse gbSuperUser OrElse gbCoordinator) _
                     AndAlso Not frmOrders.ItemsReceived _
                     AndAlso frmOrders.Sent _
-                    AndAlso Not pbClosedOrder)) 
+                    AndAlso Not pbClosedOrder))
 
         'Make sure bottom controls tab indices are at the end
         cmdCloseOrder.TabIndex = 99

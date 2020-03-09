@@ -25,10 +25,14 @@
     <NativePlatformName>Windows Mobile 6 Professional SDK</NativePlatformName>
     <FormFactorID>
     </FormFactorID>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -73,7 +77,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="WholeFoods.Mobile.Interop.Scanner, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Reference Libraries\WholeFoods.Mobile.Interop.Scanner.dll</HintPath>
+      <HintPath>..\..\..\..\Libraries\WholeFoods.Mobile.Interop.Scanner.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
