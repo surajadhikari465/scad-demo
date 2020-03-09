@@ -18,7 +18,6 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\PopulateHospitalityTraits.sql -- 2019.05.26 PBI 21601
 :r .\Scripts\PopulateData\PopulateAttributesWebConfiguration.sql -- 2019.07.13 PBI 14480
 :r .\Scripts\PopulateData\RemoveMDTTraitsFromHierarchyClassTrait.sql -- 2019.07.11 PBI 22265
-:r .\Scripts\PopulateData\PopulateBulkItemUploadStatus.sql -- 2019.09.16 PBI 24826
 :r .\Scripts\PopulateData\PopulateBulkItemUploadFileTypes.sql -- 2019.09.25 PBI 25130
 :r .\Scripts\PopulateData\AddItemPublisherToAppTable.sql -- 2019.10.10 BUG 26713
 :r .\Scripts\PopulateData\PopulateAttributeMessageType.sql --2019.10.18 PBI 23351
