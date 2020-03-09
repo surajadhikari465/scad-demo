@@ -101,6 +101,8 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
             }
 
             const newQuantity: number = quantityMode.current === QuantityAddMode.AddTo ? quantity + orderDetails.QtyReceived : quantity;
+            const parsedWeight: number = typeof weight === 'number' ? weight : parseFloat(weight);
+            const newWeight: number = quantityMode.current === QuantityAddMode.AddTo ? parsedWeight + orderDetails.Weight : parsedWeight;
 
             if (!overrideHighQty.current && newQuantity > orderDetails.QtyOrdered) {
                 setShowHighQtyModal(true);
@@ -112,7 +114,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                 var result = await agent.PurchaseOrder.receiveOrder(
                     region,
                     newQuantity,
-                    orderDetails.Weight,
+                    newWeight,
                     new Date(),
                     false,
                     orderDetails.OrderItemId,
@@ -152,6 +154,8 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                 }
             }
             finally {
+                setQuantity(1);
+                setWeight('');
                 setReceivingOrder(false);
                 overrideHighQty.current = false;
                 quantityMode.current = QuantityAddMode.None;
