@@ -12,5 +12,6 @@ namespace Icon.Web.DataAccess.Models
         public string Status { get; set; }
         public string Message { get; set; }
         public int? PercentageProcessed { get; set; }
+        public int NumberOfRowsWithError { get; set; }
     }
 }

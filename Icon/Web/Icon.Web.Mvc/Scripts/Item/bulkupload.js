@@ -15,12 +15,13 @@
                     headerText: "Status",
                     key: "Status",
                     dataType: "string",
-                    width: "5%",
+                    width: "8%",
                     formatter: statusFormatter
                 },
                 { headerText: "Uploaded At", key: "FileUploadTime", dataType: "date", format: "MM-dd-yyyy hh:mm:ss tt", width: "10%" },
-                { headerText: "Message", key: "Message", dataType: "string", width: "35%" },
+                { headerText: "Message", key: "Message", dataType: "string", width: "30%" },
                 { headerText: "", key: "PercentageProcessed", dataType: "string", width: "10%", formatter: getProgress },
+                { headerText: "NumberOfRowsWithError", key: "NumberOfRowsWithError", dataType: "string", width: "0%" }
             ],
             features: [{
                 name: "Resizing",
@@ -132,8 +133,15 @@
 
     function statusFormatter(val, record) {
 
-        if (val === 'Error')
-            return "<a href='/Item/BulkUploaderrors?Id=" + record.BulkItemUploadId + "'>Error</a>";
+        if (val === 'Error') {
+            let errorRowsCount = record.NumberOfRowsWithError;
+            if (errorRowsCount > 0) {
+                return "<a href='/Item/BulkUploaderrors?Id=" + record.BulkItemUploadId + "'>Errors: " + errorRowsCount + "</a>";
+            }
+            else {
+                return "<a href='/Item/BulkUploaderrors?Id=" + record.BulkItemUploadId + "'>Error</a>";
+            }
+        }
         else
             return val;
     }
