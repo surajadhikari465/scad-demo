@@ -12,9 +12,9 @@ const orderUtil = {
         return result;
     },
     MapOrder: (order: any, upc: string = ""): OrderDetails => {
-        var orderItemsFiltered = order.orderItems.filter(
+        var orderItemsFiltered = order.orderItems ? order.orderItems.filter(
             (oi: any) => oi.identifier === upc
-        );
+        ) : [];
     
         var orderItem = null;
         if(orderItemsFiltered.length === 1) {

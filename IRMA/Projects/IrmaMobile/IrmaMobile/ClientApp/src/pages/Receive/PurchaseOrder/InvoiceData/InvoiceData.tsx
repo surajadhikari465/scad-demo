@@ -72,7 +72,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
         dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems });
     }, [dispatch])
 
-    const loadValuesAndState = useCallback(() => {
+    const loadValuesAndState = () => {
         if (charges) {
             let lineItemCharges = 0;
             let allocatedCharges = 0;
@@ -184,14 +184,15 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                         setSelectedCurrency("CAD");
                 }
             }
-
         }
-    }, [charges, radioOptions, orderDetails, radioSelection, region, invoiceTotalEdited, invoiceDateEdited, invoiceNumberEdited]);
+    };
 
-    const getOrderInvoiceCharges = useCallback(async () => {
+    const getOrderInvoiceCharges = async (displayLoadingContent: boolean) => {
         try {
-            setIsLoading(true);
-            setLoadingMessage('Loading charges...');
+            if (displayLoadingContent) {
+                setIsLoading(true);
+                setLoadingMessage('Loading charges...');
+            }
             const existingCharges = await agent.InvoiceData.getOrderInvoiceCharges(region, parseInt(purchaseOrderNumber));
             setCharges(existingCharges ? existingCharges.map((ec: any) => {
                 return {
@@ -205,9 +206,11 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             }) : [])
         }
         finally {
-            setIsLoading(false);
+            if (displayLoadingContent) {
+                setIsLoading(false);
+            }
         }
-    }, [purchaseOrderNumber, region]);
+    };
 
     const getCurrencies = useCallback(async () => {
         const allCurrencies = await agent.InvoiceData.getCurrencies(region);
@@ -299,7 +302,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             setIsLoading(false);
         }
 
-        await getOrderInvoiceCharges()
+        await getOrderInvoiceCharges(true)
     }
 
     const handleRemoveCharge = async (chargeId: number) => {
@@ -313,7 +316,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                 return;
             }
 
-            await getOrderInvoiceCharges();
+            await getOrderInvoiceCharges(false);
         }
         finally {
             setIsLoading(false);
@@ -391,18 +394,20 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
 
     useEffect(() => {
         if (orderDetails) {
+            setLoadingMessage('...Loading Order');
             setIsLoading(true);
             const loadInvoiceOrder = async () => {
                 await agent.InvoiceData.updateOrderHeaderCosts(region, orderDetails.OrderId);
                 const order = await agent.PurchaseOrder.detailsFromPurchaseOrderNumber(region, orderDetails.OrderId);
                 const mappedOrder = orderUtil.MapOrder(order);
-                dispatch({ type: types.SETORDERDETAILS, orderDetails: mappedOrder });
-                await getOrderInvoiceCharges();
+                await getOrderInvoiceCharges(false);
                 await getCurrencies();
-                loadValuesAndState();
-                setIsLoading(false);
+                return mappedOrder;
             };
-            loadInvoiceOrder();
+            loadInvoiceOrder().then((mappedOrder) => {
+                dispatch({ type: types.SETORDERDETAILS, orderDetails: mappedOrder });
+                setIsLoading(false);
+            });
         }
     }, []);
 
@@ -423,9 +428,16 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
 
     useEffect(() => {
         if (orderDetails) {
-            setCanCloseOrder(orderDetails.OrderItems.filter((oi: OrderItem) => oi.QtyReceived > 0).length > 0);
+            const canClose = orderDetails && orderDetails.OrderItems && orderDetails.OrderItems.some((oi: OrderItem) => oi.QtyReceived > 0);
+            setCanCloseOrder(canClose);
         }
-    }, [orderDetails, setCanCloseOrder])
+    }, [orderDetails, setCanCloseOrder]);
+
+    useEffect(() => {
+        if (orderDetails) {
+            loadValuesAndState();
+        }
+    }, [orderDetails])
 
     return (
         <Fragment>

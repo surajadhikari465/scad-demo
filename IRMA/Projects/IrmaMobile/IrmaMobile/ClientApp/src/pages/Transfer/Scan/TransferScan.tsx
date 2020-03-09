@@ -417,7 +417,7 @@ const TransferScan: React.FC = () => {
                                 Quantity:
                         </Grid.Column>
                             <Grid.Column width={3} style={{ padding: '0px' }}>
-                                <Input type='number' placeholder='Qty' value={quantity} onKeyPress={handleQuantityOnKeyPress} onChange={handleQuantityChange} onBlur={clearInvalid} onKeyDown={clearInvalid} fluid />
+                                <Input type='number' placeholder='Qty' value={quantity} onKeyPress={handleQuantityOnKeyPress} onChange={handleQuantityChange} onBlur={clearInvalid} onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''} fluid />
                             </Grid.Column>
                             <Grid.Column width={2} verticalAlign='middle' textAlign='right'>
                                 Retail:

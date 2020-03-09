@@ -41,11 +41,15 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
             dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
             dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
             dispatch({ type: types.SETLISTEDORDERS, listedOrders: [] });
-        }
+        };
+
+        const handleNavigateAway = () => {
+            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
+        };
 
         const newMenuItems = [
             { id: 1, order: 0, text: "Refused Items", path: "#", disabled: true } as IMenuItem,
-            { id: 2, order: 1, text: "Invoice Data", path: `/receive/invoicedata/${purchaseOrderNumber}`, disabled: orderDetails === null } as IMenuItem,
+            { id: 2, order: 1, text: "Invoice Data", path: `/receive/invoicedata/${purchaseOrderNumber}`, disabled: orderDetails === null, onClick: handleNavigateAway } as IMenuItem,
             { id: 3, order: 2, text: "Receiving List", path: `/receive/List/${purchaseOrderNumber}`, disabled: orderDetails === null } as IMenuItem,
             { id: 4, order: 3, text: "Order Info", path: `/receive/purchaseorder/open`, disabled: orderDetails === null } as IMenuItem,
             { id: 5, order: 4, text: "Clear Screen", path: "/receive/PurchaseOrder/clearscreen", disabled: false } as IMenuItem,
@@ -73,7 +77,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     const loadPurchaseOrder = async (upc: string, purchaseOrderNum?: number | undefined, closeOrderList: boolean = false) => {
         if (purchaseOrderNum === undefined) {
             purchaseOrderNum = parseInt(purchaseOrderNumber);
-        } 
+        }
         //int32 max...
         if (purchaseOrderNum > 2147483647) {
             toast.error(`The PO # value is too large. Please enter a smaller value`, { autoClose: false });

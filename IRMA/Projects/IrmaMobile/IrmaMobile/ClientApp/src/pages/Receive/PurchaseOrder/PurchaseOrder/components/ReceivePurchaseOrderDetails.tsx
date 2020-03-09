@@ -25,7 +25,7 @@ interface IProps {
     costedByWeight: boolean;
 }
 
-const ReceivePurchaseOrderDetails: React.FC<IProps> = ({costedByWeight}) => {
+const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
     // @ts-ignore
     const { state, dispatch } = useContext(AppContext);
     const { orderDetails, region, mappedReasonCodes, user } = state;
@@ -59,11 +59,11 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({costedByWeight}) => {
         loadReasonCodes();
     }, [dispatch, region]);
 
-    useEffect(()=>{
-        if(orderDetails?.PkgWeight !== undefined){
+    useEffect(() => {
+        if (orderDetails?.PkgWeight !== undefined) {
             setWeight(quantity * orderDetails?.PkgWeight);
-        }   
-    }, [orderDetails,quantity, setWeight])
+        }
+    }, [orderDetails, quantity, setWeight])
 
 
     const handleDropdownChange = (
@@ -131,7 +131,24 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({costedByWeight}) => {
                     }
 
                     orderDetails.OrderItems.filter((oi: OrderItem) => oi.OrderItemId === orderDetails.OrderItemId)[0].QtyReceived = newQuantity;
-                    dispatch({ type: types.SETORDERDETAILS, orderDetails: { ...orderDetails, QtyReceived: newQuantity, ItemLoaded: false, OrderItems: orderDetails.OrderItems } });
+                    dispatch({
+                        type: types.SETORDERDETAILS, orderDetails: {
+                            ...orderDetails,
+                            QtyReceived: undefined,
+                            ItemLoaded: false,
+                            OrderItems: orderDetails.OrderItems,
+                            Description: '',
+                            Weight: undefined,
+                            Uom: undefined,
+                            Code: undefined,
+                            QtyOrdered: undefined,
+                            EInvQty: undefined,
+                            OrderItemId: undefined,
+                            PkgWeight: undefined,
+                            PkgQuantity: undefined,
+                            OrderUom: undefined
+                        }
+                    });
                 }
             }
             finally {
@@ -280,13 +297,13 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({costedByWeight}) => {
                                     <Input
                                         type="number"
                                         name="Quantity"
-                                        onChange={(e)=>setQuantity(parseInt(e.target.value))}
+                                        onChange={(e) => setQuantity(parseInt(e.target.value))}
                                         onKeyPress={validateIntegerInput}
                                         onFocus={(event: any) =>
                                             event.target.select()
                                         }
-                                        onKeyDown={(e:any)=> e.key === 'Enter' ? e.target.blur() : ''}
-                                        value={orderDetails?.ItemLoaded ? quantity: ''}
+                                        onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''}
+                                        value={orderDetails?.ItemLoaded ? quantity : ''}
                                         fluid
                                         size="small"
                                         disabled={!orderDetails.ItemLoaded}
@@ -306,13 +323,13 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({costedByWeight}) => {
                                     <Input
                                         type="number"
                                         name="Weight"
-                                        onChange={(e)=>setWeight(parseFloat(e.target.value))}
+                                        onChange={(e) => setWeight(parseFloat(e.target.value))}
                                         onKeyPress={validateDecimalInput}
                                         onFocus={(event: any) =>
                                             event.target.select()
                                         }
-                                        onKeyDown={(e:any)=> e.key === 'Enter' ? e.target.blur() : ''}
-                                        value={(orderDetails?.ItemLoaded  && costedByWeight )? weight: ''}
+                                        onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''}
+                                        value={(orderDetails?.ItemLoaded && costedByWeight) ? weight : ''}
                                         fluid
                                         disabled={!orderDetails.ItemLoaded || !costedByWeight}
                                         size="small"
