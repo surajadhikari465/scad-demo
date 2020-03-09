@@ -141,7 +141,7 @@
     </Reference>
     <Reference Include="Microsoft.VisualBasic.Compatibility" />
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\WholeFoods.IRMA.ScheduledJobs\POSPush\packages\Newtonsoft.Json.12.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>$(SolutionDir)\packages\Newtonsoft.Json.12.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="office, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <SpecificVersion>False</SpecificVersion>
@@ -149,12 +149,24 @@
       <HintPath>..\..\..\Libraries\office.dll</HintPath>
     </Reference>
     <Reference Include="Opsgenie.Alert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\WholeFoods.IRMA.ScheduledJobs\POSPush\packages\Opsgenie.Alert.2019.2.1.1\lib\net40\Opsgenie.Alert.dll</HintPath>
+      <HintPath>$(SolutionDir)\packages\Opsgenie.Alert.2019.9.17.1\lib\net40\Opsgenie.Alert.dll</HintPath>
+    </Reference>
+    <Reference Include="OpsGenieLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\OpsGenieLib.2020.3.9.2\lib\net40\OpsGenieLib.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WeOnlyDo.Client.SSH, Version=2.2.6.71, Culture=neutral, PublicKeyToken=72e5267712baa5fd">
@@ -375,10 +387,6 @@
     <ProjectReference Include="..\..\ItemCatalogLib\ItemCatalogLib.vbproj">
       <Project>{3374040D-5A0F-412A-A32A-E70B90339F94}</Project>
       <Name>ItemCatalogLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\OpsGenie\OpsGenieLib\OpsgenieLib.csproj">
-      <Project>{d2f2e337-45a4-4406-8e87-db87880eb919}</Project>
-      <Name>OpsgenieLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

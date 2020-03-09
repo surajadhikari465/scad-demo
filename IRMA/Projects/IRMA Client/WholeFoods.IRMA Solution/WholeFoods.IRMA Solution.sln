@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WholeFoods.IRMA", "WholeFoods.IRMA", "{DF951614-2504-489F-832B-52226CBDE7B0}"
 	ProjectSection(FolderStartupServices) = postProject
@@ -18,7 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WholeFoods.Utility", "Whole
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WholeFoods.IRMA", "IRMA\WholeFoods.IRMA.vbproj", "{FEFE1E7F-F69D-4710-BF08-75DC25D8C36E}"
 	ProjectSection(ProjectDependencies) = postProject
-		{D2F2E337-45A4-4406-8E87-DB87880EB919} = {D2F2E337-45A4-4406-8E87-DB87880EB919}
 		{6F732051-5D10-4E07-9388-6AAC3E63A52A} = {6F732051-5D10-4E07-9388-6AAC3E63A52A}
 		{E9A653FE-5C38-435C-B6D2-137915ED8E85} = {E9A653FE-5C38-435C-B6D2-137915ED8E85}
 	EndProjectSection
@@ -45,8 +44,6 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WholeFoods.IRMA.FaxLog", "..\..\..\Libraries\Wholefoods.IRMA.FaxLog\Wholefoods.IRMA.FaxLog\WholeFoods.IRMA.FaxLog.vbproj", "{6F732051-5D10-4E07-9388-6AAC3E63A52A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRMAUnitTests", "IRMAUnitTests\IRMAUnitTests.csproj", "{BE9E41C4-6289-4789-B02B-2C4AF481A560}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpsgenieLib", "..\..\OpsGenie\OpsGenieLib\OpsgenieLib.csproj", "{D2F2E337-45A4-4406-8E87-DB87880EB919}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,14 +111,6 @@ Global
 		{BE9E41C4-6289-4789-B02B-2C4AF481A560}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE9E41C4-6289-4789-B02B-2C4AF481A560}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BE9E41C4-6289-4789-B02B-2C4AF481A560}.Release|x86.ActiveCfg = Release|Any CPU
-		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Debug|x86.Build.0 = Debug|Any CPU
-		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Release|x86.ActiveCfg = Release|Any CPU
-		{D2F2E337-45A4-4406-8E87-DB87880EB919}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
