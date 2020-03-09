@@ -19,3 +19,4 @@ Post-Deployment Script Template
 :r "23903 - AddNonScaleExtraTextToEIM/AddNonScaleExtraTextToEIM.sql" --2019.11.20
 :r PBI27833-GenerateEmailWhenPosPushJobFails.sql --2019.12.05
 :r PBI29079_AddNewShrinkTypeAndGL.sql --2020.01.15
+:r PBI32245_InsertUploadAttributeEntries.sql --2020.03.06

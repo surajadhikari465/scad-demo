@@ -3360,6 +3360,7 @@
     <Build Include="Schema\extract\Stored Procedures\APT_ItemStore.sql" />
     <Build Include="Schema\extract\Stored Procedures\ItemAttribute.sql" />
     <Build Include="Schema\extract\Stored Procedures\ItemVendorLane.sql" />
+    <Build Include="Scripts\PostDeploy\PBI32245_InsertUploadAttributeEntries.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
