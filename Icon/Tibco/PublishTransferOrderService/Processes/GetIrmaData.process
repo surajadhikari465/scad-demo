@@ -330,7 +330,7 @@
 	oi.OrderItem_ID as TransferOrderDetailNumber,
 	oi.Item_Key as SourceItemKey,
 	ii.Identifier as DefaultScanCode,
-	isb.SubTeam_No as HostSubTeam_No,
+	isb.SubDept_No as HostSubTeam_No,
 	isb.SubTeam_Name as HostSubTeam_Name,
 	oi.QuantityOrdered,
 	iuo.Unit_Name as OrderedUnit,
