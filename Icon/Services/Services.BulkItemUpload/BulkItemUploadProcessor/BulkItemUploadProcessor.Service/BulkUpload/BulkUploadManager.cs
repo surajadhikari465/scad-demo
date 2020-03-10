@@ -183,7 +183,7 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
 
             if (validationResponse.InvalidRows.Any())
             {
-                failedRowsCount = validationResponse.InvalidRows.Count();
+                failedRowsCount = validationResponse.InvalidRows.Select(x => x.RowId).Distinct().Count();
                 ProcessErrors(activeUpload.BulkItemUploadId, validationResponse.InvalidRows);
             }
 

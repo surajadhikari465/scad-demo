@@ -49,53 +49,6 @@
         });
     }
 
-
-    //function setupUploadButton() {
-
-    //    $('#uploadButton').click(function () {
-
-    //        let selectedFileType = $("input:radio[name=NewOrExistSetSelected]:checked").val();
-
-    //        if (window.FormData !== undefined) {
-    //            var fileUpload = $("#ExcelAttachment").get(0);
-    //            var files = fileUpload.files;
-
-    //            // Create FormData object  
-    //            var fileData = new FormData();
-
-    //            // Looping over all files and add it to FormData object  
-    //            for (var i = 0; i < files.length; i++) {
-    //                fileData.append(files[i].name, files[i]);
-    //            }
-
-    //            fileData.append('fileType', selectedFileType);
-
-    //            $.ajax({
-    //                url: '/Item/UploadFiles',
-    //                type: "POST",
-    //                contentType: false, // Not to set any content header  
-    //                processData: false, // Not to process data  
-    //                data: fileData,
-    //                success: function (d) {
-    //                    if (d.Result === "Success") {
-    //                        console.log(d);
-    //                        alertSuccess(d.Message);
-    //                        $("#ExcelAttachment").val('');
-    //                    } else {
-    //                        alertError(d.Message);
-    //                    }
-    //                },
-    //                error: function (err) {
-    //                    alert(err.statusText);
-    //                }
-    //            });
-
-    //        } else {
-    //            alert("FormData is not supported.");
-    //        }
-    //    });
-    //}
-
     function fileTypeFormatter(val) {
         if (val === 'false')
             return '<img src="/Content/Images/plus-square.svg" style="width: 16px; height: 16px;" />';
@@ -187,7 +140,6 @@
 
     function initialize() {
         setupGrid();
-        //setupUploadButton();
         refreshGrid(100);
     }
 
@@ -264,7 +216,6 @@ function uploadFile() {
             show: { effect: "drop", duration: 300 },
             hide: { effect: "fade", duration: 300 },
             open: function () {
-                $('ul').empty();
                 $("#dlgLink").hide();
                 $("#dlgFYI").show();
                 $("#dlgFYI").text('File will be uploaded and queued for validation and processing.');
