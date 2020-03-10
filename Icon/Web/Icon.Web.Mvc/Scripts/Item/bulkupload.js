@@ -216,7 +216,6 @@ function uploadFile() {
             show: { effect: "drop", duration: 300 },
             hide: { effect: "fade", duration: 300 },
             open: function () {
-                $("#dlgLink").hide();
                 $("#dlgFYI").show();
                 $("#dlgFYI").text('File will be uploaded and queued for validation and processing.');
                 $('#dlgCancel').text('Cancel');

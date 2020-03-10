@@ -188,7 +188,7 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             }
 
             totalRows = failedRowsCount + validRows;
-            SetStatus(validationResponse.InvalidRows.Any() ? Enums.FileStatusEnum.Error : Enums.FileStatusEnum.Complete, $"{validRows} of {totalRows} Rows Successfull.", 100);
+            SetStatus(validationResponse.InvalidRows.Any() ? Enums.FileStatusEnum.Error : Enums.FileStatusEnum.Complete, $"{validRows} of {totalRows} Rows Successful.", 100);
         }
 
         private void ProcessCreateNewUpload()
