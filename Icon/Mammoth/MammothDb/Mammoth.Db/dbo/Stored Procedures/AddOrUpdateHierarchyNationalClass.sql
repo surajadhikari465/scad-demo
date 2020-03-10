@@ -15,6 +15,10 @@ BEGIN
     UPDATE t SET FamilyHCID = h.FamilyHCID, CategoryHCID = h.CategoryHCID
     FROM #hierarchyNational t
     JOIN dbo.Hierarchy_NationalClass h ON h.SubcategoryHCID = t.SubcategoryHCID;
+    
+    --Remove incomplete records
+    DELETE FROM #hierarchyNational
+    WHERE FamilyHCID IS NULL OR CategoryHCID IS NULL;
 
     UPDATE h SET ClassHCID = t.ClassHCID
     FROM dbo.Hierarchy_NationalClass h
