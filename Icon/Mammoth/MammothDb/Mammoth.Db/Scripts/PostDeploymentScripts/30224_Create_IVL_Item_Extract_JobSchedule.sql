@@ -1,4 +1,4 @@
-﻿DECLARE @ivl_scriptKey VARCHAR(128) = '30224_IVL_Item_JobSchedule';
+﻿DECLARE @ivl_scriptKey VARCHAR(128) = '30224_IVL_Item_JobSchedule_Updated';
 
 IF(NOT EXISTS (SELECT 1 FROM app.PostDeploymentScriptHistory WHERE ScriptKey = @ivl_scriptKey))
 BEGIN
