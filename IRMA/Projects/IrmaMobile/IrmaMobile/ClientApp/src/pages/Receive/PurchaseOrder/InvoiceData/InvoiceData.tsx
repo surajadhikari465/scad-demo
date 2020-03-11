@@ -16,6 +16,7 @@ import isMinDate from "../util/MinDate";
 import { useHistory } from "react-router-dom";
 import OrderItem from "../types/OrderItem";
 import BasicModal from "../../../../layout/BasicModal";
+import { WfmButton } from "@wfm/ui-react";
 
 interface RouteParams {
     purchaseOrderNumber: string;
@@ -230,19 +231,31 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             toast.error("Please enter an invoice number", { autoClose: false });
             return;
         }
+        const handleConfirmCloseOrder = () => {
+            if (new Date(invoiceDate).getFullYear() < new Date().getFullYear()) {
+                setAlert({
+                    ...alert,
+                    open: true,
+                    header: 'Confirm Invoice Date',
+                    alertMessage: `You are attempting to close an invoice with a year other than the current year. Is the year accurate?`,
+                    type: 'confirm',
+                    confirmAction: () => { closeOrder(); },
+                    cancelAction: () => { setAlert({ ...alert, open: false }); }
+                });
+            } else {
+                closeOrder();
+            }
+        };
 
-        if (new Date(invoiceDate).getFullYear() < new Date().getFullYear()) {
-            setAlert({
-                ...alert,
-                open: true,
-                alertMessage: `You are attempting to close an invoice with a year other than the current year. Is the year accurate?`,
-                type: 'confirm',
-                confirmAction: () => { closeOrder(); },
-                cancelAction: () => { setAlert({ ...alert, open: false }); }
-            });
-        } else {
-            closeOrder();
-        }
+        setAlert({
+            ...alert,
+            open: true,
+            header: 'Confirm Close Order',
+            alertMessage: `Invoice Date: '${dateFormat(new Date(), 'mm/dd/yyyy')}'. Close Order?`,
+            type: 'confirm',
+            confirmAction: () => { handleConfirmCloseOrder(); },
+            cancelAction: () => { setAlert({ ...alert, open: false }); }
+        });
     }
     
     const closeOrder = async () => {
@@ -555,11 +568,10 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                             </Grid>
                         </div>
                     </Form>
-                    <BasicModal alert={alert} setAlert={setAlert} />
                     <div style={{ position: 'absolute', bottom: '5px', width: '100%', textAlign: 'center' }}>
-                        <ConfirmModal triggerButtonText="Close Order" handleConfirmClose={validateCloseOrder} lineOne={`Invoice Date: ${dateFormat(new Date(), 'mm/dd/yyyy')}`}
-                            lineTwo="Close this order?" headerText='Invoice Data' confirmButtonText="OK" cancelButtonText="Cancel" enableButton={canCloseOrder} />
+                        <WfmButton onClick={validateCloseOrder}>Close Order</WfmButton>
                     </div>
+                    <BasicModal alert={alert} setAlert={setAlert} />
                 </Fragment>
             }
         </Fragment>

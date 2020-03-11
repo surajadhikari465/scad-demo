@@ -3,7 +3,7 @@ import { Grid, Form, Button, Input } from "semantic-ui-react";
 import { AppContext, types } from "../../../../../store";
 
 interface IProps {
-    handleSubmit: (upc: string) => any;
+    handleSubmit: (upc: string, purchaseOrderNumber: string, closeOrderList: boolean) => any;
 }
 
 const ReceivePurchaseOrderSearch: React.FC<IProps> = ({ handleSubmit }) => {
@@ -12,10 +12,9 @@ const ReceivePurchaseOrderSearch: React.FC<IProps> = ({ handleSubmit }) => {
     const { isLoading, purchaseOrderNumber, purchaseOrderUpc } = state;
 
     const handleSubmitFromPoBox = (event: any) => {
-        const e = event.nativeEvent;
-        const upc = e.target[1].value;
-
-        handleSubmit(upc);
+        handleSubmit(isNaN(parseInt(purchaseOrderUpc)) ? '' : purchaseOrderUpc, 
+            isNaN(parseInt(purchaseOrderNumber)) ? '' : purchaseOrderNumber, 
+            true);
     };
 
     return (
@@ -32,7 +31,7 @@ const ReceivePurchaseOrderSearch: React.FC<IProps> = ({ handleSubmit }) => {
                                         placeholder="PO #"
                                         min={0}
                                         value={purchaseOrderNumber}
-                                        onChange={(e:ChangeEvent<HTMLInputElement>)=>dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: parseInt(e.target.value).toString() })}
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) => dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: parseInt(e.target.value).toString() })}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -42,7 +41,7 @@ const ReceivePurchaseOrderSearch: React.FC<IProps> = ({ handleSubmit }) => {
                                         placeholder="UPC"
                                         min={0}
                                         value={purchaseOrderUpc}
-                                        onChange={(e:ChangeEvent<HTMLInputElement>)=>dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: parseInt(e.target.value).toString() })}
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) => dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: parseInt(e.target.value).toString() })}
                                     />
                                 </Form.Field>
                             </Grid.Column>

@@ -171,11 +171,12 @@ const TransferScan: React.FC = () => {
 
     useEffect(() => {
         BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
-            if (upc === data.Data) {
+            let scannedUpc = parseInt(upc.Data).toString();
+            if (upc === scannedUpc) {
                 setQuantity((q: any) => q + 1);
                 return;
             } else {
-                setUpc(data.Data);
+                setUpc(scannedUpc);
                 setSearchFlag(true);
             }
         });
@@ -199,8 +200,8 @@ const TransferScan: React.FC = () => {
         }
     }, [setTransferData]);
 
-    const handleQuantityOnKeyPress = (e: any) => {   
-        
+    const handleQuantityOnKeyPress = (e: any) => {
+
         if (item) {
             if (quantity !== null && quantity !== undefined) {
                 if (item.SoldByWeight) {
@@ -219,30 +220,19 @@ const TransferScan: React.FC = () => {
         }
     }
 
-    const clearInvalid = (e: any) =>{
-        if (!item?.SoldByWeight) {
-            setQuantity(quantity.replace(/[^a-z0-9]/gi,''));
-        } 
+    const clearInvalid = (e: any) => {
+        //android behavior fix, to stop invalid punctuation 
+        if (e.target.value === '') {
+            e.target.value = '';
+        }
     }
 
     const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
-        if (item) {
-            console.log('handleQuantityChange ' + value);
-
-            if (item.SoldByWeight) {
-                //This floatRegEx and the one in handleQuantityOnKeyPress are used in conjunction to allow
-                //a user to enter a float up to 999.99. There is an issue where a user can't enter any numbers
-                //past the decimal if the user has already entered 3 digits i.e. 999. or 123.
-                //To get around this the handleQuantityOnKeyPress allows 4 digits left of the decimal
-                //while this regex allows 3. It's not a great solution so if someone can find a better way then change it.
-                //Blake Jones
-                const floatRegEx = /^(\d{0,3}(\.\d{0,2})?|\.?\d{1,2})$/;
-                if (floatRegEx.test(value))
-                    setQuantity(value);
-            } else {
-                setQuantity(value);
-            }
-        }
+        let quantity = parseFloat(value);
+        if (!item?.SoldByWeight)
+            setQuantity(parseInt(value.replace(/[^\w\s]|_/g, "")).toString());
+        else
+            setQuantity(quantity.toString());
     }
 
     const handleAdjustedCostChange = (event: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
@@ -266,11 +256,19 @@ const TransferScan: React.FC = () => {
         }
 
         const quantityNumber = item.SoldByWeight ? parseFloat(quantity) : parseInt(quantity);
-        if (quantityNumber <= 0) {
+        if (isNaN(quantityNumber) || quantityNumber <= 0) {
             setAlert({
                 ...alert,
                 open: true,
                 alertMessage: `Quantity must be a valid number.`,
+                type: 'default',
+                header: 'Invalid Quantity'
+            });
+        } else if (quantityNumber > 999.99) {
+            setAlert({
+                ...alert,
+                open: true,
+                alertMessage: `Quantity must be less than 1000.`,
                 type: 'default',
                 header: 'Invalid Quantity'
             });
@@ -398,7 +396,7 @@ const TransferScan: React.FC = () => {
                                 UPC:
                         </Grid.Column>
                             <Grid.Column width={8} style={{ padding: '0px' }}>
-                                <Input  type='number' placeholder='UPC' value={upc || ''} onChange={handleUpcChange} onKeyDown={(e:any) => e.key === 'Enter' ?  upcSearchClick() : '' } fluid />
+                                <Input type='number' placeholder='UPC' value={upc || ''} onChange={handleUpcChange} onKeyDown={(e: any) => e.key === 'Enter' ? upcSearchClick() : ''} fluid />
                             </Grid.Column>
                             <Grid.Column width={2}>
                                 <Button className='wfmButton' onClick={upcSearchClick}>>></Button>
@@ -417,7 +415,13 @@ const TransferScan: React.FC = () => {
                                 Quantity:
                         </Grid.Column>
                             <Grid.Column width={3} style={{ padding: '0px' }}>
-                                <Input type='number' placeholder='Qty' value={quantity} onKeyPress={handleQuantityOnKeyPress} onChange={handleQuantityChange} onBlur={clearInvalid} onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''} fluid />
+                                <Input type='number'
+                                    placeholder='Qty'
+                                    value={quantity}
+                                    onChange={handleQuantityChange}
+                                    onKeyPress={clearInvalid}
+                                    onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''}
+                                    fluid />
                             </Grid.Column>
                             <Grid.Column width={2} verticalAlign='middle' textAlign='right'>
                                 Retail:

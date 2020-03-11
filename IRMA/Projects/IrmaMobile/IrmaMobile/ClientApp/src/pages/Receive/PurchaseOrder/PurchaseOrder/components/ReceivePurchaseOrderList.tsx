@@ -8,16 +8,18 @@ import { AppContext, types } from "../../../../../store";
 interface IProps {
     orders: ListedOrder[];
     upc: string;
-    poSelected: (upc: string, poNum: number, closeOrderList: boolean) => any;
+    poSelected: (upc: string, purchaseOrderNumber: string, closeOrderList: boolean) => any;
 }
 
 const ReceivePurchaseOrderList: React.FC<IProps> = ({ orders, upc, poSelected }) => {
     //@ts-ignore
     const { state, dispatch } = useContext(AppContext);
     const purchaseOrderClicked = (e: React.MouseEvent<HTMLButtonElement>) => {
-        const purchaseOrderNumber = parseInt(e.currentTarget.textContent!);
+        const purchaseOrderNumber = parseInt(e.currentTarget.textContent!).toString();
         dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: purchaseOrderNumber });
-        poSelected(upc, purchaseOrderNumber, true);
+        poSelected(isNaN(parseInt(upc)) ? '' : upc, 
+            isNaN(parseInt(purchaseOrderNumber)) ? '' : purchaseOrderNumber, 
+            true);
     }
 
     return (

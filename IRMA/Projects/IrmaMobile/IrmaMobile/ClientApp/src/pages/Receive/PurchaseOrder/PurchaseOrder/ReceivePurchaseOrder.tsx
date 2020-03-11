@@ -15,6 +15,8 @@ import orderUtil from "../util/Order"
 import isMinDate from "../util/MinDate";
 // @ts-ignore 
 import { BarcodeScanner, IBarcodeScannedEvent } from '@wfm/mobile';
+import { stat } from "fs";
+import BasicModal from "../../../../layout/BasicModal";
 
 
 interface RouteParams {
@@ -74,12 +76,23 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
         };
     }, [dispatch]);
 
-    const loadPurchaseOrder = async (upc: string, purchaseOrderNum?: number | undefined, closeOrderList: boolean = false) => {
-        if (purchaseOrderNum === undefined) {
-            purchaseOrderNum = parseInt(purchaseOrderNumber);
+    useEffect(() => {
+        BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
+            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: parseInt(data.Data, 10).toString() });
+            loadPurchaseOrder(parseInt(data.Data, 10).toString(),
+                isNaN(parseInt(state.purchaseOrderNumber, 10)) ? '' : parseInt(state.purchaseOrderNumber, 10).toString(),
+                true);
+        });
+
+        return () => {
+            BarcodeScanner.scanHandler = () => { };
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state]);
+
+    const loadPurchaseOrder = async (upc: string, purchaseOrderNumber: string, closeOrderList: boolean = false) => {
         //int32 max...
-        if (purchaseOrderNum > 2147483647) {
+        if (purchaseOrderNumber && parseInt(purchaseOrderNumber) > 2147483647) {
             toast.error(`The PO # value is too large. Please enter a smaller value`, { autoClose: false });
             return;
         }
@@ -93,8 +106,8 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                 dispatch({ type: types.SETLISTEDORDERS, listedOrders: [] });
             }
 
-            if (purchaseOrderNum) {
-                var order = await agent.PurchaseOrder.detailsFromPurchaseOrderNumber(region, purchaseOrderNum);
+            if (purchaseOrderNumber && purchaseOrderNumber !== '') {
+                var order = await agent.PurchaseOrder.detailsFromPurchaseOrderNumber(region, parseInt(purchaseOrderNumber));
 
                 if (!order) {
                     toast.error("PO could not be loaded. Please try again.", { autoClose: false });
@@ -102,22 +115,22 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                 }
 
                 if (parseInt(order.store_No) !== parseInt(storeNumber)) {
-                    toast.error(`PO ${purchaseOrderNum} is for ${order.storeCompanyName}. Please try again.`, { autoClose: false });
+                    toast.error(`PO ${purchaseOrderNumber} is for ${order.storeCompanyName}. Please try again.`, { autoClose: false });
                     return;
                 }
 
                 if (order.orderHeader_ID === 0) {
-                    toast.error(`PO #${purchaseOrderNum} not found`, { autoClose: false });
+                    toast.error(`PO #${purchaseOrderNumber} not found`, { autoClose: false });
                     return;
                 }
 
                 if (!order.sentDate || isMinDate(order.sentDate)) {
-                    toast.error(`PO #${purchaseOrderNum} has not yet been sent. Please try again.`, { autoClose: false });
+                    toast.error(`PO #${purchaseOrderNumber} has not yet been sent. Please try again.`, { autoClose: false });
                     return;
                 }
 
-                if (upc && !orderUtil.OrderHasUpc(order, upc)) {
-                    toast.error(`${upc} not found in PO #${purchaseOrderNum}`, { autoClose: false });
+                if (upc && upc !== '' && !orderUtil.OrderHasUpc(order, upc)) {
+                    toast.error(`${upc} not found in PO #${purchaseOrderNumber}`, { autoClose: false });
                     return;
                 }
 
@@ -126,7 +139,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
 
                     if (!isMinDate(orderDetails.CloseDate)) {
                         if (!orderDetails.PartialShipment) {
-                            toast.error(`PO ${purchaseOrderNum} is already closed. To review or reopen a closed order, please use the IRMA client.`, { autoClose: false });
+                            toast.error(`PO ${purchaseOrderNumber} is already closed. To review or reopen a closed order, please use the IRMA client.`, { autoClose: false });
                             dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
                             dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
                             return;
@@ -145,39 +158,45 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
 
                     setOrderInformation(orderInformation);
 
-                    let storeItem = await agent.StoreItem.getStoreItem(
-                        region,
-                        storeNumber,
-                        subteamNo,
-                        user!.userId,
-                        upc
-                    );
+                    if (orderDetails.ItemLoaded) {
+                        let storeItem = await agent.StoreItem.getStoreItem(
+                            region,
+                            storeNumber,
+                            subteamNo,
+                            user!.userId,
+                            upc
+                        );
 
-                    setCostedByWeight(storeItem.costedByWeight)
+                        setCostedByWeight(storeItem.costedByWeight)
+                    }
 
                     dispatch({ type: types.SETORDERDETAILS, orderDetails: orderDetails });
                 } catch (err) {
                     toast.error("Unable to open PO", { autoClose: false })
                 }
 
-            } else if (upc) {
+            } else if (upc && upc !== '') {
                 var ordersRaw = await agent.PurchaseOrder.detailsFromUpc(
                     region,
                     upc,
                     storeNumber
                 );
 
-                const orders = ordersRaw.map((order: any) => (
-                    {
-                        PoNum: order.orderHeader_ID.toString(),
-                        OrderCost: order.orderedCost,
-                        ExpectedDate: order.expected_Date,
-                        Subteam: order.subTeam_Name,
-                        EInv: order.einvoiceRequired
-                    }
-                ))
+                if (!ordersRaw || ordersRaw.length === 0) {
+                    toast.error('No open orders found.');
+                } else {
+                    const orders = ordersRaw.map((order: any) => (
+                        {
+                            PoNum: order.orderHeader_ID.toString(),
+                            OrderCost: order.orderedCost,
+                            ExpectedDate: order.expected_Date,
+                            Subteam: order.subTeam_Name,
+                            EInv: order.einvoiceRequired
+                        }
+                    ));
 
-                dispatch({ type: types.SETLISTEDORDERS, listedOrders: orders });
+                    dispatch({ type: types.SETLISTEDORDERS, listedOrders: orders });
+                }
             } else {
                 toast.error("UPC and/or PO # required", { autoClose: false });
             }
@@ -185,18 +204,6 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
             dispatch({ type: types.SETISLOADING, isLoading: false });
         }
     };
-
-    useEffect(() => {
-        BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
-            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: parseInt(data.Data, 10).toString() });
-            loadPurchaseOrder(parseInt(data.Data, 10).toString());
-        });
-
-        return () => {
-            BarcodeScanner.scanHandler = () => { };
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const handleOnCloseOrderInformation = () => {
         history.goBack();

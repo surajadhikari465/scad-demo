@@ -107,6 +107,7 @@ const TransferUpdate: React.FC = () => {
               step={transferItem.SoldByWeight ? "any" : 1}
               onChange={updateQuantity}
               onKeyPress={clearInvalid}
+              onKeyDown={(e:any) => e.key === 'Enter' ? e.target.blur() : '' }
             />
           </div>
           <div>
