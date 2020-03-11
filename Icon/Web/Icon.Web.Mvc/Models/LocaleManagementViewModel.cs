@@ -30,8 +30,7 @@ namespace Icon.Web.Mvc.Models
 
 		[Display(Name = "Business Unit")]
 		[BusinessUnit]
-		[StringLength(5, MinimumLength = 5, ErrorMessage = "Please enter a five digit Business Unit ID.")]
-		[RegularExpression(@"^[0-9]+$", ErrorMessage = "Please enter a numerical value.")]
+		[RegularExpression(@"^[1-9][0-9]{4}$", ErrorMessage = "Please enter a numerical value between 10000 and 99999")]
 		[Required]
 		public string BusinessUnit { get; set; }
 

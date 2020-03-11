@@ -143,8 +143,11 @@
 													colSetting.ColumnSetting().ColumnKey("BusinessUnitId")
 														.Required(true)
 														.Validation(true)
-														.EditorType(ColumnEditorType.Numeric)
-														.NumericEditorOptions(o => o.MaxDecimals(0).MaxValue(99999).MinValue(10000).GroupSeparator(String.Empty).TextAlignment(TextEditorTextAlignment.Left).Width("400"));
+														.EditorType(ColumnEditorType.Text)
+														.TextEditorOptions(o => o.Width("400")
+															.MaxLength(5)
+															.TextAlignment(TextEditorTextAlignment.Left)
+															.ValidatorOptions(vo => vo.Pattern(@"^[1-9][0-9]{4}$").ErrorMessage("Please enter a numerical value between 10000 and 99999")));
 													colSetting.ColumnSetting().ColumnKey("OpenDate").EditorType(ColumnEditorType.DatePicker).TextEditorOptions(o => o.Width("400"));
 													colSetting.ColumnSetting().ColumnKey("CloseDate").EditorType(ColumnEditorType.DatePicker).TextEditorOptions(o => o.Width("400"));
 													colSetting.ColumnSetting().ColumnKey("AddressLine1")
