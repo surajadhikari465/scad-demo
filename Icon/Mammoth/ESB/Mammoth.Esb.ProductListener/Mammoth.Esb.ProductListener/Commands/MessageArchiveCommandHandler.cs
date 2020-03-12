@@ -29,17 +29,17 @@ namespace Mammoth.Esb.ProductListener.Commands
             if (data.MessageId != null)
             {
                 db.Connection.Execute(
-                    @"  INSERT INTO esb.MessageArchive(MessageID, MessageTypeId, MessageStatusId, MessageHeadersJson, MessageBody)
-                    VALUES(@MessageID, @MessageTypeId, @MessageStatusId, @MessageHeadersJson, @MessageBody)",
+                    @"  INSERT INTO esb.MessageArchive(MessageID, MessageTypeId, MessageStatusId, MessageHeadersJson, MessageBody, InsertDateUtc)
+                    VALUES(@MessageID, @MessageTypeId, @MessageStatusId, @MessageHeadersJson, @MessageBody, @InsertDateUtc)",
                     new
                     {
                         MessageID = data.MessageId,
                         MessageTypeId = MessageTypeId,
                         MessageStatusId = MessageStatusId,
-                        MessageHeadersJson = JsonConvert.SerializeObject(data.MessageHeadersJson),
+                        MessageHeadersJson = data.MessageHeadersJson,
                         MessageBody = XDocument.Parse(data.MessageBody),
                         InsertDateUtc = data.InsertDateUtc
-                    });
+                    }, transaction: this.db.Transaction);
             }
         }
     }

@@ -69,11 +69,12 @@ namespace Mammoth.Esb.ProductListener
             {
                 try
                 {
-                    messageArchiveCommand.MessageId = new Guid();
+                    messageArchiveCommand.MessageId = new Guid().ToString();
                     List<string> lstnonReceivingSystemsProduct = new List<string>() { args.Message.GetProperty("nonReceivingSysName") };
                     var header = BuildMessageHeader(lstnonReceivingSystemsProduct, messageArchiveCommand.MessageId.ToString());
                     messageArchiveCommand.MessageHeadersJson = header.ToString();
                     messageArchiveCommand.MessageBody = args.Message.MessageText;
+                    messageArchiveCommand.InsertDateUtc = DateTime.UtcNow;
                     messageArchiveCommandHandler.Execute(messageArchiveCommand);
                 }
                 catch (Exception e)

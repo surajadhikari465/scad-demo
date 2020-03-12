@@ -200,6 +200,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Cache\HierarchyClassCacheTests.cs" />
+    <Compile Include="Commands\MessageArchiveCommandHandlerTests.cs" />
     <Compile Include="Commands\AddOrUpdateProductsCommandHandlerTests.cs" />
     <Compile Include="Mappers\HierarchyClassIdMapperTests.cs" />
     <Compile Include="MessageParsers\ProductMessageParserTests.cs" />
@@ -236,6 +237,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestMessages\ItemWithZeroConsumerProductLabelAttributes.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestMessages\MessageArchiveTestData.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
