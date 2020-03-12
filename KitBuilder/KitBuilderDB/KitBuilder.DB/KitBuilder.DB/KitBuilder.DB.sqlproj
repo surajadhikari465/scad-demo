@@ -76,6 +76,7 @@
     <Folder Include="Scripts\PostDeploymentScripts\Archive" />
     <Folder Include="Scripts\PreDeplolymentScripts" />
     <Folder Include="Scripts\PreDeplolymentScripts\Archive" />
+    <Folder Include="Scripts\MoveBoiseAndMetro" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LinkGroup.sql" />
@@ -130,6 +131,8 @@
     <None Include="Scripts\DeleteDataFromTables.sql" />
     <Build Include="dbo\User Defined Types\CopyToLocalesType.sql" />
     <Build Include="dbo\Stored Procedures\CopyKitLocaleProperties.sql" />
+    <None Include="Scripts\MoveBoiseAndMetro\MoveMetroToNC.sql" />
+    <None Include="Scripts\MoveBoiseAndMetro\MoveMetroToNC_RollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="KitBuilder.DB.refactorlog" />
