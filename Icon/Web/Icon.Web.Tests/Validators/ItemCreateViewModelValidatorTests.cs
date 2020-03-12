@@ -480,7 +480,7 @@ namespace Icon.Web.Tests.Unit.Validators
         public void Validate__BarcodeTypeIsNotUpcAndScanCodeIsNotInSelectedBarcodeTypeRanges_ScanCodeNotInBarcodeTypeRangeError()
         {
             //Given
-            BarcodeTypeModel barcodeTypeModel = getAnyBarcodeTypeModelOtherThanUpc();
+            BarcodeTypeModel barcodeTypeModel = getAnyBarcodeTypeModelOtherThanUpcAndScalePLU();
             itemCreateViewModel.BarcodeTypeId = barcodeTypeModel.BarcodeTypeId;
             itemCreateViewModel.ScanCode = barcodeTypeModel.EndRange + 1;
             mockDoesScanCodeExistQueryHandler.Setup(m => m.Search(It.IsAny<DoesScanCodeExistParameters>()))
@@ -495,6 +495,28 @@ namespace Icon.Web.Tests.Unit.Validators
                "'"+  itemCreateViewModel.ScanCode + "'"+  " should be in selected Barcode Type range. Please enter a scan code within selected Barcode Type range.",
                 result.Errors.First().ErrorMessage);
         }
+
+
+        [TestMethod]
+        public void Validate__BarcodeTypeIsNotScalePluAndScanCodeDoesNotMeetScalePluRequirement_ScanCodeNotInBarcodeTypeRangeError()
+        {
+            //Given
+            BarcodeTypeModel barcodeTypeModel = getScalePLUBarcodeType();
+            itemCreateViewModel.BarcodeTypeId = barcodeTypeModel.BarcodeTypeId;
+            itemCreateViewModel.ScanCode = barcodeTypeModel.EndRange + 1;
+            mockDoesScanCodeExistQueryHandler.Setup(m => m.Search(It.IsAny<DoesScanCodeExistParameters>()))
+                .Returns(false);
+
+            //When
+            var result = validator.Validate(itemCreateViewModel);
+
+            //Then
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(
+               "'" + itemCreateViewModel.ScanCode + "'" + " should be in selected Barcode Type range. Please enter a scan code within selected Barcode Type range.",
+                result.Errors.First().ErrorMessage);
+        }
+
 
         [TestMethod]
         public void Validate_ScanCodeTypeIsUpcAndStartsWithTwoAndHasElevenDigitsAndEndsWithFiveZeroes_ErrorReturned()
@@ -583,10 +605,16 @@ namespace Icon.Web.Tests.Unit.Validators
             return context.Database.SqlQuery<int>("select BarcodeTypeId from BarcodeType where BarcodeType !='UPC'").First();
         }
 
-        private BarcodeTypeModel getAnyBarcodeTypeModelOtherThanUpc()
+        private BarcodeTypeModel getAnyBarcodeTypeModelOtherThanUpcAndScalePLU()
         {
             context = new IconContext();
-            return context.Database.SqlQuery<BarcodeTypeModel>("select * from BarcodeType where BarcodeType !='UPC'").First();
+            return context.Database.SqlQuery<BarcodeTypeModel>("select * from BarcodeType where BarcodeType !='UPC' and ScalePlu !=1 ").First();
+        }
+
+        private BarcodeTypeModel getScalePLUBarcodeType()
+        {
+            context = new IconContext();
+            return context.Database.SqlQuery<BarcodeTypeModel>("select * from BarcodeType where ScalePlu =1 ").First();
         }
 
         private List<BarcodeTypeModel> getBarcodeTypeModels()

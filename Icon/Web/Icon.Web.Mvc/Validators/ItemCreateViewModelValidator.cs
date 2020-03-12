@@ -69,6 +69,7 @@ namespace Icon.Web.Mvc.Validators
                         .WithMessage(vm => $"'{vm.ScanCode}' should be in selected Barcode Type range. Please enter a scan code within selected Barcode Type range.");
 
                 });
+
                 RuleFor(vm => vm.ScanCode)
                 .Matches("^[1-9]\\d{0,12}$")
                 .WithMessage("Scan Code must contain only digits, not start with a 0, and must be 1 to 13 characters long.");
@@ -99,6 +100,13 @@ namespace Icon.Web.Mvc.Validators
                 var barcodeSelected = this.barcodeTypeModelList.Where(s => s.BarcodeTypeId == barcodeTypeId).FirstOrDefault();
                 long beginRange = long.Parse(barcodeSelected.BeginRange);
                 long endRange = long.Parse(barcodeSelected.EndRange);
+
+                // if it is scale plu and scan code does not end with 5 zeroes, or starts with 2 return false
+                if (barcodeSelected.ScalePlu == true && !(scanCode.Length == 11 && scanCode.EndsWith("00000") && scanCode.StartsWith("2")))
+                {
+                        return false;
+                }
+
                 if (scanCodeLong >= beginRange && scanCodeLong <= endRange)
                 {
                     return true;
@@ -134,7 +142,7 @@ namespace Icon.Web.Mvc.Validators
 
                     if (barcodeType.ScalePlu == true)
                     {
-                        beginRange = long.Parse(barcodeType.BeginRange.Substring(0,barcodeType.BeginRange.Length - 5));
+                        beginRange = long.Parse(barcodeType.BeginRange.Substring(0, barcodeType.BeginRange.Length - 5));
                         endRange = long.Parse(barcodeType.EndRange.Substring(0, barcodeType.EndRange.Length - 5));
                     }
                     else
@@ -142,7 +150,7 @@ namespace Icon.Web.Mvc.Validators
                         beginRange = long.Parse(barcodeType.BeginRange);
                         endRange = long.Parse(barcodeType.EndRange);
                     }
-                   
+
                     if (upcLong >= beginRange && upcLong <= endRange)
                     {
                         return true;

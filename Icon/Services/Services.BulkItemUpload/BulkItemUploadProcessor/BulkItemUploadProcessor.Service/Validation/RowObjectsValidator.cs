@@ -227,6 +227,12 @@ namespace BulkItemUploadProcessor.Service.Validation
                     {
                         var pluRange = barcodeTypes
                             .FirstOrDefault(b => b.BarcodeTypeId == barcodeTypeId);
+
+                        if (pluRange.ScalePlu == true && !(scanCode.Length == 11 && scanCode.EndsWith("00000") && scanCode.StartsWith("2")))
+                        {
+                            return new Tuple<bool, string>(false, $"Scan Code '{scanCode}' does not fall under '{pluRange.BarcodeType}' range.");
+                        }
+
                         if (pluRange != null && longScanCode < long.Parse(pluRange.BeginRange) || longScanCode > long.Parse(pluRange.EndRange))
                         {
                             return new Tuple<bool, string>(false, $"Scan Code '{scanCode}' does not fall under '{pluRange.BarcodeType}' range.");
