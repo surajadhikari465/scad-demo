@@ -35,13 +35,14 @@ DECLARE @jobId BINARY(16)
 EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=@jobName, 
 		@enabled=1, 
 		@notify_level_eventlog=0, 
-		@notify_level_email=0, 
+		@notify_level_email=2, 
 		@notify_level_netsend=0, 
 		@notify_level_page=0, 
 		@delete_level=0, 
 		@description=N'No description available.', 
 		@category_name=N'[Uncategorized (Local)]', 
-		@owner_login_name=N'sa', @job_id = @jobId OUTPUT
+		@owner_login_name=N'sa', 
+		@notify_email_operator_name=N'Icon SQL Agent Jobs Operator', @job_id = @jobId OUTPUT
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Check Maintenance Mode', 
 		@step_id=1, 

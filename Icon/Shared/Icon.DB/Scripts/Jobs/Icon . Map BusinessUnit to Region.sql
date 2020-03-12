@@ -40,7 +40,7 @@ EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=@jobName,
 		@description=N'Maintain the app.BusinessUnitRegionMapping table to keep it up-to-date', 
 		@category_name=N'[Uncategorized (Local)]', 
 		@owner_login_name=N'sa', 
-		@notify_email_operator_name=N'', @job_id = @jobId OUTPUT
+		@notify_email_operator_name=N'Icon SQL Agent Jobs Operator', @job_id = @jobId OUTPUT
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Check Maintenance Mode', 
 		@step_id=1, 
