@@ -26,5 +26,6 @@ SET @destinationRegionId = (
 		)
 
 UPDATE locale
-SET RegionId = @destinationRegionId
+SET RegionId = @destinationRegionId,
+RegionCode = @destinationRegionCode
 WHERE LocaleId = @metroId
