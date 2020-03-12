@@ -17,6 +17,7 @@ namespace Icon.Esb.CchTax
         {
             UpdateMammoth = AppSettingsAccessor.GetBoolSetting("UpdateMammoth", false);
             GenerateGlobalEvents = AppSettingsAccessor.GetBoolSetting("GenerateGlobalEvents", false);
+            ListenerApplicationName = "CCHTaxListener";
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Icon.Esb.R10Listener
         protected override void LoadSubSettings()
         {
             ResendMessageCount = AppSettingsAccessor.GetIntSetting("ResendMessageCount", 1);
+            ListenerApplicationName = "R10Listener";
         }
     }
 }

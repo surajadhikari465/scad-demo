@@ -44,22 +44,28 @@ namespace Icon.Esb.ListenerApplication
         /// </summary>
         public void Run()
         {
-
-            var computedClientId = $"{ListenerApplicationName}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
-            var clientId = computedClientId.Substring(Math.Min(computedClientId.Length, 255));
+            
+            var clientId = BuildClientId();
 
             listeningTimer = new Timer(
-                (x) => BeginListening(clientId),
+                (x) => OpenConnectionAndBeginListening(clientId),
                 null,
                 TimeSpan.FromSeconds(0),
                 TimeSpan.FromSeconds(esbConnectionSettings.ReconnectDelay));
+        }
+
+        private string BuildClientId()
+        {
+            var computedClientId = $"{ListenerApplicationName}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
+            var clientId = computedClientId.Substring(0,Math.Min(computedClientId.Length, 255));
+            return clientId;
         }
 
         /// <summary>
         /// Opens a connection to the ESB, sets up MessageHandlers and ExceptionHandlers, and also 
         /// logs and notifies a successful connection was made.
         /// </summary>
-        private void BeginListening(string clientId)
+        private void OpenConnectionAndBeginListening(string clientId)
         {
             if (!IsConnected)
             {
@@ -89,7 +95,7 @@ namespace Icon.Esb.ListenerApplication
                 catch (Exception ex)
                 {
                     string connectionFailueMessage =
-                        $"An error occurred in {ListenerApplicationName} when trying to connect to {esbConnectionSettings.QueueName}. ClientId: {clientId}  Exception details: {ex.ToString()}";
+                        $"An error occurred in {ListenerApplicationName} when trying to connect to {esbConnectionSettings.QueueName}. ClientId: {clientId}  Exception details: {ex.Message}";
                     LogAndNotifyError(connectionFailueMessage);
                 }
             }

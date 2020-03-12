@@ -20,12 +20,7 @@ namespace Icon.Esb.Subscriber
 
         public void BeginListening()
         {
-            BeginListening("");
-        }
-        public void BeginListening(string clientId)
-        {
             consumer.MessageHandler += messagConsumer_MessageHandler;
-            connection.ClientID = clientId;
             connection.Start();
         }
 
@@ -41,10 +36,6 @@ namespace Icon.Esb.Subscriber
             {
                 handler(sender, message);
             }
-        }
-        public void SetTibcoClientId(string clientId)
-        {
-            connection.ClientID = clientId;
         }
         internal void HandleMessage(Message message)
         {
