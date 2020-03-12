@@ -20,7 +20,7 @@ BEGIN
     DELETE FROM #hierarchyNational
     WHERE FamilyHCID IS NULL OR CategoryHCID IS NULL;
 
-    UPDATE h SET ClassHCID = t.ClassHCID
+    UPDATE h SET ClassHCID = t.ClassHCID, ModifiedDate = GetDate()
     FROM dbo.Hierarchy_NationalClass h
     JOIN #hierarchyNational t ON t.SubcategoryHCID = h.SubcategoryHCID AND h.ClassHCID IS NULL;
 
