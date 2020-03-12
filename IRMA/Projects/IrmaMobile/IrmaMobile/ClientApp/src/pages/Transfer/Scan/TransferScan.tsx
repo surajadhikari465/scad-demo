@@ -21,7 +21,7 @@ const TransferScan: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<string>('1');
-    const [upc, setUpc] = useState();
+    const [upc, setUpc] = useState<string>();
     const [queuedQuantity, setQueuedQuantity] = useState();
     const [costLabel, setCostLabel] = useState('Vendor Cost:');
     const [transferData, setTransferData] = useState<ITransferData>();
@@ -90,7 +90,7 @@ const TransferScan: React.FC = () => {
                 const filteredItems = transferData.Items.filter((item: ITransferItem) => item.Upc === upc);
                 let loadingItem = undefined;
 
-                const itemRaw = await agent.Transfer.getTransferItem(region, upc, transferData.ProductType, transferData.FromStoreNo, transferData.FromStoreVendorId, transferData.FromSubteamNo, transferData.SupplyType);
+                const itemRaw = await agent.Transfer.getTransferItem(region, upc!, transferData.ProductType, transferData.FromStoreNo, transferData.FromStoreVendorId, transferData.FromSubteamNo, transferData.SupplyType);
 
                 if (!itemRaw || itemRaw.itemKey <= 0) {
                     toast.error('Item not found.');
@@ -171,7 +171,7 @@ const TransferScan: React.FC = () => {
 
     useEffect(() => {
         BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
-            let scannedUpc = parseInt(upc.Data).toString();
+            let scannedUpc = parseInt(data.Data).toString();
             if (upc === scannedUpc) {
                 setQuantity((q: any) => q + 1);
                 return;
