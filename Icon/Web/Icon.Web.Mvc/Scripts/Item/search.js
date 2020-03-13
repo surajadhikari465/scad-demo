@@ -718,8 +718,7 @@ window.addEventListener('load', function () {
             });
 
             let columnsJson = JSON.stringify(columns);
-            window.localStorage.setItem(columnsKey, columnsJson);
-            this.setSession();
+            window.localStorage.setItem(columnsKey, columnsJson);            
         },
         setSession: () => {
             let selectedColumnNames;
@@ -750,6 +749,7 @@ window.addEventListener('load', function () {
             }
         },
         exportSelectedRows: function (exportAllAttributes) {
+            this.setSession();
             var checkedRows = $("#grid").igGrid("selectedRows");
 
             $.ajax({
@@ -888,6 +888,9 @@ window.addEventListener('load', function () {
             try {
                 $("#selectedExportRowsAllColumns")[0].addEventListener('click', this.selectedRowAllColumnsExportClick);
                 $("#selectedExportRowsSelectedColumns")[0].addEventListener('click', this.selectedRowCurrentColumnsExportClick);
+                $("#allExportRowsSelectedColumns")[0].addEventListener('click', this.setSession);
+                $("#allExportRowsAllColumns")[0].addEventListener('click', this.setSession);
+
                 this.state.attributes = attributes.sort(this.compareAttributesByName);
                 this.createAttributeComboBoxOptions();
                 this.setSession();

@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Icon.Web.Tests.Unit.Exporters
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class ExcelExporterServiceTests
     {
         private IExcelExporterService exporterService;

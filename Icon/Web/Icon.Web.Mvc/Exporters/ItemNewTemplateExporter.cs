@@ -102,8 +102,16 @@ namespace Icon.Web.Mvc.Exporters
 
         public override void AddSpreadsheetColumns()
         {
-            int currentIndex = 0;
+            
+            if(!ExportAllAttributes && SelectedColumnNames != null)
+            {
+                //Only export selected columns and keep them in order
+                AddSpreadSheetColumnsCustomView();
+                return;
+            }
 
+            int currentIndex = 0;
+           
             AddSpreadsheetColumn(
                 NewItemExcelHelper.NewExcelExportColumnNames.BarCodeType,
                 ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.BarCodeType],
@@ -196,6 +204,68 @@ namespace Icon.Web.Mvc.Exporters
                     HorizontalCellAlignment.Left,
                     (row, item) => row.Cells[currentIndex].Value = String.Empty,
                     ref currentIndex);
+            }
+        }
+
+        /*
+         * AddSpreadSheetColumnsCustomView allows the data to be exported with the column order
+         * matching the order the columns are in on the grid in the UI.
+         */
+        private void AddSpreadSheetColumnsCustomView()
+        {
+            int columnIndex;
+            //Removing Actions. That column does not get exported and would mess up the excel sheet
+            if (SelectedColumnNames.Contains("Actions"))
+            {
+                SelectedColumnNames.Remove("Actions");
+            }
+            
+            //Adding Column info to a list so we can loop through
+            List<(string columnName,int columnWidth)> baseColumnInfo = new List<(string, int)>()
+            {
+                (NewItemExcelHelper.NewExcelExportColumnNames.BarCodeType, NewItemExcelHelper.NewExcelExportColumnWidths.BarCodeType),
+                (NewItemExcelHelper.NewExcelExportColumnNames.Brand, NewItemExcelHelper.NewExcelExportColumnWidths.HierarchyClass),
+                (NewItemExcelHelper.NewExcelExportColumnNames.Financial, NewItemExcelHelper.NewExcelExportColumnWidths.HierarchyClass),
+                (NewItemExcelHelper.NewExcelExportColumnNames.ItemId, NewItemExcelHelper.NewExcelExportColumnWidths.ItemId),
+                (NewItemExcelHelper.NewExcelExportColumnNames.ItemType, NewItemExcelHelper.NewExcelExportColumnWidths.ItemType),
+                (NewItemExcelHelper.NewExcelExportColumnNames.Manufacturer, NewItemExcelHelper.NewExcelExportColumnWidths.Manufacturer),
+                (NewItemExcelHelper.NewExcelExportColumnNames.Merchandise, NewItemExcelHelper.NewExcelExportColumnWidths.HierarchyClass),
+                (NewItemExcelHelper.NewExcelExportColumnNames.ScanCode, NewItemExcelHelper.NewExcelExportColumnWidths.ScanCode),
+                (NewItemExcelHelper.NewExcelExportColumnNames.Tax, NewItemExcelHelper.NewExcelExportColumnWidths.HierarchyClass),
+                (NewItemExcelHelper.NewExcelExportColumnNames.NationalClass, NewItemExcelHelper.NewExcelExportColumnWidths.HierarchyClass)
+            };
+
+            foreach((string columnName, int columnWidth) in baseColumnInfo)
+            {
+                columnIndex = SelectedColumnNames.IndexOf(columnName);
+                if (columnIndex >= 0)
+                {
+                    AddSpreadsheetColumn(
+                        columnName,
+                        ExportItemColumnNameMapper.keyToDisplayNameDictionay[columnName],
+                        columnWidth,
+                        HorizontalCellAlignment.Left,
+                        (row, item) => row.Cells[columnIndex].Value = String.Empty,
+                        ref columnIndex);
+                }
+            }
+
+            EmptyQueryParameters<IEnumerable<AttributeModel>> attributesParam = new EmptyQueryParameters<IEnumerable<AttributeModel>>();
+            var attributesModel = getAttributesQueryHandler.Search(attributesParam).OrderByDescending(a => a.IsRequired).ThenBy(a => a.DisplayOrder);
+
+            foreach (var attributeModel in attributesModel.Where(a => a.AttributeGroupId != (int)AttributeType.Nutrition))
+            {
+                columnIndex = SelectedColumnNames.IndexOf(attributeModel.AttributeName);
+                if (columnIndex >= 0)
+                {
+                    AddSpreadsheetColumn(
+                        attributeModel.AttributeName,
+                        attributeModel.DisplayName,
+                        NewItemExcelHelper.NewExcelExportColumnWidths.AttributeNames,
+                        HorizontalCellAlignment.Left,
+                        (row, item) => row.Cells[columnIndex].Value = String.Empty,
+                        ref columnIndex);
+                }
             }
         }
     }
