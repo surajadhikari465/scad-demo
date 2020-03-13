@@ -11,6 +11,7 @@ using Mammoth.Esb.ProductListener.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Mammoth.Esb.ProductListener
 {
@@ -68,11 +69,11 @@ namespace Mammoth.Esb.ProductListener
             if (!isSuccess)
             {
                 try
-                {
-                    messageArchiveCommand.MessageId = new Guid().ToString();
+                {                      
+                    messageArchiveCommand.MessageId = Guid.NewGuid().ToString();
                     List<string> lstnonReceivingSystemsProduct = new List<string>() { args.Message.GetProperty("nonReceivingSysName") };
                     var header = BuildMessageHeader(lstnonReceivingSystemsProduct, messageArchiveCommand.MessageId.ToString());
-                    messageArchiveCommand.MessageHeadersJson = header.ToString();
+                    messageArchiveCommand.MessageHeadersJson = JsonConvert.SerializeObject(header);
                     messageArchiveCommand.MessageBody = args.Message.MessageText;
                     messageArchiveCommand.InsertDateUtc = DateTime.UtcNow;
                     messageArchiveCommandHandler.Execute(messageArchiveCommand);

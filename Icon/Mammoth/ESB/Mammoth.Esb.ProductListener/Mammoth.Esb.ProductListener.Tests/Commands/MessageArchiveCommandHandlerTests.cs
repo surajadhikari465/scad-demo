@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Mammoth.Esb.ProductListener.Tests.Commands
 {
@@ -38,8 +39,15 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
         [TestMethod]
         public void MessageArchive_WithFailedstatus_WithGlobalItem()
         {
-            var messageId = "123";            
-            var headerJson = new { IconMessageID = messageId, Source = "Icon", TransactionType = "Global Item", nonReceivingSysName = "" };
+            var messageId = "123";           
+            var headerJson = new Dictionary<string, string>
+            {
+               { "IconMessageID", messageId},
+               { "Source", "Icon" },
+               { "TransactionType", "Global Item" },
+               { "nonReceivingSysName", "" }
+            };
+            
             var messageArchiveCommand = new MessageArchiveCommand
             {                
                 MessageId = messageId,
@@ -47,8 +55,8 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                 MessageTypeId = 8,
                 InsertDateUtc = DateTime.UtcNow,
                 MessageBody = System.IO.File.ReadAllText("TestMessages/MessageArchiveTestData.xml"),
-                MessageHeadersJson = JsonConvert.SerializeObject(headerJson)                
-            };
+                MessageHeadersJson = JsonConvert.SerializeObject(headerJson)
+        };
             commandHandler.Execute(messageArchiveCommand);
             var message = dbProvider.Connection.Query<dynamic>(
                "SELECT * FROM esb.MessageArchive where MessageId  = @messageId",
