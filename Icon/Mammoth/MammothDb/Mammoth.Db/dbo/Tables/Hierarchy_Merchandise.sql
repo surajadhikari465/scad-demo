@@ -7,8 +7,6 @@
     [SubBrickHCID]           INT      NULL,
     [AddedDate]              DATETIME DEFAULT (getdate()) NOT NULL,
     [ModifiedDate]           DATETIME NULL,
-    CONSTRAINT [PK_Hierarchy_Merchandise] PRIMARY KEY CLUSTERED ([HierarchyMerchandiseID] ASC) WITH (FILLFACTOR = 100)
+    CONSTRAINT [PK_Hierarchy_Merchandise] PRIMARY KEY CLUSTERED ([HierarchyMerchandiseID] ASC) WITH (FILLFACTOR = 100),
+    CONSTRAINT IX_HierarchyMerchandiseClass UNIQUE(SegmentHCID, FamilyHCID, ClassHCID, BrickHCID, SubBrickHCID)
 );
-
-
-

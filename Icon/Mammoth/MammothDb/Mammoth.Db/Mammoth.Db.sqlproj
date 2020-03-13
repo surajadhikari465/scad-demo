@@ -833,7 +833,7 @@
     <None Include="Scripts\Projects\MoveBoiseStoreToNc\ClonePricesForAStoreRollBack.sql" />
     <None Include="Scripts\PostDeploymentScripts\30737_PopulateGlobalItemMessageType.sql" />
     <None Include="Scripts\PostDeploymentScripts\PopulateManufacturerHierarchy.sql" />
-    <None Include="Scripts\PreDeploymentScripts\32371_CleanUp_Hierarchy_NationalClass_Table.sql" />
+    <None Include="Scripts\PreDeploymentScripts\DeduplicateNationalMerchandiseHierarchy.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\DeduplicateScanCodes_QA_PROD.sql" />
   </ItemGroup>
   <ItemGroup>
