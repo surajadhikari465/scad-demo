@@ -30,5 +30,8 @@
 );
 GO
 
+CREATE NONCLUSTERED INDEX [IX_ItemAttributesSign_ItemId] ON ItemAttributes_Sign (ItemID)
+GO
+
 GRANT SELECT, UPDATE, INSERT, DELETE ON dbo.ItemAttributes_Sign TO MammothRole
 GO

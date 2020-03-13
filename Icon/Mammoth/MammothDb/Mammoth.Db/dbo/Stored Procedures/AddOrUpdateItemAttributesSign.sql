@@ -15,6 +15,8 @@ BEGIN
 	SELECT * INTO #signAttributes FROM @signAttributes;
 	SET @totalRecordCount = @@ROWCOUNT;
 
+	CREATE NONCLUSTERED INDEX [IX_SignAttributes_TempTable_ItemId] ON #signAttributes (ItemID);
+
 	SELECT
 		sa.ItemID,
 		sa.Agency_GlutenFree,
