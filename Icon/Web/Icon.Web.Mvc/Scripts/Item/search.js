@@ -14,6 +14,7 @@ const searchOperators = {
 
 window.addEventListener('load', function () {
     const columnsKey = 'columnsKey';
+    const pageSize = 'pageSize';
     let utilityFunctions = {
 
         getFormatters: () => {
@@ -376,8 +377,9 @@ window.addEventListener('load', function () {
                             }, {
                                 name: "Paging",
                                 type: "remote",
-                                pageSize: 10,
-                                recordCountKey: "TotalRecordsCount"
+                                pageSize: self.getPageSize(),
+                                recordCountKey: "TotalRecordsCount",
+                                pageSizeChanged: (evt, ui) => self.savePageSize(ui.pageSize)
                             }, {
                                 name: "Sorting",
                                 type: "remote"
@@ -709,6 +711,16 @@ window.addEventListener('load', function () {
                 }
                 return utilityFunctions.applyFormatters(columnSettings);
             }
+        },
+        getPageSize: function () {
+            let currPageSize = 10;
+            if (localStorage.getItem(pageSize) !== null && localStorage.getItem(pageSize) !== undefined) {
+                currPageSize = localStorage.getItem(pageSize);
+            }
+            return currPageSize;
+        },
+        savePageSize: function (selectedPageSize) {
+            window.localStorage.setItem(pageSize, selectedPageSize);
         },
         saveColumnSettings: function (columns) {
             columns.forEach(function (element) {
