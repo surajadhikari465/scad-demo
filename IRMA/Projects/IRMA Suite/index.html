@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+		integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+		crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		function dropDownChanged() {
+			let environments = document.querySelector("#environments");
+			let regions = document.querySelector("#regions");
+
+			let environment = environments.selectedOptions[0].value;
+			let region = regions.selectedOptions[0].value;
+
+			let linkDivs = document.querySelectorAll(".link-group")
+			for (const linkDiv of linkDivs) {
+				linkDiv.style.display = "none";
+			}
+
+			if (environment && region) {
+				let linkDivToShow = document.querySelector("#" + environment + "-" + region);
+				if (linkDivToShow) {
+					linkDivToShow.style.display = null;
+				}
+			}
+		}
+		window.addEventListener("load", function () {
+			dropDownChanged();
+			server = location.hostname;
+			document.getElementById("servername").innerHTML = "Server: " + server;
+		});
+	</script>
+	<style>
+		body {
+			background-color: #99CC99;
+		}
+
+		.content {
+			background-color: transparent;
+			margin: auto;
+			width: 60%;
+			height: 50%;
+			padding: 10px;
+		}
+
+		ol li {
+			list-style-type: none;
+		}
+
+		a {
+			display: inline-block;
+			color: Blue;
+			font-family: Arial;
+			font-size: 11pt;
+			font-weight: bold;
+			width: 304px;
+			text-align: left
+		}
+
+		label {
+			font-weight: bold;
+		}
+
+		.center {
+			margin: auto;
+			width: 99%;
+		}
+
+		#links {
+			background-color: whitesmoke;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="content text-center">
+	    <div>&nbsp;</div>
+		<div>&nbsp;</div>
+		<img src="IRMA.jpg" />
+		<div>&nbsp;</div>
+		<h1>IRMA Application Suite</h1>
+		<div>&nbsp;</div> 
+		<div class="options">
+			<label for="environments">Environment : </label>
+			<select id="environments" onchange="dropDownChanged()">
+				<option selected="selected" value=""></option>
+				<option value="Dev">Development</option>
+				<option value="Test">Test</option>
+				<option value="Test2">Test2</option>
+				<option value="QA">QA</option>
+				<option value="Perf">Perf</option>
+				<option value="Production">Production</option>
+			</select>
+			<label for="regions">Region : </label>
+			<select id="regions" onchange="dropDownChanged()">
+				<option selected="selected" value=""></option>
+				<option value="FL">FL</option>
+				<option value="MA">MA</option>
+				<option value="MW">MW</option>
+				<option value="NA">NA</option>
+				<option value="NC">NC</option>
+				<option value="NE">NE</option>
+				<option value="PN">PN</option>
+				<option value="RM">RM</option>
+				<option value="SO">SO</option>
+				<option value="SP">SP</option>
+				<option value="SW">SW</option>
+				<option value="UK">UK</option>
+			</select>
+		</div>
+		<div>&nbsp;</div>
+		<div id="links">
+		    <div id="developmentLinks">
+				<div id="Dev-FL" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientDev/fl/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://poetwebdev">POET (Works ONLY in Firefox)</a></li>
+						<li><a href="http://irmawebfldev/ReportManager/">Report Manager</a></li>
+						<li><a href="http://irmawebfldev/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-fl/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Dev-MA" class="link-group" style="display: none;">
+					<ol>
+						<li><a href=" http://IRMAClientDev/ma/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://poetwebdev">POET (Works ONLY in Firefox)</a></li>
+						<li><a href="http://irmawebmadev/ReportManager/">Report Manager</a></li>
+						<li><a href="http://irmawebmadev/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-ma/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Dev-MW" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientDev/mw/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://poetwebdev">POET (Works ONLY in Firefox)</a></li>
+						<li><a href="http://irmawebmwdev/ReportManager/">Report Manager</a></li>
+						<li><a href="http://irmawebmwdev/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-mw/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Dev-NA" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientDev/na/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://poetwebdev">POET (Works ONLY in Firefox)</a></li>
+						<li><a href="http://irmawebnadev/ReportManager/">Report Manager</a></li>
+						<li><a href="http://irmawebnadev/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-na/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Dev-NC" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientDev/nc/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://poetwebdev">POET (Works ONLY in Firefox)</a></li>
+						<li><a href="http://irmawebncdev/ReportManager/">Report Manager</a></li>
+						<li><a href="http://irmawebncdev/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-nc/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Dev-NE" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientDev/ne/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://poetwebdev">POET (Works ONLY in Firefox)</a></li>
+						<li><a href="http://irmawebnedev/ReportManager/">Report Manager</a></li>
+						<li><a href="http://irmawebnedev/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-ne/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Dev-PN" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientDev/pn/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://poetwebdev">POET (Works ONLY in Firefox)</a></li>
+						<li><a href="http://irmawebpndev/ReportManager/">Report Manager</a></li>
+						<li><a href="http://irmawebpndev/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-pn/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Dev-RM" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientDev/rm/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://poetwebdev">POET (Works ONLY in Firefox)</a></li>
+						<li><a href="http://irmawebrmdev/ReportManager/">Report Manager</a></li>
+						<li><a href="http://irmawebrmdev/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-rm/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Dev-SO" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientDev/so/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://poetwebdev">POET (Works ONLY in Firefox)</a></li>
+						<li><a href="http://irmawebsodev/ReportManager/">Report Manager</a></li>
+						<li><a href="http://irmawebsodev/SLIM/">SLIM</a></li>
+						<li><a href="">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Dev-SP" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientDev/sp/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://poetwebdev">POET (Works ONLY in Firefox)</a></li>
+						<li><a href="http://irmawebspdev/ReportManager/">Report Manager</a></li>
+						<li><a href="http://irmawebspdev/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-sp/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Dev-SW" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientDev/sw/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://poetwebdev">POET (Works ONLY in Firefox)</a></li>
+						<li><a href="http://irmawebswdev/ReportManager/">Report Manager</a></li>
+						<li><a href="http://irmawebswdev/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-sw/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Dev-UK" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientDev/uk/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://poetwebdev">POET (Works ONLY in Firefox)</a></li>
+						<li><a href="http://irmawebukdev/ReportManager/">Report Manager</a></li>
+						<li><a href="http://irmawebukdev/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-uk/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+			</div>
+			<div id="testLinks">
+				<div id="Test-FL" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/fl/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebFLTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebFLTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-fl/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test-MA" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/ma/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebMATest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebMATest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-ma/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test-MW" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/mw/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebMWTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebMWTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-mw/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test-NA" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/na/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebNATest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebNATest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-na/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test-NC" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/nc/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebNCTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebNCTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-nc/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test-NE" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/ne/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebNETest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebNETest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-ne/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test-PN" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/pn/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebPNTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebPNTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-pn/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test-RM" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/rm/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebRMTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebRMTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-rm/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test-SO" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/so/IRMA.application">IRMA Client</a></li>8
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebSOTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebSOTest1/SLIM/">SLIM</a></li>
+						<li><a href="">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test-SP" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/sp/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebSPTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebSPTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-sp/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test-SW" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/sw/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebSWTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebSWTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-sw/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test-UK" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/uk/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebUKTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebUKTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-uk/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+			</div>
+			<div id="test2Links">
+				<div id="Test2-FL" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/fl/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebFLTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebFLTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-fl/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test2-MA" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/ma/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebMATest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebMATest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-ma/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test2-MW" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/mw/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebMWTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebMWTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-mw/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test2-NA" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/na/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebNATest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebNATest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-na/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test2-NC" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/nc/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebNCTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebNCTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-nc/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test2-NE" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/ne/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebNETest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebNETest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-ne/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test2-PN" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/pn/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebPNTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebPNTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-pn/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test2-RM" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/rm/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebRMTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebRMTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-rm/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test2-SO" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/so/IRMA.application">IRMA Client</a></li>8
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebSOTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebSOTest1/SLIM/">SLIM</a></li>
+						<li><a href="">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test2-SP" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/sp/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebSPTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebSPTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-sp/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test2-SW" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/sw/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebSWTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebSWTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-sw/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Test2-UK" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientTest1/uk/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvotst7/dvo-tst/Login.do">DVO</a></li>
+						<li><a href="http://POETWebTest1">POET</a></li>
+						<li><a href="http://IRMAWebUKTest1/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebUKTest1/SLIM/">SLIM</a></li>
+						<li><a href="http://iat-uk/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+			</div>
+			<div id="qaLinks">
+				<div id="QA-FL" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/fl/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebFLQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebFLQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-fl/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="QA-MA" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/ma/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebMAQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebMAQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-ma/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="QA-MW" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/mw/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebMWQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebMWQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-mw/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="QA-NA" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/na/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebNAQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebNAQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-na/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="QA-NC" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://http://IRMAClientQA/nc/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebNCQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebNCQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-nc/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="QA-NE" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/ne/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebNEQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebNEQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-ne/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="QA-PN" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/pn/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebPNQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebPNQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-pn/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="QA-RM" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/rm/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebRMQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebRMQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-rm/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="QA-SO" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/so/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebSOQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebSOQA/SLIM/">SLIM</a></li>
+						<li><a href="">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="QA-SP" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/sp/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebSPQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebSPQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-sp/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="QA-SW" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/sw/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebSWQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebSWQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-sw/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="QA-UK" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/uk/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebUKQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebUKQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-uk/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+			</div>
+			<div id="perfLinks">
+				<div id="Perf-FL" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/fl/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebFLQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebFLQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-fl/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Perf-MA" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/ma/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebMAQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebMAQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-ma/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Perf-MW" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/mw/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebMWQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebMWQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-mw/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Perf-NA" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/na/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebNAQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebNAQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-na/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Perf-NC" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://http://IRMAClientQA/nc/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebNCQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebNCQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-nc/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Perf-NE" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/ne/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebNEQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebNEQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-ne/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Perf-PN" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/pn/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebPNQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebPNQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-pn/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Perf-RM" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/rm/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebRMQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebRMQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-rm/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Perf-SO" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/so/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebSOQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebSOQA/SLIM/">SLIM</a></li>
+						<li><a href="">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Perf-SP" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/sp/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebSPQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebSPQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-sp/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Perf-SW" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/sw/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebSWQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebSWQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-sw/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Perf-UK" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://IRMAClientQA/uk/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo-qa.wholefoods.com/dvo-qa">DVO</a></li>
+						<li><a href="http://POETWebQA">POET</a></li>
+						<li><a href="http://IRMAWebUKQA/ReportManager/">Report Manager</a></li>
+						<li><a href="http://IRMAWebUKQA/SLIM/">SLIM</a></li>
+						<li><a href="http://iaq-uk/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+			</div>
+			<div id="productionLinks">
+				<div id="Production-FL" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://iap-fl/deployment/FL/IRMA/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo/">DVO</a></li>
+						<li><a href="http://poet/">POET</a></li>
+						<li><a href="http://iap-fl/ReportManager">Report Manager</a></li>
+						<li><a href="http://iap-fl/SLIM">SLIM</a></li>
+						<li><a href="http://iap-fl/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Production-MA" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://iap-ma/deployment/MA/IRMA/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo/">DVO</a></li>
+						<li><a href="http://poet/">POET</a></li>
+						<li><a href="http://iap-ma/ReportManager">Report Manager</a></li>
+						<li><a href="http://iap-ma/SLIM">SLIM</a></li>
+						<li><a href="http://iap-ma/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Production-MW" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://iap-mw/deployment/MW/IRMA/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo/">DVO</a></li>
+						<li><a href="http://poet/">POET</a></li>
+						<li><a href="http://iap-mw/ReportManager">Report Manager</a></li>
+						<li><a href="http://iap-mw/SLIM">SLIM</a></li>
+						<li><a href="http://iap-mw/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Production-NA" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://iap-na/deployment/NA/IRMA/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo/">DVO</a></li>
+						<li><a href="http://poet/">POET</a></li>
+						<li><a href="http://iap-na/ReportManager">Report Manager</a></li>
+						<li><a href="http://iap-na/SLIM">SLIM</a></li>
+						<li><a href="http://iap-na/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Production-NC" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://iap-nc/deployment/NC/IRMA/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo/">DVO</a></li>
+						<li><a href="http://poet/">POET</a></li>
+						<li><a href="http://iap-nc/ReportManager">Report Manager</a></li>
+						<li><a href="http://iap-nc/SLIM">SLIM</a></li>
+						<li><a href="http://iap-nc/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Production-NE" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://iap-ne/deployment/NE/IRMA/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo/">DVO</a></li>
+						<li><a href="http://poet/">POET</a></li>
+						<li><a href="http://iap-ne/ReportManager">Report Manager</a></li>
+						<li><a href="http://iap-ne/SLIM">SLIM</a></li>
+						<li><a href="http://iap-ne/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Production-PN" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://iap-pn/deployment/PN/IRMA/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo/">DVO</a></li>
+						<li><a href="http://poet/">POET</a></li>
+						<li><a href="http://iap-pn/ReportManager">Report Manager</a></li>
+						<li><a href="http://iap-pn/SLIM">SLIM</a></li>
+						<li><a href="http://iap-pn/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Production-RM" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://iap-rm/deployment/RM/IRMA/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo/">DVO</a></li>
+						<li><a href="http://poet/">POET</a></li>
+						<li><a href="http://iap-rm/ReportManager">Report Manager</a></li>
+						<li><a href="http://iap-rm/SLIM">SLIM</a></li>
+						<li><a href="http://iap-rm/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Production-SO" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://iap-so/deployment/SO/IRMA/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo/">DVO</a></li>
+						<li><a href="http://poet/">POET</a></li>
+						<li><a href="http://iap-so/ReportManager">Report Manager</a></li>
+						<li><a href="http://iap-so/SLIM">SLIM</a></li>
+						<li><a href="">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Production-SP" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://iap-sp/deployment/SP/IRMA/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo/">DVO</a></li>
+						<li><a href="http://poet/">POET</a></li>
+						<li><a href="http://iap-sp/ReportManager">Report Manager</a></li>
+						<li><a href="http://iap-sp/SLIM">SLIM</a></li>
+						<li><a href="http://iap-sp/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Production-SW" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://iap-sw/deployment/SW/IRMA/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo/">DVO</a></li>
+						<li><a href="http://poet/">POET</a></li>
+						<li><a href="http://iap-sw/ReportManager">Report Manager</a></li>
+						<li><a href="http://iap-sw/SLIM">SLIM</a></li>
+						<li><a href="http://iap-sw/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+				<div id="Production-UK" class="link-group" style="display: none;">
+					<ol>
+						<li><a href="http://iap-uk/deployment/UK/IRMA/IRMA.application">IRMA Client</a></li>
+						<li><a href="http://dvo/">DVO</a></li>
+						<li><a href="http://poet/">POET</a></li>
+						<li><a href="http://iap-uk/ReportManager">Report Manager</a></li>
+						<li><a href="http://iap-uk/SLIM">SLIM</a></li>
+						<li><a href="http://iap-uk/StoreOps">Store Ops</a></li>
+					</ol>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+            <label id="servername" text="NOT" />
+        </div>
+	</div>
+</body>
+
+</html>
