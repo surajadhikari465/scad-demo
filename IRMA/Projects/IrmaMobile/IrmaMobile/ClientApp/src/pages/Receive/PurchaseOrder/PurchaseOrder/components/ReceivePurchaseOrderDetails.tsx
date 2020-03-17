@@ -259,12 +259,14 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                             Subteam:
                         </Grid.Column>
                         <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} textAlign="left">
-                            {orderDetails.Subteam
-                                ? orderDetails.IsReturnOrder
-                                    ? "(C)"
-                                    : "(P)"
-                                : ""}{" "}
-                            {orderDetails.Subteam}
+                            <Textfit mode='single' min={8} max={14}>
+                                {orderDetails.Subteam
+                                    ? orderDetails.IsReturnOrder
+                                        ? "(C)"
+                                        : "(P)"
+                                    : ""}{" "}
+                                {orderDetails.Subteam}
+                            </Textfit>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
@@ -272,7 +274,9 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                             Vendor:
                         </Grid.Column>
                         <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} textAlign="left">
-                            {orderDetails.Vendor}
+                            <Textfit mode='single' min={8} max={14}>
+                                {orderDetails.Vendor}
+                            </Textfit>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>

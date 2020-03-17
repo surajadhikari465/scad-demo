@@ -32,7 +32,6 @@ import { LifecycleManager, AuthHandler } from '@wfm/mobile';
 import decode from 'jwt-decode';
 import Config from './config';
 
-
 const App: React.FC = () => {
   const [state, dispatch] = usePersistedReducer(reducer, initialState);
   const { menuItems, settingsItems, Title } = state;

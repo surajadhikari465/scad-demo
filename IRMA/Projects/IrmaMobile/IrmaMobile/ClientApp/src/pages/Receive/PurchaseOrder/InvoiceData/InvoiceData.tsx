@@ -63,6 +63,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
     const [difference, setDifference] = useState<number>(0);
     const [invoiceTotal, setInvoiceTotal] = useState<number>(0);
     const [nonAllocatedCharges, setNonAllocatedCharges] = useState<number>(0);
+    const [allocatedCharges, setAllocatedCharges] = useState<number>(0);
     const [invoiceTotalEdited, setInvoiceTotalEdited] = useState<boolean>(false);
     const [canCloseOrder, setCanCloseOrder] = useState<boolean>(false);
     const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { }, cancelAction: () => { } });
@@ -101,6 +102,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
 
             let totalCharges = allocatedCharges + nonAllocatedChargesLocal + lineItemCharges;
             setNonAllocatedCharges(nonAllocatedChargesLocal);
+            setAllocatedCharges(allocatedCharges);
             setInvoiceCharges(totalCharges);
 
             if (!orderDetails) {
@@ -257,7 +259,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             cancelAction: () => { setAlert({ ...alert, open: false }); }
         });
     }
-    
+
     const closeOrder = async () => {
         if (!orderDetails) { return; }
         if (!invoiceNumber) { return; }
@@ -378,7 +380,12 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
         const result = await agent.InvoiceData.refuseOrder(region, parseInt(purchaseOrderNumber), user!.userId, refuseCodeId)
 
         if (result.status) {
-            toast.info('Order Refused')
+            toast.info('Order Refused');
+            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
+            dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
+            dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
+            dispatch({ type: types.SETLISTEDORDERS, listedOrders: [] });
+            history.push('/receive/PurchaseOrder');
         } else {
             toast.error(`Error when refusing order: ${result.errorMessage || 'No message given'}`, { autoClose: false })
         }
@@ -471,6 +478,55 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             loadValuesAndState();
         }
     }, [orderDetails])
+
+    useEffect(() => {
+        if (orderDetails) {
+            setSubteamTotal(invoiceTotal - orderDetails.InvoiceFreight - invoiceCharges)
+
+            let difference: number = 0;
+            if (invoiceTotal - invoiceCharges === orderDetails.AdjustedReceivedCost) {
+                difference = 0;
+            } else {
+                if (allocatedCharges + nonAllocatedCharges > 0) {
+                    difference = invoiceTotal - orderDetails.AdjustedReceivedCost - invoiceCharges;
+                } else {
+                    difference = invoiceTotal - orderDetails.AdjustedReceivedCost + invoiceCharges;
+                }
+            }
+            setDifference(difference);
+        }
+    }, [orderDetails, invoiceTotal, charges, nonAllocatedCharges]);
+
+    useEffect(() => {
+        if (charges) {
+            let lineItemCharges = 0;
+            let allocatedCharges = 0;
+            let nonAllocatedChargesLocal = 0;
+
+            charges.forEach((charge: any) => {
+                switch (charge.SACType) {
+                    case "Allocated":
+                        if (charge.IsAllowance === 'False') {
+                            allocatedCharges += charge.ChargeValue;
+                        }
+                        break;
+                    case "Not Allocated":
+                        nonAllocatedChargesLocal += charge.ChargeValue;
+                        break;
+                    case "Line Item":
+                        lineItemCharges += charge.ChargeValue;
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+            let totalCharges = allocatedCharges + nonAllocatedChargesLocal + lineItemCharges;
+            setNonAllocatedCharges(nonAllocatedChargesLocal);
+            setAllocatedCharges(allocatedCharges);
+            setInvoiceCharges(totalCharges);
+        }
+    }, [charges])
 
     return (
         <Fragment>
@@ -569,7 +625,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                         </div>
                     </Form>
                     <div style={{ position: 'absolute', bottom: '5px', width: '100%', textAlign: 'center' }}>
-                        <WfmButton onClick={validateCloseOrder}>Close Order</WfmButton>
+                        <WfmButton disabled={!canCloseOrder} onClick={validateCloseOrder}>Close Order</WfmButton>
                     </div>
                     <BasicModal alert={alert} setAlert={setAlert} />
                 </Fragment>

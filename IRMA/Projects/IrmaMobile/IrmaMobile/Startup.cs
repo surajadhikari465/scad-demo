@@ -17,9 +17,12 @@ namespace IrmaMobile
 {
     public class Startup
     {
+        private bool enableAuthentication = false;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            enableAuthentication = bool.Parse(Configuration["EnableAuthentication"]);
         }
 
         public IConfiguration Configuration { get; }
@@ -28,31 +31,35 @@ namespace IrmaMobile
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks();
-            var jwtConfiguration = CreateConfigurationServiceInstance(Configuration);
-            var authenticationKey = GetJsonWebKey(jwtConfiguration.AuthenticationServiceUrl, jwtConfiguration.JwtKeyId).Result;
 
-            services.AddAuthentication(options =>
+            if (enableAuthentication)
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.IncludeErrorDetails = true;
-                options.TokenValidationParameters = new TokenValidationParameters()
+                var jwtConfiguration = CreateConfigurationServiceInstance(Configuration);
+                var authenticationKey = GetJsonWebKey(jwtConfiguration.AuthenticationServiceUrl, jwtConfiguration.JwtKeyId).Result;
+
+                services.AddAuthentication(options =>
                 {
-                    RequireExpirationTime = false,
-                    RequireSignedTokens = true,
-                    ValidateAudience = false,
-                    ValidateIssuer = true,
-                    IssuerSigningKey = authenticationKey,
-                    ValidIssuer = jwtConfiguration.JwtTokenIssuer,
-                };
-                options.Audience = jwtConfiguration.JwtTokenAudience;
-            });
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.IncludeErrorDetails = true;
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        RequireExpirationTime = false,
+                        RequireSignedTokens = true,
+                        ValidateAudience = false,
+                        ValidateIssuer = true,
+                        IssuerSigningKey = authenticationKey,
+                        ValidIssuer = jwtConfiguration.JwtTokenIssuer,
+                    };
+                    options.Audience = jwtConfiguration.JwtTokenAudience;
+                });
+            }
 
             services.AddCors(options =>
             {
@@ -87,8 +94,11 @@ namespace IrmaMobile
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            if (enableAuthentication)
+            {
+                app.UseAuthentication();
+                app.UseAuthorization();
+            }
             app.UseCors("AllowAll");
 
             app.UseEndpoints(endpoints =>
