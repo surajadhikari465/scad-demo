@@ -179,12 +179,12 @@ namespace Icon.Web.Mvc.Excel
 
         public bool Read()
         {
-            if(IsEmpty) return false;
+            if (IsEmpty) return false;
 
-            while(this.rowEnumerator.MoveNext())
+            while (this.rowEnumerator.MoveNext())
             {
                 this.RecordsAffected++;
-                if(IsValidRecord(rowEnumerator.Current.Elements<Cell>().ToArray())) return true;
+                if (IsValidRecord(rowEnumerator.Current.Elements<Cell>().ToArray())) return true;
             }
 
             return false;
@@ -195,7 +195,7 @@ namespace Icon.Web.Mvc.Excel
             Row row = new Row();
             foreach(var val in values)
             {
-                row.AppendChild(new Cell(){ CellValue = new CellValue(val), DataType = CellValues.String});
+                row.AppendChild(new Cell(){ CellValue = new CellValue(val), DataType = CellValues.String });
             }
             return row;
         }
@@ -225,17 +225,17 @@ namespace Icon.Web.Mvc.Excel
             ws.Append(columns);
 
             sheetData.AppendChild(GetHeader("Ref Link", "Validation Message"));
-            foreach(Hyperlink hl in links)
+            foreach (Hyperlink hl in links)
             {
                 var run = new Run()
                 {
-                    RunProperties = new RunProperties(new Color(){ Rgb = new HexBinaryValue(){ Value = "0000FF" }}, new Underline(){ Val = UnderlineValues.Single }),
+                    RunProperties = new RunProperties(new Color() { Rgb = new HexBinaryValue() { Value = "0000FF" } }, new Underline() { Val = UnderlineValues.Single }),
                     Text = new Text(hl.Display)
                 };
-
-                var r = new Row(new Cell(new InlineString(run)){ DataType = CellValues.InlineString },
-                                new Cell(){CellValue = new CellValue(hl.Tooltip), DataType = CellValues.String });
-
+                
+                var r = new Row(new Cell(new InlineString(run)) { DataType = CellValues.InlineString },
+                                new Cell() { CellValue = new CellValue(hl.Tooltip), DataType = CellValues.String });                
+                
                 sheetData.AppendChild(r);
             }
 
@@ -255,7 +255,44 @@ namespace Icon.Web.Mvc.Excel
             sheets.Append(wsValidation);
             doc.Save();
         }
+        public void SetErrorLinks(Hyperlinks links, string validationTableName, List<int> rowIds)
+        {
+            SetErrorLinks(links, "ItemsValidation");
 
+            var sheets = doc.WorkbookPart.Workbook.GetFirstChild<Sheets>();
+            IEnumerable<Sheet> sheets1 = doc.WorkbookPart.Workbook.GetFirstChild<Sheets>().Elements<Sheet>().Where(s => s.Name == "Items");
+            if (sheets1.Any())
+            {
+                string relationshipId1 = sheets1?.First().Id.Value;
+                WorksheetPart worksheetPart = (WorksheetPart)doc.WorkbookPart.GetPartById(relationshipId1);
+                SheetData sheetData1 = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+                var allRows = sheetData1.Elements<Row>().Where(a => a.RowIndex > 1).OrderBy(a => a.RowIndex.Value).ToArray();
+                var errorRows = sheetData1.Elements<Row>().Where(r => rowIds.Contains((int)r.RowIndex.Value)).OrderBy(a => a.RowIndex.Value).ToArray();
+
+                //Delete all records
+                for (int x = 0; x < allRows.Count(); x++)
+                {
+                    ((Row)allRows[x]).Remove();
+                }
+                worksheetPart.Worksheet.Save();
+
+                //Insert bad records only
+                uint rowid = 1;
+                foreach (var r in errorRows)
+                {
+                    r.RowIndex.Value = ++rowid;
+                    int inx = 0;
+
+                    foreach (Cell c in r.Elements<Cell>().ToArray())
+                    {
+                        c.CellReference.Value = String.Format("{0}{1}", ToExcelColumn(++inx), rowid);
+                    }
+                    sheetData1.Append(r);
+                }
+                worksheetPart.Worksheet.Save();
+            }
+            doc.Save();
+        }
         private string ToExcelColumn(int inx)
         {
             int mod;

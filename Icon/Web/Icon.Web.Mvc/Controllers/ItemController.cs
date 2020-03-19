@@ -60,7 +60,7 @@ namespace Icon.Web.Controllers
 
         private IHistoryModelTransformer historyModelTransformer;
         private readonly IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler;
-        private IQueryHandler<GetBulkItemUploadErrorReportParameters, BulkItemUploadErrorExportModel> getBulkItemUploadErrorReportQueryHandler;       
+        private IQueryHandler<GetBulkItemUploadErrorReportParameters, BulkItemUploadErrorExportModel> getBulkItemUploadErrorReportQueryHandler;
 
         public ItemController(
             ILogger logger,
@@ -728,36 +728,43 @@ namespace Icon.Web.Controllers
             try
             {
                 var model = getBulkItemUploadErrorReportQueryHandler.Search(new GetBulkItemUploadErrorReportParameters { BulkItemUploadId = Id });
-                
-                    using (var mem = new MemoryStream())
-                    {
-                        try
-                        {
-                            mem.Write(model.bulkItemUploadModel.FileContent, 0, model.bulkItemUploadModel.FileContent.Length);
 
-                            using (var rdr = new Icon.Web.Mvc.Excel.ExcelReader(mem))
-                            {
-                                var links = new DocumentFormat.OpenXml.Spreadsheet.Hyperlinks();
-                                foreach (var link in model.bulkUploadErrorModels)
-                                {
-                                    links.Append(new DocumentFormat.OpenXml.Spreadsheet.Hyperlink() { Reference = $"A{links.Count() + 2}", Location = $"Items!A{link.RowId}", Display = $"Ref ID: {link.RowId}", Tooltip = link.Message });
-                                }
-                                rdr.SetErrorLinks(links, "ItemsValidation");
-                                SendForDownloadItem(mem, $"{Path.GetFileNameWithoutExtension(model.bulkItemUploadModel.FileName)}_Error.xlsx");
-                            }
-                        }
-                        catch (Exception ex)
+                using (var mem = new MemoryStream())
+                {
+                    try
+                    {
+                        mem.Write(model.bulkItemUploadModel.FileContent, 0, model.bulkItemUploadModel.FileContent.Length);
+
+                        using (var rdr = new Icon.Web.Mvc.Excel.ExcelReader(mem))
                         {
-                            var result = new BulkUploadResultModel { Result = "Error", Message = $"Error occurred. Error details: {ex.Message}" };
-                            return Json(result);
+                            var links = new DocumentFormat.OpenXml.Spreadsheet.Hyperlinks();
+                            var rowid = 2;
+                            foreach (var grp in model.bulkUploadErrorModels.OrderBy(a => a.RowId).GroupBy(a => a.RowId))
+                            {
+                                foreach (var val in grp)
+                                {                                    
+                                   links.Append(new DocumentFormat.OpenXml.Spreadsheet.Hyperlink() { Reference = $"A{links.Count() + 2}", Location = $"Items!A{rowid}", Display = $"Ref ID: {rowid}", Tooltip = val.Message });
+                                }
+                                rowid++;
+                            }
+
+                            var listId = model.bulkUploadErrorModels.Select(a => a.RowId).Distinct().ToList();
+                            rdr.SetErrorLinks(links, "ItemsValidation", listId);
+                            SendForDownloadItem(mem, $"{Path.GetFileNameWithoutExtension(model.bulkItemUploadModel.FileName)}_Error.xlsx");
                         }
-                    }               
+                    }
+                    catch (Exception ex)
+                    {
+                        var result = new BulkUploadResultModel { Result = "Error", Message = $"Error occurred. Error details: {ex.Message}" };
+                        return Json(result);
+                    }
+                }
             }
             catch (Exception ex)
             {
                 var result = new BulkUploadResultModel { Result = "Error", Message = $"Error occurred. Error details: {ex.Message}" };
                 return Json(result);
-            }           
+            }
             return Json("OK", JsonRequestBehavior.AllowGet);
         }
 
@@ -891,7 +898,7 @@ namespace Icon.Web.Controllers
         {
             //To prevent IIS from hijacking custom response or add the line below to web config file in <system.webServer> section
             //<httpErrors errorMode="DetailedLocalOnly" existingResponse="PassThrough"/>
-            Response.TrySkipIisCustomErrors = true; 
+            Response.TrySkipIisCustomErrors = true;
 
             Response.StatusCode = (int)statusCode;
             Response.StatusDescription = errMessage;

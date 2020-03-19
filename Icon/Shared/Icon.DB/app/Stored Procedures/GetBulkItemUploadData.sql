@@ -9,9 +9,9 @@ BEGIN
 	JOIN BulkItemUpload b ON b.BulkItemUploadId = a.BulkItemUploadId
 	WHERE a.BulkItemUploadId = @bulkItemUploadId
 
-	SELECT c.BulkItemUploadId
-	       ,c.rowid
-		   ,c.Message
+	SELECT DISTINCT c.Message,
+	       c.BulkItemUploadId
+	       ,c.rowid		   
 	FROM BulkItemUploadErrors c
 	WHERE c.BulkItemUploadId = @bulkItemUploadId
 END
