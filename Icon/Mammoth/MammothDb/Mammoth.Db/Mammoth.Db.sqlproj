@@ -835,6 +835,10 @@
     <None Include="Scripts\PostDeploymentScripts\PopulateManufacturerHierarchy.sql" />
     <None Include="Scripts\PreDeploymentScripts\DeduplicateNationalMerchandiseHierarchy.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\DeduplicateScanCodes_QA_PROD.sql" />
+    <Build Include="dbo\Stored Procedures\AddOrUpdateHierarchyMerchandiseSegment.sql" />
+    <Build Include="dbo\Stored Procedures\AddOrUpdateHierarchyMerchandiseFamily.sql" />
+    <Build Include="dbo\Stored Procedures\AddOrUpdateHierarchyMerchandiseClass.sql" />
+    <Build Include="dbo\Stored Procedures\AddOrUpdateHierarchyMerchandiseBrick.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -854,6 +858,8 @@
     <None Include="Scripts\PreDeploymentScripts\Archive\DeduplicateScanCodes_PERF.sql" />
     <None Include="Scripts\PostDeploymentScripts\30224_Create_IVL_Extract_JobScheudle.sql" />
     <None Include="Scripts\PostDeploymentScripts\30224_Create_IVL_Item_Extract_JobSchedule.sql" />
+    <Build Include="dbo\User Defined Types\HierarchyMerchandiseClassType.sql" />
+    <None Include="dbo\Stored Procedures\AddOrUpdateHierarchyMerchandiseSubBrick.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Icon.Shared.DataAccess.Dapper.DbProviders;
 using Mammoth.Esb.HierarchyClassListener.Commands;
@@ -112,10 +111,15 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
             commandHandler.Execute(command);
 
             //Then
-            var actualHierarchyClasses = dbProvider.Connection.Query<dynamic>("SELECT * FROM dbo.HierarchyClass",
+            var actualCount = dbProvider.Connection.Query<int>("SELECT Count(*) FROM dbo.HierarchyClass;",
+                null,
+                dbProvider.Transaction).First();
+            Assert.AreEqual(existingNum + 5, actualCount);
+
+            var actualHierarchyClasses = dbProvider.Connection.Query<dynamic>("SELECT * FROM dbo.HierarchyClass WHERE HierarchyClassID IN(1,2,3,4,5) ORDER BY HierarchyClassID;",
                 null,
                 dbProvider.Transaction).ToList();
-            Assert.AreEqual(existingNum + 5, actualHierarchyClasses.Count);
+
             for (int i = 0; i < hierarchyClasses.Count; i++)
             {
                 Assert.AreEqual(hierarchyClasses[i].HierarchyClassId, actualHierarchyClasses[i].HierarchyClassID);

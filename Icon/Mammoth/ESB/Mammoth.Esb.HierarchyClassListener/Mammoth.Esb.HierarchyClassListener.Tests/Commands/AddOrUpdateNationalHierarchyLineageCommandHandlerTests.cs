@@ -316,7 +316,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                 dbProvider.Transaction)
                 .Single();
 
-            AssertNationalHierarchiesAreEqual(testNationalHierarchy, NationalHierarchy);
+            AssertNationalHierarchiesAreEqual(testNationalHierarchy, NationalHierarchy, true);
         }
 
         [TestMethod]
@@ -385,7 +385,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                 dbProvider.Transaction)
                 .Single();
 
-            AssertNationalHierarchiesAreEqual(testNationalHierarchy, NationalHierarchy);
+            AssertNationalHierarchiesAreEqual(testNationalHierarchy, NationalHierarchy, true);
         }
 
         [TestMethod]

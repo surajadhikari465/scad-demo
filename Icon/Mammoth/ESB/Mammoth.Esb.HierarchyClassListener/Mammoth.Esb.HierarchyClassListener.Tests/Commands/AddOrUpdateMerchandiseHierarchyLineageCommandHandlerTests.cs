@@ -277,16 +277,15 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                 new { Id = newFamily_ID2 },
                 dbProvider.Transaction)
                 .Single();
-            AssertMerchandiseHierarchiesAreEqual(newMerchHierarchyC, actualFamily2Lineage, false);
+            AssertMerchandiseHierarchiesAreEqual(newMerchHierarchyC, actualFamily2Lineage, true);
+            Assert.IsTrue(actualFamily2Lineage.ModifiedDate > actualFamily2Lineage.AddedDate);
 
             var actualFamily1Lineage = dbProvider.Connection.Query<MerchandiseHierarchyModel>(
                 @"SELECT * FROM dbo.Hierarchy_Merchandise WHERE FamilyHCID = @Id",
                 new { Id = newFamily_ID1 },
                 dbProvider.Transaction)
                 .Single();
-            Assert.IsNotNull(actualFamily1Lineage.ModifiedDate);
-            AssertMerchandiseHierarchiesAreEqual(updatedMerchHierarchyA, actualFamily1Lineage, true);
-            Assert.IsTrue(actualFamily1Lineage.ModifiedDate > actualFamily1Lineage.AddedDate);
+            AssertMerchandiseHierarchiesAreEqual(updatedMerchHierarchyA, actualFamily1Lineage, false);
         }
 
         [TestMethod]
@@ -321,7 +320,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                 dbProvider.Transaction)
                 .Single();
 
-            AssertMerchandiseHierarchiesAreEqual(testMerchandiseHierarchy, merchandiseHierarchy);
+            AssertMerchandiseHierarchiesAreEqual(testMerchandiseHierarchy, merchandiseHierarchy, true);
         }
 
         [TestMethod]
@@ -390,7 +389,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                 dbProvider.Transaction)
                 .Single();
 
-            AssertMerchandiseHierarchiesAreEqual(testMerchandiseHierarchy, merchandiseHierarchy);
+            AssertMerchandiseHierarchiesAreEqual(testMerchandiseHierarchy, merchandiseHierarchy, true);
         }
 
         [TestMethod]
@@ -461,7 +460,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
                 dbProvider.Transaction)
                 .Single();
 
-            AssertMerchandiseHierarchiesAreEqual(testMerchandiseHierarchy, merchandiseHierarchy);
+            AssertMerchandiseHierarchiesAreEqual(testMerchandiseHierarchy, merchandiseHierarchy, true);
         }
 
         [TestMethod]

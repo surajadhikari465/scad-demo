@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Hierarchy_Merchandise] (
     [HierarchyMerchandiseID] INT      IDENTITY (1, 1) NOT NULL,
-    [SegmentHCID]            INT      NULL,
+    [SegmentHCID]            INT      NOT NULL,
     [FamilyHCID]             INT      NULL,
     [ClassHCID]              INT      NULL,
     [BrickHCID]              INT      NULL,
