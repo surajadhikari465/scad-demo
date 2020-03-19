@@ -34,5 +34,6 @@ namespace Icon.Common.Models
         public string XmlTraitDescription { get; set; }
         public int? ItemCount { get; set; }
         public IEnumerable<AttributeItemCountModel> AttributeItemCounts { get; set; }
+        public bool IsItemCountOnAttributes { get; set; } 
     }
 }
