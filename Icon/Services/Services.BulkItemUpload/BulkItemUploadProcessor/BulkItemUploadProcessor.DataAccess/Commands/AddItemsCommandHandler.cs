@@ -82,8 +82,6 @@ namespace BulkItemUploadProcessor.DataAccess.Commands
                 data.InvalidItems = invalidItems;
                 throw;
             }
-
-            
         }
     }
 }

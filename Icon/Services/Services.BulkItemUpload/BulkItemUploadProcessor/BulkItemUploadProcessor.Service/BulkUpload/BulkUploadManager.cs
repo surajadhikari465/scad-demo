@@ -5,6 +5,7 @@ using BulkItemUploadProcessor.DataAccess.Queries;
 using BulkItemUploadProcessor.Service.Cache.Interfaces;
 using BulkItemUploadProcessor.Service.ExcelParsing.Interfaces;
 using BulkItemUploadProcessor.Service.Interfaces;
+using BulkItemUploadProcessor.Service.Mappers;
 using BulkItemUploadProcessor.Service.Mappers.Interfaces;
 using BulkItemUploadProcessor.Service.Validation;
 using BulkItemUploadProcessor.Service.Validation.Interfaces;
@@ -42,17 +43,18 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
         private readonly IExcelWorksheetHeadersParser excelWorksheetHeadersParser;
         private readonly IExcelRowParser excelRowParser;
         private readonly IRowObjectsValidator rowObjectsValidator;
-        private readonly ICommandHandler<UpdateItemsCommand> updateItemsCommandHandler;
+        private readonly IColumnHeadersValidator columnHeadersValidator;
+       
         private readonly IHierarchyCache hierarchyCache;
         private readonly IMerchItemPropertiesCache merchItemPropertiesCache;
 
         private List<RowObject> rowData;
         public IRowObjectToAddItemModelMapper addItemModelMapper;
-        private readonly ICommandHandler<AddItemsCommand> addItemsCommandHandler;
         private readonly IExcelWorkbookValidator excelWorkbookValidator;
         private readonly ICommandHandler<PublishItemUpdatesCommand> publishItemUpdatesCommandHandler;
         private List<ColumnHeader> headers;
         private RowObjectValidatorResponse validationResponse;
+        private IAddUpdateItemManager addUpdateItemManager;
 
         public BulkUploadManager(
             ILogger<BulkUploadManager> logger,
@@ -69,13 +71,13 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             IExcelWorksheetHeadersParser excelWorksheetHeadersParser,
             IExcelRowParser excelRowParser,
             IRowObjectsValidator rowObjectsValidator,
-            ICommandHandler<UpdateItemsCommand> updateItemsCommandHandler,
+            IColumnHeadersValidator columnHeadersValidator,
             IHierarchyCache hierarchyCache,
             IMerchItemPropertiesCache merchItemPropertiesCache,
             IRowObjectToAddItemModelMapper addItemModelMapper,
-            ICommandHandler<AddItemsCommand> addItemsCommandHandler,
             IExcelWorkbookValidator excelWorkbookValidator,
-            ICommandHandler<PublishItemUpdatesCommand> publishItemUpdatesCommandHandler)
+            ICommandHandler<PublishItemUpdatesCommand> publishItemUpdatesCommandHandler,
+            IAddUpdateItemManager addUpdateItemManager)
         {
             this.logger = logger;
             setStatusCommandHandler = statusCommandHandler;
@@ -91,13 +93,13 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             this.excelWorksheetHeadersParser = excelWorksheetHeadersParser;
             this.excelRowParser = excelRowParser;
             this.rowObjectsValidator = rowObjectsValidator;
-            this.updateItemsCommandHandler = updateItemsCommandHandler;
             this.hierarchyCache = hierarchyCache;
             this.merchItemPropertiesCache = merchItemPropertiesCache;
             this.addItemModelMapper = addItemModelMapper;
-            this.addItemsCommandHandler = addItemsCommandHandler;
             this.excelWorkbookValidator = excelWorkbookValidator;
             this.publishItemUpdatesCommandHandler = publishItemUpdatesCommandHandler;
+            this.columnHeadersValidator = columnHeadersValidator;
+            this.addUpdateItemManager = addUpdateItemManager;
         }
 
         public void SetActiveUpload(BulkItemUploadInformation uploadInformation)
@@ -144,6 +146,8 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             if (!result.IsValid)
                 throw new InvalidOperationException(result.Error);
 
+            var columHeaderValidationResult = columnHeadersValidator.Validate(activeUpload, activeExcelData);
+
             var sheet = activeExcelData.Workbook.Worksheets[Constants.ItemWorksheetName];
 
             SetStatus(Enums.FileStatusEnum.Processing, "Parsing Headers", 20);
@@ -152,8 +156,32 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             SetStatus(Enums.FileStatusEnum.Processing, "Parsing Rows", 30);
             rowData = excelRowParser.Parse(sheet, headers);
 
-            SetStatus(Enums.FileStatusEnum.Processing, "Validating Rows", 40);
-            validationResponse = rowObjectsValidator.Validate(activeUpload.FileModeType, rowData, headers, attributeModels);
+            if (!columHeaderValidationResult.IsValid)
+            {
+                setErrorForAllRows(columHeaderValidationResult);
+            }
+            else
+            {
+                SetStatus(Enums.FileStatusEnum.Processing, "Validating Rows", 40);
+                validationResponse = rowObjectsValidator.Validate(activeUpload.FileModeType, rowData, headers, attributeModels);
+            }
+        }
+
+        private void setErrorForAllRows(ValidationResponse columHeaderValidationResult)
+        {
+            List<InvalidRowError> errors = new List<InvalidRowError>();
+            validationResponse = new RowObjectValidatorResponse();
+
+            foreach (RowObject rowObject in rowData)
+            {
+                errors.Add(new InvalidRowError
+                {
+                    RowId = rowObject.Row,
+                    Error = columHeaderValidationResult.Error
+                });
+            }
+            validationResponse.InvalidRows.AddRange(errors);
+            SetStatus(Enums.FileStatusEnum.Processing, "Processing Complete", 100);
         }
 
         public void ClearErrors(int bulkItemUploadId)
@@ -195,15 +223,13 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
         {
             SetStatus(Enums.FileStatusEnum.Processing, "Creating Items", 80);
             var mapperResponse = addItemModelMapper.Map(validationResponse.ValidRows, headers, attributeModels, activeUpload.UploadedBy);
-            var command = new AddItemsCommand
-            {
-                Items = mapperResponse.Items
-            };
-            addItemsCommandHandler.Execute(command);
+            List<ErrorItem<AddItemModel>> invalidItems = new List<ErrorItem<AddItemModel>>();
+            List<ItemIdAndScanCode> addedItems = new List<ItemIdAndScanCode>();
+            addUpdateItemManager.CreateItems(mapperResponse.Items, invalidItems, addedItems);
 
-            if (command.InvalidItems != null && command.InvalidItems.Any())
+            if (invalidItems != null && invalidItems.Any())
             {
-                foreach (var invalidItem in command.InvalidItems)
+                foreach (var invalidItem in invalidItems)
                 {
                     if (mapperResponse.ItemToRowDictionary.ContainsKey(invalidItem.Item))
                     {
@@ -216,28 +242,49 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
                     }
                 }
             }
-            if (command.AddedItems != null && command.AddedItems.Any())
+
+            if (addedItems != null && addedItems.Any())
             {
                 publishItemUpdatesCommandHandler.Execute(new PublishItemUpdatesCommand
                 {
-                    ScanCodes = command.AddedItems.Select(i => i.ScanCode).ToList()
+                    ScanCodes = addedItems.Select(i => i.ScanCode).ToList()
                 });
             }
         }
 
         private void ProcessUpdateUpload()
         {
+            List<ErrorItem<UpdateItemModel>> invalidItems = new List<ErrorItem<UpdateItemModel>>();
+            List<ItemIdAndScanCode> updatedItems = new List<ItemIdAndScanCode>();
+
             SetStatus(Enums.FileStatusEnum.Processing, "Updating Items", 80);
-            var items = updateItemMapper.Map(validationResponse.ValidRows, headers, attributeModels, activeUpload.UploadedBy);
-            updateItemsCommandHandler.Execute(new UpdateItemsCommand
+            var mapperResponse = updateItemMapper.Map(validationResponse.ValidRows, headers, attributeModels, activeUpload.UploadedBy);
+            addUpdateItemManager.UpdateItems(mapperResponse.Items, invalidItems, updatedItems);
+
+            if (invalidItems != null && invalidItems.Any())
             {
-                Items = items
-            });
-            publishItemUpdatesCommandHandler.Execute(new PublishItemUpdatesCommand
+                foreach (var invalidItem in invalidItems)
+                {
+                    if (mapperResponse.ItemToRowDictionary.ContainsKey(invalidItem.Item))
+                    {
+                        var rowObject = mapperResponse.ItemToRowDictionary[invalidItem.Item];
+                        validationResponse.InvalidRows.Add(new InvalidRowError
+                        {
+                            RowId = rowObject.Row,
+                            Error = invalidItem.Error
+                        });
+                    }
+                }
+            }
+
+            if (updatedItems != null && updatedItems.Any())
             {
-                ScanCodes = items.Select(i => i.ScanCode).ToList()
-            });
-        }
+                publishItemUpdatesCommandHandler.Execute(new PublishItemUpdatesCommand
+                {
+                    ScanCodes = updatedItems.Select(i => i.ScanCode).ToList()
+                });
+            }
+        }    
 
         private void ProcessErrors(int bulkItemUploadId, List<InvalidRowError> invalidRows)
         {

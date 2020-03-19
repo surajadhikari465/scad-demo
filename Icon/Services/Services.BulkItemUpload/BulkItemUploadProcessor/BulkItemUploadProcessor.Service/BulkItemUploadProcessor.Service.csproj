@@ -127,6 +127,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BulkUpload\AddUpdateItemManager.cs" />
     <Compile Include="BulkUpload\BulkUploadManager.cs" />
     <Compile Include="BulkUploadProcessorService.cs" />
     <Compile Include="Cache\HierarchyCache.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="ExcelParsing\Interfaces\IExcelRowParser.cs" />
     <Compile Include="ExcelParsing\Interfaces\IExcelWorksheetHeadersParser.cs" />
     <Compile Include="ExcelParsing\Interfaces\IExcelWorksheetParser.cs" />
+    <Compile Include="Interfaces\IAddUpdateItemManager.cs" />
     <Compile Include="Interfaces\IBulkUploadManager.cs" />
     <Compile Include="Interfaces\IServiceConfiguration.cs" />
     <Compile Include="Interfaces\IService.cs" />
@@ -150,8 +152,10 @@
     <Compile Include="Mappers\RowObjectToItemMapperResponse.cs" />
     <Compile Include="Mappers\RowObjectToUpdateItemModelMapper.cs" />
     <Compile Include="Validation\ExcelPackageValidator.cs" />
+    <Compile Include="Validation\ColumnHeadersValidator.cs" />
     <Compile Include="Validation\ExcelWorkbookValidator.cs" />
     <Compile Include="Validation\HierarchyValidator.cs" />
+    <Compile Include="Validation\Interfaces\IColumnHeadersValidator.cs" />
     <Compile Include="Validation\Interfaces\IExcelWorkbookValidator.cs" />
     <Compile Include="Validation\Interfaces\IHierarchyValidator.cs" />
     <Compile Include="Validation\Interfaces\IValidationManager.cs" />

@@ -27,7 +27,7 @@ namespace BulkItemUploadProcessor.Service.Mappers
             this.merchItemPropertiesCache = merchItemPropertiesCache;
         }
 
-        public List<UpdateItemModel> Map(
+        public RowObjectToItemMapperResponse<UpdateItemModel> Map(
             List<RowObject> rowObjects,
             List<ColumnHeader> columnHeaders,
             List<AttributeModel> attributeModels,
@@ -56,9 +56,15 @@ namespace BulkItemUploadProcessor.Service.Mappers
             var scanCodesToRowObjects = rowObjects
                 .ToDictionary(
                     r => r.Cells.First(c => c.Column.ColumnIndex == scanCodeIndex).CellValue,
-                    r => r.Cells.ToDictionary(
+                    r => new
+                    {
+                        RowId = r.Row,
+                        Row = r,
+                        DictionaryValues =
+                    r.Cells.ToDictionary(
                         c => c.Column.ColumnIndex,
-                        c => c.CellValue));
+                        c => c.CellValue)
+                    });
 
             //Create DateTime for ModifiedDate and CreatedDate attributes
             var now = DateTime.UtcNow.ToFormattedDateTimeString();
@@ -68,6 +74,8 @@ namespace BulkItemUploadProcessor.Service.Mappers
             {
                 ScanCodes = scanCodesToRowObjects.Keys.ToList()
             });
+
+            Dictionary<UpdateItemModel, RowObject> dictionary = new Dictionary<UpdateItemModel, RowObject>();
 
             foreach (var itemModel in updateItemModelsStream)
             {
@@ -79,9 +87,9 @@ namespace BulkItemUploadProcessor.Service.Mappers
 
                 foreach (var columnHeader in validAttributeColumnHeaders)
                 {
-                    if (rowObject.ContainsKey(columnHeader.ColumnIndex))
+                    if (rowObject.DictionaryValues.ContainsKey(columnHeader.ColumnIndex))
                     {
-                        var value = rowObject[columnHeader.ColumnIndex];
+                        var value = rowObject.DictionaryValues[columnHeader.ColumnIndex];
                         if (!string.IsNullOrWhiteSpace(value))
                         {
                             if (value == RemoveExcelValue)
@@ -91,21 +99,27 @@ namespace BulkItemUploadProcessor.Service.Mappers
                             }
                             else
                             {
-                                itemAttributesJson[columnHeader.AttributeName] = rowObject[columnHeader.ColumnIndex];
+                                itemAttributesJson[columnHeader.AttributeName] = rowObject.DictionaryValues[columnHeader.ColumnIndex];
                             }
                         }
-                    }
+                    }        
                 }
 
                 foreach (var hierarchyClassAction in hierarchyClassActions)
                 {
-                    hierarchyClassAction(itemModel, itemAttributesJson, rowObject);
+                    hierarchyClassAction(itemModel, itemAttributesJson, rowObject.DictionaryValues);
                 }
 
                 itemModel.ItemAttributesJson = JsonConvert.SerializeObject(itemAttributesJson);
+
+                dictionary.Add(itemModel, rowObject.Row);
             }
 
-            return updateItemModelsStream.ToList();
+            return new RowObjectToItemMapperResponse<UpdateItemModel>
+            {
+                Items = dictionary.Keys.ToList(),
+                ItemToRowDictionary = dictionary
+            };
         }
 
         private Action<UpdateItemModel, Dictionary<string, string>, Dictionary<int, string>> SetHierarchyClassActions(string hierarchyName, int columnIndex)

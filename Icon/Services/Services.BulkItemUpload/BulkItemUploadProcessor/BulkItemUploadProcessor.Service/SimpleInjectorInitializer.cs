@@ -48,10 +48,11 @@ namespace BulkItemUploadProcessor.Service
             container.Register<IItemAttributesValidatorFactory, ItemAttributesValidatorFactory>();
             
             container.Register<IValidationManager, ValidationManager>();
-
+            container.Register<IAddUpdateItemManager,AddUpdateItemManager>();
             container.Register<IValidator<ExcelPackage>, ExcelPackageValidator>();
             container.Register<IHierarchyValidator, HierarchyValidator>();
             container.Register<IRowObjectsValidator, RowObjectsValidator>();
+            container.Register<IColumnHeadersValidator, ColumnHeadersValidator>();
             container.Register<IRowObjectToUpdateItemModelMapper, RowObjectToUpdateItemModelMapper>();
             container.Register<IExcelRowParser, ExcelRowParser>();
             container.Register<IExcelWorksheetParser, ExcelWorksheetParser>();
@@ -60,10 +61,8 @@ namespace BulkItemUploadProcessor.Service
             container.Register<IExcelWorkbookValidator, ExcelWorkbookValidator>();
 
             container.RegisterDecorator<ICommandHandler<AddItemsCommand>, TransactionCommandHandlerDecorator<AddItemsCommand>>();
-            container.RegisterDecorator<ICommandHandler<AddItemsCommand>, RetryCommandHandlerDecorator<AddItemsCommand>>();
 
             container.RegisterDecorator<ICommandHandler<UpdateItemsCommand>, TransactionCommandHandlerDecorator<UpdateItemsCommand>>();
-            container.RegisterDecorator<ICommandHandler<UpdateItemsCommand>, RetryCommandHandlerDecorator<UpdateItemsCommand>>();
 
             container.Register(() => BulkItemUploadProcessorSettings.Load());
 

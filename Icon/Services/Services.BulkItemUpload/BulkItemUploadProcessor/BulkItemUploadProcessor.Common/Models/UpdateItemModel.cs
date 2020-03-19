@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BulkItemUploadProcessor.Common.Models
+﻿namespace BulkItemUploadProcessor.Common.Models
 {
     public class UpdateItemModel
     {

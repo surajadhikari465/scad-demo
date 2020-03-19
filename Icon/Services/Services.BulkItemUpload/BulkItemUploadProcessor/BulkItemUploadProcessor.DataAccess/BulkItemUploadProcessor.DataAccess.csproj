@@ -100,6 +100,7 @@
     <Compile Include="Commands\SetTotalRecordCountCommandHandler.cs" />
     <Compile Include="Commands\UpdateItemsCommand.cs" />
     <Compile Include="Commands\UpdateItemsCommandHandler.cs" />
+    <Compile Include="Decorators\ProcessErrorRecordsDecorator.cs" />
     <Compile Include="Decorators\RetryCommandHandlerDecorator.cs" />
     <Compile Include="Decorators\TransactionCommandHandlerDecorator.cs" />
     <Compile Include="IManagerHandler.cs" />

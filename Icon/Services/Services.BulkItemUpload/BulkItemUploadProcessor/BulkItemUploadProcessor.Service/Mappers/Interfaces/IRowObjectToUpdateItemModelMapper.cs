@@ -7,6 +7,6 @@ namespace BulkItemUploadProcessor.Service.Mappers.Interfaces
 {
     public interface IRowObjectToUpdateItemModelMapper
     {
-        List<UpdateItemModel> Map(List<RowObject> rowObjects, List<ColumnHeader> columnHeaders, List<AttributeModel> attributeModels, string uploadedBy);
+        RowObjectToItemMapperResponse<UpdateItemModel> Map(List<RowObject> rowObjects, List<ColumnHeader> columnHeaders, List<AttributeModel> attributeModels, string uploadedBy);
     }
 }
