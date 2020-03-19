@@ -2,13 +2,12 @@
 using Icon.Common.DataAccess;
 using Icon.Shared.DataAccess.Dapper.DbProviders;
 using Mammoth.Common.DataAccess;
-using Mammoth.Esb.HierarchyClassListener.Models;
-using System;
 using System.Linq;
+using Icon.Common;
 
 namespace Mammoth.Esb.HierarchyClassListener.Commands
 {
-    public class DeleteMerchandiseClassCommandHandler
+    public class DeleteMerchandiseClassCommandHandler 
         : DeleteHierarchyClassesGenericCommandHandler<DeleteHierarchyClassesParameter>,
         ICommandHandler<DeleteMerchandiseClassParameter>
     {
@@ -24,58 +23,20 @@ namespace Mammoth.Esb.HierarchyClassListener.Commands
 
         public void Execute(DeleteMerchandiseClassParameter data)
         {
-            const string tempTable = "#tempDeleteMerchandiseClass";
-            string sqlToExecute = String.Empty;
-
-            sqlToExecute = $"CREATE TABLE {tempTable} (HierarchyClassID int);";
             DbProvider.Connection.Execute(
-                sql: sqlToExecute, param: null, transaction: DbProvider.Transaction);
+                sql: "dbo.DeleteHierarchyMerchandise",
+                param: new
+                {
+                    @hcID = data.HierarchyClasses.Select(x => new
+                    {
+                        Value = x.HierarchyClassId,
+                    })
+                    .ToDataTable()
+                    .AsTableValuedParameter("dbo.IntListType")
+                },
+            transaction: DbProvider.Transaction,
+            commandType: System.Data.CommandType.StoredProcedure);
 
-            var tempInsertParams = data.HierarchyClasses
-                .Select(hc => new HierarchyClassModel { HierarchyClassId = hc.HierarchyClassId });
-            sqlToExecute = $"INSERT INTO {tempTable} VALUES (@HierarchyClassId);";
-            var insertTempResult = DbProvider.Connection.Execute(
-                sql: sqlToExecute, param: tempInsertParams, transaction: DbProvider.Transaction);
-
-            sqlToExecute = $@"
-                DELETE HM FROM dbo.Hierarchy_Merchandise HM
-                    INNER JOIN {tempTable} TEMP ON TEMP.HierarchyClassID = HM.SegmentHCID;";
-            var deleteSegmentResult = DbProvider.Connection.Execute(
-                sql: sqlToExecute, param: null, transaction: DbProvider.Transaction);
-
-            sqlToExecute = $@"
-                UPDATE dbo.Hierarchy_Merchandise
-                SET FamilyHCID = NULL, ClassHCID = NULL, BrickHCID = NULL, SubBrickHCID = NULL, ModifiedDate = GETDATE()
-                FROM dbo.Hierarchy_Merchandise HM
-                        INNER JOIN {tempTable} TEMP ON TEMP.HierarchyClassID = HM.FamilyHCID;";
-            var deleteFamilyResult = DbProvider.Connection.Execute(
-                sql: sqlToExecute, param: null, transaction: DbProvider.Transaction);
-
-            sqlToExecute = $@"
-                UPDATE dbo.Hierarchy_Merchandise
-                SET ClassHCID = NULL, BrickHCID = NULL, SubBrickHCID = NULL, ModifiedDate = GETDATE()
-                FROM dbo.Hierarchy_Merchandise HM
-                        INNER JOIN {tempTable} TEMP ON TEMP.HierarchyClassID = HM.ClassHCID;";
-            var deleteClassResult = DbProvider.Connection.Execute(
-                sql: sqlToExecute, param: null, transaction: DbProvider.Transaction);
-
-            sqlToExecute = $@"
-                UPDATE dbo.Hierarchy_Merchandise
-                SET BrickHCID = NULL, SubBrickHCID = NULL, ModifiedDate = GETDATE()
-                FROM dbo.Hierarchy_Merchandise HM
-                       INNER JOIN {tempTable} TEMP ON TEMP.HierarchyClassID = HM.BrickHCID;";
-            var deleteBrickResult = DbProvider.Connection.Execute(
-                sql: sqlToExecute, param: null, transaction: DbProvider.Transaction);
-
-            sqlToExecute = $@"
-                UPDATE dbo.Hierarchy_Merchandise
-                SET SubBrickHCID = NULL, ModifiedDate = GETDATE()
-                FROM dbo.Hierarchy_Merchandise HM
-                        INNER JOIN {tempTable} TEMP ON TEMP.HierarchyClassID = HM.SubBrickHCID;";
-            var deleteSubBrickResult = DbProvider.Connection.Execute(
-                sql: sqlToExecute, param: null, transaction: DbProvider.Transaction);
-
-            // call the base execute method to delete the hierarchy classes themselves
             base.Execute(data);
         }
     }

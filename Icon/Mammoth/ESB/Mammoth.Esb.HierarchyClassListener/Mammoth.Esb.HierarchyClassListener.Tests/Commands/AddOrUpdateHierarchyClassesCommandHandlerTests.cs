@@ -59,10 +59,14 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
             commandHandler.Execute(command);
 
             //Then
-            var actualHierarchyClasses = dbProvider.Connection.Query<dynamic>("SELECT * FROM dbo.HierarchyClass",
+            var actualNum = dbProvider.Connection.Query<int>(
+               "select count(*) from dbo.HierarchyClass", transaction: dbProvider.Transaction).First();
+            Assert.AreEqual(existingNum + 5, actualNum);
+
+            var actualHierarchyClasses = dbProvider.Connection.Query<dynamic>("SELECT * FROM dbo.HierarchyClass WHERE HierarchyClassId IN(1,2,3,4,5)",
                 null,
                 dbProvider.Transaction).ToList();
-            Assert.AreEqual(existingNum + 5, actualHierarchyClasses.Count);
+           
             for (int i = 0; i < hierarchyClasses.Count; i++)
             {
                 Assert.AreEqual(hierarchyClasses[i].HierarchyClassId, actualHierarchyClasses[i].HierarchyClassID);
@@ -149,10 +153,14 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Commands
             commandHandler.Execute(command);
 
             //Then
-            var actualHierarchyClasses = dbProvider.Connection.Query<dynamic>("SELECT * FROM dbo.HierarchyClass",
+            var actualNum = dbProvider.Connection.Query<int>(
+               "select count(*) from dbo.HierarchyClass", transaction: dbProvider.Transaction).First();
+             
+            Assert.AreEqual(existingNum + 5, actualNum);
+
+            var actualHierarchyClasses = dbProvider.Connection.Query<dynamic>("SELECT * FROM dbo.HierarchyClass WHERE HierarchyClassId IN(1,2,3,4,5)",
                 null,
                 dbProvider.Transaction).ToList();
-            Assert.AreEqual(existingNum + 5, actualHierarchyClasses.Count);
             for (int i = 0; i < hierarchyClasses.Count; i++)
             {
                 Assert.AreEqual(hierarchyClasses[i].HierarchyClassId, actualHierarchyClasses[i].HierarchyClassID);
