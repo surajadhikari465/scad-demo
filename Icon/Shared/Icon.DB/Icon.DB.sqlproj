@@ -806,6 +806,7 @@
     <None Include="Scripts\Projects\BoiseScripts\33039_MoveMetroFromRMToNC.sql" />
     <None Include="Scripts\Projects\BoiseScripts\33039_MoveMetroFromNCToRMRollBackScript.sql" />
     <None Include="Scripts\Projects\DeleteBrowsingHierachyAssociation\DeleteBrowsingHistoryAssociation.sql" />
+    <Build Include="app\Stored Procedures\GetAttributesList.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

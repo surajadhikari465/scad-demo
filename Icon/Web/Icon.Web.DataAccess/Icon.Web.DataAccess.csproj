@@ -469,6 +469,7 @@
     <Compile Include="Models\VenueModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\BulkItemUploadStatusModel.cs" />
+    <Compile Include="Queries\EmptyAttributesParameters.cs" />
     <Compile Include="Queries\GetBulkItemUploadErrorReportParameters.cs" />
     <Compile Include="Queries\DoesAttributeExistOnItemsParameters.cs" />
     <Compile Include="Queries\DoesAttributeExistOnItemsQueryHandler.cs" />
@@ -510,6 +511,7 @@
     <Compile Include="Queries\GetHierarchiesQueryHandler.cs" />
     <Compile Include="Queries\GetHierarchyClassesParameters.cs" />
     <Compile Include="Queries\GetHierarchyClassesQueryHandler.cs" />
+    <Compile Include="Queries\GetItemCountOnAttributeQueryHandler.cs" />
     <Compile Include="Queries\GetItemHierarchyClassHistoryParameters.cs" />
     <Compile Include="Queries\GetItemInforHistoryParameters.cs" />
     <Compile Include="Queries\GetItemHistoryParameters.cs" />

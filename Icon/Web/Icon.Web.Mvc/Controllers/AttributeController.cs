@@ -40,6 +40,7 @@ namespace Icon.Web.Mvc.Controllers
         private IAttributesHelper attributesHelper;
         private IExcelExporterService exporterService;
         private IDonutCacheManager cacheManager;
+        private IQueryHandler<EmptyAttributesParameters, IEnumerable<AttributeModel>> getItemCountOnAttributesQueryHandler;
 
         public AttributeController(
             ILogger logger,
@@ -54,7 +55,8 @@ namespace Icon.Web.Mvc.Controllers
             IQueryHandler<GetPickListByAttributeParameters, List<PickListModel>> getPickListByAttributeParameters,
             IAttributesHelper attributesHelper,
             IExcelExporterService exporterService,
-            IDonutCacheManager cacheManager)
+            IDonutCacheManager cacheManager,
+            IQueryHandler<EmptyAttributesParameters, IEnumerable<AttributeModel>> getItemCountOnAttributesQueryHandler)
         {
             this.logger = logger;
             this.settings = settings;
@@ -69,6 +71,7 @@ namespace Icon.Web.Mvc.Controllers
             this.attributesHelper = attributesHelper;
             this.exporterService = exporterService;
             this.cacheManager = cacheManager;
+            this.getItemCountOnAttributesQueryHandler = getItemCountOnAttributesQueryHandler;
         }
 
         // GET: Attribute
@@ -80,7 +83,7 @@ namespace Icon.Web.Mvc.Controllers
         [GridDataSourceAction]
         public ActionResult GridDataSource()
         {
-            var model = this.getAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>());
+            var model = this.getItemCountOnAttributesQueryHandler.Search(new EmptyAttributesParameters());
             return View(model.ToViewModels().AsQueryable());
         }
 
@@ -431,7 +434,7 @@ namespace Icon.Web.Mvc.Controllers
 
         public void Export()
         {
-            List<AttributeViewModel> attributes = getAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>())
+            List<AttributeViewModel> attributes = getItemCountOnAttributesQueryHandler.Search(new EmptyAttributesParameters())
                 .Select(a => new AttributeViewModel(a))
                 .ToList();
 

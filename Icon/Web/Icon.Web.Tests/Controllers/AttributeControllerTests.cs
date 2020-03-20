@@ -38,6 +38,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IAttributesHelper> mockAttributesHelper;
         private Mock<IExcelExporterService> mockExcelExporterService;
         private Mock<IDonutCacheManager> mockCacheManager;
+        private Mock<IQueryHandler<EmptyAttributesParameters, IEnumerable<AttributeModel>>> mockGetItemCountOnAttributesQueryHandler;
 
         [TestInitialize]
         public void Initialize()
@@ -57,6 +58,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockAttributesHelper = new Mock<IAttributesHelper>();
             mockExcelExporterService = new Mock<IExcelExporterService>();
             mockCacheManager = new Mock<IDonutCacheManager>();
+            mockGetItemCountOnAttributesQueryHandler = new Mock<IQueryHandler<EmptyAttributesParameters, IEnumerable<AttributeModel>>>();
             this.controller = new AttributeController(
                 mockLogger.Object,
                 settings,
@@ -70,7 +72,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockgetPickListByAttributeParameters.Object,
                 mockAttributesHelper.Object,
                 mockExcelExporterService.Object,
-                mockCacheManager.Object);
+                mockCacheManager.Object,
+                mockGetItemCountOnAttributesQueryHandler.Object);
 
             this.userName = "Test User";
             this.mockIdentity.SetupGet(i => i.Name).Returns(userName);

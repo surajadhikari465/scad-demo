@@ -25,7 +25,9 @@ namespace Icon.Web.Tests.Integration.Queries
         private int pickListSecondId;
         private int attributesWebConfigurationId;
         private int characterSetId;
-        private int attributeCharacterSetId;        
+        private int attributeCharacterSetId;
+        private GetItemCountOnAttributeQueryHandler itemCountQry;
+        private EmptyAttributesParameters param;
 
         [TestInitialize]
         public void InitializeData()
@@ -34,6 +36,8 @@ namespace Icon.Web.Tests.Integration.Queries
             connection = SqlConnectionBuilder.CreateIconConnection();
             query = new GetAttributesQueryHandler(connection);
             parameters = new EmptyQueryParameters<IEnumerable<AttributeModel>>();
+            itemCountQry = new GetItemCountOnAttributeQueryHandler(connection);
+            param = new EmptyAttributesParameters();
             StageData();
         }
 
@@ -112,9 +116,9 @@ namespace Icon.Web.Tests.Integration.Queries
         public void GetAttributesQuery_AttributeExists_ReturnsAttributesWithItemCount()
         {
             //When
-            var result = query.Search(parameters).Where(a => a.AttributeName.Equals("ABF")).FirstOrDefault().ItemCount;            
+            var result = itemCountQry.Search(param).Where(a => a.AttributeName.Equals("ABF")).FirstOrDefault().ItemCount;            
             
-            var itemCount = connection.ExecuteScalar("SELECT COUNT(*) FROM Item i CROSS APPLY OPENJSON(ItemAttributesJson) j WHERE j.[key] = 'ABF' GROUP BY j.[Key]; ");
+            var itemCount = connection.ExecuteScalar("SELECT COUNT(*) FROM Item i with (nolock) CROSS APPLY OPENJSON(ItemAttributesJson) j WHERE j.[key] = 'ABF' GROUP BY j.[Key]; ");
 
             //Then         
             Assert.IsNotNull(result);
