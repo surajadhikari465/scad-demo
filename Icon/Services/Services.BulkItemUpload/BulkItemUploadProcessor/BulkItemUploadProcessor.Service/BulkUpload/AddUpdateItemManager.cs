@@ -63,7 +63,12 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
                 if(command.AddedItems != null)
                 {
                     addedItems.AddRange(command.AddedItems);
-                }               
+                }
+
+                if(command.InvalidItems != null)
+                {
+                    invalidItems.AddRange(command.InvalidItems);
+                }
             }
 
             catch (Exception ex)

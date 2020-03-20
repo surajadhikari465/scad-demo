@@ -58,6 +58,7 @@ namespace BulkItemUploadProcessor.DataAccess.Commands
                         itemsCopy.Remove(item);
                         invalidItems.Add(new ErrorItem<AddItemModel>(item, "No available Scan Codes for given Barcode Type range."));
                     }
+                    data.InvalidItems = invalidItems;
                 }
             }
 
