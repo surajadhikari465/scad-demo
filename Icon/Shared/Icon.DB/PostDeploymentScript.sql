@@ -32,5 +32,6 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\UpdateDeprecatedSubTeams.sql --2020-01-24 30580
 :r .\Scripts\PopulateData\DeleteInvalidEventQueueRecords.sql -- 2020-02-25 32410
 :r .\Scripts\PopulateData\32769_UpdateSubTeamName.sql -- 2020-03-12 32769
+:r .\Scripts\PopulateData\RetentionPolicyContactUpload.sql --2020-03-20 PBI: 32330
 -- Always run this security script and make it the last entry in this script.
 :r .\Security\Icon.Security.sql

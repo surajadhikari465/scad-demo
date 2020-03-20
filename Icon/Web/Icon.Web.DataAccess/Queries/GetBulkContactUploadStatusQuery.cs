@@ -1,37 +1,34 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Icon.Common.DataAccess;
-using Icon.Framework;
 using Icon.Web.DataAccess.Models;
+using Dapper;
+using System.Data;
 
 namespace Icon.Web.DataAccess.Queries
 {
 	public class GetBulkContactUploadStatusQuery : IQueryHandler<GetBulkContactUploadStatusParameters, List<BulkContactUploadStatusModel>>
 	{
-		private readonly IconContext context;
+		private readonly IDbConnection connection;
 
 
-		public GetBulkContactUploadStatusQuery(IconContext context)
+		public GetBulkContactUploadStatusQuery(IDbConnection connection)
 		{
-			this.context = context;
+			this.connection = connection;
 		}
 
 		public List<BulkContactUploadStatusModel> Search(GetBulkContactUploadStatusParameters parameters)
 		{
 			var query = $@"
-                SELECT TOP {parameters.RowCount} 
-                    b.BulkContactUploadId,
-	                b.FileName,
-	                b.FileUploadTime,
-	                b.UploadedBy,
-	                s.STATUS,
-                    b.Message
-                FROM BulkContactUpload b
-                INNER JOIN BulkUploadStatus s ON b.StatusId = s.Id
-                ORDER BY BulkContactUploadId DESC";
+				SELECT TOP {parameters.RowCount} 
+					BulkContactUploadId,
+					FileName,
+					FileUploadTime,
+					UploadedBy
+				FROM BulkContactUpload
+				ORDER BY BulkContactUploadId DESC";
 
-			var data = this.context.Database.SqlQuery<BulkContactUploadStatusModel>(query).ToList();
-			return data;
+			return this.connection.Query<BulkContactUploadStatusModel>(query).ToList();
 		}
 	}
 }

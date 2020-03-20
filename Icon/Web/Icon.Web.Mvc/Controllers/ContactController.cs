@@ -40,7 +40,6 @@ namespace Icon.Web.Mvc.Controllers
         private ICommandHandler<DeleteContactCommand> handlerDeleteContact;
         private ICommandHandler<DeleteContactTypeCommand> handlerDeleteContactType;
         private IExcelExporterService excelExporterService;
-        private IQueryHandler<GetBulkContactUploadErrorsPrameters, List<BulkUploadErrorModel>> getBulkUploadErrorsQueryHandler;
         private IQueryHandler<GetBulkContactUploadStatusParameters, List<BulkContactUploadStatusModel>> getBulkUploadStatusQueryHandler;
         private IQueryHandler<GetBulkContactUploadByIdParameters, BulkItemUploadStatusModel> getBulkUploadByIdQueryHandler;
         private ICommandHandler<BulkContactUploadCommand> bulkUploadCommandHandler;
@@ -76,7 +75,6 @@ namespace Icon.Web.Mvc.Controllers
             IExcelExporterService excelExporterService,
             IQueryHandler<GetBulkContactUploadByIdParameters, BulkItemUploadStatusModel> getBulkUploadByIdQueryHandler,
             IQueryHandler<GetBulkContactUploadStatusParameters, List<BulkContactUploadStatusModel>> getBulkUploadStatusQueryHandler,
-            IQueryHandler<GetBulkContactUploadErrorsPrameters, List<BulkUploadErrorModel>> getBulkUploadErrorsQueryHandler,
             ICommandHandler<BulkContactUploadCommand> bulkUploadCommandHandler)
         {
             this.logger = logger;
@@ -91,7 +89,6 @@ namespace Icon.Web.Mvc.Controllers
             this.getHierarchyClassQuery = getHierarchyClassQuery;
             this.excelExporterService = excelExporterService;
             this.getBulkUploadStatusQueryHandler = getBulkUploadStatusQueryHandler;
-            this.getBulkUploadErrorsQueryHandler = getBulkUploadErrorsQueryHandler;
             this.getBulkUploadByIdQueryHandler = getBulkUploadByIdQueryHandler;
             this.bulkUploadCommandHandler = bulkUploadCommandHandler;
             this.getContactEligibleHCQuery = getContactEligibleHCQuery;
@@ -284,14 +281,6 @@ namespace Icon.Web.Mvc.Controllers
             var model = getBulkUploadByIdQueryHandler.Search(new GetBulkContactUploadByIdParameters { BulkContactUploadId = Id });
 
             return View(model);
-        }
-
-        [HttpGet]
-        public ActionResult GetBulkUploadErrors(int Id)
-        {
-            var parameters = new GetBulkContactUploadErrorsPrameters() { BulkContactUploadId = Id };
-            var data = this.getBulkUploadErrorsQueryHandler.Search(parameters);
-            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

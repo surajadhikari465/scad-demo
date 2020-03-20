@@ -7,16 +7,8 @@
 			columns: [
                 { headerText: "ID", key: "BulkContactUploadId", dataType: "number", width: "3%", hidden: true },
 				{ headerText: "File Name", key: "FileName", dataType: "string", width: "45%" },
-				{ headerText: "UploadedBy", key: "UploadedBy", dataType: "string", width: "25%" },
-				{
-					headerText: "Status",
-					key: "Status",
-					dataType: "string",
-					width: "10%",
-					formatter: statusFormatter
-				},
+				{ headerText: "Uploade dBy", key: "UploadedBy", dataType: "string", width: "25%" },
 				{ headerText: "Uploaded At", key: "FileUploadTime", dataType: "date", format: "MM-dd-yyyy hh:mm:ss tt", width: "20%" },
-				//{ headerText: "Message", key: "Message", dataType: "string", width: "300px" },
 			],
 			features: [{
 				name: "Resizing",
@@ -59,30 +51,6 @@
 			return val;
 	}
 
-	//function getBulkUploadStatusData(rowCount) {
-	//	$.ajax({
-	//		dataType: "json",
-	//		url: "/Contact/BulkUploadStatus?rowCount=" + rowCount,
-	//		data: { rows: rowCount }
-	//	}).done(function (data) {
-	//		var grid = $("#bulkUploadStatusGrid");
-	//		//grid.Rows.Refresh(data);
-	//		grid.igGrid("dataSourceObject", data).igGrid("dataBind");
-	//	});
-	//}
-
-	//function refreshIntervalChanged() {
-	//	let timeInSeconds = $("#refreshInterval").val();
-	//	let pageSize = $("#bulkUploadStatusGrid").igGridPaging("option", "pageSize");
-	//	let rowCount = $("#gridRowCount").val();
-	//	setInterval(function () { refreshGrid(rowCount); }, timeInSeconds * 1000);
-	//}
-
-	//function getRecords(value) {
-	//	let numberOfRecordsToBeFetched = $("#gridRowCount").val();
-	//	refreshGrid(numberOfRecordsToBeFetched);
-	//}
-
     function refreshGrid(rowCount) {
 		getBulkUploadStatusData(rowCount);
 	}
@@ -94,9 +62,6 @@
 
     initialize();
 
-    //$('#refreshInterval').change(function () {
-    //    refreshIntervalChanged();
-    //});
 
     $('#inputGroupFile').change(
         function (e) {

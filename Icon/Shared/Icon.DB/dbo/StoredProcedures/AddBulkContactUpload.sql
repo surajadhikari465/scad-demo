@@ -1,39 +1,21 @@
 ﻿CREATE PROCEDURE [dbo].[AddBulkContactUpload] (
-	@fileName NVARCHAR(150)
+	@fileName NVARCHAR(1000)
 	,@fileContent VARBINARY(Max)
-	,@uploadedBy NVARCHAR(100)
+	,@uploadedBy NVARCHAR(1000)
 	,@totalRecords INT
 	)
 AS
 BEGIN
-	DECLARE @maxUploadId INT
-
-	SET NOCOUNT ON
+	SET NOCOUNT ON;
 
 	INSERT INTO dbo.BulkContactUpload (
 		FileName
 		,UploadedBy
 		,TotalRows
-		,StatusId
-		)
+		,FileContent)
 	VALUES (
 		@fileName
 		,@uploadedBy
 		,@totalRecords
-		,(SELECT ID FROM dbo.BulkUploadStatus WHERE Status = 'Complete')
-		)
-
-	SET @maxUploadId = (
-			SELECT max([BulkContactUploadId])
-			FROM dbo.BulkContactUpload
-			)
-
-	INSERT INTO dbo.BulkContactUploadData (
-		FileContent
-		,BulkContactUploadId
-		)
-	VALUES (
-		@fileContent
-		,@maxUploadId
-		)
+		,@fileContent)
 END
