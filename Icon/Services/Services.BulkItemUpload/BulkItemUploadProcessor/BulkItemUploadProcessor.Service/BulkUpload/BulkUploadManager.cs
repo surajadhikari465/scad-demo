@@ -196,9 +196,11 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             int totalRows = 0;
 
             SetStatus(Enums.FileStatusEnum.Processing, "Processing Validated Data", 60);
+
             if (validationResponse.ValidRows.Any())
             {
                 validRows = validationResponse.ValidRows.Count;
+                totalRows = (validationResponse.InvalidRows.Any() ? validationResponse.InvalidRows.Count() : failedRowsCount) + validRows;
                 if (activeUpload.FileModeType == Enums.FileModeTypeEnum.CreateNew)
                 {
                     ProcessCreateNewUpload();
@@ -208,14 +210,18 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
                     ProcessUpdateUpload();
                 }
             }
-
+            else
+            {
+                totalRows = (validationResponse.InvalidRows.Any() ? validationResponse.InvalidRows.Count() : failedRowsCount);
+            }
+          
             if (validationResponse.InvalidRows.Any())
             {
                 failedRowsCount = validationResponse.InvalidRows.Select(x => x.RowId).Distinct().Count();
+                validRows = totalRows - failedRowsCount;
                 ProcessErrors(activeUpload.BulkItemUploadId, validationResponse.InvalidRows);
             }
-
-            totalRows = failedRowsCount + validRows;
+         
             SetStatus(validationResponse.InvalidRows.Any() ? Enums.FileStatusEnum.Error : Enums.FileStatusEnum.Complete, $"{validRows} of {totalRows} Rows Successful.", 100);
         }
 
