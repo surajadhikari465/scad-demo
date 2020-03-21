@@ -44,11 +44,10 @@
 	LastRunEndDateTimeUtc,
 	-- DatePart returns number of minutes off of UTC time. This is setup for Central time
 	CASE 
-		-- 6 hour difference when not in Daylight Savings
-		WHEN DATEPART(TZoffset, SYSDATETIMEOffSET()) = -420 THEN NextScheduledDateTimeUtc
 		-- 5 hour difference when in Daylight Savings
-		WHEN DATEPART(TZoffset, SYSDATETIMEOFFSET()) = -360 THEN DATEADD(hour, -1, NextScheduledDateTimeUtc)
-	END AS [NextSchedluedDateTimeUtc],
+		WHEN DATEPART(TZoffset, SYSDATETIMEOFFSET()) = -300 THEN DATEADD(hour, -1, NextScheduledDateTimeUtc)
+		ELSE NextScheduledDateTimeUtc
+	END AS NextScheduledDateTimeUtc,
 	IntervalInSeconds,
 	Enabled,
 	Status,

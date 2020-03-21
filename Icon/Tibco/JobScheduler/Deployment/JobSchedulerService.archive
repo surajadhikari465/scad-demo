@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Git\SCAD\Icon\Tibco\DeploymentFiles\JobSchedulerService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\dev\SCAD\Icon\Tibco\DeploymentFiles\JobSchedulerService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>
