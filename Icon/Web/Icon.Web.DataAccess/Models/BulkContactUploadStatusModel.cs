@@ -8,5 +8,6 @@ namespace Icon.Web.DataAccess.Models
 		public string FileName { get; set; }
 		public DateTime FileUploadTime { get; set; }
 		public string UploadedBy { get; set; }
+		public byte[] FileContent { get; set; }
 	}
 }

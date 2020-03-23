@@ -1,67 +1,115 @@
-﻿$(function () {
-	function setupGrid() {
-        $("#bulkUploadStatusGrid").igGrid({
-            primaryKey: "BulkContactUploadId",
-            height: "520px",
-            rowHeight: "5px",
-			columns: [
-                { headerText: "ID", key: "BulkContactUploadId", dataType: "number", width: "3%", hidden: true },
-				{ headerText: "File Name", key: "FileName", dataType: "string", width: "45%" },
-				{ headerText: "Uploade dBy", key: "UploadedBy", dataType: "string", width: "25%" },
-				{ headerText: "Uploaded At", key: "FileUploadTime", dataType: "date", format: "MM-dd-yyyy hh:mm:ss tt", width: "20%" },
-			],
-			features: [{
-				name: "Resizing",
-				deferredResizing: true
-			},
-			{
-				name: "Filtering",
-				columnSettings: [
-					{ columnKey: "FileUploadTime", allowFiltering: false },
-					{ columnKey: "FileModeType", allowFiltering: false }
-				]
-			},
-			{
-				name: "Sorting",
-				type: "local",
-				persist: true
-			},
-			{
-				name: "Paging",
-				type: "local",
-                pageSize: 10,
-                hidden: true
-			}
-			]
-		});
-	}
+﻿var selectedItem = null;
 
-	//function fileTypeFormatter(val) {
-	//	if (val === 'false')
-	//		return '<img src="/Content/Images/plus-square.svg" style="width: 16px; height: 16px;" />';
-	//	else
-	//		return '<img src="/Content/Images/edit.svg" style="width: 16px; height: 16px;" />';
-	//}
+$(function () {
+    var tbl = $('#tblUpload').DataTable({
+        rowId: function (val) { return 'id' + val.BulkContactUploadId },
+        paging: true,
+        ordering: true,
+        order: [[0, "desc"]],
+        info: true,
+        sDom: 'RSlftip',
+        processing: true,
+        responsive: true,
+        orderMulti: false,
+        keys: false,    //Key navigation
+        select: false,  //Row selection
+        scrollY: "50vh",
+        emptyTable: "No upload data available...",
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        infoEmpty: "",
+        loadingRecords: "Loading upload files data... Please wait...",
+        processing: "Processing data...",
 
-	function statusFormatter(val, record) {
+        language: {
+            info: "Total Files: _TOTAL_",
+            search: "Search Files ",
+            lengthMenu: "Show &nbsp _MENU_ &nbsp files",
+        },
 
-		if (val === 'Error')
-			return "<a href='/Contact/BulkUploaderrors?Id=" + record.BulkContactUploadId + "'>Error</a>";
-		else
-			return val;
-	}
+        ajax: {
+            url: "/Contact/BulkUploadStatus?rowCount=10000",
+            type: "POST",
+            datatype: "json"
+        },
 
-    function refreshGrid(rowCount) {
-		getBulkUploadStatusData(rowCount);
-	}
+        columnDefs: [
+            {
+                targets: [0],
+                visible: false,
+                orderable: true,
+                searchable: false
+            },
+            {
+                targets: [3],
+                orderable: true,
+                searchable: false,
+            },
+            {
+                targets: [4],
+                orderable: false,
+                searchable: false,
+                width: 5
+            },
+        ],
 
-	function initialize() {
-		setupGrid();
-		refreshGrid(1000);
-	}
+        columns: [
+            { data: "BulkContactUploadId", name: "BulkContactUploadId", autoWidth: false },
+            { data: "FileName", name: "File Name", autoWidth: true },
+            { data: "UploadedBy", name: "Uploaded By", autoWidth: true },
+            { data: "FileUploadTime", name: "Uploaded At", autoWidth: true },
+            { class: "action-control text-info", orderable: false, data: null, defaultContent: '<p class="action-control fa fa-bars text-secondary m-1"/>' },
+        ]
+    });
 
-    initialize();
+    $('#tblUpload tbody').on('click', 'td.action-control', function (e) {
+        selectedItem = null;
+        let tr = $(this).closest('tr');
+        let row = tbl.row(tr);
+        selectedItem = row.data();
 
+        var top = e.pageY - 10;
+        var left = e.pageX - 40;
+
+        $("#context-menu").css({
+            display: "block",
+            top: top,
+            left: left,
+            width: "30px"
+            /*}).on("click a", function () {
+                $("#context-menu").hide();*/
+        });
+
+        e.stopPropagation(); //To prevent menu close
+    });
+
+    $("div.dropdown-menu a").click(function () {
+        $("#context-menu").hide();
+        let key = $(this).attr("id");
+
+        if (window.selectedItem != null && window.selectedItem != undefined) {
+            switch (key) {
+                case "mnuDownload":
+                    location.href = '/Contact/DownloadFile?id=' + window.selectedItem.BulkContactUploadId;
+                    break;
+                case 'mnuRename':
+                    alert('mnuRename is not implemented');
+                    //renameItem(window.selectedItem.BulkContactUploadId);
+                    break;
+                case 'mnuDelete':
+                    alert('mnuDelete is not implemented');
+                    //renameItem(window.selectedItem.BulkContactUploadId);
+                    break;
+                default:
+                    break;
+            }
+        }
+    })
+
+    $(document).on("click", function (event) {
+        if ($('#context-menu').is(":visible")) {
+            $('#context-menu').slideUp("fast");
+        }
+    });
 
     $('#inputGroupFile').change(
         function (e) {
@@ -84,7 +132,7 @@ function getBulkUploadStatusData(rowCount) {
         url: "/Contact/BulkUploadStatus?rowCount=" + rowCount,
         data: { rows: rowCount }
     }).done(function (data) {
-        var grid = $("#bulkUploadStatusGrid");
+        var grid = $("#tblUpload");
         grid.igGrid("dataSourceObject", data).igGrid("dataBind");
     });
 }
@@ -250,8 +298,9 @@ function uploadFile() {
                     text: 'Cancel',
                     click: function () {
                         if (isRefresh) {
-                            //window.location.reload();   //Reload page
-                            getBulkUploadStatusData(1000); //Update grid
+                            //window.location.reload();   //If full Reload page is required
+                            let tbl = $('#tblUpload').DataTable();
+                            tbl.ajax.reload(null, false);
                         }
                         $(this).dialog("close");
                     },

@@ -1,39 +1,30 @@
-﻿using System.Data.SqlClient;
-using System.Linq;
+﻿using System.Linq;
 using Icon.Common.DataAccess;
-using Icon.Framework;
 using Icon.Web.DataAccess.Models;
+using Dapper;
+using System.Data;
 
 namespace Icon.Web.DataAccess.Queries
 {
-	public class GetBulkContactUploadByIdQueryHandler : IQueryHandler<GetBulkContactUploadByIdParameters, BulkItemUploadStatusModel>
+	public class GetBulkContactUploadByIdQueryHandler : IQueryHandler<GetBulkContactUploadByIdParameters, BulkContactUploadStatusModel>
 	{
-		private readonly IconContext context;
+		private readonly IDbConnection connection;
 
-
-		public GetBulkContactUploadByIdQueryHandler(IconContext context)
+		public GetBulkContactUploadByIdQueryHandler(IDbConnection connection)
 		{
-			this.context = context;
+			this.connection = connection;
 		}
 
-		public BulkItemUploadStatusModel Search(GetBulkContactUploadByIdParameters parameters)
+		public BulkContactUploadStatusModel Search(GetBulkContactUploadByIdParameters parameters)
 		{
-			var query = @"       
-                SELECT b.BulkContactUploadId,
-	                b.FileName,
-	                b.FileUploadTime,
-	                b.UploadedBy,
-	                s.STATUS,
-                    b.Message,
-                    CASE WHEN IsNull(PercentageProcessed, 0) > 100 THEN 100 ELSE IsNull(PercentageProcessed, 0) END AS PercentageProcessed
-                FROM BulkContactUpload b
-                INNER JOIN BulkUploadStatus s ON b.StatusId = s.Id
-                WHERE b.BulkContactUploadId = @Id";
+			var query = $@"SELECT
+					BulkContactUploadId,
+					FileName,
+					FileContent
+				FROM BulkContactUpload
+				WHERE BulkContactUploadId = {parameters.BulkContactUploadId}";
 
-			var idParam = new SqlParameter("Id", parameters.BulkContactUploadId);
-
-			var data = this.context.Database.SqlQuery<BulkItemUploadStatusModel>(query, idParam).ToList();
-			return data.FirstOrDefault();
+			return this.connection.Query<BulkContactUploadStatusModel>(query).FirstOrDefault();
 		}
 	}
 }

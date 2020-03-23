@@ -1,13 +1,9 @@
-﻿@*@model Icon.Web.Mvc.Models.BulkUploadViewModel*@
-@using Icon.Web.Mvc.Utility
-@using Infragistics.Web.Mvc
+﻿@using Icon.Web.Mvc.Utility
 
 @{
     ViewBag.Title = "Bulk Upload";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-@*@{Html.RenderPartial("_HeaderPartial", "Bulk Upload");}*@
 
 <div id="divLink">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-right: 10px">Export</a>
@@ -31,7 +27,7 @@
             <h2>Contact Management</h2>
             <p class="lead">Bulk Upload</p>
         </div>
-
+    
         <div class="input-group mb-1">
             <div class="custom-file">
                 <input accept=".xlsx" type="file" class="custom-file-input" id="inputGroupFile">
@@ -41,31 +37,27 @@
                 <span class="input-group-text btn-primary" id="uploadFile" onclick="uploadFile()">Upload</span>
             </div>
         </div>
-
+    
         <p class="text-muted fine-print">*Only the Excel .xlsx file format is currently supported.</p>
-
+    
         <div>
             <label class="text-muted">File upload history</label>
-            <table id="bulkUploadStatusGrid" style="height:25px;" />
+            <table id="tblUpload" class="display stripe compact" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>BulkContactUploadId</th>
+                        <th>File Name</th>
+                        <th>Uploaded By</th>
+                        <th>Uploaded At</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
         </div>
-        
+        <br />
     </div>
 }
 
-@*<div>
-    <div>
-        @Html.Label("Refresh Interval (in seconds):")
-        @Html.DropDownList("refreshInterval", new List<SelectListItem>
-            ()
-            {
-            new SelectListItem() { Value = "10", Text = "10" },
-            new SelectListItem() { Value = "30", Text = "30", Selected = true},
-            new SelectListItem() { Value = "60", Text = "60" },
-            new SelectListItem() { Value = "300", Text = "300" }
-            }, new { @class = "form-control" })
-    </div>
-    <table id="bulkUploadStatusGrid" />
-</div>*@
 
 <div id="dlgConfirm" title="User Confirmation Required" style="display:none;">
     <div style="max-height:500px; box-sizing:border-box;">
@@ -84,13 +76,16 @@
     </div>
 </div>
 
+<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu">
+    <a class="dropdown-item fa fa-download" href="#" id="mnuDownload">&nbsp;&nbsp;&nbsp;Download</a>
+    @*<div class="dropdown-divider"></div>
+    <a class="dropdown-item fa fa-edit" href="#" id="mnuRename">&nbsp;&nbsp;&nbsp;Rename</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item text-danger fa fa-eraser" href="#" id="mnuDelete">&nbsp;&nbsp;&nbsp;Delete</a>*@
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item fa fa-close text-secondary" href="#" id="mnuCancel">&nbsp;&nbsp;&nbsp;Cancel</a>
+</div>
 
-@if (ViewData["BulkUploadType"].ToString() == "Item")
-{
-    @Scripts.Render("~/Scripts/Item/bulkupload.js")
-}
 
-@if (ViewData["BulkUploadType"].ToString() == "Contact")
-{
-    @Scripts.Render("~/Scripts/Contact/bulkupload.js")
-}
+@Scripts.Render("~/Scripts/Contact/bulkupload.js")
+<link rel="stylesheet" type="text/css" href="~/Content/datatables.css" />

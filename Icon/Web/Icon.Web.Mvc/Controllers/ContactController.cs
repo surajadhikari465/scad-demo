@@ -41,7 +41,7 @@ namespace Icon.Web.Mvc.Controllers
         private ICommandHandler<DeleteContactTypeCommand> handlerDeleteContactType;
         private IExcelExporterService excelExporterService;
         private IQueryHandler<GetBulkContactUploadStatusParameters, List<BulkContactUploadStatusModel>> getBulkUploadStatusQueryHandler;
-        private IQueryHandler<GetBulkContactUploadByIdParameters, BulkItemUploadStatusModel> getBulkUploadByIdQueryHandler;
+        private IQueryHandler<GetBulkContactUploadByIdParameters, BulkContactUploadStatusModel> getBulkUploadByIdQueryHandler;
         private ICommandHandler<BulkContactUploadCommand> bulkUploadCommandHandler;
         private Regex emailRegex = new Regex(@"^([\w-]+\.)*?[\w-]+@[\w-]+\.([\w-]+\.)*?[\w]+$", RegexOptions.Compiled);
 
@@ -73,7 +73,7 @@ namespace Icon.Web.Mvc.Controllers
             IconWebAppSettings settings,
             IDonutCacheManager cacheManager,
             IExcelExporterService excelExporterService,
-            IQueryHandler<GetBulkContactUploadByIdParameters, BulkItemUploadStatusModel> getBulkUploadByIdQueryHandler,
+            IQueryHandler<GetBulkContactUploadByIdParameters, BulkContactUploadStatusModel> getBulkUploadByIdQueryHandler,
             IQueryHandler<GetBulkContactUploadStatusParameters, List<BulkContactUploadStatusModel>> getBulkUploadStatusQueryHandler,
             ICommandHandler<BulkContactUploadCommand> bulkUploadCommandHandler)
         {
@@ -259,11 +259,12 @@ namespace Icon.Web.Mvc.Controllers
             }
         }
 
-        [HttpGet]
         public ActionResult BulkUploadStatus(int rowCount)
         {
-            var data = this.getBulkUploadStatusQueryHandler.Search(new GetBulkContactUploadStatusParameters() { RowCount = rowCount });
-            return Json(data, JsonRequestBehavior.AllowGet);
+            var data = this.getBulkUploadStatusQueryHandler.Search(new GetBulkContactUploadStatusParameters() { RowCount = rowCount })
+                .Select(x => new{ x.BulkContactUploadId, x.FileName, x.UploadedBy, FileUploadTime = x.FileUploadTime.ToString("yyyy-MM-dd hh:mm:ss tt") })
+                .ToArray();
+            return Json(new { data });
         }
 
         [HttpGet]
@@ -276,11 +277,24 @@ namespace Icon.Web.Mvc.Controllers
         }
 
         [HttpGet]
-        public ActionResult BulkUploadErrors(int Id)
+        public ActionResult DownloadFile(int id)
         {
-            var model = getBulkUploadByIdQueryHandler.Search(new GetBulkContactUploadByIdParameters { BulkContactUploadId = Id });
-
-            return View(model);
+            try
+            {
+                var model = getBulkUploadByIdQueryHandler.Search(new GetBulkContactUploadByIdParameters { BulkContactUploadId = id });
+                if(model == null || model.FileContent == null)
+                {
+                    throw new Exception(String.Format("Requested file not found on the server{0}", model == null ? String.Empty : $": {model.FileName}"));    
+                }
+                
+                SendForDownload(new MemoryStream(model.FileContent), model.FileName);
+                return Json("OK", JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
+            {
+                TempData["Message"] = ex.Message;
+                return RedirectToAction("FYI", "Contact");   
+            }
         }
 
         [HttpGet]

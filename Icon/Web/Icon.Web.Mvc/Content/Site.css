@@ -453,7 +453,7 @@ td {
 }
 
 .compact-row tr td {
-    height: 20px
+    height: 20px;
 }
 
 table.dataTable.display tbody tr.child {

@@ -154,7 +154,7 @@ $(document).ready(function () {
                     }
                     break;
                 default:
-                    btreak;
+                    break;
             }
         }
     })
