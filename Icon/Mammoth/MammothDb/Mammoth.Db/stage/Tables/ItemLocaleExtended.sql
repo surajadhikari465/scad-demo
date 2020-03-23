@@ -19,6 +19,12 @@ CREATE CLUSTERED INDEX [IX_ItemLocaleExtended_Clustered] ON [stage].[ItemLocaleE
 )
 GO
 
-create nonclustered index [IX_ItemLocaleExtended_AttributeID] on [stage].[ItemLocaleExtended]
-	(BusinessUnitId, ScanCode, AttributeId) include (AttributeValue)
+CREATE NONCLUSTERED INDEX [IX_ItemLocaleExtended_AttributeID] ON [stage].[ItemLocaleExtended]
+(
+	[TransactionId] ASC,
+	[BusinessUnitId] ASC,
+	[Region] ASC,
+	[AttributeId] ASC
+)
+INCLUDE([AttributeValue],[ScanCode])
 GO

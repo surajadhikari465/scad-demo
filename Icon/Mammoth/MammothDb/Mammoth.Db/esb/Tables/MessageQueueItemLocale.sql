@@ -54,3 +54,9 @@
     CONSTRAINT [FK_MessageQueueItemLocale_MessageStatusId] FOREIGN KEY ([MessageStatusId]) REFERENCES [esb].[MessageStatus] ([MessageStatusId]),
     CONSTRAINT [FK_MessageQueueItemLocale_MessageTypeId] FOREIGN KEY ([MessageTypeId]) REFERENCES [esb].[MessageType] ([MessageTypeId])
 );
+GO
+
+CREATE NONCLUSTERED INDEX [IX_MessageQueueItemLocale_InProcessBy] ON [esb].[MessageQueueItemLocale]
+(
+    InProcessBy
+)

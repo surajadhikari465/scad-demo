@@ -24,7 +24,7 @@ GO
 
 CREATE UNIQUE NONCLUSTERED INDEX IX_Items_ScanCode
 	ON dbo.Items (ScanCode ASC)
-	INCLUDE (ItemID, Desc_Product, PackageUnit, RetailSize, RetailUOM, FoodStampEligible, BrandHCID, PSNumber)
+	INCLUDE (ItemID, Desc_Product, PackageUnit, RetailSize, RetailUOM, FoodStampEligible, BrandHCID, PSNumber, ItemTypeId)
 
 GO
 
