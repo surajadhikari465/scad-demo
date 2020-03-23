@@ -1234,18 +1234,25 @@ Namespace WholeFoods.IRMA.Replenishment.Common.Writers
             Dim dataContent As String = Nothing
             ' the data for the tax flag is determined by the TaxFlagBO
             ' the text in the DataElement column defines which tax flag should be displayed
+
             Dim currentTaxFlagKey As String = currentColumn.DataElement
 
-            ' read the tax flag values for the current item and store from the StoreUpdatesBO
-            Dim currentItemKey As Integer = CType(_currentChange.GetValue(_currentChange.GetOrdinal("Item_Key")), Integer)
-            Dim currentTaxFlag As TaxFlagBO = _currentStoreUpdate.GetItemTaxFlagData(currentItemKey, currentTaxFlagKey)
+            Try
+                ' read the tax flag values for the current item and store from the StoreUpdatesBO
+                Dim currentItemKey As Integer = CType(_currentChange.GetValue(_currentChange.GetOrdinal("Item_Key")), Integer)
+                Dim currentTaxFlag As TaxFlagBO = _currentStoreUpdate.GetItemTaxFlagData(currentItemKey, currentTaxFlagKey)
 
-            ' write the true or false value for the tax flag
-            If currentTaxFlag.TaxFlagValue Then
-                dataContent = TaxFlagTrueChar
-            Else
-                dataContent = TaxFlagFalseChar
-            End If
+                ' write the true or false value for the tax flag
+                If currentTaxFlag.TaxFlagValue Then
+                    dataContent = TaxFlagTrueChar
+                Else
+                    dataContent = TaxFlagFalseChar
+                End If
+            Catch ex As Exception
+                logger.Info("BuildTaxDataString, currentItemKey = " + _currentChange.GetValue(_currentChange.GetOrdinal("Item_Key")).ToString())
+                logger.Info("BuildTaxDataString, currentTaxFlagKey = " + currentTaxFlagKey)
+                Throw
+            End Try
 
             logger.Debug("BuildTaxDataString exit: dataContent=" + dataContent)
             Return dataContent

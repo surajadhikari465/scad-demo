@@ -152,7 +152,7 @@
       <HintPath>$(SolutionDir)\packages\Opsgenie.Alert.2019.9.17.1\lib\net40\Opsgenie.Alert.dll</HintPath>
     </Reference>
     <Reference Include="OpsGenieLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\OpsGenieLib.2020.3.9.2\lib\net40\OpsGenieLib.dll</HintPath>
+      <HintPath>packages\OpsGenieLib.2020.3.9.2\lib\net40\OpsGenieLib.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>

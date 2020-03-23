@@ -289,7 +289,11 @@ Namespace WholeFoods.IRMA.Replenishment.POSPush.Controller
                         End If
 
                         ' get the writer instance for the store
-                        currentPosWriter = CType(currentStoreUpdate.FileWriter, POSWriter)
+                        If (currentStoreUpdate.FileWriter Is Nothing) Then
+                            logger.Error("WriteResultsToFile - currentStoreUpdate.FileWriter is null object")
+                        Else
+                            currentPosWriter = CType(currentStoreUpdate.FileWriter, POSWriter)
+                        End If
 
                         ' **** IRMA POS Push to ICON related changes - Begin
 
@@ -304,11 +308,11 @@ Namespace WholeFoods.IRMA.Replenishment.POSPush.Controller
 
                         Select Case chgType
                             Case ChangeType.ItemDataDeAuth,
-                                 ChangeType.ItemIdAdd,
-                                 ChangeType.ItemIdDelete,
-                                 ChangeType.ItemRefresh,
-                                 ChangeType.ItemDataChange,
-                                 ChangeType.ItemDataDelete
+                                     ChangeType.ItemIdAdd,
+                                     ChangeType.ItemIdDelete,
+                                     ChangeType.ItemRefresh,
+                                     ChangeType.ItemDataChange,
+                                     ChangeType.ItemDataDelete
                                 isR10ChangeType = True
                             Case Else
                                 isR10ChangeType = False
@@ -508,9 +512,9 @@ Namespace WholeFoods.IRMA.Replenishment.POSPush.Controller
 
                                 Select Case chgType
                                     Case ChangeType.ItemDataDeAuth,
-                                        ChangeType.ItemIdAdd,
-                                        ChangeType.ItemIdDelete,
-                                        ChangeType.ItemRefresh
+                                            ChangeType.ItemIdAdd,
+                                            ChangeType.ItemIdDelete,
+                                            ChangeType.ItemRefresh
 
                                         If results.IsDBNull(results.GetOrdinal("ForceTare")) Then
                                             scaleForcedTare = False
@@ -578,9 +582,9 @@ Namespace WholeFoods.IRMA.Replenishment.POSPush.Controller
 
                                 Select Case chgType
                                     Case ChangeType.ItemDataDeAuth,
-                                        ChangeType.ItemIdAdd,
-                                        ChangeType.ItemIdDelete,
-                                        ChangeType.ItemRefresh
+                                            ChangeType.ItemIdAdd,
+                                            ChangeType.ItemIdDelete,
+                                            ChangeType.ItemRefresh
 
                                         If results.IsDBNull(results.GetOrdinal("StartDate")) Then
                                             saleStartDate = Nothing
@@ -615,8 +619,6 @@ Namespace WholeFoods.IRMA.Replenishment.POSPush.Controller
 
                                 For counter = 0 To iConChangeTypeList.Rows.Count - 1
                                     iConPOSChangeType = iConChangeTypeList.Rows(counter).Item("IconChangeType").ToString
-
-
                                     ' If TPR & REG are combined, newRegPrice is used. In addition, any TPR info will be removed for the 
                                     ' RegularPriceChange type.
                                     If hasTprAndRegChange And iConPOSChangeType = "RegularPriceChange" Then
@@ -644,7 +646,6 @@ Namespace WholeFoods.IRMA.Replenishment.POSPush.Controller
                                                 sale_Multiple, salePrice, saleStartDate, saleEndDate, linkCode_ItemIdentifier,
                                                 posTare)
                                     End If
-
                                 Next
 
                                 ' Remove all Change Type from the list  
@@ -830,20 +831,37 @@ Namespace WholeFoods.IRMA.Replenishment.POSPush.Controller
                 End If
 
                 ' track ID data for updates to DB in ApplyChangesInIRMA
-                Select Case chgType
-                    Case ChangeType.ItemIdAdd
-                        PopulateApplyChangesData(currentStoreUpdate, results)
-                    Case ChangeType.ItemIdDelete
-                        PopulateApplyChangesData(currentStoreUpdate, results)
-                    Case ChangeType.VendorIDAdd
-                        PopulateApplyChangesData(currentStoreUpdate, results)
-                    Case ChangeType.ItemDataDelete
-                        PopulateApplyChangesData(currentStoreUpdate, results)
-                    Case ChangeType.ItemDataDeAuth
-                        PopulateApplyChangesData(currentStoreUpdate, results)
-                    Case ChangeType.ItemRefresh
-                        PopulateApplyChangesData(currentStoreUpdate, results)
-                End Select
+                Try
+                    Select Case chgType
+                        Case ChangeType.ItemIdAdd
+                            PopulateApplyChangesData(currentStoreUpdate, results)
+                        Case ChangeType.ItemIdDelete
+                            PopulateApplyChangesData(currentStoreUpdate, results)
+                        Case ChangeType.VendorIDAdd
+                            PopulateApplyChangesData(currentStoreUpdate, results)
+                        Case ChangeType.ItemDataDelete
+                            PopulateApplyChangesData(currentStoreUpdate, results)
+                        Case ChangeType.ItemDataDeAuth
+                            PopulateApplyChangesData(currentStoreUpdate, results)
+                        Case ChangeType.ItemRefresh
+                            PopulateApplyChangesData(currentStoreUpdate, results)
+                    End Select
+
+                Catch ex As Exception
+                    _debugStoreNo = currentStoreUpdate.StoreNum
+
+                    ' Add more logging information
+                    Dim errorStr As New StringBuilder("** POS PUSH PopulateApplyChangesData ERROR: Change Type = ")
+                    errorStr.Append(chgType)
+                    errorStr.Append(", Current Store =  ")
+                    errorStr.Append(currentStoreUpdate.StoreNum)
+                    logger.Info(", Current Item Id = " + results.GetInt32(results.GetOrdinal("Item_Key")).ToString())
+                    errorStr.Append(", currentPosWriter.POSFileWriterKey = ")
+                    errorStr.Append(currentPosWriter.POSFileWriterKey.ToString)
+
+                    logger.Error(errorStr.ToString, ex)
+                    Throw
+                End Try
 
                 ' Append this type of change to the POS file for the store, but only for retail sale items.
                 Try
@@ -877,6 +895,7 @@ Namespace WholeFoods.IRMA.Replenishment.POSPush.Controller
                     ' Add more logging information
                     Dim errorStr As New StringBuilder("** POS PUSH FILE ERROR: Current Store = ")
                     errorStr.Append(currentStoreUpdate.StoreNum)
+                    errorStr.Append(", Current Item Id = " + results.GetInt32(results.GetOrdinal("Item_Key")).ToString())
                     errorStr.Append(", Successful Lines Written = ")
                     errorStr.Append(currentPosWriter.RecordCount)
                     errorStr.Append(", Processing Row = ")
