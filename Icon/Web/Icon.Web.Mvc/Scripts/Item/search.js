@@ -894,6 +894,7 @@ window.addEventListener('load', function () {
         resetColumns: function () {
             this.view.igGrid.igGrid("destroy");
             localStorage.removeItem(columnsKey);
+            localStorage.removeItem(pageSize);
             this.search();
         },
         init: function (attributes) {
