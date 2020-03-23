@@ -481,16 +481,18 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
 
     useEffect(() => {
         if (orderDetails) {
-            setSubteamTotal(invoiceTotal - orderDetails.InvoiceFreight - invoiceCharges)
+            let invoiceTotalLocal:number = isNaN(invoiceTotal) ? 0 : invoiceTotal;
+
+            setSubteamTotal(invoiceTotalLocal - orderDetails.InvoiceFreight - invoiceCharges)
 
             let difference: number = 0;
-            if (invoiceTotal - invoiceCharges === orderDetails.AdjustedReceivedCost) {
+            if (invoiceTotalLocal - invoiceCharges === orderDetails.AdjustedReceivedCost) {
                 difference = 0;
             } else {
                 if (allocatedCharges + nonAllocatedCharges > 0) {
-                    difference = invoiceTotal - orderDetails.AdjustedReceivedCost - invoiceCharges;
+                    difference = invoiceTotalLocal - orderDetails.AdjustedReceivedCost - invoiceCharges;
                 } else {
-                    difference = invoiceTotal - orderDetails.AdjustedReceivedCost + invoiceCharges;
+                    difference = invoiceTotalLocal - orderDetails.AdjustedReceivedCost + invoiceCharges;
                 }
             }
             setDifference(difference);
