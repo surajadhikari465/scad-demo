@@ -277,15 +277,15 @@ namespace Icon.Web.Mvc.Excel
                 worksheetPart.Worksheet.Save();
 
                 //Insert bad records only
-                uint rowid = 1;
+                uint rowid = 1;                
+                Regex regex = new Regex(@"(^[A-Z]+)", RegexOptions.Compiled);
                 foreach (var r in errorRows)
                 {
-                    r.RowIndex.Value = ++rowid;
-                    int inx = 0;
+                    r.RowIndex.Value = ++rowid;                    
 
                     foreach (Cell c in r.Elements<Cell>().ToArray())
                     {
-                        c.CellReference.Value = String.Format("{0}{1}", ToExcelColumn(++inx), rowid);
+                        c.CellReference.Value = String.Format("{0}{1}", regex.Matches(c.CellReference.Value)[0].Value, rowid);
                     }
                     sheetData1.Append(r);
                 }
@@ -306,6 +306,6 @@ namespace Icon.Web.Mvc.Excel
             }
 
             return name;
-        }
+        }       
     }
 }
