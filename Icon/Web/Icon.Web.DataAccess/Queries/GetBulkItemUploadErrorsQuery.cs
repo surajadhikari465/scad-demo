@@ -26,7 +26,7 @@ namespace Icon.Web.DataAccess.Queries
             bulkItemUploadId.Value = parameters.BulkItemUploadId;
 
             var sql =
-                "select * from BulkItemUploadErrors where BulkItemUploadId = @BulkItemUploadId order by BulkItemUploadErrorId asc";
+                "select * from BulkItemUploadErrors where BulkItemUploadId = @BulkItemUploadId order by RowId asc";
             return context.Database.SqlQuery<BulkUploadErrorModel>(sql,bulkItemUploadId).ToList();
         }
     }
