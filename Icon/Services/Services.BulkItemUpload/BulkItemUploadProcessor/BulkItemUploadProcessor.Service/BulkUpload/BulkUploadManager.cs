@@ -200,7 +200,7 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             if (validationResponse.ValidRows.Any())
             {
                 validRows = validationResponse.ValidRows.Count;
-                totalRows = (validationResponse.InvalidRows.Any() ? validationResponse.InvalidRows.Count() : failedRowsCount) + validRows;
+                totalRows = (validationResponse.InvalidRows.Any() ? validationResponse.InvalidRows.Select(s=>s.RowId).Distinct().Count() : failedRowsCount) + validRows;
                 if (activeUpload.FileModeType == Enums.FileModeTypeEnum.CreateNew)
                 {
                     ProcessCreateNewUpload();
@@ -212,7 +212,7 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             }
             else
             {
-                totalRows = (validationResponse.InvalidRows.Any() ? validationResponse.InvalidRows.Count() : failedRowsCount);
+                totalRows = (validationResponse.InvalidRows.Any() ? validationResponse.InvalidRows.Select(s => s.RowId).Distinct().Count() : failedRowsCount);
             }
           
             if (validationResponse.InvalidRows.Any())
