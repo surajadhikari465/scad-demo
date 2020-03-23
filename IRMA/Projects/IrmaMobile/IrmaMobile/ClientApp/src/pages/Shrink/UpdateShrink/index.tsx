@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { AppContext, types, ISubteamSession } from "../../../store";
 import BasicModal from '../../../layout/BasicModal';
@@ -18,6 +18,12 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
   const [shrinkType] = useState(selectedShrinkItem.shrinkType);
   const { history } = props;
   const [sessionIndex] = useState<number>(subteamSession.findIndex((s: ISubteamSession) => s.sessionUser.userName === user?.userName));
+
+  
+  useEffect(() => {
+    dispatch({ type: types.SETTITLE, Title: 'Update Shrink' });
+
+  }, [ dispatch]);
 
   const updateQuantity = (e: any) => {
     let quantity = parseFloat(e.target.value);

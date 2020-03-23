@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { AppContext, types } from "../../store";
 import { WfmButton, WfmToggleGroup } from '@wfm/ui-react';
 import { useHistory } from "react-router-dom";
@@ -11,6 +11,10 @@ const StoreSelect: React.FC = () => {
   const { state, dispatch } = useContext(AppContext);
   const { isLoading } = state;
   let history = useHistory();
+
+  useEffect(() => {
+		dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
+	}, [dispatch]);
 
   const setSubteams = (result: any) => {
     dispatch({ type: 'SETSUBTEAMS', subteams: result });

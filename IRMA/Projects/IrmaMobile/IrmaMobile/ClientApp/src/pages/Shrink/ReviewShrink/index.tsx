@@ -32,6 +32,7 @@ const ReviewShrink: React.FC = () => {
 
   useEffect(() => {
     setMenuItems();
+    dispatch({ type: types.SETTITLE, Title: 'Review Shrink' });
 
     return () => {
       dispatch({ type: types.SETMENUITEMS, menuItems: [] });
@@ -49,7 +50,7 @@ const ReviewShrink: React.FC = () => {
 
   const update = () => {
     if (shrinkItems.length === 0) {
-      setAlert({ open: true, alertMessage: 'There are no Shrink Items to Update' });
+      setAlert({ open: true, alertMessage: 'There are no Shrink Items to Update.' });
     } else {
       if (!selected) {
         setAlert({ open: true, alertMessage: 'Please Select an Item' });
@@ -137,7 +138,7 @@ const ReviewShrink: React.FC = () => {
     if (shrinkItems.length === 0) {
       setAlert({ open: true, alertMessage: 'There are no Shrink Items to Remove' });
     } else if (selected === undefined) {
-      setAlert({ open: true, alertMessage: 'Please Select an Item' });
+      setAlert({ open: true, alertMessage: 'Please Select an Item.' });
     }
     else {
       setConfirm({ open: true, message: 'Do you want to remove the selected UPC?', onConfirm: remove });
@@ -212,7 +213,7 @@ const ReviewShrink: React.FC = () => {
         <Confirm
           open={confirm.open}
           onCancel={close}
-          header='IRMA Mobile'
+          header={'Alert'}
           content={confirm.message}
           onConfirm={confirm.onConfirm}
         />

@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect, useContext, FormEvent, SyntheticEvent, ChangeEvent, useCallback } from 'react'
-import { Modal, Dropdown, Form, CheckboxProps, DropdownProps, Divider, Input, Container, InputOnChangeData } from 'semantic-ui-react'
+import { Modal, Dropdown, Form, CheckboxProps, DropdownProps, Divider, Input, Container, InputOnChangeData, Button } from 'semantic-ui-react'
 import { WfmButton } from '@wfm/ui-react'
 import agent from '../../../../../api/agent'
 import { AppContext } from '../../../../../store'
@@ -170,8 +170,12 @@ const InvoiceDataAddCharge: React.FC<IProps> = ({ orderId, handleAddCharge, disa
                         </Container>
                     </Modal.Content>
                     <Modal.Actions>
-                        <WfmButton disabled={charge === '' || amount === 0} onClick={handleOkClick} style={{marginRight: '40px'}} >OK</WfmButton>
-                        <WfmButton onClick={handleClose}>Cancel</WfmButton>
+                        <Button className='wfmButton' style={{marginRight: '10px', width: '84px'} }disabled={charge === '' || amount === 0} onClick={handleOkClick}>
+                             OK
+                        </Button>
+                        <Button className='wfmButton' onClick={handleClose}>
+                            Cancel
+                        </Button>
                     </Modal.Actions>
                 </Modal>
             }

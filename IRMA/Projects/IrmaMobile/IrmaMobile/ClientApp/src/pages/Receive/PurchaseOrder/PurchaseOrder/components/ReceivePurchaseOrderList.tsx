@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 import { Grid, Segment } from "semantic-ui-react";
 import { ListedOrder } from "../../types/ListedOrder";
 import "./styles.scss"
@@ -14,6 +14,15 @@ interface IProps {
 const ReceivePurchaseOrderList: React.FC<IProps> = ({ orders, upc, poSelected }) => {
     //@ts-ignore
     const { state, dispatch } = useContext(AppContext);
+
+    useEffect(() => {
+          dispatch({ type: types.SETTITLE, Title: 'Find PO By Item' });
+          return () => {
+            dispatch({ type: types.SETTITLE, Title: 'Receive' });
+        };
+      },[dispatch]);
+
+      
     const purchaseOrderClicked = (e: React.MouseEvent<HTMLButtonElement>) => {
         const purchaseOrderNumber = parseInt(e.currentTarget.textContent!).toString();
         dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: purchaseOrderNumber });

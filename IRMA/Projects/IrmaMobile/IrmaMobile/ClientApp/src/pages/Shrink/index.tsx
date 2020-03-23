@@ -30,14 +30,16 @@ const Shrink: React.FC = () => {
   const [shrinkState, setShrinkState] = useState(initialState);
   //@ts-ignore
   const { state, dispatch } = useContext(AppContext);
+  const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { }, cancelAction: () => { } });
   const { isLoading, user } = state;
   const { subteam, region, storeNumber, subteamNo, shrinkTypes, shrinkType, subteamSession } = state;
-  const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { }, cancelAction: () => { } });
-  const [warningOverride, setWarningOverride] = useState<boolean>(false);
+ const [warningOverride, setWarningOverride] = useState<boolean>(false);
 
   let textInput: any = React.createRef<HTMLInputElement>();
   let qtyInput: any = React.createRef<HTMLInputElement>();
   let sessionIndex = subteamSession.findIndex((session: any) => session.sessionUser.userName === user?.userName);
+  let selectionMenu = ((!state.subteamSession![sessionIndex].isPrevSession && !shrinkState.isSelected) || state.subteamSession[sessionIndex].forceSubteamSelection)
+  
 
   useEffect(() => {
     BarcodeScanner.registerHandler(function (data: IBarcodeScannedEvent) {
@@ -107,6 +109,15 @@ const Shrink: React.FC = () => {
 
   }, [shrinkState, dispatch, alert, state.subteamSession]);
 
+  useEffect(() => {
+    if(selectionMenu){
+      dispatch({ type: types.SETTITLE, Title: 'Select Shrink Type' });
+    }
+    else{
+      dispatch({ type: types.SETTITLE, Title: 'Scan Shrink' });
+    }
+  },[selectionMenu, dispatch]);
+
   const setUpc = async (value?: any, scan: boolean = false) => {
     let upc = value && typeof value !== 'object' ? value : shrinkState.upcValue;
     setIsLoading(true);
@@ -123,9 +134,9 @@ const Shrink: React.FC = () => {
         setAlert({
           ...alert,
           open: true,
-          alertMessage: 'Item not found',
+          alertMessage: 'Item not found.',
           type: 'default',
-          header: 'Irma Mobile'
+          header: 'Invalid Item'
         });
       } else if (!subteam.isUnrestricted && storeItem.retailSubteamName !== subteam.subteamName) {
         setAlert({
@@ -287,7 +298,7 @@ const Shrink: React.FC = () => {
           ...alert,
           open: true,
           // @ts-ignore
-          alertMessage: `${shrinkState.dupItem[0].quantity} of this item already queued in this session. Tap Add, Overwrite or Cancel`,
+          alertMessage: `${shrinkState.dupItem[0].quantity} of this item already queued in this session. Tap Add, Overwrite, or Cancel`,
           type: 'prevScanned',
           header: 'Previously Scanned Item',
           cancelAction: cancel.bind(undefined, false, true)
@@ -368,7 +379,7 @@ const Shrink: React.FC = () => {
     <Fragment>
       <CurrentLocation />
       <div className="shrink-page">
-        {((!state.subteamSession![sessionIndex].isPrevSession && !shrinkState.isSelected) || state.subteamSession[sessionIndex].forceSubteamSelection) ?
+        {selectionMenu ?
           (<div className='shrink-container'>
             <h1>Subteam: {subteam.subteamName}</h1>
             <div className="shrink-buttons">

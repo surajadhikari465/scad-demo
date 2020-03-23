@@ -14,7 +14,6 @@ import { ReasonCode } from "../../types/ReasonCode";
 import ReasonCodeModal from "../../../../../layout/ReasonCodeModal";
 import "./styles.scss";
 import { toast } from "react-toastify";
-import { WfmButton } from "@wfm/ui-react";
 import { QuantityAddMode } from "../../types/QuantityAddMode";
 import ReceivePurchaseOrderDetailsQtyModal from "./ReceivePurchaseOrderDetailsQtyModal";
 import OrderItem from "../../types/OrderItem";
@@ -49,6 +48,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                 value: code.reasonCodeID
             }));
 
+            mappedReasonCodes.unshift({key:0, text: ' ', value: 0})
             dispatch({
                 type: types.SETMAPPEDREASONCODES,
                 mappedReasonCodes: mappedReasonCodes
@@ -227,14 +227,14 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                 <ConfirmModal handleConfirmClose={handleHighQtyConfirmClick} setOpenExternal={setShowHighQtyModal} showTriggerButton={false}
                     openExternal={showHighQtyModal} headerText='Verify Quantity' cancelButtonText='No' confirmButtonText='Yes'
                     lineOne={`Quantity Received (${quantityMode.current === QuantityAddMode.AddTo ? orderDetails.Quantity + orderDetails.QtyReceived : orderDetails.Quantity}) is greater than Quantity Ordered (${orderDetails.QtyOrdered}). Continue?`} />
-                <ReceivePurchaseOrderDetailsQtyModal handleQuantityDecision={handleQuantityDecision} open={showQtyModal} />
+                <ReceivePurchaseOrderDetailsQtyModal handleQuantityDecision={handleQuantityDecision} open={showQtyModal} quantity={orderDetails.QtyReceived}/>
                 <ReasonCodeModal />
                 <Segment
                     disabled={!orderDetails.ItemLoaded}
                     inverted
                     color="teal"
                     textAlign="center"
-                    style={{ fontWeight: "bold" }}
+                    style={{ fontWeight: "bold", lineHeight: '0.5'}}
                 >
                     <Textfit mode='single' min={9} max={14}>
                         {orderDetails.Description}
@@ -361,12 +361,12 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                                 </Grid.Column>
                                 <Grid.Column textAlign="left" style={{ padding: '5px' }}>
                                     <Dropdown
-                                        style={{ paddingRight: '0px', paddingLeft: '0px', verticalAlign: 'middle' }}
+                                        style={{ paddingRight: '0px', verticalAlign: 'middle', minHeight:'auto', height:'34px' }}
                                         fluid
                                         selection
                                         item
                                         options={mappedReasonCodes}
-                                        name="Code"
+                                        defaultValue={0}
                                         onChange={handleDropdownChange}
                                         disabled={!orderDetails.ItemLoaded}
                                         value={orderDetails.Code}
@@ -377,7 +377,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                     </Grid.Column>
                     <Grid.Column stretched style={{ paddingTop: "0px", paddingBottom: '0px' }}>
                         <Grid celled columns={2}>
-                            <Grid.Row color="grey">
+                            <Grid.Row style={{ backgroundColor:'#f0f0f0' }}>
                                 <Grid.Column
                                     verticalAlign="middle"
                                     width={8}
@@ -394,7 +394,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                                     {orderDetails.QtyOrdered}
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row color="grey">
+                            <Grid.Row style={{ backgroundColor:'#f0f0f0' }}>
                                 <Grid.Column
                                     verticalAlign="middle"
                                     width={8}
@@ -415,7 +415,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                                     </div>
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row color="grey">
+                            <Grid.Row style={{ backgroundColor:'#f0f0f0' }}>
                                 <Grid.Column
                                     verticalAlign="middle"
                                     width={8}
@@ -437,7 +437,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                 </Grid>
 
                 <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Button style={{ backgroundColor: 'transparent' }} disabled={receivingOrder || !orderDetails.ItemLoaded} loading={receivingOrder} as={WfmButton} onClick={receiveOrder}>
+                    <Button className='wfmButton' style={{ width: '100%',backgroundColor: 'transparent'}} disabled={receivingOrder || !orderDetails.ItemLoaded} loading={receivingOrder} onClick={receiveOrder}>
                         Receive
                     </Button>
                 </span>

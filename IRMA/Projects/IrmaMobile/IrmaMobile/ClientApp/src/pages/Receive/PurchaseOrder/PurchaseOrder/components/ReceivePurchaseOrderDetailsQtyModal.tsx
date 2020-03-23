@@ -6,20 +6,19 @@ import { QuantityAddMode } from '../../types/QuantityAddMode';
 interface IProps {
     open: boolean;
     handleQuantityDecision: (decision: QuantityAddMode) => any;
+    quantity: number;
 }
 
-const ReceivePurchaseOrderDetailsQtyModal: React.FC<IProps> = ({ open, handleQuantityDecision }) => {
+const ReceivePurchaseOrderDetailsQtyModal: React.FC<IProps> = ({ open, handleQuantityDecision, quantity }) => {
     return (
         <Fragment>
             <Modal open={open}>
                 <Modal.Header>Previously Scanned Item</Modal.Header>
                 <Modal.Content>
-                    There is already quantity assigned to this PO.
-                    <p/>
-                    Do you want to add the entered quantity to the existing amount or overwrite the existing amount with the entered quantity?
+                    {`${quantity} of this item already queued in this session. Tap Add, Overwrite or Cancel`}
                 </Modal.Content>
                 <Modal.Actions>
-                    <WfmButton style={{marginRight: '20px'}} onClick={() => handleQuantityDecision(QuantityAddMode.AddTo)} >Add to</WfmButton>
+                    <WfmButton style={{marginRight: '20px'}} onClick={() => handleQuantityDecision(QuantityAddMode.AddTo)} >Add</WfmButton>
                     <WfmButton style={{marginRight: '20px'}} onClick={() => handleQuantityDecision(QuantityAddMode.Overwrite)}>Overwrite</WfmButton>
                     <WfmButton onClick={() => handleQuantityDecision(QuantityAddMode.None)}>Cancel</WfmButton>
                 </Modal.Actions>

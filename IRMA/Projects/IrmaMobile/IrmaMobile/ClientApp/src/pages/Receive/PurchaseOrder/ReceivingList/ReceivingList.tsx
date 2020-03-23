@@ -54,6 +54,13 @@ const ReceivingList: React.FC<IProps> = ({ match }) => {
     }, [dispatch, purchaseOrderNumber, enablePartialShipment])
 
     useEffect(() => {
+        dispatch({ type: types.SETTITLE, Title: 'Receiving List' });
+        return () => {
+            dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
+        };
+    }, [dispatch]);
+
+    useEffect(() => {
         const loadOrder = async () => {
             setIsLoading(true);
 

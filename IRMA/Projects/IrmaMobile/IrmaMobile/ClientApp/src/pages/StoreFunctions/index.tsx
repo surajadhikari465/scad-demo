@@ -28,6 +28,7 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
     dispatch({ type: types.SETSETTINGSITEMS, settingsItems: settingsItems });
     dispatch({ type: types.SETMENUITEMS, menuItems: [] });
     dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
+    dispatch({ type: types.SETTITLE, Title: 'IRMA Main Menu' });
 
     return () => {
       dispatch({ type: types.TOGGLECOG, showCog: false });
@@ -140,7 +141,7 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
         <Modal
           open={alertIsOpen}
           header='IRMA Mobile'
-          content='Please select a subteam'
+          content='Please select a subteam.'
           actions={['OK']}
           onActionClick={toggleAlert}
 

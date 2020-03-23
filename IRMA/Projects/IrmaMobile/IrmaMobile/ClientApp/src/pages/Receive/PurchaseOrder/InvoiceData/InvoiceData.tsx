@@ -527,7 +527,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             setInvoiceCharges(totalCharges);
         }
     }, [charges])
-
+    
     return (
         <Fragment>
             {isLoading ?
@@ -625,7 +625,9 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                         </div>
                     </Form>
                     <div style={{ position: 'absolute', bottom: '5px', width: '100%', textAlign: 'center' }}>
-                        <WfmButton disabled={!canCloseOrder} onClick={validateCloseOrder}>Close Order</WfmButton>
+                        <Button className='wfmButton' style={{ width: '100%'}} disabled={!canCloseOrder} onClick={validateCloseOrder}>
+                             Close Order
+                        </Button>
                     </div>
                     <BasicModal alert={alert} setAlert={setAlert} />
                 </Fragment>

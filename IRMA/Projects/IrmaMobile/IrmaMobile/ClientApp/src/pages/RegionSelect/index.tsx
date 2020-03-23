@@ -21,6 +21,8 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 
 	useEffect(() => {
 		dispatch({ type: types.RESETSTATE });
+		dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
+
 	}, [dispatch]);
 
 	const setStores = (result: any) => {
