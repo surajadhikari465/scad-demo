@@ -75,7 +75,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'NotifyOn
 		@retry_interval=0, 
 		@os_run_priority=0, @subsystem=N'TSQL', 
 		@command=N'EXEC msdb.dbo.sp_send_dbmail
-@recipients=N''DBA.SQLServer.Alert@wholefoods.com;IRMA.developers@wholefoods.com'',
+@recipients=N''DBA.SQLServer.Alert@wholefoods.com;SCAD.Alerts.Prd@wholefoods.com'',
 @body= ''MAMMOTH . Delete Expired Prices and Sales has failed. Please check job history for details'', 
 @subject = ''MAMMOTH . Delete Expired Prices and Sales - Failed'',
 @profile_name = ''SQLServerDBAs''', 

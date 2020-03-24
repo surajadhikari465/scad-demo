@@ -18,7 +18,7 @@
         </NameValuePair>
         <NameValuePair>
             <name>Application/EmailTo</name>
-            <value>irma.developers@wholefoods.com;irma.support@wholefoods.opsgenie.net</value>
+            <value>SCAD.Alerts.Prd@wholefoods.com</value>
         </NameValuePair>
         <NameValuePair>
             <name>Application/ErrorAlertIntegrationKey</name>
