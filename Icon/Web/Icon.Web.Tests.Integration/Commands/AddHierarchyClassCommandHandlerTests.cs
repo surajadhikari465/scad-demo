@@ -199,7 +199,7 @@ namespace Icon.Web.Tests.Integration.Commands
 
             Assert.AreEqual(expectedClassName, actual.hierarchyClassName);
             Assert.AreEqual(expectedLevel, actual.hierarchyLevel.ToString());
-            Assert.AreEqual(expectedSubTeam, actual.HierarchyClassTrait.Single(hct => hct.Trait.traitCode == TraitCodes.MerchFinMapping).traitValue);
+            Assert.AreEqual(addHierarchyClassCommand.SubTeamHierarchyClassId, int.Parse(actual.HierarchyClassTrait.Single(hct => hct.Trait.traitCode == TraitCodes.MerchFinMapping).traitValue));
         }
 
         [TestMethod]
@@ -233,7 +233,7 @@ namespace Icon.Web.Tests.Integration.Commands
 
             Assert.AreEqual(expectedClassName, actual.hierarchyClassName);
             Assert.AreEqual(expectedLevel, actual.hierarchyLevel.ToString());
-            Assert.AreEqual(expectedSubTeam, actual.HierarchyClassTrait.Single(hct => hct.Trait.traitCode == TraitCodes.MerchFinMapping).traitValue);
+            Assert.AreEqual(addHierarchyClassCommand.SubTeamHierarchyClassId, int.Parse(actual.HierarchyClassTrait.Single(hct => hct.Trait.traitCode == TraitCodes.MerchFinMapping).traitValue));
             Assert.AreEqual(expectedNonMerchandise, actual.HierarchyClassTrait.Single(hct => hct.Trait.traitCode == TraitCodes.NonMerchandise).traitValue);
         }
 
@@ -246,7 +246,7 @@ namespace Icon.Web.Tests.Integration.Commands
             var addHierarchyClassCommand = new AddHierarchyClassCommand
             {
                 NewHierarchyClass = testHierarchyClass,
-                PosDeptNumber = "223",
+                PosDeptNumber = "9999",
                 TeamName = "TestTeamName",
                 TeamNumber = "223"
             };

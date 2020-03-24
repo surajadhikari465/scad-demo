@@ -77,7 +77,7 @@ namespace Icon.Web.Tests.Integration.Commands
             List<PickListModel> pickListModels = new List<PickListModel>
             {
                 new PickListModel{AttributeId=attributeId, PickListValue="PickListValue1"},
-                new PickListModel{AttributeId=attributeId, PickListValue="PickListValue1" }
+                new PickListModel{AttributeId=attributeId, PickListValue="PickListValue2" }
             };
 
             return pickListModels;

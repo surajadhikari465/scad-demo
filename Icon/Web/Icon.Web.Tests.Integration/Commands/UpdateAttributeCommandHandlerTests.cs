@@ -38,7 +38,11 @@ namespace Icon.Web.Tests.Integration.Commands
         public void EditAttribute_SuccessfulExecution_AttributeShouldBeUpdatedToTheDatabase()
         {
             // Given.
-            AttributeModel attributeModel = BuildAttributeModel();
+            int dataTypeId = GetNewDataTypeId();
+            InsertAttribute(dataTypeId);
+            int newAttributeId = GetNewAttributeId();
+
+            AttributeModel attributeModel = BuildAttributeModel(newAttributeId, dataTypeId);
 
             var command = new UpdateAttributeCommand
             {
@@ -58,8 +62,6 @@ namespace Icon.Web.Tests.Integration.Commands
             {
                 Assert.Fail("Record Not Found");
             }
-            
-
         }
 
         private AttributeModel GetAttributeById(int attributeId)
@@ -67,7 +69,7 @@ namespace Icon.Web.Tests.Integration.Commands
             string sql = @"SELECT * from attributes where attributeId = @attributeId";
 
             AttributeModel attributeModel = this.db.Connection.Query<AttributeModel>(sql, new { attributeId = attributeId }, transaction: this.db.Transaction).FirstOrDefault();
-            
+
             return attributeModel;
         }
 
@@ -92,15 +94,47 @@ namespace Icon.Web.Tests.Integration.Commands
             return newDataTypeId;
         }
 
-        private AttributeModel BuildAttributeModel()
+        private void InsertAttribute(int dataTypeId)
+        {
+            string sql = @"
+                        INSERT INTO [dbo].[Attributes]
+                                   ([DisplayName]
+                                   ,[AttributeName]
+                                   ,[Description]             
+                                   ,[TraitCode]
+                                   ,[DataTypeId]
+                                  
+                                   ,[IsPickList])
+                            VALUES
+                            (
+	                            'Today',
+                                'Today',
+                                'Today', 
+                                'Today',
+                                 @DataTypeId,
+                                0
+                            )";
+
+            int affectedRows = this.db.Connection.Execute(sql, new { DataTypeId = dataTypeId }, transaction: this.db.Transaction);
+        }
+
+        private int GetNewAttributeId()
+        {
+            string sql = @"SELECT TOP 1 AttributeId from Attributes where DisplayName = 'Today'";
+            int newAttributeId = this.db.Connection.Query<int>(sql, transaction: this.db.Transaction).First();
+
+            return newAttributeId;
+        }
+
+        private AttributeModel BuildAttributeModel(int newAttributeId, int dataTypeId)
         {
             return new AttributeModel
             {
-                AttributeId = 518,
+                AttributeId = newAttributeId,
                 AttributeName = "today",
                 DisplayName = "today",
                 TraitCode = "today",
-                DataTypeId = GetNewDataTypeId()
+                DataTypeId = dataTypeId
             };
         }
     }

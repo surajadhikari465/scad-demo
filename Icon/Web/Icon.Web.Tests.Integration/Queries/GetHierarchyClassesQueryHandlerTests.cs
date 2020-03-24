@@ -331,10 +331,10 @@ namespace Icon.Web.Tests.Integration.Queries
             var results = queryHandler.Search(parameters).OrderBy(hc => hc.HierarchyClassId).ToList();
 
             //Then
-            Assert.AreEqual(4, results.Count);
+            Assert.AreEqual(1, results.Count);
 
-            var hierarchyClass = hierarchyClassModels.Where(hc => hc.HierarchyLevel == 4 && hc.HierarchyClassName == "TestClass").FirstOrDefault();
-            var resultHierarchyClass = results.Where(hc => hc.HierarchyLevel == 4 && hc.HierarchyClassName == "TestClass").FirstOrDefault();
+            var hierarchyClass = hierarchyClassModels.Where(hc => hc.HierarchyLevel == 4 && hc.HierarchyClassName == "NationalTestClass4").FirstOrDefault();
+            var resultHierarchyClass = results.Where(hc => hc.HierarchyLevel == 4 && hc.HierarchyClassName == "NationalTestClass4").FirstOrDefault();
             Assert.AreEqual(hierarchyClass.HierarchyClassId, resultHierarchyClass.HierarchyClassId);
             Assert.AreEqual(hierarchyClass.HierarchyClassName, resultHierarchyClass.HierarchyClassName);
             Assert.AreEqual(hierarchyClass.HierarchyId, resultHierarchyClass.HierarchyId);
@@ -399,7 +399,8 @@ namespace Icon.Web.Tests.Integration.Queries
                       SELECT hierarchyID AS HierarchyId,
                           hierarchyClassID AS HierarchyClassId,
                           hierarchyClassName AS HierarchyClassName,
-                          hierarchyLevel AS HierarchyLevel
+                          hierarchyLevel AS HierarchyLevel,
+                          HierarchyLineage
                       FROM [dbo].[BrandHierarchyView]
                       WHERE hierarchyID = @hierarchyId
                       ORDER BY hierarchyClassID",
@@ -419,7 +420,7 @@ namespace Icon.Web.Tests.Integration.Queries
             Assert.AreEqual(expectedHierarchyClass.HierarchyClassName, resultHierarchyClass.HierarchyClassName);
             Assert.AreEqual(expectedHierarchyClass.HierarchyId, resultHierarchyClass.HierarchyId);
             Assert.AreEqual(expectedHierarchyClass.HierarchyLevel, resultHierarchyClass.HierarchyLevel);
-            Assert.AreEqual(expectedHierarchyClass.HierarchyClassName, resultHierarchyClass.HierarchyLineage);
+            Assert.AreEqual(expectedHierarchyClass.HierarchyLineage, resultHierarchyClass.HierarchyLineage);
             Assert.AreEqual(expectedHierarchyClass.HierarchyParentClassId, resultHierarchyClass.HierarchyParentClassId);
         }
 
