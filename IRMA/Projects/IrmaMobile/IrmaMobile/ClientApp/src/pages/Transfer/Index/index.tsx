@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useContext, useEffect, useCallback } from 'react'
 import { AppContext, types, IStore, IMenuItem, ISubTeam } from "../../../store";
-import { Header, Segment, Dropdown, Form, DropdownProps, InputOnChangeData } from 'semantic-ui-react'
+import { Header, Segment, Dropdown, Form, DropdownProps, InputOnChangeData, Button } from 'semantic-ui-react'
 import { WfmButton } from '@wfm/ui-react'
 import dateFormat from 'dateformat'
 import { toast } from 'react-toastify';
@@ -322,7 +322,9 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
                     <Form.Input type='date' value={expectedDate} onChange={handleExpectedDateChange} min={dateFormat(new Date(), "UTC:yyyy-mm-dd")} label='Expected Date' fluid></Form.Input>
                 </div>
                 <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <WfmButton flex='true' style={{ marginTop: '10px', marginLeft: '5px', marginRight: '5px' }} onClick={handleCreatePoClick}>Create PO</WfmButton>
+                    <Button className='wfmButton' style={{ marginTop: '10px', marginLeft: '5px', marginRight: '5px',width: '100%' }} onClick={handleCreatePoClick}>
+                             Create PO
+                    </Button>
                 </span>
             </Fragment>
         )
