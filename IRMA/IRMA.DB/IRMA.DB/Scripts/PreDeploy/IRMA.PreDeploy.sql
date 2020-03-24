@@ -13,4 +13,3 @@
 -- This pre-deploy script is in the base pre-deploy folder, so you do not need to add a path or folder reference (you just specify your script name).
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 -- Example: :r Cool_Script_Stuff.sql -- 2018.01.01
-:r PBI19724_AddColumnsAndPopulateValue_amz_DeletedOrderItem.sql -- 2019-05-01

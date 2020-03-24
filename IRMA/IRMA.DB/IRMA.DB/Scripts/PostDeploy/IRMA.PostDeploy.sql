@@ -13,10 +13,10 @@ Post-Deployment Script Template
 -- This post-deploy script is in the base post-deploy folder, so you do not need to add a path or folder reference (you just specify your script name).
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 -- Example: :r Cool_Script_Stuff.sql -- 2018.01.01
--- This is a permanent entry (keep at bottom).
-:r VersionUpdates.sql -- 2018.02.28
-:r PBI25271-RemoveInforOrdering.sql -- 2019.10.22
-:r "23903 - AddNonScaleExtraTextToEIM/AddNonScaleExtraTextToEIM.sql" --2019.11.20
-:r PBI27833-GenerateEmailWhenPosPushJobFails.sql --2019.12.05
+
 :r PBI29079_AddNewShrinkTypeAndGL.sql --2020.01.15
 :r PBI32245_InsertUploadAttributeEntries.sql --2020.03.06
+
+
+-- This is a permanent entry (keep at bottom).
+:r VersionUpdates.sql -- 2018.02.28

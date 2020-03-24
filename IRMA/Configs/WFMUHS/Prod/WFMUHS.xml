@@ -24,11 +24,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.4.0.0">http://iap-fl/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.4.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="10.6.0.0">http://iap-fl/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.6.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="10.4.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.4.0.0/</Location>
+      <Update enabled="1" version="10.6.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.6.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -103,11 +103,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.4.0.0">http://iap-ma/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.4.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="10.6.0.0">http://iap-ma/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.6.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="10.4.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.4.0.0/</Location>
+      <Update enabled="1" version="10.6.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.6.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -192,11 +192,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.4.0.0">http://iap-mw/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.4.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="10.6.0.0">http://iap-mw/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.6.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="10.4.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.4.0.0/</Location>
+      <Update enabled="1" version="10.6.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.6.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -313,11 +313,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.4.0.0">http://iap-na/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.4.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="10.6.0.0">http://iap-na/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.6.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="10.4.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.4.0.0/</Location>
+      <Update enabled="1" version="10.6.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.6.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -400,11 +400,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.4.0.0">http://iap-ne/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.4.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="10.6.0.0">http://iap-ne/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.6.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="10.4.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.4.0.0/</Location>
+      <Update enabled="1" version="10.6.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.6.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -486,11 +486,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.4.0.0">http://iap-nc/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.4.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="10.6.0.0">http://iap-nc/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.6.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="10.4.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.4.0.0/</Location>
+      <Update enabled="1" version="10.6.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.6.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -592,11 +592,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.4.0.0">http://iap-pn/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.4.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="10.6.0.0">http://iap-pn/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.6.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="10.4.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.4.0.0/</Location>
+      <Update enabled="1" version="10.6.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.6.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -688,11 +688,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.4.0.0">http://iap-rm/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.4.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="10.6.0.0">http://iap-rm/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.6.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="10.4.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.4.0.0/</Location>
+      <Update enabled="1" version="10.6.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.6.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -777,11 +777,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.4.0.0">http://iap-so/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.4.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="10.6.0.0">http://iap-so/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.6.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="10.4.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.4.0.0/</Location>
+      <Update enabled="1" version="10.6.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.6.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -865,11 +865,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.4.0.0">http://iap-sp/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.4.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="10.6.0.0">http://iap-sp/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.6.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="10.4.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.4.0.0/</Location>
+      <Update enabled="1" version="10.6.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.6.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -952,11 +952,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.4.0.0">http://iap-sw/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.4.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="10.6.0.0">http://iap-sw/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.6.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="10.4.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.4.0.0/</Location>
+      <Update enabled="1" version="10.6.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.6.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -1052,11 +1052,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.4.0.0">http://iap-rm/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.4.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="10.6.0.0">http://iap-rm/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.6.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="10.4.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.4.0.0/</Location>
+      <Update enabled="1" version="10.6.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.6.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -1070,11 +1070,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.4.0.0">http://iap-uk/IRMAService/IRMA.svc/basic</Service>
-      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.4.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <Service version="10.6.0.0">http://iap-uk/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.6.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
-      <Update enabled="1" version="10.4.0.0">
-        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.4.0.0/</Location>
+      <Update enabled="1" version="10.6.0.0">
+        <Location>http://wfmmobile-prd/Updates/PluginUpdates/IRMA/10.6.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>

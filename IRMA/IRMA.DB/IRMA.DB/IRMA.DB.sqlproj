@@ -3348,7 +3348,6 @@
     <Build Include="Schema\dbo\Stored Procedures\Procs4\SubTeams_GetAllSubteams_1.sql" />
     <Build Include="Schema\dbo\Stored Procedures\Procs1\AuditAuthorizedItems.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI23075_UpdateShrinkReasonCode_PrimeNowReturns.sql" />
-    <None Include="Scripts\PostDeploy\PBI25271-RemoveInforOrdering.sql" />
     <Build Include="Schema\icon\Stored Procedures\FinalizeNewItemEvents.sql" />
     <Build Include="Schema\icon\Stored Procedures\FailUnprocessedEvents.sql" />
     <Build Include="Schema\icon\icon.sql" />
@@ -3360,6 +3359,8 @@
     <Build Include="Schema\extract\Stored Procedures\APT_ItemStore.sql" />
     <Build Include="Schema\extract\Stored Procedures\ItemAttribute.sql" />
     <Build Include="Schema\extract\Stored Procedures\ItemVendorLane.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI25271-RemoveInforOrdering.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI27833-GenerateEmailWhenPosPushJobFails.sql" />
     <Build Include="Scripts\PostDeploy\PBI32245_InsertUploadAttributeEntries.sql" />
   </ItemGroup>
   <ItemGroup>
@@ -3381,8 +3382,5 @@
       <SqlOwnerName>dbo</SqlOwnerName>
       <SqlPermissionSet>EXTERNAL_ACCESS</SqlPermissionSet>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Scripts\PostDeploy\PBI27833-GenerateEmailWhenPosPushJobFails.sql" />
   </ItemGroup>
 </Project>
