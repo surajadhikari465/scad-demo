@@ -16,4 +16,3 @@ See template script for hints:
 :r .\Scripts\PopulateData\Release\IconPredeploymentScript.sql
 */
 
-:r .\Scripts\PopulateData\PopulateBulkItemUploadStatus.sql -- 2019.09.16 PBI 24826
