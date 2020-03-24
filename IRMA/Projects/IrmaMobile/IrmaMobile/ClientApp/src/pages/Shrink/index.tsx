@@ -298,7 +298,7 @@ const Shrink: React.FC = () => {
           ...alert,
           open: true,
           // @ts-ignore
-          alertMessage: `${shrinkState.dupItem[0].quantity} of this item already queued in this session. Tap Add, Overwrite, or Cancel`,
+          alertMessage: `${shrinkState.dupItem[0].quantity} of this item already queued in this session. Tap Add, Overwrite, or Cancel.`,
           type: 'prevScanned',
           header: 'Previously Scanned Item',
           cancelAction: cancel.bind(undefined, false, true)

@@ -140,7 +140,7 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
         </div>
         <Modal
           open={alertIsOpen}
-          header='IRMA Mobile'
+          header='IRMA Main Menu'
           content='Please select a subteam.'
           actions={['OK']}
           onActionClick={toggleAlert}

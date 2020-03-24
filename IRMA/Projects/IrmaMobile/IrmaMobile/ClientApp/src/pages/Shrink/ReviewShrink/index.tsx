@@ -18,7 +18,7 @@ const ReviewShrink: React.FC = () => {
   const [selected, setSelected] = useState();
   const { isLoading, user, subteamSession, shrinkTypes } = state;
   const [alert, setAlert] = useState({ open: false, alertMessage: '' });
-  const [confirm, setConfirm] = useState({ open: false, message: '', onConfirm: () => { } });
+  const [confirm, setConfirm] = useState({ open: false, message: '', header:'Review Shrink', onConfirm: () => { } });
   let sessionIndex = subteamSession.findIndex((session:any) => session.sessionUser.userName === user?.userName);
   let history = useHistory();
 
@@ -50,13 +50,13 @@ const ReviewShrink: React.FC = () => {
 
   const update = () => {
     if (shrinkItems.length === 0) {
-      setAlert({ open: true, alertMessage: 'There are no Shrink Items to Update.' });
+      setAlert({ open: true, alertMessage: 'There are no shrink items to update.' });
     } else {
       if (!selected) {
         setAlert({ open: true, alertMessage: 'Please Select an Item' });
       }
       else {
-        setConfirm({ open: true, message: 'Do you want to update the Quantity/Subtype for the Selected UPC?', onConfirm: () => { history.push('/shrink/update') } });
+        setConfirm({ open: true, message: 'Do you want to update the Quantity/Subtype for the Selected UPC?', header:'Review Shrink', onConfirm: () => { history.push('/shrink/update') } });
       }
     }
   }
@@ -120,7 +120,7 @@ const ReviewShrink: React.FC = () => {
   }
   const close = () => {
     setSelected(undefined);
-    setConfirm({ open: false, message: '', onConfirm: () => { } });
+    setConfirm({  ...confirm, open: false, message: '', onConfirm: () => { } });
   }
 
   const remove = () => {
@@ -129,7 +129,7 @@ const ReviewShrink: React.FC = () => {
     });
     setShrinkItems(newShrinkItems);
     setSelected(undefined);
-    setConfirm({ open: false, message: '', onConfirm: () => { } });
+    setConfirm({ ...confirm, open: false, message: '', onConfirm: () => { } });
     const subteamSessionCopy = {...subteamSession[sessionIndex], shrinkItems: newShrinkItems };
     dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: [...subteamSession.slice(0, sessionIndex), subteamSessionCopy, ...subteamSession.slice(sessionIndex + 1)]})
   }
@@ -141,7 +141,7 @@ const ReviewShrink: React.FC = () => {
       setAlert({ open: true, alertMessage: 'Please Select an Item.' });
     }
     else {
-      setConfirm({ open: true, message: 'Do you want to remove the selected UPC?', onConfirm: remove });
+      setConfirm({ open: true, header:'Alert',message: 'Do you want to remove the selected UPC?', onConfirm: remove });
     }
   }
 
@@ -205,7 +205,7 @@ const ReviewShrink: React.FC = () => {
         </section>
         <Modal
           open={alert.open}
-          header='IRMA Mobile'
+          header={'Review Shrink'}
           content={alert.alertMessage}
           actions={['OK']}
           onActionClick={toggleAlert}
@@ -213,7 +213,7 @@ const ReviewShrink: React.FC = () => {
         <Confirm
           open={confirm.open}
           onCancel={close}
-          header={'Alert'}
+          header={confirm.header ? confirm.header : 'Review Shrink'}
           content={confirm.message}
           onConfirm={confirm.onConfirm}
         />
