@@ -825,7 +825,6 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\Truncate_IRMA_Price_Tables_14897.sql" />
     <Build Include="dbo\Stored Procedures\AuditGPMMessageSequence.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\Reset5NutritionValues_23879.sql" />
-    <None Include="Scripts\PreDeploymentScripts\23389_Delete_Job_CopyGpmDataForAudit.sql" />
     <None Include="OneTimeScripts\DeleteItemsFromMammothNotInIcon.sql" />
     <None Include="Scripts\Projects\MoveBoiseStoreToNc\31786_MoveBoiseStoreToNC.sql" />
     <None Include="Scripts\Projects\MoveBoiseStoreToNc\31786_MoveBoiseStoreToRMRollBackScript.sql" />
@@ -840,6 +839,13 @@
     <Build Include="dbo\Stored Procedures\AddOrUpdateHierarchyMerchandiseClass.sql" />
     <Build Include="dbo\Stored Procedures\AddOrUpdateHierarchyMerchandiseBrick.sql" />
     <Build Include="dbo\Stored Procedures\DeleteHierarchyMerchandise.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\23063_PopulateAttributeGroupsTable.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\Add_Attribute_Listener_To_App_Table_23063.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\PopulateRetentionPolicyForStagingESLePlumTables.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\22694_ExtractService_Jobs.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\25982_IRMAItemAttributeFileSentToS3.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\24848_PopulateLocaleHieararchyJob_ForExtractService.sql" />
+    <None Include="Scripts\PreDeploymentScripts\Archive\23389_Delete_Job_CopyGpmDataForAudit.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -852,10 +858,6 @@
     <None Include="Jobs\MAMMOTH.PurgeMessageQueues.sql" />
     <None Include="Scripts\Projects\GPM\GPM_Data_Conversion_Price_Bulk_Insert.sql" />
     <Build Include="dbo\Stored Procedures\AddOrUpdateItemAttributesLocaleRegion.sql" />
-    <None Include="Scripts\PostDeploymentScripts\23063_PopulateAttributeGroupsTable.sql" />
-    <None Include="Scripts\PostDeploymentScripts\22694_ExtractService_Jobs.sql" />
-    <None Include="Scripts\PostDeploymentScripts\25982_IRMAItemAttributeFileSentToS3.sql" />
-    <None Include="Scripts\PostDeploymentScripts\24848_PopulateLocaleHieararchyJob_ForExtractService.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\DeduplicateScanCodes_PERF.sql" />
     <None Include="Scripts\PostDeploymentScripts\30224_Create_IVL_Extract_JobScheudle.sql" />
     <None Include="Scripts\PostDeploymentScripts\30224_Create_IVL_Item_Extract_JobSchedule.sql" />
@@ -871,8 +873,6 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\PostDeploymentScripts\PostDeploymentScript.sql" />
-    <None Include="Scripts\PostDeploymentScripts\Add_Attribute_Listener_To_App_Table_23063.sql" />
-    <None Include="Scripts\PostDeploymentScripts\PopulateRetentionPolicyForStagingESLePlumTables.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\PreDeploymentScripts\Script.PreDeployment.sql" />
