@@ -342,11 +342,12 @@ window.addEventListener('load', function () {
                         primaryKey: "ItemId",
                         autoGenerateColumns: false,
                         width: "100%",
+                        height: "50vh",
                         dataSource: window.location.origin + '/Item/GridDataSource',
                         updateUrl: window.location.origin + '/Item/GridUpdate',
                         autoCommit: false,
                         aggregateTransactions: true,
-                        fixedHeaders: false,
+                        fixedHeaders: true,
                         responseDataKey: "Records",
                         columns: columnSettings,
                         requestError: function (evt, ui) {
