@@ -126,17 +126,6 @@ $(function () {
 });
 
 
-function getBulkUploadStatusData(rowCount) {
-    $.ajax({
-        dataType: "json",
-        url: "/Contact/BulkUploadStatus?rowCount=" + rowCount,
-        data: { rows: rowCount }
-    }).done(function (data) {
-        var grid = $("#tblUpload");
-        grid.igGrid("dataSourceObject", data).igGrid("dataBind");
-    });
-}
-
 function uploadFile() {
     if (window.FormData !== undefined) {
         let isRefresh = false;
