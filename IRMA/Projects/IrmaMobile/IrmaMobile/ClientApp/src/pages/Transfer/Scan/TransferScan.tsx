@@ -473,15 +473,15 @@ const TransferScan: React.FC = () => {
                         </Grid.Row>
                         <Grid.Row>
                             <Grid.Column width={8} verticalAlign='middle' textAlign='left' style={{ fontWeight: 'bold' }}>
-                                <div style={{fontSize:'24px'}}>Queued: {queuedQuantity}</div>
+                                <div style={{lineHeight:'2',fontSize: '30px'}}>Queued: {queuedQuantity}</div>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row >
+                        <Grid.Row style={{ marginTop: '10px' }}>
                             <Grid.Column textAlign='center' width={8}>
-                                <Button className='wfmButton' fluid onClick={clearScreen}>Clear</Button>
+                                <Button className='wfmButton' style={{ lineHeight: '1.6'}} fluid onClick={clearScreen}>Clear</Button>
                             </Grid.Column>
                             <Grid.Column textAlign='center' width={8}>
-                                <Button className='wfmButton' fluid onClick={handleSave}>Save</Button>
+                                <Button className='wfmButton' style={{lineHeight: '1.6'}} fluid onClick={handleSave}>Save</Button>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
