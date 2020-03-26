@@ -497,7 +497,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             }
             setDifference(difference);
         }
-    }, [orderDetails, invoiceTotal, charges, nonAllocatedCharges]);
+    }, [orderDetails, invoiceTotal, invoiceCharges, nonAllocatedCharges]);
 
     useEffect(() => {
         if (charges) {
