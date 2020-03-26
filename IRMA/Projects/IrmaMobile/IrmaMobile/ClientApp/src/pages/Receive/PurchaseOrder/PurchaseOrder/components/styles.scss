@@ -8,3 +8,10 @@
     padding: 0;
     color: blue;
   }
+
+  .receive-order{
+      .ui.grid+.grid {
+        margin-top: 0.5rem;
+        margin-bottom: 0.2rem;
+    }
+  }

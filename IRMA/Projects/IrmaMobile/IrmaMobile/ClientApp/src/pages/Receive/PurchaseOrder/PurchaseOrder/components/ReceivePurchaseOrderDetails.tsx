@@ -229,218 +229,219 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                     lineOne={`Quantity Received (${quantityMode.current === QuantityAddMode.AddTo ? orderDetails.Quantity + orderDetails.QtyReceived : orderDetails.Quantity}) is greater than Quantity Ordered (${orderDetails.QtyOrdered}). Continue?`} />
                 <ReceivePurchaseOrderDetailsQtyModal handleQuantityDecision={handleQuantityDecision} open={showQtyModal} quantity={orderDetails.QtyReceived}/>
                 <ReasonCodeModal />
-                <Segment
-                    disabled={!orderDetails.ItemLoaded}
-                    inverted
-                    color="teal"
-                    textAlign="center"
-                    style={{ fontWeight: "bold", lineHeight: '0.5'}}
-                >
-                    <Textfit mode='single' min={9} max={14}>
-                        {orderDetails.Description}
-                    </Textfit>
-                </Segment>
-                <Grid
-                    columns={2}
-                    celled
-                    style={{ height: "15%", marginBottom: "0px" }}
-                >
-                    <Grid.Row>
-                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} width={6} textAlign="right">
-                            Package:
-                        </Grid.Column>
-                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} textAlign="left">
-                            {orderDetails.PkgWeight} {orderDetails.ItemLoaded ? "/ " : ""}
-                            {orderDetails.PkgQuantity} {orderDetails.Uom}
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} width={6} textAlign="right">
-                            Subteam:
-                        </Grid.Column>
-                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} textAlign="left">
-                            <Textfit mode='single' min={8} max={14}>
-                                {orderDetails.Subteam
-                                    ? orderDetails.IsReturnOrder
-                                        ? "(C)"
-                                        : "(P)"
-                                    : ""}{" "}
-                                {orderDetails.Subteam}
-                            </Textfit>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} width={6} textAlign="right">
-                            Vendor:
-                        </Grid.Column>
-                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} textAlign="left">
-                            <Textfit mode='single' min={8} max={14}>
-                                {orderDetails.Vendor}
-                            </Textfit>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} width={6} textAlign="right">
-                            Order UOM:
-                        </Grid.Column>
-                        <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} textAlign="left">
-                            {orderDetails.OrderUom}
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-
-                <Grid columns={2}>
-                    <Grid.Column style={{ paddingTop: "0px", paddingBottom: '0px' }}>
-                        <Grid columns={2} celled>
-                            <Grid.Row>
-                                <Grid.Column
-                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
-                                    verticalAlign="middle"
-                                    width={8}
-                                    textAlign="right"
-                                >
-                                    Quantity:
-                                </Grid.Column>
-                                <Grid.Column textAlign="left" style={{ paddingTop: '5px', paddingBottom: '5px' }}>
-                                    <Input
-                                        type="number"
-                                        name="Quantity"
-                                        onChange={(e) => setQuantity(parseInt(e.target.value))}
-                                        onKeyPress={validateIntegerInput}
-                                        onFocus={(event: any) =>
-                                            event.target.select()
-                                        }
-                                        onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''}
-                                        value={orderDetails?.ItemLoaded ? quantity : ''}
-                                        fluid
-                                        size="small"
-                                        disabled={!orderDetails.ItemLoaded}
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row>
-                                <Grid.Column
-                                    verticalAlign="middle"
-                                    width={8}
-                                    textAlign="right"
-                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
-                                >
-                                    Weight:
-                                </Grid.Column>
-                                <Grid.Column textAlign="left" style={{ paddingTop: '5px', paddingBottom: '5px' }}>
-                                    <Input
-                                        type="number"
-                                        name="Weight"
-                                        onChange={(e) => setWeight(parseFloat(e.target.value))}
-                                        onKeyPress={validateDecimalInput}
-                                        onFocus={(event: any) =>
-                                            event.target.select()
-                                        }
-                                        onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''}
-                                        value={(orderDetails?.ItemLoaded && costedByWeight) ? weight : ''}
-                                        fluid
-                                        disabled={!orderDetails.ItemLoaded || !costedByWeight}
-                                        size="small"
-                                    ></Input>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row>
-                                <Grid.Column
-                                    width={8}
-                                    textAlign="right"
-                                    verticalAlign="middle"
-                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
-                                >
-                                    <button
-                                        type="button"
-                                        className="link-button"
-                                        onClick={reasonCodeClick}
+                <div className={'receive-order'}>
+                    <Segment
+                        disabled={!orderDetails.ItemLoaded}
+                        inverted
+                        color="teal"
+                        textAlign="center"
+                        style={{ fontWeight: "bold", lineHeight: '0.5'}}
+                    >
+                        <Textfit mode='single' min={9} max={14}>
+                            {orderDetails.Description}
+                        </Textfit>
+                    </Segment>
+                    <Grid
+                        columns={2}
+                        celled
+                        style={{ height: "15%", marginBottom: "0px" }}
+                    >
+                        <Grid.Row>
+                            <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} width={6} textAlign="right">
+                                Package:
+                            </Grid.Column>
+                            <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} textAlign="left">
+                                {orderDetails.PkgWeight} {orderDetails.ItemLoaded ? "/ " : ""}
+                                {orderDetails.PkgQuantity} {orderDetails.Uom}
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} width={6} textAlign="right">
+                                Subteam:
+                            </Grid.Column>
+                            <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} textAlign="left">
+                                <Textfit mode='single' min={8} max={14}>
+                                    {orderDetails.Subteam
+                                        ? orderDetails.IsReturnOrder
+                                            ? "(C)"
+                                            : "(P)"
+                                        : ""}{" "}
+                                    {orderDetails.Subteam}
+                                </Textfit>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} width={6} textAlign="right">
+                                Vendor:
+                            </Grid.Column>
+                            <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} textAlign="left">
+                                <Textfit mode='single' min={8} max={14}>
+                                    {orderDetails.Vendor}
+                                </Textfit>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} width={6} textAlign="right">
+                                Order UOM:
+                            </Grid.Column>
+                            <Grid.Column style={{ paddingTop: '5px', paddingBottom: '5px' }} textAlign="left">
+                                {orderDetails.OrderUom}
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                    <Grid columns={2}>
+                        <Grid.Column style={{ paddingTop: "0px", paddingBottom: '0px' }}>
+                            <Grid columns={2} celled>
+                                <Grid.Row>
+                                    <Grid.Column
+                                        style={{ paddingTop: '0px', paddingBottom: '5px' }}
+                                        verticalAlign="middle"
+                                        width={8}
+                                        textAlign="right"
                                     >
-                                        Code:
-                                    </button>
-                                </Grid.Column>
-                                <Grid.Column textAlign="left" style={{ padding: '5px' }}>
-                                    <Dropdown
-                                        style={{ paddingRight: '0px', verticalAlign: 'middle', minHeight:'auto', height:'34px' }}
-                                        fluid
-                                        selection
-                                        item
-                                        options={mappedReasonCodes}
-                                        defaultValue={0}
-                                        onChange={handleDropdownChange}
-                                        disabled={!orderDetails.ItemLoaded}
-                                        value={orderDetails.Code}
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </Grid.Column>
-                    <Grid.Column stretched style={{ paddingTop: "0px", paddingBottom: '0px' }}>
-                        <Grid celled columns={2}>
-                            <Grid.Row style={{ backgroundColor:'#f0f0f0' }}>
-                                <Grid.Column
-                                    verticalAlign="middle"
-                                    width={8}
-                                    textAlign="right"
-                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
-                                >
-                                    Ordered:
-                                </Grid.Column>
-                                <Grid.Column
-                                    verticalAlign="middle"
-                                    textAlign="left"
-                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
-                                >
-                                    {orderDetails.QtyOrdered}
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row style={{ backgroundColor:'#f0f0f0' }}>
-                                <Grid.Column
-                                    verticalAlign="middle"
-                                    width={8}
-                                    textAlign="right"
-                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
-                                >
-                                    <div style={{ color: "red" }}>
-                                        Received:
-                                    </div>
-                                </Grid.Column>
-                                <Grid.Column
-                                    verticalAlign="middle"
-                                    textAlign="left"
-                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
-                                >
-                                    <div style={{ color: "red" }}>
-                                        {orderDetails.QtyReceived}
-                                    </div>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row style={{ backgroundColor:'#f0f0f0' }}>
-                                <Grid.Column
-                                    verticalAlign="middle"
-                                    width={8}
-                                    textAlign="right"
-                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
-                                >
-                                    Qty:
-                                </Grid.Column>
-                                <Grid.Column
-                                    verticalAlign="middle"
-                                    textAlign="left"
-                                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
-                                >
-                                    {orderDetails.EInvQty}
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </Grid.Column>
-                </Grid>
+                                        Quantity:
+                                    </Grid.Column>
+                                    <Grid.Column textAlign="left" style={{ paddingTop: '5px', paddingBottom: '5px' }}>
+                                        <Input
+                                            type="number"
+                                            name="Quantity"
+                                            onChange={(e) => setQuantity(parseInt(e.target.value))}
+                                            onKeyPress={validateIntegerInput}
+                                            onFocus={(event: any) =>
+                                                event.target.select()
+                                            }
+                                            onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''}
+                                            value={orderDetails?.ItemLoaded ? quantity : ''}
+                                            fluid
+                                            size="small"
+                                            disabled={!orderDetails.ItemLoaded}
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row>
+                                    <Grid.Column
+                                        verticalAlign="middle"
+                                        width={8}
+                                        textAlign="right"
+                                        style={{ paddingTop: '5px', paddingBottom: '5px' }}
+                                    >
+                                        Weight:
+                                    </Grid.Column>
+                                    <Grid.Column textAlign="left" style={{ paddingTop: '5px', paddingBottom: '5px' }}>
+                                        <Input
+                                            type="number"
+                                            name="Weight"
+                                            onChange={(e) => setWeight(parseFloat(e.target.value))}
+                                            onKeyPress={validateDecimalInput}
+                                            onFocus={(event: any) =>
+                                                event.target.select()
+                                            }
+                                            onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''}
+                                            value={(orderDetails?.ItemLoaded && costedByWeight) ? weight : ''}
+                                            fluid
+                                            disabled={!orderDetails.ItemLoaded || !costedByWeight}
+                                            size="small"
+                                        ></Input>
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row>
+                                    <Grid.Column
+                                        width={8}
+                                        textAlign="right"
+                                        verticalAlign="middle"
+                                        style={{ paddingTop: '5px', paddingBottom: '5px' }}
+                                    >
+                                        <button
+                                            type="button"
+                                            className="link-button"
+                                            onClick={reasonCodeClick}
+                                        >
+                                            Code:
+                                        </button>
+                                    </Grid.Column>
+                                    <Grid.Column textAlign="left" style={{ padding: '5px' }}>
+                                        <Dropdown
+                                            style={{ paddingRight: '0px', verticalAlign: 'middle', minHeight:'auto', height:'34px' }}
+                                            fluid
+                                            selection
+                                            item
+                                            options={mappedReasonCodes}
+                                            defaultValue={0}
+                                            onChange={handleDropdownChange}
+                                            disabled={!orderDetails.ItemLoaded}
+                                            value={orderDetails.Code}
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Grid.Column>
+                        <Grid.Column stretched style={{ paddingTop: "0px", paddingBottom: '0px' }}>
+                            <Grid celled columns={2}>
+                                <Grid.Row style={{ backgroundColor:'#f0f0f0' }}>
+                                    <Grid.Column
+                                        verticalAlign="middle"
+                                        width={8}
+                                        textAlign="right"
+                                        style={{ paddingTop: '5px', paddingBottom: '5px' }}
+                                    >
+                                        Ordered:
+                                    </Grid.Column>
+                                    <Grid.Column
+                                        verticalAlign="middle"
+                                        textAlign="left"
+                                        style={{ paddingTop: '5px', paddingBottom: '5px' }}
+                                    >
+                                        {orderDetails.QtyOrdered}
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row style={{ backgroundColor:'#f0f0f0' }}>
+                                    <Grid.Column
+                                        verticalAlign="middle"
+                                        width={8}
+                                        textAlign="right"
+                                        style={{ paddingTop: '5px', paddingBottom: '5px' }}
+                                    >
+                                        <div style={{ color: "red" }}>
+                                            Received:
+                                        </div>
+                                    </Grid.Column>
+                                    <Grid.Column
+                                        verticalAlign="middle"
+                                        textAlign="left"
+                                        style={{ paddingTop: '5px', paddingBottom: '5px' }}
+                                    >
+                                        <div style={{ color: "red" }}>
+                                            {orderDetails.QtyReceived}
+                                        </div>
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row style={{ backgroundColor:'#f0f0f0' }}>
+                                    <Grid.Column
+                                        verticalAlign="middle"
+                                        width={8}
+                                        textAlign="right"
+                                        style={{ paddingTop: '5px', paddingBottom: '5px' }}
+                                    >
+                                        Qty:
+                                    </Grid.Column>
+                                    <Grid.Column
+                                        verticalAlign="middle"
+                                        textAlign="left"
+                                        style={{ paddingTop: '5px', paddingBottom: '5px' }}
+                                    >
+                                        {orderDetails.EInvQty}
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Grid.Column>
+                    </Grid>
 
-                <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Button className='wfmButton' style={{ width: '100%',backgroundColor: 'transparent'}} disabled={receivingOrder || !orderDetails.ItemLoaded} loading={receivingOrder} onClick={receiveOrder}>
-                        Receive
-                    </Button>
-                </span>
+                    <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <Button className='wfmButton' style={{ width: '100%',backgroundColor: 'transparent'}} disabled={receivingOrder || !orderDetails.ItemLoaded} loading={receivingOrder} onClick={receiveOrder}>
+                            Receive
+                        </Button>
+                    </span>
+                </div>
             </Fragment>
         );
     }

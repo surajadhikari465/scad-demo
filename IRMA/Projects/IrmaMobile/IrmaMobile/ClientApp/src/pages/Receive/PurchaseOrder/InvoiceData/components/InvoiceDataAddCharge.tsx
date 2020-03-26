@@ -170,10 +170,10 @@ const InvoiceDataAddCharge: React.FC<IProps> = ({ orderId, handleAddCharge, disa
                         </Container>
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button className='wfmButton' style={{marginRight: '10px', width: '84px'} }disabled={charge === '' || amount === 0} onClick={handleOkClick}>
+                        <Button className='wfmButton' style={{marginRight: '10px', width: '84px'}} disabled={charge === '' || amount === 0} onClick={handleOkClick}>
                              OK
                         </Button>
-                        <Button className='wfmButton' onClick={handleClose}>
+                        <Button className='wfmButton' style={{width: '84px'}} onClick={handleClose}>
                             Cancel
                         </Button>
                     </Modal.Actions>
