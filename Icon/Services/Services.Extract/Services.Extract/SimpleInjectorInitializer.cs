@@ -23,7 +23,7 @@ namespace Services.Extract
 
             var container = new Container();
             var esbSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("Sb1EmsConnection");
-            container.Register(() => ListenerApplicationSettings.CreateDefaultSettings("Extract Service"));
+            container.Register(() => ListenerApplicationSettings.CreateDefaultSettings("ExtractService"));
             container.Register(() => esbSettings);
             container.Register<IEmailClient>(EmailClient.CreateFromConfig);
             container.Register(typeof(ILogger<>), typeof(NLogLogger<>));
