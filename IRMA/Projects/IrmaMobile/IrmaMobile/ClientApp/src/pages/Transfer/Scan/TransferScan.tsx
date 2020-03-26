@@ -307,7 +307,7 @@ const TransferScan: React.FC = () => {
                 setAlert({
                     ...alert,
                     open: true,
-                    alertMessage: `${queuedQuantity} of this item already queued in this session. Tap Add, Overwrite or Cancel.`,
+                    alertMessage: `${queuedQuantity} of this item already queued in this session. Tap Add, Overwrite, or Cancel.`,
                     type: 'prevScanned',
                     header: 'Previously Scanned Item',
                     cancelAction: cancel.bind(undefined, true)

@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useContext, useEffect, useCallback } from 'react'
 import { AppContext, types, IStore, IMenuItem, ISubTeam } from "../../../store";
 import { Header, Segment, Dropdown, Form, DropdownProps, InputOnChangeData, Button } from 'semantic-ui-react'
-import { WfmButton } from '@wfm/ui-react'
 import dateFormat from 'dateformat'
 import { toast } from 'react-toastify';
 import agent from '../../../api/agent';
@@ -9,6 +8,7 @@ import ConfirmModal from '../../../layout/ConfirmModal';
 import { useHistory, RouteComponentProps } from 'react-router-dom';
 import ITransferData from '../types/ITransferData';
 import LoadingComponent from '../../../layout/LoadingComponent';
+import BasicModal from '../../../layout/BasicModal';
 
 interface RouteParams {
     comingFromScan: string;
@@ -38,7 +38,8 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
     const [supplyType, setSupplyType] = useState<number>(-1);
     const [expectedDate, setExpectedDate] = useState<string>(dateFormat(new Date(), "yyyy-mm-dd"));
     const [isLoading, setIsLoading] = useState<boolean>(false);
-
+    const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { } });
+  
     let history = useHistory();
 
     useEffect(() => {
@@ -117,10 +118,7 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
         if (storageData !== null) {
             const transferData: ITransferData = JSON.parse(storageData);
             if (transferData) {
-                setSavedTransferData(transferData);
-                if (!comingFromScan) {
-                    setShowSaved(true);
-                }
+                setSavedTransferData(transferData);                
             }
         }
     }, [setSavedTransferData, setShowSaved, goToReview, comingFromScan])
@@ -129,7 +127,41 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
         if (comingFromScan) {
             loadSavedSession();
         }
-    }, [loadSavedSession, comingFromScan])
+    }, [loadSavedSession, comingFromScan]);
+
+    useEffect(() => {
+        if(savedTransferData) {
+            if (!comingFromScan) {
+                setAlert({
+                  ...alert,
+                  open: true,
+                  alertMessage: `Would you like to reload your previous Order Session? (From ${savedTransferData?.FromStoreName}/${savedTransferData?.FromSubteamName} to ${savedTransferData?.ToStoreName}/${savedTransferData?.ToSubteamName}) Clicking No will delete the old session.`,
+                  type: 'confirm',
+                  header: 'Previous Session Exists',
+                  cancelAction: confirmDelete,
+                  confirmAction: goToReview
+                });
+            }
+        }
+    }, [savedTransferData]);
+
+    const clearSavedSession = () => {
+        localStorage.removeItem('transferData');
+        toast.info('Order deleted.');
+        setAlert({...alert, open: false});
+    }
+
+    const confirmDelete = () => {
+        setAlert({
+            ...alert,
+            open: true,
+            alertMessage: `Are you sure you want to delete you saved Order? (From ${savedTransferData?.FromStoreName}/${savedTransferData?.FromSubteamName} to ${savedTransferData?.ToStoreName}/${savedTransferData?.ToSubteamName})`,
+            type: 'confirm',
+            header: 'Delete Session?',
+            confirmAction: clearSavedSession,
+            cancelAction: () => history.goBack()
+          });
+    }
 
     useEffect(() => {
         dispatch({ type: types.SETTITLE, Title: 'Transfer Main' });
@@ -269,15 +301,6 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
         setExpectedDate(value);
     }
 
-    const clearSavedSession = () => {
-        localStorage.removeItem('transferData');
-        toast.info('Ordered deleted.');
-    }
-
-    const confirmDelete = () => {
-        setShowConfirmDelete(true);
-    }
-
     if (isLoading) {
         return (
             <Fragment>
@@ -287,13 +310,6 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
     else {
         return (
             <Fragment>
-                <ConfirmModal handleConfirmClose={goToReview} handleCancelClose={confirmDelete} setOpenExternal={setShowSaved} showTriggerButton={false} noGreyClick={true}
-                    openExternal={showSaved} headerText='Previous Session Exists' cancelButtonText='No' confirmButtonText='Yes'
-                    lineOne={`Would you like to reload your previous Order Session? (From ${savedTransferData?.FromStoreName}/${savedTransferData?.FromSubteamName} to ${savedTransferData?.ToStoreName}/${savedTransferData?.ToSubteamName})`}
-                    lineTwo={'Clicking No will delete the old session.'} />
-                <ConfirmModal handleConfirmClose={clearSavedSession} handleCancelClose={() => { history.goBack(); }} setOpenExternal={setShowConfirmDelete} showTriggerButton={false} noGreyClick={true}
-                    openExternal={showConfirmDelete} headerText='Delete Session?' cancelButtonText='No' confirmButtonText='Yes'
-                    lineOne={`Are you sure you want to delete your saved Order? (From ${savedTransferData?.FromStoreName}/${savedTransferData?.FromSubteamName} to ${savedTransferData?.ToStoreName}/${savedTransferData?.ToSubteamName})`} />
                 <div style={{ marginTop: '20px', marginLeft: '5px', marginRight: '5px' }}>
                     <Header style={{ padding: '0px', paddingLeft: '5px', backgroundColor: 'lightgrey' }} as='h5' attached='top'>From</Header>
                     <Segment attached>
@@ -326,6 +342,7 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
                              Create PO
                     </Button>
                 </span>
+                <BasicModal alert={alert} setAlert={setAlert} />
             </Fragment>
         )
     }

@@ -4,7 +4,7 @@ import BasicModal from '../../../../layout/BasicModal';
 
 const TransferScanDeleteOrder: React.FC = () => {
     // @ts-ignore
-    const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'confirm', header: 'IRMA Mobile' });
+    const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'confirm', header: 'Delete Order' });
     let history = useHistory();
 
     useEffect(() => {
