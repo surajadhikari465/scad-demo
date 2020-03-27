@@ -52,6 +52,7 @@ const TransferReview: React.FC = () => {
         ...alert,
         open: true,
         alertMessage: `Do you want to update the ${unit} for the selected UPC?`,
+        header: 'Review Transfer',
         type: 'confirm',
         confirmAction: () => {
           setAlert({ ...alert, open: false });
@@ -69,6 +70,7 @@ const TransferReview: React.FC = () => {
       setAlert({
         ...alert,
         open: true,
+        header: 'Alert',
         alertMessage: 'Do you want to delete the selected UPC?',
         type: 'confirm',
         confirmAction: () => {

@@ -26,20 +26,24 @@ const initialState = {
   costedByWeight: false
 };
 
-const Shrink: React.FC = () => {
+interface ShrinkProps {
+  history: any;
+}
+
+const Shrink: React.FC<ShrinkProps> = (props) => {
   const [shrinkState, setShrinkState] = useState(initialState);
   //@ts-ignore
   const { state, dispatch } = useContext(AppContext);
   const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { }, cancelAction: () => { } });
   const { isLoading, user } = state;
   const { subteam, region, storeNumber, subteamNo, shrinkTypes, shrinkType, subteamSession } = state;
- const [warningOverride, setWarningOverride] = useState<boolean>(false);
+  const [warningOverride, setWarningOverride] = useState<boolean>(false);
+  const { history } = props;
 
   let textInput: any = React.createRef<HTMLInputElement>();
   let qtyInput: any = React.createRef<HTMLInputElement>();
   let sessionIndex = subteamSession.findIndex((session: any) => session.sessionUser.userName === user?.userName);
-  let selectionMenu = ((!state.subteamSession![sessionIndex].isPrevSession && !shrinkState.isSelected) || state.subteamSession[sessionIndex].forceSubteamSelection)
-  
+  let selectionMenu = ((!state.subteamSession![sessionIndex].isPrevSession && !shrinkState.isSelected) || state.subteamSession[sessionIndex].forceSubteamSelection) 
 
   useEffect(() => {
     BarcodeScanner.registerHandler(function (data: IBarcodeScannedEvent) {
@@ -76,6 +80,7 @@ const Shrink: React.FC = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shrinkState, dispatch]);
+
   useEffect(() => {
     const changeSubtype = () => {
       subteamSession[sessionIndex] = { ...subteamSession[sessionIndex], forceSubteamSelection: true };
@@ -83,7 +88,7 @@ const Shrink: React.FC = () => {
       dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
       dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
     }
-    const newMenuItems = (shrinkState.isSelected || state.subteamSession[sessionIndex].isPrevSession) && !state.subteamSession[sessionIndex].forceSubteamSelection ? [
+    const newMenuItems = !selectionMenu ? [
       {
         id: 1, order: 0, path: "#", text: "Clear Session", onClick: () => {
           setAlert({
@@ -106,8 +111,8 @@ const Shrink: React.FC = () => {
     ] as IMenuItem[];
 
     dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems });
-
-  }, [shrinkState, dispatch, alert, state.subteamSession]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shrinkState, dispatch, alert, subteamSession, selectionMenu]);
 
   useEffect(() => {
     if(selectionMenu){
@@ -217,7 +222,7 @@ const Shrink: React.FC = () => {
     });
   }
   const confirmDeleteSession = (e: any) => {
-    if (state.subteamSession[sessionIndex].shrinkItems?.length == null) {
+    if (state.subteamSession[sessionIndex].shrinkItems?.length == null || state.subteamSession[sessionIndex].shrinkItems?.length === 0) {
       setAlert({
         ...alert,
         open: true,
@@ -234,6 +239,7 @@ const Shrink: React.FC = () => {
         ...alert,
         open: false
       });
+      history.push('/functions');
     }
   }
   const setQty = (e: any) => {

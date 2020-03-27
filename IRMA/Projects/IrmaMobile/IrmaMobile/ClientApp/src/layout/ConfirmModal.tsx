@@ -63,7 +63,6 @@ const ConfirmModal: React.FC<IProps> = ({ enableButton = true, noGreyClick = fal
                     <Modal.Description>
                         <Grid columns={2}>
                             <Grid.Column width={4}>
-                                <Icon name='question circle' size='huge'/>
                             </Grid.Column>
                             <Grid.Column width={12}>
                                 <p>

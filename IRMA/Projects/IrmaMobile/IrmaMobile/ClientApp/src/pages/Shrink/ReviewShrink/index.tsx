@@ -76,6 +76,7 @@ const ReviewShrink: React.FC = () => {
       setAlert({ open: true, alertMessage: 'There are no Shrink Items to Upload' });
     } else {
       setIsLoading(true);
+      history.push('/shrink');
       let succeededItems = 0;
       for (let i = 0; i < shrinkItems.length; i++) {
         let weight = shrinkItems[i].costedByWeight ? shrinkItems[i].quantity : 0;
@@ -98,6 +99,7 @@ const ReviewShrink: React.FC = () => {
           );
           if (!result || result === undefined) {
             toast.error(`Shrink Item ${shrinkItems[i].identifier} Failed to Upload`);
+            history.push('/shrink/review');
           } else {
             succeededItems += 1;
           }
@@ -107,7 +109,6 @@ const ReviewShrink: React.FC = () => {
           localStorage.removeItem('sessionSubType');
           localStorage.removeItem('shrinkUser');
           localStorage.removeItem('shrinkSubteam');
-          history.push('/shrink')
         }
       }
       if (succeededItems === shrinkItems.length) {
