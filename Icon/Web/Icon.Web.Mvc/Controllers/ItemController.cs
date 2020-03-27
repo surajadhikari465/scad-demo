@@ -541,11 +541,12 @@ namespace Icon.Web.Controllers
         }
 
         [HttpPost]
-        public void ExportSelectedItems(List<int> selectedIds)
+        public void ExportSelectedItems(List<int> selectedIds, string[] selectedColumnNames)
         {
             var result = GetMultipleSearchResults(selectedIds);
 
             Session["SelectedExportList"] = result;
+            Session["SelectedColumnNames"] = selectedColumnNames;
         }
 
         [HttpGet]
