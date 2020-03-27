@@ -7,32 +7,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
 		integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
 		crossorigin="anonymous"></script>
-	<script type="text/javascript">
-		function dropDownChanged() {
-			let environments = document.querySelector("#environments");
-			let regions = document.querySelector("#regions");
-
-			let environment = environments.selectedOptions[0].value;
-			let region = regions.selectedOptions[0].value;
-
-			let linkDivs = document.querySelectorAll(".link-group")
-			for (const linkDiv of linkDivs) {
-				linkDiv.style.display = "none";
-			}
-
-			if (environment && region) {
-				let linkDivToShow = document.querySelector("#" + environment + "-" + region);
-				if (linkDivToShow) {
-					linkDivToShow.style.display = null;
-				}
-			}
-		}
-		window.addEventListener("load", function () {
-			dropDownChanged();
-			server = location.hostname;
-			document.getElementById("servername").innerHTML = "Server: " + server;
-		});
-	</script>
+	
 	<style>
 		body {
 			background-color: #99CC99;
@@ -847,9 +822,33 @@
 			</div>
 		</div>
 		<div class="container-fluid">
-            <label id="servername" text="NOT" />
+            <label id="servername" text="NOT"></label>
         </div>
 	</div>
+	<script>
+		function dropDownChanged() {
+			let environment = document.getElementById("environments").value;
+			let region = document.getElementById("regions").value;
+
+			let linkDivs = document.getElementsByClassName("link-group")
+			for (let i = 0; i < linkDivs.length; i++) {
+				linkDivs[i].style.display = "none";
+			}
+
+			if (environment && region) {
+				let linkDivToShow = document.getElementById(environment + "-" + region);
+				if (linkDivToShow) {
+					console.log(linkDivToShow);
+					linkDivToShow.style.display = 'block';
+				}
+			}
+		}
+		window.addEventListener("load", function () {
+			dropDownChanged();
+			server = location.hostname;
+			document.getElementById("servername").innerHTML = "Server: " + server;
+		});
+	</script>
 </body>
 
 </html>
