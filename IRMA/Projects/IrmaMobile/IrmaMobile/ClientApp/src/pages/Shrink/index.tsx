@@ -7,6 +7,7 @@ import BasicModal from '../../layout/BasicModal';
 import CurrentLocation from "../../layout/CurrentLocation";
 import LoadingComponent from '../../layout/LoadingComponent';
 import agent from "../../api/agent";
+import ScanCodeProcessor from '../../scanning/ScanCodeProcessor';
 
 
 const initialState = {
@@ -49,7 +50,8 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
     BarcodeScanner.registerHandler(function (data: IBarcodeScannedEvent) {
       if (shrinkState.isSelected === true) {
         try {
-          setUpc(parseInt(data.Data, 10), true);
+          let scanCode = ScanCodeProcessor.parseScanCode(data.Data, data.Symbology);
+          setUpc(scanCode, true);
         } catch (ex) {
           setAlert({
             ...alert,

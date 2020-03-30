@@ -13,6 +13,7 @@ import ReasonCodeModal from '../../../layout/ReasonCodeModal';
 import { ReasonCode } from '../../Receive/PurchaseOrder/types/ReasonCode';
 import BasicModal from '../../../layout/BasicModal';
 import { useHistory } from 'react-router-dom';
+import ScanCodeProcessor from '../../../scanning/ScanCodeProcessor';
 
 const TransferScan: React.FC = () => {
     //@ts-ignore
@@ -22,16 +23,16 @@ const TransferScan: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<string>('1');
     const [upc, setUpc] = useState<string>();
-    const [queuedQuantity, setQueuedQuantity] = useState();
+    const [queuedQuantity, setQueuedQuantity] = useState<number|string>();
     const [costLabel, setCostLabel] = useState('Vendor Cost:');
     const [transferData, setTransferData] = useState<ITransferData>();
     const [item, setItem] = useState<ITransferItem>();
     const [searchFlag, setSearchFlag] = useState<boolean>(false);
 
-    const [description, setDescription] = useState();
-    const [retail, setRetail] = useState();
-    const [vendorPack, setVendorPack] = useState();
-    const [vendorCost, setVendorCost] = useState();
+    const [description, setDescription] = useState<string>();
+    const [retail, setRetail] = useState<string>();
+    const [vendorPack, setVendorPack] = useState<string>();
+    const [vendorCost, setVendorCost] = useState<string>();
     const [adjustedCost, setAdjustedCost] = useState<number>(0);
     const [reasonCode, setReasonCode] = useState(0);
     const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { }, cancelAction: () => { } });
@@ -159,7 +160,7 @@ const TransferScan: React.FC = () => {
                     setCostLabel('Adjusted Cost:');
                 }
                 else {
-                    setVendorCost(loadingItem.VendorCost);
+                    setVendorCost(loadingItem.VendorCost.toString());
                     setCostLabel('Vendor Cost:');
                 }
             }
@@ -171,19 +172,22 @@ const TransferScan: React.FC = () => {
 
     useEffect(() => {
         BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
-            let scannedUpc = parseInt(data.Data).toString();
-            if (upc === scannedUpc) {
+            let scanCode = ''
+            try
+            {
+                scanCode = ScanCodeProcessor.parseScanCode(data.Data, data.Symbology);
+            } catch(error) {
+                toast.error(scanCode);
+                return;
+            }
+            if (upc === scanCode) {
                 setQuantity((q: any) => q + 1);
                 return;
             } else {
-                setUpc(scannedUpc);
+                setUpc(scanCode);
                 setSearchFlag(true);
             }
         });
-
-        return () => {
-            BarcodeScanner.scanHandler = () => { };
-        }
     });
 
     useEffect(() => {
@@ -443,14 +447,14 @@ const TransferScan: React.FC = () => {
                                 {costLabel}
                             </Grid.Column>
                             <Grid.Column width={4} verticalAlign='middle' textAlign='left' style={{ fontWeight: 'bold', paddingLeft: '0px' }}>
-                                {parseFloat(vendorCost) === 0 ?
+                                {vendorCost && parseFloat(vendorCost) === 0 ?
                                     <Input type='number' fluid value={adjustedCost} onChange={handleAdjustedCostChange} />
                                     :
                                     vendorCost
                                 }
                             </Grid.Column>
                             {
-                                parseFloat(vendorCost) === 0 ?
+                                vendorCost && parseFloat(vendorCost) === 0 ?
                                     <Fragment>
                                         <Grid.Column width={2} verticalAlign='middle'>
                                             <button type="button" className="link-button" onClick={reasonCodeClick}>Reason:</button>

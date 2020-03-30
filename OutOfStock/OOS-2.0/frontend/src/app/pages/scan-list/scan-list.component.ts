@@ -5,13 +5,15 @@ import {
   ModalController as IonicModalController,
 } from '@ionic/angular';
 
-import { BarcodeScanner, IBarcodeScannedEvent } from '@wfm/mobile';
 
 import { AppService } from 'src/app/services/app-service.service'
 import { DataEntryComponent } from 'src/app/components/data-entry/data-entry.component'
 import { AlertModalComponent } from 'src/app/components/alert-modal/alert-modal.component'
 
 import { Store } from 'src/app/app.interfaces'
+import ScanCodeProcessor from 'src/scanning/ScanCodeProcessor';
+// @ts-ignore 
+import { BarcodeScanner, IBarcodeScannedEvent } from '@wfm/mobile';
 
 @Component({
   selector: 'app-scan-list',
@@ -40,7 +42,8 @@ export class ScanListComponent implements OnInit {
       const allowScan = self.appService.getScan();
       if (allowScan) {
         try {
-          self.addWfmItem(data.Data)
+          let scanCode = ScanCodeProcessor.parseScanCode(data.Data, data.Symbology);
+          self.addWfmItem(scanCode)
         } catch (ex) {
           alert(ex.message)
         }

@@ -17,6 +17,7 @@ import isMinDate from "../util/MinDate";
 import { BarcodeScanner, IBarcodeScannedEvent } from '@wfm/mobile';
 import { stat } from "fs";
 import BasicModal from "../../../../layout/BasicModal";
+import ScanCodeProcessor from "../../../../scanning/ScanCodeProcessor";
 
 
 interface RouteParams {
@@ -78,15 +79,17 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
 
     useEffect(() => {
         BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
-            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: parseInt(data.Data, 10).toString() });
-            loadPurchaseOrder(parseInt(data.Data, 10).toString(),
+            let scanCode = '';
+            try {
+                scanCode = ScanCodeProcessor.parseScanCode(data.Data, data.Symbology);
+            } catch(error) {
+                toast.error(error);
+            }
+            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: scanCode });
+            loadPurchaseOrder(scanCode,
                 isNaN(parseInt(state.purchaseOrderNumber, 10)) ? '' : parseInt(state.purchaseOrderNumber, 10).toString(),
                 true);
         });
-
-        return () => {
-            BarcodeScanner.scanHandler = () => { };
-        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state]);
 

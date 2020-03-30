@@ -36,6 +36,7 @@ const App: React.FC = () => {
   const [state, dispatch] = usePersistedReducer(reducer, initialState);
   const { menuItems, settingsItems, Title } = state;
 
+  //register authorization
   useEffect(() => {
     if (Config.useAuthToken) {
       LifecycleManager.onReady(function () {
