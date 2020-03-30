@@ -1,19 +1,26 @@
-import React, { useState, Fragment, useContext } from 'react'
-import { AppContext, } from '../../../store'
+import React, { useState, Fragment, useContext, useEffect  } from 'react'
+import { AppContext, types } from '../../../store'
 import { Grid, Input, Button, Segment } from 'semantic-ui-react';
 import ITransferItem from '../types/ITransferItem';
 import ReasonCodeModal from '../../../layout/ReasonCodeModal';
-import { useHistory } from "react-router-dom";
+import { useHistory} from "react-router-dom";
 
 const TransferLineItemDetails: React.FC = () => {
     //@ts-ignore
-    const { state } = useContext(AppContext);
+    const { state, dispatch } = useContext(AppContext);
     const [transferLineItem] = useState<ITransferItem>(state.transferLineItem!);
     const [unitCost] = useState<number>(transferLineItem.VendorCost !== 0 ? transferLineItem.VendorCost : transferLineItem.AdjustedCost);
     let history = useHistory();
     const handleCancelClick = () => {
         history.push('/transfer/review');
     };
+    
+    useEffect(() => {
+        dispatch({ type: types.SETTITLE, Title: "View Details" });
+        return () => {
+        dispatch({ type: types.SETTITLE, Title: "IRMA Mobile" });
+        };
+    }, [dispatch]);
 
     return (
         <Fragment>
@@ -68,12 +75,12 @@ const TransferLineItemDetails: React.FC = () => {
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column width={8} verticalAlign='middle' textAlign='left' style={{ fontWeight: 'bold' }}>
-                            <Segment color='grey' inverted>Queued: {transferLineItem.Quantity}</Segment>
+                            <div style={{lineHeight:'2',fontSize: '30px'}}>Queued: {transferLineItem.Quantity}</div>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
                 <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Button className='wfmButton' style={{ width: '100%', marginTop: '50px' }} onClick={handleCancelClick}>Cancel</Button>
+                    <Button className='wfmButton' style={{ width: '100%', marginTop: '80px', lineHeight: '1.6' }} onClick={handleCancelClick}>Cancel</Button>
                 </span>
             </Fragment>
         </Fragment>
