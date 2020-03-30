@@ -4,7 +4,6 @@ using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Models;
 using Icon.Web.Mvc.Utility;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -63,6 +62,10 @@ namespace Icon.Web.Mvc.Validators
                 .WithMessage(ValidationMessages.DisplayNameUnique)
                 .When(vm => !string.IsNullOrWhiteSpace(vm.DisplayName));
 
+            RuleFor(vm => vm.DefaultValue)
+                .Must((vm, n) => IsValidDefault(vm))
+                .WithMessage(ValidationMessages.InvalidDefaultValue);
+            
             When(vm => vm.DataTypeId == (int)DataType.Number, () =>
             {
                 RuleFor(vm => vm.NumberOfDecimals)
@@ -381,6 +384,71 @@ namespace Icon.Web.Mvc.Validators
             else
             {
                 return false;
+            }
+        }
+
+        private bool IsValidDefault(AttributeViewModel viewModel)
+        {
+            if(String.IsNullOrEmpty(viewModel.DefaultValue))
+            {
+                return true;
+            }
+
+            switch(viewModel.DataTypeId)
+            {
+                case (int)DataType.Date:
+                    DateTime date;
+                    return String.IsNullOrEmpty(viewModel.DefaultValue) || DateTime.TryParse(viewModel.DefaultValue, out date);
+                case (int)DataType.Number:
+                    int dec;
+                    decimal min, max, dflt;
+
+                    if(!Decimal.TryParse(viewModel.DefaultValue, out dflt)
+                        || !Decimal.TryParse(viewModel.MinimumNumber, out min)
+                        || !Decimal.TryParse(viewModel.MaximumNumber, out max)
+                        || !int.TryParse(viewModel.NumberOfDecimals, out dec))
+                    {
+                        return false;
+                    }
+
+                    var ar = dflt.ToString().Split('.');
+                    return dflt >= min && dflt <= max && (ar.Length == 1 ? 0 : ar[1].Length) <= dec;
+                 case (int)DataType.Text:
+                    if(viewModel.IsPickList)
+                    {
+                        return viewModel.PickListData.Any(x => x.PickListValue == viewModel.DefaultValue);
+                    }
+
+                    var chars = viewModel.DefaultValue.ToArray().Select(x => x).Distinct().ToArray();
+
+                    foreach(var rgx in viewModel.AvailableCharacterSets.Where(x => x.IsSelected).Select(x => new Regex(x.RegEx, RegexOptions.Compiled)))
+                    {
+                        chars = chars.ToArray().Where(x => String.IsNullOrEmpty(rgx.Match(x.ToString()).Value)).ToArray();
+                        if(chars.Count() == 0) break;
+                    }
+
+                    if(chars.Count() > 0)
+                    {
+                        if(viewModel.IsSpecialCharactersSelected)
+                        {
+                            if(String.Compare(viewModel.SpecialCharacterSetSelected, SPECIFIC_SPECIAL_CHARACTER_SET, StringComparison.InvariantCultureIgnoreCase) == 0)
+                            {
+                                if(chars.Except(viewModel.SpecialCharactersAllowed.ToArray().Distinct()).Count() > 0)
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                        else
+                        { 
+                            return false;
+                        }
+                    }
+
+                    return (viewModel.DefaultValue.Length >= Constants.MaxLengthAllowedMin && viewModel.DefaultValue.Length <= Constants.MaxLengthAllowedMax)
+                        && viewModel.DefaultValue.Length <= (viewModel.MaxLengthAllowed ?? 0);
+                default:
+                    return true;
             }
         }
     }

@@ -9,7 +9,6 @@ using Icon.Web.Mvc.Utility;
 using Icon.Web.Mvc.Validators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -600,7 +599,7 @@ namespace Icon.Web.Tests.Unit.Validators
 
             //Then
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual("'Max Length Allowed' must not be empty.", result.Errors.Single().ErrorMessage);
+            Assert.AreEqual("'Max Length of Attribute Value' must not be empty.", result.Errors.Single().ErrorMessage);
         }
 
         [TestMethod]
@@ -621,7 +620,7 @@ namespace Icon.Web.Tests.Unit.Validators
 
             //Then
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual("'Max Length Allowed' must be between 1 and 999999999. You entered 0.", result.Errors.Single().ErrorMessage);
+            Assert.AreEqual("'Max Length of Attribute Value' must be between 1 and 999999999. You entered 0.", result.Errors.Single().ErrorMessage);
         }
 
         [TestMethod]
@@ -642,7 +641,7 @@ namespace Icon.Web.Tests.Unit.Validators
 
             //Then
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual("'Max Length Allowed' must be between 1 and 999999999. You entered 1000000000.", result.Errors.Single().ErrorMessage);
+            Assert.AreEqual("'Max Length of Attribute Value' must be between 1 and 999999999. You entered 1000000000.", result.Errors.Single().ErrorMessage);
         }
 
         [TestMethod]
@@ -679,7 +678,7 @@ namespace Icon.Web.Tests.Unit.Validators
                 new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" }
             };
             viewModel.IsPickList = true;
-            viewModel.PickListData = null;
+            viewModel.PickListData = new List<PickListModel>();
             attributeModel.IsPickList = viewModel.IsPickList;
             mockGetAttributeByAttributeIdQuery.Setup(m => m.Search(It.IsAny<GetAttributeByAttributeIdParameters>()))
                 .Returns(attributeModel);
@@ -690,7 +689,6 @@ namespace Icon.Web.Tests.Unit.Validators
             //Then
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual("At least one pick list value must be entered.", result.Errors.Single().ErrorMessage);
-
         }
 
         [TestMethod]
@@ -748,7 +746,7 @@ namespace Icon.Web.Tests.Unit.Validators
 
             //Then
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual("Pick list values cannot be empty.", result.Errors.Single().ErrorMessage);
+            Assert.AreEqual("At least one pick list value must be entered.", result.Errors.Single().ErrorMessage);
         }
 
         [TestMethod]
@@ -780,7 +778,7 @@ namespace Icon.Web.Tests.Unit.Validators
 
             //Then
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual("Pick list values cannot be empty.", result.Errors.Single().ErrorMessage);
+            Assert.AreEqual("At least one pick list value must be entered.", result.Errors.Single().ErrorMessage);
         }
 
         [TestMethod]
@@ -842,7 +840,6 @@ namespace Icon.Web.Tests.Unit.Validators
 
             //Then
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual(ValidationMessages.PickListInvalidValue, result.Errors.Single().ErrorMessage);
         }
 
         [TestMethod]
@@ -852,7 +849,7 @@ namespace Icon.Web.Tests.Unit.Validators
             viewModel.DataTypeId = (int)DataType.Text;
             viewModel.DisplayName = "Test";
             viewModel.TraitCode = "Tst";
-            viewModel.MaxLengthAllowed = 100;
+            viewModel.MaxLengthAllowed = 50;
             viewModel.AvailableCharacterSets = new List<CharacterSetModel>
             {
                 new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" }
@@ -882,7 +879,7 @@ namespace Icon.Web.Tests.Unit.Validators
             viewModel.DataTypeId = (int)DataType.Text;
             viewModel.DisplayName = "Test";
             viewModel.TraitCode = "Tst";
-            viewModel.MaxLengthAllowed = 100;
+            viewModel.MaxLengthAllowed = 50;
             viewModel.AvailableCharacterSets = new List<CharacterSetModel>
             {
                 new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" }
@@ -1246,7 +1243,7 @@ namespace Icon.Web.Tests.Unit.Validators
         }
 
         [TestMethod]
-        public void Validate_AttributeIsPickListWithOnlyWhiteSpaceSelectedAsCharacterSet_ValidResult()
+        public void Validate_AttributeIsPickListWithOnlyWhiteSpaceSelectedAsCharacterSet_InvalidResult()
         {
             //Given
             viewModel.DataTypeId = (int)DataType.Text;
@@ -1272,7 +1269,7 @@ namespace Icon.Web.Tests.Unit.Validators
             var result = validator.Validate(viewModel);
 
             //Then
-            Assert.IsTrue(result.IsValid);
+            Assert.IsFalse(result.IsValid);
         }
 
         [TestMethod]
@@ -1543,7 +1540,7 @@ namespace Icon.Web.Tests.Unit.Validators
 
             //Then
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual(ValidationMessages.PickListMustHaveOneNonDeletedPickListValue, result.Errors.Single().ErrorMessage);
+            Assert .IsTrue(ValidationMessages.PickListMustHaveOneNonDeletedPickListValue.IndexOf(result.Errors.Single().ErrorMessage) > 0);
         }
 
         [TestMethod]
@@ -1646,6 +1643,397 @@ namespace Icon.Web.Tests.Unit.Validators
                 .Returns(attributeModel);
             mockDoesAttributeExistOnItemsQueryHandler.Setup(m => m.Search(It.IsAny<DoesAttributeExistOnItemsParameters>()))
                 .Returns(false);
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsTrue(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueWithNumberOfDecimaIs0_ValidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Number;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.MinimumNumber = "0";
+            viewModel.MaximumNumber = "0";
+            viewModel.NumberOfDecimals = "0";
+            viewModel.DefaultValue = "0";
+            viewModel.Action = ActionEnum.Add;
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsTrue(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueWithNumberOfDecimalMoreThenNumberOfDecimals_InvalidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Number;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.MinimumNumber = "0";
+            viewModel.MaximumNumber = "1";
+            viewModel.NumberOfDecimals = "0";
+            viewModel.DefaultValue = "0.2";
+            viewModel.Action = ActionEnum.Add;
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsFalse(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueExceedsMaximumNumber_InvalidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Number;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.MinimumNumber = "0";
+            viewModel.MaximumNumber = "1";
+            viewModel.NumberOfDecimals = "0";
+            viewModel.DefaultValue = "2";
+            viewModel.Action = ActionEnum.Add;
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsFalse(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueLessThenMinimumNumber_InvalidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Number;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.MinimumNumber = "1";
+            viewModel.MaximumNumber = "100";
+            viewModel.NumberOfDecimals = "0";
+            viewModel.DefaultValue = "0";
+            viewModel.Action = ActionEnum.Add;
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsFalse(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueDate_ValidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Date;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = System.DateTime.Now.ToString();
+            viewModel.Action = ActionEnum.Add;
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsTrue(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueDate_InvalidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Date;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = "2020-13-01";
+            viewModel.Action = ActionEnum.Add;
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsFalse(result.IsValid);
+        }
+
+        
+        [TestMethod]
+        public void Validate_DefaultValueText_ValidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Text;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = "TeSt 123";
+            viewModel.MaxLengthAllowed = 200;
+            viewModel.Action = ActionEnum.Add;
+            viewModel.AvailableCharacterSets = new List<CharacterSetModel>
+            {
+                new CharacterSetModel{ IsSelected = true, RegEx = "[A-Z]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = "[0-9]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = @"\s" }
+            };
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsTrue(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueTextWithAllSpecialCharacters_ValidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Text;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = "TeSt 123 &%#`~";
+            viewModel.MaxLengthAllowed = 200;
+            viewModel.IsSpecialCharactersSelected = true;
+            viewModel.SpecialCharacterSetSelected = "All";
+            viewModel.Action = ActionEnum.Add;
+            viewModel.AvailableCharacterSets = new List<CharacterSetModel>
+            {
+                new CharacterSetModel{ IsSelected = true, RegEx = "[A-Z]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = "[0-9]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = @"\s" }
+            };
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsTrue(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueTextWithSpecificSpecialCharacters_ValidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Text;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = "TeSt 123 &";
+            viewModel.MaxLengthAllowed = 200;
+            viewModel.IsSpecialCharactersSelected = true;
+            viewModel.SpecialCharactersAllowed = "&";
+            viewModel.SpecialCharacterSetSelected = "Specific";
+            viewModel.Action = ActionEnum.Add;
+            viewModel.AvailableCharacterSets = new List<CharacterSetModel>
+            {
+                new CharacterSetModel{ IsSelected = true, RegEx = "[A-Z]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = "[0-9]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = @"\s" }
+            };
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsTrue(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueTextWithSpecificSpecialCharacters_InvalidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Text;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = "TeSt 123 &@";
+            viewModel.MaxLengthAllowed = 200;
+            viewModel.IsSpecialCharactersSelected = true;
+            viewModel.SpecialCharactersAllowed = "&*";
+            viewModel.SpecialCharacterSetSelected = "Specific";
+            viewModel.Action = ActionEnum.Add;
+            viewModel.AvailableCharacterSets = new List<CharacterSetModel>
+            {
+                new CharacterSetModel{ IsSelected = true, RegEx = "[A-Z]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = "[0-9]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = @"\s" }
+            };
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsFalse(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueTextWithSpecialCharacters_InvalidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Text;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = "TeSt 123 &";
+            viewModel.MaxLengthAllowed = 200;
+            viewModel.IsSpecialCharactersSelected = false;
+            viewModel.Action = ActionEnum.Add;
+            viewModel.AvailableCharacterSets = new List<CharacterSetModel>
+            {
+                new CharacterSetModel{ IsSelected = true, RegEx = "[A-Z]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = "[0-9]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = @"\s" }
+            };
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsFalse(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueTextWithNoSpace_InvalidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Text;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = "TeSt 123";
+            viewModel.MaxLengthAllowed = 200;
+            viewModel.IsSpecialCharactersSelected = false;
+            viewModel.Action = ActionEnum.Add;
+            viewModel.AvailableCharacterSets = new List<CharacterSetModel>
+            {
+                new CharacterSetModel{ IsSelected = true, RegEx = "[A-Z]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = "[0-9]*" },
+            };
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsFalse(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueTextNoNumbers_InvalidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Text;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = "TeSt 123";
+            viewModel.MaxLengthAllowed = 200;
+            viewModel.IsSpecialCharactersSelected = false;
+            viewModel.Action = ActionEnum.Add;
+            viewModel.AvailableCharacterSets = new List<CharacterSetModel>
+            {
+                new CharacterSetModel{ IsSelected = true, RegEx = "[A-Z]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" },
+                new CharacterSetModel{ IsSelected = true, RegEx = @"\s" },
+            };
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsFalse(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueTextNoLowerCase_InvalidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Text;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = "TeSt";
+            viewModel.MaxLengthAllowed = 200;
+            viewModel.IsSpecialCharactersSelected = false;
+            viewModel.Action = ActionEnum.Add;
+            viewModel.AvailableCharacterSets = new List<CharacterSetModel>
+            {
+                new CharacterSetModel{ IsSelected = true, RegEx = "[A-Z]*" },
+            };
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsFalse(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueTextUpperCaseOnly_ValidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Text;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = "TEST";
+            viewModel.MaxLengthAllowed = 200;
+            viewModel.IsSpecialCharactersSelected = false;
+            viewModel.Action = ActionEnum.Add;
+            viewModel.AvailableCharacterSets = new List<CharacterSetModel>
+            {
+                new CharacterSetModel{ IsSelected = true, RegEx = "[A-Z]*" },
+            };
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsTrue(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueTextLowCaseOnly_ValidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Text;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = "test";
+            viewModel.MaxLengthAllowed = 200;
+            viewModel.IsSpecialCharactersSelected = false;
+            viewModel.Action = ActionEnum.Add;
+            viewModel.AvailableCharacterSets = new List<CharacterSetModel>
+            {
+                new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" },
+            };
+
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsTrue(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_DefaultValueTextNumericOnly_ValidResult()
+        {
+            //Given
+            viewModel.DataTypeId = (int)DataType.Text;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = "123";
+            viewModel.MaxLengthAllowed = 200;
+            viewModel.IsSpecialCharactersSelected = false;
+            viewModel.Action = ActionEnum.Add;
+            viewModel.AvailableCharacterSets = new List<CharacterSetModel>
+            {
+                new CharacterSetModel{ IsSelected = true, RegEx = "[0-9]*" },
+            };
 
             //When
             var result = validator.Validate(viewModel);

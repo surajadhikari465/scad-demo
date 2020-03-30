@@ -11,6 +11,7 @@
 	@SpecialCharactersAllowed NVARCHAR(255) = NULL,
 	@IsRequired bit ,
 	@CharacterSetRegexPattern NVARCHAR(255) = NULL,
+	@DefaultValue NVARCHAR(255) = NULL,
 	@AttributeId INT OUTPUT
 AS
 BEGIN
@@ -59,7 +60,8 @@ BEGIN
 			[SpecialCharactersAllowed],
 			[DisplayOrder],
 			[IsRequired],
-			[XmlTraitDescription]
+			[XmlTraitDescription],
+			[DefaultValue]
 			)
 		VALUES (
 			@DisplayName,
@@ -76,7 +78,8 @@ BEGIN
 			@SpecialCharactersAllowed,
 			@displayOrder,
 			@IsRequired,
-			@DisplayName
+			@DisplayName,
+			@DefaultValue
 			)
 
 		SET @scopeIdentity = SCOPE_IDENTITY()

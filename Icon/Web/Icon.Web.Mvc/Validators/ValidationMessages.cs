@@ -27,5 +27,6 @@ namespace Icon.Web.Mvc.Validators
         public const string ValidatePickListValue = "Pick list value is associated with one or more items. Cannot delete.";
         public const string PickListMustHaveOneNonDeletedPickListValue = "Cannot delete pick list value. At least one pick list value must be entered.";
         public const string AttributeExistsOnItemsWhenSwitchingToPickListError = "Unable to switch to a PickList. Items exist that have values for this attribute.";
+        public const string InvalidDefaultValue = "Invalid Default Value";
     }
 }

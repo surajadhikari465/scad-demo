@@ -52,6 +52,7 @@ namespace Icon.Web.Mvc.Models
         public ActionEnum Action { get; set; }
         public int? AttributeGroupId { get; set; }
         public bool? HasUniqueValues { get; set; }
+        [Display(Name = "Default Value (Optional)")]
         public string DefaultValue { get; set; }
         public int? InitialValue { get; set; }
         public int? IncrementBy { get; set; }

@@ -127,6 +127,7 @@ namespace Icon.Web.Mvc.Controllers
             }
 
             ValidatePickList(viewModel);
+            ValidateDefaultValue(viewModel);
             UpdateAttributeManager manager = new UpdateAttributeManager
             {
                 Attribute = new AttributeModel
@@ -142,6 +143,7 @@ namespace Icon.Web.Mvc.Controllers
                     MinimumNumber = viewModel.MinimumNumber,
                     MaximumNumber = viewModel.MaximumNumber,
                     NumberOfDecimals = viewModel.NumberOfDecimals,
+                    DefaultValue = viewModel.DefaultValue,
                     SpecialCharactersAllowed = viewModel.IsSpecialCharactersSelected ? (viewModel.SpecialCharacterSetSelected == Constants.SpecialCharactersAll) ? Constants.SpecialCharactersAll : viewModel.SpecialCharactersAllowed : null,
                     CharacterSetRegexPattern = attributesHelper.CreateCharacterSetRegexPattern(
                         viewModel.DataTypeId,
@@ -192,6 +194,7 @@ namespace Icon.Web.Mvc.Controllers
                 MinimumNumber = attribute.MinimumNumber,
                 NumberOfDecimals = attribute.NumberOfDecimals,
                 IsPickList = attribute.IsPickList,
+                DefaultValue = attribute.DefaultValue,
                 UserWriteAccess = GetWriteAccess(),
                 Action = ActionEnum.Update
             };
@@ -236,6 +239,7 @@ namespace Icon.Web.Mvc.Controllers
             }
 
             ValidatePickList(viewModel);
+            ValidateDefaultValue(viewModel);
             ValidateSpecialCharacters(viewModel);
             AddAttributeManager manager = new AddAttributeManager
             {
@@ -253,6 +257,7 @@ namespace Icon.Web.Mvc.Controllers
                     MinimumNumber = viewModel.MinimumNumber,
                     MaximumNumber = viewModel.MaximumNumber,
                     NumberOfDecimals = viewModel.NumberOfDecimals,
+                    DefaultValue = viewModel.DefaultValue,
                     SpecialCharactersAllowed = viewModel.IsSpecialCharactersSelected ? (viewModel.SpecialCharacterSetSelected == Constants.SpecialCharactersAll) ? Constants.SpecialCharactersAll : viewModel.SpecialCharactersAllowed : null,
                     CharacterSetRegexPattern = attributesHelper.CreateCharacterSetRegexPattern(
                         viewModel.DataTypeId,
@@ -494,6 +499,21 @@ namespace Icon.Web.Mvc.Controllers
                     : null;
 
                 viewModel.IsPickList = (viewModel.PickListData != null && viewModel.PickListData.Count > 0);
+            }
+        }
+
+        void ValidateDefaultValue(AttributeViewModel viewModel)
+        {
+            if(viewModel != null)
+            {
+                if(String.IsNullOrWhiteSpace(viewModel.DefaultValue))
+                {
+                    viewModel.DefaultValue = null;
+                }
+                else
+                {
+                    viewModel.DefaultValue = viewModel.DefaultValue.Trim();
+                }
             }
         }
 
