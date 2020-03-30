@@ -1,4 +1,5 @@
 ﻿using BulkItemUploadProcessor.Common;
+using BulkItemUploadProcessor.Common.Builder;
 using BulkItemUploadProcessor.Common.Models;
 using BulkItemUploadProcessor.DataAccess.Commands;
 using BulkItemUploadProcessor.Service.Interfaces;
@@ -13,14 +14,17 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
     {
         private readonly ICommandHandler<UpdateItemsCommand> updateItemsCommandHandler;
         private readonly ICommandHandler<AddItemsCommand> addItemsCommandHandler;
+        private IErrorMessageBuilder errorMessageBuilder;
 
         public AddUpdateItemManager(
               ICommandHandler<UpdateItemsCommand> updateItemsCommandHandler,
-              ICommandHandler<AddItemsCommand> addItemsCommandHandler
+              ICommandHandler<AddItemsCommand> addItemsCommandHandler,
+              IErrorMessageBuilder errorMessageBuilder
         )
         {
             this.addItemsCommandHandler = addItemsCommandHandler;
             this.updateItemsCommandHandler = updateItemsCommandHandler;
+            this.errorMessageBuilder = errorMessageBuilder;
         }
 
         public void UpdateItems(List<UpdateItemModel> updateItemModels,
@@ -45,7 +49,8 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
                 }
                 else
                 {
-                    invalidItems.Add(new ErrorItem<UpdateItemModel>(command.Items[0], ex.Message));
+                    var errorMessage = errorMessageBuilder.BuildErrorMessage(ex);
+                    invalidItems.Add(new ErrorItem<UpdateItemModel>(command.Items[0], errorMessage));
                 }
             }
         }
@@ -80,7 +85,8 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
                 }
                 else
                 {
-                    invalidItems.Add(new ErrorItem<AddItemModel>(command.Items[0], ex.Message));
+                    var errorMessage = errorMessageBuilder.BuildErrorMessage(ex);
+                    invalidItems.Add(new ErrorItem<AddItemModel>(command.Items[0], errorMessage));
                 }
             }
         }

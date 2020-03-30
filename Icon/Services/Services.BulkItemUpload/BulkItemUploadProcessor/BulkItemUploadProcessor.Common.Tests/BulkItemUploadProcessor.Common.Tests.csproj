@@ -5,11 +5,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{764E87A1-B114-4411-B174-8B6A6D411FEB}</ProjectGuid>
+    <ProjectGuid>{FAC557BF-D080-4036-8F95-B4BE7D13C38D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BulkItemUploadProcessor.DataAccess.Tests</RootNamespace>
-    <AssemblyName>BulkItemUploadProcessor.DataAccess.Tests</AssemblyName>
+    <RootNamespace>BulkItemUploadProcessor.Common.Tests</RootNamespace>
+    <AssemblyName>BulkItemUploadProcessor.Common.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -38,43 +38,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Perf|AnyCPU'">
-    <OutputPath>bin\Perf\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'QA|AnyCPU'">
-    <OutputPath>bin\QA\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
-    <OutputPath>bin\Test\</OutputPath>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Common.2019.12.12.1\lib\net472\Icon.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.DbContextFactory.2019.5.22.1\lib\net472\Icon.DbContextFactory.dll</HintPath>
-    </Reference>
-    <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2019.12.6.1\lib\net472\Icon.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.RenewableContext.2019.5.14.2\lib\net472\Icon.RenewableContext.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.3.2\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
@@ -82,31 +46,21 @@
       <HintPath>..\packages\MSTest.TestFramework.1.3.2\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\AddItemsCommandHandlerTests.cs" />
-    <Compile Include="Commands\UpdateItemsCommandHandlerTests.cs" />
+    <Compile Include="Builder\SqlExceptionBuilder.cs" />
+    <Compile Include="Builder\ErrorMessageBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BulkItemUploadProcessor.Common\BulkItemUploadProcessor.Common.csproj">
-      <Project>{597d2b66-69e4-4c90-ad92-514bddb82f25}</Project>
+      <Project>{597D2B66-69E4-4C90-AD92-514BDDB82F25}</Project>
       <Name>BulkItemUploadProcessor.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BulkItemUploadProcessor.DataAccess\BulkItemUploadProcessor.DataAccess.csproj">
-      <Project>{f663c8be-5e78-474c-ac7d-2117ac58961c}</Project>
-      <Name>BulkItemUploadProcessor.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

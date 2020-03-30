@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulkItemUploadProcessor.Com
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulkItemUploadProcessor.DataAccess.Tests", "BulkItemUploadProcessor.DataAccess.Tests\BulkItemUploadProcessor.DataAccess.Tests.csproj", "{764E87A1-B114-4411-B174-8B6A6D411FEB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulkItemUploadProcessor.Common.Tests", "BulkItemUploadProcessor.Common.Tests\BulkItemUploadProcessor.Common.Tests.csproj", "{FAC557BF-D080-4036-8F95-B4BE7D13C38D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,22 @@ Global
 		{764E87A1-B114-4411-B174-8B6A6D411FEB}.Test|Any CPU.Build.0 = Test|Any CPU
 		{764E87A1-B114-4411-B174-8B6A6D411FEB}.Test1|Any CPU.ActiveCfg = Release|Any CPU
 		{764E87A1-B114-4411-B174-8B6A6D411FEB}.Test1|Any CPU.Build.0 = Release|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.Dev1|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.Dev1|Any CPU.Build.0 = Debug|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.Perf|Any CPU.ActiveCfg = Release|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.Perf|Any CPU.Build.0 = Release|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.QA|Any CPU.Build.0 = Release|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.QA1|Any CPU.ActiveCfg = Release|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.QA1|Any CPU.Build.0 = Release|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.Test|Any CPU.Build.0 = Release|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.Test1|Any CPU.ActiveCfg = Release|Any CPU
+		{FAC557BF-D080-4036-8F95-B4BE7D13C38D}.Test1|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

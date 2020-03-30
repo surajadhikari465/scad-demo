@@ -1,10 +1,12 @@
 ﻿using BulkItemUploadProcessor.Common;
+using BulkItemUploadProcessor.Common.Builder;
 using BulkItemUploadProcessor.Common.Models;
 using BulkItemUploadProcessor.DataAccess.Commands;
 using BulkItemUploadProcessor.Service.BulkUpload;
 using Icon.Common.DataAccess;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 
 namespace BulkItemUploadProcessor.Service.Tests
@@ -21,16 +23,22 @@ namespace BulkItemUploadProcessor.Service.Tests
         private List<AddItemModel> addItemModels;
         private List<ErrorItem<AddItemModel>> invalidAddItems;
         private List<ItemIdAndScanCode> addedItems;
+        private Mock<IErrorMessageBuilder> mockErrorMessageBuilder;
+        private const string UpdateError = "Error in updating data.";
 
         [TestInitialize]
         public void Init()
         {
             mockUpdateItemsCommandHandler = new Mock<ICommandHandler<UpdateItemsCommand>>();
             mockAddItemsCommandHandler = new Mock<ICommandHandler<AddItemsCommand>>();
+            mockErrorMessageBuilder = new Mock<IErrorMessageBuilder>();
 
             addUpdateItemManager = new AddUpdateItemManager(mockUpdateItemsCommandHandler.Object,
-                mockAddItemsCommandHandler.Object
+                mockAddItemsCommandHandler.Object,
+                mockErrorMessageBuilder.Object
                );
+
+            mockErrorMessageBuilder.Setup(s => s.BuildErrorMessage(It.IsAny<Exception>())).Returns(UpdateError);
         }
 
         [TestMethod]

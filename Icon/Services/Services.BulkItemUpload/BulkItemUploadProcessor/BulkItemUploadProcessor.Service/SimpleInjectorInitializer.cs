@@ -1,4 +1,5 @@
 ﻿using BulkItemUploadProcessor.Common;
+using BulkItemUploadProcessor.Common.Builder;
 using BulkItemUploadProcessor.DataAccess.Commands;
 using BulkItemUploadProcessor.DataAccess.Decorators;
 using BulkItemUploadProcessor.DataAccess.Queries;
@@ -48,6 +49,7 @@ namespace BulkItemUploadProcessor.Service
             container.Register<IItemAttributesValidatorFactory, ItemAttributesValidatorFactory>();
             
             container.Register<IValidationManager, ValidationManager>();
+            container.Register<IErrorMessageBuilder, ErrorMessageBuilder>();
             container.Register<IAddUpdateItemManager,AddUpdateItemManager>();
             container.Register<IValidator<ExcelPackage>, ExcelPackageValidator>();
             container.Register<IHierarchyValidator, HierarchyValidator>();

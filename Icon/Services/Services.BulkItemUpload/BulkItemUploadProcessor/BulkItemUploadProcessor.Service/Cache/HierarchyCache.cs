@@ -44,11 +44,11 @@ namespace BulkItemUploadProcessor.Service.Cache
         }
         public void LoadAll()
         {
-            NationalHierarchy.UnionWith(LoadHierarchyIds(HierarchyNames.National));
-            MerchandiseHierarchy.UnionWith(LoadHierarchyIds(HierarchyNames.Merchandise));
-            BrandHierarchy.UnionWith(LoadHierarchyIds(HierarchyNames.Brands));
-            ManufacturerHierarchy.UnionWith(LoadHierarchyIds("Manufacturer"));
-            TaxHierarchy.UnionWith(LoadHierarchyIds(HierarchyNames.Tax));
+            NationalHierarchy.UnionWith(LoadHierarchyIds(HierarchyNames.National, HierarchyLevels.NationalClass));
+            MerchandiseHierarchy.UnionWith(LoadHierarchyIds(HierarchyNames.Merchandise, HierarchyLevels.SubBrick));
+            BrandHierarchy.UnionWith(LoadHierarchyIds(HierarchyNames.Brands, HierarchyLevels.Brand));
+            ManufacturerHierarchy.UnionWith(LoadHierarchyIds("Manufacturer", HierarchyLevels.Manufacturer));
+            TaxHierarchy.UnionWith(LoadHierarchyIds(HierarchyNames.Tax, HierarchyLevels.Tax));
         }
 
         public bool IsValidNationalHierarchyClassId(int hierarchyClassId)
@@ -76,9 +76,9 @@ namespace BulkItemUploadProcessor.Service.Cache
             return TaxHierarchy.Contains(hierarchyClassId);
         }
 
-        public List<int> LoadHierarchyIds(string hierarchyName)
+        public List<int> LoadHierarchyIds(string hierarchyName, int hierarchyLevel)
         {
-            var ids = getHierarchyIdsQueryHandler.Search(new GetHierarchyIdsParameters { HierarhcyName = hierarchyName });
+            var ids = getHierarchyIdsQueryHandler.Search(new GetHierarchyIdsParameters { HierarhcyName = hierarchyName, HierarchyLevel = hierarchyLevel });
             return ids;
         }
     }

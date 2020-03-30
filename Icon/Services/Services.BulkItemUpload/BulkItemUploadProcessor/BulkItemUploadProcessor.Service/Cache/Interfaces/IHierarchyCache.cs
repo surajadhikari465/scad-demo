@@ -5,7 +5,7 @@ namespace BulkItemUploadProcessor.Service.Cache.Interfaces
     public interface IHierarchyCache
     {
         void LoadAll();
-        List<int> LoadHierarchyIds(string hierarchyName);
+        List<int> LoadHierarchyIds(string hierarchyName, int hierarchyLevel);
         bool IsValidNationalHierarchyClassId(int hierarchyClassId);
         bool IsValidMerchandiseHierarchyClassId(int hierarchyClassId);
         bool IsValidBrandHierarchyClassId(int hierarchyClassId);
