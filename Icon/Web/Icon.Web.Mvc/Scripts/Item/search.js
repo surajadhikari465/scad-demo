@@ -342,7 +342,7 @@ window.addEventListener('load', function () {
                         primaryKey: "ItemId",
                         autoGenerateColumns: false,
                         width: "100%",
-                        height: "50vh",
+                        height: getHeight(),
                         dataSource: window.location.origin + '/Item/GridDataSource',
                         updateUrl: window.location.origin + '/Item/GridUpdate',
                         autoCommit: false,
@@ -1038,4 +1038,12 @@ window.addEventListener('load', function () {
     });
 });
 
+
+function getHeight() {
+    let wh = $(window).height();
+    let div = $("#divSearch");
+    let pos = div.position();
+    let h = 85 - (parseInt(((pos.top + div.height()) / wh) * 100));
+    return h < 50 ? '50vh' : h + 'vh';
+};
 
