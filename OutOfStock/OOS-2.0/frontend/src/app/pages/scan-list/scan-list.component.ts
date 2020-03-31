@@ -25,6 +25,7 @@ export class ScanListComponent implements OnInit {
   public wfmStore: Store;
   public wfmRegion: string;
   public shouldBeDisabled: boolean = false;
+  public isLoading: boolean = false;
 
   constructor(
     private appService: AppService,
@@ -41,6 +42,7 @@ export class ScanListComponent implements OnInit {
     BarcodeScanner.registerHandler(function (data: IBarcodeScannedEvent) {
       const allowScan = self.appService.getScan();
       if (allowScan) {
+        self.isLoading = true;
         try {
           let scanCode = ScanCodeProcessor.parseScanCode(data.Data, data.Symbology);
           self.addWfmItem(scanCode)
@@ -80,6 +82,7 @@ export class ScanListComponent implements OnInit {
 
       this.items.push(item);
       localStorage.setItem('items', JSON.stringify(this.items));
+      this.isLoading = false;
 
       // since the scanning is being called
       // by the native app we need to tell
