@@ -61,10 +61,8 @@ const ConfirmModal: React.FC<IProps> = ({ enableButton = true, noGreyClick = fal
                 <Modal.Header>{headerText}</Modal.Header>
                 <Modal.Content>
                     <Modal.Description>
-                        <Grid columns={2}>
-                            <Grid.Column width={4}>
-                            </Grid.Column>
-                            <Grid.Column width={12}>
+                        <Grid columns={1}>
+                            <Grid.Column style={{marginLeft: '10px'}}>
                                 <p>
                                     {lineOne}
                                 </p>

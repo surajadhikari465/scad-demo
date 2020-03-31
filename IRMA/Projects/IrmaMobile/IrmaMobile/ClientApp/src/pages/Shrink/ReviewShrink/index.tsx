@@ -105,13 +105,13 @@ const ReviewShrink: React.FC = () => {
           }
         }
         finally {
-          setIsLoading(false);
           localStorage.removeItem('sessionSubType');
           localStorage.removeItem('shrinkUser');
           localStorage.removeItem('shrinkSubteam');
         }
       }
       if (succeededItems === shrinkItems.length) {
+        setIsLoading(false);
         toast.success("Shrink Items Uploaded");
         dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
         subteamSession[sessionIndex] = { shrinkItems: [], isPrevSession: false, sessionShrinkType: '', sessionSubteam: undefined, sessionStore: '', sessionNumber: 0, sessionRegion: '', sessionUser: user, forceSubteamSelection: true };

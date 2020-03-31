@@ -15,7 +15,7 @@ const ReceivePurchaseOrderDetailsQtyModal: React.FC<IProps> = ({ open, handleQua
             <Modal open={open}>
                 <Modal.Header>Previously Scanned Item</Modal.Header>
                 <Modal.Content>
-                    {`${quantity} of this item already queued in this session. Tap Add, Overwrite or Cancel.`}
+                    {`${quantity} of this item already queued in this session. Tap Add, Overwrite, or Cancel.`}
                 </Modal.Content>
                 <Modal.Actions>
                     <WfmButton style={{marginRight: '20px'}} onClick={() => handleQuantityDecision(QuantityAddMode.AddTo)} >Add</WfmButton>
