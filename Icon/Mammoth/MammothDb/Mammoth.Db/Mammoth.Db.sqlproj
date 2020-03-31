@@ -846,6 +846,8 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\25982_IRMAItemAttributeFileSentToS3.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\24848_PopulateLocaleHieararchyJob_ForExtractService.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\23389_Delete_Job_CopyGpmDataForAudit.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\30224_Create_IVL_Extract_JobScheudle.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\30224_Create_IVL_Item_Extract_JobSchedule.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -859,8 +861,6 @@
     <None Include="Scripts\Projects\GPM\GPM_Data_Conversion_Price_Bulk_Insert.sql" />
     <Build Include="dbo\Stored Procedures\AddOrUpdateItemAttributesLocaleRegion.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\DeduplicateScanCodes_PERF.sql" />
-    <None Include="Scripts\PostDeploymentScripts\30224_Create_IVL_Extract_JobScheudle.sql" />
-    <None Include="Scripts\PostDeploymentScripts\30224_Create_IVL_Item_Extract_JobSchedule.sql" />
     <Build Include="dbo\User Defined Types\HierarchyMerchandiseClassType.sql" />
     <None Include="dbo\Stored Procedures\AddOrUpdateHierarchyMerchandiseSubBrick.sql" />
   </ItemGroup>

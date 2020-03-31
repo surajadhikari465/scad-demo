@@ -13,8 +13,6 @@ Post-Deployment Script Template
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 
 
-:r .\30224_Create_IVL_Extract_JobScheudle.sql -- 2020-02-25 30224
-:r .\30224_Create_IVL_Item_Extract_JobSchedule.sql -- 2020-02-25 30224
 :r .\30737_PopulateGlobalItemMessageType.sql --2020-03-06
 :r .\PopulateManufacturerHierarchy.sql --2020-02-24
 
