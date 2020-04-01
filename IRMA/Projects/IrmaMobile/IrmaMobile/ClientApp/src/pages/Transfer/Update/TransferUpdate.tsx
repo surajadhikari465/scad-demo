@@ -118,8 +118,8 @@ const TransferUpdate: React.FC = () => {
           </div>
         </section>
         <div className="update-buttons">
-          <button className="wfm-btn" onClick={() => history.goBack()}>Cancel</button>
-          <button className="wfm-btn" onClick={handleUpdateClick}>Update</button>
+          <button className="irma-btn" onClick={() => history.goBack()}>Cancel</button>
+          <button className="irma-btn" onClick={handleUpdateClick}>Update</button>
         </div>
       </div>
       <BasicModal alert={alert} setAlert={setAlert} />

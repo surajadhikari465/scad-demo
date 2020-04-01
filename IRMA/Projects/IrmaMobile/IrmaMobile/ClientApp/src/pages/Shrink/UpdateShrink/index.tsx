@@ -128,8 +128,8 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
           </select>
         </section>
         <div className="update-buttons">
-          <button className="wfm-btn"><Link to="/shrink/review">Cancel</Link></button>
-          <button className="wfm-btn" onClick={update}>Update</button>
+          <button className="irma-btn"><Link to="/shrink/review">Cancel</Link></button>
+          <button className="irma-btn" onClick={update}>Update</button>
         </div>
       </div>
       <BasicModal alert={alert} setAlert={setAlert} />

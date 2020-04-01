@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react'
 import { Modal } from 'semantic-ui-react'
-import { WfmButton } from '@wfm/ui-react'
 import { QuantityAddMode } from '../../types/QuantityAddMode';
 
 interface IProps {
@@ -18,9 +17,9 @@ const ReceivePurchaseOrderDetailsQtyModal: React.FC<IProps> = ({ open, handleQua
                     {`${quantity} of this item already queued in this session. Tap Add, Overwrite, or Cancel.`}
                 </Modal.Content>
                 <Modal.Actions>
-                    <WfmButton style={{marginRight: '20px'}} onClick={() => handleQuantityDecision(QuantityAddMode.AddTo)} >Add</WfmButton>
-                    <WfmButton style={{marginRight: '20px'}} onClick={() => handleQuantityDecision(QuantityAddMode.Overwrite)}>Overwrite</WfmButton>
-                    <WfmButton onClick={() => handleQuantityDecision(QuantityAddMode.None)}>Cancel</WfmButton>
+                    <button className="irma-btn" style={{marginRight: '20px'}} onClick={() => handleQuantityDecision(QuantityAddMode.AddTo)} >Add</button>
+                    <button className="irma-btn" style={{marginRight: '20px'}} onClick={() => handleQuantityDecision(QuantityAddMode.Overwrite)}>Overwrite</button>
+                    <button className="irma-btn" onClick={() => handleQuantityDecision(QuantityAddMode.None)}>Cancel</button>
                 </Modal.Actions>
             </Modal>
         </Fragment>

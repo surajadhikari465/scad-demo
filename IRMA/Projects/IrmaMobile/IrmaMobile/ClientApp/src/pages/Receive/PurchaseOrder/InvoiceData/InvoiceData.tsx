@@ -16,7 +16,6 @@ import isMinDate from "../util/MinDate";
 import { useHistory } from "react-router-dom";
 import OrderItem from "../types/OrderItem";
 import BasicModal from "../../../../layout/BasicModal";
-import { WfmButton } from "@wfm/ui-react";
 
 interface RouteParams {
     purchaseOrderNumber: string;

@@ -135,7 +135,7 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 					</div>
 				</div>
 				<div className="region-select">
-					<WfmButton disabled={state.region === ''} onClick={handleSelectRegionClick}>Select Region</WfmButton>
+					<button className="irma-btn" disabled={state.region === ''} onClick={handleSelectRegionClick}>Select Region</button>
 				</div>
 			</div>)
 	}

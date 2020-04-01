@@ -201,9 +201,9 @@ const ReviewShrink: React.FC = () => {
         </section>
         <section className='entry-section'>
           <div className='shrink-buttons'>
-            <button className="wfm-btn" onClick={update}>Update</button>
-            <button className="wfm-btn" onClick={removeCheck}>Remove</button>
-            <button className="wfm-btn upload-btn" onClick={upload}>Upload</button>
+            <button className="irma-btn" onClick={update}>Update</button>
+            <button className="irma-btn" onClick={removeCheck}>Remove</button>
+            <button className="irma-btn upload-btn" onClick={upload}>Upload</button>
           </div>
         </section>
         <Modal

@@ -1,8 +1,5 @@
 import React, { Fragment, useState } from 'react'
-import { Modal, Icon, Grid } from 'semantic-ui-react'
-import { WfmButton } from '@wfm/ui-react'
-
-
+import { Modal, Grid } from 'semantic-ui-react'
 
 /*
 
@@ -23,7 +20,7 @@ interface IProps {
     confirmButtonText: string;                  //optional: text to be shown on the confirm (left) button
     cancelButtonText: string;                   //optional: text to be shown on the cancel (right) button
     triggerButtonText?: string;                 //optional: text to be shown on the external button that opens the modal
-    showTriggerButton?: boolean;                //optional, default true: whether or not to generate an external WfmButton for the user to click to open the modal
+    showTriggerButton?: boolean;                //optional, default true: whether or not to generate an external button for the user to click to open the modal
     openExternal?: boolean;                     //required: state used to tell the modal to be visible or not. Must be same state variable that is attached to setOpenExternal
     noGreyClick?: boolean;                      //optional: if true, the user cannot close the modal by clicking the grey area
     enableButton?: boolean;                     //optional, default true: determines whether or not the button is greyed out
@@ -57,7 +54,7 @@ const ConfirmModal: React.FC<IProps> = ({ enableButton = true, noGreyClick = fal
 
     return (
         <Fragment>
-            <Modal closeOnDimmerClick={noGreyClick} open={open || openExternal} onClose={handleCancelClick} trigger={showTriggerButton && <WfmButton disabled={!enableButton} onClick={() => {setOpen(true)}}>{triggerButtonText}</WfmButton>}>
+            <Modal closeOnDimmerClick={noGreyClick} open={open || openExternal} onClose={handleCancelClick} trigger={showTriggerButton && <button className="irma-btn" disabled={!enableButton} onClick={() => {setOpen(true)}}>{triggerButtonText}</button>}>
                 <Modal.Header>{headerText}</Modal.Header>
                 <Modal.Content>
                     <Modal.Description>
@@ -75,8 +72,8 @@ const ConfirmModal: React.FC<IProps> = ({ enableButton = true, noGreyClick = fal
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
-                    <WfmButton onClick={handleConfirmClick} style={{marginRight: '20px'}}>{confirmButtonText}</WfmButton>
-                    <WfmButton onClick={handleCancelClick}>{cancelButtonText}</WfmButton>
+                    <button className="irma-btn" onClick={handleConfirmClick} style={{marginRight: '20px'}}>{confirmButtonText}</button>
+                    <button className="irma-btn" onClick={handleCancelClick}>{cancelButtonText}</button>
                 </Modal.Actions>
             </Modal>
         </Fragment>

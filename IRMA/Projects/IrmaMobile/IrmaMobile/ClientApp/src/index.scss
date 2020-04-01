@@ -59,3 +59,79 @@ h1, h2, h3, h4 {
   max-height: 250px!important;
   /* This makes the semantic-ui dropdown menu larger than 3 items */
 }
+
+.irma-btn {
+  background: var(--wfm-color-primary, #004e36);
+  outline: none;
+  font-family: "CircularStd-Book";
+  border: solid;
+  border-width: 2px;
+  border-color: var(--wfm-color-primary, #004e36);
+  color: var(--wfm-color-primary-contrast, #fff);
+  padding: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 2px;
+  letter-spacing: 0.25px;
+  margin: 2px;
+}
+
+.irma-btn {
+  background: var(--wfm-color-primary, #004e36);
+  outline: none;
+  font-family: "CircularStd-Book";
+  border: solid;
+  border-width: 2px;
+  border-color: var(--wfm-color-primary, #004e36);
+  color: var(--wfm-color-primary-contrast, #fff);
+  padding: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 2px;
+  letter-spacing: 0.25px;
+  margin: 2px;
+}
+.irma-btn.secondary {
+  background: var(--wfm-color-secondary, #006f46);
+  border-color: var(--wfm-color-secondary, #006f46);
+}
+.irma-btn.tertiary {
+  background: var(--wfm-color-tertiary, #d63a01);
+  border-color: var(--wfm-color-tertiary, #d63a01);
+}
+.irma-btn.prime {
+  background: #0079b4;
+  border-color: #0079b4;
+}
+.irma-btn.raised {
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.irma-btn.raised:active {
+  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12),
+      0 5px 5px -3px rgba(0, 0, 0, 0.4);
+}
+.irma-btn:hover {
+  cursor: pointer;
+}
+.irma-btn[disabled] {
+  background: var(--wfm-color-light-tint, #f9f8f6);
+  color: rgba(var(--wfm-color-dark-tint-rgb, 106, 105, 104), 50%);
+  border-color: rgba(var(--wfm-color-light-tint-rgb, 249, 248, 246), 50%);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.irma-btn--outline {
+  color: var(--wfm-color-primary, #004e36);
+  background: transparent;
+}
+.irma-btn--clear {
+  background: transparent;
+  border: transparent;
+  color: #2e2d2b;
+}
+.irma-btn--flex {
+  flex: 1;
+}

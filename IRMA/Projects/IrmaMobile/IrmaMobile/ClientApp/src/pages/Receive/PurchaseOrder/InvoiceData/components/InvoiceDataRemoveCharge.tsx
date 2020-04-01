@@ -1,4 +1,3 @@
-import { WfmButton } from '@wfm/ui-react';
 import React, { Fragment, SyntheticEvent, useEffect, useState } from 'react';
 import { Dropdown, DropdownProps, Modal, Button } from 'semantic-ui-react';
 import Charge from '../../types/Charge';
@@ -36,7 +35,7 @@ const InvoiceDataRemoveCharge: React.FC<IProps> = ({ charges, disabled, handleRe
 
     return (
         <Fragment>
-            <Modal open={open} trigger={<WfmButton disabled={disabled} onClick={() => {setOpen(true)}}>Remove</WfmButton>}>
+            <Modal open={open} trigger={<button className="irma-btn" disabled={disabled} onClick={() => {setOpen(true)}}>Remove</button>}>
                 <Modal.Header>Remove Invoice Charge</Modal.Header>
                 <Modal.Content>
                     <Dropdown clearable fluid selection options={options} value={selectedCharge} onChange={handleChargeChange} placeholder='Select Charge'/>

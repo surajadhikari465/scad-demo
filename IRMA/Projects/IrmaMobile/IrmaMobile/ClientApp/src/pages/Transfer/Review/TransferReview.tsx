@@ -14,7 +14,6 @@ import LoadingComponent from "../../../layout/LoadingComponent";
 import BasicModal from "../../../layout/BasicModal";
 import ITransferOrder from "../types/ITransferOrder";
 import '../styles.scss';
-import { WfmButton } from "@wfm/ui-react";
 
 const TransferReview: React.FC = () => {
   //@ts-ignore
@@ -196,21 +195,21 @@ const TransferReview: React.FC = () => {
           </Grid.Row>
           <Grid.Row columns={"equal"} style={{ paddingTop: "0px", paddingBottom: "0px" }}>
             <Grid.Column style={{ padding: "1px" }}>
-              <WfmButton flex='true' style={{ width: "100%" }} disabled={selectedTransferItem === null || selectedTransferItem === undefined} onClick={handleViewDetailsClick}>View Details</WfmButton>
+              <button className="irma-btn" style={{ width: "100%" }} disabled={selectedTransferItem === null || selectedTransferItem === undefined} onClick={handleViewDetailsClick}>View Details</button>
             </Grid.Column>
             <Grid.Column style={{ padding: "1px" }}>
-              <WfmButton flex='true' style={{ width: "100%" }} disabled={selectedTransferItem === null || selectedTransferItem === undefined} onClick={handleUpdateClick}>Update</WfmButton>
+              <button className="irma-btn" style={{ width: "100%" }} disabled={selectedTransferItem === null || selectedTransferItem === undefined} onClick={handleUpdateClick}>Update</button>
             </Grid.Column>
             <Grid.Column style={{ padding: "1px" }}>
-              <WfmButton flex='true' style={{ width: "100%" }} disabled={selectedTransferItem === null || selectedTransferItem === undefined} onClick={handleRemoveClick}>Remove</WfmButton>
+              <button className="irma-btn" style={{ width: "100%" }} disabled={selectedTransferItem === null || selectedTransferItem === undefined} onClick={handleRemoveClick}>Remove</button>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={"equal"} style={{ paddingTop: "1px", paddingBottom: "0px" }}>
             <Grid.Column style={{ padding: "1px" }}>
-              <WfmButton flex='true' style={{ width: "100%" }} onClick={handleAddLineItemClick}>Add Line Item</WfmButton>
+              <button className="irma-btn" style={{ width: "100%" }} onClick={handleAddLineItemClick}>Add Line Item</button>
             </Grid.Column>
             <Grid.Column style={{ padding: "1px" }}>
-              <WfmButton  flex='true' style={{ width: "100%" }} disabled={transferData.Items.length === 0} onClick={handleSendClick}>Send</WfmButton>
+              <button className="irma-btn" style={{ width: "100%" }} disabled={transferData.Items.length === 0} onClick={handleSendClick}>Send</button>
             </Grid.Column>
           </Grid.Row>
         </Grid>

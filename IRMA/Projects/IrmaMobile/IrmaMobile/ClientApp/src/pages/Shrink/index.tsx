@@ -393,7 +393,7 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
             <div className="shrink-buttons">
               {shrinkTypes.map((shrinkType: string) =>
                 // @ts-ignore 
-                <button className="wfm-btn" key={shrinkType.shrinkSubTypeId} value={JSON.stringify(shrinkType)} onClick={(e) => setShrinkType(e.target.value)}>{shrinkType.shrinkSubTypeMember}</button>
+                <button className="irma-btn" key={shrinkType.shrinkSubTypeId} value={JSON.stringify(shrinkType)} onClick={(e) => setShrinkType(e.target.value)}>{shrinkType.shrinkSubTypeMember}</button>
               )}
             </div>
           </div>) : (
@@ -455,8 +455,8 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
               </section>
               <section className='entry-section'>
                 <div className='shrink-buttons'>
-                  <button className="wfm-btn" onClick={clear}>Clear</button>
-                  <button className="wfm-btn" disabled={shrinkState.identifier === null} onClick={save}>Save</button>
+                  <button className="irma-btn" onClick={clear}>Clear</button>
+                  <button className="irma-btn" disabled={shrinkState.identifier === null} onClick={save}>Save</button>
                 </div>
               </section>
             </div>)

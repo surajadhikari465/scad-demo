@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useEffect, useContext, FormEvent, SyntheticEvent, ChangeEvent, useCallback } from 'react'
 import { Modal, Dropdown, Form, CheckboxProps, DropdownProps, Divider, Input, Container, InputOnChangeData, Button } from 'semantic-ui-react'
-import { WfmButton } from '@wfm/ui-react'
 import agent from '../../../../../api/agent'
 import { AppContext } from '../../../../../store'
 import LoadingComponent from '../../../../../layout/LoadingComponent'
@@ -141,7 +140,7 @@ const InvoiceDataAddCharge: React.FC<IProps> = ({ orderId, handleAddCharge, disa
         <Fragment>
             {open && isLoading ?
                 <LoadingComponent content="Loading types..."/> :
-                <Modal closeOnDimmerClick={false} onClose={handleClose} open={open} trigger={<WfmButton disabled={disabled} onClick={() => {setOpen(true)}}>Add</WfmButton>}>
+                <Modal closeOnDimmerClick={false} onClose={handleClose} open={open} trigger={<button className="irma-btn" disabled={disabled} onClick={() => {setOpen(true)}}>Add</button>}>
                     <Modal.Header>Add Invoice Charge</Modal.Header>
                     <Modal.Content>
                         <Form style={{position: 'relative', left: '15%'}}>
