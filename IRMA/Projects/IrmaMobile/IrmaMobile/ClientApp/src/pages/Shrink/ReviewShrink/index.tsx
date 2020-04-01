@@ -179,7 +179,7 @@ const ReviewShrink: React.FC = () => {
     [],
   )
   if (isLoading) {
-    return (<LoadingComponent content="Uploading Items..." />)
+    return (<LoadingComponent content="Loading..." />)
   }
   return (
     <Fragment>

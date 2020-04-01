@@ -27,13 +27,13 @@ const ScanCodeProcessor = {
                 }
             } else if(symbology === 'UPCA') {
                 let trimmedScanCode = scanCode.replace(trimLeadingZeroesRegExp, '');
-                if(trimmedScanCode.length !== 11) {
-                    throw new Error(`Unable to process scan code ${scanCode}. Scan code does not match expected format of UPCA symbology.`);
-                } else {
+                if(trimmedScanCode.startsWith('2') && trimmedScanCode.length === 11) {
                     //return scan code with the last 5 digits replaced as zeroes
                     return trimmedScanCode
                         .substring(0, 6)
                         .padEnd(11, '0');
+                } else {
+                    return trimmedScanCode;
                 }
             } else {
                 throw new Error(`Unable to process scan code "${scanCode}". Unhandled symbology "${symbology}".`);
