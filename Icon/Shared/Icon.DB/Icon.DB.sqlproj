@@ -812,6 +812,7 @@
     <None Include="Scripts\PopulateData\Archive\PopulateHospitalityTraits.sql" />
     <None Include="Scripts\PopulateData\Archive\RemoveMDTTraitsFromHierarchyClassTrait.sql" />
     <None Include="Scripts\PopulateData\Archive\UpdateDeprecatedSubTeams.sql" />
+    <None Include="Scripts\PopulateData\AddBulkItemUploadToAppTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
