@@ -3362,6 +3362,7 @@
     <None Include="Scripts\PostDeploy\Archive\PBI25271-RemoveInforOrdering.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI27833-GenerateEmailWhenPosPushJobFails.sql" />
     <Build Include="Scripts\PostDeploy\PBI32245_InsertUploadAttributeEntries.sql" />
+    <Build Include="Schema\extract\Stored Procedures\APT_FutureCostsExtract.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />

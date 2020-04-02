@@ -197,6 +197,42 @@ namespace Services.Extract.Tests
 
         //[Ignore("Not a real test. Used to execute runner in debug environment.")]
         [TestMethod]
+        public void IrmaTest_RegionalFiles()
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+
+            var config = new ExtractJobConfiguration
+            {
+                Delimiter = "|",
+                Source = "Irma",
+                Query = "exec [extract].[APT_FutureCostsExtract] @DeltaLoad ",
+                Regions = "FL,MA".Split(','),
+                Parameters = new ExtractJobParameter[1]
+                {
+                    new ExtractJobParameter()
+                    {
+                        Key = "@DeltaLoad",
+                        Value = 0
+                    }
+                },
+                OutputFileName = "AP_{region}_pdx_future_cost_{date:yyyyMMdd}.csv",
+                ZipOutput = true,
+                CompressionType = "gzip",
+                ConcatenateOutputFiles = false,
+                IncludeHeaders = true,
+                Destination = new Destination
+                {
+                    Type = "file",
+                    Path = @"c:\temp\1\"
+                }
+            };
+            runner.Run(config);
+            sw.Stop();
+        }
+
+        //[Ignore("Not a real test. Used to execute runner in debug environment.")]
+        [TestMethod]
         public void IconTest()
         {
             runner = new ExtractJobRunner(logger, OpsGenieAlert, CredentialsCacheManager);

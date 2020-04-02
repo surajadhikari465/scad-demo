@@ -227,7 +227,7 @@ namespace Services.Extract
                 let nameWithoutExtension = Path.GetFileNameWithoutExtension(Configuration.OutputFileName)
                 let extension = Path.GetExtension(Configuration.OutputFileName)
                 let region = c.Key
-                let regionalFilename = $"{nameWithoutExtension}_{region}{extension}"
+                let regionalFilename = nameWithoutExtension.Contains("{region}") ? nameWithoutExtension.Replace("{region}", $"{region}") : $"{nameWithoutExtension}_{region}{extension}"
                     where Configuration.Regions.Contains(region)
                 && Configuration.Source.ToLower() == "irma"
                     select new ExtractSourcesAndDestinationFile
@@ -333,6 +333,7 @@ namespace Services.Extract
                         {
                             using (var fileInput = File.OpenRead(outputFile.FullName))
                             {
+                                headerStream.Position = 0;
                                 headerStream.CopyTo(tempOutput);
                                 fileInput.CopyTo(tempOutput);
                             }

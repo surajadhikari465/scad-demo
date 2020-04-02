@@ -848,6 +848,7 @@
     <None Include="Scripts\PreDeploymentScripts\Archive\23389_Delete_Job_CopyGpmDataForAudit.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\30224_Create_IVL_Extract_JobScheudle.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\30224_Create_IVL_Item_Extract_JobSchedule.sql" />
+    <None Include="Scripts\PostDeploymentScripts\26539_FutureCostsExtract_JobSchedule.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
