@@ -342,7 +342,7 @@ window.addEventListener('load', function () {
                         primaryKey: "ItemId",
                         autoGenerateColumns: false,
                         width: "100%",
-                        height: getHeight(),
+                        height: "100vh",
                         dataSource: window.location.origin + '/Item/GridDataSource',
                         updateUrl: window.location.origin + '/Item/GridUpdate',
                         autoCommit: false,
