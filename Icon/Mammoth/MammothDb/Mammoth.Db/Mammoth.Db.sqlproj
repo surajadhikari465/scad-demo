@@ -182,6 +182,7 @@
     <Folder Include="Scripts\Projects\GPM" />
     <Folder Include="Scripts\Projects\365Conversion" />
     <Folder Include="OneTimeScripts" />
+    <Folder Include="Scripts\Projects\LocationUpdateScripts" />
     <Folder Include="Scripts\Projects\MoveBoiseStoreToNc" />
   </ItemGroup>
   <ItemGroup>
@@ -826,10 +827,6 @@
     <Build Include="dbo\Stored Procedures\AuditGPMMessageSequence.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\Reset5NutritionValues_23879.sql" />
     <None Include="OneTimeScripts\DeleteItemsFromMammothNotInIcon.sql" />
-    <None Include="Scripts\Projects\MoveBoiseStoreToNc\31786_MoveBoiseStoreToNC.sql" />
-    <None Include="Scripts\Projects\MoveBoiseStoreToNc\31786_MoveBoiseStoreToRMRollBackScript.sql" />
-    <None Include="Scripts\Projects\MoveBoiseStoreToNc\ClonePricesForAStore.sql" />
-    <None Include="Scripts\Projects\MoveBoiseStoreToNc\ClonePricesForAStoreRollBack.sql" />
     <None Include="Scripts\PostDeploymentScripts\30737_PopulateGlobalItemMessageType.sql" />
     <None Include="Scripts\PostDeploymentScripts\PopulateManufacturerHierarchy.sql" />
     <None Include="Scripts\PreDeploymentScripts\DeduplicateNationalMerchandiseHierarchy.sql" />
@@ -849,6 +846,12 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\30224_Create_IVL_Extract_JobScheudle.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\30224_Create_IVL_Item_Extract_JobSchedule.sql" />
     <None Include="Scripts\PostDeploymentScripts\26539_FutureCostsExtract_JobSchedule.sql" />
+    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MovePricesFromMAToMW.sql" />
+    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MovePricesFromMWToMARollBack.sql" />
+    <None Include="Scripts\Projects\MoveBoiseStoreToNc\31786_MoveBoiseStoreToNC.sql" />
+    <None Include="Scripts\Projects\MoveBoiseStoreToNc\31786_MoveBoiseStoreToRMRollBackScript.sql" />
+    <None Include="Scripts\Projects\MoveBoiseStoreToNc\ClonePricesForAStore.sql" />
+    <None Include="Scripts\Projects\MoveBoiseStoreToNc\ClonePricesForAStoreRollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -865,6 +868,12 @@
     <Build Include="dbo\User Defined Types\HierarchyMerchandiseClassType.sql" />
     <None Include="dbo\Stored Procedures\AddOrUpdateHierarchyMerchandiseSubBrick.sql" />
     <None Include="Scripts\PostDeploymentScripts\33668_Extract_IconHierarcies_JobSchedule.sql" />
+    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MoveMetroFromMWToRM.sql" />
+    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MoveMetroFromRMToMWRollBack.sql" />
+    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MoveMetroFromMAToMW.sql" />
+    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MoveMetroFromMWToMARollBacksql.sql" />
+    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MovePricesFromMWToRM.sql" />
+    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MovePricesFromRMToMWRollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">
