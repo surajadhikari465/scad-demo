@@ -8,7 +8,8 @@ export const environment = {
   name: 'local',
   useAuthToken: false,
   fakeUser: {
-    "samaccountname": 'Blake.Jones'
+    "samaccountname": 'Blake.Jones', 
+    "email":"blake.jones@wholefoods.com"
   }
 };
 

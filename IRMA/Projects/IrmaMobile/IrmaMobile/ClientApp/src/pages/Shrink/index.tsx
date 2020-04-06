@@ -381,7 +381,7 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
   }
 
   if (isLoading) {
-    return (<LoadingComponent content="Loading Item..." />)
+    return (<LoadingComponent content="Loading..." />)
   }
   return (
     <Fragment>

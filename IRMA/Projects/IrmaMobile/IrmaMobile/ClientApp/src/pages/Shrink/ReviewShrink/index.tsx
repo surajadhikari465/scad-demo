@@ -76,7 +76,6 @@ const ReviewShrink: React.FC = () => {
       setAlert({ open: true, alertMessage: 'There are no Shrink Items to Upload' });
     } else {
       setIsLoading(true);
-      history.push('/shrink');
       let succeededItems = 0;
       for (let i = 0; i < shrinkItems.length; i++) {
         let weight = shrinkItems[i].costedByWeight ? shrinkItems[i].quantity : 0;
@@ -104,6 +103,10 @@ const ReviewShrink: React.FC = () => {
             succeededItems += 1;
           }
         }
+        catch (error) {
+          setIsLoading(false);
+          console.error('error');
+        }
         finally {
           localStorage.removeItem('sessionSubType');
           localStorage.removeItem('shrinkUser');
@@ -111,12 +114,13 @@ const ReviewShrink: React.FC = () => {
         }
       }
       if (succeededItems === shrinkItems.length) {
-        setIsLoading(false);
         toast.success("Shrink Items Uploaded");
         dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
         subteamSession[sessionIndex] = { shrinkItems: [], isPrevSession: false, sessionShrinkType: '', sessionSubteam: undefined, sessionStore: '', sessionNumber: 0, sessionRegion: '', sessionUser: user, forceSubteamSelection: true };
         dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
+        history.push('/shrink');
       }
+      setIsLoading(false);
     }
   }
   const close = () => {

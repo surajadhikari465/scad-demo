@@ -47,7 +47,8 @@ export class ScanListComponent implements OnInit {
           let scanCode = ScanCodeProcessor.parseScanCode(data.Data, data.Symbology);
           self.addWfmItem(scanCode)
         } catch (ex) {
-          alert(ex.message)
+          alert(ex.message);
+          self.isLoading = false;
         }
       }
     })
@@ -151,13 +152,18 @@ export class ScanListComponent implements OnInit {
   }
 
   submitListItems() {
+    this.isLoading = true;
     this.appService.submitListItems(this.items)
       .subscribe({
         next: () => {
+          this.isLoading = false;
           this.displaySuccessModal();
-          this.clearList()
+          this.clearList();
         },
-        error: () => this.displayErrorModal()
+        error: () => {
+          this.isLoading = false;
+          this.displayErrorModal();
+        }
       })
   }
 

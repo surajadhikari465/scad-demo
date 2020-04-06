@@ -5,28 +5,32 @@
     <span>Region: {{wfmRegion}}</span>
     <span>Store: {{wfmStore.name}}</span>
   </div>
-  <div *ngIf="isLoading">
-      <ion-spinner></ion-spinner>
+  <div class="message-container">
+    <h1>Scan Items</h1>
+    <p>Hold the scan button and point the device at a barcode to scan an item!</p>
+    <p>Having trouble? Enter the number manually by clicking the settings <wfm-icon name="cog"></wfm-icon> icon in the
+      above toolbar</p>
+    <p class="center"><strong>Items Scanned: {{items.length}}</strong></p>
   </div>
-  <div *ngIf="!isLoading">
-    <div class="message-container">
-      <h1>Scan Items</h1>
-      <p>Hold the scan button and point the device at a barcode to scan an item!</p>
-      <p>Having trouble? Enter the number manually by clicking the settings <wfm-icon name="cog"></wfm-icon> icon in the above toolbar</p>
-      <p class="center"><strong>Items Scanned: {{items.length}}</strong></p>
-    </div>
-    <hr/>
-    <div class="itemlist-container">
-      <p class="itemlist-message" *ngIf="!items.length">You haven't scanned any items yet!</p>
-      <wfm-item *ngFor="let item of items">
-        <label>{{item}}</label>
-        <wfm-button slot="end" fill="clear" (click)="removeItem(item)">
-          <wfm-icon name="trash"></wfm-icon>
-        </wfm-button>
-      </wfm-item>
-    </div>
-    <div>
-      <wfm-button (click)="items.length ? submitListItems(): ''" [disabled]="!items.length" flex>Upload Items</wfm-button>
-    </div>
+  <hr />
+  <div class="itemlist-container">
+    <p class="itemlist-message" *ngIf="!items.length">You haven't scanned any items yet!</p>
+    
+    <wfm-item *ngFor="let item of items">
+      <label>{{item}}</label>
+      <wfm-button slot="end" fill="clear" (click)="removeItem(item)">
+        <wfm-icon name="trash"></wfm-icon>
+      </wfm-button>
+    </wfm-item>
+  </div>
+  <div>
+    <wfm-button (click)="items.length ? submitListItems(): ''" [disabled]="!items.length || isLoading" flex>
+      <div *ngIf="isLoading">
+        <ion-spinner></ion-spinner>
+      </div>
+      <div *ngIf="!isLoading">
+        Upload Items
+      </div>
+    </wfm-button>
   </div>
 </main>

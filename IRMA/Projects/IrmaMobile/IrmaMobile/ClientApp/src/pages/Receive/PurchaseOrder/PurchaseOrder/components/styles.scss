@@ -10,8 +10,15 @@
   }
 
   .receive-order{
+    margin-top: .5rem;
       .ui.grid+.grid {
         margin-top: 0.5rem;
         margin-bottom: 0.2rem;
     }
+  }
+
+  .fixed-bottom-element {
+    position: fixed;
+    bottom:0;
+    background: white;
   }

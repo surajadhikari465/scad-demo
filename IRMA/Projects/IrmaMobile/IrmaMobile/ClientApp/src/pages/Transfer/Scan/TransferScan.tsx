@@ -489,9 +489,7 @@ const TransferScan: React.FC = () => {
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-                    <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Button className='wfmButton' style={{ width: '100%', marginTop: '10px', lineHeight: '1.6' }} onClick={handleReviewClick}>Review</Button>
-                    </span>
+                    <Button className='wfmButton' style={{ width: '100%', marginTop: '10px', lineHeight: '1.6' }} onClick={handleReviewClick}>Review</Button>
                 </Fragment>
             }
             <BasicModal alert={alert} add={add} overwrite={overwrite} setAlert={setAlert} />

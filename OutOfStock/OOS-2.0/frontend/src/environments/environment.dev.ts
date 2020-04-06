@@ -4,6 +4,7 @@ export const environment = {
   name: 'dev',
   useAuthToken: true,
   fakeUser: {
-    "samaccountname": 'Blake.Jones'
+    "samaccountname": 'Blake.Jones', 
+    "email":"blake.jones@wholefoods.com"
   }
 };

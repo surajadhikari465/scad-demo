@@ -15,10 +15,7 @@ import orderUtil from "../util/Order"
 import isMinDate from "../util/MinDate";
 // @ts-ignore 
 import { BarcodeScanner, IBarcodeScannedEvent } from '@wfm/mobile';
-import { stat } from "fs";
-import BasicModal from "../../../../layout/BasicModal";
 import ScanCodeProcessor from "../../../../scanning/ScanCodeProcessor";
-
 
 interface RouteParams {
     openOrderInformation: string;
@@ -117,13 +114,13 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                     return;
                 }
 
-                if (parseInt(order.store_No) !== parseInt(storeNumber)) {
-                    toast.error(`PO ${purchaseOrderNumber} is for ${order.storeCompanyName}. Please try again.`, { autoClose: false });
+                if (order.orderHeader_ID === 0) {
+                    toast.error(`PO #${purchaseOrderNumber} not found`, { autoClose: false });
                     return;
                 }
 
-                if (order.orderHeader_ID === 0) {
-                    toast.error(`PO #${purchaseOrderNumber} not found`, { autoClose: false });
+                if (parseInt(order.store_No) !== parseInt(storeNumber)) {
+                    toast.error(`PO ${purchaseOrderNumber} is for ${order.storeCompanyName}. Please try again.`, { autoClose: false });
                     return;
                 }
 
