@@ -151,6 +151,8 @@
     <Folder Include="Scripts\Projects\LocationUpdateScripts" />
     <Folder Include="Scripts\Projects\DeleteBrowsingHierachyAssociation" />
     <Folder Include="Scripts\Projects\BoiseScripts" />
+    <Folder Include="Scripts\Projects\NewFolder1\" />
+    <Folder Include="Scripts\Projects\Initializations" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Party.sql" />
@@ -814,6 +816,10 @@
     <None Include="Scripts\PopulateData\AddBulkItemUploadToAppTable.sql" />
     <None Include="Scripts\Projects\BoiseScripts\33039_MoveMetroFromNCToRMRollBackScript.sql" />
     <None Include="Scripts\Projects\BoiseScripts\33039_MoveMetroFromRMToNC.sql" />
+    <None Include="Scripts\Projects\Initializations\Icon_Initialization_Financial.sql" />
+    <None Include="Scripts\Projects\Initializations\Icon_Initialization_Brands.sql" />
+    <None Include="Scripts\Projects\Initializations\Icon_Initialization_Item.sql" />
+    <None Include="Scripts\Projects\Initializations\Icon_Initialization_Manufacturer.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
