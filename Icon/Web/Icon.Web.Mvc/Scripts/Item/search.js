@@ -342,7 +342,7 @@ window.addEventListener('load', function () {
                         primaryKey: "ItemId",
                         autoGenerateColumns: false,
                         width: "100%",
-                        height: "100vh",
+                        height: "75vh",
                         dataSource: window.location.origin + '/Item/GridDataSource',
                         updateUrl: window.location.origin + '/Item/GridUpdate',
                         autoCommit: false,
@@ -397,13 +397,13 @@ window.addEventListener('load', function () {
                                 columnSettings: (function () {
                                     let columnHiddenSettings = [];
 
-                                columnSettings.filter(s => s.hidden == true).forEach(function (element) {
+                                    columnSettings.filter(s => s.hidden == true).forEach(function (element) {
                                         columnHiddenSettings.push({
                                             columnKey: element.key,
                                             allowHiding: true,
                                             hidden: true
-                                      });
-                                   });
+                                        });
+                                    });
                                     return columnHiddenSettings;
                                 })(),
 
@@ -578,12 +578,11 @@ window.addEventListener('load', function () {
                     var features = $("#grid").igGrid("option", "features");
                     var hiddenColumnList = features.find(f => f.name == 'Hiding').columnSettings;
 
-                    if (typeof (hiddenColumnList) !== undefined && hiddenColumnList !== null)
-                        {
-                            hiddenColumnList.filter(s => s.hidden == true).forEach(function (element) {
-                                columns.find(c => c.columnKey === element.columnKey).hidden = true;
-                            });
-                        }
+                    if (typeof (hiddenColumnList) !== undefined && hiddenColumnList !== null) {
+                        hiddenColumnList.filter(s => s.hidden == true).forEach(function (element) {
+                            columns.find(c => c.columnKey === element.columnKey).hidden = true;
+                        });
+                    }
 
                     self.saveColumnSettings(columns);
                 })
@@ -731,7 +730,24 @@ window.addEventListener('load', function () {
             });
 
             let columnsJson = JSON.stringify(columns);
-            window.localStorage.setItem(columnsKey, columnsJson);            
+            window.localStorage.setItem(columnsKey, columnsJson);
+        },
+        getSettings: function(){
+            let selectedColumnNames;
+
+            if (localStorage.getItem(columnsKey) != null) {
+                let columnSettings = JSON.parse(localStorage.getItem(columnsKey));
+                columnSettings = columnSettings.filter(a => a.hidden == false);
+                selectedColumnNames = columnSettings.map(a => a.key);
+            }
+            else {
+                selectedColumnNames = null;
+            }
+            return selectedColumnNames;
+         },
+        setSession: () => {
+            var selectedColumnNames = searchViewModel.getSettings();
+            $.post(window.location.origin + '/Item/ItemSearchExport', { selectedColumnNames: selectedColumnNames });
         },
         compareAttributesByName: function (a1, a2) {
             let a1DisplayName = a1.DisplayName.toLowerCase();
@@ -748,25 +764,16 @@ window.addEventListener('load', function () {
             }
         },
         exportSelectedRows: function (exportAllAttributes) {
-            let selectedColumnNames;
-
-            if (localStorage.getItem(columnsKey) != null) {
-                let columnSettings = JSON.parse(localStorage.getItem(columnsKey));
-                columnSettings = columnSettings.filter(a => a.hidden == false);
-                selectedColumnNames = columnSettings.map(a => a.key);
-            }
-            else {
-                selectedColumnNames = null;
-            }
+            var selectedColumnNames = searchViewModel.getSettings();
 
             var checkedRows = $("#grid").igGrid("selectedRows");
 
             $.ajax({
                 url: window.location.origin + '/Item/ExportSelectedItems',
                 type: 'POST',
-                data: {
-                    selectedIds: checkedRows.map(cr => cr.id),
-                    selectedColumnNames: selectedColumnNames },
+                data: { selectedIds: checkedRows.map(cr => cr.id),
+                selectedColumnNames: selectedColumnNames
+            },
                 success: function (response) { //return the download link
                     window.location.href = window.location.origin + '/Item/ExportSelectedItems?exportAllAttributes=' + exportAllAttributes;
                 },
@@ -900,9 +907,12 @@ window.addEventListener('load', function () {
             try {
                 $("#selectedExportRowsAllColumns")[0].addEventListener('click', this.selectedRowAllColumnsExportClick);
                 $("#selectedExportRowsSelectedColumns")[0].addEventListener('click', this.selectedRowCurrentColumnsExportClick);
-                
+                $("#allExportRowsSelectedColumns")[0].addEventListener('click', this.setSession);
+                $("#allExportRowsAllColumns")[0].addEventListener('click', this.setSession);
+
                 this.state.attributes = attributes.sort(this.compareAttributesByName);
                 this.createAttributeComboBoxOptions();
+                this.setSession();
                 this.loadPickListData(this.state.attributes)
                     .then(() => {
                         this.view.attributesElement = document.getElementById('attributes');
@@ -1038,12 +1048,4 @@ window.addEventListener('load', function () {
     });
 });
 
-
-function getHeight() {
-    let wh = $(window).height();
-    let div = $("#divSearch");
-    let pos = div.position();
-    let h = 85 - (parseInt(((pos.top + div.height()) / wh) * 100));
-    return h < 50 ? '50vh' : h + 'vh';
-};
 
