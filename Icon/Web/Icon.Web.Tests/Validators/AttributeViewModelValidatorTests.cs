@@ -1966,6 +1966,8 @@ namespace Icon.Web.Tests.Unit.Validators
                 new CharacterSetModel{ IsSelected = true, RegEx = "[A-Z]*" },
             };
 
+            mockAttributesHelper.Setup(m => m.CreateCharacterSetRegexPattern(It.IsAny<int>(), It.IsAny<List<CharacterSetModel>>(), It.IsAny<string>())).Returns("^([A-Z]|[^a-z0-9\\s])*$");
+
             //When
             var result = validator.Validate(viewModel);
 
@@ -1988,6 +1990,8 @@ namespace Icon.Web.Tests.Unit.Validators
             {
                 new CharacterSetModel{ IsSelected = true, RegEx = "[A-Z]*" },
             };
+
+            mockAttributesHelper.Setup(m => m.CreateCharacterSetRegexPattern(It.IsAny<int>(), It.IsAny<List<CharacterSetModel>>(), It.IsAny<string>())).Returns("^([A-Z]|[^a-z0-9\\s])*$");
 
             //When
             var result = validator.Validate(viewModel);
@@ -2012,6 +2016,8 @@ namespace Icon.Web.Tests.Unit.Validators
                 new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" },
             };
 
+            mockAttributesHelper.Setup(m => m.CreateCharacterSetRegexPattern(It.IsAny<int>(), It.IsAny<List<CharacterSetModel>>(), It.IsAny<string>())).Returns("^([a-z]|[^A-Z0-9\\s])*$");
+
             //When
             var result = validator.Validate(viewModel);
 
@@ -2034,6 +2040,8 @@ namespace Icon.Web.Tests.Unit.Validators
             {
                 new CharacterSetModel{ IsSelected = true, RegEx = "[0-9]*" },
             };
+
+            mockAttributesHelper.Setup(m => m.CreateCharacterSetRegexPattern(It.IsAny<int>(), It.IsAny<List<CharacterSetModel>>(), It.IsAny<string>())).Returns("^([0-9]|[^A-Za-z\\s])*$");
 
             //When
             var result = validator.Validate(viewModel);

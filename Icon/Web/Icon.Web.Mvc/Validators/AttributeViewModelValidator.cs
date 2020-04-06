@@ -65,7 +65,7 @@ namespace Icon.Web.Mvc.Validators
             RuleFor(vm => vm.DefaultValue)
                 .Must((vm, n) => IsValidDefault(vm))
                 .WithMessage(ValidationMessages.InvalidDefaultValue);
-            
+
             When(vm => vm.DataTypeId == (int)DataType.Number, () =>
             {
                 RuleFor(vm => vm.NumberOfDecimals)
@@ -377,7 +377,7 @@ namespace Icon.Web.Mvc.Validators
         {
             var attribute = getAttributeByAttributeIdQueryHandler.Search(new GetAttributeByAttributeIdParameters { AttributeId = viewModel.AttributeId });
 
-            if(!attribute.IsPickList && viewModel.IsPickList)
+            if (!attribute.IsPickList && viewModel.IsPickList)
             {
                 return true;
             }
@@ -389,12 +389,12 @@ namespace Icon.Web.Mvc.Validators
 
         private bool IsValidDefault(AttributeViewModel viewModel)
         {
-            if(String.IsNullOrEmpty(viewModel.DefaultValue))
+            if (String.IsNullOrEmpty(viewModel.DefaultValue))
             {
                 return true;
             }
 
-            switch(viewModel.DataTypeId)
+            switch (viewModel.DataTypeId)
             {
                 case (int)DataType.Date:
                     DateTime date;
@@ -403,7 +403,7 @@ namespace Icon.Web.Mvc.Validators
                     int dec;
                     decimal min, max, dflt;
 
-                    if(!Decimal.TryParse(viewModel.DefaultValue, out dflt)
+                    if (!Decimal.TryParse(viewModel.DefaultValue, out dflt)
                         || !Decimal.TryParse(viewModel.MinimumNumber, out min)
                         || !Decimal.TryParse(viewModel.MaximumNumber, out max)
                         || !int.TryParse(viewModel.NumberOfDecimals, out dec))
@@ -413,40 +413,36 @@ namespace Icon.Web.Mvc.Validators
 
                     var ar = dflt.ToString().Split('.');
                     return dflt >= min && dflt <= max && (ar.Length == 1 ? 0 : ar[1].Length) <= dec;
-                 case (int)DataType.Text:
-                    if(viewModel.IsPickList)
+                case (int)DataType.Text:
+                    if (viewModel.IsPickList)
                     {
                         return viewModel.PickListData.Any(x => x.PickListValue == viewModel.DefaultValue);
                     }
 
-                    var chars = viewModel.DefaultValue.ToArray().Select(x => x).Distinct().ToArray();
+                    var characterSetRegexPattern = attributesHelper.CreateCharacterSetRegexPattern(
+                        viewModel.DataTypeId,
+                        viewModel.AvailableCharacterSets,
+                        viewModel.IsSpecialCharactersSelected
+                            ? (viewModel.SpecialCharacterSetSelected == Constants.SpecialCharactersAll)
+                                ? Constants.SpecialCharactersAll
+                                : viewModel.SpecialCharactersAllowed
+                            : null);
+                    bool isValid = true;
 
-                    foreach(var rgx in viewModel.AvailableCharacterSets.Where(x => x.IsSelected).Select(x => new Regex(x.RegEx, RegexOptions.Compiled)))
+                    if (characterSetRegexPattern != null)
                     {
-                        chars = chars.ToArray().Where(x => String.IsNullOrEmpty(rgx.Match(x.ToString()).Value)).ToArray();
-                        if(chars.Count() == 0) break;
+                        isValid = Regex.IsMatch(viewModel.DefaultValue, characterSetRegexPattern);
                     }
 
-                    if(chars.Count() > 0)
+                    if (isValid)
                     {
-                        if(viewModel.IsSpecialCharactersSelected)
-                        {
-                            if(String.Compare(viewModel.SpecialCharacterSetSelected, SPECIFIC_SPECIAL_CHARACTER_SET, StringComparison.InvariantCultureIgnoreCase) == 0)
-                            {
-                                if(chars.Except(viewModel.SpecialCharactersAllowed.ToArray().Distinct()).Count() > 0)
-                                {
-                                    return false;
-                                }
-                            }
-                        }
-                        else
-                        { 
-                            return false;
-                        }
+                        return (viewModel.DefaultValue.Length >= Constants.MaxLengthAllowedMin && viewModel.DefaultValue.Length <= Constants.MaxLengthAllowedMax)
+                            && viewModel.DefaultValue.Length <= (viewModel.MaxLengthAllowed ?? 0);
                     }
-
-                    return (viewModel.DefaultValue.Length >= Constants.MaxLengthAllowedMin && viewModel.DefaultValue.Length <= Constants.MaxLengthAllowedMax)
-                        && viewModel.DefaultValue.Length <= (viewModel.MaxLengthAllowed ?? 0);
+                    else
+                    {
+                        return false;
+                    }
                 default:
                     return true;
             }
