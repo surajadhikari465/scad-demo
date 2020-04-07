@@ -182,8 +182,8 @@
     <Folder Include="Scripts\Projects\GPM" />
     <Folder Include="Scripts\Projects\365Conversion" />
     <Folder Include="OneTimeScripts" />
-    <Folder Include="Scripts\Projects\LocationUpdateScripts" />
     <Folder Include="Scripts\Projects\MoveBoiseStoreToNc" />
+    <Folder Include="Scripts\Projects\Distribution Realignment" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LocaleAttributes_SO.sql">
@@ -846,12 +846,22 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\30224_Create_IVL_Extract_JobScheudle.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\30224_Create_IVL_Item_Extract_JobSchedule.sql" />
     <None Include="Scripts\PostDeploymentScripts\26539_FutureCostsExtract_JobSchedule.sql" />
-    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MovePricesFromMAToMW.sql" />
-    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MovePricesFromMWToMARollBack.sql" />
     <None Include="Scripts\Projects\MoveBoiseStoreToNc\31786_MoveBoiseStoreToNC.sql" />
     <None Include="Scripts\Projects\MoveBoiseStoreToNc\31786_MoveBoiseStoreToRMRollBackScript.sql" />
     <None Include="Scripts\Projects\MoveBoiseStoreToNc\ClonePricesForAStore.sql" />
     <None Include="Scripts\Projects\MoveBoiseStoreToNc\ClonePricesForAStoreRollBack.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33710_MovePricesFromFLToSO.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33710_MovePricesFromFLToSO_RollBack.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33710_MoveStoresFromFLToSO.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33710_MoveStoresFromFLToSO_RollBack.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33696_MoveMetroFromMAToMW.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33696_MoveMetroFromMAToMW_RollBack.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33696_MoveMetroFromMWToRM.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33696_MoveMetroFromMWToRM_RollBack.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33696_MovePricesFromMAToMW.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33696_MovePricesFromMAToMW_RollBack.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33696_MovePricesFromMWToRM.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33696_MovePricesFromMWToRM_RollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -868,12 +878,6 @@
     <Build Include="dbo\User Defined Types\HierarchyMerchandiseClassType.sql" />
     <None Include="dbo\Stored Procedures\AddOrUpdateHierarchyMerchandiseSubBrick.sql" />
     <None Include="Scripts\PostDeploymentScripts\33668_Extract_IconHierarcies_JobSchedule.sql" />
-    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MoveMetroFromMWToRM.sql" />
-    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MoveMetroFromRMToMWRollBack.sql" />
-    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MoveMetroFromMAToMW.sql" />
-    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MoveMetroFromMWToMARollBacksql.sql" />
-    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MovePricesFromMWToRM.sql" />
-    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MovePricesFromRMToMWRollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

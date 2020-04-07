@@ -76,8 +76,8 @@
     <Folder Include="Scripts\PostDeploymentScripts\Archive" />
     <Folder Include="Scripts\PreDeplolymentScripts" />
     <Folder Include="Scripts\PreDeplolymentScripts\Archive" />
-    <Folder Include="Scripts\LocationUpdateScripts" />
     <Folder Include="Scripts\MoveBoiseAndMetro" />
+    <Folder Include="Scripts\Distribution Realignment" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\LinkGroup.sql" />
@@ -134,6 +134,12 @@
     <Build Include="dbo\Stored Procedures\CopyKitLocaleProperties.sql" />
     <None Include="Scripts\MoveBoiseAndMetro\MoveMetroToNC.sql" />
     <None Include="Scripts\MoveBoiseAndMetro\MoveMetroToNC_RollBack.sql" />
+    <None Include="Scripts\Distribution Realignment\33710_MoveStoresFromFLToSO_RollBack.sql" />
+    <None Include="Scripts\Distribution Realignment\33710_MoveStoresFromFLToSO.sql" />
+    <None Include="Scripts\Distribution Realignment\33696_MoveMetroFromMAToMW.sql" />
+    <None Include="Scripts\Distribution Realignment\33696_MoveMetroFromMAToMW_RollBack.sql" />
+    <None Include="Scripts\Distribution Realignment\33696_MoveMetroFromMWToRM.sql" />
+    <None Include="Scripts\Distribution Realignment\33696_MoveMetroFromMWToRM_RollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="KitBuilder.DB.refactorlog" />
@@ -149,10 +155,6 @@
     <None Include="Scripts\PostDeploymentScripts\CleanUpAvailablePluNumberTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\PopulatePurgeTableInfoRecords.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddDataPurgeServiceToApp.sql" />
-    <None Include="Scripts\LocationUpdateScripts\33696_MoveMetroFromMWToRM.sql" />
-    <None Include="Scripts\LocationUpdateScripts\33696_MoveMetroFromRMToMWRollBack.sql" />
-    <None Include="Scripts\LocationUpdateScripts\33696_MoveMetroFromMAToMW.sql" />
-    <None Include="Scripts\LocationUpdateScripts\33696_MoveMetroFromMWToMARollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\PreDeplolymentScripts\PreDeploymentScript.sql" />

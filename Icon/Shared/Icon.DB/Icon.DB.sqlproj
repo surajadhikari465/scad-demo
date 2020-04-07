@@ -148,11 +148,10 @@
     <Folder Include="extract" />
     <Folder Include="extract\Stored Procedures" />
     <Folder Include="Scripts\Projects\IconReboot\Audit" />
-    <Folder Include="Scripts\Projects\LocationUpdateScripts" />
     <Folder Include="Scripts\Projects\DeleteBrowsingHierachyAssociation" />
     <Folder Include="Scripts\Projects\BoiseScripts" />
-    <Folder Include="Scripts\Projects\NewFolder1\" />
     <Folder Include="Scripts\Projects\Initializations" />
+    <Folder Include="Scripts\Projects\Distribution Realignment" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Party.sql" />
@@ -820,6 +819,12 @@
     <None Include="Scripts\Projects\Initializations\Icon_Initialization_Brands.sql" />
     <None Include="Scripts\Projects\Initializations\Icon_Initialization_Item.sql" />
     <None Include="Scripts\Projects\Initializations\Icon_Initialization_Manufacturer.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33710_MoveStoresFromFLToSO.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33710_MoveStoresFromFLToSO_RollBack.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33696_MoveMetroFromMAtoMW.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33696_MoveMetroFromMAtoMW_RollBack.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33696_MoveMetroFromMWToRM.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\33696_MoveMetroFromMWToRM_RollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -875,10 +880,6 @@
     <None Include="Scripts\Projects\IconReboot\DeploymentSteps.docx" />
     <None Include="Scripts\PopulateData\32769_UpdateSubTeamName.sql" />
     <None Include="Scripts\PopulateData\RetentionPolicyContactUpload.sql" />
-    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MoveMetroFromMWToRM.sql" />
-    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MoveMetroFromRMToMWRollBack.sql" />
-    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MoveMetroFromMAtoMW.sql" />
-    <None Include="Scripts\Projects\LocationUpdateScripts\33696_MoveMetroFromMWToMARollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />
