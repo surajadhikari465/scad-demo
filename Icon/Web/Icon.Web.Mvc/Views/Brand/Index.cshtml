@@ -20,9 +20,11 @@
 
     <div id="divLinks">
         @Html.ActionLink("Export All Brands", "Export", "Brand", null, new { @class = "btn btn-light" })
+        @Html.ActionLink("Download Brand Template", "BrandTemplateExport", "Brand", null, new { @class = "btn btn-light ml-1" })
+        
         @if (ViewHelpers.HasWriteAccess(Request, User))
         {
-            <span style="margin-left: 10px">@Html.ActionLink("Add New Brand", "Create")</span>
+            @Html.ActionLink("Add New Brand", "Create", null, new { @class = "btn btn-light ml-1" })
         }
     </div>
     <hr />

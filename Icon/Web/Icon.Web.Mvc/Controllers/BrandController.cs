@@ -329,7 +329,16 @@ namespace Icon.Web.Mvc.Controllers
 
             ExcelHelper.SendForDownload(Response, brandExporter.ExportModel.ExcelWorkbook, brandExporter.ExportModel.ExcelWorkbook.CurrentFormat, "Brand");
         }
-        
+
+        [HttpGet]
+        public void BrandTemplateExport()
+        {
+            var brandTemplateExporter = excelExporterService.GetBrandTemplateExporter();
+            brandTemplateExporter.Export();
+
+            ExcelHelper.SendForDownload(Response, brandTemplateExporter.ExportModel.ExcelWorkbook, brandTemplateExporter.ExportModel.ExcelWorkbook.CurrentFormat, "Brand");
+        }
+
         private BrandViewModel EmptyViewModel()
         {
             return new BrandViewModel

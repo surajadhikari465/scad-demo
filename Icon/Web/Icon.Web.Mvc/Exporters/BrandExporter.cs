@@ -9,23 +9,33 @@ namespace Icon.Web.Mvc.Exporters
     public class BrandExporter : BaseHierarchyClassExporter<BrandExportViewModel>
     {
         private const int BrandNameIndex = 0;
-        private const int BrandAbbreviationIndex = 1;
-        private const int DesignationIndex = 2;
-        private const int ParentCompanyIndex = 3;
-        private const int ZipCodeIndex = 4;
-        private const int LocalityIndex = 5;
+        private const int BrandIdIndex = 1;
+        private const int BrandAbbreviationIndex = 2;
+        private const int DesignationIndex = 3;
+        private const int ParentCompanyIndex = 4;
+        private const int ZipCodeIndex = 5;
+        private const int LocalityIndex = 6;
 
         public BrandExporter()
             : base()
         {
             AddSpreadsheetColumn(BrandNameIndex,
-                "Brand",
+                "Brand Name",
                 4000,
                 HorizontalCellAlignment.Left,
                 (row, hierarchyClass) => row.Cells[BrandNameIndex].Value =
-                    (String.IsNullOrWhiteSpace(hierarchyClass.BrandName) && String.IsNullOrWhiteSpace(hierarchyClass.BrandId))
-                        ? String.Empty
-                        : String.Format("{0}|{1}", hierarchyClass.BrandName, hierarchyClass.BrandId));
+                    (string.IsNullOrWhiteSpace(hierarchyClass.BrandName))
+                        ? string.Empty
+                        : hierarchyClass.BrandName);
+
+            AddSpreadsheetColumn(BrandIdIndex,
+                "Brand ID",
+                4000,
+                HorizontalCellAlignment.Left,
+                (row, hierarchyClass) => row.Cells[BrandIdIndex].Value =
+                    (string.IsNullOrWhiteSpace(hierarchyClass.BrandId))
+                        ? string.Empty
+                        : hierarchyClass.BrandId);
 
             AddSpreadsheetColumn(BrandAbbreviationIndex,
                 "Brand Abbreviation",
@@ -69,7 +79,7 @@ namespace Icon.Web.Mvc.Exporters
                     ParentCompany = d.ParentCompany,
                     ZipCode = d.ZipCode,
                     Locality = d.Locality
-            })
+                })
                 .ToList();
 
             return exportBrands;

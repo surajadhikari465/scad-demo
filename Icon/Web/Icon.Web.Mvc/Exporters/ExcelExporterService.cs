@@ -59,7 +59,9 @@ namespace Icon.Web.Mvc.Exporters
 
         public BrandTemplateExporter GetBrandTemplateExporter()
         {
-            BrandTemplateExporter exporter = new BrandTemplateExporter();
+            connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString);
+            getHierarchyClassesQueryHandler = new GetHierarchyClassesQueryHandler(connection);
+            BrandTemplateExporter exporter = new BrandTemplateExporter(getHierarchyClassesQueryHandler);
             exporter.ExportModel = exportModel;
             return exporter;
         }
