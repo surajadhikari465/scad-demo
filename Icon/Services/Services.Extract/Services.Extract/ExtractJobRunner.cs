@@ -222,21 +222,26 @@ namespace Services.Extract
         {
             
             var activeConnections = new List<ExtractSourcesAndDestinationFile>();
-
-            var irmaSourcesAndFiles = from c in Connections
-                let nameWithoutExtension = Path.GetFileNameWithoutExtension(Configuration.OutputFileName)
-                let extension = Path.GetExtension(Configuration.OutputFileName)
-                let region = c.Key
-                let regionalFilename = nameWithoutExtension.Contains("{region}") ? nameWithoutExtension.Replace("{region}", $"{region}") : $"{nameWithoutExtension}_{region}{extension}"
+            
+            if (Configuration.Regions != null)
+            {
+                var irmaSourcesAndFiles = from c in Connections
+                    let nameWithoutExtension = Path.GetFileNameWithoutExtension(Configuration.OutputFileName)
+                    let extension = Path.GetExtension(Configuration.OutputFileName)
+                    let region = c.Key
+                    let regionalFilename = nameWithoutExtension.Contains("{region}")
+                        ? nameWithoutExtension.Replace("{region}", $"{region}")
+                        : $"{nameWithoutExtension}_{region}{extension}"
                     where Configuration.Regions.Contains(region)
-                && Configuration.Source.ToLower() == "irma"
+                          && Configuration.Source.ToLower() == "irma"
                     select new ExtractSourcesAndDestinationFile
-                {
-                    Source = c.Value,
-                    DestinationFile = WorkspacePath + @"\" + regionalFilename
-                };
+                    {
+                        Source = c.Value,
+                        DestinationFile = WorkspacePath + @"\" + regionalFilename
+                    };
 
-            activeConnections.AddRange(irmaSourcesAndFiles);
+                activeConnections.AddRange(irmaSourcesAndFiles);
+            }
 
             var iconSourcesAndFiles =
                 from c in Connections

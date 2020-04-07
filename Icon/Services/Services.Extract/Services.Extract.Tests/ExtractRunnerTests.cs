@@ -188,14 +188,14 @@ namespace Services.Extract.Tests
                 Destination = new Destination
                 {
                     Type = "file",
-                    Path = @"c:\temp\1\"
+                    Path = @".\"
                 }
             };
             runner.Run(config);
             sw.Stop();
         }
 
-        //[Ignore("Not a real test. Used to execute runner in debug environment.")]
+        [Ignore("Not a real test. Used to execute runner in debug environment.")]
         [TestMethod]
         public void IrmaTest_RegionalFiles()
         {
@@ -231,7 +231,7 @@ namespace Services.Extract.Tests
             sw.Stop();
         }
 
-        //[Ignore("Not a real test. Used to execute runner in debug environment.")]
+        [Ignore("Not a real test. Used to execute runner in debug environment.")]
         [TestMethod]
         public void IconTest()
         {
@@ -254,9 +254,7 @@ namespace Services.Extract.Tests
                     Path = @"inbound/scad/irma"
                 }
             };
-            
             runner.Run(config);
-
         }
 
         [TestMethod]
