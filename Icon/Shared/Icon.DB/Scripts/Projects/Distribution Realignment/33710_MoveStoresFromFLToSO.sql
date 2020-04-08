@@ -17,8 +17,12 @@ IF NOT EXISTS (
 		FROM locale
 		WHERE localename = 'Metro_SFL'
 		)
+BEGIN
+	SET IDENTITY_INSERT [dbo].[Locale] ON
+
 	INSERT INTO [dbo].[Locale] (
-		[ownerOrgPartyID]
+		[localeID]
+		,[ownerOrgPartyID]
 		,[localeName]
 		,[localeOpenDate]
 		,[localeCloseDate]
@@ -26,13 +30,17 @@ IF NOT EXISTS (
 		,[parentLocaleID]
 		)
 	VALUES (
-		1
+		3000
+		,1
 		,'Metro_SFL'
 		,getdate()
 		,NULL
 		,@localeTypeId
 		,@localeId
 		)
+
+	SET IDENTITY_INSERT [dbo].[Locale] OFF
+END
 GO
 
 DECLARE @localeIdTallahassee INT = (

@@ -16,11 +16,6 @@ SET @localeTypeId = (
 		WHERE localetypedesc = 'Metro'
 		)
 
-DECLARE @id INT = (
-		SELECT max(LocaleId) + 1
-		FROM dbo.locale
-		)
-
 IF NOT EXISTS (
 		SELECT *
 		FROM locale
@@ -43,7 +38,7 @@ IF NOT EXISTS (
 		,[Hospitality]
 		)
 	VALUES (
-		@id
+		3000
 		,'Metro_SFL'
 		,@localeTypeId
 		,NULL
