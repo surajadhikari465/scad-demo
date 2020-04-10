@@ -55,7 +55,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             serviceCacheMock.Setup(x => x.ProductSelectionGroupCache).Returns(productSelectionGroupMock);
 
             // When.
-            BuildMessageResult result = await builder.BuildItem(new List<MessageQueueItemModel>() { this.testDataFactory.MessageQueueItemModel }, false);
+            BuildMessageResult result = await builder.BuildItem(new List<MessageQueueItemModel>() { this.testDataFactory.MessageQueueItemModel });
 
             // Then.
             Assert.IsTrue(result.Success);
@@ -67,62 +67,6 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Assert.IsFalse(result.Contract.item.FirstOrDefault().isAvailable);
             Assert.IsFalse(result.Contract.item.FirstOrDefault().isAvailableSpecified);
             Assert.IsTrue(result.Contract.item.FirstOrDefault().locale.Length > 0);
-        }
-
-        [TestMethod]
-        public async Task BuildItem_IsDepartmentSale_ReturnIsInCorrectFormat()
-        {
-            // Given.
-            Mock<ILogger<EsbMessageBuilder>> loggerMock = new Mock<ILogger<EsbMessageBuilder>>();
-            Mock<IEsbServiceCache> serviceCacheMock = new Mock<IEsbServiceCache>();
-            Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
-            Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
-            hierarchyValuesParserMock.Setup(x => x.ParseHierarchyClassIdForContract(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns("999999998");
-            Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
-            serviceCacheMock.Setup(x => x.AttributeFromCache(It.IsAny<string>())).Returns(Task.FromResult<Attributes>(
-              new Attributes()
-              {
-                  AttributeId = 2,
-                  AttributeName = ItemPublisherConstants.Attributes.DepartmentSale,
-                  Description = "DepartmentSaleAttribute",
-                  TraitCode = "DPT"
-              }));
-
-            serviceCacheMock.Setup(x => x.HierarchyFromCache(It.IsAny<string>())).Returns(Task.FromResult<HierarchyCacheItem>(
-             new HierarchyCacheItem()
-             {
-                 HierarchyId = 1,
-                 HierarchyName = Framework.HierarchyNames.Financial
-             }));
-
-            var productSelectionGroupMock = new ConcurrentDictionary<int, ProductSelectionGroup>() { };
-            productSelectionGroupMock[1] = new ProductSelectionGroup();
-            productSelectionGroupMock[2] = new ProductSelectionGroup();
-            serviceCacheMock.Setup(x => x.ProductSelectionGroupCache).Returns(productSelectionGroupMock);
-
-            // When.
-            BuildMessageResult result = await builder.BuildItem(new List<MessageQueueItemModel>() { this.testDataFactory.MessageQueueItemModel }, true);
-
-            // Then.
-            Assert.IsTrue(result.Success);
-            Assert.IsTrue(result.Errors.Count == 0);
-            Assert.IsNotNull(result.Contract.item.FirstOrDefault());
-            Assert.AreEqual(ActionEnum.AddOrUpdate, result.Contract.item.FirstOrDefault().Action);
-            Assert.IsTrue(result.Contract.item.FirstOrDefault().ActionSpecified);
-            Assert.AreEqual(999999999, result.Contract.item.FirstOrDefault().id);
-            Assert.IsFalse(result.Contract.item.FirstOrDefault().isAvailable);
-            Assert.IsFalse(result.Contract.item.FirstOrDefault().isAvailableSpecified);
-            Assert.IsTrue(result.Contract.item.FirstOrDefault().locale.Length > 0);
-            Assert.AreEqual(Framework.TraitCodes.DepartmentSale, (result.Contract.item[0].locale[0].Item as Icon.Esb.Schemas.Wfm.Contracts.EnterpriseItemAttributesType).traits[0].code);
-            Assert.AreEqual(Framework.TraitDescriptions.DepartmentSale, (result.Contract.item[0].locale[0].Item as Icon.Esb.Schemas.Wfm.Contracts.EnterpriseItemAttributesType).traits[0].type.description);
-            Assert.AreEqual(2, (result.Contract.item[0].locale[0].Item as Icon.Esb.Schemas.Wfm.Contracts.EnterpriseItemAttributesType).hierarchies.Length);
-            Assert.AreEqual(Framework.HierarchyNames.Tax, (result.Contract.item[0].locale[0].Item as Icon.Esb.Schemas.Wfm.Contracts.EnterpriseItemAttributesType).hierarchies[0].name);
-            Assert.AreEqual(Framework.HierarchyNames.Merchandise, (result.Contract.item[0].locale[0].Item as Icon.Esb.Schemas.Wfm.Contracts.EnterpriseItemAttributesType).hierarchies[1].name);
-            Assert.AreEqual(1, (result.Contract.item[0].locale[0].Item as Icon.Esb.Schemas.Wfm.Contracts.EnterpriseItemAttributesType).traits.Length);
-            Assert.AreEqual(Framework.TraitCodes.DepartmentSale, (result.Contract.item[0].locale[0].Item as Icon.Esb.Schemas.Wfm.Contracts.EnterpriseItemAttributesType).traits[0].code);
-            Assert.AreEqual("999999998", (result.Contract.item[0].locale[0].Item as Icon.Esb.Schemas.Wfm.Contracts.EnterpriseItemAttributesType).traits[0].type.value[0].value);
         }
 
         [TestMethod]
@@ -152,7 +96,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             serviceCacheMock.Setup(x => x.ProductSelectionGroupCache).Returns(productSelectionGroupMock);
 
             // When.
-            BuildMessageResult result = await builder.BuildItem(new List<MessageQueueItemModel>() { this.testDataFactory.MessageQueueItemModel }, false);
+            BuildMessageResult result = await builder.BuildItem(new List<MessageQueueItemModel>() { this.testDataFactory.MessageQueueItemModel });
 
             // Then.
             Assert.IsFalse(result.Success, "TraitType was null so there should have been an error thrown");
@@ -192,7 +136,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             serviceCacheMock.Setup(x => x.ProductSelectionGroupCache).Returns(productSelectionGroupMock);
 
             // When.
-            BuildMessageResult result = await builder.BuildItem(new List<MessageQueueItemModel>() { this.testDataFactory.MessageQueueItemModel }, false);
+            BuildMessageResult result = await builder.BuildItem(new List<MessageQueueItemModel>() { this.testDataFactory.MessageQueueItemModel });
 
             // Then.
             Assert.IsFalse(result.Success, "We did not have a mapping for the ItemId trait so this should cause an error");

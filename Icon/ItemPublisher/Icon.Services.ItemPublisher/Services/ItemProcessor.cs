@@ -41,7 +41,7 @@ namespace Icon.Services.ItemPublisher.Services
             get
             {
 
-               return this.esbService.ReadyForProcessing;
+                return this.esbService.ReadyForProcessing;
             }
         }
 
@@ -53,14 +53,11 @@ namespace Icon.Services.ItemPublisher.Services
         public async Task<List<EsbSendResult>> ProcessRetailRecords(List<MessageQueueItemModel> records)
         {
             List<EsbSendResult> response = new List<EsbSendResult>();
-            List<MessageQueueItemModel> retailItems = records.Where(x => x.Item.ItemTypeCode != ItemPublisherConstants.NonRetailSaleTypeCode
-            && (!x.Item.ItemAttributes.ContainsKey(ItemPublisherConstants.Attributes.DepartmentSale) ||
-                x.Item.ItemAttributes[ItemPublisherConstants.Attributes.DepartmentSale] == "No")
-            ).ToList();
+            List<MessageQueueItemModel> retailItems = records.Where(x => x.Item.ItemTypeCode != ItemPublisherConstants.NonRetailSaleTypeCode).ToList();
 
             if (retailItems.Count > 0)
             {
-                response.Add(await this.EsbProcess(retailItems, this.systemListBuilder.BuildRetailNonReceivingSystemsList(), false));
+                response.Add(await this.EsbProcess(retailItems, this.systemListBuilder.BuildRetailNonReceivingSystemsList()));
             }
 
             return response;
@@ -74,34 +71,11 @@ namespace Icon.Services.ItemPublisher.Services
         public async Task<List<EsbSendResult>> ProcessNonRetailRecords(List<MessageQueueItemModel> records)
         {
             List<EsbSendResult> response = new List<EsbSendResult>();
-            List<MessageQueueItemModel> nonRetailItems = records.Where(x => x.Item.ItemTypeCode == ItemPublisherConstants.NonRetailSaleTypeCode
-              && (!x.Item.ItemAttributes.ContainsKey(ItemPublisherConstants.Attributes.DepartmentSale) ||
-                x.Item.ItemAttributes[ItemPublisherConstants.Attributes.DepartmentSale] == "No")
-            ).ToList();
+            List<MessageQueueItemModel> nonRetailItems = records.Where(x => x.Item.ItemTypeCode == ItemPublisherConstants.NonRetailSaleTypeCode).ToList();
 
             if (nonRetailItems.Count > 0)
             {
-                response.Add(await this.EsbProcess(nonRetailItems, this.systemListBuilder.BuildNonRetailReceivingSystemsList(), false));
-            }
-
-            return response;
-        }
-
-        /// <summary>
-        /// Takes a list of MessageQueueItemModels and filters them into department sale only and calls the ESB
-        /// </summary>
-        /// <param name="records"></param>
-        /// <returns></returns>
-        public async Task<List<EsbSendResult>> ProcessDepartmentSaleRecords(List<MessageQueueItemModel> records)
-        {
-            List<EsbSendResult> response = new List<EsbSendResult>();
-            List<MessageQueueItemModel> departmentSaleItems = records.Where(x =>
-                x.Item.ItemAttributes.ContainsKey(ItemPublisherConstants.Attributes.DepartmentSale) &&
-                x.Item.ItemAttributes[ItemPublisherConstants.Attributes.DepartmentSale] == "Yes").ToList();
-
-            if (departmentSaleItems.Count > 0)
-            {
-                response.Add(await this.EsbProcess(departmentSaleItems, this.systemListBuilder.BuildDepartmentSaleNonReceivingSystemsList(), true));
+                response.Add(await this.EsbProcess(nonRetailItems, this.systemListBuilder.BuildNonRetailReceivingSystemsList()));
             }
 
             return response;
@@ -112,9 +86,9 @@ namespace Icon.Services.ItemPublisher.Services
         /// </summary>
         /// <param name="records"></param>
         /// <returns></returns>
-        private async Task<EsbSendResult> EsbProcess(List<MessageQueueItemModel> records, List<string> nonReceivingSystems, bool isDepartmentSale)
+        private async Task<EsbSendResult> EsbProcess(List<MessageQueueItemModel> records, List<string> nonReceivingSystems)
         {
-            return await this.esbService.Process(records, nonReceivingSystems, isDepartmentSale);
+            return await this.esbService.Process(records, nonReceivingSystems);
         }
     }
 }

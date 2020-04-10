@@ -107,30 +107,6 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             // Then
             Assert.AreEqual(1, nonReceivingSystems.Count);
             Assert.AreEqual("R10", nonReceivingSystems.First());
-        }
-
-        /// <summary>
-        /// Department Sale items should only be sent to R10
-        /// </summary>
-        [TestMethod]
-        public void BuildNonReceivingSystem_BuildDepartmentSaleNonReceivingSystemsList_R10ShouldBeExcludedFromList()
-        {
-            // Given.
-            var service = new SystemListBuilder(new ServiceSettings()
-            {
-                AllReceivingSystemsProduct = new List<string>()
-                {
-                    "R10",
-                    "A"
-                }
-            });
-
-            // When.
-            List<string> nonReceivingSystems = service.BuildDepartmentSaleNonReceivingSystemsList();
-
-            // Then
-            Assert.AreEqual(1, nonReceivingSystems.Count);
-            Assert.AreEqual("A", nonReceivingSystems.First());
-        }
+        }       
     }
 }

@@ -137,7 +137,6 @@ namespace Icon.Services.ItemPublisher.Services
 
             response.AddRange(await this.itemProcessor.ProcessRetailRecords(records));
             response.AddRange(await this.itemProcessor.ProcessNonRetailRecords(records));
-            response.AddRange(await this.itemProcessor.ProcessDepartmentSaleRecords(records));
 
             if (!response.Any(r => r != null))
             {

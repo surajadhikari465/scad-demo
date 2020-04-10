@@ -44,9 +44,9 @@ namespace Icon.Services.ItemPublisher.Services
         /// </summary>
         /// <param name="records"></param>
         /// <returns></returns>
-        public async Task<EsbSendResult> Process(List<MessageQueueItemModel> records, List<string> nonReceivingSystems, bool isDepartmentSale)
+        public async Task<EsbSendResult> Process(List<MessageQueueItemModel> records, List<string> nonReceivingSystems)
         {
-            BuildMessageResult result = await this.esbMessageBuilder.BuildItem(records, isDepartmentSale);
+            BuildMessageResult result = await this.esbMessageBuilder.BuildItem(records);
 
             if (result.Contract != null && result.Contract.item.Length > 0)
             {

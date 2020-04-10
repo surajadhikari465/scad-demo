@@ -7,8 +7,6 @@ namespace Icon.Services.ItemPublisher.Services
 {
     public interface IItemProcessor
     {
-        Task<List<EsbSendResult>> ProcessDepartmentSaleRecords(List<MessageQueueItemModel> records);
-
         Task<List<EsbSendResult>> ProcessNonRetailRecords(List<MessageQueueItemModel> records);
 
         Task<List<EsbSendResult>> ProcessRetailRecords(List<MessageQueueItemModel> records);

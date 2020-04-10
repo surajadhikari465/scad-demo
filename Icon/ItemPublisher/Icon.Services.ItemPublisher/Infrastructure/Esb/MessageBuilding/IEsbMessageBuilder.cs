@@ -13,9 +13,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
 
         Task<List<HierarchyType>> BuildHierarchies(List<Hierarchy> hierarchies, Action<string> processLogger);
 
-        Task<BuildMessageResult> BuildItem(List<MessageQueueItemModel> models, bool isDepartmentSale);
-
-        Task<BuildMessageResult> BuildItemDepartmentSale(List<MessageQueueItemModel> models);
+        Task<BuildMessageResult> BuildItem(List<MessageQueueItemModel> models);
 
         Task<ItemType> BuildItemType(MessageQueueItemModel message, Action<string> processLogger);
 
@@ -34,7 +32,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
         Task<GroupTypeType> CreateProductSelectionGroupElement(ProductSelectionGroup group, bool addOrUpdate, Action<string> processLogger);
 
         bool IsNutritionRemoved(Nutrition nutrition);
-        Task  RefreshCache();
+        Task RefreshCache();
         bool CacheLoaded { get; }
     }
 }

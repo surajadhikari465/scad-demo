@@ -81,13 +81,10 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             mockSystemListBuilder.Verify(x => x.BuildRetailNonReceivingSystemsList(), Times.Once);
 
             mockEsbService.Verify(x => x.Process(It.Is<List<MessageQueueItemModel>>(a =>
-                a.Count == 1 && a[0].Item.ItemTypeCode == ItemPublisherConstants.RetailSaleTypeCode
+                a.Count == 2 && a[0].Item.ItemTypeCode == ItemPublisherConstants.RetailSaleTypeCode
             ),
             It.Is<List<string>>(b =>
                 b[0] == "Test"
-            ),
-            It.Is<bool>(c =>
-                c == false
             )), "Give a list of three records only the retail item should have been processed.");
         }
 
@@ -137,21 +134,18 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             ),
             It.Is<List<string>>(b =>
                 b[0] == "Test"
-            ),
-            It.Is<bool>(c =>
-                c == false
             )), "Give a list of three records only the non retail item should have been processed.");
         }
 
         [TestMethod]
-        public async Task ProcessDepartmentSale_RecordsAreFilteredAndProcessed()
+        public async Task ProcessRetailWithDepartmentSale_RecordsAreFilteredAndProcessed()
         {
             // Given.
             Mock<IEsbService> mockEsbService = new Mock<IEsbService>();
             Mock<ILogger<ItemProcessor>> loggerMock = new Mock<ILogger<ItemProcessor>>();
             Mock<ISystemListBuilder> mockSystemListBuilder = new Mock<ISystemListBuilder>();
             mockEsbService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(false));
-            mockSystemListBuilder.Setup(x => x.BuildDepartmentSaleNonReceivingSystemsList()).Returns(new List<string>()
+            mockSystemListBuilder.Setup(x => x.BuildRetailNonReceivingSystemsList()).Returns(new List<string>()
             {
                 "Test"
             });
@@ -165,33 +159,26 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             }, mockSystemListBuilder.Object);
 
             MessageQueueItemModel modelRetailSale = testDataFactory.MessageQueueItemModel;
-            modelRetailSale.Item.ItemTypeCode = ItemPublisherConstants.RetailSaleTypeCode;
+            modelRetailSale.Item.ItemAttributes[ItemPublisherConstants.Attributes.DepartmentSale] = "Yes";
 
             MessageQueueItemModel modelNonRetailSale = testDataFactory.MessageQueueItemModel;
             modelNonRetailSale.Item.ItemTypeCode = ItemPublisherConstants.NonRetailSaleTypeCode;
 
-            MessageQueueItemModel modelDepartmentSale = testDataFactory.MessageQueueItemModel;
-            modelDepartmentSale.Item.ItemAttributes[ItemPublisherConstants.Attributes.DepartmentSale] = "Yes";
-
             // When.
-            List<EsbSendResult> result = await itemProcessor.ProcessDepartmentSaleRecords(new List<MessageQueueItemModel>()
+            List<EsbSendResult> result = await itemProcessor.ProcessRetailRecords(new List<MessageQueueItemModel>()
             {
                modelRetailSale,
-               modelNonRetailSale,
-               modelDepartmentSale
+               modelNonRetailSale
             });
 
             // Then.
-            mockSystemListBuilder.Verify(x => x.BuildDepartmentSaleNonReceivingSystemsList(), Times.Once);
+            mockSystemListBuilder.Verify(x => x.BuildRetailNonReceivingSystemsList(), Times.Once);
 
             mockEsbService.Verify(x => x.Process(It.Is<List<MessageQueueItemModel>>(a =>
                 a.Count == 1 && a[0].Item.ItemAttributes[ItemPublisherConstants.Attributes.DepartmentSale] == "Yes"
             ),
             It.Is<List<string>>(b =>
                 b[0] == "Test"
-            ),
-            It.Is<bool>(c =>
-                c == true
             )), "Give a list of three records only the department sale item should have been processed.");
         }
     }

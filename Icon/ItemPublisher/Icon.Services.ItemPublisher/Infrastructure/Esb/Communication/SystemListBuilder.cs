@@ -43,22 +43,5 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
 
             return nonReceivingSystemsProduct;
         }
-
-        /// <summary>
-        /// Returns a list for a department sale message which should only go to R10
-        /// </summary>
-        /// <returns></returns>
-        public List<string> BuildDepartmentSaleNonReceivingSystemsList()
-        {
-            List<string> nonReceivingSystemsProduct = new List<string>();
-            nonReceivingSystemsProduct.AddRange(this.serviceSettings.AllReceivingSystemsProduct);
-
-            if (nonReceivingSystemsProduct.Contains("R10"))
-            {
-                nonReceivingSystemsProduct.Remove("R10");
-            }
-
-            return nonReceivingSystemsProduct;
-        }
     }
 }

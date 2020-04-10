@@ -49,7 +49,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
         /// </summary>
         public bool CacheLoaded
         {
-           
+
             get
             {
                 var cacheRefreshResults = this.RefreshCache().ContinueWith(t => t).Result;
@@ -57,24 +57,17 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
             }
         }
 
-        public  async Task RefreshCache()
+        public async Task RefreshCache()
         {
             await this.esbServiceCache.RefreshCache();
         }
 
-        public async Task<BuildMessageResult> BuildItem(List<MessageQueueItemModel> models, bool isDepartmentSale)
+        public async Task<BuildMessageResult> BuildItem(List<MessageQueueItemModel> models)
         {
-            if (isDepartmentSale)
-            {
-                return await this.BuildItemDepartmentSale(models);
-            }
-            else
-            {
-                return await this.BuildItemNonDepartmentSale(models);
-            }
+            return await this.BuildMessageResult(models);
         }
 
-        public async Task<BuildMessageResult> BuildItemNonDepartmentSale(List<MessageQueueItemModel> models)
+        public async Task<BuildMessageResult> BuildMessageResult(List<MessageQueueItemModel> models)
         {
             List<string> errors = new List<string>();
             Action<string> processLogger = (string message) =>
@@ -89,36 +82,6 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
                 try
                 {
                     itemTypes.Add(await this.BuildItemType(model, processLogger));
-                }
-                catch (Exception ex)
-                {
-                    logger.Error("Item Id:" + model.Item.ItemId + " has following issue:" + ex.Message);
-                }
-            }
-
-            var item = new Contracts.items
-            {
-                item = itemTypes.ToArray(),
-            };
-
-            return new BuildMessageResult(errors.Count == 0 ? true : false, item, errors);
-        }
-
-        public async Task<BuildMessageResult> BuildItemDepartmentSale(List<MessageQueueItemModel> models)
-        {
-            List<string> errors = new List<string>();
-            Action<string> processLogger = (string message) =>
-            {
-                errors.Add(message);
-            };
-
-            List<Contracts.ItemType> itemTypes = new List<Contracts.ItemType>();
-
-            foreach (MessageQueueItemModel model in models)
-            {
-                try
-                {
-                    itemTypes.Add(await this.BuildItemTypeDepartmentSale(model, processLogger));
                 }
                 catch (Exception ex)
                 {
@@ -180,68 +143,6 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
                         },
                     }
                 },
-            };
-        }
-
-        public async Task<Contracts.ItemType> BuildItemTypeDepartmentSale(MessageQueueItemModel message, Action<string> processLogger)
-        {
-            return new Contracts.ItemType
-            {
-                Action = Contracts.ActionEnum.AddOrUpdate,
-                ActionSpecified = true,
-                id = message.Item.ItemId,
-                @base = new Contracts.BaseItemType
-                {
-                    type = new Contracts.ItemTypeType
-                    {
-                        code = message.Item.ItemTypeCode,
-                        description = message.Item.ItemTypeDescription
-                    }
-                },
-                locale = new Contracts.LocaleType[]
-                {
-                    new Contracts.LocaleType
-                    {
-                        id = Framework.Locales.WholeFoods.ToString(),
-                        name = "Whole Foods Market",
-                        type = new Contracts.LocaleTypeType
-                        {
-                            code = Contracts.LocaleCodeType.CHN,
-                            description = Contracts.LocaleDescType.Chain
-                        },
-                        Item = new Contracts.EnterpriseItemAttributesType
-                        {
-                            scanCodes = new Contracts.ScanCodeType[]
-                            {
-                                await this.BuildScanCodeType(message, processLogger)
-                            },
-                            hierarchies = (await this.BuildHierarchies(message.Hierarchy.Where(x =>
-                                    x.HierarchyId == Framework.Hierarchies.Merchandise ||
-                                    x.HierarchyId == Framework.Hierarchies.Tax).ToList() , processLogger)
-                            ).ToArray(),
-                            traits = new Contracts.TraitType[]
-                            {
-                                new Contracts.TraitType
-                                {
-                                    code = Framework.TraitCodes.DepartmentSale,
-                                    type = new Contracts.TraitTypeType
-                                    {
-                                        description = Framework.TraitDescriptions.DepartmentSale,
-                                        value = new Contracts.TraitValueType[]
-                                        {
-                                            new Contracts.TraitValueType
-                                            {
-                                                value = this.hierarchyNameParser.ParseHierarchyClassIdForContract(message.Hierarchy.FirstOrDefault(x => x.HierarchyId == Framework.Hierarchies.Financial)?.HierarchyClassName.ToString(),
-                                                message.Hierarchy.FirstOrDefault(x => x.HierarchyId == Framework.Hierarchies.Financial)?.HierarchyClassId ?? 0,
-                                                Framework.Hierarchies.Financial)
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                        }
-                    }
-                }
             };
         }
 

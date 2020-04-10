@@ -7,7 +7,7 @@ namespace Icon.Services.ItemPublisher.Services
 {
     public interface IEsbService
     {
-        Task<EsbSendResult> Process(List<MessageQueueItemModel> records, List<string> nonReceivingSystems, bool isDepartmentSale);
+        Task<EsbSendResult> Process(List<MessageQueueItemModel> records, List<string> nonReceivingSystems);
 
         Task<bool> ReadyForProcessing { get; }
     }

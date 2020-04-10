@@ -52,7 +52,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
                  }
             };
 
-            esbMessageBuilderMock.Setup(x => x.BuildItem(It.IsAny<List<MessageQueueItemModel>>(), false)).Returns(Task.FromResult<BuildMessageResult>(new BuildMessageResult(true, esbItems, new List<string>() { })));
+            esbMessageBuilderMock.Setup(x => x.BuildItem(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult<BuildMessageResult>(new BuildMessageResult(true, esbItems, new List<string>() { })));
 
             EsbService service = new EsbService(serializerMock.Object,
                 esbClientMock.Object,
@@ -74,7 +74,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             };
 
             // When.
-            EsbSendResult result = await service.Process(models, new List<string>() { }, false);
+            EsbSendResult result = await service.Process(models, new List<string>() { });
 
             // Then.
             Assert.IsTrue(result.Success, "The service sent a message and we should have received a success response");
@@ -114,7 +114,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
                 }
             };
 
-            esbMessageBuilderMock.Setup(x => x.BuildItem(It.IsAny<List<MessageQueueItemModel>>(), It.IsAny<bool>())).Returns(Task.FromResult<BuildMessageResult>(new BuildMessageResult(false, esbItems, new List<string>() { })));
+            esbMessageBuilderMock.Setup(x => x.BuildItem(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult<BuildMessageResult>(new BuildMessageResult(false, esbItems, new List<string>() { })));
 
             esbClientMock.Setup(x => x.SendMessage(It.IsAny<string>(), It.IsAny<List<string>>())).Returns(Task.FromResult(new EsbSendResult(false, "Error Occurred", "request", new Dictionary<string, string>() { }, Guid.Parse("48a5364b-5748-493d-80ee-748cd3008869"))));
 
@@ -136,7 +136,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             };
 
             // When.
-            EsbSendResult result = await service.Process(models, new List<string>() { }, false);
+            EsbSendResult result = await service.Process(models, new List<string>() { });
 
             // Then.
             Assert.IsFalse(result.Success, "The ESB should have returned an error");
@@ -178,7 +178,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
                 }
             };
 
-            esbMessageBuilderMock.Setup(x => x.BuildItem(It.IsAny<List<MessageQueueItemModel>>(), It.IsAny<bool>())).Returns(Task.FromResult<BuildMessageResult>(new BuildMessageResult(true, esbItems, new List<string>() { expectedWarning })));
+            esbMessageBuilderMock.Setup(x => x.BuildItem(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult<BuildMessageResult>(new BuildMessageResult(true, esbItems, new List<string>() { expectedWarning })));
 
             esbClientMock.Setup(x => x.SendMessage(It.IsAny<string>(), It.IsAny<List<string>>())).Returns(Task.FromResult(new EsbSendResult(true, "", "request", new Dictionary<string, string>() { }, Guid.Parse("48a5364b-5748-493d-80ee-748cd3008869"))));
 
@@ -200,7 +200,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             };
 
             // When.
-            EsbSendResult result = await service.Process(models, new List<string>() { }, false);
+            EsbSendResult result = await service.Process(models, new List<string>() { });
 
             // Then.
             Assert.IsTrue(result.Success);

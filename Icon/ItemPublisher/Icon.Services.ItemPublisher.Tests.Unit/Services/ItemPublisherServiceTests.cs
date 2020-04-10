@@ -41,10 +41,6 @@ namespace Icon.Services.ItemPublisher.Services.Tests
         {
             // Given.
             mockItemProcessor.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(true));
-            mockItemProcessor.Setup(x => x.ProcessDepartmentSaleRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<EsbSendResult>()
-            {
-                new EsbSendResult(true,"success")
-            }));
             mockItemProcessor.Setup(x => x.ProcessNonRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<EsbSendResult>()
             {
                 new EsbSendResult(true,"success")
@@ -88,7 +84,6 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             // Then
             mockItemProcessor.Verify(x => x.ProcessRetailRecords(It.IsAny<List<MessageQueueItemModel>>()));
             mockItemProcessor.Verify(x => x.ProcessNonRetailRecords(It.IsAny<List<MessageQueueItemModel>>()));
-            mockItemProcessor.Verify(x => x.ProcessDepartmentSaleRecords(It.IsAny<List<MessageQueueItemModel>>()));
         }
 
         /// <summary>
@@ -100,10 +95,6 @@ namespace Icon.Services.ItemPublisher.Services.Tests
         {
             // Given.
             mockItemProcessor.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(true));
-            mockItemProcessor.Setup(x => x.ProcessDepartmentSaleRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<EsbSendResult>()
-            {
-                new EsbSendResult(true,"success")
-            }));
             mockItemProcessor.Setup(x => x.ProcessNonRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<EsbSendResult>()
             {
                 new EsbSendResult(true,"success")
@@ -149,8 +140,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
 
             // Then.
             mockItemProcessor.Verify(x => x.ProcessRetailRecords(It.IsAny<List<MessageQueueItemModel>>()), Times.Exactly(5), "With a batch size of 1 and a queue count of 5 we should have had 5 executions.");
-            mockItemProcessor.Verify(x => x.ProcessNonRetailRecords(It.IsAny<List<MessageQueueItemModel>>()), Times.Exactly(5), "With a batch size of 1 and a queue count of 5 we should have had 5 executions.");
-            mockItemProcessor.Verify(x => x.ProcessDepartmentSaleRecords(It.IsAny<List<MessageQueueItemModel>>()), Times.Exactly(5), "With a batch size of 1 and a queue count of 5 we should have had 5 executions.");
+            mockItemProcessor.Verify(x => x.ProcessNonRetailRecords(It.IsAny<List<MessageQueueItemModel>>()), Times.Exactly(5), "With a batch size of 1 and a queue count of 5 we should have had 5 executions."); 
         }
 
         /// <summary>
@@ -162,10 +152,6 @@ namespace Icon.Services.ItemPublisher.Services.Tests
         {
             // Given.
             mockItemProcessor.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(true));
-            mockItemProcessor.Setup(x => x.ProcessDepartmentSaleRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<EsbSendResult>()
-            {
-                new EsbSendResult(true,"success")
-            }));
             mockItemProcessor.Setup(x => x.ProcessNonRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<EsbSendResult>()
             {
                 new EsbSendResult(true,"success")
