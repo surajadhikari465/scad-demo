@@ -1,13 +1,12 @@
 import React, { Fragment, useContext, useState, useEffect } from 'react';
 // @ts-ignore 
-import { BarcodeScanner, IBarcodeScannedEvent } from '@wfm/mobile';
+import { BarcodeScanner, IBarcodeScannedEvent, transformScanCode } from '@wfm/mobile';
 import './styles.scss';
 import { AppContext, types, IMenuItem } from "../../store";
 import BasicModal from '../../layout/BasicModal';
 import CurrentLocation from "../../layout/CurrentLocation";
 import LoadingComponent from '../../layout/LoadingComponent';
 import agent from "../../api/agent";
-import ScanCodeProcessor from '../../scanning/ScanCodeProcessor';
 
 
 const initialState = {
@@ -50,7 +49,7 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
     BarcodeScanner.registerHandler(function (data: IBarcodeScannedEvent) {
       if (shrinkState.isSelected === true) {
         try {
-          let scanCode = ScanCodeProcessor.parseScanCode(data.Data, data.Symbology);
+          let scanCode = transformScanCode({ scanCode: data.Data, symbology: data.Symbology});
           setUpc(scanCode, true);
         } catch (ex) {
           setAlert({

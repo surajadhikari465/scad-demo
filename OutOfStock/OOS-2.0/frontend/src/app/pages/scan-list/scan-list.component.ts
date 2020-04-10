@@ -11,9 +11,8 @@ import { DataEntryComponent } from 'src/app/components/data-entry/data-entry.com
 import { AlertModalComponent } from 'src/app/components/alert-modal/alert-modal.component'
 
 import { Store } from 'src/app/app.interfaces'
-import ScanCodeProcessor from 'src/scanning/ScanCodeProcessor';
 // @ts-ignore 
-import { BarcodeScanner, IBarcodeScannedEvent } from '@wfm/mobile';
+import { BarcodeScanner, IBarcodeScannedEvent, transformScanCode } from '@wfm/mobile';
 
 @Component({
   selector: 'app-scan-list',
@@ -44,7 +43,7 @@ export class ScanListComponent implements OnInit {
       if (allowScan) {
         self.isLoading = true;
         try {
-          let scanCode = ScanCodeProcessor.parseScanCode(data.Data, data.Symbology);
+          let scanCode = transformScanCode({ scanCode: data.Data, symbology: data.Symbology});
           self.addWfmItem(scanCode)
         } catch (ex) {
           alert(ex.message);

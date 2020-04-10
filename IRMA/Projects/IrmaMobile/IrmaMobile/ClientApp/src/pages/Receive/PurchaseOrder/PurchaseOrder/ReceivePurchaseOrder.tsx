@@ -14,8 +14,7 @@ import OrderInformation from "../types/OrderInformation";
 import orderUtil from "../util/Order"
 import isMinDate from "../util/MinDate";
 // @ts-ignore 
-import { BarcodeScanner, IBarcodeScannedEvent } from '@wfm/mobile';
-import ScanCodeProcessor from "../../../../scanning/ScanCodeProcessor";
+import { BarcodeScanner, IBarcodeScannedEvent, transformScanCode } from '@wfm/mobile';
 
 interface RouteParams {
     openOrderInformation: string;
@@ -78,7 +77,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
         BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
             let scanCode = '';
             try {
-                scanCode = ScanCodeProcessor.parseScanCode(data.Data, data.Symbology);
+                scanCode = transformScanCode({ scanCode: data.Data, symbology: data.Symbology});
             } catch(error) {
                 toast.error(error);
             }

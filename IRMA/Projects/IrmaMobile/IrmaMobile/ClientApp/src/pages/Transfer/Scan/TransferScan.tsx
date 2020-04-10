@@ -4,7 +4,7 @@ import LoadingComponent from '../../../layout/LoadingComponent';
 import { Grid, Input, Button, Segment, InputOnChangeData, Dropdown, DropdownProps } from 'semantic-ui-react';
 import './styles.scss';
 // @ts-ignore 
-import { BarcodeScanner, IBarcodeScannedEvent } from '@wfm/mobile';
+import { BarcodeScanner, IBarcodeScannedEvent, transformScanCode } from '@wfm/mobile';
 import ITransferData from '../types/ITransferData';
 import agent from '../../../api/agent';
 import ITransferItem from '../types/ITransferItem';
@@ -13,7 +13,6 @@ import ReasonCodeModal from '../../../layout/ReasonCodeModal';
 import { ReasonCode } from '../../Receive/PurchaseOrder/types/ReasonCode';
 import BasicModal from '../../../layout/BasicModal';
 import { useHistory } from 'react-router-dom';
-import ScanCodeProcessor from '../../../scanning/ScanCodeProcessor';
 
 const TransferScan: React.FC = () => {
     //@ts-ignore
@@ -175,7 +174,7 @@ const TransferScan: React.FC = () => {
             let scanCode = ''
             try
             {
-                scanCode = ScanCodeProcessor.parseScanCode(data.Data, data.Symbology);
+                scanCode = transformScanCode({ scanCode: data.Data, symbology: data.Symbology});
             } catch(error) {
                 toast.error(scanCode);
                 return;
