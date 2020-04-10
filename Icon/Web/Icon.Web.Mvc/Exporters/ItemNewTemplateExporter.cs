@@ -103,7 +103,7 @@ namespace Icon.Web.Mvc.Exporters
         public override void AddSpreadsheetColumns()
         {
             
-            if(!ExportAllAttributes && SelectedColumnNames != null)
+            if(SelectedColumnNames != null)
             {
                 //Only export selected columns and keep them in order
                 AddSpreadSheetColumnsCustomView();

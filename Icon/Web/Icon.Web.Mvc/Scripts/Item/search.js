@@ -732,22 +732,37 @@ window.addEventListener('load', function () {
             let columnsJson = JSON.stringify(columns);
             window.localStorage.setItem(columnsKey, columnsJson);
         },
-        getSettings: function(){
+        getSettings: function (filterHiddenColumns) {
             let selectedColumnNames;
 
             if (localStorage.getItem(columnsKey) != null) {
                 let columnSettings = JSON.parse(localStorage.getItem(columnsKey));
-                columnSettings = columnSettings.filter(a => a.hidden == false);
+
+                if (filterHiddenColumns) {
+                    columnSettings = columnSettings.filter(a => a.hidden == false);
+                }
+
+
                 selectedColumnNames = columnSettings.map(a => a.key);
             }
             else {
                 selectedColumnNames = null;
             }
             return selectedColumnNames;
-         },
-        setSession: () => {
-            var selectedColumnNames = searchViewModel.getSettings();
-            $.post(window.location.origin + '/Item/ItemSearchExport', { selectedColumnNames: selectedColumnNames });
+        },
+
+        export: function (exportAllAttributes) {
+            var selectedColumnNames = searchViewModel.getSettings(!exportAllAttributes);
+            $.ajax({
+                url: window.location.origin + '/Item/ItemSearchExport',
+                type: 'POST',
+                data: {
+                    selectedColumnNames: selectedColumnNames
+                },
+                success: function (response) { //return the download link
+                    window.location.href = window.location.origin + '/Item/ItemSearchExport?exportAllAttributes=' + exportAllAttributes;
+                },
+            });
         },
         compareAttributesByName: function (a1, a2) {
             let a1DisplayName = a1.DisplayName.toLowerCase();
@@ -764,16 +779,17 @@ window.addEventListener('load', function () {
             }
         },
         exportSelectedRows: function (exportAllAttributes) {
-            var selectedColumnNames = searchViewModel.getSettings();
+            var selectedColumnNames = searchViewModel.getSettings(!exportAllAttributes);
 
             var checkedRows = $("#grid").igGrid("selectedRows");
 
             $.ajax({
                 url: window.location.origin + '/Item/ExportSelectedItems',
                 type: 'POST',
-                data: { selectedIds: checkedRows.map(cr => cr.id),
-                selectedColumnNames: selectedColumnNames
-            },
+                data: {
+                    selectedIds: checkedRows.map(cr => cr.id),
+                    selectedColumnNames: selectedColumnNames
+                },
                 success: function (response) { //return the download link
                     window.location.href = window.location.origin + '/Item/ExportSelectedItems?exportAllAttributes=' + exportAllAttributes;
                 },
@@ -905,14 +921,15 @@ window.addEventListener('load', function () {
         },
         init: function (attributes) {
             try {
-                $("#selectedExportRowsAllColumns")[0].addEventListener('click', this.selectedRowAllColumnsExportClick);
-                $("#selectedExportRowsSelectedColumns")[0].addEventListener('click', this.selectedRowCurrentColumnsExportClick);
-                $("#allExportRowsSelectedColumns")[0].addEventListener('click', this.setSession);
-                $("#allExportRowsAllColumns")[0].addEventListener('click', this.setSession);
+                var self = this;
+                $("#selectedExportRowsAllColumns")[0].addEventListener('click', self.selectedRowAllColumnsExportClick);
+                $("#selectedExportRowsSelectedColumns")[0].addEventListener('click', self.selectedRowCurrentColumnsExportClick);
+                $("#allExportRowsSelectedColumns")[0].addEventListener('click', function () { self.export(false); });
+                $("#allExportRowsAllColumns")[0].addEventListener('click', function () { self.export(true); });
+
 
                 this.state.attributes = attributes.sort(this.compareAttributesByName);
                 this.createAttributeComboBoxOptions();
-                this.setSession();
                 this.loadPickListData(this.state.attributes)
                     .then(() => {
                         this.view.attributesElement = document.getElementById('attributes');
