@@ -19,7 +19,7 @@ SET @localeTypeId = (
 IF NOT EXISTS (
 		SELECT *
 		FROM locale
-		WHERE localename = 'Metro_SFL'
+		WHERE localename = 'MET_SFL'
 		)
 	INSERT INTO [dbo].[Locale] (
 		[LocaleId]
@@ -39,7 +39,7 @@ IF NOT EXISTS (
 		)
 	VALUES (
 		3000
-		,'Metro_SFL'
+		,'MET_SFL'
 		,@localeTypeId
 		,NULL
 		,NULL
@@ -67,7 +67,7 @@ SET @regionid = (
 SET @metroid = (
 		SELECT localeid
 		FROM locale
-		WHERE localename = 'Metro_SFL'
+		WHERE localename = 'MET_SFL'
 		)
 
 DECLARE @localeIdTallahassee INT = (

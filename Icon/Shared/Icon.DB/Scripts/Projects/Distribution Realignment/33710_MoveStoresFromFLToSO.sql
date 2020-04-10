@@ -15,7 +15,7 @@ DECLARE @localeId INT = (
 IF NOT EXISTS (
 		SELECT *
 		FROM locale
-		WHERE localename = 'Metro_SFL'
+		WHERE localename = 'MET_SFL'
 		)
 BEGIN
 	SET IDENTITY_INSERT [dbo].[Locale] ON
@@ -32,7 +32,7 @@ BEGIN
 	VALUES (
 		3000
 		,1
-		,'Metro_SFL'
+		,'MET_SFL'
 		,getdate()
 		,NULL
 		,@localeTypeId
@@ -56,7 +56,7 @@ DECLARE @localeIdDestin INT = (
 DECLARE @parentLocaleid INT = (
 		SELECT TOP 1 localeId
 		FROM locale
-		WHERE LocaleName = 'Metro_SFL'
+		WHERE LocaleName = 'MET_SFL'
 		)
 
 UPDATE locale

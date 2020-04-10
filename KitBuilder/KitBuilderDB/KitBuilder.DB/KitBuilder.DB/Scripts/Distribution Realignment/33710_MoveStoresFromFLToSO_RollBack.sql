@@ -38,4 +38,4 @@ WHERE localeid IN (
 
 DELETE
 FROM locale
-WHERE localename = 'Metro_SFL'
+WHERE localename = 'MET_SFL'
