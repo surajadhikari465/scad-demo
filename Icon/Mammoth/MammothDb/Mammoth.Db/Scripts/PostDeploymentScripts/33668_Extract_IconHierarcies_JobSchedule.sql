@@ -257,7 +257,7 @@ BEGIN
 		  "concatenateOutputFiles": true,
 		  "includeHeaders": true,
 		  "source": "ICON",
-		  "query": "set transaction isolation level read uncommitted; select hc.hierarchyClassID, hierarchyClassName,hierarchyParentClassID, hierarchyLevel from Hierarchy h inner join HierarchyClass hc on h.hierarchyID = hc.hierarchyID where h.hierarchyName = ''Merchandise'' order by hierarchyLevel, hierarchyClassID;",
+		  "query": "set transaction isolation level read uncommitted; declare @SubBrickTraitId int; set @SubBrickTraitId = (select traitid from trait where traitDesc = ''Sub Brick Code'') select hc.hierarchyClassID, hierarchyClassName,hierarchyParentClassID, hierarchyLevel, hct.traitValue subBrickCode from Hierarchy h inner join HierarchyClass hc on h.hierarchyID = hc.hierarchyID left join HierarchyClassTrait hct on hct.hierarchyClassID = hc.hierarchyClassID and traitID= @SubBrickTraitId where h.hierarchyName = ''Merchandise'' order by hierarchyLevel, hierarchyClassID;",
 		  "parameters": [],
 		  "outputFileName": "{source}_hierarchy_merchandise_{date:yyyyMMdd}.csv",
 		  "delimiter": "|",
