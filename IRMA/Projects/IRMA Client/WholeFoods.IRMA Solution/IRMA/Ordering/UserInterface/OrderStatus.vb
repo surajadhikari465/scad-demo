@@ -265,7 +265,9 @@ Friend Class frmOrderStatus
             ' Verify the order has not already been closed.
             If Not pbClosedOrder Then
                 ' Confirm date is not in the past year as this causes issues to metrics
-                If dtpSearchDate.DateTime.Year < DateTime.Now.Year AndAlso MsgBox("You are attempting to close an invoice with a year other than the current year. Is the year accurate?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "Verify Close Order") = MsgBoxResult.No Then
+                ' Only prompt for confirm if the date is enabled and does not equal the default value of the Infragistics date control
+                Dim defaultInfragisticsDateTime As DateTime = New DateTime(1980, 1, 1)
+                If dtpSearchDate.Enabled AndAlso dtpSearchDate.DateTime <> defaultInfragisticsDateTime AndAlso dtpSearchDate.DateTime.Year < DateTime.Now.Year AndAlso MsgBox("You are attempting to close an invoice with a year other than the current year. Is the year accurate?", MsgBoxStyle.Question + MsgBoxStyle.YesNo, "Verify Close Order") = MsgBoxResult.No Then
                     Exit Sub
                 End If
 
