@@ -58,7 +58,14 @@ namespace Icon.Esb
 
         protected virtual void CreateDestination()
         {
-            destination = session.CreateQueue(Settings.QueueName);
+            if (Settings.DestinationType.ToLower().Contains("topic"))
+            {
+                destination = session.CreateTopic(Settings.QueueName);
+            }
+            else
+            { 
+                destination = session.CreateQueue(Settings.QueueName);
+            }
         }
 
         private LookupContext CreateLookupContext()

@@ -91,6 +91,9 @@ namespace Icon.Esb.ConfigReader
         [ConfigurationProperty("queueName", IsRequired = false)]
         public string QueueName { get { return (string)base["queueName"]; } }
 
+        [ConfigurationProperty("destinationType", IsRequired = false)]
+        public string DestinationType { get { return (string)base["destinationType"]; } }
+
         [ConfigurationProperty("certificateName", IsRequired = false)]
         public string CertificateName { get { return (string)base["certificateName"]; } }
 

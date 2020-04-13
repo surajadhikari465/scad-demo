@@ -8,6 +8,8 @@ namespace Icon.Esb
 {
     public class EsbConnectionSettings : IEsbConnectionSettings
     {
+        private string _destinationType;
+
         public string ServerUrl { get; set; }
         public string JndiUsername { get; set; }
         public string JndiPassword { get; set; }
@@ -15,6 +17,11 @@ namespace Icon.Esb
         public string SslPassword { get; set; }
         public string JmsUsername { get; set; }
         public string JmsPassword { get; set; }
+        public string DestinationType
+        {
+            get { return _destinationType ?? "Queue"; }
+            set { _destinationType = value; }
+        }
         public string QueueName { get; set; }
         public SessionMode SessionMode { get; set; }
         public string TargetHostName { get; set; }
@@ -24,7 +31,7 @@ namespace Icon.Esb
         public int ReconnectDelay { get; set; }
         public string ClientId { get; set; }
 
-        public virtual void LoadFromConfig(string queueConfigName = "QueueName")
+        public virtual void LoadFromConfig(string destinationConfigName = "QueueName")
         {
             ServerUrl = AppSettingsAccessor.GetStringSetting("ServerUrl", false);
             JndiUsername = AppSettingsAccessor.GetStringSetting("JndiUsername", false);
@@ -40,7 +47,8 @@ namespace Icon.Esb
             CertificateStoreLocation = AppSettingsAccessor.GetEnumSetting<StoreLocation>("CertificateStoreLocation", false);
             ReconnectDelay = AppSettingsAccessor.GetIntSetting("ReconnectDelay", false);
 
-            QueueName = AppSettingsAccessor.GetStringSetting(queueConfigName, false);
+            QueueName = AppSettingsAccessor.GetStringSetting(destinationConfigName, false);
+            DestinationType = AppSettingsAccessor.GetStringSetting("DestinationType", false);
             SessionMode = AppSettingsAccessor.GetEnumSetting<SessionMode>("SessionMode", false);
 
             var clientIdPrefix = AppSettingsAccessor.GetStringSetting("ClientId", "NoClientIdConfigured");
@@ -71,6 +79,7 @@ namespace Icon.Esb
             ConnectionFactoryName = connectionConfiguration.ConnectionFactoryName;
             SslPassword = connectionConfiguration.SslPassword;
             QueueName = connectionConfiguration.QueueName;
+            DestinationType = connectionConfiguration.DestinationType;
             SessionMode = !string.IsNullOrWhiteSpace(connectionConfiguration.SessionMode) 
                 ? (SessionMode)Enum.Parse(typeof(SessionMode), connectionConfiguration.SessionMode) 
                 : default(SessionMode);
