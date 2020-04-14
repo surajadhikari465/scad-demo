@@ -693,7 +693,7 @@ AS
 		SET @ToUpload_MixMatch = CASE WHEN @HasValue_MixMatch = 1 THEN @MixMatch ELSE @FromDB_MixMatch END
 		SET @ToUpload_Discountable = CASE WHEN @HasValue_Discountable = 1 THEN @Discountable ELSE @FromDB_Discountable END
 		SET @ToUpload_Subteam_No = CASE WHEN @HasValue_Subteam_No = 1 THEN @Subteam_No ELSE @FromDB_Subteam_No END
-		SET @ToUpload_IsAuthorized = CASE WHEN @HasValue_IsAuthorized = 1 THEN @IsAuthorized ELSE @FromDB_IsAuthorized END
+		SET @ToUpload_IsAuthorized = CASE WHEN @HasValue_IsAuthorized = 1 THEN @IsAuthorized ELSE ISNULL(@FromDB_IsAuthorized, 0) END
 		SET @ToUpload_Restricted_Hours = CASE WHEN @HasValue_Restricted_Hours = 1 THEN @Restricted_Hours ELSE @FromDB_Restricted_Hours END
 		SET @ToUpload_LocalItem = CASE WHEN @HasValue_LocalItem = 1 THEN @LocalItem ELSE @FromDB_LocalItem END
 		SET @ToUpload_ItemSurcharge = CASE WHEN @HasValue_ItemSurcharge = 1 THEN @ItemSurcharge ELSE @FromDB_ItemSurcharge END
