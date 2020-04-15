@@ -33,7 +33,9 @@ namespace BulkItemUploadProcessor.DataAccess.Queries
                     SELECT TOP (1) bi.BulkUploadId 
                     FROM BulkUpload bi
                     INNER JOIN BulkUploadStatus bis ON bi.StatusId = bis.Id 
+                    INNER JOIN BulkUploadDataTypes budt on bi.BulkUploadDataTypeId = budt.BulkUploadDataTypeId
                     WHERE bis.STATUS = 'New'
+                    AND budt.datatype = 'Item'
                     ORDER BY bi.BulkUploadId ASC
                 )";
             var results = Connection.Query<BulkItemUploadInformation>(query);

@@ -28,15 +28,6 @@ namespace Icon.Web.Mvc.Exporters
         {
             this.getHierarchyClassesQueryHandler = getHierarchyClassesQueryHandler;
 
-            AddSpreadsheetColumn(BrandNameIndex,
-                "Brand Name",
-                4000,
-                HorizontalCellAlignment.Left,
-                (row, hierarchyClass) => row.Cells[BrandNameIndex].Value =
-                    (string.IsNullOrWhiteSpace(hierarchyClass.BrandName))
-                        ? string.Empty
-                        : hierarchyClass.BrandName);
-
             AddSpreadsheetColumn(BrandIdIndex,
                 "Brand ID",
                 4000,
@@ -45,6 +36,15 @@ namespace Icon.Web.Mvc.Exporters
                     (string.IsNullOrWhiteSpace(hierarchyClass.BrandId))
                         ? string.Empty
                         : hierarchyClass.BrandId);
+
+            AddSpreadsheetColumn(BrandNameIndex,
+                "Brand Name",
+                4000,
+                HorizontalCellAlignment.Left,
+                (row, hierarchyClass) => row.Cells[BrandNameIndex].Value =
+                    (string.IsNullOrWhiteSpace(hierarchyClass.BrandName))
+                        ? string.Empty
+                        : hierarchyClass.BrandName);
 
             AddSpreadsheetColumn(BrandAbbreviationIndex,
                 "Brand Abbreviation",
