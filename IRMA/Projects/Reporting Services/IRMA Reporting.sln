@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2016
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "IRMA Reporting", "IRMA Reporting.rptproj", "{8899F9A8-235D-4BC3-A16A-4C5F1E54557D}"
 EndProject
@@ -13,6 +13,7 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		FL Dev|Default = FL Dev|Default
+		FL Dev1|Default = FL Dev1|Default
 		FL Test|Default = FL Test|Default
 		local|Default = local|Default
 		MA Test|Default = MA Test|Default
@@ -48,6 +49,9 @@ Global
 		{8899F9A8-235D-4BC3-A16A-4C5F1E54557D}.FL Dev|Default.ActiveCfg = FL Dev
 		{8899F9A8-235D-4BC3-A16A-4C5F1E54557D}.FL Dev|Default.Build.0 = FL Dev
 		{8899F9A8-235D-4BC3-A16A-4C5F1E54557D}.FL Dev|Default.Deploy.0 = FL Dev
+		{8899F9A8-235D-4BC3-A16A-4C5F1E54557D}.FL Dev1|Default.ActiveCfg = FL Dev1
+		{8899F9A8-235D-4BC3-A16A-4C5F1E54557D}.FL Dev1|Default.Build.0 = FL Dev1
+		{8899F9A8-235D-4BC3-A16A-4C5F1E54557D}.FL Dev1|Default.Deploy.0 = FL Dev1
 		{8899F9A8-235D-4BC3-A16A-4C5F1E54557D}.FL Test|Default.ActiveCfg = FL Test
 		{8899F9A8-235D-4BC3-A16A-4C5F1E54557D}.FL Test|Default.Build.0 = FL Test
 		{8899F9A8-235D-4BC3-A16A-4C5F1E54557D}.FL Test|Default.Deploy.0 = FL Test

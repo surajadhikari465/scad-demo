@@ -1,10 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Name>ItemCatalog</Name>
+<RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="ItemCatalog">
   <ConnectionProperties>
     <Extension>SQL</Extension>
-    <ConnectString>Data Source=idd-na\nad;Initial Catalog=ItemCatalog_Test;Connect Timeout=45</ConnectString>
-    <IntegratedSecurity>true</IntegratedSecurity>
+    <ConnectString>Data Source=fl-db01-dev;Initial Catalog=ItemCatalog;Connect Timeout=45</ConnectString>
   </ConnectionProperties>
   <DataSourceID>bbd16aa7-5ad5-4c4e-ad2c-aca47bd2036d</DataSourceID>
 </RptDataSource>

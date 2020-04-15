@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition=" '$(Configuration)' == 'UK Production' ">
     <FullPath>UK Production</FullPath>
     <OutputPath>bin\UK Production</OutputPath>
@@ -7,6 +7,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/UK</TargetReportFolder>
     <TargetServerURL>http://iap-uk/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -17,6 +18,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/UK</TargetReportFolder>
     <TargetServerURL>http://ias-uk/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -27,19 +29,21 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/UK</TargetReportFolder>
     <TargetServerURL>http://iad-uk/ReportServer</TargetServerURL>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'FL Dev' ">
     <FullPath>FL Dev</FullPath>
-    <OutputPath>bin\FL Dev</OutputPath>
+    <OutputPath>bin\FL Dev1</OutputPath>
     <ErrorLevel>2</ErrorLevel>
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
-    <TargetServerVersion>SSRS2008</TargetServerVersion>
-    <TargetReportFolder>irma/sw/test</TargetReportFolder>
-    <TargetDatasourceFolder>irma/sw/test</TargetDatasourceFolder>
-    <TargetServerURL>http://irmadevrpt/ReportServer</TargetServerURL>
+    <TargetServerVersion>SSRS2016</TargetServerVersion>
+    <Platform />
+    <TargetReportFolder>IRMA/FL</TargetReportFolder>
+    <TargetDatasourceFolder>IRMA/FL</TargetDatasourceFolder>
+    <TargetServerURL>http://irmarptdev/ReportServer</TargetServerURL>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'FL Test' ">
     <FullPath>FL Test</FullPath>
@@ -48,6 +52,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/FL</TargetReportFolder>
     <TargetServerURL>http://iaq-fl/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -58,6 +63,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/UK</TargetReportFolder>
     <TargetServerURL>http://ird-uk/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -68,6 +74,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/NA</TargetReportFolder>
     <TargetServerURL>http://iad-na/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -78,6 +85,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/MA</TargetReportFolder>
     <TargetServerURL>http://iad-ma/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -88,6 +96,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/SO</TargetReportFolder>
     <TargetServerURL>http://ird-so/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -98,6 +107,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/SW/DEV</TargetReportFolder>
     <TargetDatasourceFolder>IRMA/SW/DEV</TargetDatasourceFolder>
     <TargetServerURL>http://irmadevrpt/ReportServer</TargetServerURL>
@@ -109,6 +119,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/SW</TargetReportFolder>
     <TargetServerURL>http://ird-sw/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -119,6 +130,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/MA</TargetReportFolder>
     <TargetServerURL>http://iad-ma/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -129,6 +141,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/RM</TargetReportFolder>
     <TargetServerURL>http://ird-rm/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -139,6 +152,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/RM</TargetReportFolder>
     <TargetServerURL>http://iad-rm/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -149,6 +163,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/SW</TargetReportFolder>
     <TargetServerURL>http://iaq-sw/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -159,6 +174,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/RM</TargetReportFolder>
     <TargetServerURL>http://iaq-rm/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -169,6 +185,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/SW</TargetReportFolder>
     <TargetServerURL>http://iap-sw/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -179,6 +196,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/RM</TargetReportFolder>
     <TargetServerURL>http://iap-rm/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -189,6 +207,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/NC_V3</TargetReportFolder>
     <TargetDatasourceFolder>IRMA/NC_V3</TargetDatasourceFolder>
     <TargetServerURL>http://iad-nc/ReportServer</TargetServerURL>
@@ -200,6 +219,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/NC</TargetReportFolder>
     <TargetDatasourceFolder>IRMA/NC</TargetDatasourceFolder>
     <TargetServerURL>http://iad-nc/ReportServer</TargetServerURL>
@@ -211,6 +231,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>True</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/NC</TargetReportFolder>
     <TargetDatasourceFolder>IRMA/NC</TargetDatasourceFolder>
     <TargetServerURL>http://iaq-nc/ReportServer</TargetServerURL>
@@ -222,6 +243,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>True</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/MW</TargetReportFolder>
     <TargetDatasourceFolder>IRMA/MW</TargetDatasourceFolder>
     <TargetServerURL>http://iaq-mw/ReportServer</TargetServerURL>
@@ -233,6 +255,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/MW</TargetReportFolder>
     <TargetDatasourceFolder>IRMA/MW</TargetDatasourceFolder>
     <TargetServerURL>http://iad-mw/ReportServer</TargetServerURL>
@@ -244,6 +267,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/MW</TargetReportFolder>
     <TargetServerURL>http://iap-mw/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -254,6 +278,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>True</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/PN</TargetReportFolder>
     <TargetDatasourceFolder>IRMA/PN</TargetDatasourceFolder>
     <TargetServerURL>http://iad-pn/ReportServer</TargetServerURL>
@@ -265,6 +290,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/PN</TargetReportFolder>
     <TargetDatasourceFolder>IRMA/PN</TargetDatasourceFolder>
     <TargetServerURL>http://iap-pn/ReportServer</TargetServerURL>
@@ -276,6 +302,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/PN</TargetReportFolder>
     <TargetDatasourceFolder>IRMA/PN</TargetDatasourceFolder>
     <TargetServerURL>http://iap-pn/ReportServer</TargetServerURL>
@@ -287,6 +314,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/MW/DEV</TargetReportFolder>
     <TargetDatasourceFolder>IRMA/MW/DEV</TargetDatasourceFolder>
     <TargetServerURL>http://irmadevrpt/ReportServer</TargetServerURL>
@@ -298,6 +326,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>True</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/SP</TargetReportFolder>
     <TargetServerURL>http://iad-sp/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -308,6 +337,7 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/SP</TargetReportFolder>
     <TargetServerURL>http://iap-sp/ReportServer</TargetServerURL>
   </PropertyGroup>
@@ -318,9 +348,21 @@
     <OverwriteDatasets>False</OverwriteDatasets>
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2008</TargetServerVersion>
+    <Platform />
     <TargetReportFolder>IRMA/SO/Test</TargetReportFolder>
     <TargetDatasourceFolder>IRMA/SO/Test</TargetDatasourceFolder>
     <TargetServerURL>http://irmadevrpt/ReportServer</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FL Dev1' ">
+    <FullPath>FL Dev1</FullPath>
+    <OutputPath>bin\FL Dev1</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2016</TargetServerVersion>
+    <TargetReportFolder>IRMA/FL</TargetReportFolder>
+    <TargetDatasourceFolder>IRMA/FL</TargetDatasourceFolder>
+    <TargetServerURL>http://irmarptdev/ReportServer</TargetServerURL>
   </PropertyGroup>
   <PropertyGroup>
     <State>$base64$PFNvdXJjZUNvbnRyb2xJbmZvIHhtbG5zOnhzZD0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEiIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zOmRkbDI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yIiB4bWxuczpkZGwyXzI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yLzIiIHhtbG5zOmRkbDEwMF8xMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDA4L2VuZ2luZS8xMDAvMTAwIiB4bWxuczpkZGwyMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEwL2VuZ2luZS8yMDAiIHhtbG5zOmRkbDIwMF8yMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEwL2VuZ2luZS8yMDAvMjAwIiB4bWxuczpkZGwzMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDExL2VuZ2luZS8zMDAiIHhtbG5zOmRkbDMwMF8zMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDExL2VuZ2luZS8zMDAvMzAwIiB4bWxuczpkZGw0MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEyL2VuZ2luZS80MDAiIHhtbG5zOmRkbDQwMF80MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEyL2VuZ2luZS80MDAvNDAwIiB4bWxuczpkZGw1MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEzL2VuZ2luZS81MDAiIHhtbG5zOmRkbDUwMF81MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEzL2VuZ2luZS81MDAvNTAwIiB4bWxuczpkd2Q9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vRGF0YVdhcmVob3VzZS9EZXNpZ25lci8xLjAiPg0KICA8RW5hYmxlZD50cnVlPC9FbmFibGVkPg0KICA8UHJvamVjdE5hbWU+U0FLPC9Qcm9qZWN0TmFtZT4NCiAgPEF1eFBhdGg+U0FLPC9BdXhQYXRoPg0KICA8TG9jYWxQYXRoPlNBSzwvTG9jYWxQYXRoPg0KICA8UHJvdmlkZXI+U0FLPC9Qcm92aWRlcj4NCjwvU291cmNlQ29udHJvbEluZm8+</State>
