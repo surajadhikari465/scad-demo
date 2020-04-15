@@ -16,11 +16,15 @@ namespace BulkItemUploadProcessor.DataAccess.Commands
 
         public void Execute(SetStatusCommand data)
         {
-            var query = "update BulkItemUpload set StatusId = @StatusId, Message= @Message, PercentageProcessed  = @PercentageProcessed  where BulkItemUploadId = @BulkItemUploadId";
+            var query = @"UPDATE BulkUpload
+                        SET StatusId = @StatusId
+                            ,Message = @Message
+                            ,PercentageProcessed = @PercentageProcessed
+                        WHERE BulkUploadId = @BulkUploadId";
             DbConnection.Execute(query,
                 new
                 {
-                    StatusId = data.FileStatus, data.BulkItemUploadId,
+                    StatusId = data.FileStatus, data.BulkUploadId,
                     Message = data.Message.Substring(0, data.Message.Length <= 500 ? data.Message.Length : 500),
                     PercentageProcessed = data.PercentageProcessed
                 });

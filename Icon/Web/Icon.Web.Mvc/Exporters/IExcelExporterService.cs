@@ -9,7 +9,6 @@ namespace Icon.Web.Mvc.Exporters
         HierarchyClassExporter GetHierarchyClassExporter();
         BrandExporter GetBrandExporter();
         ManufacturerExporter GetManufacturerExporter();
-        BulkBrandExporter GetBulkBrandExporter();
         BrandTemplateExporter GetBrandTemplateExporter();
         ItemNewTemplateExporter GetItemTemplateNewExporter(List<string> selectedColumnNames = null, bool exportAllAttributes = false, bool exportNewItemTemplate = false);
         NationalClassExporter GetNationalClassExporter();

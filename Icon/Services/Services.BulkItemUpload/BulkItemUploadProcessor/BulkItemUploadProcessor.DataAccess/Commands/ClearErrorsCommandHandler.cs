@@ -15,8 +15,8 @@ namespace BulkItemUploadProcessor.DataAccess.Commands
 
         public void Execute(ClearErrorsCommand data)
         {
-            var sql = "DELETE FROM BulkItemUploadErrors WHERE BulkItemUploadId = @BulkItemUploadId ";
-            DbConnection.Execute(sql, new {  data.BulkItemUploadId } );
+            var sql = "DELETE FROM BulkUploadErrors WHERE BulkUploadId = @BulkUploadId ";
+            DbConnection.Execute(sql, new {  data.BulkUploadId } );
         }
     }
 }

@@ -189,8 +189,8 @@
     <Compile Include="Commands\AddAttributeCommandHandler.cs" />
     <Compile Include="Commands\AddVenueCommand.cs" />
     <Compile Include="Commands\AddVenueCommandHandler.cs" />
-    <Compile Include="Commands\BulkItemUploadCommand.cs" />
-    <Compile Include="Commands\BulkItemUploadCommandHandler.cs" />
+    <Compile Include="Commands\BulkUploadCommand.cs" />
+    <Compile Include="Commands\BulkUploadCommandHandler.cs" />
     <Compile Include="Commands\ManufacturerHierarchyClassTraitsCommandHandler.cs" />
     <Compile Include="Commands\RefreshAttributesCommand.cs" />
     <Compile Include="Commands\RefreshAttributesCommandHandler.cs" />
@@ -208,7 +208,6 @@
     <Compile Include="Commands\PublishItemUpdatesCommandHandler.cs" />
     <Compile Include="Commands\AddVimEventCommand.cs" />
     <Compile Include="Commands\AddVimEventCommandHandler.cs" />
-    <Compile Include="Commands\BulkImportCertificationAgencyCommandHandler.cs" />
     <Compile Include="Commands\RemoveEwicMappingCommandHandler.cs" />
     <Compile Include="Commands\RemoveEwicMappingCommand.cs" />
     <Compile Include="Commands\RemoveEwicExclusionCommandHandler.cs" />
@@ -238,8 +237,6 @@
     <Compile Include="Commands\AddressCommand.cs" />
     <Compile Include="Commands\AddTaxEventCommand.cs" />
     <Compile Include="Commands\AddTaxEventCommandHandler.cs" />
-    <Compile Include="Commands\BulkImportBrandCommandHandler.cs" />
-    <Compile Include="Commands\BulkImportNewItemCommandHandler.cs" />
     <Compile Include="Commands\DeleteHierarchyClassCommandHandler.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -304,10 +301,6 @@
     <Compile Include="Decorators\AddBrandMammothEventDecorator.cs" />
     <Compile Include="Decorators\AddHierarchyClassMammothEventDecorator.cs" />
     <Compile Include="Decorators\AddItemMessageQueueHierarchyClassTraitDecorator.cs" />
-    <Compile Include="Decorators\AddProductMammothEventDecorator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Decorators\BulkImportBrandMammothEventDecorator.cs" />
     <Compile Include="Decorators\RetryUniqueConstraintManagerHandlerDecorator.cs" />
     <Compile Include="Decorators\DeleteHierarchyClassIconEventDecorator.cs" />
     <Compile Include="Decorators\DeleteHierarchyClassMammothEventDecorator.cs" />
@@ -318,9 +311,6 @@
     <Compile Include="Decorators\UpdateItemProhibitDiscountHierarchyClassTraitDecorator.cs" />
     <Compile Include="Decorators\UpdateItemSubTeamHierarchyClassTraitDecorator.cs" />
     <Compile Include="Decorators\UpdateItemTypeHierarchyClassTraitDecorator.cs" />
-    <Compile Include="Decorators\UpdateProductMammothEventDecorator.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Decorators\UpdateSubTeamMammothEventDecorator.cs" />
     <Compile Include="Infrastructure\ConfigurationConstants.cs" />
     <Compile Include="Infrastructure\IGenericQuery.cs" />
@@ -334,8 +324,6 @@
     <Compile Include="Managers\AddNationalHierarchyManagerHandler.cs" />
     <Compile Include="Managers\AddCertificationAgencyManager.cs" />
     <Compile Include="Managers\AddCertificationAgencyManagerHandler.cs" />
-    <Compile Include="Managers\BulkItemUploadManager.cs" />
-    <Compile Include="Managers\BulkItemUploadManagerHandler.cs" />
     <Compile Include="Managers\DeleteNationalHierarchyManager.cs" />
     <Compile Include="Managers\DeleteNationalHierarchyManagerHandler.cs" />
     <Compile Include="Managers\ManufacturerManager.cs" />
@@ -381,7 +369,6 @@
     <Compile Include="Managers\UpdateProductSelectionGroupManager.cs" />
     <Compile Include="Managers\UpdateSubTeamManager.cs" />
     <Compile Include="Managers\UpdateSubTeamManagerHandler.cs" />
-    <Compile Include="Managers\ValidateItemManagerHandler.cs" />
     <Compile Include="Managers\ValidateItemManager.cs" />
     <Compile Include="Managers\UpdateItemManager.cs" />
     <Compile Include="Managers\UpdateItemManagerHandler.cs" />
@@ -393,7 +380,9 @@
     <Compile Include="Models\AddItemsType.cs" />
     <Compile Include="Models\BulkContactUploadModel.cs" />
     <Compile Include="Models\BulkContactUploadStatusModel.cs" />
-    <Compile Include="Models\BulkItemUploadErrorExportModel.cs" />
+    <Compile Include="Models\BulkUploadErrorExportModel.cs" />
+    <Compile Include="Models\BulkUploadModel.cs" />
+    <Compile Include="Models\BulkUploadStatusModel.cs" />
     <Compile Include="Models\ContactModel.cs" />
     <Compile Include="Models\ContactTypeModel.cs" />
     <Compile Include="Models\MerchandiseHierarchyClassTrait.cs" />
@@ -403,12 +392,8 @@
     <Compile Include="Models\AttributesWebConfigurationModel.cs" />
     <Compile Include="Models\BarcodeTypeModel.cs" />
     <Compile Include="Models\BrandModel.cs" />
-    <Compile Include="Models\BulkImportBrandModel.cs" />
-    <Compile Include="Models\BulkImportCertificationAgencyModel.cs" />
-    <Compile Include="Models\BulkItemUploadModel.cs" />
     <Compile Include="Models\BulkUploadErrorModel.cs" />
     <Compile Include="Models\CertificationAgencyModel.cs" />
-    <Compile Include="Models\CharacterSetModel.cs" />
     <Compile Include="Models\DataTypeModel.cs" />
     <Compile Include="Models\DefaultTaxClassMismatchExportModel.cs" />
     <Compile Include="Models\DefaultTaxClassMismatchModel.cs" />
@@ -418,10 +403,7 @@
     <Compile Include="Models\ExportPluRequestModel.cs" />
     <Compile Include="Models\HierarchyClassListModel.cs" />
     <Compile Include="Models\HierarchyClassModel.cs" />
-    <Compile Include="Models\BulkImportNewItemModel.cs" />
-    <Compile Include="Models\BulkImportItemModel.cs" />
     <Compile Include="Commands\BulkImportCommand.cs" />
-    <Compile Include="Commands\BulkImportItemCommandHandler.cs" />
     <Compile Include="Commands\DeleteHierarchyClassCommand.cs" />
     <Compile Include="Commands\UpdateHierarchyClassCommand.cs" />
     <Compile Include="Commands\UpdateHierarchyClassCommandHandler.cs" />
@@ -468,16 +450,14 @@
     <Compile Include="Models\UpdateItemsType.cs" />
     <Compile Include="Models\VenueModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\BulkItemUploadStatusModel.cs" />
     <Compile Include="Queries\EmptyAttributesParameters.cs" />
-    <Compile Include="Queries\GetBulkItemUploadErrorReportParameters.cs" />
+    <Compile Include="Queries\GetBulkUploadErrorReportParameters.cs" />
     <Compile Include="Queries\DoesAttributeExistOnItemsParameters.cs" />
     <Compile Include="Queries\DoesAttributeExistOnItemsQueryHandler.cs" />
     <Compile Include="Queries\GetAffinitySubBricksParameters.cs" />
     <Compile Include="Queries\GetAffinitySubBricksQuery.cs" />
     <Compile Include="Queries\GetAttributeByAttributeIdParameters.cs" />
     <Compile Include="Queries\GetAttributeByAttributeIdQuery.cs" />
-    <Compile Include="Queries\GetAttributesParameters.cs" />
     <Compile Include="Queries\GetAvailableScanCodeForBarcodeTypeParameters.cs" />
     <Compile Include="Queries\GetAvailableScanCodeForBarcodeTypeQuery.cs" />
     <Compile Include="Queries\GetBulkContactUploadByIdParameters.cs" />
@@ -486,9 +466,9 @@
     <Compile Include="Queries\GetBulkContactUploadErrorsQuery.cs" />
     <Compile Include="Queries\GetBulkContactUploadStatusParameters.cs" />
     <Compile Include="Queries\GetBulkContactUploadStatusQuery.cs" />
-    <Compile Include="Queries\GetBulkItemUploadByIdParameters.cs" />
-    <Compile Include="Queries\GetBulkItemUploadByIdQueryHandler.cs" />
-    <Compile Include="Queries\GetBulkItemUploadErrorReportQueryHandler.cs" />
+    <Compile Include="Queries\GetBulkUploadByIdParameters.cs" />
+    <Compile Include="Queries\GetBulkUploadByIdQueryHandler.cs" />
+    <Compile Include="Queries\GetBulkUploadErrorReportQueryHandler.cs" />
     <Compile Include="Queries\GetContactEligibleHCQuery.cs" />
     <Compile Include="Queries\GetContactEligibleHCParameters.cs" />
     <Compile Include="Queries\GetContactsParameters.cs" />
@@ -499,10 +479,10 @@
     <Compile Include="Queries\GetAttributesQueryHandler.cs" />
     <Compile Include="Queries\DoesScanCodeExistParameters.cs" />
     <Compile Include="Queries\DoesScanCodeExistQuery.cs" />
-    <Compile Include="Queries\GetBulkItemUploadErrorsQuery.cs" />
-    <Compile Include="Queries\GetBulkItemUploadErrorsPrameters.cs" />
-    <Compile Include="Queries\GetBulkItemUploadStatusParameters.cs" />
-    <Compile Include="Queries\GetBulkItemUploadStatusQuery.cs" />
+    <Compile Include="Queries\GetBulkUploadErrorsQuery.cs" />
+    <Compile Include="Queries\GetBulkUploadErrorsPrameters.cs" />
+    <Compile Include="Queries\GetBulkUploadStatusParameters.cs" />
+    <Compile Include="Queries\GetBulkUploadStatusQuery.cs" />
     <Compile Include="Queries\GetCharacterSetsByAttributeParameters.cs" />
     <Compile Include="Queries\GetCharacterSetParameters .cs" />
     <Compile Include="Queries\GetDataTypeParameters.cs" />
@@ -626,8 +606,6 @@
     <Compile Include="Queries\GetRegionalSettingsByRegionQuery.cs" />
     <Compile Include="Queries\GetRegionsParameters.cs" />
     <Compile Include="Queries\GetRegionsQuery.cs" />
-    <Compile Include="Queries\GetScanCodesNotReadyToValidateParameters.cs" />
-    <Compile Include="Queries\GetScanCodesNotReadyToValidateQuery.cs" />
     <Compile Include="Queries\GetTaxHierarchyClassesWithNoAbbreviationParameters.cs" />
     <Compile Include="Queries\GetTaxHierarchyClassesWithNoAbbreviationQuery.cs" />
     <Compile Include="Queries\GetTraitsParameters.cs" />

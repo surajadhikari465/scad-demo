@@ -2,6 +2,6 @@
 {
     public class ClearErrorsCommand 
     {
-        public int BulkItemUploadId { get; set; }
+        public int BulkUploadId { get; set; }
     }
 }

@@ -3,9 +3,7 @@ using Icon.Framework;
 using Icon.Web.Controllers;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
-using Icon.Web.Mvc.Excel.ModelMappers;
 using Icon.Web.Mvc.Excel.Models;
-using Icon.Web.Mvc.Excel.Services;
 using Icon.Web.Mvc.Exporters;
 using Icon.Web.Mvc.Models;
 using Infragistics.Documents.Excel;
@@ -38,8 +36,6 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>>> mockBulkScanCodeSearchQueryHandler;
         private Mock<IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel>> mockGetItemsBySearchQueryHandler;
         private Mock<IQueryHandler<GetDefaultTaxClassMismatchesParameters, List<DefaultTaxClassMismatchModel>>> mockGetDefaultTaxClassMismatchesQuery;
-        private Mock<IExcelService<ItemExcelModel>> mockItemExcelService;
-        private Mock<IExcelModelMapper<ItemSearchModel, ItemExcelModel>> mockItemModelMapper;
 
         [TestInitialize]
         public void Initialize()
@@ -59,8 +55,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockBulkScanCodeSearchQueryHandler = new Mock<IQueryHandler<GetItemsByBulkScanCodeSearchParameters, List<ItemSearchModel>>>();
             mockGetItemsBySearchQueryHandler = new Mock<IQueryHandler<GetItemsBySearchParameters, ItemsBySearchResultsModel>>();
             mockGetDefaultTaxClassMismatchesQuery = new Mock<IQueryHandler<GetDefaultTaxClassMismatchesParameters, List<DefaultTaxClassMismatchModel>>>();
-            mockItemExcelService = new Mock<IExcelService<ItemExcelModel>>();
-            mockItemModelMapper = new Mock<IExcelModelMapper<ItemSearchModel, ItemExcelModel>>();
 
             mockGetCertificationAgenciesByTraitQueryHandler.Setup(q => q.Search(It.IsAny<GetCertificationAgenciesByTraitParameters>())).Returns(new List<HierarchyClass>());
             mockGetBrandsQueryHandler.Setup(q => q.Search(It.IsAny<GetBrandsParameters>())).Returns(GetFakeBrandHierarchy());
@@ -70,60 +64,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockGetHierarchyClassQuery.Object,
                 mockBulkScanCodeSearchQueryHandler.Object,
                 mockGetItemsBySearchQueryHandler.Object,
-                mockGetDefaultTaxClassMismatchesQuery.Object,
-                mockItemExcelService.Object,
-                mockItemModelMapper.Object);
-        }
-
-        [TestMethod]
-        public void ItemExport_NoErrors_SpreadsheetShouldBeCreated()
-        {
-            // Given.
-            response.Setup(r => r.OutputStream).Returns(outputStream.Object);
-            context.Setup(c => c.HttpContext.Session).Returns(session.Object);
-            context.Setup(c => c.HttpContext.Response).Returns(response.Object);
-
-            var workbook = new Workbook();
-            workbook.Worksheets.Add("Items");
-
-            mockItemExcelService.Setup(m => m.Export(It.IsAny<ExportRequest<ItemExcelModel>>()))
-                .Returns(new ExportResponse { ExcelWorkbook = workbook });
-
-            controller.ControllerContext = context.Object;
-
-            // When.
-            controller.ItemExport(new List<string> { "22222222" });
-
-            // Then.
-
-            // Check that the http resonse was created.
-            response.Verify(r => r.End());
-        }
-
-        [TestMethod]
-        public void BulkItemExport_NoErrors_SpreadsheetShouldBeCreated()
-            {
-            // Given.
-            response.Setup(r => r.OutputStream).Returns(outputStream.Object);
-            session.SetupGet(s => s["consolidated_item_upload_errors"]).Returns(new List<ItemExcelModel> { new ItemExcelModel() });
-
-            context.Setup(c => c.HttpContext.Session).Returns(session.Object);
-            context.Setup(c => c.HttpContext.Response).Returns(response.Object);
-            controller.ControllerContext = context.Object;
-
-            var workbook = new Workbook();
-            workbook.Worksheets.Add("Items");
-
-            mockItemExcelService.Setup(m => m.Export(It.IsAny<ExportRequest<ItemExcelModel>>()))
-                .Returns(new ExportResponse { ExcelWorkbook = workbook });
-
-            // When.
-            controller.BulkItemExport();
-
-            // Then.
-
-            // Check that the http resonse was created.
-            response.Verify(r => r.End());
+                mockGetDefaultTaxClassMismatchesQuery.Object);
         }
 
         [TestMethod]
@@ -149,31 +90,6 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             // Then
             response.Verify(r => r.End());
-        }
-
-        [TestMethod]
-        public void ItemSearchExport_ItemsExist_ShouldExportItems()
-        {
-            //Given
-            context.SetupGet(m => m.HttpContext.Request.QueryString).Returns(new NameValueCollection());
-            response.Setup(r => r.OutputStream).Returns(outputStream.Object);
-            context.Setup(c => c.HttpContext.Response).Returns(response.Object);
-            mockGetItemsBySearchQueryHandler.Setup(m => m.Search(It.IsAny<GetItemsBySearchParameters>()))
-                .Returns(new ItemsBySearchResultsModel() { Items = new List<ItemSearchModel>() { new ItemSearchModel { ScanCode = "12345" } } });
-
-            Workbook workbook = new Workbook();
-            workbook.Worksheets.Add("Items");
-            mockItemExcelService.Setup(m => m.Export(It.IsAny<ExportRequest<ItemExcelModel>>()))
-                .Returns(new ExportResponse { ExcelWorkbook = workbook });
-
-            controller.ControllerContext = context.Object;
-
-            //When
-            controller.ItemSearchExport(new ItemSearchViewModel());
-
-            //Then
-            response.Verify(r => r.End());
-            mockGetItemsBySearchQueryHandler.Verify(m => m.Search(It.IsAny<GetItemsBySearchParameters>()), Times.Once);
         }
 
         private HierarchyClassListModel GetFakeHierarchy()

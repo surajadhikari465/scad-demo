@@ -16,8 +16,11 @@ namespace BulkItemUploadProcessor.DataAccess.Queries
 
         public GetFileContentResults Search(GetFileContentParameters parameters)
         {
-            var query = "select FileContent from  BulkItemUploadData where BulkItemUploadId = @BulkItemUploadId";
-            var fileContent = Connection.ExecuteScalar<byte[]>(query, new { parameters.BulkItemUploadId });
+            var query = @"SELECT FileContent
+                        FROM BulkUploadData
+                        WHERE BulkUploadId = @BulkUploadId";
+
+            var fileContent = Connection.ExecuteScalar<byte[]>(query, new { parameters.BulkUploadId });
             return new GetFileContentResults { Data = fileContent};
         }
     }

@@ -15,8 +15,10 @@ namespace BulkItemUploadProcessor.DataAccess.Commands
 
         public void Execute(SetCurrentRecordCommand data)
         {
-            var query = "update BulkItemUpload set CurrentRow = @CurrentRecord where BulkItemUploadId = @BulkItemUploadId";
-            DbConnection.Execute(query, new { data.BulkItemUploadId, data.CurrentRecord });
+            var query = @"UPDATE BulkUpload
+                        SET CurrentRow = @CurrentRecord
+                        WHERE BulkUploadId = @BulkUploadId";
+            DbConnection.Execute(query, new { data.BulkUploadId, data.CurrentRecord });
         }
     }
 }

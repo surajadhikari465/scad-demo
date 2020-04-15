@@ -122,6 +122,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
+    <Compile Include="BulkUpload\BulkUploadActionType.cs" />
+    <Compile Include="BulkUpload\BulkUploadDataType.cs" />
     <Compile Include="CommandException.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="FieldValidatorConstants.cs" />

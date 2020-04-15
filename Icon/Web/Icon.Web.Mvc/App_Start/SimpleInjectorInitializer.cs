@@ -4,12 +4,6 @@ using Icon.Common.Validators.ItemAttributes;
 namespace Icon.Web.Mvc.App_Start
 {
     using AutoMapper;
-    using Excel.ExcelValidationRuleBuilders.Factories;
-    using Excel.ModelMappers;
-    using Excel.Models;
-    using Excel.Services;
-    using Excel.Validators.Factories;
-    using Excel.WorksheetBuilders.Factories;
     using FluentValidation;
     using Icon.Common;
     using Icon.Common.DataAccess;
@@ -25,8 +19,8 @@ namespace Icon.Web.Mvc.App_Start
     using Icon.Web.DataAccess.Decorators;
     using Icon.Web.DataAccess.Infrastructure;
     using Icon.Web.DataAccess.Managers;
-    using Icon.Web.DataAccess.Models;
     using Icon.Web.DataAccess.Queries;
+    using Icon.Web.Mvc.Domain.BulkImport;
     using Icon.Web.Mvc.Exporters;
     using Icon.Web.Mvc.Importers;
     using Icon.Web.Mvc.InfragisticsHelpers;
@@ -74,15 +68,9 @@ namespace Icon.Web.Mvc.App_Start
             container.Register<IInfragisticsHelper, InfragisticsHelper>(Lifestyle.Singleton);
             container.RegisterSingleton(() => IconWebAppSettings.CreateSettingsFromConfig());
 
-            container.Register(typeof(IExcelModelMapper<,>), typeof(IExcelModelMapper<,>).Assembly);
-            container.Register(typeof(IExcelValidatorFactory<>), typeof(IExcelValidatorFactory<>).Assembly);
-            container.Register(typeof(IWorksheetBuilderFactory<>), typeof(IWorksheetBuilderFactory<>).Assembly);
-            container.Register(typeof(IExcelValidationRuleBuilderFactory<>), typeof(IExcelValidationRuleBuilderFactory<>).Assembly);
-            container.Register<IExcelService<ItemExcelModel>, ItemExcelService>();
             container.Register<IAttributesHelper, AttributesHelper>();
             container.Register<IDonutCacheManager, DonutCacheManager>();
             container.Register<IItemQueryBuilder, ItemQueryBuilder>();
-            
 
             container.Register<IValidatorFactory, SimpleInjectorValidatorFactory>(Lifestyle.Singleton);
             container.Register(typeof(IValidator<>), typeof(ItemCreateViewModelValidator).Assembly);
@@ -94,8 +82,8 @@ namespace Icon.Web.Mvc.App_Start
             container.Register<IItemHistoryBuilder, ItemHistoryBuilder>();
             container.Register<IHistoryModelTransformer, HistoryModelTransformer>();
 
-            container.RegisterDecorator(typeof(ICommandHandler<BulkImportCommand<BulkImportNewItemModel>>), typeof(AddProductMammothEventDecorator));
-            container.RegisterDecorator(typeof(ICommandHandler<BulkImportCommand<BulkImportItemModel>>), typeof(UpdateProductMammothEventDecorator));
+            container.Register<IBulkUploadService, BulkUploadService>();
+
             container.RegisterDecorator(typeof(ICommandHandler<UpdateHierarchyClassTraitCommand>), typeof(UpdateSubTeamMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<UpdateHierarchyClassTraitCommand>), typeof(UpdateItemTypeHierarchyClassTraitDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<UpdateHierarchyClassTraitCommand>), typeof(UpdateItemProhibitDiscountHierarchyClassTraitDecorator));
@@ -107,7 +95,6 @@ namespace Icon.Web.Mvc.App_Start
             container.RegisterDecorator(typeof(ICommandHandler<UpdateHierarchyClassCommand>), typeof(UpdateHierarchyClassMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<AddBrandCommand>), typeof(AddBrandMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<BrandCommand>), typeof(UpdateBrandMammothEventDecorator));
-            container.RegisterDecorator(typeof(ICommandHandler<BulkImportCommand<BulkImportBrandModel>>), typeof(BulkImportBrandMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<AddItemCommand>), typeof(DapperTransactionCommandHandlerDecorator<AddItemCommand>));
             container.RegisterDecorator(typeof(ICommandHandler<UpdateItemCommand>), typeof(DapperTransactionCommandHandlerDecorator<UpdateItemCommand>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<BrandManager>));
@@ -122,15 +109,9 @@ namespace Icon.Web.Mvc.App_Start
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<DeleteNationalHierarchyManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddAttributeManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<UpdateAttributeManager>));
-            container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<BulkItemUploadManager>));
-			//container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<BulkContactUploadManager>));
 
 			container.RegisterDecorator(typeof(ICommandHandler<>), typeof(DbProviderCommandHandlerDecorator<>)); // moving to bottom so that connections are build before transactions
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(DbProviderQueryHandlerDecorator<,>));
-
-            container.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandlerDecorator<BulkImportCommand<BulkImportBrandModel>>));
-            container.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandlerDecorator<BulkImportCommand<BulkImportItemModel>>));
-            container.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandlerDecorator<BulkImportCommand<BulkImportNewItemModel>>));
 
             //Register AutoMapper
             container.Register(() => mapper, Lifestyle.Singleton);

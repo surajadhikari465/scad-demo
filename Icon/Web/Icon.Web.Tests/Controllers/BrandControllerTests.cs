@@ -8,6 +8,7 @@ using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Controllers;
+using Icon.Web.Mvc.Domain.BulkImport;
 using Icon.Web.Mvc.Exporters;
 using Icon.Web.Mvc.Models;
 using Icon.Web.Mvc.Utility;

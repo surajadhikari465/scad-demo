@@ -113,7 +113,7 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             VerifyActiveUpload();
             activeExcelData?.Dispose();
 
-            var parameters = new GetFileContentParameters { BulkItemUploadId = activeUpload.BulkItemUploadId };
+            var parameters = new GetFileContentParameters { BulkUploadId = activeUpload.BulkUploadId };
             var fileContent = getFileContentQueryHandler.Search(parameters).Data;
 
             if (fileContent == null) throw new Exception("No File data found");
@@ -125,7 +125,7 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
         {
             VerifyActiveUpload();
 
-            var command = new SetStatusCommand { FileStatus = status, BulkItemUploadId = activeUpload.BulkItemUploadId, Message = message, PercentageProcessed = PercentageProcessed };
+            var command = new SetStatusCommand { FileStatus = status, BulkUploadId = activeUpload.BulkUploadId, Message = message, PercentageProcessed = PercentageProcessed };
             setStatusCommandHandler.Execute(command);
 
             logger.Info($"Setting Status: {message}");
@@ -140,7 +140,7 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
         {
             hierarchyCache.Refresh();
             merchItemPropertiesCache.Refresh();
-            ClearErrors(activeUpload.BulkItemUploadId);
+            ClearErrors(activeUpload.BulkUploadId);
             SetStatus(Enums.FileStatusEnum.Processing, "Validating Excel File", 10);
             var result = excelWorkbookValidator.Validate(activeUpload, activeExcelData);
             if (!result.IsValid)
@@ -184,9 +184,9 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             SetStatus(Enums.FileStatusEnum.Processing, "Processing Complete", 100);
         }
 
-        public void ClearErrors(int bulkItemUploadId)
+        public void ClearErrors(int BulkUploadId)
         {
-            clearErrorsCommandHandler.Execute(new ClearErrorsCommand() { BulkItemUploadId = bulkItemUploadId });
+            clearErrorsCommandHandler.Execute(new ClearErrorsCommand() { BulkUploadId = BulkUploadId });
         }
 
         public void Process()
@@ -219,7 +219,7 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             {
                 failedRowsCount = validationResponse.InvalidRows.Select(x => x.RowId).Distinct().Count();
                 validRows = totalRows - failedRowsCount;
-                ProcessErrors(activeUpload.BulkItemUploadId, validationResponse.InvalidRows);
+                ProcessErrors(activeUpload.BulkUploadId, validationResponse.InvalidRows);
             }
          
             SetStatus(validationResponse.InvalidRows.Any() ? Enums.FileStatusEnum.Error : Enums.FileStatusEnum.Complete, $"{validRows} of {totalRows} Rows Successful.", 100);
@@ -292,7 +292,7 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             }
         }    
 
-        private void ProcessErrors(int bulkItemUploadId, List<InvalidRowError> invalidRows)
+        private void ProcessErrors(int BulkUploadId, List<InvalidRowError> invalidRows)
         {
             if (invalidRows.Count == 0) return;
             logger.Info($"Items with Errors: {invalidRows.Count}");
@@ -305,7 +305,7 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
                          let rowId = grouping.Key
                          select new SaveErrorsCommand()
                          {
-                             BulkItemUploadId = bulkItemUploadId,
+                             BulkUploadId = BulkUploadId,
                              RowId = rowId,
                              ErrorList = errorsByRow
                          };

@@ -5,6 +5,6 @@ namespace BulkItemUploadProcessor.DataAccess.Queries
 {
     public class GetFileContentParameters : IQuery<GetFileContentResults>
     {
-        public int BulkItemUploadId { get; set; }
+        public int BulkUploadId { get; set; }
     }
 }

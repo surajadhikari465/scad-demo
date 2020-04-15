@@ -21,13 +21,13 @@ namespace BulkItemUploadProcessor.DataAccess.Commands
             var dataToInsert = from error in data.ErrorList
                 select new
                 {
-                    data.BulkItemUploadId,
+                    data.BulkUploadId,
                     data.RowId,
                     Message = error
                 };
 
             string sql =
-                "INSERT INTO BulkItemUploadErrors (BulkItemUploadId, RowId, Message) VALUES (@BulkItemUploadId, @RowId, @Message)";
+                @"INSERT INTO BulkUploadErrors (BulkUploadId, RowId, Message) VALUES (@BulkUploadId, @RowId, @Message)";
             DbConnection.Execute(sql, dataToInsert);
 
         }

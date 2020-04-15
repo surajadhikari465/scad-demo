@@ -215,21 +215,6 @@ namespace Icon.Web.Tests
             };
         }
 
-        public static BulkImportNewItemModel GetFakeBulkImportNewItemModel()
-        {
-            return new BulkImportNewItemModel
-            {
-                ProductDescription = "Test New Item",
-                PosDescription = "NEW ITEM",
-                PackageUnit = "1",
-                FoodStampEligible = "0",
-                PosScaleTare = "0",
-                RetailSize = "3",
-                RetailUom = "CASE",
-                IsValidated = "0"
-            };
-        }
-
         public static HierarchyClass GetFakeBrand()
         {
             return new HierarchyClass

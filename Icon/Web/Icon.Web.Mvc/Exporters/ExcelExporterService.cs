@@ -49,14 +49,6 @@ namespace Icon.Web.Mvc.Exporters
             return exporter;
         }
 
-        public BulkBrandExporter GetBulkBrandExporter()
-        {
-            BulkBrandExporter exporter = new BulkBrandExporter();
-            exporter.ExportModel = exportModel;
-
-            return exporter;
-        }
-
         public BrandTemplateExporter GetBrandTemplateExporter()
         {
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString);

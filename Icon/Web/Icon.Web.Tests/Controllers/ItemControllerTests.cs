@@ -29,6 +29,7 @@ using static Icon.Framework.ItemTypes;
 using ScanCodeTypesDescription = Icon.Framework.ScanCodeTypes.Descriptions;
 using Icon.Web.Mvc.Utility.ItemHistory;
 using Icon.Web.DataAccess.Infrastructure.ItemSearch;
+using Icon.Web.Mvc.Domain.BulkImport;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
@@ -52,19 +53,14 @@ namespace Icon.Web.Tests.Unit.Controllers
         private NameValueCollection queryString = new NameValueCollection();
         private GetItemsResult getItemsResult = new GetItemsResult();
         private Mock<IQueryHandler<GetItemPropertiesFromMerchHierarchyParameters, MerchDependentItemPropertiesModel>> mockGetItemPropertiesFromMerchQueryHandler;
-        private Mock<IQueryHandler<DoesScanCodeExistParameters, bool>> mockDoesScanCodeExistQueryHandler;
         private Mock<IManagerHandler<AddItemManager>> mockAddItemManagerHandler;
         private Mock<IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>>> mockGetBarcodeTypeQueryHandler;
         private Mock<IExcelExporterService> mockExcelExporterService;
-        private Mock<IManagerHandler<BulkItemUploadManager>> mockBulkItemUploadManagerHandler;
-        private Mock<IQueryHandler<GetBulkItemUploadByIdParameters, BulkItemUploadStatusModel>> mockGetBulkUploadByIdQueryHandler;
 
-        private Mock<IQueryHandler<GetBulkItemUploadErrorsPrameters, List<BulkUploadErrorModel>>> mockGetBulkUploadErrorsQueryHandler;
         private Mock<IQueryHandler<GetItemHistoryParameters, IEnumerable<ItemHistoryDbModel>>> mockGetItemHistoryQueryHandler;
         private Mock<IQueryHandler<GetItemInforHistoryParameters, IEnumerable<ItemInforHistoryDbModel>>> mockGetInforItemHistoryQueryHandler;
         private Mock<IItemHistoryBuilder> mockItemHistoryBuilder;
         private Mock<IQueryHandler<GetItemHierarchyClassHistoryParameters, ItemHierarchyClassHistoryAllModel>> mockItemHierarchyHistoryQueryHandler;
-        private Mock<IQueryHandler<GetBulkItemUploadStatusParameters, List<BulkItemUploadStatusModel>>> mockGetBulkUploadStatusQueryHandler;
         private Mock<IHistoryModelTransformer> mockHistoryModelTransformer;
         private string top = "20";
         private string skip = "10";
@@ -74,7 +70,6 @@ namespace Icon.Web.Tests.Unit.Controllers
         private GenericPrincipal principal;
         private Mock<ControllerContext> controllerContext;
         private Mock<IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult>> mockGetItemsByIdHandler;
-        private Mock<IQueryHandler<GetBulkItemUploadErrorReportParameters, BulkItemUploadErrorExportModel>> mockGetBulkItemUploadErrorReportQueryHandler;
 
         [TestInitialize]
         public void Initialize()
@@ -94,13 +89,9 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockGetBarcodeTypeQueryHandler = new Mock<IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>>>();
             mockExcelExporterService = new Mock<IExcelExporterService>();
             mockItemAttributesValidatorFactory = new Mock<IItemAttributesValidatorFactory>();
-            mockBulkItemUploadManagerHandler = new Mock<IManagerHandler<BulkItemUploadManager>>();
             mockItemHistoryBuilder = new Mock<IItemHistoryBuilder>();
             mockHistoryModelTransformer = new Mock<IHistoryModelTransformer>();
             mockItemHierarchyHistoryQueryHandler = new Mock<IQueryHandler<GetItemHierarchyClassHistoryParameters, ItemHierarchyClassHistoryAllModel>>();
-            mockGetBulkUploadStatusQueryHandler = new Mock<IQueryHandler<GetBulkItemUploadStatusParameters, List<BulkItemUploadStatusModel>>>();
-            mockGetBulkUploadErrorsQueryHandler = new Mock<IQueryHandler<GetBulkItemUploadErrorsPrameters, List<BulkUploadErrorModel>>>();
-            mockGetBulkUploadByIdQueryHandler = new Mock<IQueryHandler<GetBulkItemUploadByIdParameters, BulkItemUploadStatusModel>>();
             context = new Mock<ControllerContext>();
             session = new MockHttpSessionStateBase();
             fakeHttpContext = new Mock<HttpContextBase>();
@@ -108,7 +99,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             principal = new GenericPrincipal(fakeIdentity, null);
             controllerContext = new Mock<ControllerContext>();
             mockGetItemsByIdHandler = new Mock<IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult>>();
-            mockGetBulkItemUploadErrorReportQueryHandler = new Mock<IQueryHandler<GetBulkItemUploadErrorReportParameters, BulkItemUploadErrorExportModel>>();
 
             controller = new ItemController(
                 mockLogger.Object,
@@ -119,17 +109,13 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockGetAttributesQueryHandler.Object,
                 mockGetInforAttributesQueryHandler.Object,
                 mockGetHierarchyClassesQueryHandler.Object,
-                mockGetBulkUploadByIdQueryHandler.Object,
                 mockUpdateItemManagerHandler.Object,
                 mockInfragisticsHelper.Object,
                 mockAddItemManagerHandler.Object,
                 mockGetItemPropertiesFromMerchQueryHandler.Object,
                 mockGetBarcodeTypeQueryHandler.Object,
-                mockGetBulkUploadStatusQueryHandler.Object,
-                mockGetBulkUploadErrorsQueryHandler.Object,
                 mockExcelExporterService.Object,
                 mockItemAttributesValidatorFactory.Object,
-                mockBulkItemUploadManagerHandler.Object,
                 mockGetInforItemHistoryQueryHandler.Object,
                 new IconWebAppSettings()
                 {
@@ -139,10 +125,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                 },
                 mockItemHistoryBuilder.Object,
                 mockHistoryModelTransformer.Object,
-                mockGetItemsByIdHandler.Object,
-                mockGetBulkItemUploadErrorReportQueryHandler.Object
-                );
-
+                mockGetItemsByIdHandler.Object);
 
             fakeHttpContext.Setup(t => t.User).Returns(principal);
             fakeHttpContext.Setup(t => t.Session).Returns(session);
@@ -152,8 +135,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             controller.ControllerContext = controllerContext.Object;
             mockGetItemsQueryHandler.Setup(m => m.Search(It.IsAny<GetItemsParameters>())).Returns(getItemsResult);
             getItemsResult.TotalRecordsCount = 10;
-
-
 
             getItemsResult.Items = new List<ItemDbModel>
             {

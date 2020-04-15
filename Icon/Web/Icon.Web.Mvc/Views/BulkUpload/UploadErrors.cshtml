@@ -1,0 +1,45 @@
+﻿
+@model Icon.Web.Mvc.Models.BulkUploadStatusViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ var id = Model.BulkUploadId; }
+
+<style>
+    #anch_BulkUploadId.disabled {
+        color: black;
+    }
+</style>
+
+@Html.ActionLink("<- back", "Index", "BulkUpload", new { bulkUploadDataType = Model.BulkUploadDataType }, null)
+
+@if (id != null)
+{
+    <h4>Errors for  @Html.ActionLink(@Model.FileName, "BulkUploadErrorReport", "BulkUpload", new { bulkUploadDataType = Model.BulkUploadDataType, id = id }, new { id = "anch_BulkUploadId" })</h4>
+    <h6>Uploaded by: @Model.UploadedBy On: @Model.FileUploadTime</h6>
+    <br />
+    if (!string.IsNullOrWhiteSpace(Model.Message))
+    {
+        <h5>Spreadsheet Error: @Model.Message </h5>
+    }
+    <br />
+    <div id="errorsGrid">
+
+    </div>
+}
+else
+{
+    <h3>Invalid Bulk Upload Id</h3>
+
+}
+
+@Html.Hidden("bulkUploadDataType", Model.BulkUploadDataType, new { @id = "bulkUploadDataType" })
+
+@Scripts.Render("~/Scripts/BulkUpload/bulkuploaderrors.js")
+@if (id != null)
+{
+    <script>
+        BulkUploadErrorsFunctions.init(@id);
+    </script>
+}

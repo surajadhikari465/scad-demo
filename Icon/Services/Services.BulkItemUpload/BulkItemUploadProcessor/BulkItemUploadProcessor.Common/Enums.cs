@@ -10,16 +10,16 @@ namespace BulkItemUploadProcessor.Common
     {
         public enum FileModeTypeEnum
         {
-            CreateNew = 0,
-            UpdateExisting
+            CreateNew = 1,
+            UpdateExisting = 2
         }
 
         public enum FileStatusEnum
         {
-            New = 0,
-            Processing,
-            Complete,
-            Error
+            New = 1,
+            Processing = 2,
+            Complete = 3, 
+            Error = 4
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class SetCurrentRecordCommand
     {
-        public int BulkItemUploadId { get; set; }
+        public int BulkUploadId { get; set; }
         public int CurrentRecord { get; set; }
     }
 }

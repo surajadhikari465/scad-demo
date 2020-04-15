@@ -120,7 +120,7 @@ namespace BulkItemUploadProcessor.Service.Tests
 
             var bulkUploadInformation = new BulkItemUploadInformation
             {
-                BulkItemUploadId = 1,
+                BulkUploadId = 1,
                 FileModeType = Enums.FileModeTypeEnum.CreateNew,
                 FileName = "test.xlsx",
                 FileUploadTime = DateTime.Now,

@@ -1,5 +1,6 @@
 ﻿@using Infragistics.Web.Mvc
 @using Icon.Web.Mvc.Utility
+@using Icon.Web.Common.BulkUpload
 @model Icon.Web.Mvc.Models.BrandViewModel
 
 @{
@@ -21,10 +22,11 @@
     <div id="divLinks">
         @Html.ActionLink("Export All Brands", "Export", "Brand", null, new { @class = "btn btn-light" })
         @Html.ActionLink("Download Brand Template", "BrandTemplateExport", "Brand", null, new { @class = "btn btn-light ml-1" })
-        
+
         @if (ViewHelpers.HasWriteAccess(Request, User))
         {
             @Html.ActionLink("Add New Brand", "Create", null, new { @class = "btn btn-light ml-1" })
+            @Html.ActionLink("Bulk Upload Brands", "Index", "BulkUpload", new { bulkUploadDataType = BulkUploadDataType.Brand.ToString() }, new { @class = "btn btn-light ml-1" })
         }
     </div>
     <hr />
@@ -46,7 +48,6 @@
               columns.For(c => c.ZipCode).HeaderText("Zip Code").DataType("string").Width("10%");
               columns.For(c => c.Locality).HeaderText("Locality").DataType("string").Width("10%");
               columns.Unbound("ActionEdit").Template("&nbsp&nbsp&nbsp&nbsp <a href='/Brand/Edit?hierarchyClassId=${HierarchyClassId}'>Edit</a>").Width("5%").HeaderText("").Hidden(Model == null ? true : ((int)Model.UserWriteAccess) == 0);
-              //columns.Unbound("ActionDelete").Template("&nbsp&nbsp&nbsp&nbsp&nbsp <a href='/HierarchyClass/Delete?hierarchyClassId=${HierarchyClassId}'>Delete</a>").Width("10%").HeaderText("").Hidden(Model == null ? true : !((Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full));
               columns.Unbound("ActionDelete").Template("&nbsp&nbsp&nbsp&nbsp&nbsp <input type='button' class='btn btn-link' value='Delete' style='color:darkred;' onclick='deleteHC(${HierarchyClassId})' />").Width("8%").HeaderText("").Hidden(Model == null ? true : !((Model.UserWriteAccess & Icon.Web.Common.Enums.WriteAccess.Full) == Icon.Web.Common.Enums.WriteAccess.Full));
             })
             .Features(features =>

@@ -825,6 +825,13 @@
     <None Include="Scripts\Projects\Distribution Realignment\33696_MoveMetroFromMAtoMW_RollBack.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\33696_MoveMetroFromMWToRM.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\33696_MoveMetroFromMWToRM_RollBack.sql" />
+    <Build Include="dbo\Tables\BulkUploadFileTypes.sql" />
+    <Build Include="dbo\Tables\BulkUploadDataTypes.sql" />
+    <Build Include="dbo\Tables\BulkUploadErrors.sql" />
+    <Build Include="dbo\Tables\BulkUploadData.sql" />
+    <Build Include="dbo\Tables\BulkUpload.sql" />
+    <Build Include="dbo\StoredProcedures\AddBulkUpload.sql" />
+    <Build Include="app\Stored Procedures\GetBulkUploadData.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -880,6 +887,7 @@
     <None Include="Scripts\Projects\IconReboot\DeploymentSteps.docx" />
     <None Include="Scripts\PopulateData\32769_UpdateSubTeamName.sql" />
     <None Include="Scripts\PopulateData\RetentionPolicyContactUpload.sql" />
+    <None Include="Scripts\PopulateData\32222_ConsolidateBulkUploadTables.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

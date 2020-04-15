@@ -4,7 +4,7 @@ namespace BulkItemUploadProcessor.DataAccess.Commands
 {
     public class SetStatusCommand
     {
-        public int BulkItemUploadId { get; set; }
+        public int BulkUploadId { get; set; }
         public Enums.FileStatusEnum FileStatus { get; set; }
 
         public string Message { get; set; }

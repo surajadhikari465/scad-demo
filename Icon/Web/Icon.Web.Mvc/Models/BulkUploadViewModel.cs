@@ -1,4 +1,5 @@
 ﻿using Icon.Web.Attributes;
+using Icon.Web.Common.BulkUpload;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 
@@ -11,5 +12,6 @@ namespace Icon.Web.Mvc.Models
         [Required(ErrorMessage = "Please Upload File")]
         public HttpPostedFileBase ExcelAttachment { get; set; }
         public string NewOrExistSetSelected { get; set; }
+        public BulkUploadDataType BulkUploadDataType { get; set; }
     }
 }

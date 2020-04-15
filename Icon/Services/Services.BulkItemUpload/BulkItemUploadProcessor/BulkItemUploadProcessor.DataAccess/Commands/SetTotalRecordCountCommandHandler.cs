@@ -15,8 +15,10 @@ namespace BulkItemUploadProcessor.DataAccess.Commands
 
         public void Execute(SetTotalRecordCountCommand data)
         {
-            var query = "update BulkItemUpload set TotalRows = @TotalRecordCount where BulkItemUploadId = @BulkItemUploadId";
-            DbConnection.Execute(query, new {data.BulkItemUploadId,data.TotalRecordCount});
+            var query = @"UPDATE BulkUpload
+                        SET TotalRows = @TotalRecordCount
+                        WHERE BulkUploadId = @BulkUploadId";
+            DbConnection.Execute(query, new { data.BulkUploadId, data.TotalRecordCount });
         }
     }
 }

@@ -19,15 +19,22 @@ namespace BulkItemUploadProcessor.DataAccess.Queries
             var query = @"
                 DECLARE @processingId INT = (SELECT TOP 1 Id FROM dbo.BulkUploadStatus WHERE Status = 'Processing')
 
-                UPDATE BulkItemUpload
+                UPDATE BulkUpload
                 SET StatusId = @processingId
-                    OUTPUT inserted.*
-                WHERE BulkItemUploadId IN (
-                    SELECT TOP (1) bi.BulkItemUploadId 
-                    FROM BulkItemUpload bi
-                    INNER JOIN BulkItemUploadStatus bis ON bi.StatusId = bis.Id 
+                    OUTPUT 
+                        inserted.BulkUploadId,
+                        inserted.BulkUploadId,
+                        inserted.FileName,
+                        inserted.FileModeTypeId AS FileModeType,
+                        inserted.FileUploadTime, 
+                        inserted.UploadedBy,
+                        inserted.StatusId 
+                WHERE BulkUploadId IN (
+                    SELECT TOP (1) bi.BulkUploadId 
+                    FROM BulkUpload bi
+                    INNER JOIN BulkUploadStatus bis ON bi.StatusId = bis.Id 
                     WHERE bis.STATUS = 'New'
-                    ORDER BY bi.BulkItemUploadId ASC
+                    ORDER BY bi.BulkUploadId ASC
                 )";
             var results = Connection.Query<BulkItemUploadInformation>(query);
             return results;

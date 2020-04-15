@@ -7,10 +7,9 @@ namespace BulkItemUploadProcessor.Common.Models
     {
         public BulkItemUploadInformation() { }
         
-
-        public BulkItemUploadInformation(int bulkItemUploadId, string fileName, FileModeTypeEnum fileModeType, DateTime fileUploadTime, string uploadedBy, int statusId)
+        public BulkItemUploadInformation(int bulkUploadId, string fileName, FileModeTypeEnum fileModeType, DateTime fileUploadTime, string uploadedBy, int statusId)
         {
-            BulkItemUploadId = bulkItemUploadId;
+            BulkUploadId = bulkUploadId;
             FileName = fileName;
             FileModeType = fileModeType;
             FileUploadTime = fileUploadTime;
@@ -18,7 +17,7 @@ namespace BulkItemUploadProcessor.Common.Models
             StatusId = statusId;
         }
 
-        public int BulkItemUploadId { get; set; }
+        public int BulkUploadId { get; set; }
         public string FileName { get; set; }
         public FileModeTypeEnum FileModeType { get; set; }
         public DateTime FileUploadTime { get; set; }

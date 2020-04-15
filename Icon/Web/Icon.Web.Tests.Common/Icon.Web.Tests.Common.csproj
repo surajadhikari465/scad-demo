@@ -99,8 +99,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\TestAddressBuilder.cs" />
-    <Compile Include="Builders\TestBulkImportItemModelBuilder.cs" />
-    <Compile Include="Builders\TestBulkImportNewItemModelBuilder.cs" />
     <Compile Include="Builders\TestCertificationAgencyModelBuilder.cs" />
     <Compile Include="Builders\TestHierarchyClassModelBuilder.cs" />
     <Compile Include="Builders\TestHierarchyClassTraitBuilder.cs" />
