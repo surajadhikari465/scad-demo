@@ -70,6 +70,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         private GenericPrincipal principal;
         private Mock<ControllerContext> controllerContext;
         private Mock<IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult>> mockGetItemsByIdHandler;
+        private Mock<IOrderFieldsHelper> mockOrderFieldsHelper;
 
         [TestInitialize]
         public void Initialize()
@@ -99,6 +100,8 @@ namespace Icon.Web.Tests.Unit.Controllers
             principal = new GenericPrincipal(fakeIdentity, null);
             controllerContext = new Mock<ControllerContext>();
             mockGetItemsByIdHandler = new Mock<IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult>>();
+            mockOrderFieldsHelper = new Mock<IOrderFieldsHelper>();
+
 
             controller = new ItemController(
                 mockLogger.Object,
@@ -119,13 +122,16 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockGetInforItemHistoryQueryHandler.Object,
                 new IconWebAppSettings()
                 {
-                    WriteAccessGroups= "none",
-                    ReadAccessGroups="none",
-                    AdminAccessGroups="none"
+                    WriteAccessGroups = "none",
+                    ReadAccessGroups = "none",
+                    AdminAccessGroups = "none"
                 },
                 mockItemHistoryBuilder.Object,
                 mockHistoryModelTransformer.Object,
-                mockGetItemsByIdHandler.Object);
+                mockGetItemsByIdHandler.Object,
+                mockOrderFieldsHelper.Object
+                );
+
 
             fakeHttpContext.Setup(t => t.User).Returns(principal);
             fakeHttpContext.Setup(t => t.Session).Returns(session);
@@ -135,6 +141,31 @@ namespace Icon.Web.Tests.Unit.Controllers
             controller.ControllerContext = controllerContext.Object;
             mockGetItemsQueryHandler.Setup(m => m.Search(It.IsAny<GetItemsParameters>())).Returns(getItemsResult);
             getItemsResult.TotalRecordsCount = 10;
+
+            mockOrderFieldsHelper.Setup(M => M.OrderAllFields(It.IsAny<List<AttributeViewModel>>())).Returns(new Dictionary<string, string>(){
+                { "ItemId", "F" },
+                { "RequestNumber", "A" },
+                {"BarcodeType","F" },
+                {"Inactive","A" },
+                {"ItemType", "F" },
+                {"ScanCode","F" },
+                {"Brand","F" },
+                {"ProductDescription", "A" },
+                {"POSDescription","A" },
+                {"CustomerFriendlyDescription,", "A" },
+                {"ItemPack", "A" },
+                {"RetailSize", "A" },
+                {"UOM","A" },
+                {"Financial", "F" },
+                {"Merchandise", "F" },
+                {"National", "F" },
+                {"Tax","F" },
+                {"FoodStampEligible","A" },
+                { "Notes","A" },
+                {"DataSource","A" },
+                {"Manufacturer", "F" }
+                }
+                );
 
             getItemsResult.Items = new List<ItemDbModel>
             {
@@ -194,7 +225,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         public void ItemSearchExport_SelectedColumnNamesSent_SessionIsSet()
         {
             //Given
-            string[] values = new string [] { "A", "B" };
+            string[] values = new string[] { "A", "B" };
             //When
             controller.ItemSearchExport(values);
 
@@ -398,6 +429,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                          && p.HierarchyClassId == testItemModel.ManufacturerHierarchyClassId)))
                 .Returns(new List<HierarchyClassModel> { new HierarchyClassModel { HierarchyLineage = "Manufacturer" } });
 
+
             //When
             var result = controller.Detail(testScanCode) as ViewResult;
 
@@ -411,6 +443,10 @@ namespace Icon.Web.Tests.Unit.Controllers
             Assert.AreEqual("Tax", model.ItemViewModel.TaxHierarchyLineage);
             Assert.AreEqual("Financial", model.ItemViewModel.FinancialHierarchyLineage);
             Assert.AreEqual("National", model.ItemViewModel.NationalHierarchyLineage);
+            Assert.AreEqual(21, model.OrderOfFields.Count);
+            Assert.AreEqual(true, model.OrderOfFields.ContainsKey("ItemId"));
+            Assert.AreEqual(true, model.OrderOfFields.ContainsKey("Notes"));
+            Assert.AreEqual(false, model.OrderOfFields.ContainsKey("Accessory"));
         }
 
         [TestMethod]
@@ -515,9 +551,14 @@ namespace Icon.Web.Tests.Unit.Controllers
             var modelResult = result.Model as ItemEditViewModel;
             Assert.IsNotNull(modelResult);
             Assert.AreEqual("false", model.ItemViewModel.ItemAttributes[Constants.Attributes.ProhibitDiscount]);
-            Assert.AreEqual(2,modelResult.ItemViewModel.FinancialHierarchyClassId);
+            Assert.AreEqual(2, modelResult.ItemViewModel.FinancialHierarchyClassId);
             Assert.AreEqual(1, modelResult.ItemViewModel.ItemTypeId);
             Assert.IsTrue(modelResult.Success);
+            Assert.AreEqual(21, modelResult.OrderOfFields.Count);
+            Assert.AreEqual(true, modelResult.OrderOfFields.ContainsKey("ItemId"));
+            Assert.AreEqual(true, modelResult.OrderOfFields.ContainsKey("Notes"));
+            Assert.AreEqual(true, modelResult.OrderOfFields.ContainsKey("Tax"));
+            Assert.AreEqual(false, modelResult.OrderOfFields.ContainsKey("EStoreEligible"));
         }
 
         [TestMethod]
@@ -635,6 +676,11 @@ namespace Icon.Web.Tests.Unit.Controllers
             Assert.AreEqual("Financial", model.ItemViewModel.FinancialHierarchyLineage);
             Assert.AreEqual("National", model.ItemViewModel.NationalHierarchyLineage);
             Assert.AreEqual("Manufacturer", model.ItemViewModel.ManufacturerHierarchyLineage);
+            Assert.AreEqual(21, model.OrderOfFields.Count);
+            Assert.AreEqual(true, model.OrderOfFields.ContainsKey("ItemId"));
+            Assert.AreEqual(true, model.OrderOfFields.ContainsKey("Notes"));
+            Assert.AreEqual(true, model.OrderOfFields.ContainsKey("Tax"));
+            Assert.AreEqual(false, model.OrderOfFields.ContainsKey("EStoreEligible"));
         }
 
         [TestMethod]
@@ -711,7 +757,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                        && uim.ItemAttributes[Constants.Attributes.ModifiedBy] == "User"
                        && uim.ItemAttributes[Constants.Attributes.CreatedBy] == "CreatedUser"
                        && uim.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc] == expectedCreatedDateTime
-                       && DateTime.Parse(uim.ItemAttributes[Constants.Attributes.ModifiedDateTimeUtc]).Date == now.Date )));
+                       && DateTime.Parse(uim.ItemAttributes[Constants.Attributes.ModifiedDateTimeUtc]).Date == now.Date)));
         }
 
         private void AssertBasicGridDataSourceTest(params GetItemsAttributesParameters[] getItemAttributesParameters)
@@ -739,7 +785,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                          && p.OrderByValue == "ItemId")),
                    Times.Once);
         }
-   }
+    }
 
     internal class MockHttpSessionStateBase : HttpSessionStateBase
     {

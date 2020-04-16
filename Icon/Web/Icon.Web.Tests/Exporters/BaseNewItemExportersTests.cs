@@ -6,6 +6,7 @@ using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Excel;
 using Icon.Web.Mvc.Exporters;
 using Icon.Web.Mvc.Models;
+using Icon.Web.Mvc.Utility;
 using Infragistics.Documents.Excel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -26,18 +27,45 @@ namespace Icon.Web.Tests.Unit.Exporters
         private Mock<IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>>> mockGetBarcodeTypeQueryHandler;
         private ItemNewTemplateExporter exporterService1;
         private List<SpreadsheetColumn<ExportItemModel>> spreadsheetColumns;
-
+        private Mock<IOrderFieldsHelper> mockOrderFieldsHelper;
 
         [TestInitialize]
         public void Initialize()
         {
             excelFormat = WorkbookFormat.Excel2007;
             exportModel = new ExcelExportModel(excelFormat);
-            exporterService = new ExcelExporterService();
+            mockOrderFieldsHelper = new Mock<IOrderFieldsHelper>();
+            mockOrderFieldsHelper.Setup(M => M.OrderAllFields(It.IsAny<List<AttributeViewModel>>())).Returns(new Dictionary<string, string>(){
+                { "ItemId", "F" },
+                { "RequestNumber", "A" },
+                {"BarcodeType","F" },
+                {"Inactive","A" },
+                {"ItemType", "F" },
+                {"ScanCode","F" },
+                {"Brand","F" },
+                {"ProductDescription", "A" },
+                {"POSDescription","A" },
+                {"CustomerFriendlyDescription", "A" },
+                {"ItemPack", "A" },
+                {"RetailSize", "A" },
+                {"UOM","A" },
+                {"Financial", "F" },
+                {"Merchandise", "F" },
+                {"National", "F" },
+                {"Tax","F" },
+                {"FoodStampEligible","A" },
+                { "Notes","A" },
+                {"DataSource","A" },
+                {"Manufacturer", "F" }
+                }
+              );
+
+            exporterService = new ExcelExporterService(mockOrderFieldsHelper.Object);
             mockGetHierarchyClassesQueryHandler = new Mock<IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>>>();
             mockGetAttributesQueryHandler = new Mock<IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>>>();
             mockGetBarcodeTypeQueryHandler = new Mock<IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>>>();
-            exporterService1 = new ItemNewTemplateExporter(mockGetHierarchyClassesQueryHandler.Object, mockGetAttributesQueryHandler.Object, mockGetBarcodeTypeQueryHandler.Object);
+            mockOrderFieldsHelper = new Mock<IOrderFieldsHelper>();
+            exporterService1 = new ItemNewTemplateExporter(mockGetHierarchyClassesQueryHandler.Object, mockGetAttributesQueryHandler.Object, mockGetBarcodeTypeQueryHandler.Object, mockOrderFieldsHelper.Object);
             spreadsheetColumns = new List<SpreadsheetColumn<ExportItemModel>>();
         }
 
@@ -45,44 +73,37 @@ namespace Icon.Web.Tests.Unit.Exporters
         [TestMethod]
         public void GetItemTemplateNewExporter_NoError_ShouldReturnItemTemplateNewExporterWithColumnHeader()
         {
-            // Given.
-            exporterService = new ExcelExporterService();
-
             // When.
             var itemTemplateNewExporter = exporterService.GetItemTemplateNewExporter(null, true, true);
 
             // Then.
-            Assert.AreEqual("Barcode Type", itemTemplateNewExporter.spreadsheetColumns[0].HeaderTitle);
-            Assert.AreEqual("Scan Code", itemTemplateNewExporter.spreadsheetColumns[1].HeaderTitle);
-            Assert.AreEqual("Brands", itemTemplateNewExporter.spreadsheetColumns[2].HeaderTitle);
-            Assert.AreEqual("Merchandise", itemTemplateNewExporter.spreadsheetColumns[3].HeaderTitle);
-            Assert.AreEqual("Tax", itemTemplateNewExporter.spreadsheetColumns[4].HeaderTitle);
-            Assert.AreEqual("National", itemTemplateNewExporter.spreadsheetColumns[5].HeaderTitle);
+            Assert.AreEqual("Request Number", itemTemplateNewExporter.spreadsheetColumns[0].HeaderTitle);
+            Assert.AreEqual("Barcode Type", itemTemplateNewExporter.spreadsheetColumns[1].HeaderTitle);
+            Assert.AreEqual("Inactive", itemTemplateNewExporter.spreadsheetColumns[2].HeaderTitle);
+            Assert.AreEqual("Scan Code", itemTemplateNewExporter.spreadsheetColumns[3].HeaderTitle);
+            Assert.AreEqual("Brands", itemTemplateNewExporter.spreadsheetColumns[4].HeaderTitle);
+            Assert.AreEqual("Product Description", itemTemplateNewExporter.spreadsheetColumns[5].HeaderTitle);
         }
 
         [TestMethod]
         public void GetItemTemplateExporter_NoError_ShouldReturnItemTemplateExporterWithColumnHeader()
         {
-            // Given.
-            exporterService = new ExcelExporterService();
 
             // When.
             var itemTemplateNewExporter = exporterService.GetItemTemplateNewExporter(null, true, false);
 
             // Then.
-            Assert.AreEqual("Barcode Type", itemTemplateNewExporter.spreadsheetColumns[0].HeaderTitle);
-            Assert.AreEqual("Scan Code", itemTemplateNewExporter.spreadsheetColumns[1].HeaderTitle);
-            Assert.AreEqual("Brands", itemTemplateNewExporter.spreadsheetColumns[2].HeaderTitle);
-            Assert.AreEqual("Financial", itemTemplateNewExporter.spreadsheetColumns[6].HeaderTitle);
-            Assert.AreEqual("ItemId", itemTemplateNewExporter.spreadsheetColumns[8].HeaderTitle);
+            Assert.AreEqual("ItemId", itemTemplateNewExporter.spreadsheetColumns[0].HeaderTitle);
+            Assert.AreEqual("Request Number", itemTemplateNewExporter.spreadsheetColumns[1].HeaderTitle);
+            Assert.AreEqual("Barcode Type", itemTemplateNewExporter.spreadsheetColumns[2].HeaderTitle);
+            Assert.AreEqual("Inactive", itemTemplateNewExporter.spreadsheetColumns[3].HeaderTitle);
+            Assert.AreEqual("Item Type Description", itemTemplateNewExporter.spreadsheetColumns[4].HeaderTitle);         
         }
 
         [TestMethod]
         public void GetItemTemplateNewExporter_NoError_ShouldReturnItemTemplateNewExporterWithHiddenColumns()
         {
-            // Given.
-            exporterService = new ExcelExporterService();
-
+   
             // When.
             var itemTemplateNewExporter = exporterService.GetItemTemplateNewExporter(null, true, true);
 
@@ -100,8 +121,6 @@ namespace Icon.Web.Tests.Unit.Exporters
         [TestMethod]
         public void GetItemTemplateNewExporter_NoError_ShouldReturnItemTemplateNewExporterWithSelectedColumnsNull()
         {
-            // Given.
-            exporterService = new ExcelExporterService();
 
             // When.
             var itemTemplateNewExporter = exporterService.GetItemTemplateNewExporter(null, true, true);
@@ -114,8 +133,7 @@ namespace Icon.Web.Tests.Unit.Exporters
         public void GetItemTemplateNewExporter_NoError_ShouldReturnItemTemplateNewExporterWithSelectedColumnsNotNull()
         {
             // Given.
-            List<string> listSelectedColumns = new List<string>() { "Test1", "Test2" };
-            exporterService = new ExcelExporterService();
+            List<string> listSelectedColumns = new List<string>() { "ItemId", "BarcodeType" };
 
             // When.
             var itemTemplateNewExporter = exporterService.GetItemTemplateNewExporter(listSelectedColumns, true, true);
@@ -129,34 +147,23 @@ namespace Icon.Web.Tests.Unit.Exporters
         public void GetItemTemplateNewExporter_NoError_ShouldReturnItemTemplateNewExporterWithSelectedColumnsSpreadSheetColumnsInOrder()
         {
             //Given
+  
             List<string> listSelectedColumns = new List<string>()
             {
-                NewItemExcelHelper.NewExcelExportColumnNames.Manufacturer,
-                NewItemExcelHelper.NewExcelExportColumnNames.Merchandise,
                 NewItemExcelHelper.NewExcelExportColumnNames.BarCodeType,
-                NewItemExcelHelper.NewExcelExportColumnNames.Brand,
-                NewItemExcelHelper.NewExcelExportColumnNames.Financial,
                 NewItemExcelHelper.NewExcelExportColumnNames.ItemId,
-                NewItemExcelHelper.NewExcelExportColumnNames.ItemType,
-                NewItemExcelHelper.NewExcelExportColumnNames.ScanCode,
                 NewItemExcelHelper.NewExcelExportColumnNames.Tax,
                 NewItemExcelHelper.NewExcelExportColumnNames.NationalClass
             };
+
             List<string> columnDisplayNames = new List<string>()
             {
-                "Manufacturer",
-                "Merchandise",
                 "Barcode Type",
-                "Brands",
-                "Financial",
                 "ItemId",
-                "Item Type Description",
-                "Scan Code",
                 "Tax",
                 "National"
             };
-            exporterService = new ExcelExporterService();
-
+        
             //When
             var itemTemplateNewExporter = exporterService.GetItemTemplateNewExporter(listSelectedColumns, false, false);
 
@@ -167,12 +174,7 @@ namespace Icon.Web.Tests.Unit.Exporters
             Assert.AreEqual(1, itemTemplateNewExporter.spreadsheetColumns.Find(item => item.HeaderTitle == columnDisplayNames[1]).Index);
             Assert.AreEqual(2, itemTemplateNewExporter.spreadsheetColumns.Find(item => item.HeaderTitle == columnDisplayNames[2]).Index);
             Assert.AreEqual(3, itemTemplateNewExporter.spreadsheetColumns.Find(item => item.HeaderTitle == columnDisplayNames[3]).Index);
-            Assert.AreEqual(4, itemTemplateNewExporter.spreadsheetColumns.Find(item => item.HeaderTitle == columnDisplayNames[4]).Index);
-            Assert.AreEqual(5, itemTemplateNewExporter.spreadsheetColumns.Find(item => item.HeaderTitle == columnDisplayNames[5]).Index);
-            Assert.AreEqual(6, itemTemplateNewExporter.spreadsheetColumns.Find(item => item.HeaderTitle == columnDisplayNames[6]).Index);
-            Assert.AreEqual(7, itemTemplateNewExporter.spreadsheetColumns.Find(item => item.HeaderTitle == columnDisplayNames[7]).Index);
-            Assert.AreEqual(8, itemTemplateNewExporter.spreadsheetColumns.Find(item => item.HeaderTitle == columnDisplayNames[8]).Index);
-            Assert.AreEqual(9, itemTemplateNewExporter.spreadsheetColumns.Find(item => item.HeaderTitle == columnDisplayNames[9]).Index);
+         
         }
     }
 }

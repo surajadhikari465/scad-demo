@@ -887,6 +887,7 @@
     <None Include="Scripts\Projects\IconReboot\DeploymentSteps.docx" />
     <None Include="Scripts\PopulateData\32769_UpdateSubTeamName.sql" />
     <None Include="Scripts\PopulateData\RetentionPolicyContactUpload.sql" />
+    <None Include="Scripts\PopulateData\33610_UpdateAttributesDisplayOrder.sql" />
     <None Include="Scripts\PopulateData\32222_ConsolidateBulkUploadTables.sql" />
   </ItemGroup>
   <ItemGroup>

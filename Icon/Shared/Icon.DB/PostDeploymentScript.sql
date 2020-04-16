@@ -16,6 +16,7 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\32769_UpdateSubTeamName.sql -- 2020-03-12 32769
 :r .\Scripts\PopulateData\RetentionPolicyContactUpload.sql --2020-03-20 PBI: 32330
 :r .\Scripts\PopulateData\AddBulkItemUploadToAppTable.sql --2020-03-20 PBI: 32330
+:r .\Scripts\PopulateData\33610_UpdateAttributesDisplayOrder.sql --2020-04-13 PBI: 33610
 :r .\Scripts\PopulateData\32222_ConsolidateBulkUploadTables.sql --2020-04-09 32222
 -- Always run this security script and make it the last entry in this script.
 :r .\Security\Icon.Security.sql

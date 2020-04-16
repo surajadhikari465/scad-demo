@@ -11,5 +11,6 @@ namespace Icon.Web.Mvc.Models
         public bool Success { get; set; }
         public ItemHistoryViewModel ItemHistoryModel { get; set; }
         public List<string> Errors { get; set; } = new List<string>();
+        public Dictionary<string, string> OrderOfFields { get; set; }
     }
 }

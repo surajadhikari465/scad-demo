@@ -41,6 +41,7 @@ namespace Icon.Web.Mvc.Controllers
         private IExcelExporterService exporterService;
         private IDonutCacheManager cacheManager;
         private IQueryHandler<EmptyAttributesParameters, IEnumerable<AttributeModel>> getItemCountOnAttributesQueryHandler;
+        private IOrderFieldsHelper orderFieldsHelper;
 
         public AttributeController(
             ILogger logger,
@@ -56,7 +57,8 @@ namespace Icon.Web.Mvc.Controllers
             IAttributesHelper attributesHelper,
             IExcelExporterService exporterService,
             IDonutCacheManager cacheManager,
-            IQueryHandler<EmptyAttributesParameters, IEnumerable<AttributeModel>> getItemCountOnAttributesQueryHandler)
+            IQueryHandler<EmptyAttributesParameters, IEnumerable<AttributeModel>> getItemCountOnAttributesQueryHandler,
+            IOrderFieldsHelper orderFieldsHelper)
         {
             this.logger = logger;
             this.settings = settings;
@@ -72,6 +74,7 @@ namespace Icon.Web.Mvc.Controllers
             this.exporterService = exporterService;
             this.cacheManager = cacheManager;
             this.getItemCountOnAttributesQueryHandler = getItemCountOnAttributesQueryHandler;
+            this.orderFieldsHelper = orderFieldsHelper;
         }
 
         // GET: Attribute
@@ -93,7 +96,7 @@ namespace Icon.Web.Mvc.Controllers
             AttributeViewModel viewModel = BuildEditViewModel(attributeId);
 
             TempData["viewModel"] = viewModel;
-  
+
             return View(viewModel);
         }
 
@@ -107,17 +110,17 @@ namespace Icon.Web.Mvc.Controllers
                 InvalidateViewModel(viewModel);
                 return View(viewModel);
             }
-            
-            if(viewModel.IsSpecialCharactersSelected && viewModel.SpecialCharacterSetSelected != Constants.SpecialCharactersAll)
+
+            if (viewModel.IsSpecialCharactersSelected && viewModel.SpecialCharacterSetSelected != Constants.SpecialCharactersAll)
             {
                 ValidateSpecialCharacters(viewModel);
                 var attribute = this.getAttributeByAttributeIdQuery.Search(new GetAttributeByAttributeIdParameters() { AttributeId = viewModel.AttributeId });
-                
+
                 var oldAllowed = new HashSet<char>(attribute.SpecialCharactersAllowed.Distinct().OrderBy(c => c).ToArray());
                 var newAllowed = new HashSet<char>(viewModel.SpecialCharactersAllowed.Distinct().OrderBy(c => c).ToArray());
 
                 //Check the intersection between previous and new character sets
-                if(oldAllowed.Any(x => !newAllowed.Contains(x)))
+                if (oldAllowed.Any(x => !newAllowed.Contains(x)))
                 {
                     ViewData["ErrorMessages"] = new List<string>() { "Cannot remove preexisting special characters" };
                     PopulateAttributeViewModelOnError(viewModel);
@@ -426,7 +429,9 @@ namespace Icon.Web.Mvc.Controllers
                 .Select(a => new AttributeViewModel(a))
                 .ToList();
 
-            return Json(new { Attributes = attributes }, JsonRequestBehavior.AllowGet);
+            Dictionary<string,string> orderedFields = orderFieldsHelper.OrderAllFields(attributes);
+
+            return Json(new { Attributes = attributes, DefaultFields = orderedFields }, JsonRequestBehavior.AllowGet);
         }
 
         List<SelectListItem> GetAvailableDataTypes()
@@ -450,9 +455,9 @@ namespace Icon.Web.Mvc.Controllers
                 for (int attributeModelCount = 0; attributeModelCount < attributes.Count; attributeModelCount++)
                 {
                     var characterSets = getCharacterSetsByAttributeParameters.Search(new GetCharacterSetsByAttributeParameters()
-                        {
-                            AttributeId = attributes[attributeModelCount].AttributeId
-                        });
+                    {
+                        AttributeId = attributes[attributeModelCount].AttributeId
+                    });
                     if (characterSets.Any())
                     {
                         foreach (AttributeCharacterSetModel characterset in characterSets)
@@ -463,7 +468,7 @@ namespace Icon.Web.Mvc.Controllers
                 }
             }
 
-        var attributeExporter = exporterService.GetAttributeExporter();
+            var attributeExporter = exporterService.GetAttributeExporter();
             attributeExporter.ExportData = attributes.ToList();
             attributeExporter.Export();
 
@@ -472,18 +477,18 @@ namespace Icon.Web.Mvc.Controllers
 
         void InvalidateViewModel(AttributeViewModel viewModel)
         {
-            if(viewModel == null) return;
+            if (viewModel == null) return;
 
             TempData["viewModel"] = viewModel;
             ViewData["ErrorMessages"] = ModelState.Values.SelectMany(v => v.Errors).Select(s => s.ErrorMessage).Distinct().ToList();
             ModelState.Clear();
         }
 
-        void  ValidatePickList(AttributeViewModel viewModel)
+        void ValidatePickList(AttributeViewModel viewModel)
         {
-            if(viewModel != null && viewModel.PickListData != null)
+            if (viewModel != null && viewModel.PickListData != null)
             {
-                foreach(var item in viewModel.PickListData)
+                foreach (var item in viewModel.PickListData)
                 {
                     item.PickListValue = String.IsNullOrWhiteSpace(item.PickListValue)
                                          ? null
@@ -504,9 +509,9 @@ namespace Icon.Web.Mvc.Controllers
 
         void ValidateDefaultValue(AttributeViewModel viewModel)
         {
-            if(viewModel != null)
+            if (viewModel != null)
             {
-                if(String.IsNullOrWhiteSpace(viewModel.DefaultValue))
+                if (String.IsNullOrWhiteSpace(viewModel.DefaultValue))
                 {
                     viewModel.DefaultValue = null;
                 }
@@ -519,9 +524,9 @@ namespace Icon.Web.Mvc.Controllers
 
         void ValidateSpecialCharacters(AttributeViewModel viewModel)
         {
-            if(viewModel != null && viewModel.IsSpecialCharactersSelected && viewModel.SpecialCharacterSetSelected != Constants.SpecialCharactersAll)
+            if (viewModel != null && viewModel.IsSpecialCharactersSelected && viewModel.SpecialCharacterSetSelected != Constants.SpecialCharactersAll)
             {
-               viewModel.SpecialCharactersAllowed = new string(viewModel.SpecialCharactersAllowed.Replace(" ", String.Empty).Distinct().OrderBy(x => x).ToArray());
+                viewModel.SpecialCharactersAllowed = new string(viewModel.SpecialCharactersAllowed.Replace(" ", String.Empty).Distinct().OrderBy(x => x).ToArray());
             }
         }
     }

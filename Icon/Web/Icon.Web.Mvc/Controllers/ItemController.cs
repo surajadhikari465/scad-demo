@@ -55,7 +55,7 @@ namespace Icon.Web.Controllers
         private IItemAttributesValidatorFactory itemAttributesValidatorFactory;
         private IItemHistoryBuilder itemHistoryBuilder;
         private IQueryHandler<GetItemInforHistoryParameters, IEnumerable<ItemInforHistoryDbModel>> getItemInforHistoryQueryHandler;
-
+        private IOrderFieldsHelper orderFieldsHelper;
         private IHistoryModelTransformer historyModelTransformer;
         private readonly IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler;
 
@@ -80,7 +80,8 @@ namespace Icon.Web.Controllers
             IconWebAppSettings settings,
             IItemHistoryBuilder itemHistoryBuilder,
             IHistoryModelTransformer historyModelTransformer,
-            IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler)
+            IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler,
+            IOrderFieldsHelper orderFieldsHelper)
         {
             this.logger = logger;
             this.settings = settings;
@@ -102,6 +103,7 @@ namespace Icon.Web.Controllers
             this.getItemInforHistoryQueryHandler = getItemInforHistoryQueryHandler;
             this.historyModelTransformer = historyModelTransformer;
             this.getItemsByIdHandler = getItemsByIdHandler;
+            this.orderFieldsHelper = orderFieldsHelper;
         }
 
         public ActionResult Index()
@@ -289,12 +291,14 @@ namespace Icon.Web.Controllers
             itemViewModel.FinancialHierarchyLineage = GetHierarchyLineage(Hierarchies.Financial, itemViewModel.FinancialHierarchyClassId);
             itemViewModel.NationalHierarchyLineage = GetHierarchyLineage(Hierarchies.National, itemViewModel.NationalHierarchyClassId);
             itemViewModel.ManufacturerHierarchyLineage = GetHierarchyLineage(Hierarchies.Manufacturer, itemViewModel.ManufacturerHierarchyClassId.GetValueOrDefault());
+            var attributeViewModels = attributes.ToViewModels();
 
             var viewModel = new ItemDetailViewModel
             {
                 ItemViewModel = itemViewModel,
-                Attributes = attributes.ToViewModels(),
-                ItemHistoryModel = this.GetItemHistoryModel(itemViewModel, false)
+                Attributes = attributeViewModels,
+                ItemHistoryModel = this.GetItemHistoryModel(itemViewModel, false),
+                OrderOfFields = orderFieldsHelper.OrderAllFields(attributeViewModels.ToList())
             };
             return View(viewModel);
         }
@@ -430,6 +434,7 @@ namespace Icon.Web.Controllers
             var filteredAttributeModels = attributeModels.Where(a => a.AttributeName != Constants.Attributes.ProhibitDiscount);
 
             itemCreateViewModel.Attributes = filteredAttributeModels.ToViewModels();
+            itemCreateViewModel.OrderOfFields = orderFieldsHelper.OrderAllFields(itemCreateViewModel.Attributes.ToList());
             var barcodeTypes = getBarcodeTypeQueryHandler.Search(new GetBarcodeTypeParameters());
             itemCreateViewModel.BarcodeTypes = barcodeTypes;
 
@@ -455,12 +460,14 @@ namespace Icon.Web.Controllers
             itemViewModel.FinancialHierarchyLineage = GetHierarchyLineage(Hierarchies.Financial, itemViewModel.FinancialHierarchyClassId);
             itemViewModel.NationalHierarchyLineage = GetHierarchyLineage(Hierarchies.National, itemViewModel.NationalHierarchyClassId);
             itemViewModel.ManufacturerHierarchyLineage = GetHierarchyLineage(Hierarchies.Manufacturer, itemViewModel.ManufacturerHierarchyClassId.GetValueOrDefault());
+            var attributeViewModel = attributes.ToViewModels().ToList();
 
             return new ItemEditViewModel
             {
                 ItemViewModel = itemViewModel,
-                Attributes = attributes.ToViewModels().ToList(),
-                ItemHistoryModel = GetItemHistoryModel(itemViewModel, isInforHistory)
+                Attributes = attributeViewModel,
+                ItemHistoryModel = GetItemHistoryModel(itemViewModel, isInforHistory),
+                OrderOfFields = orderFieldsHelper.OrderAllFields(attributeViewModel)
             };
         }
 
@@ -513,7 +520,19 @@ namespace Icon.Web.Controllers
         [HttpGet]
         public void ItemTemplateNewExporter()
         {
-            var newItemTemplateExporter = exporterService.GetItemTemplateNewExporter(null, true, true);
+            List<String> selectedColumnNames = null;
+
+            if (Session["SelectedColumnNames"] != null)
+            {
+                selectedColumnNames = ((string[])Session["SelectedColumnNames"]).ToList();
+                logger.Debug($"sessionID={this.Session.SessionID}, SelectedColumnNames={JsonConvert.SerializeObject(selectedColumnNames)}");
+            }
+            else
+            {
+                logger.Debug($"sessionID={this.Session.SessionID}, SelectedColumnNames was null");
+            }
+
+            var newItemTemplateExporter = exporterService.GetItemTemplateNewExporter(selectedColumnNames, true, true);
             newItemTemplateExporter.Export();
 
             SendForDownload(newItemTemplateExporter.ExportModel.ExcelWorkbook, newItemTemplateExporter.ExportModel.ExcelWorkbook.CurrentFormat, "NewItem", "IconImportTemplate");
@@ -722,7 +741,7 @@ namespace Icon.Web.Controllers
 
             return userAccess;
         }
-
+    
         private ActionResult RequestInfo(string errMessage, HttpStatusCode statusCode)
         {
             //To prevent IIS from hijacking custom response or add the line below to web config file in <system.webServer> section

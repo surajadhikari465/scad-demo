@@ -10,6 +10,7 @@ using System.Configuration;
 using Icon.Common;
 using Icon.Common.Models;
 using Icon.Web.Mvc.Excel;
+using Icon.Web.Mvc.Utility;
 
 namespace Icon.Web.Mvc.Exporters
 {
@@ -22,6 +23,12 @@ namespace Icon.Web.Mvc.Exporters
         private IQueryHandler<GetContactTypesParameters, List<ContactTypeModel>> getContactTypeQuery;
         private ExcelExportModel exportModel = new ExcelExportModel(WorkbookFormat.Excel2007);
         private SqlConnection connection;
+        private IOrderFieldsHelper orderFieldsHelper;
+
+        public ExcelExporterService(IOrderFieldsHelper orderFieldsHelper)
+        {
+            this.orderFieldsHelper = orderFieldsHelper;
+        }
 
         public HierarchyClassExporter GetHierarchyClassExporter()
         {
@@ -71,7 +78,8 @@ namespace Icon.Web.Mvc.Exporters
             getHierarchyClassesQueryHandler = new GetHierarchyClassesQueryHandler(connection);
             getAttributesQueryHandler = new GetAttributesQueryHandler(connection);
             getBarcodeTypeQueryHandler = new GetBarcodeTypesQuery(connection);
-            ItemNewTemplateExporter itemTemplateNewExporter = new ItemNewTemplateExporter(getHierarchyClassesQueryHandler, getAttributesQueryHandler, getBarcodeTypeQueryHandler);
+           
+            ItemNewTemplateExporter itemTemplateNewExporter = new ItemNewTemplateExporter(getHierarchyClassesQueryHandler, getAttributesQueryHandler, getBarcodeTypeQueryHandler, this.orderFieldsHelper);
             itemTemplateNewExporter.ExportModel = exportModel;
             itemTemplateNewExporter.ExportAllAttributes = exportAllAttributes;
             itemTemplateNewExporter.SelectedColumnNames = selectedColumnNames;

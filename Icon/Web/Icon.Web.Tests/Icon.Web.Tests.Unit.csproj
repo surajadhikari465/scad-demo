@@ -300,6 +300,7 @@
     <Compile Include="Managers\UpdateItemManagerHandlerTests.cs" />
     <Compile Include="Managers\UpdateLocaleManagerHandlerTests.cs" />
     <Compile Include="Managers\UpdateSubTeamManagerHandlerTests.cs" />
+    <Compile Include="Models\AttributeModelWithAllFields.cs" />
     <Compile Include="Models\LocaleGridRowViewModelTests.cs" />
     <Compile Include="Models\LocaleAccessorTests.cs" />
     <Compile Include="Models\ItemSignAttributesSearchViewModelTests.cs" />
@@ -312,6 +313,7 @@
     </Compile>
     <Compile Include="TestHelpers.cs" />
     <Compile Include="Managers\AddBrandManagerHandlerTests.cs" />
+    <Compile Include="Utility\OrderFieldsHelperTests.cs" />
     <Compile Include="Utility\AttributesHelperTests.cs" />
     <Compile Include="Utility\ItemHistoryBuilderTests.cs" />
     <Compile Include="Utility\ConversionUtilityTests.cs" />

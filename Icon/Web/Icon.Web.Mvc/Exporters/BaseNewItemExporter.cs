@@ -12,6 +12,7 @@ using System.Linq;
 using Icon.Common.Models;
 using Icon.Common;
 using System.Text.RegularExpressions;
+using Icon.Web.Mvc.Utility;
 
 namespace Icon.Web.Mvc.Exporters
 {
@@ -56,15 +57,18 @@ namespace Icon.Web.Mvc.Exporters
         protected IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler;
         protected IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>> getAttributesQueryHandler;
         protected IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypeQueryHandler;
+        protected IOrderFieldsHelper orderFieldsHelper;
 
         public BaseNewItemExporter(
             IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler,
             IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>> getAttributesQueryHandler,
-            IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypeQueryHandler)
+            IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypeQueryHandler,
+            IOrderFieldsHelper orderFieldsHelper)
         {
             this.getHierarchyClassesQueryHandler = getHierarchyClassesQueryHandler;
             this.getAttributesQueryHandler = getAttributesQueryHandler;
             this.getBarcodeTypeQueryHandler = getBarcodeTypeQueryHandler;
+            this.orderFieldsHelper = orderFieldsHelper;
 
             brandHierarchyClassDictionary = new Dictionary<string, string>();
             merchandiseHierarchyClassDictionary = new Dictionary<string, string>();

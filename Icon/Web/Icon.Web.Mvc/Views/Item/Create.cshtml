@@ -9,6 +9,7 @@
     input {
         max-width: 1000px;
     }
+
     #btnSubmit {
         max-width: 500px;
     }
@@ -39,236 +40,260 @@
             }
         </div>
         <fieldset>
-
-            @Html.TextBoxFor(model => model.ItemId, new { @class = "form-control form-input", @type = "hidden" })
-            <div class="item">
-                @Html.LabelFor(m => m.MerchandiseHierarchyClassId)
-                <br />
-                @(Html
-                    .Infragistics()
-                    .Combo()
-                    .InputName("MerchandiseHierarchyClassId")
-                    .DelayFilteringOnKeyUp(500)
-                    .FilteringType(ComboFilteringType.Remote)
-                    .ValueKey("HierarchyClassId")
-                    .TextKey("HierarchyLineage")
-                    .Width("1000px")
-                    .DataSource("/HierarchyClass/ByHierarchyName?hierarchyName=Merchandise&initialSelection=" + Model.MerchandiseHierarchyClassId)
-                    .SelectedValues(new List<int>() { Model.MerchandiseHierarchyClassId })
-                    .ValidatorOptions(options => options.Required(true))
-                    .DataBind()
-                    .Render())
-                <script>
-                    $(function () {
-                        $("#MerchandiseHierarchyClassId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
-                    });
-                </script>
-            </div>
-
-            <div class="item">
-                @Html.LabelFor(m => m.BrandHierarchyClassId)
-                <br />
-                @(Html.Infragistics()
-                    .Combo()
-                    .InputName("BrandHierarchyClassId")
-                    .DelayFilteringOnKeyUp(500)
-                    .FilteringType(ComboFilteringType.Remote)
-                    .ValueKey("HierarchyClassId")
-                    .TextKey("HierarchyLineage")
-                    .Width("1000px")
-                    .DataSource("/HierarchyClass/ByHierarchyName?hierarchyName=Brands&initialSelection=" + Model.BrandHierarchyClassId)
-                    .SelectedValues(new List<int>() { Model.BrandHierarchyClassId })
-                    .ValidatorOptions(options => options.Required(true))
-                    .DataBind()
-                    .Render())
-                <script>
-                    $(function () {
-                        $("#BrandHierarchyClassId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
-                    });
-                </script>
-            </div>
-
-            <div class="item">
-                @Html.LabelFor(m => m.TaxHierarchyClassId)
-                <br />
-                @(Html.Infragistics()
-                    .Combo()
-                    .InputName("TaxHierarchyClassId")
-                    .DelayFilteringOnKeyUp(500)
-                    .FilteringType(ComboFilteringType.Remote)
-                    .ValueKey("HierarchyClassId")
-                    .TextKey("HierarchyLineage")
-                    .Width("1000px")
-                    .DataSource("/HierarchyClass/ByHierarchyName?hierarchyName=Tax&initialSelection=" + Model.TaxHierarchyClassId)
-                    .SelectedValues(new List<int>() { Model.TaxHierarchyClassId })
-                    .ValidatorOptions(options => options.Required(true))
-                    .DataBind()
-                    .Render())
-                <script>
-                    $(function () {
-                        $("#TaxHierarchyClassId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
-                    });
-                </script>
-            </div>
-
-            <div class="item">
-                @Html.LabelFor(m => m.NationalHierarchyClassId)
-                <br />
-                @(Html.Infragistics()
-                    .Combo()
-                    .InputName("NationalHierarchyClassId")
-                    .DelayFilteringOnKeyUp(500)
-                    .FilteringType(ComboFilteringType.Remote)
-                    .ValueKey("HierarchyClassId")
-                    .TextKey("HierarchyLineage")
-                    .Width("1000px")
-                    .DataSource("/HierarchyClass/ByHierarchyName?hierarchyName=National&initialSelection=" + Model.NationalHierarchyClassId)
-                    .SelectedValues(new List<int>() { Model.NationalHierarchyClassId })
-                    .ValidatorOptions(options => options.Required(true))
-                    .DataBind()
-                    .Render())
-                <script>
-                    $(function () {
-                        $("#NationalHierarchyClassId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
-                    });
-                </script>
-            </div>
-
-            <div class="item">
-                @Html.LabelFor(m => m.ManufacturerHierarchyClassId)
-                <br />
-                @(Html.Infragistics()
-                    .Combo()
-                    .InputName("ManufacturerHierarchyClassId")
-                    .DelayFilteringOnKeyUp(500)
-                    .FilteringType(ComboFilteringType.Remote)
-                    .ValueKey("HierarchyClassId")
-                    .TextKey("HierarchyLineage")
-                    .Width("1000px")
-                    .DataSource("/HierarchyClass/ByHierarchyName?hierarchyName=Manufacturer&initialSelection=" + Model.ManufacturerHierarchyClassId.GetValueOrDefault())
-                    .SelectedValues(new List<int>() { Model.ManufacturerHierarchyClassId.GetValueOrDefault() })
-                    .DataBind()
-                    .ValidatorOptions(options => options.Required(false))
-                    .Render())
-                <script>
-                    $(function () {
-                        $("#ManufacturerHierarchyClassId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
-                    });
-                </script>
-            </div>
-
-            <br />
-
-
-            <div class="item" id="scancodetype_plu">
-                @Html.LabelFor(m => m.BarcodeTypeId)
-                <br />
-                @(Html.Infragistics()
-                    .ComboFor(m => m.BarcodeTypes)
-                    .InputName("BarcodeTypeId")
-                    .DataSource(Model.BarcodeTypes)
-                    .ValueKey("BarcodeTypeId")
-                    .TextKey("BarcodeType")
-                    .SelectedValues(new List<int?>() { Model.BarcodeTypeId })
-                    .DataBind()
-                    .ValidatorOptions(options => options.Required(true))
-                    .Render())
-            </div>
-
-            <div class="form-group item" id="scancodetype_upc">
-                @Html.LabelFor(m => m.ScanCode)
-                <br />
-                @(Html.Infragistics()
-                    .TextEditorFor(model => model.ScanCode)
-                    .InputName("ScanCode")
-                    .HtmlAttributes(new Dictionary<string, object> { { "class", "form-control form-input" } })
-                    .Value(string.IsNullOrWhiteSpace(Model.ScanCode) ? string.Empty : Model.ScanCode)
-                    .ValidatorOptions(options => options.Required(false))
-                    .Render())
-            </div>
-
-            @foreach (var attribute in Model.Attributes.Where(a => !a.IsReadOnly).OrderBy(a => a.DisplayOrder))
+            @foreach (var field in Model.OrderOfFields)
             {
-                <div class="item">
-                    @Html.Label(@attribute.DisplayName)
-                    <br />
-
-                    @if (attribute.IsPickList)
+                if (field.Value != "A")
+                {
+                    if (field.Key == "Merchandise")
                     {
-                        var selectedValue = Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName] : null;
+                    @Html.TextBoxFor(model => model.ItemId, new { @class = "form-control form-input", @type = "hidden" })
+                    <div class="item">
+                        @Html.LabelFor(m => m.MerchandiseHierarchyClassId)
+                        <br />
+                    @(Html.Infragistics()
+                        .Combo()
+                        .InputName("MerchandiseHierarchyClassId")
+                        .DelayFilteringOnKeyUp(500)
+                        .FilteringType(ComboFilteringType.Remote)
+                        .ValueKey("HierarchyClassId")
+                        .TextKey("HierarchyLineage")
+                        .Width("1000px")
+                        .DataSource("/HierarchyClass/ByHierarchyName?hierarchyName=Merchandise&initialSelection=" + Model.MerchandiseHierarchyClassId)
+                        .SelectedValues(new List<int>() { Model.MerchandiseHierarchyClassId })
+                        .ValidatorOptions(options => options.Required(true))
+                        .DataBind()
+                        .Render())
+                        <script>
+                            $(function () {
+                                $("#MerchandiseHierarchyClassId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
+                            });
+                        </script>
+                    </div>
+                    }
+                    else if (field.Key == "Brand")
+                    {
+                    <div class="item">
+                        @Html.LabelFor(m => m.BrandHierarchyClassId)
+                        <br />
                         @(Html.Infragistics()
                             .Combo()
-                            .InputName("ItemAttributes[" + attribute.AttributeName + "]")
-                            .DataSource(attribute.PickListData)
-                            .ValueKey("PickListValue").TextKey("PickListValue")
-                            .SelectedValues(new List<String>() { selectedValue })
-                            .ValidatorOptions(options => options.Required(attribute.IsRequired))
+                            .InputName("BrandHierarchyClassId")
+                            .DelayFilteringOnKeyUp(500)
+                            .FilteringType(ComboFilteringType.Remote)
+                            .ValueKey("HierarchyClassId")
+                            .TextKey("HierarchyLineage")
+                            .Width("1000px")
+                            .DataSource("/HierarchyClass/ByHierarchyName?hierarchyName=Brands&initialSelection=" + Model.BrandHierarchyClassId)
+                            .SelectedValues(new List<int>() { Model.BrandHierarchyClassId })
+                            .ValidatorOptions(options => options.Required(true))
                             .DataBind()
                             .Render())
+                        <script>
+                            $(function () {
+                                $("#BrandHierarchyClassId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
+                            });
+                        </script>
+                    </div>
                     }
-
-                    else if (attribute.DataTypeName.ToUpper().Equals("BOOLEAN"))
+                    else if (field.Key == "Tax")
                     {
-                        var checkboxValue = Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? bool.Parse(Model.ItemAttributes[attribute.AttributeName]) : false;
-                        var checkboxName = "ItemAttributes[" + attribute.AttributeName + "]";
-                        var htmlAttributes = new Dictionary<string, object> { { "id", checkboxName }, { "style", "height: 16px; width: 16px;" } };
-
-                        @(Html.CheckBox(checkboxName, checkboxValue, htmlAttributes))
-
+                    <div class="item">
+                        @Html.LabelFor(m => m.TaxHierarchyClassId)
+                        <br />
+                        @(Html.Infragistics()
+                            .Combo()
+                            .InputName("TaxHierarchyClassId")
+                            .DelayFilteringOnKeyUp(500)
+                            .FilteringType(ComboFilteringType.Remote)
+                            .ValueKey("HierarchyClassId")
+                            .TextKey("HierarchyLineage")
+                            .Width("1000px")
+                            .DataSource("/HierarchyClass/ByHierarchyName?hierarchyName=Tax&initialSelection=" + Model.TaxHierarchyClassId)
+                            .SelectedValues(new List<int>() { Model.TaxHierarchyClassId })
+                            .ValidatorOptions(options => options.Required(true))
+                            .DataBind()
+                            .Render())
+                        <script>
+                            $(function () {
+                                $("#TaxHierarchyClassId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
+                            });
+                        </script>
+                    </div>
                     }
-
-                    else if (attribute.DataTypeName.ToUpper().Equals("TEXT") && !attribute.IsPickList)
+                    else if (field.Key == "National")
                     {
-                        var textEditor = Html.Infragistics()
-                            .TextEditor()
-                            .InputName("ItemAttributes[" + attribute.AttributeName + "]")
-                            .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : "")
+                    <div class="item">
+                        @Html.LabelFor(m => m.NationalHierarchyClassId)
+                        <br />
+                        @(Html.Infragistics()
+                            .Combo()
+                            .InputName("NationalHierarchyClassId")
+                            .DelayFilteringOnKeyUp(500)
+                            .FilteringType(ComboFilteringType.Remote)
+                            .ValueKey("HierarchyClassId")
+                            .TextKey("HierarchyLineage")
+                            .Width("1000px")
+                            .DataSource("/HierarchyClass/ByHierarchyName?hierarchyName=National&initialSelection=" + Model.NationalHierarchyClassId)
+                            .SelectedValues(new List<int>() { Model.NationalHierarchyClassId })
+                            .ValidatorOptions(options => options.Required(true))
+                            .DataBind()
+                            .Render())
+                        <script>
+                            $(function () {
+                                $("#NationalHierarchyClassId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
+                            });
+                        </script>
+                    </div>
+                    }
+                    else if (field.Key == "Manufacturer")
+                    {
+                    <div class="item">
+                        @Html.LabelFor(m => m.ManufacturerHierarchyClassId)
+                        <br />
+                        @(Html.Infragistics()
+                            .Combo()
+                            .InputName("ManufacturerHierarchyClassId")
+                            .DelayFilteringOnKeyUp(500)
+                            .FilteringType(ComboFilteringType.Remote)
+                            .ValueKey("HierarchyClassId")
+                            .TextKey("HierarchyLineage")
+                            .Width("1000px")
+                            .DataSource("/HierarchyClass/ByHierarchyName?hierarchyName=Manufacturer&initialSelection=" + Model.ManufacturerHierarchyClassId.GetValueOrDefault())
+                            .SelectedValues(new List<int>() { Model.ManufacturerHierarchyClassId.GetValueOrDefault() })
+                            .DataBind()
+                            .ValidatorOptions(options => options.Required(false))
+                            .Render())
+                        <script>
+                            $(function () {
+                                $("#ManufacturerHierarchyClassId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
+                            });
+                        </script>
+                    </div>
+
+                    <br />
+                    }
+                    else if (field.Key == "BarcodeType")
+                    {
+                    <div class="item" id="scancodetype_plu">
+                        @Html.LabelFor(m => m.BarcodeTypeId)
+                        <br />
+                        @(Html.Infragistics()
+                            .ComboFor(m => m.BarcodeTypes)
+                            .InputName("BarcodeTypeId")
+                            .DataSource(Model.BarcodeTypes)
+                            .ValueKey("BarcodeTypeId")
+                            .TextKey("BarcodeType")
+                            .SelectedValues(new List<int?>() { Model.BarcodeTypeId })
+                            .DataBind()
+                            .ValidatorOptions(options => options.Required(true))
+                            .Render())
+                    </div>
+                    }
+                    else if (field.Key == "ScanCode")
+                    {
+                    <div class="form-group item" id="scancodetype_upc">
+                        @Html.LabelFor(m => m.ScanCode)
+                        <br />
+                        @(Html.Infragistics()
+                            .TextEditorFor(model => model.ScanCode)
+                            .InputName("ScanCode")
                             .HtmlAttributes(new Dictionary<string, object> { { "class", "form-control form-input" } })
-                            .ValidatorOptions(options => options.Required(attribute.IsRequired).Pattern(attribute.CharacterSetRegexPattern))
-                            .ReadOnly(attribute.IsReadOnly);
-
-                        if (attribute.MaxLengthAllowed.HasValue)
-                        {
-                            textEditor.MaxLength(attribute.MaxLengthAllowed.Value);
-                        }
-
-                        @(textEditor.Render())
+                            .Value(string.IsNullOrWhiteSpace(Model.ScanCode) ? string.Empty : Model.ScanCode)
+                            .ValidatorOptions(options => options.Required(false))
+                            .Render())
+                    </div>
                     }
+                }
 
-                    else if (attribute.DataTypeName.ToUpper().Equals("NUMBER"))
+                else
+                {
+
+                    var attribute = Model.Attributes.Where(a => !a.IsReadOnly && a.AttributeName == field.Key).FirstOrDefault();
+
+                    if (attribute != null)
                     {
-                        @(Html.Infragistics()
-                            .TextEditor()
-                            .InputName("ItemAttributes[" + attribute.AttributeName + "]")
-                            .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : "")
-                            .HtmlAttributes(new Dictionary<string, object>
+                        <div class="item">
+                            @Html.Label(@attribute.DisplayName)
+                            <br />
+
+                            @if (attribute.IsPickList)
+                            {
+                                var selectedValue = Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName] : null;
+                                @(Html.Infragistics()
+                                    .Combo()
+                                    .InputName("ItemAttributes[" + attribute.AttributeName + "]")
+                                    .DataSource(attribute.PickListData)
+                                    .ValueKey("PickListValue").TextKey("PickListValue")
+                                    .SelectedValues(new List<String>() { selectedValue })
+                                    .ValidatorOptions(options => options.Required(attribute.IsRequired))
+                                    .DataBind()
+                                    .Render())
+                            }
+
+                            else if (attribute.DataTypeName.ToUpper().Equals("BOOLEAN"))
+                            {
+                                var checkboxValue = Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? bool.Parse(Model.ItemAttributes[attribute.AttributeName]) : false;
+                                var checkboxName = "ItemAttributes[" + attribute.AttributeName + "]";
+                                var htmlAttributes = new Dictionary<string, object> { { "id", checkboxName }, { "style", "height: 16px; width: 16px;" } };
+
+                                @(Html.CheckBox(checkboxName, checkboxValue, htmlAttributes))
+
+                            }
+
+                            else if (attribute.DataTypeName.ToUpper().Equals("TEXT") && !attribute.IsPickList)
+                            {
+                                var textEditor = Html.Infragistics()
+                                    .TextEditor()
+                                    .InputName("ItemAttributes[" + attribute.AttributeName + "]")
+                                    .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : "")
+                                    .HtmlAttributes(new Dictionary<string, object> { { "class", "form-control form-input" } })
+                                    .ValidatorOptions(options => options.Required(attribute.IsRequired).Pattern(attribute.CharacterSetRegexPattern))
+                                    .ReadOnly(attribute.IsReadOnly);
+
+                                if (attribute.MaxLengthAllowed.HasValue)
                                 {
-                                    { "class", "form-control form-input" },
-                                    { "data-number-of-decimals", attribute.NumberOfDecimals },
-                                })
-                            .ValidatorOptions(options => options.Required(attribute.IsRequired)
-                                .Number(true)
-                                .ValueRange(double.Parse(attribute.MinimumNumber), double.Parse(attribute.MaximumNumber))
-                                .Custom("validateNumberOfDecimals", string.Format("A valid number with up to {0} decimals should be entered", attribute.NumberOfDecimals)))
-                            .TextAlignment(TextEditorTextAlignment.Left)
-                            .ReadOnly(attribute.IsReadOnly)
-                            .Render())
-                    }
+                                    textEditor.MaxLength(attribute.MaxLengthAllowed.Value);
+                                }
 
-                    else if (attribute.DataTypeName.ToUpper().Equals("DATE"))
-                    {
-                        @(Html.Infragistics()
-                            .DatePicker()
-                            .DateDisplayFormat("yyyy-MM-dd")
-                            .DateInputFormat("yyyy-MM-dd")
-                            .ID("ItemAttributes[" + attribute.AttributeName + "]")
-                            .InputName("ItemAttributes[" + attribute.AttributeName + "]")
-                            .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : "")
-                            .ValidatorOptions(o => o.Required(attribute.IsRequired))
-                            .ReadOnly(attribute.IsReadOnly)
-                            .Render())
+                                @(textEditor.Render())
+                            }
+
+                            else if (attribute.DataTypeName.ToUpper().Equals("NUMBER"))
+                            {
+                                @(Html.Infragistics()
+                                    .TextEditor()
+                                    .InputName("ItemAttributes[" + attribute.AttributeName + "]")
+                                    .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : "")
+                                    .HtmlAttributes(new Dictionary<string, object>
+                                        {
+                                            { "class", "form-control form-input" },
+                                            { "data-number-of-decimals", attribute.NumberOfDecimals },
+                                        })
+                                    .ValidatorOptions(options => options.Required(attribute.IsRequired)
+                                        .Number(true)
+                                        .ValueRange(double.Parse(attribute.MinimumNumber), double.Parse(attribute.MaximumNumber))
+                                        .Custom("validateNumberOfDecimals", string.Format("A valid number with up to {0} decimals should be entered", attribute.NumberOfDecimals)))
+                                    .TextAlignment(TextEditorTextAlignment.Left)
+                                    .ReadOnly(attribute.IsReadOnly)
+                                    .Render())
+                            }
+
+                            else if (attribute.DataTypeName.ToUpper().Equals("DATE"))
+                            {
+                                @(Html.Infragistics()
+                                    .DatePicker()
+                                    .DateDisplayFormat("yyyy-MM-dd")
+                                    .DateInputFormat("yyyy-MM-dd")
+                                    .ID("ItemAttributes[" + attribute.AttributeName + "]")
+                                    .InputName("ItemAttributes[" + attribute.AttributeName + "]")
+                                    .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : "")
+                                    .ValidatorOptions(o => o.Required(attribute.IsRequired))
+                                    .ReadOnly(attribute.IsReadOnly)
+                                    .Render())
+                            }
+                        </div>
                     }
-                </div>
+                }
             }
             <div class="form-group">
                 <input type="submit" class="form-control btn-success" value="Save" id="btnSubmit" disabled="disabled" />

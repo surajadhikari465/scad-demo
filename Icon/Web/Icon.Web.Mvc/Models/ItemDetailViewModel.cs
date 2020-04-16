@@ -8,5 +8,6 @@ namespace Icon.Web.Mvc.Models
         public IEnumerable<AttributeViewModel> Attributes { get; set; }
 
         public ItemHistoryViewModel ItemHistoryModel { get; set; }
+        public Dictionary<string, string> OrderOfFields { get; set; }
     }
 }

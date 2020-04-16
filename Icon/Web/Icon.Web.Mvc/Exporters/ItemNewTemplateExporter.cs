@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Icon.Common;
 using Icon.Common.Models;
+using Icon.Web.Mvc.Extensions;
 
 namespace Icon.Web.Mvc.Exporters
 {
@@ -21,12 +22,15 @@ namespace Icon.Web.Mvc.Exporters
         private const string ScanCode = "Scan Code";
         private const int BooleanValidationRequiredCount = 2;
         private const int BooleanValidationNonRequiredCount = 3;
+        private const string AttributePrefix = "A";
+        private const string NonAttributePrefix = "F";
 
         public ItemNewTemplateExporter(
             IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler,
             IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>> getAttributesQueryHandler,
-            IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypeQueryHandler)
-            : base(getHierarchyClassesQueryHandler, getAttributesQueryHandler, getBarcodeTypeQueryHandler)
+            IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypeQueryHandler,
+            IOrderFieldsHelper orderFieldsHelper)
+            : base(getHierarchyClassesQueryHandler, getAttributesQueryHandler, getBarcodeTypeQueryHandler, orderFieldsHelper)
         {
         }
 
@@ -92,7 +96,7 @@ namespace Icon.Web.Mvc.Exporters
                     {
                         base.CreateListRuleExcelValidationRule(item.DisplayName, item.AttributeName, item.PickListData.Count());
                     }
-                    else if(item.DataTypeName.Equals(Constants.DataTypeNames.Boolean, StringComparison.OrdinalIgnoreCase))
+                    else if (item.DataTypeName.Equals(Constants.DataTypeNames.Boolean, StringComparison.OrdinalIgnoreCase))
                     {
                         base.CreateListRuleExcelValidationRule(item.DisplayName, item.AttributeName, item.IsRequired ? BooleanValidationRequiredCount : BooleanValidationNonRequiredCount);
                     }
@@ -102,108 +106,150 @@ namespace Icon.Web.Mvc.Exporters
 
         public override void AddSpreadsheetColumns()
         {
-            
-            if(SelectedColumnNames != null)
+
+            if (SelectedColumnNames != null)
             {
                 //Only export selected columns and keep them in order
                 AddSpreadSheetColumnsCustomView();
                 return;
             }
-
-            int currentIndex = 0;
-           
-            AddSpreadsheetColumn(
-                NewItemExcelHelper.NewExcelExportColumnNames.BarCodeType,
-                ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.BarCodeType],
-                NewItemExcelHelper.NewExcelExportColumnWidths.BarCodeType,
-                HorizontalCellAlignment.Left,
-                (row, item) => row.Cells[currentIndex].Value = String.Empty,
-                ref currentIndex);
-
-            AddSpreadsheetColumn(
-                NewItemExcelHelper.NewExcelExportColumnNames.ScanCode,
-                ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.ScanCode],
-                NewItemExcelHelper.NewExcelExportColumnWidths.ScanCode,
-                HorizontalCellAlignment.Right,
-                (row, item) => row.Cells[currentIndex].Value = String.Empty,
-                ref currentIndex);
-
-            AddSpreadsheetColumn(
-                NewItemExcelHelper.NewExcelExportColumnNames.Brand,
-                ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.Brand],
-                NewItemExcelHelper.NewExcelExportColumnWidths.HierarchyClass,
-                HorizontalCellAlignment.Left,
-                (row, item) => row.Cells[currentIndex].Value = String.Empty,
-                ref currentIndex);
-
-            AddSpreadsheetColumn(
-                NewItemExcelHelper.NewExcelExportColumnNames.Merchandise,
-                ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.Merchandise],
-                NewItemExcelHelper.NewExcelExportColumnWidths.HierarchyClass,
-                HorizontalCellAlignment.Left,
-                (row, item) => row.Cells[currentIndex].Value = String.Empty,
-                ref currentIndex);
-
-            AddSpreadsheetColumn(
-                NewItemExcelHelper.NewExcelExportColumnNames.Tax,
-                ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.Tax],
-                NewItemExcelHelper.NewExcelExportColumnWidths.HierarchyClass,
-                HorizontalCellAlignment.Left,
-                (row, item) => row.Cells[currentIndex].Value = String.Empty,
-                ref currentIndex);
-
-            AddSpreadsheetColumn(
-                NewItemExcelHelper.NewExcelExportColumnNames.NationalClass,
-                ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.NationalClass],
-                NewItemExcelHelper.NewExcelExportColumnWidths.HierarchyClass,
-                HorizontalCellAlignment.Left,
-                (row, item) => row.Cells[currentIndex].Value = String.Empty,
-                ref currentIndex);
-
-            AddSpreadsheetColumn(
-                NewItemExcelHelper.NewExcelExportColumnNames.Financial,
-                ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.Financial],
-                NewItemExcelHelper.NewExcelExportColumnWidths.Financial,
-                HorizontalCellAlignment.Left,
-                (row, item) => row.Cells[currentIndex].Value = String.Empty,
-                ref currentIndex);
-
-            AddSpreadsheetColumn(
-                NewItemExcelHelper.NewExcelExportColumnNames.Manufacturer,
-                ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.Manufacturer],
-                NewItemExcelHelper.NewExcelExportColumnWidths.Manufacturer,
-                HorizontalCellAlignment.Left,
-                (row, item) => row.Cells[currentIndex].Value = String.Empty,
-                ref currentIndex);
-
-            AddSpreadsheetColumn(
-                NewItemExcelHelper.NewExcelExportColumnNames.ItemId,
-                ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.ItemId],
-                NewItemExcelHelper.NewExcelExportColumnWidths.ItemId,
-                HorizontalCellAlignment.Left,
-                (row, item) => row.Cells[currentIndex].Value = String.Empty,
-                ref currentIndex);
-
-            AddSpreadsheetColumn(
-                NewItemExcelHelper.NewExcelExportColumnNames.ItemType,
-                ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.ItemType],
-                NewItemExcelHelper.NewExcelExportColumnWidths.ItemType,
-                HorizontalCellAlignment.Left,
-                (row, item) => row.Cells[currentIndex].Value = String.Empty,
-                ref currentIndex);
-
             EmptyQueryParameters<IEnumerable<AttributeModel>> attributesParam = new EmptyQueryParameters<IEnumerable<AttributeModel>>();
             var attributesModel = getAttributesQueryHandler.Search(attributesParam).OrderByDescending(a => a.IsRequired).ThenBy(a => a.DisplayOrder);
 
-            foreach (var attributeModel in attributesModel.Where(a => a.AttributeGroupId != (int)AttributeType.Nutrition))
+            var OrderOfFields = orderFieldsHelper.OrderAllFields(attributesModel.ToViewModels().ToList());
+
+            int currentIndex = 0;
+
+            foreach (KeyValuePair<string, string> field in OrderOfFields)
             {
-                AddSpreadsheetColumn(
-                    attributeModel.AttributeName,
-                    attributeModel.DisplayName,
-                    NewItemExcelHelper.NewExcelExportColumnWidths.AttributeNames,
-                    HorizontalCellAlignment.Left,
-                    (row, item) => row.Cells[currentIndex].Value = String.Empty,
+                if (field.Value != AttributePrefix)
+                {
+
+                    if (field.Key == "BarcodeType")
+                    {
+                        AddSpreadsheetColumn(
+                            NewItemExcelHelper.NewExcelExportColumnNames.BarCodeType,
+                            ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.BarCodeType],
+                            NewItemExcelHelper.NewExcelExportColumnWidths.BarCodeType,
+                            HorizontalCellAlignment.Left,
+                            (row, item) => row.Cells[currentIndex].Value = String.Empty,
+                            ref currentIndex);
+                    }
+
+                    else if (field.Key == "ScanCode")
+                    {
+                        AddSpreadsheetColumn(
+                                NewItemExcelHelper.NewExcelExportColumnNames.ScanCode,
+                                ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.ScanCode],
+                                NewItemExcelHelper.NewExcelExportColumnWidths.ScanCode,
+                                HorizontalCellAlignment.Right,
+                                (row, item) => row.Cells[currentIndex].Value = String.Empty,
                     ref currentIndex);
+                    }
+
+                    else if (field.Key == "Brand")
+                    {
+                        AddSpreadsheetColumn(
+                                NewItemExcelHelper.NewExcelExportColumnNames.Brand,
+                                ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.Brand],
+                                NewItemExcelHelper.NewExcelExportColumnWidths.HierarchyClass,
+                                HorizontalCellAlignment.Left,
+                                (row, item) => row.Cells[currentIndex].Value = String.Empty,
+                                ref currentIndex);
+                                }
+
+                    else if (field.Key == "Merchandise")
+                    {
+                        AddSpreadsheetColumn(
+                            NewItemExcelHelper.NewExcelExportColumnNames.Merchandise,
+                            ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.Merchandise],
+                            NewItemExcelHelper.NewExcelExportColumnWidths.HierarchyClass,
+                            HorizontalCellAlignment.Left,
+                            (row, item) => row.Cells[currentIndex].Value = String.Empty,
+                            ref currentIndex);
+                            }
+
+                    else if (field.Key == "Tax")
+                    {
+                        AddSpreadsheetColumn(
+                            NewItemExcelHelper.NewExcelExportColumnNames.Tax,
+                            ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.Tax],
+                            NewItemExcelHelper.NewExcelExportColumnWidths.HierarchyClass,
+                            HorizontalCellAlignment.Left,
+                            (row, item) => row.Cells[currentIndex].Value = String.Empty,
+                            ref currentIndex);
+                            }
+
+                    else if (field.Key == "National")
+                    {
+
+                        AddSpreadsheetColumn(
+                            NewItemExcelHelper.NewExcelExportColumnNames.NationalClass,
+                            ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.NationalClass],
+                            NewItemExcelHelper.NewExcelExportColumnWidths.HierarchyClass,
+                            HorizontalCellAlignment.Left,
+                            (row, item) => row.Cells[currentIndex].Value = String.Empty,
+                            ref currentIndex);
+                            }
+
+                    else if (field.Key == "Financial")
+                    {
+
+                        AddSpreadsheetColumn(
+                            NewItemExcelHelper.NewExcelExportColumnNames.Financial,
+                            ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.Financial],
+                            NewItemExcelHelper.NewExcelExportColumnWidths.Financial,
+                            HorizontalCellAlignment.Left,
+                            (row, item) => row.Cells[currentIndex].Value = String.Empty,
+                            ref currentIndex);
+                            }
+
+                    else if (field.Key == "Manufacturer")
+                    {
+                        AddSpreadsheetColumn(
+                            NewItemExcelHelper.NewExcelExportColumnNames.Manufacturer,
+                            ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.Manufacturer],
+                            NewItemExcelHelper.NewExcelExportColumnWidths.Manufacturer,
+                            HorizontalCellAlignment.Left,
+                            (row, item) => row.Cells[currentIndex].Value = String.Empty,
+                            ref currentIndex);
+                            }
+
+                    else if (field.Key == "ItemId")
+                    {
+                        AddSpreadsheetColumn(
+                            NewItemExcelHelper.NewExcelExportColumnNames.ItemId,
+                            ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.ItemId],
+                            NewItemExcelHelper.NewExcelExportColumnWidths.ItemId,
+                            HorizontalCellAlignment.Left,
+                            (row, item) => row.Cells[currentIndex].Value = String.Empty,
+                            ref currentIndex);
+                            }
+
+                    else if (field.Key == "ItemType")
+                    {
+                        AddSpreadsheetColumn(
+                            NewItemExcelHelper.NewExcelExportColumnNames.ItemType,
+                            ExportItemColumnNameMapper.keyToDisplayNameDictionay[NewItemExcelHelper.NewExcelExportColumnNames.ItemType],
+                            NewItemExcelHelper.NewExcelExportColumnWidths.ItemType,
+                            HorizontalCellAlignment.Left,
+                            (row, item) => row.Cells[currentIndex].Value = String.Empty,
+                            ref currentIndex);
+                            }
+
+                }
+                else
+                {
+                    var attributeModel = attributesModel.Where(a => a.AttributeName == field.Key).FirstOrDefault();
+
+                    AddSpreadsheetColumn(
+                        attributeModel.AttributeName,
+                        attributeModel.DisplayName,
+                        NewItemExcelHelper.NewExcelExportColumnWidths.AttributeNames,
+                        HorizontalCellAlignment.Left,
+                        (row, item) => row.Cells[currentIndex].Value = String.Empty,
+                        ref currentIndex);
+                }
             }
         }
 
@@ -219,9 +265,20 @@ namespace Icon.Web.Mvc.Exporters
             {
                 SelectedColumnNames.Remove("Actions");
             }
-            
+
+            if (this.ExportNewItemTemplate)
+            {
+                foreach (string column in this.ListHiddenColumnNames)
+                {
+                    if (SelectedColumnNames.Contains(column))
+                    {
+                        SelectedColumnNames.Remove(column);
+                    }
+                }
+            }
+
             //Adding Column info to a list so we can loop through
-            List<(string columnName,int columnWidth)> baseColumnInfo = new List<(string, int)>()
+            List<(string columnName, int columnWidth)> baseColumnInfo = new List<(string, int)>()
             {
                 (NewItemExcelHelper.NewExcelExportColumnNames.BarCodeType, NewItemExcelHelper.NewExcelExportColumnWidths.BarCodeType),
                 (NewItemExcelHelper.NewExcelExportColumnNames.Brand, NewItemExcelHelper.NewExcelExportColumnWidths.HierarchyClass),
@@ -235,7 +292,7 @@ namespace Icon.Web.Mvc.Exporters
                 (NewItemExcelHelper.NewExcelExportColumnNames.NationalClass, NewItemExcelHelper.NewExcelExportColumnWidths.HierarchyClass)
             };
 
-            foreach((string columnName, int columnWidth) in baseColumnInfo)
+            foreach ((string columnName, int columnWidth) in baseColumnInfo)
             {
                 columnIndex = SelectedColumnNames.IndexOf(columnName);
                 if (columnIndex >= 0)

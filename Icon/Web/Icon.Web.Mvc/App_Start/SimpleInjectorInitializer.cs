@@ -53,7 +53,7 @@ namespace Icon.Web.Mvc.App_Start
             container.RegisterDecorator<IManagerHandler<AddItemManager>, RetryUniqueConstraintManagerHandlerDecorator<AddItemManager>>(Lifestyle.Transient);
             container.Register(typeof(ICommandHandler<>), typeof(AddAddressCommand).Assembly);
             container.Register(typeof(IQueryHandler<,>), typeof(GetAffinitySubBricksParameters).Assembly);
-
+            container.Register<IOrderFieldsHelper, OrderFieldsHelper>();
             container.Register(typeof(IManagerHandler<>), typeof(IManagerHandler<>).Assembly);
             container.Register(typeof(ISpreadsheetImporter<>), typeof(ISpreadsheetImporter<>).Assembly);
             container.Register(typeof(ISerializer<>), typeof(ISerializer<>).Assembly);
@@ -110,7 +110,7 @@ namespace Icon.Web.Mvc.App_Start
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<AddAttributeManager>));
             container.RegisterDecorator(typeof(IManagerHandler<>), typeof(TransactionManagerHandlerDecorator<UpdateAttributeManager>));
 
-			container.RegisterDecorator(typeof(ICommandHandler<>), typeof(DbProviderCommandHandlerDecorator<>)); // moving to bottom so that connections are build before transactions
+            container.RegisterDecorator(typeof(ICommandHandler<>), typeof(DbProviderCommandHandlerDecorator<>)); // moving to bottom so that connections are build before transactions
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(DbProviderQueryHandlerDecorator<,>));
 
             //Register AutoMapper

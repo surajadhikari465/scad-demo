@@ -15,6 +15,8 @@ using System.Security.Principal;
 using System.Web.Mvc;
 using Icon.Common.Models;
 using Icon.Web.Mvc.Exporters;
+using Newtonsoft.Json;
+using Icon.Web.Tests.Unit.Models;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
@@ -39,6 +41,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IExcelExporterService> mockExcelExporterService;
         private Mock<IDonutCacheManager> mockCacheManager;
         private Mock<IQueryHandler<EmptyAttributesParameters, IEnumerable<AttributeModel>>> mockGetItemCountOnAttributesQueryHandler;
+        private Mock<IOrderFieldsHelper> mockOrderFieldsHelper;
 
         [TestInitialize]
         public void Initialize()
@@ -59,6 +62,33 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockExcelExporterService = new Mock<IExcelExporterService>();
             mockCacheManager = new Mock<IDonutCacheManager>();
             mockGetItemCountOnAttributesQueryHandler = new Mock<IQueryHandler<EmptyAttributesParameters, IEnumerable<AttributeModel>>>();
+            mockOrderFieldsHelper = new Mock<IOrderFieldsHelper>();
+
+            mockOrderFieldsHelper.Setup(M => M.OrderAllFields(It.IsAny<List<AttributeViewModel>>())).Returns(new Dictionary<string, string>(){
+                { "ItemId", "F" },
+                { "RequestNumber", "A" },
+                {"BarcodeType","F" },
+                {"Inactive","A" },
+                {"ItemType", "F" },
+                {"ScanCode","F" },
+                {"Brand","F" },
+                {"ProductDescription", "A" },
+                {"POSDescription","A" },
+                {"CustomerFriendlyDescription,", "A" },
+                {"ItemPack", "A" },
+                {"RetailSize", "A" },
+                {"UOM","A" },
+                {"Financial", "F" },
+                {"Merchandise", "F" },
+                {"National", "F" },
+                {"Tax","F" },
+                {"FoodStampEligible","A" },
+                { "Notes","A" },
+                {"DataSource","A" },
+                {"Manufacturer", "F" }
+                }
+               );
+
             this.controller = new AttributeController(
                 mockLogger.Object,
                 settings,
@@ -73,7 +103,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockAttributesHelper.Object,
                 mockExcelExporterService.Object,
                 mockCacheManager.Object,
-                mockGetItemCountOnAttributesQueryHandler.Object);
+                mockGetItemCountOnAttributesQueryHandler.Object,
+                mockOrderFieldsHelper.Object);
 
             this.userName = "Test User";
             this.mockIdentity.SetupGet(i => i.Name).Returns(userName);
@@ -125,8 +156,16 @@ namespace Icon.Web.Tests.Unit.Controllers
             //When
             var result = controller.All() as JsonResult;
 
+            string json = JsonConvert.SerializeObject(result.Data);
+            AttributeModelWithAllFields model = JsonConvert.DeserializeObject<AttributeModelWithAllFields>(json);
+
             //Then
             Assert.IsNotNull(result);
+            Assert.AreEqual(21, model.DefaultFields.Count);
+            Assert.AreEqual(true, model.DefaultFields.ContainsKey("ItemId"));
+            Assert.AreEqual(true, model.DefaultFields.ContainsKey("Notes"));
+            Assert.AreEqual(true, model.DefaultFields.ContainsKey("Tax"));
+            Assert.AreEqual(false, model.DefaultFields.ContainsKey("EStoreEligible"));
             mockGetAttributesQuery.Verify(m => m.Search(It.IsAny<EmptyQueryParameters<IEnumerable<AttributeModel>>>()), Times.Once);
         }
 

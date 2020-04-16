@@ -44,5 +44,6 @@ namespace Icon.Web.Mvc.Models
         public Dictionary<string, string> ItemAttributes { get; set; }
 
         public IEnumerable<BarcodeTypeModel> BarcodeTypes { get; set; }
+        public Dictionary<string, string> OrderOfFields { get; set; }
     }
 }

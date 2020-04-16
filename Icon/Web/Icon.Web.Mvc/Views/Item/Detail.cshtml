@@ -40,95 +40,131 @@
     }
 </div>
 <div class="page-section">
-    <div class="item">
-        @Html.LabelFor(m => m.ItemViewModel.ItemId)
-        <div>@Model.ItemViewModel.ItemId</div>
-    </div>
-
-    <div class="item">
-        @Html.LabelFor(m => m.ItemViewModel.ItemTypeDescription)
-        <div>@Model.ItemViewModel.ItemTypeDescription</div>
-    </div>
-
-    <div class="item">
-        @Html.LabelFor(m => m.ItemViewModel.ScanCode)
-        <div>@Model.ItemViewModel.ScanCode</div>
-    </div>
-
-    <div class="item">
-        @Html.LabelFor(m => m.ItemViewModel.BarcodeType)
-        <div>@Model.ItemViewModel.BarcodeType</div>
-    </div>
-
-    <div class="item">
-        @Html.LabelFor(m => m.ItemViewModel.MerchandiseHierarchyLineage)
-        <div>@Model.ItemViewModel.MerchandiseHierarchyLineage</div>
-    </div>
-
-    <div class="item">
-        @Html.LabelFor(m => m.ItemViewModel.BrandsHierarchyLineage)
-        <div>@Model.ItemViewModel.BrandsHierarchyLineage</div>
-    </div>
-
-    <div class="item">
-        @Html.LabelFor(m => m.ItemViewModel.TaxHierarchyLineage)
-        <div>@Model.ItemViewModel.TaxHierarchyLineage</div>
-    </div>
-
-    <div class="item">
-        @Html.LabelFor(m => m.ItemViewModel.FinancialHierarchyLineage)
-        <div>@Model.ItemViewModel.FinancialHierarchyLineage</div>
-    </div>
-
-    <div class="item">
-        @Html.LabelFor(m => m.ItemViewModel.NationalHierarchyLineage)
-        <div>@Model.ItemViewModel.NationalHierarchyLineage</div>
-    </div>
-
-    <div class="item">
-        @Html.LabelFor(m => m.ItemViewModel.ManufacturerHierarchyLineage)
-        @if (string.IsNullOrWhiteSpace(Model.ItemViewModel.ManufacturerHierarchyLineage))
-        {
-            <div>-</div>
-        }
-        else
-        {
-            <div>@Model.ItemViewModel.ManufacturerHierarchyLineage</div>
-        }
-    </div>
-
-    @foreach (var attribute in Model.Attributes.OrderBy(a => a.DisplayOrder))
+    @foreach (var field in Model.OrderOfFields)
     {
-        if (attribute.IsSystemAttribute)
+        if (field.Value != "A")
         {
-            continue;
-        }
-        <div class="item">
-            @Html.Label(attribute.DisplayName)
-            @if (itemViewModel.ItemAttributes.ContainsKey(attribute.AttributeName))
+
+            if (field.Key == "ItemId")
             {
-                if (attribute.DataTypeName == "Date")
-                {
-                    string dateValue = itemViewModel.ItemAttributes[attribute.AttributeName].ToString();
-                    if (!string.IsNullOrWhiteSpace(dateValue))
+                <div class="item">
+                    @Html.LabelFor(m => m.ItemViewModel.ItemId)
+                    <div>@Model.ItemViewModel.ItemId</div>
+                </div>
+            }
+            else if (field.Key == "ItemType")
+            {
+                <div class="item">
+                    @Html.LabelFor(m => m.ItemViewModel.ItemTypeDescription)
+                    <div>@Model.ItemViewModel.ItemTypeDescription</div>
+                </div>
+            }
+
+            else if (field.Key == "ScanCode")
+            {
+                <div class="item">
+                    @Html.LabelFor(m => m.ItemViewModel.ScanCode)
+                    <div>@Model.ItemViewModel.ScanCode</div>
+                </div>
+            }
+            else if (field.Key == "BarcodeType")
+            {
+                <div class="item">
+                    @Html.LabelFor(m => m.ItemViewModel.BarcodeType)
+                    <div>@Model.ItemViewModel.BarcodeType</div>
+                </div>
+            }
+            else if (field.Key == "Merchandise")
+            {
+                <div class="item">
+                    @Html.LabelFor(m => m.ItemViewModel.MerchandiseHierarchyLineage)
+                    <div>@Model.ItemViewModel.MerchandiseHierarchyLineage</div>
+                </div>
+            }
+            else if (field.Key == "Brand")
+            {
+                <div class="item">
+                    @Html.LabelFor(m => m.ItemViewModel.BrandsHierarchyLineage)
+                    <div>@Model.ItemViewModel.BrandsHierarchyLineage</div>
+                </div>
+            }
+
+            else if (field.Key == "Tax")
+            {
+                <div class="item">
+                    @Html.LabelFor(m => m.ItemViewModel.TaxHierarchyLineage)
+                    <div>@Model.ItemViewModel.TaxHierarchyLineage</div>
+                </div>
+            }
+            else if (field.Key == "Financial")
+            {
+                <div class="item">
+                    @Html.LabelFor(m => m.ItemViewModel.FinancialHierarchyLineage)
+                    <div>@Model.ItemViewModel.FinancialHierarchyLineage</div>
+                </div>
+            }
+            else if (field.Key == "National")
+            {
+                <div class="item">
+                    @Html.LabelFor(m => m.ItemViewModel.NationalHierarchyLineage)
+                    <div>@Model.ItemViewModel.NationalHierarchyLineage</div>
+                </div>
+            }
+            else if (field.Key == "Manufacturer")
+            {
+                <div class="item">
+                    @Html.LabelFor(m => m.ItemViewModel.ManufacturerHierarchyLineage)
+                    @if (string.IsNullOrWhiteSpace(Model.ItemViewModel.ManufacturerHierarchyLineage))
                     {
-                        <div>@Convert.ToDateTime(dateValue).ToString("yyyy-MM-dd")</div>
+                        <div>-</div>
                     }
                     else
                     {
-                        <div>@dateValue</div>
+                        <div>@Model.ItemViewModel.ManufacturerHierarchyLineage</div>
                     }
-                }
-                else
-                {
-                    <div>@itemViewModel.ItemAttributes[attribute.AttributeName].ToString()</div>
-                }
+                </div>
             }
-            else
+        }
+
+        else
+        {
+            var attribute = Model.Attributes.Where(a => a.AttributeName == field.Key).FirstOrDefault();
+
+            if (attribute != null)
             {
-                <div>-</div>
+
+                if (attribute.IsSystemAttribute)
+                {
+                    continue;
+                }
+                <div class="item">
+                    @Html.Label(attribute.DisplayName)
+                    @if (itemViewModel.ItemAttributes.ContainsKey(attribute.AttributeName))
+                    {
+                        if (attribute.DataTypeName == "Date")
+                        {
+                            string dateValue = itemViewModel.ItemAttributes[attribute.AttributeName].ToString();
+                            if (!string.IsNullOrWhiteSpace(dateValue))
+                            {
+                                <div>@Convert.ToDateTime(dateValue).ToString("yyyy-MM-dd")</div>
+                            }
+                            else
+                            {
+                                <div>@dateValue</div>
+                            }
+                        }
+                        else
+                        {
+                            <div>@itemViewModel.ItemAttributes[attribute.AttributeName].ToString()</div>
+                        }
+                    }
+                    else
+                    {
+                        <div>-</div>
+                    }
+                </div>
             }
-        </div>
+        }
     }
 </div>
 

@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using Icon.Common.Models;
+using Icon.Web.Mvc.Utility;
 
 namespace Icon.Web.Tests.Unit.Exporters
 {
@@ -21,6 +22,7 @@ namespace Icon.Web.Tests.Unit.Exporters
         private Mock<IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>>> mockGetHierarchyClassesQueryHandler;
         private Mock<IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>>> mockGetAttributesQueryHandler;
         private Mock<IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>>> mockGetBarcodeTypeQueryHandler;
+        private Mock<IOrderFieldsHelper> mockOrderFieldsHelper;
 
         [TestInitialize]
         public void Initialize()
@@ -31,6 +33,7 @@ namespace Icon.Web.Tests.Unit.Exporters
             mockGetHierarchyClassesQueryHandler = new Mock<IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>>>();
             mockGetAttributesQueryHandler = new Mock<IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>>>();
             mockGetBarcodeTypeQueryHandler = new Mock<IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>>>();
+            mockOrderFieldsHelper = new Mock<IOrderFieldsHelper>();
         }
 
         [TestMethod]
@@ -50,7 +53,8 @@ namespace Icon.Web.Tests.Unit.Exporters
             var exporter = new ItemNewTemplateExporter(
                 mockGetHierarchyClassesQueryHandler.Object,
                 mockGetAttributesQueryHandler.Object,
-                mockGetBarcodeTypeQueryHandler.Object);
+                mockGetBarcodeTypeQueryHandler.Object,
+                mockOrderFieldsHelper.Object);
 
             exporter.ExportModel = exportModel;
             exporter.ExportNewItemTemplate = false;
@@ -88,7 +92,8 @@ namespace Icon.Web.Tests.Unit.Exporters
             var exporter = new ItemNewTemplateExporter(
                 mockGetHierarchyClassesQueryHandler.Object,
                 mockGetAttributesQueryHandler.Object,
-                mockGetBarcodeTypeQueryHandler.Object);
+                mockGetBarcodeTypeQueryHandler.Object,
+                mockOrderFieldsHelper.Object);
 
             exporter.ExportModel = exportModel;
             exporter.ExportNewItemTemplate = false;
@@ -130,7 +135,8 @@ namespace Icon.Web.Tests.Unit.Exporters
             var exporter = new ItemNewTemplateExporter(
                 mockGetHierarchyClassesQueryHandler.Object,
                 mockGetAttributesQueryHandler.Object,
-                mockGetBarcodeTypeQueryHandler.Object);
+                mockGetBarcodeTypeQueryHandler.Object,
+                mockOrderFieldsHelper.Object);
 
             exporter.ExportModel = exportModel;
             exporter.ExportNewItemTemplate = false;
