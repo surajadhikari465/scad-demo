@@ -4,34 +4,42 @@ IF(NOT EXISTS(SELECT 1 FROM app.PostDeploymentScriptHistory WHERE ScriptKey = @u
 BEGIN
 	PRINT '[' + convert(nvarchar, getdate(), 121) + '] ' + @updateAttributesDisplayOrderScriptKey;
 
--- update Displayorder for first 12 attributes
+-- update Displayorder for first 16 attributes
 
 UPDATE attributes
 SET DisplayOrder = CASE 
-		WHEN DisplayName = 'Request Number'
+		WHEN DisplayName = 'POS Scale Tare'
 			THEN 1
 		WHEN DisplayName = 'Inactive'
 			THEN 2
-		WHEN DisplayName = 'Product Description'
+		WHEN DisplayName = 'Request Number'
 			THEN 3
-		WHEN DisplayName = 'POS Description'
+		WHEN DisplayName = 'Product Description'
 			THEN 4
-		WHEN DisplayName = 'Customer Friendly Description'
+		WHEN DisplayName = 'POS Description'
 			THEN 5
-		WHEN DisplayName = 'Item Pack'
+		WHEN DisplayName = 'Customer Friendly Description'
 			THEN 6
-		WHEN DisplayName = 'Retail Size'
+		WHEN DisplayName = 'Item Pack'
 			THEN 7
-		WHEN DisplayName = 'UOM'
+		WHEN DisplayName = 'Retail Size'
 			THEN 8
-		WHEN DisplayName = 'Food Stamp Eligible'
+		WHEN DisplayName = 'UOM'
 			THEN 9
-		WHEN DisplayName = 'Notes'
+		WHEN DisplayName = 'Food Stamp Eligible'
 			THEN 10
 		WHEN DisplayName = 'Data Source'
 			THEN 11
-		WHEN DisplayName = 'POS Scale Tare'
+		WHEN DisplayName = 'Notes'
 			THEN 12
+		WHEN DisplayName = 'Created By'
+			THEN 13
+		WHEN DisplayName = 'Created On'
+			THEN 14
+		WHEN DisplayName = 'Modified By'
+			THEN 15
+		WHEN DisplayName = 'Modified On'
+			THEN 16
 		END
 WHERE DisplayName IN (
 		'Request Number'
@@ -46,6 +54,10 @@ WHERE DisplayName IN (
 		,'Notes'
 		,'Data Source'
 		,'POS Scale Tare'
+		,'Created By'
+		,'Created On'
+		,'Modified By'
+		,'Modified On'
 		);
 
 -- update attributes displayorder for the remaining
@@ -54,7 +66,7 @@ AS (
 	SELECT DisplayName
 		,ROW_NUMBER() OVER (
 			ORDER BY DisplayName
-			) + 12 AS RN
+			) + 16 AS RN
 	FROM Attributes
 	WHERE DisplayName NOT IN (
 			'Request Number'
@@ -69,6 +81,10 @@ AS (
 			,'Notes'
 			,'Data Source'
 			,'POS Scale Tare'
+			,'Created By'
+			,'Created On'
+			,'Modified By'
+			,'Modified On'
 			)
 		AND attributegroupid = (
 			SELECT Attributegroupid
