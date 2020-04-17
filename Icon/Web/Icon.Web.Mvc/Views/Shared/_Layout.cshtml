@@ -44,7 +44,14 @@
 						<li class="dropdown">
 							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Hierarchies</a>
 							<ul class="dropdown-menu bg-dark">
-								<li class="nav-item">@Html.ActionLink("Brand", "Index", "Brand", null, new { @class = "nav-link text-nowrap" })</li>
+								<li class="dropdown-submenu nav-item">
+									@Html.ActionLink("Brand", "Index", "Brand", null, new { @class = "nav-link dropdown-toggle text-nowrap" })
+									<ul class="dropdown-menu bg-dark">
+										<li>@Html.ActionLink("Add New Brand", "Create", "Brand", null, new { @class = "nav-link text-nowrap" })</li>
+										<li>@Html.ActionLink("Bulk Upload Brands", "Index", "BulkUpload", new { bulkUploadDataType = BulkUploadDataType.Brand.ToString() }, new { @class = "nav-link text-nowrap" })</li>
+										<li>@Html.ActionLink("Download Brand Template", "BrandTemplateExport", "Brand", null, new { @class = "nav-link text-nowrap" })</li>
+									</ul>
+								</li>
 								<li class="nav-item">@Html.ActionLink("Financial", "Index", "Financial", null, new { @class = "nav-link text-nowrap" })</li>
 								<li class="nav-item">@Html.ActionLink("National Class", "Index", "NationalClass", null, new { @class = "nav-link text-nowrap" })</li>
 								<li class="nav-item">@Html.ActionLink("Merchandise", "Index", "Hierarchy", new { SelectedHierarchyId = 1 }, new { @class = "nav-link text-nowrap" })</li>

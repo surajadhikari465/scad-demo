@@ -504,3 +504,18 @@ tr.shown td.details-control {
 .action-control {
     cursor: pointer;
 }
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown-submenu:hover .dropdown-menu {
+    display: block;
+}
