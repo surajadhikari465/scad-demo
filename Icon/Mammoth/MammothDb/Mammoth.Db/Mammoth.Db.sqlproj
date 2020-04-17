@@ -862,6 +862,7 @@
     <None Include="Scripts\Projects\Distribution Realignment\33696_MovePricesFromMAToMW_RollBack.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\33696_MovePricesFromMWToRM.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\33696_MovePricesFromMWToRM_RollBack.sql" />
+    <None Include="Scripts\PostDeploymentScripts\26540_AMZItemVendorLane_JobSchedule.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
