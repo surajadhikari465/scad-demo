@@ -105,7 +105,7 @@
       <HintPath>..\packages\Icon.DbContextFactory.2019.5.22.1\lib\net472\Icon.DbContextFactory.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.2020.3.12.5\lib\net472\Icon.Esb.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.2020.4.13.1\lib\net472\Icon.Esb.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Framework.2019.12.6.1\lib\net472\Icon.Framework.dll</HintPath>
@@ -168,7 +168,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\EsbCredentialConfigItem.cs" />
+    <Compile Include="Config\EsbCredentialConfigItems.cs" />
+    <Compile Include="Config\EsbCredentialConfigSection.cs" />
     <Compile Include="Credentials\CredentialsCacheManager.cs" />
+    <Compile Include="Credentials\ESBCredential.cs" />
+    <Compile Include="Credentials\EsbCredentialsCache.cs" />
+    <Compile Include="Credentials\IEsbCredentialsCache.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Credentials\ICredentialsCacheManager.cs" />
     <Compile Include="Models\Destination.cs" />
@@ -237,6 +243,7 @@
   <ItemGroup>
     <Content Include="CodeAssassin.ConfigTransform.Readme.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <UsingTask TaskName="TransformXml" AssemblyFile="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Web\Microsoft.Web.Publishing.Tasks.dll" />
   <Target Name="App_config_AfterCompile" AfterTargets="AfterCompile" Condition="Exists('App.$(Configuration).config')">

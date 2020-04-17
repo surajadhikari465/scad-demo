@@ -32,6 +32,7 @@ namespace Services.Extract
             container.RegisterSingleton<IOpsgenieAlert, OpsgenieAlert.OpsgenieAlert>();
             container.RegisterSingleton<ISFtpCredentialsCache, SFtpCredentialsCache>();
             container.RegisterSingleton<IS3CredentialsCache, S3CredentialsCache>();
+            container.RegisterSingleton<IEsbCredentialsCache, EsbCredentialsCache>();
             container.Register<ICredentialsCacheManager, CredentialsCacheManager>();
             container.Register(typeof(ICommandHandler<>), typeof(UpdateJobLastRunEndCommand).Assembly);
             container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString));

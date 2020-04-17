@@ -18,6 +18,12 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Icon.Esb.Producer;
+using TIBCO.EMS;
+using System.Collections;
+using System.Security.Cryptography.X509Certificates;
+using Icon.Esb;
+using System.Data;
 
 [assembly: InternalsVisibleTo("Services.Extract.Tests")]
 
@@ -32,6 +38,7 @@ namespace Services.Extract
         internal ExtractJobConfiguration Configuration;
         internal Dictionary<string, SqlConnection> Connections;
         internal ILogger<ExtractJobRunner> Logger;
+        internal IEnumerable<ExtractJobParameter> DynamicParam;
         internal IEnumerable<ExtractDataAndFileInformation> OutputData;
         internal IOpsgenieAlert OpsGenie;
         internal string OpsGenieApiKey;
@@ -195,9 +202,33 @@ namespace Services.Extract
             return output;
         }
 
+        internal void LoadDynamicParameters(ExtractSourcesAndDestinationFile[] connections, string sql, out IEnumerable<ExtractJobParameter> outPutParam)
+        {
+            var outputList = new List<dynamic>();
+            var param = new List<ExtractJobParameter>();
 
-        
-        internal void  ExecuteStoredProcedure(ExtractSourcesAndDestinationFile[] connections, string sql, ExtractJobParameter[] parameters, out IEnumerable<ExtractDataAndFileInformation> extractDataAndFileInformation)
+
+            foreach (var connection in connections)
+            {
+                outputList.Add(connection.Source.Query(sql, buffered: false, commandTimeout: 3000));
+            }
+
+            Parallel.ForEach(outputList, new ParallelOptions() { MaxDegreeOfParallelism = 6 }, output =>
+            {
+                foreach (var row in output)
+                {
+                    param.Add(new ExtractJobParameter
+                    {
+                        Key = row.Key,
+                        Value = row.Value
+                    });
+                }
+            });
+
+            outPutParam = param;
+        }
+
+        internal void ExecuteStagingQuery(ExtractSourcesAndDestinationFile[] connections, string sql, ExtractJobParameter[] parameters)
         {
             var outputDataAndFileInformation = new List<ExtractDataAndFileInformation>();
             var dbArgs = new DynamicParameters();
@@ -209,14 +240,58 @@ namespace Services.Extract
 
             foreach (var connection in connections)
             {
-                outputDataAndFileInformation.Add(new ExtractDataAndFileInformation()
+                connection.Source.Query(sql, dbArgs, buffered: false, commandTimeout: 3000).ToList();
+            }
+        }
+
+        internal void ExecuteExtractQuery(ExtractSourcesAndDestinationFile[] connections, string sql, ExtractJobParameter[] parameters, IEnumerable<ExtractJobParameter> dynamicParameters, out IEnumerable<ExtractDataAndFileInformation> extractDataAndFileInformation)
+        {
+            var outputDataAndFileInformation = new List<ExtractDataAndFileInformation>();
+            var dbArgs = new DynamicParameters();
+
+            if (parameters != null)
+                foreach (var extractJobParameter in parameters)
                 {
-                    Data = connection.Source.Query(sql, dbArgs, buffered: false, commandTimeout:3000),
-                    FileInformation = new FileInfo(connection.DestinationFile)
-                });
+                    dbArgs.Add(extractJobParameter.Key, extractJobParameter.Value);
+                }
+
+            foreach (var connection in connections)
+            {
+                if (dynamicParameters != null && dynamicParameters.Count() > 0)
+                {
+                    foreach (var dynamicParameter in dynamicParameters)
+                    {
+                        var destinationFile = connection.DestinationFile.Contains(dynamicParameter.Key.ToString()) ? connection.DestinationFile.Replace(('{' + dynamicParameter.Key.ToString() + '}'), dynamicParameter.Value.ToString()) : connection.DestinationFile;
+
+                        var combinedArgs = new DynamicParameters();
+                        if (parameters != null && parameters.Count() > 0)
+                        {
+                            combinedArgs = dbArgs;
+                            combinedArgs.Add(dynamicParameter.Key, dynamicParameter.Value);
+                        }
+                        else
+                        {
+                            combinedArgs.Add(dynamicParameter.Key, dynamicParameter.Value);
+                        }
+
+                        outputDataAndFileInformation.Add(new ExtractDataAndFileInformation()
+                        {
+                            Data = connection.Source.Query(sql, dbArgs, buffered: false, commandTimeout: 3000),
+                            FileInformation = new FileInfo(destinationFile)
+                        });
+                    }
+                }
+                else
+                {
+                    outputDataAndFileInformation.Add(new ExtractDataAndFileInformation()
+                    {
+                        Data = connection.Source.Query(sql, dbArgs, buffered: false, commandTimeout: 3000),
+                        FileInformation = new FileInfo(connection.DestinationFile)
+                    });
+                }
             }
 
-            extractDataAndFileInformation =  outputDataAndFileInformation;
+            extractDataAndFileInformation = outputDataAndFileInformation;
         }
         internal void  GetActiveSourceConnectionsAndDestinationFiles(out IEnumerable<ExtractSourcesAndDestinationFile> extractSourcesAndDestinationFiles)
         {
@@ -361,15 +436,31 @@ namespace Services.Extract
                 Configuration = configuration;
                 CredentialsCacheManager.S3CredentialsCache.Refresh();
                 CredentialsCacheManager.SFtpCredentialsCache.Refresh();
+                CredentialsCacheManager.EsbCredentialsCache.Refresh();
 
                 CreateWorksapce(WorkspacePath);
                 CleanWorkspace(WorkspacePath);
                 TransformFilenames();
                 GetActiveSourceConnectionsAndDestinationFiles(out ActiveSourcesAndDestinationFiles);
-                ExecuteStoredProcedure(ActiveSourcesAndDestinationFiles.ToArray(), Configuration.Query,
-                    Configuration.Parameters, out OutputData);
+                if (Configuration.StagingQuery != null && Configuration.StagingQuery.Trim().Length > 0)
+                {
+                    ExecuteStagingQuery(ActiveSourcesAndDestinationFiles.ToArray(), Configuration.StagingQuery,
+                    Configuration.StagingParameters);
+                }
+
+                if (Configuration.DynamicParameterQuery != null && Configuration.DynamicParameterQuery.Trim().Length > 0)
+                {
+                    if (ActiveSourcesAndDestinationFiles.Count() > 1) throw new Exception($"Only one database connection is allowed if DynamicParameterQuery is specified.");
+
+                    LoadDynamicParameters(ActiveSourcesAndDestinationFiles.ToArray(), Configuration.DynamicParameterQuery,
+                    out DynamicParam);
+                }
+
+                ExecuteExtractQuery(ActiveSourcesAndDestinationFiles.ToArray(), Configuration.Query,
+                        Configuration.Parameters, DynamicParam, out OutputData);
+
                 GetHeaders(OutputData);
-                OutputFiles.AddRange(WriteDataToFiles(OutputData));
+                OutputFiles.AddRange(WriteDataToFiles(OutputData, ActiveSourcesAndDestinationFiles.Count()));
                 ProcessHeaders(OutputFiles);
 
                 OutputFiles = ConcatenateFiles(Configuration.OutputFileName, OutputFiles);
@@ -402,7 +493,7 @@ namespace Services.Extract
             Configuration.OutputFileName  =Configuration.OutputFileName.TransformDateTimeStamp();
         }
 
-        internal IEnumerable<FileInfo> WriteDataToFiles(IEnumerable<ExtractDataAndFileInformation> dataAndFileInfo)
+        internal IEnumerable<FileInfo> WriteDataToFiles(IEnumerable<ExtractDataAndFileInformation> dataAndFileInfo, int connectionCounter)
         {
             var files = dataAndFileInfo.Select(d => d.FileInformation);
             var outputWriters = new Dictionary<string, StreamWriter>();
@@ -412,29 +503,43 @@ namespace Services.Extract
                 outputWriters.Add(file.FileInformation.Name, new StreamWriter(file.FileInformation.FullName));
             }
 
-            Parallel.ForEach(dataAndFileInfo, new ParallelOptions() {MaxDegreeOfParallelism = 6}, currentFile =>
+            if (connectionCounter > 1)
             {
-                using (var sw = outputWriters[currentFile.FileInformation.Name])
+                Parallel.ForEach(dataAndFileInfo, new ParallelOptions() { MaxDegreeOfParallelism = 6 }, currentFile =>
                 {
-                    foreach (var row in currentFile.Data)
+                    using (var sw = outputWriters[currentFile.FileInformation.Name])
                     {
-                        var x = DynamicToConcatenatedValuesString(row, "|", false, true);
-                        sw.WriteLine(x);
+                        foreach (var row in currentFile.Data)
+                        {
+                            var x = DynamicToConcatenatedValuesString(row, "|", false, true);
+                            sw.WriteLine(x);
+                        }
                     }
-                }
-            });
+                });
+            }
+            else
+            {
+                foreach (var currentFile in dataAndFileInfo)
+                    using (var sw = outputWriters[currentFile.FileInformation.Name])
+                    {
+                        foreach (var row in currentFile.Data)
+                        {
+                            var x = DynamicToConcatenatedValuesString(row, "|", false, true);
+                            sw.WriteLine(x);
+                        }
+                    }
+            }
 
             return files;
         }
-        
 
         internal void CopyFilesToSFtp(string credentialKey, ISFtpCredentialsCache credentialsCache, string destinationDir, List<FileInfo> files)
         {
             if (!credentialsCache.Credentials.ContainsKey(credentialKey)) throw new Exception($"Unable to find SFtp Credentials for Key: {credentialKey}");
             var credentials = credentialsCache.Credentials[credentialKey];
             if (credentials == null) throw new Exception($"Expected to find SFtp Credentials for Key: {credentialKey} but they were null");
-            
-            var connectionInfo = new ConnectionInfo(credentials.Host,credentials.Username,new PasswordAuthenticationMethod(credentials.Username, credentials.Password));
+
+            var connectionInfo = new ConnectionInfo(credentials.Host, credentials.Username, new PasswordAuthenticationMethod(credentials.Username, credentials.Password));
             using (var client = new SftpClient(connectionInfo))
             {
                 client.Connect();
@@ -447,7 +552,67 @@ namespace Services.Extract
                     {
                         client.UploadFile(fStream, file.Name);
                         fStream.Close();
-                    } 
+                    }
+                }
+            }
+        }
+        internal void CopyFilesToEsb(string credentialKey, IEsbCredentialsCache credentialsCache, List<FileInfo> files)
+        {
+            if (!credentialsCache.Credentials.ContainsKey(credentialKey)) throw new Exception($"Unable to find ESB Credentials for Key: {credentialKey}");
+            var credentials = credentialsCache.Credentials[credentialKey];
+            if (credentials == null) throw new Exception($"Expected to find ESB Credentials for Key: {credentialKey} but they were null");
+
+            using (var producer = new EsbProducer(new EsbConnectionSettings()
+            {
+                ConnectionFactoryName = credentials.ConnectionFactoryName,
+                CertificateStoreName = credentials.CertificateStoreName.ConvertToEnum<StoreName>(),
+                CertificateName = credentials.CertificateName,
+                TargetHostName = credentials.TargetHostName,
+                SessionMode = credentials.SessionMode.ConvertToEnum<SessionMode>(),
+                QueueName = credentials.QueueName,
+                DestinationType = credentials.DestinationType,
+                JmsUsername = credentials.JmsUsername,
+                JmsPassword = credentials.JmsPassword,
+                SslPassword = credentials.SslPassword,
+                JndiUsername = credentials.JndiPassword,
+                JndiPassword = credentials.JndiPassword,
+                ServerUrl = credentials.ServerUrl,
+                CertificateStoreLocation = credentials.CertificateStoreLocation.ConvertToEnum<StoreLocation>(),
+                ReconnectDelay = String.IsNullOrEmpty(credentials.ReconnectDelay) ? 0 : int.Parse(credentials.ReconnectDelay)
+            }))
+            {
+                var computedClientId = $"IconExtractService-{credentialKey}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
+                var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
+
+                producer.OpenConnection(clientId);
+
+                foreach (var file in files)
+                {
+                    string dynamicParamKey = "{" + DynamicParam.FirstOrDefault().Key + "}";
+                    string transactionId = credentials.TransactionId;
+
+                    if (credentials.TransactionId.Contains(dynamicParamKey))
+                    {
+                        foreach(var value in DynamicParam.Select(v => v.Value))
+                        {
+                            if (file.Name.Contains(value.ToString()))
+                            {
+                                transactionId = credentials.TransactionId.Replace(dynamicParamKey, value.ToString());
+                                break;
+                            }
+                        }
+                    }
+                    byte[] bytes = File.ReadAllBytes(file.FullName);
+                    var messageProperties = new Dictionary<string, string>
+                    {
+                        { "TransactionType", credentials.TransactionType },
+                        { "TransactionID", transactionId.TransformDateTimeStamp() },
+                        { "FileName", file.Name },
+                        { "Source", Configuration.Source.ToUpper() },
+                        { "MessageType", credentials.MessageType }
+                    };
+
+                    producer.Send(bytes, clientId, messageProperties);
                 }
             }
         }
@@ -473,9 +638,6 @@ namespace Services.Extract
                 }
             }
         }
-
-        
-
         
         private void ProcessDestination()
         {
@@ -495,6 +657,9 @@ namespace Services.Extract
                     break;
                 case "sftp":
                     CopyFilesToSFtp(Configuration.Destination.CredentialsKey, CredentialsCacheManager.SFtpCredentialsCache, Configuration.Destination.Path, OutputFiles);
+                    break;
+                case "esb":
+                    CopyFilesToEsb(Configuration.Destination.CredentialsKey, CredentialsCacheManager.EsbCredentialsCache, OutputFiles);
                     break;
                 default:
                     Logger.Warn($"Unknown Destination Type [{Configuration.Destination.Type}]");

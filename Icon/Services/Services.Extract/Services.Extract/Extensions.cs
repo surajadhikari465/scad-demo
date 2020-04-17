@@ -47,5 +47,23 @@ namespace Services.Extract
         {
             return input.Replace("{source}", sourceValue);
         }
+
+        public static T ConvertToEnum<T>(this string text) where T : struct, IComparable, IFormattable, IConvertible
+        {
+            T enumSetting = default(T);
+            if (Enum.TryParse<T>(text, out enumSetting))
+            {
+                return enumSetting;
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                    String.Format("[{0}] is not a valid value for [{1}].  Valid values for [{1}] are : [{2}].",
+                        text,
+                        typeof(T),
+                        String.Join(", ", Enum.GetNames(typeof(T)
+                ))));
+            }
+        }
     }
 }

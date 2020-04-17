@@ -8,6 +8,9 @@
         public bool IncludeHeaders { get; set; }
         public string Source { get; set; }
         public string[] Regions { get; set; }
+        public string StagingQuery { get; set; }
+        public ExtractJobParameter[] StagingParameters { get; set; }
+        public string DynamicParameterQuery { get; set; }
         public string Query { get; set; }
         public ExtractJobParameter[] Parameters { get; set; }
         public string OutputFileName { get; set; }
