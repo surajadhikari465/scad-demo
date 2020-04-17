@@ -38,6 +38,14 @@ namespace BulkItemUploadProcessor.Service.BulkUpload
             try
             {
                 updateItemsCommandHandler.Execute(command);
+                if (command.Items != null)
+                {
+                    updatedItems.AddRange(command.Items.Select(i => new ItemIdAndScanCode
+                    {
+                        ItemId = i.ItemId,
+                        ScanCode = i.ScanCode
+                    }));
+                }
             }
 
             catch (Exception ex)
