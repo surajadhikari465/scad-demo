@@ -832,6 +832,7 @@
     <Build Include="dbo\Tables\BulkUpload.sql" />
     <Build Include="dbo\StoredProcedures\AddBulkUpload.sql" />
     <Build Include="app\Stored Procedures\GetBulkUploadData.sql" />
+    <None Include="Scripts\PopulateData\UpdateAttributesDefaultValue.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

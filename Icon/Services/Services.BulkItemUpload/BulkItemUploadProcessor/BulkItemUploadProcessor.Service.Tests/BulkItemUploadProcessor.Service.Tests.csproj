@@ -150,6 +150,7 @@
     <Compile Include="ExcelParsing\ExcelWorksheetHeaderParserTests.cs" />
     <Compile Include="ExtensionTests.cs" />
     <Compile Include="InMemoryDatabase.cs" />
+    <Compile Include="Mapper\RowObjectToAddItemModelMapperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleInjectorInitializerTests.cs" />
     <Compile Include="ValidationManagerTests.cs" />
