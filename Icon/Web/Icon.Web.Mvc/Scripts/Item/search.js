@@ -119,7 +119,15 @@ window.addEventListener('load', function () {
                     editorOptions.maxDecimals = Number.parseInt(attribute.NumberOfDecimals);
                 }
             } else if (attribute.DataTypeName === "Date") {
-                dataMode: "date"
+
+                editorOptions.validatorOptions = {
+                    date: true,                    
+                    errorMessage: "A value between 2000-01-01 and 2100-12-31 should be entered",
+                    valueRange: {
+                        min: "2000-01-01",
+                        max: "2100-12-31"
+                    }
+                };               
             }
             return editorOptions;
         },
@@ -1011,7 +1019,7 @@ window.addEventListener('load', function () {
                 $("#selectedExportRowsSelectedColumns")[0].addEventListener('click', self.selectedRowCurrentColumnsExportClick);
                 $("#allExportRowsSelectedColumns")[0].addEventListener('click', function () { self.export(false); });
                 $("#allExportRowsAllColumns")[0].addEventListener('click', function () { self.export(true); });
-               $ ("#selectedExportTemplate")[0].addEventListener('click', function () { self.exportTemplate(true); });
+                $("#selectedExportTemplate")[0].addEventListener('click', function () { self.exportTemplate(true); });
 
                 this.state.attributes = attributes.sort(this.compareAttributesByName);
                 this.createAttributeComboBoxOptions();

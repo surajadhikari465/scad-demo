@@ -11,6 +11,7 @@ using Icon.Common;
 using Icon.Common.Models;
 using System;
 using Icon.Web.DataAccess.Infrastructure.ItemSearch;
+using System.Globalization;
 
 namespace Icon.Web.Mvc.Validators
 {
@@ -66,88 +67,95 @@ namespace Icon.Web.Mvc.Validators
                 .Must((vm, n) => IsValidDefault(vm))
                 .WithMessage(ValidationMessages.InvalidDefaultValue);
 
-            When(vm => vm.DataTypeId == (int)DataType.Number, () =>
+            When(vm => vm.DataTypeId == (int)DataType.Date && vm.DefaultValue != null, () =>
             {
-                RuleFor(vm => vm.NumberOfDecimals)
-                    .NotEmpty();
-
-                RuleFor(vm => vm.NumberOfDecimals)
-                    .Must(i => int.TryParse(i, out _))
-                    .WithMessage(ValidationMessages.NumberOfDecimalsValidInteger)
-                    .When(vm => !string.IsNullOrWhiteSpace(vm.NumberOfDecimals));
-
-                When(vm => int.TryParse(vm.NumberOfDecimals, out _), () =>
-                {
-                    RuleFor(vm => int.Parse(vm.NumberOfDecimals))
-                        .InclusiveBetween(Constants.NumberOfDecimalsMin, Constants.NumberOfDecimalsMax)
-                        .WithName(nameof(AttributeViewModel.NumberOfDecimals))
-                        .WithMessage(ValidationMessages.NumberOfDecimalsInclusiveBetween);
-
-                    RuleFor(vm => int.Parse(vm.NumberOfDecimals))
-                        .Must((vm, d) => IsValidNumberOfDigitsAfterDecimals(decimal.Parse(vm.MaximumNumber), d))
-                        .WithMessage(ValidationMessages.ValidNumberOfDigits)
-                        .WithName(nameof(AttributeViewModel.NumberOfDecimals))
-                        .When(vm => decimal.TryParse(vm.MaximumNumber, out _));
-
-                    RuleFor(vm => int.Parse(vm.NumberOfDecimals))
-                        .Must((vm, d) => IsValidNumberOfDigitsAfterDecimals(decimal.Parse(vm.MinimumNumber), d))
-                        .WithMessage(ValidationMessages.ValidNumberOfDigits)
-                        .WithName(nameof(AttributeViewModel.NumberOfDecimals))
-                        .When(vm => decimal.TryParse(vm.MinimumNumber, out _));
-
-                    RuleFor(vm => int.Parse(vm.NumberOfDecimals))
-                        .Must((vm, n) => IsNumberOfDecimalsGreaterthanCurrentValue(vm))
-                        .WithMessage(ValidationMessages.CurrentNumberOfDecimalsGreaterThanNewNumberOfDecimals)
-                        .WithName(nameof(AttributeViewModel.NumberOfDecimals))
-                        .When(vm => vm.Action == ActionEnum.Update);
-                });
-
-                RuleFor(vm => vm.MaximumNumber)
-                    .NotEmpty();
-
-                RuleFor(vm => vm.MaximumNumber)
-                    .Must(n => decimal.TryParse(n, out _))
-                    .When(vm => !string.IsNullOrWhiteSpace(vm.MaximumNumber))
-                    .WithMessage(ValidationMessages.MaximumNumberValidDecimal);
-
-                When(vm => decimal.TryParse(vm.MaximumNumber, out _), () =>
-                {
-                    RuleFor(a => decimal.Parse(a.MaximumNumber))
-                        .GreaterThanOrEqualTo(a => decimal.Parse(a.MinimumNumber))
-                        .WithMessage(ValidationMessages.MaximumNumberGreaterThanMinimumNumber)
-                        .When(vm => decimal.TryParse(vm.MinimumNumber, out _));
-
-                    RuleFor(vm => decimal.Parse(vm.MaximumNumber))
-                        .InclusiveBetween(Constants.MaximumNumberMin, Constants.MaximumNumberMax)
-                        .WithMessage(ValidationMessages.MaximumNumberInclusiveBetween);
-
-                    RuleFor(vm => decimal.Parse(vm.MaximumNumber))
-                        .Must((vm, n) => IsMaximumNumberGreaterthanCurrentValue(vm))
-                        .WithMessage(ValidationMessages.CurrentMaximumNumberIsGreaterThanNewMaximumNumber)
-                        .WithName(nameof(AttributeViewModel.MaximumNumber))
-                        .When(vm => vm.Action == ActionEnum.Update);
-                });
-
-                RuleFor(vm => vm.MinimumNumber)
-                    .NotEmpty();
-
-                RuleFor(vm => vm.MinimumNumber)
-                    .Must(n => decimal.TryParse(n, out _))
-                    .When(vm => !string.IsNullOrWhiteSpace(vm.MinimumNumber))
-                    .WithMessage(ValidationMessages.MinimumNumberValidDecimal);
-
-                When(vm => decimal.TryParse(vm.MinimumNumber, out _), () =>
-                {
-                    RuleFor(vm => decimal.Parse(vm.MinimumNumber))
-                        .InclusiveBetween(Constants.MinimumNumberMin, Constants.MinimumNumberMax)
-                        .WithMessage(ValidationMessages.MinimumNumberInclusiveBetween);
-
-                    RuleFor(vm => decimal.Parse(vm.MinimumNumber))
-                        .Must((vm, n) => IsMinimumNumberLessthanCurrentValue(vm))
-                        .WithMessage(ValidationMessages.CurrentMinimumNumberMustBeLessThanNewMinimumNumber)
-                        .When(vm => vm.Action == ActionEnum.Update);
-                });
+                RuleFor(vm => vm.DefaultValue)
+                    .Must((vm, n) => IsDateAttributeDefaultFormat(vm.DefaultValue))
+                    .WithMessage(ValidationMessages.InvalidDefaultValueForDateAttribute);
             });
+
+            When(vm => vm.DataTypeId == (int)DataType.Number, () =>
+        {
+            RuleFor(vm => vm.NumberOfDecimals)
+                .NotEmpty();
+
+            RuleFor(vm => vm.NumberOfDecimals)
+                .Must(i => int.TryParse(i, out _))
+                .WithMessage(ValidationMessages.NumberOfDecimalsValidInteger)
+                .When(vm => !string.IsNullOrWhiteSpace(vm.NumberOfDecimals));
+
+            When(vm => int.TryParse(vm.NumberOfDecimals, out _), () =>
+            {
+                RuleFor(vm => int.Parse(vm.NumberOfDecimals))
+                    .InclusiveBetween(Constants.NumberOfDecimalsMin, Constants.NumberOfDecimalsMax)
+                    .WithName(nameof(AttributeViewModel.NumberOfDecimals))
+                    .WithMessage(ValidationMessages.NumberOfDecimalsInclusiveBetween);
+
+                RuleFor(vm => int.Parse(vm.NumberOfDecimals))
+                    .Must((vm, d) => IsValidNumberOfDigitsAfterDecimals(decimal.Parse(vm.MaximumNumber), d))
+                    .WithMessage(ValidationMessages.ValidNumberOfDigits)
+                    .WithName(nameof(AttributeViewModel.NumberOfDecimals))
+                    .When(vm => decimal.TryParse(vm.MaximumNumber, out _));
+
+                RuleFor(vm => int.Parse(vm.NumberOfDecimals))
+                    .Must((vm, d) => IsValidNumberOfDigitsAfterDecimals(decimal.Parse(vm.MinimumNumber), d))
+                    .WithMessage(ValidationMessages.ValidNumberOfDigits)
+                    .WithName(nameof(AttributeViewModel.NumberOfDecimals))
+                    .When(vm => decimal.TryParse(vm.MinimumNumber, out _));
+
+                RuleFor(vm => int.Parse(vm.NumberOfDecimals))
+                    .Must((vm, n) => IsNumberOfDecimalsGreaterthanCurrentValue(vm))
+                    .WithMessage(ValidationMessages.CurrentNumberOfDecimalsGreaterThanNewNumberOfDecimals)
+                    .WithName(nameof(AttributeViewModel.NumberOfDecimals))
+                    .When(vm => vm.Action == ActionEnum.Update);
+            });
+
+            RuleFor(vm => vm.MaximumNumber)
+                .NotEmpty();
+
+            RuleFor(vm => vm.MaximumNumber)
+                .Must(n => decimal.TryParse(n, out _))
+                .When(vm => !string.IsNullOrWhiteSpace(vm.MaximumNumber))
+                .WithMessage(ValidationMessages.MaximumNumberValidDecimal);
+
+            When(vm => decimal.TryParse(vm.MaximumNumber, out _), () =>
+            {
+                RuleFor(a => decimal.Parse(a.MaximumNumber))
+                    .GreaterThanOrEqualTo(a => decimal.Parse(a.MinimumNumber))
+                    .WithMessage(ValidationMessages.MaximumNumberGreaterThanMinimumNumber)
+                    .When(vm => decimal.TryParse(vm.MinimumNumber, out _));
+
+                RuleFor(vm => decimal.Parse(vm.MaximumNumber))
+                    .InclusiveBetween(Constants.MaximumNumberMin, Constants.MaximumNumberMax)
+                    .WithMessage(ValidationMessages.MaximumNumberInclusiveBetween);
+
+                RuleFor(vm => decimal.Parse(vm.MaximumNumber))
+                    .Must((vm, n) => IsMaximumNumberGreaterthanCurrentValue(vm))
+                    .WithMessage(ValidationMessages.CurrentMaximumNumberIsGreaterThanNewMaximumNumber)
+                    .WithName(nameof(AttributeViewModel.MaximumNumber))
+                    .When(vm => vm.Action == ActionEnum.Update);
+            });
+
+            RuleFor(vm => vm.MinimumNumber)
+                .NotEmpty();
+
+            RuleFor(vm => vm.MinimumNumber)
+                .Must(n => decimal.TryParse(n, out _))
+                .When(vm => !string.IsNullOrWhiteSpace(vm.MinimumNumber))
+                .WithMessage(ValidationMessages.MinimumNumberValidDecimal);
+
+            When(vm => decimal.TryParse(vm.MinimumNumber, out _), () =>
+            {
+                RuleFor(vm => decimal.Parse(vm.MinimumNumber))
+                    .InclusiveBetween(Constants.MinimumNumberMin, Constants.MinimumNumberMax)
+                    .WithMessage(ValidationMessages.MinimumNumberInclusiveBetween);
+
+                RuleFor(vm => decimal.Parse(vm.MinimumNumber))
+                    .Must((vm, n) => IsMinimumNumberLessthanCurrentValue(vm))
+                    .WithMessage(ValidationMessages.CurrentMinimumNumberMustBeLessThanNewMinimumNumber)
+                    .When(vm => vm.Action == ActionEnum.Update);
+            });
+        });
 
             When(vm => vm.DataTypeId == (int)DataType.Text, () =>
             {
@@ -396,9 +404,9 @@ namespace Icon.Web.Mvc.Validators
 
             switch (viewModel.DataTypeId)
             {
-                case (int)DataType.Date:
-                    DateTime date;
-                    return String.IsNullOrEmpty(viewModel.DefaultValue) || DateTime.TryParse(viewModel.DefaultValue, out date);
+                case (int)DataType.Date:                    
+                DateTime date;                
+                return String.IsNullOrEmpty(viewModel.DefaultValue) || DateTime.TryParse(viewModel.DefaultValue, out date);                    
                 case (int)DataType.Number:
                     int dec;
                     decimal min, max, dflt;
@@ -447,5 +455,24 @@ namespace Icon.Web.Mvc.Validators
                     return true;
             }
         }
+        private bool IsDateAttributeDefaultFormat(string date)
+        {            
+            DateTime dDate;
+            if (DateTime.TryParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dDate))
+            {
+                if (dDate >= Convert.ToDateTime("2000-01-01") && dDate <= Convert.ToDateTime("2100-12-31"))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }        
     }
 }

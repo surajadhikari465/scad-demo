@@ -287,7 +287,8 @@
                                     .ID("ItemAttributes[" + attribute.AttributeName + "]")
                                     .InputName("ItemAttributes[" + attribute.AttributeName + "]")
                                     .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : "")
-                                    .ValidatorOptions(o => o.Required(attribute.IsRequired))
+                                    .ValidatorOptions(o => o.Required(attribute.IsRequired)
+                                    .ValueRange(Convert.ToDateTime("2000-01-01"), Convert.ToDateTime("2100-12-31"),"A value between 2000-01-01 and 2100-12-31 should be entered"))
                                     .ReadOnly(attribute.IsReadOnly)
                                     .Render())
                             }
