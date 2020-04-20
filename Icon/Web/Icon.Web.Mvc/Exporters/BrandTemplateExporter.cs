@@ -12,8 +12,8 @@ namespace Icon.Web.Mvc.Exporters
 {
     public class BrandTemplateExporter : BaseHierarchyClassExporter<BrandExportViewModel>
     {
-        private const int BrandNameIndex = 0;
-        private const int BrandIdIndex = 1;
+        private const int BrandIdIndex = 0;
+        private const int BrandNameIndex = 1;
         private const int BrandAbbreviationIndex = 2;
         private const int DesignationIndex = 3;
         private const int ParentCompanyIndex = 4;
