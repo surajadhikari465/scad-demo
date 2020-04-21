@@ -8,6 +8,7 @@ namespace Icon.Web.Mvc.Exporters
 {
     public abstract class BaseHierarchyClassExporter<T>
     {
+        protected string HierarchyWorksheetName { get; set; }
         protected const int HierarchyClassNameColumnIndex = 0;
         public List<T> ExportData { get; set; }
         public ExcelExportModel ExportModel { get; set; }
@@ -19,6 +20,7 @@ namespace Icon.Web.Mvc.Exporters
         public BaseHierarchyClassExporter()
         {
             this.spreadsheetColumns = new List<SpreadsheetColumn<T>>();
+            this.HierarchyWorksheetName = "Exported";
         }
 
         public virtual void Export()
@@ -41,7 +43,7 @@ namespace Icon.Web.Mvc.Exporters
 
         protected void BuildSpreadsheet()
         {
-            worksheet = ExportModel.ExcelWorkbook.Worksheets.Add("Exported");
+            worksheet = ExportModel.ExcelWorkbook.Worksheets.Add(HierarchyWorksheetName);
             CreateHeaderRow();
         }
 

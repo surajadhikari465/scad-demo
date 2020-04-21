@@ -27,6 +27,7 @@ namespace Icon.Web.Mvc.Exporters
             : base()
         {
             this.getHierarchyClassesQueryHandler = getHierarchyClassesQueryHandler;
+            HierarchyWorksheetName = "Brands";
 
             AddSpreadsheetColumn(BrandIdIndex,
                 "Brand ID",

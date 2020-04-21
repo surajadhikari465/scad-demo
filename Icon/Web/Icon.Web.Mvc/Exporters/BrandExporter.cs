@@ -19,6 +19,8 @@ namespace Icon.Web.Mvc.Exporters
         public BrandExporter()
             : base()
         {
+            HierarchyWorksheetName = "Brands";
+
             AddSpreadsheetColumn(BrandIdIndex,
                 "Brand ID",
                 4000,

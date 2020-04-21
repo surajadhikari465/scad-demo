@@ -164,13 +164,13 @@ namespace Icon.Web.Mvc.Controllers
                             {
                                 foreach (var val in grp)
                                 {
-                                    links.Append(new DocumentFormat.OpenXml.Spreadsheet.Hyperlink() { Reference = $"A{links.Count() + 2}", Location = $"Brands!A{rowid}", Display = $"Ref ID: {rowid}", Tooltip = val.Message });
+                                    links.Append(new DocumentFormat.OpenXml.Spreadsheet.Hyperlink() { Reference = $"A{links.Count() + 2}", Location = $"{bulkUploadDataType}s!A{rowid}", Display = $"Ref ID: {rowid}", Tooltip = val.Message });
                                 }
                                 rowid++;
                             }
 
                             var listId = model.bulkUploadErrorModels.Select(a => a.RowId).Distinct().ToList();
-                            rdr.SetErrorLinks(links, "BrandsValidation", listId);
+                            rdr.SetErrorLinks(links, $"{bulkUploadDataType}sValidation", listId);
                             SendForDownloadBrand(mem, $"{Path.GetFileNameWithoutExtension(model.BulkUploadModel.FileName)}_Error.xlsx");
                         }
                     }
