@@ -161,7 +161,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                         let storeItem = await agent.StoreItem.getStoreItem(
                             region,
                             storeNumber,
-                            subteamNo,
+                            0,
                             user!.userId,
                             upc
                         );
