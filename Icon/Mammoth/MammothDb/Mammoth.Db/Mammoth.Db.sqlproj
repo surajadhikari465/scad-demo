@@ -877,7 +877,7 @@
     <Build Include="dbo\Stored Procedures\AddOrUpdateItemAttributesLocaleRegion.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\DeduplicateScanCodes_PERF.sql" />
     <Build Include="dbo\User Defined Types\HierarchyMerchandiseClassType.sql" />
-    <None Include="dbo\Stored Procedures\AddOrUpdateHierarchyMerchandiseSubBrick.sql" />
+    <Build Include="dbo\Stored Procedures\AddOrUpdateHierarchyMerchandiseSubBrick.sql" />
     <None Include="Scripts\PostDeploymentScripts\33668_Extract_IconHierarcies_JobSchedule.sql" />
   </ItemGroup>
   <ItemGroup>
