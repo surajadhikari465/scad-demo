@@ -87,7 +87,7 @@ namespace Icon.Web.DataAccess.Managers
                 {
                     var irmaBrandName = data.Brand.hierarchyClassName.Substring(0, Constants.IrmaBrandNameMaxLength);
 
-                    if (context.HierarchyClass.Any(x => x.Hierarchy.hierarchyName == HierarchyNames.Brands && x.hierarchyClassName.StartsWith(irmaBrandName)))
+                    if (context.HierarchyClass.Any(x => x.Hierarchy.hierarchyName == HierarchyNames.Brands && x.hierarchyClassName.StartsWith(irmaBrandName) && x.hierarchyClassID != data.Brand.hierarchyClassID))
                     {
                         throw new DuplicateValueException($"Brand name trimmed to {Constants.IrmaBrandNameMaxLength.ToString()} characters {irmaBrandName} already exists. Change the brand name so that the first {Constants.IrmaBrandNameMaxLength.ToString()} characters are unique.");
                     }
