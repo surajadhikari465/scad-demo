@@ -220,7 +220,7 @@ namespace Services.Extract.Tests
                 ZipOutput = true,
                 CompressionType = "gzip",
                 ConcatenateOutputFiles = false,
-                IncludeHeaders = true,
+                IncludeHeaders = false,
                 Destination = new Destination
                 {
                     Type = "file",

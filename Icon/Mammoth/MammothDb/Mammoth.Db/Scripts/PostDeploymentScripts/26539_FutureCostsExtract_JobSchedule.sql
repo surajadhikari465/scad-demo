@@ -11,7 +11,7 @@ BEGIN
 		  "zipOutput": true,
 		  "compressionType": "gzip",
 		  "concatenateOutputFiles": false,
-		  "includeHeaders": true,
+		  "includeHeaders": false,
 		  "source": "IRMA",
 		  "regions": [ "FL", "MA", "MW", "NA", "NC", "NE", "PN", "RM", "SO", "SP", "SW", "UK" ],
 		  "query": "Exec [extract].[APT_FutureCostsExtract]",

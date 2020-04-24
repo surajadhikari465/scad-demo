@@ -333,11 +333,17 @@ namespace Services.Extract
         }
         internal FileInfo GetHeaders(IEnumerable<ExtractDataAndFileInformation> Data)
         {
-            var firstDataSet = Data.FirstOrDefault();
-            if (firstDataSet == null) return null;
+            dynamic firstRow = null;
 
+            foreach (var singleDateSet in Data)
+            {
+                if (singleDateSet != null)
+                { 
+                    firstRow = singleDateSet.Data.FirstOrDefault();
+                    if (firstRow != null) break;
+                }
+            }
 
-            var firstRow = firstDataSet.Data.FirstOrDefault();
             if (firstRow == null) return null;
 
             var headerFile = new FileInfo(WorkspacePath + @"\headers.txt");
