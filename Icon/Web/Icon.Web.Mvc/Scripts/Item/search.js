@@ -121,13 +121,13 @@ window.addEventListener('load', function () {
             } else if (attribute.DataTypeName === "Date") {
 
                 editorOptions.validatorOptions = {
-                    date: true,                    
+                    date: true,
                     errorMessage: "A value between 2000-01-01 and 2100-12-31 should be entered",
                     valueRange: {
                         min: "2000-01-01",
                         max: "2100-12-31"
                     }
-                };               
+                };
             }
             return editorOptions;
         },
@@ -313,7 +313,8 @@ window.addEventListener('load', function () {
             $('#searchError').html('');
             $("#selectedCount")[0].innerHTML = '';
             $("#ExportLink").css("display", "block");
-
+            $("#hideMissingScanCodeCall").val('');
+            $('#btnmissingScancodes').hide();
             if ($("#grid").igGrid() != undefined) {
                 $("#grid").igGrid('destroy');
             }
@@ -369,6 +370,37 @@ window.addEventListener('load', function () {
                             $('#resetColumnsButton').hide();
                             $('#ExportLink').hide();
 
+                        },
+                        dataBound: function (evt, ui) {
+                            if ($("#hideMissingScanCodeCall").val() == "") {
+                                $("#btnmissingScancodes").hide();
+                            }
+                        },
+                        dataRendered: function (evt, ui) {
+                            if ($("#hideMissingScanCodeCall").val() == "") {
+                                $("#btnmissingScancodes").show();
+                                $("#btnmissingScancodes").text("Loading...");
+                                $.getJSON(window.location.origin + '/Item/GetMissingScanCodes')
+                                    .done(function (data) {                                        
+                                        $("#hideMissingScanCodeCall").val('Yes');
+                                        if (data.MissingScanCodes != null && data.MissingScanCodes.length > 0) {
+                                            $("#btnmissingScancodes").show();
+                                            $("#btnmissingScancodes").text(data.MissingScanCodes.length + ' Missing Scan Code(s)');
+                                            var scanCodeText = "";
+                                            for (var row = 0; row < data.MissingScanCodes.length; row++) {
+                                                scanCodeText += data.MissingScanCodes[row] + "\n";
+                                            }
+                                            $("#txtModel").val(scanCodeText);
+                                        }
+                                        else {
+                                            $("#btnmissingScancodes").hide();
+                                        }
+
+                                    }).fail(function (data) {
+                                        $("#hideMissingScanCodeCall").val('Y');
+                                        console.error(data);
+                                    });
+                            }
                         },
                         features: [
                             {
@@ -620,6 +652,7 @@ window.addEventListener('load', function () {
                 .fail(function (data) {
                     console.log(data);
                 });
+
         },
         getColumns: function () {
             if (localStorage.getItem(columnsKey)) {

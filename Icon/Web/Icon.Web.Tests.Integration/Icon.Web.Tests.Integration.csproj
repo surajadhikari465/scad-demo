@@ -250,6 +250,7 @@
     <Compile Include="Queries\GetItemsByIdSearchQueryTests.cs" />
     <Compile Include="Queries\GetItemsBySearchQueryTests.cs" />
     <Compile Include="Queries\GetItemsQueryHandlerTests.cs" />
+    <Compile Include="Queries\GetScanCodeQueryTests.cs" />
     <Compile Include="Queries\GetNewScanCodeUploadsQueryTests.cs" />
     <Compile Include="Queries\GetTaxClassesWithNoAbbreviationQueryTests.cs" />
     <Compile Include="Queries\GetEwicAgenciesWithoutExclusionQueryTests.cs" />

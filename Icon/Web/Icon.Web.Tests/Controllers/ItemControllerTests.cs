@@ -30,6 +30,7 @@ using ScanCodeTypesDescription = Icon.Framework.ScanCodeTypes.Descriptions;
 using Icon.Web.Mvc.Utility.ItemHistory;
 using Icon.Web.DataAccess.Infrastructure.ItemSearch;
 using Icon.Web.Mvc.Domain.BulkImport;
+using Icon.Web.Tests.Unit.Models;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
@@ -71,6 +72,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<ControllerContext> controllerContext;
         private Mock<IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult>> mockGetItemsByIdHandler;
         private Mock<IOrderFieldsHelper> mockOrderFieldsHelper;
+        private Mock<IQueryHandler<GetScanCodesParameters, List<string>>> mockGetScanCodeQueryHandler;
 
         [TestInitialize]
         public void Initialize()
@@ -101,6 +103,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             controllerContext = new Mock<ControllerContext>();
             mockGetItemsByIdHandler = new Mock<IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult>>();
             mockOrderFieldsHelper = new Mock<IOrderFieldsHelper>();
+            mockGetScanCodeQueryHandler = new Mock<IQueryHandler<GetScanCodesParameters, List<string>>>();
 
 
             controller = new ItemController(
@@ -129,7 +132,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockItemHistoryBuilder.Object,
                 mockHistoryModelTransformer.Object,
                 mockGetItemsByIdHandler.Object,
-                mockOrderFieldsHelper.Object
+                mockOrderFieldsHelper.Object,
+                mockGetScanCodeQueryHandler.Object
                 );
 
 
@@ -785,14 +789,35 @@ namespace Icon.Web.Tests.Unit.Controllers
                          && p.OrderByValue == "ItemId")),
                    Times.Once);
         }
-    }
 
+        [TestMethod]
+        public void GetMissingScanCodes_WhenScanCodeExactyMatchAny_ShouldReturnWithMissingScanCode()
+        {
+            //Given
+            var parameters = new[] { new GetItemsAttributesParameters { AttributeName = "ScanCode", AttributeValue = "4011 10", SearchOperator = AttributeSearchOperator.ExactlyMatchesAny } }.ToList();
+                        
+            session[GET_ITEMS_PARAMETERS_VIEW_MODEL] = new GetItemsParametersViewModel
+            {
+                GetItemsAttributesParameters = parameters
+            };
+
+            //When
+            mockGetScanCodeQueryHandler.Setup(m => m.Search(It.IsAny<GetScanCodesParameters>()))
+              .Returns(new List<string> { "4011" });
+            var result = controller.GetMissingScanCodes() as JsonResult;
+           
+            //Then
+            Assert.IsNotNull(result.Data);
+            var json = JsonConvert.SerializeObject(result.Data);            
+            var missingScanCode = JsonConvert.DeserializeObject<MissingScanCodeModelTests>(json);
+            Assert.IsTrue(missingScanCode.MissingScanCodes.Any());
+            Assert.AreEqual("10", missingScanCode.MissingScanCodes[0]);            
+        }
+    }
     internal class MockHttpSessionStateBase : HttpSessionStateBase
     {
         private Dictionary<string, object> dictionary = new Dictionary<string, object>();
 
         public override object this[string name] { get => dictionary[name]; set => dictionary[name] = value; }
     }
-
-
 }

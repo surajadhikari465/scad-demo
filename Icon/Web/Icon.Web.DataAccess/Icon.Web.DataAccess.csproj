@@ -451,6 +451,8 @@
     <Compile Include="Models\VenueModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\EmptyAttributesParameters.cs" />
+    <Compile Include="Queries\GetScanCodesParameters.cs" />
+    <Compile Include="Queries\GetScanCodesQuery.cs" />
     <Compile Include="Queries\GetBulkUploadErrorReportParameters.cs" />
     <Compile Include="Queries\DoesAttributeExistOnItemsParameters.cs" />
     <Compile Include="Queries\DoesAttributeExistOnItemsQueryHandler.cs" />

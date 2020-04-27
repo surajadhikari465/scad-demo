@@ -58,6 +58,7 @@ namespace Icon.Web.Controllers
         private IOrderFieldsHelper orderFieldsHelper;
         private IHistoryModelTransformer historyModelTransformer;
         private readonly IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler;
+        private IQueryHandler<GetScanCodesParameters, List<string>> getScanCodeQueryHandler;
 
         public ItemController(
             ILogger logger,
@@ -81,7 +82,8 @@ namespace Icon.Web.Controllers
             IItemHistoryBuilder itemHistoryBuilder,
             IHistoryModelTransformer historyModelTransformer,
             IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler,
-            IOrderFieldsHelper orderFieldsHelper)
+            IOrderFieldsHelper orderFieldsHelper,
+            IQueryHandler<GetScanCodesParameters, List<string>> getScanCodeQueryHandler)
         {
             this.logger = logger;
             this.settings = settings;
@@ -104,6 +106,7 @@ namespace Icon.Web.Controllers
             this.historyModelTransformer = historyModelTransformer;
             this.getItemsByIdHandler = getItemsByIdHandler;
             this.orderFieldsHelper = orderFieldsHelper;
+            this.getScanCodeQueryHandler = getScanCodeQueryHandler;
         }
 
         public ActionResult Index()
@@ -155,14 +158,46 @@ namespace Icon.Web.Controllers
                 orderByValue = splitOrderBy[0];
                 orderByOrder = splitOrderBy[1];
             }
-
             ItemResultModel result = GetSearchResults(top, skip, orderByOrder, orderByValue);
             for (int i = 0; i < result.Records.Count; i++)
             {
                 result.Records[i]["UserWriteAccess"] = this.GetWriteAccess();
             }
-
             return this.Content(JsonConvert.SerializeObject(result), "application/json");
+        }
+        public ActionResult GetMissingScanCodes()
+        {
+            List<string> missingScanCodes = new List<string>();
+            if (Session["GetItemsParametersViewModel"] != null)
+            {
+                var getItemsParametersViewModel = Session["GetItemsParametersViewModel"] as GetItemsParametersViewModel;
+                if (getItemsParametersViewModel.GetItemsAttributesParameters[0].AttributeName.Equals("ScanCode")
+                    && getItemsParametersViewModel.GetItemsAttributesParameters[0].SearchOperator == AttributeSearchOperator.ExactlyMatchesAny)
+                {
+                    if (!string.IsNullOrWhiteSpace(getItemsParametersViewModel.GetItemsAttributesParameters[0].AttributeValue))
+                    {
+                        var searchParamScanCodes = getItemsParametersViewModel.GetItemsAttributesParameters[0].AttributeValue.Split(' ').ToList();
+                        var missingScanCodeParam = new GetScanCodesParameters()
+                        {
+                            ListOfScanCodes = searchParamScanCodes
+                        };
+                        var existingScanCodes = getScanCodeQueryHandler.Search(missingScanCodeParam);
+                        if (existingScanCodes != null && existingScanCodes.Any())
+                        {
+                            var notExistScanCodes = searchParamScanCodes.Distinct().Where(s => !existingScanCodes.Contains(s));
+                            if (notExistScanCodes.Any())
+                            {
+                                missingScanCodes = notExistScanCodes.ToList();
+                            }
+                        }
+                        else
+                        {
+                            missingScanCodes = searchParamScanCodes;
+                        }
+                    }
+                }
+            }
+            return Json(new { MissingScanCodes = missingScanCodes }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -741,7 +776,7 @@ namespace Icon.Web.Controllers
 
             return userAccess;
         }
-    
+
         private ActionResult RequestInfo(string errMessage, HttpStatusCode statusCode)
         {
             //To prevent IIS from hijacking custom response or add the line below to web config file in <system.webServer> section

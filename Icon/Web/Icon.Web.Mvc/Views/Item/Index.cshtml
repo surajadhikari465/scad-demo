@@ -10,17 +10,24 @@
     input {
         max-width: 100%;
     }
+
+    #mDialog {
+        overflow-y: initial !important
+    }
+   
 </style>
 <div id="loading">
     <div class="spinner-border text-info" role="status">
     </div>
 </div>
-
+<input type="hidden" id="hideMissingScanCodeCall" />
 <div class="mx-3 d-none" id="searchtools">
     <ul id="attributes" class="list-unstyled"></ul>
     <div class="my-1" id="divSearch">
         <button id="searchButton" class="btn btn-light">Search</button>
         <button type="button" class="btn" data-toggle="modal" data-target="#helpModal">?</button>
+        <button id="btnmissingScancodes" class="btn btn-light" data-toggle="modal"
+                data-target="#missingScanCodeModal" style="display: none; color: red; "></button>
         <div id="searchError" class="alert alert-danger" style="display:none;margin-top:10px;" role="alert"></div>
         <div style="margin-left:10px;float:right;">
             <button id="resetColumnsButton" class="btn btn-light" hidden="hidden">Reset Columns</button>
@@ -45,12 +52,12 @@
                     </ul>
                 </li>
                 <li class="dropdown-divider"></li>
-                <li><a class="dropdown-item"id="selectedExportTemplate"  href="#">Export Blank Template</a></li>
+                <li><a class="dropdown-item" id="selectedExportTemplate" href="#">Export Blank Template</a></li>
             </ul>
         </div>
     </div>
-
-
+    
+    
     <!-- Modal -->
     <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -115,6 +122,25 @@
                     Returns all product descriptions with exactly "yellow banana" in the value. Would return "yellow banana".<br /><br />
                     yellow banana apple<br />
                     Returns all product descriptions with "yellow banana apple" in the value. Would return "yellow banana apple".<br /><br />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="missingScanCodeModal" tabindex="-1" role="dialog"
+         aria-labelledby="missingScancodeModalTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document" id="mDialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="helpModalTitle">Missing Scan Codes</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="divMissingScancodes">
+                    <textarea id="txtModel" name="txtModel" class="form-control" style="min-width: 100%" readonly="readonly"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
