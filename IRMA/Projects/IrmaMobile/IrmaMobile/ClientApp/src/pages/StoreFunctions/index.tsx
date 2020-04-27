@@ -139,8 +139,8 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
         </div>
         <div className="subteam-buttons">
           <button className="irma-btn" value="shrink" onClick={handleClick} hidden={!user!.isShrink && !user!.isSuperUser && !user!.isCoordinator} disabled={!user!.isShrink && !user!.isSuperUser && !user!.isCoordinator}>Shrink</button>
-          <button className="irma-btn" value="transfer" onClick={handleTransferClick} hidden={!user!.isDistributor && !user!.isSuperUser && !user!.isCoordinator} disabled={!user!.isDistributor && !user!.isSuperUser && !user!.isCoordinator}>Transfer</button>
-          <button className="irma-btn" value="receive/PurchaseOrder" onClick={handleReceiveClick} hidden={!user!.isBuyer && !user!.isSuperUser && !user!.isCoordinator} disabled={!user!.isBuyer && !user!.isSuperUser && !user!.isCoordinator}>Receive</button>
+          <button className="irma-btn" value="transfer" onClick={handleTransferClick} hidden={!user!.isBuyer && !user!.isSuperUser && !user!.isCoordinator} disabled={!user!.isDistributor && !user!.isSuperUser && !user!.isCoordinator}>Transfer</button>
+          <button className="irma-btn" value="receive/PurchaseOrder" onClick={handleReceiveClick} hidden={!user!.isDistributor && !user!.isSuperUser && !user!.isCoordinator} disabled={!user!.isBuyer && !user!.isSuperUser && !user!.isCoordinator}>Receive</button>
         </div>
         <Modal
           open={alertIsOpen}
