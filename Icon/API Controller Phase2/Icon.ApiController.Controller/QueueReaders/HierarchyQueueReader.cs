@@ -57,6 +57,7 @@ namespace Icon.ApiController.Controller.QueueReaders
             MessageQueueHierarchy message = messages[currentMessageIndex++];
 
             var hierarchyId = message.HierarchyId;
+            var hierarchyClassId = message.HierarchyClassId;
             var hierarchyPrototype = new Contracts.HierarchyPrototypeType
             {
                 hierarchyLevelName = message.HierarchyLevelName,
@@ -81,6 +82,11 @@ namespace Icon.ApiController.Controller.QueueReaders
                     continue;
                 }
                 else if (MessageContainsDifferentPrototype(hierarchyPrototype, message.HierarchyLevelName, message.ItemsAttached ? "1" : "0"))
+                {
+                    currentMessageIndex++;
+                    continue;
+                }
+                else if (groupedMessages.Any(a => a.HierarchyClassId == message.HierarchyClassId))
                 {
                     currentMessageIndex++;
                     continue;
@@ -254,7 +260,7 @@ namespace Icon.ApiController.Controller.QueueReaders
         private bool MessageContainsDifferentHierarchy(int hierarchyId, MessageQueueHierarchy message)
         {
             return hierarchyId != message.HierarchyId;
-        }
+        }        
 
         public void MarkQueuedMessagesAsInProcess(int businessUnit)
         {
