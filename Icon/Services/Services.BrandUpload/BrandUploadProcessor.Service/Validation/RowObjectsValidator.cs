@@ -1,0 +1,388 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BrandUploadProcessor.Common;
+using BrandUploadProcessor.Common.Models;
+using BrandUploadProcessor.Service.Interfaces;
+using BrandUploadProcessor.Service.Validation.Interfaces;
+using Icon.Common.DataAccess;
+
+namespace BrandUploadProcessor.Service.Validation
+{
+    public class RowObjectsValidator : IRowObjectsValidator
+    {
+
+        private readonly IBrandsCache brandsCache;
+        private readonly IRegexTextValidator regexTextValidator;
+        
+
+        public RowObjectsValidator(
+            IRegexTextValidator regexTextValidator, IBrandsCache brandsCache)
+        {
+            this.regexTextValidator = regexTextValidator;
+            this.brandsCache = brandsCache;
+        }
+
+        public RowObjectValidatorResponse Validate(Enums.FileModeTypeEnum fileModeType, List<RowObject> rowObjects, List<ColumnHeader> columnHeaders, List<BrandAttributeModel> brandAttributeModels)
+        {
+            switch (fileModeType)
+            {
+                case Enums.FileModeTypeEnum.CreateNew:
+                    return ValidateCreateNew(rowObjects, columnHeaders, brandAttributeModels);
+                case Enums.FileModeTypeEnum.UpdateExisting:
+                    return ValidateUpdateExisting(rowObjects, columnHeaders, brandAttributeModels);
+                default:
+                    throw new ArgumentException($"No validator is set for fileModeType {fileModeType}", nameof(fileModeType));
+            }
+        }
+
+        private static void ValidateParentCompany(RowObjectDictionary rowObjectDictionary, string parentCompany, List<BrandModel> brandsFromDatabase, List<InvalidRowError> errors)
+        {
+
+            var matchingBrand = brandsFromDatabase.FirstOrDefault(b =>  string.Equals(b.BrandName, parentCompany, StringComparison.CurrentCultureIgnoreCase));
+
+            if (matchingBrand == null)
+            {
+                errors.Add(new InvalidRowError
+                {
+                    RowId = rowObjectDictionary.Row, 
+                    Error = $"'{Constants.ParentCompanyColumnHeader}' has invalid value. '{parentCompany}' does not exist in Icon."
+                });
+            }
+        }
+
+        private static void ValidateDuplicateBrandAbbreviations(RowObjectDictionary rowObjectDictionary,BrandModel existingBrand, List<BrandModel> brandsFromDatabase,
+            string brandAbbreviation, HashSet<string> brandAbbreviatoinsThatExistMoreThanOnceInWorksheet, List<InvalidRowError> errors)
+        {
+            if (!string.IsNullOrWhiteSpace(brandAbbreviation))
+            {
+                IEnumerable<BrandModel> dupesInDatabase;
+                if (existingBrand != null)
+                {
+                    dupesInDatabase = brandsFromDatabase.Where(b => b.BrandAbbreviation == brandAbbreviation && b.BrandId != existingBrand.BrandId);
+                }
+                else
+                {
+                    dupesInDatabase = brandsFromDatabase.Where(b => b.BrandAbbreviation == brandAbbreviation);
+                }
+
+                if (dupesInDatabase.Any())
+                {
+                    errors.Add(new InvalidRowError
+                    {
+                        RowId = rowObjectDictionary.Row,
+                        Error =
+                            $"'{Constants.BrandAbbreviationColumnHeader}' has invalid value. '{brandAbbreviation}' already exists in the database and must be unique."
+                    });
+                }
+
+                if (brandAbbreviatoinsThatExistMoreThanOnceInWorksheet.Contains(brandAbbreviation))
+                {
+                    errors.Add(new InvalidRowError
+                    {
+                        RowId = rowObjectDictionary.Row,
+                        Error =
+                            $"'{Constants.BrandAbbreviationColumnHeader}' has invalid value. '{brandAbbreviation}' exists more than once in the worksheet and must be unique."
+                    });
+                }
+            }
+        }
+
+        private static void ValidateDuplicateBrandNames(RowObjectDictionary rowObjectDictionary, BrandModel existingBrand, List<BrandModel> brandsFromDatabase, string brandName, 
+             HashSet<string> brandNamesThatExistMoreThanOnceInWorksheet, List<InvalidRowError> errors)
+        {
+            if (string.IsNullOrWhiteSpace(brandName)) return;
+
+            IEnumerable<BrandModel> dupesInDatabase;
+            if (existingBrand != null)
+            {
+                dupesInDatabase = brandsFromDatabase.Where(b => b.BrandName == brandName && b.BrandId != existingBrand.BrandId);
+            }
+            else
+            {
+                dupesInDatabase = brandsFromDatabase.Where(b => b.BrandName == brandName);
+            }
+
+            if (dupesInDatabase.Any())
+            {
+                errors.Add(new InvalidRowError
+                {
+                    RowId = rowObjectDictionary.Row,
+                    Error =
+                        $"'{Constants.BrandNameColumnHeader}' has invalid value. '{brandName}' already exists in the database and must be unique."
+                });
+            }
+
+            if (brandNamesThatExistMoreThanOnceInWorksheet.Contains(brandName))
+                errors.Add(new InvalidRowError
+                {
+                    RowId = rowObjectDictionary.Row,
+                    Error =
+                        $"'{Constants.BrandNameColumnHeader}' has invalid value. '{brandName}' exists more than once in the worksheet and must be unique."
+                });
+        }
+
+        public RowObjectValidatorResponse ValidateCreateNew(List<RowObject> rowObjects, List<ColumnHeader> columnHeaders, List<BrandAttributeModel> brandAttributeModels)
+        {
+            var response = new RowObjectValidatorResponse();
+            var brandIdIndex = columnHeaders.First(c => c.Name == Constants.BrandIdColumnHeader).ColumnIndex;
+            var brandNameIndex = columnHeaders.First(c => c.Name == Constants.BrandNameColumnHeader).ColumnIndex;
+            var brandAbbreviationIndex = columnHeaders.First(c => c.Name == Constants.BrandAbbreviationColumnHeader).ColumnIndex;
+            var parentComapnyIndex = columnHeaders.First(c => c.Name == Constants.ParentCompanyColumnHeader).ColumnIndex;
+
+            var attributeColumns = columnHeaders
+                .Join(brandAttributeModels.Where(a => !a.IsReadOnly),
+                    c => c.Name,
+                    a => a.TraitDesc,
+                    (c, a) => new
+                    {
+                        ColumnHeader = c,
+                        a.IsRequired,
+                        RegexPattern = a.TraitPattern
+                    })
+                .ToList();
+
+            var rowObjectDictionaries = rowObjects
+                .Select(r => new RowObjectDictionary()
+                {
+                    Row = r.Row,
+                    Cells = r.Cells.ToDictionary(
+                        c => c.Column.ColumnIndex,
+                        c => c.CellValue),
+                    RowObject = r
+                }).ToList();
+
+            
+
+            // Brand Names that appear in uploaded worksheet more than once.
+            var brandNamesThatExistMoreThanOnceInWorksheet = DuplicateColumnValuesFromWorksheet(rowObjectDictionaries, brandNameIndex);
+            // Brand Abbreviations that appear in uploaded worksheet more than once.
+            var brandAbbreviationsThatExistMoreThanOnceInWorksheet = DuplicateColumnValuesFromWorksheet(rowObjectDictionaries, brandAbbreviationIndex);
+
+            foreach (var rowObjectDictionary in rowObjectDictionaries)
+            {
+                List<InvalidRowError> errors = new List<InvalidRowError>();
+
+                try
+                {
+                    // make sure brandname and brandabbreviation are unique.
+                    string brandName = rowObjectDictionary.Cells.ContainsKey(brandNameIndex) ? rowObjectDictionary.Cells[brandNameIndex] : null;
+                    string brandAbbreviation = rowObjectDictionary.Cells.ContainsKey(brandAbbreviationIndex) ? rowObjectDictionary.Cells[brandAbbreviationIndex] : null;
+                    string brandId = rowObjectDictionary.Cells.ContainsKey(brandIdIndex) ? rowObjectDictionary.Cells[brandIdIndex] : null;
+                    string parentCompany = rowObjectDictionary.Cells.ContainsKey(parentComapnyIndex) ? rowObjectDictionary.Cells[parentComapnyIndex] : null;
+
+
+                    if (brandName != null && string.Equals(brandName, Constants.RemoveExcelValue, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandNameColumnHeader}' cannot be {Constants.RemoveExcelValue}" });
+                    }
+                    if (brandAbbreviation != null &&  string.Equals(brandAbbreviation, Constants.RemoveExcelValue, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandAbbreviationColumnHeader}' cannot be {Constants.RemoveExcelValue}" });
+                    }
+
+                    if (brandId != null) errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandIdColumnHeader}' must be empty when creating new brands." });
+
+                    ValidateDuplicateBrandNames(rowObjectDictionary, null, brandsCache.Brands, brandName, brandNamesThatExistMoreThanOnceInWorksheet, errors);
+                    ValidateDuplicateBrandAbbreviations(rowObjectDictionary, null, brandsCache.Brands, brandAbbreviation, brandAbbreviationsThatExistMoreThanOnceInWorksheet, errors);
+
+                    foreach (var attributeColumn in attributeColumns)
+                    {
+                        // skip parent company when validating regex. It uses different rules.
+                        if (attributeColumn.ColumnHeader.Name == "Parent Company") continue;
+
+                        var rowObjectContainsAttribute = rowObjectDictionary.Cells.ContainsKey(attributeColumn.ColumnHeader.ColumnIndex);
+                        if (attributeColumn.IsRequired && !rowObjectContainsAttribute)
+                        {
+                            errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{attributeColumn.ColumnHeader.Name}' is required." });
+                        }
+                        else if (rowObjectContainsAttribute)
+                        {
+                            var value = rowObjectDictionary.Cells[attributeColumn.ColumnHeader.ColumnIndex];
+                            if (attributeColumn.IsRequired || value != string.Empty)
+                            {
+                                if (string.Equals(value, Constants.RemoveExcelValue, StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{attributeColumn.ColumnHeader.Name}' has invalid value. '{Constants.RemoveExcelValue}' cannot be used when creating new brands" });
+                                    continue;
+                                }
+
+                                var result = regexTextValidator.Validate(attributeColumn.RegexPattern, value);
+                                if (!result.IsValid) errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = result.Error });
+                            }
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(parentCompany) )
+                    {
+                        if (string.Equals(parentCompany, Constants.RemoveExcelValue, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.ParentCompanyColumnHeader}' has invalid value. '{Constants.RemoveExcelValue}' cannot be used when creating new brands" });
+                        }
+                        else
+                        {
+                            ValidateParentCompany(rowObjectDictionary, parentCompany, brandsCache.Brands, errors);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"Unexpected error occurred while validating row. Error: {ex.Message}" });
+                }
+
+                if (errors.Count > 0)
+                    response.InvalidRows.AddRange(errors);
+                else
+                    response.ValidRows.Add(rowObjectDictionary.RowObject);
+            }
+            return response;
+        }
+
+        private RowObjectValidatorResponse ValidateUpdateExisting(List<RowObject> rowObjects, List<ColumnHeader> columnHeaders, List<BrandAttributeModel> brandAttributeModels)
+        {
+            var response = new RowObjectValidatorResponse();
+            var brandIdIndex = columnHeaders.First(c => c.Name == Constants.BrandIdColumnHeader).ColumnIndex;
+            var brandNameIndex = columnHeaders.First(c => c.Name == Constants.BrandNameColumnHeader).ColumnIndex;
+            var brandAbbreviationIndex = columnHeaders.First(c => c.Name == Constants.BrandAbbreviationColumnHeader).ColumnIndex;
+            var parentComapnyIndex = columnHeaders.First(c => c.Name == Constants.ParentCompanyColumnHeader).ColumnIndex;
+
+            var attributeColumns = columnHeaders
+                .Join(brandAttributeModels.Where(a => !a.IsReadOnly),
+                    c => c.Name,
+                    a => a.TraitDesc,
+                    (c, a) => new
+                    {
+                        ColumnHeader = c,
+                        a.IsRequired,
+                        RegexPattern = a.TraitPattern
+                    })
+                .ToList();
+
+
+            var rowObjectDictionaries = rowObjects
+                .Select(r => new RowObjectDictionary()
+                {
+                    Row=r.Row,
+                    Cells = r.Cells.ToDictionary(
+                        c => c.Column.ColumnIndex,
+                        c => c.CellValue),
+                    RowObject = r
+                }).ToList();
+
+            
+
+            // Brand Names that appear in uploaded worksheet more than once.
+            var brandNamesThatExistMoreThanOnceInWorksheet = DuplicateColumnValuesFromWorksheet(rowObjectDictionaries, brandNameIndex);
+            // Brand Abbreviations that appear in uploaded worksheet more than once.
+            var brandAbbreviationsThatExistMoreThanOnceInWorksheet = DuplicateColumnValuesFromWorksheet(rowObjectDictionaries, brandAbbreviationIndex);
+            
+            foreach (var rowObjectDictionary in rowObjectDictionaries)
+            {
+                List<InvalidRowError> errors = new List<InvalidRowError>();
+
+                // make sure brandname and brandabbreviation are unique.
+                string brandName = rowObjectDictionary.Cells.ContainsKey(brandNameIndex) ? rowObjectDictionary.Cells[brandNameIndex] : null;
+                string brandAbbreviation = rowObjectDictionary.Cells.ContainsKey(brandAbbreviationIndex) ? rowObjectDictionary.Cells[brandAbbreviationIndex] : null;
+                string brandId = rowObjectDictionary.Cells.ContainsKey(brandIdIndex) ? rowObjectDictionary.Cells[brandIdIndex] : null;
+                string parentCompany = rowObjectDictionary.Cells.ContainsKey(parentComapnyIndex) ? rowObjectDictionary.Cells[parentComapnyIndex] : null;
+
+
+                if (brandId == null)
+                    errors.Add(new InvalidRowError
+                    {
+                        RowId = rowObjectDictionary.Row,
+                        Error = $"'{Constants.BrandIdColumnHeader}' is required when updating existng brands."
+                    });
+
+                if (!int.TryParse(brandId, out int brandIdInt))
+                {
+                    errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandIdColumnHeader}' has invalid value. '{brandId}' does not appear to be a valid hierarchyClassId value" });
+                }
+                else
+                {
+
+
+                    if (brandName != null && string.Equals(brandName, Constants.RemoveExcelValue, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandNameColumnHeader}' cannot be {Constants.RemoveExcelValue}" });
+                    }
+                    if (brandAbbreviation != null && string.Equals(brandAbbreviation, Constants.RemoveExcelValue, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandAbbreviationColumnHeader}' cannot be {Constants.RemoveExcelValue}" });
+                    }
+
+                    BrandModel existingBrand = brandsCache.Brands.FirstOrDefault(b => b.BrandId == brandIdInt);
+
+                    if (existingBrand == null)
+                    {
+                        errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandIdColumnHeader}' has invalid value. '{brandId}' does not match and existing Brand" });
+                    }
+                    else
+                    {
+                        ValidateDuplicateBrandNames(rowObjectDictionary, existingBrand, brandsCache.Brands, brandName, brandNamesThatExistMoreThanOnceInWorksheet, errors);
+                        ValidateDuplicateBrandAbbreviations(rowObjectDictionary, existingBrand, brandsCache.Brands, brandAbbreviation,brandAbbreviationsThatExistMoreThanOnceInWorksheet, errors);
+
+
+                        if (!string.IsNullOrEmpty(parentCompany) && parentCompany.ToLower() != "remove")
+                        {
+                            ValidateParentCompany(rowObjectDictionary, parentCompany, brandsCache.Brands, errors);
+                        }
+
+                        foreach (var attributeColumn in attributeColumns)
+                        {
+                            // skip parent company when validating regex. It uses different rules.
+                            if (attributeColumn.ColumnHeader.Name == "Parent Company") continue;
+                            if (!rowObjectDictionary.Cells.ContainsKey(attributeColumn.ColumnHeader.ColumnIndex)) continue;
+
+                            var value = rowObjectDictionary.Cells[attributeColumn.ColumnHeader.ColumnIndex];
+                            
+                            if (value == string.Empty) continue;
+                            
+                            if (string.Equals(value, Constants.RemoveExcelValue, StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                if (attributeColumn.IsRequired)
+                                {
+                                    errors.Add(new InvalidRowError
+                                    {
+                                        RowId = rowObjectDictionary.Row,
+                                        Error = $"'{attributeColumn.ColumnHeader.Name}' is required and can't be removed."
+                                    });
+                                }
+                            }
+                            else
+                            {
+                                var result = regexTextValidator.Validate(attributeColumn.RegexPattern, value);
+                                
+                                if (result.IsValid) continue;
+
+                                errors.Add(new InvalidRowError {RowId = rowObjectDictionary.Row, Error = $"'{attributeColumn.ColumnHeader.Name}' has invalid value. {result.Error}"});
+                            }
+                        }
+                    }
+                }
+
+                if (errors.Count > 0)
+                {
+                    response.InvalidRows.AddRange(errors);
+                }
+                else
+                {
+                    response.ValidRows.Add(rowObjectDictionary.RowObject);
+                }
+            }
+            return response;
+        }
+
+        private static HashSet<string> DuplicateColumnValuesFromWorksheet(List<RowObjectDictionary> rowObjectDictionaries, int columnIndex)
+        {
+            var valuesThatExistMoreThanOnceInWorksheet = rowObjectDictionaries
+                .Where(r => r.Cells.ContainsKey(columnIndex)
+                            && !string.IsNullOrEmpty(r.Cells[columnIndex]))
+                .GroupBy(g => g.Cells[columnIndex])
+                .Where(g => g.Count() > 1)
+                .Select(s => s.Key)
+                .ToHashSet();
+            return valuesThatExistMoreThanOnceInWorksheet;
+        }
+    }
+}

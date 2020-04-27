@@ -20,5 +20,6 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\32222_ConsolidateBulkUploadTables.sql --2020-04-09 32222
 :r .\Scripts\PopulateData\UpdateAttributesDefaultValue.sql --2020-04-17 33674
 :r .\Scripts\Projects\DeleteBrowsingHierachyAssociation\DeleteBrowsingHistoryAssociation.sql --2020-04-17 33555
+:r .\Scripts\PopulateData\32224_AddBrandUploadServiceAppId.sql -- 2020-04-21 32224
 -- Always run this security script and make it the last entry in this script.
 :r .\Security\Icon.Security.sql

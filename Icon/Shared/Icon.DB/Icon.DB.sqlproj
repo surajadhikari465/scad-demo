@@ -832,6 +832,9 @@
     <Build Include="dbo\Tables\BulkUpload.sql" />
     <Build Include="dbo\StoredProcedures\AddBulkUpload.sql" />
     <Build Include="app\Stored Procedures\GetBulkUploadData.sql" />
+    <Build Include="dbo\StoredProcedures\AddBrand.sql" />
+    <Build Include="dbo\User Defined Types\AddUpdateBrandType.sql" />
+    <Build Include="dbo\StoredProcedures\UpdateBrand.sql" />
     <None Include="Scripts\PopulateData\UpdateAttributesDefaultValue.sql" />
   </ItemGroup>
   <ItemGroup>
@@ -890,6 +893,7 @@
     <None Include="Scripts\PopulateData\RetentionPolicyContactUpload.sql" />
     <None Include="Scripts\PopulateData\33610_UpdateAttributesDisplayOrder.sql" />
     <None Include="Scripts\PopulateData\32222_ConsolidateBulkUploadTables.sql" />
+    <None Include="Scripts\PopulateData\32224_AddBrandUploadServiceAppId.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />
