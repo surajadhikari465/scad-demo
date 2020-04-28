@@ -26,7 +26,7 @@
         @if (ViewHelpers.HasWriteAccess(Request, User))
         {
             @Html.ActionLink("Add New Brand", "Create", null, new { @class = "btn btn-light ml-1" })
-            @*@Html.ActionLink("Bulk Upload Brands", "Index", "BulkUpload", new { bulkUploadDataType = BulkUploadDataType.Brand.ToString() }, new { @class = "btn btn-light ml-1" })*@
+            @Html.ActionLink("Bulk Upload Brands", "Index", "BulkUpload", new { bulkUploadDataType = BulkUploadDataType.Brand.ToString() }, new { @class = "btn btn-light ml-1" })
         }
     </div>
     <hr />
