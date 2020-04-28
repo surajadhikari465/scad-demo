@@ -180,7 +180,12 @@ const TransferScan: React.FC = () => {
                 return;
             }
             if (upc === scanCode) {
-                setQuantity((q: any) => q + 1);
+                setQuantity((q: any) => {
+                    if(isNaN(q))
+                        return "1";
+                    else
+                        return (parseInt(q) + 1).toString();
+                });
                 return;
             } else {
                 setUpc(scanCode);
@@ -204,7 +209,6 @@ const TransferScan: React.FC = () => {
     }, [setTransferData]);
 
     const handleQuantityOnKeyPress = (e: any) => {
-
         if (item) {
             if (quantity !== null && quantity !== undefined) {
                 if (item.SoldByWeight) {

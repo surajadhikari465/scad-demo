@@ -168,7 +168,9 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
         let quantity = shrinkState.quantity;
         if (scan) {
           quantity += 1;
-        } else quantity = 1;
+        } else {
+          quantity = 1;
+        }
         setShrinkItem(storeItem, upc, quantity);
       }
     } finally {
