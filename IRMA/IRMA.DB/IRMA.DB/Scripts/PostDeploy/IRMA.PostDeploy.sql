@@ -14,8 +14,6 @@ Post-Deployment Script Template
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 -- Example: :r Cool_Script_Stuff.sql -- 2018.01.01
 
-:r PBI29079_AddNewShrinkTypeAndGL.sql --2020.01.15
-:r PBI32245_InsertUploadAttributeEntries.sql --2020.03.06
 
 
 -- This is a permanent entry (keep at bottom).

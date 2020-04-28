@@ -3361,9 +3361,10 @@
     <Build Include="Schema\extract\Stored Procedures\ItemVendorLane.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI25271-RemoveInforOrdering.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI27833-GenerateEmailWhenPosPushJobFails.sql" />
-    <Build Include="Scripts\PostDeploy\PBI32245_InsertUploadAttributeEntries.sql" />
     <Build Include="Schema\extract\Stored Procedures\APT_FutureCostsExtract.sql" />
     <Build Include="Schema\amz\StoredProcedures\PopulateVendorLaneExtract.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI29079_AddNewShrinkTypeAndGL.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI32245_InsertUploadAttributeEntries.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
@@ -3373,7 +3374,6 @@
     <Build Include="Schema\amz\amz.sql" />
     <None Include="Scripts\Other\Gpm765Conversion_CancelTprScript.sql" />
     <None Include="Scripts\Other\RemoveFTPForClosedStores.sql" />
-    <None Include="Scripts\PostDeploy\PBI29079_AddNewShrinkTypeAndGL.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="RegexProject">
