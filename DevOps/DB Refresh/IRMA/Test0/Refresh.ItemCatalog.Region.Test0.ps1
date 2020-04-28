@@ -17,6 +17,8 @@ HISTORY:
 - Tom Lux - New var $diffRestoreRuntimeScript is unique to region, so concurrent refreshes should not accidentially use diff-restore cmd for other regions.
 
 2019.11.27: Tom - Added date-time stamp to step output and notes about the dynamic script for setup-testing-access.
+
+2020.04.22: Tom - Added scripts to add logins and perms for "QP" (Perf) users, because we sometimes point Perf interfaces to IRMA Test0 DBs.
 #>
 
 
@@ -132,6 +134,10 @@ $diffRestoreRuntimeScript,
 "Refresh.Set DB RestrictedUser Access.ItemCatalog.sql",
 "Refresh.Set DB Recovery Simple.ItemCatalog.sql",
 "Refresh.Remap Permissions.Test.ItemCatalog.sql",
+### Next two are Perf-env dependencies:
+"Refresh.Temp New IRMA Perf Logins for Test0 for Icon Reboot.ItemCatalog.sql",
+"Refresh.Remap Permissions.SQL2008-Perf-Test0.ItemCatalog.sql",
+###
 "ClearTables",
 "ImportTablesPreserved",
 "Refresh.Set Env.Test.ItemCatalog.sql",
