@@ -95,6 +95,7 @@ window.addEventListener('load', function () {
                 editorOptions.virtualization = true;
             } else if (attribute.DataTypeName === "Text") {
                 editorOptions.maxLength = attribute.MaxLengthAllowed;
+                editorOptions.selectionOnFocus = 'atEnd';
                 editorOptions.validatorOptions = {
                     pattern: attribute.CharacterSetRegexPattern
                 };
