@@ -1,6 +1,8 @@
 Imports WholeFoods.Utility.FTP
 Imports WholeFoods.Utility
 Imports System.IO
+Imports Renci.SshNet
+Imports Renci.SshNet.Sftp
 Imports System.Configuration
 Imports WholeFoods.IRMA.Replenishment
 Imports WholeFoods.IRMA.Replenishment.EInvoicing.DataAccess
@@ -159,7 +161,7 @@ Module EInvoicingModule
                     ' Use a special processing folder here.
                     processingFolder = processingSpecialFolder
                     logger.InfoFormat("Retrieving specific files from FTP with names matching '{0}'...", sArgs(0))
-                    ReadDataFromFTP(sArgs(0), False)
+                    ReadDataFromSSHSFtp(sArgs(0), False)
                     ImportAndArchiveFiles()
                 Else
 
@@ -175,7 +177,7 @@ Module EInvoicingModule
                     processingFolder = processingMainFolder
                     ImportAndArchiveFiles()
                     ' This pulls all files down from FTP server to a local 'Processing' folder.
-                    ReadDataFromFTP(String.Empty, True)
+                    ReadDataFromSSHSFtp(String.Empty, True)
                     ' This processes files we just pulled down from FTP.
                     ImportAndArchiveFiles()
 
@@ -279,21 +281,17 @@ Module EInvoicingModule
         End Try
 
     End Sub
-    ' TFS Task #12301, 03/24/2010, Faisal Ahmed
-    ' New procedure to use WeOnlyDo FTP instead of JScape FTP 
-    '
-    Private Sub ReadDataFromFTP(ByVal _filename As String, ByVal _setLastRunTime As Boolean)
+
+    Private Sub ReadDataFromSSHSFtp(ByVal _filename As String, ByVal _setLastRunTime As Boolean)
         Dim fileList As List(Of String)
         Dim ftpServer As String
         Dim ftpUser As String
         Dim ftpPassword As String
         Dim ftpDir As String
         Dim ftpPort As String
-        Dim ftpDebugModeOn As Boolean = False
+
         'ActionList is used to collect LOG messages and write them in 1 line instead of multiple. Logging cleanup effort.
         Dim ActionList As List(Of String) = New List(Of String)
-
-        Dim wsftp As WeOnlyDo.Client.SFTP = New WeOnlyDo.Client.SFTP()
 
         Dim regionCodes() As String
 
@@ -306,12 +304,6 @@ Module EInvoicingModule
         ftpPassword = ConfigurationServices.AppSettings("EInvoicing_Password")
         ftpDir = ConfigurationServices.AppSettings("EInvoicing_Directory")
         ftpPort = ConfigurationServices.AppSettings("EInvoicing_Port")
-        Try
-            ftpDebugModeOn = ConfigurationServices.AppSettings("EInvoicing_ftpDebugModeOn").ToLower.Equals("true")
-        Catch
-            ftpDebugModeOn = False
-        End Try
-
 
         regionCodes = ConfigurationServices.AppSettings("Region").ToString().Split(",")
         For Each region As String In regionCodes
@@ -321,27 +313,14 @@ Module EInvoicingModule
 
         logger.InfoFormat("FTP Server: {0} Dir: {1}", ftpServer, ftpDir)
 
-
-        'Initialize FTP parameters
-        If ftpDebugModeOn Then
-            wsftp.DebugFile = "sftp_debug.dat"
-            logger.Info("FTP Debug Mode: On")
-        End If
-
-        wsftp.Timeout = 0
-        wsftp.Blocking = True
-        wsftp.TransferMode = WeOnlyDo.Client.SFTP.TransferModes.Binary
-        wsftp.LicenseKey = "7BYU-Z8GN-SZQC-A3PX"
-
-        wsftp.Hostname = ftpServer
-        wsftp.Login = ftpUser
-        wsftp.Password = ftpPassword
-
-        'Always uses port 22 for secure FTP 
-        wsftp.Port = 22
+        Dim sftp = New SftpClient(ftpServer, ftpUser, ftpPassword)
+        Dim files As IEnumerable(Of SftpFile)
 
         Try
-            wsftp.Connect()
+            sftp.Connect()
+
+            'Retrieves the directory list
+            files = sftp.ListDirectory(ftpDir)
 
         Catch ex As Exception
             logger.Info(ex.Message)
@@ -353,25 +332,18 @@ Module EInvoicingModule
             ftpDir = ftpDir.Remove(0, 1)
         End If
 
-        'Retrieves the directory list
-        wsftp.ListNames(ftpDir)
-
-        Dim filenames As String()
-        filenames = wsftp.ListItem.Split(New [Char]() {ControlChars.Cr, ControlChars.Lf})
-
         fileList = New List(Of String)
-
-        For i As Integer = 0 To filenames.Length - 1
-            If filenames(i) = "" Then
+        For Each file As SftpFile In files
+            If file.Name = "" Then
                 Continue For
             End If
 
-            If (filenames(i).Length > 0 And filenames(i).Substring(0, 1) = ".") Then
+            If (file.Name.Length > 0 And file.Name.Substring(0, 1) = ".") Then
                 Continue For
             End If
 
-            fileList.Add(filenames(i))
-        Next i
+            fileList.Add(file.Name)
+        Next
 
         EInvoicing_CurrentInvoice.Filename = "test"
 
@@ -393,6 +365,7 @@ Module EInvoicingModule
 
         Dim _FileOK As Boolean = False
         Dim filename As String = String.Empty
+
         ' If no specific remote FTP file was provided as cmd-line arg, we process all remote files.
         If _filename.Equals(String.Empty) Then
             For Each item As String In fileList
@@ -406,7 +379,6 @@ Module EInvoicingModule
 
                     If item.Contains("_invoice_") And item.Contains(".xml") Then
 
-
                         'this loop seems to be obsolete. should be verified and removed when scope allows.
                         For Each region As String In regionCodes
                             ' loop through the configured regions and make sure the current files matches at least one of them. 
@@ -417,11 +389,13 @@ Module EInvoicingModule
 
                         ActionList.Add("Downloaded.")
 
-                        wsftp.LocalPath = processingFolder
-                        wsftp.RemotePath = ftpDir + filename
-                        wsftp.GetFile()
+                        Dim RemotePath As String = ftpDir + filename
+                        Using fileStream As Stream = File.OpenWrite(processingFolder + filename)
+                            sftp.DownloadFile(RemotePath, fileStream)
+                        End Using
 
-                        wsftp.DeleteFile()
+                        sftp.DeleteFile(RemotePath)
+
                         'logger.InfoFormat("Removing from FTP: {0}", filename)
                         ActionList.Add("Removed from FTP.")
 
@@ -446,12 +420,15 @@ Module EInvoicingModule
                     If item.Contains(_filename) Then
                         ActionList.Add("Downloaded.")
 
-                        wsftp.LocalPath = processingFolder
-                        wsftp.RemotePath = ftpDir + filename
-                        wsftp.GetFile()
+                        Dim FileStream As Stream = File.OpenWrite(processingFolder + filename)
+
+                        Dim RemotePath As String = ftpDir + filename
+                        Using fileStreamSpecial As Stream = File.OpenWrite(processingFolder + filename)
+                            sftp.DownloadFile(RemotePath, fileStreamSpecial)
+                        End Using
 
                         ActionList.Add("Removed from FTP.")
-                        wsftp.DeleteFile()
+                        sftp.DeleteFile(RemotePath)
                     End If
                 Catch ex As Exception
                     ActionList.Add(String.Format("Error. {0}", ex.Message))
@@ -461,11 +438,10 @@ Module EInvoicingModule
             Next
         End If
 
-        wsftp.Disconnect()
+        sftp.Disconnect()
 
     End Sub
-
-    <Obsolete("This sub is deprecated. you should probably use ReadDataFromFTP() instead.", True)> _
+    <Obsolete("This sub is deprecated. you should probably use ReadDataFromFTP() instead.", True)>
     Private Sub ReadDataFromJScapeFTP(ByVal _filename As String, ByVal _setLastRunTime As Boolean)
         ' Dim LastRunTime As DateTime
         Dim ftpClient As FTPclient = Nothing
