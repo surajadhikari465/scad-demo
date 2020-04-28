@@ -836,6 +836,7 @@
     <Build Include="dbo\User Defined Types\AddUpdateBrandType.sql" />
     <Build Include="dbo\StoredProcedures\UpdateBrand.sql" />
     <None Include="Scripts\PopulateData\UpdateAttributesDefaultValue.sql" />
+    <Build Include="nutrition\Tables\ItemNutritionHistory.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

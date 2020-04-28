@@ -1,6 +1,6 @@
-CREATE TABLE [nutrition].ItemNutrition
+CREATE TABLE [nutrition].ItemNutritionHistory
 (
-	RecipeId INT identity(1, 1) NOT NULL,
+	RecipeId INT NOT NULL,
 	Plu VARCHAR(50) NULL,
 	RecipeName NVARCHAR(100) NULL,
 	Allergens NVARCHAR(510) NULL,
@@ -69,23 +69,18 @@ CREATE TABLE [nutrition].ItemNutrition
 	Molybdenum SMALLINT NULL,
 	Selenium SMALLINT NULL,
 	TransfatWeight DECIMAL(10, 1) NULL,
-	InsertDate DATETIME2(7) NOT NULL DEFAULT sysdatetime(),
+	InsertDate DATETIME2(7) NOT NULL,
 	ModifiedDate DATETIME2(7) NULL,
   AddedSugarsWeight DECIMAL(10, 1) NULL,
 	AddedSugarsPercent SMALLINT NULL,
 	CalciumWeight DECIMAL(10, 1) NULL,
 	IronWeight DECIMAL(10, 1) NULL,
 	VitaminDWeight DECIMAL(10, 1) NULL,
-	SysStartTimeUtc datetime2 GENERATED ALWAYS AS ROW START HIDDEN
-		CONSTRAINT DF_Item_SysStart DEFAULT SYSUTCDATETIME(),
-	SysEndTimeUtc datetime2 GENERATED ALWAYS AS ROW END HIDDEN
-		CONSTRAINT DF_Item_SysEnd DEFAULT CONVERT(DATETIME2(7), '9999-12-31 23:59:59.99999999'),
-	PERIOD FOR SYSTEM_TIME (SysStartTimeUtc, SysEndTimeUtc),
-	CONSTRAINT [PK_nutrition.ItemNutrition] PRIMARY KEY CLUSTERED ([RecipeId])
+	SysStartTimeUtc datetime2  NOT NULL,
+	SysEndTimeUtc datetime2 NOT NULL
 	)
-WITH (SYSTEM_VERSIONING = ON (HISTORY_TABLE = nutrition.ItemNutritionHistory));
+	ON [FG_History]
 GO
 
-
-CREATE INDEX [ItemNutrition_Plu_Idx] ON [nutrition].[ItemNutrition] ([Plu])
+CREATE INDEX [ItemNutritionHistory_Plu_Idx] ON [nutrition].[ItemNutritionHistory] ([Plu])
 GO

@@ -27,7 +27,9 @@ JOIN dbo.ScanCodeType sct on sct.scanCodeTypeId = sc. scanCodeTypeId
 JOIN dbo.ItemType it on it.ItemTypeId = i.ItemTypeId
 JOIN #itemIds on #itemIds.ItemId = i.itemID
 
-select 
+--if there is no nutrition record in main table but there is one in history table
+--then SysEndTimeUtc will be in past and we know nutrition has been deleted (isdeleted will be true)
+select TOP 1
     [RecipeId]
     ,[Plu]
     ,[RecipeName]
@@ -104,9 +106,11 @@ select
     ,[CalciumWeight]
     ,[IronWeight]
     ,[VitaminDWeight]
-FROM nutrition.ItemNutrition inu
+	,CASE WHEN SysEndTimeUtc > SYSUTCDATETIME()  THEN 0 ELSE 1 END AS IsDeleted
+FROM nutrition.ItemNutrition FOR SYSTEM_TIME all as inu
 JOIN dbo.ScanCode sc on sc.scanCode = inu.Plu
 JOIN #itemIds on #itemIds.ItemId = sc.itemID
+ORDER BY SysStartTimeUtc DESC;
 
 select 
     ihc.hierarchyClassId,

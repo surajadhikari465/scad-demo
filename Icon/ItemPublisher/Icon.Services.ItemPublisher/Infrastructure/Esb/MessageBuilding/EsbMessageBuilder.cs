@@ -25,7 +25,6 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
         private readonly IValueFormatter valueFormatter;
         private readonly IUomMapper uomMapper;
         private readonly ServiceSettings serviceSettings;
-        private const string DELETED = "Deleted";
 
         public EsbMessageBuilder(ILogger<EsbMessageBuilder> logger,
             IEsbServiceCache esbServiceCache,
@@ -197,7 +196,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
                 return null;
             }
 
-            return IsNutritionRemoved(nutrition)
+            return nutrition.IsDeleted
                 ? new Contracts.ConsumerInformationType
                 {
                     stockItemConsumerProductLabel = new Contracts.StockProductLabelType
@@ -275,22 +274,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
                 };
         }
 
-        public bool IsNutritionRemoved(Nutrition nutrition)
-        {
-            if (nutrition == null)
-            {
-                return true;
-            }
-            else if (String.Compare(nutrition.RecipeName, DELETED, true) == 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
+    
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 
         public async Task<Contracts.ScanCodeType> BuildScanCodeType(MessageQueueItemModel message, Action<string> processLogger)
@@ -310,7 +294,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
         {
             List<Contracts.TraitType> response = new List<Contracts.TraitType>();
             response.AddRange(await this.BuildTraitsFromAttributes(itemAttributes, processLogger));
-            if (!this.IsNutritionRemoved(nutrition))
+            if (nutrition!= null && !nutrition.IsDeleted)
             {
                 response.AddRange(await this.BuildTraitsFromNutrition(nutrition, processLogger));
             }

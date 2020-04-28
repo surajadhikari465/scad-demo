@@ -31,7 +31,6 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
 
         Task<GroupTypeType> CreateProductSelectionGroupElement(ProductSelectionGroup group, bool addOrUpdate, Action<string> processLogger);
 
-        bool IsNutritionRemoved(Nutrition nutrition);
         Task RefreshCache();
         bool CacheLoaded { get; }
     }

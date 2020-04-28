@@ -1615,6 +1615,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             nutrition.CalciumWeight = null;
             nutrition.IronWeight = null;
             nutrition.VitaminDWeight = null;
+            nutrition.IsDeleted = false;
 
             ConsumerInformationType result = await builder.BuildConsumerInformation(nutrition, processLogger);
 
@@ -1627,7 +1628,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
         }
 
         [TestMethod]
-        public void IsNutritionRemoved_NutritionIsRemoved_ReturnsTrue()
+        public async Task BuildConsumerInformation_NutritionWasDelted_NutritionElementsShouldNotBeSpecified()
         {
             // Given.
             Mock<ILogger<EsbMessageBuilder>> loggerMock = new Mock<ILogger<EsbMessageBuilder>>();
@@ -1638,61 +1639,20 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
             EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
 
-            Nutrition nutrition = new Nutrition()
+            Action<string> processLogger = (message) =>
             {
-                RecipeName = "DELETED"
             };
+            Nutrition nutrition = this.testDataFactory.Nutrition;
+            nutrition.IsDeleted = true;
 
             // When.
-            bool result = builder.IsNutritionRemoved(nutrition);
-
-            // When.
-            Assert.IsTrue(result);
-        }
-
-        [TestMethod]
-        public void IsNutritionRemoved_NullNutrition_ReturnsTrue()
-        {
-            // Given.
-            Mock<ILogger<EsbMessageBuilder>> loggerMock = new Mock<ILogger<EsbMessageBuilder>>();
-            Mock<IEsbServiceCache> serviceCacheMock = new Mock<IEsbServiceCache>();
-            Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
-            Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
-            Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
-
-            // When.
-            bool result = builder.IsNutritionRemoved(null);
+            ConsumerInformationType result = await builder.BuildConsumerInformation(nutrition, processLogger);
 
             // Then.
-            Assert.IsTrue(result);
+            Assert.AreEqual(ActionEnum.Delete , result.stockItemConsumerProductLabel.Action);
+         
         }
-
-        [TestMethod]
-        public void IsNutritionRemoved_NutritionIsRemoved_ReturnsFalse()
-        {
-            // Given.
-            Mock<ILogger<EsbMessageBuilder>> loggerMock = new Mock<ILogger<EsbMessageBuilder>>();
-            Mock<IEsbServiceCache> serviceCacheMock = new Mock<IEsbServiceCache>();
-            Mock<ITraitMessageBuilder> traitBuilderMock = new Mock<ITraitMessageBuilder>();
-            Mock<IHierarchyValueParser> hierarchyValuesParserMock = new Mock<IHierarchyValueParser>();
-            Mock<IValueFormatter> valueFormatterMock = new Mock<IValueFormatter>();
-            Mock<IUomMapper> uomMapperMock = new Mock<IUomMapper>();
-            EsbMessageBuilder builder = new EsbMessageBuilder(loggerMock.Object, serviceCacheMock.Object, traitBuilderMock.Object, hierarchyValuesParserMock.Object, valueFormatterMock.Object, uomMapperMock.Object, new ServiceSettings());
-
-            Nutrition nutrition = new Nutrition()
-            {
-                RecipeName = "Test"
-            };
-
-            // When.
-            bool result = builder.IsNutritionRemoved(nutrition);
-
-            //Then.
-            Assert.IsFalse(result);
-        }
-
+       
         [TestMethod]
         public async Task BuildScanCodeType_ReturnIsInCorrectFormat()
         {

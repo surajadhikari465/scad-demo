@@ -80,5 +80,6 @@ namespace Icon.Services.ItemPublisher.Repositories.Entities
         public decimal? CalciumWeight { get; set; }
         public decimal? IronWeight { get; set; }
         public decimal? VitaminDWeight { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
