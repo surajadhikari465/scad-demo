@@ -16,8 +16,8 @@ Post-Deployment Script Template
 :r .\30737_PopulateGlobalItemMessageType.sql --2020-03-06
 :r .\PopulateManufacturerHierarchy.sql --2020-02-24
 :r .\33668_Extract_IconHierarcies_JobSchedule.sql -- 2020-03-30 33668
-:r .\26539_FutureCostsExtract_JobSchedule.sql --2020-04-01
 :r .\26540_AMZItemVendorLane_JobSchedule.sql --2020-04-16
+--:r .\26539_FutureCostsExtract_JobSchedule.sql --2020-04-01
 
 -- Run every time (add your script above; keep this at bottom, as last post-deploy script).
 :r ..\..\Security\SecurityGrants.sql
