@@ -66,6 +66,7 @@ namespace BulkItemUploadProcessor.Service.Validation
                     {
                         ColumnHeader = c,
                         a.IsRequired,
+                        a.DefaultValue,
                         AttributeValidator = itemAttributesValidatorFactory.CreateItemAttributesJsonValidator(a.AttributeName)
                     })
                 .ToList();
@@ -129,14 +130,14 @@ namespace BulkItemUploadProcessor.Service.Validation
                     foreach (var attributeColumn in attributeColumns)
                     {
                         var rowObjectContainsAttribute = rowObjectDictionary.Cells.ContainsKey(attributeColumn.ColumnHeader.ColumnIndex);
-                        if (attributeColumn.IsRequired && !rowObjectContainsAttribute)
+                        if (attributeColumn.IsRequired && String.IsNullOrEmpty(attributeColumn.DefaultValue) && !rowObjectContainsAttribute)
                         {
                             errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{attributeColumn.ColumnHeader.Name}' is required." });
                         }
                         else if (rowObjectContainsAttribute)
                         {
                             var value = rowObjectDictionary.Cells[attributeColumn.ColumnHeader.ColumnIndex];
-                            if (attributeColumn.IsRequired || value != string.Empty)
+                            if ((attributeColumn.IsRequired && String.IsNullOrEmpty(attributeColumn.DefaultValue))|| value != string.Empty)
                             {
                                 var result = attributeColumn.AttributeValidator.Validate(value);
                                 if (!result.IsValid)

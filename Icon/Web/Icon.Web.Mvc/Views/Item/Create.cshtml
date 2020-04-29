@@ -218,7 +218,7 @@
 
                             @if (attribute.IsPickList)
                             {
-                                var selectedValue = Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName] : null;
+                                var selectedValue = Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName] : attribute.DefaultValue;
                                 @(Html.Infragistics()
                                             .Combo()
                                             .InputName("ItemAttributes[" + attribute.AttributeName + "]")
@@ -232,7 +232,13 @@
 
                             else if (attribute.DataTypeName.ToUpper().Equals("BOOLEAN"))
                             {
-                                var checkboxValue = Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? bool.Parse(Model.ItemAttributes[attribute.AttributeName]) : false;
+                                var defaultValue = false;
+                                if (attribute.DefaultValue != null)
+                                {
+                                    defaultValue = bool.Parse(attribute.DefaultValue);
+                                }
+
+                                var checkboxValue = Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? bool.Parse(Model.ItemAttributes[attribute.AttributeName]) : defaultValue;
                                 var checkboxName = "ItemAttributes[" + attribute.AttributeName + "]";
                                 var htmlAttributes = new Dictionary<string, object> { { "id", checkboxName }, { "style", "height: 16px; width: 16px;" } };
 
@@ -242,10 +248,16 @@
 
                             else if (attribute.DataTypeName.ToUpper().Equals("TEXT") && !attribute.IsPickList)
                             {
+                                var defaultValue = string.Empty;
+                                if (attribute.DefaultValue != null)
+                                {
+                                    defaultValue = attribute.DefaultValue;
+                                }
+
                                 var textEditor = Html.Infragistics()
                                     .TextEditor()
                                     .InputName("ItemAttributes[" + attribute.AttributeName + "]")
-                                    .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : "")
+                                    .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : defaultValue)
                                     .HtmlAttributes(new Dictionary<string, object> { { "class", "form-control form-input" } })
                                     .ValidatorOptions(options => options.Required(attribute.IsRequired).Pattern(attribute.CharacterSetRegexPattern))
                                     .ReadOnly(attribute.IsReadOnly);
@@ -260,10 +272,16 @@
 
                             else if (attribute.DataTypeName.ToUpper().Equals("NUMBER"))
                             {
+                                var defaultValue = string.Empty;
+                                if (attribute.DefaultValue != null)
+                                {
+                                    defaultValue = attribute.DefaultValue;
+                                }
+
                                 @(Html.Infragistics()
                                             .TextEditor()
                                             .InputName("ItemAttributes[" + attribute.AttributeName + "]")
-                                            .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : "")
+                                            .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : defaultValue)
                                             .HtmlAttributes(new Dictionary<string, object>
                                                 {
                                                 { "class", "form-control form-input" },
@@ -280,13 +298,19 @@
 
                             else if (attribute.DataTypeName.ToUpper().Equals("DATE"))
                             {
+                                var defaultValue = string.Empty;
+                                if (attribute.DefaultValue != null)
+                                {
+                                    defaultValue = attribute.DefaultValue;
+                                }
+
                                 @(Html.Infragistics()
                                             .DatePicker()
                                             .DateDisplayFormat("yyyy-MM-dd")
                                             .DateInputFormat("yyyy-MM-dd")
                                             .ID("ItemAttributes[" + attribute.AttributeName + "]")
                                             .InputName("ItemAttributes[" + attribute.AttributeName + "]")
-                                            .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : "")
+                                            .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : (defaultValue == string.Empty ? defaultValue : DateTime.Parse(defaultValue).ToString()))
                                             .ValidatorOptions(o => o.Required(attribute.IsRequired)
                                             .ValueRange(Convert.ToDateTime("2000-01-01"), Convert.ToDateTime("2100-12-31"), "A value between 2000-01-01 and 2100-12-31 should be entered"))
                                             .ReadOnly(attribute.IsReadOnly)

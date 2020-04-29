@@ -36,6 +36,10 @@ namespace BulkItemUploadProcessor.Service.Mappers
                     (a, c) => new { a.AttributeName, ColumnIndex = c.ColumnIndex })
                 .ToList();
 
+            ///get attributes that have default value associated to them in database but do not have a column in spreadsheet
+            var attributesWithDefaultValueButNotPassed = attributeModels.Where(a => !a.IsReadOnly && !string.IsNullOrWhiteSpace(a.DefaultValue))
+                                                            .Where(p => !validAttributeColumnHeaders.Any(p2 => p2.AttributeName == p.AttributeName));
+
             //Create DateTime for ModifiedDate and CreatedDate attributes
             var now = DateTime.UtcNow.ToFormattedDateTimeString();
 
@@ -94,7 +98,22 @@ namespace BulkItemUploadProcessor.Service.Mappers
                         else
                             itemAttributesJson[columnHeader.AttributeName] = attributeValue;
                     }
+                    else
+                    {   // check if attribute has default value, if yes then set it for item
+                        var attribute = attributeModels.Where(a => a.AttributeName == columnHeader.AttributeName).FirstOrDefault();
+                        if (!string.IsNullOrWhiteSpace(attribute.DefaultValue))
+                        {
+                            itemAttributesJson[columnHeader.AttributeName] = attribute.DefaultValue;
+                        }
+                    }
                 }
+
+                //for attributes that do not have a column in spreadhseet but has default value , add them with default value
+                foreach (var attributeWithDefaultValueButNotPassed in attributesWithDefaultValueButNotPassed)
+                {
+                    itemAttributesJson[attributeWithDefaultValueButNotPassed.AttributeName] = attributeWithDefaultValueButNotPassed.DefaultValue;
+                }
+
                 if (!itemAttributesJson.ContainsKey(Constants.Attributes.Inactive)) itemAttributesJson["Inactive"] = JsonFalse;
 
                 item.ItemAttributesJson = JsonConvert.SerializeObject(itemAttributesJson);

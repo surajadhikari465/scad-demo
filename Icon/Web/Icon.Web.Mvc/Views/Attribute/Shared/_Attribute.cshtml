@@ -1,4 +1,5 @@
 ﻿@using Icon.Web.Mvc.Models
+@using Icon.Web.DataAccess.Infrastructure
 @model Icon.Web.Mvc.Models.AttributeViewModel
 
 <div class="form-group">
@@ -40,12 +41,22 @@
     }
     else
     {
-        @Html.DropDownListFor(model => Model.DataTypeId, Model.AvailableDataTypes, new { @class = "form-control" })
+        @Html.DropDownListFor(model => Model.DataTypeId, Model.AvailableDataTypes.Where(x => String.Compare(x.Text, "Boolean", false) != 0), new { @class = "form-control" })
     }
 </div>
 
 <div class="form-group">
     @Html.LabelFor(model => model.DefaultValue, new { @class = "form-label" })
-    @Html.TextBoxFor(model => model.DefaultValue, new { @class = "form-control form-input", @id = "defaultValue" })
+    @if (Model.AttributeId > 0 && Model.DataTypeId == (int)DataType.Boolean)
+    {
+        @Html.DropDownListFor(model => Model.DefaultValue, Model.AvailableDefaultValuesForBoolean, new { @class = "form-control" })
+        @Html.HiddenFor(model => model.DefaultValue)
+    }
+
+    else
+    {
+        @Html.TextBoxFor(model => model.DefaultValue, new { @class = "form-control form-input", @id = "defaultValue" })
+    }
+
 </div>
 <div id="partialViewPlaceHolder" style="display:none;"> </div>

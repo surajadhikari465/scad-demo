@@ -216,6 +216,12 @@ namespace Icon.Web.Mvc.Controllers
                 }
             }
             viewModel.AvailableCharacterSets = new List<CharacterSetModel>();
+
+            if(viewModel.DataTypeId == (int)DataType.Boolean)
+            {
+                viewModel.AvailableDefaultValuesForBoolean = GetAvailableDefaultValuesForBoolean();
+            }
+
             PopulateListsForAttributeModel(viewModel);
 
             return viewModel;
@@ -437,9 +443,17 @@ namespace Icon.Web.Mvc.Controllers
         List<SelectListItem> GetAvailableDataTypes()
         {
             return getDataTypeQueryHandler.Search(new GetDataTypeParameters())
-                .Where(x => String.Compare(x.DataType, "Boolean", false) != 0)
                 .Select(e => new SelectListItem { Value = e.DataTypeId.ToString(), Text = e.DataType })
                 .ToList();
+        }
+
+        List<SelectListItem> GetAvailableDefaultValuesForBoolean()
+        {
+            return new List<SelectListItem>()
+            {   new SelectListItem{Text ="", Value = null},
+                new SelectListItem{Text ="True", Value = "true"},
+                new SelectListItem{Text ="False", Value = "false"}   
+            };
         }
 
         public void Export()

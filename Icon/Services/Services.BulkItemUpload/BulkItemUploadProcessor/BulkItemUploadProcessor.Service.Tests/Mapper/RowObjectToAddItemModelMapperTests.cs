@@ -116,7 +116,8 @@ namespace BulkItemUploadProcessor.Service.Tests.Validators
         {
             var response = rowObjectToAddItemModelMapper.Map(rowObjects,columnHeaders, attributeModels,"Test");
 
-           //then        
+            //then        
+            Assert.IsTrue(response.Items[0].ItemAttributesJson.Contains("ItemPack\":\"5\""));
             Assert.IsFalse(response.Items[0].ItemAttributesJson.Contains("POSDescription"));
             Assert.IsFalse(response.Items[0].ItemAttributesJson.Contains("RequestNumber"));
             // since its readonly it should not get into json

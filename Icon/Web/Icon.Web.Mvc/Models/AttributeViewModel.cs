@@ -48,6 +48,7 @@ namespace Icon.Web.Mvc.Models
         public string CharacterSetRegexPattern { get; set; }
         public Enums.WriteAccess UserWriteAccess { get; set; }
         public IEnumerable<SelectListItem> AvailableDataTypes { get; set; }
+        public IEnumerable<SelectListItem> AvailableDefaultValuesForBoolean { get; set; }
         public List<CharacterSetModel> AvailableCharacterSets{ get; set; }
         public ActionEnum Action { get; set; }
         public int? AttributeGroupId { get; set; }

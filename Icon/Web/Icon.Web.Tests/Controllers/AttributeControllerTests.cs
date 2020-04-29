@@ -291,6 +291,31 @@ namespace Icon.Web.Tests.Unit.Controllers
         }
 
         [TestMethod]
+        public void AttributeControllerEditGet_BooleanAttribute_ModelShouldHaveAvailableDefaultValuesForBoolean()
+        {
+            mockGetAttributeByAttributeIdQuery.Setup(x => x.Search(It.IsAny<GetAttributeByAttributeIdParameters>())).Returns(
+               new AttributeModel()
+               {
+                   AttributeId = 1234,
+                   DisplayName = "test",
+                   DataTypeId = (int)DataType.Boolean,
+                   TraitCode = "Test",
+                   IsPickList = false,
+                   SpecialCharactersAllowed = "!@#"
+               });
+
+            mockGetDataTypeQueryHandler.Setup(m => m.Search(It.IsAny<GetDataTypeParameters>())).Returns(new List<DataTypeModel>()
+                {
+                    new DataTypeModel{ DataTypeId = 1, DataType = "Boolean"}
+                });
+
+            // When.
+            var result = controller.Edit(1234) as ViewResult;
+
+            Assert.IsNotNull(((AttributeViewModel)result.Model).AvailableDefaultValuesForBoolean);
+        }
+
+        [TestMethod]
         public void AttributeControllerEditPost_AttributeSpecialCharsAreEdited_SameCharsRearranged_Success()
         {
             // Given.
