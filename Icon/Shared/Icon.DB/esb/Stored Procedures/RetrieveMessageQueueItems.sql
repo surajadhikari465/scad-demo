@@ -25,12 +25,15 @@ FROM dbo.Item i
 JOIN dbo.ScanCode sc on sc.itemId = i.itemId
 JOIN dbo.ScanCodeType sct on sct.scanCodeTypeId = sc. scanCodeTypeId
 JOIN dbo.ItemType it on it.ItemTypeId = i.ItemTypeId
-JOIN #itemIds on #itemIds.ItemId = i.itemID
+JOIN #itemIds on #itemIds.ItemId = i.itemID;
 
 --if there is no nutrition record in main table but there is one in history table
 --then SysEndTimeUtc will be in past and we know nutrition has been deleted (isdeleted will be true)
-select TOP 1
-    [RecipeId]
+WITH NutritionDataWithHistory AS
+(
+   SELECT 
+     ROW_NUMBER() OVER (PARTITION BY [Plu] ORDER BY SysStartTimeUtc DESC) AS rowNumber,
+     [RecipeId]
     ,[Plu]
     ,[RecipeName]
     ,[Allergens]
@@ -110,7 +113,88 @@ select TOP 1
 FROM nutrition.ItemNutrition FOR SYSTEM_TIME all as inu
 JOIN dbo.ScanCode sc on sc.scanCode = inu.Plu
 JOIN #itemIds on #itemIds.ItemId = sc.itemID
-ORDER BY SysStartTimeUtc DESC;
+)
+
+SELECT 
+     [RecipeId]
+    ,[Plu]
+    ,[RecipeName]
+    ,[Allergens]
+    ,[Ingredients]
+    ,[ServingsPerPortion]
+    ,[ServingSizeDesc]
+    ,[ServingPerContainer]
+    ,[HshRating]
+    ,[ServingUnits]
+    ,[SizeWeight]
+    ,[Calories]
+    ,[CaloriesFat]
+    ,[CaloriesSaturatedFat]
+    ,[TotalFatWeight]
+    ,[TotalFatPercentage]
+    ,[SaturatedFatWeight]
+    ,[SaturatedFatPercent]
+    ,[PolyunsaturatedFat]
+    ,[MonounsaturatedFat]
+    ,[CholesterolWeight]
+    ,[CholesterolPercent]
+    ,[SodiumWeight]
+    ,[SodiumPercent]
+    ,[PotassiumWeight]
+    ,[PotassiumPercent]
+    ,[TotalCarbohydrateWeight]
+    ,[TotalCarbohydratePercent]
+    ,[DietaryFiberWeight]
+    ,[DietaryFiberPercent]
+    ,[SolubleFiber]
+    ,[InsolubleFiber]
+    ,[Sugar]
+    ,[SugarAlcohol]
+    ,[OtherCarbohydrates]
+    ,[ProteinWeight]
+    ,[ProteinPercent]
+    ,[VitaminA]
+    ,[Betacarotene]
+    ,[VitaminC]
+    ,[Calcium]
+    ,[Iron]
+    ,[VitaminD]
+    ,[VitaminE]
+    ,[Thiamin]
+    ,[Riboflavin]
+    ,[Niacin]
+    ,[VitaminB6]
+    ,[Folate]
+    ,[VitaminB12]
+    ,[Biotin]
+    ,[PantothenicAcid]
+    ,[Phosphorous]
+    ,[Iodine]
+    ,[Magnesium]
+    ,[Zinc]
+    ,[Copper]
+    ,[Transfat]
+    ,[CaloriesFromTransfat]
+    ,[Om6Fatty]
+    ,[Om3Fatty]
+    ,[Starch]
+    ,[Chloride]
+    ,[Chromium]
+    ,[VitaminK]
+    ,[Manganese]
+    ,[Molybdenum]
+    ,[Selenium]
+    ,[TransfatWeight]
+    ,[InsertDate]
+    ,[ModifiedDate]
+    ,[AddedSugarsWeight]
+    ,[AddedSugarsPercent]
+    ,[CalciumWeight]
+    ,[IronWeight]
+    ,[VitaminDWeight]
+	,[IsDeleted]
+FROM NutritionDataWithHistory
+WHERE rowNumber = 1
 
 select 
     ihc.hierarchyClassId,
