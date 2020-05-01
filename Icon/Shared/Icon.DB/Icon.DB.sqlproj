@@ -895,6 +895,8 @@
     <None Include="Scripts\PopulateData\33610_UpdateAttributesDisplayOrder.sql" />
     <None Include="Scripts\PopulateData\32222_ConsolidateBulkUploadTables.sql" />
     <None Include="Scripts\PopulateData\32224_AddBrandUploadServiceAppId.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\35114_MoveStoresFromMAToMW.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\35114_MoveStoresFromMAToMW_RollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

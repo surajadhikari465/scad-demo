@@ -155,6 +155,8 @@
     <None Include="Scripts\PostDeploymentScripts\CleanUpAvailablePluNumberTable.sql" />
     <None Include="Scripts\PostDeploymentScripts\PopulatePurgeTableInfoRecords.sql" />
     <None Include="Scripts\PostDeploymentScripts\AddDataPurgeServiceToApp.sql" />
+    <None Include="Scripts\Distribution Realignment\35114_MoveStoresFromMAToMW.sql" />
+    <None Include="Scripts\Distribution Realignment\35114_MoveStoresFromMAToMW_RollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\PreDeplolymentScripts\PreDeploymentScript.sql" />
