@@ -101,7 +101,7 @@ namespace Icon.Web.Mvc.Controllers
         }
 
         // GET: Contact/Contact/5
-        [WriteAccessAuthorize]
+
         public ActionResult Contact(int hierarchyClassId)
         {
             if (!this.settings.IsContactViewEnabled)

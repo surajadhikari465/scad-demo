@@ -18,9 +18,9 @@
             <li class="nav-item">@Html.ActionLink("Current Contacts", "Export", "Contact", new { hierarchyClassId = Model.HierarchyClassId }, new { @class = "text-nowrap ml-3" })</li>
         </ul>
 
+        <span class="ml-3">@Html.ActionLink("Back To " + Model.HierarchyLevelName + "s", "Index", Model.HierarchyLevelName)</span>
         @if (ViewHelpers.HasWriteAccess(Request, User))
         {
-            <span class="ml-3">@Html.ActionLink("Back To " + Model.HierarchyLevelName + "s", "Index", Model.HierarchyLevelName)</span>
             <span class="ml-3">@Html.ActionLink("Back To Edit", "Edit", Model.HierarchyLevelName, new { hierarchyClassId = Model.HierarchyClassId }, null)</span>
             <span class="ml-3">@Html.ActionLink("Add New Contact", "Manage", "Contact", new { hierarchyClassId = Model.HierarchyClassId, contactId = 0 }, null)</span>
         }
@@ -62,14 +62,17 @@
     </div>
 </div>
 
-<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu">
-    <a class="dropdown-item fa fa-edit" href="#" id="mnuEdit">&nbsp;&nbsp;&nbsp;Edit</a>
-    <a class="dropdown-item fa fa-address-card" href="#" id="mnuDetail">&nbsp;&nbsp;&nbsp;Details</a>
-    <div class="dropdown-divider"></div>
-    <a class="dropdown-item text-danger fa fa-eraser" href="#" id="mnuDelete">&nbsp;&nbsp;&nbsp;Delete</a>
-    <div class="dropdown-divider"></div>
-    <a class="dropdown-item fa fa-close text-secondary" href="#" id="mnuCancel">&nbsp;&nbsp;&nbsp;Cancel</a>
-</div>
+@if (ViewHelpers.HasWriteAccess(Request, User))
+{ 
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu">
+        <a class="dropdown-item fa fa-edit" href="#" id="mnuEdit">&nbsp;&nbsp;&nbsp;Edit</a>
+        <a class="dropdown-item fa fa-address-card" href="#" id="mnuDetail">&nbsp;&nbsp;&nbsp;Details</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item text-danger fa fa-eraser" href="#" id="mnuDelete">&nbsp;&nbsp;&nbsp;Delete</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item fa fa-close text-secondary" href="#" id="mnuCancel">&nbsp;&nbsp;&nbsp;Cancel</a>
+    </div>
+}
 
 @section scripts
 {
