@@ -164,6 +164,10 @@ namespace Icon.Web.DataAccess.Infrastructure
             string hierarchyJoinClause = this.BuildHierarchyJoinClause(parameters.ItemAttributeJsonParameters);
             string hierarchyTempTableInclude = this.BuildHierarchyTempTableInclude(parameters.ItemAttributeJsonParameters);
             string select = $@"
+
+
+SET TRANSACTION ISOLATION LEVEL SNAPSHOT
+
 IF OBJECT_ID('TEMPDB..#MFM') IS NOT NULL
     DROP TABLE #MFM
 IF OBJECT_ID('TEMPDB..#NCC') IS NOT NULL
