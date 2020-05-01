@@ -122,7 +122,7 @@
       <HintPath>..\packages\NodaTime.Testing.2.4.2\lib\net45\NodaTime.Testing.dll</HintPath>
     </Reference>
     <Reference Include="Opsgenie.Alert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Opsgenie.Alert.2019.1.31.8\lib\net46\Opsgenie.Alert.dll</HintPath>
+      <HintPath>..\packages\Opsgenie.Alert.2019.9.17.1\lib\net40\Opsgenie.Alert.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack, Version=5.0.0.0, Culture=neutral, PublicKeyToken=02c12cbda47e6587, processorArchitecture=MSIL">
       <HintPath>..\packages\ServiceStack.5.4.0\lib\net45\ServiceStack.dll</HintPath>
@@ -186,6 +186,7 @@
   <ItemGroup>
     <Compile Include="MonitorServiceTests.cs" />
     <Compile Include="Monitors\ApiControllerMonitorTests.cs" />
+    <Compile Include="Monitors\MammothFailedEventsMonitorTests.cs" />
     <Compile Include="Monitors\MessageArchiveMonitorTests.cs" />
     <Compile Include="Monitors\DeadLetterMonitorTests.cs" />
     <Compile Include="Monitors\DvoBulkImportJobMonitorTests.cs" />

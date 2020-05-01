@@ -5,6 +5,7 @@
     using Icon.Common.DataAccess;
     using Icon.Monitoring.DataAccess.Queries;
     using Common.Enums;
+
     public class IrmaQueryHandlerDecorator<TParameters, TResult> : IQueryByRegionHandler<TParameters, TResult> where TParameters : IQuery<TResult>
     {
         private IQueryByRegionHandler<TParameters, TResult> queryHandler;
