@@ -1,41 +1,43 @@
-﻿$scriptFullPath = $MyInvocation.MyCommand.Definition
-$scriptFileObj = new-object system.io.fileinfo $MyInvocation.MyCommand.Definition
-$scriptFolder = $scriptFileObj.directoryname
+﻿<#
+------------------------------------------------------
+Script-Update History
+------------------------------------------------------
+Tom Lux, 2019.10.23:
+1) Script will add an entry to the update list if the base app.config or web.config file has an edit.
+2) Change-log-commit-history file and change-log file so they reference IRMAPrdFile2 now.
 
-# Make sure we're in the location of this script, since it should be in Git.
-cd $scriptFolder
+Tom Lux, Spring 2020:
+Fixed app list entries (reg-ex) for a few apps that were not being missed.
+Added Perf configs.
+
+Tom Lux, 2020.05.04:
+Added new Icon Bulk Brand Upload.
+
+
+
+#>
 
 $lineBreak = "------------------------------------------------------"
 # Get target repository.
 $repoName = "SCAD"
-$tempDevOpsFolder = "\temp\devops\"
-
-if(-not (Test-Path $tempDevOpsFolder)){
-    new-item -Verbose -ItemType Directory $tempDevOpsFolder
-}
 
 # Show commits
-$commitLogFile = "$tempDevOpsFolder\$repoName Release Commits.log"
+#$commitLogFile = "c:\tlux\dev\Change Control\$repoName Release Commits.log"
+$commitLogFile = "\\irmaprdfile2\e$\devops\ps\Git Change Log\$repoName Release Commits.log"
 $lineBreak
 $commitLogFile
 $lineBreak
-if(-not (Test-Path $tempDevOpsFolder)){
-    Get-Content $commitLogFile
-} else {
-    Write-Host -ForegroundColor Yellow "Release change log commit history file will be created."
-}
+if(Test-Path $commitLogFile){ Get-Content $commitLogFile } else { Write-Host -ForegroundColor Yellow "**No change-log-commit-history file found.**" }
 $lineBreak
 
-# Switch to base local GIT folder (should be 2 folders up, if this script stays in '...\%REPO_NAME%\DevOps\Release.Support\' folder.
-cd "..\.."
+# Switch to base local GIT folder
+$baseGit = read-host "Enter local SCAD repo location, (ex: c:\tlux\dev\git\scad\)"
+cd $baseGit
 
 # Validate we're in the right spot.
 $gitStatus = git status
 $gitStatus
-$lineBreak
-Write-Host -ForegroundColor Yellow "** Review the local-branch information output above, to ensure change log is taken from appropriate branch. **"
-$lineBreak
-read-host "If using correct branch, press ENTER to continue..."
+read-host "Using correct branch?"
 
 $start = read-host "Start commit (not included)"
 $gitStartCommitDetails = git show --summary $start
@@ -43,7 +45,7 @@ $gitStartCommitDetails
 $end = read-host "End commit (included)"
 $gitEndCommitDetails = git show --summary $end
 $gitEndCommitDetails
-$version = read-host "Enter $repoName release version (format: YYYY.II -- 4-digit year and 2-digit release ID)"
+$version = read-host "Enter $repoName release version"
 
 [string]$commitLogEntry = $repoName + " " + $version + "`t" + $start + "`t" + $end
 $lineBreak
@@ -63,7 +65,7 @@ $releaseChanges = git diff --name-status --relative $start $end
 #NAME-ONLY"
 #git diff --name-only --relative $start $end
 
-$releaseLogFile = "$tempDevOpsFolder\$repoName $version Release - Changes.log"
+$releaseLogFile = "\\irmaprdfile2\e$\devops\ps\Git Change Log\$repoName $version Release - Changes.log"
 if(Test-Path $releaseLogFile){
     Read-Host ("** FILE EXISTS (and will be overwritten): " + $releaseLogFile)
 }
@@ -72,17 +74,17 @@ if(Test-Path $releaseLogFile){
 
 $appList = @(
     "icon/api controller",
-#    "cch tax", #sunset
-    "icon/item move",
-    "icon/r10 listen",
+    "cch tax", #sunset, then reactivated with icon-reboot
+    "icon/.*item move",
+    "icon/.*r10 listen",
     "ewic apl",
     "ewic error response",
     "icon/iconwebapi",
-    "icon/infor/listeners/.*hier",
-    "icon/infor/listeners/.*item",
+#    "icon/infor/listeners/.*hier", #sunset with IR
+#    "icon/infor/listeners/.*item", #sunset with IR
 #    "icon/infor/listeners/.*locale", #not used
 #    "icon/infor/listeners/.*price", #not used
-    "icon/infor/services/.*newitem",
+#    "icon/infor/services/.*newitem", #sunset with IR
     "icon/interface controller/global event",
     "icon/interface controller/pos push",
 #    "icon/interface controller/regional event", #sunset
@@ -93,6 +95,15 @@ $appList = @(
     "icon/monitoring/icon.dash",
     "icon/nutrition/",
     "icon/vim/",
+    # new with Icon Reboot:
+    "icon/AttributePublisher",
+    "icon/ItemPublisher",
+    "Services.BulkItemUpload",
+    "Services.Extract",
+    "Services.NewItem",
+    # later addition:
+    "Services.BrandUpload",
+    ############################
     "/MammothAuditService",
     "mammoth/esb/.*hier",
     "mammoth/esb/.*locale",
@@ -102,19 +113,78 @@ $appList = @(
     "mammoth.price",
     "mammothwebapi",
     "mammoth/primeaffinity",
-    "mammoth/websupport"
+    "mammoth/websupport",
+    "KitBuilder.ESB.Listeners.Item",
+    "KitBuilder.Esb.LocaleListener",
+    "KitBuilderWeb/",
+    "KitBuilderWebApi/"
 )
 
 $appsUpdatedList = @()
 foreach($app in $appList){
+    # Class-files
     if($releaseChanges -match "$app.*\.cs$"){
         $appsUpdatedList += $app
+    }
+
+    # For the next set of files, entries are only added to the updated-apps list if they aren't already in the list for a class-file (functional) update. 
+
+    # Project files
+    if($releaseChanges -match "$app.*\.csproj$"){
+        if(-not $appsUpdatedList.Contains($app)){
+            $appsUpdatedList += ($app + " (PROJ)")
+        }
+    }
+
+    # Base App-Config files
+    if($releaseChanges -match "$app.*/app.config$"){
+        if(-not $appsUpdatedList.Contains($app)){
+            $appsUpdatedList += ($app + " (BASE.APP.CFG)")
+        }
+    }
+
+    # Base Web-Config files
+    if($releaseChanges -match "$app.*/web.config$"){
+        if(-not $appsUpdatedList.Contains($app)){
+            $appsUpdatedList += ($app + " (BASE.WEB.CFG)")
+        }
+    }
+
+    # QA Config files
+    if($releaseChanges -match "$app.*\.QA\.config$"){
+        if(-not $appsUpdatedList.Contains($app)){
+            $appsUpdatedList += ($app + " (QA.CFG)")
+        }
+    }
+
+    # Perf Config files
+    if($releaseChanges -match "$app.*\.Perf\.config$"){
+        if(-not $appsUpdatedList.Contains($app)){
+            $appsUpdatedList += ($app + " (PERF.CFG)")
+        }
+    }
+
+    # Prod Config files
+    if($releaseChanges -match "$app.*\.Release\.config$"){
+        if(-not $appsUpdatedList.Contains($app)){
+            $appsUpdatedList += ($app + " (REL.CFG)")
+        }
+    }
+}
+
+
+# TIBCO EARs
+if($releaseChanges -match ".*\.ear$"){
+    $ears = $releaseChanges -match ".*\.ear$"
+    foreach($ear in $ears){
+        # Lines will have change type and file, separated by tab, so we just grab the file.
+        $appsUpdatedList += $ear.split("`t")[1]
     }
 }
 
 #####################################################################################################
 
-Out-File -FilePath $releaseLogFile -InputObject "Apps With Class-File Updates:"
+Out-File -FilePath $releaseLogFile -InputObject "Apps With Class/Proj/Cgf-File Updates:"
 Out-File -Append -FilePath $releaseLogFile -InputObject $appsUpdatedList
 Out-File -Append -FilePath $releaseLogFile -InputObject "`r`n$lineBreak"
 Out-File -Append -FilePath $releaseLogFile -InputObject "[Full App List Used For Class-Update Search]"
@@ -136,3 +206,5 @@ Out-File -Append -FilePath $releaseLogFile -InputObject $releaseChanges
 "--> " + $releaseLogFile
 Invoke-Item $releaseLogFile
 
+
+read-host "Press <ENTER> to exit..."
