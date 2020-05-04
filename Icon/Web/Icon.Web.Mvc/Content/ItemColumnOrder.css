@@ -1,0 +1,36 @@
+﻿.blue-background-class {
+    background-color: #C8EBFB;
+}
+
+.card-block {
+    background-color: rgba(245, 245, 245, 0.4);
+}
+
+.control-item {
+    padding: 0px 10px;
+    cursor: pointer;
+}
+
+.drag-handle {
+    cursor: move;
+    cursor: -webkit-grabbing;
+    padding-right: 10px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+#successDiv {
+    padding: 5px 0 0
+}
+
+.fixed-instructions {
+    position: fixed;
+    left: 500px;
+    z-index: 1;
+}
+
+.sortableListDiv {
+    margin-top: 10px;
+}

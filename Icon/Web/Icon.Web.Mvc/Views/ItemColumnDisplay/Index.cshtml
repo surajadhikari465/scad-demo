@@ -1,0 +1,55 @@
+﻿<link rel="stylesheet" type="text/css" href="/Content/ItemColumnOrder.css" />
+
+<script src="/Scripts/Sortable/Sortable.js"></script>
+<script src="/Scripts/Sortable/jquery-sortable.js"></script>
+<script src="/Scripts/ItemColumnDisplay/ItemColumnDisplay.js"></script>
+
+<div class="row">
+    <div id="card" class="col-md-6">
+        <div class="card">
+            <div class="card-header bold">
+                <span>Item Attribute and Hieararchy Column Order</span>
+                <span class="float-right"><button id="saveButton" class="btn btn-info btn-sm" disabled="disabled" onclick="saveChanges()">Save Changes</button></span>
+            </div>
+            <div class="card-body">
+                <p>
+                    <h6> Click and Drag or use the arrows to set the default order for Item Attributes and Hierarchies on Item screens and exports.</h6>
+                </p>
+                <p>
+                    <button class="btn btn-info btn-sm" onclick="sortAlphabetically($('#item-detail-column-list'))">Sort Alphabetically</button>
+                    <button class="btn btn-info btn-sm" onclick="RefreshList()">Reset</button>
+                </p>
+                <div>
+                    <div id="successDiv" style="display: none">
+                        <div class="alert alert-success">Column Order Changed successfully</div>
+                    </div>
+                    <div id="errorDiv" style="display: none">
+                        <div class="alert alert-danger">Column Order was not saved successfully. Check logs for error information</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div id="data" class="col-md-6 sortableListDiv">
+        <span id="loadingSpan">Loading...</span>
+        <ul id="item-detail-column-list" class="list-group">
+        </ul>
+    </div>
+</div>
+
+<template>
+    <span class="float-right">
+        <span class="control-item" title="Move to top" onclick="moveListItem($(this).closest('li'), 'top')">
+            <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
+        </span>
+        <span class="control-item drag-handle" title="Move">
+            <i class="fa fa-bars"></i><i class="fa fa-bars"></i><i class="fa fa-bars"></i>
+        </span>
+        <span class="control-item" title="Move to bottom" onclick="moveListItem($(this).closest('li'), 'bottom')">
+            <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+        </span>
+    </span>
+</template>

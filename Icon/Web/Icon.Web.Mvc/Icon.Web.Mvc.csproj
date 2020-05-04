@@ -282,6 +282,7 @@
     <Compile Include="Controllers\AttributeController.cs" />
     <Compile Include="Controllers\BulkUploadController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
+    <Compile Include="Controllers\ItemColumnDisplayController.cs" />
     <Compile Include="Controllers\ManufacturerController.cs" />
     <Compile Include="Domain\BulkImport\BulkUploadService.cs" />
     <Compile Include="Domain\BulkImport\IBulkUploadService.cs" />
@@ -1399,6 +1400,9 @@
     <Content Include="Scripts\Infragistics\js\modules\infragistics.util.js" />
     <Content Include="Scripts\Infragistics\js\modules\infragistics.xml.js" />
     <Content Include="Scripts\Infragistics\js\modules\infragistics.zoomslider_core.js" />
+    <Content Include="Scripts\ItemColumnDisplay\ItemColumnDisplay.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\Item\create.js" />
     <Content Include="Scripts\Ewic\mapping-detail.js" />
     <Content Include="Scripts\Ewic\mappings.js" />
@@ -1703,6 +1707,12 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Sortable\jquery-sortable.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\Sortable\Sortable.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\src\index.js" />
     <Content Include="Scripts\src\methods\defaults.js" />
     <Content Include="Scripts\src\methods\destroy.js" />
@@ -1770,6 +1780,9 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Content\ItemColumnOrder.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Item\_ItemHistoryPartial.cshtml" />
     <Content Include="Views\Support\ChooseHierarchyClass.cshtml" />
     <Content Include="Views\Support\Index.cshtml" />
@@ -1819,6 +1832,7 @@
     <Content Include="Views\Contact\BulkUpload.cshtml" />
     <Content Include="Views\BulkUpload\Index.cshtml" />
     <Content Include="Views\BulkUpload\UploadErrors.cshtml" />
+    <Content Include="Views\ItemColumnDisplay\Index.cshtml" />
     <None Include="Web.2016.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

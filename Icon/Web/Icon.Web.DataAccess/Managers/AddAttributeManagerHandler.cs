@@ -10,21 +10,24 @@ namespace Icon.Web.DataAccess.Managers
 {
     public class AddAttributeManagerHandler : IManagerHandler<AddAttributeManager>
     {
-        private ICommandHandler<AddAttributeCommand> addAttributeCommandHandler;
-        private ICommandHandler<AddUpdateCharacterSetCommand> addUpdateCharacterSetCommandHandler;
-        private ICommandHandler<AddUpdatePickListDataCommand> addUpdatePickListDataCommandHandler;
-        private ICommandHandler<AddAttributeMessageCommand> addAttributeMessageCommandHandler;
+        private readonly ICommandHandler<AddAttributeCommand> addAttributeCommandHandler;
+        private readonly ICommandHandler<AddUpdateCharacterSetCommand> addUpdateCharacterSetCommandHandler;
+        private readonly ICommandHandler<AddUpdatePickListDataCommand> addUpdatePickListDataCommandHandler;
+        private readonly ICommandHandler<AddAttributeMessageCommand> addAttributeMessageCommandHandler;
+        private readonly ICommandHandler<AddMissingColumnsToItemColumnDisplayTableCommand> addMissingColumnsToItemColumnDisplayTableCommandHandler;
 
         public AddAttributeManagerHandler(
             ICommandHandler<AddAttributeCommand> addAttributeCommandHandler,
             ICommandHandler<AddUpdateCharacterSetCommand> addUpdateCharacterSetCommandHandler,
             ICommandHandler<AddUpdatePickListDataCommand> addUpdatePickListDataCommandHandler,
-            ICommandHandler<AddAttributeMessageCommand> addAttributeMessageCommandHandler)
+            ICommandHandler<AddAttributeMessageCommand> addAttributeMessageCommandHandler, 
+            ICommandHandler<AddMissingColumnsToItemColumnDisplayTableCommand> addMissingColumnsToItemColumnDisplayTableCommandHandler)
         {
             this.addAttributeCommandHandler = addAttributeCommandHandler;
             this.addUpdateCharacterSetCommandHandler = addUpdateCharacterSetCommandHandler;
             this.addUpdatePickListDataCommandHandler = addUpdatePickListDataCommandHandler;
             this.addAttributeMessageCommandHandler = addAttributeMessageCommandHandler;
+            this.addMissingColumnsToItemColumnDisplayTableCommandHandler = addMissingColumnsToItemColumnDisplayTableCommandHandler;
         }
 
         public void Execute(AddAttributeManager data)
@@ -46,6 +49,7 @@ namespace Icon.Web.DataAccess.Managers
                 {
                     AttributeModel = data.Attribute
                 });
+                addMissingColumnsToItemColumnDisplayTableCommandHandler.Execute(new AddMissingColumnsToItemColumnDisplayTableCommand());
             }
             catch (DuplicateValueException ex)
             {

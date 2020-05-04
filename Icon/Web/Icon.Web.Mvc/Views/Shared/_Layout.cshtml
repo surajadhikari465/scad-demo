@@ -36,7 +36,8 @@
 									<li class="nav-item">@Html.ActionLink("Add New Item", "Create", "Item", null, new { @class = "nav-link text-nowrap" })</li>
 									<li class="nav-item">@Html.ActionLink("Bulk Upload", "Index", "BulkUpload", new { bulkUploadDataType = BulkUploadDataType.Item.ToString() }, new { @class = "nav-link text-nowrap" })</li>
 									<li class="nav-item">@Html.ActionLink("Download New Item Template", "ItemTemplateNewExporter", "Item", null, new { @class = "nav-link text-nowrap" })</li>
-									<li class="nav-item">@Html.ActionLink("Clear Icon Cache", "ClearCache", "HierarchyClass", null, new { @class = "nav-link text-nowrap" })</li>
+								    <li class="nav-item">@Html.ActionLink("Clear Icon Cache", "ClearCache", "HierarchyClass", null, new { @class = "nav-link text-nowrap" })</li>
+								    <li class="nav-item">@Html.ActionLink("Item Column Order", "Index", "ItemColumnDisplay", null, new { @class = "nav-link text-nowrap" })</li>
 								}
 							</ul>
 						</li>

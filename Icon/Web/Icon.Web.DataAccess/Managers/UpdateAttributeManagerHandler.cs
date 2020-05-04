@@ -8,18 +8,21 @@ namespace Icon.Web.DataAccess.Managers
 {
     public class UpdateAttributeManagerHandler : IManagerHandler<UpdateAttributeManager>
     {
-        private ICommandHandler<UpdateAttributeCommand> updateAttributeCommandHandler;
-        private ICommandHandler<AddUpdateCharacterSetCommand> addUpdateCharacterSetCommandHandler;
-        private ICommandHandler<AddUpdatePickListDataCommand> addUpdatePickListDataCommandHandler;
+        private readonly ICommandHandler<UpdateAttributeCommand> updateAttributeCommandHandler;
+        private readonly ICommandHandler<AddUpdateCharacterSetCommand> addUpdateCharacterSetCommandHandler;
+        private readonly ICommandHandler<AddUpdatePickListDataCommand> addUpdatePickListDataCommandHandler;
+        private readonly ICommandHandler<AddMissingColumnsToItemColumnDisplayTableCommand> addMissingColumnToItemColumnOrderTableCommandHandler;
 
         public UpdateAttributeManagerHandler(
             ICommandHandler<UpdateAttributeCommand> updateAttributeCommandHandler,
             ICommandHandler<AddUpdateCharacterSetCommand> addUpdateCharacterSetCommandHandler,
-            ICommandHandler<AddUpdatePickListDataCommand> addUpdatePickListDataCommandHandler)
+            ICommandHandler<AddUpdatePickListDataCommand> addUpdatePickListDataCommandHandler,
+            ICommandHandler<AddMissingColumnsToItemColumnDisplayTableCommand> addMissingColumnToItemColumnOrderTableCommandHandler)
         {
             this.updateAttributeCommandHandler = updateAttributeCommandHandler;
             this.addUpdateCharacterSetCommandHandler = addUpdateCharacterSetCommandHandler;
             this.addUpdatePickListDataCommandHandler = addUpdatePickListDataCommandHandler;
+            this.addMissingColumnToItemColumnOrderTableCommandHandler = addMissingColumnToItemColumnOrderTableCommandHandler;
         }
 
         public void Execute(UpdateAttributeManager data)
@@ -40,6 +43,8 @@ namespace Icon.Web.DataAccess.Managers
                         AttributeId = data.Attribute.AttributeId
                     });
                 }
+
+                addMissingColumnToItemColumnOrderTableCommandHandler.Execute(new AddMissingColumnsToItemColumnDisplayTableCommand());
             }
             catch (Exception ex)
             {

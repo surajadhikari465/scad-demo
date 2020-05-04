@@ -22,6 +22,7 @@ namespace Icon.Web.Tests.Unit.Managers
         private Mock<ICommandHandler<AddUpdateCharacterSetCommand>> mockAddUpdateCharacterSetCommand;
         private Mock<ICommandHandler<AddUpdatePickListDataCommand>> mockAddUpdatePickListDataCommand;
         private Mock<ICommandHandler<AddAttributeMessageCommand>> mockAddAttributeMessageCommand;
+        private Mock<ICommandHandler<AddMissingColumnsToItemColumnDisplayTableCommand>> mockAddMissingColumnsToItemColumnDisplayTableCommand;
         private AttributeModel attribute;
 
         [TestInitialize]
@@ -31,12 +32,14 @@ namespace Icon.Web.Tests.Unit.Managers
             mockAddUpdateCharacterSetCommand = new Mock<ICommandHandler<AddUpdateCharacterSetCommand>>();
             mockAddUpdatePickListDataCommand = new Mock<ICommandHandler<AddUpdatePickListDataCommand>>();
             mockAddAttributeMessageCommand = new Mock<ICommandHandler<AddAttributeMessageCommand>>();
+            mockAddMissingColumnsToItemColumnDisplayTableCommand = new Mock<ICommandHandler<AddMissingColumnsToItemColumnDisplayTableCommand>>();
 
             managerHandler = new AddAttributeManagerHandler(
                 mockAddAttributeCommand.Object, 
                 mockAddUpdateCharacterSetCommand.Object, 
                 mockAddUpdatePickListDataCommand.Object,
-                mockAddAttributeMessageCommand.Object);
+                mockAddAttributeMessageCommand.Object,
+                mockAddMissingColumnsToItemColumnDisplayTableCommand.Object);
             attribute = new AttributeModel();
         }
 
@@ -57,6 +60,7 @@ namespace Icon.Web.Tests.Unit.Managers
             mockAddUpdateCharacterSetCommand.Verify(c => c.Execute(It.IsAny<AddUpdateCharacterSetCommand>()), Times.Once);
             mockAddUpdatePickListDataCommand.Verify(c => c.Execute(It.IsAny<AddUpdatePickListDataCommand>()), Times.Once);
             mockAddAttributeMessageCommand.Verify(c => c.Execute(It.IsAny<AddAttributeMessageCommand>()), Times.Once);
+            mockAddMissingColumnsToItemColumnDisplayTableCommand.Verify(c => c.Execute(It.IsAny<AddMissingColumnsToItemColumnDisplayTableCommand>()), Times.Once);
         }
     }
 }

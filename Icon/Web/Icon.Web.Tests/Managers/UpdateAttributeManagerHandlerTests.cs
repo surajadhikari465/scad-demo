@@ -21,6 +21,7 @@ namespace Icon.Web.Tests.Unit.Managers
         private Mock<ICommandHandler<UpdateAttributeCommand>> mockUpdateAttributeCommand;
         private Mock<ICommandHandler<AddUpdateCharacterSetCommand>> mockAddUpdateCharacterSetCommand;
         private Mock<ICommandHandler<AddUpdatePickListDataCommand>> mockAddUpdatePickListDataCommand;
+        private Mock<ICommandHandler<AddMissingColumnsToItemColumnDisplayTableCommand>> mockAddMissingColumnsToItemColumnDisplayTableCommand;
         private IDbProvider db;
         private AttributeModel attribute;
         private List<CharacterSetModel> characterSetModelList;
@@ -39,13 +40,18 @@ namespace Icon.Web.Tests.Unit.Managers
             mockUpdateAttributeCommand = new Mock<ICommandHandler<UpdateAttributeCommand>>();
             mockAddUpdateCharacterSetCommand = new Mock<ICommandHandler<AddUpdateCharacterSetCommand>>();
             mockAddUpdatePickListDataCommand = new Mock<ICommandHandler<AddUpdatePickListDataCommand>>();
+            mockAddMissingColumnsToItemColumnDisplayTableCommand = new Mock<ICommandHandler<AddMissingColumnsToItemColumnDisplayTableCommand>>();
+
             AutoMapperWebConfiguration.Configure();
             BuildModel();
         }
 
         private void BuildAttributeManagerHandler()
         {
-            managerHandler = new UpdateAttributeManagerHandler(mockUpdateAttributeCommand.Object, mockAddUpdateCharacterSetCommand.Object, mockAddUpdatePickListDataCommand.Object);
+            managerHandler = new UpdateAttributeManagerHandler(mockUpdateAttributeCommand.Object, 
+                mockAddUpdateCharacterSetCommand.Object, 
+                mockAddUpdatePickListDataCommand.Object, 
+                mockAddMissingColumnsToItemColumnDisplayTableCommand.Object);
         }
 
         [TestMethod]
@@ -63,6 +69,7 @@ namespace Icon.Web.Tests.Unit.Managers
             mockUpdateAttributeCommand.Verify(c => c.Execute(It.IsAny<UpdateAttributeCommand>()), Times.Once);
             mockAddUpdateCharacterSetCommand.Verify(c => c.Execute(It.IsAny<AddUpdateCharacterSetCommand>()), Times.Once);
             mockAddUpdatePickListDataCommand.Verify(c => c.Execute(It.IsAny<AddUpdatePickListDataCommand>()), Times.Once);
+            mockAddMissingColumnsToItemColumnDisplayTableCommand.Verify(c => c.Execute(It.IsAny<AddMissingColumnsToItemColumnDisplayTableCommand>()), Times.Once);
         }
 
         private UpdateAttributeManager GetUpdateAttributeManager(AttributeModel attribute, List<CharacterSetModel> characterSetModelList, List<PickListModel> pickListModel)
@@ -167,7 +174,7 @@ namespace Icon.Web.Tests.Unit.Managers
 			,[Description] ='test1234'
 		    ,[AttributeName] = 'test1234'			
 			,[MaxLengthAllowed] = 1
-			,[IsPickList] = 0
+			,[IsPickList] = 1
 			,[SpecialCharactersAllowed] = 'All'
             ,[IsRequired] = 1
              WHERE [AttributeId]=@AttributeId";
@@ -197,6 +204,7 @@ namespace Icon.Web.Tests.Unit.Managers
                 AttributeName = "test1234",
                 DisplayName = "test1234",
                 TraitCode = "test1234",
+                IsPickList = true,
                 DataTypeId = GetNewDataTypeId()
             };
         }

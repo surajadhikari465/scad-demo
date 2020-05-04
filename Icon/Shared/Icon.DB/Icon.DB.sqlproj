@@ -837,6 +837,10 @@
     <Build Include="dbo\StoredProcedures\UpdateBrand.sql" />
     <None Include="Scripts\PopulateData\UpdateAttributesDefaultValue.sql" />
     <Build Include="nutrition\Tables\ItemNutritionHistory.sql" />
+    <Build Include="dbo\User Defined Types\ItemColumnDisplayOrderType.sql" />
+    <Build Include="dbo\StoredProcedures\AddMissingColumnsToItemDisplayOrder.sql" />
+    <Build Include="dbo\StoredProcedures\UpdateItemDisplayOrder.sql" />
+    <Build Include="dbo\Tables\ItemColumnDisplayOrder.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

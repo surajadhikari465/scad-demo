@@ -1,14 +1,101 @@
-﻿using Icon.Web.DataAccess.Commands;
+﻿using System;
+using System.Collections.Generic;
+using Icon.Web.DataAccess.Commands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Icon.Shared.DataAccess.Dapper.DbProviders;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Data;
 using Dapper;
+using Icon.Common.DataAccess;
 using Icon.Common.Models;
+using Icon.Web.DataAccess.Models;
+using Icon.Web.DataAccess.Queries;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
+
+    [TestClass]
+    public class UpdateItemColumnOrderCommandHandlerTests
+    {
+        private IDbConnection dbConnection;
+        private IDbTransaction transaction;  
+        private UpdateItemColumnOrderCommandHandler updateItemColumnOrderCommandHandler;
+
+
+        [TestInitialize]
+        public void Initialize()    
+        {
+
+            dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString);
+            dbConnection.Open();
+            transaction = dbConnection.BeginTransaction();
+            updateItemColumnOrderCommandHandler = new UpdateItemColumnOrderCommandHandler(new SqlDbProvider {Connection = dbConnection, Transaction = transaction} );
+        }
+        [TestMethod]
+        public void UpdateItemColumnOrderCommandHandler_Update1OrderValue_DBValueIncremented()
+        {
+            var displayOrderData =
+                GetItemColumnOrderData(dbConnection, transaction);
+
+            var randomItem = displayOrderData.OrderBy(x => Guid.NewGuid()).Take(1).Single();
+            var originalDisplayOrder = randomItem.DisplayOrder;
+            var newDisplayOrder = originalDisplayOrder + 1;
+
+            randomItem.DisplayOrder = newDisplayOrder;
+
+            var command = new UpdateItemColumnOrderCommand
+            {
+                DisplayData = new List<ItemColumnOrderModel>() {randomItem}
+            };
+            updateItemColumnOrderCommandHandler.Execute(command);
+
+
+            var updatedOrderData = GetItemColumnOrderData(dbConnection, transaction);
+            var updatedItem = updatedOrderData.Single(s =>
+                s.ReferenceId == randomItem.ReferenceId && s.ColumnType == randomItem.ColumnType);
+
+            Assert.AreEqual(newDisplayOrder, updatedItem.DisplayOrder);
+        }
+
+        private List<ItemColumnOrderModel> GetItemColumnOrderData(IDbConnection db, IDbTransaction tran)
+        {
+            var sql = @"
+               select  ColumnType, 
+                        ReferenceId, 
+                        h.HierarchyName ReferenceName,
+                        d.DisplayOrder 
+                from dbo.ItemDisplayOrder d
+                inner join dbo.Hierarchy h on d.ReferenceId = h.HierarchyId
+				where d.ColumnType = 'Hierarchy'
+
+                union all 
+
+                select  ColumnType, 
+                        ReferenceId, 
+                        a.AttributeName ReferenceName,
+                        d.DisplayOrder 
+                from dbo.ItemDisplayOrder d
+                inner join dbo.Attributes a on d.ReferenceId = a.AttributeId
+				where d.ColumnType = 'Attribute'
+                order by DisplayOrder
+            ";
+
+           return db.Query<ItemColumnOrderModel>(sql, transaction: tran).ToList();
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            transaction.Rollback();
+            transaction.Dispose();
+            dbConnection.Close();
+            dbConnection.Dispose();
+
+        }
+    }
+
     [TestClass]
     public class UpdateAttributeCommandHandlerTests
     {
