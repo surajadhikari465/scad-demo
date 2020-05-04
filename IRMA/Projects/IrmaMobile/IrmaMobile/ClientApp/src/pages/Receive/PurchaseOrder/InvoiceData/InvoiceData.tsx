@@ -383,7 +383,6 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
             dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
             dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
-            dispatch({ type: types.SETLISTEDORDERS, listedOrders: [] });
             history.push('/receive/PurchaseOrder');
         } else {
             toast.error(`Error when refusing order: ${result.errorMessage || 'No message given'}`, { autoClose: false })
@@ -407,13 +406,14 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                 toast.error(`Error when reparsing eInvoice: ${result.errorMessage || 'No message given'}`, { autoClose: false })
             }
 
-            var order = await agent.PurchaseOrder.detailsFromPurchaseOrderNumber(region, parseInt(purchaseOrderNumber));
+            var order = await agent.PurchaseOrder.getOrder(region, parseInt(purchaseOrderNumber));
             var reparsedOrderDetails = orderUtil.MapOrder(order);
-
-            dispatch({ type: types.SETORDERDETAILS, orderDetails: reparsedOrderDetails });
+            
             setInvoiceNumberEdited(false);
             setInvoiceDateEdited(false);
             setInvoiceTotalEdited(false);
+
+            dispatch({ type: types.SETORDERDETAILS, orderDetails: reparsedOrderDetails });
         }
         finally {
             setIsLoading(false);
@@ -437,7 +437,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             setIsLoading(true);
             const loadInvoiceOrder = async () => {
                 await agent.InvoiceData.updateOrderHeaderCosts(region, orderDetails.OrderId);
-                const order = await agent.PurchaseOrder.detailsFromPurchaseOrderNumber(region, orderDetails.OrderId);
+                const order = await agent.PurchaseOrder.getOrder(region, orderDetails.OrderId);
                 const mappedOrder = orderUtil.MapOrder(order);
                 await getOrderInvoiceCharges(false);
                 await getCurrencies();

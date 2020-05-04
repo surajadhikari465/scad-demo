@@ -1,11 +1,10 @@
-import React, { Fragment, useContext, useEffect, useCallback, useState } from "react";
+import React, { Fragment, useContext, useEffect, useCallback, useState, ChangeEvent } from "react";
 import { toast } from "react-toastify";
 import agent from "../../../../api/agent";
 import CurrentLocation from "../../../../layout/CurrentLocation";
-import { AppContext, types, IMenuItem } from "../../../../store";
+import { AppContext, types, IMenuItem, IExternalOrder } from "../../../../store";
 import ReceivePurchaseOrderDetails from "./components/ReceivePurchaseOrderDetails";
-import ReceivePurchaseOrderList from "./components/ReceivePurchaseOrderList";
-import ReceivePoSearch from "./components/ReceivePurchaseOrderSearch";
+import SelectOrderByScanCode from "./components/SelectOrderByScanCode";
 import ConfirmModal from "../../../../layout/ConfirmModal";
 import LoadingComponent from "../../../../layout/LoadingComponent";
 import { RouteComponentProps, useHistory } from "react-router-dom";
@@ -15,6 +14,10 @@ import orderUtil from "../util/Order"
 import isMinDate from "../util/MinDate";
 // @ts-ignore 
 import { BarcodeScanner, IBarcodeScannedEvent, transformScanCode } from '@wfm/mobile';
+import { Form, Grid, Input, Button } from "semantic-ui-react";
+import SelectExternalOrder from "./components/SelectExternalOrder";
+import { OrderByScanCode } from "../types/OrderByScanCode";
+import { IValidateOrderResult } from "../types/IValidateOrderResult";
 
 interface RouteParams {
     openOrderInformation: string;
@@ -25,21 +28,24 @@ interface IProps extends RouteComponentProps<RouteParams> { }
 const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     // @ts-ignore
     const { state, dispatch } = useContext(AppContext);
-    const { storeNumber, subteamNo, user, listedOrders, region, purchaseOrderUpc, purchaseOrderNumber, orderDetails } = state;
-    let selectedPo = null;
+    const { storeNumber, user, region, purchaseOrderUpc, purchaseOrderNumber, orderDetails } = state;
     const { openOrderInformation } = match.params;
     const [orderInformation, setOrderInformation] = useState<OrderInformation>({} as OrderInformation);
     let history = useHistory();
     const [openPartial, setOpenPartial] = useState<boolean>(false);
     const [costedByWeight, setCostedByWeight] = useState<boolean>(false);
     const [isReopening, setIsReopening] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [displaySelectExternalOrder, setDisplaySelectExternalOrder] = useState<boolean>(false);
+    const [displaySelectOrderByScanCode, setDisplaySelectOrderByScanCode] = useState<boolean>(false);
+    const [externalOrders, setExternalOrders] = useState<IExternalOrder[]>();
+    const [ordersByScanCode, setOrdersByScanCode] = useState<OrderByScanCode[]>();
 
     const setMenuItems = useCallback(() => {
         const handleExitReceiveClick = () => {
             dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
-            dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
             dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
-            dispatch({ type: types.SETLISTEDORDERS, listedOrders: [] });
+            dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
         };
 
         const handleNavigateAway = () => {
@@ -59,150 +65,162 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     }, [purchaseOrderNumber, orderDetails, dispatch]);
 
     useEffect(() => {
-        setMenuItems()
+        BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
+            let scanCode = '';
+            try {
+                scanCode = transformScanCode({ scanCode: data.Data, symbology: data.Symbology });
+            } catch (error) {
+                toast.error(error);
+                return;
+            }
 
-        return () => {
-            dispatch({ type: types.SETMENUITEMS, menuItems: [] });
-        }
-    }, [setMenuItems, dispatch]);
+            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: scanCode });
+            search();
+        });
 
-    useEffect(() => {
         dispatch({ type: types.SETTITLE, Title: 'Receive' });
+
         return () => {
             dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
         };
     }, [dispatch]);
 
     useEffect(() => {
-        BarcodeScanner.registerHandler((data: IBarcodeScannedEvent) => {
-            let scanCode = '';
-            try {
-                scanCode = transformScanCode({ scanCode: data.Data, symbology: data.Symbology});
-            } catch(error) {
-                toast.error(error);
-            }
-            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: scanCode });
-            loadPurchaseOrder(scanCode,
-                isNaN(parseInt(state.purchaseOrderNumber, 10)) ? '' : parseInt(state.purchaseOrderNumber, 10).toString(),
-                true);
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state]);
+        setMenuItems()
 
-    const loadPurchaseOrder = async (upc: string, purchaseOrderNumber: string, closeOrderList: boolean = false) => {
+        return () => {
+            dispatch({ type: types.SETMENUITEMS, menuItems: [] });
+        }
+    }, [setMenuItems, dispatch]);
+    
+    const searchForExternalOrders = async (purchaseOrderNumber: string) => {
         //int32 max...
         if (purchaseOrderNumber && parseInt(purchaseOrderNumber) > 2147483647) {
             toast.error(`The PO # value is too large. Please enter a smaller value`, { autoClose: false });
-            return;
-        }
-
-        try {
-            dispatch({ type: types.SETISLOADING, isLoading: true });
+        } else {
+            setIsLoading(true);
             dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
             setMenuItems();
 
-            if (closeOrderList) {
-                dispatch({ type: types.SETLISTEDORDERS, listedOrders: [] });
-            }
+            try {
+                let externalOrders = await agent.PurchaseOrder.getExternalOrders(region, parseInt(purchaseOrderNumber), storeNumber);
 
-            if (purchaseOrderNumber && purchaseOrderNumber !== '') {
-                var order = await agent.PurchaseOrder.detailsFromPurchaseOrderNumber(region, parseInt(purchaseOrderNumber));
-
-                if (!order) {
-                    toast.error("PO could not be loaded. Please try again.", { autoClose: false });
-                    return;
-                }
-
-                if (order.orderHeader_ID === 0) {
-                    toast.error(`PO #${purchaseOrderNumber} not found`, { autoClose: false });
-                    return;
-                }
-
-                if (parseInt(order.store_No) !== parseInt(storeNumber)) {
-                    toast.error(`PO ${purchaseOrderNumber} is for ${order.storeCompanyName}. Please try again.`, { autoClose: false });
-                    return;
-                }
-
-                if (!order.sentDate || isMinDate(order.sentDate)) {
-                    toast.error(`PO #${purchaseOrderNumber} has not yet been sent. Please try again.`, { autoClose: false });
-                    return;
-                }
-
-                if (upc && upc !== '' && !orderUtil.OrderHasUpc(order, upc)) {
-                    toast.error(`${upc} not found in PO #${purchaseOrderNumber}`, { autoClose: false });
-                    return;
-                }
-
-                try {
-                    var orderDetails = orderUtil.MapOrder(order, upc);
-
-                    if (!isMinDate(orderDetails.CloseDate)) {
-                        if (!orderDetails.PartialShipment) {
-                            toast.error(`PO ${purchaseOrderNumber} is already closed. To review or reopen a closed order, please use the IRMA client.`, { autoClose: false });
-                            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
-                            dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
-                            return;
-                        } else {
-                            setOpenPartial(true);
-                            return;
-                        }
-                    }
-
-                    var orderInformation: OrderInformation = {
-                        buyer: order.createdByName,
-                        isCreditOrder: order.return_Order,
-                        orderDate: order.orderDate,
-                        orderNotes: order.notes
-                    }
-
-                    setOrderInformation(orderInformation);
-
-                    if (orderDetails.ItemLoaded) {
-                        let storeItem = await agent.StoreItem.getStoreItem(
-                            region,
-                            storeNumber,
-                            0,
-                            user!.userId,
-                            upc
-                        );
-
-                        setCostedByWeight(storeItem.costedByWeight)
-                    }
-
-                    dispatch({ type: types.SETORDERDETAILS, orderDetails: orderDetails });
-                } catch (err) {
-                    toast.error("Unable to open PO", { autoClose: false })
-                }
-
-            } else if (upc && upc !== '') {
-                var ordersRaw = await agent.PurchaseOrder.detailsFromUpc(
-                    region,
-                    upc,
-                    storeNumber
-                );
-
-                if (!ordersRaw || ordersRaw.length === 0) {
-                    toast.error('No open orders found.');
+                if (externalOrders.length === 1) {
+                    searchForOrder(externalOrders[0].orderHeaderId);
+                } else if (externalOrders.length > 1) {
+                    setExternalOrders(externalOrders);
+                    setDisplaySelectExternalOrder(true);
                 } else {
-                    const orders = ordersRaw.map((order: any) => (
-                        {
-                            PoNum: order.orderHeader_ID.toString(),
-                            OrderCost: order.orderedCost,
-                            ExpectedDate: order.expected_Date,
-                            Subteam: order.subTeam_Name,
-                            EInv: order.einvoiceRequired
-                        }
-                    ));
+                    searchForOrder(parseInt(purchaseOrderNumber));
+                }
+            } catch (error) {
+                console.error(error);
+                toast.error(`Error occurred when searching for order an order. Please retry your request.  If the problem persists, please contact support.`, { autoClose: false });
+                dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
+                setIsLoading(false);
+            } 
+        }
+    }
 
-                    dispatch({ type: types.SETLISTEDORDERS, listedOrders: orders });
+    const searchForOrder = async (purchaseOrderNumber: number) => {
+        setIsLoading(true);
+        try {
+            const order = await agent.PurchaseOrder.getOrder(region, purchaseOrderNumber);
+            const validationResult = validateOrder(order);
+            if (validationResult.isValid) {
+                if (purchaseOrderUpc && purchaseOrderUpc.length > 0) {
+                    if (order.orderItems.some((oi: { identifier: string }) => oi.identifier === purchaseOrderUpc)) {
+                        searchForOrderItem(purchaseOrderNumber, purchaseOrderUpc);
+                    } else {
+                        toast.error(`${purchaseOrderUpc} not found in PO #${purchaseOrderNumber}`, { autoClose: false });
+                    }
+                }
+
+                var orderDetails = orderUtil.MapOrder(order, purchaseOrderUpc);
+                var orderInformation: OrderInformation = {
+                    buyer: order.createdByName,
+                    isCreditOrder: order.return_Order,
+                    orderDate: order.orderDate,
+                    orderNotes: order.notes
+                }
+                setOrderInformation(orderInformation);
+                dispatch({ type: types.SETORDERDETAILS, orderDetails: orderDetails });
+
+                if(!isMinDate(order.closeDate) && order.partialShipment) {
+                    setOpenPartial(true);
                 }
             } else {
-                toast.error("UPC and/or PO # required", { autoClose: false });
+                toast.error(validationResult.errorMessage);
+                dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
+                dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
+                dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
             }
+        } catch (error) {
+            console.error(`Error retrieving order ${purchaseOrderNumber}: ${error}`);
+            toast.error(`Error occurred when searching for order an order. Please retry your request.  If the problem persists, please contact support.`, { autoClose: false });
+            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
+            dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
+            dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
         } finally {
-            dispatch({ type: types.SETISLOADING, isLoading: false });
+            setIsLoading(false);
         }
     };
+
+    const validateOrder = (order: { orderHeader_ID: number, store_No: number, storeCompanyName: string, sentDate: Date, closeDate: Date, partialShipment: boolean }): IValidateOrderResult => {
+        if (!order) {
+            return { isValid: false, errorMessage: "PO could not be loaded. Please try again." };
+        } else if (order.orderHeader_ID === 0) {
+            return { isValid: false, errorMessage: `PO #${purchaseOrderNumber} not found.` };
+        } else if (order.store_No !== parseInt(storeNumber)) {
+            return { isValid: false, errorMessage: `PO ${order.orderHeader_ID} is for ${order.storeCompanyName}. Please try again.` };
+        } else if (!order.sentDate || isMinDate(order.sentDate)) {
+            return { isValid: false, errorMessage: `PO #${order.orderHeader_ID} has not yet been sent. Please try again.` };
+        } else if (purchaseOrderUpc && purchaseOrderUpc.length > 0 && !orderUtil.OrderHasUpc(order, purchaseOrderUpc)) {
+            return { isValid: false, errorMessage: `${purchaseOrderUpc} not found in PO #${order.orderHeader_ID}.` };
+        } else if (!isMinDate(order.closeDate) && !order.partialShipment) {
+            return { isValid: false, errorMessage: `PO ${order.orderHeader_ID} is already closed. To review or reopen a closed order, please use the IRMA client.` }
+        } else {
+            return { isValid: true };
+        }
+    };
+
+    const searchForOrderItem = async (purchaseOrderNumber: number, scanCode: string) => {
+        let storeItem = await agent.StoreItem.getStoreItem(
+            region,
+            storeNumber,
+            0,
+            user!.userId,
+            scanCode
+        );
+
+        setCostedByWeight(storeItem.costedByWeight)
+    }
+
+    const searchForOrderByScanCode = async (scanCode: string) => {
+        setIsLoading(true);
+        try {
+            let orders = await agent.PurchaseOrder.detailsFromUpc(region, scanCode, storeNumber);
+            if (!orders || orders.length <= 0) {
+                toast.error('No open orders found.');
+            } else {
+                setOrdersByScanCode(orders.map((order: any) => (
+                    {
+                        PoNum: order.orderHeader_ID.toString(),
+                        OrderCost: order.orderedCost,
+                        ExpectedDate: order.expected_Date,
+                        Subteam: order.subTeam_Name,
+                        EInv: order.einvoiceRequired
+                    }
+                )));
+                setDisplaySelectOrderByScanCode(true);
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error('Error occurred while searching for orders by UPC. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
     const handleOnCloseOrderInformation = () => {
         history.goBack();
@@ -211,15 +229,16 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     const handleReopenPartial = async () => {
         try {
             setIsReopening(true);
-            const result = await agent.PurchaseOrder.reopenOrder(region, parseInt(purchaseOrderNumber));
+            const result = await agent.PurchaseOrder.reOpenOrder(region, parseInt(purchaseOrderNumber!));
 
             if (result && result.status) {
                 toast.info('The order has been reopened');
             } else {
                 toast.error(`Error reopening the order: ${(result && result.errorMessage) || 'No message given'}`);
             }
-        }
-        finally {
+        } catch (error) {
+            toast.error(`Error reopening the order: ${error}`);
+        } finally {
             setIsReopening(false);
         }
     }
@@ -230,21 +249,106 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
         dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
     }
 
-    if (listedOrders.length > 0 && !selectedPo) {
-        return (<ReceivePurchaseOrderList upc={purchaseOrderUpc} orders={listedOrders} poSelected={loadPurchaseOrder} />)
+    const handleSearchClicked = () => {
+        search();
+    }
+
+    const handlePurchaseOrderUpcChanged = (e: ChangeEvent<HTMLInputElement>) => {        
+        dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: e.target.value });
+    }
+
+    const handlePurchaseOrderNumberChanged = (e: ChangeEvent<HTMLInputElement>) => {
+        dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: e.target.value });
+    }
+
+    const handleSelectExternalOrder = (upc: string, orderHeaderId: number) => {
+        setDisplaySelectExternalOrder(false);
+        dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: orderHeaderId.toString() });
+        searchForOrder(orderHeaderId);
+    };
+
+    const handleSelectOrderByScanCode = (upc: string, orderHeaderId: number) => {
+        setDisplaySelectOrderByScanCode(false);
+        dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: orderHeaderId.toString() });
+        searchForOrder(orderHeaderId);
+    };
+
+    const search = () => {
+        setMenuItems();
+
+        if (purchaseOrderNumber && purchaseOrderNumber.length > 0 && purchaseOrderUpc && purchaseOrderUpc.length > 0) {
+            searchForExternalOrders(purchaseOrderNumber);
+        } else if (purchaseOrderNumber && purchaseOrderNumber.length > 0) {
+            searchForExternalOrders(purchaseOrderNumber);
+        } else if (purchaseOrderUpc && purchaseOrderUpc.length > 0) {
+            searchForOrderByScanCode(purchaseOrderUpc);
+        } else {
+            toast.error('Please enter a value for the PO # or the UPC to perform a search.');
+        }
+    }
+
+    if (displaySelectExternalOrder) {
+        return (<SelectExternalOrder upc={purchaseOrderUpc!} orders={externalOrders!} orderSelected={handleSelectExternalOrder} />)
+    }
+    else if (displaySelectOrderByScanCode) {
+        return (<SelectOrderByScanCode upc={purchaseOrderUpc!} orders={ordersByScanCode!} orderSelected={handleSelectOrderByScanCode} />)
     }
     else {
         return (
             <Fragment>
                 {isReopening ? <LoadingComponent content="Reopening order..." /> :
                     <Fragment>
-                        <ConfirmModal handleCancelClose={handleReopenCancel} handleConfirmClose={handleReopenPartial} setOpenExternal={setOpenPartial} showTriggerButton={false}
-                            openExternal={openPartial} headerText='Receive' cancelButtonText='No' confirmButtonText='Yes'
+                        <ConfirmModal
+                            handleCancelClose={handleReopenCancel}
+                            handleConfirmClose={handleReopenPartial}
+                            setOpenExternal={setOpenPartial}
+                            showTriggerButton={false}
+                            openExternal={openPartial}
+                            headerText='Receive'
+                            cancelButtonText='No'
+                            confirmButtonText='Yes'
                             lineOne={'This order was closed as a partial shipment. Re-open the order now to scan more items?'} />
                         <OrderInformationModal handleOnClose={handleOnCloseOrderInformation} orderInformation={orderInformation} open={openOrderInformation === 'open'} />
                         <CurrentLocation />
                         <div style={{ marginTop: '10px', padding: '0px' }}>
-                            <ReceivePoSearch handleSubmit={loadPurchaseOrder} />
+                            <Form onSubmit={handleSearchClicked}>
+                                <Grid centered>
+                                    <Grid.Row style={{ paddingBottom: "0px" }}>
+                                        <Form.Group inline>
+                                            <Grid.Column>
+                                                <Form.Field>
+                                                    <Input
+                                                        name="purchaseOrderNumber"
+                                                        type="number"
+                                                        placeholder="PO #"
+                                                        min={0}
+                                                        value={purchaseOrderNumber}
+                                                        onChange={handlePurchaseOrderNumberChanged}
+                                                    />
+                                                </Form.Field>
+                                                <Form.Field>
+                                                    <Input
+                                                        name="purchaseOrderUpc"
+                                                        type="number"
+                                                        placeholder="UPC"
+                                                        min={0}
+                                                        value={purchaseOrderUpc}
+                                                        onChange={handlePurchaseOrderUpcChanged}
+                                                    />
+                                                </Form.Field>
+                                            </Grid.Column>
+                                            <Grid.Column>
+                                                <Button
+                                                    loading={isLoading}
+                                                    type="submit"
+                                                    content="Search"
+                                                    disabled={(!purchaseOrderUpc || purchaseOrderUpc?.length === 0) && (!purchaseOrderNumber || purchaseOrderNumber?.length === 0)}
+                                                />
+                                            </Grid.Column>
+                                        </Form.Group>
+                                    </Grid.Row>
+                                </Grid>
+                            </Form>
                         </div>
                         <ReceivePurchaseOrderDetails costedByWeight={costedByWeight} />
                     </Fragment>

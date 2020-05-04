@@ -1,4 +1,4 @@
-export interface ListedOrder {
+export interface OrderByScanCode {
     PoNum: number;
     OrderCost: number;
     ExpectedDate: Date;

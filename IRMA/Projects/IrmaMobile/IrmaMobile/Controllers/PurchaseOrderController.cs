@@ -46,6 +46,17 @@ namespace IrmaMobile.Controllers
 
         [ProducesResponseType(200)]
         [HttpGet]
+        public async Task<List<ExternalOrder>> ExternalPurchaseOrders([FromRoute]string region, [FromQuery]int externalOrderNumber, [FromQuery]int storeNumber)
+        {
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(PurchaseOrderController)}.{nameof(PurchaseOrders)}");
+
+            var result = await service.GetExternalPurchaseOrdersAsync(region, externalOrderNumber, storeNumber);
+
+            return result;
+        }
+
+        [ProducesResponseType(200)]
+        [HttpGet]
         public async Task<List<ReasonCode>> ReasonCodes(string region)
         {
             logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(PurchaseOrderController)}.{nameof(ReasonCodes)}");

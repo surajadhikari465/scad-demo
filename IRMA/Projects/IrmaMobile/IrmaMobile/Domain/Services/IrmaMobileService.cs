@@ -134,11 +134,6 @@ namespace IrmaMobile.Services
 
         public async Task<Order> GetPurchaseOrderAsync(string region, long poNum)
         {
-            if (poNum > int.MaxValue)
-            {
-                return null;
-            }
-
             var order = await MakeServiceRequest(region, client => client.GetOrderAsync(poNum));
             return order;
         }
@@ -416,6 +411,19 @@ namespace IrmaMobile.Services
                 serviceClient.Abort();
                 throw;
             }
+        }
+
+        public async Task<List<ExternalOrder>> GetExternalPurchaseOrdersAsync(string region, int externalOrderNumber, int storeNumber)
+        {
+            var orders = await MakeServiceRequest(region, client => client.GetExternalOrdersAsync(externalOrderNumber, storeNumber));
+            return orders
+                .Select(o => new ExternalOrder
+                {
+                    OrderHeaderId = o.OrderHeader_ID,
+                    CompanyName = o.CompanyName,
+                    Source = o.Source
+                })
+                .ToList();
         }
     }
 }

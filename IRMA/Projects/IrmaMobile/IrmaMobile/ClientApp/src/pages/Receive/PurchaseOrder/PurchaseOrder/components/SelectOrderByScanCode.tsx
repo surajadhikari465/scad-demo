@@ -1,39 +1,35 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { Grid, Segment } from "semantic-ui-react";
-import { ListedOrder } from "../../types/ListedOrder";
+import { OrderByScanCode } from "../../types/OrderByScanCode";
 import "./styles.scss"
 import dateFormat from 'dateformat'
 import { AppContext, types } from "../../../../../store";
 
 interface IProps {
-    orders: ListedOrder[];
+    orders: OrderByScanCode[];
     upc: string;
-    poSelected: (upc: string, purchaseOrderNumber: string, closeOrderList: boolean) => any;
+    orderSelected: (upc: string, orderHeaderId: number) => any;
 }
 
-const ReceivePurchaseOrderList: React.FC<IProps> = ({ orders, upc, poSelected }) => {
+const SelectOrderByScanCode: React.FC<IProps> = (props) => {
     //@ts-ignore
     const { state, dispatch } = useContext(AppContext);
 
     useEffect(() => {
-          dispatch({ type: types.SETTITLE, Title: 'Find PO By Item' });
-          return () => {
+        dispatch({ type: types.SETTITLE, Title: 'Find PO By Item' });
+        return () => {
             dispatch({ type: types.SETTITLE, Title: 'Receive' });
         };
-      },[dispatch]);
+    }, [dispatch]);
 
-      
     const purchaseOrderClicked = (e: React.MouseEvent<HTMLButtonElement>) => {
-        const purchaseOrderNumber = parseInt(e.currentTarget.textContent!).toString();
-        dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: purchaseOrderNumber });
-        poSelected(isNaN(parseInt(upc)) ? '' : upc, 
-            isNaN(parseInt(purchaseOrderNumber)) ? '' : purchaseOrderNumber, 
-            true);
+        const orderHeaderId = parseInt(e.currentTarget.textContent!);
+        props.orderSelected(props.upc, orderHeaderId);
     }
 
     return (
         <Fragment>
-            <Segment textAlign='center' size='large' basic style={{ fontWeight: 'bold' }}>UPC: {upc}</Segment>
+            <Segment textAlign='center' size='large' basic style={{ fontWeight: 'bold' }}>UPC: {props.upc}</Segment>
             <Grid columns={5} celled>
                 <Grid.Row color="grey" style={{ fontSize: '10px' }} textAlign='center'>
                     <Grid.Column>PO #</Grid.Column>
@@ -43,7 +39,7 @@ const ReceivePurchaseOrderList: React.FC<IProps> = ({ orders, upc, poSelected })
                     <Grid.Column>Einv</Grid.Column>
                 </Grid.Row>
 
-                {orders.map(order => (
+                {props.orders.map(order => (
                     <Grid.Row key={order.PoNum}>
                         <Grid.Column style={{ fontWeight: 'bold' }}><button className="link-button" onClick={purchaseOrderClicked}>{order.PoNum}</button></Grid.Column>
                         <Grid.Column>{order.OrderCost}</Grid.Column>
@@ -57,4 +53,4 @@ const ReceivePurchaseOrderList: React.FC<IProps> = ({ orders, upc, poSelected })
     );
 };
 
-export default ReceivePurchaseOrderList;
+export default SelectOrderByScanCode;

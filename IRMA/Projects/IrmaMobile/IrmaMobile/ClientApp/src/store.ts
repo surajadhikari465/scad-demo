@@ -1,7 +1,7 @@
 import React from "react";
 import { OrderDetails } from "./pages/Receive/PurchaseOrder/types/OrderDetails";
 import { ReasonCode } from "./pages/Receive/PurchaseOrder/types/ReasonCode";
-import { ListedOrder } from "./pages/Receive/PurchaseOrder/types/ListedOrder";
+import { OrderByScanCode } from "./pages/Receive/PurchaseOrder/types/OrderByScanCode";
 import createPersistedReducer from "./scripts/use-persisted-reducer";
 import ITransferItem from "./pages/Transfer/types/ITransferItem";
 import ITransferData from "./pages/Transfer/types/ITransferData";
@@ -9,39 +9,36 @@ import ITransferData from "./pages/Transfer/types/ITransferData";
 export const usePersistedReducer = createPersistedReducer('state');
 
 interface IIntitialState {
-    region: string;
-    stores: IStore[];
-    store: string;
-    storeNumber: string;
-    subteams: ISubTeam[];
-    subteam: ISubTeam;
-    subteamNo: string;
-    subteamSession: ISubteamSession[];
-    shrinkType: IShrinkType;
+    region: string,
+    stores: IStore[],
+    store: string,
+    storeNumber: string,
+    subteams: ISubTeam[],
+    subteam: ISubTeam,
+    subteamNo: string,
+    subteamSession: ISubteamSession[],
+    shrinkType: IShrinkType,
     shrinkTypes: any[],
     selectedShrinkItem: ISelectedShrink,
-    isLoading: boolean;
-    orderDetails: OrderDetails | null;
-    mappedReasonCodes: IMappedReasonCode[];
-    reasonCodes: ReasonCode[];
-    modalOpen: boolean;
-    listedOrders: ListedOrder[];
-    purchaseOrderUpc: string;
-    purchaseOrderNumber: string;
-    menuItems: IMenuItem[];
-    settingsItems: IMenuItem[];
-    showShrinkHeader: boolean;
-    Title: string;
-    transferData: ITransferData | null;
-    transferLineItem: ITransferItem | null;
-    showCog: boolean;
-    transferToStores: IStore[] | null;
-    user: IUser | null;
-    shrinkAdjustmentReasons: IShrinkAdjustment[] | null;
+    isLoading: boolean,
+    orderDetails: OrderDetails | null,
+    mappedReasonCodes: IMappedReasonCode[],
+    reasonCodes: ReasonCode[],
+    modalOpen: boolean,
+    purchaseOrderUpc: string,
+    purchaseOrderNumber: string,
+    menuItems: IMenuItem[],
+    settingsItems: IMenuItem[],
+    showShrinkHeader: boolean,
+    Title: string,
+    transferData: ITransferData | null,
+    transferLineItem: ITransferItem | null,
+    showCog: boolean,
+    transferToStores: IStore[] | null,
+    user: IUser | null,
+    shrinkAdjustmentReasons: IShrinkAdjustment[] | null,
+    externalOrders: IExternalOrder[] | null
 }
-
-const a = [] as ISubteamSession[]
-
 
 export interface IMenuItem {
     id: number;
@@ -74,7 +71,7 @@ export interface ISubTeam {
 
 export interface IShrinkAdjustment {
     abbreviation: string;
-    adjustmentDescription: string; 
+    adjustmentDescription: string;
     adjustmentID: number;
     inventoryAdjustmentCodeID: number;
 }
@@ -133,6 +130,12 @@ export interface IUser {
     telxonStoreLimit: number
 }
 
+export interface IExternalOrder {
+    orderHeaderId: number,
+    source: string,
+    companyName: string
+}
+
 export const initialState = {
     region: "",
     stores: [],
@@ -150,7 +153,6 @@ export const initialState = {
     mappedReasonCodes: [],
     reasonCodes: [],
     modalOpen: false,
-    listedOrders: [],
     purchaseOrderUpc: "",
     purchaseOrderNumber: "",
     menuItems: [],
@@ -162,7 +164,8 @@ export const initialState = {
     showCog: false,
     transferToStores: null,
     user: null,
-    shrinkAdjustmentReasons: null
+    shrinkAdjustmentReasons: null,
+    externalOrders: null
 } as IIntitialState;
 
 export const types = {
@@ -182,7 +185,6 @@ export const types = {
     SETMAPPEDREASONCODES: "SETMAPPEDREASONCODES",
     SETREASONCODES: "SETREASONCODES",
     SETMODALOPEN: "SETMODALOPEN",
-    SETLISTEDORDERS: "SETLISTEDORDERS",
     SETPURCHASEORDERUPC: "SETPURCHASEORDERUPC",
     SETPURCHASEORDERNUMBER: "SETPURCHASEORDERNUMBER",
     SETSETTINGSITEMS: "SETSETTINGSITEMS",
@@ -192,7 +194,7 @@ export const types = {
     SETTRANSFERDATA: "SETTRANSFERDATA",
     SETTRANSFERLINEITEM: "SETTRANSFERLINEITEM",
     TOGGLECOG: "TOGGLECOG",
-    SETTRANSFERTOSTORES: "SETTRANSFERTOSTORES", 
+    SETTRANSFERTOSTORES: "SETTRANSFERTOSTORES",
     SETSHRINKADJUSTMENTREASONS: "SETSHRINKADJUSTMENTREASONS",
     SETUSER: "SETUSER",
     RESETSTATE: "RESETSTATE"
@@ -203,7 +205,7 @@ export const AppContext = React.createContext({ state: initialState });
 export const reducer = (state: any, action: any) => {
     switch (action.type) {
         case types.RESETSTATE: {
-            return {...initialState, subteamSession: state.subteamSession};
+            return { ...initialState, subteamSession: state.subteamSession };
         }
         case types.SETREGION: {
             return { ...state, region: action.region };
@@ -253,9 +255,6 @@ export const reducer = (state: any, action: any) => {
         case types.SETMODALOPEN: {
             return { ...state, modalOpen: action.modalOpen };
         }
-        case types.SETLISTEDORDERS: {
-            return { ...state, listedOrders: action.listedOrders };
-        }
         case types.SETPURCHASEORDERUPC: {
             return { ...state, purchaseOrderUpc: action.purchaseOrderUpc };
         }
@@ -287,7 +286,7 @@ export const reducer = (state: any, action: any) => {
             return { ...state, user: action.user };
         }
         case types.SETSHRINKADJUSTMENTREASONS: {
-            return { ...state, shrinkAdjustmentReasons: action.shrinkAdjustmentReasons};
+            return { ...state, shrinkAdjustmentReasons: action.shrinkAdjustmentReasons };
         }
         default:
             return state;

@@ -28,6 +28,7 @@ namespace IrmaMobile.Services
         Task<Result> RefuseOrderAsync(string region, int orderId, int userId, int reasonCodeId);
         Task<Result> ReparseEInvoiceAsync(string region, int eInvId);
         Task<Result> UpdateOrderBeforeClosingAsync(string region, UpdateOrderBeforeClosingModel model);
+        Task<List<ExternalOrder>> GetExternalPurchaseOrdersAsync(string region, int externalOrderNumber, int storeNumber);
         Task<List<OrderItem>> GetReceivingListEinvoiceExceptionsAsync(string region, int orderId);
         Task<Result> ReopenOrderAsync(string region, int orderId);
         Task<List<DSDVendor>> GetVendorsAsync(string region, int storeNo);

@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import Config from "../config";
 import ITransferOrder from '../pages/Transfer/types/ITransferOrder'
-import { IStore, IUser, IShrinkAdjustment, IStoreItem } from "../store";
+import { IStore, IUser, IShrinkAdjustment, IStoreItem, IExternalOrder } from "../store";
 
 axios.defaults.baseURL = Config.baseUrl;
 axios.defaults.timeout = 60000; //1 minute
@@ -57,13 +57,14 @@ const StoreItem = {
 }
 
 const PurchaseOrder = {
-    detailsFromPurchaseOrderNumber: async (
-        region: string,
-        purchaseOrderNum: number
-    ) =>
+    getOrder: async (region: string, purchaseOrderNum: number) =>
         await requests.get(
             `/${region}/purchaseorder/PurchaseOrder?purchaseOrderNum=${purchaseOrderNum}`
         ),
+    getExternalOrders: async (region: string, purchaseOrderNum: number, storeNumber: string) =>
+        await requests.get(
+            `/${region}/purchaseorder/ExternalPurchaseOrders?externalOrderNumber=${purchaseOrderNum}&storeNumber=${storeNumber}`
+        ) as IExternalOrder[],
     detailsFromUpc: async (region: string, upc: string, store: string) =>
         await requests.get(
             `/${region}/purchaseorder/PurchaseOrders?upc=${upc}&storeNumber=${store}`
@@ -91,7 +92,7 @@ const PurchaseOrder = {
             packSize,
             userId
         }),
-    reopenOrder: async (region: string, orderId: number) => await requests.post(`/${region}/PurchaseOrder/ReopenOrder`, { OrderId: orderId })
+    reOpenOrder: async (region: string, orderId: number) => await requests.post(`/${region}/PurchaseOrder/ReopenOrder`, { OrderId: orderId })
 };
 
 const InvoiceData = {

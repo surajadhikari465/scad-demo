@@ -24,7 +24,7 @@ const ReceivingList: React.FC<IProps> = ({ match }) => {
     const [ordered, setOrdered] = useState<number>(0);
     const [received, setReceived] = useState<number>(0);
     const [eInvoiced, setEInvoiced] = useState<number>(0);
-    const [EInvoiceExceptionList, setEInvoiceExceptionList] = useState<OrderItem[]>();
+    const [eInvoiceExceptionList, setEInvoiceExceptionList] = useState<OrderItem[]>();
     const [enablePartialShipment, setEnablePartialShipment] = useState<boolean>(false);
 
     useEffect(() => {
@@ -61,8 +61,9 @@ const ReceivingList: React.FC<IProps> = ({ match }) => {
     }, [dispatch]);
 
     useEffect(() => {
+        setIsLoading(true);
+
         const loadOrder = async () => {
-            setIsLoading(true);
 
             try {
                 if(!orderDetails) {
@@ -99,7 +100,7 @@ const ReceivingList: React.FC<IProps> = ({ match }) => {
         },
         {
             menuItem: 'eInv. Exception',
-            render: () => <Tab.Pane loading={isLoadingExceptions} attached='top' style={{padding: '0px', height: '480px', overflow: 'auto'}}>{EInvoiceExceptionList && EInvoiceExceptionList.map((oi: OrderItem) => (<ReceivingListLineItem orderItem={oi} />))}</Tab.Pane>
+            render: () => <Tab.Pane loading={isLoadingExceptions} attached='top' style={{padding: '0px', height: '480px', overflow: 'auto'}}>{eInvoiceExceptionList && eInvoiceExceptionList.map((oi: OrderItem) => (<ReceivingListLineItem orderItem={oi} />))}</Tab.Pane>
         },
         {
             menuItem: 'Not Recvd.',
