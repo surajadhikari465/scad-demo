@@ -25,7 +25,8 @@ SELECT a.AttributeId,
 	awc.GridColumnWidth,
 	awc.CharacterSetRegexPattern,
 	awc.IsReadOnly,
-	a.XmlTraitDescription
+	a.XmlTraitDescription,
+	a.IsActive
 FROM dbo.Attributes a
 INNER JOIN dbo.DataType dt ON a.DataTypeId = dt.DataTypeId
 INNER JOIN dbo.AttributesWebConfiguration awc ON a.AttributeId = awc.AttributeId

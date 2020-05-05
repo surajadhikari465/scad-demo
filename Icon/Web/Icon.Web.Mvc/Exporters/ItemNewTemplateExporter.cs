@@ -114,7 +114,7 @@ namespace Icon.Web.Mvc.Exporters
                 return;
             }
             EmptyQueryParameters<IEnumerable<AttributeModel>> attributesParam = new EmptyQueryParameters<IEnumerable<AttributeModel>>();
-            var attributesModel = getAttributesQueryHandler.Search(attributesParam).OrderByDescending(a => a.IsRequired).ThenBy(a => a.DisplayOrder);
+            var attributesModel = getAttributesQueryHandler.Search(attributesParam).Where(a=>a.IsActive).OrderByDescending(a => a.IsRequired).ThenBy(a => a.DisplayOrder);
 
             var OrderOfFields = orderFieldsHelper.OrderAllFields(attributesModel.ToViewModels().ToList());
 
@@ -308,9 +308,9 @@ namespace Icon.Web.Mvc.Exporters
             }
 
             EmptyQueryParameters<IEnumerable<AttributeModel>> attributesParam = new EmptyQueryParameters<IEnumerable<AttributeModel>>();
-            var attributesModel = getAttributesQueryHandler.Search(attributesParam).OrderByDescending(a => a.IsRequired).ThenBy(a => a.DisplayOrder);
+            var attributesModel = getAttributesQueryHandler.Search(attributesParam).Where(a=>a.IsActive).OrderByDescending(a => a.IsRequired).ThenBy(a => a.DisplayOrder);
 
-            foreach (var attributeModel in attributesModel.Where(a => a.AttributeGroupId != (int)AttributeType.Nutrition))
+            foreach (var attributeModel in attributesModel.Where(a=>a.AttributeGroupId != (int)AttributeType.Nutrition))
             {
                 columnIndex = SelectedColumnNames.IndexOf(attributeModel.AttributeName);
                 if (columnIndex >= 0)

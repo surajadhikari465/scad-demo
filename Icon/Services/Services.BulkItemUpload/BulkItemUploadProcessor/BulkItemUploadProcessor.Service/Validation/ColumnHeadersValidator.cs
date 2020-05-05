@@ -48,18 +48,18 @@ namespace BulkItemUploadProcessor.Service.Validation
                 if (!headers.Contains(HierarchyNames.National))
                     return new ValidationResponse { IsValid = false, Error = $"Missing '{HierarchyNames.National}' column." };
 
-                foreach (var attribute in attributes.Where(a => a.IsRequired && !a.IsReadOnly))
+                foreach (var attribute in attributes.Where(a => a.IsRequired && !a.IsReadOnly && a.IsActive))
                 {
                     if (!headers.Contains(attribute.DisplayName))
                         return new ValidationResponse { IsValid = false, Error = $"Missing '{attribute.DisplayName}' column." };
                 }
-  
+
             }
             else
             {
                 if (!headers.Contains(Constants.ScanCodeColumnHeader))
                     return new ValidationResponse { IsValid = false, Error = $"Missing '{Constants.ScanCodeColumnHeader}' column." };
-                if (!headers.Any(h => Constants.HierarchyColumnNames.Contains(h)) && !attributes.Where(a => !a.IsReadOnly).Any(a => headers.Contains(a.DisplayName)))
+                if (!headers.Any(h => Constants.HierarchyColumnNames.Contains(h)) && !attributes.Where(a => !a.IsReadOnly && a.IsActive).Any(a => headers.Contains(a.DisplayName)))
                     return new ValidationResponse { IsValid = false, Error = $"Missing additional columns. Must specify a valid hierarchy or non-readonly attribute to update." };
             }
 

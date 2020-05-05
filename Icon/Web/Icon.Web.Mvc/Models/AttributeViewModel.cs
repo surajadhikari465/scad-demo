@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Icon.Common.Models;
 using Icon.Common;
+using Icon.Web.Mvc.Utility;
 
 namespace Icon.Web.Mvc.Models
 {
@@ -63,6 +64,8 @@ namespace Icon.Web.Mvc.Models
 
         public string AttributeGroupName { get; set; }
         public int? ItemCount { get; set; }
+        [Display(Name = AttributesHelper.AttributesColumnNames.IsActive)]
+        public bool IsActive { get; set; }
         
         public AttributeViewModel()
         {
@@ -121,6 +124,7 @@ namespace Icon.Web.Mvc.Models
             this.AvailableCharacterSets = new List<CharacterSetModel>();
             this.XmlTraitDescription = model.XmlTraitDescription;            
             this.ItemCount = model.ItemCount;
+            this.IsActive = model.IsActive;
         }
     }
 }

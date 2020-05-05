@@ -91,9 +91,9 @@ namespace Icon.Web.Mvc.Controllers
         }
 
         [WriteAccessAuthorize]
-        public ActionResult Edit(int attributeId)
+        public ActionResult Edit(int attributeId, int itemCount)
         {
-            AttributeViewModel viewModel = BuildEditViewModel(attributeId);
+            AttributeViewModel viewModel = BuildEditViewModel(attributeId, itemCount);
 
             TempData["viewModel"] = viewModel;
 
@@ -106,7 +106,7 @@ namespace Icon.Web.Mvc.Controllers
         {
             if (!ModelState.IsValid)
             {
-                viewModel = BuildEditViewModel(viewModel.AttributeId);
+                viewModel = BuildEditViewModel(viewModel.AttributeId, viewModel.ItemCount.Value);
                 InvalidateViewModel(viewModel);
                 return View(viewModel);
             }
@@ -147,6 +147,7 @@ namespace Icon.Web.Mvc.Controllers
                     MaximumNumber = viewModel.MaximumNumber,
                     NumberOfDecimals = viewModel.NumberOfDecimals,
                     DefaultValue = viewModel.DefaultValue,
+                    IsActive = viewModel.IsActive,
                     SpecialCharactersAllowed = viewModel.IsSpecialCharactersSelected ? (viewModel.SpecialCharacterSetSelected == Constants.SpecialCharactersAll) ? Constants.SpecialCharactersAll : viewModel.SpecialCharactersAllowed : null,
                     CharacterSetRegexPattern = attributesHelper.CreateCharacterSetRegexPattern(
                         viewModel.DataTypeId,
@@ -164,14 +165,14 @@ namespace Icon.Web.Mvc.Controllers
             }
             catch (Exception ex)
             {
-                viewModel = BuildEditViewModel(viewModel.AttributeId);
+                viewModel = BuildEditViewModel(viewModel.AttributeId,viewModel.ItemCount.Value);
                 var exceptionLogger = new ExceptionLogger(logger);
                 exceptionLogger.LogException(ex, this.GetType(), MethodBase.GetCurrentMethod());
                 InvalidateViewModel(viewModel);
                 return View(viewModel);
             }
 
-            viewModel = BuildEditViewModel(viewModel.AttributeId);
+            viewModel = BuildEditViewModel(viewModel.AttributeId, viewModel.ItemCount.Value);
 
             ViewData["SuccessMessage"] = $"Updated attribute: {viewModel.DisplayName} successfully.";
             TempData["viewModel"] = viewModel;
@@ -179,7 +180,7 @@ namespace Icon.Web.Mvc.Controllers
             return View(viewModel);
         }
 
-        private AttributeViewModel BuildEditViewModel(int attributeId)
+        private AttributeViewModel BuildEditViewModel(int attributeId, int itemCount)
         {
             var attribute = this.getAttributeByAttributeIdQuery.Search(new GetAttributeByAttributeIdParameters() { AttributeId = attributeId });
             var viewModel = new AttributeViewModel
@@ -198,8 +199,10 @@ namespace Icon.Web.Mvc.Controllers
                 NumberOfDecimals = attribute.NumberOfDecimals,
                 IsPickList = attribute.IsPickList,
                 DefaultValue = attribute.DefaultValue,
+                IsActive = attribute.IsActive,
                 UserWriteAccess = GetWriteAccess(),
-                Action = ActionEnum.Update
+                Action = ActionEnum.Update,
+                ItemCount = itemCount
             };
 
             if (attribute.SpecialCharactersAllowed != null)
@@ -217,7 +220,7 @@ namespace Icon.Web.Mvc.Controllers
             }
             viewModel.AvailableCharacterSets = new List<CharacterSetModel>();
 
-            if(viewModel.DataTypeId == (int)DataType.Boolean)
+            if (viewModel.DataTypeId == (int)DataType.Boolean)
             {
                 viewModel.AvailableDefaultValuesForBoolean = GetAvailableDefaultValuesForBoolean();
             }
@@ -302,7 +305,7 @@ namespace Icon.Web.Mvc.Controllers
         private string GetAttributeNameFromDisplayName(string displayName)
         {
             return Regex.Replace(displayName, @"[^0-9a-zA-Z]+", "");
-        }
+        }       
 
         private void PopulateAttributeViewModelOnError(AttributeViewModel viewModel)
         {
@@ -432,10 +435,10 @@ namespace Icon.Web.Mvc.Controllers
         {
             var attributes = getAttributesQueryHandler
                 .Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>())
-                .Select(a => new AttributeViewModel(a))
+                .Select(a => new AttributeViewModel(a)).Where(a => a.IsActive)
                 .ToList();
 
-            Dictionary<string,string> orderedFields = orderFieldsHelper.OrderAllFields(attributes);
+            Dictionary<string, string> orderedFields = orderFieldsHelper.OrderAllFields(attributes);
 
             return Json(new { Attributes = attributes, DefaultFields = orderedFields }, JsonRequestBehavior.AllowGet);
         }
@@ -452,7 +455,7 @@ namespace Icon.Web.Mvc.Controllers
             return new List<SelectListItem>()
             {   new SelectListItem{Text ="", Value = null},
                 new SelectListItem{Text ="True", Value = "true"},
-                new SelectListItem{Text ="False", Value = "false"}   
+                new SelectListItem{Text ="False", Value = "false"}
             };
         }
 

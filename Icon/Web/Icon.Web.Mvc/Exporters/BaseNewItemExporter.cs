@@ -104,7 +104,7 @@ namespace Icon.Web.Mvc.Exporters
             CreateHierarchyWorksheets();
 
             attributeList = getAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>())
-                .Where(x => x.AttributeGroupId != (int)AttributeType.Nutrition)
+                .Where(x => x.AttributeGroupId != (int)AttributeType.Nutrition && x.IsActive)
                 .OrderByDescending(a => a.IsRequired).ThenBy(a => a.DisplayOrder)
                 .ToList();
 

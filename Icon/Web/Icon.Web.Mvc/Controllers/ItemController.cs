@@ -333,7 +333,7 @@ namespace Icon.Web.Controllers
                 ItemViewModel = itemViewModel,
                 Attributes = attributeViewModels,
                 ItemHistoryModel = this.GetItemHistoryModel(itemViewModel, false),
-                OrderOfFields = orderFieldsHelper.OrderAllFields(attributeViewModels.ToList())
+                OrderOfFields = orderFieldsHelper.OrderAllFields(attributeViewModels.Where(a =>a.IsActive).ToList())
             };
             return View(viewModel);
         }
@@ -466,7 +466,7 @@ namespace Icon.Web.Controllers
         private void BuildItemCreateViewModel(ItemCreateViewModel itemCreateViewModel, bool shouldUpdateToPlu = false)
         {
             var attributeModels = getAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>());
-            var filteredAttributeModels = attributeModels.Where(a => a.AttributeName != Constants.Attributes.ProhibitDiscount);
+            var filteredAttributeModels = attributeModels.Where(a => a.AttributeName != Constants.Attributes.ProhibitDiscount && a.IsActive);
 
             itemCreateViewModel.Attributes = filteredAttributeModels.ToViewModels();
             itemCreateViewModel.OrderOfFields = orderFieldsHelper.OrderAllFields(itemCreateViewModel.Attributes.ToList());
@@ -495,7 +495,7 @@ namespace Icon.Web.Controllers
             itemViewModel.FinancialHierarchyLineage = GetHierarchyLineage(Hierarchies.Financial, itemViewModel.FinancialHierarchyClassId);
             itemViewModel.NationalHierarchyLineage = GetHierarchyLineage(Hierarchies.National, itemViewModel.NationalHierarchyClassId);
             itemViewModel.ManufacturerHierarchyLineage = GetHierarchyLineage(Hierarchies.Manufacturer, itemViewModel.ManufacturerHierarchyClassId.GetValueOrDefault());
-            var attributeViewModel = attributes.ToViewModels().ToList();
+            var attributeViewModel = attributes.Where(a =>a.IsActive).ToViewModels().ToList();
 
             return new ItemEditViewModel
             {

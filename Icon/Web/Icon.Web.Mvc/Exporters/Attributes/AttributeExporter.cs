@@ -32,7 +32,8 @@ namespace Icon.Web.Mvc.Exporters
         private const int PickListDataIndex = 21;
         private const int CharacterSetIndex = 22;
         private const int ItemCountIndex = 23;
-       
+        private const int IsActiveIndex = 24;
+
         AttributeViewModel attributeModel = new AttributeViewModel();
 
         public AttributeExporter()
@@ -184,6 +185,12 @@ namespace Icon.Web.Mvc.Exporters
                2000,
                HorizontalCellAlignment.Left,
                (row, attribute) => row.Cells[ItemCountIndex].Value = attribute.ItemCount);
+
+            AddSpreadsheetColumn(IsActiveIndex,
+             AttributesHelper.AttributesColumnNames.IsActive,
+              2000,
+              HorizontalCellAlignment.Left,
+              (row, attribute) => row.Cells[IsActiveIndex].Value = attribute.IsActive);
         }
 
 
@@ -214,7 +221,8 @@ namespace Icon.Web.Mvc.Exporters
                 XmlTraitDescription = a.XmlTraitDescription,
                 PickListData = a.PickListData,
                 AvailableCharacterSets = a.AvailableCharacterSets,
-                ItemCount = a.ItemCount
+                ItemCount = a.ItemCount,
+                IsActive = a.IsActive
             })
                 .ToList();
 

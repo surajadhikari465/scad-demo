@@ -78,7 +78,7 @@
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Common.2020.2.27.1\lib\net472\Icon.Common.dll</HintPath>
+      <HintPath>..\packages\Icon.Common.2020.4.28.1\lib\net472\Icon.Common.dll</HintPath>
     </Reference>
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.DbContextFactory.2019.5.22.1\lib\net472\Icon.DbContextFactory.dll</HintPath>

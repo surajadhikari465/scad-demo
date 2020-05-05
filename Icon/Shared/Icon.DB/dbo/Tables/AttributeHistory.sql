@@ -25,6 +25,7 @@
 	AttributeGuid uniqueidentifier null,
 	IsSpecialTransform  BIT NOT NULL DEFAULT(0),
 	SysStartTimeUtc datetime2 NOT NULL,
-	SysEndTimeUtc datetime2 NOT NULL
+	SysEndTimeUtc datetime2 NOT NULL, 
+    IsActive BIT NOT NULL DEFAULT 1
 ) ON [FG_History]
 GO

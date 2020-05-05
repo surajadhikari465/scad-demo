@@ -39,6 +39,7 @@ BEGIN
 		,a.CharacterSetRegexPattern
 		,a.IsReadOnly
 		,a.XmlTraitDescription
+		,a.IsActive
 	FROM dbo.AttributesView a
 	WHERE a.AttributeGroupId <> @nutritionGroupId;
 

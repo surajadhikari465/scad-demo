@@ -40,6 +40,7 @@ namespace Icon.Web.DataAccess.Queries
                                   ,[MaximumNumber]
                                   ,[NumberOfDecimals]
                                   ,[IsPickList]
+                                  ,[IsActive]
                                  FROM [dbo].[Attributes]
                                  WHERE AttributeId = @AttributeId",
                                 new { AttributeId = parameters.AttributeId }).FirstOrDefault();

@@ -213,7 +213,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                 TraitCode = "Test",
                 IsPickList = false,
                 AvailableCharacterSets = new List<CharacterSetModel>(),
-                SpecialCharactersAllowed = string.Empty
+                SpecialCharactersAllowed = string.Empty,
+                ItemCount = 0
             };
 
             mockGetAttributeByAttributeIdQuery.Setup(x => x.Search(It.IsAny<GetAttributeByAttributeIdParameters>())).Returns(
@@ -224,7 +225,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                     DataTypeId = int.MaxValue,
                     TraitCode = "Test",
                     IsPickList = false,
-                    SpecialCharactersAllowed = string.Empty
+                    SpecialCharactersAllowed = string.Empty                    
                 });
 
             mockGetDataTypeQueryHandler.Setup(m => m.Search(It.IsAny<GetDataTypeParameters>())).Returns(new List<DataTypeModel>()
@@ -259,7 +260,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                 AvailableCharacterSets = new List<CharacterSetModel>(),
                 IsSpecialCharactersSelected = true,
                 SpecialCharacterSetSelected = "Specific",
-                SpecialCharactersAllowed = "!@#$"
+                SpecialCharactersAllowed = "!@#$",
+                ItemCount = 0
             };
 
             mockGetAttributeByAttributeIdQuery.Setup(x => x.Search(It.IsAny<GetAttributeByAttributeIdParameters>())).Returns(
@@ -310,7 +312,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                 });
 
             // When.
-            var result = controller.Edit(1234) as ViewResult;
+            var result = controller.Edit(1234, 0) as ViewResult;
 
             Assert.IsNotNull(((AttributeViewModel)result.Model).AvailableDefaultValuesForBoolean);
         }
@@ -329,7 +331,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                 AvailableCharacterSets = new List<CharacterSetModel>(),
                 IsSpecialCharactersSelected = true,
                 SpecialCharacterSetSelected = "Specific",
-                SpecialCharactersAllowed = "#@!"
+                SpecialCharactersAllowed = "#@!",
+                ItemCount = 0
             };
 
             mockGetAttributeByAttributeIdQuery.Setup(x => x.Search(It.IsAny<GetAttributeByAttributeIdParameters>())).Returns(
@@ -374,7 +377,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                 AvailableCharacterSets = new List<CharacterSetModel>(),
                 IsSpecialCharactersSelected = true,
                 SpecialCharacterSetSelected = "Specific",
-                SpecialCharactersAllowed = "#@!$"
+                SpecialCharactersAllowed = "#@!$",
+                ItemCount = 0
             };
 
             mockGetAttributeByAttributeIdQuery.Setup(x => x.Search(It.IsAny<GetAttributeByAttributeIdParameters>())).Returns(
@@ -538,6 +542,54 @@ namespace Icon.Web.Tests.Unit.Controllers
             Assert.AreEqual(result.ViewName, string.Empty);
             Assert.AreEqual("Cannot remove preexisting special characters", (viewData["ErrorMessages"] as List<string>)[0]);
             mockAttributesHelper.Verify(m => m.CreateCharacterSetRegexPattern(It.IsAny<int>(), It.IsAny<List<CharacterSetModel>>(), It.IsAny<string>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void AttributeControllerEditPost_AttributeStatusIsEdited_UpdateToHideAttribute_Success()
+        {
+            // Given.
+            var viewModel = new AttributeViewModel
+            {
+                AttributeId = 1234,
+                DisplayName = "test",
+                DataTypeId = int.MaxValue,
+                TraitCode = "Test",
+                IsPickList = false,
+                AvailableCharacterSets = new List<CharacterSetModel>(),
+                IsSpecialCharactersSelected = true,
+                SpecialCharacterSetSelected = "Specific",
+                SpecialCharactersAllowed = "#@!$",
+                ItemCount = 0,
+                IsActive = true
+            };
+
+            mockGetAttributeByAttributeIdQuery.Setup(x => x.Search(It.IsAny<GetAttributeByAttributeIdParameters>())).Returns(
+                new AttributeModel()
+                {
+                    AttributeId = 1234,
+                    DisplayName = "test",
+                    DataTypeId = int.MaxValue,
+                    TraitCode = "Test",
+                    IsPickList = false,
+                    SpecialCharactersAllowed = "#@!$",
+                    IsActive = false
+                });
+
+            mockGetDataTypeQueryHandler.Setup(m => m.Search(It.IsAny<GetDataTypeParameters>())).Returns(new List<DataTypeModel>()
+                {
+                    new DataTypeModel{ DataTypeId = 1, DataType = "Text"}
+                });
+
+            // When.
+            var result = controller.Edit(viewModel) as ViewResult;
+
+            // Then.
+            var viewData = result.ViewData;
+            string expectedSuccessMessage = $"Updated attribute: {viewModel.DisplayName} successfully.";
+
+            Assert.AreEqual(result.ViewName, string.Empty);
+            Assert.AreEqual(expectedSuccessMessage, viewData["SuccessMessage"]);
+            mockAttributesHelper.Verify(m => m.CreateCharacterSetRegexPattern(It.IsAny<int>(), It.IsAny<List<CharacterSetModel>>(), It.IsAny<string>()));
         }
     }
 }

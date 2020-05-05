@@ -176,7 +176,8 @@ namespace Icon.Web.Tests.Unit.Managers
 			,[MaxLengthAllowed] = 1
 			,[IsPickList] = 1
 			,[SpecialCharactersAllowed] = 'All'
-            ,[IsRequired] = 1
+            ,[IsRequired] = 0
+            ,[IsActive] = 0
              WHERE [AttributeId]=@AttributeId";
             int affectedRows = this.db.Connection.Execute(sql, new { AttributeId = 123 }, transaction: this.db.Transaction);
         }
@@ -203,7 +204,7 @@ namespace Icon.Web.Tests.Unit.Managers
             {
                 AttributeName = "test1234",
                 DisplayName = "test1234",
-                TraitCode = "test1234",
+                TraitCode = "test1234",                               
                 IsPickList = true,
                 DataTypeId = GetNewDataTypeId()
             };

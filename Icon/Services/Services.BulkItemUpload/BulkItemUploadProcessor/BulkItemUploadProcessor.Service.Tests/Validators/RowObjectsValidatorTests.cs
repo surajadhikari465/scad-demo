@@ -154,7 +154,8 @@ namespace BulkItemUploadProcessor.Service.Tests.Validators
                 AttributeId =1,
                 IsRequired=true,
                 DefaultValue = null,
-                IsReadOnly=false
+                IsReadOnly=false,
+                IsActive = true
             });
 
             string expectedError = attributeModels[0].DisplayName.ToString() + " is required.";
@@ -208,7 +209,8 @@ namespace BulkItemUploadProcessor.Service.Tests.Validators
                 AttributeId = 1,
                 IsRequired = true,
                 DefaultValue = null,
-                IsReadOnly = false
+                IsReadOnly = false,
+                IsActive = true
             });
 
             string expectedError = "'"+ attributeModels[0].DisplayName.ToString() + "' is required.";
@@ -245,6 +247,105 @@ namespace BulkItemUploadProcessor.Service.Tests.Validators
 
             Assert.AreEqual(0, rowObjectValidatorResponse.ValidRows.Count());
             Assert.IsTrue(rowObjectValidatorResponse.InvalidRows.Where(s => s.Error == expectedError).Any());
+        }
+
+        [TestMethod]
+        public void Validate_AttributeStatusIsActiveAndValuePassedInSpreadhsheet_ShouldReturnError()
+        {
+            attributeModels.Add(new AttributeModel
+            {
+                AttributeName = "Test",
+                DisplayName = "Test",
+                AttributeId = 1,
+                IsRequired = true,
+                DefaultValue = null,
+                IsReadOnly = false,
+                IsActive = true
+
+            });
+
+            string expectedError = "'" + attributeModels[0].DisplayName.ToString() + "' is required.";
+
+            mockItemAttributesValidatorFactory.Setup(m => m.CreateItemAttributesJsonValidator(attributeModels[0].AttributeName).Validate(string.Empty)).Returns
+                (new ItemAttributesValidationResult
+                {
+                    IsValid = false,
+                    ErrorMessages = new List<string>() { expectedError }
+                }
+                );
+
+            mockGetBarcodeTypesQueryHandler.Setup(s => s.Search(It.IsAny<EmptyQueryParameters<List<BarcodeTypeModel>>>())).Returns(
+                new List<BarcodeTypeModel>()
+                {
+                    new BarcodeTypeModel{ BarcodeTypeId = 19,
+                                          BarcodeType = "Scale PLU (21000000000-2100000009)",
+                                          BeginRange = "21000000000",
+                                          EndRange = "2100000009",
+                                          ScalePlu =true},
+                     new BarcodeTypeModel{ BarcodeTypeId = 12,
+                                          BarcodeType = "UPC",
+                                          BeginRange = null,
+                                          EndRange = null,
+                                          ScalePlu =false},
+
+                }
+              );
+
+            mockGetScanCodesThatExistQueryHandler.Setup(s => s.Search(It.IsAny<GetScanCodesThatExistParameters>())).Returns(new HashSet<string>());
+            mockHierarchyValidator.Setup(s => s.Validate(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(new ValidationResponse() { IsValid = true, Error = string.Empty });
+
+            var rowObjectValidatorResponse = validator.Validate(Enums.FileModeTypeEnum.CreateNew, rowObjects, columnHeaders, attributeModels);
+
+            Assert.AreEqual(0, rowObjectValidatorResponse.ValidRows.Count());
+            Assert.IsTrue(rowObjectValidatorResponse.InvalidRows.Where(s => s.Error == expectedError).Any());
+        }
+
+        [TestMethod]
+        public void Validate_AttributeIsActivefalseAndValuePassedInSpreadhsheet_ShouldNotReturnError()
+        {
+            attributeModels.Add(new AttributeModel
+            {
+                AttributeName = "Test",
+                DisplayName = "Test",
+                AttributeId = 1,
+                IsRequired = false,
+                DefaultValue = null,
+                IsReadOnly = false,
+                IsActive = false
+
+            });
+
+            mockItemAttributesValidatorFactory.Setup(m => m.CreateItemAttributesJsonValidator(attributeModels[0].AttributeName).Validate(string.Empty)).Returns
+                (new ItemAttributesValidationResult
+                {
+                    IsValid = false,
+                    ErrorMessages = new List<string>() 
+                }
+                );
+
+            mockGetBarcodeTypesQueryHandler.Setup(s => s.Search(It.IsAny<EmptyQueryParameters<List<BarcodeTypeModel>>>())).Returns(
+                new List<BarcodeTypeModel>()
+                {
+                    new BarcodeTypeModel{ BarcodeTypeId = 19,
+                                          BarcodeType = "Scale PLU (21000000000-2100000009)",
+                                          BeginRange = "21000000000",
+                                          EndRange = "2100000009",
+                                          ScalePlu =true},
+                     new BarcodeTypeModel{ BarcodeTypeId = 12,
+                                          BarcodeType = "UPC",
+                                          BeginRange = null,
+                                          EndRange = null,
+                                          ScalePlu =false},
+
+               }
+         );
+
+            mockGetScanCodesThatExistQueryHandler.Setup(s => s.Search(It.IsAny<GetScanCodesThatExistParameters>())).Returns(new HashSet<string>());
+            mockHierarchyValidator.Setup(s => s.Validate(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(new ValidationResponse() { IsValid = true, Error = string.Empty });
+
+            var rowObjectValidatorResponse = validator.Validate(Enums.FileModeTypeEnum.CreateNew, rowObjects, columnHeaders, attributeModels);
+
+            Assert.AreEqual(0, rowObjectValidatorResponse.ValidRows.Count());
         }
     }
 }

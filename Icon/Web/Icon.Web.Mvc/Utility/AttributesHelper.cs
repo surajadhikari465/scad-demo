@@ -146,6 +146,7 @@ namespace Icon.Web.Mvc.Utility
             public const string CharacterSet = "CharacterSet";
             public const string GlobalItem = "Global Item";
             public const string ItemCount = "ItemCount";
+            public const string IsActive = "Active";
         }
     }
 }

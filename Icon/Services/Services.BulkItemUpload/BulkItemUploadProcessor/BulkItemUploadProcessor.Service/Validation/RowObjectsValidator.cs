@@ -59,14 +59,14 @@ namespace BulkItemUploadProcessor.Service.Validation
             var barcodeTypeIndex = columnHeaders.First(c => c.Name == BarcodeTypeColumnHeader).ColumnIndex;
 
             var attributeColumns = columnHeaders
-                .Join(attributeModels.Where(a => !a.IsReadOnly),
+                .Join(attributeModels.Where(a => !a.IsReadOnly && a.IsActive),
                     c => c.Name,
                     a => a.DisplayName,
                     (c, a) => new
                     {
                         ColumnHeader = c,
                         a.IsRequired,
-                        a.DefaultValue,
+                        a.DefaultValue,                        
                         AttributeValidator = itemAttributesValidatorFactory.CreateItemAttributesJsonValidator(a.AttributeName)
                     })
                 .ToList();
@@ -130,14 +130,14 @@ namespace BulkItemUploadProcessor.Service.Validation
                     foreach (var attributeColumn in attributeColumns)
                     {
                         var rowObjectContainsAttribute = rowObjectDictionary.Cells.ContainsKey(attributeColumn.ColumnHeader.ColumnIndex);
-                        if (attributeColumn.IsRequired && String.IsNullOrEmpty(attributeColumn.DefaultValue) && !rowObjectContainsAttribute)
+                        if (attributeColumn.IsRequired && String.IsNullOrEmpty(attributeColumn.DefaultValue) && !rowObjectContainsAttribute )
                         {
                             errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{attributeColumn.ColumnHeader.Name}' is required." });
                         }
                         else if (rowObjectContainsAttribute)
                         {
                             var value = rowObjectDictionary.Cells[attributeColumn.ColumnHeader.ColumnIndex];
-                            if ((attributeColumn.IsRequired && String.IsNullOrEmpty(attributeColumn.DefaultValue))|| value != string.Empty)
+                            if ((attributeColumn.IsRequired && String.IsNullOrEmpty(attributeColumn.DefaultValue)) || value != string.Empty)
                             {
                                 var result = attributeColumn.AttributeValidator.Validate(value);
                                 if (!result.IsValid)
@@ -256,7 +256,7 @@ namespace BulkItemUploadProcessor.Service.Validation
             var response = new RowObjectValidatorResponse();
             var scanCodeIndex = columnHeaders.First(c => c.Name == ScanCodeColumnHeader).ColumnIndex;
             var attributeColumns = columnHeaders
-                .Join(attributeModels.Where(a => !a.IsReadOnly),
+                .Join(attributeModels.Where(a => !a.IsReadOnly && a.IsActive),
                     c => c.Name,
                     a => a.DisplayName,
                     (c, a) => new { a.IsRequired, ColumnHeader = c, AttributeValidator = itemAttributesValidatorFactory.CreateItemAttributesJsonValidator(a.AttributeName) })

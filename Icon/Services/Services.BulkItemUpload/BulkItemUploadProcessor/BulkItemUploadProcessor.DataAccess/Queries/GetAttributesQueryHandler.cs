@@ -49,7 +49,8 @@ namespace BulkItemUploadProcessor.DataAccess.Queries
 	                a.IsPickList,
 	                a.GridColumnWidth,
                     a.CharacterSetRegexPattern,
-	                a.IsReadOnly
+	                a.IsReadOnly,
+                    a.IsActive
                 FROM dbo.AttributesView a
 
                 SELECT 
