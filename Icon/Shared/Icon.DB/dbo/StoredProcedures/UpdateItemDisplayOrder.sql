@@ -12,6 +12,7 @@ BEGIN
 		FROM @DisplayOrderData d
 		INNER JOIN Hierarchy h ON d.referenceid = h.HIERARCHYID
 		WHERE ColumnType = 'Hierarchy'
+		and h.hierarchyName not in ('Certification Agency Management', 'Browsing')
 	
 		UNION ALL
 	

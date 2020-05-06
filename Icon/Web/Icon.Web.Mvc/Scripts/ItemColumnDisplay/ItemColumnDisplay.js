@@ -33,6 +33,25 @@ function moveListItem(listElement, direction) {
 
 };
 
+function setDefaultOrder() {
+    $.ajax({
+        url: "/ItemColumnDisplay/SetDefaultDisplayOrder",
+        type: "POST",
+        data: {},
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (response) {
+            showMessage("#resetDiv", 3000);
+            RefreshList();
+        },
+        error:
+            function (xhr, status, error) {
+                console.log("error", error);
+                return null;
+            }
+    });
+}
+
 function CheckForMissingColumns() {
     $.ajax({
         url: "/ItemColumnDisplay/AddMissingColumnsToOrderTable",
@@ -82,6 +101,9 @@ function sortAlphabetically(listElement) {
     enableSaveButton();
 }
 
+
+
+
 function saveChanges() {
 
     const data = list.toArray();
@@ -125,7 +147,7 @@ function DrawList(data) {
         listElement.innerHTML = ""; // clear items.
         if (!data) return;
         data.forEach(d => {
-            let icon = d.ColumnType === "Hierarchy" ? "fa-sitemap" : "fa-cube";
+            let icon = getColumnTypeIcon(d.ColumnType);
             $(listElement).append(`<li class="list-group-item" data-name="${d.ReferenceName}" data-id="${returnDataId(d)}"><span><i class="fa ${icon} control-item" title="${d.ColumnType}"></i></span> ${d.ReferenceName}${controlsTemplate}</li>`);
         });
 
@@ -139,6 +161,19 @@ function DrawList(data) {
                 }
             });
         disableSaveButton();
+    }
+}
+
+function getColumnTypeIcon(columnType) {
+    switch (columnType) {
+        case "Hierarchy":
+            return "fa-sitemap";
+        case "Attribute":
+            return "fa-cube";
+        case "Other":
+            return "fa-file-o";
+        default:
+         return "fa-question-circle-o";
     }
 }
 

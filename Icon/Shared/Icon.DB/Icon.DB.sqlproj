@@ -841,6 +841,7 @@
     <Build Include="dbo\StoredProcedures\AddMissingColumnsToItemDisplayOrder.sql" />
     <Build Include="dbo\StoredProcedures\UpdateItemDisplayOrder.sql" />
     <Build Include="dbo\Tables\ItemColumnDisplayOrder.sql" />
+    <Build Include="dbo\StoredProcedures\SetDefaultItemColumnDisplayOrder.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
@@ -901,6 +902,7 @@
     <None Include="Scripts\PopulateData\32224_AddBrandUploadServiceAppId.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\35114_MoveStoresFromMAToMW.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\35114_MoveStoresFromMAToMW_RollBack.sql" />
+    <None Include="Scripts\PopulateData\25934_PopulateItemColumnDisplayOrder.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

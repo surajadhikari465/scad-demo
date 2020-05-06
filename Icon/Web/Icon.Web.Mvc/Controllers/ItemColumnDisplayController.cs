@@ -13,16 +13,20 @@ namespace Icon.Web.Mvc.Controllers
 
         private readonly IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>> getItemColumnOrderQuery;
         private readonly ICommandHandler<UpdateItemColumnOrderCommand> updateItemColumnOrderCommandHandler;
+        private readonly ICommandHandler<SetDefaultItemColumnOrderCommand> setDefaultItemColumnOrderCommandHandler;
 
         private readonly ICommandHandler<AddMissingColumnsToItemColumnDisplayTableCommand>
             addMissingColumnsToItemColumnOrderTableCommandHandler;
 
         public ItemColumnDisplayController(IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>> getItemColumnOrderQuery,
-            ICommandHandler<UpdateItemColumnOrderCommand> updateItemColumnOrderCommandHandler, ICommandHandler<AddMissingColumnsToItemColumnDisplayTableCommand> addMissingColumnsToItemColumnOrderTableCommandHandler)
+            ICommandHandler<UpdateItemColumnOrderCommand> updateItemColumnOrderCommandHandler, 
+            ICommandHandler<AddMissingColumnsToItemColumnDisplayTableCommand> addMissingColumnsToItemColumnOrderTableCommandHandler, 
+            ICommandHandler<SetDefaultItemColumnOrderCommand> setDefaultItemColumnOrderCommandHandler)
         {
             this.getItemColumnOrderQuery = getItemColumnOrderQuery;
             this.updateItemColumnOrderCommandHandler = updateItemColumnOrderCommandHandler;
             this.addMissingColumnsToItemColumnOrderTableCommandHandler = addMissingColumnsToItemColumnOrderTableCommandHandler;
+            this.setDefaultItemColumnOrderCommandHandler = setDefaultItemColumnOrderCommandHandler;
         }
 
         public ActionResult Index()
@@ -50,6 +54,20 @@ namespace Icon.Web.Mvc.Controllers
         {
             var hierarchies = getItemColumnOrderQuery.Search(new EmptyQueryParameters<List<ItemColumnOrderModel>>());
             return Json(hierarchies, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult SetDefaultDisplayOrder()
+        {
+            try
+            {
+                setDefaultItemColumnOrderCommandHandler.Execute(new SetDefaultItemColumnOrderCommand());
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.Message);
+            }
         }
 
         [HttpPost]

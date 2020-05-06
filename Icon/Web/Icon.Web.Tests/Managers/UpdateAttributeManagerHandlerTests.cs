@@ -204,7 +204,7 @@ namespace Icon.Web.Tests.Unit.Managers
             {
                 AttributeName = "test1234",
                 DisplayName = "test1234",
-                TraitCode = "test1234",                               
+                TraitCode = "test1234",
                 IsPickList = true,
                 DataTypeId = GetNewDataTypeId()
             };

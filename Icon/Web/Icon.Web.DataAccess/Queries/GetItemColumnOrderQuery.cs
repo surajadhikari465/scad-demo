@@ -31,11 +31,21 @@ namespace Icon.Web.DataAccess.Queries
 
                 SELECT ColumnType
 	                ,ReferenceId
-	                ,a.AttributeName ReferenceName
+	                ,a.DisplayName ReferenceName
 	                ,d.DisplayOrder
                 FROM dbo.ItemColumnDisplayOrder d
                 INNER JOIN dbo.Attributes a ON d.ReferenceId = a.AttributeId
                 WHERE d.ColumnType = 'Attribute'
+
+                UNION ALL
+
+                SELECT ColumnType
+	                ,ReferenceId
+	                ,ReferenceName
+	                ,d.DisplayOrder
+                FROM dbo.ItemColumnDisplayOrder d
+                WHERE d.ColumnType = 'Other'
+
                 ORDER BY DisplayOrder
             ";
 

@@ -175,6 +175,8 @@
     <Compile Include="Commands\DeleteContactTypeCommandHandler.cs" />
     <Compile Include="Commands\BulkContactUploadCommand.cs" />
     <Compile Include="Commands\BulkContactUploadCommandHandler.cs" />
+    <Compile Include="Commands\SetDefaultItemColumnOrderCommand.cs" />
+    <Compile Include="Commands\SetDefaultItemColumnOrderCommandHandler.cs" />
     <Compile Include="Commands\UpdateItemColumnOrderCommand.cs" />
     <Compile Include="Commands\UpdateItemColumnOrderCommandHandler.cs" />
     <Compile Include="Commands\UpdateManufacturerCommand.cs" />

@@ -8,7 +8,7 @@
     <div id="card" class="col-md-6">
         <div class="card">
             <div class="card-header bold">
-                <span>Item Attribute and Hieararchy Column Order</span>
+                <span>Item Attribute and Hierarchy Column Order</span>
                 <span class="float-right"><button id="saveButton" class="btn btn-info btn-sm" disabled="disabled" onclick="saveChanges()">Save Changes</button></span>
             </div>
             <div class="card-body">
@@ -17,11 +17,14 @@
                 </p>
                 <p>
                     <button class="btn btn-info btn-sm" onclick="sortAlphabetically($('#item-detail-column-list'))">Sort Alphabetically</button>
-                    <button class="btn btn-info btn-sm" onclick="RefreshList()">Reset</button>
+                    <button class="btn btn-info btn-sm" onclick="setDefaultOrder()">Reset</button>
                 </p>
                 <div>
                     <div id="successDiv" style="display: none">
                         <div class="alert alert-success">Column Order Changed successfully</div>
+                    </div>
+                    <div id="resetDiv" style="display: none">
+                        <div class="alert alert-success">Column Order has been reset to default</div>
                     </div>
                     <div id="errorDiv" style="display: none">
                         <div class="alert alert-danger">Column Order was not saved successfully. Check logs for error information</div>
