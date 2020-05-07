@@ -17,7 +17,6 @@ const ReceivingListClosePartial: React.FC<IProps> = ({ match }) => {
     let history = useHistory();
     //@ts-ignore
     const { state, dispatch } = useContext(AppContext);
-    const { purchaseOrderNumber } = match.params;
     const { region, orderDetails, user } = state;
     const [open, setOpen] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -33,16 +32,23 @@ const ReceivingListClosePartial: React.FC<IProps> = ({ match }) => {
             setIsLoading(true);
 
             
-            var updateResult = await agent.InvoiceData.updateOrderBeforeClosing(region, orderDetails.OrderId, '', undefined, 0, 
-                                                                                    '', undefined, orderDetails.SubteamNo, 
-                                                                                    true);
+            var updateResult = await agent.InvoiceData.updateOrderBeforeClosing(
+                region, 
+                orderDetails.OrderId,
+                '', 
+                undefined, 
+                0,
+                '',
+                undefined,
+                orderDetails.SubteamNo,
+                true);
 
             if((updateResult && !updateResult.status) || !updateResult) {
                 toast.error(`Error when updating order before closing: ${(updateResult && updateResult.errorMessage) || 'No message given'}`, { autoClose: false })
                 return;
             }
 
-            var result = await agent.InvoiceData.closeOrder(region, parseInt(purchaseOrderNumber), user!.userId)
+            var result = await agent.InvoiceData.closeOrder(region, orderDetails.OrderId, user!.userId)
 
             if(result && result.status) {
                 toast.info('Order Partially Closed', { autoClose: false });

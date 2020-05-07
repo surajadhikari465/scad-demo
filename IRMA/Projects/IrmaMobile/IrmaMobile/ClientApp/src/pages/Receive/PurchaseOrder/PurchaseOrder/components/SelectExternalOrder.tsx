@@ -21,7 +21,7 @@ const SelectExternalOrder: React.FC<IProps> = (props) => {
     },[dispatch]);
     
     const handleOrderClicked = (e: React.MouseEvent<HTMLButtonElement>) => {
-        const orderHeaderId = parseInt(e.currentTarget.value);
+        const orderHeaderId = parseInt(e.currentTarget.textContent!);
         props.orderSelected(props.upc, orderHeaderId);
     }
 

@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import Config from "../config";
 import ITransferOrder from '../pages/Transfer/types/ITransferOrder'
 import { IStore, IUser, IShrinkAdjustment, IStoreItem, IExternalOrder } from "../store";
+import { IPurchaseOrderResult } from "../pages/Receive/PurchaseOrder/types/PurchaseOrderResult";
 
 axios.defaults.baseURL = Config.baseUrl;
 axios.defaults.timeout = 60000; //1 minute
@@ -49,11 +50,11 @@ const requests = {
 const RegionSelect = {
     getStores: async (region: string, useVendorIdAsStoreNo: boolean = false) => await requests.get(`/${region}/stores?useVendorIdAsStoreNo=${useVendorIdAsStoreNo}`) as IStore[],
     getShrinkSubtypes: async (region: string) => await requests.get(`/${region}/shrinksubtypes/`),
-    getShrinkAdjustmentReasons: async (region: string) =>  await requests.get(`/${region}/shrinkAdjustments/`) as IShrinkAdjustment[]
+    getShrinkAdjustmentReasons: async (region: string) => await requests.get(`/${region}/shrinkAdjustments/`) as IShrinkAdjustment[]
 };
 
 const StoreItem = {
-    getStoreItem: async (region:string, storeNumber: number | string, subteamNo: number | string, userId: number, upc: string | number) => await requests.get(`/${region}/storeitems?storeNo=${storeNumber}&subteamNo=${subteamNo}&userId=${userId}&scanCode=${upc}`) as IStoreItem
+    getStoreItem: async (region: string, storeNumber: number | string, subteamNo: number | string, userId: number, upc: string | number) => await requests.get(`/${region}/storeitems?storeNo=${storeNumber}&subteamNo=${subteamNo}&userId=${userId}&scanCode=${upc}`) as IStoreItem
 }
 
 const PurchaseOrder = {
@@ -92,7 +93,8 @@ const PurchaseOrder = {
             packSize,
             userId
         }),
-    reOpenOrder: async (region: string, orderId: number) => await requests.post(`/${region}/PurchaseOrder/ReopenOrder`, { OrderId: orderId })
+    reOpenOrder: async (region: string, orderId: number) => await requests.post(`/${region}/PurchaseOrder/ReopenOrder`, { OrderId: orderId }),
+    updateReceivingDiscrepancyCode: async (region: string, orderItemId: number, reasonCodeId: number) : Promise<IPurchaseOrderResult> => await requests.post(`/${region}/PurchaseOrder/UpdateReceivingDiscrepancyCode`, { orderItemId, reasonCodeId })
 };
 
 const InvoiceData = {

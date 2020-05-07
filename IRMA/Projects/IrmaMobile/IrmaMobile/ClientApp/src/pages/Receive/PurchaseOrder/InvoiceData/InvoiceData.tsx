@@ -197,7 +197,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                 setIsLoading(true);
                 setLoadingMessage('Loading charges...');
             }
-            const existingCharges = await agent.InvoiceData.getOrderInvoiceCharges(region, parseInt(purchaseOrderNumber));
+            const existingCharges = await agent.InvoiceData.getOrderInvoiceCharges(region, orderDetails!.OrderId);
             setCharges(existingCharges ? existingCharges.map((ec: any) => {
                 return {
                     SACType: ec.sacType,
@@ -278,7 +278,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                 return;
             }
 
-            var result = await agent.InvoiceData.closeOrder(region, parseInt(purchaseOrderNumber), user!.userId)
+            var result = await agent.InvoiceData.closeOrder(region, orderDetails.OrderId, user!.userId)
 
             if (result && result.status) {
                 if (result && result.flag === true) {
@@ -330,7 +330,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
         try {
             setIsLoading(true);
             setLoadingMessage('Adding charge...');
-            await agent.InvoiceData.addInvoiceCharge(region, parseInt(purchaseOrderNumber), sacType, newCharge.Description, newCharge.GLPurchaseAccount, isAllowance, amount);
+            await agent.InvoiceData.addInvoiceCharge(region, orderDetails!.OrderId, sacType, newCharge.Description, newCharge.GLPurchaseAccount, isAllowance, amount);
         }
         finally {
             setIsLoading(false);
@@ -376,7 +376,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
     }
 
     const handleConfirmRefuse = async () => {
-        const result = await agent.InvoiceData.refuseOrder(region, parseInt(purchaseOrderNumber), user!.userId, refuseCodeId)
+        const result = await agent.InvoiceData.refuseOrder(region, orderDetails!.OrderId, user!.userId, refuseCodeId)
 
         if (result.status) {
             toast.info('Order Refused');
@@ -406,7 +406,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                 toast.error(`Error when reparsing eInvoice: ${result.errorMessage || 'No message given'}`, { autoClose: false })
             }
 
-            var order = await agent.PurchaseOrder.getOrder(region, parseInt(purchaseOrderNumber));
+            var order = await agent.PurchaseOrder.getOrder(region, orderDetails.OrderId);
             var reparsedOrderDetails = orderUtil.MapOrder(order);
             
             setInvoiceNumberEdited(false);
@@ -595,7 +595,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                             <div style={{ backgroundColor: 'grey', border: '1px solid black' }}>
                                 <Grid columns="equal">
                                     <Grid.Column textAlign="center" floated='left' style={{ marginTop: '10px', marginBottom: '10px' }}>
-                                        <InvoiceDataAddCharge disabled={radioSelection === radioOptions.None} handleAddCharge={handleAddCharge} orderId={parseInt(purchaseOrderNumber)} />
+                                        <InvoiceDataAddCharge disabled={radioSelection === radioOptions.None} handleAddCharge={handleAddCharge} orderId={orderDetails!.OrderId} />
                                     </Grid.Column>
                                     <Grid.Column textAlign="center" verticalAlign="middle" style={{ fontWeight: 'bold', fontSize: '16px' }}>
                                         Charges

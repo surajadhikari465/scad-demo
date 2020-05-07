@@ -425,5 +425,10 @@ namespace IrmaMobile.Services
                 })
                 .ToList();
         }
+
+        public async Task<Result> UpdateReceivingDiscrepancyCode(string region, int orderItemId, int reasonCodeId)
+        {
+            return await MakeServiceRequest(region, client => client.UpdateReceivingDiscrepancyCodeAsync($"{orderItemId},{reasonCodeId}|", "|", ","));
+        }
     }
 }

@@ -99,5 +99,16 @@ namespace IrmaMobile.Controllers
 
             return result;
         }
+
+        [ProducesResponseType(200)]
+        [HttpPost]
+        public async Task<Result> UpdateReceivingDiscrepancyCode([FromRoute]string region, [FromBody]UpdateReceivingDiscrepancyCodeModel model)
+        {
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(PurchaseOrderController)}.{nameof(UpdateReceivingDiscrepancyCode)}");
+
+            var result = await service.UpdateReceivingDiscrepancyCode(region, model.OrderItemId, model.ReasonCodeId);
+
+            return result;
+        }
     }
 }

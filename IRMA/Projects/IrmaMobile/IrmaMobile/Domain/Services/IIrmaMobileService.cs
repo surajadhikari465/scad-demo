@@ -38,5 +38,6 @@ namespace IrmaMobile.Services
         Task<CreateTransferOrderResult> CreateTransferOrder(string region, TransferOrderModel transferOrder);
         Task<UserModel> GetUser(string region, string userName);
         Task UpdateOrderHeaderCosts(string region, int orderHeaderId);
+        Task<Result> UpdateReceivingDiscrepancyCode(string region, int orderItemId, int reasonCodeId);
     }
 }

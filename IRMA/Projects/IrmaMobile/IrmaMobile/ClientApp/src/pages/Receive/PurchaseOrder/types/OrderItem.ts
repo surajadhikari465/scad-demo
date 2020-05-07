@@ -8,7 +8,7 @@ interface OrderItem
     Description: string;
     Weight: number;
     eInvoiceWeight: number;
-    Code: string;
+    Code: number;
 }
 
 export default OrderItem;

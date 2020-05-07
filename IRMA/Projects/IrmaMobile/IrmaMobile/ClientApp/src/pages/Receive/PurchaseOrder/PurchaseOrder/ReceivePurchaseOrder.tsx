@@ -18,6 +18,7 @@ import { Form, Grid, Input, Button } from "semantic-ui-react";
 import SelectExternalOrder from "./components/SelectExternalOrder";
 import { OrderByScanCode } from "../types/OrderByScanCode";
 import { IValidateOrderResult } from "../types/IValidateOrderResult";
+import BasicModal from "../../../../layout/BasicModal";
 
 interface RouteParams {
     openOrderInformation: string;
@@ -40,6 +41,15 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     const [displaySelectOrderByScanCode, setDisplaySelectOrderByScanCode] = useState<boolean>(false);
     const [externalOrders, setExternalOrders] = useState<IExternalOrder[]>();
     const [ordersByScanCode, setOrdersByScanCode] = useState<OrderByScanCode[]>();
+    const [barcodeScanSearch, setBarcodeScanSearch] = useState<boolean>(false);
+    const [alert, setAlert] = useState<any>({
+        open: false,
+        alertMessage: 'Reason codes are required for some items on this order. You may review these items on the Receiving List screen. Go there now?',
+        type: 'confirm',
+        header: 'Receive',
+        confirmAction: () => { history.push(`/receive/List/${purchaseOrderNumber}`); }
+    });
+
 
     const setMenuItems = useCallback(() => {
         const handleExitReceiveClick = () => {
@@ -48,13 +58,23 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
             dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
         };
 
-        const handleNavigateAway = () => {
-            dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
+        const handleInvoiceClicked = () => {
+            if (orderDetails && orderDetails.EInvId > 0) {
+                let eInvoiceDiscrepancyExists = orderDetails.OrderItems.some(oi => (oi.QtyReceived !== oi.eInvoiceQty && oi.QtyReceived + oi.eInvoiceQty > 0) && oi.Code === 0);
+                if (eInvoiceDiscrepancyExists) {
+                    setAlert({ ...alert, open: true });
+                } else {
+                    history.push(`/receive/Invoicedata/${purchaseOrderNumber}`);
+                }
+            } else {
+                history.push(`/receive/InvoiceData/${purchaseOrderNumber}`);
+                dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
+            }
         };
 
         const newMenuItems = [
             { id: 1, order: 0, text: "Refused Items", path: "#", disabled: true } as IMenuItem,
-            { id: 2, order: 1, text: "Invoice Data", path: `/receive/invoicedata/${purchaseOrderNumber}`, disabled: orderDetails === null, onClick: handleNavigateAway } as IMenuItem,
+            { id: 2, order: 1, text: "Invoice Data", path: "#", disabled: orderDetails === null, onClick: handleInvoiceClicked } as IMenuItem,
             { id: 3, order: 2, text: "Receiving List", path: `/receive/List/${purchaseOrderNumber}`, disabled: orderDetails === null } as IMenuItem,
             { id: 4, order: 3, text: "Order Info", path: `/receive/purchaseorder/open`, disabled: orderDetails === null } as IMenuItem,
             { id: 5, order: 4, text: "Clear Screen", path: "/receive/PurchaseOrder/clearscreen", disabled: false } as IMenuItem,
@@ -73,9 +93,9 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                 toast.error(error);
                 return;
             }
-
+            
             dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: scanCode });
-            search();
+            setBarcodeScanSearch(true);
         });
 
         dispatch({ type: types.SETTITLE, Title: 'Receive' });
@@ -92,7 +112,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
             dispatch({ type: types.SETMENUITEMS, menuItems: [] });
         }
     }, [setMenuItems, dispatch]);
-    
+
     const searchForExternalOrders = async (purchaseOrderNumber: string) => {
         //int32 max...
         if (purchaseOrderNumber && parseInt(purchaseOrderNumber) > 2147483647) {
@@ -118,7 +138,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                 toast.error(`Error occurred when searching for order an order. Please retry your request.  If the problem persists, please contact support.`, { autoClose: false });
                 dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
                 setIsLoading(false);
-            } 
+            }
         }
     }
 
@@ -146,7 +166,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                 setOrderInformation(orderInformation);
                 dispatch({ type: types.SETORDERDETAILS, orderDetails: orderDetails });
 
-                if(!isMinDate(order.closeDate) && order.partialShipment) {
+                if (!isMinDate(order.closeDate) && order.partialShipment) {
                     setOpenPartial(true);
                 }
             } else {
@@ -253,7 +273,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
         search();
     }
 
-    const handlePurchaseOrderUpcChanged = (e: ChangeEvent<HTMLInputElement>) => {        
+    const handlePurchaseOrderUpcChanged = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: e.target.value });
     }
 
@@ -272,6 +292,13 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
         dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: orderHeaderId.toString() });
         searchForOrder(orderHeaderId);
     };
+
+    useEffect(() => {
+        if(barcodeScanSearch) {
+            setBarcodeScanSearch(false);
+            search();
+        }
+    }, [barcodeScanSearch])
 
     const search = () => {
         setMenuItems();
@@ -351,6 +378,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                             </Form>
                         </div>
                         <ReceivePurchaseOrderDetails costedByWeight={costedByWeight} />
+                        <BasicModal alert={alert} setAlert={setAlert}></BasicModal>
                     </Fragment>
                 }
             </Fragment>
