@@ -55,6 +55,7 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         public void DeleteHierarchyClassManager_ShouldCallCommandHandlers()
         {
             //When
+            manager.EnableHierarchyMessages = true;
             managerHandler.Execute(manager);
 
             //Then

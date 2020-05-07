@@ -987,6 +987,7 @@ namespace Icon.Web.Tests.Integration.Queries
         {
             //Given
             var item = itemTestHelper.CreateDefaultTestItem();
+            item.ItemAttributesJson = "{\"Inactive\":\"false\",\"testAttribute\":\"Test\"}";
             itemTestHelper.SaveItem(item);
             parameters.ItemAttributeJsonParameters = new List<ItemSearchCriteria>()
             {
@@ -1027,7 +1028,8 @@ namespace Icon.Web.Tests.Integration.Queries
         {
             //Given
             var item = itemTestHelper.CreateDefaultTestItem();
-            itemTestHelper.SaveItem(item);
+            item.ItemAttributesJson = "{\"Inactive\":\"false\",\"testAttribute\":\"Test\"}";
+            itemTestHelper.SaveItem(item);         
             parameters.ItemAttributeJsonParameters = new List<ItemSearchCriteria>()
             {
                 new ItemSearchCriteria("testAttribute", AttributeSearchOperator.DoesNotHaveAttribute, string.Empty),

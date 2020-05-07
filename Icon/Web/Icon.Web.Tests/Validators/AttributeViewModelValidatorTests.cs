@@ -1540,7 +1540,7 @@ namespace Icon.Web.Tests.Unit.Validators
 
             //Then
             Assert.IsFalse(result.IsValid);
-            Assert .IsTrue(ValidationMessages.PickListMustHaveOneNonDeletedPickListValue.IndexOf(result.Errors.Single().ErrorMessage) > 0);
+            Assert.IsTrue(ValidationMessages.PickListMustHaveOneNonDeletedPickListValue.IndexOf(result.Errors.Single().ErrorMessage) > 0);
         }
 
         [TestMethod]
@@ -1738,7 +1738,7 @@ namespace Icon.Web.Tests.Unit.Validators
             viewModel.DataTypeId = (int)DataType.Date;
             viewModel.DisplayName = "Test";
             viewModel.TraitCode = "Tst";
-            viewModel.DefaultValue = System.DateTime.Now.ToString();
+            viewModel.DefaultValue = System.DateTime.Now.ToString("yyyy-MM-dd");
             viewModel.Action = ActionEnum.Add;
 
             //When
@@ -1765,7 +1765,7 @@ namespace Icon.Web.Tests.Unit.Validators
             Assert.IsFalse(result.IsValid);
         }
 
-        
+
         [TestMethod]
         public void Validate_DefaultValueText_ValidResult()
         {
@@ -1867,6 +1867,10 @@ namespace Icon.Web.Tests.Unit.Validators
                 new CharacterSetModel{ IsSelected = true, RegEx = @"\s" }
             };
 
+
+            mockAttributesHelper.Setup(m => m.CreateCharacterSetRegexPattern(It.IsAny<int>(),
+                                                                       It.IsAny<List<CharacterSetModel>>(),
+                                                                       It.IsAny<string>())).Returns("^[A-Za-z0-9\\s&*]*$");
             //When
             var result = validator.Validate(viewModel);
 
@@ -1893,6 +1897,11 @@ namespace Icon.Web.Tests.Unit.Validators
                 new CharacterSetModel{ IsSelected = true, RegEx = @"\s" }
             };
 
+
+            mockAttributesHelper.Setup(m => m.CreateCharacterSetRegexPattern(It.IsAny<int>(),
+                                                                       It.IsAny<List<CharacterSetModel>>(),
+                                                                       It.IsAny<string>())).Returns("^[A-Za-z0-9\\s]*$");
+
             //When
             var result = validator.Validate(viewModel);
 
@@ -1918,6 +1927,10 @@ namespace Icon.Web.Tests.Unit.Validators
                 new CharacterSetModel{ IsSelected = true, RegEx = "[0-9]*" },
             };
 
+            mockAttributesHelper.Setup(m => m.CreateCharacterSetRegexPattern(It.IsAny<int>(),
+                                                                       It.IsAny<List<CharacterSetModel>>(),
+                                                                       It.IsAny<string>())).Returns("^[A-Za-z0-9]*$");
+
             //When
             var result = validator.Validate(viewModel);
 
@@ -1936,12 +1949,17 @@ namespace Icon.Web.Tests.Unit.Validators
             viewModel.MaxLengthAllowed = 200;
             viewModel.IsSpecialCharactersSelected = false;
             viewModel.Action = ActionEnum.Add;
+
             viewModel.AvailableCharacterSets = new List<CharacterSetModel>
             {
                 new CharacterSetModel{ IsSelected = true, RegEx = "[A-Z]*" },
                 new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" },
                 new CharacterSetModel{ IsSelected = true, RegEx = @"\s" },
             };
+
+            mockAttributesHelper.Setup(m => m.CreateCharacterSetRegexPattern(It.IsAny<int>(),
+                                                                          It.IsAny<List<CharacterSetModel>>(),
+                                                                          It.IsAny<string>())).Returns("^[A-Za-z\\s]*$");
 
             //When
             var result = validator.Validate(viewModel);

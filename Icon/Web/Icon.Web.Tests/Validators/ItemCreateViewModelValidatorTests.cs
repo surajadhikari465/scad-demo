@@ -52,14 +52,20 @@ namespace Icon.Web.Tests.Unit.Validators
         {
             //Given
             itemCreateViewModel.BarcodeTypeId = getUpcBarcodeTypeId();
+            itemCreateViewModel.ScanCode = string.Empty;
+            List<string> expectedErrorMessages = new List<string>()
+            {  "Scan Code is required when choosing UPC.",
+                "Scan Code must contain only digits, not start with a 0, and must be 1 to 13 characters long.",
+            };
 
             //When
             var result = validator.Validate(itemCreateViewModel);
 
             //Then
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual(1, result.Errors.Count);
-            Assert.AreEqual("Scan Code is required when choosing UPC.", result.Errors.First().ErrorMessage);
+            Assert.AreEqual(2, result.Errors.Count);
+            Assert.AreEqual(expectedErrorMessages[0], result.Errors.Select(s => s.ErrorMessage).ToList()[0]);
+            Assert.AreEqual(expectedErrorMessages[1], result.Errors.Select(s => s.ErrorMessage).ToList()[1]);
         }
 
         [TestMethod]
@@ -415,6 +421,11 @@ namespace Icon.Web.Tests.Unit.Validators
         {
             //Given
             itemCreateViewModel.BarcodeTypeId = getAnyBarcodeTypeIdOtherThanUpc();
+            List<string> expectedErrorMessages = new List<string>()
+            {  "'-1234' should be in selected Barcode Type range. Please enter a scan code within selected Barcode Type range.",
+                "Scan Code must contain only digits, not start with a 0, and must be 1 to 13 characters long.",    
+            };
+            // scan code is negative and not in barcode type range so we will 
             itemCreateViewModel.ScanCode = "-1234";
             mockDoesScanCodeExistQueryHandler.Setup(m => m.Search(It.IsAny<DoesScanCodeExistParameters>()))
                 .Returns(false);
@@ -426,18 +437,22 @@ namespace Icon.Web.Tests.Unit.Validators
 
             //Then
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual(1, result.Errors.Count);
-            Assert.AreEqual(
-                "Scan Code must contain only digits, not start with a 0, and must be 1 to 13 characters long.",
-                result.Errors.First().ErrorMessage);
+            Assert.AreEqual(2, result.Errors.Count);
+            Assert.AreEqual(expectedErrorMessages[0], result.Errors.Select(s => s.ErrorMessage).ToList()[0]);
+            Assert.AreEqual(expectedErrorMessages[1], result.Errors.Select(s => s.ErrorMessage).ToList()[1]);
         }
 
         [TestMethod]
         public void Validate_BarcodeIsNotUpcScanCodeDoesStartsWith0_ScanCodeRegexNoMatchError()
         {
             //Given
-            itemCreateViewModel.BarcodeTypeId = getAnyBarcodeTypeIdOtherThanUpc();
+            itemCreateViewModel.BarcodeTypeId = getAnyBarcodeTypeIdOtherThanUpcAndBeginRangeGreaterThan123();
             itemCreateViewModel.ScanCode = "0123";
+            List<string> expectedErrorMessages = new List<string>()
+            {  "'0123' should be in selected Barcode Type range. Please enter a scan code within selected Barcode Type range.",
+                "Scan Code must contain only digits, not start with a 0, and must be 1 to 13 characters long.",
+            };
+
             mockDoesScanCodeExistQueryHandler.Setup(m => m.Search(It.IsAny<DoesScanCodeExistParameters>()))
                 .Returns(false);
             mockGetBarcodeTypeQueryHandler.Setup(m => m.Search(It.IsAny<GetBarcodeTypeParameters>()))
@@ -448,18 +463,23 @@ namespace Icon.Web.Tests.Unit.Validators
 
             //Then
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual(1, result.Errors.Count);
-            Assert.AreEqual(
-                "Scan Code must contain only digits, not start with a 0, and must be 1 to 13 characters long.",
-                result.Errors.First().ErrorMessage);
+            Assert.AreEqual(2, result.Errors.Count);
+            Assert.AreEqual(expectedErrorMessages[0], result.Errors.Select(s => s.ErrorMessage).ToList()[0]);
+            Assert.AreEqual(expectedErrorMessages[1], result.Errors.Select(s => s.ErrorMessage).ToList()[1]);
         }
 
         [TestMethod]
         public void Validate_BarcodeTypeNotUpcScanCodeExistsAlready_ScanCodeExistsError()
         {
             //Given
-            itemCreateViewModel.BarcodeTypeId = getAnyBarcodeTypeIdOtherThanUpc();
-            itemCreateViewModel.ScanCode = "1234";
+            itemCreateViewModel.BarcodeTypeId = getAnyBarcodeTypeIdOtherThanUpcAndBeginRangeGreaterThan123();
+            itemCreateViewModel.ScanCode = "123";
+
+            List<string> expectedErrorMessages = new List<string>()
+            {   "'123' is already associated to an item. Please use another scan code.",
+                "'123' should be in selected Barcode Type range. Please enter a scan code within selected Barcode Type range.",
+            };
+
             mockDoesScanCodeExistQueryHandler.Setup(m => m.Search(It.IsAny<DoesScanCodeExistParameters>()))
                 .Returns(true);
             mockGetBarcodeTypeQueryHandler.Setup(m => m.Search(It.IsAny<GetBarcodeTypeParameters>()))
@@ -470,10 +490,9 @@ namespace Icon.Web.Tests.Unit.Validators
 
             //Then
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual(1, result.Errors.Count);
-            Assert.AreEqual(
-                "'1234' is already associated to an item. Please use another scan code.",
-                result.Errors.First().ErrorMessage);
+            Assert.AreEqual(2, result.Errors.Count);
+            Assert.AreEqual(expectedErrorMessages[0], result.Errors.Select(s => s.ErrorMessage).ToList()[0]);
+            Assert.AreEqual(expectedErrorMessages[1], result.Errors.Select(s => s.ErrorMessage).ToList()[1]);
         }
 
         [TestMethod]
@@ -605,6 +624,12 @@ namespace Icon.Web.Tests.Unit.Validators
             return context.Database.SqlQuery<int>("select BarcodeTypeId from BarcodeType where BarcodeType !='UPC'").First();
         }
 
+        private int getAnyBarcodeTypeIdOtherThanUpcAndBeginRangeGreaterThan123()
+        {
+            context = new IconContext();
+            return context.Database.SqlQuery<int>("select BarcodeTypeId from BarcodeType where BarcodeType !='UPC' and beginRange>123").First();
+
+        }
         private BarcodeTypeModel getAnyBarcodeTypeModelOtherThanUpcAndScalePLU()
         {
             context = new IconContext();
