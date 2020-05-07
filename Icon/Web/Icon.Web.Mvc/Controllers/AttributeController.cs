@@ -91,9 +91,9 @@ namespace Icon.Web.Mvc.Controllers
         }
 
         [WriteAccessAuthorize]
-        public ActionResult Edit(int attributeId, int itemCount)
+        public ActionResult Edit(int attributeId)
         {
-            AttributeViewModel viewModel = BuildEditViewModel(attributeId, itemCount);
+            AttributeViewModel viewModel = BuildEditViewModel(attributeId);
 
             TempData["viewModel"] = viewModel;
 
@@ -106,7 +106,7 @@ namespace Icon.Web.Mvc.Controllers
         {
             if (!ModelState.IsValid)
             {
-                viewModel = BuildEditViewModel(viewModel.AttributeId, viewModel.ItemCount.Value);
+                viewModel = BuildEditViewModel(viewModel.AttributeId);
                 InvalidateViewModel(viewModel);
                 return View(viewModel);
             }
@@ -165,14 +165,14 @@ namespace Icon.Web.Mvc.Controllers
             }
             catch (Exception ex)
             {
-                viewModel = BuildEditViewModel(viewModel.AttributeId,viewModel.ItemCount.Value);
+                viewModel = BuildEditViewModel(viewModel.AttributeId);
                 var exceptionLogger = new ExceptionLogger(logger);
                 exceptionLogger.LogException(ex, this.GetType(), MethodBase.GetCurrentMethod());
                 InvalidateViewModel(viewModel);
                 return View(viewModel);
             }
 
-            viewModel = BuildEditViewModel(viewModel.AttributeId, viewModel.ItemCount.Value);
+            viewModel = BuildEditViewModel(viewModel.AttributeId);
 
             ViewData["SuccessMessage"] = $"Updated attribute: {viewModel.DisplayName} successfully.";
             TempData["viewModel"] = viewModel;
@@ -180,7 +180,7 @@ namespace Icon.Web.Mvc.Controllers
             return View(viewModel);
         }
 
-        private AttributeViewModel BuildEditViewModel(int attributeId, int itemCount)
+        private AttributeViewModel BuildEditViewModel(int attributeId)
         {
             var attribute = this.getAttributeByAttributeIdQuery.Search(new GetAttributeByAttributeIdParameters() { AttributeId = attributeId });
             var viewModel = new AttributeViewModel
@@ -202,7 +202,6 @@ namespace Icon.Web.Mvc.Controllers
                 IsActive = attribute.IsActive,
                 UserWriteAccess = GetWriteAccess(),
                 Action = ActionEnum.Update,
-                ItemCount = itemCount
             };
 
             if (attribute.SpecialCharactersAllowed != null)
@@ -305,7 +304,7 @@ namespace Icon.Web.Mvc.Controllers
         private string GetAttributeNameFromDisplayName(string displayName)
         {
             return Regex.Replace(displayName, @"[^0-9a-zA-Z]+", "");
-        }       
+        }
 
         private void PopulateAttributeViewModelOnError(AttributeViewModel viewModel)
         {
@@ -545,6 +544,6 @@ namespace Icon.Web.Mvc.Controllers
             {
                 viewModel.SpecialCharactersAllowed = new string(viewModel.SpecialCharactersAllowed.Replace(" ", String.Empty).Distinct().OrderBy(x => x).ToArray());
             }
-        }
+        }       
     }
 }

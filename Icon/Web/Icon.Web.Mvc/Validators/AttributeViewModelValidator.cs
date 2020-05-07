@@ -38,6 +38,20 @@ namespace Icon.Web.Mvc.Validators
             this.doesAttributeExistOnItemsQueryHandler = doesAttributeExistOnItemsQueryHandler;
             this.attributesHelper = attributesHelper;
 
+            When(vm => vm.AttributeId > 0 && !vm.IsActive, () =>
+            {
+                When(vm => vm.IsRequired, () =>
+                 {
+                     RuleFor(vm => vm.IsActive)
+                        .Must((vm, n) => !vm.IsRequired)
+                        .WithMessage(ValidationMessages.ValidateIsRequiredAttribute);
+                 });
+
+                RuleFor(vm => vm.IsActive)
+                    .Must((vm, n) => !DoesAttributeExistOnItems(vm))
+                    .WithMessage(ValidationMessages.ValidateItemCountOnAttribute);                
+            });
+
             RuleFor(vm => vm.TraitCode)
                 .NotEmpty();
 
@@ -226,7 +240,7 @@ namespace Icon.Web.Mvc.Validators
                         });
                 });
             });
-        }
+        }       
 
         private bool IsUniqueTraitCode(AttributeViewModel attributeViewModel)
         {
@@ -404,9 +418,9 @@ namespace Icon.Web.Mvc.Validators
 
             switch (viewModel.DataTypeId)
             {
-                case (int)DataType.Date:                    
-                DateTime date;                
-                return String.IsNullOrEmpty(viewModel.DefaultValue) || DateTime.TryParse(viewModel.DefaultValue, out date);                    
+                case (int)DataType.Date:
+                    DateTime date;
+                    return String.IsNullOrEmpty(viewModel.DefaultValue) || DateTime.TryParse(viewModel.DefaultValue, out date);
                 case (int)DataType.Number:
                     int dec;
                     decimal min, max, dflt;
@@ -456,7 +470,7 @@ namespace Icon.Web.Mvc.Validators
             }
         }
         private bool IsDateAttributeDefaultFormat(string date)
-        {            
+        {
             DateTime dDate;
             if (DateTime.TryParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dDate))
             {

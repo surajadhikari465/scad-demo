@@ -58,7 +58,7 @@ namespace Icon.Web.Tests.Unit.Validators
 
             //Then
             Assert.IsTrue(result.IsValid);
-        }
+        }        
 
         [TestMethod]
         public void Validate_ViewModelIsValidDate_ValidResult()
@@ -2048,6 +2048,97 @@ namespace Icon.Web.Tests.Unit.Validators
 
             //Then
             Assert.IsTrue(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_IsActiveIsFalseAndIsRequiredIsFalseAndItemCountIsZero_ValidResult()
+        {
+            //Given
+            viewModel.AttributeId = 123;
+            viewModel.DataTypeId = (int)DataType.Date;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.IsActive = false;
+            viewModel.IsRequired = false;
+
+            //When
+            mockGetAttributeByAttributeIdQuery.Setup(m => m.Search(It.IsAny<GetAttributeByAttributeIdParameters>()))
+                .Returns(attributeModel);
+            mockDoesAttributeExistOnItemsQueryHandler.Setup(m => m.Search(It.IsAny<DoesAttributeExistOnItemsParameters>()))
+                .Returns(false);
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsTrue(result.IsValid);
+            Assert.IsTrue(result.Errors.Count == 0);
+        }
+
+        [TestMethod]
+        public void Validate_IsActiveIsFalseAndIsRequiredIsFalseAndItemCountIsNotZero_InvalidResult()
+        {
+            //Given
+            viewModel.AttributeId = 123;
+            viewModel.DataTypeId = (int)DataType.Date;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.IsActive = false;
+            viewModel.IsRequired = false;
+
+            //When
+            mockGetAttributeByAttributeIdQuery.Setup(m => m.Search(It.IsAny<GetAttributeByAttributeIdParameters>()))
+                .Returns(attributeModel);
+            mockDoesAttributeExistOnItemsQueryHandler.Setup(m => m.Search(It.IsAny<DoesAttributeExistOnItemsParameters>()))
+                .Returns(true);
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsFalse(result.IsValid);
+            Assert.IsTrue(result.Errors.Any(e => e.ErrorMessage == "Attribute is associated with one or more items. Cannot hide."));
+        }
+
+        [TestMethod]
+        public void Validate_IsActiveIsFalseAndIsRequiredIsTruAndItemCountIsZero_InvalidResult()
+        {
+            //Given
+            viewModel.AttributeId = 123;
+            viewModel.DataTypeId = (int)DataType.Date;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.IsActive = false;
+            viewModel.IsRequired = true;
+
+            //When
+            mockGetAttributeByAttributeIdQuery.Setup(m => m.Search(It.IsAny<GetAttributeByAttributeIdParameters>()))
+                .Returns(attributeModel);
+            mockDoesAttributeExistOnItemsQueryHandler.Setup(m => m.Search(It.IsAny<DoesAttributeExistOnItemsParameters>()))
+                .Returns(false);
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsFalse(result.IsValid);
+            Assert.IsTrue(result.Errors.Any(e => e.ErrorMessage == "Attribute is required. Cannot hide."));
+        }
+
+        [TestMethod]
+        public void Validate_IsActiveIsFalseAndIsRequiredIsTrueAndItemCountIsNotZero_InvalidResult()
+        {
+            //Given
+            viewModel.AttributeId = 123;
+            viewModel.DataTypeId = (int)DataType.Date;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.IsActive = false;
+            viewModel.IsRequired = true;
+
+            //When
+            mockGetAttributeByAttributeIdQuery.Setup(m => m.Search(It.IsAny<GetAttributeByAttributeIdParameters>()))
+                .Returns(attributeModel);
+            mockDoesAttributeExistOnItemsQueryHandler.Setup(m => m.Search(It.IsAny<DoesAttributeExistOnItemsParameters>()))
+                .Returns(true);
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsFalse(result.IsValid);
         }
     }
 }

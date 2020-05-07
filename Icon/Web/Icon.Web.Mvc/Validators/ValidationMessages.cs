@@ -28,6 +28,8 @@ namespace Icon.Web.Mvc.Validators
         public const string PickListMustHaveOneNonDeletedPickListValue = "Cannot delete pick list value. At least one pick list value must be entered.";
         public const string AttributeExistsOnItemsWhenSwitchingToPickListError = "Unable to switch to a PickList. Items exist that have values for this attribute.";
         public const string InvalidDefaultValue = "Invalid Default Value";
-        public const string InvalidDefaultValueForDateAttribute = "Default date value format must be in the form yyyy-MM-dd and be between 2000-01-01 and 2100-12-31.";        
+        public const string InvalidDefaultValueForDateAttribute = "Default date value format must be in the form yyyy-MM-dd and be between 2000-01-01 and 2100-12-31.";
+        public const string ValidateItemCountOnAttribute = "Attribute is associated with one or more items. Cannot hide.";
+        public const string ValidateIsRequiredAttribute = "Attribute is required. Cannot hide.";
     }
 }

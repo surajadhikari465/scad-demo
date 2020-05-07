@@ -214,7 +214,6 @@ namespace Icon.Web.Tests.Unit.Controllers
                 IsPickList = false,
                 AvailableCharacterSets = new List<CharacterSetModel>(),
                 SpecialCharactersAllowed = string.Empty,
-                ItemCount = 0
             };
 
             mockGetAttributeByAttributeIdQuery.Setup(x => x.Search(It.IsAny<GetAttributeByAttributeIdParameters>())).Returns(
@@ -261,7 +260,6 @@ namespace Icon.Web.Tests.Unit.Controllers
                 IsSpecialCharactersSelected = true,
                 SpecialCharacterSetSelected = "Specific",
                 SpecialCharactersAllowed = "!@#$",
-                ItemCount = 0
             };
 
             mockGetAttributeByAttributeIdQuery.Setup(x => x.Search(It.IsAny<GetAttributeByAttributeIdParameters>())).Returns(
@@ -312,7 +310,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                 });
 
             // When.
-            var result = controller.Edit(1234, 0) as ViewResult;
+            var result = controller.Edit(1234) as ViewResult;
 
             Assert.IsNotNull(((AttributeViewModel)result.Model).AvailableDefaultValuesForBoolean);
         }
@@ -332,7 +330,6 @@ namespace Icon.Web.Tests.Unit.Controllers
                 IsSpecialCharactersSelected = true,
                 SpecialCharacterSetSelected = "Specific",
                 SpecialCharactersAllowed = "#@!",
-                ItemCount = 0
             };
 
             mockGetAttributeByAttributeIdQuery.Setup(x => x.Search(It.IsAny<GetAttributeByAttributeIdParameters>())).Returns(
@@ -378,7 +375,6 @@ namespace Icon.Web.Tests.Unit.Controllers
                 IsSpecialCharactersSelected = true,
                 SpecialCharacterSetSelected = "Specific",
                 SpecialCharactersAllowed = "#@!$",
-                ItemCount = 0
             };
 
             mockGetAttributeByAttributeIdQuery.Setup(x => x.Search(It.IsAny<GetAttributeByAttributeIdParameters>())).Returns(
@@ -579,7 +575,6 @@ namespace Icon.Web.Tests.Unit.Controllers
                 {
                     new DataTypeModel{ DataTypeId = 1, DataType = "Text"}
                 });
-
             // When.
             var result = controller.Edit(viewModel) as ViewResult;
 
@@ -589,7 +584,6 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             Assert.AreEqual(result.ViewName, string.Empty);
             Assert.AreEqual(expectedSuccessMessage, viewData["SuccessMessage"]);
-            mockAttributesHelper.Verify(m => m.CreateCharacterSetRegexPattern(It.IsAny<int>(), It.IsAny<List<CharacterSetModel>>(), It.IsAny<string>()));
-        }
+        }       
     }
 }
