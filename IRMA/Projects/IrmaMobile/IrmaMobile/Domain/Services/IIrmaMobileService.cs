@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using IrmaMobile.Domain.Models;
+﻿using IrmaMobile.Domain.Models;
 using IrmaMobile.Legacy;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace IrmaMobile.Services
 {

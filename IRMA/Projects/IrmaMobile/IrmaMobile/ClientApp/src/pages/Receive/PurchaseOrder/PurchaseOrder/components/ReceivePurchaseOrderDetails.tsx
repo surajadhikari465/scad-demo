@@ -7,7 +7,7 @@ import React, {
     useState,
     useRef
 } from "react";
-import { Dropdown, Grid, Input, Segment, Button } from "semantic-ui-react";
+import { Dropdown, Grid, Input, Segment, Button, InputOnChangeData } from "semantic-ui-react";
 import agent from "../../../../../api/agent";
 import { AppContext, types } from "../../../../../store";
 import { ReasonCode } from "../../types/ReasonCode";
@@ -36,6 +36,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
     const [quantity, setQuantity] = useState<any>(1);
     const [weight, setWeight] = useState<number | string>(orderDetails ? quantity * orderDetails?.PkgWeight : '');
     const [inputHasFocus, setInputHasFocus] = useState<boolean>(false);
+    const [catchWeightWarning, setCatchweightWarning] = useState<boolean>(false);
 
     useEffect(() => {
         const loadReasonCodes = async () => {
@@ -61,11 +62,34 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
     }, [dispatch, region]);
 
     useEffect(() => {
-        if (orderDetails?.PkgWeight !== undefined) {
-            setWeight(quantity * orderDetails?.PkgWeight);
+        if (orderDetails && orderDetails.ItemLoaded) {
+            if (orderDetails.CatchweightRequired) {
+                setCatchweightWarning(true);
+            } else {
+                setCatchweightWarning(false);
+                if (costedByWeight) {
+                    if (orderDetails.PkgWeight !== undefined) {
+                        setWeight(quantity * orderDetails.PkgWeight);
+                    } else {
+                        setWeight(quantity * 0);
+                    }
+                }
+            }
         }
     }, [orderDetails, quantity, setWeight])
 
+    const handleWeightChanged = (e: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
+        if (orderDetails) {
+            if (costedByWeight && orderDetails.CatchweightRequired) {
+                if (data.value === '') {
+                    setCatchweightWarning(true);
+                } else {
+                    setCatchweightWarning(false);
+                }
+            }
+            setWeight(data.value);
+        }
+    }
 
     const handleDropdownChange = (
         event: SyntheticEvent<HTMLElement, Event>,
@@ -155,6 +179,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                 }
             }
             finally {
+                setCatchweightWarning(false);
                 setQuantity(1);
                 setWeight('');
                 setReceivingOrder(false);
@@ -230,11 +255,11 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                     showTriggerButton={false}
                     openExternal={showHighQtyModal}
                     headerText='Verify Quantity'
-                    cancelButtonText='No' 
+                    cancelButtonText='No'
                     confirmButtonText='Yes'
-                    lineOne={quantityMode.current === QuantityAddMode.AddTo 
-                                ? `Quantity Received (${quantity + orderDetails.QtyReceived}) is greater than Quantity Ordered (${orderDetails.QtyOrdered}). Continue?`
-                                : `Quantity (${quantity}) is greater than Quantity Ordered (${orderDetails.QtyOrdered}). Continue?`} />
+                    lineOne={quantityMode.current === QuantityAddMode.AddTo
+                        ? `Quantity Received (${quantity + orderDetails.QtyReceived}) is greater than Quantity Ordered (${orderDetails.QtyOrdered}). Continue?`
+                        : `Quantity (${quantity}) is greater than Quantity Ordered (${orderDetails.QtyOrdered}). Continue?`} />
                 <ReceivePurchaseOrderDetailsQtyModal handleQuantityDecision={handleQuantityDecision} open={showQtyModal} quantity={orderDetails.QtyReceived} />
                 <ReasonCodeModal />
                 <div className={'receive-order'}>
@@ -337,16 +362,17 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                                     </Grid.Column>
                                         <Grid.Column textAlign="left" style={{ paddingTop: '5px', paddingBottom: '5px' }}>
                                             <Input
+                                                className={catchWeightWarning ? 'warning-component' : ''}
                                                 type="number"
                                                 name="Weight"
                                                 onFocus={() => setInputHasFocus(true)}
                                                 onBlur={() => setInputHasFocus(false)}
-                                                onChange={(e) => setWeight(parseFloat(e.target.value))}
+                                                onChange={handleWeightChanged}
                                                 onKeyPress={validateDecimalInput}
                                                 onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''}
                                                 value={(orderDetails?.ItemLoaded && costedByWeight) ? weight : ''}
                                                 fluid
-                                                disabled={!orderDetails.ItemLoaded || !costedByWeight}
+                                                disabled={!orderDetails.ItemLoaded || !orderDetails.CatchweightRequired}
                                                 size="small"
                                             ></Input>
                                         </Grid.Column>
@@ -442,7 +468,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                                 </Grid>
                             </Grid.Column>
                         </Grid>
-                        <button className='irma-btn' style={{ width: '100%', marginTop:'10px', marginBottom: '15px' }} disabled={receivingOrder || !orderDetails.ItemLoaded} onClick={receiveOrder}>
+                        <button className='irma-btn' style={{ width: '100%', marginTop: '10px', marginBottom: '15px' }} disabled={receivingOrder || !orderDetails.ItemLoaded} onClick={receiveOrder}>
                             Receive
                         </button>
                     </Grid>

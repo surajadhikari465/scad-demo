@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using IrmaMobile.Domain.Models;
+﻿using IrmaMobile.Domain.Models;
+using IrmaMobile.Legacy;
 using IrmaMobile.Logging;
 using IrmaMobile.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using IrmaMobile.Legacy;
 
 namespace IrmaMobile.Controllers
 {

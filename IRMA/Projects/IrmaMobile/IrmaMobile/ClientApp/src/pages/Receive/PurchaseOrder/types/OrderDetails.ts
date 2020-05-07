@@ -34,4 +34,5 @@ export interface OrderDetails {
     CloseDate: Date;
     PartialShipment: boolean;
     OrderItems: OrderItem[];
+    CatchweightRequired: boolean | null;
 }

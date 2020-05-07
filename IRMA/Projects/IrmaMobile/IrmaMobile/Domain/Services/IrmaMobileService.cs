@@ -239,9 +239,15 @@ namespace IrmaMobile.Services
 
         public async Task<Result> UpdateOrderBeforeClosingAsync(string region, UpdateOrderBeforeClosingModel model)
         {
-            var result = await MakeServiceRequest(region, client => client.UpdateOrderBeforeCloseAsync(model.OrderId, model.InvoiceNumber, 
-                                                    model.InvoiceDate, model.InvoiceCost, model.VendorDocId, model.VendorDocDate, 
-                                                    model.SubteamNo, model.PartialShipment));
+            var result = await MakeServiceRequest(region, client => client.UpdateOrderBeforeCloseAsync(
+                model.OrderId, 
+                model.InvoiceNumber,
+                model.InvoiceDate, 
+                model.InvoiceCost, 
+                model.VendorDocId, 
+                model.VendorDocDate,
+                model.SubteamNo, 
+                model.PartialShipment));
             return result;
         }
 

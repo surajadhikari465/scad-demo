@@ -252,7 +252,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             ...alert,
             open: true,
             header: 'Confirm Close Order',
-            alertMessage: `Invoice Date: '${dateFormat(new Date(), 'mm/dd/yyyy')}'. Close Order?`,
+            alertMessage: `Invoice Date: '${dateFormat(new Date(invoiceDate), 'mm/dd/yyyy')}'. Close Order?`,
             type: 'confirm',
             confirmAction: () => { handleConfirmCloseOrder(); },
             cancelAction: () => { setAlert({ ...alert, open: false }); }
@@ -269,9 +269,16 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
 
             const invoiceCost = invoiceTotal - nonAllocatedCharges - orderDetails.InvoiceFreight;
 
-            var updateResult = await agent.InvoiceData.updateOrderBeforeClosing(region, orderDetails.OrderId, invoiceNumber.toString(), new Date(invoiceDate), invoiceCost,
-                orderDetails.VendorDocId ? orderDetails.VendorDocId.toString() : '', orderDetails.VendorDocDate, orderDetails.SubteamNo,
-                orderDetails.PartialShipment)
+            var updateResult = await agent.InvoiceData.updateOrderBeforeClosing(
+                region, 
+                orderDetails.OrderId,
+                invoiceNumber.toString(), 
+                new Date(invoiceDate), 
+                invoiceCost,
+                orderDetails.VendorDocId ? orderDetails.VendorDocId.toString() : '', 
+                orderDetails.VendorDocDate, 
+                orderDetails.SubteamNo,
+                false)
 
             if ((updateResult && !updateResult.status) || !updateResult) {
                 toast.error(`Error when updating order before closing: ${updateResult.errorMessage || 'No message given'}`, { autoClose: false })

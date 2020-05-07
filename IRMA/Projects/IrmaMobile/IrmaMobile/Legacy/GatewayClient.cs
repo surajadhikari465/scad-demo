@@ -9,9 +9,6 @@
 
 namespace IrmaMobile.Legacy
 {
-    using System.Runtime.Serialization;
-    
-    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
     [System.Runtime.Serialization.DataContractAttribute(Name="UserRole", Namespace="http://schemas.datacontract.org/2004/07/WholeFoods.ServiceLibrary.IRMA.Security")]

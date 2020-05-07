@@ -58,7 +58,8 @@ const orderUtil = {
             PartialShipment: order.partialShipment,
             OrderItems: order.orderItems.map((oi: any) => {
                 return orderUtil.MapOrderItem(oi);
-            })
+            }),
+            CatchweightRequired: orderItem.catchweightRequired
         }
     
         return orderDetails;
@@ -73,7 +74,8 @@ const orderUtil = {
             Description: oi.item_Description,
             Weight: oi.total_Weight,
             eInvoiceWeight: oi.eInvoiceWeight,
-            Code: oi.receivingDiscrepancyReasonCodeID
+            Code: oi.receivingDiscrepancyReasonCodeID,
+            CatchweightRequired: oi.catchweightRequired
         } as OrderItem
     }
 }

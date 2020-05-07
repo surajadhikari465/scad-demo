@@ -9,6 +9,7 @@ interface OrderItem
     Weight: number;
     eInvoiceWeight: number;
     Code: number;
+    CatchweightRequired: boolean;
 }
 
 export default OrderItem;

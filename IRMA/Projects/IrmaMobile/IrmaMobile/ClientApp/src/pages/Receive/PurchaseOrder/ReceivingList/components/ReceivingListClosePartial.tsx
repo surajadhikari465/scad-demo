@@ -30,16 +30,15 @@ const ReceivingListClosePartial: React.FC<IProps> = ({ match }) => {
             }
 
             setIsLoading(true);
-
             
             var updateResult = await agent.InvoiceData.updateOrderBeforeClosing(
                 region, 
                 orderDetails.OrderId,
-                '', 
-                undefined, 
-                0,
-                '',
-                undefined,
+                orderDetails.InvoiceNumber, 
+                orderDetails.InvoiceDate, 
+                orderDetails.InvoiceCost,
+                orderDetails.VendorDocId ? orderDetails.VendorDocId.toString() : '',
+                orderDetails.VendorDocDate,
                 orderDetails.SubteamNo,
                 true);
 
