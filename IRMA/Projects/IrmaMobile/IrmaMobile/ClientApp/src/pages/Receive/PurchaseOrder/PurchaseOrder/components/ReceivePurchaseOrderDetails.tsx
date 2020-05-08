@@ -63,11 +63,11 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
 
     useEffect(() => {
         if (orderDetails && orderDetails.ItemLoaded) {
-            if (orderDetails.CatchweightRequired) {
-                setCatchweightWarning(true);
-            } else {
-                setCatchweightWarning(false);
-                if (costedByWeight) {
+            if (costedByWeight) {
+                if (orderDetails.CatchweightRequired) {
+                    setCatchweightWarning(true);
+                } else {
+                    setCatchweightWarning(false);
                     if (orderDetails.PkgWeight !== undefined) {
                         setWeight(quantity * orderDetails.PkgWeight);
                     } else {
@@ -76,7 +76,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                 }
             }
         }
-    }, [orderDetails, quantity, setWeight])
+    }, [orderDetails, quantity, setWeight, costedByWeight])
 
     const handleWeightChanged = (e: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
         if (orderDetails) {
@@ -118,6 +118,21 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
             if (parseInt(quantity) === 0) {
                 toast.error("Please enter a quantity of at least 1.", { autoClose: false });
                 return;
+            }
+
+            if (costedByWeight) {
+                if(!weight || isNaN(parseFloat(weight.toString()))) {
+                    toast.error("Weight Received must be a numeric value. Please try again.", { autoClose: false });
+                    return;
+                }
+                if(weight > 9999.99) {
+                    toast.error("Weight amount must be less than 9999.99", { autoClose: false });
+                    return;
+                }
+                if(weight < .01) {
+                    toast.error("Weight amount must be greater than .01", { autoClose: false });
+                    return;
+                }
             }
 
             if (!overrideHighQty.current && orderDetails.QtyReceived !== 0 && quantityMode.current === QuantityAddMode.None) {
@@ -372,7 +387,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                                                 onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''}
                                                 value={(orderDetails?.ItemLoaded && costedByWeight) ? weight : ''}
                                                 fluid
-                                                disabled={!orderDetails.ItemLoaded || !orderDetails.CatchweightRequired}
+                                                disabled={!orderDetails.ItemLoaded || !costedByWeight}
                                                 size="small"
                                             ></Input>
                                         </Grid.Column>
