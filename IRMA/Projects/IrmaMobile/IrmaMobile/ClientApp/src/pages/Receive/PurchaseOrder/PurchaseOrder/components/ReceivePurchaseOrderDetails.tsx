@@ -141,7 +141,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
             }
 
             const newQuantity: number = quantityMode.current === QuantityAddMode.AddTo ? quantity + orderDetails.QtyReceived : quantity;
-            const parsedWeight: number = typeof weight === 'number' ? weight : parseFloat(weight);
+            const parsedWeight: number = typeof weight === 'number' ? weight : isNaN(parseFloat(weight)) ? 0 : parseFloat(weight);
             const newWeight: number = quantityMode.current === QuantityAddMode.AddTo ? parsedWeight + orderDetails.Weight : parsedWeight;
 
             if (!overrideHighQty.current && newQuantity > orderDetails.QtyOrdered) {
