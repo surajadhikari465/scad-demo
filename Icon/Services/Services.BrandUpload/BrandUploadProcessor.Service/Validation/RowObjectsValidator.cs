@@ -89,11 +89,15 @@ namespace BrandUploadProcessor.Service.Validation
         }
 
         private static void ValidateDuplicateBrandNames(RowObjectDictionary rowObjectDictionary, BrandModel existingBrand, List<BrandModel> brandsFromDatabase, string brandName, 
-             HashSet<string> brandNamesThatExistMoreThanOnceInWorksheet, List<InvalidRowError> errors)
+             HashSet<string> brandNamesThatExistMoreThanOnceInWorksheet, HashSet<string> trimmedBrandNamesThatExistMoreThanOnceInWorksheet, List<InvalidRowError> errors)
         {
-            if (string.IsNullOrWhiteSpace(brandName)) return;
+             if (string.IsNullOrWhiteSpace(brandName)) return;
 
             IEnumerable<BrandModel> dupesInDatabase;
+            IEnumerable<BrandModel> dupesInDatabaseByTrimmedName = null;
+            string trimmedBrandName = string.Empty;
+            
+
             if (existingBrand != null)
             {
                 dupesInDatabase = brandsFromDatabase.Where(b => b.BrandName == brandName && b.BrandId != existingBrand.BrandId);
@@ -101,6 +105,19 @@ namespace BrandUploadProcessor.Service.Validation
             else
             {
                 dupesInDatabase = brandsFromDatabase.Where(b => b.BrandName == brandName);
+            }
+
+            if (brandName.Length > Constants.IrmaBrandNameMaxLength)
+            {
+                trimmedBrandName = brandName.Substring(0, Constants.IrmaBrandNameMaxLength);
+                if (existingBrand != null)
+                {
+                    dupesInDatabaseByTrimmedName = brandsFromDatabase.Where(b => b.BrandName == trimmedBrandName && b.BrandId != existingBrand.BrandId);
+                }
+                else
+                {
+                    dupesInDatabaseByTrimmedName = brandsFromDatabase.Where(b => b.BrandName == trimmedBrandName);
+                }
             }
 
             if (dupesInDatabase.Any())
@@ -120,6 +137,26 @@ namespace BrandUploadProcessor.Service.Validation
                     Error =
                         $"'{Constants.BrandNameColumnHeader}' has invalid value. '{brandName}' exists more than once in the worksheet and must be unique."
                 });
+
+
+            if (trimmedBrandNamesThatExistMoreThanOnceInWorksheet.Contains(trimmedBrandName))
+                errors.Add(new InvalidRowError
+                {
+                    RowId = rowObjectDictionary.Row,
+                    Error =
+                        $"Brand name '{brandName}' trimmed to {Constants.IrmaBrandNameMaxLength} characters already exists. Change the brand name so that the first {Constants.IrmaBrandNameMaxLength} characters are unique."
+                });
+
+            if (dupesInDatabaseByTrimmedName != null && dupesInDatabaseByTrimmedName.Any())
+            {
+                errors.Add(new InvalidRowError
+                {
+                    RowId = rowObjectDictionary.Row,
+                    Error =
+                        $"Brand name '{brandName}' trimmed to {Constants.IrmaBrandNameMaxLength} characters already exists in the spreadsheet. Change the brand name so that the first {Constants.IrmaBrandNameMaxLength} characters are unique."
+                });
+
+            }
         }
 
         public RowObjectValidatorResponse ValidateCreateNew(List<RowObject> rowObjects, List<ColumnHeader> columnHeaders, List<BrandAttributeModel> brandAttributeModels)
@@ -134,10 +171,10 @@ namespace BrandUploadProcessor.Service.Validation
                 .Join(brandAttributeModels.Where(a => !a.IsReadOnly),
                     c => c.Name,
                     a => a.TraitDesc,
-                    (c, a) => new
+                    (c, a) => new AttributeColumn
                     {
                         ColumnHeader = c,
-                        a.IsRequired,
+                        IsRequired = a.IsRequired,
                         RegexPattern = a.TraitPattern
                     })
                 .ToList();
@@ -155,9 +192,12 @@ namespace BrandUploadProcessor.Service.Validation
             
 
             // Brand Names that appear in uploaded worksheet more than once.
-            var brandNamesThatExistMoreThanOnceInWorksheet = DuplicateColumnValuesFromWorksheet(rowObjectDictionaries, brandNameIndex);
+            var brandNamesThatExistMoreThanOnceInWorksheet = DuplicateColumnValuesFromWorksheet(rowObjectDictionaries, brandNameIndex, brandName => brandName);
+            // brand names trimmed to meet IRMA length requirements in uploaded worksheet more than once.
+            var trimmedBrandNamesThatExistMoreThanOnceInWorksheet = DuplicateColumnValuesFromWorksheet(rowObjectDictionaries, brandNameIndex, brandName => brandName.Length >= Constants.IrmaBrandNameMaxLength ? brandName.Substring(0, Constants.IrmaBrandNameMaxLength) : brandName);
             // Brand Abbreviations that appear in uploaded worksheet more than once.
-            var brandAbbreviationsThatExistMoreThanOnceInWorksheet = DuplicateColumnValuesFromWorksheet(rowObjectDictionaries, brandAbbreviationIndex);
+            var brandAbbreviationsThatExistMoreThanOnceInWorksheet = DuplicateColumnValuesFromWorksheet(rowObjectDictionaries, brandAbbreviationIndex, brandAbbrev => brandAbbrev);
+
 
             foreach (var rowObjectDictionary in rowObjectDictionaries)
             {
@@ -183,7 +223,7 @@ namespace BrandUploadProcessor.Service.Validation
 
                     if (brandId != null) errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandIdColumnHeader}' must be empty when creating new brands." });
 
-                    ValidateDuplicateBrandNames(rowObjectDictionary, null, brandsCache.Brands, brandName, brandNamesThatExistMoreThanOnceInWorksheet, errors);
+                    ValidateDuplicateBrandNames(rowObjectDictionary, null, brandsCache.Brands, brandName, brandNamesThatExistMoreThanOnceInWorksheet, trimmedBrandNamesThatExistMoreThanOnceInWorksheet, errors);
                     ValidateDuplicateBrandAbbreviations(rowObjectDictionary, null, brandsCache.Brands, brandAbbreviation, brandAbbreviationsThatExistMoreThanOnceInWorksheet, errors);
 
                     foreach (var attributeColumn in attributeColumns)
@@ -207,7 +247,7 @@ namespace BrandUploadProcessor.Service.Validation
                                     continue;
                                 }
 
-                                var result = regexTextValidator.Validate(attributeColumn.RegexPattern, value);
+                                var result = regexTextValidator.Validate(attributeColumn, value);
                                 if (!result.IsValid) errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = result.Error });
                             }
                         }
@@ -250,10 +290,10 @@ namespace BrandUploadProcessor.Service.Validation
                 .Join(brandAttributeModels.Where(a => !a.IsReadOnly),
                     c => c.Name,
                     a => a.TraitDesc,
-                    (c, a) => new
+                    (c, a) => new AttributeColumn
                     {
                         ColumnHeader = c,
-                        a.IsRequired,
+                        IsRequired = a.IsRequired,
                         RegexPattern = a.TraitPattern
                     })
                 .ToList();
@@ -272,9 +312,11 @@ namespace BrandUploadProcessor.Service.Validation
             
 
             // Brand Names that appear in uploaded worksheet more than once.
-            var brandNamesThatExistMoreThanOnceInWorksheet = DuplicateColumnValuesFromWorksheet(rowObjectDictionaries, brandNameIndex);
+            var brandNamesThatExistMoreThanOnceInWorksheet = DuplicateColumnValuesFromWorksheet(rowObjectDictionaries, brandNameIndex, brandName=>brandName);
+            // brand names trimmed to meet IRMA length requirements in uploaded worksheet more than once.
+            var trimmedBrandNamesThatExistMoreThanOnceInWorksheet = DuplicateColumnValuesFromWorksheet(rowObjectDictionaries, brandNameIndex, brandName => brandName.Length >= Constants.IrmaBrandNameMaxLength ? brandName.Substring(0, Constants.IrmaBrandNameMaxLength) : brandName);
             // Brand Abbreviations that appear in uploaded worksheet more than once.
-            var brandAbbreviationsThatExistMoreThanOnceInWorksheet = DuplicateColumnValuesFromWorksheet(rowObjectDictionaries, brandAbbreviationIndex);
+            var brandAbbreviationsThatExistMoreThanOnceInWorksheet = DuplicateColumnValuesFromWorksheet(rowObjectDictionaries, brandAbbreviationIndex, brandAbbrev => brandAbbrev);
             
             foreach (var rowObjectDictionary in rowObjectDictionaries)
             {
@@ -300,8 +342,6 @@ namespace BrandUploadProcessor.Service.Validation
                 }
                 else
                 {
-
-
                     if (brandName != null && string.Equals(brandName, Constants.RemoveExcelValue, StringComparison.CurrentCultureIgnoreCase))
                     {
                         errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandNameColumnHeader}' cannot be {Constants.RemoveExcelValue}" });
@@ -319,7 +359,7 @@ namespace BrandUploadProcessor.Service.Validation
                     }
                     else
                     {
-                        ValidateDuplicateBrandNames(rowObjectDictionary, existingBrand, brandsCache.Brands, brandName, brandNamesThatExistMoreThanOnceInWorksheet, errors);
+                        ValidateDuplicateBrandNames(rowObjectDictionary, existingBrand, brandsCache.Brands, brandName, brandNamesThatExistMoreThanOnceInWorksheet, trimmedBrandNamesThatExistMoreThanOnceInWorksheet, errors);
                         ValidateDuplicateBrandAbbreviations(rowObjectDictionary, existingBrand, brandsCache.Brands, brandAbbreviation,brandAbbreviationsThatExistMoreThanOnceInWorksheet, errors);
 
 
@@ -351,7 +391,7 @@ namespace BrandUploadProcessor.Service.Validation
                             }
                             else
                             {
-                                var result = regexTextValidator.Validate(attributeColumn.RegexPattern, value);
+                                var result = regexTextValidator.Validate(attributeColumn, value);
                                 
                                 if (result.IsValid) continue;
 
@@ -373,12 +413,12 @@ namespace BrandUploadProcessor.Service.Validation
             return response;
         }
 
-        private static HashSet<string> DuplicateColumnValuesFromWorksheet(List<RowObjectDictionary> rowObjectDictionaries, int columnIndex)
+        private static HashSet<string> DuplicateColumnValuesFromWorksheet(List<RowObjectDictionary> rowObjectDictionaries, int columnIndex, Func<string, string> transformKey)
         {
             var valuesThatExistMoreThanOnceInWorksheet = rowObjectDictionaries
                 .Where(r => r.Cells.ContainsKey(columnIndex)
                             && !string.IsNullOrEmpty(r.Cells[columnIndex]))
-                .GroupBy(g => g.Cells[columnIndex])
+                .GroupBy(g => transformKey(g.Cells[columnIndex]))
                 .Where(g => g.Count() > 1)
                 .Select(s => s.Key)
                 .ToHashSet();

@@ -1,23 +1,25 @@
-﻿using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
+using BrandUploadProcessor.Common.Models;
+using BrandUploadProcessor.Service.Mappers;
 using BrandUploadProcessor.Service.Validation.Interfaces;
-using Icon.Common.Validators.ItemAttributes;
 
 namespace BrandUploadProcessor.Service.Validation
 {
     public class RegexTextValidator : IRegexTextValidator
     {
-        public ValidationResponse Validate(string regexPattern, string value)
+        private readonly IAttributeErrorMessageMapper errorMessageMapper;
+
+        public RegexTextValidator(IAttributeErrorMessageMapper errorMessageMapper)
         {
-            var result = new ValidationResponse {IsValid = true};
+            this.errorMessageMapper = errorMessageMapper;
+        }
 
-            if (!Regex.IsMatch(value, regexPattern))
-            {
-                result.IsValid = false;
-                result.Error = $"'{value}' does not meet traitPattern [ {regexPattern} ] requirements.";
-            }
+        public ValidationResponse Validate(AttributeColumn attributeColumn, string value)
+        {
+            if (Regex.IsMatch(value, attributeColumn.RegexPattern)) 
+                return new ValidationResponse { IsValid = true };
 
-            return result;
+            return new ValidationResponse {IsValid = false, Error = errorMessageMapper.Map(attributeColumn, value)};
 
         }
     }

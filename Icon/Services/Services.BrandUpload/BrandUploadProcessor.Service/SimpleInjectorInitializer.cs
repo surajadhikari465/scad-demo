@@ -42,10 +42,11 @@ namespace BrandUploadProcessor.Service
             container.Register<IAddUpdateBrandManager, AddUpdateBrandManager>();
             container.Register<IColumnHeadersValidator, ColumnHeadersValidator>();
             container.Register<IErrorMessageBuilder, ErrorMessageBuilder>();
-            container.Register<IRegexTextValidator, RegexTextValidator>();
-            container.Register<IRowObjectsValidator, RowObjectsValidator>();
             container.Register<IRowObjectToAddBrandModelMapper, RowObjectToAddBrandModelMapper>();
             container.Register<IRowObjectToUpdateBrandModelMapper, RowObjectToUpdateBrandModelMapper>();
+            container.Register<IAttributeErrorMessageMapper, AttributeErrorMessageMapper>();
+            container.Register<IRegexTextValidator, RegexTextValidator>();
+            container.Register<IRowObjectsValidator, RowObjectsValidator>();
 
             container.Register<IBrandsCache, BrandsCache>(Lifestyle.Singleton);
 

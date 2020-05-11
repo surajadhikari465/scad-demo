@@ -95,6 +95,7 @@
     <Compile Include="Interfaces\IErrorMessageBuilder.cs" />
     <Compile Include="InvalidRowError.cs" />
     <Compile Include="Models\AddBrandModel.cs" />
+    <Compile Include="Models\AttributeColumn.cs" />
     <Compile Include="Models\BrandAttributeModel.cs" />
     <Compile Include="Models\BrandModel.cs" />
     <Compile Include="Models\BrandUploadInformation.cs" />

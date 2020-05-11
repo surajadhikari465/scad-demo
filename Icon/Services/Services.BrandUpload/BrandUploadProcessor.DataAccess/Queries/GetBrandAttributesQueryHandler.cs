@@ -4,6 +4,7 @@ using System.Linq;
 using BrandUploadProcessor.Common.Models;
 using Dapper;
 using Icon.Common.DataAccess;
+using Icon.Common.Validators;
 
 namespace BrandUploadProcessor.DataAccess.Queries
 {
@@ -17,10 +18,12 @@ namespace BrandUploadProcessor.DataAccess.Queries
 
         public IEnumerable<BrandAttributeModel> Search(EmptyQueryParameters<IEnumerable<BrandAttributeModel>> parameters)
         {
-            var sql = @"
+            var validationRules = IconPropertyValidationRules.GetIconPropertyValidationRules("BrandName");
+            
+            var sql = $@"
                 select traitId, TraitCode, TraitPattern, TraitDesc, cast(0 as bit) IsRequired, cast(0 as bit) IsReadOnly  from trait where traitcode in ('BA','GRD', 'PCO', 'ZIP', 'LCL') 
                 union all
-                select null TraitId, 'BN' Traitcode, '^[a-zA-Z0-9 &]{1,255}$' TraitPattern, 'Brand Name' TraitDesc, cast(0 as bit) IsRequired, cast(0 as bit) IsReadOnly
+                select null TraitId, 'BN' Traitcode, '{validationRules.ExpressionToValidate}' TraitPattern, 'Brand Name' TraitDesc, cast(0 as bit) IsRequired, cast(0 as bit) IsReadOnly
             ";
 
             var attributes = connection.Query<BrandAttributeModel>(sql).ToList();

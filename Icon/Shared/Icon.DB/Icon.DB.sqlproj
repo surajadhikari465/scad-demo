@@ -842,6 +842,7 @@
     <Build Include="dbo\StoredProcedures\UpdateItemDisplayOrder.sql" />
     <Build Include="dbo\Tables\ItemColumnDisplayOrder.sql" />
     <Build Include="dbo\StoredProcedures\SetDefaultItemColumnDisplayOrder.sql" />
+    <None Include="Scripts\PopulateData\35524_BrandValidation_FixZipCodeTraitPattern.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

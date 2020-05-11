@@ -114,6 +114,8 @@
     <Compile Include="Interfaces\IAddUpdateBrandManager.cs" />
     <Compile Include="Interfaces\IService.cs" />
     <Compile Include="Interfaces\IServiceConfiguration.cs" />
+    <Compile Include="Mappers\AttributeErrorMessageMapper.cs" />
+    <Compile Include="Mappers\IAttributeErrorMessageMapper.cs" />
     <Compile Include="Mappers\Interfaces\IRowObjectToAddBrandModelMapper.cs" />
     <Compile Include="Mappers\Interfaces\IRowObjectToUpdateBrandModelMapper.cs" />
     <Compile Include="Mappers\RowObjectToAddBrandModelMapper.cs" />

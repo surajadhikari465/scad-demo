@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using BrandUploadProcessor.Common;
 using BrandUploadProcessor.Common.Models;
 using BrandUploadProcessor.Service.Interfaces;
+using BrandUploadProcessor.Service.Mappers;
 using BrandUploadProcessor.Service.Validation;
 using BrandUploadProcessor.Service.Validation.Interfaces;
 using Icon.Common.DataAccess;
@@ -34,7 +36,7 @@ namespace BrandUploadProcessor.Service.Tests
             getBrandAttributesQueryHandler.Setup(s => s.Search(It.IsAny<EmptyQueryParameters<IEnumerable<BrandAttributeModel>>>()))
                 .Returns(TestHelpers.GetBrandAttributeModels());
 
-            regexTextValidator = new RegexTextValidator();
+            regexTextValidator = new RegexTextValidator(new AttributeErrorMessageMapper());
 
             brandsCache = new BrandsCache(GetBrandsQueryHandler.Object);
             brandsCache.Refresh();
@@ -208,6 +210,83 @@ namespace BrandUploadProcessor.Service.Tests
             Assert.AreEqual(expectedValidRows, rowObjectValidatorResponse.ValidRows.Count);
             Assert.AreEqual(expectedInvalidRows, rowObjectValidatorResponse.InvalidRows.Count);
         }
+
+        [TestMethod]
+        public void Validate_UpdateExisting_BrandInWorksheetMatchesBrandInDBByIrmaLengthRules_NotSameBrandId_1ErrorRow()
+        {
+            var irmaLengthName = "1234567890123456789012345";
+            var uniqueAfter25Name = irmaLengthName + "1";
+            var nonDupeBrandId = "1";
+
+            var dupebrand = new BrandModel {BrandAbbreviation = "11", BrandId = 9999999, BrandName = irmaLengthName};
+
+            brandsCache.Brands.Add(dupebrand);
+
+            var expectedValidRows = 0;
+            var expectedInvalidRows = 1;
+            var expectedErrorMessage =
+                $"Brand name '{uniqueAfter25Name}' trimmed to 25 characters already exists in the spreadsheet. Change the brand name so that the first 25 characters are unique.";
+
+            var rowObjects = new List<RowObject>
+            {
+                TestHelpers.CreateRowObject(1, new List<ParsedCell>
+                {
+                    TestHelpers.CreateParsedCell(Constants.BrandIdColumnHeader, nonDupeBrandId),
+                    TestHelpers.CreateParsedCell(Constants.BrandNameColumnHeader, uniqueAfter25Name),
+                    TestHelpers.CreateParsedCell(Constants.BrandAbbreviationColumnHeader,  "999"),
+                    TestHelpers.CreateParsedCell(Constants.ZipCodeColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.LocalityColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.DesignationColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.ParentCompanyColumnHeader, string.Empty)
+                })
+            };
+            var columnHeaders = TestHelpers.GetHeaders();
+            var brandAttributeModels = TestHelpers.GetBrandAttributeModels();
+
+            var rowObjectValidatorResponse = validator.Validate(Enums.FileModeTypeEnum.UpdateExisting, rowObjects, columnHeaders, brandAttributeModels);
+
+            Assert.AreEqual(expectedValidRows, rowObjectValidatorResponse.ValidRows.Count);
+            Assert.AreEqual(expectedInvalidRows, rowObjectValidatorResponse.InvalidRows.Count);
+            Assert.AreEqual(expectedErrorMessage, rowObjectValidatorResponse.InvalidRows[0].Error);
+        }
+
+
+        [TestMethod]
+        public void Validate_UpdateExisting_BrandNameInWorksheetMatchesBrandInDBByIrmaLengthRules_SameBrandId_NoErrors()
+        {
+            var irmaLengthName = "1234567890123456789012345";
+            var uniqueAfter25Name = irmaLengthName + "1";
+            
+
+            var dupebrand = new BrandModel { BrandAbbreviation = "11", BrandId = 9999999, BrandName = irmaLengthName };
+
+            brandsCache.Brands.Add(dupebrand);
+
+            var expectedValidRows = 1;
+            var expectedInvalidRows = 0;
+
+            var rowObjects = new List<RowObject>
+            {
+                TestHelpers.CreateRowObject(1, new List<ParsedCell>
+                {
+                    TestHelpers.CreateParsedCell(Constants.BrandIdColumnHeader, dupebrand.BrandId.ToString()),
+                    TestHelpers.CreateParsedCell(Constants.BrandNameColumnHeader, uniqueAfter25Name),
+                    TestHelpers.CreateParsedCell(Constants.BrandAbbreviationColumnHeader,  "999"),
+                    TestHelpers.CreateParsedCell(Constants.ZipCodeColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.LocalityColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.DesignationColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.ParentCompanyColumnHeader, string.Empty)
+                })
+            };
+            var columnHeaders = TestHelpers.GetHeaders();
+            var brandAttributeModels = TestHelpers.GetBrandAttributeModels();
+
+            var rowObjectValidatorResponse = validator.Validate(Enums.FileModeTypeEnum.UpdateExisting, rowObjects, columnHeaders, brandAttributeModels);
+
+            Assert.AreEqual(expectedValidRows, rowObjectValidatorResponse.ValidRows.Count);
+            Assert.AreEqual(expectedInvalidRows, rowObjectValidatorResponse.InvalidRows.Count);
+        }
+
 
 
 
@@ -476,7 +555,6 @@ namespace BrandUploadProcessor.Service.Tests
             var badDesignation = "BadDesignation";
             var badName = "bad.brand|name";
             var badAbbr = "bad.abbreviation!";
-            var expectedErrorMsgPartial = " does not meet traitPattern";
 
             var expectedValidRows = 0;
             var expectedInvalidRows = 5;
@@ -501,11 +579,6 @@ namespace BrandUploadProcessor.Service.Tests
 
             Assert.AreEqual(expectedValidRows, rowObjectValidatorResponse.ValidRows.Count);
             Assert.AreEqual(expectedInvalidRows, rowObjectValidatorResponse.InvalidRows.Count);
-
-            foreach (var invalidRowError in rowObjectValidatorResponse.InvalidRows)
-            {
-                Assert.IsTrue(invalidRowError.Error.Contains(expectedErrorMsgPartial));
-            }
         }
 
 

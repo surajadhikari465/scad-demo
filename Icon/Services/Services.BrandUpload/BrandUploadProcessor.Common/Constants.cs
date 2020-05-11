@@ -1,4 +1,7 @@
-﻿namespace BrandUploadProcessor.Common
+﻿using System.Collections.Generic;
+using System.Net.NetworkInformation;
+
+namespace BrandUploadProcessor.Common
 {
     public static class Constants
     {
@@ -11,5 +14,8 @@
         public const string ZipCodeColumnHeader = "Zip Code";
         public const string LocalityColumnHeader = "Locality";
         public const string ParentCompanyColumnHeader = "Parent Company";
+        public const int IrmaBrandNameMaxLength = 25;
+
+
     }
 }

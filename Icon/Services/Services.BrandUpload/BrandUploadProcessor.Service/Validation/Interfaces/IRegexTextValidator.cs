@@ -1,7 +1,9 @@
-﻿namespace BrandUploadProcessor.Service.Validation.Interfaces
+﻿using BrandUploadProcessor.Common.Models;
+
+namespace BrandUploadProcessor.Service.Validation.Interfaces
 {
     public interface IRegexTextValidator
     {
-        ValidationResponse Validate(string regex, string value);
+        ValidationResponse Validate(AttributeColumn attributeColumn, string value);
     }
 }
