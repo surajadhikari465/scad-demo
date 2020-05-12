@@ -152,6 +152,7 @@
     <Folder Include="Scripts\Projects\BoiseScripts" />
     <Folder Include="Scripts\Projects\Initializations" />
     <Folder Include="Scripts\Projects\Distribution Realignment" />
+    <Folder Include="nutrition\Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Party.sql" />
@@ -843,6 +844,10 @@
     <Build Include="dbo\Tables\ItemColumnDisplayOrder.sql" />
     <Build Include="dbo\StoredProcedures\SetDefaultItemColumnDisplayOrder.sql" />
     <None Include="Scripts\PopulateData\35524_BrandValidation_FixZipCodeTraitPattern.sql" />
+    <Build Include="dbo\Views\v4r_Attributes.sql" />
+    <Build Include="dbo\Views\v4r_Item.sql" />
+    <Build Include="dbo\Views\v4r_ItemHierarchyClass.sql" />
+    <Build Include="nutrition\Views\v4r_ItemNutrition.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
