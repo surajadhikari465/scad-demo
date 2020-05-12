@@ -53,6 +53,9 @@
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.DbContextFactory.2019.5.22.1\lib\net472\Icon.DbContextFactory.dll</HintPath>
     </Reference>
+    <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2020.5.12.3\lib\net472\Icon.Esb.Schemas.Wfm.dll</HintPath>
+    </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Framework.2019.10.2.3\lib\net472\Icon.Framework.dll</HintPath>
     </Reference>

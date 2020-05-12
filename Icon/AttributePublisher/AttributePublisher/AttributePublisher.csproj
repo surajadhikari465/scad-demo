@@ -69,7 +69,7 @@
       <HintPath>..\packages\Icon.Esb.Schemas.Mammoth.2017.12.27.2\lib\net46\Icon.Esb.Schemas.Mammoth.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2019.5.21.1\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2020.5.12.3\lib\net472\Icon.Esb.Schemas.Wfm.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Framework.2019.10.2.3\lib\net472\Icon.Framework.dll</HintPath>
@@ -143,15 +143,39 @@
     <Compile Include="SimpleInjectorInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Dev.config" />
-    <None Include="App.Test.config" />
-    <None Include="App.QA.config" />
-    <None Include="App.QA1.config" />
-    <None Include="App.Perf.config" />
-    <None Include="App.Release.config" />
+    <None Include="App.Dev.config" >
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App.Test.config" >
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App.QA.config" >
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App.QA1.config" >
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App.Perf.config" >
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App.Release.config" >
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
     <None Include="App.config" />
-    <None Include="App.Dev1.config" />
-    <None Include="App.Test1.config" />
+    <None Include="App.Dev1.config" >
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App.Test1.config" >
+      <DependentUpon>App.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

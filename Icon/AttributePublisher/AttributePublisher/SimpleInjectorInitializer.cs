@@ -11,6 +11,7 @@ using Icon.Common.DataAccess;
 using Icon.Esb;
 using Icon.Esb.Producer;
 using Icon.Esb.Schemas.Attributes.ContractTypes;
+using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Logging;
 using SimpleInjector;
 using SimpleInjector.Diagnostics;
@@ -46,13 +47,13 @@ namespace AttributePublisher
             container.RegisterConditional<IOperation<AttributePublisherServiceParameters>, ClearAttributePublisherServiceParametersOperation>(
                 c => c.Consumer.ImplementationType == typeof(ArchiveAttributeMessagesOperation));
 
-            container.Register<EsbConnectionSettings>(() => EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("SB1"), Lifestyle.Singleton);
+            container.Register<EsbConnectionSettings>(() => EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("ESB"), Lifestyle.Singleton);
             container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString));
-            container.Register<IEsbProducer, Sb1EsbProducer>(Lifestyle.Singleton);
+            container.Register<IEsbProducer, EsbProducer>(Lifestyle.Singleton);
             container.Register<ILogger>(() => new NLogLogger(typeof(AttributePublisherService)), Lifestyle.Transient);
             container.Register<IMessageBuilder<List<AttributeModel>>, AttributeMessageBuilder>();
             container.Register<IMessageHeaderBuilder, AttributeMessageHeaderBuilder>();
-            container.Register<ISerializer<AttributesType>, SerializerWithoutNamepaceAliases<AttributesType>>();
+            container.Register<ISerializer<TraitsType>, SerializerWithoutNamepaceAliases<TraitsType>>();
 
             container.RegisterDecorator(typeof(IOperation<AttributePublisherServiceParameters>), typeof(ManageEsbConnectionOperationDecorator),
                 c => c.ImplementationType == typeof(SendAttributesToEsbOperation));

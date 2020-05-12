@@ -12,7 +12,7 @@
 	<xs:element name="traitValue" type="TraitValueType"/>
 	<xs:complexType name="TraitValueType">
 		<xs:sequence>
-			<xs:element name="value" type="tcf:TraitValueType"/>
+			<xs:element name="value" type="tcf:TraitValueType" minOccurs="0"/>
 			<xs:element name="uom" type="uom:UomType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>

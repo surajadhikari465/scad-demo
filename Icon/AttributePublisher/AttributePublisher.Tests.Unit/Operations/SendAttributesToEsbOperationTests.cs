@@ -39,7 +39,7 @@ namespace AttributePublisher.Tests.Unit.Operations
             });
 
             //Then
-            mockProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(4));
+            mockProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(4));
         }
     }
 }

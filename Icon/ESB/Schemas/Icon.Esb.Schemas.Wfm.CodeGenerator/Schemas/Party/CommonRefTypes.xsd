@@ -110,6 +110,12 @@
 		</xs:annotation>
 		<xs:restriction base="crf:WfmStrType"/>
 	</xs:simpleType>
+	<xs:simpleType name="CustomerIdentificationMethodType">
+		<xs:annotation>
+			<xs:documentation>This is used to identify the way customer was found</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
 	<!-- ================== -->
 	<!--  Complex Types              -->
 	<!-- ================== -->
@@ -120,6 +126,7 @@
 			<xs:element name="taxCertificate" type="TaxCertType" minOccurs="0"/>
 			<xs:element name="taxregistration" type="TaxRegistrationType" minOccurs="0"/>
 			<xs:element name="taxExemptReason" type="TaxExemptReasonType" minOccurs="0"/>
+			<xs:element name="customerIdentificationMethod" type="CustomerIdentificationMethodType" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="isVoid" type="crf:WfmBoolType" use="optional"/>
 		<xs:attribute name="isAuthenticatedOffline" type="crf:WfmBoolType" use="optional"/>

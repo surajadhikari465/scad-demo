@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:tcf="http://schemas.wfm.com/Enterprise/TraitMgmt/CommonRefTypes/V1" xmlns:trv="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" xmlns:tvl="http://schemas.wfm.com/Enterprise/TraitMgmt/ValuesListType/V1" targetNamespace="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TraitMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitValue/V2" schemaLocation="TraitValue.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TraitMgmt/ValuesListType/V1" schemaLocation="TraitValuesListType.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="traitType" type="TraitTypeType"/>
+	<xs:complexType name="TraitTypeType">
+		<xs:sequence>
+			<xs:element name="description" type="tcf:TraitDescType" minOccurs="0"/>
+			<xs:element name="value" type="trv:TraitValueType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="valuesList" type="tvl:ValuesListType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
