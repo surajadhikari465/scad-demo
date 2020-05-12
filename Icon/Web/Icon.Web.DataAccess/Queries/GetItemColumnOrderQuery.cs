@@ -23,6 +23,7 @@ namespace Icon.Web.DataAccess.Queries
 	                ,ReferenceId
 	                ,h.HierarchyName ReferenceName
 	                ,d.DisplayOrder
+                    ,REPLACE(h.HierarchyName,' ','') ReferenceNameWithoutSpecialCharacters
                 FROM dbo.ItemColumnDisplayOrder d
                 INNER JOIN dbo.Hierarchy h ON d.ReferenceId = h.HIERARCHYID
                 WHERE d.ColumnType = 'Hierarchy'
@@ -33,9 +34,10 @@ namespace Icon.Web.DataAccess.Queries
 	                ,ReferenceId
 	                ,a.DisplayName ReferenceName
 	                ,d.DisplayOrder
+                    ,a.AttributeName ReferenceNameWithoutSpecialCharacters
                 FROM dbo.ItemColumnDisplayOrder d
                 INNER JOIN dbo.Attributes a ON d.ReferenceId = a.AttributeId
-                WHERE d.ColumnType = 'Attribute'
+                WHERE d.ColumnType = 'Attribute' and a.IsActive = 1
 
                 UNION ALL
 
@@ -43,6 +45,7 @@ namespace Icon.Web.DataAccess.Queries
 	                ,ReferenceId
 	                ,ReferenceName
 	                ,d.DisplayOrder
+                    ,REPLACE(ReferenceName,' ','') as ReferenceNameWithoutSpecialCharacters
                 FROM dbo.ItemColumnDisplayOrder d
                 WHERE d.ColumnType = 'Other'
 

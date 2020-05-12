@@ -41,7 +41,7 @@ namespace Icon.Web.Mvc.Controllers
         private IExcelExporterService exporterService;
         private IDonutCacheManager cacheManager;
         private IQueryHandler<EmptyAttributesParameters, IEnumerable<AttributeModel>> getItemCountOnAttributesQueryHandler;
-        private IOrderFieldsHelper orderFieldsHelper;
+        private IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>> getItemColumnOrderQueryHandler;
 
         public AttributeController(
             ILogger logger,
@@ -58,7 +58,7 @@ namespace Icon.Web.Mvc.Controllers
             IExcelExporterService exporterService,
             IDonutCacheManager cacheManager,
             IQueryHandler<EmptyAttributesParameters, IEnumerable<AttributeModel>> getItemCountOnAttributesQueryHandler,
-            IOrderFieldsHelper orderFieldsHelper)
+            IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>> getItemColumnOrderQueryHandler)
         {
             this.logger = logger;
             this.settings = settings;
@@ -74,7 +74,7 @@ namespace Icon.Web.Mvc.Controllers
             this.exporterService = exporterService;
             this.cacheManager = cacheManager;
             this.getItemCountOnAttributesQueryHandler = getItemCountOnAttributesQueryHandler;
-            this.orderFieldsHelper = orderFieldsHelper;
+            this.getItemColumnOrderQueryHandler = getItemColumnOrderQueryHandler;
         }
 
         // GET: Attribute
@@ -437,9 +437,9 @@ namespace Icon.Web.Mvc.Controllers
                 .Select(a => new AttributeViewModel(a)).Where(a => a.IsActive)
                 .ToList();
 
-            Dictionary<string, string> orderedFields = orderFieldsHelper.OrderAllFields(attributes);
+            List<ItemColumnOrderModel> itemColumnOrderModelList= getItemColumnOrderQueryHandler.Search(new EmptyQueryParameters<List<ItemColumnOrderModel>>());
 
-            return Json(new { Attributes = attributes, DefaultFields = orderedFields }, JsonRequestBehavior.AllowGet);
+            return Json(new { Attributes = attributes, OrderOfFields = itemColumnOrderModelList }, JsonRequestBehavior.AllowGet);
         }
 
         List<SelectListItem> GetAvailableDataTypes()

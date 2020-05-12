@@ -71,7 +71,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         private GenericPrincipal principal;
         private Mock<ControllerContext> controllerContext;
         private Mock<IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult>> mockGetItemsByIdHandler;
-        private Mock<IOrderFieldsHelper> mockOrderFieldsHelper;
+        private Mock<IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>>> mockGetItemColumnOrderQueryHandler;
         private Mock<IQueryHandler<GetScanCodesParameters, List<string>>> mockGetScanCodeQueryHandler;
 
         [TestInitialize]
@@ -102,7 +102,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             principal = new GenericPrincipal(fakeIdentity, null);
             controllerContext = new Mock<ControllerContext>();
             mockGetItemsByIdHandler = new Mock<IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult>>();
-            mockOrderFieldsHelper = new Mock<IOrderFieldsHelper>();
+            mockGetItemColumnOrderQueryHandler = new Mock<IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>>>();
             mockGetScanCodeQueryHandler = new Mock<IQueryHandler<GetScanCodesParameters, List<string>>>();
 
 
@@ -132,44 +132,42 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockItemHistoryBuilder.Object,
                 mockHistoryModelTransformer.Object,
                 mockGetItemsByIdHandler.Object,
-                mockOrderFieldsHelper.Object,
+                mockGetItemColumnOrderQueryHandler.Object,
                 mockGetScanCodeQueryHandler.Object
                 );
-
 
             fakeHttpContext.Setup(t => t.User).Returns(principal);
             fakeHttpContext.Setup(t => t.Session).Returns(session);
             fakeHttpContext.Setup(t => t.Request.QueryString).Returns(queryString);
             controllerContext.Setup(t => t.HttpContext).Returns(fakeHttpContext.Object);
-
             controller.ControllerContext = controllerContext.Object;
             mockGetItemsQueryHandler.Setup(m => m.Search(It.IsAny<GetItemsParameters>())).Returns(getItemsResult);
             getItemsResult.TotalRecordsCount = 10;
 
-            mockOrderFieldsHelper.Setup(M => M.OrderAllFields(It.IsAny<List<AttributeViewModel>>())).Returns(new Dictionary<string, string>(){
-                { "ItemId", "F" },
-                { "RequestNumber", "A" },
-                {"BarcodeType","F" },
-                {"Inactive","A" },
-                {"ItemType", "F" },
-                {"ScanCode","F" },
-                {"Brand","F" },
-                {"ProductDescription", "A" },
-                {"POSDescription","A" },
-                {"CustomerFriendlyDescription,", "A" },
-                {"ItemPack", "A" },
-                {"RetailSize", "A" },
-                {"UOM","A" },
-                {"Financial", "F" },
-                {"Merchandise", "F" },
-                {"National", "F" },
-                {"Tax","F" },
-                {"FoodStampEligible","A" },
-                { "Notes","A" },
-                {"DataSource","A" },
-                {"Manufacturer", "F" }
+            mockGetItemColumnOrderQueryHandler.Setup(M => M.Search(It.IsAny<EmptyQueryParameters<List<ItemColumnOrderModel>>>())).Returns(new List<ItemColumnOrderModel>(){
+                { new ItemColumnOrderModel(){ReferenceName = "ItemId", ReferenceNameWithoutSpecialCharacters = "ItemId", ColumnType = "Other" }},
+                { new ItemColumnOrderModel(){ReferenceName = "RequestNumber", ReferenceNameWithoutSpecialCharacters = "RequestNumber", ColumnType = "Attribute" }},
+                { new ItemColumnOrderModel(){ReferenceName ="BarcodeType", ReferenceNameWithoutSpecialCharacters = "BarcodeType", ColumnType ="Other" }},
+                { new ItemColumnOrderModel(){ReferenceName ="Inactive", ReferenceNameWithoutSpecialCharacters = "Inactive", ColumnType ="Attribute" }},
+                { new ItemColumnOrderModel(){ReferenceName ="ItemType", ReferenceNameWithoutSpecialCharacters = "ItemType", ColumnType ="Other" }},
+                { new ItemColumnOrderModel(){ReferenceName ="ScanCode", ReferenceNameWithoutSpecialCharacters = "ScanCode", ColumnType ="Other" }},
+                { new ItemColumnOrderModel(){ReferenceName ="Brand", ReferenceNameWithoutSpecialCharacters = "Brand", ColumnType ="Other" }},
+                { new ItemColumnOrderModel(){ReferenceName ="ProductDescription", ReferenceNameWithoutSpecialCharacters = "ProductDescription", ColumnType = "Attribute" }},
+                { new ItemColumnOrderModel(){ReferenceName ="POSDescription", ReferenceNameWithoutSpecialCharacters = "POSDescription", ColumnType ="Attribute" }},
+                { new ItemColumnOrderModel(){ReferenceName ="CustomerFriendlyDescription", ReferenceNameWithoutSpecialCharacters = "CustomerFriendlyDescription", ColumnType ="Attribute" }},
+                { new ItemColumnOrderModel(){ReferenceName ="ItemPack", ReferenceNameWithoutSpecialCharacters = "ItemPack", ColumnType ="Attribute" }},
+                { new ItemColumnOrderModel(){ReferenceName ="RetailSize", ReferenceNameWithoutSpecialCharacters = "RetailSize", ColumnType = "Attribute" }},
+                { new ItemColumnOrderModel(){ReferenceName ="UOM", ReferenceNameWithoutSpecialCharacters = "UOM", ColumnType ="Attribute" }},
+                { new ItemColumnOrderModel(){ReferenceName ="Financial", ReferenceNameWithoutSpecialCharacters = "Financial", ColumnType ="Other" }},
+                { new ItemColumnOrderModel(){ReferenceName ="Merchandise", ReferenceNameWithoutSpecialCharacters = "Merchandise", ColumnType ="Other" }},
+                { new ItemColumnOrderModel(){ReferenceName ="National", ReferenceNameWithoutSpecialCharacters = "National", ColumnType = "Other" }},
+                { new ItemColumnOrderModel(){ReferenceName ="Tax", ReferenceNameWithoutSpecialCharacters = "Tax", ColumnType ="Other" }},
+                { new ItemColumnOrderModel(){ReferenceName ="FoodStampEligible", ReferenceNameWithoutSpecialCharacters = "FoodStampEligible", ColumnType ="Attribute" }},
+                { new ItemColumnOrderModel(){ReferenceName = "Notes", ReferenceNameWithoutSpecialCharacters = "Notes", ColumnType ="Attribute" }},
+                { new ItemColumnOrderModel() { ReferenceName = "DataSource", ReferenceNameWithoutSpecialCharacters = "DataSource", ColumnType = "Attribute" }},
+                { new ItemColumnOrderModel() { ReferenceName = "Manufacturer", ReferenceNameWithoutSpecialCharacters = "Manufacturer", ColumnType = "Other" }}
                 }
-                );
+               );
 
             getItemsResult.Items = new List<ItemDbModel>
             {
@@ -189,6 +187,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                     TaxHierarchyClassId = 8
                 }
             };
+
+            session.SessionID = Guid.NewGuid().ToString();
             session[GET_ITEMS_PARAMETERS_VIEW_MODEL] = new GetItemsParametersViewModel
             {
                 GetItemsAttributesParameters = new List<GetItemsAttributesParameters>()
@@ -217,6 +217,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                     new GetItemsAttributesParameters { AttributeName = "Test2", AttributeValue = "Value2" },
                 }
             };
+            mockLogger.Setup(m => m.Debug(It.IsAny<string>()));
 
             //When
             controller.SaveGetItemsParameters(viewModel);
@@ -447,10 +448,10 @@ namespace Icon.Web.Tests.Unit.Controllers
             Assert.AreEqual("Tax", model.ItemViewModel.TaxHierarchyLineage);
             Assert.AreEqual("Financial", model.ItemViewModel.FinancialHierarchyLineage);
             Assert.AreEqual("National", model.ItemViewModel.NationalHierarchyLineage);
-            Assert.AreEqual(21, model.OrderOfFields.Count);
-            Assert.AreEqual(true, model.OrderOfFields.ContainsKey("ItemId"));
-            Assert.AreEqual(true, model.OrderOfFields.ContainsKey("Notes"));
-            Assert.AreEqual(false, model.OrderOfFields.ContainsKey("Accessory"));
+            Assert.AreEqual(21, model.ItemColumnOrderModelList.Count);
+            Assert.AreEqual(true, model.ItemColumnOrderModelList.Any(x => x.ReferenceNameWithoutSpecialCharacters == "ItemId"));
+            Assert.AreEqual(true, model.ItemColumnOrderModelList.Any(x => x.ReferenceNameWithoutSpecialCharacters == "Notes"));
+            Assert.AreEqual(false, model.ItemColumnOrderModelList.Any(x => x.ReferenceNameWithoutSpecialCharacters == "Accessory"));
         }
 
         [TestMethod]
@@ -558,11 +559,11 @@ namespace Icon.Web.Tests.Unit.Controllers
             Assert.AreEqual(2, modelResult.ItemViewModel.FinancialHierarchyClassId);
             Assert.AreEqual(1, modelResult.ItemViewModel.ItemTypeId);
             Assert.IsTrue(modelResult.Success);
-            Assert.AreEqual(21, modelResult.OrderOfFields.Count);
-            Assert.AreEqual(true, modelResult.OrderOfFields.ContainsKey("ItemId"));
-            Assert.AreEqual(true, modelResult.OrderOfFields.ContainsKey("Notes"));
-            Assert.AreEqual(true, modelResult.OrderOfFields.ContainsKey("Tax"));
-            Assert.AreEqual(false, modelResult.OrderOfFields.ContainsKey("EStoreEligible"));
+            Assert.AreEqual(21, modelResult.ItemColumnOrderModelList.Count);
+            Assert.AreEqual(true, modelResult.ItemColumnOrderModelList.Any(x => x.ReferenceNameWithoutSpecialCharacters == "ItemId"));
+            Assert.AreEqual(true, modelResult.ItemColumnOrderModelList.Any(x => x.ReferenceNameWithoutSpecialCharacters == "Notes"));
+            Assert.AreEqual(true, modelResult.ItemColumnOrderModelList.Any(x => x.ReferenceNameWithoutSpecialCharacters == "Tax"));
+            Assert.AreEqual(false, modelResult.ItemColumnOrderModelList.Any(x => x.ReferenceNameWithoutSpecialCharacters == "EStoreEligible"));
         }
 
         [TestMethod]
@@ -680,11 +681,11 @@ namespace Icon.Web.Tests.Unit.Controllers
             Assert.AreEqual("Financial", model.ItemViewModel.FinancialHierarchyLineage);
             Assert.AreEqual("National", model.ItemViewModel.NationalHierarchyLineage);
             Assert.AreEqual("Manufacturer", model.ItemViewModel.ManufacturerHierarchyLineage);
-            Assert.AreEqual(21, model.OrderOfFields.Count);
-            Assert.AreEqual(true, model.OrderOfFields.ContainsKey("ItemId"));
-            Assert.AreEqual(true, model.OrderOfFields.ContainsKey("Notes"));
-            Assert.AreEqual(true, model.OrderOfFields.ContainsKey("Tax"));
-            Assert.AreEqual(false, model.OrderOfFields.ContainsKey("EStoreEligible"));
+            Assert.AreEqual(21, model.ItemColumnOrderModelList.Count);
+            Assert.AreEqual(true, model.ItemColumnOrderModelList.Any(x => x.ReferenceNameWithoutSpecialCharacters == "ItemId"));
+            Assert.AreEqual(true, model.ItemColumnOrderModelList.Any(x => x.ReferenceNameWithoutSpecialCharacters == "Notes"));
+            Assert.AreEqual(true, model.ItemColumnOrderModelList.Any(x => x.ReferenceNameWithoutSpecialCharacters == "Tax"));
+            Assert.AreEqual(false, model.ItemColumnOrderModelList.Any(x => x.ReferenceNameWithoutSpecialCharacters == "EStoreEligible"));
         }
 
         [TestMethod]
@@ -795,7 +796,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         {
             //Given
             var parameters = new[] { new GetItemsAttributesParameters { AttributeName = "ScanCode", AttributeValue = "4011 10", SearchOperator = AttributeSearchOperator.ExactlyMatchesAny } }.ToList();
-                        
+
             session[GET_ITEMS_PARAMETERS_VIEW_MODEL] = new GetItemsParametersViewModel
             {
                 GetItemsAttributesParameters = parameters
@@ -805,19 +806,37 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockGetScanCodeQueryHandler.Setup(m => m.Search(It.IsAny<GetScanCodesParameters>()))
               .Returns(new List<string> { "4011" });
             var result = controller.GetMissingScanCodes() as JsonResult;
-           
+
             //Then
             Assert.IsNotNull(result.Data);
-            var json = JsonConvert.SerializeObject(result.Data);            
+            var json = JsonConvert.SerializeObject(result.Data);
             var missingScanCode = JsonConvert.DeserializeObject<MissingScanCodeModelTests>(json);
             Assert.IsTrue(missingScanCode.MissingScanCodes.Any());
-            Assert.AreEqual("10", missingScanCode.MissingScanCodes[0]);            
+            Assert.AreEqual("10", missingScanCode.MissingScanCodes[0]);
         }
     }
-    internal class MockHttpSessionStateBase : HttpSessionStateBase
+
+    internal abstract class MockHttpSessionState : HttpSessionStateBase
+    {
+        // session id was not getting set causing tests to fail
+        public sealed override string SessionID
+        {
+            get { return SessionValue; }
+        }
+
+        protected abstract string SessionValue { get; }
+    }
+    internal class MockHttpSessionStateBase : MockHttpSessionState
     {
         private Dictionary<string, object> dictionary = new Dictionary<string, object>();
 
         public override object this[string name] { get => dictionary[name]; set => dictionary[name] = value; }
+
+        public new string SessionID { get; set; }
+
+        protected override string SessionValue
+        {
+            get { return SessionID; }
+        }
     }
 }

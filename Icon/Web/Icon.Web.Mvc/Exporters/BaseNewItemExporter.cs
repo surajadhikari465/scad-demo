@@ -57,18 +57,18 @@ namespace Icon.Web.Mvc.Exporters
         protected IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler;
         protected IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>> getAttributesQueryHandler;
         protected IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypeQueryHandler;
-        protected IOrderFieldsHelper orderFieldsHelper;
+        protected IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>> getItemColumnOrderQueryHandler;
 
         public BaseNewItemExporter(
             IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler,
             IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>> getAttributesQueryHandler,
             IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypeQueryHandler,
-            IOrderFieldsHelper orderFieldsHelper)
+            IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>> getItemColumnOrderQueryHandler)
         {
             this.getHierarchyClassesQueryHandler = getHierarchyClassesQueryHandler;
             this.getAttributesQueryHandler = getAttributesQueryHandler;
             this.getBarcodeTypeQueryHandler = getBarcodeTypeQueryHandler;
-            this.orderFieldsHelper = orderFieldsHelper;
+            this.getItemColumnOrderQueryHandler = getItemColumnOrderQueryHandler;
 
             brandHierarchyClassDictionary = new Dictionary<string, string>();
             merchandiseHierarchyClassDictionary = new Dictionary<string, string>();

@@ -1,8 +1,9 @@
 ﻿@model Icon.Web.Mvc.Models.ItemDetailViewModel
+@using Icon.Web.Mvc.Utility
 @using Icon.Common;
 @{
     ViewBag.Title = Model.ItemViewModel.ScanCode + " Details";
-    var itemViewModel = Model.ItemViewModel;
+var itemViewModel = Model.ItemViewModel;
 }
 <h3>Item Details</h3>
 
@@ -40,19 +41,19 @@
     }
 </div>
 <div class="page-section">
-    @foreach (var field in Model.OrderOfFields)
+    @foreach (var itemColumnOrderModel in Model.ItemColumnOrderModelList)
     {
-        if (field.Value != "A")
+        if (itemColumnOrderModel.ColumnType != "Attribute")
         {
 
-            if (field.Key == "ItemId")
+            if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.ItemId)
             {
                 <div class="item">
                     @Html.LabelFor(m => m.ItemViewModel.ItemId)
                     <div>@Model.ItemViewModel.ItemId</div>
                 </div>
             }
-            else if (field.Key == "ItemType")
+            else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.ItemType)
             {
                 <div class="item">
                     @Html.LabelFor(m => m.ItemViewModel.ItemTypeDescription)
@@ -60,28 +61,28 @@
                 </div>
             }
 
-            else if (field.Key == "ScanCode")
+            else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.Scancode)
             {
                 <div class="item">
                     @Html.LabelFor(m => m.ItemViewModel.ScanCode)
                     <div>@Model.ItemViewModel.ScanCode</div>
                 </div>
             }
-            else if (field.Key == "BarcodeType")
+            else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.BarcodeType)
             {
                 <div class="item">
                     @Html.LabelFor(m => m.ItemViewModel.BarcodeType)
                     <div>@Model.ItemViewModel.BarcodeType</div>
                 </div>
             }
-            else if (field.Key == "Merchandise")
+            else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.Merchandise)
             {
                 <div class="item">
                     @Html.LabelFor(m => m.ItemViewModel.MerchandiseHierarchyLineage)
                     <div>@Model.ItemViewModel.MerchandiseHierarchyLineage</div>
                 </div>
             }
-            else if (field.Key == "Brand")
+            else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.Brands)
             {
                 <div class="item">
                     @Html.LabelFor(m => m.ItemViewModel.BrandsHierarchyLineage)
@@ -89,28 +90,28 @@
                 </div>
             }
 
-            else if (field.Key == "Tax")
+            else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.Tax)
             {
                 <div class="item">
                     @Html.LabelFor(m => m.ItemViewModel.TaxHierarchyLineage)
                     <div>@Model.ItemViewModel.TaxHierarchyLineage</div>
                 </div>
             }
-            else if (field.Key == "Financial")
+            else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.Financial)
             {
                 <div class="item">
                     @Html.LabelFor(m => m.ItemViewModel.FinancialHierarchyLineage)
                     <div>@Model.ItemViewModel.FinancialHierarchyLineage</div>
                 </div>
             }
-            else if (field.Key == "National")
+            else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.National)
             {
                 <div class="item">
                     @Html.LabelFor(m => m.ItemViewModel.NationalHierarchyLineage)
                     <div>@Model.ItemViewModel.NationalHierarchyLineage</div>
                 </div>
             }
-            else if (field.Key == "Manufacturer")
+            else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.Manufacturer)
             {
                 <div class="item">
                     @Html.LabelFor(m => m.ItemViewModel.ManufacturerHierarchyLineage)
@@ -128,7 +129,7 @@
 
         else
         {
-            var attribute = Model.Attributes.Where(a => a.AttributeName == field.Key).FirstOrDefault();
+            var attribute = Model.Attributes.Where(a => a.AttributeName == itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters).FirstOrDefault();
 
             if (attribute != null)
             {
@@ -139,6 +140,7 @@
                 }
                 <div class="item">
                     @Html.Label(attribute.DisplayName)
+
                     @if (itemViewModel.ItemAttributes.ContainsKey(attribute.AttributeName))
                     {
                         if (attribute.DataTypeName == "Date")

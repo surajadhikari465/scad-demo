@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Icon.Web.DataAccess.Models;
+using System.Collections.Generic;
 
 namespace Icon.Web.Mvc.Models
 {
@@ -8,6 +9,6 @@ namespace Icon.Web.Mvc.Models
         public IEnumerable<AttributeViewModel> Attributes { get; set; }
 
         public ItemHistoryViewModel ItemHistoryModel { get; set; }
-        public Dictionary<string, string> OrderOfFields { get; set; }
+        public List<ItemColumnOrderModel> ItemColumnOrderModelList { get; set; }
     }
 }

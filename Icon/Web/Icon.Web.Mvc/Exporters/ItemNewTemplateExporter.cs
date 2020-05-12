@@ -22,15 +22,14 @@ namespace Icon.Web.Mvc.Exporters
         private const string ScanCode = "Scan Code";
         private const int BooleanValidationRequiredCount = 2;
         private const int BooleanValidationNonRequiredCount = 3;
-        private const string AttributePrefix = "A";
-        private const string NonAttributePrefix = "F";
+        private const string AttributePrefix = "Attribute";
 
         public ItemNewTemplateExporter(
             IQueryHandler<GetHierarchyClassesParameters, IEnumerable<HierarchyClassModel>> getHierarchyClassesQueryHandler,
             IQueryHandler<EmptyQueryParameters<IEnumerable<AttributeModel>>, IEnumerable<AttributeModel>> getAttributesQueryHandler,
             IQueryHandler<GetBarcodeTypeParameters, List<BarcodeTypeModel>> getBarcodeTypeQueryHandler,
-            IOrderFieldsHelper orderFieldsHelper)
-            : base(getHierarchyClassesQueryHandler, getAttributesQueryHandler, getBarcodeTypeQueryHandler, orderFieldsHelper)
+            IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>> getItemColumnOrderQueryHandler)
+            : base(getHierarchyClassesQueryHandler, getAttributesQueryHandler, getBarcodeTypeQueryHandler, getItemColumnOrderQueryHandler)
         {
         }
 
@@ -116,16 +115,15 @@ namespace Icon.Web.Mvc.Exporters
             EmptyQueryParameters<IEnumerable<AttributeModel>> attributesParam = new EmptyQueryParameters<IEnumerable<AttributeModel>>();
             var attributesModel = getAttributesQueryHandler.Search(attributesParam).Where(a=>a.IsActive).OrderByDescending(a => a.IsRequired).ThenBy(a => a.DisplayOrder);
 
-            var OrderOfFields = orderFieldsHelper.OrderAllFields(attributesModel.ToViewModels().ToList());
+            var itemColumnOrderModelList = getItemColumnOrderQueryHandler.Search(new EmptyQueryParameters<List<ItemColumnOrderModel>>());
 
             int currentIndex = 0;
 
-            foreach (KeyValuePair<string, string> field in OrderOfFields)
+            foreach (ItemColumnOrderModel itemColumnOrderModel in itemColumnOrderModelList)
             {
-                if (field.Value != AttributePrefix)
+                if (itemColumnOrderModel.ColumnType != AttributePrefix)
                 {
-
-                    if (field.Key == "BarcodeType")
+                    if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.BarcodeType)
                     {
                         AddSpreadsheetColumn(
                             NewItemExcelHelper.NewExcelExportColumnNames.BarCodeType,
@@ -136,7 +134,7 @@ namespace Icon.Web.Mvc.Exporters
                             ref currentIndex);
                     }
 
-                    else if (field.Key == "ScanCode")
+                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.Scancode)
                     {
                         AddSpreadsheetColumn(
                                 NewItemExcelHelper.NewExcelExportColumnNames.ScanCode,
@@ -147,7 +145,7 @@ namespace Icon.Web.Mvc.Exporters
                     ref currentIndex);
                     }
 
-                    else if (field.Key == "Brand")
+                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.Brands)
                     {
                         AddSpreadsheetColumn(
                                 NewItemExcelHelper.NewExcelExportColumnNames.Brand,
@@ -158,7 +156,7 @@ namespace Icon.Web.Mvc.Exporters
                                 ref currentIndex);
                                 }
 
-                    else if (field.Key == "Merchandise")
+                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.Merchandise)
                     {
                         AddSpreadsheetColumn(
                             NewItemExcelHelper.NewExcelExportColumnNames.Merchandise,
@@ -169,7 +167,7 @@ namespace Icon.Web.Mvc.Exporters
                             ref currentIndex);
                             }
 
-                    else if (field.Key == "Tax")
+                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.Tax)
                     {
                         AddSpreadsheetColumn(
                             NewItemExcelHelper.NewExcelExportColumnNames.Tax,
@@ -180,7 +178,7 @@ namespace Icon.Web.Mvc.Exporters
                             ref currentIndex);
                             }
 
-                    else if (field.Key == "National")
+                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.National)
                     {
 
                         AddSpreadsheetColumn(
@@ -192,7 +190,7 @@ namespace Icon.Web.Mvc.Exporters
                             ref currentIndex);
                             }
 
-                    else if (field.Key == "Financial")
+                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.Financial)
                     {
 
                         AddSpreadsheetColumn(
@@ -204,7 +202,7 @@ namespace Icon.Web.Mvc.Exporters
                             ref currentIndex);
                             }
 
-                    else if (field.Key == "Manufacturer")
+                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.Manufacturer)
                     {
                         AddSpreadsheetColumn(
                             NewItemExcelHelper.NewExcelExportColumnNames.Manufacturer,
@@ -215,7 +213,7 @@ namespace Icon.Web.Mvc.Exporters
                             ref currentIndex);
                             }
 
-                    else if (field.Key == "ItemId")
+                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.ItemId)
                     {
                         AddSpreadsheetColumn(
                             NewItemExcelHelper.NewExcelExportColumnNames.ItemId,
@@ -226,7 +224,7 @@ namespace Icon.Web.Mvc.Exporters
                             ref currentIndex);
                             }
 
-                    else if (field.Key == "ItemType")
+                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.ItemType)
                     {
                         AddSpreadsheetColumn(
                             NewItemExcelHelper.NewExcelExportColumnNames.ItemType,
@@ -236,11 +234,10 @@ namespace Icon.Web.Mvc.Exporters
                             (row, item) => row.Cells[currentIndex].Value = String.Empty,
                             ref currentIndex);
                             }
-
                 }
                 else
                 {
-                    var attributeModel = attributesModel.Where(a => a.AttributeName == field.Key).FirstOrDefault();
+                    var attributeModel = attributesModel.Where(a => a.AttributeName == itemColumnOrderModel.ReferenceName).FirstOrDefault();
 
                     AddSpreadsheetColumn(
                         attributeModel.AttributeName,

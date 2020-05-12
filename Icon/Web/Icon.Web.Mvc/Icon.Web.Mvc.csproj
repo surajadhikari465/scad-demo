@@ -463,20 +463,19 @@
       <DependentUpon>Store.resx</DependentUpon>
     </Compile>
     <Compile Include="Utility\AttributesHelper.cs" />
+    <Compile Include="Utility\ColumnNameHelper.cs" />
     <Compile Include="Utility\ContactHelper.cs" />
     <Compile Include="Utility\DonutCacheManager.cs" />
     <Compile Include="Utility\ExportItemColumnNameMapper.cs" />
     <Compile Include="Utility\IAttributesHelper.cs" />
     <Compile Include="Utility\IconWebAppSettings.cs" />
     <Compile Include="Utility\IDonutCacheManager.cs" />
-    <Compile Include="Utility\IOrderFieldsHelper.cs" />
     <Compile Include="Utility\ItemNonAttributeFieldsDefaultOrder.cs" />
     <Compile Include="Utility\ItemHistory\HistoryModelTransformer.cs" />
     <Compile Include="Utility\ItemHistory\IHistoryModelTransformer.cs" />
     <Compile Include="Utility\ItemHistory\IItemHistoryBuilder.cs" />
     <Compile Include="Utility\ItemHistory\InforConstants.cs" />
     <Compile Include="Utility\ItemHistory\ItemHistoryBuilder.cs" />
-    <Compile Include="Utility\OrderFieldsHelper.cs" />
     <Compile Include="Utility\ViewHelpers.cs" />
     <Compile Include="Utility\ViewModelHelpers.cs" />
     <Compile Include="Importers\ISpreadsheetImporter.cs" />

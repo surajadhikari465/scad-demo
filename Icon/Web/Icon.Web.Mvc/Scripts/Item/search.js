@@ -151,7 +151,7 @@ window.addEventListener('load', function () {
             hierarchyClassesLoaded: [],
             pickListDataLoaded: [],
             searchParameters: [],
-            defaultFields: [],
+            orderOfFields: [],
         },
         view: {
             attributesElement: null,
@@ -506,8 +506,10 @@ window.addEventListener('load', function () {
                                         readOnly: true
                                     });
 
-                                    for (var field in searchViewModel.defaultFields) {
-                                        if (field == "ItemId") {
+                                    for (var key in searchViewModel.orderOfFields) {
+                                        var itemColumnOrderModel = searchViewModel.orderOfFields[key];
+
+                                        if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "ItemId") {
                                             columnSettings.push({
                                                 columnKey: "ItemId",
                                                 editorType: "number",
@@ -515,7 +517,7 @@ window.addEventListener('load', function () {
                                                 readOnly: true
                                             });
                                         }
-                                        else if (field == "ItemType") {
+                                        else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "ItemType") {
                                             columnSettings.push({
                                                 columnKey: "ItemTypeDescription",
                                                 editorType: "text",
@@ -523,7 +525,7 @@ window.addEventListener('load', function () {
                                                 readOnly: true
                                             });
                                         }
-                                        else if (field == "ScanCode") {
+                                        else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Scancode") {
                                             columnSettings.push({
                                                 columnKey: "ScanCode",
                                                 editorType: "text",
@@ -531,7 +533,7 @@ window.addEventListener('load', function () {
                                                 readOnly: true
                                             });
                                         }
-                                        else if (field == "BarcodeType") {
+                                        else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "BarcodeType") {
                                             columnSettings.push({
                                                 columnKey: "BarcodeType",
                                                 editorType: "text",
@@ -539,7 +541,7 @@ window.addEventListener('load', function () {
                                                 readOnly: true
                                             });
                                         }
-                                        else if (field == "Merchandise") {
+                                        else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Merchandise") {
                                             columnSettings.push({
                                                 columnKey: "MerchandiseHierarchyClassId",
                                                 editorType: "combo",
@@ -552,7 +554,7 @@ window.addEventListener('load', function () {
                                                 }
                                             });
                                         }
-                                        else if (field == "Brand") {
+                                        else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Brands") {
                                             columnSettings.push({
                                                 columnKey: "BrandsHierarchyClassId",
                                                 editorType: "combo",
@@ -565,7 +567,7 @@ window.addEventListener('load', function () {
                                                 }
                                             });
                                         }
-                                        else if (field == "National") {
+                                        else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters  == "National") {
                                             columnSettings.push({
                                                 columnKey: "NationalHierarchyClassId",
                                                 editorType: "combo",
@@ -578,7 +580,7 @@ window.addEventListener('load', function () {
                                                 }
                                             });
                                         }
-                                        else if (field == "Financial") {
+                                        else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Financial") {
                                             columnSettings.push({
                                                 columnKey: "FinancialHierarchyClassId",
                                                 editorType: "combo",
@@ -592,7 +594,7 @@ window.addEventListener('load', function () {
                                                 }
                                             });
                                         }
-                                        else if (field == "Tax") {
+                                        else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Tax") {
                                             columnSettings.push({
                                                 columnKey: "TaxHierarchyClassId",
                                                 editorType: "combo",
@@ -605,7 +607,7 @@ window.addEventListener('load', function () {
                                                 }
                                             });
                                         }
-                                        else if (field == "Manufacturer") {
+                                        else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Manufacturer") {
                                             columnSettings.push({
                                                 columnKey: "ManufacturerHierarchyClassId",
                                                 editorType: "combo",
@@ -617,8 +619,8 @@ window.addEventListener('load', function () {
                                                 }
                                             });
                                         }
-                                        else {
-                                            let attribute = self.state.attributes.find(s => s.AttributeName == field);
+                                        else if (itemColumnOrderModel.ColumnType == "Attribute"){
+                                            let attribute = self.state.attributes.find(s => s.AttributeName == itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters);
                                             columnSettings.push({
                                                 columnKey: attribute.AttributeName,
                                                 editorType: utilityFunctions.getColumnEditorType(attribute),
@@ -694,9 +696,10 @@ window.addEventListener('load', function () {
                 }
 
 
-                for (var field in searchViewModel.defaultFields) {
+               for (var key in searchViewModel.orderOfFields) {
+                var itemColumnOrderModel = searchViewModel.orderOfFields[key];
 
-                    if (field == "ItemId") {
+                    if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "ItemId") {
                         columnSettings.push({
                             headerText: "Item ID",
                             key: "ItemId",
@@ -704,7 +707,7 @@ window.addEventListener('load', function () {
                             width: "200px"
                         });
                     }
-                    else if (field == "ItemType") {
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharactersfield == "ItemType") {
                         columnSettings.push({
                             headerText: "Item Type",
                             key: "ItemTypeDescription",
@@ -712,7 +715,7 @@ window.addEventListener('load', function () {
                             width: "200px"
                         });
                     }
-                    else if (field == "ScanCode") {
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Scancode") {
                         columnSettings.push({
                             headerText: "Scan Code",
                             key: "ScanCode",
@@ -721,7 +724,7 @@ window.addEventListener('load', function () {
                             template: "<a href='Item/Detail?scanCode=${ScanCode}'>${ScanCode}</a>"
                         });
                     }
-                    else if (field == "BarcodeType") {
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "BarcodeType") {
                         columnSettings.push({
                             headerText: "Barcode Type",
                             key: "BarcodeType",
@@ -729,7 +732,7 @@ window.addEventListener('load', function () {
                             width: "200px"
                         });
                     }
-                    else if (field == "Brand") {
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Brands") {
                         columnSettings.push({
                             headerText: "Brands",
                             key: "BrandsHierarchyClassId",
@@ -737,7 +740,7 @@ window.addEventListener('load', function () {
                             width: "200px"
                         });
                     }
-                    else if (field == "Merchandise") {
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Merchandise") {
                         columnSettings.push({
                             headerText: "Merchandise",
                             key: "MerchandiseHierarchyClassId",
@@ -745,7 +748,7 @@ window.addEventListener('load', function () {
                             width: "200px"
                         });
                     }
-                    else if (field == "Tax") {
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Tax") {
                         columnSettings.push({
                             headerText: "Tax",
                             key: "TaxHierarchyClassId",
@@ -753,7 +756,7 @@ window.addEventListener('load', function () {
                             width: "200px"
                         });
                     }
-                    else if (field == "Financial") {
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Financial") {
                         columnSettings.push({
                             headerText: "Financial",
                             key: "FinancialHierarchyClassId",
@@ -761,7 +764,7 @@ window.addEventListener('load', function () {
                             width: "200px"
                         });
                     }
-                    else if (field == "National") {
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "National") {
                         columnSettings.push({
                             headerText: "National",
                             key: "NationalHierarchyClassId",
@@ -769,7 +772,7 @@ window.addEventListener('load', function () {
                             width: "200px"
                         });
                     }
-                    else if (field == "Manufacturer") {
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Manufacturer") {
                         columnSettings.push({
                             headerText: "Manufacturer",
                             key: "ManufacturerHierarchyClassId",
@@ -777,9 +780,8 @@ window.addEventListener('load', function () {
                             width: "200px"
                         });
                     }
-                    else {
-
-                        let attribute = this.state.attributes.find(s => s.AttributeName == field);
+                    else if (itemColumnOrderModel.ColumnType == "Attribute")  {
+                        let attribute = this.state.attributes.find(s => s.AttributeName == itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters);
                         if (attribute.DataTypeName === 'Date') {
                             columnSettings.push({
                                 headerText: attribute.DisplayName,
@@ -955,33 +957,34 @@ window.addEventListener('load', function () {
         }],
         createAttributeComboBoxOptions: function () {
 
-            for (var field in searchViewModel.defaultFields) {
+            for (var key in searchViewModel.orderOfFields) {
+                var itemColumnOrderModel = searchViewModel.orderOfFields[key];
 
-                if (field == "ItemId") {
+                if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "ItemId") {
                     this.attributeComboBoxOptions.push({
                         displayName: "Item ID",
                         value: "ItemId"
                     });
                 }
-                else if (field == "ItemType") {
+                else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "ItemType") {
                     this.attributeComboBoxOptions.push({
                         displayName: "Item Type",
                         value: "ItemTypeDescription"
                     });
                 }
-                else if (field == "ScanCode") {
+                else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Scancode") {
                     this.attributeComboBoxOptions.push({
                         displayName: "Scan Code",
                         value: "ScanCode"
                     });
                 }
-                else if (field == "BarcodeType") {
+                else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "BarcodeType") {
                     this.attributeComboBoxOptions.push({
                         displayName: "Barcode Type",
                         value: "BarcodeType"
                     });
                 }
-                else if (field == "Brand") {
+                else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Brands") {
                     this.attributeComboBoxOptions.push({
                         displayName: "Brands",
                         value: "Brands",
@@ -989,7 +992,7 @@ window.addEventListener('load', function () {
                         hierarchyName: "Brands"
                     });
                 }
-                else if (field == "Merchandise") {
+                else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Merchandise") {
                     this.attributeComboBoxOptions.push({
                         displayName: "Merchandise",
                         value: "Merchandise",
@@ -997,7 +1000,7 @@ window.addEventListener('load', function () {
                         hierarchyName: "Merchandise"
                     });
                 }
-                else if (field == "Tax") {
+                else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Tax") {
                     this.attributeComboBoxOptions.push({
                         displayName: "Tax",
                         value: "Tax",
@@ -1005,7 +1008,7 @@ window.addEventListener('load', function () {
                         hierarchyName: "Tax"
                     });
                 }
-                else if (field == "Financial") {
+                else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Financial") {
                     this.attributeComboBoxOptions.push({
                         displayName: "Financial",
                         value: "Financial",
@@ -1013,7 +1016,7 @@ window.addEventListener('load', function () {
                         hierarchyName: "Financial"
                     });
                 }
-                else if (field == "National") {
+                else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "National") {
                     this.attributeComboBoxOptions.push({
                         displayName: "National",
                         value: "National",
@@ -1021,7 +1024,7 @@ window.addEventListener('load', function () {
                         hierarchyName: "National"
                     });
                 }
-                else if (field == "Manufacturer") {
+                else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "Manufacturer") {
                     this.attributeComboBoxOptions.push({
                         displayName: "Manufacturer",
                         value: "Manufacturer",
@@ -1029,8 +1032,8 @@ window.addEventListener('load', function () {
                         hierarchyName: "Manufacturer"
                     });
                 }
-                else {
-                    var attribute = this.state.attributes.find(s => s.AttributeName == field)
+                else if (itemColumnOrderModel.ColumnType == "Attribute") {
+                    var attribute = this.state.attributes.find(s => s.AttributeName == itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters);
                     this.attributeComboBoxOptions.push({
                         displayName: attribute.DisplayName,
                         value: attribute.AttributeName,
@@ -1057,6 +1060,7 @@ window.addEventListener('load', function () {
 
                 this.state.attributes = attributes.sort(this.compareAttributesByName);
                 this.createAttributeComboBoxOptions();
+              
                 this.loadPickListData(this.state.attributes)
                     .then(() => {
                         this.view.attributesElement = document.getElementById('attributes');
@@ -1161,7 +1165,7 @@ window.addEventListener('load', function () {
     let loadAttributes = () => {
         $.getJSON(window.location.origin + '/Attribute/All')
             .done(function (data) {
-                searchViewModel.defaultFields = data.DefaultFields;
+                searchViewModel.orderOfFields = data.OrderOfFields;
                 searchViewModel.init(data.Attributes);
                 window.searchViewModel = searchViewModel;
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Icon.Common;
+using Icon.Web.DataAccess.Models;
 
 namespace Icon.Web.Mvc.Models
 {
@@ -11,6 +12,6 @@ namespace Icon.Web.Mvc.Models
         public bool Success { get; set; }
         public ItemHistoryViewModel ItemHistoryModel { get; set; }
         public List<string> Errors { get; set; } = new List<string>();
-        public Dictionary<string, string> OrderOfFields { get; set; }
+        public List<ItemColumnOrderModel> ItemColumnOrderModelList { get; set; }
     }
 }

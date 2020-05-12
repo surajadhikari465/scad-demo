@@ -53,7 +53,6 @@ namespace Icon.Web.Mvc.App_Start
             container.RegisterDecorator<IManagerHandler<AddItemManager>, RetryUniqueConstraintManagerHandlerDecorator<AddItemManager>>(Lifestyle.Transient);
             container.Register(typeof(ICommandHandler<>), typeof(AddAddressCommand).Assembly);
             container.Register(typeof(IQueryHandler<,>), typeof(GetAffinitySubBricksParameters).Assembly);
-            container.Register<IOrderFieldsHelper, OrderFieldsHelper>();
             container.Register(typeof(IManagerHandler<>), typeof(IManagerHandler<>).Assembly);
             container.Register(typeof(ISpreadsheetImporter<>), typeof(ISpreadsheetImporter<>).Assembly);
             container.Register(typeof(ISerializer<>), typeof(ISerializer<>).Assembly);

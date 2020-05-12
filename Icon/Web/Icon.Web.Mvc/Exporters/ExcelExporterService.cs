@@ -23,11 +23,11 @@ namespace Icon.Web.Mvc.Exporters
         private IQueryHandler<GetContactTypesParameters, List<ContactTypeModel>> getContactTypeQuery;
         private ExcelExportModel exportModel = new ExcelExportModel(WorkbookFormat.Excel2007);
         private SqlConnection connection;
-        private IOrderFieldsHelper orderFieldsHelper;
+        private IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>> getItemColumnOrderQueryHandler;
 
-        public ExcelExporterService(IOrderFieldsHelper orderFieldsHelper)
+        public ExcelExporterService(IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>> getItemColumnOrderQueryHandler)
         {
-            this.orderFieldsHelper = orderFieldsHelper;
+            this.getItemColumnOrderQueryHandler = getItemColumnOrderQueryHandler;
         }
 
         public HierarchyClassExporter GetHierarchyClassExporter()
@@ -79,7 +79,7 @@ namespace Icon.Web.Mvc.Exporters
             getAttributesQueryHandler = new GetAttributesQueryHandler(connection);
             getBarcodeTypeQueryHandler = new GetBarcodeTypesQuery(connection);
            
-            ItemNewTemplateExporter itemTemplateNewExporter = new ItemNewTemplateExporter(getHierarchyClassesQueryHandler, getAttributesQueryHandler, getBarcodeTypeQueryHandler, this.orderFieldsHelper);
+            ItemNewTemplateExporter itemTemplateNewExporter = new ItemNewTemplateExporter(getHierarchyClassesQueryHandler, getAttributesQueryHandler, getBarcodeTypeQueryHandler, this.getItemColumnOrderQueryHandler);
             itemTemplateNewExporter.ExportModel = exportModel;
             itemTemplateNewExporter.ExportAllAttributes = exportAllAttributes;
             itemTemplateNewExporter.SelectedColumnNames = selectedColumnNames;

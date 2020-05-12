@@ -55,7 +55,7 @@ namespace Icon.Web.Controllers
         private IItemAttributesValidatorFactory itemAttributesValidatorFactory;
         private IItemHistoryBuilder itemHistoryBuilder;
         private IQueryHandler<GetItemInforHistoryParameters, IEnumerable<ItemInforHistoryDbModel>> getItemInforHistoryQueryHandler;
-        private IOrderFieldsHelper orderFieldsHelper;
+        private IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>> getItemColumnOrderQueryHandler;
         private IHistoryModelTransformer historyModelTransformer;
         private readonly IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler;
         private IQueryHandler<GetScanCodesParameters, List<string>> getScanCodeQueryHandler;
@@ -82,7 +82,7 @@ namespace Icon.Web.Controllers
             IItemHistoryBuilder itemHistoryBuilder,
             IHistoryModelTransformer historyModelTransformer,
             IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler,
-            IOrderFieldsHelper orderFieldsHelper,
+            IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>> getItemColumnOrderQueryHandler,
             IQueryHandler<GetScanCodesParameters, List<string>> getScanCodeQueryHandler)
         {
             this.logger = logger;
@@ -105,7 +105,7 @@ namespace Icon.Web.Controllers
             this.getItemInforHistoryQueryHandler = getItemInforHistoryQueryHandler;
             this.historyModelTransformer = historyModelTransformer;
             this.getItemsByIdHandler = getItemsByIdHandler;
-            this.orderFieldsHelper = orderFieldsHelper;
+            this.getItemColumnOrderQueryHandler = getItemColumnOrderQueryHandler;
             this.getScanCodeQueryHandler = getScanCodeQueryHandler;
         }
 
@@ -333,7 +333,7 @@ namespace Icon.Web.Controllers
                 ItemViewModel = itemViewModel,
                 Attributes = attributeViewModels,
                 ItemHistoryModel = this.GetItemHistoryModel(itemViewModel, false),
-                OrderOfFields = orderFieldsHelper.OrderAllFields(attributeViewModels.Where(a =>a.IsActive).ToList())
+                ItemColumnOrderModelList = getItemColumnOrderQueryHandler.Search(new EmptyQueryParameters<List<ItemColumnOrderModel>>())
             };
             return View(viewModel);
         }
@@ -469,7 +469,8 @@ namespace Icon.Web.Controllers
             var filteredAttributeModels = attributeModels.Where(a => a.AttributeName != Constants.Attributes.ProhibitDiscount && a.IsActive);
 
             itemCreateViewModel.Attributes = filteredAttributeModels.ToViewModels();
-            itemCreateViewModel.OrderOfFields = orderFieldsHelper.OrderAllFields(itemCreateViewModel.Attributes.ToList());
+            itemCreateViewModel.ItemColumnOrderModelList = getItemColumnOrderQueryHandler.Search(new EmptyQueryParameters<List<ItemColumnOrderModel>>());
+
             var barcodeTypes = getBarcodeTypeQueryHandler.Search(new GetBarcodeTypeParameters());
             itemCreateViewModel.BarcodeTypes = barcodeTypes;
 
@@ -495,14 +496,14 @@ namespace Icon.Web.Controllers
             itemViewModel.FinancialHierarchyLineage = GetHierarchyLineage(Hierarchies.Financial, itemViewModel.FinancialHierarchyClassId);
             itemViewModel.NationalHierarchyLineage = GetHierarchyLineage(Hierarchies.National, itemViewModel.NationalHierarchyClassId);
             itemViewModel.ManufacturerHierarchyLineage = GetHierarchyLineage(Hierarchies.Manufacturer, itemViewModel.ManufacturerHierarchyClassId.GetValueOrDefault());
-            var attributeViewModel = attributes.Where(a =>a.IsActive).ToViewModels().ToList();
+            var attributeViewModel = attributes.Where(a => a.IsActive).ToViewModels().ToList();
 
             return new ItemEditViewModel
             {
                 ItemViewModel = itemViewModel,
                 Attributes = attributeViewModel,
                 ItemHistoryModel = GetItemHistoryModel(itemViewModel, isInforHistory),
-                OrderOfFields = orderFieldsHelper.OrderAllFields(attributeViewModel)
+                ItemColumnOrderModelList = getItemColumnOrderQueryHandler.Search(new EmptyQueryParameters<List<ItemColumnOrderModel>>())
             };
         }
 
