@@ -18,8 +18,8 @@ namespace Icon.Web.DataAccess.Queries
 
         public IEnumerable<AttributeModel> Search(EmptyAttributesParameters parameters)
         {
-            var results = connection.QueryMultiple("app.GetAttributesList", new { includeItemCount = 1 } , commandType: CommandType.StoredProcedure);          
-            var attributes = results.Read<AttributeModel>()
+            var results = connection.QueryMultiple("app.GetAttributesList", new { includeItemCount = 1 } , commandType: CommandType.StoredProcedure);
+            var attributes = results.Read<AttributeModel>().OrderBy(a => a.DisplayName)
                 .ToList();
             var pickListDataGroups = results.Read<PickListModel>()
                 .GroupBy(p => p.AttributeId);

@@ -48,7 +48,8 @@ BEGIN
 		,pld.PickListValue
 	FROM dbo.PickListData pld
 	JOIN Attributes a ON a.AttributeId = pld.AttributeId
-	WHERE a.AttributeGroupId <> @nutritionGroupId;
+	WHERE a.AttributeGroupId <> @nutritionGroupId
+	ORDER BY pld.PickListValue;
 
 	SELECT acs.AttributeCharacterSetId
 		,acs.AttributeId

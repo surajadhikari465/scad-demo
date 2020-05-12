@@ -25,7 +25,7 @@ namespace Icon.Web.DataAccess.Queries
                                   ,[AttributeId]                                
                                  FROM [dbo].[PickListData]
                                  WHERE AttributeId = @AttributeId",
-                                  new { AttributeId = parameters.AttributeId }).ToList();
+                                  new { AttributeId = parameters.AttributeId }).OrderBy(a => a.PickListValue).ToList();
         }
     }
 }
