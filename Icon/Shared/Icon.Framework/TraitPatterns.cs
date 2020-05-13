@@ -60,7 +60,7 @@ namespace Icon.Framework
         public const string InsertDate = @"^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$";
         public const string ModifiedDate = @"^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$";
         public const string ValidationDate = @"^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$";
-        public const string MerchFinMapping = @"^[a-zA-Z0-9_]*$";
+        public const string MerchFinMapping = @"^[0-9]*$";
         public const string GlAccount = @"^[a-zA-Z0-9_]*$";
         public const string TaxAbbreviation = @"^[\d]{7} [^<>]{1,42}$";
         public const string SubBrickCode = @"^[a-zA-Z0-9_]*$";
@@ -191,7 +191,7 @@ namespace Icon.Framework
         public const string Ident = @"0|1";
         public const string LiquorLicensing = @"(Beer|Wine|Spirit)$";
         public const string PrimenowMerchantId = @"^[0-9]{11}$";
-        public const string PrimenowMerchantIdEncrypted = @"^[a-zA-Z0-9]{13}$";
+        public const string PrimenowMerchantIdEncrypted = @"^[a-zA-Z0-9]{50}$";
         public const string LocalZone = @"^.{1,35}$";
         public const string Designation = @"(Global|Regional)$";
         public const string ParentCompany = @"^[0-9]{1,10}$";
@@ -218,12 +218,17 @@ namespace Icon.Framework
         public const string Varietal = @"";
         public const string BeerStyle = @"";
         public const string LineExtension = @"";
-        public const string ZipCode = @"^[0-9]{5}(?:-[0-9]{4})?$";
+        public const string ZipCode = @"^[A-Za-z0-9\s-]{0,10}$";
         public const string Locality = @"^.{1,35}$";
         public const string TouchpointGroupId = @"";
         public const string HospitalityItem = @"";
         public const string KitchenItem = @"";
         public const string KitchenDescription = @"";
         public const string ImageUrl = @"";
-    }
+        public const string SodiumWarningRequired = @"0|1";
+        public const string ArCustomerId = @"^[a-zA-Z0-9_]*$";
+        public const string CreatedBy = @"";
+        public const string RequestNumber = @"";
+        public const string HierarchyContactUpdateDate = @"";
+	}
 }

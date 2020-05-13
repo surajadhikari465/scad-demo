@@ -23,5 +23,6 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\32224_AddBrandUploadServiceAppId.sql -- 2020-04-21 32224
 :r .\Scripts\PopulateData\25934_PopulateItemColumnDisplayOrder.sql -- 2020-05-05 25934
 :r .\Scripts\PopulateData\35524_BrandValidation_FixZipCodeTraitPattern.sql -- 2020-05-07 35524
+:r .\Scripts\PopulateData\32221_UpdatePrimeNowMerchantIDEncryptedToAllow50Characters.sql --2020-05-08 32221
 -- Always run this security script and make it the last entry in this script.
 :r .\Security\Icon.Security.sql

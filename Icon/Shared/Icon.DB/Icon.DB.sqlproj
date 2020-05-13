@@ -848,6 +848,7 @@
     <Build Include="dbo\Views\v4r_Item.sql" />
     <Build Include="dbo\Views\v4r_ItemHierarchyClass.sql" />
     <Build Include="nutrition\Views\v4r_ItemNutrition.sql" />
+    <None Include="Scripts\PopulateData\32221_UpdatePrimeNowMerchantIDEncryptedToAllow50Characters.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

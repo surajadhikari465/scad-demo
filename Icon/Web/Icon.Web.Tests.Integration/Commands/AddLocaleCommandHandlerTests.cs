@@ -77,6 +77,7 @@ namespace Icon.Web.Tests.Integration.Commands
 			addLocaleCommand.Fax = "TestFax";
 			addLocaleCommand.UserName = "Test User";
 			addLocaleCommand.SodiumWarningRequired = true;
+			addLocaleCommand.PrimeMerchantIDEncrypted = "ThisIsToTestPrimeMerchantIDEncryptedLength";
 
 			// When.
 			addLocaleCommandHandler.Execute(addLocaleCommand);
@@ -95,6 +96,7 @@ namespace Icon.Web.Tests.Integration.Commands
 			Assert.AreEqual(addLocaleCommand.UserName, newLocale.LocaleTrait.Single(lt => lt.traitID == Traits.ModifiedUser).traitValue);
 			Assert.AreEqual(addLocaleCommand.EwicAgencyId, context.Locale.Single(l => l.localeID == newLocale.localeID).Agency.Single().AgencyId);
 			Assert.AreEqual(addLocaleCommand.SodiumWarningRequired, newLocale.LocaleTrait.Single(lt => lt.traitID == Traits.SodiumWarningRequired).traitValue == "1");
+			Assert.AreEqual(addLocaleCommand.PrimeMerchantIDEncrypted, newLocale.LocaleTrait.Single(lt => lt.traitID == Traits.PrimenowMerchantIdEncrypted).traitValue);
 		}
 
 		[TestMethod]
@@ -197,7 +199,6 @@ namespace Icon.Web.Tests.Integration.Commands
 			var newLocale = context.Locale.Single(l => l.localeName == addLocaleCommand.LocaleName);
 
 			Assert.AreEqual(addLocaleCommand.CloseDate, newLocale.localeCloseDate);
-		}
-
+		}		
 	}
 }

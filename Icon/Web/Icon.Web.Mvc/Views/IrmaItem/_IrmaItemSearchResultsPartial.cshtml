@@ -91,8 +91,7 @@
                 .EnableDeleteRow(false)
                 .EnableAddRow(false)
                 .ShowDoneCancelButtons(true)
-                .StartEditTriggers(GridStartEditTriggers.DblClick)
-                .DoneLabel("Apply")
+                .StartEditTriggers(GridStartEditTriggers.DblClick)                
                 .ColumnSettings(settings =>
                 {
                     settings.ColumnSetting().ColumnKey("IrmaItemId").ReadOnly(true);
@@ -105,12 +104,10 @@
                     settings.ColumnSetting().ColumnKey("PackageUnit").Required(true).Validation(true)
                         .NumericEditorOptions(option => option.DataMode(NumericEditorDataMode.Int).MinValue(0).MaxValue(999));
                     settings.ColumnSetting().ColumnKey("Size").Required(true).Validation(true)
-                        .NumericEditorOptions(options => options.DataMode(NumericEditorDataMode.Decimal).MinValue(0.0001).MaxValue(99999.9999).MaxDecimals(4));
+                        .NumericEditorOptions(options => options.DataMode(NumericEditorDataMode.Float).MinValue(0.0001).MaxValue(99999.9999).MaxDecimals(4));
                     settings.ColumnSetting().ColumnKey("RetailUom").EditorType(ColumnEditorType.Combo).Required(false).Validation(true)
                         .ComboEditorOptions(uomOptions =>
                             uomOptions.DataSource(Model.Uoms.AsQueryable())
-                                .ShowDropDownButton(true)
-                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.StartsWith)
                                 .AllowCustomValue(true)
                                 .Virtualization(true)
                                 .DropDownWidth(300)
@@ -119,26 +116,22 @@
                         .EditorType(ColumnEditorType.Text);
                     settings.ColumnSetting().ColumnKey("FoodStamp");
                     settings.ColumnSetting().ColumnKey("PosScaleTare").Required(true).Validation(true)
-                        .NumericEditorOptions(option => option.DataMode(NumericEditorDataMode.Decimal).MinDecimals(0).MaxDecimals(3).MinValue(0).MaxValue(9.999));
+                        .NumericEditorOptions(option => option.DataMode(NumericEditorDataMode.Float).MinDecimals(0).MaxDecimals(3).MinValue(0).MaxValue(9.999));
                     settings.ColumnSetting().ColumnKey("BrandName").EditorType(ColumnEditorType.Combo).Required(true).Validation(true)
                         .ComboEditorOptions(brandOptions =>
                             brandOptions.DataSource(Model.AllBrands.AsQueryable())
                                 .ValueKey("HierarchyClassName")
-                                .ShowDropDownButton(true)
                                 .AllowCustomValue(true)
                                 .Virtualization(true)
-                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
                                 .FilteringType(ComboFilteringType.Local)
-                                .ValidatorOptions(vo => vo.RegExp( CustomValidationPatterns.BrandNamePattern))
-                                .ValidatorOptions(vo => vo.CustomErrorMessage("Value Required, " + ValidatorErrorMessages.BrandNameError)));
+                                .ValidatorOptions(vo => vo.Pattern( CustomValidationPatterns.BrandNamePattern))
+                                .ValidatorOptions(vo => vo.ErrorMessage("Value Required, " + ValidatorErrorMessages.BrandNameError)));
                     settings.ColumnSetting().ColumnKey("IrmaSubTeamName").ReadOnly(true);
                     settings.ColumnSetting().ColumnKey("MerchandiseHierarchyClassId").EditorType(ColumnEditorType.Combo)
                         .ComboEditorOptions(merchOptions =>
                             merchOptions.DataSource(Model.MerchandiseHierarchyClasses.AsQueryable())
                                 .ValueKey("HierarchyClassId")
                                 .TextKey("HierarchyClassLineage")
-                                .ShowDropDownButton(true)
-                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
                                 .AllowCustomValue(false)
                                 .Virtualization(true)
                                 .DropDownWidth(1500)
@@ -148,8 +141,6 @@
                            nationalOptions.DataSource(Model.NationalHierarchyClasses.AsQueryable())
                                .ValueKey("HierarchyClassId")
                                .TextKey("HierarchyClassLineage")
-                               .ShowDropDownButton(true)
-                               .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
                                .AllowCustomValue(false)
                                .Virtualization(true)
                                .DropDownWidth(1500)
@@ -159,8 +150,6 @@
                             taxOptions.DataSource(Model.TaxHierarchyClasses.AsQueryable())
                                 .ValueKey("HierarchyClassId")
                                 .TextKey("HierarchyClassLineage")
-                                .ShowDropDownButton(true)
-                                .RenderMatchItemsCondition(ComboRenderMatchItemsCondition.Contains)
                                 .AllowCustomValue(false)
                                 .Virtualization(true)
                                 .DropDownWidth(400)
@@ -174,7 +163,6 @@
                             options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
                                 .ValueKey("Item1")
                                 .TextKey("Item2")
-                                .ShowDropDownButton(true)
                                 .AllowCustomValue(false)
                                 .Virtualization(true)
                                 .DropDownWidth(300)
@@ -189,7 +177,6 @@
                             options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
                                 .ValueKey("Item1")
                                 .TextKey("Item2")
-                                .ShowDropDownButton(true)
                                 .AllowCustomValue(false)
                                 .Virtualization(true)
                                 .DropDownWidth(300)
@@ -203,7 +190,6 @@
                             options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
                                 .ValueKey("Item1")
                                 .TextKey("Item2")
-                                .ShowDropDownButton(true)
                                 .AllowCustomValue(false)
                                 .Virtualization(true)
                                 .DropDownWidth(300)
@@ -215,7 +201,6 @@
                             options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
                                 .ValueKey("Item1")
                                 .TextKey("Item2")
-                                .ShowDropDownButton(true)
                                 .AllowCustomValue(false)
                                 .Virtualization(true)
                                 .DropDownWidth(300)
@@ -231,7 +216,6 @@
                             options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
                                 .ValueKey("Item1")
                                 .TextKey("Item2")
-                                .ShowDropDownButton(true)
                                 .AllowCustomValue(false)
                                 .Virtualization(true)
                                 .DropDownWidth(300)
@@ -243,7 +227,6 @@
                             options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
                                 .ValueKey("Item1")
                                 .TextKey("Item2")
-                                .ShowDropDownButton(true)
                                 .AllowCustomValue(false)
                                 .Virtualization(true)
                                 .DropDownWidth(300)
@@ -255,7 +238,6 @@
                             options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
                                 .ValueKey("Item1")
                                 .TextKey("Item2")
-                                .ShowDropDownButton(true)
                                 .AllowCustomValue(false)
                                 .Virtualization(true)
                                 .DropDownWidth(300)
@@ -267,7 +249,6 @@
                             options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
                                 .ValueKey("Item1")
                                 .TextKey("Item2")
-                                .ShowDropDownButton(true)
                                 .AllowCustomValue(false)
                                 .Virtualization(true)
                                 .DropDownWidth(300)
@@ -279,7 +260,6 @@
                             options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
                                 .ValueKey("Item1")
                                 .TextKey("Item2")
-                                .ShowDropDownButton(true)
                                 .AllowCustomValue(false)
                                 .Virtualization(true)
                                 .DropDownWidth(300)
@@ -291,7 +271,6 @@
                             options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
                                 .ValueKey("Item1")
                                 .TextKey("Item2")
-                                .ShowDropDownButton(true)
                                 .AllowCustomValue(false)
                                 .Virtualization(true)
                                 .DropDownWidth(300)
@@ -303,7 +282,6 @@
                             options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
                                 .ValueKey("Item1")
                                 .TextKey("Item2")
-                                .ShowDropDownButton(true)
                                 .AllowCustomValue(false)
                                 .Virtualization(true)
                                 .DropDownWidth(300)
@@ -315,7 +293,6 @@
                             options.DataSource(Model.NullableBooleanComboBoxValues.Values.AsQueryable())
                                 .ValueKey("Item1")
                                 .TextKey("Item2")
-                                .ShowDropDownButton(true)
                                 .AllowCustomValue(false)
                                 .Virtualization(true)
                                 .DropDownWidth(300)
@@ -323,7 +300,7 @@
                         );
                     settings.ColumnSetting().ColumnKey("DepartmentSale").ReadOnly(true);
                     settings.ColumnSetting().ColumnKey("AlcoholByVolume")
-                        .NumericEditorOptions(option => option.DataMode(NumericEditorDataMode.Decimal).MinDecimals(0).MaxDecimals(2).MinValue(0).MaxValue(99.99));
+                        .NumericEditorOptions(option => option.DataMode(NumericEditorDataMode.Float).MinDecimals(0).MaxDecimals(2).MinValue(0).MaxValue(99.99));
                 });
         })
         .DataSource(Model.Items.AsQueryable())
