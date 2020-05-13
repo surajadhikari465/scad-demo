@@ -252,7 +252,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             ...alert,
             open: true,
             header: 'Confirm Close Order',
-            alertMessage: `Invoice Date: '${dateFormat(new Date(invoiceDate), 'mm/dd/yyyy')}'. Close Order?`,
+            alertMessage: `Invoice Date: '${dateFormat(invoiceDate, 'mm/dd/yyyy', true)}'. Close Order?`,
             type: 'confirm',
             confirmAction: () => { handleConfirmCloseOrder(); },
             cancelAction: () => { setAlert({ ...alert, open: false }); }

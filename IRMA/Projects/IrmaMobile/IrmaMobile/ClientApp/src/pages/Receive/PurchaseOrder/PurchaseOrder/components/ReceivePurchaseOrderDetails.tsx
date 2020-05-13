@@ -141,7 +141,10 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
             }
 
             const newQuantity: number = quantityMode.current === QuantityAddMode.AddTo ? quantity + orderDetails.QtyReceived : quantity;
-            const parsedWeight: number = typeof weight === 'number' ? weight : isNaN(parseFloat(weight)) ? 0 : parseFloat(weight);
+            let parsedWeight: number = 0;
+            if(!isNaN(Number(weight))) {
+                parsedWeight = Number(weight);
+            }
             const newWeight: number = quantityMode.current === QuantityAddMode.AddTo ? parsedWeight + orderDetails.Weight : parsedWeight;
 
             if (!overrideHighQty.current && newQuantity > orderDetails.QtyOrdered) {
@@ -265,7 +268,8 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
     if (orderDetails) {
         return (
             <Fragment>
-                <ConfirmModal handleConfirmClose={handleHighQtyConfirmClick} setOpenExternal={setShowHighQtyModal}
+                <ConfirmModal handleConfirmClose={handleHighQtyConfirmClick} 
+                    setOpenExternal={setShowHighQtyModal}
                     handleCancelClose={() => quantityMode.current = QuantityAddMode.None}
                     showTriggerButton={false}
                     openExternal={showHighQtyModal}
@@ -275,7 +279,13 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                     lineOne={quantityMode.current === QuantityAddMode.AddTo
                         ? `Quantity Received (${quantity + orderDetails.QtyReceived}) is greater than Quantity Ordered (${orderDetails.QtyOrdered}). Continue?`
                         : `Quantity (${quantity}) is greater than Quantity Ordered (${orderDetails.QtyOrdered}). Continue?`} />
-                <ReceivePurchaseOrderDetailsQtyModal handleQuantityDecision={handleQuantityDecision} open={showQtyModal} quantity={orderDetails.QtyReceived} />
+                <ReceivePurchaseOrderDetailsQtyModal 
+                    handleQuantityDecision={handleQuantityDecision} 
+                    open={showQtyModal} 
+                    previousQuantityReceived={orderDetails.QtyReceived}
+                    catchweightRequired={orderDetails.CatchweightRequired}
+                    previousWeightReceived={orderDetails.Weight}
+                    uom={orderDetails.OrderUom} />
                 <ReasonCodeModal />
                 <div className={'receive-order'}>
                     <Segment
