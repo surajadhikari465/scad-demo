@@ -76,7 +76,6 @@ namespace BulkItemUploadProcessor.Service.Tests.Validators
         [TestInitialize]
         public void Initialize()
         {
-
             excelPackage = new ExcelPackage(new FileInfo(@".\TestData\ExcelRowParserTest_SingleRow - ScalePlu.xlsx"));
             excelRowParser = new ExcelRowParser();
             merchItemPropertiesCache = new Mock<IMerchItemPropertiesCache>();
@@ -93,28 +92,34 @@ namespace BulkItemUploadProcessor.Service.Tests.Validators
                 excelPackage.Workbook.Worksheets["items"],
                 columnHeaders);
 
-            attributeModels = new List<AttributeModel>()
-            {
-                 new AttributeModel(){AttributeId = 1, AttributeName="365Eligible", DisplayOrder =1 },
-                new AttributeModel(){AttributeId = 2, AttributeName="RequestNumber", DisplayOrder =2 },
-                new AttributeModel(){AttributeId = 3, AttributeName="Inactive", DisplayOrder =5 },
-                new AttributeModel(){AttributeId = 4, AttributeName="POSDescription", DisplayOrder =10 },
-                new AttributeModel(){AttributeId = 5, AttributeName="ItemPack", DisplayOrder =99, DefaultValue = "5" },
-                new AttributeModel(){AttributeId = 6, AttributeName="VitaminK", DisplayOrder =100, DefaultValue = "Vi", IsReadOnly = true },
-            };
-            merchItemPropertiesCache.SetupGet(m => m.Properties)
-                .Returns( new Dictionary<int, MerchPropertiesModel>()
-                { {5000376,
-                 new MerchPropertiesModel {FinancialHierarcyClassId=84238, ItemTypeCode="NRT",MerchandiseHierarchyClassId=5000376, NonMerchandiseTraitValue="Leagcy", ProhibitDiscount=false }}
-                });
-
-            rowObjectToAddItemModelMapper = new RowObjectToAddItemModelMapper(merchItemPropertiesCache.Object);
         }
 
         [TestMethod]
         public void ValidateMap_AttributeWithDefaultValueNotSpecified_ShouldAddAttributeWithDefaultValueToItem()
         {
-            var response = rowObjectToAddItemModelMapper.Map(rowObjects,columnHeaders, attributeModels,"Test");
+            //When
+            attributeModels = new List<AttributeModel>()
+            {
+                new AttributeModel(){AttributeId = 1, AttributeName="365Eligible", DisplayOrder =1,IsActive = true },
+                new AttributeModel(){AttributeId = 2, AttributeName="RequestNumber", DisplayOrder =2, IsActive =true },
+                new AttributeModel(){AttributeId = 3, AttributeName="Inactive", DisplayOrder =5, IsActive = true },
+                new AttributeModel(){AttributeId = 4, AttributeName="POSDescription", DisplayOrder =10, IsActive = true },
+                new AttributeModel(){AttributeId = 5, AttributeName="ItemPack", DisplayOrder =99, DefaultValue = "5", IsActive = true },
+                new AttributeModel(){AttributeId = 6, AttributeName="VitaminK", DisplayOrder =100, DefaultValue = "Vi", IsReadOnly = true, IsActive = true},
+            };
+            MerchPropertiesModel merchPropertiesModel = new MerchPropertiesModel
+            {
+                FinancialHierarcyClassId = 84238,
+                ItemTypeCode = "NRT",
+                MerchandiseHierarchyClassId = 5000376,
+                NonMerchandiseTraitValue = "Leagcy",
+                ProhibitDiscount = false
+            };
+            var idToMerchProperties = new Dictionary<int, MerchPropertiesModel> { { merchPropertiesModel.MerchandiseHierarchyClassId, merchPropertiesModel } };
+            merchItemPropertiesCache.SetupGet(m => m.Properties).Returns(idToMerchProperties);
+
+            rowObjectToAddItemModelMapper = new RowObjectToAddItemModelMapper(merchItemPropertiesCache.Object);
+            var response = rowObjectToAddItemModelMapper.Map(rowObjects, columnHeaders, attributeModels, "Test");
 
             //then        
             Assert.IsTrue(response.Items[0].ItemAttributesJson.Contains("ItemPack\":\"5\""));
@@ -125,6 +130,374 @@ namespace BulkItemUploadProcessor.Service.Tests.Validators
             Assert.IsFalse(response.Items[0].ItemAttributesJson.Contains("365Eligible"));
             // inactive is always added by the code
             Assert.IsTrue(response.Items[0].ItemAttributesJson.Contains("Inactive"));
+        }
+
+        [TestMethod]
+        public void ValidateMap_AttributeWithDefaultValueSpecifiedAndIsReadOnlyFalseAndIsActiveIsTrue_ShouldAddAttributeWithDefaultValueToItem()
+        {
+            //When
+            attributeModels = new List<AttributeModel>()
+            {
+                new AttributeModel
+                {
+                    AttributeId = 1,
+                    AttributeName="ABF",
+                    DisplayOrder =101,
+                    DefaultValue = "IN",
+                    IsReadOnly = false,
+                    IsActive = true
+                }
+            };
+
+            MerchPropertiesModel merchPropertiesModel = new MerchPropertiesModel
+            {
+                FinancialHierarcyClassId = 84238,
+                ItemTypeCode = "NRT",
+                MerchandiseHierarchyClassId = 5000376,
+                NonMerchandiseTraitValue = "Leagcy",
+                ProhibitDiscount = false
+            };
+            var idToMerchProperties = new Dictionary<int, MerchPropertiesModel> { { merchPropertiesModel.MerchandiseHierarchyClassId, merchPropertiesModel } };
+            merchItemPropertiesCache.SetupGet(m => m.Properties).Returns(idToMerchProperties);
+
+            rowObjectToAddItemModelMapper = new RowObjectToAddItemModelMapper(merchItemPropertiesCache.Object);
+            var response = rowObjectToAddItemModelMapper.Map(rowObjects, columnHeaders, attributeModels, "Test");
+
+            //then        
+            Assert.IsTrue(response.Items[0].ItemAttributesJson.Contains("ABF"));
+        }
+
+        [TestMethod]
+        public void ValidateMap_AttributeWithDefaultValueSpecifiedAndIsReadOnlyFalseAndIsActiveIsFalse_ShouldNotAddAttributeWithDefaultValueToItem()
+        {
+            //When
+            attributeModels = new List<AttributeModel>()
+            {
+                new AttributeModel
+                {
+                    AttributeId = 1,
+                    AttributeName="ABF",
+                    DisplayOrder =101,
+                    DefaultValue = "AB",
+                    IsReadOnly = false,
+                    IsActive = false
+                }
+            };
+            MerchPropertiesModel merchPropertiesModel = new MerchPropertiesModel
+            {
+                FinancialHierarcyClassId = 84238,
+                ItemTypeCode = "NRT",
+                MerchandiseHierarchyClassId = 5000376,
+                NonMerchandiseTraitValue = "Leagcy",
+                ProhibitDiscount = false
+            };
+            var idToMerchProperties = new Dictionary<int, MerchPropertiesModel> { { merchPropertiesModel.MerchandiseHierarchyClassId, merchPropertiesModel } };
+            merchItemPropertiesCache.SetupGet(m => m.Properties).Returns(idToMerchProperties);
+
+            rowObjectToAddItemModelMapper = new RowObjectToAddItemModelMapper(merchItemPropertiesCache.Object);
+            var response = rowObjectToAddItemModelMapper.Map(rowObjects, columnHeaders, attributeModels, "Test");
+
+            //then          
+            Assert.IsFalse(response.Items[0].ItemAttributesJson.Contains("ABF"));
+        }
+        [TestMethod]
+        public void ValidateMap_AttributeWithDefaultValueIsNullAndIsReadOnlyIsFalseAndIsActiveIsTrue_ShouldNotAddAttributeWithDefaultValueToItem()
+        {
+            //When
+            attributeModels = new List<AttributeModel>()
+            {
+                new AttributeModel
+                {
+                    AttributeId = 1,
+                    AttributeName="ABF",
+                    DisplayOrder =101,
+                    DefaultValue = null,
+                    IsReadOnly = false,
+                    IsActive = true
+                }
+            };
+            MerchPropertiesModel merchPropertiesModel = new MerchPropertiesModel
+            {
+                FinancialHierarcyClassId = 84238,
+                ItemTypeCode = "NRT",
+                MerchandiseHierarchyClassId = 5000376,
+                NonMerchandiseTraitValue = "Leagcy",
+                ProhibitDiscount = false
+            };
+            var idToMerchProperties = new Dictionary<int, MerchPropertiesModel> { { merchPropertiesModel.MerchandiseHierarchyClassId, merchPropertiesModel } };
+            merchItemPropertiesCache.SetupGet(m => m.Properties).Returns(idToMerchProperties);
+
+            rowObjectToAddItemModelMapper = new RowObjectToAddItemModelMapper(merchItemPropertiesCache.Object);
+            var response = rowObjectToAddItemModelMapper.Map(rowObjects, columnHeaders, attributeModels, "Test");
+
+            //then        
+            Assert.IsFalse(response.Items[0].ItemAttributesJson.Contains("ABF"));
+        }
+
+        [TestMethod]
+        public void ValidateMap_AttributeWithDefaultValueIsNullAndIsReadOnlyIsFalseAndIsActiveIsFalse_ShouldNotAddAttributeWithDefaultValueToItem()
+        {
+            //When
+            attributeModels = new List<AttributeModel>()
+            {
+                new AttributeModel
+                {
+                    AttributeId = 1,
+                    AttributeName="ABF",
+                    DisplayOrder =101,
+                    DefaultValue = null,
+                    IsReadOnly = false,
+                    IsActive = false
+                }
+            };
+            MerchPropertiesModel merchPropertiesModel = new MerchPropertiesModel
+            {
+                FinancialHierarcyClassId = 84238,
+                ItemTypeCode = "NRT",
+                MerchandiseHierarchyClassId = 5000376,
+                NonMerchandiseTraitValue = "Leagcy",
+                ProhibitDiscount = false
+            };
+            var idToMerchProperties = new Dictionary<int, MerchPropertiesModel> { { merchPropertiesModel.MerchandiseHierarchyClassId, merchPropertiesModel } };
+            merchItemPropertiesCache.SetupGet(m => m.Properties).Returns(idToMerchProperties);
+
+            rowObjectToAddItemModelMapper = new RowObjectToAddItemModelMapper(merchItemPropertiesCache.Object);
+            var response = rowObjectToAddItemModelMapper.Map(rowObjects, columnHeaders, attributeModels, "Test");
+
+            //then          
+            Assert.IsFalse(response.Items[0].ItemAttributesJson.Contains("ABF"));
+        }
+        [TestMethod]
+        public void ValidateMap_AttributeWithDefaultValueIsNullAndIsReadOnlyIsTrueAndIsActiveIsTrue_ShouldNotAddAttributeWithDefaultValueToItem()
+        {
+            //When
+            attributeModels = new List<AttributeModel>()
+            {
+                new AttributeModel
+                {
+                    AttributeId = 1,
+                    AttributeName="ABF",
+                    DisplayOrder =101,
+                    DefaultValue = null,
+                    IsReadOnly = true,
+                    IsActive = true
+                }
+            };
+            MerchPropertiesModel merchPropertiesModel = new MerchPropertiesModel
+            {
+                FinancialHierarcyClassId = 84238,
+                ItemTypeCode = "NRT",
+                MerchandiseHierarchyClassId = 5000376,
+                NonMerchandiseTraitValue = "Leagcy",
+                ProhibitDiscount = false
+            };
+            var idToMerchProperties = new Dictionary<int, MerchPropertiesModel> { { merchPropertiesModel.MerchandiseHierarchyClassId, merchPropertiesModel } };
+            merchItemPropertiesCache.SetupGet(m => m.Properties).Returns(idToMerchProperties);
+
+            rowObjectToAddItemModelMapper = new RowObjectToAddItemModelMapper(merchItemPropertiesCache.Object);
+            var response = rowObjectToAddItemModelMapper.Map(rowObjects, columnHeaders, attributeModels, "Test");
+
+            //then        
+            Assert.IsFalse(response.Items[0].ItemAttributesJson.Contains("ABF"));
+        }
+
+        [TestMethod]
+        public void ValidateMap_AttributeWithDefaultValueIsNullAndIsReadOnlyIsTrueAndIsActiveIsFalse_ShouldNotAddAttributeWithDefaultValueToItem()
+        {
+            //When
+            attributeModels = new List<AttributeModel>()
+            {
+                new AttributeModel
+                {
+                    AttributeId = 1,
+                    AttributeName="ABF",
+                    DisplayOrder =101,
+                    DefaultValue = null,
+                    IsReadOnly = true,
+                    IsActive = false
+                }
+            };
+            MerchPropertiesModel merchPropertiesModel = new MerchPropertiesModel
+            {
+                FinancialHierarcyClassId = 84238,
+                ItemTypeCode = "NRT",
+                MerchandiseHierarchyClassId = 5000376,
+                NonMerchandiseTraitValue = "Leagcy",
+                ProhibitDiscount = false
+            };
+            var idToMerchProperties = new Dictionary<int, MerchPropertiesModel> { { merchPropertiesModel.MerchandiseHierarchyClassId, merchPropertiesModel } };
+            merchItemPropertiesCache.SetupGet(m => m.Properties).Returns(idToMerchProperties);
+
+            rowObjectToAddItemModelMapper = new RowObjectToAddItemModelMapper(merchItemPropertiesCache.Object);
+            var response = rowObjectToAddItemModelMapper.Map(rowObjects, columnHeaders, attributeModels, "Test");
+
+            //then          
+            Assert.IsFalse(response.Items[0].ItemAttributesJson.Contains("ABF"));
+        }
+        [TestMethod]
+        public void ValidateMap_AttributeWithDefaultValueIsNotNullAndIsReadOnlyIsTrueAndIsActiveIsTrue_ShouldNotAddAttributeWithDefaultValueToItem()
+        {
+            //When
+            attributeModels = new List<AttributeModel>()
+            {
+                new AttributeModel
+                {
+                    AttributeId = 1,
+                    AttributeName="ABF",
+                    DisplayOrder =101,
+                    DefaultValue = "IN",
+                    IsReadOnly = true,
+                    IsActive = true
+                }
+            };
+            MerchPropertiesModel merchPropertiesModel = new MerchPropertiesModel
+            {
+                FinancialHierarcyClassId = 84238,
+                ItemTypeCode = "NRT",
+                MerchandiseHierarchyClassId = 5000376,
+                NonMerchandiseTraitValue = "Leagcy",
+                ProhibitDiscount = false
+            };
+            var idToMerchProperties = new Dictionary<int, MerchPropertiesModel> { { merchPropertiesModel.MerchandiseHierarchyClassId, merchPropertiesModel } };
+            merchItemPropertiesCache.SetupGet(m => m.Properties).Returns(idToMerchProperties);
+
+            rowObjectToAddItemModelMapper = new RowObjectToAddItemModelMapper(merchItemPropertiesCache.Object);
+            var response = rowObjectToAddItemModelMapper.Map(rowObjects, columnHeaders, attributeModels, "Test");
+
+            //then        
+            Assert.IsFalse(response.Items[0].ItemAttributesJson.Contains("ABF"));
+        }
+
+        [TestMethod]
+        public void ValidateMap_AttributeWithDefaultValueIsNotNullAndIsReadOnlyIsTrueAndIsActiveIsFalse_ShouldNotAddAttributeWithDefaultValueToItem()
+        {
+            //When
+            attributeModels = new List<AttributeModel>()
+            {
+                new AttributeModel
+                {
+                    AttributeId = 1,
+                    AttributeName="ABF",
+                    DisplayOrder =101,
+                    DefaultValue = "IN",
+                    IsReadOnly = true,
+                    IsActive = false
+                }
+            };
+            MerchPropertiesModel merchPropertiesModel = new MerchPropertiesModel
+            {
+                FinancialHierarcyClassId = 84238,
+                ItemTypeCode = "NRT",
+                MerchandiseHierarchyClassId = 5000376,
+                NonMerchandiseTraitValue = "Leagcy",
+                ProhibitDiscount = false
+            };
+            var idToMerchProperties = new Dictionary<int, MerchPropertiesModel> { { merchPropertiesModel.MerchandiseHierarchyClassId, merchPropertiesModel } };
+            merchItemPropertiesCache.SetupGet(m => m.Properties).Returns(idToMerchProperties);
+
+            rowObjectToAddItemModelMapper = new RowObjectToAddItemModelMapper(merchItemPropertiesCache.Object);
+            var response = rowObjectToAddItemModelMapper.Map(rowObjects, columnHeaders, attributeModels, "Test");
+
+            //then          
+            Assert.IsFalse(response.Items[0].ItemAttributesJson.Contains("ABF"));
+        }
+        [TestMethod]
+        public void ValidateMap_AttributeWithIsReadOnlyIsTrueAndIsActiveIsFalse_ShouldNotAddAttributeWithDefaultValueToItem()
+        {
+            //When
+            attributeModels = new List<AttributeModel>()
+            {
+                new AttributeModel
+                {
+                    AttributeId = 1,
+                    AttributeName="ABF",
+                    DisplayOrder =101,
+                    IsReadOnly = true,
+                    IsActive = false
+                }
+            };
+            MerchPropertiesModel merchPropertiesModel = new MerchPropertiesModel
+            {
+                FinancialHierarcyClassId = 84238,
+                ItemTypeCode = "NRT",
+                MerchandiseHierarchyClassId = 5000376,
+                NonMerchandiseTraitValue = "Leagcy",
+                ProhibitDiscount = false
+            };
+            var idToMerchProperties = new Dictionary<int, MerchPropertiesModel> { { merchPropertiesModel.MerchandiseHierarchyClassId, merchPropertiesModel } };
+            merchItemPropertiesCache.SetupGet(m => m.Properties).Returns(idToMerchProperties);
+
+            rowObjectToAddItemModelMapper = new RowObjectToAddItemModelMapper(merchItemPropertiesCache.Object);
+            var response = rowObjectToAddItemModelMapper.Map(rowObjects, columnHeaders, attributeModels, "Test");
+
+            //then          
+            Assert.IsFalse(response.Items[0].ItemAttributesJson.Contains("ABF"));
+        }
+
+        [TestMethod]
+        public void ValidateMap_AttributeWithIsReadOnlyIsTrueAndIsActiveIsTrue_ShouldNotAddAttributeWithDefaultValueToItem()
+        {
+            //When
+            attributeModels = new List<AttributeModel>()
+            {
+                new AttributeModel
+                {
+                    AttributeId = 1,
+                    AttributeName="ABF",
+                    DisplayOrder =101,
+                    IsReadOnly = true,
+                    IsActive = true
+                }
+            };
+            MerchPropertiesModel merchPropertiesModel = new MerchPropertiesModel
+            {
+                FinancialHierarcyClassId = 84238,
+                ItemTypeCode = "NRT",
+                MerchandiseHierarchyClassId = 5000376,
+                NonMerchandiseTraitValue = "Leagcy",
+                ProhibitDiscount = false
+            };
+            var idToMerchProperties = new Dictionary<int, MerchPropertiesModel> { { merchPropertiesModel.MerchandiseHierarchyClassId, merchPropertiesModel } };
+            merchItemPropertiesCache.SetupGet(m => m.Properties).Returns(idToMerchProperties);
+
+            rowObjectToAddItemModelMapper = new RowObjectToAddItemModelMapper(merchItemPropertiesCache.Object);
+            var response = rowObjectToAddItemModelMapper.Map(rowObjects, columnHeaders, attributeModels, "Test");
+
+            //then          
+            Assert.IsFalse(response.Items[0].ItemAttributesJson.Contains("ABF"));
+        }
+
+        [TestMethod]
+        public void ValidateMap_AttributeWithIsReadOnlyIsFalseAndIsActiveIsFalse_ShouldNotAddAttributeWithDefaultValueToItem()
+        {
+            //When
+            attributeModels = new List<AttributeModel>()
+            {
+                new AttributeModel
+                {
+                    AttributeId = 1,
+                    AttributeName="ABF",
+                    DisplayOrder =101,
+                    IsReadOnly = false,
+                    IsActive = false
+                }
+            };
+            MerchPropertiesModel merchPropertiesModel = new MerchPropertiesModel
+            {
+                FinancialHierarcyClassId = 84238,
+                ItemTypeCode = "NRT",
+                MerchandiseHierarchyClassId = 5000376,
+                NonMerchandiseTraitValue = "Leagcy",
+                ProhibitDiscount = false
+            };
+            var idToMerchProperties = new Dictionary<int, MerchPropertiesModel> { { merchPropertiesModel.MerchandiseHierarchyClassId, merchPropertiesModel } };
+            merchItemPropertiesCache.SetupGet(m => m.Properties).Returns(idToMerchProperties);
+
+            rowObjectToAddItemModelMapper = new RowObjectToAddItemModelMapper(merchItemPropertiesCache.Object);
+            var response = rowObjectToAddItemModelMapper.Map(rowObjects, columnHeaders, attributeModels, "Test");
+
+            //then          
+            Assert.IsFalse(response.Items[0].ItemAttributesJson.Contains("ABF"));
         }
     }
 }

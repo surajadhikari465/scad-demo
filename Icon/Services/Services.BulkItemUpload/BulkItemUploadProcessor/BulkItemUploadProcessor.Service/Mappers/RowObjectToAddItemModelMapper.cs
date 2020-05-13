@@ -29,15 +29,15 @@ namespace BulkItemUploadProcessor.Service.Mappers
             string uploadedBy)
         {
             //Get column headers that match non-readonly attributes DisplayNames
-            var validAttributeColumnHeaders = attributeModels.Where(a => !a.IsReadOnly)
+            var validAttributeColumnHeaders = attributeModels.Where(a => !a.IsReadOnly && a.IsActive)
                 .Join(columnHeaders,
                     a => a.DisplayName,
                     c => c.Name,
                     (a, c) => new { a.AttributeName, ColumnIndex = c.ColumnIndex })
                 .ToList();
 
-            ///get attributes that have default value associated to them in database but do not have a column in spreadsheet
-            var attributesWithDefaultValueButNotPassed = attributeModels.Where(a => !a.IsReadOnly && !string.IsNullOrWhiteSpace(a.DefaultValue))
+            ///get attributes that have default value associated to them in database but do not have a column in spreadsheet and get only active attributes
+            var attributesWithDefaultValueButNotPassed = attributeModels.Where(a => !a.IsReadOnly && !string.IsNullOrWhiteSpace(a.DefaultValue) && a.IsActive)
                                                             .Where(p => !validAttributeColumnHeaders.Any(p2 => p2.AttributeName == p.AttributeName));
 
             //Create DateTime for ModifiedDate and CreatedDate attributes
