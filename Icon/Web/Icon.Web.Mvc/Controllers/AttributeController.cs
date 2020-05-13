@@ -429,7 +429,6 @@ namespace Icon.Web.Mvc.Controllers
             }
         }
 
-        [DonutOutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "")]
         public ActionResult All()
         {
             var attributes = getAttributesQueryHandler
