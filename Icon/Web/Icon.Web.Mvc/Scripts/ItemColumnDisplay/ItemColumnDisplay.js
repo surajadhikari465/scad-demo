@@ -148,7 +148,8 @@ function DrawList(data) {
         if (!data) return;
         data.forEach(d => {
             let icon = getColumnTypeIcon(d.ColumnType);
-            $(listElement).append(`<li class="list-group-item" data-name="${d.ReferenceName}" data-id="${returnDataId(d)}"><span><i class="fa ${icon} control-item" title="${d.ColumnType}"></i></span> ${d.ReferenceName}${controlsTemplate}</li>`);
+            let lowerCaseReferenceName = d.ReferenceName.toLowerCase(); // lower case to allow case insensitive sorting.
+            $(listElement).append(`<li class="list-group-item" data-name="${lowerCaseReferenceName}" data-id="${returnDataId(d)}"><span><i class="fa ${icon} control-item" title="${d.ColumnType}"></i></span> ${d.ReferenceName}${controlsTemplate}</li>`);
         });
 
         list = new window.Sortable(listElement,
