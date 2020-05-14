@@ -149,10 +149,10 @@ namespace BrandUploadProcessor.Service.Tests
 
             var expectedName = Constants.RemoveExcelValue;
             var expectedAbbr = "asdf";
-            var expectedErrorMsg = $"'{Constants.BrandNameColumnHeader}' cannot be {Constants.RemoveExcelValue}";
+            var expectedErrorMsg = Constants.ErrorMessages.InvalidRemoveBrandName;
 
             var expectedValidRows = 0;
-            var expectedInvalidRowErrors = 2;
+            var expectedInvalidRowErrors = 1;
 
             var rowObjects = new List<RowObject>
             {
@@ -178,15 +178,15 @@ namespace BrandUploadProcessor.Service.Tests
         }
 
         [TestMethod]
-        public void Validate_CreateNew_1BrandAbbrIsRemove_2RowErrors()
+        public void Validate_CreateNew_1BrandAbbrIsRemove_1RowError()
         {
 
             var expectedName = "asldkjfals Random";
             var expectedAbbr = Constants.RemoveExcelValue;
-            var expectedErrorMsg = $"'{Constants.BrandAbbreviationColumnHeader}' cannot be {Constants.RemoveExcelValue}";
+            var expectedErrorMsg = Constants.ErrorMessages.InvalidRemoveBrandAbbreviation;
 
             var expectedValidRows = 0;
-            var expectedInvalidRowErrors = 2;
+            var expectedInvalidRowErrors = 1;
 
             var rowObjects = new List<RowObject>
             {
@@ -217,7 +217,7 @@ namespace BrandUploadProcessor.Service.Tests
 
             var expectedName = "asldkjfals Random";
             var expectedAbbr = "t944";
-            var expectedErrorMsg = $"'{Constants.BrandIdColumnHeader}' must be empty when creating new brands.";
+            var expectedErrorMsg = Constants.ErrorMessages.CreateNewBrandIdNotAllowed;
 
             var expectedValidRows = 0;
             var expectedInvalidRowErrors = 1;
@@ -586,8 +586,7 @@ namespace BrandUploadProcessor.Service.Tests
 
             var removeValue = Constants.RemoveExcelValue;
 
-            var expectedErrorMsgPartial =
-                $"has invalid value. '{Constants.RemoveExcelValue}' cannot be used when creating new brands";
+            var expectedErrorMsgPartial =$"has invalid value. '{Constants.RemoveExcelValue}' cannot be used when creating new brands.";
 
             var expectedValidRows = 0;
             var expectedInvalidRowErrors = 4;
@@ -617,6 +616,73 @@ namespace BrandUploadProcessor.Service.Tests
             {
                 Assert.IsTrue(invalidRowError.Error.EndsWith(expectedErrorMsgPartial));
             }
+
+        }
+
+        [TestMethod]
+        public void Validate_CreateNew_MissingBrandName_1RowError()
+        {
+
+            var missingBrandName = string.Empty;
+            var expextedErrorMessage = Constants.ErrorMessages.RequiredBrandName;
+            var expectedValidRows = 0;
+            var expectedInvalidRowErrors = 1;
+
+            var rowObjects = new List<RowObject>
+            {
+                TestHelpers.CreateRowObject(1, new List<ParsedCell>
+                {
+                    TestHelpers.CreateParsedCell(Constants.BrandIdColumnHeader, null),
+                    TestHelpers.CreateParsedCell(Constants.BrandNameColumnHeader, missingBrandName),
+                    TestHelpers.CreateParsedCell(Constants.BrandAbbreviationColumnHeader,  "AA"),
+                    TestHelpers.CreateParsedCell(Constants.ZipCodeColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.LocalityColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.DesignationColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.ParentCompanyColumnHeader, string.Empty)
+                })
+            };
+
+            var columnHeaders = TestHelpers.GetHeaders();
+            var brandAttributeModels = TestHelpers.GetBrandAttributeModels();
+
+            var rowObjectValidatorResponse = validator.Validate(Enums.FileModeTypeEnum.CreateNew, rowObjects, columnHeaders, brandAttributeModels);
+            Assert.AreEqual(expectedValidRows, rowObjectValidatorResponse.ValidRows.Count);
+            Assert.AreEqual(expectedInvalidRowErrors, rowObjectValidatorResponse.InvalidRows.Count);
+            Assert.AreEqual(expextedErrorMessage, rowObjectValidatorResponse.InvalidRows[0].Error);
+
+        }
+
+
+        [TestMethod]
+        public void Validate_CreateNew_MissingBrandAbbreviation_1RowError()
+        {
+
+            var missingBrandAbbreviation = string.Empty;
+            var expextedErrorMessage = Constants.ErrorMessages.RequiredBrandAbbreviation;
+            var expectedValidRows = 0;
+            var expectedInvalidRowErrors = 1;
+
+            var rowObjects = new List<RowObject>
+            {
+                TestHelpers.CreateRowObject(1, new List<ParsedCell>
+                {
+                    TestHelpers.CreateParsedCell(Constants.BrandIdColumnHeader, null),
+                    TestHelpers.CreateParsedCell(Constants.BrandNameColumnHeader, "test brand"),
+                    TestHelpers.CreateParsedCell(Constants.BrandAbbreviationColumnHeader,  missingBrandAbbreviation),
+                    TestHelpers.CreateParsedCell(Constants.ZipCodeColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.LocalityColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.DesignationColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.ParentCompanyColumnHeader, string.Empty)
+                })
+            };
+
+            var columnHeaders = TestHelpers.GetHeaders();
+            var brandAttributeModels = TestHelpers.GetBrandAttributeModels();
+
+            var rowObjectValidatorResponse = validator.Validate(Enums.FileModeTypeEnum.CreateNew, rowObjects, columnHeaders, brandAttributeModels);
+            Assert.AreEqual(expectedValidRows, rowObjectValidatorResponse.ValidRows.Count);
+            Assert.AreEqual(expectedInvalidRowErrors, rowObjectValidatorResponse.InvalidRows.Count);
+            Assert.AreEqual(expextedErrorMessage, rowObjectValidatorResponse.InvalidRows[0].Error);
 
         }
 

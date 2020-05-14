@@ -211,20 +211,35 @@ namespace BrandUploadProcessor.Service.Validation
                     string brandId = rowObjectDictionary.Cells.ContainsKey(brandIdIndex) ? rowObjectDictionary.Cells[brandIdIndex] : null;
                     string parentCompany = rowObjectDictionary.Cells.ContainsKey(parentComapnyIndex) ? rowObjectDictionary.Cells[parentComapnyIndex] : null;
 
+                    if ( string.IsNullOrWhiteSpace(brandName))
+                    {
+                        errors.Add(new InvalidRowError {RowId = rowObjectDictionary.Row, Error = Constants.ErrorMessages.RequiredBrandName});
+                    }
+
+                    if (string.IsNullOrWhiteSpace(brandAbbreviation))
+                    {
+                        errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = Constants.ErrorMessages.RequiredBrandAbbreviation });
+                    }
 
                     if (brandName != null && string.Equals(brandName, Constants.RemoveExcelValue, StringComparison.CurrentCultureIgnoreCase))
                     {
-                        errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandNameColumnHeader}' cannot be {Constants.RemoveExcelValue}" });
+                        errors.Add(new InvalidRowError {RowId = rowObjectDictionary.Row, Error = Constants.ErrorMessages.InvalidRemoveBrandName});
                     }
                     if (brandAbbreviation != null &&  string.Equals(brandAbbreviation, Constants.RemoveExcelValue, StringComparison.CurrentCultureIgnoreCase))
                     {
-                        errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandAbbreviationColumnHeader}' cannot be {Constants.RemoveExcelValue}" });
+                        errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = Constants.ErrorMessages.InvalidRemoveBrandAbbreviation });
                     }
 
-                    if (brandId != null) errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandIdColumnHeader}' must be empty when creating new brands." });
+                    if (brandId != null) errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = Constants.ErrorMessages.CreateNewBrandIdNotAllowed });
 
                     ValidateDuplicateBrandNames(rowObjectDictionary, null, brandsCache.Brands, brandName, brandNamesThatExistMoreThanOnceInWorksheet, trimmedBrandNamesThatExistMoreThanOnceInWorksheet, errors);
                     ValidateDuplicateBrandAbbreviations(rowObjectDictionary, null, brandsCache.Brands, brandAbbreviation, brandAbbreviationsThatExistMoreThanOnceInWorksheet, errors);
+
+                    if (errors.Any())
+                    {
+                        response.InvalidRows.AddRange(errors);
+                        continue;
+                    }
 
                     foreach (var attributeColumn in attributeColumns)
                     {
@@ -243,7 +258,7 @@ namespace BrandUploadProcessor.Service.Validation
                             {
                                 if (string.Equals(value, Constants.RemoveExcelValue, StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{attributeColumn.ColumnHeader.Name}' has invalid value. '{Constants.RemoveExcelValue}' cannot be used when creating new brands" });
+                                    errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{attributeColumn.ColumnHeader.Name}' has invalid value. '{Constants.RemoveExcelValue}' cannot be used when creating new brands." });
                                     continue;
                                 }
 
@@ -257,7 +272,7 @@ namespace BrandUploadProcessor.Service.Validation
                     {
                         if (string.Equals(parentCompany, Constants.RemoveExcelValue, StringComparison.CurrentCultureIgnoreCase))
                         {
-                            errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.ParentCompanyColumnHeader}' has invalid value. '{Constants.RemoveExcelValue}' cannot be used when creating new brands" });
+                            errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.ParentCompanyColumnHeader}' has invalid value. '{Constants.RemoveExcelValue}' cannot be used when creating new brands." });
                         }
                         else
                         {
@@ -265,7 +280,7 @@ namespace BrandUploadProcessor.Service.Validation
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception ex) 
                 {
                     errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"Unexpected error occurred while validating row. Error: {ex.Message}" });
                 }
@@ -298,7 +313,6 @@ namespace BrandUploadProcessor.Service.Validation
                     })
                 .ToList();
 
-
             var rowObjectDictionaries = rowObjects
                 .Select(r => new RowObjectDictionary()
                 {
@@ -308,8 +322,6 @@ namespace BrandUploadProcessor.Service.Validation
                         c => c.CellValue),
                     RowObject = r
                 }).ToList();
-
-            
 
             // Brand Names that appear in uploaded worksheet more than once.
             var brandNamesThatExistMoreThanOnceInWorksheet = DuplicateColumnValuesFromWorksheet(rowObjectDictionaries, brandNameIndex, brandName=>brandName);
@@ -329,33 +341,53 @@ namespace BrandUploadProcessor.Service.Validation
                 string parentCompany = rowObjectDictionary.Cells.ContainsKey(parentComapnyIndex) ? rowObjectDictionary.Cells[parentComapnyIndex] : null;
 
 
-                if (brandId == null)
+                if (string.IsNullOrWhiteSpace(brandId))
+                {
                     errors.Add(new InvalidRowError
                     {
                         RowId = rowObjectDictionary.Row,
-                        Error = $"'{Constants.BrandIdColumnHeader}' is required when updating existng brands."
+                        Error = Constants.ErrorMessages.RequiredBrandId
                     });
+                }
+
+                if (string.IsNullOrWhiteSpace(brandName))
+                {
+                    errors.Add(new InvalidRowError
+                    {
+                        RowId = rowObjectDictionary.Row,
+                        Error = Constants.ErrorMessages.RequiredBrandName
+                    });
+                }
+                if (string.IsNullOrWhiteSpace(brandAbbreviation))
+                {
+                    errors.Add(new InvalidRowError
+                    {
+                        RowId = rowObjectDictionary.Row,
+                        Error = Constants.ErrorMessages.RequiredBrandAbbreviation
+                    });
+                }
+
 
                 if (!int.TryParse(brandId, out int brandIdInt))
                 {
-                    errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandIdColumnHeader}' has invalid value. '{brandId}' does not appear to be a valid hierarchyClassId value" });
+                    errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = Constants.ErrorMessages.InvalidBrandIdDataType });
                 }
                 else
                 {
                     if (brandName != null && string.Equals(brandName, Constants.RemoveExcelValue, StringComparison.CurrentCultureIgnoreCase))
                     {
-                        errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandNameColumnHeader}' cannot be {Constants.RemoveExcelValue}" });
+                        errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = Constants.ErrorMessages.InvalidRemoveBrandName });
                     }
                     if (brandAbbreviation != null && string.Equals(brandAbbreviation, Constants.RemoveExcelValue, StringComparison.CurrentCultureIgnoreCase))
                     {
-                        errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandAbbreviationColumnHeader}' cannot be {Constants.RemoveExcelValue}" });
+                        errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = Constants.ErrorMessages.InvalidRemoveBrandAbbreviation });
                     }
 
                     BrandModel existingBrand = brandsCache.Brands.FirstOrDefault(b => b.BrandId == brandIdInt);
 
                     if (existingBrand == null)
                     {
-                        errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{Constants.BrandIdColumnHeader}' has invalid value. '{brandId}' does not match and existing Brand" });
+                        errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = Constants.ErrorMessages.InvalidbrandId });
                     }
                     else
                     {
@@ -366,6 +398,13 @@ namespace BrandUploadProcessor.Service.Validation
                         if (!string.IsNullOrEmpty(parentCompany) && parentCompany.ToLower() != "remove")
                         {
                             ValidateParentCompany(rowObjectDictionary, parentCompany, brandsCache.Brands, errors);
+                        }
+
+
+                        if (errors.Any())
+                        {
+                            response.InvalidRows.AddRange(errors);
+                            continue;
                         }
 
                         foreach (var attributeColumn in attributeColumns)

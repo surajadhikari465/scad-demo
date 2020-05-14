@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using BrandUploadProcessor.Common;
 using BrandUploadProcessor.Common.Models;
 using BrandUploadProcessor.Service.Interfaces;
@@ -382,10 +381,10 @@ namespace BrandUploadProcessor.Service.Tests
 
             var expectedName = Constants.RemoveExcelValue;
             var expectedAbbr = "asdf";
-            var expectedErrorMsg = $"'{Constants.BrandNameColumnHeader}' cannot be {Constants.RemoveExcelValue}";
+            var expectedErrorMsg = Constants.ErrorMessages.InvalidRemoveBrandName;
 
             var expectedValidRows = 0;
-            var expectedInvalidRowErrors = 2;
+            var expectedInvalidRowErrors = 1;
 
             var rowObjects = new List<RowObject>
             {
@@ -416,10 +415,10 @@ namespace BrandUploadProcessor.Service.Tests
 
             var expectedName = "asldkjfals Random";
             var expectedAbbr = Constants.RemoveExcelValue;
-            var expectedErrorMsg = $"'{Constants.BrandAbbreviationColumnHeader}' cannot be {Constants.RemoveExcelValue}";
+            var expectedErrorMsg = Constants.ErrorMessages.InvalidRemoveBrandAbbreviation;
 
             var expectedValidRows = 0;
-            var expectedInvalidRowErrors = 2;
+            var expectedInvalidRowErrors = 1;
 
             var rowObjects = new List<RowObject>
             {
@@ -581,6 +580,105 @@ namespace BrandUploadProcessor.Service.Tests
             Assert.AreEqual(expectedInvalidRows, rowObjectValidatorResponse.InvalidRows.Count);
         }
 
+        [TestMethod]
+        public void Validate_UpdateExisting_MissingBrandName_1RowError()
+        {
+
+            var missingBrandName = string.Empty;
+            var expextedErrorMessage = Constants.ErrorMessages.RequiredBrandName;
+            var expectedValidRows = 0;
+            var expectedInvalidRowErrors = 1;
+
+            var rowObjects = new List<RowObject>
+            {
+                TestHelpers.CreateRowObject(1, new List<ParsedCell>
+                {
+                    TestHelpers.CreateParsedCell(Constants.BrandIdColumnHeader, "1"),
+                    TestHelpers.CreateParsedCell(Constants.BrandNameColumnHeader, missingBrandName),
+                    TestHelpers.CreateParsedCell(Constants.BrandAbbreviationColumnHeader, "AA"),
+                    TestHelpers.CreateParsedCell(Constants.ZipCodeColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.LocalityColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.DesignationColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.ParentCompanyColumnHeader, string.Empty)
+                })
+            };
+
+            var columnHeaders = TestHelpers.GetHeaders();
+            var brandAttributeModels = TestHelpers.GetBrandAttributeModels();
+
+            var rowObjectValidatorResponse = validator.Validate(Enums.FileModeTypeEnum.UpdateExisting, rowObjects,
+                columnHeaders, brandAttributeModels);
+            Assert.AreEqual(expectedValidRows, rowObjectValidatorResponse.ValidRows.Count);
+            Assert.AreEqual(expectedInvalidRowErrors, rowObjectValidatorResponse.InvalidRows.Count);
+            Assert.AreEqual(expextedErrorMessage, rowObjectValidatorResponse.InvalidRows[0].Error);
+
+        }
+
+        [TestMethod]
+        public void Validate_UpdateExisting_NonIntegerBrandId_1RowError()
+        {
+            var invalidBrandId = "a";
+            var expextedErrorMessage = Constants.ErrorMessages.InvalidBrandIdDataType;
+            var expectedValidRows = 0;
+            var expectedInvalidRowErrors = 1;
+
+            var rowObjects = new List<RowObject>
+            {
+                TestHelpers.CreateRowObject(1, new List<ParsedCell>
+                {
+                    TestHelpers.CreateParsedCell(Constants.BrandIdColumnHeader, invalidBrandId),
+                    TestHelpers.CreateParsedCell(Constants.BrandNameColumnHeader, "Test brand"),
+                    TestHelpers.CreateParsedCell(Constants.BrandAbbreviationColumnHeader, "Test abbrev"),
+                    TestHelpers.CreateParsedCell(Constants.ZipCodeColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.LocalityColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.DesignationColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.ParentCompanyColumnHeader, string.Empty)
+                })
+            };
+
+            var columnHeaders = TestHelpers.GetHeaders();
+            var brandAttributeModels = TestHelpers.GetBrandAttributeModels();
+
+            var rowObjectValidatorResponse = validator.Validate(Enums.FileModeTypeEnum.UpdateExisting, rowObjects,
+                columnHeaders, brandAttributeModels);
+            Assert.AreEqual(expectedValidRows, rowObjectValidatorResponse.ValidRows.Count);
+            Assert.AreEqual(expectedInvalidRowErrors, rowObjectValidatorResponse.InvalidRows.Count);
+            Assert.AreEqual(expextedErrorMessage, rowObjectValidatorResponse.InvalidRows[0].Error);
+        }
+
+        [TestMethod]
+        public void Validate_UpdateExisting_MissingBrandAbbreviation_1RowError()
+        {
+
+            var missingBrandAbbreviation = string.Empty;
+            var expextedErrorMessage = Constants.ErrorMessages.RequiredBrandAbbreviation;
+            var expectedValidRows = 0;  
+            var expectedInvalidRowErrors = 1;
+
+            var rowObjects = new List<RowObject>
+            {
+                TestHelpers.CreateRowObject(1, new List<ParsedCell>
+                {
+                    TestHelpers.CreateParsedCell(Constants.BrandIdColumnHeader, "1"),
+                    TestHelpers.CreateParsedCell(Constants.BrandNameColumnHeader, "Test brand"),
+                    TestHelpers.CreateParsedCell(Constants.BrandAbbreviationColumnHeader, missingBrandAbbreviation),
+                    TestHelpers.CreateParsedCell(Constants.ZipCodeColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.LocalityColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.DesignationColumnHeader, string.Empty),
+                    TestHelpers.CreateParsedCell(Constants.ParentCompanyColumnHeader, string.Empty)
+                })
+            };
+
+            var columnHeaders = TestHelpers.GetHeaders();
+            var brandAttributeModels = TestHelpers.GetBrandAttributeModels();
+
+            var rowObjectValidatorResponse = validator.Validate(Enums.FileModeTypeEnum.UpdateExisting, rowObjects,
+                columnHeaders, brandAttributeModels);
+            Assert.AreEqual(expectedValidRows, rowObjectValidatorResponse.ValidRows.Count);
+            Assert.AreEqual(expectedInvalidRowErrors, rowObjectValidatorResponse.InvalidRows.Count);
+            Assert.AreEqual(expextedErrorMessage, rowObjectValidatorResponse.InvalidRows[0].Error);
+
+        }
 
         [TestCleanup]
         public void Cleanup() { }
