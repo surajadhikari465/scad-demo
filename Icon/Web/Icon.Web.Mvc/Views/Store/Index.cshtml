@@ -245,7 +245,7 @@
 													colSetting.ColumnSetting().ColumnKey("PrimeMerchantIDEncrypted")
 														.Validation(true)
 														.EditorType(ColumnEditorType.Text)
-														.TextEditorOptions(o => o.Width(400).MaxLength(13).ValidatorOptions(vo => vo.Pattern(@"^[a-zA-Z0-9]{50}$").ErrorMessage("Expecting alpha-numeric with 50 characters length.")));
+														.TextEditorOptions(o => o.Width(400).MaxLength(50).ValidatorOptions(vo => vo.Pattern(@"^[a-zA-Z0-9]{1,50}$").ErrorMessage("Expecting alpha-numeric up to 50 characters length.")));
 													colSetting.ColumnSetting().ColumnKey("LocalZone")
 														.Validation(true)
 														.EditorType(ColumnEditorType.Text)

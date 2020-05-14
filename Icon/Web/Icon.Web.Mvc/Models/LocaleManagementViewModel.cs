@@ -144,7 +144,7 @@ namespace Icon.Web.Mvc.Models
 		public string PrimeMerchantID { get; set; }
 
 		[Display(Name = "PrimeNow Merchant ID Encrypted")]
-		[RegularExpression(@"^[a-zA-Z0-9]{50}$", ErrorMessage = "PrimeNow Merchant ID Encrypted must be alpha-numeric with 50 characters length.")]
+		[RegularExpression(@"^[a-zA-Z0-9]{1,50}$", ErrorMessage = "PrimeNow Merchant ID Encrypted must be alpha-numeric with up to 50 characters length.")]
 		public string PrimeMerchantIDEncrypted { get; set; }
 
 		[Display(Name = "Local Zone")]

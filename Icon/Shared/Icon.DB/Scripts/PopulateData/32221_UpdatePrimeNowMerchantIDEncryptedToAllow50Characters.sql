@@ -11,7 +11,7 @@ BEGIN
 	PRINT '[' + convert(NVARCHAR, getdate(), 121) + '] ' + @scriptKey;
 
 	UPDATE dbo.Trait
-	SET traitPattern = '^[a-zA-Z0-9]{50}$'
+	SET traitPattern = '^[a-zA-Z0-9]{1,50}$'
 	WHERE traitCode = 'MIE'
 
 	INSERT INTO app.PostDeploymentScriptHistory (
