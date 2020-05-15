@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Icon.Esb.Schemas.Wfm</id>
+    <version>1.0.0</version>
+    <title>Icon.Esb.Schemas.Wfm</title>
+    <authors>Whole Foods Market IP. L.P.</authors>
+    <owners>Whole Foods Market IP. L.P.</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.NET wrapper for WFM ESB schema (XSD) definitions</description>
+    <releaseNotes>Initial release</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Icon ESB</tags>
+    <references>
+      <reference file="Icon.Esb.Schemas.Wfm.dll" />
+    </references>
+  </metadata>
+  <files>
+    <file src="bin\Release\Icon.Esb.Schemas.Wfm.dll" target="lib\net45"/>
+  </files>
+</package>

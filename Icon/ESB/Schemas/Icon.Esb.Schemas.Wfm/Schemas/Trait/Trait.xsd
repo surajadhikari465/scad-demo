@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2019 rel. 3 sp1 (x64) (http://www.altova.com) by Rohan Nayak (Whole Foods) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:trt="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitType/V2" xmlns:tcf="http://schemas.wfm.com/Enterprise/TraitMgmt/CommonRefTypes/V1" xmlns:tgr="http://schemas.wfm.com/Enterprise/TraitMgmt/TraitGroup/V2" targetNamespace="http://schemas.wfm.com/Enterprise/TraitMgmt/Trait/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
 	<!-- ================== -->
 	<!-- Schema Imports             -->
@@ -15,18 +14,10 @@
 	<xs:complexType name="TraitType">
 		<xs:sequence>
 			<xs:element name="code" type="tcf:TraitCodeType"/>
-			<xs:element name="definition" type="tcf:TraitDefinitionType" minOccurs="0"/>
 			<xs:element name="pattern" type="tcf:TraitPtrnType" minOccurs="0"/>
 			<xs:element name="group" type="tgr:TraitGroupType" minOccurs="0"/>
 			<xs:element name="type" type="trt:TraitTypeType"/>
 		</xs:sequence>
 		<xs:attribute ref="crf:Action"/>
-		<xs:attribute name="id" type="crf:WfmStrType" use="optional"/>
-		<xs:attribute name="dataType" type="crf:WfmStrType" use="optional"/>
-		<xs:attribute name="maxLength" type="crf:WfmIntType" use="optional"/>
-		<xs:attribute name="minValue" type="crf:WfmStrType" use="optional"/>
-		<xs:attribute name="maxValue" type="crf:WfmStrType" use="optional"/>
-		<xs:attribute name="decimalPrecision" type="crf:WfmStrType" use="optional"/>
-		<xs:attribute name="decimalScale" type="crf:WfmStrType" use="optional"/>
 	</xs:complexType>
 </xs:schema>

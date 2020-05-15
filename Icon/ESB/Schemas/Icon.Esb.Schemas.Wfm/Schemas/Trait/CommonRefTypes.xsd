@@ -16,14 +16,6 @@
 		</xs:restriction>
 		<!--restrict to 5-->
 	</xs:simpleType>
-	
-		<xs:simpleType name="TraitDefinitionType">
-			<xs:annotation>
-				<xs:documentation>This represents Attribute Description field in ICON</xs:documentation>
-			</xs:annotation>
-			<xs:restriction base="crf:WfmStrType"/>
-		</xs:simpleType>
-	
 	<xs:simpleType name="TraitPtrnType">
 		<xs:restriction base="crf:WfmStrType"/>
 	</xs:simpleType>

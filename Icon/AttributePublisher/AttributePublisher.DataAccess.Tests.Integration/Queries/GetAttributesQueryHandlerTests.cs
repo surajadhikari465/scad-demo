@@ -36,7 +36,7 @@ namespace AttributePublisher.DataAccess.Tests.Integration.Queries
         public void GetAttributes_MessageQueueAttributeExists_ReturnsAttribute()
         {
             //Given
-            InsertTestData(true);
+            InsertTestData();
 
             //When
             var results = queryHandler.Search(parameters);
@@ -44,47 +44,14 @@ namespace AttributePublisher.DataAccess.Tests.Integration.Queries
             //Then
             Assert.AreEqual(1, results.Count);
             Assert.AreEqual(attributeId, results[0].AttributeId);
-            Assert.AreEqual("TestDescription", results[0].Description);
-            Assert.AreEqual("TST", results[0].TraitCode);
-            Assert.AreEqual(10, results[0].MaxLengthAllowed);
-            Assert.AreEqual("1", results[0].MinimumNumber);
-            Assert.AreEqual("5", results[0].MaximumNumber);
-            Assert.AreEqual("Test Attribute Description", results[0].XmlTraitDescription);
-            Assert.AreEqual("TestPattern", results[0].CharacterSetRegexPattern);
             Assert.AreEqual("TestGroup", results[0].AttributeGroupName);
+            Assert.AreEqual("TestAttributeName", results[0].AttributeName);
             Assert.AreEqual("TestDataType", results[0].DataType);
-            Assert.AreEqual(true, results[0].IsPickList);
-            Assert.AreEqual(2, results[0].PickListValues.Count);
-            Assert.AreEqual("TestPickList1", results[0].PickListValues[0]);
-            Assert.AreEqual("TestPickList2", results[0].PickListValues[1]);
+            Assert.AreEqual("TST", results[0].TraitCode);
+            Assert.AreEqual("Test Attribute Description", results[0].XmlTraitDescription);
         }
 
-        [TestMethod]
-        public void GetAttributes_MessageQueueAttributeExistsButIsNotPickList_ReturnsAttributeWithoutPickListValues()
-        {
-            //Given
-            InsertTestData(false);
-
-            //When
-            var results = queryHandler.Search(parameters);
-
-            //Then
-            Assert.AreEqual(1, results.Count);
-            Assert.AreEqual(attributeId, results[0].AttributeId);
-            Assert.AreEqual("TestDescription", results[0].Description);
-            Assert.AreEqual("TST", results[0].TraitCode);
-            Assert.AreEqual(10, results[0].MaxLengthAllowed);
-            Assert.AreEqual("1", results[0].MinimumNumber);
-            Assert.AreEqual("5", results[0].MaximumNumber);
-            Assert.AreEqual("Test Attribute Description", results[0].XmlTraitDescription);
-            Assert.AreEqual("TestPattern", results[0].CharacterSetRegexPattern);
-            Assert.AreEqual("TestGroup", results[0].AttributeGroupName);
-            Assert.AreEqual("TestDataType", results[0].DataType);
-            Assert.AreEqual(false, results[0].IsPickList);
-            Assert.IsNull(results[0].PickListValues);
-        }
-
-        private void InsertTestData(bool isPickList)
+        private void InsertTestData()
         {
             attributeId = sqlConnection.QueryFirst<int>(@"
                 DECLARE @groupId INT
@@ -103,40 +70,24 @@ namespace AttributePublisher.DataAccess.Tests.Integration.Queries
 
                 INSERT dbo.Attributes (
 	                AttributeName,
-                    Description,
 	                TraitCode,
-                    MaxLengthAllowed,
-                    MinimumNumber,
-                    MaximumNumber,
-                    IsPickList,
 	                XmlTraitDescription,
-                    isSpecialTransform,
 	                DataTypeId,
 	                AttributeGroupId
 	                )
                 VALUES (
 	                'TestAttributeName',
-                    'TestDescription',
 	                'TST',
-                    10,
-                    1,
-                    5,
-                    @isPickList,
 	                'Test Attribute Description',
-                    0,
                     @dataTypeId,
-	                @groupId
-                    )
-                
-                SET @attributeId = SCOPE_IDENTITY()
-                INSERT INTO dbo.AttributesWebConfiguration(Attributeid,GridColumnWidth,CharacterSetRegexPattern)values(@attributeId,200,'TestPattern')
-                INSERT INTO esb.MessageQueueAttribute(AttributeId) VALUES (@attributeId)
+	                @groupId	                
+	                )
 
-                INSERT INTO dbo.PickListData(AttributeId, PickListValue)
-                VALUES (@attributeId, 'TestPickList1'), (@attributeId, 'TestPickList2')
+                SET @attributeId = SCOPE_IDENTITY()
                 
-                SELECT @attributeId",
-                new { isPickList });
+                INSERT INTO esb.MessageQueueAttribute(AttributeId) VALUES (@attributeId)
+                
+                SELECT @attributeId");
         }
     }
 }

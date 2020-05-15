@@ -21,39 +21,19 @@ namespace AttributePublisher.DataAccess.Queries
             string sql = @"
                     DELETE TOP(@RecordsPerQuery) q
                         OUTPUT deleted.AttributeId,
-                            a.Description,
+                            a.AttributeName,
                             a.TraitCode,
-                            a.MaxLengthAllowed,
-                            a.MinimumNumber,
-                            a.MaximumNumber,
-                            a.NumberOfDecimals,                            
                             a.XmlTraitDescription,
-                            awc.CharacterSetRegexPattern,
-                            ag.AttributeGroupId,
-                            ag.AttributeGroupName,
                             dt.DataType,
-                            a.IsPickList
+                            ag.AttributeGroupName
                     FROM esb.MessageQueueAttribute q
                     JOIN dbo.Attributes a ON q.AttributeId = a.AttributeId
                     JOIN dbo.AttributeGroup ag on a.AttributeGroupId = ag.AttributeGroupId
-                    JOIN dbo.DataType dt on a.DataTypeId = dt.DataTypeId
-                    JOIN dbo.AttributesWebConfiguration awc on awc.AttributeId = a.AttributeId";
+                    JOIN dbo.DataType dt on a.DataTypeId = dt.DataTypeId";
 
             var attributeModels = dbConnection
                 .Query<AttributeModel>(sql, parameters)
                 .ToList();
-
-            foreach (var attributeModel in attributeModels)
-            {
-                if(attributeModel.IsPickList)
-                {
-                    attributeModel.PickListValues = dbConnection.Query<string>(
-                        @"SELECT PickListValue 
-                        FROM PickListData 
-                        WHERE AttributeId = @AttributeId", 
-                        attributeModel).ToList();
-                }
-            }
 
             return attributeModels;
         }
