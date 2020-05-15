@@ -237,7 +237,7 @@ namespace Icon.Web.Mvc.Exporters
                 }
                 else
                 {
-                    var attributeModel = attributesModel.Where(a => a.AttributeName == itemColumnOrderModel.ReferenceName).FirstOrDefault();
+                    var attributeModel = attributesModel.Where(a => a.AttributeName == itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters).FirstOrDefault();
 
                     AddSpreadsheetColumn(
                         attributeModel.AttributeName,
