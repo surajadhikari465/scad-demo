@@ -49,7 +49,7 @@ namespace Icon.Web.Mvc.Validators
 
                 RuleFor(vm => vm.IsActive)
                     .Must((vm, n) => !DoesAttributeExistOnItems(vm))
-                    .WithMessage(ValidationMessages.ValidateItemCountOnAttribute);                
+                    .WithMessage(ValidationMessages.ValidateItemCountOnAttribute);
             });
 
             RuleFor(vm => vm.TraitCode)
@@ -238,9 +238,14 @@ namespace Icon.Web.Mvc.Validators
                                         .WithMessage(ValidationMessages.ValidatePickListValue);
                                 });
                         });
+
+                    RuleFor(vm => vm.PickListData)
+               .Must((vm, n) => !IsDeletedPickListValueSameAsDefaltValue(vm))
+               .WithMessage(ValidationMessages.PickListValueAssignedSameAsDefaultValue)
+               .When(vm => vm.Action == ActionEnum.Update);
                 });
-            });
-        }       
+            });            
+        }
 
         private bool IsUniqueTraitCode(AttributeViewModel attributeViewModel)
         {
@@ -487,6 +492,25 @@ namespace Icon.Web.Mvc.Validators
             {
                 return false;
             }
-        }        
+        }
+
+        private bool IsDeletedPickListValueSameAsDefaltValue(AttributeViewModel viewModel)
+        {
+            if (viewModel.IsPickList && viewModel.PickListData.Any(x => x.IsPickListSelectedForDelete))
+            {
+                if (viewModel.PickListData.Where(a=>a.IsPickListSelectedForDelete).Any(x => x.PickListValue == viewModel.DefaultValue))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

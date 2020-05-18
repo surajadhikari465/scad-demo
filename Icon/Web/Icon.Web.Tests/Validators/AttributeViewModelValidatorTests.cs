@@ -502,6 +502,7 @@ namespace Icon.Web.Tests.Unit.Validators
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual("Maximum Number must be between -9999999999.9999 and 9999999999.9999.", result.Errors.Single().ErrorMessage);
         }
+       
 
         [TestMethod]
         public void Validate_NumberOfDecimalsIsNull_InvalidResult()
@@ -2157,6 +2158,115 @@ namespace Icon.Web.Tests.Unit.Validators
 
             //Then
             Assert.IsFalse(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_PickListValuesAreAssignedSameAsDefaultValue_InValidResult()
+        {
+            //Given
+            viewModel.AttributeId = 123;
+            viewModel.DataTypeId = (int)DataType.Text;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = "df";
+            viewModel.MaxLengthAllowed = 5;
+            viewModel.Action = ActionEnum.Update;
+            viewModel.AvailableCharacterSets = new List<CharacterSetModel>
+            {
+                new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" }
+            };
+            viewModel.IsPickList = true;
+            viewModel.PickListData = new List<PickListModel>
+            {
+                new PickListModel { PickListValue = "pld", IsPickListSelectedForDelete = true },
+                new PickListModel { PickListValue = "pldt", IsPickListSelectedForDelete = false },
+                new PickListModel { PickListValue = "df", IsPickListSelectedForDelete = true },
+            };
+            attributeModel.MaxLengthAllowed = viewModel.MaxLengthAllowed;
+            mockAttributesHelper.Setup(m => m.CreateCharacterSetRegexPattern(It.IsAny<int>(), It.IsAny<List<CharacterSetModel>>(), It.IsAny<string>()))
+                .Returns(".*");
+            mockGetAttributeByAttributeIdQuery.Setup(m => m.Search(It.IsAny<GetAttributeByAttributeIdParameters>()))
+               .Returns(attributeModel);
+            mockGetItemsQueryHandler.Setup(m => m.Search(It.IsAny<GetItemsParameters>()))
+               .Returns(new GetItemsResult { TotalRecordsCount = 0 });
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsFalse(result.IsValid);
+            Assert.IsTrue(result.Errors.Any(e => e.ErrorMessage == "Pick list value assigned same as default value. Cannot delete."));
+        }
+
+        [TestMethod]
+        public void Validate_PickListValuesAreNotAssignedSameAsDefaultValue_IsValidResult()
+        {
+            //Given
+            viewModel.AttributeId = 123;
+            viewModel.DataTypeId = (int)DataType.Text;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = "df";
+            viewModel.MaxLengthAllowed = 5;
+            viewModel.Action = ActionEnum.Update;
+            viewModel.AvailableCharacterSets = new List<CharacterSetModel>
+            {
+                new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" }
+            };
+            viewModel.IsPickList = true;
+            viewModel.PickListData = new List<PickListModel>
+            {
+                new PickListModel { PickListValue = "pld", IsPickListSelectedForDelete = true },
+                new PickListModel { PickListValue = "pldt", IsPickListSelectedForDelete = true },
+                new PickListModel { PickListValue = "df", IsPickListSelectedForDelete = false },
+            };
+            attributeModel.MaxLengthAllowed = viewModel.MaxLengthAllowed;
+            mockAttributesHelper.Setup(m => m.CreateCharacterSetRegexPattern(It.IsAny<int>(), It.IsAny<List<CharacterSetModel>>(), It.IsAny<string>()))
+                .Returns(".*");
+            mockGetAttributeByAttributeIdQuery.Setup(m => m.Search(It.IsAny<GetAttributeByAttributeIdParameters>()))
+               .Returns(attributeModel);
+            mockGetItemsQueryHandler.Setup(m => m.Search(It.IsAny<GetItemsParameters>()))
+               .Returns(new GetItemsResult { TotalRecordsCount = 0 });
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsTrue(result.IsValid);
+        }
+
+        [TestMethod]
+        public void Validate_PickListValuesAreAddedInAttributeEdit_IsValidResult()
+        {
+            //Given
+            viewModel.AttributeId = 123;
+            viewModel.DataTypeId = (int)DataType.Text;
+            viewModel.DisplayName = "Test";
+            viewModel.TraitCode = "Tst";
+            viewModel.DefaultValue = "df";
+            viewModel.MaxLengthAllowed = 5;
+            viewModel.Action = ActionEnum.Update;
+            viewModel.AvailableCharacterSets = new List<CharacterSetModel>
+            {
+                new CharacterSetModel{ IsSelected = true, RegEx = "[a-z]*" }
+            };
+            viewModel.IsPickList = true;
+            viewModel.PickListData = new List<PickListModel>
+            {                
+                new PickListModel { PickListValue = "pldt", IsPickListSelectedForDelete = false, PickListId =1 },
+                new PickListModel { PickListValue = "df", IsPickListSelectedForDelete = false, PickListId =2 },
+                new PickListModel { PickListValue = "add"},
+            };
+            attributeModel.MaxLengthAllowed = viewModel.MaxLengthAllowed;
+            mockAttributesHelper.Setup(m => m.CreateCharacterSetRegexPattern(It.IsAny<int>(), It.IsAny<List<CharacterSetModel>>(), It.IsAny<string>()))
+                .Returns(".*");
+            mockGetAttributeByAttributeIdQuery.Setup(m => m.Search(It.IsAny<GetAttributeByAttributeIdParameters>()))
+               .Returns(attributeModel);
+            mockGetItemsQueryHandler.Setup(m => m.Search(It.IsAny<GetItemsParameters>()))
+               .Returns(new GetItemsResult { TotalRecordsCount = 0 });
+            //When
+            var result = validator.Validate(viewModel);
+
+            //Then
+            Assert.IsTrue(result.IsValid);
         }
     }
 }

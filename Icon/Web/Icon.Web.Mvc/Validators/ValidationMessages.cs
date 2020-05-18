@@ -31,5 +31,6 @@ namespace Icon.Web.Mvc.Validators
         public const string InvalidDefaultValueForDateAttribute = "Default date value format must be in the form yyyy-MM-dd and be between 2000-01-01 and 2100-12-31.";
         public const string ValidateItemCountOnAttribute = "Attribute is associated with one or more items. Cannot hide.";
         public const string ValidateIsRequiredAttribute = "Attribute is required. Cannot hide.";
+        public const string PickListValueAssignedSameAsDefaultValue = "Pick list value assigned same as default value. Cannot delete.";
     }
 }
