@@ -80,25 +80,36 @@ SELECT [RecipeId]
 FROM [nutrition].[ItemNutrition]
 GO
 
--- set system versioning off
+DECLARE @key VARCHAR(128) = 'QueueItemsWithDeletedNutrition';
+
 IF (
-		SELECT temporal_type
-		FROM sys.tables
-		WHERE name = 'ItemNutrition'
-			AND SCHEMA_NAME(schema_id) = 'nutrition'
-		) <> 0
+		NOT EXISTS (
+			SELECT 1
+			FROM app.PostDeploymentScriptHistory
+			WHERE ScriptKey = @key
+			)
+		)
 BEGIN
-	PRINT 'Disabling [nutrition] history'
+	-- set system versioning off
+	IF (
+			SELECT temporal_type
+			FROM sys.tables
+			WHERE name = 'ItemNutrition'
+				AND SCHEMA_NAME(schema_id) = 'nutrition'
+			) <> 0
+	BEGIN
+		PRINT 'Disabling [nutrition] history'
+
+		ALTER TABLE [nutrition].[ItemNutrition]
+
+		SET (SYSTEM_VERSIONING = OFF)
+	END
 
 	ALTER TABLE [nutrition].[ItemNutrition]
 
-	SET (SYSTEM_VERSIONING = OFF)
+	DROP PERIOD
+	FOR SYSTEM_TIME;
 END
-
-ALTER TABLE [nutrition].[ItemNutrition]
-
-DROP PERIOD
-FOR SYSTEM_TIME;
 GO
 
 IF EXISTS (
