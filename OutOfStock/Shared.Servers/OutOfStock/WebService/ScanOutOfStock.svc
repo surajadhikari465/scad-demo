@@ -1,6 +1,0 @@
-﻿<%@ ServiceHost Language="C#" 
-    Debug="true" 
-    Service="OutOfStock.WebService.ScanOutOfStock" 
-    Factory=""
-    CodeBehind="ScanOutOfStock.svc.cs" 
-    %>

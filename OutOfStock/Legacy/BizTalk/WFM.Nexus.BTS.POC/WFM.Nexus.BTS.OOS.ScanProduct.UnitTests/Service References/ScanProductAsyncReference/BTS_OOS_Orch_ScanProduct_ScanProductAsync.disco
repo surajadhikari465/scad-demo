@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
-  <contractRef ref="http://pc1140549298595.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc?wsdl" docRef="http://pc1140549298595.wfm.pvt/BTS.OOS/BTS_OOS_Orch_ScanProduct_ScanProductAsync.svc" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
-</discovery>

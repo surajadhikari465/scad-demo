@@ -1,9 +1,0 @@
-﻿CREATE LOGIN [WFM\Nexus.Dev]
-    FROM WINDOWS WITH DEFAULT_LANGUAGE = [us_english];
-
-
-
-
-GO
-
-

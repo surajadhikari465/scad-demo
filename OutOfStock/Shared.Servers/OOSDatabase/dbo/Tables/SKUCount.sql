@@ -1,8 +1,0 @@
-﻿CREATE TABLE [dbo].[SKUCount] (
-    [idSKUCount]   INT IDENTITY (1, 1) NOT NULL,
-    [STORE_PS_BU]  INT NOT NULL,
-    [TEAM_ID]      INT NOT NULL,
-    [numberOfSKUs] INT NULL,
-    CONSTRAINT [PK_SKUCount] PRIMARY KEY CLUSTERED ([idSKUCount] ASC)
-);
-
