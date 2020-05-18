@@ -97,12 +97,18 @@ namespace Icon.Web.Mvc.Exporters
                     }
                     else if (item.DataTypeName.Equals(Constants.DataTypeNames.Boolean, StringComparison.OrdinalIgnoreCase))
                     {
+                        int colIndex = GetColumnByName(itemsWorksheet, item.DisplayName);
+                        SetColumnFormatForBooleanAttributes(colIndex);
                         base.CreateListRuleExcelValidationRule(item.DisplayName, item.AttributeName, item.IsRequired ? BooleanValidationRequiredCount : BooleanValidationNonRequiredCount);
                     }
                 }
             }
         }
-
+        private void SetColumnFormatForBooleanAttributes(int colIndex)
+        {
+            //set cell format for attributes with boolean data type
+            itemsWorksheet.Columns[colIndex].CellFormat.FormatString = "@";
+        }
         public override void AddSpreadsheetColumns()
         {
 

@@ -136,7 +136,7 @@ namespace Icon.Web.Mvc.Exporters
                     IsHeaderFontBold = ExcelDefaultableBoolean.True,
                     Width = width,
                     Alignment = alignment,
-                    SetValue = setValue
+                    SetValue = setValue                    
                 });
                 currentIndex++;
             }
@@ -206,9 +206,9 @@ namespace Icon.Web.Mvc.Exporters
                 var cellRegion = new WorksheetRegion(itemsWorksheet, 1, colIndex, MaxRowCount, colIndex);
                 var cellCollection = new WorksheetReferenceCollection(cellRegion);
 
-                itemsWorksheet.DataValidationRules.Add(listRule, cellCollection);
+                itemsWorksheet.DataValidationRules.Add(listRule, cellCollection);                
             }
-        }
+        }       
 
         protected void CreateReadOnlyExcelValidationRule(string excelColName)
         {
@@ -304,7 +304,7 @@ namespace Icon.Web.Mvc.Exporters
                 itemsWorksheet.Rows[0].Cells[column.Index].CellFormat.Font.ColorInfo = column.HeaderForeground;
                 itemsWorksheet.Rows[0].Cells[column.Index].CellFormat.Font.Bold = column.IsHeaderFontBold;
                 itemsWorksheet.Columns[column.Index].Width = column.Width;
-                itemsWorksheet.Columns[column.Index].CellFormat.Alignment = HorizontalCellAlignment.Left;
+                itemsWorksheet.Columns[column.Index].CellFormat.Alignment = HorizontalCellAlignment.Left;                
             }
 
             itemsWorksheet.DisplayOptions.PanesAreFrozen = true;
@@ -357,9 +357,6 @@ namespace Icon.Web.Mvc.Exporters
             manufacturerHierarchyClassDictionary = manufacturerHierarchyModel
                 .Select(man => new { Key = man.HierarchyClassId.ToString(), Value = man.HierarchyLineage })
                 .ToDictionary(nc => nc.Key, nc => nc.Value + " | " + nc.Key);
-
-
-
 
             List<BarcodeTypeModel> listBarCodeModel = getBarcodeTypeQueryHandler.Search(new GetBarcodeTypeParameters());
             barCodeTypeDictionary = listBarCodeModel
@@ -414,7 +411,7 @@ namespace Icon.Web.Mvc.Exporters
             if (!model.IsRequired) attributesWorksheet.Rows[i++].Cells[0].Value = RemovePickListValue; //Available for non-required attributes only
 
             attributesWorksheet.Rows[i++].Cells[0].Value = JsonTrue;
-            attributesWorksheet.Rows[i++].Cells[0].Value = JsonFalse;
+            attributesWorksheet.Rows[i++].Cells[0].Value = JsonFalse;            
         }
     }
 }
