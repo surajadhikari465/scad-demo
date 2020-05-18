@@ -41,6 +41,7 @@ namespace Icon.Web.DataAccess.Queries
                                   ,[NumberOfDecimals]
                                   ,[IsPickList]
                                   ,[IsActive]
+                                  ,[LastModifiedBy]
                                  FROM [dbo].[Attributes]
                                  WHERE AttributeId = @AttributeId",
                                 new { AttributeId = parameters.AttributeId }).FirstOrDefault();

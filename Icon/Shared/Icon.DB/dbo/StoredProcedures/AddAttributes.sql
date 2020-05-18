@@ -12,6 +12,7 @@
 	@IsRequired bit ,
 	@CharacterSetRegexPattern NVARCHAR(255) = NULL,
 	@DefaultValue NVARCHAR(255) = NULL,
+	@LastModifiedBy NVARCHAR(100) = NULL,
 	@AttributeId INT OUTPUT
 AS
 BEGIN
@@ -61,7 +62,8 @@ BEGIN
 			[DisplayOrder],
 			[IsRequired],
 			[XmlTraitDescription],
-			[DefaultValue]
+			[DefaultValue],
+			[LastModifiedBy]
 			)
 		VALUES (
 			@DisplayName,
@@ -79,7 +81,8 @@ BEGIN
 			@displayOrder,
 			@IsRequired,
 			@DisplayName,
-			@DefaultValue
+			@DefaultValue,
+			@LastModifiedBy
 			)
 
 		SET @scopeIdentity = SCOPE_IDENTITY()

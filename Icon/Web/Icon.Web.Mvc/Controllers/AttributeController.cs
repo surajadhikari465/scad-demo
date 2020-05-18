@@ -148,6 +148,7 @@ namespace Icon.Web.Mvc.Controllers
                     NumberOfDecimals = viewModel.NumberOfDecimals,
                     DefaultValue = viewModel.DefaultValue,
                     IsActive = viewModel.IsActive,
+                    LastModifiedBy = User.Identity.Name,
                     SpecialCharactersAllowed = viewModel.IsSpecialCharactersSelected ? (viewModel.SpecialCharacterSetSelected == Constants.SpecialCharactersAll) ? Constants.SpecialCharactersAll : viewModel.SpecialCharactersAllowed : null,
                     CharacterSetRegexPattern = attributesHelper.CreateCharacterSetRegexPattern(
                         viewModel.DataTypeId,
@@ -155,7 +156,8 @@ namespace Icon.Web.Mvc.Controllers
                         viewModel.IsSpecialCharactersSelected ? (viewModel.SpecialCharacterSetSelected == Constants.SpecialCharactersAll) ? Constants.SpecialCharactersAll : viewModel.SpecialCharactersAllowed : null)
                 },
                 CharacterSetModelList = (viewModel.DataTypeId == (int)DataType.Text) ? viewModel.AvailableCharacterSets.Where(p => p.IsSelected == true).ToList() : null,
-                PickListModel = viewModel.PickListData
+                PickListModel = viewModel.PickListData,
+                
             };
 
             try
@@ -200,6 +202,7 @@ namespace Icon.Web.Mvc.Controllers
                 IsPickList = attribute.IsPickList,
                 DefaultValue = attribute.DefaultValue,
                 IsActive = attribute.IsActive,
+                LastModifiedBy = attribute.LastModifiedBy,
                 UserWriteAccess = GetWriteAccess(),
                 Action = ActionEnum.Update,
             };
@@ -217,7 +220,7 @@ namespace Icon.Web.Mvc.Controllers
                     viewModel.SpecialCharacterSetSelected = "Specific";
                 }
             }
-            viewModel.AvailableCharacterSets = new List<CharacterSetModel>();
+             viewModel.AvailableCharacterSets = new List<CharacterSetModel>();
 
             if (viewModel.DataTypeId == (int)DataType.Boolean)
             {
@@ -269,6 +272,7 @@ namespace Icon.Web.Mvc.Controllers
                     MaximumNumber = viewModel.MaximumNumber,
                     NumberOfDecimals = viewModel.NumberOfDecimals,
                     DefaultValue = viewModel.DefaultValue,
+                    LastModifiedBy = User.Identity.Name,
                     SpecialCharactersAllowed = viewModel.IsSpecialCharactersSelected ? (viewModel.SpecialCharacterSetSelected == Constants.SpecialCharactersAll) ? Constants.SpecialCharactersAll : viewModel.SpecialCharactersAllowed : null,
                     CharacterSetRegexPattern = attributesHelper.CreateCharacterSetRegexPattern(
                         viewModel.DataTypeId,

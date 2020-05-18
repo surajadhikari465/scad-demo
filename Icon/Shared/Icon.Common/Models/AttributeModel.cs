@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Icon.Common.Models
 {
@@ -36,5 +37,7 @@ namespace Icon.Common.Models
         public IEnumerable<AttributeItemCountModel> AttributeItemCounts { get; set; }
         public bool IsItemCountOnAttributes { get; set; }
         public bool IsActive { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
+        public string LastModifiedBy { get; set; }
     }
 }

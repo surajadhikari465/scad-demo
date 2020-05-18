@@ -67,6 +67,9 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = AttributesHelper.AttributesColumnNames.IsActive)]
         public bool IsActive { get; set; }
         
+        public string LastModifiedDate { get; set; }
+        public string LastModifiedBy { get; set; }
+
         public AttributeViewModel()
         {
         }
@@ -125,6 +128,8 @@ namespace Icon.Web.Mvc.Models
             this.XmlTraitDescription = model.XmlTraitDescription;            
             this.ItemCount = model.ItemCount;
             this.IsActive = model.IsActive;
+            this.LastModifiedDate = model.LastModifiedDate.ToString();
+            this.LastModifiedBy = model.LastModifiedBy;
         }
     }
 }

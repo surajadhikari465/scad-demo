@@ -30,7 +30,8 @@ namespace Icon.Web.DataAccess.Commands
                     isRequired = data.AttributeModel.IsRequired,
                     characterSetRegexPattern = data.AttributeModel.CharacterSetRegexPattern,
                     defaultValue = data.AttributeModel.DefaultValue,
-                    isActive = data.AttributeModel.IsActive
+                    isActive = data.AttributeModel.IsActive,
+                    lastModifiedBy = data.AttributeModel.LastModifiedBy,
                 },
                 transaction: this.db.Transaction,
                 commandType: System.Data.CommandType.StoredProcedure);

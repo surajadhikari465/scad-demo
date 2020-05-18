@@ -33,7 +33,8 @@ namespace Icon.Web.DataAccess.Commands
                                                specialCharactersAllowed = data.AttributeModel.SpecialCharactersAllowed,
                                                isRequired = data.AttributeModel.IsRequired,
                                                characterSetRegexPattern = data.AttributeModel.CharacterSetRegexPattern,
-                                               defaultValue = data.AttributeModel.DefaultValue
+                                               defaultValue = data.AttributeModel.DefaultValue,
+                                               lastModifiedBy = data.AttributeModel.LastModifiedBy,
                                            },
                                            transaction: this.db.Transaction,
                                            commandType: System.Data.CommandType.StoredProcedure)).First();

@@ -28,6 +28,7 @@
 	SysEndTimeUtc datetime2 GENERATED ALWAYS AS ROW END HIDDEN,
 	PERIOD FOR SYSTEM_TIME (SysStartTimeUtc, SysEndTimeUtc),
 	IsActive BIT NOT NULL CONSTRAINT DF_Attribute_IsActive DEFAULT (1), 
+	LastModifiedBy NVARCHAR(100) NULL,
     CONSTRAINT [FK_Attributes_DataType_DataTypeId] FOREIGN KEY ([DataTypeId]) REFERENCES [dbo].[DataType] ([DataTypeId]),
 	CONSTRAINT [PK_Attributes] PRIMARY KEY CLUSTERED ([AttributeId] ASC),
 	CONSTRAINT [FK_Attributes_AttributeType_AttributeGroupId] FOREIGN KEY ([AttributeGroupId]) REFERENCES [dbo].AttributeGroup (AttributeGroupId)

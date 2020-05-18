@@ -34,6 +34,9 @@ namespace Icon.Web.Mvc.Exporters
         private const int ItemCountIndex = 23;
         private const int IsActiveIndex = 24;
 
+        private const int LastModifiedByIndex = 25;
+        private const int LastModifiedDateIndex = 26;
+
         AttributeViewModel attributeModel = new AttributeViewModel();
 
         public AttributeExporter()
@@ -191,6 +194,20 @@ namespace Icon.Web.Mvc.Exporters
               2000,
               HorizontalCellAlignment.Left,
               (row, attribute) => row.Cells[IsActiveIndex].Value = attribute.IsActive);
+
+            AddSpreadsheetColumn(LastModifiedByIndex,
+                AttributesHelper.AttributesColumnNames.LastModifiedBy,
+                2000,
+                HorizontalCellAlignment.Left,
+                (row, attribute) => row.Cells[LastModifiedByIndex].Value = attribute.LastModifiedBy);
+
+            AddSpreadsheetColumn(LastModifiedDateIndex,
+                AttributesHelper.AttributesColumnNames.LastModifiedDate,
+                2000,
+                HorizontalCellAlignment.Left,
+                (row, attribute) => row.Cells[LastModifiedDateIndex].Value = attribute.LastModifiedDate);
+
+
         }
 
 
@@ -222,7 +239,9 @@ namespace Icon.Web.Mvc.Exporters
                 PickListData = a.PickListData,
                 AvailableCharacterSets = a.AvailableCharacterSets,
                 ItemCount = a.ItemCount,
-                IsActive = a.IsActive
+                IsActive = a.IsActive,
+                LastModifiedBy = a.LastModifiedBy,
+                LastModifiedDate = a.LastModifiedDate
             })
                 .ToList();
 

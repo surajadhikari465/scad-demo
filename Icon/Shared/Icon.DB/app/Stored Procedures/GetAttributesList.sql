@@ -40,6 +40,8 @@ BEGIN
 		,a.IsReadOnly
 		,a.XmlTraitDescription
 		,a.IsActive
+		,a.LastModifiedDate
+		,a.LastModifiedBy
 	FROM dbo.AttributesView a
 	WHERE a.AttributeGroupId <> @nutritionGroupId;
 

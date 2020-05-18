@@ -115,6 +115,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             this.mockControllerContext.Setup(c => c.HttpContext.User.IsInRole(It.Is<string>(s => s == userName))).Returns(true);
             // default settings for all tests
             this.settings.WriteAccessGroups = "";
+            this.mockControllerContext.SetupGet(c => c.HttpContext.User.Identity.Name).Returns("Test User");
 
             // setup for get attributes list
             mockGetAttributesQuery.Setup(bq => bq.Search(It.IsAny<EmptyQueryParameters<IEnumerable<AttributeModel>>>())).Returns(new List<AttributeModel>());
@@ -585,6 +586,57 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             Assert.AreEqual(result.ViewName, string.Empty);
             Assert.AreEqual(expectedSuccessMessage, viewData["SuccessMessage"]);
-        }       
+        }
+
+
+        [TestMethod]
+        public void AttributeControllerEditPost_AttributeModifiedByIsEdited_ModifiedByRetrieved_Success()
+        {
+            // Given.
+            var viewModel = new AttributeViewModel
+            {
+                AttributeId = 1234,
+                DisplayName = "test",
+                DataTypeId = int.MaxValue,
+                TraitCode = "Test",
+                IsPickList = false,
+                AvailableCharacterSets = new List<CharacterSetModel>(),
+                IsSpecialCharactersSelected = true,
+                SpecialCharacterSetSelected = "Specific",
+                SpecialCharactersAllowed = "#@!$",
+                ItemCount = 0,
+                IsActive = true,
+                LastModifiedBy = this.userName
+            };
+
+            mockGetAttributeByAttributeIdQuery.Setup(x => x.Search(It.IsAny<GetAttributeByAttributeIdParameters>())).Returns(
+                new AttributeModel()
+                {
+                    AttributeId = 1234,
+                    DisplayName = "test",
+                    DataTypeId = int.MaxValue,
+                    TraitCode = "Test",
+                    IsPickList = false,
+                    SpecialCharactersAllowed = "#@!$",
+                    IsActive = true,
+                    LastModifiedBy = "UserNameTest"
+                });
+
+            mockGetDataTypeQueryHandler.Setup(m => m.Search(It.IsAny<GetDataTypeParameters>())).Returns(new List<DataTypeModel>()
+                {
+                    new DataTypeModel{ DataTypeId = 1, DataType = "Text"}
+                });
+            // When.
+            var result = controller.Edit(viewModel) as ViewResult;
+
+            // Then.
+            var viewData = result.ViewData;
+            var resultModel = result.Model as AttributeViewModel;             
+
+            Assert.AreEqual(result.ViewName, string.Empty);
+            Assert.AreEqual("UserNameTest", resultModel.LastModifiedBy);
+            
+        }
+
     }
 }

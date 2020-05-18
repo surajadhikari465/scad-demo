@@ -144,16 +144,24 @@ namespace Icon.Web.Tests.Integration.Commands
             if (updateAttribute != null)
             {
                 Assert.AreEqual(updateAttribute.DisplayName, attributeModel.DisplayName);
+                Assert.IsNotNull(updateAttribute.LastModifiedDate);
+                Assert.AreEqual(updateAttribute.LastModifiedBy, attributeModel.LastModifiedBy);
             }
             else
             {
                 Assert.Fail("Record Not Found");
             }
+
+         
+
         }
 
         private AttributeModel GetAttributeById(int attributeId)
         {
-            string sql = @"SELECT * from attributes where attributeId = @attributeId";
+            //string sql = @"SELECT * from attributes where attributeId = @attributeId";
+            string sql = @"SELECT *, a.SysStartTimeUtc LastModifiedDate 
+                            FROM dbo.Attributes a 
+                        where a.attributeId = @attributeId";
 
             AttributeModel attributeModel = this.db.Connection.Query<AttributeModel>(sql, new { attributeId = attributeId }, transaction: this.db.Transaction).FirstOrDefault();
 
@@ -191,7 +199,8 @@ namespace Icon.Web.Tests.Integration.Commands
                                    ,[TraitCode]
                                    ,[DataTypeId]
                                   
-                                   ,[IsPickList])
+                                   ,[IsPickList]
+                                   ,[LastModifiedBy])
                             VALUES
                             (
 	                            'Today',
@@ -199,7 +208,8 @@ namespace Icon.Web.Tests.Integration.Commands
                                 'Today', 
                                 'Today',
                                  @DataTypeId,
-                                0
+                                0,
+                                'TestUser'
                             )";
 
             int affectedRows = this.db.Connection.Execute(sql, new { DataTypeId = dataTypeId }, transaction: this.db.Transaction);
@@ -221,7 +231,8 @@ namespace Icon.Web.Tests.Integration.Commands
                 AttributeName = "today",
                 DisplayName = "today",
                 TraitCode = "today",
-                DataTypeId = dataTypeId
+                DataTypeId = dataTypeId,
+                LastModifiedBy = "NewTestUser"
             };
         }
     }

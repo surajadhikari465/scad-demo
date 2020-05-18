@@ -26,6 +26,7 @@
 	IsSpecialTransform  BIT NOT NULL DEFAULT(0),
 	SysStartTimeUtc datetime2 NOT NULL,
 	SysEndTimeUtc datetime2 NOT NULL, 
-    IsActive BIT NOT NULL DEFAULT 1
+    IsActive BIT NOT NULL DEFAULT 1,
+	LastModifiedBy NVARCHAR(100) NULL
 ) ON [FG_History]
 GO

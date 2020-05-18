@@ -60,6 +60,8 @@ namespace Icon.Web.Tests.Integration.Commands
             var webConfiguration = GetAttributesWebConfiguration(newAttribute);
             Assert.AreEqual(200, webConfiguration.GridColumnWidth);
             Assert.IsFalse(webConfiguration.ReadOnly);
+            Assert.IsNotNull(newAttribute.LastModifiedDate);
+            Assert.AreEqual(newAttribute.LastModifiedBy, attributeModel.LastModifiedBy);
         }
 
         [TestMethod]
@@ -86,7 +88,18 @@ namespace Icon.Web.Tests.Integration.Commands
 
         private AttributeModel GetAttributeByName(string name)
         {
-            string sql = @"SELECT * from attributes where attributeName = @name";
+            //string sql = @"SELECT * from attributes where attributeName = @name";
+            string sql = @"SELECT *, a.SysStartTimeUtc LastModifiedDate, coalesce(Createdate, a.SysStartTimeUtc) CreateDate
+                            FROM dbo.Attributes a
+                            INNER JOIN dbo.DataType dt ON a.DataTypeId = dt.DataTypeId
+                            INNER JOIN dbo.AttributesWebConfiguration awc ON a.AttributeId = awc.AttributeId
+                            OUTER APPLY  (
+                                SELECT TOP 1  SysStartTimeUtc as CreateDate 
+                                FROM AttributeHistory ah 
+                                WHERE attributeid = a.Attributeid 
+                                ORDER BY SysStartTimeUtc ASC
+                            ) history
+                            where a.attributeName = @name";
 
             AttributeModel attributeModel = this.db.Connection.Query<AttributeModel>(sql, new { name = name }, transaction: this.db.Transaction).First();
 
@@ -134,7 +147,8 @@ namespace Icon.Web.Tests.Integration.Commands
                 AttributeName = "test1234",
                 DisplayName = "test1234",
                 TraitCode = "test1234",
-                DataTypeId = GetNewDataTypeId()
+                DataTypeId = GetNewDataTypeId(),
+                LastModifiedBy = "testUser"
             };
         }
 
