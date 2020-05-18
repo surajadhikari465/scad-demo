@@ -43,7 +43,7 @@ namespace BrandUploadProcessor.Service.Mappers
                 {
                     BrandId = int.Parse(r.Cells[brandIdIndex]),
                     BrandAbbreviation = Extensions.GetCellValue(brandAbbreviationIndex, r.Cells, false, Constants.RemoveExcelValue),
-                    BrandName = Extensions.GetCellValue(brandNameIndex, r.Cells, true, Constants.RemoveExcelValue),
+                    BrandName = Extensions.GetCellValue(brandNameIndex, r.Cells, false, Constants.RemoveExcelValue),
                     ZipCode = Extensions.GetCellValue(zipCodeIndex, r.Cells, true, Constants.RemoveExcelValue),
                     Designation = Extensions.GetCellValue(designationIndex, r.Cells, true, Constants.RemoveExcelValue),
                     Locality = Extensions.GetCellValue(localityIndex, r.Cells, true, Constants.RemoveExcelValue),

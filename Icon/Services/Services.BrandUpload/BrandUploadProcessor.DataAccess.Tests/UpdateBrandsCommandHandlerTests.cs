@@ -32,6 +32,87 @@ namespace BrandUploadProcessor.DataAccess.Tests
             command = new UpdateBrandsCommand();
         }
 
+
+        [TestMethod]
+        public void UpdateBrands_Update1Brand_NullBrandName_OriginalBrandNameNotChanged()
+        {
+            var originalBrandId = 97536; // 1911 SPIRITS
+            var originalBrand = TestHelpers.GetBrandAndTraitsByHierarchyClassId<UpdateBrandModel>(sqlConnection, originalBrandId);
+            var expectedUpdatedBrandCount = 1;
+            var expectedInvalidBrandCount = 0;
+
+            Assert.IsNotNull(originalBrand, $"Could not find a brand with id {originalBrandId}");
+
+            var originalBrandName = originalBrand.BrandName;
+            var newBrandName = $"";
+
+            var updatedBrand = TestHelpers.CreateRowObject(1, new List<ParsedCell>
+            {
+                TestHelpers.CreateParsedCell(Constants.BrandIdColumnHeader, originalBrand.BrandId.ToString()),
+                TestHelpers.CreateParsedCell(Constants.BrandNameColumnHeader, newBrandName),
+                TestHelpers.CreateParsedCell(Constants.BrandAbbreviationColumnHeader,  originalBrand.BrandAbbreviation),
+                TestHelpers.CreateParsedCell(Constants.ZipCodeColumnHeader, originalBrand.ZipCode),
+                TestHelpers.CreateParsedCell(Constants.LocalityColumnHeader, originalBrand.Locality),
+                TestHelpers.CreateParsedCell(Constants.DesignationColumnHeader, originalBrand.Designation),
+                TestHelpers.CreateParsedCell(Constants.ParentCompanyColumnHeader, originalBrand.ParentCompany)
+            });
+
+            var brands = new List<RowObject> { updatedBrand };
+            var mapperResponse = mapper.Map(brands, TestHelpers.GetHeaders(), TestHelpers.GetBrandAttributeModels(), "Tester");
+
+            command.Brands.AddRange(mapperResponse.Brands);
+            commandHandler.Execute(command);
+
+            var brandAfterUpdate = TestHelpers.GetBrandAndTraitsByHierarchyClassId<UpdateBrandModel>(sqlConnection, originalBrandId);
+            Assert.AreEqual(expectedUpdatedBrandCount, command.UpdatedBrandIds.Count);
+            Assert.AreEqual(expectedInvalidBrandCount, command.InvalidBrands.Count);
+
+            Assert.AreEqual(originalBrandName, brandAfterUpdate.BrandName);
+        }
+
+        [TestMethod]
+        public void UpdateBrands_Update1Brand_NullBrandAbbreviation_OriginalBrandAbbreviationNotChanged()
+        {
+            var originalBrandId = 97536; // 1911 SPIRITS
+            var originalBrand = TestHelpers.GetBrandAndTraitsByHierarchyClassId<UpdateBrandModel>(sqlConnection, originalBrandId);
+            var expectedUpdatedBrandCount = 1;
+            var expectedInvalidBrandCount = 0;
+
+            Assert.IsNotNull(originalBrand, $"Could not find a brand with id {originalBrandId}");
+
+            var originalBrandAbbreviation = originalBrand.BrandAbbreviation;
+            var newBrandAbbreviation = $"";
+
+            var updatedBrand = TestHelpers.CreateRowObject(1, new List<ParsedCell>
+            {
+                TestHelpers.CreateParsedCell(Constants.BrandIdColumnHeader, originalBrand.BrandId.ToString()),
+                TestHelpers.CreateParsedCell(Constants.BrandNameColumnHeader, originalBrand.BrandName),
+                TestHelpers.CreateParsedCell(Constants.BrandAbbreviationColumnHeader,  newBrandAbbreviation),
+                TestHelpers.CreateParsedCell(Constants.ZipCodeColumnHeader, originalBrand.ZipCode),
+                TestHelpers.CreateParsedCell(Constants.LocalityColumnHeader, originalBrand.Locality),
+                TestHelpers.CreateParsedCell(Constants.DesignationColumnHeader, originalBrand.Designation),
+                TestHelpers.CreateParsedCell(Constants.ParentCompanyColumnHeader, originalBrand.ParentCompany)
+            });
+
+            var brands = new List<RowObject> { updatedBrand };
+            var mapperResponse = mapper.Map(brands, TestHelpers.GetHeaders(), TestHelpers.GetBrandAttributeModels(), "Tester");
+
+            command.Brands.AddRange(mapperResponse.Brands);
+            commandHandler.Execute(command);
+
+            var brandAfterUpdate = TestHelpers.GetBrandAndTraitsByHierarchyClassId<UpdateBrandModel>(sqlConnection, originalBrandId);
+
+
+            Assert.AreEqual(expectedUpdatedBrandCount, command.UpdatedBrandIds.Count);
+            Assert.AreEqual(expectedInvalidBrandCount, command.InvalidBrands.Count);
+
+            Assert.AreEqual(originalBrandAbbreviation, brandAfterUpdate.BrandAbbreviation);
+        }
+
+
+
+
+
         [TestMethod]
         public void UpdateBrands_Update1Brand_BrandName_NewNameSavedToDb()
         {
@@ -65,10 +146,10 @@ namespace BrandUploadProcessor.DataAccess.Tests
             var brandAfterUpdate = TestHelpers.GetBrandAndTraitsByHierarchyClassId<UpdateBrandModel>(sqlConnection, originalBrandId);
 
             Assert.AreEqual(expectedUpdatedBrandCount, command.UpdatedBrandIds.Count);
-            Assert.AreEqual(expectedUpdatedBrandCount, command.UpdatedBrandIds.Count);
             Assert.AreEqual(expectedInvalidBrandCount, command.InvalidBrands.Count);
 
             Assert.AreNotEqual(originalBrand.BrandName, brandAfterUpdate.BrandName);
+            Assert.AreEqual(newBrandName, brandAfterUpdate.BrandName);
         }
 
 
@@ -106,7 +187,6 @@ namespace BrandUploadProcessor.DataAccess.Tests
 
             var brandAfterUpdate = TestHelpers.GetBrandAndTraitsByHierarchyClassId<UpdateBrandModel>(sqlConnection, originalBrandId);
 
-            Assert.AreEqual(expectedUpdatedBrandCount, command.UpdatedBrandIds.Count);
             Assert.AreEqual(expectedUpdatedBrandCount, command.UpdatedBrandIds.Count);
             Assert.AreEqual(expectedInvalidBrandCount, command.InvalidBrands.Count);
 
@@ -163,7 +243,6 @@ namespace BrandUploadProcessor.DataAccess.Tests
             var brandAfterUpdate = TestHelpers.GetBrandAndTraitsByHierarchyClassId<UpdateBrandModel>(sqlConnection, originalBrandId);
 
             Assert.AreEqual(expectedUpdatedBrandCount, command.UpdatedBrandIds.Count);
-            Assert.AreEqual(expectedUpdatedBrandCount, command.UpdatedBrandIds.Count);
             Assert.AreEqual(expectedInvalidBrandCount, command.InvalidBrands.Count);
 
             Assert.AreNotEqual(expectedZip, originalBrand.ZipCode);
@@ -201,7 +280,6 @@ namespace BrandUploadProcessor.DataAccess.Tests
 
             // get brand after remove
             var brandAfterRemove = TestHelpers.GetBrandAndTraitsByHierarchyClassId<UpdateBrandModel>(sqlConnection, originalBrandId);
-            Assert.AreEqual(expectedUpdatedBrandCount, command.UpdatedBrandIds.Count);
             Assert.AreEqual(expectedUpdatedBrandCount, command.UpdatedBrandIds.Count);
             Assert.AreEqual(expectedInvalidBrandCount, command.InvalidBrands.Count);
 
@@ -244,7 +322,6 @@ namespace BrandUploadProcessor.DataAccess.Tests
             var brandAfterUpdate = TestHelpers.GetBrandAndTraitsByHierarchyClassId<UpdateBrandModel>(sqlConnection, originalBrandId);
 
             Assert.AreEqual(originalBrand.BrandName, brandAfterUpdate.BrandName);  // no changes. these should match.
-            Assert.AreEqual(expectedAddedBrandCount, command.UpdatedBrandIds.Count);
             Assert.AreEqual(expectedAddedBrandCount, command.UpdatedBrandIds.Count);
             Assert.AreEqual(expectedInvalidBrandCount, command.InvalidBrands.Count);
 

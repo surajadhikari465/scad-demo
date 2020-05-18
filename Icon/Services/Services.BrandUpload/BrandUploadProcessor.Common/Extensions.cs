@@ -25,9 +25,12 @@ namespace BrandUploadProcessor.Common
         {
             if (!cells.ContainsKey(index)) return null;
 
-            if (allowRemoveValue) return cells[index];
+            var cellValue = cells[index];
+            if (cellValue == string.Empty) cellValue = null;
+
+            if (allowRemoveValue) return cellValue;
             
-            return string.Equals(cells[index], removeValue, StringComparison.CurrentCultureIgnoreCase) ? null : cells[index];
+            return string.Equals(cells[index], removeValue, StringComparison.CurrentCultureIgnoreCase) ? null : cellValue;
             
             
         }

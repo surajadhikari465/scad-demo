@@ -255,12 +255,12 @@ namespace Icon.Web.Mvc.Excel
             sheets.Append(wsValidation);
             doc.Save();
         }
-        public void SetErrorLinks(Hyperlinks links, string validationTableName, List<int> rowIds)
+        public void SetErrorLinks(Hyperlinks links, string validationTableName, List<int> rowIds, string dataTableName)
         {
-            SetErrorLinks(links, "ItemsValidation");
+            SetErrorLinks(links, validationTableName);
 
             var sheets = doc.WorkbookPart.Workbook.GetFirstChild<Sheets>();
-            IEnumerable<Sheet> sheets1 = doc.WorkbookPart.Workbook.GetFirstChild<Sheets>().Elements<Sheet>().Where(s => s.Name == "Items");
+            IEnumerable<Sheet> sheets1 = doc.WorkbookPart.Workbook.GetFirstChild<Sheets>().Elements<Sheet>().Where(s => s.Name == dataTableName);
             if (sheets1.Any())
             {
                 string relationshipId1 = sheets1?.First().Id.Value;
@@ -285,7 +285,7 @@ namespace Icon.Web.Mvc.Excel
 
                     foreach (Cell c in r.Elements<Cell>().ToArray())
                     {
-                        c.CellReference.Value = String.Format("{0}{1}", regex.Matches(c.CellReference.Value)[0].Value, rowid);
+                        c.CellReference.Value = $"{regex.Matches(c.CellReference.Value)[0].Value}{rowid}";
                     }
                     sheetData1.Append(r);
                 }
@@ -301,7 +301,7 @@ namespace Icon.Web.Mvc.Excel
             while (inx > 0)
             {
                 mod = (inx - 1) % 26;
-                name = String.Format("{0}{1}", Convert.ToChar('A' + mod).ToString(), name);
+                name = $"{Convert.ToChar('A' + mod).ToString()}{name}";
                 inx = (int)((inx - mod) / 26);
             }
 

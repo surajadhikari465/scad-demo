@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 
 namespace Icon.Web.Mvc.Controllers
 {
@@ -146,6 +147,18 @@ namespace Icon.Web.Mvc.Controllers
         [HttpGet]
         public ActionResult BulkUploadErrorReport(BulkUploadDataType bulkUploadDataType, int id)
         {
+
+            var mappedDataType = string.Empty;
+            switch (bulkUploadDataType)
+            {
+                case BulkUploadDataType.Brand:
+                    mappedDataType = "Brands";
+                    break;
+                case BulkUploadDataType.Item:
+                    mappedDataType = "Items";
+                    break;
+            }
+
             try
             {
                 var model = bulkUploadService.GetBulkUploadErrorExport(bulkUploadDataType, id);
@@ -170,7 +183,7 @@ namespace Icon.Web.Mvc.Controllers
                             }
 
                             var listId = model.bulkUploadErrorModels.Select(a => a.RowId).Distinct().ToList();
-                            rdr.SetErrorLinks(links, $"{bulkUploadDataType}sValidation", listId);
+                            rdr.SetErrorLinks(links, $"{bulkUploadDataType}sValidation", listId, mappedDataType);
                             SendForDownloadBrand(mem, $"{Path.GetFileNameWithoutExtension(model.BulkUploadModel.FileName)}_Error.xlsx");
                         }
                     }

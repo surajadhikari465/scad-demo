@@ -38,14 +38,20 @@ BEGIN
 	from #BrandData
 	
 	
-	Update HierarchyClass
-	set hierarchyClassName = @BrandName
-	where hierarchyClassID = @BrandId
-
-	Update HierarchyClassTrait
-	set traitvalue = @BrandAbbreviation
-	where traitID = @BrandAbbreviationTraitId
-	and HierarchyClassID = @BrandId
+	if (@BrandName is not null and lower(@BrandName) <> 'remove')
+	begin
+		Update HierarchyClass
+		set hierarchyClassName = @BrandName
+		where hierarchyClassID = @BrandId
+	end
+	
+	if (@BrandAbbreviation is not null and lower(@BrandAbbreviation) <> 'remove')
+	begin
+		Update HierarchyClassTrait
+		set traitvalue = @BrandAbbreviation
+		where traitID = @BrandAbbreviationTraitId
+		and HierarchyClassID = @BrandId
+	end
 
 	if (@Designation is not null)
 		if lower(@Designation) = 'remove'

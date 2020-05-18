@@ -24,7 +24,6 @@ namespace BrandUploadProcessor.DataAccess.Commands
                     Message = error
                 };
 
-            // todo: update this query to work with brands uploads
             string sql =
                 "INSERT INTO BulkUploadErrors (BulkUploadId, RowId, Message) VALUES (@BulkUploadId, @RowId, @Message)";
             dbConnection.Execute(sql, dataToInsert);

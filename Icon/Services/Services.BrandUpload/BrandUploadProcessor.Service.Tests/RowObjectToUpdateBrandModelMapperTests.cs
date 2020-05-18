@@ -51,6 +51,124 @@ namespace BrandUploadProcessor.Service.Tests
             Assert.AreEqual(expected, result.Brands[0].BrandId);
         }
 
+
+        [TestMethod]
+        public void Map_BrandName_EmptyStringBrandAbbreviation_ReturnNull()
+        {
+
+            var rows = new List<RowObject>
+            {
+                TestHelpers.CreateRowObject(1, new List<ParsedCell>
+                {
+                    TestHelpers.CreateParsedCell(Constants.BrandIdColumnHeader, "12345"),
+                    TestHelpers.CreateParsedCell(Constants.BrandAbbreviationColumnHeader, ""),
+                    TestHelpers.CreateParsedCell(Constants.ParentCompanyColumnHeader, "test"),
+                })
+            };
+
+            var result = mapper.Map(rows, columnHeaders, brandAttributeModels, "Tester");
+            Assert.IsNull(result.Brands[0].BrandAbbreviation);
+        }
+
+        [TestMethod]
+        public void Map_BrandName_ValidValueBrandAbbreviation_ReturnBrandAbbreviation()
+        {
+
+            var rows = new List<RowObject>
+            {
+                TestHelpers.CreateRowObject(1, new List<ParsedCell>
+                {
+                    TestHelpers.CreateParsedCell(Constants.BrandIdColumnHeader, "12345"),
+                    TestHelpers.CreateParsedCell(Constants.BrandAbbreviationColumnHeader, "tst"),
+                    TestHelpers.CreateParsedCell(Constants.ParentCompanyColumnHeader, "test"),
+                })
+            };
+
+            var result = mapper.Map(rows, columnHeaders, brandAttributeModels, "Tester");
+            Assert.IsNotNull(result.Brands[0].BrandAbbreviation);
+            Assert.AreEqual("tst", result.Brands[0].BrandAbbreviation);
+        }
+
+
+        [TestMethod]
+        public void Map_BrandName_RemoveBrandAbbreviation_ReturnsNull()
+        {
+
+            var rows = new List<RowObject>
+            {
+                TestHelpers.CreateRowObject(1, new List<ParsedCell>
+                {
+                    TestHelpers.CreateParsedCell(Constants.BrandIdColumnHeader, "12345"),
+                    TestHelpers.CreateParsedCell(Constants.BrandAbbreviationColumnHeader, "REMOVE"),
+                    TestHelpers.CreateParsedCell(Constants.ParentCompanyColumnHeader, "test"),
+                })
+            };
+
+            var result = mapper.Map(rows, columnHeaders, brandAttributeModels, "Tester");
+            Assert.IsNull(result.Brands[0].BrandName);
+        }
+
+
+
+
+        [TestMethod]
+        public void Map_BrandName_EmptyStringBrandName_ReturnNull()
+        {
+
+            var rows = new List<RowObject>
+            {
+                TestHelpers.CreateRowObject(1, new List<ParsedCell>
+                {
+                    TestHelpers.CreateParsedCell(Constants.BrandIdColumnHeader, "12345"),
+                    TestHelpers.CreateParsedCell(Constants.BrandNameColumnHeader, ""),
+                    TestHelpers.CreateParsedCell(Constants.ParentCompanyColumnHeader, "test"),
+                })
+            };
+
+            var result = mapper.Map(rows, columnHeaders, brandAttributeModels, "Tester");
+            Assert.IsNull(result.Brands[0].BrandName);
+        }
+
+        [TestMethod]
+        public void Map_BrandName_ValidValueBrandName_ReturnBrandName()
+        {
+
+            var rows = new List<RowObject>
+            {
+                TestHelpers.CreateRowObject(1, new List<ParsedCell>
+                {
+                    TestHelpers.CreateParsedCell(Constants.BrandIdColumnHeader, "12345"),
+                    TestHelpers.CreateParsedCell(Constants.BrandNameColumnHeader, "test brand"),
+                    TestHelpers.CreateParsedCell(Constants.ParentCompanyColumnHeader, "test"),
+                })
+            };
+
+            var result = mapper.Map(rows, columnHeaders, brandAttributeModels, "Tester");
+            Assert.IsNotNull(result.Brands[0].BrandName);
+            Assert.AreEqual("test brand", result.Brands[0].BrandName);
+        }
+
+
+        [TestMethod]
+        public void Map_BrandName_RemoveBrandName_ReturnsNull()
+        {
+
+            var rows = new List<RowObject>
+            {
+                TestHelpers.CreateRowObject(1, new List<ParsedCell>
+                {
+                    TestHelpers.CreateParsedCell(Constants.BrandIdColumnHeader, "12345"),
+                    TestHelpers.CreateParsedCell(Constants.BrandNameColumnHeader, "REMOVE"),
+                    TestHelpers.CreateParsedCell(Constants.ParentCompanyColumnHeader, "test"),
+                })
+            };
+
+            var result = mapper.Map(rows, columnHeaders, brandAttributeModels, "Tester");
+            Assert.IsNull(result.Brands[0].BrandName);
+        }
+
+
+
         [TestMethod]
         public void RowObjectToUpdateBrandModelMappter_ReturnsUpdateMapperResponse()
         {

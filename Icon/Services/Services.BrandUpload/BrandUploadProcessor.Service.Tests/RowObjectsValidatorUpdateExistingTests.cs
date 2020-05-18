@@ -152,7 +152,7 @@ namespace BrandUploadProcessor.Service.Tests
             
 
             var expectedValidRows = 0;
-            var expectedInvalidRowErrors = 2;
+            var expectedInvalidRowErrors = 1;
 
             var rowObjects = new List<RowObject>
             {
@@ -174,6 +174,7 @@ namespace BrandUploadProcessor.Service.Tests
 
             Assert.AreEqual(expectedValidRows, rowObjectValidatorResponse.ValidRows.Count);
             Assert.AreEqual(expectedInvalidRowErrors, rowObjectValidatorResponse.InvalidRows.Count);
+            Assert.AreEqual(Constants.ErrorMessages.RequiredBrandId, rowObjectValidatorResponse.InvalidRows[0].Error);
         }
 
 
@@ -581,13 +582,13 @@ namespace BrandUploadProcessor.Service.Tests
         }
 
         [TestMethod]
-        public void Validate_UpdateExisting_MissingBrandName_1RowError()
+        public void Validate_UpdateExisting_MissingBrandName_1ValidRow()
         {
 
             var missingBrandName = string.Empty;
-            var expextedErrorMessage = Constants.ErrorMessages.RequiredBrandName;
-            var expectedValidRows = 0;
-            var expectedInvalidRowErrors = 1;
+            
+            var expectedValidRows = 1;
+            var expectedInvalidRowErrors = 0;
 
             var rowObjects = new List<RowObject>
             {
@@ -610,7 +611,6 @@ namespace BrandUploadProcessor.Service.Tests
                 columnHeaders, brandAttributeModels);
             Assert.AreEqual(expectedValidRows, rowObjectValidatorResponse.ValidRows.Count);
             Assert.AreEqual(expectedInvalidRowErrors, rowObjectValidatorResponse.InvalidRows.Count);
-            Assert.AreEqual(expextedErrorMessage, rowObjectValidatorResponse.InvalidRows[0].Error);
 
         }
 
@@ -647,13 +647,12 @@ namespace BrandUploadProcessor.Service.Tests
         }
 
         [TestMethod]
-        public void Validate_UpdateExisting_MissingBrandAbbreviation_1RowError()
+        public void Validate_UpdateExisting_MissingBrandAbbreviation_1ValidRow()
         {
 
             var missingBrandAbbreviation = string.Empty;
-            var expextedErrorMessage = Constants.ErrorMessages.RequiredBrandAbbreviation;
-            var expectedValidRows = 0;  
-            var expectedInvalidRowErrors = 1;
+            var expectedValidRows = 1;  
+            var expectedInvalidRowErrors = 0;
 
             var rowObjects = new List<RowObject>
             {
@@ -676,7 +675,6 @@ namespace BrandUploadProcessor.Service.Tests
                 columnHeaders, brandAttributeModels);
             Assert.AreEqual(expectedValidRows, rowObjectValidatorResponse.ValidRows.Count);
             Assert.AreEqual(expectedInvalidRowErrors, rowObjectValidatorResponse.InvalidRows.Count);
-            Assert.AreEqual(expextedErrorMessage, rowObjectValidatorResponse.InvalidRows[0].Error);
 
         }
 
