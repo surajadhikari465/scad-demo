@@ -243,6 +243,7 @@
     <Compile Include="Queries\GetHierarchyClassesQueryHandlerTests.cs" />
     <Compile Include="Queries\GetHierarchyLineageQueryTests.cs" />
     <Compile Include="Queries\GetIrmaItemsQueryTests.cs" />
+    <Compile Include="Queries\GetItemColumnOrderQueryTests.cs" />
     <Compile Include="Queries\GetItemHierarchyClassHistoryQueryTests.cs" />
     <Compile Include="Queries\GetItemHistoryQueryHandlerTests.cs" />
     <Compile Include="Queries\GetItemQueryHandlerTests.cs" />
