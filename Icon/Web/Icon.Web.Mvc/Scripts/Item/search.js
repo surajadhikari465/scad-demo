@@ -517,8 +517,8 @@ window.addEventListener('load', function () {
                                                 readOnly: true
                                             });
                                         }
-                                        else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "ItemType") {
-                                            columnSettings.push({
+                                        else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "ItemType") {                                            
+                                            columnSettings.push({                                                
                                                 columnKey: "ItemTypeDescription",
                                                 editorType: "text",
                                                 required: true,
@@ -707,7 +707,7 @@ window.addEventListener('load', function () {
                             width: "200px"
                         });
                     }
-                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharactersfield == "ItemType") {
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == "ItemType") {
                         columnSettings.push({
                             headerText: "Item Type",
                             key: "ItemTypeDescription",
