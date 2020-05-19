@@ -98,7 +98,10 @@ namespace Icon.Web.Mvc.Exporters
                     else if (item.DataTypeName.Equals(Constants.DataTypeNames.Boolean, StringComparison.OrdinalIgnoreCase))
                     {
                         int colIndex = GetColumnByName(itemsWorksheet, item.DisplayName);
-                        SetColumnFormatForBooleanAttributes(colIndex);
+                        if (colIndex > 0)
+                        {
+                            SetColumnFormatForBooleanAttributes(colIndex);
+                        }
                         base.CreateListRuleExcelValidationRule(item.DisplayName, item.AttributeName, item.IsRequired ? BooleanValidationRequiredCount : BooleanValidationNonRequiredCount);
                     }
                 }
