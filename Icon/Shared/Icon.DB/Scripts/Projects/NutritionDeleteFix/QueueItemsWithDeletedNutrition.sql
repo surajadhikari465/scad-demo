@@ -1823,6 +1823,17 @@ BEGIN
 			,'6390981'
 			)
 
+        INSERT INTO ItemIdScanCode (
+			itemId
+			,ScanCode
+			,RecipeID
+			)
+		VALUES (
+			'4221547'
+			,'46000032426'
+			,'8800001'
+			)
+
 		INSERT INTO ItemIdScanCode (
 			itemId
 			,ScanCode
