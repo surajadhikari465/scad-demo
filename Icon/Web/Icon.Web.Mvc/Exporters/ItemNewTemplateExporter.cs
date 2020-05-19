@@ -132,7 +132,7 @@ namespace Icon.Web.Mvc.Exporters
             {
                 if (itemColumnOrderModel.ColumnType != AttributePrefix)
                 {
-                    if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.BarcodeType)
+                    if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.BarcodeType)
                     {
                         AddSpreadsheetColumn(
                             NewItemExcelHelper.NewExcelExportColumnNames.BarCodeType,
@@ -143,7 +143,7 @@ namespace Icon.Web.Mvc.Exporters
                             ref currentIndex);
                     }
 
-                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.Scancode)
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.Scancode)
                     {
                         AddSpreadsheetColumn(
                                 NewItemExcelHelper.NewExcelExportColumnNames.ScanCode,
@@ -154,7 +154,7 @@ namespace Icon.Web.Mvc.Exporters
                     ref currentIndex);
                     }
 
-                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.Brands)
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.Brands)
                     {
                         AddSpreadsheetColumn(
                                 NewItemExcelHelper.NewExcelExportColumnNames.Brand,
@@ -165,7 +165,7 @@ namespace Icon.Web.Mvc.Exporters
                                 ref currentIndex);
                                 }
 
-                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.Merchandise)
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.Merchandise)
                     {
                         AddSpreadsheetColumn(
                             NewItemExcelHelper.NewExcelExportColumnNames.Merchandise,
@@ -176,7 +176,7 @@ namespace Icon.Web.Mvc.Exporters
                             ref currentIndex);
                             }
 
-                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.Tax)
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.Tax)
                     {
                         AddSpreadsheetColumn(
                             NewItemExcelHelper.NewExcelExportColumnNames.Tax,
@@ -187,7 +187,7 @@ namespace Icon.Web.Mvc.Exporters
                             ref currentIndex);
                             }
 
-                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.National)
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.National)
                     {
 
                         AddSpreadsheetColumn(
@@ -199,7 +199,7 @@ namespace Icon.Web.Mvc.Exporters
                             ref currentIndex);
                             }
 
-                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.Financial)
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.Financial)
                     {
 
                         AddSpreadsheetColumn(
@@ -211,7 +211,7 @@ namespace Icon.Web.Mvc.Exporters
                             ref currentIndex);
                             }
 
-                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.Manufacturer)
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.Manufacturer)
                     {
                         AddSpreadsheetColumn(
                             NewItemExcelHelper.NewExcelExportColumnNames.Manufacturer,
@@ -222,7 +222,7 @@ namespace Icon.Web.Mvc.Exporters
                             ref currentIndex);
                             }
 
-                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.ItemId)
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.ItemId)
                     {
                         AddSpreadsheetColumn(
                             NewItemExcelHelper.NewExcelExportColumnNames.ItemId,
@@ -233,7 +233,7 @@ namespace Icon.Web.Mvc.Exporters
                             ref currentIndex);
                             }
 
-                    else if (itemColumnOrderModel.ReferenceName == ColumnNameHelper.ItemType)
+                    else if (itemColumnOrderModel.ReferenceNameWithoutSpecialCharacters == ColumnNameHelper.ItemType)
                     {
                         AddSpreadsheetColumn(
                             NewItemExcelHelper.NewExcelExportColumnNames.ItemType,
