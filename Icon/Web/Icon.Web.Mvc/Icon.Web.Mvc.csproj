@@ -814,6 +814,7 @@
     <Content Include="Content\Infragistics\css\themes\metro\infragistics.theme.css" />
     <Content Include="Content\Infragistics\css\themes\metro\style-guides\style-guide.css" />
     <Content Include="Content\Infragistics\css\themes\metro\style-guides\style-guide.html" />
+    <Content Include="Content\ItemColumnOrder.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -1704,6 +1705,8 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Sortable\jquery-sortable.js" />
+    <Content Include="Scripts\Sortable\Sortable.js" />
     <Content Include="Scripts\src\index.js" />
     <Content Include="Scripts\src\methods\defaults.js" />
     <Content Include="Scripts\src\methods\destroy.js" />
