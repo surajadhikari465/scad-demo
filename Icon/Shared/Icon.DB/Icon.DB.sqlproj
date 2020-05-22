@@ -913,6 +913,8 @@
     <None Include="Scripts\Projects\Distribution Realignment\35114_MoveStoresFromMAToMW.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\35114_MoveStoresFromMAToMW_RollBack.sql" />
     <None Include="Scripts\PopulateData\25934_PopulateItemColumnDisplayOrder.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\35761_MoveStoresFromFLToSOAndMAToMW.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\35761_MoveStoresFromFLToSOAndMAToMW_RollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

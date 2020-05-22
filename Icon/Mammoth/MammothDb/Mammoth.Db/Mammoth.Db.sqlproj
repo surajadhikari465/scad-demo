@@ -883,6 +883,10 @@
     <None Include="Scripts\Projects\Distribution Realignment\35114_MoveStoresFromMAToMW_RollBack.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\35114_MovePricesFromMAToMW.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\35114_MovePricesFromMAToMW_RollBack.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\35761_MoveStoresFromFLToSOAndMAToMW.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\35761_MoveStoresFromFLToSOAndMAToMW_RollBack.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\35761_MovePricesFromFLToSOAndMAToMW.sql" />
+    <None Include="Scripts\Projects\Distribution Realignment\35761_MovePricesFromFLToSOAndMAToMW_RollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">
