@@ -81,14 +81,12 @@ namespace Icon.Web.Tests.Integration.Queries
 
             Assert.AreEqual(2, testAttribute.PickListData.Count());
 
-            var firstPickListData = testAttribute.PickListData.First();
+            var firstPickListData = testAttribute.PickListData.Where(s=>s.PickListId== pickListId).FirstOrDefault();
             Assert.AreEqual(attributeId, firstPickListData.AttributeId);
-            Assert.AreEqual(pickListId, firstPickListData.PickListId);
             Assert.AreEqual("Yes", firstPickListData.PickListValue);
 
-            var lastPickListData = testAttribute.PickListData.Last();
+            var lastPickListData = testAttribute.PickListData.Where(s => s.PickListId == pickListSecondId).FirstOrDefault();
             Assert.AreEqual(attributeId, lastPickListData.AttributeId);
-            Assert.AreEqual(pickListSecondId, lastPickListData.PickListId);
             Assert.AreEqual("No", lastPickListData.PickListValue);
 
             var characterSet = testAttribute.CharacterSets.Single();

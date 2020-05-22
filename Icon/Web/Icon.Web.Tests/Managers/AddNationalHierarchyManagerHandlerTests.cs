@@ -107,6 +107,9 @@ namespace Icon.Web.Tests.Unit.Managers
             //Given
             addNationalHierarchyCommandHandler.Setup(cm => cm.Execute(It.IsAny<AddNationalHierarchyCommand>()))
                 .Throws(new DuplicateValueException("Test Exception"));
+
+            getNationalClassQuery.Setup(cm => cm.Search(It.IsAny<GetNationalClassByClassCodeParameters>())).Returns(new List<HierarchyClass>());
+
             CreateManagerHandler();
 
             //When

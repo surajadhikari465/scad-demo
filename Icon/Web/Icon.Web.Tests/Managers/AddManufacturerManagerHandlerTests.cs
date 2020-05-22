@@ -62,6 +62,7 @@ namespace Icon.Web.Tests.Unit.Managers
             };
 
             var manager = GetManufacturerManager(hierarchyClass);
+            manager.IsManufacturerHierarchyMessage = true;
 
             // When.
             managerHandler.Execute(manager);
@@ -81,6 +82,7 @@ namespace Icon.Web.Tests.Unit.Managers
             };
 
             var manager = GetManufacturerManager(hierarchyClass);
+            manager.IsManufacturerHierarchyMessage = true;
 
             // When.
             managerHandler.Execute(manager);
@@ -200,7 +202,7 @@ namespace Icon.Web.Tests.Unit.Managers
             string exceptionMessage = $"An error occurred when processing Manufacturer {testManufacturerName} (ID: 0).";
             var unexpectedException = new Exception(exceptionMessage);
 
-            mockAddManufacturerMessageCommand.Setup(c => c.Execute(It.IsAny<AddManufacturerMessageCommand>())).Throws(unexpectedException);
+            mockAddManufacturerCommand.Setup(c => c.Execute(It.IsAny<AddManufacturerCommand>())).Throws(unexpectedException);
 
             HierarchyClass hierarchyClass = new HierarchyClass
             {
@@ -238,6 +240,7 @@ namespace Icon.Web.Tests.Unit.Managers
             };
 
             var manager = GetManufacturerManager(hierarchyClass);
+            manager.IsManufacturerHierarchyMessage = true;
 
             // When.
             managerHandler.Execute(manager);
@@ -254,7 +257,7 @@ namespace Icon.Web.Tests.Unit.Managers
             {
                 Manufacturer = testManufacturer,
                 ZipCode = testZipCode,
-                ArCustomerId = testArCustomerId
+                ArCustomerId = testArCustomerId,
             };
         }
     }

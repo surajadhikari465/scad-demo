@@ -195,28 +195,6 @@ namespace Icon.Web.Tests.Unit.Managers
             mockBrandHierarchyClassTraitsCommand.Verify(c => c.Execute(It.IsAny<UpdateBrandHierarchyClassTraitsCommand>()), Times.Once);
         }
 
-
-        [TestMethod]
-        public void AddBrand_UserWriteAccessIsNone_ZeroCommandHandlersCalled()
-        {
-            // Given.
-            HierarchyClass hierarchyClass = new HierarchyClass
-            {
-                hierarchyClassName = "TestBrand",
-                hierarchyClassID = 1
-            };
-
-            var manager = GetBrandManager(hierarchyClass, Enums.WriteAccess.None);
-
-            // When.
-            managerHandler.Execute(manager);
-
-            // Then.
-            mockBrandCommand.Verify(c => c.Execute(It.IsAny<BrandCommand>()), Times.Never);
-            mockAddBrandMessageCommand.Verify(c => c.Execute(It.IsAny<AddBrandMessageCommand>()), Times.Never);
-            mockBrandHierarchyClassTraitsCommand.Verify(c => c.Execute(It.IsAny<UpdateBrandHierarchyClassTraitsCommand>()), Times.Never);
-        }
-
         BrandManager GetBrandManager(HierarchyClass testBrand, Enums.WriteAccess userAccess)
         {
             return new BrandManager()
