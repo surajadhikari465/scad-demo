@@ -46,12 +46,4 @@ BEGIN
 	insert into dbo.ItemColumnDisplayOrder (ColumnType, ReferenceId, ReferenceName, DisplayOrder)
 	values ('Other', 4, 'Scancode', 9999)
 
-	if not exists (select 1 from dbo.ItemColumnDisplayOrder where ColumnType = 'Other' and ReferenceId = 5 )
-	insert into dbo.ItemColumnDisplayOrder (ColumnType, ReferenceId, ReferenceName, DisplayOrder)
-	values ('Other', 5, 'Modified On', 9999)
-
-	if not exists (select 1 from dbo.ItemColumnDisplayOrder where ColumnType = 'Other' and ReferenceId = 6 )
-	insert into dbo.ItemColumnDisplayOrder (ColumnType, ReferenceId, ReferenceName, DisplayOrder)
-	values ('Other', 6, 'Created On', 9999)
-
 END
