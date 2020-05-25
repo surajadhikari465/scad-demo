@@ -159,6 +159,8 @@
     <None Include="Scripts\Distribution Realignment\35114_MoveStoresFromMAToMW_RollBack.sql" />
     <None Include="Scripts\Distribution Realignment\35761_MoveStoresFromFLToSOAndMAToMW.sql" />
     <None Include="Scripts\Distribution Realignment\35761_MoveStoresFromFLToSOAndMAToMW_RollBack.sql" />
+    <None Include="Scripts\Distribution Realignment\35763_MoveMetroFromMAToMW.sql" />
+    <None Include="Scripts\Distribution Realignment\35763_MoveMetroFromMAToMW_RollBack.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\PreDeplolymentScripts\PreDeploymentScript.sql" />
