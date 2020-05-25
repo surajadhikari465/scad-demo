@@ -4,6 +4,7 @@ using Infragistics.Documents.Excel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Icon.Common.Models;
+using System;
 
 namespace Icon.Web.Tests.Unit.Exporters
 {
@@ -39,9 +40,9 @@ namespace Icon.Web.Tests.Unit.Exporters
  
 
             var testAttribute1 = new AttributeViewModel
-            { DisplayName = "Test1", AttributeName = "Test1", Description = "TEST1",PickListData= pickListModels, AvailableCharacterSets = characterSetModels, LastModifiedBy = "userTest",  LastModifiedDate = "2020/01/12 12:00:00:000" };
+            { DisplayName = "Test1", AttributeName = "Test1", Description = "TEST1",PickListData= pickListModels, AvailableCharacterSets = characterSetModels, LastModifiedBy = "userTest",  LastModifiedDate = DateTime.Now};
             var testAttribute2 = new AttributeViewModel
-                {DisplayName = "Test2", AttributeName = "Test2", Description = "TEST2",PickListData = pickListModels, AvailableCharacterSets= characterSetModels, LastModifiedBy = "userTest" , LastModifiedDate = "2020/01/20 12:00:00:000" };
+                {DisplayName = "Test2", AttributeName = "Test2", Description = "TEST2",PickListData = pickListModels, AvailableCharacterSets= characterSetModels, LastModifiedBy = "userTest" , LastModifiedDate = DateTime.Now };
             var attributeExportData = new List<AttributeViewModel>();
 
             attributeExportData.Add(testAttribute1);
@@ -82,8 +83,8 @@ namespace Icon.Web.Tests.Unit.Exporters
             };
 
             var testAttribute = new AttributeViewModel
-            { DisplayName = "Test1", AttributeName = "Test1", Description = "TEST1", PickListData = pickListModels, AvailableCharacterSets = characterSetModels,ItemCount = 2, LastModifiedBy = "userTest", LastModifiedDate = "2020/01/20 12:00:00:000" };           
-            
+            { DisplayName = "Test1", AttributeName = "Test1", Description = "TEST1", PickListData = pickListModels, AvailableCharacterSets = characterSetModels,ItemCount = 2, LastModifiedBy = "userTest", LastModifiedDate = DateTime.Now };
+
             var attributeExportData = new List<AttributeViewModel>();
 
             attributeExportData.Add(testAttribute);           

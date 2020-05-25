@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Icon.Common.Models;
 using Icon.Common;
 using Icon.Web.Mvc.Utility;
+using System;
 
 namespace Icon.Web.Mvc.Models
 {
@@ -66,8 +67,7 @@ namespace Icon.Web.Mvc.Models
         public int? ItemCount { get; set; }
         [Display(Name = AttributesHelper.AttributesColumnNames.IsActive)]
         public bool IsActive { get; set; }
-        
-        public string LastModifiedDate { get; set; }
+        public DateTime LastModifiedDate { get; set; }
         public string LastModifiedBy { get; set; }
 
         public AttributeViewModel()
@@ -128,8 +128,10 @@ namespace Icon.Web.Mvc.Models
             this.XmlTraitDescription = model.XmlTraitDescription;            
             this.ItemCount = model.ItemCount;
             this.IsActive = model.IsActive;
-            this.LastModifiedDate = model.LastModifiedDate.ToString();
+            this.LastModifiedDate = (DateTime)model.LastModifiedDate;
             this.LastModifiedBy = model.LastModifiedBy;
+
         }
+
     }
 }

@@ -32,7 +32,7 @@
         columns.Unbound("ActionEdit").Template("&nbsp&nbsp&nbsp&nbsp <a href='/Attribute/Edit?attributeId=${AttributeId}'>Edit</a>").Width("10%").HeaderText("").Hidden(Model == null ? true : ((int)Model.UserWriteAccess) == 0);
         columns.For(c => c.ItemCount).HeaderText("Item Count").DataType("number").Width("10%");
         columns.For(c => c.IsActive).HeaderText("Active").DataType("bool").Width("10%").Format("checkbox");
-        columns.For(c => c.LastModifiedDate).HeaderText("Last Modified Date").DataType("string").Width("18%");
+        columns.For(c => c.LastModifiedDate).HeaderText("Last Modified Date").DataType("date").Format("MM/dd/yyyy hh:mm:ss").Width("15%");
         columns.For(c => c.LastModifiedBy).HeaderText("Last Modified By").DataType("string").Width("15%");
         })
         .Features(features =>
