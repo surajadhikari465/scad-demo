@@ -1,13 +1,11 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Icon.Esb.ListenerApplication;
 using Icon.Esb.Subscriber;
 using Icon.Esb.CchTax.Models;
 using System.Collections.Generic;
 using Icon.Esb.CchTax.MessageParsers;
 using Icon.Common.Email;
 using Icon.Logging;
-using Icon.Common.DataAccess;
 using Icon.Esb.CchTax.Commands;
 using Moq;
 using System.IO;
@@ -185,7 +183,7 @@ namespace Icon.Esb.CchTax.Tests.Integration
                 .Where(hct => hct.traitID == Traits.TaxAbbreviation)
                 .OrderBy(hct => hct.traitValue)
                 .ToList();
-            Assert.AreEqual(2, taxAbbreviations.Count);
+            Assert.AreEqual(3, taxAbbreviations.Count);
             Assert.AreEqual(taxAbbreviations[0].traitValue, taxHierarchyClassesAfterUpdate[3].hierarchyClassName);
             Assert.AreEqual(taxAbbreviations[1].traitValue, taxHierarchyClassesAfterUpdate[4].hierarchyClassName);
 
@@ -285,9 +283,10 @@ namespace Icon.Esb.CchTax.Tests.Integration
                 .Where(hct => hct.traitID == Traits.TaxAbbreviation)
                 .OrderBy(hct => hct.traitValue)
                 .ToList();
-            Assert.AreEqual(2, taxAbbreviations.Count);
+            Assert.AreEqual(3, taxAbbreviations.Count);
             Assert.AreEqual(taxAbbreviations[0].traitValue, taxHierarchyClassesAfterUpdate[3].hierarchyClassName);
             Assert.AreEqual(taxAbbreviations[1].traitValue, taxHierarchyClassesAfterUpdate[4].hierarchyClassName);
+            Assert.AreNotEqual(taxAbbreviations[2].traitValue.Length, taxHierarchyClassesAfterUpdate[5].hierarchyClassName.Length);
 
             //Assert that events are generated
             var taxIds = taxHierarchyClassNamesAfterUpdate
