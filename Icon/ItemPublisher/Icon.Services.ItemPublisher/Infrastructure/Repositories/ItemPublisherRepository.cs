@@ -60,7 +60,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Repositories
 
             var parameters = new
             {
-                MessageQueueItemJson = new DbString { Value = JsonConvert.SerializeObject(history.MessageQueueItemJson) },
+                MessageQueueItemJson = new DbString { Value = history.MessageQueueItemJson },
                 history.ErrorOccurred,
                 history.ErrorMessage,
                 MessageId = history.MessageId,
