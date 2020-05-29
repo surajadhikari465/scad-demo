@@ -186,8 +186,8 @@ namespace Services.Extract
 
         
         internal string DynamicToConcatenatedHeaderString(dynamic data, string delimiter, bool includeLineFeed)
-        {
-            var jObject = (JObject) JToken.FromObject(data);
+        {            
+            var jObject = (JObject) JToken.FromObject(data);            
             var output = string.Join(delimiter,
                 jObject.ToObject<Dictionary<string, string>>().Select(x1 => x1.Key.RemoveChar(delimiter)));
 
@@ -195,13 +195,13 @@ namespace Services.Extract
             return output;
         }
         internal string DynamicToConcatenatedValuesString(dynamic data, string delimiter, bool includeLineFeed, bool boolToInt)
-        {
-            var jObject = (JObject) JToken.FromObject(data);
+        {            
+            var jObject = (JObject) JToken.FromObject(data);            
             var output = string.Join(delimiter,jObject.ToObject<Dictionary<string, string>>().Select(x1 => x1.Value.RemoveChar(delimiter).BoolToInt(boolToInt)));
             if (includeLineFeed) output += Environment.NewLine;
             return output;
         }
-
+       
         internal void LoadDynamicParameters(ExtractSourcesAndDestinationFile[] connections, string sql, out IEnumerable<ExtractJobParameter> outPutParam)
         {
             var outputList = new List<dynamic>();
@@ -333,8 +333,12 @@ namespace Services.Extract
         }
         internal FileInfo GetHeaders(IEnumerable<ExtractDataAndFileInformation> Data)
         {
+            if (string.IsNullOrWhiteSpace(Configuration.Delimiter))
+            {
+                Configuration.Delimiter = "|";
+            }
             dynamic firstRow = null;
-
+            
             foreach (var singleDateSet in Data)
             {
                 if (singleDateSet != null)
@@ -501,8 +505,12 @@ namespace Services.Extract
 
         internal IEnumerable<FileInfo> WriteDataToFiles(IEnumerable<ExtractDataAndFileInformation> dataAndFileInfo, int connectionCounter)
         {
+            if (string.IsNullOrWhiteSpace(Configuration.Delimiter))
+            {
+                Configuration.Delimiter = "|";
+            }
             var files = dataAndFileInfo.Select(d => d.FileInformation);
-            var outputWriters = new Dictionary<string, StreamWriter>();
+            var outputWriters = new Dictionary<string, StreamWriter>();            
 
             foreach (var file in dataAndFileInfo)
             {
@@ -517,7 +525,7 @@ namespace Services.Extract
                     {
                         foreach (var row in currentFile.Data)
                         {
-                            var x = DynamicToConcatenatedValuesString(row, "|", false, true);
+                            var x = DynamicToConcatenatedValuesString(row, Configuration.Delimiter, false, true);
                             sw.WriteLine(x);
                         }
                     }
@@ -530,7 +538,7 @@ namespace Services.Extract
                     {
                         foreach (var row in currentFile.Data)
                         {
-                            var x = DynamicToConcatenatedValuesString(row, "|", false, true);
+                            var x = DynamicToConcatenatedValuesString(row, Configuration.Delimiter, false, true);
                             sw.WriteLine(x);
                         }
                     }

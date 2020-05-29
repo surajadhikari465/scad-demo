@@ -32,9 +32,9 @@ namespace Services.Extract.Tests
             OpsGenieAlert = new OpsgenieAlert.OpsgenieAlert();
             CredentialsCacheManager = new CredentialsCacheManager(new S3CredentialsCache(), new SFtpCredentialsCache(), new EsbCredentialsCache());
             runner = new ExtractJobRunner(logger, OpsGenieAlert, CredentialsCacheManager);
-            
 
-            
+
+
         }
 
         [TestMethod]
@@ -61,29 +61,29 @@ namespace Services.Extract.Tests
             Assert.AreEqual(1, files.Length);
 
             runner.CleanWorkspace(WorkspacePath);
-            
+
             files = Directory.GetFiles(WorkspacePath);
-            Assert.AreEqual(0,files.Length);
+            Assert.AreEqual(0, files.Length);
 
         }
 
         [TestMethod]
         public void ExtractJobRunner_CompressFilesZipOutputEqualsFalse_ShouldReturn()
         {
-            var config = new ExtractJobConfiguration {ZipOutput = false, OutputFileName = "output.txt"};
+            var config = new ExtractJobConfiguration { ZipOutput = false, OutputFileName = "output.txt" };
             runner.SetConfiguration(config);
             runner.TransformFilenames();
 
             runner.SetupWorkspace(WorkspacePath);
             var file = TestHelper.CreateTestFile(WorkspacePath);
 
-            var files = new List<FileInfo> {file};
+            var files = new List<FileInfo> { file };
 
             runner.CompressFiles(files, WorkspacePath + @"\" + config.OutputFileName);
 
             var outputfile = WorkspacePath + @"\output.zip";
             Assert.IsFalse(File.Exists(outputfile));
-            
+
         }
         [TestMethod]
         public void ExtractJobRunner_CompressFilesZipOutputEqualsTrue_ShouldZipFile()
@@ -108,7 +108,7 @@ namespace Services.Extract.Tests
         public void ExtractJobRunner_CallCleanup_ShouldDisposeConnections()
         {
             runner.Connections.Add("test", new SqlConnection(""));
-            
+
             var extractSourcesAndDestinationFiles = new List<ExtractSourcesAndDestinationFile>
             {
                 new ExtractSourcesAndDestinationFile() {DestinationFile = "test", Source = new SqlConnection("")}
@@ -167,7 +167,7 @@ namespace Services.Extract.Tests
 
             Assert.AreEqual("Test0xyzTest1", results);
         }
-      
+
         [TestMethod]
         public void IrmaTest()
         {
@@ -181,9 +181,9 @@ namespace Services.Extract.Tests
                 Query = "select top 1 * from Item",
                 Regions = "FL,MA".Split(','),
                 OutputFileName = "test_{source}_{date:MMddyyyyHHmmss}.txt",
-                ZipOutput = true, 
+                ZipOutput = true,
                 CompressionType = "zip",
-                ConcatenateOutputFiles = false, 
+                ConcatenateOutputFiles = false,
                 IncludeHeaders = true,
                 Destination = new Destination
                 {
@@ -274,12 +274,12 @@ namespace Services.Extract.Tests
                 Delimiter = "|",
                 Source = "Icon",
                 Query = "select * from hierarchyClass where HierarchyId = @Id",
-                Parameters = new[] { new ExtractJobParameter() { Key = "@Id", Value = 5}  },
-                Regions = new string[] {  },
+                Parameters = new[] { new ExtractJobParameter() { Key = "@Id", Value = 5 } },
+                Regions = new string[] { },
                 OutputFileName = "test_{source}.txt",
                 ZipOutput = true,
                 IncludeHeaders = true,
-                ConcatenateOutputFiles = false, 
+                ConcatenateOutputFiles = false,
                 Destination = new Destination
                 {
                     Type = "s3",
@@ -290,21 +290,88 @@ namespace Services.Extract.Tests
             runner.Run(config);
         }
 
+        [Ignore("Not a real test. Used to execute runner in debug environment.")]
         [TestMethod]
-        public void TestFromFile()
+        public void IrmaUserAuditTest_RegionalFiles()
         {
-           var config =  JsonConvert.DeserializeObject<ExtractJobConfiguration>(
-                File.ReadAllText(@".\ExtractTestConfiguration.json"));
-           runner = new ExtractJobRunner(logger, OpsGenieAlert, CredentialsCacheManager);
-           runner.Run(config);
+            var sw = new Stopwatch();
+            sw.Start();
+
+            var config = new ExtractJobConfiguration
+            {
+                Delimiter = ",",
+                Source = "Irma",
+                Query = "SELECT s.Store_No,s.Store_Name,uo.* FROM users uo" +
+                "    LEFT JOIN(" +
+                "        SELECT u.user_id, ust.Store_No FROM users u" +
+                "        JOIN UserStoreTeamTitle ust ON u.user_id = ust.user_id" +
+                "        GROUP BY u.user_id, ust.Store_No" +
+                "        HAVING count(ust.store_no) >= 1) us ON uo.user_id = us.user_id" +
+                "    LEFT JOIN store s ON us.store_no = s.store_no" +
+                "    ORDER BY s.Store_No; ",
+                Regions = "FL".Split(','),                
+                OutputFileName = "IRMA_UserAudit_{date:yyyyMMdd}.csv",
+                ZipOutput = true,                
+                ConcatenateOutputFiles = false,
+                IncludeHeaders = true,
+                Destination = new Destination
+                {
+                    Type = "file",
+                    Path = @"c:\temp\1\"
+                }
+            };
+        runner.Run(config);
+            sw.Stop();
         }
 
-        [TestCleanup]
-        public void CleanUp()
+    [Ignore("Not a real test. Used to execute runner in debug environment.")]
+    [TestMethod]
+    public void IrmaUserAuditTest_WithOutDelimiter_RegionalFiles()
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+
+        var config = new ExtractJobConfiguration
         {
-            runner.Cleanup();
-        }
-
-
+            Source = "Irma",
+            Query = "SELECT s.Store_No,s.Store_Name,uo.* FROM users uo" +
+                "    LEFT JOIN(" +
+                "        SELECT u.user_id, ust.Store_No FROM users u" +
+                "        JOIN UserStoreTeamTitle ust ON u.user_id = ust.user_id" +
+                "        GROUP BY u.user_id, ust.Store_No" +
+                "        HAVING count(ust.store_no) >= 1) us ON uo.user_id = us.user_id" +
+                "    LEFT JOIN store s ON us.store_no = s.store_no" +
+                "    ORDER BY s.Store_No; ",
+            Regions = "FL".Split(','),
+            OutputFileName = "IRMA_UserAudit_{date:yyyyMMdd}.csv",
+            ZipOutput = true,
+            ConcatenateOutputFiles = false,
+            IncludeHeaders = true,
+            Destination = new Destination
+            {
+                Type = "file",
+                Path = @"c:\temp\1\"
+            }
+        };
+        runner.Run(config);
+        sw.Stop();
     }
+
+    [TestMethod]
+    public void TestFromFile()
+    {
+        var config = JsonConvert.DeserializeObject<ExtractJobConfiguration>(
+             File.ReadAllText(@".\ExtractTestConfiguration.json"));
+        runner = new ExtractJobRunner(logger, OpsGenieAlert, CredentialsCacheManager);
+        runner.Run(config);
+    }
+
+    [TestCleanup]
+    public void CleanUp()
+    {
+        runner.Cleanup();
+    }
+
+
+}
 }

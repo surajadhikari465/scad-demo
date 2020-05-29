@@ -18,6 +18,7 @@ Post-Deployment Script Template
 :r .\33668_Extract_IconHierarcies_JobSchedule.sql -- 2020-03-30 33668
 :r .\26540_AMZItemVendorLane_JobSchedule.sql --2020-04-16
 --:r .\26539_FutureCostsExtract_JobSchedule.sql --2020-04-01
+:r .\34409_IRMAUserAudit_JobSchedule.sql --2020-05-28
 
 -- Run every time (add your script above; keep this at bottom, as last post-deploy script).
 :r ..\..\Security\SecurityGrants.sql

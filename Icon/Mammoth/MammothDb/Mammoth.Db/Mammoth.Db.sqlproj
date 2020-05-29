@@ -891,6 +891,7 @@
     <None Include="Scripts\Projects\Distribution Realignment\35763_MoveMetroFromMAToMW_RollBack.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\35763_MovePricesFromMAToMW.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\35763_MovePricesFromMAToMW_RollBack.sql" />
+    <None Include="Scripts\PostDeploymentScripts\34409_IRMAUserAudit_JobSchedule.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">
