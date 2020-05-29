@@ -1,3 +1,15 @@
+DECLARE @key VARCHAR(128) = 'QueueItemsWithDeletedNutrition';
+DECLARE @serverName VARCHAR(100) = (
+		SELECT @@SERVERNAME
+		)
+
+IF (@serverName = 'ODWD6825' OR @serverName = 'ODWD6801')
+BEGIN
+	DELETE
+	FROM app.PostDeploymentScriptHistory
+	WHERE ScriptKey = @key
+END
+GO
 --alter view remove schema binding
 ALTER VIEW [nutrition].[v4r_ItemNutrition]
 AS
@@ -4474,9 +4486,87 @@ BEGIN
 			,'8841934'
 			)
 
-		SELECT TOP 1 *
-		INTO #tmp
-		FROM [nutrition].[ItemNutritionHistory]
+		SELECT TOP 1 79516 AS [RecipeId]
+	,'28597100000' AS [Plu]
+	,'Parfait, Chocolate Hazelnut Crunch MA' AS [RecipeName]
+	,'CONTAINS:MILK,EGGS,TREE NUTS,WHEAT,SOY.' AS [Allergens]
+	,
+	'Ingredients: Chocolate Cake (mix [cane sugar, unbleached unbromated wheat flour, natural cocoa, palm shortening, baking powder (sodium acid pyrophosphate, sodium bicarbonate, starch), tapioca food starch, dextrose, egg, salt, soy flour, xanthan gum, cellulose gum, guar gum], water, egg [whole eggs, citric acid], expeller pressed canola oil), Chocolate Hazelnut Chantilly Icing (heavy cream [heavy cream, mono and diglycerides, polysorbate 80, carrageenan], mascarpone cheese [cream, milk, citric acid], cream cheese [milk & cream, cheese culture, salt, stabilizers (carob bean and/or xanthan and/or guar gums)], powdered sugar [sugar, cornstarch], hazelnut praline paste [roasted hazelnuts, soy lecithin], cocoa powder [cocoa powder processed with alkali]), Chocolate Hazelnut Crunch (chocolate [chocolate, sugar, cocoa butter, soy lecithin, vanilla flavor], hazelnuts, crushed biscuit [enriched wheat flour (niacin, reduced iron, thiamin mononitrate, riboflavin, folic acid), cane sugar, dextrose, milk, butter, salt, sunflower lecithin]), Hazelnuts, Simple Syrup (sugar, water), Chocolate Hazelnut Crunch Triangle (chocolate [sugar, chocolate liquor, cocoa butter, soya lecithin (emulsifier), vanilla extract], hazelnuts, biscuit [enriched wheat flour, cane sugar, dextrose, milk, butter, salt, sunflower lecithin]), Ganache (chocolate [sugar, chocolate liquor, cocoa butter, soya lecithin, vanilla extract], whipping cream).' 
+	AS [Ingredients]
+	,4 AS [ServingsPerPortion]
+	,'4 oz' AS [ServingSizeDesc]
+	,'varied' AS [ServingPerContainer]
+	,0 AS [HshRating]
+	,1 AS [ServingUnits]
+	,1 AS [SizeWeight]
+	,450 AS [Calories]
+	,330 AS [CaloriesFat]
+	,180 AS [CaloriesSaturatedFat]
+	,36.0 AS [TotalFatWeight]
+	,47 AS [TotalFatPercentage]
+	,20.0 AS [SaturatedFatWeight]
+	,100 AS [SaturatedFatPercent]
+	,0.0 AS [PolyunsaturatedFat]
+	,0.0 AS [MonounsaturatedFat]
+	,15.0 AS [CholesterolWeight]
+	,35 AS [CholesterolPercent]
+	,100.0 AS [SodiumWeight]
+	,4 AS [SodiumPercent]
+	,110.0 AS [PotassiumWeight]
+	,2 AS [PotassiumPercent]
+	,28.0 AS [TotalCarbohydrateWeight]
+	,10 AS [TotalCarbohydratePercent]
+	,2.0 AS [DietaryFiberWeight]
+	,8 AS [DietaryFiberPercent]
+	,0.0 AS [SolubleFiber]
+	,0.0 AS [InsolubleFiber]
+	,17.0 AS [Sugar]
+	,0.0 AS [SugarAlcohol]
+	,0.0 AS [OtherCarbohydrates]
+	,4.0 AS [ProteinWeight]
+	,0 AS [ProteinPercent]
+	,20 AS [VitaminA]
+	,0 AS [Betacarotene]
+	,0 AS [VitaminC]
+	,4 AS [Calcium]
+	,10 AS [Iron]
+	,0 AS [VitaminD]
+	,0 AS [VitaminE]
+	,0 AS [Thiamin]
+	,0 AS [Riboflavin]
+	,0 AS [Niacin]
+	,0 AS [VitaminB6]
+	,2 AS [Folate]
+	,0 AS [VitaminB12]
+	,0 AS [Biotin]
+	,0 AS [PantothenicAcid]
+	,0 AS [Phosphorous]
+	,0 AS [Iodine]
+	,0 AS [Magnesium]
+	,0 AS [Zinc]
+	,0 AS [Copper]
+	,0.0 AS [Transfat]
+	,0 AS [CaloriesFromTransfat]
+	,0.0 AS [Om6Fatty]
+	,0.0 AS [Om3Fatty]
+	,0.0 AS [Starch]
+	,0 AS [Chloride]
+	,0 AS [Chromium]
+	,0 AS [VitaminK]
+	,0 AS [Manganese]
+	,0 AS [Molybdenum]
+	,4 AS [Selenium]
+	,0.0 AS [TransfatWeight]
+	,getdate() AS [InsertDate]
+	,getdate() AS [ModifiedDate]
+	,NULL AS [AddedSugarsWeight]
+	,NULL AS [AddedSugarsPercent]
+	,NULL AS [CalciumWeight]
+	,NULL AS [IronWeight]
+	,NULL AS [VitaminDWeight]
+	,getUTCDate() AS [SysStartTimeUtc]
+	,getUTCDate() AS [SysEndTimeUtc]
+	INTO #tmp
 
 		INSERT INTO [nutrition].[ItemNutritionHistory] (
 			[RecipeId]
