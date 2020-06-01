@@ -228,10 +228,13 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             return;
         }
 
-        if (!invoiceNumber) {
-            toast.error("Please enter an invoice number", { autoClose: false });
-            return;
-        }
+        if (radioSelection === radioOptions.Invoice || radioSelection === radioOptions.Other) {
+            if (!invoiceNumber) {
+                toast.error("Please enter an invoice number");
+                return;
+            }
+        } 
+
         const handleConfirmCloseOrder = () => {
             if (new Date(invoiceDate).getFullYear() < new Date().getFullYear()) {
                 setAlert({
@@ -248,11 +251,13 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             }
         };
 
+        let alertMessage = radioSelection === radioOptions.None ? "Close Order?" : `Invoice Date: '${dateFormat(invoiceDate, 'mm/dd/yyyy', true)}'. Close Order?`;
+
         setAlert({
             ...alert,
             open: true,
             header: 'Confirm Close Order',
-            alertMessage: `Invoice Date: '${dateFormat(invoiceDate, 'mm/dd/yyyy', true)}'. Close Order?`,
+            alertMessage: alertMessage,
             type: 'confirm',
             confirmAction: () => { handleConfirmCloseOrder(); },
             cancelAction: () => { setAlert({ ...alert, open: false }); }
@@ -270,18 +275,18 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             const invoiceCost = invoiceTotal - nonAllocatedCharges - orderDetails.InvoiceFreight;
 
             var updateResult = await agent.InvoiceData.updateOrderBeforeClosing(
-                region, 
+                region,
                 orderDetails.OrderId,
-                invoiceNumber.toString(), 
-                new Date(invoiceDate), 
+                invoiceNumber.toString(),
+                new Date(invoiceDate),
                 invoiceCost,
-                orderDetails.VendorDocId ? orderDetails.VendorDocId.toString() : '', 
-                orderDetails.VendorDocDate, 
+                orderDetails.VendorDocId ? orderDetails.VendorDocId.toString() : '',
+                orderDetails.VendorDocDate,
                 orderDetails.SubteamNo,
                 false)
 
             if ((updateResult && !updateResult.status) || !updateResult) {
-                toast.error(`Error when updating order before closing: ${updateResult.errorMessage || 'No message given'}`, { autoClose: false })
+                toast.error(`Error when updating order before closing: ${updateResult.errorMessage || 'No message given'}`)
                 return;
             }
 
@@ -289,9 +294,9 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
 
             if (result && result.status) {
                 if (result && result.flag === true) {
-                    toast.error(`WARNING: The order was closed but is now in Suspended state. The invoice associated with this order will not be uploaded to PeopleSoft until the order has been approved`, { autoClose: false })
+                    toast.error(`WARNING: The order was closed but is now in Suspended state. The invoice associated with this order will not be uploaded to PeopleSoft until the order has been approved`);
                 } else {
-                    toast.info('Order Closed', { autoClose: false });
+                    toast.info('Order Closed');
                 }
                 dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
                 dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
@@ -299,7 +304,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
 
                 history.push("/receive/PurchaseOrder");
             } else {
-                toast.error(`Error when closing order: ${result.errorMessage || 'No message given'}`, { autoClose: false })
+                toast.error(`Error when closing order: ${result.errorMessage || 'No message given'}`);
             }
         }
         finally {
@@ -353,7 +358,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             const result = await agent.InvoiceData.removeInvoiceCharge(region, chargeId);
 
             if (!result.status) {
-                toast.error(`Failed removing charge, ${result.errorMessage || 'No message given'}`, { autoClose: false });
+                toast.error(`Failed removing charge, ${result.errorMessage || 'No message given'}`);
                 return;
             }
 
@@ -392,7 +397,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
             history.push('/receive/PurchaseOrder');
         } else {
-            toast.error(`Error when refusing order: ${result.errorMessage || 'No message given'}`, { autoClose: false })
+            toast.error(`Error when refusing order: ${result.errorMessage || 'No message given'}`);
         }
     }
 
@@ -410,12 +415,12 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             if (result.status) {
                 toast.info("eInvoice Reparsed");
             } else {
-                toast.error(`Error when reparsing eInvoice: ${result.errorMessage || 'No message given'}`, { autoClose: false })
+                toast.error(`Error when reparsing eInvoice: ${result.errorMessage || 'No message given'}`);
             }
 
             var order = await agent.PurchaseOrder.getOrder(region, orderDetails.OrderId);
             var reparsedOrderDetails = orderUtil.MapOrder(order);
-            
+
             setInvoiceNumberEdited(false);
             setInvoiceDateEdited(false);
             setInvoiceTotalEdited(false);
@@ -487,7 +492,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
 
     useEffect(() => {
         if (orderDetails) {
-            let invoiceTotalLocal:number = isNaN(invoiceTotal) ? 0 : invoiceTotal;
+            let invoiceTotalLocal: number = isNaN(invoiceTotal) ? 0 : invoiceTotal;
 
             setSubteamTotal(invoiceTotalLocal - orderDetails.InvoiceFreight - invoiceCharges)
 
@@ -535,7 +540,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             setInvoiceCharges(totalCharges);
         }
     }, [charges])
-    
+
     return (
         <Fragment>
             {isLoading ?
@@ -633,8 +638,8 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                         </div>
                     </Form>
                     <div style={{ position: 'absolute', bottom: '5px', width: '100%', textAlign: 'center' }}>
-                        <Button className='wfmButton' style={{ width: '100%'}} disabled={!canCloseOrder} onClick={validateCloseOrder}>
-                             Close Order
+                        <Button className='wfmButton' style={{ width: '100%' }} disabled={!canCloseOrder} onClick={validateCloseOrder}>
+                            Close Order
                         </Button>
                     </div>
                     <BasicModal alert={alert} setAlert={setAlert} />

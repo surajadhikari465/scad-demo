@@ -56,7 +56,7 @@ const App: React.FC = () => {
 
   return (
     <Fragment>
-      <ToastContainer position="bottom-right" />
+      <ToastContainer position="top-right" autoClose={3000} />
       {/* 
       // @ts-ignore */}
       <AppContext.Provider value={{ state, dispatch }}>

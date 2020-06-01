@@ -24,7 +24,7 @@ const ReceivingListClosePartial: React.FC<IProps> = ({ match }) => {
     const handleClosePartial = async () => {
         try {
             if(!orderDetails) {
-                toast.error('orderDetails is not defined', { autoClose: false });
+                toast.error('orderDetails is not defined');
                 history.goBack();
                 return;
             }
@@ -43,14 +43,14 @@ const ReceivingListClosePartial: React.FC<IProps> = ({ match }) => {
                 true);
 
             if((updateResult && !updateResult.status) || !updateResult) {
-                toast.error(`Error when updating order before closing: ${(updateResult && updateResult.errorMessage) || 'No message given'}`, { autoClose: false })
+                toast.error(`Error when updating order before closing: ${(updateResult && updateResult.errorMessage) || 'No message given'}`);
                 return;
             }
 
             var result = await agent.InvoiceData.closeOrder(region, orderDetails.OrderId, user!.userId)
 
             if(result && result.status) {
-                toast.info('Order Partially Closed', { autoClose: false });
+                toast.info('Order Partially Closed');
 
                 dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
                 dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
@@ -58,7 +58,7 @@ const ReceivingListClosePartial: React.FC<IProps> = ({ match }) => {
 
                 history.push("/receive/PurchaseOrder");
             } else {
-                toast.error(`Error when closing order: ${(result && result.errorMessage) || 'No message given'}`, { autoClose: false })
+                toast.error(`Error when closing order: ${(result && result.errorMessage) || 'No message given'}`);
             }
         }
         finally {

@@ -85,6 +85,7 @@ export interface ISelectedShrink {
     packageUnitAbbreviation: string;
     shrinkType: string;
     costedByWeight: boolean;
+    soldByWeight: boolean;
 }
 
 export interface IShrinkType {
@@ -146,7 +147,7 @@ export const initialState = {
     subteamSession: [],
     subteamNo: '',
     shrinkType: { shrinkType: '', abbreviation: '', shrinkSubTypeMember: '', shrinkSubTypeId: null, inventoryAdjustmentCodeId: null, reasonCode: null },
-    selectedShrinkItem: { identifier: '', quantity: 0, signDescription: '', packageDesc1: '', packageDesc2: '', packageUnitAbbreviation: '', shrinkType: '', costedByWeight: false },
+    selectedShrinkItem: { identifier: '', quantity: 0, signDescription: '', packageDesc1: '', packageDesc2: '', packageUnitAbbreviation: '', shrinkType: '', costedByWeight: false, soldByWeight: false },
     shrinkTypes: [],
     isLoading: false,
     orderDetails: null,

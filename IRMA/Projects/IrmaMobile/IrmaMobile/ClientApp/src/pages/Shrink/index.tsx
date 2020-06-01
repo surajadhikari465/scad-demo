@@ -7,6 +7,7 @@ import BasicModal from '../../layout/BasicModal';
 import CurrentLocation from "../../layout/CurrentLocation";
 import LoadingComponent from '../../layout/LoadingComponent';
 import agent from "../../api/agent";
+import useNumberInput from '../../hooks/useNumberInput';
 
 
 const initialState = {
@@ -23,7 +24,8 @@ const initialState = {
   packageDesc1: '',
   packageDesc2: '',
   dupItem: [],
-  costedByWeight: false
+  costedByWeight: false,
+  soldByWeight: false
 };
 
 interface ShrinkProps {
@@ -247,7 +249,7 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
   }
   const setQty = (e: any) => {
     let quantity = parseFloat(e.target.value);
-    if (!shrinkState.costedByWeight) {
+    if (!shrinkState.costedByWeight && !shrinkState.soldByWeight) {
       setShrinkState({ ...shrinkState, quantity: parseInt(e.target.value.replace(/[^\w\s]|_/g, "")) });
     }
     else setShrinkState({ ...shrinkState, quantity: quantity });

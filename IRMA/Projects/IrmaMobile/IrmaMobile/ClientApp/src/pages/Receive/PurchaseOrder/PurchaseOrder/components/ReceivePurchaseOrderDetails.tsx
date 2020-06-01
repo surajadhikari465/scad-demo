@@ -111,26 +111,26 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
     const receiveOrder = async () => {
         if (orderDetails) {
             if (orderDetails.Code === -1) {
-                toast.error("Please enter a Reason Code", { autoClose: false });
+                toast.error("Please enter a Reason Code");
                 return;
             }
 
             if (parseInt(quantity) === 0) {
-                toast.error("Please enter a quantity of at least 1.", { autoClose: false });
+                toast.error("Please enter a quantity of at least 1.");
                 return;
             }
 
             if (costedByWeight) {
                 if(!weight || isNaN(parseFloat(weight.toString()))) {
-                    toast.error("Weight Received must be a numeric value. Please try again.", { autoClose: false });
+                    toast.error("Weight Received must be a numeric value. Please try again.");
                     return;
                 }
                 if(weight > 9999.99) {
-                    toast.error("Weight amount must be less than 9999.99", { autoClose: false });
+                    toast.error("Weight amount must be less than 9999.99");
                     return;
                 }
                 if(weight < .01) {
-                    toast.error("Weight amount must be greater than .01", { autoClose: false });
+                    toast.error("Weight amount must be greater than .01");
                     return;
                 }
             }

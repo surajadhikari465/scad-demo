@@ -129,12 +129,12 @@ const TransferReview: React.FC = () => {
       setIsLoading(false);
       
       let po = result.irmaPoNumber;      
-      toast.success(`PO# ${po} created successfully.`, { autoClose: false });
+      toast.success(`PO# ${po} created successfully.`);
       localStorage.removeItem('transferData');
       history.push('/transfer/index/false');
     } catch (error) {
       setIsLoading(false);
-      toast.error('Error sending transfer order.', { autoClose: false });
+      toast.error('Error sending transfer order.');
     }
   };
 

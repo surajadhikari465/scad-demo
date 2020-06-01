@@ -202,25 +202,25 @@ const TransferHome: React.FC<IProps> = ({ match }) => {
 
     const handleCreatePoClick = () => {
         if (fromStore === -1) {
-            toast.error('Please set From Store', { autoClose: false });
+            toast.error('Please set From Store');
             return;
         } else if (fromSubteam === -1) {
-            toast.error('Please set From Subteam', { autoClose: false });
+            toast.error('Please set From Subteam');
             return;
         } else if (toStore === -1) {
-            toast.error('Please set To Store', { autoClose: false });
+            toast.error('Please set To Store');
             return;
         } else if (toSubteam === -1) {
-            toast.error('Please set To Subteam', { autoClose: false });
+            toast.error('Please set To Subteam');
             return;
         } else if (productType === -1) {
-            toast.error('Please set Product Type', { autoClose: false });
+            toast.error('Please set Product Type');
             return;
         } else if (productType === 3 && supplyType === -1) {
-            toast.error('Please set Supply Type', { autoClose: false });
+            toast.error('Please set Supply Type');
             return;
         } else if (stores.find(s => parseInt(s.storeNo) === fromStore)?.name === transferToStores?.find(s => parseInt(s.storeNo) === toStore)?.name && fromSubteam === toSubteam) {
-            toast.error('From Store/Subteam cannot be the same as To Store/Subteam', { autoClose: false });
+            toast.error('From Store/Subteam cannot be the same as To Store/Subteam');
             return;
         }
 

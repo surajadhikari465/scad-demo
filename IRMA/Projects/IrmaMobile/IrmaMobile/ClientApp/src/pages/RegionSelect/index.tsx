@@ -65,11 +65,11 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 				dispatch({ type: types.SETREGION, region: '' });
 				dispatch({ type: types.SETSTORE, store: '' });
 				dispatch({ type: types.SETSTORES, store: [] });
-				toast.error("Store could not be loaded. Try again.", { autoClose: false });
+				toast.error("Store could not be loaded. Try again.");
 				return;
 			}
 			if (!shrinkSubTypes) {
-				toast.error("Shrink Types could not be loaded. Try again.", { autoClose: false });
+				toast.error("Shrink Types could not be loaded. Try again.");
 				return;
 			}
 			try {
@@ -81,7 +81,7 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 				setShrinkTypes(shrinkSubTypes);
 				setShrinkAdjustmentReasons(shrinkAdjustmentReasons);
 			} catch (err) {
-				toast.error("Unable to Set Stores", { autoClose: false })
+				toast.error("Unable to Set Stores");
 			}
 		}
 		finally {

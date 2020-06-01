@@ -27,7 +27,7 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
 
   const updateQuantity = (e: any) => {
     let quantity = parseFloat(e.target.value);
-    if (!selectedShrinkItem.costedByWeight) {
+    if (!selectedShrinkItem.costedByWeight && !selectedShrinkItem.soldByWeight) {
       dispatch({ type: types.SETSELECTEDSHRINKITEM, selectedShrinkItem: { ...selectedShrinkItem, quantity: parseInt(e.target.value.replace(/[^\w\s]|_/g, "")) } });
     }
     else dispatch({ type: types.SETSELECTEDSHRINKITEM, selectedShrinkItem: { ...selectedShrinkItem, quantity } });
@@ -41,7 +41,7 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
       setAlert({
         ...alert,
         open: true,
-        alertMessage: `${selectedShrinkItem.costedByWeight ? 'Weight' : 'Quantity'} cannot be greater than 999`,
+        alertMessage: `${selectedShrinkItem.costedByWeight || selectedShrinkItem.soldByWeight ? 'Weight' : 'Quantity'} cannot be greater than 999`,
         type: 'default',
         header: 'Update Shrink'
       });
@@ -49,7 +49,7 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
       setAlert({
         ...alert,
         open: true,
-        alertMessage: `${selectedShrinkItem.costedByWeight ? 'Weight' : 'Quantity'} cannot be 0`,
+        alertMessage: `${selectedShrinkItem.costedByWeight || selectedShrinkItem.soldByWeight ? 'Weight' : 'Quantity'} cannot be 0`,
         type: 'default',
         header: 'Update Shrink'
       });
@@ -57,7 +57,7 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
       setAlert({
         ...alert,
         open: true,
-        alertMessage: `Please enter a numeric value for the ${selectedShrinkItem.costedByWeight ? 'Weight' : 'Quantity'}`,
+        alertMessage: `Please enter a numeric value for the ${selectedShrinkItem.costedByWeight || selectedShrinkItem.soldByWeight ? 'Weight' : 'Quantity'}`,
         type: 'default',
         header: 'Update Shrink'
       });
@@ -74,8 +74,7 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
    * to stop invalid punctuation 
    */
   const clearInvalid = (e: any) => {
-
-    if (!selectedShrinkItem.costedByWeight) {
+    if (!selectedShrinkItem.costedByWeight && !selectedShrinkItem.soldByWeight) {
       dispatch({ type: types.SETSELECTEDSHRINKITEM, selectedShrinkItem: { ...selectedShrinkItem, quantity: parseInt(e.target.value.replace(/[^\w\s]|_/g, "")) } });
     }
   }
@@ -98,16 +97,16 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
         </section>
         <section className='quantity-info'>
           <div>
-            <label>{`${selectedShrinkItem.costedByWeight ? 'Weight Recorded' : 'Quantity Recorded:'}`}</label>
+            <label>{`${selectedShrinkItem.costedByWeight || selectedShrinkItem.soldByWeight ? 'Weight Recorded' : 'Quantity Recorded:'}`}</label>
             <span className="initial-quantity">{initialQuantity}</span>
           </div>
           <div>
-            <label>{`${selectedShrinkItem.costedByWeight ? 'New Weight:' : 'New Quantity:'}`}</label>
+            <label>{`${selectedShrinkItem.costedByWeight || selectedShrinkItem.soldByWeight ? 'New Weight:' : 'New Quantity:'}`}</label>
             <input type='number'
               value={selectedShrinkItem.quantity.toString()}
               min="1"
               maxLength={3}
-              step={selectedShrinkItem.costedByWeight ? 'any' : 1}
+              step={selectedShrinkItem.costedByWeight || selectedShrinkItem.soldByWeight ? 'any' : 1}
               onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''}
               onKeyPress={clearInvalid}
               onBlur={clearInvalid}

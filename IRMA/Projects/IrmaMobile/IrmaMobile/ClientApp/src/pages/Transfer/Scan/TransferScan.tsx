@@ -100,9 +100,9 @@ const TransferScan: React.FC = () => {
                 }
                 if (itemRaw.GLAcct === 0 && transferData.ProductType !== 1) {
                     if (transferData.ProductType === 2) {
-                        toast.error(`This item cannot be transferred because it's from subteam ${itemRaw.RetailSubteamName}, which doesn't have a GL Packaging Account set up yet.`, { autoClose: false });
+                        toast.error(`This item cannot be transferred because it's from subteam ${itemRaw.RetailSubteamName}, which doesn't have a GL Packaging Account set up yet.`);
                     } else {
-                        toast.error(`This item cannot be transferred because it's from subteam ${itemRaw.RetailSubteamName}, which doesn't have a GL Supplies Account set up yet.`, { autoClose: false });
+                        toast.error(`This item cannot be transferred because it's from subteam ${itemRaw.RetailSubteamName}, which doesn't have a GL Supplies Account set up yet.`);
                     }
                     setUpc('');
                     return;
@@ -151,7 +151,7 @@ const TransferScan: React.FC = () => {
                 setAdjustedCost(loadingItem.AdjustedCost);
 
                 if ((loadingItem.VendorCost === 0) && (loadingItem.AdjustedCost === 0)) {
-                    toast.info("The cost for this item is 0.00, or it could not be determined. If this is incorrect, please enter the Adjusted Cost for the item.", { autoClose: false });
+                    toast.info("The cost for this item is 0.00, or it could not be determined. If this is incorrect, please enter the Adjusted Cost for the item.");
                     setVendorCost('0');
                     setCostLabel('Adjusted Cost:');
                 } else if (loadingItem.VendorCost === 0) {

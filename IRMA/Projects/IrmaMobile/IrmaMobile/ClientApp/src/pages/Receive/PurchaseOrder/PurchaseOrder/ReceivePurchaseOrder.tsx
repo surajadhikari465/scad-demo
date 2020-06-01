@@ -116,7 +116,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     const searchForExternalOrders = async (purchaseOrderNumber: string) => {
         //int32 max...
         if (purchaseOrderNumber && parseInt(purchaseOrderNumber) > 2147483647) {
-            toast.error(`The PO # value is too large. Please enter a smaller value`, { autoClose: false });
+            toast.error(`The PO # value is too large. Please enter a smaller value`);
         } else {
             setIsLoading(true);
             dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
@@ -135,7 +135,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                 }
             } catch (error) {
                 console.error(error);
-                toast.error(`Error occurred when searching for order an order. Please retry your request.  If the problem persists, please contact support.`, { autoClose: false });
+                toast.error(`Error occurred when searching for order an order. Please retry your request.  If the problem persists, please contact support.`);
                 dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
                 setIsLoading(false);
             }
@@ -152,7 +152,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                     if (order.orderItems.some((oi: { identifier: string }) => oi.identifier === purchaseOrderUpc)) {
                         searchForOrderItem(purchaseOrderNumber, purchaseOrderUpc);
                     } else {
-                        toast.error(`${purchaseOrderUpc} not found in PO #${purchaseOrderNumber}`, { autoClose: false });
+                        toast.error(`${purchaseOrderUpc} not found in PO #${purchaseOrderNumber}`);
                     }
                 }
 
@@ -177,7 +177,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
             }
         } catch (error) {
             console.error(`Error retrieving order ${purchaseOrderNumber}: ${error}`);
-            toast.error(`Error occurred when searching for order an order. Please retry your request.  If the problem persists, please contact support.`, { autoClose: false });
+            toast.error(`Error occurred when searching for order an order. Please retry your request.  If the problem persists, please contact support.`);
             dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
             dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
             dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
