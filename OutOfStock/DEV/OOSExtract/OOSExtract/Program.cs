@@ -22,9 +22,6 @@ namespace OOSExtract
 
         [Option('f', "useftp", Default = false, HelpText = "Send to Ted's Ftp")]
         public bool UseFtp { get; set; }
-
-        [Option('s', "useS3", Default = false, HelpText = "Send to S3 Bucket")]
-        public bool UseS3 { get; set; }
     }
 
     class Program
@@ -33,13 +30,6 @@ namespace OOSExtract
         private static string connectionStringTemplate;
         private static string serverName;
         private static  string connectionString;
-
-        private const string AccessKey = "AKIAI4ZFUHNVCWA3UUKA";
-        private const string SecretKey = "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";
-        private const string KmsKey = "3a847b00-0d76-4f40-bec2-1f2f18b0381b";
-        private const string BucketName = "oos-staging-dev";
-
-
         static void Main(string[] args)
         {
 
@@ -60,7 +50,7 @@ namespace OOSExtract
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .WriteTo.File(@".\logs\log.txt", LogEventLevel.Verbose, "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}", null, 5120000L, null, false, false, new TimeSpan?(), RollingInterval.Day, true)
+                .WriteTo.File(@".\logs\log.txt", LogEventLevel.Verbose, "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}", null, 5120000L, null, false, false, new TimeSpan?(), RollingInterval.Infinite, true)
                 .WriteTo.Console(LogEventLevel.Verbose, "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}", null, null, new LogEventLevel?()).CreateLogger();
 
             Log.Logger.Information("{@options}", options);
@@ -75,16 +65,10 @@ namespace OOSExtract
             try
             {
                 var oosData = ExtractOosData(options.DaysBack, options.IncludeScansMissingDetails);
-
-                
                 var csv = WriteToCsv(infn, oosData);
                 CompressData(infn, outfn, csv);
                 if (options.UseFtp)
                     SendToFtp(outfn);
-
-                if (options.UseS3)
-                    SendToS3(outfn);
-
 
                 switch (options.DaysBack)
                 {
@@ -106,16 +90,6 @@ namespace OOSExtract
             }
 
 
-        }
-
-        private static void SendToS3(string outfn)
-        {
-
-            Log.Logger.Information("s3 Upload...");
-
-            var uploader = new S3Uploader(AccessKey, SecretKey, KmsKey);
-            
-            uploader.UploadFile(File.OpenRead(outfn), BucketName, outfn);
         }
 
         private static void MoveToDaily(string outfn)
@@ -203,8 +177,7 @@ namespace OOSExtract
 
         private static string WriteToCsv(string infn, DataTable dt)
         {
-            Log.Logger.Debug($"Writing {dt.Rows.Count} rows...");
-            var cnt = 0;
+            Log.Logger.Debug("Writing ...");
             using (var text = File.CreateText(infn))
             {
                 using (var csvWriter = new CsvWriter(text))
@@ -214,13 +187,11 @@ namespace OOSExtract
                     csvWriter.NextRecord();
                     foreach (DataRow row in dt.Rows)
                     {
-                        cnt++;
                         for (var index = 0; index < dt.Columns.Count; ++index)
                             csvWriter.WriteField(row[index]);
                         csvWriter.NextRecord();
                     }
                 }
-                Log.Logger.Debug($"Wrote {cnt} rows...");
             }
             return File.ReadAllText(infn);
         }

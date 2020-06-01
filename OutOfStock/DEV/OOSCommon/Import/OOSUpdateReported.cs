@@ -333,6 +333,8 @@ namespace OOSCommon.Import
 
         private Dictionary<string, IRetailItem> GetProductMap(IEnumerable<string> upcs)
         {
+            
+            
             var productDataService = ObjectFactory.GetInstance<ProductDataService>();
             var retailItems = productDataService.QueryProductData(upcs, store.STORE_ABBREVIATION);
             var productDataMap = retailItems.ToDictionary(p => p.UPC.Code, q => q);

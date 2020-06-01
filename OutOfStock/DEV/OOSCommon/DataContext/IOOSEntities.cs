@@ -43,5 +43,6 @@ namespace OOSCommon.DataContext
         IObjectSet<STORE> STORE { get; }
         IObjectSet<OutOfStockNofitication> OutOfStockNofitication { get; }
         IObjectSet<Users> Users { get; }
+        IObjectSet<RegionalAppConfiguration> RegionalAppConfiguration { get; }
     }
 }

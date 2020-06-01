@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[PullReport]
+﻿CREATE PROCEDURE PullReport
     (
       @BeginDate DATETIME ,
       @EndDate DATETIME,

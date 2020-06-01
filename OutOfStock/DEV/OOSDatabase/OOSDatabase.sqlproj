@@ -135,6 +135,18 @@
     <Build Include="dbo\Stored Procedures\MultiStoreReport.sql" />
     <Build Include="dbo\Stored Procedures\InsertOrUpdateScansMissingVimData.sql" />
     <Build Include="dbo\Stored Procedures\DeleteScansMissingVimData.sql" />
+    <Build Include="dbo\Tables\Users.sql" />
+    <Build Include="dbo\Tables\RegionalAppConfiguration.sql" />
+    <Build Include="dbo\Tables\RawScans.sql" />
+    <Build Include="dbo\Tables\OutOfStockNofitication.sql" />
+    <Build Include="dbo\Stored Procedures\SummaryReport.sql" />
+    <Build Include="dbo\Stored Procedures\SaveRawScan.sql" />
+    <Build Include="dbo\Stored Procedures\OutOfStockExtract.sql" />
+    <Build Include="dbo\Stored Procedures\MultiStoreReport_NoGrouping.sql" />
+    <Build Include="dbo\Stored Procedures\MultiStoreReport_GroupByUpc.sql" />
+    <Build Include="dbo\Stored Procedures\MarkScanAsFailed.sql" />
+    <Build Include="dbo\Stored Procedures\MarkScanAsComplete.sql" />
+    <Build Include="dbo\Stored Procedures\GetNextScans.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="UpdateProjectFromTest.scmp" />

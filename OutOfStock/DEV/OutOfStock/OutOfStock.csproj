@@ -431,7 +431,7 @@
     <Compile Include="UserLoginManager.cs" />
     <Compile Include="UserProfile.cs" />
     <Compile Include="WebService\IScanOutOfStock.cs" />
-    <Compile Include="WebService\ITestService.cs" />
+    <Compile Include="WebService\IOOSBackend.cs" />
     <Compile Include="WebService\MovementDataReadFaultException.cs" />
     <Compile Include="WebService\NoProductDataForAnyScanFaultException.cs" />
     <Compile Include="WebService\ProductDataReadFaultException.cs" />
@@ -439,8 +439,8 @@
       <DependentUpon>ScanOutOfStock.svc</DependentUpon>
     </Compile>
     <Compile Include="WebService\ScanProductFaultException.cs" />
-    <Compile Include="WebService\TestService.svc.cs">
-      <DependentUpon>TestService.svc</DependentUpon>
+    <Compile Include="WebService\OOSBackend.svc.cs">
+      <DependentUpon>OOSBackend.svc</DependentUpon>
     </Compile>
     <Compile Include="WebService\ValidationFaultException.cs" />
   </ItemGroup>
@@ -807,7 +807,7 @@
     </Content>
     <Content Include="Views\Support\Index.cshtml" />
     <Content Include="Views\SummaryReport\GridTest.cshtml" />
-    <Content Include="WebService\TestService.svc" />
+    <Content Include="WebService\OOSBackend.svc" />
     <Content Include="_bin_deployableAssemblies\System.Web.Mvc.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

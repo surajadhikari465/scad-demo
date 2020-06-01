@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OOS.Model;
+using OOS.Model.Repository;
 using OOS.Services.DAL;
 using OOS.Services.DataModels;
 using OOS.Services.Tests.Fakes;
@@ -9,6 +11,8 @@ using OOSCommon;
 using OutOfStock;
 using OutOfStock.ScanManagement;
 using OutOfStock.WebService;
+using ProductDataBoundedContext;
+using SharedKernel;
 using StructureMap;
 
 namespace OOS.Services.Tests
@@ -133,31 +137,50 @@ namespace OOS.Services.Tests
     [TestClass]
     public class ServiceTester
     {
-        private  static TestService _service;
+        private  static IOosBackend _service;
         private static string[] _upcs;
+        private static string[] _upcs2;
+        private static string[] _upcsAll;
 
         [ClassInitialize()]
         public static void ClassInit(TestContext context)
         {
+            //ObjectFactory.Configure(cfg =>
+            //{
+            //    cfg.For<IConfigure>().Use<BasicConfigurator>();
+            //    cfg.For<IApplicationConfig>().Use<ApplcationConfig>();
+            //    cfg.For<IRawScanRepository>().Use<RawScanRepository>();
+            //    cfg.For<IScanOutOfStockItemService>().Use<ScanOutOfStockItemService>();
+
+
+            //});
+
             ObjectFactory.Configure(cfg =>
             {
-                cfg.For<IConfigure>().Use<BasicConfigurator>();
-                cfg.For<IApplicationConfig>().Use<ApplcationConfig>();
                 cfg.For<IRawScanRepository>().Use<RawScanRepository>();
-
+                cfg.For<IConfigure>().Use<BasicConfigurator>();
+                cfg.For<IScanOutOfStockItemService>().Use<ScanOutOfStockItemService>();
+                cfg.For<ILogService>().Use<LogService>();
+                cfg.For<IConfigurator>().Use<ScanProcessorConfigurator>();
+                cfg.For<IEventCreatorFactory>().Use<EventCreatorFactory>();
+                cfg.For<IOOSEntitiesFactory>().Use<OOSEntitiesFactory>();
+                cfg.For<IRegionRepository>().Use<RegionRepository>();
+                cfg.For<IProductRepository>().Use<ProductRepository>();
+                cfg.For<ProductDataService>().Use<ProductDataService>();
+                cfg.For<IStoreRepository>().Use<StoreRepository>();
+                cfg.For<IRetailItemRepository>().Use<RetailItemRepository>();
+                cfg.For<IUserProfile>().Use<ScanProcessorUserProfile>();
+                cfg.For<IProductFactory>().Use<ProductFactory>();
+                
             });
-            _service = new TestService();
-            _upcs = Enumerable.Repeat("1234567890123", 500).ToArray();
+            _service = new OosBackend();
+            _upcs = Enumerable.Repeat("0009948228578", 100).ToArray();
+            _upcs2 = Enumerable.Repeat("0009948228577", 100).ToArray();
+            _upcsAll = _upcs.Concat(_upcs2).ToArray();
         }
 
 
-        [TestMethod]
-        public void TestPing()
-        {
-           
-            var result = _service.Ping();
-
-        }
+       
 
         [TestMethod]
 
@@ -165,9 +188,57 @@ namespace OOS.Services.Tests
 
         {
             
-            _service.ScanProductsByStoreAbbreviation(DateTime.Now, "SW", "LMR", _upcs);
+            _service.ScanProductsByStoreAbbreviation(DateTime.Now, "SW", "LMR", _upcsAll, string.Empty, string.Empty, string.Empty);
 
         }
 
+    }
+
+    public class ScanProcessorConfigurator : BasicConfigurator, IConfigurator
+    {
+        public string GetSessionID()
+        {
+            //var sessionId = " ".PadBoth(24);
+            //if (HttpContext.Current != null && HttpContext.Current.Session != null &&
+            //    !string.IsNullOrWhiteSpace(HttpContext.Current.Session.SessionID))
+            //    sessionId = HttpContext.Current.Session.SessionID;
+            //return sessionId;
+            return "[sessionid]";
+        }
+
+        public string TemporaryDownloadFilePath()
+        {
+            return "c:\\";
+        }
+    }
+
+    public class ScanProcessorUserProfile : IUserProfile
+    {
+        public bool IsRegionBuyer()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string UserStoreAbbreviation()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsCentral()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string UserRegion()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsStoreLevel()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string UserName { get; }
     }
 }

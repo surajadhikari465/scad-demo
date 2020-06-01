@@ -151,9 +151,7 @@ namespace OOS.Model
         public void ScanProductsByStoreAbbreviation(string regionAbbrev, string storeAbbrev, string[] upcs, DateTime scanDate)
         {
             ValidateStoreInRegion(regionAbbrev, storeAbbrev);
-            
             var eventCreator = _creatorFactory.ForStoreByAbbreviation(storeAbbrev);
-            LogRawScanData(upcs);
 
             var success = eventCreator.BeginBatch(scanDate);
             if (success)

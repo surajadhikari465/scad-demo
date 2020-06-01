@@ -35,6 +35,7 @@ namespace OutOfStock
                 cfg.For<IApplicationConfig>().Use<ApplcationConfig>();
                 cfg.For<IOutOfStockNotificationManager>().Use<OutOfStockNotificationManager>();
                 cfg.For<IUserLoginManager>().Use<UserLoginManager>();
+                cfg.For<IScanOutOfStockItemService>().Use<ScanOutOfStockItemService>();
                 cfg.For<IRawScanRepository>().Use<RawScanRepository>();
                 cfg.For<IServiceBus>().Use(context => ServiceBusFactory.New(sbc =>
                 {

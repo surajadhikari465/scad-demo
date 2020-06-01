@@ -128,5 +128,10 @@ namespace OOSCommon.DataContext
             get { return _users  ?? (_users = new MockObjectSet<Users>()); }
         }
         private IObjectSet<Users> _users;
+        public IObjectSet<RegionalAppConfiguration> RegionalAppConfiguration
+        {
+            get { return _regionalAppConfiguration  ?? (_regionalAppConfiguration = new MockObjectSet<RegionalAppConfiguration>()); }
+        }
+        private IObjectSet<RegionalAppConfiguration> _regionalAppConfiguration;
     }
 }

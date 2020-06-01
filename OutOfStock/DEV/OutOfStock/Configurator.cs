@@ -1,8 +1,8 @@
 ﻿using System.Web;
 using OOS.Model;
-using OOSCommon;
+using OutOfStock;
 
-namespace OutOfStock
+namespace OOSCommon
 {
     public class Configurator : BasicConfigurator, IConfigurator
     {

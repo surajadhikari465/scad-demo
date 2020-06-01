@@ -45,6 +45,7 @@
     <OutputPath>bin\Production\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="StructureMap, Version=2.6.3.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
       <HintPath>..\packages\structuremap.2.6.3\lib\StructureMap.dll</HintPath>
     </Reference>
@@ -70,6 +71,10 @@
     <Compile Include="UpdateStoresTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OOS.Model\OOS.Model.csproj">
+      <Project>{42EEB29B-E7F5-43DE-A7AE-617BE3DDAD97}</Project>
+      <Name>OOS.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OOS.Services\OOS.Services.csproj">
       <Project>{8095c4a1-a842-4343-926a-ea5d5679b5ff}</Project>
       <Name>OOS.Services</Name>
@@ -85,6 +90,14 @@
     <ProjectReference Include="..\OutOfStock\OutOfStock.csproj">
       <Project>{6ab80a3f-f7a2-4fdc-b813-817e66f55d34}</Project>
       <Name>OutOfStock</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProductDataBoundedContext\ProductDataBoundedContext.csproj">
+      <Project>{ABFCAEE8-EF96-41A9-815E-57F60CA36F20}</Project>
+      <Name>ProductDataBoundedContext</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedKernel\SharedKernel.csproj">
+      <Project>{C28D2FC7-81B5-40BB-B343-1DD84A1A5CE6}</Project>
+      <Name>SharedKernel</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

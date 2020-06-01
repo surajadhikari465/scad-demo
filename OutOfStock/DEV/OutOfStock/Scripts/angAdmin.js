@@ -1,20 +1,20 @@
-﻿var adminApp = angular.module('adminApp', ['ngAnimate', 'ajoslin.promise-tracker']);
+﻿var adminApp = angular.module("adminApp", ["ngAnimate", "ajoslin.promise-tracker"]);
 
-adminApp.config(['$httpProvider', function ($httpProvider) {
-    $httpProvider.interceptors.push('noCacheInterceptor');
-}]).factory('noCacheInterceptor', function () {
+adminApp.config(["$httpProvider", function ($httpProvider) {
+    $httpProvider.interceptors.push("noCacheInterceptor");
+}]).factory("noCacheInterceptor", function () {
     return {
         request: function (config) {
-            if (config.method === 'GET') {
-                var separator = config.url.indexOf('?') === -1 ? '?' : '&';
-                config.url = config.url + separator + 'noCache=' + new Date().getTime();
+            if (config.method === "GET") {
+                var separator = config.url.indexOf("?") === -1 ? "?" : "&";
+                config.url = config.url + separator + "noCache=" + new Date().getTime();
             }
             return config;
         }
     };
 });
 
-adminApp.controller('updaterCtrl', function($scope, $http, promiseTracker) {
+adminApp.controller("updaterCtrl", function($scope, $http, promiseTracker) {
     $scope.loadingTracker = promiseTracker();
     $scope.appData = null;
     $scope.regionList = null;
@@ -27,14 +27,14 @@ adminApp.controller('updaterCtrl', function($scope, $http, promiseTracker) {
     
 
     $scope.getRegionList = function() {
-        $http.get('/Admin/GetRegionList', { tracker: $scope.loadingTracker }).success(function (data) {
+        $http.get("/Admin/GetRegionList", { tracker: $scope.loadingTracker }).success(function (data) {
             $scope.regionList = data;
         });
     }
 
 
     $scope.loadStoresCurrentlyInOOS = function () {
-        $http.get('/Admin/GetAvailableStores?regionid=' + $scope.selectedRegion.Value, { tracker: $scope.loadingTracker }).success(function(data) {
+        $http.get("/Admin/GetAvailableStores?regionid=" + $scope.selectedRegion.Value, { tracker: $scope.loadingTracker }).success(function(data) {
             $scope.appData = data;
             $scope.view = "oos";
             $scope.checkForUpdates();
@@ -53,14 +53,14 @@ adminApp.controller('updaterCtrl', function($scope, $http, promiseTracker) {
         if (data.PSBU === "")
             alert("PSBU is required.");
         else {
-            $http({ method: 'POST', url: '/Admin/CloseStore', data: data }).success(function (d, status, headers, config) {
+            $http({ method: "POST", url: "/Admin/CloseStore", data: data }).success(function (d, status, headers, config) {
                 var m = $("#CloseStoreMessage");
                 m.text(d.message);
 
                 if (d.isError) {
-                    m.css('color', 'red');
+                    m.css("color", "red");
                 } else {
-                    m.css('color', 'green');
+                    m.css("color", "green");
                     $("#closestoreid").val("");
                 }
 
@@ -80,18 +80,18 @@ adminApp.controller('updaterCtrl', function($scope, $http, promiseTracker) {
         data.StoreName = $("#renamestorename").val();
         data.StoreAbbr = $("#renamestoreabbr").val();
 
-        if (data.StoreNumber == "")
+        if (data.StoreNumber === "")
             alert("PSBU is required.");
         else {
-            $http({ method: 'POST', url: '/Admin/RenameStore', data: data }).success(function (d, status, headers, config) {
+            $http({ method: "POST", url: "/Admin/RenameStore", data: data }).success(function (d, status, headers, config) {
                 
                 var m = $("#RenameStoreMessage");
                 m.text(d.message);
 
                 if (d.isError) {
-                    m.css('color', 'red');
+                    m.css("color", "red");
                 } else {
-                    m.css('color', 'green');
+                    m.css("color", "green");
                     $("#renamestoreid").val("");
                     $("#renamestorename").val("");
                     $("#renamestoreabbr").val("");
@@ -120,14 +120,14 @@ adminApp.controller('updaterCtrl', function($scope, $http, promiseTracker) {
             alert("Business Unit is required.");
        
         } else {
-            $http({ method: 'POST', url: '/Admin/ToggleStoreVisibility', data: data }).success(function (d, status, headers, config) {
+            $http({ method: "POST", url: "/Admin/ToggleStoreVisibility", data: data }).success(function (d, status, headers, config) {
                 var m = $("#VisibilityMessage");
                 m.text(d.message);
 
                 if (d.isError) {
-                    m.css('color', 'red');
+                    m.css("color", "red");
                 } else {
-                    m.css('color', 'green');
+                    m.css("color", "green");
                 }
                 $("#displayStorePSBU").val("");
                 m.show();
@@ -162,15 +162,15 @@ adminApp.controller('updaterCtrl', function($scope, $http, promiseTracker) {
 
         } else {
             console.log("add");
-            $http({ method: 'POST', url: '/Admin/AddStore', data: data }).success(function(d, status, headers, config) {
+            $http({ method: "POST", url: "/Admin/AddStore", data: data }).success(function(d, status, headers, config) {
                 console.log(d);
                 var m = $("#AddStoreMessage");
                 m.text(d.message);
 
                 if (d.isError) {
-                    m.css('color', 'red');
+                    m.css("color", "red");
                 } else {
-                    m.css('color', 'green');
+                    m.css("color", "green");
                      $("#newstoreabbreviation").val("");
                     $("#newstorename").val("");
                     $("#newstorebu").val("");
@@ -195,7 +195,7 @@ adminApp.controller('updaterCtrl', function($scope, $http, promiseTracker) {
             
 
 
-            $http({ method: 'POST', url: '/Admin/SaveStore', data: json }).success(function(d, status, headers, config) {
+            $http({ method: "POST", url: "/Admin/SaveStore", data: json }).success(function(d, status, headers, config) {
                 
                 $scope.checkForUpdates();
                 switch (view) {
@@ -218,14 +218,14 @@ adminApp.controller('updaterCtrl', function($scope, $http, promiseTracker) {
     }
 
     $scope.loadStoresToBeAdded = function () {        
-        $http.get('/Admin/GetNewStores', { tracker: $scope.loadingTracker }).success(function(data) {
+        $http.get("/Admin/GetNewStores", { tracker: $scope.loadingTracker }).success(function(data) {
             $scope.appData = data;
             $scope.view = "new";
         });
     };
 
     $scope.loadStoresThatNeedUpates = function() {
-        $http.get('/Admin/GetUpdatedStores', { tracker: $scope.loadingTracker }).success(function(data) {
+        $http.get("/Admin/GetUpdatedStores", { tracker: $scope.loadingTracker }).success(function(data) {
             $scope.appData = data;
             $scope.view = "updates";
         });
@@ -259,12 +259,12 @@ adminApp.controller('updaterCtrl', function($scope, $http, promiseTracker) {
                 for (var i = 0; i < data.length; i++) {
                     //console.log(data[i].Key + " :: " + data[i].Value);
 
-                    if (data[i].Key == "update") {
+                    if (data[i].Key === "update") {
                         $scope.updateStoreCount = data[i].Value;
                         if (data[i].Value > 0) {
                             $scope.updatesAvailable = true;
                         }
-                    } else if (data[i].Key == "insert") {
+                    } else if (data[i].Key === "insert") {
                         $scope.newStoreCount = data[i].Value;
                         if (data[i].Value > 0) {
                             $scope.updatesAvailable = true;
@@ -280,7 +280,7 @@ adminApp.controller('updaterCtrl', function($scope, $http, promiseTracker) {
     $scope.getRegionList();
 });
 
-adminApp.controller('userManagementCtrl',
+adminApp.controller("userManagementCtrl",
     function($scope, $http, promiseTracker) {
         $scope.loadingTracker = promiseTracker();
         $scope.matchedUsers = null;
@@ -289,7 +289,7 @@ adminApp.controller('userManagementCtrl',
 
             var user = $("#txtUserSearch").val();
 
-            $http.get('/Admin/GetUserInfo?user='+user, { tracker: $scope.loadingTracker }).success(function (data) {
+            $http.get("/Admin/GetUserInfo?user="+user, { tracker: $scope.loadingTracker }).success(function (data) {
                 $scope.matchedUsers = data;
             });
 
@@ -307,8 +307,8 @@ adminApp.controller('userManagementCtrl',
             };
             console.log(data);
 
-            $http({ method: 'POST', url: '/Admin/SaveLocationOverride', data: data }).success(function (d, status, headers, config) {
-                alert(d);
+            $http({ method: "POST", url: "/Admin/SaveLocationOverride", data: data }).success(function (d, status, headers, config) {
+                console.log(d);
             });
 
 

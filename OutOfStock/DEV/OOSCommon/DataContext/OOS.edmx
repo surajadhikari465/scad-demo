@@ -128,6 +128,15 @@
           <Property Name="LAST_UPDATED_BY" Type="varchar" MaxLength="50" />
           <Property Name="LAST_UPDATED_DATE" Type="datetime" />
         </EntityType>
+        <EntityType Name="RegionalAppConfiguration">
+          <Key>
+            <PropertyRef Name="RegionId" />
+          </Key>
+          <Property Name="RegionId" Type="int" Nullable="false" />
+          <Property Name="UseBiztalk" Type="bit" />
+          <Property Name="BiztalkServiceURI" Type="varchar" MaxLength="255" />
+          <Property Name="OOSServiceURI" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
         <EntityType Name="REPORT_DETAIL">
           <Key>
             <PropertyRef Name="ID" />
@@ -271,6 +280,18 @@
           <Property Name="Store" Type="varchar" MaxLength="5" />
           <Property Name="StoreOverride" Type="varchar" MaxLength="5" />
         </EntityType>
+        <Association Name="FK_RegionalAppConfiguration_Region_Id">
+          <End Role="REGION" Type="Self.REGION" Multiplicity="1" />
+          <End Role="RegionalAppConfiguration" Type="Self.RegionalAppConfiguration" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RegionalAppConfiguration">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="KNOWN_OOS_DETAIL_KNOWN_OOS_HEADER_FK">
           <End Role="KNOWN_OOS_HEADER" Type="Self.KNOWN_OOS_HEADER" Multiplicity="0..1" />
           <End Role="KNOWN_OOS_DETAIL" Type="Self.KNOWN_OOS_DETAIL" Multiplicity="*" />
@@ -490,6 +511,7 @@
           <EntitySet Name="REGION" EntityType="Self.REGION" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="REGION_MOVEMENT_QUERY" EntityType="Self.REGION_MOVEMENT_QUERY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" EntityType="Self.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RegionalAppConfiguration" EntityType="Self.RegionalAppConfiguration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="REPORT_DETAIL" EntityType="Self.REPORT_DETAIL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="REPORT_DETAIL_ATTRIBUTE" EntityType="Self.REPORT_DETAIL_ATTRIBUTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="REPORT_DETAIL_ATTRIBUTE_TYPE" EntityType="Self.REPORT_DETAIL_ATTRIBUTE_TYPE" Schema="dbo" store:Type="Tables" />
@@ -501,6 +523,10 @@
           <EntitySet Name="store" EntityType="Self.store" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TEAM_Interim" EntityType="Self.TEAM_Interim" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_RegionalAppConfiguration_Region_Id" Association="Self.FK_RegionalAppConfiguration_Region_Id">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="RegionalAppConfiguration" EntitySet="RegionalAppConfiguration" />
+          </AssociationSet>
           <AssociationSet Name="KNOWN_OOS_DETAIL_KNOWN_OOS_HEADER_FK" Association="Self.KNOWN_OOS_DETAIL_KNOWN_OOS_HEADER_FK">
             <End Role="KNOWN_OOS_HEADER" EntitySet="KNOWN_OOS_HEADER" />
             <End Role="KNOWN_OOS_DETAIL" EntitySet="KNOWN_OOS_DETAIL" />
@@ -683,6 +709,11 @@
           </AssociationSet>
           <EntitySet Name="OutOfStockNofitication" EntityType="OOSCommon.DataContext.OutOfStockNofitication" />
           <EntitySet Name="Users" EntityType="OOSCommon.DataContext.Users" />
+          <EntitySet Name="RegionalAppConfiguration" EntityType="OOSCommon.DataContext.RegionalAppConfiguration" />
+          <AssociationSet Name="FK_RegionalAppConfiguration_Region_Id" Association="OOSCommon.DataContext.FK_RegionalAppConfiguration_Region_Id">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="RegionalAppConfiguration" EntitySet="RegionalAppConfiguration" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="KNOWN_OOS_DETAIL">
           <Key>
@@ -766,6 +797,7 @@
           <NavigationProperty Name="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" Relationship="OOSCommon.DataContext.REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP_REGION_FK" FromRole="REGION" ToRole="REGION_REPORT_DETAIL_ATTRIBUTE_TYPE_MAP" />
           <Property Name="TimeOffsetFromCentral" Type="Int16" Nullable="false" />
           <NavigationProperty Name="store" Relationship="OOSCommon.DataContext.STORE_REGION_FK" FromRole="REGION" ToRole="store" />
+          <NavigationProperty Name="RegionalAppConfiguration" Relationship="OOSCommon.DataContext.FK_RegionalAppConfiguration_Region_Id" FromRole="REGION" ToRole="RegionalAppConfiguration" />
         </EntityType>
         <EntityType Name="REGION_MOVEMENT_QUERY">
           <Key>
@@ -1216,6 +1248,28 @@
           <Property Name="Store" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="StoreOverride" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="RegionalAppConfiguration">
+          <Key>
+            <PropertyRef Name="RegionId" />
+          </Key>
+          <Property Name="RegionId" Type="Int32" Nullable="false" />
+          <Property Name="UseBiztalk" Type="Boolean" />
+          <Property Name="BiztalkServiceURI" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="OOSServiceURI" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="REGION" Relationship="OOSCommon.DataContext.FK_RegionalAppConfiguration_Region_Id" FromRole="RegionalAppConfiguration" ToRole="REGION" />
+        </EntityType>
+        <Association Name="FK_RegionalAppConfiguration_Region_Id">
+          <End Type="OOSCommon.DataContext.REGION" Role="REGION" Multiplicity="1" />
+          <End Type="OOSCommon.DataContext.RegionalAppConfiguration" Role="RegionalAppConfiguration" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RegionalAppConfiguration">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1449,6 +1503,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="RegionalAppConfiguration">
+            <EntityTypeMapping TypeName="OOSCommon.DataContext.RegionalAppConfiguration">
+              <MappingFragment StoreEntitySet="RegionalAppConfiguration">
+                <ScalarProperty Name="OOSServiceURI" ColumnName="OOSServiceURI" />
+                <ScalarProperty Name="BiztalkServiceURI" ColumnName="BiztalkServiceURI" />
+                <ScalarProperty Name="UseBiztalk" ColumnName="UseBiztalk" />
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1471,7 +1535,7 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="OOS" ZoomLevel="64">
+      <Diagram Name="OOS" ZoomLevel="59">
         <EntityTypeShape EntityType="OOSCommon.DataContext.KNOWN_OOS_DETAIL" Width="2.25" PointX="0.875" PointY="0.625" Height="5.634013671875" IsExpanded="true" />
         <EntityTypeShape EntityType="OOSCommon.DataContext.KNOWN_OOS_HEADER" Width="2.25" PointX="0.5" PointY="7.5" Height="2.3648893229166674" IsExpanded="true" />
         <EntityTypeShape EntityType="OOSCommon.DataContext.KNOWN_OOS_MAP" Width="1.875" PointX="3.375" PointY="8.25" Height="2.9417936197916656" IsExpanded="true" />
@@ -1551,6 +1615,8 @@
         <AssociationConnector Association="OOSCommon.DataContext.STORE_STATUS_FK" />
         <EntityTypeShape EntityType="OOSCommon.DataContext.OutOfStockNofitication" Width="1.5" PointX="0.75" PointY="14.75" />
         <EntityTypeShape EntityType="OOSCommon.DataContext.Users" Width="1.5" PointX="14.375" PointY="9.75" />
+        <EntityTypeShape EntityType="OOSCommon.DataContext.RegionalAppConfiguration" Width="1.5" PointX="8" PointY="19.75" />
+        <AssociationConnector Association="OOSCommon.DataContext.FK_RegionalAppConfiguration_Region_Id" />
       </Diagram>
     </Diagrams>
   </Designer>

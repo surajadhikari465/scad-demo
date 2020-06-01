@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[MultiStoreReport]
+﻿CREATE PROCEDURE [dbo].[MultiStoreReport]
     @Region VARCHAR(5) ,
     @startdate DATETIME ,
     @enddate DATETIME ,
@@ -7,13 +6,15 @@ CREATE PROCEDURE [dbo].[MultiStoreReport]
     @TeamIds VARCHAR(MAX) ,
     @SubTeamIds VARCHAR(MAX) ,
     @Debug INT ,
-    @TestUPC VARCHAR(13)
+    @TestUPC VARCHAR(13),
+	@GroupByUpc INT = 1
 AS 
     BEGIN
 
         DECLARE @LogMsg VARCHAR(255)
         DECLARE @createIndexes BIT
         DECLARE @days INT
+		      
 
 -- ## SET FLAGS
         SET @createIndexes = 1;
@@ -26,6 +27,7 @@ AS
 	--SET @enddate = '03/26/2014';
 	
 
+  
         SET @days = DATEDIFF(d, @startdate, @enddate)
 
 
@@ -47,6 +49,8 @@ AS
         SELECT  @LogMsg = 'Days:' + CAST(@days AS VARCHAR(100))
         IF @debug = 1 
             RAISERROR(@LogMsg,0,1) WITH NOWAIT
+
+
 
 
         CREATE TABLE #itemdata
@@ -138,6 +142,7 @@ AS
                               OR upc = @TestUPC
                             )
 
+							
 
 
 
@@ -263,7 +268,7 @@ AS
 					UPDATE #itemdata SET MatchSubTeam = 1          
 			END          
         
-
+		RAISERROR('here',0,1) WITH nowait 
 		               
           
           UPDATE    #itemdata
@@ -272,8 +277,12 @@ AS
                     AND matchteam = 1
 
 
+ 
         IF @createIndexes = 1 
+			begin
             CREATE INDEX IX_ItemData_Stores ON #itemdata(upc, storeabbr,isactive) 
+			CREATE INDEX IX_ItemData_id ON #itemdata(id) 
+			END 
 
 
 -- ## Get a count of scans for eac upc
@@ -346,7 +355,7 @@ AS
 
 
         UPDATE  #itemdata
-        SET     Movement = -1
+        SET     Movement = 0
         WHERE   ( Movement IS NULL
                   OR Movement = 0
                 );
@@ -369,8 +378,12 @@ AS
 
             RAISERROR(@LogMsg,0,1) WITH NOWAIT
 
+			
+
 			IF @Debug = 1				
 			SELECT * FROM #itemdata 
+
+			
 
 			INSERT  INTO #AveragesByUPCandStore
                 ( UPC ,
@@ -385,7 +398,7 @@ AS
                         StoreAbbr ,
                         AvgEffCost = AVG(EFF_Cost) ,
                         AvgEffPrice = AVG(EFF_Price) ,
-                        AvgMovement = AVG(Movement) ,
+                        AvgMovement = AVG(NULLIF(Movement,0)) ,
 						SalesByStore = SUM(Movement * EFF_Price),
                         LastDateSold = MAX(lastDateSOld)
                 FROM    #itemdata
@@ -393,7 +406,7 @@ AS
                 GROUP BY upc ,
                         StoreAbbr
 
-
+				
 				IF @Debug = 1				
 				SELECT * FROM #averagesbyupcandstore
 
@@ -412,6 +425,10 @@ AS
         FROM    #AveragesByUPCandStore
         GROUP BY UPC 
 
+		
+	IF @createindexes = 1
+		CREATE INDEX ix_CumulativeSalesData_upc ON #CumulativeSalesData(upc)
+
 				SELECT  id.UPC ,
                 Region ,
                 ps.ProductStatus
@@ -422,7 +439,10 @@ AS
         WHERE   ps.ExpirationDate IS NULL
                 OR ps.ExpirationDate > GETDATE() 
 
-
+                             --SELECT *
+                             --FROM   #MostRecentIdByUPC r
+                             --       INNER JOIN #itemdata i ON r.MostRecentId = i.id
+                             --       INNER JOIN dbo.REPORT_DETAIL rd ON i.id = rd.ID
 
         SELECT  rd.PS_SUBTEAM ,
                 r.UPC ,
@@ -436,8 +456,11 @@ AS
                 Sales = cs.CumulativeSalesOpportunity ,
                 times_scanned = cnt.CountByUPC ,
                 rd.notes ,
-                Cost = cs.Movement * ( ISNULL(cs.AvgCost, 0.0)
-                                       / ISNULL(rd.CASE_SIZE, 0) ) ,
+              Cost =	 CASE WHEN  ISNULL(rd.CASE_SIZE, 0) = 0
+						THEN cs.Movement * ISNULL(cs.AvgCost, 0.0)
+						ELSE 
+						cs.Movement * (ISNULL(cs.AvgCost, 0.0)  / ISNULL(rd.CASE_SIZE, 1))
+											   END,
                 Margin = CASE WHEN cs.AvgPrice = 0
                                    OR rd.CASE_SIZE = 0 THEN 0
                               ELSE ( ( cs.AvgPrice - ( cs.AvgCost
@@ -452,7 +475,7 @@ AS
                 rd.CLASS_NAME ,
                 Avg_daily_Units = cs.Movement ,
                 Avg_Mov_Sales = cs.Movement * cs.AvgPrice, 
-				StoresList =sbu.StoreList,
+				--StoresList =sbu.StoreList,
                 LAST_DATE_SOLD = rd.LASTDATEOFSALES ,
                 DAYS_WITH_SALES = rd.DAYSOFMOVEMENT
         INTO    #ItemDetail
@@ -462,7 +485,7 @@ AS
                 INNER JOIN #CountByUPC cnt ON r.upc = cnt.upc
                 INNER JOIN #CumulativeSalesData cs ON cs.upc = rd.upc
                                                       --AND cs.storeabbr = i.storeabbr
-				INNER JOIN #storesbyupc sbu ON sbu.upc = r.upc
+				--INNER JOIN #storesbyupc sbu ON sbu.upc = r.upc
 				
         WHERE   i.isactive = 1
 
@@ -470,39 +493,73 @@ AS
 		SELECT * FROM #ItemDetail
 
 
+		IF @GroupByUpc = 1
 		
 
+			SELECT  id.PS_SUBTEAM ,
+					id.UPC ,
+					id.BRAND ,
+					id.BRAND_NAME ,
+					id.LONG_DESCRIPTION ,
+					id.ITEM_SIZE ,
+					id.ITEM_UOM ,
+					id.VENDOR_KEY ,
+					id.VIN ,
+					Sales=ROUND(id.Sales,2) ,
+					id.times_scanned ,
+					--id.StoreList ,
+					id.NOTES ,
+					Cost=ROUND(ISNULL(id.Cost,0),2) ,
+					margin= ROUND(id.margin,0) ,
+					id.Case_Size ,
+					id.Eff_Price ,
+					id.Eff_Cost ,
+					id.EFF_PRICETYPE ,
+					id.CATEGORY_NAME ,
+					id.CLASS_NAME ,
+					Avg_daily_Units = ROUND(ISNULL(id.Avg_daily_Units,0),2) ,
+					Avg_Mov_Sales=ROUND(ISNULL(id.Avg_Mov_Sales,0),2) ,
+					id.LAST_DATE_SOLD ,
+					id.DAYS_WITH_SALES ,
+					StoresList = sbu.StoreList,
+					Product_Status = ps.ProductStatus
+			FROM    #ItemDetail id
+					INNER JOIN #storesbyupc sbu ON sbu.upc = id.upc
+					LEFT JOIN #productstatus ps ON id.UPC = ps.UPC
+			ORDER BY  Avg_Mov_Sales	desc					   
+
+		IF @GroupByUpc = 0
         SELECT  id.PS_SUBTEAM ,
-                id.UPC ,
-                id.BRAND ,
-                id.BRAND_NAME ,
-                id.LONG_DESCRIPTION ,
-                id.ITEM_SIZE ,
-                id.ITEM_UOM ,
-                id.VENDOR_KEY ,
-                id.VIN ,
-                Sales=ROUND(id.Sales,2) ,
-                id.times_scanned ,
-                id.StoresList ,
-                id.NOTES ,
-                Cost=ROUND(id.Cost,2) ,
-                margin= ROUND(id.margin,0) ,
-                id.Case_Size ,
-                id.Eff_Price ,
-                id.Eff_Cost ,
-                id.EFF_PRICETYPE ,
-                id.CATEGORY_NAME ,
-                id.CLASS_NAME ,
-                Avg_daily_Units = ROUND(id.Avg_daily_Units,2) ,
-                Avg_Mov_Sales=ROUND(id.Avg_Mov_Sales,2) ,
-                id.LAST_DATE_SOLD ,
-                id.DAYS_WITH_SALES ,
-				StoreList = id.StoresList,
-                Product_Status = ps.ProductStatus
-        FROM    #ItemDetail id
-                LEFT JOIN #productstatus ps ON id.UPC = ps.UPC
-        ORDER BY  Avg_Mov_Sales	desc					   
-        
+					id.UPC ,
+					id.BRAND ,
+					id.BRAND_NAME ,
+					id.LONG_DESCRIPTION ,
+					id.ITEM_SIZE ,
+					id.ITEM_UOM ,
+					id.VENDOR_KEY ,
+					id.VIN ,
+					Sales=ROUND(id.Sales,2) ,
+					id.times_scanned ,
+					--id.StoreList ,
+					id.NOTES ,
+					Cost=ROUND(ISNULL(id.Cost,0),2) ,
+					margin= ROUND(id.margin,0) ,
+					id.Case_Size ,
+					id.Eff_Price ,
+					id.Eff_Cost ,
+					id.EFF_PRICETYPE ,
+					id.CATEGORY_NAME ,
+					id.CLASS_NAME ,
+					Avg_daily_Units = ROUND(ISNULL(id.Avg_daily_Units,0),2) ,
+					Avg_Mov_Sales=ROUND(ISNULL(id.Avg_Mov_Sales,0),2) ,
+					id.LAST_DATE_SOLD ,
+					id.DAYS_WITH_SALES ,
+					StoresList = d.storeabbr,
+					Product_Status = ps.ProductStatus
+			FROM    #ItemDetail id
+					INNER JOIN #itemdata d ON id.UPC = d.upc
+					LEFT JOIN #productstatus ps ON id.UPC = ps.UPC
+				WHERE d.isactive =1
 
 
 
@@ -520,3 +577,20 @@ AS
 
 
     END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[MultiStoreReport] TO [WFM\WFM NEXus Support]
+    AS [dbo];
+
+
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[MultiStoreReport] TO [WFM\Nexus.Dev]
+    AS [dbo];
+
+
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[MultiStoreReport] TO PUBLIC
+    AS [dbo];
+

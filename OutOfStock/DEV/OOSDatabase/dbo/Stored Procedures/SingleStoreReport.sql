@@ -1,5 +1,5 @@
 ﻿
-		CREATE   PROCEDURE [dbo].[SingleStoreReport]
+		CREATE    PROCEDURE [dbo].[SingleStoreReport]
 			@Region VARCHAR(5) ,
 			@startdate DATETIME ,
 			@enddate DATETIME ,
@@ -509,10 +509,13 @@
 						times_scanned = cnt.CountByUPC ,
 						StoresList = 'N/A' ,
 						rd.notes ,
-						Cost = cs.Movement * ( ISNULL(cs.AvgCost, 0.0)
-											   / ISNULL(rd.CASE_SIZE, 0) ) ,
-						Margin = CASE WHEN cs.AvgPrice = 0
-										   OR rd.CASE_SIZE = 0 THEN 0
+						Cost =	 CASE WHEN  ISNULL(rd.CASE_SIZE, 0) = 0
+						THEN cs.Movement * ISNULL(cs.AvgCost, 0.0)
+						ELSE 
+						cs.Movement * (ISNULL(cs.AvgCost, 0.0)  / ISNULL(rd.CASE_SIZE, 1))
+											   END,
+						Margin = CASE WHEN ISNULL(cs.AvgPrice,0) = 0
+										   OR ISNULL(rd.CASE_SIZE, 0) = 0 THEN 0
 									  ELSE ( ( cs.AvgPrice - ( cs.AvgCost
 															   / rd.CASE_SIZE ) )
 											 / cs.AvgPrice ) * 100

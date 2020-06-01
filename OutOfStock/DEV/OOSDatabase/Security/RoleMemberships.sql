@@ -56,3 +56,11 @@ EXECUTE sp_addrolemember @rolename = N'db_datawriter', @membername = N'oos_backe
 GO
 EXECUTE sp_addrolemember @rolename = N'db_datareader', @membername = N'oos_backend';
 
+
+GO
+EXECUTE sp_addrolemember @rolename = N'db_owner', @membername = N'WFM\gnpt.outofstock';
+
+
+GO
+EXECUTE sp_addrolemember @rolename = N'db_owner', @membername = N'WFM\gradyp';
+

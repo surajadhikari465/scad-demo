@@ -201,7 +201,7 @@ namespace OutOfStock.Models
                 OutOfStock.MvcApplication.oosLog.Info(string.Format(
                     "Unable to process ForceRegionalUsersList. List: {0} Username: {1}", ForceRegionalUsersList, userName));
             }
-
+            
             
             return userPermission;
         }
@@ -284,7 +284,8 @@ namespace OutOfStock.Models
                         if (!string.IsNullOrEmpty(storeOverride) || !string.IsNullOrEmpty(regionOverride))
                         {
                             userResult.LocationOverride = true;
-                            MvcApplication.oosLog.Info( $"Location Override for {alias}: {regionvalue}:{storevalue} => {regionOverride}:{storeOverride}");
+                            MvcApplication.oosLog.Warn(
+                                $"Location Override for {alias} from {regionvalue}:{storevalue} to {regionOverride}:{storeOverride}");
                         }
                     }
                 }

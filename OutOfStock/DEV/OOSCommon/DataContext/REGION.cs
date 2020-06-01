@@ -180,10 +180,38 @@ namespace OOSCommon.DataContext
             }
         }
         private ICollection<STORE> _store;
+    
+        public virtual RegionalAppConfiguration RegionalAppConfiguration
+        {
+            get { return _regionalAppConfiguration; }
+            set
+            {
+                if (!ReferenceEquals(_regionalAppConfiguration, value))
+                {
+                    var previousValue = _regionalAppConfiguration;
+                    _regionalAppConfiguration = value;
+                    FixupRegionalAppConfiguration(previousValue);
+                }
+            }
+        }
+        private RegionalAppConfiguration _regionalAppConfiguration;
 
         #endregion
 
         #region Association Fixup
+    
+        private void FixupRegionalAppConfiguration(RegionalAppConfiguration previousValue)
+        {
+            if (previousValue != null && ReferenceEquals(previousValue.REGION, this))
+            {
+                previousValue.REGION = null;
+            }
+    
+            if (RegionalAppConfiguration != null)
+            {
+                RegionalAppConfiguration.REGION = this;
+            }
+        }
     
         private void FixupKNOWN_OOS_MAP(object sender, NotifyCollectionChangedEventArgs e)
         {

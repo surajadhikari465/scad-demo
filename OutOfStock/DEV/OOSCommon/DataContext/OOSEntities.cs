@@ -176,6 +176,12 @@ namespace OOSCommon.DataContext
             get { return _users ?? (_users = CreateObjectSet<Users>("Users")); }
         }
         private ObjectSet<Users> _users;
+    
+        public IObjectSet<RegionalAppConfiguration> RegionalAppConfiguration
+        {
+            get { return _regionalAppConfiguration ?? (_regionalAppConfiguration = CreateObjectSet<RegionalAppConfiguration>("RegionalAppConfiguration")); }
+        }
+        private ObjectSet<RegionalAppConfiguration> _regionalAppConfiguration;
 
         #endregion
 
