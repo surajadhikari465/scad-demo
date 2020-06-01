@@ -1,10 +1,11 @@
-import { WfmButton, WfmToggleGroup } from '@wfm/ui-react';
+import { WfmToggleGroup } from '@wfm/ui-react';
 import React, { useContext, useEffect, useState } from 'react';
 import { toast } from "react-toastify";
 import agent from '../../api/agent';
 import LoadingComponent from '../../layout/LoadingComponent';
-import { AppContext, IShrinkAdjustment, IUser, types } from "../../store";
+import { AppContext, IShrinkAdjustment, IUser, types, IMenuItem } from "../../store";
 import './styles.scss';
+import { AuthHandler } from '@wfm/mobile';
 
 const REGION_LIST = ['FL', 'MA', 'MW', 'NA', 'NC', 'NE', 'PN', 'RM', 'SO', 'SP', 'SW', 'EU'];
 // @ts-ignore 
@@ -22,6 +23,18 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 	useEffect(() => {
 		dispatch({ type: types.RESETSTATE });
 		dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
+
+		const logout = () => {
+			dispatch({ type: types.RESETSTATE });
+			//do nothing with the clearToken callback
+			AuthHandler.clearToken(() => { });
+		};
+		const settingsItems = [
+			{ id: 1, order: 0, text: "Log Out", path: "#", disabled: false, onClick: logout } as IMenuItem
+		] as IMenuItem[];
+
+		dispatch({ type: types.TOGGLECOG, showCog: true });
+		dispatch({ type: types.SETSETTINGSITEMS, settingsItems: settingsItems });
 
 	}, [dispatch]);
 
@@ -96,7 +109,7 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 						setIsLoading(false);
 					} else {
 						dispatch({ type: types.SETUSER, user: user });
-					
+
 						if ((subteamSession.filter((session: any) => session.sessionUser.userName === user.userName).length === 0)) {
 							subteamSession.push({ shrinkItems: [], isPrevSession: false, sessionShrinkType: '', sessionNumber: 0, sessionSubteam: undefined, sessionStore: '', sessionRegion: '', sessionUser: user, forceSubteamSelection: true });
 						}

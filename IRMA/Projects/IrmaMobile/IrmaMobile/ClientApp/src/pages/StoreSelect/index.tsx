@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from 'react';
-import { AppContext, types } from "../../store";
+import { AppContext, types, IMenuItem } from "../../store";
 import { WfmButton, WfmToggleGroup } from '@wfm/ui-react';
 import { useHistory } from "react-router-dom";
 import './styles.scss';
 import Config from '../../config';
 import LoadingComponent from '../../layout/LoadingComponent';
+import { AuthHandler } from '@wfm/mobile';
 
 const StoreSelect: React.FC = () => {
   // @ts-ignore 
@@ -13,7 +14,19 @@ const StoreSelect: React.FC = () => {
   let history = useHistory();
 
   useEffect(() => {
-		dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
+    dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
+    
+		const logout = () => {
+			dispatch({ type: types.RESETSTATE });
+			//do nothing with the clearToken callback
+			AuthHandler.clearToken(() => { });
+		};
+		const settingsItems = [
+			{ id: 1, order: 0, text: "Log Out", path: "#", disabled: false, onClick: logout } as IMenuItem
+		] as IMenuItem[];
+
+		dispatch({ type: types.TOGGLECOG, showCog: true });
+		dispatch({ type: types.SETSETTINGSITEMS, settingsItems: settingsItems });
 	}, [dispatch]);
 
   const setSubteams = (result: any) => {

@@ -4,6 +4,7 @@ import { Modal } from 'semantic-ui-react';
 import BasicModal from '../../layout/BasicModal';
 import CurrentLocation from "../../layout/CurrentLocation";
 import { AppContext, types, IMenuItem } from "../../store";
+import { AuthHandler } from '@wfm/mobile';
 
 interface StoreFunctionsProps {
   history: any;
@@ -20,8 +21,15 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
   let sessionIndex = subteamSession.findIndex((session:any) => session.sessionUser.userName === user?.userName);
 
   useEffect(() => {
+    const logout = () => {
+			dispatch({ type: types.RESETSTATE });
+			//do nothing with the clearToken callback
+			AuthHandler.clearToken(() => { });
+		};
+    
     const settingsItems = [
-      { id: 1, order: 0, text: "Change Store", path: "/", disabled: false } as IMenuItem
+      { id: 1, order: 0, text: "Change Store", path: "/", disabled: false } as IMenuItem,
+			{ id: 2, order: 1, text: "Log Out", path: "#", disabled: false, onClick: logout } as IMenuItem
     ] as IMenuItem[];
 
     dispatch({ type: types.TOGGLECOG, showCog: true });
