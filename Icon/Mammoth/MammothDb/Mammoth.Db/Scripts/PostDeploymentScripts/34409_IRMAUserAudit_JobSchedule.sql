@@ -40,7 +40,7 @@ BEGIN
 			SET @irmaUserAudit_NextScheduledDateTimeUtc = '2020-09-14 12:00:00'
 			SET @irmaUserAudit_xmlobject = '
 		{
-		  "zipOutput": true,
+		  "zipOutput": false,
 		  "concatenateOutputFiles": false,
 		  "includeHeaders": true,
 		  "source": "IRMA",
@@ -80,7 +80,7 @@ BEGIN
 					,NULL AS LastScheduledTimeUtc
 					,NULL AS lastRunEndDateTimeUtc
 					,@irmaUserAudit_NextScheduledDateTimeUtc AS NextScheduledDateTimeUtc
-					,86400 AS IntervalInSeconds
+					,7776000 AS IntervalInSeconds
 					,0 AS Enabled
 					,'ready' AS STATUS
 					,@irmaUserAudit_xmlobject AS XmlObject
@@ -96,7 +96,7 @@ BEGIN
 					,LastScheduledDateTimeUtc = NULL
 					,LastRunEndDateTimeUtc = NULL
 					,NextScheduledDateTimeUtc = @irmaUserAudit_NextScheduledDateTimeUtc
-					,IntervalInSeconds = 86400
+					,IntervalInSeconds = 7776000
 					,Enabled = 0
 					,STATUS = 'ready'
 					,xmlobject = @irmaUserAudit_xmlobject

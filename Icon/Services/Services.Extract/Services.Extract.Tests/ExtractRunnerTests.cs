@@ -311,7 +311,7 @@ namespace Services.Extract.Tests
                 "    ORDER BY s.Store_No; ",
                 Regions = "FL".Split(','),                
                 OutputFileName = "IRMA_UserAudit_{date:yyyyMMdd}.csv",
-                ZipOutput = true,                
+                ZipOutput = false,                
                 ConcatenateOutputFiles = false,
                 IncludeHeaders = true,
                 Destination = new Destination
@@ -344,7 +344,7 @@ namespace Services.Extract.Tests
                 "    ORDER BY s.Store_No; ",
             Regions = "FL".Split(','),
             OutputFileName = "IRMA_UserAudit_{date:yyyyMMdd}.csv",
-            ZipOutput = true,
+            ZipOutput = false,
             ConcatenateOutputFiles = false,
             IncludeHeaders = true,
             Destination = new Destination
