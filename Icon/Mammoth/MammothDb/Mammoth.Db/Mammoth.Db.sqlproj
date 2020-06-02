@@ -827,9 +827,6 @@
     <Build Include="dbo\Stored Procedures\AuditGPMMessageSequence.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\Reset5NutritionValues_23879.sql" />
     <None Include="OneTimeScripts\DeleteItemsFromMammothNotInIcon.sql" />
-    <None Include="Scripts\PostDeploymentScripts\30737_PopulateGlobalItemMessageType.sql" />
-    <None Include="Scripts\PostDeploymentScripts\PopulateManufacturerHierarchy.sql" />
-    <None Include="Scripts\PreDeploymentScripts\DeduplicateNationalMerchandiseHierarchy.sql" />
     <None Include="Scripts\PreDeploymentScripts\Archive\DeduplicateScanCodes_QA_PROD.sql" />
     <Build Include="dbo\Stored Procedures\AddOrUpdateHierarchyMerchandiseSegment.sql" />
     <Build Include="dbo\Stored Procedures\AddOrUpdateHierarchyMerchandiseFamily.sql" />
@@ -862,7 +859,11 @@
     <None Include="Scripts\Projects\Distribution Realignment\33696_MovePricesFromMAToMW_RollBack.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\33696_MovePricesFromMWToRM.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\33696_MovePricesFromMWToRM_RollBack.sql" />
-    <None Include="Scripts\PostDeploymentScripts\26540_AMZItemVendorLane_JobSchedule.sql" />
+    <None Include="Scripts\PreDeploymentScripts\Archive\DeduplicateNationalMerchandiseHierarchy.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\26540_AMZItemVendorLane_JobSchedule.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\33668_Extract_IconHierarcies_JobSchedule.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\PopulateManufacturerHierarchy.sql" />
+    <None Include="Scripts\PostDeploymentScripts\Archive\30737_PopulateGlobalItemMessageType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -878,7 +879,6 @@
     <None Include="Scripts\PreDeploymentScripts\Archive\DeduplicateScanCodes_PERF.sql" />
     <Build Include="dbo\User Defined Types\HierarchyMerchandiseClassType.sql" />
     <Build Include="dbo\Stored Procedures\AddOrUpdateHierarchyMerchandiseSubBrick.sql" />
-    <None Include="Scripts\PostDeploymentScripts\33668_Extract_IconHierarcies_JobSchedule.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\35114_MoveStoresFromMAToMW.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\35114_MoveStoresFromMAToMW_RollBack.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\35114_MovePricesFromMAToMW.sql" />
