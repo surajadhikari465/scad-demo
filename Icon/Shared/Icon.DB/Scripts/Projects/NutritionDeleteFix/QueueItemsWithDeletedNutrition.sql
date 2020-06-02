@@ -3,7 +3,8 @@ DECLARE @serverName VARCHAR(100) = (
 		SELECT @@SERVERNAME
 		)
 
-IF (@serverName = 'ODWD6825' OR @serverName = 'ODWD6801')
+-- QA server
+IF (@serverName = 'ODWD6825')
 BEGIN
 	DELETE
 	FROM app.PostDeploymentScriptHistory
@@ -117,10 +118,9 @@ BEGIN
 		SET (SYSTEM_VERSIONING = OFF)
 	END
 
-	ALTER TABLE [nutrition].[ItemNutrition]
-
-	DROP PERIOD
-	FOR SYSTEM_TIME;
+	EXEC sp_executesql N'ALTER TABLE [nutrition].[ItemNutrition]
+						DROP PERIOD
+						FOR SYSTEM_TIME';
 END
 GO
 
@@ -4733,8 +4733,8 @@ BEGIN
 				FROM [nutrition].[ItemNutritionHistory]
 				)
 
-		ALTER TABLE [nutrition].[ItemNutrition] ADD PERIOD
-		FOR SYSTEM_TIME(SysStartTimeUtc, SysEndTimeUtc)
+		EXEC sp_executesql N'ALTER TABLE [nutrition].[ItemNutrition] ADD PERIOD
+		FOR SYSTEM_TIME(SysStartTimeUtc, SysEndTimeUtc)'
 
 		ALTER TABLE [nutrition].[ItemNutrition]
 
@@ -4774,8 +4774,8 @@ BEGIN
 		SELECT ERROR_NUMBER() AS ErrorNumber
 			,ERROR_MESSAGE() AS ErrorMessage;
 
-		ALTER TABLE [nutrition].[ItemNutrition] ADD PERIOD
-		FOR SYSTEM_TIME(SysStartTimeUtc, SysEndTimeUtc)
+		EXEC sp_executesql N'ALTER TABLE [nutrition].[ItemNutrition] ADD PERIOD
+		FOR SYSTEM_TIME(SysStartTimeUtc, SysEndTimeUtc)'
 
 		ALTER TABLE [nutrition].[ItemNutrition]
 
