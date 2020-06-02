@@ -70,6 +70,7 @@ namespace Icon.Esb.CchTax.Commands
                 foreach (var taxClass in data.TaxHierarchyClasses)
                 {
                     taxClass.HierarchyClassId = context.HierarchyClass
+                        .AsNoTracking()
                         .First(hc => hc.hierarchyClassName == taxClass.HierarchyClassName).hierarchyClassID;
                 }
             }

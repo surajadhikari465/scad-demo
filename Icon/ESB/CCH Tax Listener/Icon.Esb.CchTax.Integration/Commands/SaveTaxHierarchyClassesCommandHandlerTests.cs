@@ -53,7 +53,7 @@ namespace Icon.Esb.CchTax.Integration.Commands
         }
 
         [TestMethod]
-        public void SaveTaxHierarchyClasses_NewTaxClasses_ShouldAddTaxClassesToIcon()
+        public void SaveTaxHierarchyClasses_NewTaxClasses_ShouldAddTaxClassesToIconAndOutputHierarchyClassIds()
         {
             //Given
             var testTaxClasses = new List<TaxHierarchyClassModel>
@@ -73,6 +73,7 @@ namespace Icon.Esb.CchTax.Integration.Commands
             command.Regions = regions;
 
             command.CchTaxMessage = "test";
+
             //When
             commandHandler.Execute(command);
 
@@ -92,6 +93,7 @@ namespace Icon.Esb.CchTax.Integration.Commands
             for (int i = 0; i < testTaxClasses.Count; i++)
             {
                 Assert.AreEqual(testTaxClasses[i].HierarchyClassName, actualTaxClasses[i].hierarchyClassName);
+                Assert.AreEqual(testTaxClasses[i].HierarchyClassId, actualTaxClasses[i].hierarchyClassID);
             }
         }
 
