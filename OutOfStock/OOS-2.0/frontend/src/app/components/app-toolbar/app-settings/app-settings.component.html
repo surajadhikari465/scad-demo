@@ -1,14 +1,17 @@
 <div style="width: 200px">
-  <wfm-item (click)="manualDataEntry()">
+  <wfm-item (click)="manualDataEntry()" [hidden]="!enableScanListMenuOptions">
     <label>Manual UPC Entry</label>
     <wfm-icon slot="end" name='keyboard'></wfm-icon>
   </wfm-item>
-  <wfm-item (click)="clearList()">
+  <wfm-item (click)="clearList()" [hidden]="!enableScanListMenuOptions">
     Clear List
     <wfm-icon slot="end" name="edit"></wfm-icon>
   </wfm-item>
   <wfm-item (click)="changeStore()">
     Change Store
     <wfm-icon slot="end" name="cog"></wfm-icon>
+  </wfm-item>
+  <wfm-item (click)="logout()">
+    Log Out
   </wfm-item>
 </div>

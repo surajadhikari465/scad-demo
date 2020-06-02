@@ -52,10 +52,14 @@ export class AppComponent implements OnInit {
   }
 
   processNavigationEvent(event: any) {
-    if (event.url == "/list")
-      this.appService.setScan(true)
-    else
-      this.appService.setScan(false)
+    if (event.url == "/list") {
+      this.appService.setScan(true);
+      this.appService.setEnableScanListMenuOptions(true);
+    } else {
+      this.appService.setScan(false);
+      this.appService.setEnableScanListMenuOptions(false);
+
+    }
   }
 }
 

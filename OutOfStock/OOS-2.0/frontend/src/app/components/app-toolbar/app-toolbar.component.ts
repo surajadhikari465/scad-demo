@@ -2,8 +2,6 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { MenuController, ModalController } from '@wfm/ui-angular'
 import { environment } from '../../../environments/environment'
 import { AlertModalComponent } from 'src/app/components/alert-modal/alert-modal.component';
-//import { PopoverController } from '@ionic/angular';
-
 import { AppSettingsComponent } from './app-settings/app-settings.component'
 
 @Component({
@@ -19,22 +17,19 @@ export class AppToolbarComponent implements OnInit {
 
   constructor(public menuController: MenuController,
     public modalController: ModalController) { }
-  //constructor(public popoverController: PopoverController) { }
 
   ngOnInit() {
     this.tapCount = 0;
   }
 
-
   tap() {
     this.tapCount += 1;
     if (this.tapCount >= 5) {
-      var msg = JSON.stringify(environment, null, 2);
+      var msg = JSON.stringify({ baseUrl: environment.baseURL}, null, 2);
       this.displayModal("Environment Info", msg);
       this.tapCount = 0;
     }
   }
-
 
   async displayModal(title: string, message: string) {
     const modal = await this.modalController.create({
@@ -46,10 +41,9 @@ export class AppToolbarComponent implements OnInit {
   }
 
   async presentMenu(ev: UIEvent) {
-    //const menu = await this.popoverController.create({
     const menu = await this.menuController.create({
       event: ev,
-      component: AppSettingsComponent,
+      component: AppSettingsComponent, 
     })
 
     menu.onDidDismiss().then(selectedMenuOption => {

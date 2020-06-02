@@ -4,7 +4,7 @@
 // @import './wfm-ui-stencil.css';
 @import '../node_modules/@wfm/ui-core/dist/wfm-ui-stencil/wfm-ui-stencil.css';
 
-@import "circular-std";
+@import "../node_modules/@css-pkg/circular-std/";
 
 /* font converted using font-converter.net. thank you! */
 @font-face {

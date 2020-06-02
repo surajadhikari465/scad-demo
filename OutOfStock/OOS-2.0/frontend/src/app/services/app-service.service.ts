@@ -8,6 +8,8 @@ import { environment } from '../../environments/environment';
 
 const BASE_URL = environment.baseURL;
 let allowScan = false;
+let enableScanListMenuOptions = false;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -59,15 +61,25 @@ export class AppService {
   currentRegion(): string {
     return this.getItem(WFM_REGION);
   }
+
   setScan(allowScanning: boolean) {
     console.log("scanning", allowScanning);
     allowScan = allowScanning;
   }
+
   getScan(): boolean {
     return allowScan;
   }
 
   getEnvironment(): string {
     return environment.name;
+  }
+
+  setEnableScanListMenuOptions(enabled: boolean) {
+    enableScanListMenuOptions = enabled;
+  }
+
+  getEnableScanListMenuOptions() {
+    return enableScanListMenuOptions;
   }
 }
