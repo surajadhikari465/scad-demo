@@ -203,10 +203,12 @@ BEGIN
 	WHERE columntype = 'Attribute'
 		AND a.AttributeName = 'CreatedBy'
 
-	UPDATE dbo.ItemColumnDisplayOrder
+	UPDATE icd
 	SET displayorder = 24
-	WHERE columntype = 'Other'
-		AND ReferenceName = 'Created On'
+	FROM dbo.ItemColumnDisplayOrder icd
+	INNER JOIN attributes a ON icd.ReferenceId = a.AttributeId
+	WHERE columntype = 'Attribute'
+		AND a.AttributeName = 'CreatedDateTimeUtc'
 
 	UPDATE icd
 	SET displayorder = 25
@@ -215,10 +217,11 @@ BEGIN
 	WHERE columntype = 'Attribute'
 		AND a.AttributeName = 'ModifiedBy'
 
-	UPDATE dbo.ItemColumnDisplayOrder
+	UPDATE icd
 	SET displayorder = 26
-	WHERE columntype = 'Other'
-		AND ReferenceName = 'Modified On'
+	FROM dbo.ItemColumnDisplayOrder icd
+	INNER JOIN attributes a ON icd.ReferenceId = a.AttributeId
+	WHERE columntype = 'Attribute'
+		AND a.AttributeName = 'ModifiedDateTimeUtc'
 END
 GO
-
