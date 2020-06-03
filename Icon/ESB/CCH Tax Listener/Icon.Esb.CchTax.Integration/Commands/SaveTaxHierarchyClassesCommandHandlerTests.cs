@@ -58,9 +58,9 @@ namespace Icon.Esb.CchTax.Integration.Commands
             //Given
             var testTaxClasses = new List<TaxHierarchyClassModel>
             {
-                new TaxHierarchyClassModel { TaxCode = "1111111",  HierarchyClassName = "TestTax1" },
-                new TaxHierarchyClassModel { TaxCode = "1111112",  HierarchyClassName = "TestTax2" },
-                new TaxHierarchyClassModel { TaxCode = "1111113",  HierarchyClassName = "TestTax3" }
+                new TaxHierarchyClassModel { TaxCode = "1111101",  HierarchyClassName = "1111101 Test1" },
+                new TaxHierarchyClassModel { TaxCode = "1111102",  HierarchyClassName = "1111102 Test12" },
+                new TaxHierarchyClassModel { TaxCode = "1111103",  HierarchyClassName = "1111103 Test13" }
             };
 
             regions.AddRange(new List<RegionModel>
@@ -82,7 +82,7 @@ namespace Icon.Esb.CchTax.Integration.Commands
                 @"SELECT *
                   FROM dbo.HierarchyClass hc
                   Join dbo.HierarchyClassTrait hct on hct.HierarchyClassid = hc.HierarchyClassid
-                  WHERE hc.HierarchyClassName like '%TestTax%'
+                  WHERE hc.HierarchyClassName like '%Test1%'
                   AND hct.traitID = 51  
                   AND hc.HierarchyID = @TaxHierarchyId",
                   new { TaxHierarchyId = this.taxId })
@@ -103,9 +103,9 @@ namespace Icon.Esb.CchTax.Integration.Commands
             //Given
             var testTaxClasses = new List<TaxHierarchyClassModel>
             {
-                new TaxHierarchyClassModel { TaxCode = "1111111", HierarchyClassName = "TEST TAX11 WITH MORE THAN 50 CHARACTERS FOR TAX ABBREVIATION TEST" },
-                new TaxHierarchyClassModel { TaxCode = "1111112", HierarchyClassName = "TEST TAX12 WITH MORE THAN 50 CHARACTERS FOR TAX ABBREVIATION TEST" },
-                new TaxHierarchyClassModel { TaxCode = "1111113", HierarchyClassName = "TEST TAX13 WITH MORE THAN 50 CHARACTERS FOR TAX ABBREVIATION TEST" }
+                new TaxHierarchyClassModel { TaxCode = "1111001", HierarchyClassName = "1111001 TEST TAX11 WITH MORE THAN 50 CHARACTERS FOR TAX ABBREVIATION TEST" },
+                new TaxHierarchyClassModel { TaxCode = "1111002", HierarchyClassName = "1111002 TEST TAX12 WITH MORE THAN 50 CHARACTERS FOR TAX ABBREVIATION TEST" },
+                new TaxHierarchyClassModel { TaxCode = "1111003", HierarchyClassName = "1111003 TEST TAX13 WITH MORE THAN 50 CHARACTERS FOR TAX ABBREVIATION TEST" }
             };
 
             regions.AddRange(new List<RegionModel>
