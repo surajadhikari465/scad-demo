@@ -5,6 +5,7 @@ import BasicModal from '../../layout/BasicModal';
 import CurrentLocation from "../../layout/CurrentLocation";
 import { AppContext, types, IMenuItem } from "../../store";
 import { AuthHandler } from '@wfm/mobile';
+import { toast } from 'react-toastify';
 
 interface StoreFunctionsProps {
   history: any;
@@ -22,9 +23,13 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
 
   useEffect(() => {
     const logout = () => {
-			dispatch({ type: types.RESETSTATE });
-			//do nothing with the clearToken callback
-			AuthHandler.clearToken(() => { });
+			try {
+				//do nothing with the clearToken callback
+				AuthHandler.clearToken(() => { });
+			} catch (error) {
+				toast.error(`Error logging out. ${error}`);
+				console.error(`Error logging out. ${error}`);
+			}
 		};
     
     const settingsItems = [

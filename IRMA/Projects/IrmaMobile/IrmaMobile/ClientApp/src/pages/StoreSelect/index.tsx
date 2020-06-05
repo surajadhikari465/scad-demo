@@ -6,6 +6,7 @@ import './styles.scss';
 import Config from '../../config';
 import LoadingComponent from '../../layout/LoadingComponent';
 import { AuthHandler } from '@wfm/mobile';
+import { toast } from 'react-toastify';
 
 const StoreSelect: React.FC = () => {
   // @ts-ignore 
@@ -17,9 +18,13 @@ const StoreSelect: React.FC = () => {
     dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
     
 		const logout = () => {
-			dispatch({ type: types.RESETSTATE });
-			//do nothing with the clearToken callback
-			AuthHandler.clearToken(() => { });
+			try {
+				//do nothing with the clearToken callback
+				AuthHandler.clearToken(() => { });
+			} catch (error) {
+				toast.error(`Error logging out. ${error}`);
+				console.error(`Error logging out. ${error}`);
+			}
 		};
 		const settingsItems = [
 			{ id: 1, order: 0, text: "Log Out", path: "#", disabled: false, onClick: logout } as IMenuItem

@@ -25,9 +25,13 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 		dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
 
 		const logout = () => {
-			dispatch({ type: types.RESETSTATE });
-			//do nothing with the clearToken callback
-			AuthHandler.clearToken(() => { });
+			try {
+				//do nothing with the clearToken callback
+				AuthHandler.clearToken(() => { });
+			} catch (error) {
+				toast.error(`Error logging out. ${error}`);
+				console.error(`Error logging out. ${error}`);
+			}
 		};
 		const settingsItems = [
 			{ id: 1, order: 0, text: "Log Out", path: "#", disabled: false, onClick: logout } as IMenuItem

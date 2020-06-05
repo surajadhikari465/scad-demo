@@ -4,8 +4,6 @@
 // @import './wfm-ui-stencil.css';
 @import '../node_modules/@wfm/ui-core/dist/wfm-ui-stencil/wfm-ui-stencil.css';
 
-@import "../node_modules/@css-pkg/circular-std/";
-
 /* font converted using font-converter.net. thank you! */
 @font-face {
   font-family: "Corda-Regular";
@@ -39,7 +37,7 @@ body {
 
 html, body {
   overflow: hidden;
-  font-family: "CircularStd";
+  font-family: "CircularStd-Book";
 }
 body{
   height: 616px;
@@ -52,7 +50,7 @@ p:last-child, p:first-child{
 
 
 h1, h2, h3, h4 {
-  font-family: "CircularStd";
+  font-family: "CircularStd-Book";
 }
 
 .ui.dropdown .menu {
