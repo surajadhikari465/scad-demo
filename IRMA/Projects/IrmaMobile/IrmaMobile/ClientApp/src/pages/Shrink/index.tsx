@@ -414,7 +414,7 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
                     onChange={setUpcValue}
                     onKeyDown={(e) => e.key === 'Enter' ? setUpc() : ''}
                     ref={textInput} />
-                  <button className='submit-upc wfmButton' onClick={setUpc}>>></button>
+                  <button className='submit-upc wfmButton' onClick={setUpc}>{'>>'}</button>
                 </div>
                 {
                   shrinkState.itemDescription &&

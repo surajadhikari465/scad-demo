@@ -33,6 +33,7 @@ import decode from 'jwt-decode';
 import Config from './config';
 
 const App: React.FC = () => {
+  //@ts-ignore
   const [state, dispatch] = usePersistedReducer(reducer, initialState);
   const { menuItems, settingsItems, Title } = state;
 

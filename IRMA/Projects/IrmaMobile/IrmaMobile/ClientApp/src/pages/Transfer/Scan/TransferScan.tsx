@@ -406,7 +406,7 @@ const TransferScan: React.FC = () => {
                                 <Input type='number' placeholder='UPC' value={upc || ''} onChange={handleUpcChange} onKeyDown={(e: any) => e.key === 'Enter' ? upcSearchClick() : ''} fluid />
                             </Grid.Column>
                             <Grid.Column width={2}>
-                                <Button className='wfmButton' onClick={upcSearchClick}>>></Button>
+                                <Button className='wfmButton' onClick={upcSearchClick}>{'>>'}</Button>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
