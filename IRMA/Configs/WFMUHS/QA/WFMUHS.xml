@@ -2,12 +2,12 @@
 <WFMUHS version="1.1">
   <Update name="WFM Mobile" enabled="1" version="1.0.2.1">
     <DevicePath>\Program Files\WFM Mobile\Client.exe</DevicePath>
-    <Location>http://wfmmobile-qa/Updates/ApplicationUpdates/WFMMobile/1.0.2.1/</Location>
+    <Location>http://WfmMblQA/Updates/ApplicationUpdates/WFMMobile/1.0.2.1/</Location>
     <File>WFMMobile.CAB</File>
   </Update>
   <Update name="WFM Mobile GAC" enabled="1" version="1.0.2.1">
     <DevicePath>\Program Files\WFM Mobile\Client.exe</DevicePath>
-    <Location>http://wfmmobile-qa/Updates/ApplicationUpdates/WFMMobile/1.0.2.1/</Location>
+    <Location>http://WfmMblQA/Updates/ApplicationUpdates/WFMMobile/1.0.2.1/</Location>
     <File>WFMMobile.GAC.txt</File>
   </Update>
   <AppSettings>
@@ -24,11 +24,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.8.0.0">http://iax-fl/IRMAService/IRMA.svc/basic</Service>
+      <Service version="10.8.0.0">http://IRMAWebFLQA/IRMAService/IRMA.svc/basic</Service>
       <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
       <Update enabled="1" version="10.8.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -36,7 +36,7 @@
       <Description>DVO Handheld</Description>
       <ExePath version="4.1.0.1">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.1.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>-->
@@ -49,7 +49,7 @@
         <add key="MaxItems" value="500" />
       </AppSettings>
       <Update enabled="1" version="1.0.0.14">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -58,7 +58,7 @@
       <Service version="3.13.2.2">http://marsscanauditservices-qa.wholefoods.com/AuditService.svc/basic</Service>
       <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
       <Update enabled="1" version="3.13.2.2">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
@@ -69,7 +69,7 @@
       <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.5" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
       <Update enabled="1" version="1.2.0.5">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -77,7 +77,7 @@
       <Description>Pilot DVO Handheld</Description>
       <ExePath version="4.5.2.0">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.5.2.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>
@@ -88,7 +88,7 @@
       <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
       <AppSettings />
       <Update enabled="1" version="1.5.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
         <File>WFM.Mobile.GROW.dll</File>
       </Update>
     </Application>
@@ -103,11 +103,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.8.0.0">http://iax-ma/IRMAService/IRMA.svc/basic</Service>
+      <Service version="10.8.0.0">http://IRMAWebMAQA/IRMAService/IRMA.svc/basic</Service>
       <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
       <Update enabled="1" version="10.8.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -115,7 +115,7 @@
       <Description>DVO Handheld</Description>
       <ExePath version="4.1.0.1">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.1.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>-->
@@ -128,7 +128,7 @@
         <add key="MaxItems" value="500" />
       </AppSettings>
       <Update enabled="1" version="1.0.0.14">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -147,7 +147,7 @@
       <Service version="3.13.2.2">http://marsscanauditservices-qa.wholefoods.com/AuditService.svc/basic</Service>
       <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
       <Update enabled="1" version="3.13.2.2">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
@@ -158,7 +158,7 @@
       <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
       <Update enabled="1" version="2.0.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -166,7 +166,7 @@
       <Description>Pilot DVO Handheld</Description>
       <ExePath version="4.5.2.0">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.5.2.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>
@@ -178,7 +178,7 @@
       <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
       <AppSettings />
       <Update enabled="1" version="1.5.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
         <File>WFM.Mobile.GROW.dll</File>
       </Update>
     </Application>
@@ -193,11 +193,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.8.0.0">http://iax-mw/IRMAService/IRMA.svc/basic</Service>
+      <Service version="10.8.0.0">http://IRMAWebMWQA/IRMAService/IRMA.svc/basic</Service>
       <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
       <Update enabled="1" version="10.8.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -205,7 +205,7 @@
       <Description>DVO Handheld</Description>
       <ExePath version="4.1.0.1">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.1.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>-->
@@ -219,7 +219,7 @@
         <add key="MaxItems" value="500" />
       </AppSettings>
       <Update enabled="1" version="1.0.0.14">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -227,7 +227,7 @@
       <Description>RBOFM</Description>
       <ExePath version="1.0.0.1">\Program Files\RBOFM\RBOFM.exe</ExePath>
       <Update enabled="0" version="1.0.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/RBOFM/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/RBOFM/</Location>
         <File>RBOFM.CAB</File>
       </Update>
     </Application>
@@ -239,7 +239,7 @@
       <Assembly name="WFM Mobile WebApp Launcher" file="WholeFoods.Mobile.WebApp.dll" version="1.0.0.3" entryPoint="WholeFoods.Mobile.WebApp.MainForm" />
       <AppSettings />
       <Update enabled="1" version="1.0.0.3">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/WebApp/1.0.0.3/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/WebApp/1.0.0.3/</Location>
         <File>WholeFoods.Mobile.WebApp.dll</File>
       </Update>
     </Application>
@@ -248,7 +248,7 @@
       <Service version="3.13.2.2">http://marsscanauditservices-qa.wholefoods.com/AuditService.svc/basic</Service>
       <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
       <Update enabled="1" version="3.13.2.2">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
@@ -285,7 +285,7 @@
       <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.5" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
       <Update enabled="1" version="1.2.0.5">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -293,7 +293,7 @@
       <Description>Pilot DVO Handheld</Description>
       <ExePath version="4.5.2.0">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.5.2.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>
@@ -304,7 +304,7 @@
       <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
       <AppSettings />
       <Update enabled="1" version="1.5.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
         <File>WFM.Mobile.GROW.dll</File>
       </Update>
     </Application>
@@ -319,11 +319,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.8.0.0">http://iax-na/IRMAService/IRMA.svc/basic</Service>
+      <Service version="10.8.0.0">http://IRMAWebNAQA/IRMAService/IRMA.svc/basic</Service>
       <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
       <Update enabled="1" version="10.8.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -331,7 +331,7 @@
       <Description>DVO Handheld</Description>
       <ExePath version="4.1.0.1">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.1.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>-->
@@ -344,7 +344,7 @@
         <add key="MaxItems" value="500" />
       </AppSettings>
       <Update enabled="1" version="1.0.0.14">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -352,7 +352,7 @@
       <Description>RBOFM</Description>
       <ExePath version="1.0.0.1">\Program Files\RBOFM\RBOFM.exe</ExePath>
       <Update enabled="0" version="1.0.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/RBOFM/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/RBOFM/</Location>
         <File>RBOFM.CAB</File>
       </Update>
     </Application>
@@ -361,7 +361,7 @@
       <Service version="3.13.2.2">http://marsscanauditservices-qa.wholefoods.com/AuditService.svc/basic</Service>
       <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
       <Update enabled="1" version="3.13.2.2">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
@@ -372,7 +372,7 @@
       <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.5" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
       <Update enabled="1" version="1.2.0.5">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -380,7 +380,7 @@
       <Description>Pilot DVO Handheld</Description>
       <ExePath version="4.5.2.0">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.5.2.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>
@@ -391,7 +391,7 @@
       <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
       <AppSettings />
       <Update enabled="1" version="1.5.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
         <File>WFM.Mobile.GROW.dll</File>
       </Update>
     </Application>
@@ -406,11 +406,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.8.0.0">http://iax-ne/IRMAService/IRMA.svc/basic</Service>
+      <Service version="10.8.0.0">http://IRMAWebNEQA/IRMAService/IRMA.svc/basic</Service>
       <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
       <Update enabled="1" version="10.8.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -418,7 +418,7 @@
       <Description>DVO Handheld</Description>
       <ExePath version="4.1.0.1">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.1.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>-->
@@ -431,7 +431,7 @@
         <add key="MaxItems" value="500" />
       </AppSettings>
       <Update enabled="1" version="1.0.0.14">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -440,7 +440,7 @@
       <Service version="3.13.2.2">http://marsscanauditservices-qa.wholefoods.com/AuditService.svc/basic</Service>
       <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
       <Update enabled="1" version="3.13.2.2">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
@@ -451,7 +451,7 @@
       <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.5" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
       <Update enabled="1" version="1.2.0.5">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -459,7 +459,7 @@
       <Description>Pilot DVO Handheld</Description>
       <ExePath version="4.5.2.0">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.5.2.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>
@@ -470,7 +470,7 @@
       <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
       <AppSettings />
       <Update enabled="1" version="1.5.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
         <File>WFM.Mobile.GROW.dll</File>
       </Update>
     </Application>
@@ -485,11 +485,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.8.0.0">http://iax-nc/IRMAService/IRMA.svc/basic</Service>
+      <Service version="10.8.0.0">http://IRMAWebNCQA/IRMAService/IRMA.svc/basic</Service>
       <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
       <Update enabled="1" version="10.8.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -497,7 +497,7 @@
       <Description>DVO Handheld</Description>
       <ExePath version="4.1.0.1">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.1.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>-->
@@ -510,7 +510,7 @@
         <add key="MaxItems" value="500" />
       </AppSettings>
       <Update enabled="1" version="1.0.0.14">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -541,7 +541,7 @@
 		      <ExePath version="1.0.0.1">\Windows\Start Menu\Programs\RBOFM.exe</ExePath>
 		      -->
       <Update enabled="0" version="1.0.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/RBOFM/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/RBOFM/</Location>
         <File>RBOFM.CAB</File>
       </Update>
     </Application>
@@ -550,7 +550,7 @@
       <Description>Net Weight Audit executable</Description>
       <ExePath version="2.0.3">\Windows\Start Menu\Programs\Net Weight Audit 2.1.exe</ExePath>
       <Update enabled="0" version="1.0.0.4">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/N.W.Audit/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/N.W.Audit/</Location>
         <File>N.W.Audit.CAB</File>
       </Update>
     </Application>
@@ -559,7 +559,7 @@
       <Service version="3.13.2.2">http://marsscanauditservices-qa.wholefoods.com/AuditService.svc/basic</Service>
       <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
       <Update enabled="1" version="3.13.2.2">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
@@ -570,7 +570,7 @@
       <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.5" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
       <Update enabled="1" version="1.2.0.5">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -578,7 +578,7 @@
       <Description>Pilot DVO Handheld</Description>
       <ExePath version="4.5.2.0">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.5.2.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>
@@ -589,7 +589,7 @@
       <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
       <AppSettings />
       <Update enabled="1" version="1.5.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
         <File>WFM.Mobile.GROW.dll</File>
       </Update>
     </Application>
@@ -604,11 +604,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.8.0.0">http://iax-pn/IRMAService/IRMA.svc/basic</Service>
+      <Service version="10.8.0.0">http://IRMAWebPNQA/IRMAService/IRMA.svc/basic</Service>
       <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
       <Update enabled="1" version="10.8.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -616,7 +616,7 @@
       <Description>DVO Handheld</Description>
       <ExePath version="4.1.0.1">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="0" version="4.1.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>-->
@@ -629,7 +629,7 @@
         <add key="MaxItems" value="500" />
       </AppSettings>
       <Update enabled="0" version="1.0.0.14">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -637,7 +637,7 @@
       <Description>RBOFM</Description>
       <ExePath version="1.0.0.1">\Program Files\RBOFM\RBOFM.exe</ExePath>
       <Update enabled="0" version="1.0.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/RBOFM/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/RBOFM/</Location>
         <File>RBOFM.CAB</File>
       </Update>
     </Application>-->
@@ -648,7 +648,7 @@
       <Assembly name="WFM Mobile WebApp Launcher" file="WholeFoods.Mobile.WebApp.dll" version="1.0.0.3" entryPoint="WholeFoods.Mobile.WebApp.MainForm" />
       <AppSettings />
       <Update enabled="1" version="1.0.0.3">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/WebApp/1.0.0.3/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/WebApp/1.0.0.3/</Location>
         <File>WholeFoods.Mobile.WebApp.dll</File>
       </Update>
     </Application>-->
@@ -657,7 +657,7 @@
       <Service version="3.13.2.2">http://marsscanauditservices-qa.wholefoods.com/AuditService.svc/basic</Service>
       <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
       <Update enabled="1" version="3.13.2.2">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
@@ -668,7 +668,7 @@
       <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
       <Update enabled="1" version="2.0.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -676,7 +676,7 @@
       <Description>Pilot DVO Handheld</Description>
       <ExePath version="4.5.2.0">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.5.2.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>
@@ -687,7 +687,7 @@
       <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
       <AppSettings />
       <Update enabled="1" version="1.5.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
         <File>WFM.Mobile.GROW.dll</File>
       </Update>
     </Application>
@@ -702,11 +702,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.8.0.0">http://iax-rm/IRMAService/IRMA.svc/basic</Service>
+      <Service version="10.8.0.0">http://IRMAWebRMQA/IRMAService/IRMA.svc/basic</Service>
       <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
       <Update enabled="1" version="10.8.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -714,7 +714,7 @@
       <Description>DVO Handheld</Description>
       <ExePath version="4.1.0.1">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.1.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>-->
@@ -727,7 +727,7 @@
         <add key="MaxItems" value="500" />
       </AppSettings>
       <Update enabled="1" version="1.0.0.14">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -736,7 +736,7 @@
       <Service version="3.13.2.2">http://marsscanauditservices-qa.wholefoods.com/AuditService.svc/basic</Service>
       <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
       <Update enabled="1" version="3.13.2.2">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
@@ -747,7 +747,7 @@
       <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.5" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
       <Update enabled="1" version="1.2.0.5">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -755,7 +755,7 @@
       <Description>Pilot DVO Handheld</Description>
       <ExePath version="4.5.2.0">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.5.2.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>
@@ -766,7 +766,7 @@
       <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
       <AppSettings />
       <Update enabled="1" version="1.5.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
         <File>WFM.Mobile.GROW.dll</File>
       </Update>
     </Application>
@@ -781,11 +781,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.8.0.0">http://iax-so/IRMAService/IRMA.svc/basic</Service>
+      <Service version="10.8.0.0">http://IRMAWebSOQA/IRMAService/IRMA.svc/basic</Service>
       <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
       <Update enabled="1" version="10.8.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -793,7 +793,7 @@
       <Description>DVO Handheld</Description>
       <ExePath version="4.1.0.1">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.1.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>-->
@@ -806,7 +806,7 @@
         <add key="MaxItems" value="500" />
       </AppSettings>
       <Update enabled="1" version="1.0.0.14">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -815,7 +815,7 @@
       <Service version="3.13.2.2">http://marsscanauditservices-qa.wholefoods.com/AuditService.svc/basic</Service>
       <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
       <Update enabled="1" version="3.13.2.2">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
@@ -826,7 +826,7 @@
       <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.5" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
       <Update enabled="1" version="1.2.0.5">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -834,7 +834,7 @@
       <Description>Pilot DVO Handheld</Description>
       <ExePath version="4.5.2.0">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.5.2.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>
@@ -845,7 +845,7 @@
       <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
       <AppSettings />
       <Update enabled="1" version="1.5.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
         <File>WFM.Mobile.GROW.dll</File>
       </Update>
     </Application>
@@ -855,7 +855,7 @@
       <Service version="3.7.3.4">http://marsscanauditservices-qa/AuditService.svc/basic</Service>
       <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.PLU2ESL.dll" version="0.9.4.23262" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
       <Update enabled="1" version="0.9.4.23262">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/PLU2ESL/0.9.4.23262/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/PLU2ESL/0.9.4.23262/</Location>
         <File>WholeFoods.Mobile.PLU2ESL.dll</File>
       </Update>
     </Application>
@@ -869,11 +869,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.8.0.0">http://iax-sp/IRMAService/IRMA.svc/basic</Service>
+      <Service version="10.8.0.0">http://IRMAWebSPQA/IRMAService/IRMA.svc/basic</Service>
       <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
       <Update enabled="1" version="10.8.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -881,7 +881,7 @@
       <Description>DVO Handheld</Description>
       <ExePath version="4.1.0.1">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.1.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>-->
@@ -894,7 +894,7 @@
         <add key="MaxItems" value="500" />
       </AppSettings>
       <Update enabled="1" version="1.0.0.14">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -902,7 +902,7 @@
       <Description>RBOFM</Description>
       <ExePath version="1.0.0.1">\Program Files\RBOFM\RBOFM.exe</ExePath>
       <Update enabled="0" version="1.0.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/RBOFM/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/RBOFM/</Location>
         <File>RBOFM.CAB</File>
       </Update>
     </Application>
@@ -911,7 +911,7 @@
       <Service version="3.13.2.2">http://marsscanauditservices-qa.wholefoods.com/AuditService.svc/basic</Service>
       <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
       <Update enabled="1" version="3.13.2.2">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
@@ -922,7 +922,7 @@
       <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.5" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
       <Update enabled="1" version="1.2.0.5">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -930,7 +930,7 @@
       <Description>Pilot DVO Handheld</Description>
       <ExePath version="4.5.2.0">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.5.2.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>
@@ -941,7 +941,7 @@
       <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
       <AppSettings />
       <Update enabled="1" version="1.5.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
         <File>WFM.Mobile.GROW.dll</File>
       </Update>
     </Application>
@@ -964,11 +964,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.8.0.0">http://iax-sw/IRMAService/IRMA.svc/basic</Service>
+      <Service version="10.8.0.0">http://IRMAWebSWQA/IRMAService/IRMA.svc/basic</Service>
       <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
       <Update enabled="1" version="10.8.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -976,7 +976,7 @@
       <Description>DVO Handheld</Description>
       <ExePath version="4.1.0.1">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.1.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>-->
@@ -989,7 +989,7 @@
         <add key="MaxItems" value="500" />
       </AppSettings>
       <Update enabled="1" version="1.0.0.14">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -997,7 +997,7 @@
       <Description>RBOFM</Description>
       <ExePath version="1.0.0.1">\Program Files\RBOFM\RBOFM.exe</ExePath>
       <Update enabled="0" version="1.0.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/RBOFM/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/RBOFM/</Location>
         <File>RBOFM.CAB</File>
       </Update>
     </Application>
@@ -1009,7 +1009,7 @@
       <Assembly name="WFM Mobile WebApp Launcher" file="WholeFoods.Mobile.WebApp.dll" version="1.0.0.3" entryPoint="WholeFoods.Mobile.WebApp.MainForm" />
       <AppSettings />
       <Update enabled="1" version="1.0.0.3">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/WebApp/1.0.0.3/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/WebApp/1.0.0.3/</Location>
         <File>WholeFoods.Mobile.WebApp.dll</File>
       </Update>
     </Application>
@@ -1018,7 +1018,7 @@
       <Service version="3.13.2.2">http://marsscanauditservices-qa.wholefoods.com/AuditService.svc/basic</Service>
       <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
       <Update enabled="1" version="3.13.2.2">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
@@ -1029,7 +1029,7 @@
       <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.5" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
       <Update enabled="1" version="1.2.0.5">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -1037,7 +1037,7 @@
       <Description>Pilot DVO Handheld</Description>
       <ExePath version="4.5.2.0">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.5.2.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>
@@ -1048,7 +1048,7 @@
       <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
       <AppSettings />
       <Update enabled="1" version="1.5.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
         <File>WFM.Mobile.GROW.dll</File>
       </Update>
     </Application>
@@ -1064,11 +1064,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.8.0.0">http://iax-rm/IRMAService/IRMA.svc/basic</Service>
+      <Service version="10.8.0.0">http://IRMAWebRMQA/IRMAService/IRMA.svc/basic</Service>
       <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
       <Update enabled="1" version="10.8.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -1083,11 +1083,11 @@
     <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
       <SecurityGroup />
       <Description>IRMA Mobile Plugin</Description>
-      <Service version="10.8.0.0">http://iax-uk/IRMAService/IRMA.svc/basic</Service>
+      <Service version="10.8.0.0">http://IRMAWebUKQA/IRMAService/IRMA.svc/basic</Service>
       <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
       <AppSettings />
       <Update enabled="1" version="10.8.0.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
         <File>WholeFoods.Mobile.IRMA.dll</File>
       </Update>
     </Application>
@@ -1096,7 +1096,7 @@
       <Description>DVO Handheld</Description>
       <ExePath version="4.1.0.1">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.1.0.1">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.1.0.1/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>
@@ -1110,7 +1110,7 @@
         <add key="MaxItems" value="500" />
       </AppSettings>
       <Update enabled="1" version="1.0.0.14">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
         <File>WholeFoods.Mobile.SMORe.dll</File>
       </Update>
     </Application>
@@ -1119,7 +1119,7 @@
       <Service version="3.13.2.2">http://marsscanauditservices-qa.wholefoods.com/AuditService.svc/basic</Service>
       <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
       <Update enabled="1" version="3.13.2.2">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
         <File>WholeFoods.Mobile.POSScanAudit.dll</File>
       </Update>
     </Application>
@@ -1130,7 +1130,7 @@
       <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.5" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
       <AppSettings />
       <Update enabled="1" version="1.2.0.5">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/OOS/1.2.0.5/</Location>
         <File>WFM.Mobile.OOS.dll</File>
       </Update>
     </Application>
@@ -1138,7 +1138,7 @@
       <Description>Pilot DVO Handheld</Description>
       <ExePath version="4.5.2.0">\Program Files\DVO-QA\DVO.exe</ExePath>
       <Update enabled="1" version="4.5.2.0">
-        <Location>http://wfmmobile-qa/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
+        <Location>http://WfmMblQA/Updates/PluginUpdates/DVO/4.5.2.0/</Location>
         <File>DVO-QA.CAB</File>
       </Update>
     </Application>
