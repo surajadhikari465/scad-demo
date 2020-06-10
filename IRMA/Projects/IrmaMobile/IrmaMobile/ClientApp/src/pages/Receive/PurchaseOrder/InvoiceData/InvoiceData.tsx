@@ -233,10 +233,10 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                 toast.error("Please enter an invoice number");
                 return;
             }
-        } 
+        }
 
         const handleConfirmCloseOrder = () => {
-            if (new Date(invoiceDate).getFullYear() < new Date().getFullYear()) {
+            if (radioSelection !== radioOptions.None && new Date(invoiceDate).getFullYear() < new Date().getFullYear()) {
                 setAlert({
                     ...alert,
                     open: true,
@@ -266,19 +266,21 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
 
     const closeOrder = async () => {
         if (!orderDetails) { return; }
-        if (!invoiceNumber) { return; }
+        if (radioSelection !== radioOptions.None && !invoiceNumber) { return; }
 
         try {
             setLoadingMessage("Closing Order...");
             setIsLoading(true);
 
             const invoiceCost = invoiceTotal - nonAllocatedCharges - orderDetails.InvoiceFreight;
+            const invoiceNumberArgument = !invoiceNumber ? '' : invoiceNumber.toString();
+            const invoiceDateArgument = radioSelection === radioOptions.None ? new Date() : new Date(invoiceDate);
 
             var updateResult = await agent.InvoiceData.updateOrderBeforeClosing(
                 region,
                 orderDetails.OrderId,
-                invoiceNumber.toString(),
-                new Date(invoiceDate),
+                invoiceNumberArgument,
+                invoiceDateArgument,
                 invoiceCost,
                 orderDetails.VendorDocId ? orderDetails.VendorDocId.toString() : '',
                 orderDetails.VendorDocDate,
@@ -392,10 +394,10 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
 
         if (result.status) {
             toast.info('Order Refused');
+            history.push('/receive/PurchaseOrder');
             dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
             dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
             dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
-            history.push('/receive/PurchaseOrder');
         } else {
             toast.error(`Error when refusing order: ${result.errorMessage || 'No message given'}`);
         }
