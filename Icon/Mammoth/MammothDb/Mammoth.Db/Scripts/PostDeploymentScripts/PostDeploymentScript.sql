@@ -15,6 +15,7 @@ Post-Deployment Script Template
 
 --:r .\26539_FutureCostsExtract_JobSchedule.sql --2020-04-01
 :r .\34409_IRMAUserAudit_JobSchedule.sql --2020-05-28
+:r .\34822_ExtractServiceJob_Attributes.sql --2020-06-10
 
 -- Run every time (add your script above; keep this at bottom, as last post-deploy script).
 :r ..\..\Security\SecurityGrants.sql

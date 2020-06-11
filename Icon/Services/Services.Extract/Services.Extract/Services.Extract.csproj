@@ -171,10 +171,16 @@
     <Compile Include="Config\EsbCredentialConfigItem.cs" />
     <Compile Include="Config\EsbCredentialConfigItems.cs" />
     <Compile Include="Config\EsbCredentialConfigSection.cs" />
+    <Compile Include="Config\FileDestinationConfigItem.cs" />
+    <Compile Include="Config\FileDestinationConfigItems.cs" />
+    <Compile Include="Config\FileDestinationConfigSection.cs" />
     <Compile Include="Credentials\CredentialsCacheManager.cs" />
     <Compile Include="Credentials\ESBCredential.cs" />
     <Compile Include="Credentials\EsbCredentialsCache.cs" />
+    <Compile Include="Credentials\FileDestination.cs" />
+    <Compile Include="Credentials\FileDestinationsCache.cs" />
     <Compile Include="Credentials\IEsbCredentialsCache.cs" />
+    <Compile Include="Credentials\IFileDestinationCache.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Credentials\ICredentialsCacheManager.cs" />
     <Compile Include="Models\Destination.cs" />

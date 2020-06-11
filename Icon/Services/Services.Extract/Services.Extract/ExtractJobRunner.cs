@@ -44,14 +44,16 @@ namespace Services.Extract
         internal string OpsGenieApiKey;
         internal string OpsGenieUrl;
         private ICredentialsCacheManager CredentialsCacheManager;
+        private IFileDestinationCache FileDestinationCache;
 
         
 
-        public ExtractJobRunner(ILogger<ExtractJobRunner> logger, IOpsgenieAlert opsGenieAlert, ICredentialsCacheManager credentialsCacheManager)
+        public ExtractJobRunner(ILogger<ExtractJobRunner> logger, IOpsgenieAlert opsGenieAlert, ICredentialsCacheManager credentialsCacheManager, IFileDestinationCache fileDestinationCache)
         {
             OpsGenieApiKey = AppSettingsAccessor.GetStringSetting("OpsGenieApiKey", true);
             OpsGenieUrl = AppSettingsAccessor.GetStringSetting("OpsGenieUri", true);
             CredentialsCacheManager = credentialsCacheManager;
+            FileDestinationCache = fileDestinationCache;
             Regions = AppSettingsAccessor.GetStringSetting("Regions", "FL,MA,MW,NA,NC,NE,PN,RM,SO,SP,SW,UK").Split(',');
             Logger = logger;
             OpsGenie = opsGenieAlert;
@@ -113,13 +115,15 @@ namespace Services.Extract
         internal string GZipFile(string inputFileName)
         {
             var gzipFile = Path.ChangeExtension(inputFileName, "gz");
-            var bytes = File.ReadAllBytes(inputFileName);
-            using (var fs = new FileStream(gzipFile, FileMode.CreateNew))
-            using (var zipStream = new GZipStream(fs, CompressionMode.Compress, false))
+            // changing from System.IO.File.ReadAllBytes() to System.IO.FileStream.CopyTo() because ReadAllBytes doesnt support files over 2gigs.
+            using (FileStream target = new FileStream(gzipFile, FileMode.Create, FileAccess.Write))
+            using (GZipStream zipStream = new GZipStream(target, CompressionMode.Compress, leaveOpen: false))
             {
-                zipStream.Write(bytes, 0, bytes.Length);
+                using (var fileToRead = File.Open(inputFileName, FileMode.Open))
+                {
+                    fileToRead.CopyTo(zipStream);
+                }
             }
-
             return gzipFile;
         }
         internal List<FileInfo> ZipFiles(List<FileInfo> inputFiles, string destinationFile)
@@ -371,8 +375,6 @@ namespace Services.Extract
                 .ToDictionary(d => d.Source, d => d.Conn);
 
             Connections.Add("Icon", new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString));
-
-
         }
         internal void ProcessHeaders(List<FileInfo> sourceFiles)
         {
@@ -447,6 +449,7 @@ namespace Services.Extract
                 CredentialsCacheManager.S3CredentialsCache.Refresh();
                 CredentialsCacheManager.SFtpCredentialsCache.Refresh();
                 CredentialsCacheManager.EsbCredentialsCache.Refresh();
+                FileDestinationCache.Refresh();
 
                 CreateWorksapce(WorkspacePath);
                 CleanWorkspace(WorkspacePath);
@@ -652,7 +655,16 @@ namespace Services.Extract
                 }
             }
         }
-        
+
+
+        internal void CopyFilesToStoredDestination(string destinationPathKey, IFileDestinationCache fileDestinationCache, List<FileInfo> outputFiles)
+        {
+            if (!fileDestinationCache.FileDestinations.ContainsKey(destinationPathKey)) throw new Exception($"Unable to find destination path for Key: {destinationPathKey}");
+            var destinationPath = fileDestinationCache.FileDestinations[destinationPathKey].Path;
+
+            OutputFiles.ForEach(of => CopyFile(sourceFileName: of.FullName, destFileName: destinationPath + of.Name, overwrite: true));
+        }
+
         private void ProcessDestination()
         {
             if (Configuration.Destination == null)
@@ -669,6 +681,9 @@ namespace Services.Extract
                 case "file":
                     OutputFiles.ForEach(of => CopyFile(sourceFileName: of.FullName, destFileName:Configuration.Destination.Path + of.Name, overwrite:true));
                     break;
+                case "pathkey":
+                    CopyFilesToStoredDestination(Configuration.Destination.PathKey, FileDestinationCache, OutputFiles);
+                    break;
                 case "sftp":
                     CopyFilesToSFtp(Configuration.Destination.CredentialsKey, CredentialsCacheManager.SFtpCredentialsCache, Configuration.Destination.Path, OutputFiles);
                     break;
@@ -680,5 +695,7 @@ namespace Services.Extract
                     break;
             }
         }
+
+        
     }
 }

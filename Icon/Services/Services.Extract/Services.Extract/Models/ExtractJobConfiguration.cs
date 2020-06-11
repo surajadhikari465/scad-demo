@@ -16,5 +16,6 @@
         public string OutputFileName { get; set; }
         public string Delimiter { get; set; }
         public Destination Destination { get; set; }
+
     }
 }

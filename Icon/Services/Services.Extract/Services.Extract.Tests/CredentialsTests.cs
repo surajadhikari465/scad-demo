@@ -3,6 +3,25 @@ using Services.Extract.Credentials;
 
 namespace Services.Extract.Tests
 {
+
+    [TestClass]
+    public class FileDestinationTests
+    {
+        private IFileDestinationCache FileDestinations;
+
+        [TestMethod]
+        public void FileDestinations_LoadFromonfig_DestinationsLoaded()
+        {
+            FileDestinations = new FileDestinationsCache();
+            FileDestinations.Refresh();
+            Assert.IsTrue(FileDestinations.FileDestinations.ContainsKey("CAP"));
+            Assert.IsFalse(FileDestinations.FileDestinations.ContainsKey("notthere"));
+
+            var fileDestination = FileDestinations.FileDestinations["CAP"];
+            Assert.AreEqual("c:\\temp\\", fileDestination.Path);
+        }
+    }
+
     [TestClass]
     public class CredentialsTests
     {

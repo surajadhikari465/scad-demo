@@ -34,6 +34,7 @@ namespace Services.Extract
             container.RegisterSingleton<IS3CredentialsCache, S3CredentialsCache>();
             container.RegisterSingleton<IEsbCredentialsCache, EsbCredentialsCache>();
             container.Register<ICredentialsCacheManager, CredentialsCacheManager>();
+            container.Register<IFileDestinationCache, FileDestinationsCache>();
             container.Register(typeof(ICommandHandler<>), typeof(UpdateJobLastRunEndCommand).Assembly);
             container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString));
             

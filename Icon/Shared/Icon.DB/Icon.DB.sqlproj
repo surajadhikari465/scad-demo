@@ -856,6 +856,7 @@
     <None Include="Scripts\PopulateData\Archive\33610_UpdateAttributesDisplayOrder.sql" />
     <None Include="Scripts\PopulateData\Archive\32222_ConsolidateBulkUploadTables.sql" />
     <None Include="Scripts\PopulateData\Archive\UpdateAttributesDefaultValue.sql" />
+    <Build Include="extract\Stored Procedures\ExtractAttributes.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

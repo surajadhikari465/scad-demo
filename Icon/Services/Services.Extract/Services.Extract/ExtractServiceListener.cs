@@ -16,8 +16,9 @@ namespace Services.Extract
     {
         private readonly ILogger<ExtractJobRunner> ExtractJobLogger;
         private readonly IOpsgenieAlert OpsGenieAlert;
-        private readonly ICommandHandler<UpdateJobLastRunEndCommand> updateJobLastRunEndCommandHandler;
+        private readonly ICommandHandler<UpdateJobLastRunEndCommand> UpdateJobLastRunEndCommandHandler;
         private readonly ICredentialsCacheManager CredentialsCacheManager;
+        private readonly IFileDestinationCache FileDestinationCache;
 
         public ExtractServiceListener(
             ListenerApplicationSettings listenerApplicationSettings,
@@ -27,14 +28,16 @@ namespace Services.Extract
             ILogger<ExtractServiceListener> serviceLogger,
             ILogger<ExtractJobRunner> extractJoblogger,
             ICredentialsCacheManager credentialsCacheManager,
+            IFileDestinationCache fileDestinationCache,
             IOpsgenieAlert opsGenieAlert,
             ICommandHandler<UpdateJobLastRunEndCommand> updateJobLastRunEndCommandHandler
         ) : base(listenerApplicationSettings, esbConnectionSettings, subscriber, emailClient, serviceLogger)
         {
             ExtractJobLogger = extractJoblogger;
             OpsGenieAlert = opsGenieAlert;
-            this.updateJobLastRunEndCommandHandler = updateJobLastRunEndCommandHandler;
+            UpdateJobLastRunEndCommandHandler = updateJobLastRunEndCommandHandler;
             CredentialsCacheManager = credentialsCacheManager;
+            FileDestinationCache = fileDestinationCache;
         }
 
         public override void HandleMessage(object sender, EsbMessageEventArgs args)
@@ -43,7 +46,7 @@ namespace Services.Extract
             var extractJobConfig = new ExtractJobConfigurationParser().Parse(jobSchedule.XmlObject);
             logger.Debug($"Executing Job: {jobSchedule.JobName}");
 
-            var runner = new ExtractJobRunner(ExtractJobLogger, OpsGenieAlert, CredentialsCacheManager);
+            var runner = new ExtractJobRunner(ExtractJobLogger, OpsGenieAlert, CredentialsCacheManager, FileDestinationCache);
             try
             {
                 runner.Run(extractJobConfig);
@@ -57,7 +60,7 @@ namespace Services.Extract
             {
                 try
                 {
-                    updateJobLastRunEndCommandHandler.Execute(new UpdateJobLastRunEndCommand
+                    UpdateJobLastRunEndCommandHandler.Execute(new UpdateJobLastRunEndCommand
                     {
                         JobScheduleId = jobSchedule.JobScheduleId,
                         LastRunEndDateTime = DateTime.UtcNow

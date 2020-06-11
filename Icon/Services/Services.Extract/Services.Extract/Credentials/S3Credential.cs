@@ -1,4 +1,6 @@
-﻿namespace Services.Extract.Credentials
+﻿using Amazon.S3.Model;
+
+namespace Services.Extract.Credentials
 {
     public class S3Credential
     {
