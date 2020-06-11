@@ -46,8 +46,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
         open: false,
         alertMessage: 'Reason codes are required for some items on this order. You may review these items on the Receiving List screen. Go there now?',
         type: 'confirm',
-        header: 'Receive',
-        confirmAction: () => { history.push(`/receive/List/${purchaseOrderNumber}`); }
+        header: 'Receive'
     });
 
 
@@ -62,7 +61,21 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
             if (orderDetails && orderDetails.EInvId > 0) {
                 let eInvoiceDiscrepancyExists = orderDetails.OrderItems.some(oi => (oi.QtyReceived !== oi.eInvoiceQty && oi.QtyReceived + oi.eInvoiceQty > 0) && oi.Code === 0);
                 if (eInvoiceDiscrepancyExists) {
-                    setAlert({ ...alert, open: true });
+                    setAlert({
+                        ...alert,
+                        open: true,
+                        alertMessage: 'Reason codes are required for some items on this order. You may review these items on the Receiving List screen. Go there now?',
+                        type: 'confirm',
+                        header: 'Receive',
+                        confirmAction: () => {
+                            if (orderDetails) {
+                                history.push(`/receive/List/${orderDetails.OrderId}`);
+                            } else {
+                                toast.error('Error loading receiving list. Please contact support if error persists.');
+                                console.error('OrderDetails is null, unable to load receiving list.');
+                            }
+                        }
+                    });
                 } else {
                     history.push(`/receive/Invoicedata/${purchaseOrderNumber}`);
                 }
@@ -93,7 +106,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                 toast.error(error);
                 return;
             }
-            
+
             dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: scanCode });
             setBarcodeScanSearch(true);
         });
@@ -247,19 +260,24 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     }
 
     const handleReopenPartial = async () => {
-        try {
-            setIsReopening(true);
-            const result = await agent.PurchaseOrder.reOpenOrder(region, parseInt(purchaseOrderNumber!));
+        if (orderDetails) {
+            try {
+                setIsReopening(true);
+                const result = await agent.PurchaseOrder.reOpenOrder(region, Number(orderDetails.OrderId));
 
-            if (result && result.status) {
-                toast.info('The order has been reopened');
-            } else {
-                toast.error(`Error reopening the order: ${(result && result.errorMessage) || 'No message given'}`);
+                if (result && result.status) {
+                    toast.info('The order has been reopened');
+                } else {
+                    toast.error(`Error reopening the order: ${(result && result.errorMessage) || 'No message given'}`);
+                }
+            } catch (error) {
+                toast.error(`Error reopening the order: ${error}`);
+            } finally {
+                setIsReopening(false);
             }
-        } catch (error) {
-            toast.error(`Error reopening the order: ${error}`);
-        } finally {
-            setIsReopening(false);
+        } else {
+            toast.error('Unable to reopen order. If this error persists please contact support.');
+            console.error("Unable to reopen order. OrderDetails is null.");
         }
     }
 
@@ -294,7 +312,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     };
 
     useEffect(() => {
-        if(barcodeScanSearch) {
+        if (barcodeScanSearch) {
             setBarcodeScanSearch(false);
             search();
         }
