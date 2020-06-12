@@ -1,31 +1,14 @@
-﻿CREATE TABLE [dbo].[ItemGroupMember] (
-[itemID] INT  NOT NULL  
-, [itemGroupID] INT  NOT NULL  
-, [localeID] INT  NULL  
-)
-GO
-ALTER TABLE [dbo].[ItemGroupMember] WITH CHECK ADD CONSTRAINT [Locale_ItemGroupMember_FK1] FOREIGN KEY (
-[localeID]
-)
-REFERENCES [dbo].[Locale] (
-[localeID]
-)
-GO
-ALTER TABLE [dbo].[ItemGroupMember] WITH CHECK ADD CONSTRAINT [Item_ItemGroupMember_FK1] FOREIGN KEY (
-[itemID]
-)
-REFERENCES [dbo].[Item] (
-[itemID]
-)
-GO
-ALTER TABLE [dbo].[ItemGroupMember] WITH CHECK ADD CONSTRAINT [ItemGroup_ItemGroupMember_FK1] FOREIGN KEY (
-[itemGroupID]
-)
-REFERENCES [dbo].[ItemGroup] (
-[itemGroupID]
-)
-GO
-ALTER TABLE [dbo].[ItemGroupMember] ADD CONSTRAINT [ItemGroupMember_PK] PRIMARY KEY CLUSTERED (
-[itemID]
-, [itemGroupID]
-)
+﻿CREATE TABLE dbo.ItemGroupMember 
+( 
+    ItemId int NOT NULL, 
+    ItemGroupId int NOT NULL, 
+    IsPrimary bit NOT NULL CONSTRAINT DF_ItemGroupMember_IsPrimary DEFAULT ((0)), 
+    LastModifiedBy nvarchar(255) NOT NULL, 
+    SysStartTimeUtc datetime2(7) GENERATED ALWAYS AS ROW START, 
+    SysEndTimeUtc datetime2(7) GENERATED ALWAYS AS ROW END, 
+    PERIOD FOR SYSTEM_TIME (SysStartTimeUtc, SysEndTimeUtc), 
+    CONSTRAINT PK_ItemGroupMember PRIMARY KEY CLUSTERED (ItemId, ItemGroupId), 
+    CONSTRAINT FK_ItemGroupMember_ItemId FOREIGN KEY (ItemId) REFERENCES dbo.Item (ItemId), 
+    CONSTRAINT FK_ItemGroupMember_ItemGroupId FOREIGN KEY (ItemGroupId) REFERENCES dbo.ItemGroup (ItemGroupId) 
+) 
+WITH (SYSTEM_VERSIONING = ON (HISTORY_TABLE = dbo.ItemGroupMemberHistory)); 

@@ -18,6 +18,7 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\35524_BrandValidation_FixZipCodeTraitPattern.sql -- 2020-05-07 35524
 :r .\Scripts\PopulateData\32221_UpdatePrimeNowMerchantIDEncryptedToAllow50Characters.sql --2020-05-08 32221
 :r .\Scripts\Projects\NutritionDeleteFix\QueueItemsWithDeletedNutrition.sql --2020-05-12 35635
+:r .\Scripts\PopulateData\36704_PopulateItemGroupTypes.sql --2020-06-11 36704
 :r .\Scripts\PopulateData\36950_PopulateReservedEsbTraitCodesTable.sql --2020-06-09 36950
 
 -- Always run this security script and make it the last entry in this script.

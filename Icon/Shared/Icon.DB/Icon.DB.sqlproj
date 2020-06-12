@@ -857,6 +857,10 @@
     <None Include="Scripts\PopulateData\Archive\32222_ConsolidateBulkUploadTables.sql" />
     <None Include="Scripts\PopulateData\Archive\UpdateAttributesDefaultValue.sql" />
     <Build Include="extract\Stored Procedures\ExtractAttributes.sql" />
+    <Build Include="dbo\Tables\ItemGroupType.sql" />
+    <Build Include="dbo\Tables\ItemGroupHistory.sql" />
+    <Build Include="dbo\Tables\ItemGroupMemberHistory.sql" />
+    <None Include="Scripts\PopulateData\36704_PopulateItemGroupTypes.sql" />
     <Build Include="dbo\Tables\ReservedEsbTraitCodes.sql" />
   </ItemGroup>
   <ItemGroup>
