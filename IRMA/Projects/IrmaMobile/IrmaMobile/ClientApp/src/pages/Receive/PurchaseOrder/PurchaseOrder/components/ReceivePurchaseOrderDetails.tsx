@@ -7,7 +7,7 @@ import React, {
     useState,
     useRef
 } from "react";
-import { Dropdown, Grid, Input, Segment, Button, InputOnChangeData } from "semantic-ui-react";
+import { Dropdown, Grid, Input, Segment, InputOnChangeData } from "semantic-ui-react";
 import agent from "../../../../../api/agent";
 import { AppContext, types } from "../../../../../store";
 import { ReasonCode } from "../../types/ReasonCode";
@@ -22,9 +22,10 @@ import { Textfit } from 'react-textfit';
 
 interface IProps {
     costedByWeight: boolean;
+    setCostedByWeight: (costedByWeight: boolean) => void
 }
 
-const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
+const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight, setCostedByWeight }) => {
     // @ts-ignore
     const { state, dispatch } = useContext(AppContext);
     const { orderDetails, region, mappedReasonCodes, user } = state;
@@ -34,7 +35,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
     const overrideHighQty = useRef(false);
     const quantityMode = useRef(QuantityAddMode.None);
     const [quantity, setQuantity] = useState<any>(1);
-    const [weight, setWeight] = useState<number | string>(orderDetails ? quantity * orderDetails?.PkgWeight : '');
+    const [weight, setWeight] = useState<number | string>(orderDetails && costedByWeight ? quantity * orderDetails?.PkgWeight : '');
     const [inputHasFocus, setInputHasFocus] = useState<boolean>(false);
     const [catchWeightWarning, setCatchweightWarning] = useState<boolean>(false);
 
@@ -121,15 +122,15 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
             }
 
             if (costedByWeight) {
-                if(!weight || isNaN(parseFloat(weight.toString()))) {
+                if (!weight || isNaN(parseFloat(weight.toString()))) {
                     toast.error("Weight Received must be a numeric value. Please try again.");
                     return;
                 }
-                if(weight > 9999.99) {
+                if (weight > 9999.99) {
                     toast.error("Weight amount must be less than 9999.99");
                     return;
                 }
-                if(weight < .01) {
+                if (weight < .01) {
                     toast.error("Weight amount must be greater than .01");
                     return;
                 }
@@ -142,7 +143,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
 
             const newQuantity: number = quantityMode.current === QuantityAddMode.AddTo ? quantity + orderDetails.QtyReceived : quantity;
             let parsedWeight: number = 0;
-            if(!isNaN(Number(weight))) {
+            if (!isNaN(Number(weight))) {
                 parsedWeight = Number(weight);
             }
             const newWeight: number = quantityMode.current === QuantityAddMode.AddTo ? parsedWeight + orderDetails.Weight : parsedWeight;
@@ -203,6 +204,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                 setReceivingOrder(false);
                 overrideHighQty.current = false;
                 quantityMode.current = QuantityAddMode.None;
+                setCostedByWeight(false);
 
                 dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
             }
@@ -268,7 +270,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
     if (orderDetails) {
         return (
             <Fragment>
-                <ConfirmModal handleConfirmClose={handleHighQtyConfirmClick} 
+                <ConfirmModal handleConfirmClose={handleHighQtyConfirmClick}
                     setOpenExternal={setShowHighQtyModal}
                     handleCancelClose={() => quantityMode.current = QuantityAddMode.None}
                     showTriggerButton={false}
@@ -279,9 +281,9 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight }) => {
                     lineOne={quantityMode.current === QuantityAddMode.AddTo
                         ? `Quantity Received (${quantity + orderDetails.QtyReceived}) is greater than Quantity Ordered (${orderDetails.QtyOrdered}). Continue?`
                         : `Quantity (${quantity}) is greater than Quantity Ordered (${orderDetails.QtyOrdered}). Continue?`} />
-                <ReceivePurchaseOrderDetailsQtyModal 
-                    handleQuantityDecision={handleQuantityDecision} 
-                    open={showQtyModal} 
+                <ReceivePurchaseOrderDetailsQtyModal
+                    handleQuantityDecision={handleQuantityDecision}
+                    open={showQtyModal}
                     previousQuantityReceived={orderDetails.QtyReceived}
                     catchweightRequired={orderDetails.CatchweightRequired}
                     previousWeightReceived={orderDetails.Weight}

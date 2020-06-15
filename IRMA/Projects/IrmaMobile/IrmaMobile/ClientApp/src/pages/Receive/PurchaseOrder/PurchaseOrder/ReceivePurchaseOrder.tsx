@@ -395,7 +395,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                                 </Grid>
                             </Form>
                         </div>
-                        <ReceivePurchaseOrderDetails costedByWeight={costedByWeight} />
+                        <ReceivePurchaseOrderDetails costedByWeight={costedByWeight} setCostedByWeight={setCostedByWeight} />
                         <BasicModal alert={alert} setAlert={setAlert}></BasicModal>
                     </Fragment>
                 }
