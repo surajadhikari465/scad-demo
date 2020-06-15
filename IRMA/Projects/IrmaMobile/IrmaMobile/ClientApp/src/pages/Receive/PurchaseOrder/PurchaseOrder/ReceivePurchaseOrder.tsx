@@ -185,7 +185,6 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
             } else {
                 toast.error(validationResult.errorMessage);
                 dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
-                dispatch({ type: types.SETPURCHASEORDERNUMBER, purchaseOrderNumber: '' });
                 dispatch({ type: types.SETORDERDETAILS, orderDetails: null });
             }
         } catch (error) {
