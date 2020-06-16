@@ -16,10 +16,10 @@ const ReviewShrink: React.FC = () => {
   const { state, dispatch } = useContext(AppContext);
   const [shrinkItems, setShrinkItems] = useState<[] | any>([]);
   const [selected, setSelected] = useState();
-  const { isLoading, user, subteamSession, shrinkTypes } = state;
+  const { isLoading, user, shrinkSessions, shrinkTypes } = state;
   const [alert, setAlert] = useState({ open: false, alertMessage: '' });
   const [confirm, setConfirm] = useState({ open: false, message: '', header: 'Review Shrink', onConfirm: () => { } });
-  let sessionIndex = subteamSession.findIndex((session: any) => session.sessionUser.userName === user?.userName);
+  let sessionIndex = shrinkSessions.findIndex((session: any) => session.sessionUser.userName === user?.userName);
   let history = useHistory();
 
   const setMenuItems = useCallback(() => {
@@ -40,9 +40,9 @@ const ReviewShrink: React.FC = () => {
   }, [setMenuItems, dispatch]);
 
   useEffect(() => {
-    if (subteamSession[sessionIndex].shrinkItems) {
+    if (shrinkSessions[sessionIndex].shrinkItems) {
       // @ts-ignore
-      let localShrinkItems = subteamSession[sessionIndex].shrinkItems;
+      let localShrinkItems = shrinkSessions[sessionIndex].shrinkItems;
       setShrinkItems(localShrinkItems);
     }
     dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
@@ -85,8 +85,8 @@ const ReviewShrink: React.FC = () => {
           var result = await agent.Shrink.submitShrinkItems(
             state.region,
             shrinkItems[i].itemKey,
-            subteamSession[sessionIndex].sessionNumber,
-            subteamSession[sessionIndex].sessionSubteam?.subteamNo,
+            shrinkSessions[sessionIndex].sessionNumber,
+            shrinkSessions[sessionIndex].sessionSubteam?.subteamNo,
             selectedShrinkType.shrinkSubTypeId,
             findShrinkAjustmentIdByAbbreviation(state.shrinkAdjustmentReasons, state.shrinkType.abbreviation),
             selectedShrinkType.shrinkType,
@@ -116,8 +116,8 @@ const ReviewShrink: React.FC = () => {
       if (succeededItems === shrinkItems.length) {
         toast.success("Shrink Items Uploaded");
         dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
-        subteamSession[sessionIndex] = { shrinkItems: [], isPrevSession: false, sessionShrinkType: '', sessionSubteam: undefined, sessionStore: '', sessionNumber: 0, sessionRegion: '', sessionUser: user, forceSubteamSelection: true };
-        dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
+        shrinkSessions[sessionIndex] = { shrinkItems: [], isPrevSession: false, sessionShrinkType: '', sessionSubteam: undefined, sessionStore: '', sessionNumber: 0, sessionRegion: '', sessionUser: user, forceSubteamSelection: true };
+        dispatch({ type: types.SETSHRINKSESSIONS, shrinkSessions });
         history.push('/shrink');
       }
       setIsLoading(false);
@@ -136,8 +136,8 @@ const ReviewShrink: React.FC = () => {
       setShrinkItems(newShrinkItems);
       setSelected(undefined);
       setConfirm({ ...confirm, open: false, message: '', onConfirm: () => { } });
-      const subteamSessionCopy = { ...subteamSession[sessionIndex], shrinkItems: newShrinkItems };
-      dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: [...subteamSession.slice(0, sessionIndex), subteamSessionCopy, ...subteamSession.slice(sessionIndex + 1)] })
+      const shrinkSessionsCopy = { ...shrinkSessions[sessionIndex], shrinkItems: newShrinkItems };
+      dispatch({ type: types.SETSHRINKSESSIONS, shrinkSessions: [...shrinkSessions.slice(0, sessionIndex), shrinkSessionsCopy, ...shrinkSessions.slice(sessionIndex + 1)] })
     }
   }
 

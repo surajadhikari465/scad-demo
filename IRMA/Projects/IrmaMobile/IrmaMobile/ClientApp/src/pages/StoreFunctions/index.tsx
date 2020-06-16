@@ -17,24 +17,23 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
   const [isSelected, setSelected] = useState(false);
   const [alertIsOpen, setAlertOpen] = useState(false);
   const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { } });
-  const { subteams, user, subteamSession } = state;
+  const { subteams, user } = state;
   const { history } = props;
-  let sessionIndex = subteamSession.findIndex((session:any) => session.sessionUser.userName === user?.userName);
 
   useEffect(() => {
     const logout = () => {
-			try {
-				//do nothing with the clearToken callback
-				AuthHandler.clearToken(() => { });
-			} catch (error) {
-				toast.error(`Error logging out. ${error}`);
-				console.error(`Error logging out. ${error}`);
-			}
-		};
-    
+      try {
+        //do nothing with the clearToken callback
+        AuthHandler.clearToken(() => { });
+      } catch (error) {
+        toast.error(`Error logging out. ${error}`);
+        console.error(`Error logging out. ${error}`);
+      }
+    };
+
     const settingsItems = [
       { id: 1, order: 0, text: "Change Store", path: "/", disabled: false } as IMenuItem,
-			{ id: 2, order: 1, text: "Log Out", path: "#", disabled: false, onClick: logout } as IMenuItem
+      { id: 2, order: 1, text: "Log Out", path: "#", disabled: false, onClick: logout } as IMenuItem
     ] as IMenuItem[];
 
     dispatch({ type: types.TOGGLECOG, showCog: true });
@@ -48,18 +47,6 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
     };
   }, [dispatch]);
 
-  const deleteSession = () => {
-    localStorage.removeItem('sessionSubType');
-    dispatch({ type: types.SETSHRINKTYPE, shrinkType: {} });
-    subteamSession[sessionIndex] = { ...subteamSession[sessionIndex], shrinkItems: [], isPrevSession: false };
-    dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
-    setAlert({
-      ...alert,
-      open: false
-    });
-    history.push('/shrink');
-  }
-
   const deleteWarning = () => {
     setAlert({
       ...alert,
@@ -67,45 +54,46 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
       alertMessage: 'Are you sure you want to delete you saved Session?',
       type: 'confirm',
       header: 'Delete Session?',
-      confirmAction: deleteSession
+      confirmAction: () => {
+        dispatch({ type: types.SETSHRINKTYPE, shrinkType: {} });
+        const shrinkSessions = state.shrinkSessions;
+        const shrinkSessionsCopy = shrinkSessions.filter(s => s.sessionUser.userName !== user?.userName);
+        shrinkSessionsCopy.push({ shrinkItems: [], isPrevSession: false, sessionShrinkType: '', sessionNumber: 0, sessionSubteam: undefined, sessionStore: '', sessionRegion: '', sessionUser: user, forceSubteamSelection: true });
+        dispatch({ type: types.SETSHRINKSESSIONS, shrinkSessions: shrinkSessionsCopy });
+        history.push('/shrink');
+      }
     });
   }
 
-  const confirm = () => {
-    setAlert({
-      ...alert,
-      open: false
-    });
-    subteamSession[sessionIndex] = { ...subteamSession[sessionIndex], isPrevSession: true };
-    dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
-    history.push('/shrink');
-  }
-
-  const checkLocalStorage = () => {
-    setAlert({
-      ...alert,
-      open: true,
-      alertMessage: `Would you like to reload your previous Session? (${state.subteamSession[sessionIndex].sessionUser.userName} for ${state.subteamSession[sessionIndex].sessionSubteam?.subteamName}) Clicking No will delete the old session.`,
-      type: 'confirm',
-      header: 'Previous Session Exists',
-      cancelAction: deleteWarning,
-      confirmAction: confirm
-    });
-  }
-
-  const handleClick = (e: any) => {
+  const handleShrinkClick = () => {
     if (!isSelected) {
       setAlertOpen(true);
     }
     else {
-      let shrinkItems = [];
-      if (subteamSession[sessionIndex].shrinkItems) {
-        shrinkItems = subteamSession[sessionIndex].shrinkItems;
-      }
-      if (shrinkItems.length > 0 && e.target.value === 'shrink') {
-        checkLocalStorage();
+      const shrinkSession = state.shrinkSessions.find(session => session.sessionUser.userName === user?.userName);
+      if (shrinkSession && shrinkSession.shrinkItems && shrinkSession.shrinkItems.length > 0) {
+        setAlert({
+          ...alert,
+          open: true,
+          alertMessage: `Would you like to reload your previous Session? (${user?.userName}) for (${shrinkSession.sessionSubteam?.subteamName}) Clicking No will delete the old session.`,
+          type: 'confirm',
+          header: 'Previous Session Exists',
+          cancelAction: deleteWarning,
+          confirmAction: () => {
+            const shrinkSessionCopy = { ...shrinkSession, isPrevSession: true };
+            const shrinkSessions = state.shrinkSessions;
+            const shrinkSessionsCopy = shrinkSessions.filter(s => s.sessionUser.userName !== user?.userName);
+            shrinkSessionsCopy.push(shrinkSessionCopy);
+            dispatch({ type: types.SETSHRINKSESSIONS, shrinkSessions: shrinkSessionsCopy });
+            history.push('/shrink');
+          }
+        });
       } else {
-        history.push(`/${e.target.value}`);
+        const shrinkSessions = state.shrinkSessions;
+        const shrinkSessionsCopy = shrinkSessions.filter(s => s.sessionUser.userName !== user?.userName);
+        shrinkSessionsCopy.push({ shrinkItems: [], isPrevSession: false, sessionShrinkType: '', sessionNumber: 0, sessionSubteam: undefined, sessionStore: '', sessionRegion: '', sessionUser: user, forceSubteamSelection: true });
+        dispatch({ type: types.SETSHRINKSESSIONS, shrinkSessions: shrinkSessionsCopy });
+        history.push('/shrink');
       }
     }
   }
@@ -151,7 +139,7 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
           </select>
         </div>
         <div className="subteam-buttons">
-          <button className="irma-btn" value="shrink" onClick={handleClick} hidden={!user!.isShrink && !user!.isSuperUser && !user!.isCoordinator} disabled={!user!.isShrink && !user!.isSuperUser && !user!.isCoordinator}>Shrink</button>
+          <button className="irma-btn" value="shrink" onClick={handleShrinkClick} hidden={!user!.isShrink && !user!.isSuperUser && !user!.isCoordinator} disabled={!user!.isShrink && !user!.isSuperUser && !user!.isCoordinator}>Shrink</button>
           <button className="irma-btn" value="transfer" onClick={handleTransferClick} hidden={!user!.isBuyer && !user!.isSuperUser && !user!.isCoordinator} disabled={!user!.isBuyer && !user!.isSuperUser && !user!.isCoordinator}>Transfer</button>
           <button className="irma-btn" value="receive/PurchaseOrder" onClick={handleReceiveClick} hidden={!user!.isDistributor && !user!.isSuperUser && !user!.isCoordinator} disabled={!user!.isDistributor && !user!.isSuperUser && !user!.isCoordinator}>Receive</button>
         </div>

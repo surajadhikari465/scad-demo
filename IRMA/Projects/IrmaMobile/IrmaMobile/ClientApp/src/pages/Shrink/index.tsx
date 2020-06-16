@@ -9,7 +9,6 @@ import LoadingComponent from '../../layout/LoadingComponent';
 import agent from "../../api/agent";
 import useNumberInput from '../../hooks/useNumberInput';
 
-
 const initialState = {
   isSelected: false,
   itemDescription: null,
@@ -38,20 +37,20 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
   const { state, dispatch } = useContext(AppContext);
   const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { }, cancelAction: () => { } });
   const { isLoading, user } = state;
-  const { subteam, region, storeNumber, subteamNo, shrinkTypes, shrinkType, subteamSession } = state;
+  const { subteam, region, storeNumber, subteamNo, shrinkTypes, shrinkType, shrinkSessions } = state;
   const [warningOverride, setWarningOverride] = useState<boolean>(false);
   const { history } = props;
 
   let textInput: any = React.createRef<HTMLInputElement>();
   let qtyInput: any = React.createRef<HTMLInputElement>();
-  let sessionIndex = subteamSession.findIndex((session: any) => session.sessionUser.userName === user?.userName);
-  let selectionMenu = ((!state.subteamSession![sessionIndex].isPrevSession && !shrinkState.isSelected) || state.subteamSession[sessionIndex].forceSubteamSelection) 
+  let sessionIndex = shrinkSessions.findIndex((session: any) => session.sessionUser.userName === user?.userName);
+  let selectionMenu = ((!state.shrinkSessions![sessionIndex].isPrevSession && !shrinkState.isSelected) || state.shrinkSessions[sessionIndex].forceSubteamSelection)
 
   useEffect(() => {
     BarcodeScanner.registerHandler(function (data: IBarcodeScannedEvent) {
       if (shrinkState.isSelected === true) {
         try {
-          let scanCode = transformScanCode({ scanCode: data.Data, symbology: data.Symbology});
+          let scanCode = transformScanCode({ scanCode: data.Data, symbology: data.Symbology });
           setUpc(scanCode, true);
         } catch (ex) {
           setAlert({
@@ -65,15 +64,15 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
       }
     });
 
-    if (subteamSession[sessionIndex].isPrevSession) {
-      dispatch({ type: types.SETSHRINKTYPE, shrinkType: subteamSession[sessionIndex].sessionShrinkType });
-      dispatch({ type: types.SETSUBTEAM, subteam: subteamSession[sessionIndex].sessionSubteam });
-      dispatch({ type: types.SETSTORE, store: subteamSession[sessionIndex].sessionStore });
-      dispatch({ type: types.SETSTORENUMBER, storeNumber: subteamSession[sessionIndex].sessionNumber.toString() });
-      dispatch({ type: types.SETREGION, region: subteamSession[sessionIndex].sessionRegion });
+    if (shrinkSessions[sessionIndex].isPrevSession) {
+      dispatch({ type: types.SETSHRINKTYPE, shrinkType: shrinkSessions[sessionIndex].sessionShrinkType });
+      dispatch({ type: types.SETSUBTEAM, subteam: shrinkSessions[sessionIndex].sessionSubteam });
+      dispatch({ type: types.SETSTORE, store: shrinkSessions[sessionIndex].sessionStore });
+      dispatch({ type: types.SETSTORENUMBER, storeNumber: shrinkSessions[sessionIndex].sessionNumber.toString() });
+      dispatch({ type: types.SETREGION, region: shrinkSessions[sessionIndex].sessionRegion });
     }
 
-    if (shrinkState.isSelected || state.subteamSession[sessionIndex].isPrevSession) {
+    if (shrinkState.isSelected || state.shrinkSessions[sessionIndex].isPrevSession) {
       dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: true });
     }
     return () => {
@@ -86,9 +85,9 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
 
   useEffect(() => {
     const changeSubtype = () => {
-      subteamSession[sessionIndex] = { ...subteamSession[sessionIndex], forceSubteamSelection: true };
+      shrinkSessions[sessionIndex] = { ...shrinkSessions[sessionIndex], forceSubteamSelection: true };
       setShrinkState(initialState);
-      dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
+      dispatch({ type: types.SETSHRINKSESSIONS, shrinkSessions });
       dispatch({ type: types.SHOWSHRINKHEADER, showShrinkHeader: false });
     }
     const newMenuItems = !selectionMenu ? [
@@ -114,30 +113,30 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
     ] as IMenuItem[];
 
     dispatch({ type: types.SETMENUITEMS, menuItems: newMenuItems });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shrinkState, dispatch, alert, subteamSession, selectionMenu]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shrinkState, dispatch, alert, shrinkSessions, selectionMenu]);
 
   useEffect(() => {
-    if(selectionMenu){
+    if (selectionMenu) {
       dispatch({ type: types.SETTITLE, Title: 'Select Shrink Type' });
     }
-    else{
+    else {
       dispatch({ type: types.SETTITLE, Title: 'Scan Shrink' });
     }
-  },[selectionMenu, dispatch]);
+  }, [selectionMenu, dispatch]);
 
   const setUpc = async (value?: any, scan: boolean = false) => {
     let upc = value && typeof value !== 'object' ? value : shrinkState.upcValue;
     setIsLoading(true);
     try {
-        let storeItem = await agent.StoreItem.getStoreItem(
-          region,
-          storeNumber,
-          subteamNo,
-          user!.userId,
-          upc
-      );    
-      
+      let storeItem = await agent.StoreItem.getStoreItem(
+        region,
+        storeNumber,
+        subteamNo,
+        user!.userId,
+        upc
+      );
+
       if (storeItem.itemKey === 0 && storeItem.itemDescription === null) {
         setAlert({
           ...alert,
@@ -155,7 +154,7 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
           header: 'Subteam Mismatch'
         });
       } else {
-        let alreadyScanned = state.subteamSession[sessionIndex].shrinkItems.filter((item: any) => storeItem.retailSubteamName === item.retailSubteamName).length > 0 ? true : false;
+        let alreadyScanned = state.shrinkSessions[sessionIndex].shrinkItems.filter((item: any) => storeItem.retailSubteamName === item.retailSubteamName).length > 0 ? true : false;
         if (storeItem.retailSubteamName !== subteam.subteamName && warningOverride === false && !alreadyScanned) {
           setAlert({
             ...alert,
@@ -183,8 +182,8 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
   const setShrinkType = (value: any) => {
     let shrinkType = JSON.parse(value);
     setShrinkState({ ...shrinkState, isSelected: true });
-    subteamSession[sessionIndex] = { ...subteamSession[sessionIndex], forceSubteamSelection: false, sessionShrinkType: shrinkType };
-    dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
+    shrinkSessions[sessionIndex] = { ...shrinkSessions[sessionIndex], forceSubteamSelection: false, sessionShrinkType: shrinkType };
+    dispatch({ type: types.SETSHRINKSESSIONS, shrinkSessions });
     dispatch({ type: 'SETSHRINKTYPE', shrinkType });
   }
 
@@ -203,8 +202,8 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
   }
   const dupItemCheck = (result: any) => {
     let shrinkItem = [];
-    if (subteamSession[sessionIndex] && subteamSession[sessionIndex].shrinkItems) {
-      shrinkItem = subteamSession[sessionIndex].shrinkItems.filter((item: any) => item.identifier === result.identifier && state.shrinkType.shrinkSubTypeMember === item.shrinkType);
+    if (shrinkSessions[sessionIndex] && shrinkSessions[sessionIndex].shrinkItems) {
+      shrinkItem = shrinkSessions[sessionIndex].shrinkItems.filter((item: any) => item.identifier === result.identifier && state.shrinkType.shrinkSubTypeMember === item.shrinkType);
     }
     return shrinkItem;
   }
@@ -227,7 +226,7 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
     });
   }
   const confirmDeleteSession = (e: any) => {
-    if (state.subteamSession[sessionIndex].shrinkItems?.length == null || state.subteamSession[sessionIndex].shrinkItems?.length === 0) {
+    if (state.shrinkSessions[sessionIndex].shrinkItems?.length == null || state.shrinkSessions[sessionIndex].shrinkItems?.length === 0) {
       setAlert({
         ...alert,
         open: true,
@@ -238,8 +237,8 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
     } else {
       localStorage.clear();
       setShrinkState({ ...shrinkState, isSelected: false });
-      subteamSession[sessionIndex] = { shrinkItems: [], isPrevSession: false, sessionShrinkType: '', sessionSubteam: undefined, sessionStore: '', sessionNumber: 0, sessionRegion: '', sessionUser: user, forceSubteamSelection: true };
-      dispatch({ type: types.SETSUBTEAMSESSION, subteamSession })
+      shrinkSessions[sessionIndex] = { shrinkItems: [], isPrevSession: false, sessionShrinkType: '', sessionSubteam: undefined, sessionStore: '', sessionNumber: 0, sessionRegion: '', sessionUser: user, forceSubteamSelection: true };
+      dispatch({ type: types.SETSHRINKSESSIONS, shrinkSessions })
       setAlert({
         ...alert,
         open: false
@@ -298,9 +297,9 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
       shrinkItem.quantity = parseFloat((+(shrinkState.queued) + +(shrinkState.quantity)).toPrecision(4));
       let shrinkItems: any = [];
 
-      if (state.subteamSession[sessionIndex].shrinkItems) {
+      if (state.shrinkSessions[sessionIndex].shrinkItems) {
         // @ts-ignore
-        shrinkItems = state.subteamSession[sessionIndex].shrinkItems;
+        shrinkItems = state.shrinkSessions[sessionIndex].shrinkItems;
       }
 
       if (shrinkState.dupItem.length > 0) {
@@ -327,7 +326,7 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
     shrinkItem.shrinkType = shrinkType.shrinkSubTypeMember;
     shrinkItem.quantity = quantity;
     // @ts-ignore
-    let shrinkItems = state.subteamSession[sessionIndex].shrinkItems;
+    let shrinkItems = state.shrinkSessions[sessionIndex].shrinkItems;
     let localShrinkItems = shrinkItems.filter((item: any) => item.identifier !== shrinkItem.identifier || item.shrinkType !== state.shrinkType.shrinkSubTypeMember);
     return [...localShrinkItems, shrinkItem];
   }
@@ -361,9 +360,9 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
   }
 
   const saveItems = (shrinkItems: any[]) => {
-    subteamSession[sessionIndex] = { ...subteamSession[sessionIndex], shrinkItems: shrinkItems, sessionNumber: parseInt(state.storeNumber), sessionShrinkType: state.shrinkType, sessionSubteam: state.subteam, sessionStore: state.store, sessionRegion: state.region, isPrevSession: true };
+    shrinkSessions[sessionIndex] = { ...shrinkSessions[sessionIndex], shrinkItems: shrinkItems, sessionNumber: parseInt(state.storeNumber), sessionShrinkType: state.shrinkType, sessionSubteam: state.subteam, sessionStore: state.store, sessionRegion: state.region, isPrevSession: true };
 
-    dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
+    dispatch({ type: types.SETSHRINKSESSIONS, shrinkSessions });
     if (!shrinkState.skipConfirm) {
       setAlert({
         ...alert,

@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
-import { AppContext, types, ISubteamSession } from "../../../store";
+import { AppContext, types, IShrinkSession } from "../../../store";
 import BasicModal from '../../../layout/BasicModal';
 import './styles.scss';
 
@@ -11,19 +11,19 @@ interface UpdateShrinkProps {
 const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
   // @ts-ignore
   const { state, dispatch } = useContext(AppContext);
-  const { selectedShrinkItem, user, subteamSession } = state;
+  const { selectedShrinkItem, user, shrinkSessions } = state;
   const [alert, setAlert] = useState<any>({ open: false, alertMessage: '', type: 'default', header: 'IRMA Mobile', confirmAction: () => { }, cancelAction: () => { } });
   const [initialQuantity] = useState(selectedShrinkItem.quantity);
   const [initialShrinkType] = useState(selectedShrinkItem.shrinkType);
   const [shrinkType] = useState(selectedShrinkItem.shrinkType);
   const { history } = props;
-  const [sessionIndex] = useState<number>(subteamSession.findIndex((s: ISubteamSession) => s.sessionUser.userName === user?.userName));
+  const [sessionIndex] = useState<number>(shrinkSessions.findIndex((s: IShrinkSession) => s.sessionUser.userName === user?.userName));
 
-  
+
   useEffect(() => {
     dispatch({ type: types.SETTITLE, Title: 'Update Shrink' });
 
-  }, [ dispatch]);
+  }, [dispatch]);
 
   const updateQuantity = (e: any) => {
     let quantity = parseFloat(e.target.value);
@@ -32,10 +32,12 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
     }
     else dispatch({ type: types.SETSELECTEDSHRINKITEM, selectedShrinkItem: { ...selectedShrinkItem, quantity } });
   }
+
   const changeSubtype = (e: any) => {
     let shrinkType = e.target.value;
     dispatch({ type: types.SETSELECTEDSHRINKITEM, selectedShrinkItem: { ...selectedShrinkItem, shrinkType } });
   }
+
   const update = () => {
     if (selectedShrinkItem.quantity > 999) {
       setAlert({
@@ -62,9 +64,9 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
         header: 'Update Shrink'
       });
     } else {
-      let shrinkItems = state.subteamSession[sessionIndex].shrinkItems.map((shrinkItem: any) => shrinkItem.identifier === selectedShrinkItem.identifier && initialShrinkType === shrinkItem.shrinkType ? selectedShrinkItem : shrinkItem);
-      let subteamSessionCopy = { ...state.subteamSession[sessionIndex], shrinkItems: shrinkItems };
-      dispatch({ type: types.SETSUBTEAMSESSION, subteamSession: [...state.subteamSession.slice(0, sessionIndex), subteamSessionCopy, ...state.subteamSession.slice(sessionIndex + 1)] });
+      let shrinkItems = state.shrinkSessions[sessionIndex].shrinkItems.map((shrinkItem: any) => shrinkItem.identifier === selectedShrinkItem.identifier && initialShrinkType === shrinkItem.shrinkType ? selectedShrinkItem : shrinkItem);
+      let shrinkSessionsCopy = { ...state.shrinkSessions[sessionIndex], shrinkItems: shrinkItems };
+      dispatch({ type: types.SETSHRINKSESSIONS, shrinkSessions: [...state.shrinkSessions.slice(0, sessionIndex), shrinkSessionsCopy, ...state.shrinkSessions.slice(sessionIndex + 1)] });
       history.push('/shrink/review');
     }
   }
@@ -80,6 +82,7 @@ const UpdateShrink: React.FC<UpdateShrinkProps> = (props) => {
   }
 
   const { shrinkTypes } = state;
+
   return (
     <Fragment>
       <div className='update-shrink-page'>

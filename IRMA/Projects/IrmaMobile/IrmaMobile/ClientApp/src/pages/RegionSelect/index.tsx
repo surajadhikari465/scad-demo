@@ -98,7 +98,7 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 		setLoadingContent("Retrieving User information...");
 		setIsLoading(true);
 		dispatch({ type: types.SETUSER, user: null })
-		const { region, subteamSession } = state;
+		const { region, shrinkSessions } = state;
 		const getUser = async () => {
 			try {
 				const authToken = localStorage.getItem('authToken');
@@ -114,10 +114,10 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 					} else {
 						dispatch({ type: types.SETUSER, user: user });
 
-						if ((subteamSession.filter((session: any) => session.sessionUser.userName === user.userName).length === 0)) {
-							subteamSession.push({ shrinkItems: [], isPrevSession: false, sessionShrinkType: '', sessionNumber: 0, sessionSubteam: undefined, sessionStore: '', sessionRegion: '', sessionUser: user, forceSubteamSelection: true });
+						if ((shrinkSessions.filter((session: any) => session.sessionUser.userName === user.userName).length === 0)) {
+							shrinkSessions.push({ shrinkItems: [], isPrevSession: false, sessionShrinkType: '', sessionNumber: 0, sessionSubteam: undefined, sessionStore: '', sessionRegion: '', sessionUser: user, forceSubteamSelection: true });
 						}
-						dispatch({ type: types.SETSUBTEAMSESSION, subteamSession });
+						dispatch({ type: types.SETSHRINKSESSIONS, shrinkSessions });
 						setLoadingContent("Loading Stores...");
 						getStores(user);
 					}
