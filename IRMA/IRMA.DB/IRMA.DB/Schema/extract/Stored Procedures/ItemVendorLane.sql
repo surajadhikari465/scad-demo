@@ -25,9 +25,11 @@ BEGIN
 			,rtrim(riu.Unit_Abbreviation) AS RETAIL_UOM
 			,i.Package_Desc1 AS RETAIL_PACK
 			,siv.PrimaryVendor AS PRIMARY_VENDOR
+			,st.SubDept_No as GLOBAL_SUBTEAM
 		FROM StoreItemVendor siv
 		JOIN Store s ON siv.Store_No = s.Store_No
 		JOIN Item i ON siv.Item_key = i.Item_Key
+		JOIN SubTeam st on st.SubTeam_No = i.SubTeam_No
 		JOIN ItemIdentifier ii ON i.Item_key = ii.Item_Key
 		JOIN StoreItem si ON si.Store_No = s.Store_No
 			AND si.Item_Key = i.Item_Key
@@ -87,6 +89,7 @@ BEGIN
 			,RETAIL_UOM
 			,RETAIL_PACK
 			,PRIMARY_VENDOR
+			,GLOBAL_SUBTEAM
 		FROM dbo.VendorLaneExtract
 	END
 END
