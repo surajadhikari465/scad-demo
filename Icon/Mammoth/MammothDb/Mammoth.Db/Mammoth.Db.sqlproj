@@ -864,6 +864,7 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\33668_Extract_IconHierarcies_JobSchedule.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\PopulateManufacturerHierarchy.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\30737_PopulateGlobalItemMessageType.sql" />
+    <Build Include="dbo\Stored Procedures\AuditGPMPrice_NoGrouping.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
@@ -893,6 +894,7 @@
     <None Include="Scripts\Projects\Distribution Realignment\35763_MovePricesFromMAToMW_RollBack.sql" />
     <None Include="Scripts\PostDeploymentScripts\34409_IRMAUserAudit_JobSchedule.sql" />
     <None Include="Scripts\PostDeploymentScripts\34822_ExtractServiceJob_Attributes.sql" />
+    <None Include="Scripts\PostDeploymentScripts\33552_ExtractServiceJob_Price.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

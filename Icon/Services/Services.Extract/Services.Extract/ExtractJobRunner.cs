@@ -330,10 +330,21 @@ namespace Services.Extract
                 Source = c.Value,
                 DestinationFile = WorkspacePath + @"\" + Configuration.OutputFileName
             };
-
             activeConnections.AddRange(iconSourcesAndFiles);
 
-            extractSourcesAndDestinationFiles= activeConnections;
+
+            var mammothSourcesAndFiles =
+                from c in Connections
+                where c.Key.ToLower() == "mammoth" && Configuration.Source.ToLower() == "mammoth"
+                select new ExtractSourcesAndDestinationFile
+                {
+                    Source = c.Value,
+                    DestinationFile = WorkspacePath + @"\" + Configuration.OutputFileName
+                };
+            activeConnections.AddRange(mammothSourcesAndFiles);
+
+
+            extractSourcesAndDestinationFiles = activeConnections;
         }
         internal FileInfo GetHeaders(IEnumerable<ExtractDataAndFileInformation> Data)
         {
@@ -375,6 +386,7 @@ namespace Services.Extract
                 .ToDictionary(d => d.Source, d => d.Conn);
 
             Connections.Add("Icon", new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString));
+            Connections.Add("Mammoth", new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString));
         }
         internal void ProcessHeaders(List<FileInfo> sourceFiles)
         {
