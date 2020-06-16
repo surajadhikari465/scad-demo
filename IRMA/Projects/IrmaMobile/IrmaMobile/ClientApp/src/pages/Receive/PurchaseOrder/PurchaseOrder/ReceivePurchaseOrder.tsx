@@ -9,7 +9,6 @@ import ConfirmModal from "../../../../layout/ConfirmModal";
 import LoadingComponent from "../../../../layout/LoadingComponent";
 import { RouteComponentProps, useHistory } from "react-router-dom";
 import OrderInformationModal from "../OrderInformation/OrderInformationModal";
-import OrderInformation from "../types/OrderInformation";
 import orderUtil from "../util/Order"
 import isMinDate from "../util/MinDate";
 // @ts-ignore 
@@ -31,7 +30,6 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
     const { state, dispatch } = useContext(AppContext);
     const { storeNumber, user, region, purchaseOrderUpc, purchaseOrderNumber, orderDetails } = state;
     const { openOrderInformation } = match.params;
-    const [orderInformation, setOrderInformation] = useState<OrderInformation>({} as OrderInformation);
     let history = useHistory();
     const [openPartial, setOpenPartial] = useState<boolean>(false);
     const [costedByWeight, setCostedByWeight] = useState<boolean>(false);
@@ -170,13 +168,6 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                 }
 
                 var orderDetails = orderUtil.MapOrder(order, purchaseOrderUpc);
-                var orderInformation: OrderInformation = {
-                    buyer: order.createdByName,
-                    isCreditOrder: order.return_Order,
-                    orderDate: order.orderDate,
-                    orderNotes: order.notes
-                }
-                setOrderInformation(orderInformation);
                 dispatch({ type: types.SETORDERDETAILS, orderDetails: orderDetails });
 
                 if (!isMinDate(order.closeDate) && order.partialShipment) {
@@ -352,7 +343,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                             cancelButtonText='No'
                             confirmButtonText='Yes'
                             lineOne={'This order was closed as a partial shipment. Re-open the order now to scan more items?'} />
-                        <OrderInformationModal handleOnClose={handleOnCloseOrderInformation} orderInformation={orderInformation} open={openOrderInformation === 'open'} />
+                        <OrderInformationModal handleOnClose={handleOnCloseOrderInformation} open={openOrderInformation === 'open'} />
                         <CurrentLocation />
                         <div style={{ marginTop: '10px', padding: '0px' }}>
                             <Form onSubmit={handleSearchClicked}>
