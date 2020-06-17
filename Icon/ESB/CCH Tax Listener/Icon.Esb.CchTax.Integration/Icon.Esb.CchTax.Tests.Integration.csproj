@@ -157,7 +157,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Commands\SaveTaxHierarchyClassesCommandHandlerTests.cs" />
     <Compile Include="Commands\SaveTaxToMammothCommandHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CchTaxListenerTests.cs" />

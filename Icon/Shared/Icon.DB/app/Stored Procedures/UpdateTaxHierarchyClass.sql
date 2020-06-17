@@ -67,11 +67,10 @@ BEGIN
 			ON hc.hierarchyClassID = uthc.hierarchyClassID;
 
 			----------------------------------------------------------------------
-			-- Add new Tax HierarchyClasses 
-			--Tax Abbreviation should truncate to 50 characters 
+			-- Add new Tax HierarchyClasses
 			----------------------------------------------------------------------
 			INSERT dbo.HierarchyClass ([hierarchyLevel], [hierarchyID], [hierarchyParentClassID], [hierarchyClassName])
-				OUTPUT INSERTED.hierarchyClassID, NULL, LEFT(INSERTED.hierarchyClassName, 50), 1
+				OUTPUT INSERTED.hierarchyClassID, NULL, INSERTED.hierarchyClassName, 1
 					INTO @NewTaxHierarchyClasses (hierarchyClassID, cchHierarchyClassID, hierarchyClassName, insertTaxAbbr)
 			SELECT	1,
 					@TaxHierarchyID,
