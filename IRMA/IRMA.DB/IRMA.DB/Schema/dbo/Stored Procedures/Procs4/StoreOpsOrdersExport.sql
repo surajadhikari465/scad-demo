@@ -28,6 +28,7 @@ BEGIN
 		OrderExportQueueID,
 		OrderHeader.OrderHeader_ID, 
 		[PS_Vendor_ID]				= LTRIM(RTRIM(V.PS_Vendor_ID)),
+		[PS_Export_Vendor_ID]       = LTRIM(RTRIM(V.PS_Export_Vendor_ID)),
 		[VendorBusinessUnit_ID]		= VBU.BusinessUnit_ID, 
 		Transfer_PS_SubTeam_No,
 		SBU.BusinessUnit_ID, 
