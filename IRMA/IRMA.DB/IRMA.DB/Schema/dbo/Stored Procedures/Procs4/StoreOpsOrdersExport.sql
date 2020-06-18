@@ -188,7 +188,7 @@ BEGIN
 		ON V.Store_No = VBU.Store_No
 	LEFT JOIN dbo.Currency C on C.CurrencyID = OrderHeader.CurrencyID
 
-	GROUP BY OrderExportQueueID, OrderHeader.OrderHeader_ID, V.PS_Vendor_ID, 
+	GROUP BY OrderExportQueueID, OrderHeader.OrderHeader_ID, V.PS_Vendor_ID, V.PS_Export_Vendor_ID, 
 			 Transfer_PS_SubTeam_No, VBU.BusinessUnit_ID, StoreSubTeam.PS_SubTeam_No, SBU.BusinessUnit_id, 
 			 EO.SubTeam_No, OrderHeader.Return_Order, OrderHeader.ProductType_ID, IsDestination,
 			 OrderHeader.OrderType_ID, EO.QueueInsertedDate, OrderHeader.DVOOrderID, C.CurrencyCode,
@@ -200,6 +200,7 @@ BEGIN
 		null as OrderExportQueueID,
 		DQ.OrderHeader_ID, 
 		null as PS_Vendor_ID,
+		null as PS_Export_Vendor_ID,
 		null as VendorBusinessUnit_ID, 
 		null as Transfer_PS_SubTeam_No,
 		9999 as BusinessUnit_ID, 
@@ -230,6 +231,7 @@ BEGIN
 		null as OrderExportQueueID,
 		EO2.OrderHeader_ID, 
 		null as PS_Vendor_ID,
+		null as PS_Export_Vendor_ID,
 		null as VendorBusinessUnit_ID, 
 		null as Transfer_PS_SubTeam_No,
 		9999 as BusinessUnit_ID, 
