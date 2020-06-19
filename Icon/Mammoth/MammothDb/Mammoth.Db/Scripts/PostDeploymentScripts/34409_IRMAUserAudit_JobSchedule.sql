@@ -21,8 +21,7 @@ BEGIN
 	SELECT Region
 	FROM Regions
 	WHERE Region NOT IN (
-			'TS'
-			,'UK'
+			'TS'			
 			);
 
 	OPEN region_cursor;
