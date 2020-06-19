@@ -1,0 +1,34 @@
+################################################################################
+####################DATA - TCP/SSL##############################################      
+################################################################################
+## Note that passwords are for lower environments and should be different/changed in PRD
+## Login to appropriate EMS server
+## Switch user to tibco using su - tibco
+## Navigate to EMS folder using cd /opt/tibco/product/ems/8.0/bin/
+## Launch EMS Admin Console using ./tibemsadmin
+## Connect to the DATA EMS server using appropriate active ems url
+## <<UserName>> 
+## <<Password>>
+## Execute the following commands 
+
+echo on START TIME:
+time
+echo on ################################################################################
+echo on ### PRE VERIFICATION                                                         ###
+echo on ################################################################################
+
+echo on ################################################################################
+echo on ### USERS AND GROUPS                                                         ###
+echo on ################################################################################
+
+echo on #######################################################################
+echo on ### CREATE QUEUE                                                    ###
+echo on #######################################################################
+
+## Attribute Queue -Attribute for Attributes messages :: Icon to Mammoth
+
+create queue WFMSB1.Mammoth.Retail.RealTimeWfmPriceApi.Price.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
+grant queue WFMSB1.Mammoth.Retail.RealTimeWfmPriceApi.Price.Queue.V1 group=sb1_mammothPriceArchiveGroup  receive,send,browse
+addprop queue WFMSB1.Mammoth.Retail.RealTimeWfmPriceApi.Price.Queue.V1 maxRedelivery=3, redeliveryDelay=15
+
+commit
