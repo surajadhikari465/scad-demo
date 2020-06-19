@@ -8,6 +8,7 @@ import CurrentLocation from "../../layout/CurrentLocation";
 import LoadingComponent from '../../layout/LoadingComponent';
 import agent from "../../api/agent";
 import useNumberInput from '../../hooks/useNumberInput';
+import { toast } from 'react-toastify';
 
 const initialState = {
   isSelected: false,
@@ -47,23 +48,6 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
   let selectionMenu = ((!state.shrinkSessions![sessionIndex].isPrevSession && !shrinkState.isSelected) || state.shrinkSessions[sessionIndex].forceSubteamSelection)
 
   useEffect(() => {
-    BarcodeScanner.registerHandler(function (data: IBarcodeScannedEvent) {
-      if (shrinkState.isSelected === true) {
-        try {
-          let scanCode = transformScanCode({ scanCode: data.Data, symbology: data.Symbology });
-          setUpc(scanCode, true);
-        } catch (ex) {
-          setAlert({
-            ...alert,
-            open: true,
-            alertMessage: ex.message,
-            type: 'default',
-            header: 'Scan'
-          });
-        }
-      }
-    });
-
     if (shrinkSessions[sessionIndex].isPrevSession) {
       dispatch({ type: types.SETSHRINKTYPE, shrinkType: shrinkSessions[sessionIndex].sessionShrinkType });
       dispatch({ type: types.SETSUBTEAM, subteam: shrinkSessions[sessionIndex].sessionSubteam });
@@ -82,6 +66,20 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shrinkState, dispatch]);
+
+  useEffect(() => {
+    BarcodeScanner.registerHandler(function (data: IBarcodeScannedEvent) {
+      try {
+        if (!selectionMenu) {
+          let scanCode = transformScanCode({ scanCode: data.Data, symbology: data.Symbology });
+          setUpc(scanCode, true);
+        }
+      } catch (ex) {
+        console.error(ex);
+        toast.error('Error scanning item:' + ex);
+      }//
+    });
+  }, [selectionMenu])
 
   useEffect(() => {
     const changeSubtype = () => {
