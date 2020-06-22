@@ -862,6 +862,8 @@
     <Build Include="dbo\Tables\ItemGroupMemberHistory.sql" />
     <None Include="Scripts\PopulateData\36704_PopulateItemGroupTypes.sql" />
     <Build Include="dbo\Tables\ReservedEsbTraitCodes.sql" />
+    <None Include="Scripts\PopulateData\36709_PopulateSkuPriceLineAttributeGroups.sql" />
+    <None Include="Scripts\PopulateData\36709_AddSkuPriceLineAttributes.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

@@ -20,6 +20,7 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\Projects\NutritionDeleteFix\QueueItemsWithDeletedNutrition.sql --2020-05-12 35635
 :r .\Scripts\PopulateData\36704_PopulateItemGroupTypes.sql --2020-06-11 36704
 :r .\Scripts\PopulateData\36950_PopulateReservedEsbTraitCodesTable.sql --2020-06-09 36950
-
+:r .\Scripts\PopulateData\36709_PopulateSkuPriceLineAttributeGroups.sql --2020-06-17 36709
+:r .\Scripts\PopulateData\36709_AddSkuPriceLineAttributes.sql --2020-06-18 36709
 -- Always run this security script and make it the last entry in this script.
 :r .\Security\Icon.Security.sql
