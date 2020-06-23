@@ -80,6 +80,8 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
           header: 'Previous Session Exists',
           cancelAction: deleteWarning,
           confirmAction: () => {
+            dispatch({ type: types.SETSUBTEAM, subteam: shrinkSession.sessionSubteam });
+            dispatch({ type: types.SETSUBTEAMNO, subteamNo: shrinkSession.sessionSubteam?.subteamNo });
             const shrinkSessionCopy = { ...shrinkSession, isPrevSession: true };
             const shrinkSessions = state.shrinkSessions;
             const shrinkSessionsCopy = shrinkSessions.filter(s => s.sessionUser.userName !== user?.userName);
