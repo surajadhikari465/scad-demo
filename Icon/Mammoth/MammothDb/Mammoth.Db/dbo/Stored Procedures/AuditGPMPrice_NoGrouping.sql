@@ -38,3 +38,5 @@ BEGIN
 	EXEC sp_executesql @sql;
 END
 GO
+GRANT EXECUTE ON dbo.AuditGPMPrice_NoGrouping TO IconInterfaceRole;
+GO
