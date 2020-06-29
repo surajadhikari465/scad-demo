@@ -15,7 +15,9 @@ BEGIN
     declare @sql nvarchar(1024)
 
     set @sql = '
-          SELECT B.ItemID,
+          SELECT 
+               '''+@region+''' Region,
+               B.ItemID,
                B.BusinessUnitID,
                A.ScanCode,
                Convert(varchar, P.StartDate, 23) StartDate,
@@ -23,7 +25,7 @@ BEGIN
                P.Price,
                P.PercentOff,
                P.PriceType,
-               P.PriceTypeAttribute AS PriceReasonCode, --price reason type modify
+               P.PriceTypeAttribute AS PriceReasonCode,
                P.CurrencyCode,
                P.Multiple,
                Convert(varchar, P.TagExpirationDate, 120) TagExpirationDate, 
