@@ -1,0 +1,1215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WFMUHS version="1.1">
+  <Update name="WFM Mobile" enabled="1" version="1.0.2.0">
+    <DevicePath>\Program Files\WFM Mobile\Client.exe</DevicePath>
+    <Location>http://WFMMblTest1/Updates/ApplicationUpdates/WFMMobile/1.0.2.0/</Location>
+    <File>WFMMobile.CAB</File>
+  </Update>
+  <Update name="WFM Mobile GAC" enabled="1" version="1.0.2.0">
+    <DevicePath>\Program Files\WFM Mobile\Client.exe</DevicePath>
+    <Location>http://WFMMblTest1/Updates/ApplicationUpdates/WFMMobile/1.0.2.0/</Location>
+    <File>WFMMobile.GAC.txt</File>
+  </Update>
+  <AppSettings>
+    <add key="OverwriteConfigOnLoad" value="1" />
+    <add key="ServiceURI" value="http://wfmmobilesvc-tst/UHS.svc/basic" />
+    <add key="Environment" value="TEST" />
+  </AppSettings>
+  <Region id="FL">
+    <SecurityGroup />
+    <AppSettings>
+      <add key="IdleShutdownThreshold" value="300" />
+      <add key="ShowServiceURI" value="1" />
+    </AppSettings>
+    <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup />
+      <Description>IRMA Mobile Plugin</Description>
+      <Service version="10.8.0.0">http://IRMAWebFLTest1.wfm.pvt/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="10.8.0.0">	
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <File>WholeFoods.Mobile.IRMA.dll</File>
+      </Update>
+    </Application>
+    <!--<Application name="DVO-OLD" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>DVO Handheld</Description>
+      <ExePath version="4.1.0.0">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.1.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.1.0.0/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>-->
+    <Application name="SMORe" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>SMORe List-O-Matic</Description>
+      <Service version="1.0.0.0">http://listomaticDEV/listomaticServiceDEV/service.svc/basic</Service>
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.14" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <AppSettings>
+        <add key="MaxItems" value="500" />
+      </AppSettings>
+      <Update enabled="1" version="1.0.0.14">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/SMORe/1.0.0.14/</Location>
+        <File>WholeFoods.Mobile.SMORe.dll</File>
+      </Update>
+    </Application>
+    <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <Description>Mobile Audit Reporting System</Description>
+      <Service version="3.13.2.2">http://marsscanauditservices-tst/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <File>WholeFoods.Mobile.POSScanAudit.dll</File>
+      </Update>
+    </Application>
+     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+        <Description>Pilot DVO Handheld</Description>
+        <ExePath version="4.5.1.8">\Program Files\DVO-TST\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.8">
+           <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.5.1.8/</Location>
+           <File>DVO-TST.CAB</File>
+        </Update>
+     </Application>
+     <!--<Application name="RBOFM" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>RBOFM</Description>
+      <ExePath version="1.0.0.1">\Program Files\RBOFM\RBOFM.exe</ExePath>
+      <Update enabled="0" version="1.0.0.1">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/RBOFM/</Location>
+        <File>RBOFM.CAB</File>
+      </Update>
+    </Application>-->
+    <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>Responsibily Grown Rating App</Description>
+      <Service version="1.5.0.0"></Service>
+      <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
+      <AppSettings />
+      <Update enabled="1" version="1.5.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <File>WFM.Mobile.GROW.dll</File>
+      </Update>
+    </Application>-->
+  </Region>
+  <Region id="MA">
+    <SecurityGroup />
+    <AppSettings>
+      <add key="IdleShutdownThreshold" value="300" />
+      <add key="ShowServiceURI" value="1" />
+    </AppSettings>
+    <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup />
+      <Description>IRMA Mobile Plugin</Description>
+      <Service version="10.8.0.0">http://IRMAWebMATest1.wmf.pvt/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="10.8.0.0">	
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <File>WholeFoods.Mobile.IRMA.dll</File>
+      </Update>
+    </Application>
+    <!--<Application name="DVO-OLD" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>DVO Handheld</Description>
+      <ExePath version="4.1.0.0">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.1.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.1.0.0/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>-->
+    <Application name="SMORe" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>SMORe List-O-Matic</Description>
+      <Service version="1.0.0.0">http://listomaticDEV/listomaticServiceDEV/service.svc/basic</Service>
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.12" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <AppSettings>
+        <add key="MaxItems" value="500" />
+      </AppSettings>
+      <Update enabled="1" version="1.0.0.12">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/SMORe/1.0.0.12/</Location>
+        <File>WholeFoods.Mobile.SMORe.dll</File>
+      </Update>
+    </Application>
+    <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <Description>Mobile Audit Reporting System</Description>
+      <Service version="3.13.2.2">http://marsscanauditservices-tst/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <File>WholeFoods.Mobile.POSScanAudit.dll</File>
+      </Update>
+    </Application>
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup />
+      <Service version="2.0.0.0">http://oosapptest/WebService/oosbackend.svc</Service>
+      <Description>Out Of Stock Tool</Description>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="2.0.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <AppSettings />
+      <Update enabled="1" version="2.0.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/OOS/2.0.0.0/</Location>
+        <File>WFM.Mobile.OOS.dll</File>
+      </Update>
+    </Application>
+    <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>Pilot DVO Handheld</Description>
+      <ExePath version="4.5.1.8">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.5.1.8">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.5.1.8/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>
+    <!--<Application name="RBOFM" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>RBOFM</Description>
+      <ExePath version="1.0.0.1">\Program Files\RBOFM\RBOFM.exe</ExePath>
+      <Update enabled="0" version="1.0.0.1">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/RBOFM/</Location>
+        <File>RBOFM.CAB</File>
+      </Update>
+    </Application>-->
+    <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>Responsibily Grown Rating App</Description>
+      <Service version="1.5.0.0"></Service>
+      <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
+      <AppSettings />
+      <Update enabled="1" version="1.5.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <File>WFM.Mobile.GROW.dll</File>
+      </Update>
+    </Application>-->
+  </Region>
+  <Region id="MW">
+    <SecurityGroup />
+    <AppSettings>
+      <add key="IdleShutdownThreshold" value="300" />
+      <add key="ShowServiceURI" value="1" />
+    </AppSettings>
+    <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup />
+      <Description>IRMA Mobile Plugin</Description>
+      <Service version="10.8.0.0">http://IRMAWebMWTest1/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="10.8.0.0">	
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <File>WholeFoods.Mobile.IRMA.dll</File>
+      </Update>
+    </Application>
+    <!--<Application name="DVO-OLD" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>DVO Handheld</Description>
+      <ExePath version="4.1.0.0">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.1.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.1.0.0/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>-->
+    <Application name="SMORe" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>SMORe List-O-Matic</Description>
+      <Service version="1.0.0.0">http://listomaticDEV/listomaticServiceDEV/service.svc/basic</Service>
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.12" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <AppSettings>
+        <add key="MaxItems" value="500" />
+      </AppSettings>
+      <Update enabled="1" version="1.0.0.12">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/SMORe/1.0.0.12/</Location>
+        <File>WholeFoods.Mobile.SMORe.dll</File>
+      </Update>
+    </Application>
+    <Application name="RBOFM" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>RBOFM</Description>
+      <ExePath version="1.0.0.1">\Program Files\RBOFM\RBOFM.exe</ExePath>
+      <Update enabled="0" version="1.0.0.1">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/RBOFM/</Location>
+        <File>RBOFM.CAB</File>
+      </Update>
+    </Application>
+    <Application name="TagNet" isAuthorized="1" hasService="0" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>Tagnetics Web-Based App</Description>
+      <Service version="0">
+      </Service>
+      <Assembly name="WFM Mobile WebApp Launcher" file="WholeFoods.Mobile.WebApp.dll" version="1.0.0.3" entryPoint="WholeFoods.Mobile.WebApp.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="1.0.0.3">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/WebApp/1.0.0.3/</Location>
+        <File>WholeFoods.Mobile.WebApp.dll</File>
+      </Update>
+    </Application>
+    <!--<Application name="Spoilage" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+			<Description>FARM Spoilage App</Description>
+			<ExePath version="">\Program files\FarmApps\HandheldSpoilage.exe</ExePath>
+			<Update enabled="0" version="">
+				<Location></Location>
+				<File></File>
+			</Update>
+		</Application>
+		<Application name="EndCap" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+			<Description>FARM Endcap Scan</Description>
+			<ExePath version="">\Program files\FarmApps\EndcapScan.exe</ExePath>
+			<Update enabled="0" version="">
+				<Location></Location>
+				<File></File>
+			</Update>
+		</Application>
+		<Application name="FarmDBSync" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+			<Description>FARM ScanDB</Description>
+			<ExePath version="">\Program files\FarmApps\FarmDbSync.exe</ExePath>
+			<Update enabled="0" version="">
+				<Location></Location>
+				<File></File>
+			</Update>
+		</Application> -->
+    <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <Description>Mobile Audit Reporting System</Description>
+      <Service version="3.13.2.2">http://marsscanauditservices-tst/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <File>WholeFoods.Mobile.POSScanAudit.dll</File>
+      </Update>
+    </Application>
+     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+        <Description>Pilot DVO Handheld</Description>
+        <ExePath version="4.5.1.8">\Program Files\DVO-TST\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.8">
+           <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.5.1.8/</Location>
+           <File>DVO-TST.CAB</File>
+        </Update>
+     </Application>
+     <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>Responsibily Grown Rating App</Description>
+      <Service version="1.5.0.0"></Service>
+      <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
+      <AppSettings />
+      <Update enabled="1" version="1.5.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <File>WFM.Mobile.GROW.dll</File>
+      </Update>
+    </Application>-->
+  </Region>
+  <Region id="NA">
+    <SecurityGroup />
+    <AppSettings>
+      <add key="IdleShutdownThreshold" value="300" />
+      <add key="ShowServiceURI" value="1" />
+    </AppSettings>
+    <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup />
+      <Description>IRMA Mobile Plugin</Description>
+      <Service version="10.8.0.0">http://IRMAWebNATest1/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="10.8.0.0">	
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <File>WholeFoods.Mobile.IRMA.dll</File>
+      </Update>
+    </Application>
+    <!--<Application name="DVO-OLD" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>DVO Handheld</Description>
+      <ExePath version="4.1.0.0">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.1.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.1.0.0/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>-->
+    <Application name="SMORe" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>SMORe List-O-Matic</Description>
+      <Service version="1.0.0.0">http://listomaticDEV/listomaticServiceDEV/service.svc/basic</Service>
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.12" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <AppSettings>
+        <add key="MaxItems" value="500" />
+      </AppSettings>
+      <Update enabled="1" version="1.0.0.12">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/SMORe/1.0.0.12/</Location>
+        <File>WholeFoods.Mobile.SMORe.dll</File>
+      </Update>
+    </Application>
+    <Application name="RBOFM" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>RBOFM</Description>
+      <ExePath version="1.0.0.1">\Program Files\RBOFM\RBOFM.exe</ExePath>
+      <Update enabled="0" version="1.0.0.1">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/RBOFM/</Location>
+        <File>RBOFM.CAB</File>
+      </Update>
+    </Application>
+    <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <Description>Mobile Audit Reporting System</Description>
+      <Service version="3.13.2.2">http://marsscanauditservices-tst/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <File>WholeFoods.Mobile.POSScanAudit.dll</File>
+      </Update>
+    </Application>
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <Description>Out Of Stock Tool [test]</Description>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.3" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Service version="1.2.0.3">http://oosapptest/WebService/ScanOutOfStock.svc|http://BTSTST1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Update enabled="1" version="1.2.0.3">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/OOS/1.2.0.3/</Location>
+        <File>WFM.Mobile.OOS.dll</File>
+      </Update>
+    </Application>
+    <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+       <Description>Pilot DVO Handheld</Description>
+       <ExePath version="4.5.1.8">\Program Files\DVO-TST\DVO.exe</ExePath>
+       <Update enabled="1" version="4.5.1.8">
+          <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.5.1.8/</Location>
+          <File>DVO-TST.CAB</File>
+       </Update>
+    </Application>
+     <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>Responsibily Grown Rating App</Description>
+      <Service version="1.5.0.0"></Service>
+      <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
+      <AppSettings />
+      <Update enabled="1" version="1.5.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <File>WFM.Mobile.GROW.dll</File>
+      </Update>
+    </Application>-->
+  </Region>
+  <Region id="NE">
+    <SecurityGroup />
+    <AppSettings>
+      <add key="IdleShutdownThreshold" value="300" />
+      <add key="ShowServiceURI" value="1" />
+    </AppSettings>
+    <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup />
+      <Description>IRMA Mobile Plugin</Description>
+      <Service version="10.8.0.0">http://IRMAWebNETest1/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="10.8.0.0">	
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <File>WholeFoods.Mobile.IRMA.dll</File>
+      </Update>
+    </Application>
+    <!--<Application name="DVO-OLD" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>DVO Handheld</Description>
+      <ExePath version="4.1.0.0">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.1.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.1.0.0/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>-->
+    <Application name="SMORe" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>SMORe List-O-Matic</Description>
+      <Service version="1.0.0.0">http://listomaticDEV/listomaticServiceDEV/service.svc/basic</Service>
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.12" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <AppSettings>
+        <add key="MaxItems" value="500" />
+      </AppSettings>
+      <Update enabled="1" version="1.0.0.12">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/SMORe/1.0.0.12/</Location>
+        <File>WholeFoods.Mobile.SMORe.dll</File>
+      </Update>
+    </Application>
+    <Application name="RBOFM" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>RBOFM</Description>
+      <ExePath version="1.0.0.1">\Program Files\RBOFM\RBOFM.exe</ExePath>
+      <Update enabled="0" version="1.0.0.1">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/RBOFM/</Location>
+        <File>RBOFM.CAB</File>
+      </Update>
+    </Application>
+    <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <Description>Mobile Audit Reporting System</Description>
+      <Service version="3.13.2.2">http://marsscanauditservices-tst/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <File>WholeFoods.Mobile.POSScanAudit.dll</File>
+      </Update>
+    </Application>
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <Description>Out Of Stock Tool [test]</Description>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Service version="1.2.0.0">http://oosapptest/WebService/ScanOutOfStock.svc|http://BTSTST1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Update enabled="1" version="1.2.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+        <File>WFM.Mobile.OOS.dll</File>
+      </Update>
+    </Application>
+     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+        <Description>Pilot DVO Handheld</Description>
+        <ExePath version="4.5.1.8">\Program Files\DVO-TST\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.8">
+           <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.5.1.8/</Location>
+           <File>DVO-TST.CAB</File>
+        </Update>
+     </Application>
+     <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>Responsibily Grown Rating App</Description>
+      <Service version="1.5.0.0"></Service>
+      <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
+      <AppSettings />
+      <Update enabled="1" version="1.5.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <File>WFM.Mobile.GROW.dll</File>
+      </Update>
+    </Application>-->
+  </Region>
+  <Region id="NC">
+    <SecurityGroup />
+    <AppSettings>
+      <add key="IdleShutdownThreshold" value="300" />
+      <add key="ShowServiceURI" value="1" />
+    </AppSettings>
+    <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup />
+      <Description>IRMA Mobile Plugin</Description>
+      <Service version="10.8.0.0">http://IRMAWebNCTest1/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="10.8.0.0">	
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <File>WholeFoods.Mobile.IRMA.dll</File>
+      </Update>
+    </Application>
+    <!--<Application name="DVO-OLD" isAuthorized="0" hasService="0" type="Executable" authenticateUser="0">
+      <Description>DVO Handheld</Description>
+      <ExePath version="4.1.0.0">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.1.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.1.0.0/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>-->
+    <Application name="SMORe" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup />
+      <Description>SMORe List-O-Matic</Description>
+      <Service version="1.0.0.0">http://listomaticDEV/listomaticServiceDEV/service.svc/basic</Service>
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.12" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <AppSettings>
+        <add key="MaxItems" value="500" />
+      </AppSettings>
+      <Update enabled="1" version="1.0.0.12">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/SMORe/1.0.0.12/</Location>
+        <File>WholeFoods.Mobile.SMORe.dll</File>
+      </Update>
+    </Application>
+    <Application name="RBOFM" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>RBOFM</Description>
+      <ExePath version="1.0.0.1">\Program Files\RBOFM\RBOFM.exe</ExePath>
+      <!--   test version: 
+      <ExePath version="1.0.0.1">\Windows\Start Menu\Programs\RBOFM.exe</ExePath>
+      -->
+      <Update enabled="0" version="1.0.0.1">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/RBOFM/</Location>
+        <File>RBOFM.CAB</File>
+      </Update>
+    </Application>
+    <!--  HOS removed 8/30/2010 by rwa 
+		<Application name="HOS" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+			<Description>HOS Mobile</Description>
+			<ExePath version="">\Program Files\HOS Mobile\HOSMobile.exe</ExePath>
+			<Update enabled="0" version="">
+				<Location></Location>
+				<File></File>
+			</Update>
+		</Application>
+    -->
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <Description>Out Of Stock Tool [test]</Description>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.3" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Service version="1.2.0.3">http://oosapptest/WebService/oosbackend.svc</Service>
+      <Update enabled="1" version="1.2.0.3">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/OOS/1.2.0.3/</Location>
+        <File>WFM.Mobile.OOS.dll</File>
+      </Update>
+    </Application>
+    <!--            new for NC         -->
+    <Application name="AV" isAuthorized="1" hasService="0" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>AccessVia Web-Based App</Description>
+      <Service version="0">
+      </Service>
+      <Assembly name="WFM Mobile WebApp Launcher" file="WholeFoods.Mobile.WebApp.dll" version="1.0.0.3" entryPoint="WholeFoods.Mobile.WebApp.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="1.0.0.3">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/WebApp/1.0.0.3/</Location>
+        <File>WholeFoods.Mobile.WebApp.dll</File>
+      </Update>
+    </Application>
+    <!--            new for NC         -->
+    <Application name="N.W.Audit" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>Net Weight Audit executable</Description>
+      <ExePath version="2.0.3">\Windows\Start Menu\Programs\Net Weight Audit 2.1.exe</ExePath>
+      <Update enabled="0" version="1.0.0.4">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/N.W.Audit/</Location>
+        <File>N.W.Audit.CAB</File>
+      </Update>
+    </Application>
+    <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <Description>Mobile Audit Reporting System</Description>
+      <Service version="3.13.2.2">http://marsscanauditservices-tst/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <File>WholeFoods.Mobile.POSScanAudit.dll</File>
+      </Update>
+    </Application>
+    <!-- removed 8/30/2011 rwa 
+    <Application name="TagNet" isAuthorized="1" hasService="0" type="Assembly" authenticateUser="0">
+			<SecurityGroup/>
+			<Description>Tagnetics Web-Based App</Description>
+			<Service version="0"></Service>
+			<Assembly name="WFM Mobile WebApp Launcher" file="WholeFoods.Mobile.WebApp.dll" version="1.0.0.4" entryPoint="WholeFoods.Mobile.WebApp.MainForm"/>
+			<AppSettings/>
+			<Update enabled="1" version="1.0.0.4">
+				<Location>http://WFMMblTest1/Updates/PluginUpdates/WebApp/1.0.0.4/</Location>
+				<File>WholeFoods.Mobile.WebApp.dll</File>
+			</Update>
+		</Application>
+-->
+    <!-- ScanAudit removed 8/30/2011  rwa 
+    <Application name="ScanAudit" isAuthorized="1" hasService="0" type="Assembly" authenticateUser="1">
+      <Description>ScanAudit</Description>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="1.1.1.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain"/>
+      <Update enabled="1" version="1.1.1.2">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/ScanAudit/1.1.1.2/</Location>
+        <File>WholeFoods.Mobile.POSScanAudit.dll</File>
+      </Update>
+    </Application>
+    -->
+     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+        <Description>Pilot DVO Handheld</Description>
+        <ExePath version="4.5.1.8">\Program Files\DVO-TST\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.8">
+           <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.5.1.8/</Location>
+           <File>DVO-TST.CAB</File>
+        </Update>
+     </Application>
+     <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>Responsibily Grown Rating App</Description>
+      <Service version="1.5.0.0"></Service>
+      <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
+      <AppSettings />
+      <Update enabled="1" version="1.5.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <File>WFM.Mobile.GROW.dll</File>
+      </Update>
+    </Application>-->
+  </Region>
+  <Region id="PN">
+    <SecurityGroup />
+    <AppSettings>
+      <add key="IdleShutdownThreshold" value="300" />
+      <add key="ShowServiceURI" value="1" />
+    </AppSettings>
+    <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup />
+      <Description>IRMA Mobile Plugin</Description>
+      <Service version="10.8.0.0">http://IRMAWebPNTest1/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="10.8.0.0">	
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <File>WholeFoods.Mobile.IRMA.dll</File>
+      </Update>
+    </Application>
+    <!--<Application name="DVO-OLD" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>DVO Handheld</Description>
+      <ExePath version="4.1.0.0">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.1.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.1.0.0/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>-->
+    <Application name="SMORe" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>SMORe List-O-Matic</Description>
+      <Service version="1.0.0.0">http://listomaticDEV/listomaticServiceDEV/service.svc/basic</Service>
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.12" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <AppSettings>
+        <add key="MaxItems" value="500" />
+      </AppSettings>
+      <Update enabled="1" version="1.0.0.12">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/SMORe/1.0.0.12/</Location>
+        <File>WholeFoods.Mobile.SMORe.dll</File>
+      </Update>
+    </Application>
+    <!--<Application name="RBOFM" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>RBOFM</Description>
+      <ExePath version="1.0.0.1">\Program Files\RBOFM\RBOFM.exe</ExePath>
+      <Update enabled="0" version="1.0.0.1">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/RBOFM/</Location>
+        <File>RBOFM.CAB</File>
+      </Update>
+    </Application>-->
+    <!--            new for PN         -->
+    <Application name="AV" isAuthorized="1" hasService="0" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>AccessVia Web-Based App</Description>
+      <Service version="0">
+      </Service>
+      <Assembly name="WFM Mobile WebApp Launcher" file="WholeFoods.Mobile.WebApp.dll" version="1.0.0.3" entryPoint="WholeFoods.Mobile.WebApp.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="1.0.0.3">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/WebApp/1.0.0.3/</Location>
+        <File>WholeFoods.Mobile.WebApp.dll</File>
+      </Update>
+    </Application>
+    <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <Description>Mobile Audit Reporting System</Description>
+      <Service version="3.13.2.2">http://marsscanauditservices-tst/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <File>WholeFoods.Mobile.POSScanAudit.dll</File>
+      </Update>
+    </Application>
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>Out Of Stock Tool</Description>
+      <Service version="1.2.0.0">http://oosapptest/WebService/ScanOutOfStock.svc|http://BTSTST1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <AppSettings />
+      <Update enabled="1" version="1.2.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+        <File>WFM.Mobile.OOS.dll</File>
+      </Update>
+    </Application>
+     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+        <Description>Pilot DVO Handheld</Description>
+        <ExePath version="4.5.1.8">\Program Files\DVO-TST\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.8">
+           <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.5.1.8/</Location>
+           <File>DVO-TST.CAB</File>
+        </Update>
+     </Application>
+     <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>Responsibily Grown Rating App</Description>
+      <Service version="1.5.0.0"></Service>
+      <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
+      <AppSettings />
+      <Update enabled="1" version="1.5.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <File>WFM.Mobile.GROW.dll</File>
+      </Update>
+    </Application>-->
+  </Region>
+  <Region id="RM">
+    <SecurityGroup />
+    <AppSettings>
+      <add key="IdleShutdownThreshold" value="300" />
+      <add key="ShowServiceURI" value="1" />
+    </AppSettings>
+    <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup />
+      <Description>IRMA Mobile Plugin</Description>
+      <Service version="10.8.0.0">http://IRMAWebRMTest1/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="10.8.0.0">	
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <File>WholeFoods.Mobile.IRMA.dll</File>
+      </Update>
+    </Application>
+    <!--<Application name="DVO-OLD" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>DVO Handheld</Description>
+      <ExePath version="4.1.0.0">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.1.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.1.0.0/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>-->
+    <Application name="SMORe" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>SMORe List-O-Matic</Description>
+      <Service version="1.0.0.0">http://listomaticDEV/listomaticServiceDEV/service.svc/basic</Service>
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.12" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <AppSettings>
+        <add key="MaxItems" value="500" />
+      </AppSettings>
+      <Update enabled="1" version="1.0.0.12">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/SMORe/1.0.0.12/</Location>
+        <File>WholeFoods.Mobile.SMORe.dll</File>
+      </Update>
+    </Application>
+    <!-- <Application name="AV" isAuthorized="1" hasService="0" type="Assembly" authenticateUser="0">
+			<SecurityGroup/>
+			<Description>Tagnetics Web-Based App</Description>
+			<Service version="0"></Service>
+			<Assembly name="WFM Mobile WebApp Launcher" file="WholeFoods.Mobile.WebApp.dll" version="1.0.0.3" entryPoint="WholeFoods.Mobile.WebApp.MainForm"/>
+			<AppSettings/>
+			<Update enabled="1" version="1.0.0.3">
+				<Location>http://WFMMblTest1/Updates/PluginUpdates/WebApp/1.0.0.3/</Location>
+				<File>WholeFoods.Mobile.WebApp.dll</File>
+			</Update>
+		</Application> -->
+    <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <Description>Mobile Audit Reporting System</Description>
+      <Service version="3.13.2.2">http://marsscanauditservices-tst/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <File>WholeFoods.Mobile.POSScanAudit.dll</File>
+      </Update>
+    </Application>
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <Description>Out Of Stock Tool [test]</Description>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Service version="1.2.0.0">http://oosapptest/WebService/ScanOutOfStock.svc|http://BTSTST1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Update enabled="1" version="1.2.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+        <File>WFM.Mobile.OOS.dll</File>
+      </Update>
+    </Application>
+    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>Responsibily Grown Rating App</Description>
+      <Service version="1.5.0.0"></Service>
+      <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
+      <AppSettings />
+      <Update enabled="1" version="1.5.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <File>WFM.Mobile.GROW.dll</File>
+      </Update>
+    </Application>
+     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+        <Description>Pilot DVO Handheld</Description>
+        <ExePath version="4.5.1.8">\Program Files\DVO-TST\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.8">
+           <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.5.1.8/</Location>
+           <File>DVO-TST.CAB</File>
+        </Update>
+     </Application>
+  </Region>
+  <Region id="SO">
+    <SecurityGroup />
+    <AppSettings>
+      <add key="IdleShutdownThreshold" value="300" />
+      <add key="ShowServiceURI" value="1" />
+    </AppSettings>
+    <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup />
+      <Description>IRMA Mobile Plugin</Description>
+      <Service version="10.8.0.0">http://IRMAWebSOTest1/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="10.8.0.0">	
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <File>WholeFoods.Mobile.IRMA.dll</File>
+      </Update>
+    </Application>
+    <!--<Application name="DVO-OLD" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>DVO Handheld</Description>
+      <ExePath version="4.1.0.0">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.1.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.1.0.0/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>-->
+    <Application name="SMORe" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>SMORe List-O-Matic</Description>
+      <Service version="1.0.0.0">http://listomaticDEV/listomaticServiceDEV/service.svc/basic</Service>
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.12" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <AppSettings>
+        <add key="MaxItems" value="500" />
+      </AppSettings>
+      <Update enabled="1" version="1.0.0.12">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/SMORe/1.0.0.12/</Location>
+        <File>WholeFoods.Mobile.SMORe.dll</File>
+      </Update>
+    </Application>
+    <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <Description>Mobile Audit Reporting System</Description>
+      <Service version="3.13.2.2">http://marsscanauditservices-tst/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <File>WholeFoods.Mobile.POSScanAudit.dll</File>
+      </Update>
+    </Application>
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <Description>Out Of Stock Tool [test]</Description>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Service version="1.2.0.0">http://oosapptest/WebService/ScanOutOfStock.svc|http://BTSTST1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Update enabled="1" version="1.2.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+        <File>WFM.Mobile.OOS.dll</File>
+      </Update>
+    </Application>
+    <!--<Application name="RBOFM" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>RBOFM</Description>
+      <ExePath version="1.0.0.1">\Program Files\RBOFM\RBOFM.exe</ExePath>
+      <Update enabled="0" version="1.0.0.1">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/RBOFM/</Location>
+        <File>RBOFM.CAB</File>
+      </Update>
+    </Application>-->
+     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+        <Description>Pilot DVO Handheld</Description>
+        <ExePath version="4.5.1.8">\Program Files\DVO-TST\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.8">
+           <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.5.1.8/</Location>
+           <File>DVO-TST.CAB</File>
+        </Update>
+     </Application>
+     <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>Responsibily Grown Rating App</Description>
+      <Service version="1.5.0.0"></Service>
+      <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
+      <AppSettings />
+      <Update enabled="1" version="1.5.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <File>WFM.Mobile.GROW.dll</File>
+      </Update>
+    </Application>-->
+    <Application name="PLU2ESL" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <Description>PLU2ESL App</Description>
+      <Service version="3.7.3.7">http://marsscanauditservices-tst/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.PLU2ESL.dll" version="0.9.4.23262" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="0.9.4.23262">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/PLU2ESL/0.9.4.23262/</Location>
+        <File>WholeFoods.Mobile.PLU2ESL.dll</File>
+      </Update>
+    </Application>
+  </Region>
+  <Region id="SP">
+    <SecurityGroup />
+    <AppSettings>
+      <add key="IdleShutdownThreshold" value="300" />
+      <add key="ShowServiceURI" value="1" />
+    </AppSettings>
+    <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup />
+      <Description>IRMA Mobile Plugin</Description>
+      <Service version="10.8.0.0">http://IRMAWebSPTest1/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="10.8.0.0">	
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <File>WholeFoods.Mobile.IRMA.dll</File>
+      </Update>
+    </Application>
+    <!--<Application name="DVO-OLD" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>DVO Handheld</Description>
+      <ExePath version="4.1.0.0">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.1.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.1.0.0/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>-->
+    <Application name="SMORe" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>SMORe List-O-Matic</Description>
+      <Service version="1.0.0.0">http://listomaticDEV/listomaticServiceDEV/service.svc/basic</Service>
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.12" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <AppSettings>
+        <add key="MaxItems" value="500" />
+      </AppSettings>
+      <Update enabled="1" version="1.0.0.12">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/SMORe/1.0.0.12/</Location>
+        <File>WholeFoods.Mobile.SMORe.dll</File>
+      </Update>
+    </Application>
+    <Application name="RBOFM" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>RBOFM</Description>
+      <ExePath version="1.0.0.1">\Program Files\RBOFM\RBOFM.exe</ExePath>
+      <Update enabled="0" version="1.0.0.1">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/RBOFM/</Location>
+        <File>RBOFM.CAB</File>
+      </Update>
+    </Application>
+    <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <Description>Mobile Audit Reporting System</Description>
+      <Service version="3.13.2.2">http://marsscanauditservices-tst/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <File>WholeFoods.Mobile.POSScanAudit.dll</File>
+      </Update>
+    </Application>
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <Description>Out Of Stock Tool [test]</Description>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Service version="1.2.0.0">http://oosapptest/WebService/ScanOutOfStock.svc|http://BTSTST1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Update enabled="1" version="1.2.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+        <File>WFM.Mobile.OOS.dll</File>
+      </Update>
+    </Application>
+    <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>Pilot DVO Handheld</Description>
+      <ExePath version="4.5.1.8">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.5.1.8">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.5.1.8/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>
+
+    <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>Responsibily Grown Rating App</Description>
+      <Service version="1.5.0.0"></Service>
+      <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
+      <AppSettings />
+      <Update enabled="1" version="1.5.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <File>WFM.Mobile.GROW.dll</File>
+      </Update>
+    </Application>-->
+  </Region>
+  <Region id="SW">
+    <SecurityGroup />
+    <AppSettings>
+      <add key="IdleShutdownThreshold" value="300" />
+      <add key="ShowServiceURI" value="1" />
+    </AppSettings>
+    <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup />
+      <Description>IRMA Mobile Plugin</Description>
+      <Service version="10.8.0.0">http://IRMAWebSWTest1/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="10.8.0.0">	
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <File>WholeFoods.Mobile.IRMA.dll</File>
+      </Update>
+    </Application>
+    <!--<Application name="DVO-OLD" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>DVO Handheld</Description>
+      <ExePath version="4.1.0.0">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.1.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.1.0.0/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>-->
+    <Application name="SMORe" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>SMORe List-O-Matic</Description>
+      <Service version="1.0.0.0">http://listomaticDEV/listomaticServiceDEV/service.svc/basic</Service>
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.12" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <AppSettings>
+        <add key="MaxItems" value="500" />
+      </AppSettings>
+      <Update enabled="1" version="1.0.0.12">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/SMORe/1.0.0.12/</Location>
+        <File>WholeFoods.Mobile.SMORe.dll</File>
+      </Update>
+    </Application>
+    <Application name="RBOFM" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>RBOFM</Description>
+      <ExePath version="1.0.0.1">\Program Files\RBOFM\RBOFM.exe</ExePath>
+      <Update enabled="0" version="1.0.0.1">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/RBOFM/</Location>
+        <File>RBOFM.CAB</File>
+      </Update>
+    </Application>
+    <Application name="TagNet" isAuthorized="1" hasService="0" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>Tagnetics Web-Based App</Description>
+      <Service version="0">
+      </Service>
+      <Assembly name="WFM Mobile WebApp Launcher" file="WholeFoods.Mobile.WebApp.dll" version="1.0.0.3" entryPoint="WholeFoods.Mobile.WebApp.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="1.0.0.3">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/WebApp/1.0.0.3/</Location>
+        <File>WholeFoods.Mobile.WebApp.dll</File>
+      </Update>
+    </Application>
+    <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <Description>Mobile Audit Reporting System</Description>
+      <Service version="3.13.2.2">http://marsscanauditservices-tst/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <File>WholeFoods.Mobile.POSScanAudit.dll</File>
+      </Update>
+    </Application>
+    <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>Pilot DVO Handheld</Description>
+      <ExePath version="4.5.1.8">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.5.1.8">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.5.1.8/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>
+
+    <!--    <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>Responsibily Grown Rating App</Description>
+      <Service version="1.5.0.0"></Service>
+      <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
+      <AppSettings />
+      <Update enabled="1" version="1.5.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <File>WFM.Mobile.GROW.dll</File>
+      </Update>
+    </Application>-->
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <Description>Out Of Stock Tool [test]</Description>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Service version="1.2.0.0">http://oosapptest/WebService/ScanOutOfStock.svc|http://BTSTST1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Update enabled="1" version="1.2.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+        <File>WFM.Mobile.OOS.dll</File>
+      </Update>
+    </Application>
+  </Region>
+  <Region id="TS">
+    <SecurityGroup />
+    <AppSettings>
+      <add key="IdleShutdownThreshold" value="300" />
+      <add key="ShowServiceURI" value="1" />
+    </AppSettings>
+    <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup />
+      <Description>IRMA Mobile Plugin</Description>
+      <Service version="10.8.0.0">http://IRMAWebRMTest1/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="10.8.0.0">	
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <File>WholeFoods.Mobile.IRMA.dll</File>
+      </Update>
+    </Application>
+    <!--<Application name="DVO-OLD" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>DVO Handheld</Description>
+      <ExePath version="4.1.0.0">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.1.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.1.0.0/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>-->
+    <Application name="SMORe" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>SMORe List-O-Matic</Description>
+      <Service version="1.0.0.0">http://listomaticDEV/listomaticServiceDEV/service.svc/basic</Service>
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.12" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <AppSettings>
+        <add key="MaxItems" value="500" />
+      </AppSettings>
+      <Update enabled="1" version="1.0.0.12">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/SMORe/1.0.0.12/</Location>
+        <File>WholeFoods.Mobile.SMORe.dll</File>
+      </Update>
+    </Application>
+    <!-- <Application name="AV" isAuthorized="1" hasService="0" type="Assembly" authenticateUser="0">
+			<SecurityGroup/>
+			<Description>Tagnetics Web-Based App</Description>
+			<Service version="0"></Service>
+			<Assembly name="WFM Mobile WebApp Launcher" file="WholeFoods.Mobile.WebApp.dll" version="1.0.0.3" entryPoint="WholeFoods.Mobile.WebApp.MainForm"/>
+			<AppSettings/>
+			<Update enabled="1" version="1.0.0.3">
+				<Location>http://WFMMblTest1/Updates/PluginUpdates/WebApp/1.0.0.3/</Location>
+				<File>WholeFoods.Mobile.WebApp.dll</File>
+			</Update>
+		</Application> -->
+    <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <Description>Mobile Audit Reporting System</Description>
+      <Service version="3.13.2.2">http://marsscanauditservices-tst/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <File>WholeFoods.Mobile.POSScanAudit.dll</File>
+      </Update>
+    </Application>
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <Description>Out Of Stock Tool [test]</Description>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Service version="1.2.0.0">http://oosapptest/WebService/ScanOutOfStock.svc|http://BTSTST1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Update enabled="1" version="1.2.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+        <File>WFM.Mobile.OOS.dll</File>
+      </Update>
+    </Application>
+     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+        <Description>Pilot DVO Handheld</Description>
+        <ExePath version="4.5.1.8">\Program Files\DVO-TST\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.8">
+           <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.5.1.8/</Location>
+           <File>DVO-TST.CAB</File>
+        </Update>
+     </Application>
+     <Application name="GROW" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>Responsibily Grown Rating App</Description>
+      <Service version="1.5.0.0"></Service>
+      <Assembly name="GROW" file="WFM.Mobile.GROW.dll" version="1.5.0.0" entryPoint="WFM.Mobile.GROW.ScanBarCode" />
+      <AppSettings />
+      <Update enabled="1" version="1.5.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/GROW/1.5.0.0/</Location>
+        <File>WFM.Mobile.GROW.dll</File>
+      </Update>
+    </Application>
+  </Region>
+  <Region id="EU">
+    <SecurityGroup />
+    <AppSettings>
+      <add key="IdleShutdownThreshold" value="300" />
+      <add key="ShowServiceURI" value="1" />
+    </AppSettings>
+    <Application name="IRMA" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <SecurityGroup />
+      <Description>IRMA Mobile Plugin</Description>
+      <Service version="10.8.0.0">http://IRMAWebUKTest1/IRMAService/IRMA.svc/basic</Service>
+      <Assembly name="IRMA Mobile Plugin" file="WholeFoods.Mobile.IRMA.dll" version="10.8.0.0" entryPoint="WholeFoods.Mobile.IRMA.MainForm" />
+      <AppSettings />
+      <Update enabled="1" version="10.8.0.0">	
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/IRMA/10.8.0.0/</Location>
+        <File>WholeFoods.Mobile.IRMA.dll</File>
+      </Update>
+    </Application>
+<!--
+     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+      <Description>DVO Handheld</Description>
+      <ExePath version="4.1.0.0">\Program Files\DVO-TST\DVO.exe</ExePath>
+      <Update enabled="1" version="4.1.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.1.0.0/</Location>
+        <File>DVO-TST.CAB</File>
+      </Update>
+    </Application>
+-->
+     <Application name="DVO" isAuthorized="1" hasService="0" type="Executable" authenticateUser="0">
+        <Description>Pilot DVO Handheld</Description>
+        <ExePath version="4.5.1.8">\Program Files\DVO-TST\DVO.exe</ExePath>
+        <Update enabled="1" version="4.5.1.8">
+           <Location>http://WFMMblTest1/Updates/PluginUpdates/DVO/4.5.1.8/</Location>
+           <File>DVO-TST.CAB</File>
+        </Update>
+     </Application>
+     <Application name="SMORe" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <SecurityGroup />
+      <Description>SMORe List-O-Matic</Description>
+      <Service version="1.0.0.0">http://listomaticDEV/listomaticServiceDEV/service.svc/basic</Service>
+      <Assembly name="SMORe List-O-Matic Plugin" file="WholeFoods.Mobile.SMORe.dll" version="1.0.0.12" entryPoint="WholeFoods.Mobile.SMORe.DefineReport" />
+      <AppSettings>
+        <add key="MaxItems" value="500" />
+      </AppSettings>
+      <Update enabled="1" version="1.0.0.12">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/SMORe/1.0.0.12/</Location>
+        <File>WholeFoods.Mobile.SMORe.dll</File>
+      </Update>
+    </Application>
+    <Application name="MARS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="1">
+      <Description>Mobile Audit Reporting System</Description>
+      <Service version="3.13.2.2">http://marsscanauditservices-tst/AuditService.svc/basic</Service>
+      <Assembly name="Scan Audit Tool" file="WholeFoods.Mobile.POSScanAudit.dll" version="3.13.2.2" entryPoint="WholeFoods.Mobile.POSScanAudit.ScanMain" />
+      <Update enabled="1" version="3.13.2.2">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/ScanAudit/3.13.2.2/</Location>
+        <File>WholeFoods.Mobile.POSScanAudit.dll</File>
+      </Update>
+    </Application>
+    <Application name="OOS" isAuthorized="1" hasService="1" type="Assembly" authenticateUser="0">
+      <Description>Out Of Stock Tool [test]</Description>
+      <Assembly name="OutOfStock Tool" file="WFM.Mobile.OOS.dll" version="1.2.0.0" entryPoint="WFM.Mobile.OOS.ScanUPCs" />
+      <Service version="1.2.0.0">http://oosapptest/WebService/ScanOutOfStock.svc|http://BTSTST1/BTS.oos/BTS_OOS_Orch_scanproduct_scanproductasync.svc</Service>
+      <Update enabled="1" version="1.2.0.0">
+        <Location>http://WFMMblTest1/Updates/PluginUpdates/OOS/1.2.0.0/</Location>
+        <File>WFM.Mobile.OOS.dll</File>
+      </Update>
+    </Application>
+  </Region>
+</WFMUHS>
