@@ -280,7 +280,7 @@ namespace Services.Extract
 
                         outputDataAndFileInformation.Add(new ExtractDataAndFileInformation()
                         {
-                            Data = connection.Source.Query(sql, dbArgs, buffered: false, commandTimeout: 3000),
+                            Data = connection.Source.Query(sql, combinedArgs, buffered: false, commandTimeout: 3000),
                             FileInformation = new FileInfo(destinationFile)
                         });
                     }

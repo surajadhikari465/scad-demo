@@ -22,3 +22,9 @@ ELSE
 
 SELECT * FROM @costtable
 END
+GO
+
+GRANT EXECUTE
+    ON OBJECT::[extract].[APT_FutureCostsExtract] TO [IConInterface]
+    AS [dbo];
+GO

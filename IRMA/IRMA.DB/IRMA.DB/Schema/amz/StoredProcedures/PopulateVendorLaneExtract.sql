@@ -47,3 +47,10 @@ AND   vch.VendorCostHistoryID = (SELECT max(VendorCostHistoryID)
 								  WHERE vch2.StoreItemVendorID = vch.StoreItemVendorID 
 								  AND vch2.StartDate <= @currentDate)
 END
+
+GO
+
+GRANT EXECUTE
+    ON OBJECT::[amz].[PopulateVendorLaneExtract] TO [IConInterface]
+    AS [dbo];
+GO
