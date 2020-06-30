@@ -163,6 +163,10 @@
     <Compile Include="Commands\AddAttributeMessageCommandHandler.cs" />
     <Compile Include="Commands\AddBrandCommand.cs" />
     <Compile Include="Commands\AddBrandCommandHandler.cs" />
+    <Compile Include="Commands\UpdateFeatureFlagCommand.cs" />
+    <Compile Include="Commands\AddFeatureFlagCommand.cs" />
+    <Compile Include="Commands\UpdateFeatureFlagCommandHandler.cs" />
+    <Compile Include="Commands\AddFeatureFlagCommandHandler.cs" />
     <Compile Include="Commands\AddMissingColumnsToItemColumnDisplayTableCommand.cs" />
     <Compile Include="Commands\AddMissingColumnsToItemColumnDisplayTableCommandHandler.cs" />
     <Compile Include="Commands\AddUpdateContactCommand.cs" />
@@ -391,6 +395,7 @@
     <Compile Include="Models\BulkUploadStatusModel.cs" />
     <Compile Include="Models\ContactModel.cs" />
     <Compile Include="Models\ContactTypeModel.cs" />
+    <Compile Include="Models\FeatureFlagModel.cs" />
     <Compile Include="Models\ItemColumnOrderModel.cs" />
     <Compile Include="Models\MerchandiseHierarchyClassTrait.cs" />
     <Compile Include="Models\AttributeCharacterSetModel.cs" />
@@ -458,6 +463,8 @@
     <Compile Include="Models\VenueModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\EmptyAttributesParameters.cs" />
+    <Compile Include="Queries\GetFeatureFlagsQuery.cs" />
+    <Compile Include="Queries\GetFeatureFlagsQueryParameters.cs" />
     <Compile Include="Queries\GetItemColumnOrderQuery.cs" />
     <Compile Include="Queries\GetScanCodesParameters.cs" />
     <Compile Include="Queries\GetScanCodesQuery.cs" />

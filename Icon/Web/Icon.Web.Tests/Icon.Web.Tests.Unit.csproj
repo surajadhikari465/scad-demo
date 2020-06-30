@@ -247,6 +247,7 @@
     <Compile Include="AutoMapperConverters\LocaleToMessageQueueLocaleConverterTests.cs" />
     <Compile Include="Controllers\AttributeControllerTests.cs" />
     <Compile Include="Controllers\BulkScanCodeSearchControllerTests.cs" />
+    <Compile Include="Controllers\FeatureFlagControllerTests.cs" />
     <Compile Include="Controllers\ManufacturerControllerTests.cs" />
     <Compile Include="Controllers\NationalClassControllerTests.cs" />
     <Compile Include="Controllers\ProductSelectionGroupControllerTests.cs" />

@@ -1,0 +1,65 @@
+﻿@using Infragistics.Web.Mvc
+@model Icon.Web.Mvc.Models.FeatureFlagGridViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{Html.RenderPartial("_HeaderPartial", "Feature Flag Management");}
+
+<div class="search-alert page-subsection"></div>
+<hr />
+<div id="barcodeTypesView" class="page-section">
+    @if (Model.FeatureFlags != null)
+    {
+        @(Html.Infragistics().Grid(Model.FeatureFlags.AsQueryable())
+            .ID("featureFlagGrid")
+                .PrimaryKey("FeatureFlagId")
+            .Width("100%")
+            .Columns(columns =>
+            {
+                columns.For(c => c.FeatureFlagId).Hidden(true);
+                columns.For(c => c.FlagName).HeaderText("FlagName").DataType("string").Width("35%");
+                columns.For(c => c.Description).HeaderText("Description").DataType("string").Width("15%");
+                columns.For(c => c.Enabled).HeaderText("Enabled").DataType("boolean").Width("10%");
+                columns.For(c => c.CreatedDate).HeaderText("Created Date").DataType("date").DateDisplayType(DateDisplayType.Local).Width("10%");
+                columns.For(c => c.LastModifiedDate).HeaderText("Last Modified Date").DataType("date").DateDisplayType(DateDisplayType.Local).Width("10%");
+                columns.For(c => c.LastModifiedBy).HeaderText("Last Modified By").DataType("string").Width("10%");
+            })
+            .Features(features =>
+            {
+                features.Sorting().Inherit(true);
+                features.Paging().PageSize(50).Inherit(true);
+                features.Filtering().Inherit(true);
+                features.Updating()
+                    .EditMode(GridEditMode.Row)
+                    .EnableDeleteRow(false)
+                    .EnableAddRow(true)
+                    .ColumnSettings(cs =>
+                    {
+                        cs.ColumnSetting().ColumnKey("FeatureFlagId").ReadOnly(true);
+                        cs.ColumnSetting().ColumnKey("FlagName").Required(true).TextEditorOptions(o => o.ValidatorOptions(vo => vo.LengthRange(1,255)));
+                        cs.ColumnSetting().ColumnKey("Description").Required(true).TextEditorOptions(o => o.ValidatorOptions(vo => vo.LengthRange(1,255)));
+                        cs.ColumnSetting().ColumnKey("Enabled").Required(true);
+                        cs.ColumnSetting().ColumnKey("CreatedDate").ReadOnly(true);
+                        cs.ColumnSetting().ColumnKey("LastModifiedDate").ReadOnly(true);
+                        cs.ColumnSetting().ColumnKey("LastModifiedBy").ReadOnly(true);
+                    });
+            })
+            .DataSource(Model.FeatureFlags.AsQueryable())
+            .UpdateUrl(Url.Action("SaveChangesInGrid"))
+            .AggregateTransactions(false)
+            .DataBind()
+            .Render()
+        );
+    }
+    else
+    {
+        <h4>No data was found.</h4>
+    }   
+</div>
+
+@Scripts.Render("~/Scripts/FeatureFlag/feature-flag-view.js")
+@Scripts.Render("~/Scripts/common-search.js")
+@Scripts.Render("~/Scripts/jquery.fileDownload.js")

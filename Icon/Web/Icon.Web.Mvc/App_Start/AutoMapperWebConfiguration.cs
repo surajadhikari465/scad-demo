@@ -3,6 +3,7 @@ using Icon.Framework;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Managers;
+using Icon.Web.DataAccess.Models;
 using Icon.Web.Mvc.AutoMapperConverters;
 using Icon.Web.Mvc.Models;
 using Irma.Framework;
@@ -18,6 +19,7 @@ namespace Icon.Web.Mvc.App_Start
                 cfg.AddProfile<LocaleProfile>();
                 cfg.AddProfile<HierarchyClassProfile>();
                 cfg.AddProfile<RegionalItemProfile>();
+                cfg.AddProfile<FeatureFlagProfile>();
             });
             var mapper = new Mapper(config);
             return mapper;
@@ -27,6 +29,15 @@ namespace Icon.Web.Mvc.App_Start
     public class ItemProfile : Profile
     {
 
+    }
+
+    public class FeatureFlagProfile : Profile
+    {
+        public FeatureFlagProfile()
+        {
+            this.CreateMap<FeatureFlagModel, FeatureFlagViewModel>();
+            this.CreateMap<FeatureFlagViewModel, FeatureFlagModel>();
+        }
     }
 
     public class HierarchyClassProfile : Profile

@@ -120,7 +120,7 @@
       <HintPath>..\packages\Icon.Ewic.Transmission.2019.5.15.2\lib\net46\Icon.Ewic.Transmission.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2020.5.8.2\lib\net472\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2019.12.6.1\lib\net472\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -282,6 +282,7 @@
     <Compile Include="Controllers\AttributeController.cs" />
     <Compile Include="Controllers\BulkUploadController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
+    <Compile Include="Controllers\FeatureFlagController.cs" />
     <Compile Include="Controllers\ItemColumnDisplayController.cs" />
     <Compile Include="Controllers\ManufacturerController.cs" />
     <Compile Include="Domain\BulkImport\BulkUploadService.cs" />
@@ -368,6 +369,8 @@
     <Compile Include="Models\ContactViewModel.cs" />
     <Compile Include="Models\CountryViewModel.cs" />
     <Compile Include="Models\ErrorModel.cs" />
+    <Compile Include="Models\FeatureFlagGridViewModel.cs" />
+    <Compile Include="Models\FeatureFlagViewModel.cs" />
     <Compile Include="Models\FieldNameDisplayOrderModel.cs" />
     <Compile Include="Models\GetItemsAttributesParameters.cs" />
     <Compile Include="Models\GetItemsParametersViewModel.cs" />
@@ -881,6 +884,7 @@
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
     <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\FeatureFlag\feature-flag-view.js" />
     <Content Include="Scripts\Infragistics\js\extensions\infragistics.datasource.knockoutjs.js" />
     <Content Include="Scripts\Infragistics\js\extensions\infragistics.ui.combo.knockout-extensions.js" />
     <Content Include="Scripts\Infragistics\js\extensions\infragistics.ui.datachart.knockout-extensions.js" />
@@ -1824,6 +1828,7 @@
     <Content Include="Views\BulkUpload\Index.cshtml" />
     <Content Include="Views\BulkUpload\UploadErrors.cshtml" />
     <Content Include="Views\ItemColumnDisplay\Index.cshtml" />
+    <Content Include="Views\FeatureFlag\Index.cshtml" />
     <None Include="Web.2016.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2046,11 +2051,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>10077</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:37488/</IISUrl>
+          <IISUrl>http://localhost:10077/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
