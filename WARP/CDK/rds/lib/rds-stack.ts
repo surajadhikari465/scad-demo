@@ -14,10 +14,14 @@ export class RdsStack extends cdk.Stack {
       vpcName: '1-243990056803'
     });
 
-    // const paramGroup = new rds.ClusterParameterGroup(this, 'ClusterParamGroup', {
-    //   family: 'aurora-postgresql11',
-    //   description: 'Parameter Group for the Aurora Postgres Warp DB RDS instance.'
-    // })
+    const rdsSecurityGroupVPN = new ec2.SecurityGroup(this, 'NewSecurityGroup', {
+      description: 'Allow VPN Access to RDS',
+      securityGroupName: 'rds-vpn-access',
+      allowAllOutbound: true,
+      vpc: vpc
+    });
+    rdsSecurityGroupVPN.addIngressRule(ec2.Peer.ipv4('10.0.0.0/8'), ec2.Port.tcp(3306));
+
     const paramGroup = ClusterParameterGroup.fromParameterGroupName(this, 'RdsClusterParameterGroup', 'default.aurora-postgresql11');
 
     new rds.DatabaseCluster(this, 'AuroraRdsInstance', {
@@ -32,9 +36,9 @@ export class RdsStack extends cdk.Stack {
         vpcSubnets: {
           subnetType: ec2.SubnetType.PRIVATE
         },
-        vpc: vpc
-      },
-      
+        vpc: vpc,
+        securityGroups: [rdsSecurityGroupVPN]
+      }
     });
   }
 }
