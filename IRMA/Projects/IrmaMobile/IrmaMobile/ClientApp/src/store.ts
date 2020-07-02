@@ -112,6 +112,7 @@ export interface IStoreItem {
   retailSubteamNo: number;
   storeNo: number;
   isUnrestricted: boolean;
+  soldByWeight: boolean;
 }
 
 export interface IMappedReasonCode {

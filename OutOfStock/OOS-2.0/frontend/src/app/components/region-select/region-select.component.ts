@@ -1,13 +1,25 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from "@angular/core";
 
-const REGION_LIST = ['SP', 'MW', 'MA', 'SW', 'SO', 'NC', 'RM', 'NE', 'NA', 'FL', 'PN', 'UK']
+const REGION_LIST = [
+  "FL",
+  "MA",
+  "MW",
+  "NA",
+  "NC",
+  "NE",
+  "PN",
+  "RM",
+  "SO",
+  "SP",
+  "SW",
+  "UK",
+];
 @Component({
-  selector: 'app-region-select',
-  templateUrl: './region-select.component.html',
-  styleUrls: ['./region-select.component.scss']
+  selector: "app-region-select",
+  templateUrl: "./region-select.component.html",
+  styleUrls: ["./region-select.component.scss"],
 })
 export class RegionSelectComponent implements OnInit {
-
   regions: any;
   selectedRegion: any;
 
@@ -19,12 +31,11 @@ export class RegionSelectComponent implements OnInit {
 
   ngOnInit() {}
 
-  setSelected(selected){
+  setSelected(selected) {
     this.selectedRegion = selected.detail;
   }
 
-  selectRegion(){
-    this.regionSelected.emit(this.selectedRegion.name)
+  selectRegion() {
+    this.regionSelected.emit(this.selectedRegion.name);
   }
-
 }

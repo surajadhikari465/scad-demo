@@ -14,6 +14,7 @@ namespace WFM.OutOfStock.API.Services
 {
     public sealed class OutOfStockService : IOutOfStockService
     {
+        private const string LegacyUkRegionCode = "EU";
         private readonly string _endpointUri;
 
         public OutOfStockService(IOptions<AppConfiguration> options)
@@ -23,7 +24,8 @@ namespace WFM.OutOfStock.API.Services
 
         public async Task<List<StoreResponse>> RetrieveStoresForRegion(string regionCode)
         {
-            var stores = await MakeServiceRequest(client => client.StoreAbbreviationsForAsync(regionCode));
+            var serviceRequestRegionCode = regionCode == "UK" ? LegacyUkRegionCode : regionCode;
+            var stores = await MakeServiceRequest(client => client.StoreAbbreviationsForAsync(serviceRequestRegionCode));
 
             return stores
                 .Select(s => new StoreResponse(s))
@@ -33,7 +35,7 @@ namespace WFM.OutOfStock.API.Services
         public async Task SubmitList(UploadItemsRequest list)
         {
             DateTime scanDate = DateTime.Now;
-            string regionAbbrev = list.RegionCode;
+            string regionAbbrev = list.RegionCode == "UK" ? LegacyUkRegionCode : list.RegionCode;
             string storeAbbrev = list.StoreName;
             string[] upcs = list.Items;
             string userName = list.UserName;

@@ -9,6 +9,7 @@ import LoadingComponent from '../../layout/LoadingComponent';
 import agent from "../../api/agent";
 import useNumberInput from '../../hooks/useNumberInput';
 import { toast } from 'react-toastify';
+import { Textfit } from 'react-textfit';
 
 const initialState = {
   isSelected: false,
@@ -41,9 +42,9 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
   const { subteam, region, storeNumber, subteamNo, shrinkTypes, shrinkType, shrinkSessions } = state;
   const [warningOverride, setWarningOverride] = useState<boolean>(false);
   const { history } = props;
+  const quantityInput = useNumberInput(0, '', false, false, '');
 
   let textInput: any = React.createRef<HTMLInputElement>();
-  let qtyInput: any = React.createRef<HTMLInputElement>();
   let sessionIndex = shrinkSessions.findIndex((session: any) => session.sessionUser.userName === user?.userName);
   let selectionMenu = ((!state.shrinkSessions![sessionIndex].isPrevSession && !shrinkState.isSelected) || state.shrinkSessions[sessionIndex].forceSubteamSelection)
 
@@ -164,17 +165,24 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
             cancelAction: cancel.bind(undefined, true, false)
           });
         }
-        let quantity = shrinkState.quantity;
+
         if (scan) {
-          quantity += 1;
+          quantityInput.setValueInput((shrinkState.quantity + 1).toString());
         } else {
-          quantity = 1;
+          quantityInput.setValueInput('1');
         }
-        setShrinkItem(storeItem, upc, quantity);
+        setShrinkItem(storeItem, upc, quantityInput.value);
+        quantityInput.setAllowDecimals(storeItem.costedByWeight || storeItem.soldByWeight);
       }
     } finally {
       setIsLoading(false);
     }
+  }
+
+  const resetQuantityInput = () => {
+    quantityInput.setValueInput('');
+    quantityInput.setErrorMessage('');
+    quantityInput.setAllowDecimals(false);
   }
 
   const setShrinkType = (value: any) => {
@@ -244,18 +252,16 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
       history.push('/functions');
     }
   }
-  const setQty = (e: any) => {
-    let quantity = parseFloat(e.target.value);
-    if (!shrinkState.costedByWeight && !shrinkState.soldByWeight) {
-      setShrinkState({ ...shrinkState, quantity: parseInt(e.target.value.replace(/[^\w\s]|_/g, "")) });
-    }
-    else setShrinkState({ ...shrinkState, quantity: quantity });
+  const setQty = (e: React.ChangeEvent<HTMLInputElement>) => {
+    quantityInput.setValueInput(e.target.value);
+    setShrinkState({ ...shrinkState, quantity: quantityInput.value });
   }
   const skipConfirm = (e: any) => {
     setShrinkState({ ...shrinkState, skipConfirm: !shrinkState.skipConfirm });
   }
   const clear = () => {
     setShrinkState({ ...initialState, isSelected: true, skipConfirm: shrinkState.skipConfirm });
+    resetQuantityInput();
   }
   const clearRetainUPC = () => {
     setShrinkState({ ...initialState, upcValue: shrinkState.upcValue, ...skipConfirm, isSelected: true });
@@ -263,9 +269,10 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
   const setUpcValue = (e: any) => {
     let value = e.target.value;
     setShrinkState({ ...initialState, upcValue: value.replace(/[^\w\s]|_/g, ""), isSelected: true, skipConfirm: shrinkState.skipConfirm });
+    resetQuantityInput();
   }
   const save = (e: any) => {
-    if (shrinkState.quantity > 999) {
+    if (quantityInput.value > 999) {
       setAlert({
         ...alert,
         open: true,
@@ -273,7 +280,7 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
         type: 'default',
         header: 'Scan Shrink'
       });
-    } else if (shrinkState.quantity === 0) {
+    } else if (quantityInput.value === 0) {
       setAlert({
         ...alert,
         open: true,
@@ -281,7 +288,7 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
         type: 'default',
         header: 'Scan Shrink'
       });
-    } else if (isNaN(shrinkState.quantity)) {
+    } else if (isNaN(quantityInput.value)) {
       setAlert({
         ...alert,
         open: true,
@@ -292,7 +299,7 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
     } else {
       const { isSelected, skipConfirm, queued, dupItem, ...shrinkItem } = shrinkState;
       shrinkItem.shrinkType = shrinkType.shrinkSubTypeMember;
-      shrinkItem.quantity = parseFloat((+(shrinkState.queued) + +(shrinkState.quantity)).toPrecision(4));
+      shrinkItem.quantity = Number((+(shrinkState.queued) + quantityInput.value).toPrecision(4));
       let shrinkItems: any = [];
 
       if (state.shrinkSessions[sessionIndex].shrinkItems) {
@@ -315,6 +322,7 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
         // else add a new shrink Item
         shrinkItems.push(shrinkItem);
         saveItems(shrinkItems);
+        resetQuantityInput();
       }
     }
   }
@@ -331,14 +339,16 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
 
   const add = (e: any) => {
     setAlert({ ...alert, open: false });
-    let shrinkItems: any[] = getShrinkItems(parseFloat((+(shrinkState.queued) + +(shrinkState.quantity)).toPrecision(4)));
+    let shrinkItems: any[] = getShrinkItems(Number((+(shrinkState.queued) + quantityInput.value).toPrecision(4)));
     saveItems(shrinkItems);
+    resetQuantityInput();
   }
 
   const overwrite = (e: any) => {
     setAlert({ ...alert, open: false });
-    let shrinkItems: any[] = getShrinkItems(shrinkState.quantity);
+    let shrinkItems: any[] = getShrinkItems(quantityInput.value);
     saveItems(shrinkItems);
+    resetQuantityInput();
   }
 
   const cancel = (clearData = true, cancelledAlert = true, e: any) => {
@@ -428,16 +438,15 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
                     type='number'
                     min="0"
                     onChange={setQty}
-                    onKeyPress={clearInvalid}
                     maxLength={3}
                     onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''}
-                    value={shrinkState.quantity.toString()}
-                    ref={qtyInput}></input>
+                    value={quantityInput.valueInput}></input>
                   {
                     shrinkState.packageUnitAbbreviation &&
                     <label className='qty-type'>Retail: {shrinkState.retailUnitName}</label>
                   }
                 </div>
+                <Textfit className="error-message" mode='single' min={8} max={14}>{quantityInput.errorMessage}</Textfit>
                 {
                   shrinkState.retailUnitName &&
                   <div className='description'>
@@ -456,7 +465,7 @@ const Shrink: React.FC<ShrinkProps> = (props) => {
               <section className='entry-section'>
                 <div className='shrink-buttons'>
                   <button className="irma-btn" onClick={clear}>Clear</button>
-                  <button className="irma-btn" disabled={shrinkState.identifier === null} onClick={save}>Save</button>
+                  <button className="irma-btn" disabled={shrinkState.identifier === null || quantityInput.errorMessage !== '' || quantityInput.value === 0} onClick={save}>Save</button>
                 </div>
               </section>
             </div>)
