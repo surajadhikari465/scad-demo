@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarpDbMigration", "WarpDbMigration\WarpDbMigration.csproj", "{80B4EA19-79F9-44B9-80BC-E687D7AA57CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80B4EA19-79F9-44B9-80BC-E687D7AA57CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80B4EA19-79F9-44B9-80BC-E687D7AA57CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80B4EA19-79F9-44B9-80BC-E687D7AA57CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80B4EA19-79F9-44B9-80BC-E687D7AA57CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {87BE2692-89A4-447F-86D1-8CBC3DC44D3C}
+	EndGlobalSection
+EndGlobal
