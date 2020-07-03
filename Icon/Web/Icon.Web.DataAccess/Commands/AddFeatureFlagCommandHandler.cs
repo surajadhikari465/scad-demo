@@ -40,15 +40,15 @@ namespace Icon.Web.DataAccess.Commands
                            ([FlagName]
                            ,[Enabled]
                            ,[Description]
-                           ,[CreatedDate]
-                           ,[LastModifiedDate]
+                           ,[CreatedDateUtc]
+                           ,[LastModifiedDateUtc]
                            ,[LastModifiedBy])
                      VALUES
                            (@FlagName
                            ,@Enabled
                            ,@Description
-                           ,GETDATE()
-                           ,GETDATE()
+                           ,GETUTCDATE()
+                           ,GETUTCDATE()
                            ,@LastModifiedBy);",
                          data.FeatureFlag);
 

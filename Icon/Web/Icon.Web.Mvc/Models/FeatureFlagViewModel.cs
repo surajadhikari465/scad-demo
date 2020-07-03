@@ -27,11 +27,11 @@ namespace Icon.Web.Mvc.Models
 
         [ReadOnly(true)]
         [Display(Name = "Created Date")]
-        public DateTime? CreatedDate { get; set; }
+        public DateTime? CreatedDateUtc { get; set; }
 
         [ReadOnly(true)]
         [Display(Name = "Last Modified Date")]
-        public DateTime? LastModifiedDate { get; set; }
+        public DateTime? LastModifiedDateUtc { get; set; }
 
         [ReadOnly(true)]
         [Display(Name = "Last Modified By")]

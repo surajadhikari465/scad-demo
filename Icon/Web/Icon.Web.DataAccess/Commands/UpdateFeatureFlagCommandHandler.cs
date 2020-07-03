@@ -32,7 +32,7 @@ namespace Icon.Web.DataAccess.Commands
                    SET [FlagName] = @FlagName
                       ,[Enabled] = @Enabled
                       ,[Description] = @Description
-                      ,[LastModifiedDate] = GETDATE()  
+                      ,[LastModifiedDateUtc] = GETUTCDATE()  
                       ,[LastModifiedBy] = @LastModifiedBy
                  WHERE [FeatureFlagId] = @FeatureFlagId;",
                 data.FeatureFlag);

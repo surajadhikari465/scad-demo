@@ -37,8 +37,8 @@ namespace Icon.Web.DataAccess.Queries
                       ,[FlagName]
                       ,[Enabled]
                       ,[Description]
-                      ,[CreatedDate]
-                      ,[LastModifiedDate]
+                      ,[CreatedDateUtc]
+                      ,[LastModifiedDateUtc]
                       ,[LastModifiedBy]
                   FROM [icon].[dbo].[FeatureFlag]");
         }

@@ -20,11 +20,11 @@
             .Columns(columns =>
             {
                 columns.For(c => c.FeatureFlagId).Hidden(true);
-                columns.For(c => c.FlagName).HeaderText("FlagName").DataType("string").Width("35%");
+                columns.For(c => c.FlagName).HeaderText("Flag Name").DataType("string").Width("35%");
                 columns.For(c => c.Description).HeaderText("Description").DataType("string").Width("15%");
                 columns.For(c => c.Enabled).HeaderText("Enabled").DataType("boolean").Width("10%");
-                columns.For(c => c.CreatedDate).HeaderText("Created Date").DataType("date").DateDisplayType(DateDisplayType.Local).Width("10%");
-                columns.For(c => c.LastModifiedDate).HeaderText("Last Modified Date").DataType("date").DateDisplayType(DateDisplayType.Local).Width("10%");
+                columns.For(c => c.CreatedDateUtc).HeaderText("Created Date").DataType("date").DateDisplayType(DateDisplayType.Local).Width("10%");
+                columns.For(c => c.LastModifiedDateUtc).HeaderText("Last Modified Date").DataType("date").DateDisplayType(DateDisplayType.Local).Width("10%");
                 columns.For(c => c.LastModifiedBy).HeaderText("Last Modified By").DataType("string").Width("10%");
             })
             .Features(features =>
@@ -42,8 +42,8 @@
                         cs.ColumnSetting().ColumnKey("FlagName").Required(true).TextEditorOptions(o => o.ValidatorOptions(vo => vo.LengthRange(1,255)));
                         cs.ColumnSetting().ColumnKey("Description").Required(true).TextEditorOptions(o => o.ValidatorOptions(vo => vo.LengthRange(1,255)));
                         cs.ColumnSetting().ColumnKey("Enabled").Required(true);
-                        cs.ColumnSetting().ColumnKey("CreatedDate").ReadOnly(true);
-                        cs.ColumnSetting().ColumnKey("LastModifiedDate").ReadOnly(true);
+                        cs.ColumnSetting().ColumnKey("CreatedDateUtc").ReadOnly(true);
+                        cs.ColumnSetting().ColumnKey("LastModifiedDateUtc").ReadOnly(true);
                         cs.ColumnSetting().ColumnKey("LastModifiedBy").ReadOnly(true);
                     });
             })

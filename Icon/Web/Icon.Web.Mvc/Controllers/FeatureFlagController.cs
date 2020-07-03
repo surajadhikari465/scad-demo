@@ -4,6 +4,7 @@ using Icon.Logging;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Models;
+using Icon.Web.Mvc.Attributes;
 using Icon.Web.Mvc.Models;
 using Infragistics.Web.Mvc;
 using System;
@@ -18,6 +19,7 @@ namespace Icon.Web.Mvc.Controllers
     /// <summary>
     /// FeatureFlag Controller
     /// </summary>
+    [AdminAccessAuthorizeAttribute]
     public class FeatureFlagController : Controller
     {
         private IQueryHandler<EmptyQueryParameters<IEnumerable<FeatureFlagModel>>,IEnumerable<FeatureFlagModel>> getFeatureFlagsQuery;

@@ -12,9 +12,9 @@ namespace Icon.Web.DataAccess.Models
 
         public string Description { get; set; }
 
-        public DateTime? CreatedDate { get; set; }
+        public DateTime? CreatedDateUtc { get; set; }
 
-        public DateTime? LastModifiedDate { get; set; }
+        public DateTime? LastModifiedDateUtc { get; set; }
 
         public string LastModifiedBy { get; set; }
     }

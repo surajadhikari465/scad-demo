@@ -47,8 +47,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                     FlagName = "Flag name", 
                     Description = "Description", 
                     Enabled = true, 
-                    CreatedDate = DateTime.Now, 
-                    LastModifiedDate = DateTime.Now, 
+                    CreatedDateUtc = DateTime.Now, 
+                    LastModifiedDateUtc = DateTime.Now, 
                     LastModifiedBy = "Me" 
                 } 
             };
@@ -76,8 +76,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                                 FlagName = ff.FlagName,
                                 Description = ff.Description,
                                 Enabled = ff.Enabled,
-                                CreatedDate = ff.CreatedDate ?? DateTime.MinValue,
-                                LastModifiedDate =ff.LastModifiedDate ?? DateTime.MinValue,
+                                CreatedDateUtc = ff.CreatedDateUtc ?? DateTime.MinValue,
+                                LastModifiedDateUtc =ff.LastModifiedDateUtc ?? DateTime.MinValue,
                                 LastModifiedBy = ff.LastModifiedBy,
 
                             };
@@ -124,8 +124,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                                 ""FlagName"": ""feature-flag"",
                                 ""Description"": ""Feature name Z"",
                                 ""Enabled"": true,
-                                ""CreatedDate"": ""2020-06-24T06:53:01-05:00"",
-                                ""LastModifiedDate"": ""2020-06-24T10:34:15-05:00"",
+                                ""CreatedDateUtc"": ""2020-06-24T06:53:01-05:00"",
+                                ""LastModifiedDateUtc"": ""2020-06-24T10:34:15-05:00"",
                                 ""LastModifiedBy"": ""WFM\\UserX""
                             },
                             ""rowId"": 3
@@ -146,8 +146,8 @@ namespace Icon.Web.Tests.Unit.Controllers
             Assert.AreEqual("feature-flag", featureFlag.FlagName);
             Assert.AreEqual("Feature name Z", featureFlag.Description);
             Assert.AreEqual(true, featureFlag.Enabled);
-            Assert.AreEqual(DateTime.Parse("2020-06-24T06:53:01-05:00"), featureFlag.CreatedDate);
-            Assert.AreEqual(DateTime.Parse("2020-06-24T10:34:15-05:00"), featureFlag.LastModifiedDate);
+            Assert.AreEqual(DateTime.Parse("2020-06-24T06:53:01-05:00"), featureFlag.CreatedDateUtc);
+            Assert.AreEqual(DateTime.Parse("2020-06-24T10:34:15-05:00"), featureFlag.LastModifiedDateUtc);
             Assert.AreEqual("Test User", featureFlag.LastModifiedBy);
         }
 
@@ -165,8 +165,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                                 ""FlagName"": ""feature-flag"",
                                 ""Description"": ""Feature name Z"",
                                 ""Enabled"": true,
-                                ""CreatedDate"": ""2020-06-24T06:53:01-05:00"",
-                                ""LastModifiedDate"": ""2020-06-24T10:34:15-05:00"",
+                                ""CreatedDateUtc"": ""2020-06-24T06:53:01-05:00"",
+                                ""LastModifiedDateUtc"": ""2020-06-24T10:34:15-05:00"",
                                 ""LastModifiedBy"": ""WFM\\UserX""
                             },
                             ""rowId"": 3
@@ -187,8 +187,8 @@ namespace Icon.Web.Tests.Unit.Controllers
             Assert.AreEqual("feature-flag", featureFlag.FlagName);
             Assert.AreEqual("Feature name Z", featureFlag.Description);
             Assert.AreEqual(true, featureFlag.Enabled);
-            Assert.AreEqual(DateTime.Parse("2020-06-24T06:53:01-05:00"), featureFlag.CreatedDate);
-            Assert.AreEqual(DateTime.Parse("2020-06-24T10:34:15-05:00"), featureFlag.LastModifiedDate);
+            Assert.AreEqual(DateTime.Parse("2020-06-24T06:53:01-05:00"), featureFlag.CreatedDateUtc);
+            Assert.AreEqual(DateTime.Parse("2020-06-24T10:34:15-05:00"), featureFlag.LastModifiedDateUtc);
             Assert.AreEqual("Test User", featureFlag.LastModifiedBy);
         }
 
