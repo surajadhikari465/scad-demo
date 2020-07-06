@@ -23,4 +23,5 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\36709_PopulateSkuPriceLineAttributeGroups.sql --2020-06-17 36709
 --:r .\Scripts\PopulateData\36709_AddSkuPriceLineAttributes.sql --2020-06-18 36709
 -- Always run this security script and make it the last entry in this script.
+--:r .\Scripts\PopulateData\36949_AddItemGroups.sql --2020-06-29 36949
 :r .\Security\Icon.Security.sql
