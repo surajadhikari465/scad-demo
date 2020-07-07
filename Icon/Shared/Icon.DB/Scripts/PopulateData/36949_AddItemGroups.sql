@@ -38,7 +38,7 @@ INSERT INTO [dbo].[ItemGroup] (
 	,[LastModifiedBy]
 	)
 SELECT DISTINCT @SkuItemGroupTypeId
-	,'{"SKUDescription":' +'"'+ Replace(Replace(CustomerFriendlyDescription,'"',''),'\','\\') + '"'+ '}'
+	,(SELECT CustomerFriendlyDescription as SKUDescription FOR JSON PATH)
 	,sku
 FROM #tmSku
 WHere #tmSku.scanCode = #tmSku.Sku
@@ -87,7 +87,7 @@ INSERT INTO [dbo].[ItemGroup] (
 	,[LastModifiedBy]
 	)
 SELECT  @PriceLineItemGroupTypeId
-	,'{"PriceLineDescription":' +'"'+  BrandName +' '+ Replace(Replace(CustomerFriendly,'"',''),'\','\\')+ ' '+  RetailSize + ' '+ UOM + ' ' + '","PriceLineSize":' +  +'"'+  RetailSize +'","PriceLineUOM":'  +'"'+  UOM+ +'"'+'}'
+	,(SELECT (BrandName +' '+ Replace(Replace(CustomerFriendly,'"',''),'\','\\')+ ' '+  RetailSize + ' '+ UOM) as PriceLineDescription ,RetailSize as PriceLineSize,UOM as PriceLineUOM FOR JSON PATH)
 	,'Script'
 FROM #tmpPriceLine
 WHERE BrandName Is not Null 
