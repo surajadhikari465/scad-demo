@@ -3365,6 +3365,7 @@
     <Build Include="Schema\amz\StoredProcedures\PopulateVendorLaneExtract.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI29079_AddNewShrinkTypeAndGL.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI32245_InsertUploadAttributeEntries.sql" />
+    <None Include="Scripts\PostDeploy\Archive\PBI39370_InStock_UpdateRetentionPolicy.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
