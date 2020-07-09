@@ -18,7 +18,7 @@ namespace Icon.Web.DataAccess.Queries
 
         public IEnumerable<AttributeModel> Search(EmptyQueryParameters<IEnumerable<AttributeModel>> parameters)
         {
-            var results = connection.QueryMultiple("app.GetAttributesList", commandType: CommandType.StoredProcedure);
+            var results = connection.QueryMultiple("app.GetItemAttributesList", commandType: CommandType.StoredProcedure);
             var attributes = results.Read<AttributeModel>()
                 .ToList();
             var pickListDataGroups = results.Read<PickListModel>()

@@ -52,6 +52,7 @@ namespace BulkItemUploadProcessor.DataAccess.Queries
 	                a.IsReadOnly,
                     a.IsActive
                 FROM dbo.AttributesView a
+                WHERE a.AttributeGroupId = @attributeGroupId;        
 
                 SELECT 
                     PickListId,

@@ -80,7 +80,7 @@ BEGIN
 			,'Sku Description'
 			,NULL
 			,1
-			,'All'
+			,' [,./'';]=-\`~!@#$%^&*()_+|}{":?><'
 			,'SKD'
 			,@DataTypeTextID
 			,@MaxDisplayOrder + 1
@@ -166,7 +166,7 @@ BEGIN
 			,'Price Line Description'
 			,NULL
 			,1
-			,'All'
+			,' [,./'';]=-\`~!@#$%^&*()_+|}{":?><'
 			,'PLD'
 			,@DataTypeTextID
 			,@MaxDisplayOrder + 2

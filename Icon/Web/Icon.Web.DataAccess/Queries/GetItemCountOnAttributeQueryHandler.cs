@@ -18,7 +18,7 @@ namespace Icon.Web.DataAccess.Queries
 
         public IEnumerable<AttributeModel> Search(EmptyAttributesParameters parameters)
         {
-            var results = connection.QueryMultiple("app.GetAttributesList", new { includeItemCount = 1 } , commandType: CommandType.StoredProcedure);
+            var results = connection.QueryMultiple("app.GetAttributesListWithItemCount", commandType: CommandType.StoredProcedure);
             var attributes = results.Read<AttributeModel>().OrderBy(a => a.DisplayName)
                 .ToList();
             var pickListDataGroups = results.Read<PickListModel>()
@@ -32,12 +32,13 @@ namespace Icon.Web.DataAccess.Queries
                 "CharacterSetId")
                 .GroupBy(c => c.AttributeId);
             var attributesCount = results.Read<AttributeItemCountModel>().ToList();
+            var itemAttributeGroupId= results.Read<int>().FirstOrDefault();
 
             attributes.ForEach(a =>
             {
                 a.PickListData = pickListDataGroups.FirstOrDefault(g => g.Key == a.AttributeId);
                 a.CharacterSets = attributeCharacterSetGroups.FirstOrDefault(g => g.Key == a.AttributeId);
-                a.ItemCount = attributesCount.FirstOrDefault(g => g.AttributeName == a.AttributeName)?.ItemCount ?? 0;
+                a.ItemCount = attributesCount.FirstOrDefault(g => g.AttributeName == a.AttributeName && a.AttributeGroupId == itemAttributeGroupId)?.ItemCount ?? 0;
             });
 
             return attributes;

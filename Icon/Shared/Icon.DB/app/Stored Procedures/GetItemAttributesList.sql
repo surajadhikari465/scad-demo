@@ -1,5 +1,4 @@
-﻿CREATE PROCEDURE [app].[GetAttributesList] 
-@includeItemCount BIT = 0
+﻿CREATE PROCEDURE [app].[GetItemAttributesList] 
 AS
 BEGIN
 	DECLARE @attributeGroupId INT = (
@@ -7,11 +6,6 @@ BEGIN
 			FROM AttributeGroup
 			WHERE AttributeGroupName = 'Global Item'
 			)
-		,@nutritionGroupId INT = (
-			SELECT AttributeGroupId
-			FROM AttributeGroup
-			WHERE AttributeGroupName = 'Nutrition'
-			);
 
 	SELECT a.AttributeId
 		,a.DisplayName
@@ -43,14 +37,14 @@ BEGIN
 		,a.LastModifiedDate
 		,a.LastModifiedBy
 	FROM dbo.AttributesView a
-	WHERE a.AttributeGroupId <> @nutritionGroupId;
+	WHERE a.AttributeGroupId = @attributeGroupId;
 
 	SELECT pld.PickListId
 		,pld.AttributeId
 		,pld.PickListValue
 	FROM dbo.PickListData pld
 	JOIN Attributes a ON a.AttributeId = pld.AttributeId
-	WHERE a.AttributeGroupId <> @nutritionGroupId
+	WHERE a.AttributeGroupId = @attributeGroupId
 	ORDER BY pld.PickListValue;
 
 	SELECT acs.AttributeCharacterSetId
@@ -61,15 +55,6 @@ BEGIN
 	FROM AttributeCharacterSets acs
 	JOIN CharacterSets cs ON acs.CharacterSetId = cs.CharacterSetId
 	JOIN Attributes a ON a.AttributeId = acs.AttributeId
-	WHERE a.AttributeGroupId <> @nutritionGroupId;
+	WHERE a.AttributeGroupId = @attributeGroupId;
 
-	IF (IsNull(@includeItemCount, 0) = 1)
-	BEGIN
-		SELECT COUNT(1) AS ItemCount
-			,j.[Key] AS AttributeName
-		FROM Item i WITH (NOLOCK)
-		CROSS APPLY OPENJSON(ItemAttributesJson) j
-		WHERE j.[Value] IS NOT NULL
-		GROUP BY j.[Key];
-	END
 END

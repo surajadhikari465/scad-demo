@@ -20,7 +20,10 @@ namespace Icon.Web.Tests.Integration.Queries
         private EmptyQueryParameters<IEnumerable<AttributeModel>> parameters;
         private int pickListId;
         private int dataTypeId;
-        private int attributeGroupId;
+        private int itemAttributeGroupId;
+        private int skuAttributeGroupId;
+        private int priceLineAttributeGroupId;
+        private int nutritionAttributeGroupId;
         private int attributeId;
         private int pickListSecondId;
         private int attributesWebConfigurationId;
@@ -38,7 +41,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new EmptyQueryParameters<IEnumerable<AttributeModel>>();
             itemCountQry = new GetItemCountOnAttributeQueryHandler(connection);
             param = new EmptyAttributesParameters();
-            StageData();
+            setupData();
         }
 
         [TestCleanup]
@@ -56,9 +59,9 @@ namespace Icon.Web.Tests.Integration.Queries
             //Then
             var testAttribute = result.SingleOrDefault(a => a.AttributeId == attributeId);
             Assert.IsNotNull(testAttribute);
-            Assert.AreEqual("AttributeDisplay1", testAttribute.DisplayName);
-            Assert.AreEqual("AttributeName1", testAttribute.AttributeName);
-            Assert.AreEqual(attributeGroupId, testAttribute.AttributeGroupId);
+            Assert.AreEqual("AttributeDisplayItem", testAttribute.DisplayName);
+            Assert.AreEqual("AttributeNameItem", testAttribute.AttributeName);
+            Assert.AreEqual(itemAttributeGroupId, testAttribute.AttributeGroupId);
             Assert.AreEqual(false, testAttribute.HasUniqueValues);
             Assert.AreEqual("Test", testAttribute.Description);
             Assert.AreEqual(dataTypeId, testAttribute.DataTypeId);
@@ -95,6 +98,9 @@ namespace Icon.Web.Tests.Integration.Queries
             Assert.AreEqual(characterSetId, characterSet.CharacterSetModel.CharacterSetId);
             Assert.AreEqual("TestCharacterSet", characterSet.CharacterSetModel.Name);
             Assert.AreEqual("Test", characterSet.CharacterSetModel.RegEx);
+            Assert.IsFalse(result.Any(x => x.AttributeGroupId == nutritionAttributeGroupId));
+            Assert.IsFalse(result.Any(x => x.AttributeGroupId == skuAttributeGroupId));
+            Assert.IsFalse(result.Any(x => x.AttributeGroupId ==  priceLineAttributeGroupId));
         }
 
 		[TestMethod]
@@ -111,6 +117,32 @@ namespace Icon.Web.Tests.Integration.Queries
 		}
 
         [TestMethod]
+        public void GetAttributesQuery_AttributeExists_ReturnsAttributesWithoutSkuLineAttributes()
+        {
+            //When
+            var result = query.Search(parameters);
+
+            var groupId = connection.ExecuteScalar("SELECT AttributeGroupID FROM AttributeGroup WHERE AttributeGroupName = 'Sku';");
+
+            //Then
+            Assert.IsFalse(result.Any(x => x.AttributeGroupId == (int)groupId));
+            Assert.IsTrue(result.Count() > 0);
+        }
+
+        [TestMethod]
+        public void GetAttributesQuery_AttributeExists_ReturnsAttributesWithoutPriceLineLineAttributes()
+        {
+            //When
+            var result = query.Search(parameters);
+
+            var groupId = connection.ExecuteScalar("SELECT AttributeGroupID FROM AttributeGroup WHERE AttributeGroupName = 'PriceLine';");
+
+            //Then
+            Assert.IsFalse(result.Any(x => x.AttributeGroupId == (int)groupId));
+            Assert.IsTrue(result.Count() > 0);
+        }
+
+        [TestMethod]
         public void GetAttributesQuery_AttributeExists_ReturnsAttributesWithItemCount()
         {
             //When
@@ -124,12 +156,20 @@ namespace Icon.Web.Tests.Integration.Queries
             Assert.AreEqual(itemCount, result);            
         }
 
-        private void StageData()
+        private void setupData()
+        {
+            StageNutritionData();
+            StagePriceLineAttributeData();
+            StageSkuAttributeData();
+            StageItemAttributeData();
+        }
+
+        private void StageNutritionData()
         {
             dataTypeId = connection.QuerySingle<int>(@"
                 INSERT dbo.DataType VALUES ('Test');
                 SELECT SCOPE_IDENTITY();");
-            attributeGroupId = connection.QuerySingle<int>($"INSERT dbo.attributeGroup(attributeGroupName) VALUES ('Test'); SELECT SCOPE_IDENTITY()");
+            nutritionAttributeGroupId = connection.QuerySingle<int>($"INSERT dbo.attributeGroup(attributeGroupName) VALUES ('Test'); SELECT SCOPE_IDENTITY()");
             attributeId = connection.QuerySingle<int>(
                 $@"
                     INSERT dbo.Attributes (
@@ -181,7 +221,223 @@ namespace Icon.Web.Tests.Integration.Queries
                 ", 
                 new
                 {
-                    AttributeGroupId = attributeGroupId,
+                    AttributeGroupId = nutritionAttributeGroupId,
+                    DataTypeId = dataTypeId,
+                    MinimumNumber = 1,
+                    MaximumNumber = 2,
+                    NumberOfDecimals = 3
+                });
+            pickListId = connection.QuerySingle<int>($"insert into dbo.picklistdata(attributeId,PickListValue) values ({attributeId},'Yes') SELECT SCOPE_IDENTITY()", new { attributeId = attributeId });
+            pickListSecondId = connection.QuerySingle<int>($"insert into dbo.picklistdata(attributeId,PickListValue) values ({attributeId},'No')   SELECT SCOPE_IDENTITY()", new { attributeId = attributeId });
+            attributesWebConfigurationId = connection.QuerySingle<int>("INSERT INTO dbo.AttributesWebConfiguration(AttributeId, GridColumnWidth, IsReadOnly) VALUES (@AttributeId, 200, 1); SELECT SCOPE_IDENTITY()", new { AttributeId = attributeId });
+            characterSetId = connection.QuerySingle<int>("INSERT INTO dbo.CharacterSets(Name, RegEx) VALUES ('TestCharacterSet', 'Test'); SELECT SCOPE_IDENTITY()");
+            attributeCharacterSetId = connection.QuerySingle<int>("INSERT INTO dbo.AttributeCharacterSets(AttributeId, CharacterSetId) VALUES (@AttributeId, @CharacterSetId); SELECT SCOPE_IDENTITY()", new { AttributeId = attributeId, CharacterSetId = characterSetId });
+        }
+
+        private void StageSkuAttributeData()
+        {
+            connection.Execute($"IF NOT EXISTS( SELECT 1 FROM attributeGroup Where AttributeGroupName = 'Sku')BEGIN INSERT dbo.attributeGroup(attributeGroupName) VALUES ('Sku') END");
+
+            dataTypeId = connection.QuerySingle<int>(@"
+                INSERT dbo.DataType VALUES ('Test');
+                SELECT SCOPE_IDENTITY();");
+            skuAttributeGroupId = (int)connection.ExecuteScalar("SELECT AttributeGroupID FROM AttributeGroup WHERE AttributeGroupName = 'Sku';");
+            attributeId = connection.QuerySingle<int>(
+                $@"
+                    INSERT dbo.Attributes (
+	                DisplayName,
+	                AttributeName,
+	                AttributeGroupId,
+	                HasUniqueValues,
+	                Description,
+	                DefaultValue,
+	                IsRequired,
+	                SpecialCharactersAllowed,
+	                TraitCode,
+	                DataTypeId,
+	                DisplayOrder,
+	                InitialValue,
+	                IncrementBy,
+	                InitialMax,
+	                DisplayType,
+	                MaxLengthAllowed,
+                    MinimumNumber,
+                    MaximumNumber,
+                    NumberOfDecimals,
+	                IsPickList
+	                )
+                VALUES (
+	                'AttributeDisplaySku',    --DisplayName,
+	                'AttributeNameSku',       --AttributeName,
+	                @AttributeGroupId,      --AttributeGroupId,
+	                '0',                    --HasUniqueValues,
+	                'Test',                 --Description,
+	                'TestDefaultValue',     --DefaultValue,
+	                1,                      --IsRequired,
+	                NULL,                   --SpecialCharactersAllowed,
+	                'TestCode',             --TraitCode,
+	                @DataTypeId,            --DataTypeId,
+	                1000000,                --DisplayOrder,
+	                100001,                 --InitialValue,
+	                20,                     --IncrementBy,
+	                100,                    --InitialMax,
+	                'Number',               --DisplayType,
+	                500,                    --MaxLengthAllowed,
+	                @MinimumNumber,         --MinimumNumber,
+	                @MaximumNumber,         --MaximumNumber,
+	                @NumberOfDecimals,      --NumberOfDecimals,
+	                1                       --IsPickList
+	                )
+
+                SELECT SCOPE_IDENTITY()
+                ",
+                new
+                {
+                    AttributeGroupId = skuAttributeGroupId,
+                    DataTypeId = dataTypeId,
+                    MinimumNumber = 1,
+                    MaximumNumber = 2,
+                    NumberOfDecimals = 3
+                });
+            pickListId = connection.QuerySingle<int>($"insert into dbo.picklistdata(attributeId,PickListValue) values ({attributeId},'Yes') SELECT SCOPE_IDENTITY()", new { attributeId = attributeId });
+            pickListSecondId = connection.QuerySingle<int>($"insert into dbo.picklistdata(attributeId,PickListValue) values ({attributeId},'No')   SELECT SCOPE_IDENTITY()", new { attributeId = attributeId });
+            attributesWebConfigurationId = connection.QuerySingle<int>("INSERT INTO dbo.AttributesWebConfiguration(AttributeId, GridColumnWidth, IsReadOnly) VALUES (@AttributeId, 200, 1); SELECT SCOPE_IDENTITY()", new { AttributeId = attributeId });
+            characterSetId = connection.QuerySingle<int>("INSERT INTO dbo.CharacterSets(Name, RegEx) VALUES ('TestCharacterSet', 'Test'); SELECT SCOPE_IDENTITY()");
+            attributeCharacterSetId = connection.QuerySingle<int>("INSERT INTO dbo.AttributeCharacterSets(AttributeId, CharacterSetId) VALUES (@AttributeId, @CharacterSetId); SELECT SCOPE_IDENTITY()", new { AttributeId = attributeId, CharacterSetId = characterSetId });
+        }
+
+        private void StagePriceLineAttributeData()
+        {
+            connection.Execute($"IF NOT EXISTS( SELECT 1 FROM attributeGroup Where AttributeGroupName = 'PriceLine')BEGIN INSERT dbo.attributeGroup(attributeGroupName) VALUES ('PriceLine') END");
+
+            dataTypeId = connection.QuerySingle<int>(@"
+                INSERT dbo.DataType VALUES ('Test');
+                SELECT SCOPE_IDENTITY();");
+            priceLineAttributeGroupId = (int)connection.ExecuteScalar("SELECT AttributeGroupID FROM AttributeGroup WHERE AttributeGroupName = 'PriceLine';");
+            attributeId = connection.QuerySingle<int>(
+                $@"
+                    INSERT dbo.Attributes (
+	                DisplayName,
+	                AttributeName,
+	                AttributeGroupId,
+	                HasUniqueValues,
+	                Description,
+	                DefaultValue,
+	                IsRequired,
+	                SpecialCharactersAllowed,
+	                TraitCode,
+	                DataTypeId,
+	                DisplayOrder,
+	                InitialValue,
+	                IncrementBy,
+	                InitialMax,
+	                DisplayType,
+	                MaxLengthAllowed,
+                    MinimumNumber,
+                    MaximumNumber,
+                    NumberOfDecimals,
+	                IsPickList
+	                )
+                VALUES (
+	                'AttributeDisplaySku',    --DisplayName,
+	                'AttributeNameSku',       --AttributeName,
+	                @AttributeGroupId,      --AttributeGroupId,
+	                '0',                    --HasUniqueValues,
+	                'Test',                 --Description,
+	                'TestDefaultValue',     --DefaultValue,
+	                1,                      --IsRequired,
+	                NULL,                   --SpecialCharactersAllowed,
+	                'TestCode',             --TraitCode,
+	                @DataTypeId,            --DataTypeId,
+	                1000000,                --DisplayOrder,
+	                100001,                 --InitialValue,
+	                20,                     --IncrementBy,
+	                100,                    --InitialMax,
+	                'Number',               --DisplayType,
+	                500,                    --MaxLengthAllowed,
+	                @MinimumNumber,         --MinimumNumber,
+	                @MaximumNumber,         --MaximumNumber,
+	                @NumberOfDecimals,      --NumberOfDecimals,
+	                1                       --IsPickList
+	                )
+
+                SELECT SCOPE_IDENTITY()
+                ",
+                new
+                {
+                    AttributeGroupId = priceLineAttributeGroupId,
+                    DataTypeId = dataTypeId,
+                    MinimumNumber = 1,
+                    MaximumNumber = 2,
+                    NumberOfDecimals = 3
+                });
+            pickListId = connection.QuerySingle<int>($"insert into dbo.picklistdata(attributeId,PickListValue) values ({attributeId},'Yes') SELECT SCOPE_IDENTITY()", new { attributeId = attributeId });
+            pickListSecondId = connection.QuerySingle<int>($"insert into dbo.picklistdata(attributeId,PickListValue) values ({attributeId},'No')   SELECT SCOPE_IDENTITY()", new { attributeId = attributeId });
+            attributesWebConfigurationId = connection.QuerySingle<int>("INSERT INTO dbo.AttributesWebConfiguration(AttributeId, GridColumnWidth, IsReadOnly) VALUES (@AttributeId, 200, 1); SELECT SCOPE_IDENTITY()", new { AttributeId = attributeId });
+            characterSetId = connection.QuerySingle<int>("INSERT INTO dbo.CharacterSets(Name, RegEx) VALUES ('TestCharacterSet', 'Test'); SELECT SCOPE_IDENTITY()");
+            attributeCharacterSetId = connection.QuerySingle<int>("INSERT INTO dbo.AttributeCharacterSets(AttributeId, CharacterSetId) VALUES (@AttributeId, @CharacterSetId); SELECT SCOPE_IDENTITY()", new { AttributeId = attributeId, CharacterSetId = characterSetId });
+        }
+
+        private void StageItemAttributeData()
+        {
+             connection.Execute($"IF NOT EXISTS( SELECT 1 FROM attributeGroup Where AttributeGroupName = 'Global Item')BEGIN INSERT dbo.attributeGroup(attributeGroupName) VALUES ('Global Item') END");
+
+            dataTypeId = connection.QuerySingle<int>(@"
+                INSERT dbo.DataType VALUES ('Test');
+                SELECT SCOPE_IDENTITY();");
+            itemAttributeGroupId = (int)connection.ExecuteScalar("SELECT AttributeGroupID FROM AttributeGroup WHERE AttributeGroupName = 'Global Item';");
+            attributeId = connection.QuerySingle<int>(
+                $@"
+                    INSERT dbo.Attributes (
+	                DisplayName,
+	                AttributeName,
+	                AttributeGroupId,
+	                HasUniqueValues,
+	                Description,
+	                DefaultValue,
+	                IsRequired,
+	                SpecialCharactersAllowed,
+	                TraitCode,
+	                DataTypeId,
+	                DisplayOrder,
+	                InitialValue,
+	                IncrementBy,
+	                InitialMax,
+	                DisplayType,
+	                MaxLengthAllowed,
+                    MinimumNumber,
+                    MaximumNumber,
+                    NumberOfDecimals,
+	                IsPickList
+	                )
+                VALUES (
+	                'AttributeDisplayItem',    --DisplayName,
+	                'AttributeNameItem',       --AttributeName,
+	                @AttributeGroupId,      --AttributeGroupId,
+	                '0',                    --HasUniqueValues,
+	                'Test',                 --Description,
+	                'TestDefaultValue',     --DefaultValue,
+	                1,                      --IsRequired,
+	                NULL,                   --SpecialCharactersAllowed,
+	                'TestCode',             --TraitCode,
+	                @DataTypeId,            --DataTypeId,
+	                1000000,                --DisplayOrder,
+	                100001,                 --InitialValue,
+	                20,                     --IncrementBy,
+	                100,                    --InitialMax,
+	                'Number',               --DisplayType,
+	                500,                    --MaxLengthAllowed,
+	                @MinimumNumber,         --MinimumNumber,
+	                @MaximumNumber,         --MaximumNumber,
+	                @NumberOfDecimals,      --NumberOfDecimals,
+	                1                       --IsPickList
+	                )
+
+                SELECT SCOPE_IDENTITY()
+                ",
+                new
+                {
+                    AttributeGroupId = itemAttributeGroupId,
                     DataTypeId = dataTypeId,
                     MinimumNumber = 1,
                     MaximumNumber = 2,

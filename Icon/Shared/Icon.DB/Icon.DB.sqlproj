@@ -793,7 +793,7 @@
     <None Include="Scripts\Projects\IconReboot\Audit\Brands.sql" />
     <Build Include="app\Stored Procedures\GetBulkItemUploadData.sql" />
     <None Include="Scripts\Projects\DeleteBrowsingHierachyAssociation\DeleteBrowsingHistoryAssociation.sql" />
-    <Build Include="app\Stored Procedures\GetAttributesList.sql" />
+    <Build Include="app\Stored Procedures\GetItemAttributesList.sql" />
     <None Include="Scripts\PopulateData\Archive\PopulateBulkItemUploadFileTypes.sql" />
     <None Include="Scripts\PopulateData\Archive\23417-PopulateManufacturerValues.sql" />
     <None Include="Scripts\PopulateData\Archive\24776_AddHierarchyContactTrait.sql" />
@@ -866,6 +866,7 @@
     <None Include="Scripts\PopulateData\36709_AddSkuPriceLineAttributes.sql" />
     <Build Include="dbo\Tables\FeatureFlag.sql" />
     <None Include="Scripts\PopulateData\36949_AddItemGroups.sql" />
+    <Build Include="app\Stored Procedures\GetAttributesListWithItemCount.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
