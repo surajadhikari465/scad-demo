@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[AuditItemLocale]
-  @action VARCHAR(25),
-  @region VARCHAR(2),
+	@action VARCHAR(25),
+	@region VARCHAR(2),
 	@groupSize INT = 250000,
 	@groupId INT = 0
 AS
@@ -28,22 +28,24 @@ BEGIN
 
     DECLARE @minId INT = (@groupId * @groupSize) + (CASE WHEN @groupID = 0 THEN 0 ELSE 1 END);
 
-	  DECLARE @ColorAddedId INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE '%Color%Add%');
-	  DECLARE @CountryOfProcessingId INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Country of Processing');
-	  DECLARE @OriginId INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Origin');
-	  DECLARE @EstId INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Electronic Shelf Tag');
-	  DECLARE @ExclusiveId INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Exclusive');
-	  DECLARE @NumDigitsToScaleId INT = (SELECT AttributeID FROM Attributes	WHERE AttributeDesc = 'Number of Digits Sent To Scale');
-	  DECLARE @ChicagoBabyId INT = (SELECT AttributeID FROM Attributes	WHERE AttributeDesc = 'Chicago Baby');
-	  DECLARE @TagUomId INT = (SELECT AttributeID FROM Attributes	WHERE AttributeDesc = 'Tag UOM');
-	  DECLARE @LinkedScanCodeId INT = (SELECT AttributeID	FROM Attributes	WHERE AttributeDesc = 'Linked Scan Code');
-	  DECLARE @ScaleExtraTextId INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Scale Extra Text');
-	  DECLARE @CFSSendtoScale INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'CFS Send to Scale'); 
-	  DECLARE @ForceTare INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Force Tare'); 
-	  DECLARE @ShelfLife INT = (SELECT AttributeID FROM Attributes WHERE AttributeCode = 'SHL'); -- This is the ItemLocale Shelf Life attribute as opposed to the Global Item Shelf Life attribute
-	  DECLARE @UnwrappedTareWeight INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Unwrapped Tare Weight');
-	  DECLARE @UseByEAB INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Use By EAB');
-	  DECLARE @WrappedTareWeight INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Wrapped Tare Weight'); 
+	DECLARE @ItemLocaleAttributeGroupId INT = (SELECT AttributeGroupID FROM AttributeGroups ag WHERE ag.AttributeGroupCode = 'ITL')
+
+	DECLARE @ColorAddedId INT = (SELECT AttributeID FROM Attributes WHERE AttributeGroupID = @ItemLocaleAttributeGroupId AND AttributeDesc = 'Color Added');
+	DECLARE @CountryOfProcessingId INT = (SELECT AttributeID FROM Attributes WHERE AttributeGroupID = @ItemLocaleAttributeGroupId AND AttributeDesc = 'Country of Processing');
+	DECLARE @OriginId INT = (SELECT AttributeID FROM Attributes WHERE AttributeGroupID = @ItemLocaleAttributeGroupId AND AttributeDesc = 'Origin');
+	DECLARE @EstId INT = (SELECT AttributeID FROM Attributes WHERE AttributeGroupID = @ItemLocaleAttributeGroupId AND AttributeDesc = 'Electronic Shelf Tag');
+	DECLARE @ExclusiveId INT = (SELECT AttributeID FROM Attributes WHERE AttributeGroupID = @ItemLocaleAttributeGroupId AND AttributeDesc = 'Exclusive');
+	DECLARE @NumDigitsToScaleId INT = (SELECT AttributeID FROM Attributes WHERE AttributeGroupID = @ItemLocaleAttributeGroupId AND AttributeDesc = 'Number of Digits Sent To Scale');
+	DECLARE @ChicagoBabyId INT = (SELECT AttributeID FROM Attributes WHERE AttributeGroupID = @ItemLocaleAttributeGroupId AND AttributeDesc = 'Chicago Baby');
+	DECLARE @TagUomId INT = (SELECT AttributeID FROM Attributes	WHERE AttributeGroupID = @ItemLocaleAttributeGroupId AND AttributeDesc = 'Tag UOM');
+	DECLARE @LinkedScanCodeId INT = (SELECT AttributeID	FROM Attributes	WHERE AttributeGroupID = @ItemLocaleAttributeGroupId AND AttributeDesc = 'Linked Scan Code');
+	DECLARE @ScaleExtraTextId INT = (SELECT AttributeID FROM Attributes WHERE AttributeGroupID = @ItemLocaleAttributeGroupId AND AttributeDesc = 'Scale Extra Text');
+	DECLARE @CFSSendtoScale INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'CFS Send to Scale'); 
+	DECLARE @ForceTare INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Force Tare'); 
+	DECLARE @ShelfLife INT = (SELECT AttributeID FROM Attributes WHERE AttributeCode = 'SHL'); -- This is the ItemLocale Shelf Life attribute as opposed to the Global Item Shelf Life attribute
+	DECLARE @UnwrappedTareWeight INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Unwrapped Tare Weight');
+	DECLARE @UseByEAB INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Use By EAB');
+	DECLARE @WrappedTareWeight INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc = 'Wrapped Tare Weight'); 
     
 	  IF (object_id('tempdb..#group') IS NOT NULL) DROP TABLE #group;
     IF (object_id('tempdb..#items') IS NOT NULL) DROP TABLE #items;
