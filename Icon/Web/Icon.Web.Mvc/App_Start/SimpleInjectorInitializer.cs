@@ -10,6 +10,7 @@ namespace Icon.Web.Mvc.App_Start
     using Icon.Esb.Factory;
     using Icon.Ewic.Serialization.Serializers;
     using Icon.Ewic.Transmission.Producers;
+    using Icon.FeatureFlags;
     using Icon.Framework;
     using Icon.Logging;
     using Icon.Shared.DataAccess.Dapper.ConnectionBuilders;
@@ -82,6 +83,8 @@ namespace Icon.Web.Mvc.App_Start
             container.Register<IHistoryModelTransformer, HistoryModelTransformer>();
 
             container.Register<IBulkUploadService, BulkUploadService>();
+
+            container.Register<IFeatureFlagService, FeatureFlagService>();
 
             container.RegisterDecorator(typeof(ICommandHandler<UpdateHierarchyClassTraitCommand>), typeof(UpdateSubTeamMammothEventDecorator));
             container.RegisterDecorator(typeof(ICommandHandler<UpdateHierarchyClassTraitCommand>), typeof(UpdateItemTypeHierarchyClassTraitDecorator));

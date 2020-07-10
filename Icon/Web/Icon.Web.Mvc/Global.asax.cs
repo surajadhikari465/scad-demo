@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Mvc;
 using Icon.Web.Mvc.App_Start;
 using Icon.Web.Mvc.Validators;
+using SimpleInjector;
 using System;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -11,6 +12,8 @@ namespace Icon.Web.Mvc
     public class MvcApplication : System.Web.HttpApplication
     {
         public static string IconVersionWithDate = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+        public static Container GlobalContainer = null;
 
         protected void Application_Start()
         {
@@ -26,6 +29,7 @@ namespace Icon.Web.Mvc
                     provider.AddImplicitRequiredValidator = false;
                 });
             GetBuildDate();
+            GlobalContainer = container;
         }
 
         public void GetBuildDate()

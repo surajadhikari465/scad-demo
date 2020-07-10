@@ -1,0 +1,74 @@
+﻿@using Icon.Web.Mvc.Utility
+
+@{
+    ViewBag.Title = "SKU Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{Html.RenderPartial("_HeaderPartial", "SKU Management");}
+
+    <style>
+        #divLinks {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+
+    <div class="page-section mb-2">
+
+
+        <div id="divLinks">
+
+            @if (ViewHelpers.HasWriteAccess(Request, User))
+            {
+                @Html.ActionLink("Bulk Upload Item Association SKU", "UploadItemAssociation", "Sku", null, new { @class = "btn btn-light ml-1" })
+                @Html.ActionLink("Bulk Upload Attribution SKU", "AddSkuAttribution", "Sku", null, new { @class = "btn btn-light ml-1" })
+                @Html.ActionLink("Download Item Association Template", "ItemAssociationTemplate", "Sku", null, new { @class = "btn btn-light ml-1" })
+                @Html.ActionLink("Download Attibution Template", "AttibutionTemplate", "Sku", null, new { @class = "btn btn-light ml-1" })
+            }
+            @Html.ActionLink("Export", "Export", "Sku", null, new { @class = "btn btn-light ml-1" })
+        </div>
+        <hr />
+
+        <div class="col-10 offset-1">
+
+            <div>
+                <table id="tblSku" class="display stripe compact" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>SKU Id</th>
+                            <th>SKU Description</th>
+                            <th>SKU Primary Scan Code</th>
+                            <th>Item Count</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+<div id="dlgConfirm" title="User Confirmation Required" style="display:none;">
+    <div style="max-height:300px; box-sizing:border-box;">
+        <p id="dlgSku" />
+        <p id="dlgMsg" />
+    </div>
+</div>
+
+@if (ViewHelpers.HasWriteAccess(Request, User))
+{
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu">
+        <a class="dropdown-item fa fa-edit" href="#" id="mnuEdit">&nbsp;&nbsp;&nbsp;Edit</a>
+        <a class="dropdown-item fa fa-address-card" href="#" id="mnuDetail">&nbsp;&nbsp;&nbsp;Details</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item text-danger fa fa-eraser" href="#" id="mnuDelete">&nbsp;&nbsp;&nbsp;Delete</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item fa fa-close text-secondary" href="#" id="mnuCancel">&nbsp;&nbsp;&nbsp;Cancel</a>
+    </div>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/Sku/sku.js")
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/datatables.css" />

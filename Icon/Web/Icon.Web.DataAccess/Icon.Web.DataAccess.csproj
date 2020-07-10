@@ -397,6 +397,7 @@
     <Compile Include="Models\ContactTypeModel.cs" />
     <Compile Include="Models\FeatureFlagModel.cs" />
     <Compile Include="Models\ItemColumnOrderModel.cs" />
+    <Compile Include="Models\ItemGroupTypeId.cs" />
     <Compile Include="Models\MerchandiseHierarchyClassTrait.cs" />
     <Compile Include="Models\AttributeCharacterSetModel.cs" />
     <Compile Include="Models\AttributeListModel.cs" />
@@ -458,6 +459,8 @@
     <Compile Include="Models\PluCategoryModel.cs" />
     <Compile Include="Models\RegionalSettingsModel.cs" />
     <Compile Include="Models\EwicAplScanCodeModel.cs" />
+    <Compile Include="Models\SkuItemCountModel.cs" />
+    <Compile Include="Models\ItemGroupModel.cs" />
     <Compile Include="Models\StoreModel.cs" />
     <Compile Include="Models\UpdateItemsType.cs" />
     <Compile Include="Models\VenueModel.cs" />
@@ -466,6 +469,8 @@
     <Compile Include="Queries\GetFeatureFlagsQuery.cs" />
     <Compile Include="Queries\GetFeatureFlagsQueryParameters.cs" />
     <Compile Include="Queries\GetItemColumnOrderQuery.cs" />
+    <Compile Include="Queries\GetItemGroupItemCountQuery.cs" />
+    <Compile Include="Queries\GetItemGroupItemCountParameters.cs" />
     <Compile Include="Queries\GetScanCodesParameters.cs" />
     <Compile Include="Queries\GetScanCodesQuery.cs" />
     <Compile Include="Queries\GetBulkUploadErrorReportParameters.cs" />
@@ -588,6 +593,8 @@
     <Compile Include="Queries\GetBarcodeTypeParameters.cs" />
     <Compile Include="Queries\GetMerchTaxMappingsParameters.cs" />
     <Compile Include="Queries\GetMerchTaxMappingsQuery.cs" />
+    <Compile Include="Queries\GetItemGroupParameters.cs" />
+    <Compile Include="Queries\GetItemGroupQuery.cs" />
     <Compile Include="Queries\GetTaxClassByTaxRomanceParameters.cs" />
     <Compile Include="Queries\GetTaxClassByTaxRomanceQuery.cs" />
     <Compile Include="Queries\GetBrandsParameters.cs" />

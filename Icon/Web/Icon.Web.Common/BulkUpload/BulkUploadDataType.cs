@@ -3,6 +3,8 @@
     public enum BulkUploadDataType
     {
         Item = 1,
-        Brand = 2
+        Brand = 2,
+        Sku = 3,
+        PriceLine = 4
     }
 }

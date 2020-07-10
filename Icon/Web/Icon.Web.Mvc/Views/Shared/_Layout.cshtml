@@ -1,5 +1,13 @@
 ﻿@using Icon.Web.Mvc.Utility
 @using Icon.Web.Common.BulkUpload
+@using Icon.FeatureFlags;
+
+@{ 
+    var featureFlagManager = (IFeatureFlagService) @Icon.Web.Mvc.MvcApplication.GlobalContainer.GetInstance( typeof(IFeatureFlagService) );
+    var skuManagementFeatureFlag = featureFlagManager.IsEnabled("SkuManagement");
+    var priceLineManagementFeatureFlag = featureFlagManager.IsEnabled("PriceLineManagement");
+}
+
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
@@ -25,68 +33,95 @@
                     @Html.ActionLink("Home", "Index", "Home", null, new { @class = "navbar-brand" })
                 </div>
                 <div class="navbar-collapse collapse">
-					<ul class="navbar-nav">
+                    <ul class="navbar-nav">
 
-						<li class="dropdown">
-							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Items</a>
-							<ul class="dropdown-menu bg-dark">
-								<li class="nav-item">@Html.ActionLink("Search", "Index", "Item", null, new { @class = "nav-link text-nowrap" })</li>
-								@if (ViewHelpers.HasWriteAccess(Request, User))
-								{
-									<li class="nav-item">@Html.ActionLink("Add New Item", "Create", "Item", null, new { @class = "nav-link text-nowrap" })</li>
-									<li class="nav-item">@Html.ActionLink("Bulk Upload", "Index", "BulkUpload", new { bulkUploadDataType = BulkUploadDataType.Item.ToString() }, new { @class = "nav-link text-nowrap" })</li>
-									<li class="nav-item">@Html.ActionLink("Download New Item Template", "ItemTemplateNewExporter", "Item", null, new { @class = "nav-link text-nowrap" })</li>
-								    <li class="nav-item">@Html.ActionLink("Clear Icon Cache", "ClearCache", "HierarchyClass", null, new { @class = "nav-link text-nowrap" })</li>
-								    <li class="nav-item">@Html.ActionLink("Item Column Order", "Index", "ItemColumnDisplay", null, new { @class = "nav-link text-nowrap" })</li>
-								}
-							</ul>
-						</li>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Items</a>
+                            <ul class="dropdown-menu bg-dark">
+                                <li class="nav-item">@Html.ActionLink("Search", "Index", "Item", null, new { @class = "nav-link text-nowrap" })</li>
+                                @if (ViewHelpers.HasWriteAccess(Request, User))
+                                {
+                                    <li class="nav-item">@Html.ActionLink("Add New Item", "Create", "Item", null, new { @class = "nav-link text-nowrap" })</li>
+                                    <li class="nav-item">@Html.ActionLink("Bulk Upload", "Index", "BulkUpload", new { bulkUploadDataType = BulkUploadDataType.Item.ToString() }, new { @class = "nav-link text-nowrap" })</li>
+                                    <li class="nav-item">@Html.ActionLink("Download New Item Template", "ItemTemplateNewExporter", "Item", null, new { @class = "nav-link text-nowrap" })</li>
+                                    <li class="nav-item">@Html.ActionLink("Clear Icon Cache", "ClearCache", "HierarchyClass", null, new { @class = "nav-link text-nowrap" })</li>
+                                    <li class="nav-item">@Html.ActionLink("Item Column Order", "Index", "ItemColumnDisplay", null, new { @class = "nav-link text-nowrap" })</li>
+                                }
+                            </ul>
+                        </li>
 
-						<li class="dropdown">
-							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Hierarchies</a>
-							<ul class="dropdown-menu bg-dark">
-								<li class="dropdown-submenu nav-item">
-									@Html.ActionLink("Brand", "Index", "Brand", null, new { @class = "nav-link dropdown-toggle text-nowrap" })
-									<ul class="dropdown-menu bg-dark">
-										<li>@Html.ActionLink("Add New Brand", "Create", "Brand", null, new { @class = "nav-link text-nowrap" })</li>
-										<li>@Html.ActionLink("Bulk Upload Brands", "Index", "BulkUpload", new { bulkUploadDataType = BulkUploadDataType.Brand.ToString() }, new { @class = "nav-link text-nowrap" })</li>
-										<li>@Html.ActionLink("Download Brand Template", "BrandTemplateExport", "Brand", null, new { @class = "nav-link text-nowrap" })</li>
-									</ul>
-								</li>
-								<li class="nav-item">@Html.ActionLink("Financial", "Index", "Financial", null, new { @class = "nav-link text-nowrap" })</li>
-								<li class="nav-item">@Html.ActionLink("National Class", "Index", "NationalClass", null, new { @class = "nav-link text-nowrap" })</li>
-								<li class="nav-item">@Html.ActionLink("Merchandise", "Index", "Hierarchy", new { SelectedHierarchyId = 1 }, new { @class = "nav-link text-nowrap" })</li>
-								<li class="nav-item">@Html.ActionLink("Tax", "Index", "Hierarchy", new { SelectedHierarchyId = 3 }, new { @class = "nav-link text-nowrap" })</li>
-								<li class="nav-item">@Html.ActionLink("Manufacturer", "Index", "Manufacturer", null, new { @class = "nav-link text-nowrap" })</li>
-							</ul>
-						</li>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Hierarchies</a>
+                            <ul class="dropdown-menu bg-dark">
+                                <li class="dropdown-submenu nav-item">
+                                    @Html.ActionLink("Brand", "Index", "Brand", null, new { @class = "nav-link dropdown-toggle text-nowrap" })
+                                    <ul class="dropdown-menu bg-dark">
+                                        <li>@Html.ActionLink("Add New Brand", "Create", "Brand", null, new { @class = "nav-link text-nowrap" })</li>
+                                        <li>@Html.ActionLink("Bulk Upload Brands", "Index", "BulkUpload", new { bulkUploadDataType = BulkUploadDataType.Brand.ToString() }, new { @class = "nav-link text-nowrap" })</li>
+                                        <li>@Html.ActionLink("Download Brand Template", "BrandTemplateExport", "Brand", null, new { @class = "nav-link text-nowrap" })</li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">@Html.ActionLink("Financial", "Index", "Financial", null, new { @class = "nav-link text-nowrap" })</li>
+                                <li class="nav-item">@Html.ActionLink("National Class", "Index", "NationalClass", null, new { @class = "nav-link text-nowrap" })</li>
+                                <li class="nav-item">@Html.ActionLink("Merchandise", "Index", "Hierarchy", new { SelectedHierarchyId = 1 }, new { @class = "nav-link text-nowrap" })</li>
+                                <li class="nav-item">@Html.ActionLink("Tax", "Index", "Hierarchy", new { SelectedHierarchyId = 3 }, new { @class = "nav-link text-nowrap" })</li>
+                                <li class="nav-item">@Html.ActionLink("Manufacturer", "Index", "Manufacturer", null, new { @class = "nav-link text-nowrap" })</li>
+                            </ul>
+                        </li>
 
-						<li>@Html.ActionLink("Attributes", "Index", "Attribute", null, new { @class = "nav-link text-nowrap" })</li>
+                        <li>@Html.ActionLink("Attributes", "Index", "Attribute", null, new { @class = "nav-link text-nowrap" })</li>
 
-						@if (ViewHelpers.HasWriteAccess(Request, User))
-						{
-							<li>@Html.ActionLink("Stores", "Index", "Store", null, new { @class = "nav-link" })</li>
-							<li>@Html.ActionLink("Barcode Types", "Index", "PluCategory", null, new { @class = "nav-link text-nowrap" })</li>
-							<li class="dropdown">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">eWIC</a>
-								<ul class="dropdown-menu bg-dark">
-									<li class="nav-item">@Html.ActionLink("Exclusions", "Exclusions", "Ewic", null, new { @class = "nav-link text-nowrap" })</li>
-									<li class="nav-item">@Html.ActionLink("Mappings", "Mappings", "Ewic", null, new { @class = "nav-link text-nowrap" })</li>
-								</ul>
-							</li>
+                        @if (ViewHelpers.HasWriteAccess(Request, User))
+                        {
+                            <li>@Html.ActionLink("Stores", "Index", "Store", null, new { @class = "nav-link" })</li>
+                            <li>@Html.ActionLink("Barcode Types", "Index", "PluCategory", null, new { @class = "nav-link text-nowrap" })</li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">eWIC</a>
+                                <ul class="dropdown-menu bg-dark">
+                                    <li class="nav-item">@Html.ActionLink("Exclusions", "Exclusions", "Ewic", null, new { @class = "nav-link text-nowrap" })</li>
+                                    <li class="nav-item">@Html.ActionLink("Mappings", "Mappings", "Ewic", null, new { @class = "nav-link text-nowrap" })</li>
+                                </ul>
+                            </li>
+                        }
 
+                        @if (@System.Configuration.ConfigurationManager.AppSettings["EnableBulkContactUpload"].ToString().ToLower() == "true" && ViewHelpers.HasWriteAccess(Request, User))
+                        {
+                            <li>@Html.ActionLink("Contacts", "BulkUpload", "Contact", null, new { @class = "nav-link" })</li>
+                        }
 
-						}
+                        @if (skuManagementFeatureFlag == true || priceLineManagementFeatureFlag == true)
+                        {
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Groups</a>
+                                <ul class="dropdown-menu bg-dark">
+                                    @if (skuManagementFeatureFlag == true)
+                                    {
+                                        <li class="dropdown-submenu nav-item">
+                                            @Html.ActionLink("SKU", "Index", "Sku", null, new { @class = "nav-link dropdown-toggle text-nowrap" })
+                                            <ul class="dropdown-menu bg-dark">
+                                                <li>@Html.ActionLink("Bulk Upload SKU Item Association", "Index", "UploadItemAssociation", new { bulkUploadDataType = BulkUploadDataType.Sku.ToString() }, new { @class = "nav-link text-nowrap" })</li>
+                                                <li>@Html.ActionLink("Download Bulk SKU Template", "SkuTemplateExport", "Sku", null, new { @class = "nav-link text-nowrap" })</li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    @if (priceLineManagementFeatureFlag == true)
+                                    {
+                                        <li>
+                                            @Html.ActionLink("PriceLine", "Index", "PriceLine", null, new { @class = "nav-link dropdown-toggle text-nowrap" })
+                                            <ul class="dropdown-menu bg-dark">
+                                                <li>@Html.ActionLink("Bulk Upload Price Line Item Association", "Index", "UploadItemAssociation", new { bulkUploadDataType = BulkUploadDataType.PriceLine.ToString() }, new { @class = "nav-link text-nowrap" })</li>
+                                                <li>@Html.ActionLink("Download Price Line Template", "PricelineTemplateExport", "PriceLine", null, new { @class = "nav-link text-nowrap" })</li>
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
 
-						@if (@System.Configuration.ConfigurationManager.AppSettings["EnableBulkContactUpload"].ToString().ToLower() == "true" && ViewHelpers.HasWriteAccess(Request, User))
-						{
-							<li>@Html.ActionLink("Contacts", "BulkUpload", "Contact", null, new { @class = "nav-link" })</li>
-						}
-
-						@if (ViewHelpers.DisplayAdminLink(Request, User))
-						{
-							<li class="dropdown">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Admin</a>
+                        @if (ViewHelpers.DisplayAdminLink(Request, User))
+                        {
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Admin</a>
                                 <ul class="dropdown-menu bg-dark">
                                     <li class="nav-item">@Html.ActionLink("Refresh Items", "Items", "RefreshData", null, new { @class = "nav-link text-nowrap" })</li>
                                     <li class="nav-item">@Html.ActionLink("Refresh Attributes", "Attributes", "RefreshData", null, new { @class = "nav-link text-nowrap" })</li>
@@ -108,12 +143,13 @@
                                     <li class="nav-item">@Html.ActionLink("Configuration", "Index", "Configuration", null, new { @class = "nav-link text-nowrap" })</li>
                                     <li class="nav-item">@Html.ActionLink("Feature Flags", "Index", "FeatureFlag", null, new { @class = "nav-link text-nowrap" })</li>
                                 </ul>
-							</li>
-						}
-
-					</ul>
-                    <ul class="navbar-nav ml-auto">
-                        <li class="navbar-text">Hello, @User.Identity.Name!</li>
+                            </li>
+                        }
+                        <li>
+                            <ul class="navbar-nav ml-auto">
+                                <li class="navbar-text">&nbsp; Hello, @User.Identity.Name!</li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -140,6 +176,6 @@
         </p>
     </div>
 
- 
+
 </body>
 </html>
