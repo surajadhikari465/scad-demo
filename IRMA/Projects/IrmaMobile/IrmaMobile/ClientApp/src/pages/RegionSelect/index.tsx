@@ -77,11 +77,7 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 				return;
 			}
 			try {
-				if (user.telxonStoreLimit === -1 || user.isSuperUser || user.isCoordinator) {
-					setStores(stores);
-				} else {
-					setStores(stores.filter(s => parseInt(s.storeNo) === user.telxonStoreLimit));
-				}
+				setStores(stores);
 				setShrinkTypes(shrinkSubTypes);
 				setShrinkAdjustmentReasons(shrinkAdjustmentReasons);
 			} catch (err) {

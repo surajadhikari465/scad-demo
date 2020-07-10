@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react';
-import { AppContext, types, IMenuItem } from "../../store";
-import { WfmButton, WfmToggleGroup } from '@wfm/ui-react';
+import React, { useContext, useEffect, useState } from 'react';
+import { AppContext, types, IMenuItem, IStore } from "../../store";
+import { WfmToggleGroup } from '@wfm/ui-react';
 import { useHistory } from "react-router-dom";
 import './styles.scss';
 import Config from '../../config';
@@ -11,28 +11,35 @@ import { toast } from 'react-toastify';
 const StoreSelect: React.FC = () => {
   // @ts-ignore 
   const { state, dispatch } = useContext(AppContext);
-  const { isLoading } = state;
+  const { isLoading, user } = state;
+  const [stores, setStores] = useState<IStore[]>();
   let history = useHistory();
 
   useEffect(() => {
     dispatch({ type: types.SETTITLE, Title: 'IRMA Mobile' });
-    
-		const logout = () => {
-			try {
-				//do nothing with the clearToken callback
-				AuthHandler.clearToken(() => { });
-			} catch (error) {
-				toast.error(`Error logging out. ${error}`);
-				console.error(`Error logging out. ${error}`);
-			}
-		};
-		const settingsItems = [
-			{ id: 1, order: 0, text: "Log Out", path: "#", disabled: false, onClick: logout } as IMenuItem
-		] as IMenuItem[];
 
-		dispatch({ type: types.TOGGLECOG, showCog: true });
-		dispatch({ type: types.SETSETTINGSITEMS, settingsItems: settingsItems });
-	}, [dispatch]);
+    const logout = () => {
+      try {
+        //do nothing with the clearToken callback
+        AuthHandler.clearToken(() => { });
+      } catch (error) {
+        toast.error(`Error logging out. ${error}`);
+        console.error(`Error logging out. ${error}`);
+      }
+    };
+    const settingsItems = [
+      { id: 1, order: 0, text: "Log Out", path: "#", disabled: false, onClick: logout } as IMenuItem
+    ] as IMenuItem[];
+    if (user) {
+      if (user.telxonStoreLimit === -1 || user.isSuperUser || user.isCoordinator) {
+        setStores(state.stores);
+      } else {
+        setStores(state.stores.filter(s => parseInt(s.storeNo) === user.telxonStoreLimit));
+      }
+    }
+    dispatch({ type: types.TOGGLECOG, showCog: true });
+    dispatch({ type: types.SETSETTINGSITEMS, settingsItems: settingsItems });
+  }, [dispatch]);
 
   const setSubteams = (result: any) => {
     dispatch({ type: 'SETSUBTEAMS', subteams: result });
@@ -67,7 +74,7 @@ const StoreSelect: React.FC = () => {
       </div>
       <div className="store-container">
         <div className="toggle-group">
-          <WfmToggleGroup buttons={state.stores} direction="vertical" onWfmToggleButtonSelected={selectStore} flex />
+          <WfmToggleGroup buttons={stores} direction="vertical" onWfmToggleButtonSelected={selectStore} flex />
         </div>
       </div>
       <div className="store-select">
