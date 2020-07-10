@@ -15,7 +15,7 @@ BEGIN
         ('SkuManagement', 0, 'Sku Management', GETUTCDATE(), GETUTCDATE(), 'Script')
   END
 
-  IF NOT EXISTS( SELECT 1 FROM [dbo].[FeatureFlag]  WHERE [FlagName] ='SkuManagement')
+  IF NOT EXISTS( SELECT 1 FROM [dbo].[FeatureFlag]  WHERE [FlagName] ='PriceLineManagement')
   BEGIN
 	INSERT INTO [dbo].[FeatureFlag] 
 		([FlagName],[Enabled],[Description],[CreatedDateUtc],[LastModifiedDateUtc],[LastModifiedBy])
