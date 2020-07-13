@@ -868,6 +868,7 @@
     <None Include="Scripts\PopulateData\36949_AddItemGroups.sql" />
     <Build Include="app\Stored Procedures\GetAttributesListWithItemCount.sql" />
     <None Include="Scripts\PopulateData\36882_PopulateFeatureFlags_Sku_andPriceline.sql" />
+    <None Include="Scripts\PopulateData\36202_DeleteSkuPriceLineItemAttribute.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />
