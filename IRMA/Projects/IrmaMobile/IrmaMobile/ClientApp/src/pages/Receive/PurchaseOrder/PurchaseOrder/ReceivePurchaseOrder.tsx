@@ -173,6 +173,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                         setCostedByWeight(storeItem.costedByWeight);
                     } else {
                         toast.error(`${purchaseOrderUpc} not found in PO #${purchaseOrderNumber}`);
+                        dispatch({ type: types.SETPURCHASEORDERUPC, purchaseOrderUpc: '' });
                     }
                 }
 
