@@ -22,15 +22,31 @@ DECLARE @BrandhierarchyId VARCHAR(20) = (
 		FROM Hierarchy
 		WHERE Hierarchyname = 'Brands'
 		)
+CREATE TABLE #tmSku
+(
+	ItemId INT,
+	ScanCode NVARCHAR(13),
+	Sku NVARCHAR(255),
+	CustomerFriendlyDescription NVARCHAR(255)
+)
 
+INSERT #tmSku(ItemId, ScanCode, Sku, CustomerFriendlyDescription)
 SELECT item.itemid
 	,scancode
 	,JSON_VALUE(ItemAttributesJson, '$.SKU') AS Sku
 	,JSON_VALUE(ItemAttributesJson, '$.CustomerFriendlyDescription') AS CustomerFriendlyDescription
-INTO #tmSku
 FROM item
 JOIN scancode ON item.itemid = scancode.itemid
 WHERE JSON_VALUE(ItemAttributesJson, '$.SKU') IS NOT NULL
+UNION
+SELECT item.itemid
+	,scancode
+	,scancode AS Sku
+	,JSON_VALUE(ItemAttributesJson, '$.CustomerFriendlyDescription') AS CustomerFriendlyDescription
+FROM item
+JOIN scancode ON item.itemid = scancode.itemid
+WHERE JSON_VALUE(ItemAttributesJson, '$.SKU') IS NULL
+
 
 INSERT INTO [dbo].[ItemGroup] (
 	[ItemGroupTypeId]
@@ -38,10 +54,10 @@ INSERT INTO [dbo].[ItemGroup] (
 	,[LastModifiedBy]
 	)
 SELECT DISTINCT @SkuItemGroupTypeId
-	,(SELECT CustomerFriendlyDescription as SKUDescription FOR JSON PATH)
+	,(SELECT CustomerFriendlyDescription as SKUDescription FOR JSON PATH, WITHOUT_ARRAY_WRAPPER)
 	,sku
 FROM #tmSku
-WHere #tmSku.scanCode = #tmSku.Sku
+WHERE #tmSku.scanCode = #tmSku.Sku
 
 INSERT INTO [dbo].[ItemGroupMember] (
 	[ItemId]
@@ -64,6 +80,19 @@ AND ItemGroup.ItemGroupTypeId = @SkuItemGroupTypeId
 UPDATE ItemGroup
 SET LastModifiedBy = 'Script'
 
+CREATE TABLE #tmpPriceLine
+(
+	ItemId INT,
+	ScanCode NVARCHAR(13),
+	PriceLine NVARCHAR(255),
+	PriceLineDescription NVARCHAR(255),
+	CustomerFriendly NVARCHAR(255),
+	BrandName NVARCHAR(255),
+	RetailSize NVARCHAR(20),
+	UOM NVARCHAR(4)
+)
+
+INSERT #tmpPriceLine(ItemId, ScanCode, PriceLine, PriceLineDescription, CustomerFriendly, BrandName, RetailSize, UOM)
 SELECT item.itemid
 	,scancode
 	,JSON_VALUE(ItemAttributesJson, '$.PriceLine') AS PriceLine
@@ -72,7 +101,6 @@ SELECT item.itemid
 	,HierarchyClass.hierarchyClassName AS BrandName
 	,JSON_VALUE(ItemAttributesJson, '$.RetailSize') AS RetailSize
 	,JSON_VALUE(ItemAttributesJson, '$.UOM') AS UOM
-INTO #tmpPriceLine
 FROM item
 JOIN scancode ON item.itemid = scancode.itemid
 INNER JOIN ItemHierarchyClass ON ItemHierarchyClass.itemid = item.ItemId
@@ -80,6 +108,22 @@ INNER JOIN HierarchyClass ON ItemHierarchyClass.hierarchyClassID = HierarchyClas
 	AND HierarchyClass.HIERARCHYID = @BrandhierarchyId
 WHERE JSON_VALUE(ItemAttributesJson, '$.PriceLine') IS NOT NULL
 	OR JSON_VALUE(ItemAttributesJson, '$.PriceLineDescription') IS NOT NULL
+UNION 
+SELECT item.itemid
+	,scancode
+	,scancode AS PriceLine
+	,NULL AS PriceLineDescription
+	,JSON_VALUE(ItemAttributesJson, '$.CustomerFriendlyDescription') AS CustomerFriendly
+	,HierarchyClass.hierarchyClassName AS BrandName
+	,JSON_VALUE(ItemAttributesJson, '$.RetailSize') AS RetailSize
+	,JSON_VALUE(ItemAttributesJson, '$.UOM') AS UOM
+FROM item
+JOIN scancode ON item.itemid = scancode.itemid
+INNER JOIN ItemHierarchyClass ON ItemHierarchyClass.itemid = item.ItemId
+INNER JOIN HierarchyClass ON ItemHierarchyClass.hierarchyClassID = HierarchyClass.hierarchyClassID
+	AND HierarchyClass.HIERARCHYID = @BrandhierarchyId
+WHERE JSON_VALUE(ItemAttributesJson, '$.PriceLine') IS NULL
+	OR JSON_VALUE(ItemAttributesJson, '$.PriceLineDescription') IS NULL
 
 INSERT INTO [dbo].[ItemGroup] (
 	[ItemGroupTypeId]
@@ -87,11 +131,11 @@ INSERT INTO [dbo].[ItemGroup] (
 	,[LastModifiedBy]
 	)
 SELECT  @PriceLineItemGroupTypeId
-	,(SELECT (BrandName +' '+ Replace(Replace(CustomerFriendly,'"',''),'\','\\')+ ' '+  RetailSize + ' '+ UOM) as PriceLineDescription ,RetailSize as PriceLineSize,UOM as PriceLineUOM FOR JSON PATH)
+	,(SELECT (BrandName +' '+ Replace(Replace(CustomerFriendly,'"',''),'\','\\')+ ' '+  RetailSize + ' '+ UOM) as PriceLineDescription ,RetailSize as PriceLineSize,UOM as PriceLineUOM FOR JSON PATH, WITHOUT_ARRAY_WRAPPER)
 	,'Script'
 FROM #tmpPriceLine
-WHERE BrandName Is not Null 
-AND Convert(bigint,#tmpPriceLine.PriceLine) = Convert(bigint,#tmpPriceLine.scanCode)
+WHERE BrandName IS NOT NULL
+	AND Convert(bigint,#tmpPriceLine.PriceLine) = Convert(bigint,#tmpPriceLine.scanCode)
 
 INSERT INTO [dbo].[ItemGroupMember] (
 	[ItemId]
@@ -108,7 +152,7 @@ SELECT ItemId
 		END
 	,'Script'
 FROM #tmpPriceLine
-INNER JOIN ItemGroup ON JSON_VALUE(ItemGroup.ItemGroupAttributesJson, '$.PriceLineDescription') = BrandName + CustomerFriendly + RetailSize + UOM
+INNER JOIN ItemGroup ON JSON_VALUE(ItemGroup.ItemGroupAttributesJson, '$.PriceLineDescription') = BrandName + ' ' + CustomerFriendly + ' ' + RetailSize + ' ' + UOM
 
 DROP TABLE #tmpPriceLine
 
