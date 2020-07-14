@@ -2,7 +2,7 @@ import React, { Fragment, useContext, useEffect, useCallback, useState, ChangeEv
 import { toast } from "react-toastify";
 import agent from "../../../../api/agent";
 import CurrentLocation from "../../../../layout/CurrentLocation";
-import { AppContext, types, IMenuItem, IExternalOrder } from "../../../../store";
+import { AppContext, types, IMenuItem, IExternalOrder, IStore, IStoreItem } from "../../../../store";
 import ReceivePurchaseOrderDetails from "./components/ReceivePurchaseOrderDetails";
 import SelectOrderByScanCode from "./components/SelectOrderByScanCode";
 import ConfirmModal from "../../../../layout/ConfirmModal";
@@ -159,15 +159,24 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
             const order = await agent.PurchaseOrder.getOrder(region, purchaseOrderNumber);
             const validationResult = validateOrder(order);
             if (validationResult.isValid) {
+                setCostedByWeight(false);
+                let storeItem = {} as IStoreItem;
                 if (purchaseOrderUpc && purchaseOrderUpc.length > 0) {
-                    if (order.orderItems.some((oi: { identifier: string }) => oi.identifier === purchaseOrderUpc)) {
-                        searchForOrderItem(purchaseOrderNumber, purchaseOrderUpc);
+                    storeItem = await agent.StoreItem.getStoreItem(
+                        region,
+                        storeNumber,
+                        0,
+                        user!.userId,
+                        purchaseOrderUpc
+                    );
+                    if (order.orderItems.some((oi: { item_Key: number }) => oi.item_Key === storeItem.itemKey)) {
+                        setCostedByWeight(storeItem.costedByWeight);
                     } else {
                         toast.error(`${purchaseOrderUpc} not found in PO #${purchaseOrderNumber}`);
                     }
                 }
 
-                var orderDetails = orderUtil.MapOrder(order, purchaseOrderUpc);
+                var orderDetails = orderUtil.MapOrder(order, storeItem?.itemKey);
                 dispatch({ type: types.SETORDERDETAILS, orderDetails: orderDetails });
 
                 if (!isMinDate(order.closeDate) && order.partialShipment) {
@@ -198,26 +207,12 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
             return { isValid: false, errorMessage: `PO ${order.orderHeader_ID} is for ${order.storeCompanyName}. Please try again.` };
         } else if (!order.sentDate || isMinDate(order.sentDate)) {
             return { isValid: false, errorMessage: `PO #${order.orderHeader_ID} has not yet been sent. Please try again.` };
-        } else if (purchaseOrderUpc && purchaseOrderUpc.length > 0 && !orderUtil.OrderHasUpc(order, purchaseOrderUpc)) {
-            return { isValid: false, errorMessage: `${purchaseOrderUpc} not found in PO #${order.orderHeader_ID}.` };
         } else if (!isMinDate(order.closeDate) && !order.partialShipment) {
             return { isValid: false, errorMessage: `PO ${order.orderHeader_ID} is already closed. To review or reopen a closed order, please use the IRMA client.` }
         } else {
             return { isValid: true };
         }
     };
-
-    const searchForOrderItem = async (purchaseOrderNumber: number, scanCode: string) => {
-        let storeItem = await agent.StoreItem.getStoreItem(
-            region,
-            storeNumber,
-            0,
-            user!.userId,
-            scanCode
-        );
-
-        setCostedByWeight(storeItem.costedByWeight)
-    }
 
     const searchForOrderByScanCode = async (scanCode: string) => {
         setIsLoading(true);

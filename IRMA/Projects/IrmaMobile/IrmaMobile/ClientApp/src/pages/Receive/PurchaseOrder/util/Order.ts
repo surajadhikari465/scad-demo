@@ -2,18 +2,9 @@ import { OrderDetails } from "../types/OrderDetails";
 import OrderItem from "../types/OrderItem";
 
 const orderUtil = {
-  OrderHasUpc: (order: any, upc: string): boolean => {
-    var orderItemsFiltered = order.orderItems.filter(
-      (oi: any) => oi.identifier === upc
-    );
-
-    const result = orderItemsFiltered.length === 1;
-
-    return result;
-  },
-  MapOrder: (order: any, upc: string = ""): OrderDetails => {
+  MapOrder: (order: any, itemKey?: number): OrderDetails => {
     var orderItemsFiltered = order.orderItems
-      ? order.orderItems.filter((oi: any) => oi.identifier === upc)
+      ? order.orderItems.filter((oi: any) => oi.item_Key === itemKey)
       : [];
 
     var orderItem = null;
