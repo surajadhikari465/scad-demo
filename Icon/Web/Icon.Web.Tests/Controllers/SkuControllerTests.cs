@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Icon.Web.Mvc.Controllers;
 using Moq;
@@ -19,10 +20,82 @@ namespace Icon.Web.Tests.Unit.Controllers
     public class SkuControllerTests
     {
         private SkuController controller;
-        private Mock<IQueryHandler<GetItemGroupParameters, IEnumerable<ItemGroupModel>>> skuQuery;
-        private Mock<IQueryHandler<GetItemGroupItemCountParameters, IEnumerable<SkuItemCountModel>>> skuItemCount;
-        private List<ItemGroupModel> skus;
-        private List<SkuItemCountModel>  skusItemCount;
+        private List<ItemGroupModel> skusSource;
+        private Mock<IQueryHandler<GetItemGroupParameters, List<ItemGroupModel>>> getItemGroupPageQuery;
+        private Mock<IQueryHandler<GetItemGroupFilteredResultsCountQueryParameters, int>> getFilteredResultsCountQuery;
+        private Mock<IQueryHandler<GetItemGroupUnfilteredResultsCountQueryParameters, int>> getUnfilteredResultsCountQuery;
+        private List<ItemGroupModel> getItemGroupPageQueryResult;
+        private int getFilteredResultsCountQueryResult;
+        private int getUnfilteredResultsCountQueryResult;
+        private DataTableAjaxPostModel dataTableAjaxPostModel;
+        private string datatablePostJson = @"
+                {
+                    ""draw"": 1,
+                    ""start"": 0,
+                    ""length"": 5,
+                    ""columns"": [
+                        {
+                            ""data"": ""SkuId"",
+                            ""name"": ""SkuId"",
+                            ""searchable"": true,
+                            ""orderable"": true,
+                            ""search"": {
+                                ""value"": null,
+                                ""regex"": ""false""
+                            }
+                        },
+                        {
+                            ""data"": ""SkuDescription"",
+                            ""name"": ""Sku Description"",
+                            ""searchable"": true,
+                            ""orderable"": true,
+                            ""search"": {
+                                ""value"": null,
+                                ""regex"": ""false""
+                            }
+                        },
+                        {
+                            ""data"": ""PrimaryItemUpc"",
+                            ""name"": ""Primary Item Upc"",
+                            ""searchable"": true,
+                            ""orderable"": true,
+                            ""search"": {
+                                ""value"": null,
+                                ""regex"": ""false""
+                            }
+                        },
+                        {
+                            ""data"": ""CountOfItems"",
+                            ""name"": ""Count Of Items"",
+                            ""searchable"": false,
+                            ""orderable"": true,
+                            ""search"": {
+                                ""value"": null,
+                                ""regex"": ""false""
+                            }
+                        },
+                        {
+                            ""data"": ""SkuId"",
+                            ""name"": null,
+                            ""searchable"": false,
+                            ""orderable"": false,
+                            ""search"": {
+                                ""value"": null,
+                                ""regex"": ""false""
+                            }
+                        }
+                    ],
+                    ""search"": {
+                        ""value"": null,
+                        ""regex"": ""false""
+                    },
+                    ""order"": [
+                        {
+                            ""column"": 0,
+                            ""dir"": ""asc""
+                        }
+                    ]
+                }";
 
         /// <summary>
         /// Initializes tests with:
@@ -33,31 +106,41 @@ namespace Icon.Web.Tests.Unit.Controllers
         [TestInitialize()]
         public void MyTestInitialize() 
         {
-            skuQuery = new Mock<IQueryHandler<GetItemGroupParameters, IEnumerable<ItemGroupModel>>>();
-            skuItemCount = new Mock<IQueryHandler<GetItemGroupItemCountParameters, IEnumerable<SkuItemCountModel>>>();
-            skuQuery.Setup(q => q.Search(It.IsAny<GetItemGroupParameters>())).Returns(() => this.skus);
-            skuItemCount.Setup(q => q.Search(It.IsAny<GetItemGroupItemCountParameters>())).Returns(() => this.skusItemCount);
+            getItemGroupPageQuery = new Mock<IQueryHandler<GetItemGroupParameters, List<ItemGroupModel>>>();
+            getFilteredResultsCountQuery = new Mock<IQueryHandler<GetItemGroupFilteredResultsCountQueryParameters, int>>();
+            getUnfilteredResultsCountQuery = new Mock<IQueryHandler<GetItemGroupUnfilteredResultsCountQueryParameters, int>>();
 
-            skus = new List<ItemGroupModel>();
-            skusItemCount = new List<SkuItemCountModel>();
+            skusSource = new List<ItemGroupModel>();
+            
+            List<string> products = new List<string> { "Tofu", "Cat food", "Lettuce", "Banana", "Pasta", "Avocado", "Ham" };
+            List<string> adjectives = new List<string> { "Organic", "Premium", "Regular" };
 
-            for (int i = 0; i < 10; i++)
+            int counter = 0;
+            foreach(var product in products)
             {
-                skus.Add(new ItemGroupModel
+                foreach (var adjective in adjectives)
                 {
-                    ItemGroupId = 1000 + i,
-                    ItemGroupTypeId = ItemGroupTypeId.Sku,
-                    ItemGroupAttributesJson = $"{{ \"SKUDescription\":\"SKU Description {i}\" }}",
-                    ScanCode = (10000 + i).ToString().PadLeft(13, '0'),
-                });
-                skusItemCount.Add(new SkuItemCountModel
-                {
-                    ItemGroupId = 1000 + i,
-                    CountOfItems = i + 1,
-                });
+                    skusSource.Add(new ItemGroupModel
+                    {
+                        ItemGroupId = 1000 + counter,
+                        ItemGroupTypeId = ItemGroupTypeId.Sku,
+                        SKUDescription = $"{adjective} {product}",
+                        ScanCode = (10000 + counter).ToString().PadLeft(13, '0'),
+                        ItemCount = counter % 7,
+                    });
+                    counter++;
+                }
             }
 
-            controller = new SkuController(skuQuery.Object, skuItemCount.Object);
+            getItemGroupPageQuery.Setup(m => m.Search(It.IsAny<GetItemGroupParameters>()))
+                .Returns(() => getItemGroupPageQueryResult);
+            getFilteredResultsCountQuery.Setup(m => m.Search(It.IsAny<GetItemGroupFilteredResultsCountQueryParameters>()))
+                .Returns(() => getFilteredResultsCountQueryResult);
+            getUnfilteredResultsCountQuery.Setup(m => m.Search(It.IsAny<GetItemGroupUnfilteredResultsCountQueryParameters>()))
+                .Returns(() => getUnfilteredResultsCountQueryResult);
+
+            dataTableAjaxPostModel = JsonConvert.DeserializeObject<DataTableAjaxPostModel>(datatablePostJson);
+            controller = new SkuController(getItemGroupPageQuery.Object, getFilteredResultsCountQuery.Object, getUnfilteredResultsCountQuery.Object);
         }
 
         /// <summary>
@@ -66,9 +149,10 @@ namespace Icon.Web.Tests.Unit.Controllers
         [TestMethod]
         public void Controller_contructor_should_validate_arguments()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(null, skuItemCount.Object));
-            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(skuQuery.Object, null));
-            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(null, null));
+            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(null, getFilteredResultsCountQuery.Object, getUnfilteredResultsCountQuery.Object));
+            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(getItemGroupPageQuery.Object, null, getUnfilteredResultsCountQuery.Object));
+            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(getItemGroupPageQuery.Object, getFilteredResultsCountQuery.Object, null));
+            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(null, null, null));
         }
 
 
@@ -91,63 +175,78 @@ namespace Icon.Web.Tests.Unit.Controllers
         /// Checks that AllSku returns a correct json.
         /// </summary>
         [TestMethod]
-        public void Controller_AllSku_should_return_json()
+        public void Controller_AllSku_no_search_should_return_json()
         {
             // Given.
+            getItemGroupPageQueryResult = skusSource.Take(5).ToList();
+            getFilteredResultsCountQueryResult = skusSource.Count;
+            getUnfilteredResultsCountQueryResult = skusSource.Count;
+            dataTableAjaxPostModel.search = null;
 
             // When.
-            JsonResult result = controller.AllSku() as JsonResult;
-            string jsonResult = JsonConvert.SerializeObject(result.Data);
-            var allSkuData = JsonConvert.DeserializeObject<AllSkuJsonObject>(jsonResult);
+            JsonResult result = controller.AllSku(dataTableAjaxPostModel) as JsonResult;
+
             // Then.
             Assert.IsNotNull(result);
-            
-            //Verify returned data
-            Assert.AreEqual(10, allSkuData.data.Count);
-            for (int index =0; index < 10; index++)
-            {
-                Assert.AreEqual(skus[index].ItemGroupId, allSkuData.data[index].SkuId);
-                Assert.AreEqual(skus[index].ScanCode, allSkuData.data[index].PrimaryItemUpc);
-                Assert.AreEqual($"SKU Description {allSkuData.data[index].SkuId - 1000}", allSkuData.data[index].SkuDescription);
-                Assert.IsNull(allSkuData.data[index].CountOfItems);
 
+            //Verify returned data
+            string jsonResult = JsonConvert.SerializeObject(result.Data);
+            var allSkuData = JsonConvert.DeserializeObject<DataTableResponse<SkuViewModel>>(jsonResult);
+
+            Assert.AreEqual(1, allSkuData.draw);
+            Assert.AreEqual(getFilteredResultsCountQueryResult, allSkuData.recordsFiltered);
+            Assert.AreEqual(getUnfilteredResultsCountQueryResult, allSkuData.recordsTotal);
+            Assert.AreEqual(5, allSkuData.data.Count);
+
+            for (int index =0; index < getItemGroupPageQueryResult.Count; index++)
+            {
+                Assert.AreEqual(getItemGroupPageQueryResult[index].ItemGroupId, allSkuData.data[index].SkuId);
+                Assert.AreEqual(getItemGroupPageQueryResult[index].ScanCode, allSkuData.data[index].PrimaryItemUpc);
+                Assert.AreEqual(getItemGroupPageQueryResult[index].SKUDescription, allSkuData.data[index].SkuDescription);
+                Assert.AreEqual(getItemGroupPageQueryResult[index].ItemCount, allSkuData.data[index].CountOfItems);
             }
         }
 
         /// <summary>
-        /// Checks that AllSkuCount returns a correct json.
+        /// Checks that AllSku returns a correct json.
         /// </summary>
-
         [TestMethod]
-        public void Controller_AllSkuCount_should_return_json()
+        public void Controller_AllSku_with_search_should_return_json()
         {
             // Given.
+            dataTableAjaxPostModel.search.value = "Pasta";
+
+            var preResult = skusSource
+                .Where(s => s.SKUDescription.Contains(dataTableAjaxPostModel.search.value))
+                .ToList();
+
+            getItemGroupPageQueryResult = preResult.Take(5).ToList();
+            getFilteredResultsCountQueryResult = preResult.Count;
+            getUnfilteredResultsCountQueryResult = skusSource.Count;
 
             // When.
-            JsonResult result = controller.AllSkuCount() as JsonResult;
-            string jsonResult = JsonConvert.SerializeObject(result.Data);
-            var allSkuCountData = JsonConvert.DeserializeObject<List<SkuItemCountViewModel>>(jsonResult);
+            JsonResult result = controller.AllSku(dataTableAjaxPostModel) as JsonResult;
+
             // Then.
             Assert.IsNotNull(result);
 
             //Verify returned data
-            Assert.AreEqual(10, allSkuCountData.Count);
-            for (int index = 0; index < 10; index++)
+            string jsonResult = JsonConvert.SerializeObject(result.Data);
+            var allSkuData = JsonConvert.DeserializeObject<DataTableResponse<SkuViewModel>>(jsonResult);
+
+            Assert.AreEqual(1, allSkuData.draw);
+            Assert.AreEqual(getFilteredResultsCountQueryResult, allSkuData.recordsFiltered);
+            Assert.AreEqual(getUnfilteredResultsCountQueryResult, allSkuData.recordsTotal);
+            Assert.AreEqual(getItemGroupPageQueryResult.Count, allSkuData.data.Count);
+
+            for (int index = 0; index < getItemGroupPageQueryResult.Count; index++)
             {
-                Assert.AreEqual(skusItemCount[index].ItemGroupId, allSkuCountData[index].SkuId);
-                Assert.AreEqual(skusItemCount[index].CountOfItems, allSkuCountData[index].CountOfItems);
+                Assert.AreEqual(getItemGroupPageQueryResult[index].ItemGroupId, allSkuData.data[index].SkuId);
+                Assert.AreEqual(getItemGroupPageQueryResult[index].ScanCode, allSkuData.data[index].PrimaryItemUpc);
+                Assert.AreEqual(getItemGroupPageQueryResult[index].SKUDescription, allSkuData.data[index].SkuDescription);
+                Assert.AreEqual(getItemGroupPageQueryResult[index].ItemCount, allSkuData.data[index].CountOfItems);
             }
         }
 
-        /// <summary>
-        /// Class used to desirialize the return of AllSku.
-        /// </summary>
-        private class AllSkuJsonObject
-        {
-            /// <summary>
-            /// Gets or sets the AllSku data.
-            /// </summary>
-            public List<SkuViewModel> data { get; set; }
-        }
     }
 }

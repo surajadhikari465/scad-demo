@@ -1,25 +1,27 @@
-﻿using System;
-using System.Data;
-using System.Linq;
-using System.Transactions;
-using Dapper;
+﻿using Dapper;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Tests.Integration.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    /// <summary>
-    /// GetItemGroupItemCountQuery Tests.
-    /// </summary>
     [TestClass]
-    public class GetItemGroupItemCountQueryTests
+    public class GetItemGroupUnfilteredResultsCountQueryTests
     {
+        private const string PrimaryItemScanCode = "1234567890101";
+        private const string ItemGroupDescription = "{ \"SkuDescription\":\"ItemGroup Descrition Test 1\"}";
         private IDbConnection connection;
         private TransactionScope transaction;
-        private GetItemGroupItemCountParameters queryParameters;
-        private GetItemGroupItemCountQuery query;
+        private GetItemGroupUnfilteredResultsCountQueryParameters queryParameters;
+        private GetItemGroupUnfilteredResultsCountQuery query;
         private ItemTestHelper itemTestHelper;
 
         /// <summary>
@@ -30,8 +32,12 @@ namespace Icon.Web.Tests.Integration.Queries
         {
             this.transaction = new TransactionScope();
             this.connection = SqlConnectionBuilder.CreateIconConnection();
-            this.queryParameters = new GetItemGroupItemCountParameters();
-            this.query = new GetItemGroupItemCountQuery(this.connection);
+            this.queryParameters = new GetItemGroupUnfilteredResultsCountQueryParameters()
+            {                
+                ItemGroupTypeId = ItemGroupTypeId.Sku,                
+            };
+
+            this.query = new GetItemGroupUnfilteredResultsCountQuery(this.connection);
             itemTestHelper = new ItemTestHelper();
             itemTestHelper.Initialize(this.connection, initializeTestItem: false);
         }
@@ -46,71 +52,50 @@ namespace Icon.Web.Tests.Integration.Queries
             this.connection.Dispose();
         }
 
-        /// <summary>
-        /// Verify that GetItemGroupItemCountQuery returns values for Skus.
+        // <summary>
+        /// Verify that GetFilteredResultsCountQuery with Filter returns values for Skus.
         /// </summary>
         [TestMethod]
-        public void GetItemGroupItemCountQuery_Sku_Returns_values()
+        public void GetUnfilteredResultsCountQuery_Sku_returns_values()
         {
             // Given
             long itemGroupId = CreateTestData(ItemGroupTypeId.Sku);
 
             // When
-            this.queryParameters.ItemGroupTypeId = ItemGroupTypeId.Sku;
-            var result = this.query.Search(this.queryParameters).ToList();
+            this.queryParameters.ItemGroupTypeId = DataAccess.Models.ItemGroupTypeId.Sku;
+            var result = this.query.Search(this.queryParameters);
 
             // Then
-            Assert.IsTrue(result.Count > 0);
-            var skuCount = result.FirstOrDefault(s => s.ItemGroupId == itemGroupId);
-            Assert.IsNotNull(itemGroupId);
-            Assert.AreEqual(2, skuCount.CountOfItems);
+            Assert.IsTrue(result > 0);
         }
 
-        /// <summary>
-        /// Verify that GetItemGroupItemCountQuery returns values for Priceline.
+        // <summary>
+        /// Verify that GetFilteredResultsCountQuery with Filter returns values for Priceline.
         /// </summary>
         [TestMethod]
-        public void GetItemGroupItemCountQuery_PriceLine_Returns_values()
+        public void GetUnfilteredResultsCountQuery_Priceline_returns_values()
         {
             // Given
             long itemGroupId = CreateTestData(ItemGroupTypeId.Priceline);
 
             // When
-            this.queryParameters.ItemGroupTypeId = ItemGroupTypeId.Priceline;
-            var result = this.query.Search(this.queryParameters).ToList();
+            this.queryParameters.ItemGroupTypeId = DataAccess.Models.ItemGroupTypeId.Priceline;
+            var result = this.query.Search(this.queryParameters);
 
             // Then
-            Assert.IsTrue(result.Count > 0);
-            var testPriceLineCount = result.FirstOrDefault(p => p.ItemGroupId == itemGroupId);
-            Assert.IsNotNull(testPriceLineCount);
-            Assert.AreEqual(2, testPriceLineCount.CountOfItems);
-        }
-
-
-        /// <summary>
-        /// Verify that GetItemGroupQuery validates arguments.
-        /// </summary>
-        [TestMethod]
-        public void GetItemGroupItemCountQuery_Validate_Argument_Null()
-        {
-            // Given
-
-            // When / Then
-            Assert.ThrowsException<ArgumentNullException>(() => this.query.Search(null));
-            Assert.ThrowsException<ArgumentNullException>(() => new GetItemGroupQuery(null));
+            Assert.IsTrue(result > 0);
         }
 
         private long CreateTestData(ItemGroupTypeId itemGroupTypeId)
         {
             var item = itemTestHelper.CreateDefaultTestItem();
-            item.ScanCode = "1234567890101";
+            item.ScanCode = PrimaryItemScanCode;
             itemTestHelper.SaveItem(item);
 
             var item2 = itemTestHelper.CreateDefaultTestItem();
             item2.ScanCode = "1234567890102";
             itemTestHelper.SaveItem(item2);
 
-            var attributesJson = "{ \"SKUDescription\":\"ItemGroup Descrition Test 1\"}";
 
             var itemGroupId = this.connection.QuerySingle<long>(@"
             INSERT INTO [dbo].[ItemGroup]([ItemGroupTypeId], [ItemGroupAttributesJson], [LastModifiedBy])
@@ -118,7 +103,7 @@ namespace Icon.Web.Tests.Integration.Queries
             SELECT SCOPE_IDENTITY();", new
             {
                 ItemGroupTypeId = (int)itemGroupTypeId,
-                ItemGroupAttributesJson = attributesJson
+                ItemGroupAttributesJson = ItemGroupDescription
             });
 
             this.connection.Execute(@"
@@ -140,5 +125,6 @@ namespace Icon.Web.Tests.Integration.Queries
             });
             return itemGroupId;
         }
+
     }
 }

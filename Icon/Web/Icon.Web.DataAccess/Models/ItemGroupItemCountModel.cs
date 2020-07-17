@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace Icon.Web.DataAccess.Models
 {
     /// <summary>
-    /// Sku Item-Count Model.
+    /// Sku/priceline Item-Count Model.
     /// </summary>
-    public class SkuItemCountModel
+    public class ItemGroupItemCountModel
     {
         /// <summary>
         /// Gets or sets the SkuId

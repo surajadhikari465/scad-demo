@@ -3,7 +3,7 @@
 namespace Icon.Web.DataAccess.Models
 {
     /// <summary>
-    /// Sku Model.
+    /// Sku/Priceline Model.
     /// </summary>
     public class ItemGroupModel
     {
@@ -22,11 +22,31 @@ namespace Icon.Web.DataAccess.Models
         /// <summary>
         /// Gets or sets the Sku Description.
         /// </summary>
-        public string ItemGroupAttributesJson { get; set; }
+        public string SKUDescription { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Price Line Description.
+        /// </summary>
+        public string PriceLineDescription { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Price Line Size.
+        /// </summary>
+        public string PriceLineSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Price Line UOM
+        /// </summary>
+        public string PriceLineUOM { get; set; }
 
         /// <summary>
         /// Gets or sets the Scan Code.
         /// </summary>
         public string ScanCode { get; set; }
+
+        /// <summary>
+        /// Sets or sets the number of items in the itemGroup.
+        /// </summary>
+        public int? ItemCount { get; set; }
     }
 }

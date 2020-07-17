@@ -5,7 +5,11 @@
     ItemGroupAttributesJson nvarchar(max) NOT NULL, 
     LastModifiedBy nvarchar(255) NOT NULL, 
     SysStartTimeUtc datetime2(7)  NOT NULL, 
-    SysEndTimeUtc datetime2(7)  NOT NULL
+    SysEndTimeUtc datetime2(7)  NOT NULL,
+	[vSKUDescription] [nvarchar](4000) NULL,
+	[vPriceLineDescription] [nvarchar](4000) NULL,
+	[vPriceLineSize] [nvarchar](4000) NULL,
+	[vPriceLineUOM] [nvarchar](4000) NULL
 ) 
 ON [FG_History]
 GO

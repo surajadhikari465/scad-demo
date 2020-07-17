@@ -1,6 +1,11 @@
 ﻿$(document).ready(function () {
     var skuTable = $('#tblSku').DataTable({
-        "ajax": '/Sku/AllSku',
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "/Sku/AllSku",
+            "type": 'POST'
+        },
         columns: [
             { data: "SkuId", name: "SkuId", autoWidth: false },
             { data: "SkuDescription", name: "Sku Description", autoWidth: true },
@@ -15,29 +20,17 @@
                 searchable: false
             }
         ],
-        lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "All"]],
+        lengthMenu: [[20, 50, 100, 1000], [20, 50, 100, 1000]],
         loadingRecords: "Loading Sku data... Please wait...",
-    });
-    skuTable.on('init.dt', function () {
-        // Get the Sku Count for all skus
-        $.getJSON("/Sku/AllSkuCount", function (data) {
-
-            // Update Sku Cells
-            var skuCountTable = new Object();
-            $.each(data, function (index, skuItemCount) {
-                skuCountTable[skuItemCount.SkuId] = skuItemCount.CountOfItems;
-            });
-
-            skuTable.rows().every(function () {
-                var skuData = this.data();
-                if (skuCountTable[skuData.SkuId] != null) {
-                    skuData.CountOfItems = skuCountTable[skuData.SkuId];
-                    this.invalidate(); // invalidate the data DataTables has cached for this row
+        searchDelay: 2000,
+        initComplete: function () {
+            $('.dataTables_filter input').unbind();
+            $('.dataTables_filter input').bind('keyup', function (e) {
+                var code = e.keyCode || e.which;
+                if (code == 13) {
+                    skuTable.search(this.value).draw();
                 }
             });
-
-            // Draw once all updates are done
-            table.draw();
-        });
+        },
     });
 });

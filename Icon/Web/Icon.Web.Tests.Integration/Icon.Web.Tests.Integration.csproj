@@ -244,6 +244,8 @@
     <Compile Include="Queries\GetBrandsThatExistQueryTests.cs" />
     <Compile Include="Queries\GetExistingScanCodeUploadsQueryTests.cs" />
     <Compile Include="Queries\GetCertificationAgenciesByTraitQueryTests.cs" />
+    <Compile Include="Queries\GetItemGroupUnfilteredResultsCountQueryTests.cs" />
+    <Compile Include="Queries\GetItemGroupFilteredResultsCountQueryTests.cs" />
     <Compile Include="Queries\GetHierarchyClassesQueryHandlerTests.cs" />
     <Compile Include="Queries\GetHierarchyLineageQueryTests.cs" />
     <Compile Include="Queries\GetIrmaItemsQueryTests.cs" />
@@ -263,8 +265,7 @@
     <Compile Include="Queries\GetMessageHistoryQueryTests.cs" />
     <Compile Include="Queries\GetDefaultTaxClassMismatchesQueryTests.cs" />
     <Compile Include="Infrastructure\ItemSearch\ItemSearchCriteriaTests.cs" />
-    <Compile Include="Queries\GetItemGroupQueryTests.cs" />
-    <Compile Include="Queries\GetItemGroupItemCountQueryTests.cs" />
+    <Compile Include="Queries\GetItemGroupPageQueryTests.cs" />
     <Compile Include="TestBuilders\TestItemDbModelBuilder.cs" />
     <Compile Include="TestHelpers\SqlExceptionCreator.cs" />
     <Compile Include="TestHelpers\ItemTestHelper.cs" />

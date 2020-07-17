@@ -372,6 +372,11 @@
     <Compile Include="Models\ContactExportViewModel.cs" />
     <Compile Include="Models\ContactViewModel.cs" />
     <Compile Include="Models\CountryViewModel.cs" />
+    <Compile Include="Models\DataTableAjaxPostModel.cs" />
+    <Compile Include="Models\DataTableColumn.cs" />
+    <Compile Include="Models\DataTableOrder.cs" />
+    <Compile Include="Models\DataTableResponse.cs" />
+    <Compile Include="Models\DataTableSearch.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\FeatureFlagGridViewModel.cs" />
     <Compile Include="Models\FeatureFlagViewModel.cs" />
