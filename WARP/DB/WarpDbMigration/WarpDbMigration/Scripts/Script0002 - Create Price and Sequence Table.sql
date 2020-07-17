@@ -1,6 +1,7 @@
 CREATE TABLE gpm.price(
     price_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY,
     gpm_id UUID,
+    region character varying(2) NOT NULL, 
     scan_code VARCHAR(13) NOT NULL,
     item_id INT NOT NULL,
     business_unit_id int NOT NULL,
