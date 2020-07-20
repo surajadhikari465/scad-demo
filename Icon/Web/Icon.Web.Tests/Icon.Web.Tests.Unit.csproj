@@ -259,6 +259,7 @@
     <Compile Include="Controllers\NationalClassControllerTests.cs" />
     <Compile Include="Controllers\ProductSelectionGroupControllerTests.cs" />
     <Compile Include="Controllers\RefreshDataControllerTests.cs" />
+    <Compile Include="Controllers\PriceLineControllerTests.cs" />
     <Compile Include="Controllers\SkuControllerTests.cs" />
     <Compile Include="Controllers\StoreControllerTests.cs" />
     <Compile Include="Controllers\FinancialControllerTests.cs" />

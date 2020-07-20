@@ -11,20 +11,21 @@ using System.Web.Mvc;
 namespace Icon.Web.Mvc.Controllers
 {
     /// <summary>
-    /// Sku Controller.
+    /// Price Line Controller.
     /// </summary>
-    public class SkuController : Controller
+    public class PriceLineController : Controller
     {
         private IQueryHandler<GetItemGroupParameters, List<ItemGroupModel>> getItemGroupPageQuery;
         private IQueryHandler<GetItemGroupFilteredResultsCountQueryParameters, int> getFilteredResultsCountQuery;
         private IQueryHandler<GetItemGroupUnfilteredResultsCountQueryParameters, int> getUnfilteredResultsCountQuery;
 
         /// <summary>
-        /// Initializes an instance of SkuController.
+        /// Initializes an instance of PriceLineController.
         /// </summary>
-        /// <param name="skuQuery">Sku Query.</param>
-        /// <param name="skuItemCount">Sku Item Count.</param>
-        public SkuController(
+        /// <param name="getItemGroupPageQuery">Priceline Query.</param>
+        /// <param name="getFilteredResultsCountQuery">Priceline filtered Count Query.</param>
+        /// <param name="getUnfilteredResultsCountQuery">Priceline unfiltered Count Query.</param>
+        public PriceLineController(
             IQueryHandler<GetItemGroupParameters, List<ItemGroupModel>> getItemGroupPageQuery,
             IQueryHandler<GetItemGroupFilteredResultsCountQueryParameters, int> getFilteredResultsCountQuery,
             IQueryHandler<GetItemGroupUnfilteredResultsCountQueryParameters, int> getUnfilteredResultsCountQuery)
@@ -62,7 +63,7 @@ namespace Icon.Web.Mvc.Controllers
         /// </summary>
         /// <param name="draw"
         /// <returns>Json with a list of Sku.</returns>
-        public JsonResult AllSku(DataTableAjaxPostModel dataTableAjaxPostModel)
+        public JsonResult AllPriceline(DataTableAjaxPostModel dataTableAjaxPostModel)
         {
             if (dataTableAjaxPostModel == null)
             {
@@ -85,7 +86,7 @@ namespace Icon.Web.Mvc.Controllers
             // Convert Data from input to internal values
 
             // Escape search field;
-            string search = dataTableAjaxPostModel?.search?.value?.Replace("[","[[]")?.Replace("%", "[%]")?.Replace("_", "[_]");
+            string search = dataTableAjaxPostModel?.search?.value?.Replace("[", "[[]")?.Replace("%", "[%]")?.Replace("_", "[_]");
 
             // Translate Datatable columns to Query Column
             ItemGroupColumns sortColumn = ItemGroupColumns.ItemGroupId;
@@ -93,9 +94,17 @@ namespace Icon.Web.Mvc.Controllers
             {
                 sortColumn = ItemGroupColumns.ScanCode;
             }
-            else if (sortOrderColumnName == "SkuDescription")
+            else if (sortOrderColumnName == "PriceLineDescription")
             {
-                sortColumn = ItemGroupColumns.SKUDescription;
+                sortColumn = ItemGroupColumns.PriceLineDescription;
+            }
+            else if (sortOrderColumnName == "PriceLineSize")
+            {
+                sortColumn = ItemGroupColumns.PriceLineSize;
+            }
+            else if (sortOrderColumnName == "PriceLineUOM")
+            {
+                sortColumn = ItemGroupColumns.PriceLineUOM;
             }
             else if (sortOrderColumnName == "CountOfItems")
             {
@@ -104,7 +113,7 @@ namespace Icon.Web.Mvc.Controllers
 
             // Translate Sort order from input to internal enum.
             SortOrder sortOrder = (dataTableAjaxPostModel.order[0].dir == "asc") ? SortOrder.Ascending : SortOrder.Descending;
-            
+
             // Result variables
             List<ItemGroupModel> itemGroups = null;
             int unfilteredCount = 0;
@@ -119,7 +128,7 @@ namespace Icon.Web.Mvc.Controllers
                         itemGroups = getItemGroupPageQuery.Search(
                             new GetItemGroupParameters
                             {
-                                ItemGroupTypeId = ItemGroupTypeId.Sku,
+                                ItemGroupTypeId = ItemGroupTypeId.Priceline,
                                 PageSize = dataTableAjaxPostModel.length,
                                 RowsOffset = dataTableAjaxPostModel.start,
                                 SearchTerm = null,
@@ -132,7 +141,7 @@ namespace Icon.Web.Mvc.Controllers
                         filteredCount = unfilteredCount = getUnfilteredResultsCountQuery.Search(
                             new GetItemGroupUnfilteredResultsCountQueryParameters
                             {
-                                ItemGroupTypeId = ItemGroupTypeId.Sku
+                                ItemGroupTypeId = ItemGroupTypeId.Priceline
                             });
                     });
             }
@@ -144,7 +153,7 @@ namespace Icon.Web.Mvc.Controllers
                         itemGroups = getItemGroupPageQuery.Search(
                             new GetItemGroupParameters
                             {
-                                ItemGroupTypeId = ItemGroupTypeId.Sku,
+                                ItemGroupTypeId = ItemGroupTypeId.Priceline,
                                 PageSize = dataTableAjaxPostModel.length,
                                 RowsOffset = dataTableAjaxPostModel.start,
                                 SearchTerm = $"%{search}%",
@@ -157,12 +166,12 @@ namespace Icon.Web.Mvc.Controllers
                         unfilteredCount = getUnfilteredResultsCountQuery.Search(
                             new GetItemGroupUnfilteredResultsCountQueryParameters
                             {
-                                ItemGroupTypeId = ItemGroupTypeId.Sku
+                                ItemGroupTypeId = ItemGroupTypeId.Priceline
                             });
                     },
                     () =>
                     {
-                        filteredCount =  getFilteredResultsCountQuery.Search(
+                        filteredCount = getFilteredResultsCountQuery.Search(
                             new GetItemGroupFilteredResultsCountQueryParameters
                             {
                                 ItemGroupTypeId = ItemGroupTypeId.Sku,
@@ -172,27 +181,31 @@ namespace Icon.Web.Mvc.Controllers
             }
 
             // return datatable page data
-            return Json(new DataTableResponse<SkuViewModel>() {
+            var result = new DataTableResponse<PriceLineViewModel>()
+            {
                 draw = dataTableAjaxPostModel.draw,
-                data = itemGroups.Select(ig => new SkuViewModel {
+                data = itemGroups.Select(ig => new PriceLineViewModel
+                {
                     CountOfItems = ig.ItemCount,
                     PrimaryItemUpc = ig.ScanCode,
-                    SkuDescription = ig.SKUDescription,
-                    SkuId = ig.ItemGroupId
+                    PriceLineDescription = ig.PriceLineDescription,
+                    PriceLineId = ig.ItemGroupId,
+                    PriceLineSize = ig.PriceLineSize,
+                    PriceLineUOM = ig.PriceLineUOM
                 }).ToList(),
                 recordsFiltered = filteredCount,
                 recordsTotal = unfilteredCount
-            },
-            behavior: JsonRequestBehavior.AllowGet);
+            };
+
+            return Json(result);
         }
 
         private void EnsureArgumentCondition(bool condition, string message)
         {
-            if (condition== false)
+            if (condition == false)
             {
                 throw new ArgumentException(message);
             }
         }
-
     }
 }

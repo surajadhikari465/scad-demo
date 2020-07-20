@@ -1,0 +1,74 @@
+﻿@using Icon.Web.Mvc.Utility
+
+@{
+    ViewBag.Title = "Price Line Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{Html.RenderPartial("_HeaderPartial", "Price Line Management");}
+
+    <style>
+        #divLinks {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+
+    <div class="page-section mb-2">
+
+
+        <div id="divLinks">
+
+            @if (ViewHelpers.HasWriteAccess(Request, User))
+            {
+                @Html.ActionLink("Bulk Upload Item Association Price Line", "UploadItemAssociation", "PriceLine", null, new { @class = "btn btn-light ml-1" })
+                @Html.ActionLink("Bulk Upload Attribution Price Line", "AddPriceLineAttribution", "PriceLine", null, new { @class = "btn btn-light ml-1" })
+                @Html.ActionLink("Download Item Association Template", "ItemAssociationTemplate", "PriceLine", null, new { @class = "btn btn-light ml-1" })
+                @Html.ActionLink("Download Attibution Template", "AttibutionTemplate", "PriceLine", null, new { @class = "btn btn-light ml-1" })
+            }
+            @Html.ActionLink("Export", "Export", "PriceLine", null, new { @class = "btn btn-light ml-1" })
+        </div>
+        <hr />
+
+        <div class="col-10 offset-1">
+
+            <div>
+                <table id="tblPriceLine" class="display stripe compact" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>Price Line Id</th>
+                            <th>Description</th>
+                            <th>Size</th>
+                            <th>UOM</th>
+                            <th>Primary Scan Code</th>
+                            <th>Item Count</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+<div id="dlgConfirm" title="User Confirmation Required" style="display:none;">
+    <div style="max-height:300px; box-sizing:border-box;">
+        <p id="dlgSku" />
+        <p id="dlgMsg" />
+    </div>
+</div>
+
+@if (ViewHelpers.HasWriteAccess(Request, User))
+{
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu">
+        <a class="dropdown-item fa fa-edit" href="#" id="mnuEdit">&nbsp;&nbsp;&nbsp;Edit</a>
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item fa fa-close text-secondary" href="#" id="mnuCancel">&nbsp;&nbsp;&nbsp;Cancel</a>
+    </div>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/PriceLine/priceline.js")
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/datatables.css" />

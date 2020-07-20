@@ -24,7 +24,7 @@ namespace Icon.Web.DataAccess.Queries
 						,ig.[ItemGroupTypeId]
 						,CASE WHEN @ItemGroupTypeId = 1 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SkuDescription') ELSE NULL END AS SKUDescription
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineDescription') ELSE NULL END AS PriceLineDescription
-						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineSize') ELSE NULL END AS PriceLineSize
+						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineRetailSize') ELSE NULL END AS PriceLineSize
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineUOM') ELSE NULL END AS PriceLineUOM		
 						,sc.[ScanCode]		
 				FROM [dbo].[ItemGroup] ig
@@ -239,9 +239,7 @@ namespace Icon.Web.DataAccess.Queries
 					string effectiveQuery = baseQuery.Replace("ORDER BY [ItemGroupId] DESC -- REPLACE IN CODE", sortStament);
 					
 					// Get the itemgroup page
-					itemGroupPage = (connection.Query<ItemGroupModel>(effectiveQuery, parameters, commandTimeout: 600))
-
-								.ToList();
+					itemGroupPage = (connection.Query<ItemGroupModel>(effectiveQuery, parameters, commandTimeout: 600)).ToList();
 
 					// Get the Item Count for each itemgroup in the page
 					var itemGroupIds = itemGroupPage.Select(ig => ig.ItemGroupId).ToList();

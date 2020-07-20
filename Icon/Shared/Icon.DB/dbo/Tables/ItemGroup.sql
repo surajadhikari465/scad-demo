@@ -8,7 +8,7 @@
     SysEndTimeUtc datetime2(7) GENERATED ALWAYS AS ROW END, 
 	vSkuDescription  AS (json_value(ItemGroupAttributesJson,'$.SkuDescription')),
 	vPriceLineDescription  AS (json_value(ItemGroupAttributesJson,'$.PriceLineDescription')),
-	vPriceLineSize  AS (json_value(ItemGroupAttributesJson,'$.PriceLineSize')),
+	vPriceLineSize  AS (json_value(ItemGroupAttributesJson,'$.PriceLineRetailSize')),
 	vPriceLineUOM  AS (json_value(ItemGroupAttributesJson,'$.PriceLineUOM')),
     PERIOD FOR SYSTEM_TIME (SysStartTimeUtc, SysEndTimeUtc), 
     CONSTRAINT FK_ItemGroup_ItemGroupTypeId FOREIGN KEY (ItemGroupTypeId) REFERENCES dbo.ItemGroupType (ItemGroupTypeId), 
@@ -23,7 +23,7 @@ GO
 CREATE INDEX idx_ItemGroupMember_json_vPriceLineDescription ON [dbo].[ItemGroup](vPriceLineDescription);
 GO
 
-CREATE INDEX idx_ItemGroupMember_json_vPriceLineSize ON [dbo].[ItemGroup](vPriceLineSize);
+CREATE INDEX idx_ItemGroupMember_json_vPriceLineRetailSize ON [dbo].[ItemGroup](vPriceLineSize);
 GO
 
 CREATE INDEX idx_ItemGroupMember_json_vPriceLineUOM ON [dbo].[ItemGroup](vPriceLineUOM);

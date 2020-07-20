@@ -288,6 +288,7 @@
     <Compile Include="Controllers\FeatureFlagController.cs" />
     <Compile Include="Controllers\ItemColumnDisplayController.cs" />
     <Compile Include="Controllers\ManufacturerController.cs" />
+    <Compile Include="Controllers\PriceLineController.cs" />
     <Compile Include="Controllers\SkuController.cs" />
     <Compile Include="Domain\BulkImport\BulkUploadService.cs" />
     <Compile Include="Domain\BulkImport\IBulkUploadService.cs" />
@@ -431,6 +432,7 @@
     <Compile Include="Models\ItemSpreadsheetModel.cs" />
     <Compile Include="Models\BarcodeTypeGridViewModel.cs" />
     <Compile Include="Models\BarcodeTypeViewModel.cs" />
+    <Compile Include="Models\PriceLineViewModel.cs" />
     <Compile Include="Models\ProductSelectionGroupCreateViewModel.cs" />
     <Compile Include="Models\ProductSelectionGroupGridViewModel.cs" />
     <Compile Include="Models\ProductSelectionGroupTypeViewModel.cs" />
@@ -1716,6 +1718,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\PriceLine\priceline.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
@@ -1842,6 +1845,7 @@
     <Content Include="Views\ItemColumnDisplay\Index.cshtml" />
     <Content Include="Views\FeatureFlag\Index.cshtml" />
     <Content Include="Views\Sku\Index.cshtml" />
+    <Content Include="Views\PriceLine\Index.cshtml" />
     <None Include="Web.2016.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
