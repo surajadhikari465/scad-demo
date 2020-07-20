@@ -9,9 +9,11 @@
     <None Remove="Scripts\Script0001 - Create gpm schema.sql" />
     <None Remove="Scripts\Script0002 - Create Price and Sequence Table.sql" />
     <None Remove="Scripts\Script0003 - Create Add_Price_Function.sql" />
+    <None Remove="Scripts\Script0004 - Install Postgres S3 Extension .sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Scripts\Script0004 - Install Postgres S3 Extension .sql" />
     <EmbeddedResource Include="Scripts\Script0002 - Create Price and Sequence Table.sql" />
     <EmbeddedResource Include="Scripts\Script0001 - Create gpm schema.sql" />
     <EmbeddedResource Include="Scripts\Script0003 - Create Add_Price_Function.sql" />
@@ -22,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Properties\" />
     <Folder Include="Tables\" />
   </ItemGroup>
 

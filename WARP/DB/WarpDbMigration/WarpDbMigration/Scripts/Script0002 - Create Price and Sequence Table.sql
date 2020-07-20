@@ -15,7 +15,7 @@ CREATE TABLE gpm.price(
     currency_code VARCHAR(3),
     multiple SMALLINT NOT NULL,
     tag_expiration_date TIMESTAMP(0) WITHOUT TIME ZONE,
-    insert_date_utc TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL,
+    insert_date_utc TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL CONSTRAINT df_price_insertdateutc CURRENT_TIMESTAMP,
     modified_date_utc TIMESTAMP(6) WITHOUT TIME ZONE
 );
 
@@ -26,6 +26,6 @@ CREATE TABLE gpm.price_sequence (
     patch_family_id VARCHAR(50) NOT NULL, -- ItemID-BU string
     sequence_id INT NOT NULL, -- sequence of message for patch family id
     message_id VARCHAR(50) NOT NULL,
-    insert_date_utc TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL,
+    insert_date_utc TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL CONSTRAINT df_pricesequence_insertdateutc CURRENT_TIMESTAMP,
     modified_date_utc TIMESTAMP(6) WITHOUT TIME ZONE
 );
