@@ -15,7 +15,14 @@ $(document).ready(function () {
             { data: "PriceLineUOM", name: "UOM", autoWidth: true },
             { data: "PrimaryItemUpc", name: "Primary Item Upc", autoWidth: true },
             { data: "CountOfItems", name: "Count Of Items", autoWidth: true, searchable: false },
-            { class: "action-control text-info", orderable: false, searchable: false, data: null, defaultContent: '<p class="action-control fa fa-bars text-secondary"/>' },
+            {
+                data: "PriceLineId",
+                render: function (data, type, row, meta) {
+                    return '<a href="/PriceLine/' + data + '">Edit</a>';
+                },
+                orderable: false,
+                searchable: false
+            }
         ],
         lengthMenu: [[20, 50, 100, 1000], [20, 50, 100, 1000]],
         loadingRecords: "Loading price line data... Please wait...",
