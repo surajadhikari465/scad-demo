@@ -2,12 +2,29 @@
 @using Icon.Web.Common.BulkUpload
 @using Icon.FeatureFlags;
 
-@{ 
-    var featureFlagManager = (IFeatureFlagService) @Icon.Web.Mvc.MvcApplication.GlobalContainer.GetInstance( typeof(IFeatureFlagService) );
-    var skuManagementFeatureFlag = featureFlagManager.IsEnabled("SkuManagement");
-    var priceLineManagementFeatureFlag = featureFlagManager.IsEnabled("PriceLineManagement");
+@{
+    var featureFlagManager = (IFeatureFlagService)@Icon.Web.Mvc.MvcApplication.GlobalContainer.GetInstance(typeof(IFeatureFlagService));
+    var skuManagementFeatureFlag = false;
+    var priceLineManagementFeatureFlag = false;
+    IgnoreException(() => skuManagementFeatureFlag = featureFlagManager.IsEnabled("SkuManagement"));
+    IgnoreException(() => priceLineManagementFeatureFlag = featureFlagManager.IsEnabled("PriceLineManagement"));    
 }
 
+@functions {
+
+    void IgnoreException(Action action)
+    {
+        try
+        {
+            action();
+        }
+        catch
+        {
+            // ignore exception
+        }
+    }
+
+}
 <!doctype html>
 <html class="no-js" lang="en">
 <head>

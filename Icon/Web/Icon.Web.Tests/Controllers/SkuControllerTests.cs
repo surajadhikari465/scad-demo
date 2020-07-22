@@ -10,6 +10,7 @@ using Icon.Web.DataAccess.Models;
 using System.Web.Mvc;
 using Icon.Web.Mvc.Models;
 using Newtonsoft.Json;
+using Icon.FeatureFlags;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
@@ -24,6 +25,8 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IQueryHandler<GetItemGroupParameters, List<ItemGroupModel>>> getItemGroupPageQuery;
         private Mock<IQueryHandler<GetItemGroupFilteredResultsCountQueryParameters, int>> getFilteredResultsCountQuery;
         private Mock<IQueryHandler<GetItemGroupUnfilteredResultsCountQueryParameters, int>> getUnfilteredResultsCountQuery;
+        private Mock<IFeatureFlagService> featureFlagService;
+
         private List<ItemGroupModel> getItemGroupPageQueryResult;
         private int getFilteredResultsCountQueryResult;
         private int getUnfilteredResultsCountQueryResult;
@@ -109,7 +112,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             getItemGroupPageQuery = new Mock<IQueryHandler<GetItemGroupParameters, List<ItemGroupModel>>>();
             getFilteredResultsCountQuery = new Mock<IQueryHandler<GetItemGroupFilteredResultsCountQueryParameters, int>>();
             getUnfilteredResultsCountQuery = new Mock<IQueryHandler<GetItemGroupUnfilteredResultsCountQueryParameters, int>>();
-
+            featureFlagService = new Mock<IFeatureFlagService>();
             skusSource = new List<ItemGroupModel>();
             
             List<string> products = new List<string> { "Tofu", "Cat food", "Lettuce", "Banana", "Pasta", "Avocado", "Ham" };
@@ -138,9 +141,11 @@ namespace Icon.Web.Tests.Unit.Controllers
                 .Returns(() => getFilteredResultsCountQueryResult);
             getUnfilteredResultsCountQuery.Setup(m => m.Search(It.IsAny<GetItemGroupUnfilteredResultsCountQueryParameters>()))
                 .Returns(() => getUnfilteredResultsCountQueryResult);
+            featureFlagService.Setup(m => m.IsEnabled(It.IsAny<string>()))
+                .Returns(true);
 
             dataTableAjaxPostModel = JsonConvert.DeserializeObject<DataTableAjaxPostModel>(datatablePostJson);
-            controller = new SkuController(getItemGroupPageQuery.Object, getFilteredResultsCountQuery.Object, getUnfilteredResultsCountQuery.Object);
+            controller = new SkuController(getItemGroupPageQuery.Object, getFilteredResultsCountQuery.Object, getUnfilteredResultsCountQuery.Object, featureFlagService.Object);
         }
 
         /// <summary>
@@ -149,10 +154,11 @@ namespace Icon.Web.Tests.Unit.Controllers
         [TestMethod]
         public void Controller_contructor_should_validate_arguments()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(null, getFilteredResultsCountQuery.Object, getUnfilteredResultsCountQuery.Object));
-            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(getItemGroupPageQuery.Object, null, getUnfilteredResultsCountQuery.Object));
-            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(getItemGroupPageQuery.Object, getFilteredResultsCountQuery.Object, null));
-            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(null, null, null));
+            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(null, getFilteredResultsCountQuery.Object, getUnfilteredResultsCountQuery.Object, featureFlagService.Object));
+            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(getItemGroupPageQuery.Object, null, getUnfilteredResultsCountQuery.Object, featureFlagService.Object));
+            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(getItemGroupPageQuery.Object, getFilteredResultsCountQuery.Object, null, featureFlagService.Object));
+            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(getItemGroupPageQuery.Object, getFilteredResultsCountQuery.Object, getUnfilteredResultsCountQuery.Object, null));
+            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(null, null, null, null));
         }
 
 

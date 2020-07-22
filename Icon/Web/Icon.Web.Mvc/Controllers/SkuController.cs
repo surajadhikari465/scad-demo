@@ -1,4 +1,5 @@
 ﻿using Icon.Common.DataAccess;
+using Icon.FeatureFlags;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Models;
@@ -18,16 +19,20 @@ namespace Icon.Web.Mvc.Controllers
         private IQueryHandler<GetItemGroupParameters, List<ItemGroupModel>> getItemGroupPageQuery;
         private IQueryHandler<GetItemGroupFilteredResultsCountQueryParameters, int> getFilteredResultsCountQuery;
         private IQueryHandler<GetItemGroupUnfilteredResultsCountQueryParameters, int> getUnfilteredResultsCountQuery;
+        private IFeatureFlagService featureFlagService;
 
         /// <summary>
         /// Initializes an instance of SkuController.
         /// </summary>
-        /// <param name="skuQuery">Sku Query.</param>
-        /// <param name="skuItemCount">Sku Item Count.</param>
+        /// <param name="getItemGroupPageQuery">Sku/Priceline Query.</param>
+        /// <param name="getFilteredResultsCountQuery">Sku/Priceline filtered Count Query.</param>
+        /// <param name="getUnfilteredResultsCountQuery">Sku/Priceline unfiltered Count Query.</param>
+        /// <param name="featureFlagService">Feature Flag Service</param>
         public SkuController(
             IQueryHandler<GetItemGroupParameters, List<ItemGroupModel>> getItemGroupPageQuery,
             IQueryHandler<GetItemGroupFilteredResultsCountQueryParameters, int> getFilteredResultsCountQuery,
-            IQueryHandler<GetItemGroupUnfilteredResultsCountQueryParameters, int> getUnfilteredResultsCountQuery)
+            IQueryHandler<GetItemGroupUnfilteredResultsCountQueryParameters, int> getUnfilteredResultsCountQuery,
+            IFeatureFlagService featureFlagService)
         {
             if (getItemGroupPageQuery == null)
             {
@@ -41,10 +46,15 @@ namespace Icon.Web.Mvc.Controllers
             {
                 throw new ArgumentNullException(nameof(getUnfilteredResultsCountQuery));
             }
+            if (featureFlagService == null)
+            {
+                throw new ArgumentNullException(nameof(featureFlagService));
+            }
 
             this.getItemGroupPageQuery = getItemGroupPageQuery;
             this.getFilteredResultsCountQuery = getFilteredResultsCountQuery;
             this.getUnfilteredResultsCountQuery = getUnfilteredResultsCountQuery;
+            this.featureFlagService = featureFlagService;
         }
 
         /// <summary>
@@ -53,6 +63,22 @@ namespace Icon.Web.Mvc.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
+            // Get the feature flag.
+            bool skuManagementFeatureFlag;
+            try
+            {
+                skuManagementFeatureFlag = this.featureFlagService.IsEnabled("SkuManagement");
+            }
+            catch
+            {
+                skuManagementFeatureFlag = false;
+            }
+
+            // If the feature is not enable, redirect.
+            if (skuManagementFeatureFlag == false)
+            {
+                return Redirect("/");
+            }
             return View();
         }
 
