@@ -29,8 +29,7 @@ namespace Icon.Web.DataAccess.Commands
 
             var rowsUpdated = db.Connection.Execute(@"
                 UPDATE [dbo].[FeatureFlag]
-                   SET [FlagName] = @FlagName
-                      ,[Enabled] = @Enabled
+                   SET [Enabled] = @Enabled
                       ,[Description] = @Description
                       ,[LastModifiedDateUtc] = GETUTCDATE()  
                       ,[LastModifiedBy] = @LastModifiedBy

@@ -34,12 +34,12 @@
                 features.Filtering().Inherit(true);
                 features.Updating()
                     .EditMode(GridEditMode.Row)
+                    .EnableAddRow(false)
                     .EnableDeleteRow(false)
-                    .EnableAddRow(true)
                     .ColumnSettings(cs =>
                     {
                         cs.ColumnSetting().ColumnKey("FeatureFlagId").ReadOnly(true);
-                        cs.ColumnSetting().ColumnKey("FlagName").Required(true).TextEditorOptions(o => o.ValidatorOptions(vo => vo.LengthRange(1,255)));
+                        cs.ColumnSetting().ColumnKey("FlagName").ReadOnly(true);
                         cs.ColumnSetting().ColumnKey("Description").Required(true).TextEditorOptions(o => o.ValidatorOptions(vo => vo.LengthRange(1,255)));
                         cs.ColumnSetting().ColumnKey("Enabled").Required(true);
                         cs.ColumnSetting().ColumnKey("CreatedDateUtc").ReadOnly(true);
@@ -62,4 +62,3 @@
 
 @Scripts.Render("~/Scripts/FeatureFlag/feature-flag-view.js")
 @Scripts.Render("~/Scripts/common-search.js")
-@Scripts.Render("~/Scripts/jquery.fileDownload.js")

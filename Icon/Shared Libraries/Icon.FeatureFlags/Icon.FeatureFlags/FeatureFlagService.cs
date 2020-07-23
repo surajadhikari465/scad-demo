@@ -22,7 +22,7 @@ namespace Icon.FeatureFlags
             var featureFlag = dbConnection.QueryFirstOrDefault<FeatureFlag>("SELECT Enabled FROM dbo.FeatureFlag WHERE FlagName = @FlagName", new { FlagName = featureFlagName });
             if (featureFlag == null)
             {
-                throw new Exception($"No Feature Flag exists with the name \"{featureFlagName}\".");
+                return false;
             }
             else
             {

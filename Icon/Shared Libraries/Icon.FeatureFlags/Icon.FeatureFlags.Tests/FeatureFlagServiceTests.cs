@@ -57,14 +57,16 @@ namespace Icon.FeatureFlags.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception), "No Feature Flag exists with the name \"AutomatedTestFeatureFlag\".")]
-        public void IsEnabled_FeatureFlagDoesNotExist_ThrowsException()
+        public void IsEnabled_FeatureFlagDoesNotExist_ReturnsFalse()
         {
             //Given
             string featureFlagName = "AutomatedTestFeatureFlag";
 
             //When
             var result = featureFlagService.IsEnabled(featureFlagName);
+
+            //Then
+            Assert.IsFalse(result);
         }
 
         [TestMethod]
