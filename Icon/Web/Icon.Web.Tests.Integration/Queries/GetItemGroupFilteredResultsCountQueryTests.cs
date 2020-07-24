@@ -16,13 +16,10 @@ namespace Icon.Web.Tests.Integration.Queries
     [TestClass]
     public class GetItemGroupFilteredResultsCountQueryTests
     {
-        private const string PrimaryItemScanCode = "1234567890101";
-        private const string ItemGroupDescription = "{ \"SkuDescription\":\"ItemGroup Descrition Test 150917697\"}";
         private IDbConnection connection;
         private TransactionScope transaction;
         private GetItemGroupFilteredResultsCountQueryParameters queryParameters;
         private GetItemGroupFilteredResultsCountQuery query;
-        private ItemTestHelper itemTestHelper;
 
         /// <summary>
         /// Initialize Data for each data.
@@ -39,8 +36,6 @@ namespace Icon.Web.Tests.Integration.Queries
             };
 
             this.query = new GetItemGroupFilteredResultsCountQuery(this.connection);
-            itemTestHelper = new ItemTestHelper();
-            itemTestHelper.Initialize(this.connection, initializeTestItem: false);
         }
 
         /// <summary>
@@ -60,56 +55,15 @@ namespace Icon.Web.Tests.Integration.Queries
         public void GetFilteredResultsCountQuery_Sku_with_filters__returns_values()
         {
             // Given
-            long itemGroupId = CreateTestData(ItemGroupTypeId.Sku);
+            // The database contains more that 1 tofu product
 
             // When
             this.queryParameters.ItemGroupTypeId = DataAccess.Models.ItemGroupTypeId.Sku;
-            this.queryParameters.SearchTerm = "%Test 150917697%";
+            this.queryParameters.SearchTerm = "Tofu";
             var result = this.query.Search(this.queryParameters);
 
             // Then
-            Assert.AreEqual(1, result);
+            Assert.IsTrue(result > 1);
         }
-
-        private long CreateTestData(ItemGroupTypeId itemGroupTypeId)
-        {
-            var item = itemTestHelper.CreateDefaultTestItem();
-            item.ScanCode = PrimaryItemScanCode;
-            itemTestHelper.SaveItem(item);
-
-            var item2 = itemTestHelper.CreateDefaultTestItem();
-            item2.ScanCode = "1234567890102";
-            itemTestHelper.SaveItem(item2);
-
-
-            var itemGroupId = this.connection.QuerySingle<long>(@"
-            INSERT INTO [dbo].[ItemGroup]([ItemGroupTypeId], [ItemGroupAttributesJson], [LastModifiedBy])
-            VALUES (@ItemGroupTypeId, @ItemGroupAttributesJson, 'test');
-            SELECT SCOPE_IDENTITY();", new
-            {
-                ItemGroupTypeId = (int)itemGroupTypeId,
-                ItemGroupAttributesJson = ItemGroupDescription
-            });
-
-            this.connection.Execute(@"
-            INSERT INTO [dbo].[ItemGroupMember] ([ItemId],[ItemGroupId],[IsPrimary],[LastModifiedBy])
-            VALUES (@ItemId, @ItemGroupId,@IsPrimary, 'Test')", new
-            {
-                ItemId = item.ItemId,
-                ItemGroupId = itemGroupId,
-                IsPrimary = 1
-            });
-
-            this.connection.Execute(@"
-            INSERT INTO [dbo].[ItemGroupMember] ([ItemId],[ItemGroupId],[IsPrimary],[LastModifiedBy])
-            VALUES (@ItemId, @ItemGroupId,@IsPrimary, 'Test')", new
-            {
-                ItemId = item2.ItemId,
-                ItemGroupId = itemGroupId,
-                IsPrimary = 0
-            });
-            return itemGroupId;
-        }
-
     }
 }

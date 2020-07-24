@@ -18,36 +18,20 @@ namespace Icon.Web.DataAccess.Queries
 		private IDbConnection dbConnection;
 
 		private const string FilteredQuery = @"
-			WITH UnfilteredResults AS
+			WITH FilteredResults AS
 			(
 				SELECT ig.[ItemGroupId]
 						,ig.[ItemGroupTypeId]
 						,CASE WHEN @ItemGroupTypeId = 1 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SkuDescription') ELSE NULL END AS SKUDescription
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineDescription') ELSE NULL END AS PriceLineDescription
-						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineRetailSize') ELSE NULL END AS PriceLineSize
+						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineSize') ELSE NULL END AS PriceLineSize
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineUOM') ELSE NULL END AS PriceLineUOM		
 						,sc.[ScanCode]		
-				FROM [dbo].[ItemGroup] ig
-					INNER JOIN [dbo].[ItemGroupMember] img ON (img.[ItemGroupId] = ig.ItemGroupId AND img.[IsPrimary] =1)
-					INNER JOIN [dbo].[ScanCode] sc ON (sc.[ItemId] = img.[ItemId])
+				FROM [dbo].[ItemGroup] ig (NOLOCK)
+					INNER JOIN [dbo].[ItemGroupMember] img (NOLOCK) ON (img.[ItemGroupId] = ig.ItemGroupId AND img.[IsPrimary] =1)
+					INNER JOIN [dbo].[ScanCode] sc (NOLOCK) ON (sc.[ItemId] = img.[ItemId])
 				WHERE [ItemGroupTypeId] = @ItemGroupTypeId
-			),
-			FilteredResults AS
-			(
-				SELECT [ItemGroupId]
-						,[ItemGroupTypeId]
-						,[SKUDescription]
-						,[PriceLineDescription]
-						,[PriceLineSize]
-						,[PriceLineUOM]
-						,[ScanCode]		
-				FROM UnfilteredResults
-				WHERE [ItemGroupId] LIKE @searchTerm
-						OR (@ItemGroupTypeId = 1 AND SKUDescription LIKE @SearchTerm)
-						OR (@ItemGroupTypeId = 2 AND PriceLineDescription LIKE @SearchTerm)
-						OR (@ItemGroupTypeId = 2 AND PriceLineSize LIKE @SearchTerm)
-						OR (@ItemGroupTypeId = 2 AND PriceLineUOM LIKE @SearchTerm)
-						OR scanCode LIKE @SearchTerm	
+					AND (FREETEXT(KeyWords, @SearchTerm))
 			),
 			PagedResults AS 
 			(
@@ -63,8 +47,7 @@ namespace Icon.Web.DataAccess.Queries
 				,[PriceLineSize]
 				,[PriceLineUOM]
 				,[ScanCode]
-			FROM PagedResults;
-			";
+			FROM PagedResults;";
 
 		private const string UnfilteredQuery = @"
 			WITH UnfilteredResults AS
@@ -99,35 +82,20 @@ namespace Icon.Web.DataAccess.Queries
 			";
 
 		private const string FilteredQueryOrderByItemCount = @"
-			WITH UnfilteredResults AS
+			WITH FilteredResults AS
 			(
 				SELECT ig.[ItemGroupId]
 						,ig.[ItemGroupTypeId]
 						,CASE WHEN @ItemGroupTypeId = 1 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SkuDescription') ELSE NULL END AS SKUDescription
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineDescription') ELSE NULL END AS PriceLineDescription
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineSize') ELSE NULL END AS PriceLineSize
-						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineUOM') ELSE NULL END AS PriceLineUOM							,sc.[ScanCode]		
+						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineUOM') ELSE NULL END AS PriceLineUOM		
+						,sc.[ScanCode]		
 				FROM [dbo].[ItemGroup] ig (NOLOCK)
 					INNER JOIN [dbo].[ItemGroupMember] img (NOLOCK) ON (img.[ItemGroupId] = ig.ItemGroupId AND img.[IsPrimary] =1)
 					INNER JOIN [dbo].[ScanCode] sc (NOLOCK) ON (sc.[ItemId] = img.[ItemId])
 				WHERE [ItemGroupTypeId] = @ItemGroupTypeId
-			),
-			FilteredResults AS
-			(
-				SELECT [ItemGroupId]
-						,[ItemGroupTypeId]
-						,[SKUDescription]
-						,[PriceLineDescription]
-						,[PriceLineSize]
-						,[PriceLineUOM]
-						,[ScanCode]		
-				FROM UnfilteredResults
-				WHERE [ItemGroupId] LIKE @searchTerm
-						OR (@ItemGroupTypeId = 1 AND SKUDescription LIKE @SearchTerm)
-						OR (@ItemGroupTypeId = 2 AND PriceLineDescription LIKE @SearchTerm)
-						OR (@ItemGroupTypeId = 2 AND PriceLineSize LIKE @SearchTerm)
-						OR (@ItemGroupTypeId = 2 AND PriceLineUOM LIKE @SearchTerm)
-						OR scanCode LIKE @searchTerm	
+					AND (FREETEXT(KeyWords, @SearchTerm))
 			),
 			ItemCount as 
 			(

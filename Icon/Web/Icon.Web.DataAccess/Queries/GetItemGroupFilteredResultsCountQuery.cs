@@ -16,39 +16,17 @@ namespace Icon.Web.DataAccess.Queries
     {
         private IDbConnection dbConnection;
 
-		private string FilteredResultsCountQuery = @"
-			WITH UnfilteredResults AS
-			(
-				SELECT ig.[ItemGroupId]
-						,ig.[ItemGroupTypeId]
-						,CASE WHEN @ItemGroupTypeId = 1 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SkuDescription') ELSE NULL END AS SKUDescription
-						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineDescription') ELSE NULL END AS PriceLineDescription
-						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineSize') ELSE NULL END AS PriceLineSize
-						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineUOM') ELSE NULL END AS PriceLineUOM		
-						,sc.[ScanCode]		
-				FROM [dbo].[ItemGroup] ig (NOLOCK)
-					INNER JOIN [dbo].[ItemGroupMember] img (NOLOCK) ON (img.[ItemGroupId] = ig.ItemGroupId AND img.[IsPrimary] =1)
-					INNER JOIN [dbo].[ScanCode] sc (NOLOCK) ON (sc.[ItemId] = img.[ItemId])
-				WHERE [ItemGroupTypeId] = @ItemGroupTypeId
-			),
-			FilteredResults AS
-			(
-				SELECT [ItemGroupId]
-						,[ItemGroupTypeId]
-						,[SKUDescription]
-						,[PriceLineDescription]
-						,[PriceLineSize]
-						,[PriceLineUOM]
-						,[ScanCode]		
-				FROM UnfilteredResults
-				WHERE [ItemGroupId] LIKE @SearchTerm
-						OR (@ItemGroupTypeId = 1 AND SKUDescription LIKE @SearchTerm)
-						OR (@ItemGroupTypeId = 2 AND PriceLineDescription LIKE @SearchTerm)
-						OR (@ItemGroupTypeId = 2 AND PriceLineSize LIKE @SearchTerm)
-						OR (@ItemGroupTypeId = 2 AND PriceLineUOM LIKE @SearchTerm)
-						OR scanCode LIKE @SearchTerm	
-			)
-			SELECT COUNT(*) AS [FilteredResultsCount] FROM FilteredResults";
+		private string FilteredResultsCountQuery = @"			
+				WITH FilteredResults AS
+				(
+					SELECT ig.[ItemGroupId]
+					FROM [dbo].[ItemGroup] ig (NOLOCK)
+						INNER JOIN [dbo].[ItemGroupMember] img (NOLOCK) ON (img.[ItemGroupId] = ig.ItemGroupId AND img.[IsPrimary] =1)
+						INNER JOIN [dbo].[ScanCode] sc (NOLOCK) ON (sc.[ItemId] = img.[ItemId])
+					WHERE [ItemGroupTypeId] = @ItemGroupTypeId
+						AND (FREETEXT(KeyWords, @SearchTerm))
+				)
+				SELECT COUNT(*) AS [FilteredResultsCount] FROM FilteredResults";
 
 		/// <summary>
 		/// Initializes an instance of the class

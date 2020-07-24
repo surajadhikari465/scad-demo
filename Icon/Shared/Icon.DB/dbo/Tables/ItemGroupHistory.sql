@@ -9,7 +9,8 @@
 	[vSKUDescription] [nvarchar](4000) NULL,
 	[vPriceLineDescription] [nvarchar](4000) NULL,
 	[vPriceLineSize] [nvarchar](4000) NULL,
-	[vPriceLineUOM] [nvarchar](4000) NULL
+	[vPriceLineUOM] [nvarchar](4000) NULL,
+    [KeyWords] nvarchar(max) NOT NULL DEFAULT ' '
 ) 
 ON [FG_History]
 GO

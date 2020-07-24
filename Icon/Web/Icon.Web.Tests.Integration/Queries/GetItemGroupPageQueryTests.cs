@@ -84,19 +84,15 @@ namespace Icon.Web.Tests.Integration.Queries
         public void GetItemGroupQuery_Sku_with_filters_returns_values()
         {
             // Given
-            long itemGroupId = CreateTestData(ItemGroupTypeId.Sku);
+            // The database contains more that 1 tofu product
 
             // When
             this.queryParameters.ItemGroupTypeId = DataAccess.Models.ItemGroupTypeId.Sku;
-            this.queryParameters.SearchTerm = "%Test 1%";
-            var result = this.query.Search(this.queryParameters).ToList();
+            this.queryParameters.SearchTerm = "Tofu";
+            var result = this.query.Search(this.queryParameters);
 
             // Then
             Assert.IsTrue(result.Count > 0);
-            var itemGroup = result.FirstOrDefault(sku => sku.ScanCode == PrimaryItemScanCode);
-            Assert.IsNotNull(itemGroup);
-            Assert.AreEqual("ItemGroup Descrition Test 1", itemGroup.SKUDescription);
-            Assert.AreEqual(PrimaryItemScanCode, itemGroup.ScanCode);
         }
 
         /// <summary>
@@ -127,19 +123,15 @@ namespace Icon.Web.Tests.Integration.Queries
         public void GetItemGroupQuery_PriceLine_with_filters_returns_values()
         {
             // Given
-            long itemGroupId = CreateTestData(ItemGroupTypeId.Priceline);
+            // The database contains more that 1 tofu product
 
             // When
             this.queryParameters.ItemGroupTypeId = DataAccess.Models.ItemGroupTypeId.Priceline;
-            this.queryParameters.SearchTerm = "%Test 1%";
+            this.queryParameters.SearchTerm = "Tofu";
             var result = this.query.Search(this.queryParameters).ToList();
 
             // Then
             Assert.IsTrue(result.Count > 0);
-            var itemGroup = result.FirstOrDefault(sku => sku.ScanCode == PrimaryItemScanCode);
-            Assert.IsNotNull(itemGroup);
-            Assert.AreEqual("ItemGroup Descrition Test 1", itemGroup.SKUDescription);
-            Assert.AreEqual(PrimaryItemScanCode, itemGroup.ScanCode);
         }
 
         // <summary>
@@ -149,20 +141,16 @@ namespace Icon.Web.Tests.Integration.Queries
         public void GetItemGroupQuery_PriceLine_with_filters_order_by_ItemCount_returns_values()
         {
             // Given
-            long itemGroupId = CreateTestData(ItemGroupTypeId.Priceline);
+            // The database contains more that 1 tofu product
 
             // When
             this.queryParameters.ItemGroupTypeId = DataAccess.Models.ItemGroupTypeId.Priceline;
-            this.queryParameters.SearchTerm = "%Test 1%";
+            this.queryParameters.SearchTerm = "Tofu";
             this.queryParameters.SortColumn = ItemGroupColumns.ItemCount;
             var result = this.query.Search(this.queryParameters).ToList();
 
             // Then
             Assert.IsTrue(result.Count > 0);
-            var itemGroup = result.FirstOrDefault(sku => sku.ScanCode == PrimaryItemScanCode);
-            Assert.IsNotNull(itemGroup);
-            Assert.AreEqual("ItemGroup Descrition Test 1", itemGroup.SKUDescription);
-            Assert.AreEqual(PrimaryItemScanCode, itemGroup.ScanCode);
         }
 
         // <summary>
@@ -172,21 +160,17 @@ namespace Icon.Web.Tests.Integration.Queries
         public void GetItemGroupQuery_Sku_with_filters_order_by_ItemCount_returns_values()
         {
             // Given
-            long itemGroupId = CreateTestData(ItemGroupTypeId.Sku);
+            // The database contains more that 1 tofu product
 
             // When
             this.queryParameters.ItemGroupTypeId = DataAccess.Models.ItemGroupTypeId.Sku;
-            this.queryParameters.SearchTerm = "%Test 1%";
+            this.queryParameters.SearchTerm = "Tofu";
             this.queryParameters.SortColumn = ItemGroupColumns.ItemCount;
             this.queryParameters.SortOrder = SortOrder.Ascending;
-            var result = this.query.Search(this.queryParameters).ToList();
+            var result = this.query.Search(this.queryParameters);
 
             // Then
             Assert.IsTrue(result.Count > 0);
-            var itemGroup = result.FirstOrDefault(sku => sku.ScanCode == PrimaryItemScanCode);
-            Assert.IsNotNull(itemGroup);
-            Assert.AreEqual("ItemGroup Descrition Test 1", itemGroup.SKUDescription);
-            Assert.AreEqual(PrimaryItemScanCode, itemGroup.ScanCode);
         }
 
         // <summary>

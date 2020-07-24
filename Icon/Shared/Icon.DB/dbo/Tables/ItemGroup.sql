@@ -10,6 +10,7 @@
 	vPriceLineDescription  AS (json_value(ItemGroupAttributesJson,'$.PriceLineDescription')),
 	vPriceLineSize  AS (json_value(ItemGroupAttributesJson,'$.PriceLineRetailSize')),
 	vPriceLineUOM  AS (json_value(ItemGroupAttributesJson,'$.PriceLineUOM')),
+    KeyWords nvarchar(max) NOT NULL DEFAULT ' ', 
     PERIOD FOR SYSTEM_TIME (SysStartTimeUtc, SysEndTimeUtc), 
     CONSTRAINT FK_ItemGroup_ItemGroupTypeId FOREIGN KEY (ItemGroupTypeId) REFERENCES dbo.ItemGroupType (ItemGroupTypeId), 
     CONSTRAINT CK_ItemGroupAttributesJson_IsJson CHECK (ISJSON(ItemGroupAttributesJson) > 0) 
@@ -28,3 +29,7 @@ GO
 
 CREATE INDEX idx_ItemGroupMember_json_vPriceLineUOM ON [dbo].[ItemGroup](vPriceLineUOM);
 GO
+CREATE FULLTEXT INDEX ON [dbo].[ItemGroup] (KeyWords)
+KEY INDEX PK_ItemGroupId ON IconFullTextCatalog --Unique index  
+WITH CHANGE_TRACKING AUTO, STOPLIST = OFF
+GO  

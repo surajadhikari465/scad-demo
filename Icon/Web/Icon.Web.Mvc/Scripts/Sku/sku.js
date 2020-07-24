@@ -7,9 +7,9 @@
             "type": 'POST'
         },
         columns: [
-            { data: "SkuId", name: "SkuId", autoWidth: false },
-            { data: "SkuDescription", name: "Sku Description", autoWidth: true },
-            { data: "PrimaryItemUpc", name: "Primary Item Upc", autoWidth: true },
+            { data: "SkuId", name: "SKU ID", autoWidth: false },
+            { data: "SkuDescription", name: "SKU Description", autoWidth: true },
+            { data: "PrimaryItemUpc", name: "SKU Primary Scan Code", autoWidth: true },
             { data: "CountOfItems", name: "Count Of Items", autoWidth: true, searchable: false },
             {
                 data: "SkuId",

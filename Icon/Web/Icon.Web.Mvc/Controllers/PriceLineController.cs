@@ -111,7 +111,7 @@ namespace Icon.Web.Mvc.Controllers
             // Convert Data from input to internal values
 
             // Escape search field;
-            string search = dataTableAjaxPostModel?.search?.value?.Replace("[", "[[]")?.Replace("%", "[%]")?.Replace("_", "[_]");
+            string search = dataTableAjaxPostModel?.search?.value;
 
             // Translate Datatable columns to Query Column
             ItemGroupColumns sortColumn = ItemGroupColumns.ItemGroupId;
@@ -181,7 +181,7 @@ namespace Icon.Web.Mvc.Controllers
                                 ItemGroupTypeId = ItemGroupTypeId.Priceline,
                                 PageSize = dataTableAjaxPostModel.length,
                                 RowsOffset = dataTableAjaxPostModel.start,
-                                SearchTerm = $"%{search}%",
+                                SearchTerm = search,
                                 SortColumn = sortColumn,
                                 SortOrder = sortOrder
                             });
@@ -200,7 +200,7 @@ namespace Icon.Web.Mvc.Controllers
                             new GetItemGroupFilteredResultsCountQueryParameters
                             {
                                 ItemGroupTypeId = ItemGroupTypeId.Sku,
-                                SearchTerm = $"%{search}%"
+                                SearchTerm = search
                             });
                     });
             }
