@@ -1,0 +1,24 @@
+
+{
+    "Information" : [
+        "This file provides default values for the deployment wizard inside Visual Studio and the AWS Lambda commands added to the .NET Core CLI.",
+        "To learn more about the Lambda commands with the .NET Core CLI execute the following command at the command line in the project root directory.",
+        "dotnet lambda help",
+        "All the command line options for the Lambda command can be specified in this file."
+    ],
+    "profile"     : "default",
+    "region"      : "us-east-1",
+    "configuration" : "Debug",
+    "framework"     : "netcoreapp3.1",
+    "function-runtime" : "dotnetcore3.1",
+    "function-memory-size" : 512,
+    "function-timeout"     : 30,
+    "function-handler"     : "Warp.ProcessPrices::Warp.ProcessPrices.Lambda.Function::FunctionHandler",
+    "msbuild-parameters"   : "--self-contained true",
+    "function-name"        : "ProcessPrices1",
+    "function-role"        : "arn:aws:iam::243990056803:role/TestLambdaRole",
+    "function-subnets"     : "subnet-080ce4e7384e7e5ab,subnet-0fcc9941b7e623525,subnet-004dd9c40e1be02ba,subnet-0376906d086b63a2a,subnet-0e817d73a27c3f79d,subnet-0f15fbde95b2e8937",
+    "function-security-groups" : "sg-0cdb57df7a7e3849b",
+    "tracing-mode"             : "PassThrough",
+    "environment-variables"    : ""
+}
