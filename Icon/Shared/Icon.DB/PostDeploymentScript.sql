@@ -25,4 +25,5 @@ EXAMPLE (showing Icon-DB scripts path):
 -- Always run this security script and make it the last entry in this script.
 -- :r .\Scripts\PopulateData\36949_AddItemGroups.sql --2020-06-29 36949
 :r .\Scripts\PopulateData\36882_PopulateFeatureFlags_Sku_andPriceline.sql -- 2020-07-08 36882
+:r .\Scripts\PopulateData\40795_Populate_ItemGroup_Keywords.sql -- 2020-07-27 40795
 :r .\Security\Icon.Security.sql
