@@ -6,10 +6,8 @@ import * as rds from '@aws-cdk/aws-rds';
 import * as eventSources from '@aws-cdk/aws-lambda-event-sources';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as s3 from '@aws-cdk/aws-s3';
-import * as ecr from '@aws-cdk/aws-ecr';
-import * as ecs from '@aws-cdk/aws-ecs';
 import * as path from 'path';
-
+import * as config from '../infrastructure.config.json';
 
 /*
 
@@ -37,19 +35,18 @@ export class WarpCdkStack extends cdk.Stack {
 
     // ### get the existing VPC, make sure its the correct one
     // ###################################################################
-    const vpc = ec2.Vpc.fromLookup(this, 'WarpVpc', {
+    const vpc = ec2.Vpc.fromLookup(this, config.vpc.id , {
       isDefault: false,
-      vpcName: '1-243990056803'
+      vpcName: config.vpc.name
     });
 
     // ### setup s3 bucket for bulk s3 imports
     // ###################################################################
 
     // TODO: create condition to create s3 if it doesn't exist
-    const bucketName = 'warp-initialload-dev1';
-    const s3Bucket = new s3.Bucket(this, 'WarpS3', {
+        const s3Bucket = new s3.Bucket(this, config.s3.id, {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-      bucketName: bucketName,
+      bucketName: config.s3.name,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL
     });
 
@@ -77,50 +74,31 @@ export class WarpCdkStack extends cdk.Stack {
 
     // ### create security group for secretmanager enpoint
     // ###################################################################
-    var secretsManagerSecurityGroup = new ec2.SecurityGroup(this, 'WarpSecretsManagerSecurityGroup', {
+    var secretsManagerSecurityGroup = new ec2.SecurityGroup(this, config.SecretManager.SecurityGroup.id, {
       vpc: vpc,
       allowAllOutbound: true,
-      securityGroupName: 'WarpSecretsManagerSecurityGroup',
-      description: 'Allow Lambda Access to Secretsmanager',
+      securityGroupName: config.SecretManager.SecurityGroup.securityGroupName,
+      description: config.SecretManager.SecurityGroup.description,
     });
 
     // ### create a VPC Enpoint for Secrets Manager
     // ###################################################################
 
-    var secretManagerEndpoint = new ec2.InterfaceVpcEndpoint(this, 'WarpSecretsManagerEndpoint', {
+    var secretManagerEndpoint = new ec2.InterfaceVpcEndpoint(this, config.SecretManager.Enpoint.id, {
       vpc,
       service: new ec2.InterfaceVpcEndpointService('com.amazonaws.us-east-1.secretsmanager'),
-      // Choose which availability zones to place the VPC endpoint in, based on
-      // available AZs
       subnets: {
         availabilityZones: vpc.availabilityZones
       },
-      privateDnsEnabled: true,
+      privateDnsEnabled: config.SecretManager.Enpoint.privateDnsEnabled,
       securityGroups: [secretsManagerSecurityGroup]
-    });
-
-    // iam user needs permissions for these.... ecr:DescribeRepositories
-    // ECR repository
-    // ###################################################################
-
-    const repository = new ecr.Repository(this, "warp-app-ecr", {
-      repositoryName: "warp-app-ecr",
-      removalPolicy: cdk.RemovalPolicy.DESTROY
-    });
-
-    // ECS cluster/resources
-    // ###################################################################
-
-    const cluster = new ecs.Cluster(this, "warp-app-ecs", {
-      clusterName: "warp-app-cluster",
-      vpc: vpc,
     });
 
     // create a role that the lambda will execute as
     // ###################################################################
 
-    const lambdaExecutionRole = new iam.Role(this, 'WarpLambdaExecutionRole', {
-      roleName: 'WarpLambdaExecutionRole',
+    const lambdaExecutionRole = new iam.Role(this, config.PriceLambda.ExecutionRole.id, {
+      roleName: config.PriceLambda.ExecutionRole.roleName,
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaVPCAccessExecutionRole"),
@@ -129,11 +107,11 @@ export class WarpCdkStack extends cdk.Stack {
       ]
     });
 
-    const lambdaSecurityGroup = new ec2.SecurityGroup(this, 'WarpLambdaSecurityGroup', {
+    const lambdaSecurityGroup = new ec2.SecurityGroup(this, config.PriceLambda.SecurityGroup.id, {
       vpc: vpc,
       allowAllOutbound: true,
-      securityGroupName: 'WarpLambdaSecurityGroup',
-      description: 'Allow Lambda Access to RDS'
+      securityGroupName: config.PriceLambda.SecurityGroup.securityGroupName,
+      description: config.PriceLambda.SecurityGroup.description
     });
 
     // ### database 
@@ -148,19 +126,17 @@ export class WarpCdkStack extends cdk.Stack {
 
     rdsSecurityGroupVPN.addIngressRule(ec2.Peer.ipv4('10.0.0.0/8'), ec2.Port.tcp(3306));
 
-    const paramGroup = rds.ClusterParameterGroup.fromParameterGroupName(this, 'WarpRDSClusterParameterGroup', 'default.aurora-postgresql11');
+    const paramGroup = rds.ClusterParameterGroup.fromParameterGroupName(this, config.Rds.ClusterPrameterGroup.id, config.Rds.ClusterPrameterGroup.parameterGroupname);
 
-    var db = new rds.DatabaseCluster(this, 'WarpRDSInstance', {
+    var db = new rds.DatabaseCluster(this, config.Rds.Cluster.id, {
       parameterGroup: paramGroup,
-      defaultDatabaseName: 'warp',
-      masterUser: {
-        username: 'warpadmindev',
-      },
-      clusterIdentifier: 'WarpCluster',
-      instanceIdentifierBase: 'WarpInsatnce',
+      defaultDatabaseName: config.Rds.Cluster.defaultDatabaseName,
+      masterUser: config.Rds.Cluster.masterUser,
+      clusterIdentifier: config.Rds.Cluster.clusterIdentifier,
+      instanceIdentifierBase: config.Rds.Cluster.instanceIdentifierBase,
       engine: rds.DatabaseClusterEngine.AURORA_POSTGRESQL,
-      port: 3306,
-      engineVersion: '11.7',
+      port: config.Rds.Cluster.port,
+      engineVersion: config.Rds.Cluster.engineVersion,
       s3ImportRole: iamRole,
       instanceProps: {
         instanceType: ec2.InstanceType.of(ec2.InstanceClass.MEMORY5, ec2.InstanceSize.LARGE),
@@ -174,14 +150,14 @@ export class WarpCdkStack extends cdk.Stack {
 
     // ### create an SQS Queue that will be an event source for the lambda.
     // ###################################################################
-    const sqsQueue = new sqs.Queue(this, 'WarpPriceQueue', { queueName: 'WarpPriceQueue' });
+    const sqsQueue = new sqs.Queue(this, config.Sqs.id, { queueName: config.Sqs.queueName  });
 
     // ### create the lambda function.
     // ###################################################################
-    const LambdaFunction = new lambda.Function(this, 'WarpLambdaProcessPrices', {
+    const LambdaFunction = new lambda.Function(this, config.PriceLambda.Lambda.id, {
       runtime: lambda.Runtime.DOTNET_CORE_3_1,
-      handler: 'Warp.ProcessPrices::Warp.ProcessPrices.Lambda.Function::FunctionHandler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '..\\lambda\\Warp.ProcessPrices.Lambda.zip')),
+      handler: config.PriceLambda.Lambda.handler,
+      code: lambda.Code.fromAsset(path.join(__dirname, config.PriceLambda.Lambda.assetPath)),
       role: lambdaExecutionRole,
       securityGroup: lambdaSecurityGroup,
       vpc: vpc,

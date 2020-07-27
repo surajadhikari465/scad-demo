@@ -1,0 +1,63 @@
+{
+    "appName": "warp",
+    "account": {
+        "number": "243990056803",
+        "region": "us-east-1"
+    },
+    "vpc": {
+        "id": "WarpVpc",
+        "name": "1-243990056803"
+    },
+    "s3": {
+        "id": "WarpS3initialload",
+        "name": "warp-initialload-dev1"
+    },
+    "SecretManager": {
+        "SecurityGroup": {
+            "id": "WarpSecretsManagerSecurityGroup",
+            "securityGroupName": "WarpSecretsManagerSecurityGroup",
+            "description": "Allow Lambda Access to Secretsmanager"
+        }, 
+        "Enpoint": {
+            "id": "WarpSecretsManagerEndpoint",
+            "privateDnsEnabled": true
+        }
+    }, 
+    "PriceLambda": {
+        "ExecutionRole": {
+            "id": "WarpLambdaExecutionRole",
+            "roleName": "WarpLambdaExecutionRole"
+        },
+        "SecurityGroup": {
+            "id": "WarpLambdaSecurityGroup",
+            "securityGroupName": "WarpLambdaSecurityGroup",
+            "description": "Allow Lambda Access to RDS"
+        }, 
+        "Lambda": {
+            "id": "WarpLambdaProcessPrices",
+            "handler": "Warp.ProcessPrices::Warp.ProcessPrices.Lambda.Function::FunctionHandler",
+            "assetPath": "..\\assets\\lambda\\Warp.ProcessPrices.Lambda.zip"
+        }
+    },
+    "Rds": {
+        "ClusterPrameterGroup": {
+            "id": "WarpRDSClusterParameterGroup",
+            "parameterGroupname": "default.aurora-postgresql11"
+        }, 
+        "Cluster": {
+            "id": "WarpRDSInstance", 
+            "masterUser": {
+                "username": "warpadmindev"
+            },
+            "defaultDatabaseName": "warp", 
+            "clusterIdentifier": "WarpCluster", 
+            "instanceIdentifierBase": "WarpInstance", 
+            "port": 3306, 
+            "engineVersion": "11.7"
+        }
+    }, 
+    "Sqs": {
+        "id": "WarpPriceQueue",
+        "queueName":"WarpPriceQueue"
+    }
+}
