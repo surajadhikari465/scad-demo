@@ -49,6 +49,6 @@ namespace Icon.Web.DataAccess.Models
         /// <summary>
         /// ItemCount.
         /// </summary>
-        ItemCount = 7,
+        ItemCount = 8,
     }
 }
