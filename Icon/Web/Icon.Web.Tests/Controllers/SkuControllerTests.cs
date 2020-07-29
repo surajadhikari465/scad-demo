@@ -11,6 +11,8 @@ using System.Web.Mvc;
 using Icon.Web.Mvc.Models;
 using Newtonsoft.Json;
 using Icon.FeatureFlags;
+using Icon.Web.DataAccess.Commands;
+using Icon.Logging;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
@@ -26,6 +28,9 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IQueryHandler<GetItemGroupFilteredResultsCountQueryParameters, int>> getFilteredResultsCountQuery;
         private Mock<IQueryHandler<GetItemGroupUnfilteredResultsCountQueryParameters, int>> getUnfilteredResultsCountQuery;
         private Mock<IFeatureFlagService> featureFlagService;
+        private Mock<IQueryHandler<GetSkuBySkuIdParameters, SkuModel>> mockGetSkuBySkuIdQuery;
+        private Mock<ICommandHandler<UpdateSkuCommand>> mockUpdateSkuCommandHandler;
+        private Mock<ILogger> mockLogger;
 
         private List<ItemGroupModel> getItemGroupPageQueryResult;
         private int getFilteredResultsCountQueryResult;
@@ -114,7 +119,10 @@ namespace Icon.Web.Tests.Unit.Controllers
             getUnfilteredResultsCountQuery = new Mock<IQueryHandler<GetItemGroupUnfilteredResultsCountQueryParameters, int>>();
             featureFlagService = new Mock<IFeatureFlagService>();
             skusSource = new List<ItemGroupModel>();
-            
+            mockLogger = new Mock<ILogger>();
+            mockGetSkuBySkuIdQuery = new Mock<IQueryHandler<GetSkuBySkuIdParameters, SkuModel>>();
+            mockUpdateSkuCommandHandler = new Mock<ICommandHandler<UpdateSkuCommand>>();
+
             List<string> products = new List<string> { "Tofu", "Cat food", "Lettuce", "Banana", "Pasta", "Avocado", "Ham" };
             List<string> adjectives = new List<string> { "Organic", "Premium", "Regular" };
 
@@ -145,7 +153,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                 .Returns(true);
 
             dataTableAjaxPostModel = JsonConvert.DeserializeObject<DataTableAjaxPostModel>(datatablePostJson);
-            controller = new SkuController(getItemGroupPageQuery.Object, getFilteredResultsCountQuery.Object, getUnfilteredResultsCountQuery.Object, featureFlagService.Object);
+            controller = new SkuController(getItemGroupPageQuery.Object, getFilteredResultsCountQuery.Object, getUnfilteredResultsCountQuery.Object, mockGetSkuBySkuIdQuery.Object,featureFlagService.Object, mockLogger.Object, mockUpdateSkuCommandHandler.Object);
         }
 
         /// <summary>
@@ -154,11 +162,11 @@ namespace Icon.Web.Tests.Unit.Controllers
         [TestMethod]
         public void Controller_contructor_should_validate_arguments()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(null, getFilteredResultsCountQuery.Object, getUnfilteredResultsCountQuery.Object, featureFlagService.Object));
-            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(getItemGroupPageQuery.Object, null, getUnfilteredResultsCountQuery.Object, featureFlagService.Object));
-            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(getItemGroupPageQuery.Object, getFilteredResultsCountQuery.Object, null, featureFlagService.Object));
-            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(getItemGroupPageQuery.Object, getFilteredResultsCountQuery.Object, getUnfilteredResultsCountQuery.Object, null));
-            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(null, null, null, null));
+            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(null, getFilteredResultsCountQuery.Object, getUnfilteredResultsCountQuery.Object, mockGetSkuBySkuIdQuery.Object, featureFlagService.Object, mockLogger.Object, mockUpdateSkuCommandHandler.Object));
+            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(getItemGroupPageQuery.Object, null, getUnfilteredResultsCountQuery.Object, mockGetSkuBySkuIdQuery.Object, featureFlagService.Object, mockLogger.Object, mockUpdateSkuCommandHandler.Object));
+            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(getItemGroupPageQuery.Object, getFilteredResultsCountQuery.Object, null, mockGetSkuBySkuIdQuery.Object, featureFlagService.Object, mockLogger.Object, mockUpdateSkuCommandHandler.Object));
+            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(getItemGroupPageQuery.Object, getFilteredResultsCountQuery.Object, getUnfilteredResultsCountQuery.Object, mockGetSkuBySkuIdQuery.Object, null, mockLogger.Object, mockUpdateSkuCommandHandler.Object));
+            Assert.ThrowsException<ArgumentNullException>(() => new SkuController(null, null, null, null,null, null, null));
         }
 
 
@@ -175,6 +183,22 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             // Then.
             Assert.IsNotNull(result);
+        }
+
+        /// <summary>
+        /// Checks that index returna a view.
+        /// </summary>
+        [TestMethod]
+        public void Controller_edit_should_return_view()
+        {
+            // Given.
+
+            // When.
+            ViewResult result = controller.Edit(-1) as ViewResult;
+
+            // Then.
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.ViewName, "Error");
         }
 
         /// <summary>

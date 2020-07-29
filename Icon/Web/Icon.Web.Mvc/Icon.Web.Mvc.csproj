@@ -455,7 +455,9 @@
     <Compile Include="Models\LocaleAccessor.cs" />
     <Compile Include="Models\LocaleGridViewModel.cs" />
     <Compile Include="Models\LocaleManagementViewModel.cs" />
+    <Compile Include="Models\SkuEditViewModel.cs" />
     <Compile Include="Models\SkuItemCountViewModel.cs" />
+    <Compile Include="Models\SkuPricelineBaseModel.cs" />
     <Compile Include="Models\SkuViewModel.cs" />
     <Compile Include="Models\TerritoryViewModel.cs" />
     <Compile Include="Models\CurrencyViewModel.cs" />
@@ -513,6 +515,7 @@
     <Compile Include="Models\IrmaItemSearchViewModel.cs" />
     <Compile Include="Models\ItemSearchViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validators\SkuEditViewModelValidator.cs" />
     <Compile Include="Validators\AttributeViewModelValidator.cs" />
     <Compile Include="Validators\ContactViewModelValidator.cs" />
     <Compile Include="Validators\ValidationMessages.cs" />
@@ -1846,6 +1849,7 @@
     <Content Include="Views\FeatureFlag\Index.cshtml" />
     <Content Include="Views\Sku\Index.cshtml" />
     <Content Include="Views\PriceLine\Index.cshtml" />
+    <Content Include="Views\Sku\Edit.cshtml" />
     <None Include="Web.2016.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

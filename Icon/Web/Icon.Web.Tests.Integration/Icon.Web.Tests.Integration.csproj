@@ -177,6 +177,7 @@
     <Compile Include="Commands\AddManufacturerMessageCommandHandlerTests.cs" />
     <Compile Include="Commands\AddMessageQueueItemByHierarchyClassIdCommadHandlerTests.cs" />
     <Compile Include="Commands\RefreshAttributesCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateSkuCommandHandlerTests.cs" />
     <Compile Include="Commands\UpdateItemProhibitDiscountCommandHandlerTests.cs" />
     <Compile Include="Commands\UpdateItemSubTeamByHierarchyClassCommandHandlerTests.cs" />
     <Compile Include="Commands\UpdateItemTypeByHierarchyClassCommandHandlerTests.cs" />
@@ -226,6 +227,8 @@
     <Compile Include="Infrastructure\ItemSearch\ItemQueryBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\DoesAttributeExistOnItemsQueryHandlerTests.cs" />
+    <Compile Include="Queries\GetSkuBySkuIdQueryTests.cs" />
+    <Compile Include="Queries\GetAttributeByNameGroupQueryTests.cs" />
     <Compile Include="Queries\GetAttributesQueryTests.cs" />
     <Compile Include="Queries\GetAttributeByAttributeIdQueryTests.cs" />
     <Compile Include="Queries\DoesScanCodeExistQueryTests.cs" />

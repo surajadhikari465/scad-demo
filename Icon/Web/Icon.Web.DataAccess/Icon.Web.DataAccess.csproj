@@ -287,6 +287,8 @@
     <Compile Include="Commands\UpdateItemProhibitDiscountByHierarchyClassCommandHandler.cs" />
     <Compile Include="Commands\UpdateItemTypeByHierarchyClassCommandHandler.cs" />
     <Compile Include="Commands\UpdateManufacturerHierarchyClassTraitsCommand.cs" />
+    <Compile Include="Commands\UpdateSkuCommand.cs" />
+    <Compile Include="Commands\UpdateSkuCommandHandler.cs" />
     <Compile Include="Commands\UpdateVenueCommandHandler.cs" />
     <Compile Include="Commands\UpdateVenueCommand.cs" />
     <Compile Include="Commands\UpdateNationalHierarchyCommand.cs" />
@@ -462,12 +464,17 @@
     <Compile Include="Models\EwicAplScanCodeModel.cs" />
     <Compile Include="Models\ItemGroupItemCountModel.cs" />
     <Compile Include="Models\ItemGroupModel.cs" />
+    <Compile Include="Models\SkuModel.cs" />
     <Compile Include="Models\SortOrder.cs" />
     <Compile Include="Models\StoreModel.cs" />
     <Compile Include="Models\UpdateItemsType.cs" />
     <Compile Include="Models\VenueModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\EmptyAttributesParameters.cs" />
+    <Compile Include="Queries\GetAttributeByNameGroupParameters.cs" />
+    <Compile Include="Queries\GetAttributeByNameGroupQueryHandler.cs" />
+    <Compile Include="Queries\GetSkuBySkuIdParameters.cs" />
+    <Compile Include="Queries\GetSkuBySkuIdQuery.cs" />
     <Compile Include="Queries\GetItemGroupFilteredResultsCountQuery.cs" />
     <Compile Include="Queries\GetFeatureFlagsQuery.cs" />
     <Compile Include="Queries\GetFeatureFlagsQueryParameters.cs" />

@@ -14,7 +14,7 @@
             {
                 data: "SkuId",
                 render: function (data, type, row, meta) {
-                    return '<a href="/sku/' + data + '">Edit</a>';
+                    return '<a href="/sku/Edit?skuId=' + data + '">Edit</a>';
                 },
                 orderable: false,
                 searchable: false

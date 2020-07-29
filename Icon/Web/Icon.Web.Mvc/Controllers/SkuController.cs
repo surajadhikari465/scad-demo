@@ -1,11 +1,17 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.FeatureFlags;
+using Icon.Logging;
+using Icon.Web.Common;
+using Icon.Web.Common.Utility;
+using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
+using Icon.Web.Mvc.Attributes;
 using Icon.Web.Mvc.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -19,7 +25,10 @@ namespace Icon.Web.Mvc.Controllers
         private IQueryHandler<GetItemGroupParameters, List<ItemGroupModel>> getItemGroupPageQuery;
         private IQueryHandler<GetItemGroupFilteredResultsCountQueryParameters, int> getFilteredResultsCountQuery;
         private IQueryHandler<GetItemGroupUnfilteredResultsCountQueryParameters, int> getUnfilteredResultsCountQuery;
+        private IQueryHandler<GetSkuBySkuIdParameters, SkuModel> getSkuBySkuIdQuery;
         private IFeatureFlagService featureFlagService;
+        private ILogger logger;
+        private ICommandHandler<UpdateSkuCommand> updateSkuCommandHandler;
 
         /// <summary>
         /// Initializes an instance of SkuController.
@@ -32,7 +41,11 @@ namespace Icon.Web.Mvc.Controllers
             IQueryHandler<GetItemGroupParameters, List<ItemGroupModel>> getItemGroupPageQuery,
             IQueryHandler<GetItemGroupFilteredResultsCountQueryParameters, int> getFilteredResultsCountQuery,
             IQueryHandler<GetItemGroupUnfilteredResultsCountQueryParameters, int> getUnfilteredResultsCountQuery,
-            IFeatureFlagService featureFlagService)
+            IQueryHandler<GetSkuBySkuIdParameters, SkuModel> getSkuBySkuIdQuery,
+            IFeatureFlagService featureFlagService,
+            ILogger logger,
+            ICommandHandler<UpdateSkuCommand> updateSkuCommandHandler
+            )
         {
             if (getItemGroupPageQuery == null)
             {
@@ -51,10 +64,28 @@ namespace Icon.Web.Mvc.Controllers
                 throw new ArgumentNullException(nameof(featureFlagService));
             }
 
+            if (getSkuBySkuIdQuery == null)
+            {
+                throw new ArgumentNullException(nameof(getSkuBySkuIdQuery));
+            }
+
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            if (updateSkuCommandHandler == null)
+            {
+                throw new ArgumentNullException(nameof(updateSkuCommandHandler));
+            }
+
             this.getItemGroupPageQuery = getItemGroupPageQuery;
             this.getFilteredResultsCountQuery = getFilteredResultsCountQuery;
             this.getUnfilteredResultsCountQuery = getUnfilteredResultsCountQuery;
             this.featureFlagService = featureFlagService;
+            this.getSkuBySkuIdQuery = getSkuBySkuIdQuery;
+            this.logger = logger;
+            this.updateSkuCommandHandler = updateSkuCommandHandler;
         }
 
         /// <summary>
@@ -82,6 +113,84 @@ namespace Icon.Web.Mvc.Controllers
             return View();
         }
 
+        public ActionResult Edit(int skuId)
+        {
+            // Get the feature flag.
+            bool skuManagementFeatureFlag;
+            try
+            {
+                skuManagementFeatureFlag = this.featureFlagService.IsEnabled("SkuManagement");
+            }
+            catch
+            {
+                skuManagementFeatureFlag = false;
+            }
+
+            // If the feature is not enable, redirect.
+            if (skuManagementFeatureFlag == false)
+            {
+                return Redirect("/");
+            }
+
+            SkuModel sku = getSkuBySkuIdQuery.Search(
+                           new GetSkuBySkuIdParameters
+                           {
+                               SkuId = skuId
+                           });
+
+            if (sku == null)
+            {
+                string msg = $"SKU with id:" + skuId + " not found.";
+                logger.Error(msg);
+                ViewData["ErrorMessage"] = msg;
+                return View("Error");
+            }
+
+            return View(new SkuEditViewModel(sku));
+        }
+
+        [HttpPost]
+        [WriteAccessAuthorize]
+        public ActionResult Edit(SkuEditViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                InvalidateViewModel(viewModel);
+                return View(viewModel);
+            }
+
+            try
+            {
+                updateSkuCommandHandler.Execute(new UpdateSkuCommand
+                {
+                    SkuId = viewModel.SkuId,
+                    SkuDescription = viewModel.SkuDescription,
+                    ModifiedBy = User.Identity.Name,
+                    ModifiedDateTimeUtc = DateTime.UtcNow.ToFormattedDateTimeString()
+                });
+                viewModel.LastModifiedBy = User.Identity.Name;
+            }
+
+            catch (Exception ex)
+            {
+                var exceptionLogger = new ExceptionLogger(logger);
+                exceptionLogger.LogException(ex, this.GetType(), MethodBase.GetCurrentMethod());
+                InvalidateViewModel(viewModel);
+                ViewData["ErrorMessages"] = new List<string> { "Error in saving data. Please try again." };
+                return View(viewModel);
+            }
+
+            ViewData["SuccessMessage"] = $"Updated Sku: {viewModel.SkuId} successfully.";
+            return View(viewModel);
+        }
+
+        void InvalidateViewModel(SkuEditViewModel viewModel)
+        {
+            if (viewModel == null) return;
+
+            ViewData["ErrorMessages"] = ModelState.Values.SelectMany(v => v.Errors).Select(s => s.ErrorMessage).Distinct().ToList();
+            ModelState.Clear();
+        }
         /// <summary>
         /// GET: /Sku/AllSku
         /// List of all Skus.
@@ -130,7 +239,7 @@ namespace Icon.Web.Mvc.Controllers
 
             // Translate Sort order from input to internal enum.
             SortOrder sortOrder = (dataTableAjaxPostModel.order[0].dir == "asc") ? SortOrder.Ascending : SortOrder.Descending;
-            
+
             // Result variables
             List<ItemGroupModel> itemGroups = null;
             int unfilteredCount = 0;
@@ -188,7 +297,7 @@ namespace Icon.Web.Mvc.Controllers
                     },
                     () =>
                     {
-                        filteredCount =  getFilteredResultsCountQuery.Search(
+                        filteredCount = getFilteredResultsCountQuery.Search(
                             new GetItemGroupFilteredResultsCountQueryParameters
                             {
                                 ItemGroupTypeId = ItemGroupTypeId.Sku,
@@ -198,9 +307,11 @@ namespace Icon.Web.Mvc.Controllers
             }
 
             // return datatable page data
-            return Json(new DataTableResponse<SkuViewModel>() {
+            return Json(new DataTableResponse<SkuViewModel>()
+            {
                 draw = dataTableAjaxPostModel.draw,
-                data = itemGroups.Select(ig => new SkuViewModel {
+                data = itemGroups.Select(ig => new SkuViewModel
+                {
                     CountOfItems = ig.ItemCount,
                     PrimaryItemUpc = ig.ScanCode,
                     SkuDescription = ig.SKUDescription,
@@ -214,7 +325,7 @@ namespace Icon.Web.Mvc.Controllers
 
         private void EnsureArgumentCondition(bool condition, string message)
         {
-            if (condition== false)
+            if (condition == false)
             {
                 throw new ArgumentException(message);
             }
