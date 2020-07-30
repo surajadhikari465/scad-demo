@@ -1,13 +1,12 @@
 Option Strict Off
 Option Explicit On
-
 Imports log4net
 
 Friend Class frmLogin
     Inherits System.Windows.Forms.Form
 
-  Dim mValidated As Boolean
-  Dim mUserName As String
+    Dim mValidated As Boolean
+    Dim mUserName As String
     Dim mRetryCount As Short
     Dim mSetUserInfo As Boolean
 
@@ -160,7 +159,8 @@ Friend Class frmLogin
 
                 'Support Team
                 If Not String.IsNullOrEmpty(gsTitleDescription) Then
-                    gbSupportUser = gsTitleDescription.Equals("CEN - IRMA Developer") OrElse gsTitleDescription.Equals("CEN - IRMA Business Analyst")
+                    Dim supportTitles = New List(Of String) From {"CEN - IRMA Developer", "CEN - IRMA Business Analyst", "CEN - IRMA Support"}
+                    gbSupportUser = supportTitles.Contains(gsTitleDescription)
                 End If
 
                 gRSRecordset.Close()
@@ -180,19 +180,19 @@ Friend Class frmLogin
         logger.Debug("cmdOK_Click Exit")
     End Sub
 
-  Private Sub frmLogin_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
-    mUserName = System.Environment.UserName
-    txtUserName.Text = mUserName
-  End Sub
+    Private Sub frmLogin_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+        mUserName = System.Environment.UserName
+        txtUserName.Text = mUserName
+    End Sub
 
-  Private Sub frmLogin_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
-    mValidated = False
-    mRetryCount = 0
-    mUserName = String.Empty
-    mSetUserInfo = False
-  End Sub
+    Private Sub frmLogin_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
+        mValidated = False
+        mRetryCount = 0
+        mUserName = String.Empty
+        mSetUserInfo = False
+    End Sub
 
-  Private Sub txtBox_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPassword.Enter, txtUserName.Enter
-    CType(eventSender, TextBox).SelectAll()
-  End Sub
+    Private Sub txtBox_Enter(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles txtPassword.Enter, txtUserName.Enter
+        CType(eventSender, TextBox).SelectAll()
+    End Sub
 End Class
