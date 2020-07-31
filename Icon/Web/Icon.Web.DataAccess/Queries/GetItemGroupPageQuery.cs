@@ -24,14 +24,14 @@ namespace Icon.Web.DataAccess.Queries
 						,ig.[ItemGroupTypeId]
 						,CASE WHEN @ItemGroupTypeId = 1 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SkuDescription') ELSE NULL END AS SKUDescription
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineDescription') ELSE NULL END AS PriceLineDescription
-						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineSize') ELSE NULL END AS PriceLineSize
+						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineRetailSize') ELSE NULL END AS PriceLineSize
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineUOM') ELSE NULL END AS PriceLineUOM		
 						,sc.[ScanCode]		
 				FROM [dbo].[ItemGroup] ig (NOLOCK)
 					INNER JOIN [dbo].[ItemGroupMember] img (NOLOCK) ON (img.[ItemGroupId] = ig.ItemGroupId AND img.[IsPrimary] =1)
 					INNER JOIN [dbo].[ScanCode] sc (NOLOCK) ON (sc.[ItemId] = img.[ItemId])
 				WHERE [ItemGroupTypeId] = @ItemGroupTypeId
-					AND (FREETEXT(KeyWords, @SearchTerm))
+					AND (CONTAINS(KeyWords, @SearchTerm))
 			),
 			PagedResults AS 
 			(
@@ -88,14 +88,14 @@ namespace Icon.Web.DataAccess.Queries
 						,ig.[ItemGroupTypeId]
 						,CASE WHEN @ItemGroupTypeId = 1 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SkuDescription') ELSE NULL END AS SKUDescription
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineDescription') ELSE NULL END AS PriceLineDescription
-						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineSize') ELSE NULL END AS PriceLineSize
+						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineRetailSize') ELSE NULL END AS PriceLineSize
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineUOM') ELSE NULL END AS PriceLineUOM		
 						,sc.[ScanCode]		
 				FROM [dbo].[ItemGroup] ig (NOLOCK)
 					INNER JOIN [dbo].[ItemGroupMember] img (NOLOCK) ON (img.[ItemGroupId] = ig.ItemGroupId AND img.[IsPrimary] =1)
 					INNER JOIN [dbo].[ScanCode] sc (NOLOCK) ON (sc.[ItemId] = img.[ItemId])
 				WHERE [ItemGroupTypeId] = @ItemGroupTypeId
-					AND (FREETEXT(KeyWords, @SearchTerm))
+					AND (CONTAINS(KeyWords, @SearchTerm))
 			),
 			ItemCount as 
 			(

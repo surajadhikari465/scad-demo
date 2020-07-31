@@ -58,7 +58,7 @@ namespace Icon.Web.Mvc.Controllers
         }
 
         /// <summary>
-        /// GET: /Sku
+        /// GET: /PriceLine
         /// </summary>
         /// <returns></returns>
         public ActionResult Index()
@@ -83,11 +83,11 @@ namespace Icon.Web.Mvc.Controllers
         }
 
         /// <summary>
-        /// GET: /Sku/AllSku
-        /// List of all Skus.
+        /// GET: /PriceLine/AllPriceline
+        /// List of all Price lines.
         /// </summary>
         /// <param name="draw"
-        /// <returns>Json with a list of Sku.</returns>
+        /// <returns>Json with a list of PriceLines.</returns>
         public JsonResult AllPriceline(DataTableAjaxPostModel dataTableAjaxPostModel)
         {
             if (dataTableAjaxPostModel == null)
@@ -112,6 +112,10 @@ namespace Icon.Web.Mvc.Controllers
 
             // Escape search field;
             string search = dataTableAjaxPostModel?.search?.value;
+            if (String.IsNullOrWhiteSpace(search) == false)
+            {
+                search = string.Join(" AND ", search.Replace("\"", "\"\"").Split(null).Select(s => $"\"{s}\""));
+            }
 
             // Translate Datatable columns to Query Column
             ItemGroupColumns sortColumn = ItemGroupColumns.ItemGroupId;
@@ -199,7 +203,7 @@ namespace Icon.Web.Mvc.Controllers
                         filteredCount = getFilteredResultsCountQuery.Search(
                             new GetItemGroupFilteredResultsCountQueryParameters
                             {
-                                ItemGroupTypeId = ItemGroupTypeId.Sku,
+                                ItemGroupTypeId = ItemGroupTypeId.Priceline,
                                 SearchTerm = search
                             });
                     });

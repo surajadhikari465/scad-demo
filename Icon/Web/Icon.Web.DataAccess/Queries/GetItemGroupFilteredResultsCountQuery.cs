@@ -24,7 +24,7 @@ namespace Icon.Web.DataAccess.Queries
 						INNER JOIN [dbo].[ItemGroupMember] img (NOLOCK) ON (img.[ItemGroupId] = ig.ItemGroupId AND img.[IsPrimary] =1)
 						INNER JOIN [dbo].[ScanCode] sc (NOLOCK) ON (sc.[ItemId] = img.[ItemId])
 					WHERE [ItemGroupTypeId] = @ItemGroupTypeId
-						AND (FREETEXT(KeyWords, @SearchTerm))
+						AND (CONTAINS(KeyWords, @SearchTerm))
 				)
 				SELECT COUNT(*) AS [FilteredResultsCount] FROM FilteredResults";
 

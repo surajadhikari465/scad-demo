@@ -221,6 +221,10 @@ namespace Icon.Web.Mvc.Controllers
 
             // Escape search field;
             string search = dataTableAjaxPostModel?.search?.value;
+            if (String.IsNullOrWhiteSpace(search) == false)
+            {
+                search = string.Join(" AND ", search.Replace("\"", "\"\"").Split(null).Select(s => $"\"{s}\""));
+            }
 
             // Translate Datatable columns to Query Column
             ItemGroupColumns sortColumn = ItemGroupColumns.ItemGroupId;
