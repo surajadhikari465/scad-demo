@@ -70,7 +70,7 @@ Friend Class frmPricingBatch
         If TypeOf sender Is CheckBox Then
             Dim chkBox As CheckBox = DirectCast(sender, CheckBox)
             ' make sure user confirms turning this option on
-            If (chkBox.Checked) Then
+            If (chkBox.Checked And Not IsIgnoreNoTagLogicCheckboxDisabled()) Then
                 chkBox.Checked = ConfirmThatUserWantsToIgnoreNoTagLogic()
                 'Else
                 '    chkBox.Checked = StopIgnoringNoTagLogic()
@@ -198,6 +198,13 @@ Friend Class frmPricingBatch
 
         'hide button panel that contains Pring Shelf Tags & Apply Batches buttons
         fraProcess.Visible = False
+
+        ' disable 'Ignore No-Tag Logic' checkbox if Instance Data Flag is true
+        If IsIgnoreNoTagLogicCheckboxDisabled() Then
+            chkIgnoreNoTagLogic.Enabled = False
+            chkIgnoreNoTagLogic.Checked = True
+            chkIgnoreNoTagLogic.AutoCheck = False
+        End If
 
         logger.Debug("frmPricingBatch_Load Exit")
     End Sub
@@ -490,7 +497,18 @@ ExitSub:
         Return display
     End Function
 
-	Public Sub PopulateBatchStatusDropDown(ByRef cmb As System.Windows.Forms.ComboBox)
+    ''' <summary>
+    ''' checks the DisableNoTagLogicCheckboxes Instance Data Flag
+    ''' the value of the flag determines if the 'Ignore No-Tag Logic' checkbox is enabled.
+    ''' </summary>
+    ''' <param name="cmb"></param>
+    Private Function IsIgnoreNoTagLogicCheckboxDisabled() As Boolean
+        Dim shouldDisable As Boolean
+        shouldDisable = InstanceDataDAO.IsFlagActive("DisableNoTagLogicCheckboxes")
+        Return shouldDisable
+    End Function
+
+    Public Sub PopulateBatchStatusDropDown(ByRef cmb As System.Windows.Forms.ComboBox)
 		Dim iLoop As Short
 		logger.Debug("PopulateBatchStatusDropDown Enter")
 		cmb.Items.Clear()

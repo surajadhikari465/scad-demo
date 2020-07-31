@@ -3386,4 +3386,7 @@
       <SqlPermissionSet>EXTERNAL_ACCESS</SqlPermissionSet>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\PostDeploy\PBI4898 - SLAW DisableNoTagLogicCheckboxes.sql" />
+  </ItemGroup>
 </Project>
