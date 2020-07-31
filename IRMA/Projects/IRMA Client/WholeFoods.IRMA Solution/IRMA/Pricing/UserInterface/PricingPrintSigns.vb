@@ -4,6 +4,7 @@ Imports System.Net
 Imports System.Text
 Imports Infragistics.Win.UltraWinGrid
 Imports log4net
+Imports WholeFoods.IRMA.Common.DataAccess
 Imports WholeFoods.IRMA.Pricing.BusinessLogic
 Imports WholeFoods.IRMA.Pricing.DataAccess
 Imports WholeFoods.Utility.DataAccess
@@ -48,7 +49,14 @@ Friend Class frmPricingPrintSigns
             cmbBrand.ValueMember = "Brand_ID"
             cmbBrand.SelectedIndex = -1
 
-            chkApplyNoTagLogic.Enabled = (glStore_Limit = 0)
+            If IsIgnoreNoTagLogicCheckboxDisabled() Then
+                chkApplyNoTagLogic.Enabled = False
+                chkApplyNoTagLogic.Checked = False
+                chkApplyNoTagLogic.AutoCheck = False
+            Else
+                chkApplyNoTagLogic.Enabled = (glStore_Limit = 0)
+            End If
+
             ugrdSearchResults.DisplayLayout.Override.AllowUpdate = Infragistics.Win.DefaultableBoolean.Default.False 'Prevent data change in the grid
 
             dteEffectiveDate.Value = DateAndTime.Today
@@ -71,6 +79,16 @@ Friend Class frmPricingPrintSigns
             Me.Close()
         End Try
     End Sub
+
+    ''' <summary>
+    ''' checks the DisableNoTagLogicCheckboxes Instance Data Flag
+    ''' the value of the flag determines if the 'Ignore No-Tag Logic' checkbox is enabled.
+    ''' </summary>
+    Private Function IsIgnoreNoTagLogicCheckboxDisabled() As Boolean
+        Dim shouldDisable As Boolean
+        shouldDisable = InstanceDataDAO.IsFlagActive("DisableNoTagLogicCheckboxes")
+        Return shouldDisable
+    End Function
 
     Private Sub cmdExit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdExit.Click
         Me.Close()
