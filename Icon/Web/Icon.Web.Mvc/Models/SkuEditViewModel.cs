@@ -9,7 +9,7 @@ namespace Icon.Web.Mvc.Models
         /// <summary>
         /// Gets or sets the Sku Id.
         /// </summary>
-        [Display(Name = "SKU Id")]
+        [Display(Name = "SKU ID")]
         public int SkuId { get; set; }
 
         [Display(Name = "SKU Primary Scan Code")]

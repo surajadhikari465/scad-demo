@@ -180,7 +180,7 @@ namespace Icon.Web.Mvc.Controllers
                 return View(viewModel);
             }
 
-            ViewData["SuccessMessage"] = $"Updated Sku: {viewModel.SkuId} successfully.";
+            ViewData["SuccessMessage"] = $"Updated SKU: {viewModel.SkuId} successfully.";
             return View(viewModel);
         }
 
