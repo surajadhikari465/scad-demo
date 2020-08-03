@@ -842,12 +842,10 @@
     <Build Include="dbo\StoredProcedures\UpdateItemDisplayOrder.sql" />
     <Build Include="dbo\Tables\ItemColumnDisplayOrder.sql" />
     <Build Include="dbo\StoredProcedures\SetDefaultItemColumnDisplayOrder.sql" />
-    <None Include="Scripts\PopulateData\35524_BrandValidation_FixZipCodeTraitPattern.sql" />
     <Build Include="dbo\Views\v4r_Attributes.sql" />
     <Build Include="dbo\Views\v4r_Item.sql" />
     <Build Include="dbo\Views\v4r_ItemHierarchyClass.sql" />
     <Build Include="nutrition\Views\v4r_ItemNutrition.sql" />
-    <None Include="Scripts\PopulateData\32221_UpdatePrimeNowMerchantIDEncryptedToAllow50Characters.sql" />
     <None Include="Scripts\Projects\NutritionDeleteFix\QueueItemsWithDeletedNutrition.sql" />
     <None Include="Scripts\Projects\NutritionDeleteFix\QueueItemsWithDeletedNutritionRollBack.sql" />
     <None Include="Scripts\PopulateData\Archive\32769_UpdateSubTeamName.sql" />
@@ -862,6 +860,10 @@
     <Build Include="dbo\Tables\ItemGroupMemberHistory.sql" />
     <None Include="Scripts\PopulateData\36704_PopulateItemGroupTypes.sql" />
     <Build Include="dbo\Tables\ReservedEsbTraitCodes.sql" />
+    <None Include="Scripts\PopulateData\Archive\32224_AddBrandUploadServiceAppId.sql" />
+    <None Include="Scripts\PopulateData\Archive\25934_PopulateItemColumnDisplayOrder.sql" />
+    <None Include="Scripts\PopulateData\Archive\35524_BrandValidation_FixZipCodeTraitPattern.sql" />
+    <None Include="Scripts\PopulateData\Archive\32221_UpdatePrimeNowMerchantIDEncryptedToAllow50Characters.sql" />
     <None Include="Scripts\PopulateData\36709_PopulateSkuPriceLineAttributeGroups.sql" />
     <None Include="Scripts\PopulateData\36709_AddSkuPriceLineAttributes.sql" />
     <Build Include="dbo\Tables\FeatureFlag.sql" />
@@ -923,10 +925,8 @@
     <None Include="Scripts\Projects\IconReboot\Audit\Attributes.sql" />
     <Build Include="app\User Defined Types\ContactTypeInputType.sql" />
     <None Include="Scripts\Projects\IconReboot\DeploymentSteps.docx" />
-    <None Include="Scripts\PopulateData\32224_AddBrandUploadServiceAppId.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\35114_MoveStoresFromMAToMW.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\35114_MoveStoresFromMAToMW_RollBack.sql" />
-    <None Include="Scripts\PopulateData\25934_PopulateItemColumnDisplayOrder.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\35761_MoveStoresFromFLToSOAndMAToMW.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\35761_MoveStoresFromFLToSOAndMAToMW_RollBack.sql" />
     <None Include="Scripts\Projects\Distribution Realignment\35763_MoveMetroFromMAToMW.sql" />

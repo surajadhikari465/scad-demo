@@ -13,11 +13,6 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\Release\__YOUR__SCRIPT__NAME.sql -- 2018.01.01 PBI 12345
 */
 
-:r .\Scripts\PopulateData\32224_AddBrandUploadServiceAppId.sql -- 2020-04-21 32224
-:r .\Scripts\PopulateData\25934_PopulateItemColumnDisplayOrder.sql -- 2020-05-05 25934
-:r .\Scripts\PopulateData\35524_BrandValidation_FixZipCodeTraitPattern.sql -- 2020-05-07 35524
-:r .\Scripts\PopulateData\32221_UpdatePrimeNowMerchantIDEncryptedToAllow50Characters.sql --2020-05-08 32221
-:r .\Scripts\Projects\NutritionDeleteFix\QueueItemsWithDeletedNutrition.sql --2020-05-12 35635
 :r .\Scripts\PopulateData\36704_PopulateItemGroupTypes.sql --2020-06-11 36704
 :r .\Scripts\PopulateData\36950_PopulateReservedEsbTraitCodesTable.sql --2020-06-09 36950
 :r .\Scripts\PopulateData\36709_PopulateSkuPriceLineAttributeGroups.sql --2020-06-17 36709
