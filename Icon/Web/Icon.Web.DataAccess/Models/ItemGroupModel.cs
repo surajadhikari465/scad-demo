@@ -48,5 +48,10 @@ namespace Icon.Web.DataAccess.Models
         /// Sets or sets the number of items in the itemGroup.
         /// </summary>
         public int? ItemCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ItemGroupAttributesJson
+        /// </summary>
+        public string ItemGroupAttributesJson { get; set; }
     }
 }

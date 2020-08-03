@@ -270,6 +270,7 @@
     <Compile Include="Controllers\BrandControllerTests.cs" />
     <Compile Include="Controllers\EwicControllerTests.cs" />
     <Compile Include="Controllers\MessageHistoryControllerTests.cs" />
+    <Compile Include="Controllers\PriceLineAssociationControllerTests.cs" />
     <Compile Include="Decorators\UpdateSubTeamMammothEventDecoratorTests.cs" />
     <Compile Include="Excel\ExcelHelperTests.cs" />
     <Compile Include="Exporters\BaseNewItemExportersTests.cs" />

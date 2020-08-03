@@ -1,0 +1,100 @@
+﻿@using Icon.Web.Mvc.Utility
+@using Icon.Web.DataAccess.Models;
+
+
+@{
+    ViewBag.Title = "Price Line Item Association";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{Html.RenderPartial("_HeaderPartial", "Price Line Item Association");}
+
+@*<div style="border:solid; border-width:thin; width:30%">*@
+<p>@Model.PriceLineDescription</p>
+@*</div>*@
+
+<style>
+    #divLinks {
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+<div class="page-section mb-2">
+
+    <div id="divLinks">
+        <a href="#" class="dropdown-toggle btn btn-light ml-1" data-toggle="dropdown" style="margin-right: 10px">Export</a>
+        <ul class="dropdown-menu bg-light">
+            <li class="nav-item">@Html.ActionLink("Export All Scancodes", "ExportAllScanCodes", "PriceLine", null, new { @class = "text-nowrap ml-1" })</li>
+            <li class="nav-item">@Html.ActionLink("Export current Grid", "ExportCurrentGrid", "PriceLine", null, new { @class = "text-nowrap ml-1" })</li>
+        </ul>
+        @Html.ActionLink("Back to Price Line Management", "/", "PriceLine", null, new { @class = "btn btn-light ml-1" })
+        @Html.ActionLink("Back to Edit Price Line Management", "/PriceLine", "PriceLine", new { priceLineId = @Model.ItemGroupId }, new { @class = "btn btn-light ml-1" })
+        <a onclick="addItemToPriceLine()"  class = "btn btn-light ml-1">Add Item to Price Line</a>
+        <!--
+
+        /div>
+
+    -->
+    </div>
+    <hr />
+
+    <div class="col-10 offset-1">
+
+        <div>
+            <table id="tblPriceLineAssociation" class="display stripe compact" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>Scan Code</th>
+                        <th>Price Line Primary</th>
+                        <th>Customer Friendly Description</th>
+                        <th>Product Description</th>
+                        <th>Item Pack</th>
+                        <th>Retail Size</th>
+                        <th>UOM</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="dlgConfirm" title="User Confirmation Required" style="display:none;">
+    <p id="dlgMsg">Primary Item is being changed, do you want to proceed?</p>
+</div>
+
+<div id="dlgAddItem" title="Add Item To Price Line" style="display:none;">
+    <div>
+        <p>Scan Code to Search</p>
+        <input type="text" id="scanCodeToSearch" />
+        <span id="itemToAdd"></span>
+    </div>
+    <hr />
+    <div id="previousPriceLinePanel" class="alert alert-warning" style="display:none;">
+        <p id="previousPriceLine"></p>
+    </div>
+    <div id="addItemMessagePanel" style="display:none;">
+        <p id="addItemMessage"></p>
+    </div>
+</div>
+
+@if (ViewHelpers.HasWriteAccess(Request, User))
+{
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu">
+        <a class="dropdown-item fa fa-edit" href="#" id="mnuEdit">&nbsp;&nbsp;&nbsp;Edit</a>
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item fa fa-close text-secondary" href="#" id="mnuCancel">&nbsp;&nbsp;&nbsp;Cancel</a>
+    </div>
+}
+
+<script type="text/javascript">
+    var priceLineId = @Model.ItemGroupId;
+    var priceModelDescription = "@Model.PriceLineDescription";
+</script>
+
+@section scripts
+{
+    @Scripts.Render("~/Scripts/PriceLineAssociation/pricelineAssociation.js")
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/datatables.css" />

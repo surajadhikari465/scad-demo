@@ -163,6 +163,9 @@
     <Compile Include="Commands\AddAttributeMessageCommandHandler.cs" />
     <Compile Include="Commands\AddBrandCommand.cs" />
     <Compile Include="Commands\AddBrandCommandHandler.cs" />
+    <Compile Include="Commands\AddItemToItemGroupCommand.cs" />
+    <Compile Include="Commands\AddItemToItemGroupCommandHandler.cs" />
+    <Compile Include="Commands\SetPrimaryItemGroupItemCommandHandler.cs" />
     <Compile Include="Commands\UpdateFeatureFlagCommand.cs" />
     <Compile Include="Commands\AddFeatureFlagCommand.cs" />
     <Compile Include="Commands\UpdateFeatureFlagCommandHandler.cs" />
@@ -399,7 +402,10 @@
     <Compile Include="Models\ContactTypeModel.cs" />
     <Compile Include="Models\FeatureFlagModel.cs" />
     <Compile Include="Models\ItemColumnOrderModel.cs" />
+    <Compile Include="Models\ItemGroupAssociationAutoCompleteData.cs" />
+    <Compile Include="Models\ItemGroupAssociationItemModel.cs" />
     <Compile Include="Models\ItemGroupColumns.cs" />
+    <Compile Include="Models\ItemGroupMember.cs" />
     <Compile Include="Models\ItemGroupTypeId.cs" />
     <Compile Include="Models\MerchandiseHierarchyClassTrait.cs" />
     <Compile Include="Models\AttributeCharacterSetModel.cs" />
@@ -475,11 +481,17 @@
     <Compile Include="Queries\GetAttributeByNameGroupQueryHandler.cs" />
     <Compile Include="Queries\GetSkuBySkuIdParameters.cs" />
     <Compile Include="Queries\GetSkuBySkuIdQuery.cs" />
+    <Compile Include="Queries\GetItemGroupAssociationSearchItemPartialParameters.cs" />
+    <Compile Include="Queries\GetItemGroupAssociationSearchItemPartialQuery.cs" />
+    <Compile Include="Queries\GetItemGroupByIdQuery.cs" />
     <Compile Include="Queries\GetItemGroupFilteredResultsCountQuery.cs" />
     <Compile Include="Queries\GetFeatureFlagsQuery.cs" />
     <Compile Include="Queries\GetFeatureFlagsQueryParameters.cs" />
     <Compile Include="Queries\GetItemGroupFilteredResultsCountQueryParameters.cs" />
     <Compile Include="Queries\GetItemColumnOrderQuery.cs" />
+    <Compile Include="Queries\GetItemGroupByIdParameters.cs" />
+    <Compile Include="Queries\GetItemGroupMembersParameters.cs" />
+    <Compile Include="Queries\GetItemGroupMembersQuery.cs" />
     <Compile Include="Queries\GetScanCodesParameters.cs" />
     <Compile Include="Queries\GetScanCodesQuery.cs" />
     <Compile Include="Queries\GetBulkUploadErrorReportParameters.cs" />
@@ -670,6 +682,7 @@
     <Compile Include="Queries\GetUomQuery.cs" />
     <Compile Include="Commands\ReprocessFailedIconPosPushPublishCommand.cs" />
     <Compile Include="Commands\ReprocessFailedIconPosPushPublishCommandHandler.cs" />
+    <Compile Include="Commands\SetPrimaryItemGroupItemCommand.cs" />
     <Compile Include="Validators\AddEwicMappingManagerValidator.cs" />
     <Compile Include="Validators\AddEwicExclusionManagerValidator.cs" />
     <Compile Include="Validators\AddItemManagerValidator.cs" />

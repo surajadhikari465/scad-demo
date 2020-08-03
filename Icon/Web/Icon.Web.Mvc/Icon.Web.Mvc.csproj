@@ -288,6 +288,7 @@
     <Compile Include="Controllers\FeatureFlagController.cs" />
     <Compile Include="Controllers\ItemColumnDisplayController.cs" />
     <Compile Include="Controllers\ManufacturerController.cs" />
+    <Compile Include="Controllers\PriceLineAssociationController.cs" />
     <Compile Include="Controllers\PriceLineController.cs" />
     <Compile Include="Controllers\SkuController.cs" />
     <Compile Include="Domain\BulkImport\BulkUploadService.cs" />
@@ -1721,6 +1722,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\PriceLineAssociation\pricelineAssociation.js" />
     <Content Include="Scripts\PriceLine\priceline.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
@@ -1850,6 +1852,7 @@
     <Content Include="Views\Sku\Index.cshtml" />
     <Content Include="Views\PriceLine\Index.cshtml" />
     <Content Include="Views\Sku\Edit.cshtml" />
+    <Content Include="Views\PriceLineAssociation\Index.cshtml" />
     <None Include="Web.2016.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -178,6 +178,8 @@
     <Compile Include="Commands\AddMessageQueueItemByHierarchyClassIdCommadHandlerTests.cs" />
     <Compile Include="Commands\RefreshAttributesCommandHandlerTests.cs" />
     <Compile Include="Commands\UpdateSkuCommandHandlerTests.cs" />
+    <Compile Include="Commands\SetPrimaryItemGroupItemCommandHandlerTests.cs" />
+    <Compile Include="Commands\AddItemToItemGroupCommandHandlerTests.cs" />
     <Compile Include="Commands\UpdateItemProhibitDiscountCommandHandlerTests.cs" />
     <Compile Include="Commands\UpdateItemSubTeamByHierarchyClassCommandHandlerTests.cs" />
     <Compile Include="Commands\UpdateItemTypeByHierarchyClassCommandHandlerTests.cs" />
@@ -269,6 +271,9 @@
     <Compile Include="Queries\GetDefaultTaxClassMismatchesQueryTests.cs" />
     <Compile Include="Infrastructure\ItemSearch\ItemSearchCriteriaTests.cs" />
     <Compile Include="Queries\GetItemGroupPageQueryTests.cs" />
+    <Compile Include="Queries\GetItemGroupByIdQueryTests.cs" />
+    <Compile Include="Queries\GetItemGroupMembersQueryTests.cs" />
+    <Compile Include="Queries\GetItemGroupAssociationSearchItemPartialQueryTests.cs" />
     <Compile Include="TestBuilders\TestItemDbModelBuilder.cs" />
     <Compile Include="TestHelpers\SqlExceptionCreator.cs" />
     <Compile Include="TestHelpers\ItemTestHelper.cs" />
