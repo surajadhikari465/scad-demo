@@ -13,6 +13,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using SimpleInjector.Diagnostics;
+using Icon.Esb.MessageParsers;
+using Services.Extract.Models;
 
 namespace Services.Extract
 {
@@ -20,7 +22,6 @@ namespace Services.Extract
     {
         public static Container Init()
         {
-
             var container = new Container();
             var esbSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("Sb1EmsConnection");
             container.Register(() => ListenerApplicationSettings.CreateDefaultSettings("ExtractService"));
@@ -37,7 +38,9 @@ namespace Services.Extract
             container.Register<IFileDestinationCache, FileDestinationsCache>();
             container.Register(typeof(ICommandHandler<>), typeof(UpdateJobLastRunEndCommand).Assembly);
             container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString));
-            
+            container.Register<IMessageParser<JobSchedule>, JobScheduleMessageParser>();
+            container.Register<IExtractJobConfigurationParser, ExtractJobConfigurationParser>();
+            container.Register<IExtractJobRunnerFactory, ExtractJobRunnerFactory>();
             
             container.Register<ExtractService>();
 
@@ -49,7 +52,6 @@ namespace Services.Extract
 
             container.Verify();
             return container;
-
         }
     }
 }

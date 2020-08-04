@@ -1,22 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Dynamic;
-using System.IO;
-using Icon.Logging;
+﻿using Icon.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using OpsgenieAlert;
 using Services.Extract.Credentials;
 using Services.Extract.Models;
-
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Diagnostics;
+using System.Dynamic;
+using System.IO;
 
 namespace Services.Extract.Tests
 {
     [TestClass]
-    public class ExtractRunnerTests
+    public class ExtractJobRunnerTests
     {
-
         private NLogLogger<ExtractJobRunner> logger;
         private ExtractJobRunner runner;
         private string WorkspacePath = @".\Workspace";
@@ -34,9 +32,6 @@ namespace Services.Extract.Tests
                 new EsbCredentialsCache());
             FileDestinationCache = new FileDestinationsCache();
             runner = new ExtractJobRunner(logger, OpsGenieAlert, CredentialsCacheManager, FileDestinationCache);
-
-
-
         }
 
         [TestMethod]
@@ -58,7 +53,6 @@ namespace Services.Extract.Tests
 
             TestHelper.CreateTestFile(WorkspacePath);
 
-
             var files = Directory.GetFiles(WorkspacePath);
             Assert.AreEqual(1, files.Length);
 
@@ -72,33 +66,32 @@ namespace Services.Extract.Tests
         [TestMethod]
         public void ExtractJobRunner_CompressFilesZipOutputEqualsFalse_ShouldReturn()
         {
-            var config = new ExtractJobConfiguration {ZipOutput = false, OutputFileName = "output.txt"};
+            var config = new ExtractJobConfiguration { ZipOutput = false, OutputFileName = "output.txt" };
             runner.SetConfiguration(config);
             runner.TransformFilenames();
 
             runner.SetupWorkspace(WorkspacePath);
             var file = TestHelper.CreateTestFile(WorkspacePath);
 
-            var files = new List<FileInfo> {file};
+            var files = new List<FileInfo> { file };
 
             runner.CompressFiles(files, WorkspacePath + @"\" + config.OutputFileName);
 
             var outputfile = WorkspacePath + @"\output.zip";
             Assert.IsFalse(File.Exists(outputfile));
-
         }
 
         [TestMethod]
         public void ExtractJobRunner_CompressFilesZipOutputEqualsTrue_ShouldZipFile()
         {
-            var config = new ExtractJobConfiguration {ZipOutput = true, OutputFileName = "output.txt"};
+            var config = new ExtractJobConfiguration { ZipOutput = true, OutputFileName = "output.txt" };
             runner.SetConfiguration(config);
             runner.TransformFilenames();
 
             runner.SetupWorkspace(WorkspacePath);
             var file = TestHelper.CreateTestFile(WorkspacePath);
 
-            var files = new List<FileInfo> {file};
+            var files = new List<FileInfo> { file };
 
             runner.CompressFiles(files, WorkspacePath + @"\" + config.OutputFileName);
 
@@ -110,7 +103,7 @@ namespace Services.Extract.Tests
         [TestMethod]
         public void ExtractJobRunner_CompressFilesGZipOutputEqualsTrue_LargeFile_ShouldGZipFile()
         {
-            var config = new ExtractJobConfiguration { ZipOutput = true, CompressionType = "gzip" ,OutputFileName = "test.txt" };
+            var config = new ExtractJobConfiguration { ZipOutput = true, CompressionType = "gzip", OutputFileName = "test.txt" };
             runner.SetConfiguration(config);
             runner.TransformFilenames();
 
@@ -213,7 +206,7 @@ namespace Services.Extract.Tests
                 {
                     Type = "pathkey",
                     PathKey = "CAP",
-                    
+
                 }
             };
             runner.Run(config);
@@ -277,7 +270,7 @@ namespace Services.Extract.Tests
                     "select distinct(STORE_NUMBER) as Value, 'STORE_NUMBER' as [Key] from [dbo].[VendorLaneExtract]",
                 Query =
                     "select top 100 * from dbo.VendorLaneExtract where STORE_NUMBER = @STORE_NUMBER AND ITEM_KEY = @ITEM_KEY",
-                Parameters = new[] {new ExtractJobParameter() {Key = "@ITEM_KEY", Value = 158800}},
+                Parameters = new[] { new ExtractJobParameter() { Key = "@ITEM_KEY", Value = 158800 } },
                 Regions = "SO".Split(','),
                 OutputFileName = "item_vendor_lane_{region}_{STORE_NUMBER}_{date:yyyyMMdd}.csv",
                 ZipOutput = true,
@@ -304,7 +297,7 @@ namespace Services.Extract.Tests
                 Delimiter = "|",
                 Source = "Icon",
                 Query = "select * from hierarchyClass where HierarchyId = @Id",
-                Parameters = new[] {new ExtractJobParameter() {Key = "@Id", Value = 5}},
+                Parameters = new[] { new ExtractJobParameter() { Key = "@Id", Value = 5 } },
                 Regions = new string[] { },
                 OutputFileName = "test_{source}.txt",
                 ZipOutput = true,

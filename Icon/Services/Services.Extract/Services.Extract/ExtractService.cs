@@ -5,36 +5,33 @@ namespace Services.Extract
 {
     public class ExtractService
     {
-
-        private readonly ExtractServiceListener ListenerApplication;
-        private ILogger<ExtractService> Logger;
+        private readonly ExtractServiceListener listenerApplication;
+        private ILogger<ExtractService> logger;
 
         public ExtractService(ExtractServiceListener listenerApplication, ILogger<ExtractService> logger)
         {
-            ListenerApplication = listenerApplication;
-            Logger = logger;
+            this.listenerApplication = listenerApplication;
+            this.logger = logger;
         }
 
         public void Start()
         {
-
-            ListenerApplication.Run();
-
+            listenerApplication.Run();
         }
 
         public void Stop()
         {
             try
             {
-                ListenerApplication.Close();
+                listenerApplication.Close();
             }
             catch (TIBCO.EMS.IllegalStateException tibcoEx)
             {
-                Logger.Warn($"tibco: {tibcoEx.Message}");
+                logger.Warn($"tibco: {tibcoEx.Message}");
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex.Message);
+                logger.Warn(ex.Message);
             }
         }
     }

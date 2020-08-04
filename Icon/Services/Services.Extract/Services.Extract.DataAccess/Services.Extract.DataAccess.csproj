@@ -44,7 +44,7 @@
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Common.2020.3.19.1\lib\net472\Icon.Common.dll</HintPath>
+      <HintPath>..\packages\Icon.Common.2020.6.23.1\lib\net472\Icon.Common.dll</HintPath>
     </Reference>
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.DbContextFactory.2019.5.22.1\lib\net472\Icon.DbContextFactory.dll</HintPath>
@@ -66,7 +66,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\UpdateJobStatusCommand.cs" />
     <Compile Include="Commands\UpdateJobLastRunEndCommand.cs" />
+    <Compile Include="Commands\UpdateJobStatusCommandHandler.cs" />
     <Compile Include="Commands\UpdateJobLastRunEndCommandHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,5 +1,9 @@
-﻿using Dapper;
+﻿using Amazon.S3;
+using Amazon.S3.Model;
+using Dapper;
 using Icon.Common;
+using Icon.Esb;
+using Icon.Esb.Producer;
 using Icon.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -10,26 +14,21 @@ using Services.Extract.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Amazon.S3;
-using Amazon.S3.Model;
-using Icon.Esb.Producer;
-using TIBCO.EMS;
-using System.Collections;
 using System.Security.Cryptography.X509Certificates;
-using Icon.Esb;
-using System.Data;
+using System.Threading.Tasks;
+using TIBCO.EMS;
 
 [assembly: InternalsVisibleTo("Services.Extract.Tests")]
 
 namespace Services.Extract
 {
-    public class ExtractJobRunner
+    public class ExtractJobRunner : IExtractJobRunner
     {
         const string WorkspacePath = @".\Workspace";
         internal List<FileInfo> OutputFiles = new List<FileInfo>();
@@ -46,8 +45,6 @@ namespace Services.Extract
         private ICredentialsCacheManager CredentialsCacheManager;
         private IFileDestinationCache FileDestinationCache;
 
-        
-
         public ExtractJobRunner(ILogger<ExtractJobRunner> logger, IOpsgenieAlert opsGenieAlert, ICredentialsCacheManager credentialsCacheManager, IFileDestinationCache fileDestinationCache)
         {
             OpsGenieApiKey = AppSettingsAccessor.GetStringSetting("OpsGenieApiKey", true);
@@ -59,7 +56,6 @@ namespace Services.Extract
             OpsGenie = opsGenieAlert;
             LoadConnectionConfiguration();
         }
-
 
         internal void Cleanup()
         {
@@ -75,8 +71,7 @@ namespace Services.Extract
                     extractSourcesAndDestinationFile.CleanUp();
                 }
         }
-        
-    
+
         internal List<FileInfo> CompressFiles(List<FileInfo> inputFiles, string destinationFile)
         {
             if (!Configuration.ZipOutput) return inputFiles;
@@ -96,22 +91,24 @@ namespace Services.Extract
                     OutputFiles = GzipFiles(inputFiles);
                     break;
                 default:
-                    Logger.Warn($"Unknown Compression Type [{Configuration.CompressionType}]"); 
+                    Logger.Warn($"Unknown Compression Type [{Configuration.CompressionType}]");
                     break;
             }
             return OutputFiles;
         }
+
         internal List<FileInfo> GzipFiles(List<FileInfo> inputFiles)
         {
             var compressedFiles = new List<FileInfo>();
             foreach (var file in inputFiles)
             {
-               var compressedFile=  GZipFile(file.FullName);
-               compressedFiles.Add(new FileInfo(compressedFile));
+                var compressedFile = GZipFile(file.FullName);
+                compressedFiles.Add(new FileInfo(compressedFile));
             }
 
             return compressedFiles;
         }
+
         internal string GZipFile(string inputFileName)
         {
             var gzipFile = Path.ChangeExtension(inputFileName, "gz");
@@ -126,6 +123,7 @@ namespace Services.Extract
             }
             return gzipFile;
         }
+
         internal List<FileInfo> ZipFiles(List<FileInfo> inputFiles, string destinationFile)
         {
             destinationFile = Path.ChangeExtension(destinationFile, ".zip");
@@ -139,14 +137,16 @@ namespace Services.Extract
                 }
             }
 
-            return new List<FileInfo> {new FileInfo(destinationFile)};
+            return new List<FileInfo> { new FileInfo(destinationFile) };
         }
+
         internal void CopyFile(string sourceFileName, string destFileName, bool overwrite)
         {
             var destDir = Path.GetDirectoryName(destFileName);
             if (!Directory.Exists(destDir)) Directory.CreateDirectory(destDir);
             File.Copy(sourceFileName, destFileName, overwrite);
         }
+
         internal List<FileInfo> ConcatenateFiles(string destinationFile, List<FileInfo> sourceFiles)
         {
             if (!destinationFile.StartsWith(WorkspacePath)) destinationFile = WorkspacePath + @"\" + destinationFile;
@@ -171,14 +171,14 @@ namespace Services.Extract
                 sourceFile.Delete();
             }
 
-            return new List<FileInfo> {destinationFileInfo};
+            return new List<FileInfo> { destinationFileInfo };
         }
 
-        
         internal void CreateWorksapce(string path)
         {
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
         }
+
         internal void CleanWorkspace(string path)
         {
             var workspaceDirectory = new DirectoryInfo(path);
@@ -188,29 +188,28 @@ namespace Services.Extract
             }
         }
 
-        
         internal string DynamicToConcatenatedHeaderString(dynamic data, string delimiter, bool includeLineFeed)
-        {            
-            var jObject = (JObject) JToken.FromObject(data);            
+        {
+            var jObject = (JObject)JToken.FromObject(data);
             var output = string.Join(delimiter,
                 jObject.ToObject<Dictionary<string, string>>().Select(x1 => x1.Key.RemoveChar(delimiter)));
 
             if (includeLineFeed) output += Environment.NewLine;
             return output;
         }
+
         internal string DynamicToConcatenatedValuesString(dynamic data, string delimiter, bool includeLineFeed, bool boolToInt)
-        {            
-            var jObject = (JObject) JToken.FromObject(data);            
-            var output = string.Join(delimiter,jObject.ToObject<Dictionary<string, string>>().Select(x1 => x1.Value.RemoveChar(delimiter).BoolToInt(boolToInt)));
+        {
+            var jObject = (JObject)JToken.FromObject(data);
+            var output = string.Join(delimiter, jObject.ToObject<Dictionary<string, string>>().Select(x1 => x1.Value.RemoveChar(delimiter).BoolToInt(boolToInt)));
             if (includeLineFeed) output += Environment.NewLine;
             return output;
         }
-       
+
         internal void LoadDynamicParameters(ExtractSourcesAndDestinationFile[] connections, string sql, out IEnumerable<ExtractJobParameter> outPutParam)
         {
             var outputList = new List<dynamic>();
             var param = new List<ExtractJobParameter>();
-
 
             foreach (var connection in connections)
             {
@@ -297,39 +296,40 @@ namespace Services.Extract
 
             extractDataAndFileInformation = outputDataAndFileInformation;
         }
-        internal void  GetActiveSourceConnectionsAndDestinationFiles(out IEnumerable<ExtractSourcesAndDestinationFile> extractSourcesAndDestinationFiles)
+
+        internal void GetActiveSourceConnectionsAndDestinationFiles(out IEnumerable<ExtractSourcesAndDestinationFile> extractSourcesAndDestinationFiles)
         {
-            
+
             var activeConnections = new List<ExtractSourcesAndDestinationFile>();
-            
+
             if (Configuration.Regions != null)
             {
                 var irmaSourcesAndFiles = from c in Connections
-                    let nameWithoutExtension = Path.GetFileNameWithoutExtension(Configuration.OutputFileName)
-                    let extension = Path.GetExtension(Configuration.OutputFileName)
-                    let region = c.Key
-                    let regionalFilename = nameWithoutExtension.Contains("{region}")
-                        ? nameWithoutExtension.Replace("{region}", $"{region}")
-                        : $"{nameWithoutExtension}_{region}{extension}"
-                    where Configuration.Regions.Contains(region)
-                          && Configuration.Source.ToLower() == "irma"
-                    select new ExtractSourcesAndDestinationFile
-                    {
-                        Source = c.Value,
-                        DestinationFile = WorkspacePath + @"\" + regionalFilename
-                    };
+                                          let nameWithoutExtension = Path.GetFileNameWithoutExtension(Configuration.OutputFileName)
+                                          let extension = Path.GetExtension(Configuration.OutputFileName)
+                                          let region = c.Key
+                                          let regionalFilename = nameWithoutExtension.Contains("{region}")
+                                              ? nameWithoutExtension.Replace("{region}", $"{region}")
+                                              : $"{nameWithoutExtension}_{region}{extension}"
+                                          where Configuration.Regions.Contains(region)
+                                                && Configuration.Source.ToLower() == "irma"
+                                          select new ExtractSourcesAndDestinationFile
+                                          {
+                                              Source = c.Value,
+                                              DestinationFile = WorkspacePath + @"\" + regionalFilename
+                                          };
 
                 activeConnections.AddRange(irmaSourcesAndFiles);
             }
 
             var iconSourcesAndFiles =
                 from c in Connections
-            where c.Key.ToLower() == "icon" && Configuration.Source.ToLower() == "icon"
-            select new ExtractSourcesAndDestinationFile
-            {
-                Source = c.Value,
-                DestinationFile = WorkspacePath + @"\" + Configuration.OutputFileName
-            };
+                where c.Key.ToLower() == "icon" && Configuration.Source.ToLower() == "icon"
+                select new ExtractSourcesAndDestinationFile
+                {
+                    Source = c.Value,
+                    DestinationFile = WorkspacePath + @"\" + Configuration.OutputFileName
+                };
             activeConnections.AddRange(iconSourcesAndFiles);
 
 
@@ -346,6 +346,7 @@ namespace Services.Extract
 
             extractSourcesAndDestinationFiles = activeConnections;
         }
+
         internal FileInfo GetHeaders(IEnumerable<ExtractDataAndFileInformation> Data)
         {
             if (string.IsNullOrWhiteSpace(Configuration.Delimiter))
@@ -353,11 +354,11 @@ namespace Services.Extract
                 Configuration.Delimiter = "|";
             }
             dynamic firstRow = null;
-            
+
             foreach (var singleDateSet in Data)
             {
                 if (singleDateSet != null)
-                { 
+                {
                     firstRow = singleDateSet.Data.FirstOrDefault();
                     if (firstRow != null) break;
                 }
@@ -374,20 +375,22 @@ namespace Services.Extract
 
             return headerFile;
         }
+
         internal void LoadConnectionConfiguration()
         {
             Connections = (from c in ConfigurationManager.ConnectionStrings.Cast<ConnectionStringSettings>().Where(w => w.Name.StartsWith("Irma_"))
-                    let region = c.Name.Substring(c.Name.Length - 2, 2)
-                    select new
-                    {
-                        Source = region,
-                        Conn = new SqlConnection(c.ConnectionString)
-                    })
+                           let region = c.Name.Substring(c.Name.Length - 2, 2)
+                           select new
+                           {
+                               Source = region,
+                               Conn = new SqlConnection(c.ConnectionString)
+                           })
                 .ToDictionary(d => d.Source, d => d.Conn);
 
             Connections.Add("Icon", new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString));
             Connections.Add("Mammoth", new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString));
         }
+
         internal void ProcessHeaders(List<FileInfo> sourceFiles)
         {
             if (!Configuration.IncludeHeaders) return;
@@ -452,11 +455,11 @@ namespace Services.Extract
                 }
             }
         }
+
         public void Run(ExtractJobConfiguration configuration)
         {
             try
             {
-
                 Configuration = configuration;
                 CredentialsCacheManager.S3CredentialsCache.Refresh();
                 CredentialsCacheManager.SFtpCredentialsCache.Refresh();
@@ -497,7 +500,7 @@ namespace Services.Extract
             catch (Exception ex)
             {
                 Logger.Error(ex.Message);
-                var data = new Dictionary<string, string> {{"Job", JsonConvert.SerializeObject(configuration)}};
+                var data = new Dictionary<string, string> { { "Job", JsonConvert.SerializeObject(configuration) } };
 
                 if (AppSettingsAccessor.GetBoolSetting("SendOpsGenieAlerts"))
                     OpsGenie.CreateOpsgenieAlert(OpsGenieApiKey, OpsGenieUrl, ex.Message, "SCAD Extract Service Alert", data);
@@ -512,10 +515,11 @@ namespace Services.Extract
         {
             Configuration = config;
         }
+
         internal void TransformFilenames()
         {
             Configuration.OutputFileName = Configuration.OutputFileName.TransformSource(Configuration.Source);
-            Configuration.OutputFileName  =Configuration.OutputFileName.TransformDateTimeStamp();
+            Configuration.OutputFileName = Configuration.OutputFileName.TransformDateTimeStamp();
         }
 
         internal IEnumerable<FileInfo> WriteDataToFiles(IEnumerable<ExtractDataAndFileInformation> dataAndFileInfo, int connectionCounter)
@@ -525,7 +529,7 @@ namespace Services.Extract
                 Configuration.Delimiter = "|";
             }
             var files = dataAndFileInfo.Select(d => d.FileInformation);
-            var outputWriters = new Dictionary<string, StreamWriter>();            
+            var outputWriters = new Dictionary<string, StreamWriter>();
 
             foreach (var file in dataAndFileInfo)
             {
@@ -585,6 +589,7 @@ namespace Services.Extract
                 }
             }
         }
+
         internal void CopyFilesToEsb(string credentialKey, IEsbCredentialsCache credentialsCache, List<FileInfo> files)
         {
             if (!credentialsCache.Credentials.ContainsKey(credentialKey)) throw new Exception($"Unable to find ESB Credentials for Key: {credentialKey}");
@@ -622,7 +627,7 @@ namespace Services.Extract
 
                     if (credentials.TransactionId.Contains(dynamicParamKey))
                     {
-                        foreach(var value in DynamicParam.Select(v => v.Value))
+                        foreach (var value in DynamicParam.Select(v => v.Value))
                         {
                             if (file.Name.Contains(value.ToString()))
                             {
@@ -645,6 +650,7 @@ namespace Services.Extract
                 }
             }
         }
+
         internal void CopyFilesToS3(string credentialKey, IS3CredentialsCache credentialsCache, string destinationDir, List<FileInfo> files)
         {
 
@@ -652,7 +658,7 @@ namespace Services.Extract
             var credentials = credentialsCache.Credentials[credentialKey];
             if (credentials == null) throw new Exception($"Expected to find S3 Credentials for Key: {credentialKey} but they were null");
 
-            using (var client = new AmazonS3Client(credentials.AccessKey,credentials.SecretKey,new AmazonS3Config() {ServiceURL = credentials.BucketRegion}))
+            using (var client = new AmazonS3Client(credentials.AccessKey, credentials.SecretKey, new AmazonS3Config() { ServiceURL = credentials.BucketRegion }))
             {
                 foreach (var fileInfo in files)
                 {
@@ -667,7 +673,6 @@ namespace Services.Extract
                 }
             }
         }
-
 
         internal void CopyFilesToStoredDestination(string destinationPathKey, IFileDestinationCache fileDestinationCache, List<FileInfo> outputFiles)
         {
@@ -691,7 +696,7 @@ namespace Services.Extract
                     CopyFilesToS3(Configuration.Destination.CredentialsKey, CredentialsCacheManager.S3CredentialsCache, Configuration.Destination.Path, OutputFiles);
                     break;
                 case "file":
-                    OutputFiles.ForEach(of => CopyFile(sourceFileName: of.FullName, destFileName:Configuration.Destination.Path + of.Name, overwrite:true));
+                    OutputFiles.ForEach(of => CopyFile(sourceFileName: of.FullName, destFileName: Configuration.Destination.Path + of.Name, overwrite: true));
                     break;
                 case "pathkey":
                     CopyFilesToStoredDestination(Configuration.Destination.PathKey, FileDestinationCache, OutputFiles);
@@ -707,7 +712,5 @@ namespace Services.Extract
                     break;
             }
         }
-
-        
     }
 }

@@ -1,17 +1,16 @@
-﻿using System;
+﻿using Dapper;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Services.Extract.DataAccess.Commands;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Transactions;
-using Dapper;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Services.Extract.DataAccess.Commands;
 
-namespace Services.Extract.DataAccess.Tests
+namespace Services.Extract.DataAccess.Tests.Commands
 {
     [TestClass]
-    public class UpdateJobLastRunEndCommandHandlerTests
+    public class UpdateJobStatusCommandHandlerTests
     {
-        private UpdateJobLastRunEndCommandHandler commandHandler;
+        private UpdateJobStatusCommandHandler commandHandler;
         private SqlConnection sqlConnection;
         private TransactionScope transaction;
 
@@ -20,7 +19,7 @@ namespace Services.Extract.DataAccess.Tests
         {
             transaction = new TransactionScope();
             sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString);
-            commandHandler = new UpdateJobLastRunEndCommandHandler(sqlConnection);
+            commandHandler = new UpdateJobStatusCommandHandler(sqlConnection);
         }
 
         [TestCleanup]
@@ -31,22 +30,21 @@ namespace Services.Extract.DataAccess.Tests
         }
 
         [TestMethod]
-        public void UpdateJobLastRunEnd_JobExists_UpdatesLastRunEnd()
+        public void UpdateJobStatus_JobExists_UpdatesStatus()
         {
             //Given
             int testJobScheduleId = sqlConnection.QueryFirst<int>(GetInsertJobSchedule());
-            DateTime testDateTime = DateTime.Today;
 
             //When
-            commandHandler.Execute(new UpdateJobLastRunEndCommand
+            commandHandler.Execute(new UpdateJobStatusCommand
             {
                 JobScheduleId = testJobScheduleId,
-                LastRunEndDateTime = testDateTime
+                Status = "running"
             });
 
             //Then
-            var dateTime = sqlConnection.QueryFirst<DateTime>("SELECT LastRunEndDateTimeUtc FROM app.JobSchedule WHERE JobScheduleId = @JobScheduleId", new { JobScheduleId = testJobScheduleId });
-            Assert.AreEqual(testDateTime, dateTime);
+            var status = sqlConnection.QueryFirst<string>("SELECT Status FROM app.JobSchedule WHERE JobScheduleId = @JobScheduleId", new { JobScheduleId = testJobScheduleId });
+            Assert.AreEqual("running", status);
         }
 
         private string GetInsertJobSchedule()

@@ -55,7 +55,8 @@
     <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UpdateJobLastRunEndCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateJobStatusCommandHandlerTests.cs" />
+    <Compile Include="Commands\UpdateJobLastRunEndCommandHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
