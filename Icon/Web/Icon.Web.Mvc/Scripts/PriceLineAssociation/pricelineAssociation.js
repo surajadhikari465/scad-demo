@@ -10,24 +10,30 @@ $(document).ready(function () {
         columns: [
             { data: "ScanCode", name: "Scan Code", autoWidth: false },
             {
-                data: "IsPrimary", name: "Price Line Primary", autoWidth: true,
+                data: "IsPrimary",
+                name: "Price Line Primary",
+                autoWidth: true,
                 render: function (data, type, row) {
-                    if (row.IsPrimary == true) {
-                        return '<input type = "checkbox" name = "PriceLinePrimary[' + row.ItemId + ']" checked disabled  />';
+                    if (type == "display") {
+                        if (row.IsPrimary == true) {
+                            return '<input type = "checkbox" name = "PriceLinePrimary[' + row.ItemId + ']" checked disabled  />';
+                        }
+                        else {
+                            return '<input type = "checkbox" name = "PriceLinePrimary[' + row.ItemId + ']" onchange="togglePrimary(this, ' + row.ItemId + ')" />';
+                        }
                     }
-                    else {
-                        return '<input type = "checkbox" name = "PriceLinePrimary[' + row.ItemId + ']" onchange="togglePrimary(this, ' + row.ItemId + ')" />';
-                    }
+                    return data;
                 }
             },
             { data: "CustomerFriendlyDescription", name: "Customer Friendly Description", autoWidth: true },
             { data: "ProductDescription", name: "Product Description", autoWidth: true },
             { data: "ItemPack", name: "ItemPack", autoWidth: true },
-            { data: "RetailSize", name: "Retail Size", autoWidth: true, searchable: false },
-            { data: "UOM", name: "UOM", autoWidth: true, searchable: false }
+            { data: "RetailSize", name: "Retail Size", autoWidth: true, searchable: true },
+            { data: "UOM", name: "UOM", autoWidth: true, searchable: true }
         ],
         lengthMenu: [[20, 50, 100, -1], [20, 50, 100, 'All']],
-        loadingRecords: "Loading price line association data... Please wait..."
+        loadingRecords: "Loading price line association data... Please wait...",
+        order: [[1, "desc"], [0, "asc"]]
     });
 });
 
