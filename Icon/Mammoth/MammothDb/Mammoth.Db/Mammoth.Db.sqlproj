@@ -866,6 +866,7 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\30737_PopulateGlobalItemMessageType.sql" />
     <Build Include="dbo\Stored Procedures\AuditGPMPrice_NoGrouping.sql" />
     <None Include="Scripts\PostDeploymentScripts\36202_DeleteSkuPriceLineItemAttribute.sql" />
+    <None Include="Scripts\PostDeploymentScripts\41985_AMZItemVendorLane_JobSchedule.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
