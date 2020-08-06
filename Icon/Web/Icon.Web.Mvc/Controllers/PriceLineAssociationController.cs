@@ -4,6 +4,7 @@ using Icon.Logging;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
+using Icon.Web.Mvc.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -181,6 +182,7 @@ namespace Icon.Web.Mvc.Controllers
         /// <param name="itemId"></param>
         /// <returns>Json with the status.</returns>
         [HttpPost]
+        [WriteAccessAuthorize]
         public ActionResult ChangePrimaryItem(int priceLineId, int itemId)
         {
             try
@@ -207,6 +209,7 @@ namespace Icon.Web.Mvc.Controllers
         /// <param name="itemId"></param>
         /// <returns>Json with the status.</returns>
         [HttpPost]
+        [WriteAccessAuthorize]
         public ActionResult AddItemToPriceLine(int priceLineId, int itemId)
         {
             System.Threading.Thread.Sleep(10000);

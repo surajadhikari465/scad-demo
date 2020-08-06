@@ -29,13 +29,12 @@
         </ul>
         @Html.ActionLink("Back to Price Line Management", "/", "PriceLine", null, new { @class = "btn btn-light ml-1" })
         @Html.ActionLink("Back to Edit Price Line Management", "/PriceLine", "PriceLine", new { priceLineId = @Model.ItemGroupId }, new { @class = "btn btn-light ml-1" })
-        <a onclick="addItemToPriceLine()"  class = "btn btn-light ml-1">Add Item to Price Line</a>
-        <!--
+        @if (ViewHelpers.HasWriteAccess(Request, User))
+        {
+            <a onclick="addItemToPriceLine()" class="btn btn-light ml-1">Add Item to Price Line</a>
+        }
 
-        /div>
-
-    -->
-    </div>
+        </div>
     <hr />
 
     <div class="col-10 offset-1">
@@ -90,6 +89,7 @@
 <script type="text/javascript">
     var priceLineId = @Model.ItemGroupId;
     var priceModelDescription = "@Model.PriceLineDescription";
+    var hasWriteAccess = @ViewHelpers.HasWriteAccess(Request, User).ToString().ToLowerInvariant();
 </script>
 
 @section scripts

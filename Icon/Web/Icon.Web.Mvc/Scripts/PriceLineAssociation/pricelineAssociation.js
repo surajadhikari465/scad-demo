@@ -19,7 +19,13 @@ $(document).ready(function () {
                             return '<input type = "checkbox" name = "PriceLinePrimary[' + row.ItemId + ']" checked disabled  />';
                         }
                         else {
-                            return '<input type = "checkbox" name = "PriceLinePrimary[' + row.ItemId + ']" onchange="togglePrimary(this, ' + row.ItemId + ')" />';
+                            return '<input type = "checkbox" name = "PriceLinePrimary['
+                                + row.ItemId
+                                + ']" onchange="togglePrimary(this, '
+                                + row.ItemId
+                                + ')"'
+                                + (!hasWriteAccess ? ' disabled ' : '')
+                                + ' />';
                         }
                     }
                     return data;
