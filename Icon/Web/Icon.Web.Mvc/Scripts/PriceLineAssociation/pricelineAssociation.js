@@ -137,15 +137,13 @@ function clearAddItemDialogBox() {
     $("#previousPriceLinePanel").hide();
     $("#addItemMessagePanel").hide();
     $("#addItemMessage").text('');
-    //$("#dlgAddItem").dialog("option", "height", 260);
 }
 
 function addItemToPriceLine() {
     var addEnablementInterval= null;
     $("#dlgAddItem").dialog({
         resizable: false,
-        //height: 260,
-        height: 'auto',
+        height: 380,
         width: '40%',
         modal: true,
         closeOnEscape: true,
@@ -179,8 +177,6 @@ function addItemToPriceLine() {
                     selectedItem.scanCode = scanCode
 
                     if (selectedItem.previousPriceLine != null) {
-                        $("#dlgAddItem").dialog("option", "height", 380);
-
                         if (selectedItem.isPrimary && selectedItem.isLastInpreviousPriceLine == false) {
                             $('#addButton').attr("disabled", true);
                             $("#previousPriceLine").text(
@@ -201,7 +197,6 @@ function addItemToPriceLine() {
                             $("#previousPriceLinePanel").show();
                         }
                     } else {
-                        $("#dlgAddItem").dialog("option", "height", 260);;
                         $("#previousPriceLinePanel").hide();
                         $("#previousPriceLine").text(''); 
                     }
@@ -228,7 +223,6 @@ function addItemToPriceLine() {
                     $(".ui-dialog-buttonset").children().hide();
                     $(".ui-dialog-title").text("Processing Request...");
                     $("#previousPriceLinePanel").hide();
-                    //$("#dlgAddItem").dialog("option", "height", 380);
                     $("#addItemMessagePanel").show();
                     $("#addItemMessage").html('Adding Item... &nbsp<span class="spinner-border float-right ml-auto text-primary" role="status" aria-hidden="true" style="color: red" />');
 
