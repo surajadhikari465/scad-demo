@@ -28,6 +28,7 @@ const orderUtil = {
       Subteam: order.transfer_To_SubTeamName,
       SubteamNo: order.transfer_To_SubTeam,
       Vendor: order.companyName,
+      VendorId: order.vendor_ID,
       OrderItemId: orderItem.orderItem_ID,
       PkgWeight: orderItem.package_Desc1,
       PkgQuantity: orderItem.package_Desc2,
@@ -55,7 +56,6 @@ const orderUtil = {
       OrderDate: order.orderDate,
       Notes: order.notes,
     };
-
     return orderDetails;
   },
   MapOrderItem: (oi: any): OrderItem => {

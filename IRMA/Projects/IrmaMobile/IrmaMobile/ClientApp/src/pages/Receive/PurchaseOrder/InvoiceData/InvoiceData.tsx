@@ -247,7 +247,7 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
                     cancelAction: () => { setAlert({ ...alert, open: false }); }
                 });
             } else {
-                closeOrder();
+               closeOrder();
             }
         };
 
@@ -259,7 +259,10 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             header: 'Confirm Close Order',
             alertMessage: alertMessage,
             type: 'confirm',
-            confirmAction: () => { handleConfirmCloseOrder(); },
+            confirmAction: () => {
+                setAlert({ ...alert, open: false });
+                handleConfirmCloseOrder(); 
+            },
             cancelAction: () => { setAlert({ ...alert, open: false }); }
         });
     }
@@ -275,6 +278,17 @@ const InvoiceData: React.FC<IProps> = ({ match }) => {
             const invoiceCost = invoiceTotal - nonAllocatedCharges - orderDetails.InvoiceFreight;
             const invoiceNumberArgument = !invoiceNumber ? '' : invoiceNumber.toString();
             const invoiceDateArgument = radioSelection === radioOptions.None ? new Date() : new Date(invoiceDate);
+
+            var dupeCheckResult = await agent.InvoiceData.checkDuplicateInvoice(
+                region,
+                invoiceNumberArgument,
+                orderDetails.VendorId,
+                orderDetails.OrderId)
+
+            if (dupeCheckResult && dupeCheckResult.flag) {
+                toast.error(`"The order cannot be closed.  This invoice number [${invoiceNumberArgument}] has already been used for this vendor."`);
+                return;
+            }
 
             var updateResult = await agent.InvoiceData.updateOrderBeforeClosing(
                 region,

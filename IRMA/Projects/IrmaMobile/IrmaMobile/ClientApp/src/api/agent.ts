@@ -98,6 +98,8 @@ const PurchaseOrder = {
 };
 
 const InvoiceData = {
+    checkDuplicateInvoice: async (region: string, invoiceNumber: string, vendorId: string, orderId: number) =>
+        await requests.get(`/${region}/invoicedata/CheckInvoiceNumber?orderId=${orderId}&invoiceNumber=${invoiceNumber}&vendorId=${vendorId}`),
     getCurrencies: async (region: string) =>
         await requests.get(`/${region}/invoicedata/Currencies`),
     getOrderInvoiceCharges: async (region: string, orderId: number) =>

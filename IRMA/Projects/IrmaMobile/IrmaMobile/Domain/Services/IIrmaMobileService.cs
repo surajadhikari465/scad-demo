@@ -39,5 +39,6 @@ namespace IrmaMobile.Services
         Task<UserModel> GetUser(string region, string userName);
         Task UpdateOrderHeaderCosts(string region, int orderHeaderId);
         Task<Result> UpdateReceivingDiscrepancyCode(string region, int orderItemId, int reasonCodeId);
+        Task<Result> CheckDuplicateInvoice(string region, int orderId, int vendorId, string invoiceNunber);
     }
 }

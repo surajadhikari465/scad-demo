@@ -436,5 +436,11 @@ namespace IrmaMobile.Services
         {
             return await MakeServiceRequest(region, client => client.UpdateReceivingDiscrepancyCodeAsync($"{orderItemId},{reasonCodeId}|", "|", ","));
         }
+
+        public async Task<Result> CheckDuplicateInvoice(string region, int orderId, int vendorId, string invoiceNunber)
+        {
+            return await MakeServiceRequest(region,
+                client => client.CheckInvoiceNumberAsync(vendorId, invoiceNunber, orderId));
+        }
     }
 }

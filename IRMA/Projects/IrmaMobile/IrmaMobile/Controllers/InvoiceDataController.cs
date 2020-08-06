@@ -151,5 +151,14 @@ namespace IrmaMobile.Controllers
 
             await service.UpdateOrderHeaderCosts(region, orderId);
         }
+
+        [ProducesResponseType(200)]
+        [HttpGet]
+        public async Task<Result> CheckInvoiceNumber([FromRoute] string region, [FromQuery] int orderId, string invoiceNumber, int vendorId)
+        {
+            logger.LogInformation(LoggingEvents.ApiStarted, $"Executing: {nameof(InvoiceDataController)}.{nameof(CheckInvoiceNumber)}");
+            var result = await service.CheckDuplicateInvoice(region, orderId, vendorId, invoiceNumber);
+            return result;
+        }
     }
 }

@@ -14,6 +14,7 @@ export interface OrderDetails {
   Subteam: string;
   SubteamNo: number;
   Vendor: string;
+  VendorId: string;
   OrderItemId: number;
   PkgWeight: number;
   PkgQuantity: number;
