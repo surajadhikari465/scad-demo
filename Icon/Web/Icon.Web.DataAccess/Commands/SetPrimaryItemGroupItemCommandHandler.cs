@@ -18,7 +18,20 @@ namespace Icon.Web.DataAccess.Commands
 	                    AND (
 	                    [itemId] =  @PrimaryItemId
 	                    OR [IsPrimary] = 1
-	                    )";
+	                    );
+
+                    UPDATE [dbo].[ItemGroup]
+	                SET KeyWords = CONCAT(
+				                ig.[ItemGroupId]
+				                ,' ', JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SkuDescription')
+				                ,' ', JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineDescription')
+				                ,' ', JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineSize')
+				                ,' ', JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineUOM')
+				                ,' ', sc.[ScanCode]	)
+		                FROM [dbo].[ItemGroup] ig 
+			                INNER JOIN [dbo].[ItemGroupMember] img ON (img.[ItemGroupId] = ig.ItemGroupId AND img.[IsPrimary] =1)
+			                INNER JOIN [dbo].[ScanCode] sc  ON (sc.[ItemId] = img.[ItemId])
+                        WHERE ig.[itemGroupId] = @ItemGroupId;";
 
         /// <summary>
         /// Initialize an instance of SetPrimaryItemGroupItemCommandHandler.
