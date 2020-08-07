@@ -18,4 +18,7 @@
 GO
 
 GRANT ALTER, DELETE, INSERT, SELECT ON [dbo].[VendorLaneExtract] TO [IRMAPDXExtractRole] AS [dbo];
-Go
+GO
+
+GRANT ALTER, DELETE, INSERT, SELECT ON [dbo].[VendorLaneExtract] TO [IConInterface] AS [dbo];
+GO

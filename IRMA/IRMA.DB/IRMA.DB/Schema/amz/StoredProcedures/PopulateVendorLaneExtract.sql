@@ -5,7 +5,9 @@ SET NOCOUNT ON
 
 DECLARE @currentDate  datetime = getdate()
 
-INSERT INTO dbo.VendorLaneExtract (UPC, ITEM_KEY, VIN, STORE_NUMBER,VENDOR_NUMBER, VENDOR_NAME, VENDOR_CASE_SIZE, VENDOR_CASE_UOM, VENDOR_COST_UOM,REG_COST, RETAIL_UOM, RETAIL_PACK, PRIMARY_VENDOR)
+TRUNCATE TABLE dbo.VendorLaneExtract
+
+INSERT INTO dbo.VendorLaneExtract (UPC, ITEM_KEY, VIN, STORE_NUMBER,VENDOR_NUMBER, VENDOR_NAME, VENDOR_CASE_SIZE, VENDOR_CASE_UOM, VENDOR_COST_UOM,REG_COST, RETAIL_UOM, RETAIL_PACK, PRIMARY_VENDOR,GLOBAL_SUBTEAM)
 SELECT 
 	ii.Identifier as UPC, 
 	i.Item_Key as ITEM_KEY,
@@ -19,10 +21,12 @@ SELECT
 	vch.UnitCost as REG_COST, 
 	rtrim(riu.Unit_Abbreviation) as RETAIL_UOM, 
 	i.Package_Desc1 as RETAIL_PACK,
-    siv.PrimaryVendor as PRIMARY_VENDOR
+    siv.PrimaryVendor as PRIMARY_VENDOR,
+	st.SubDept_No as GLOBAL_SUBTEAM
 FROM StoreItemVendor siv
 join Store s on siv.Store_No = s.Store_No
 join Item i on siv.Item_key = i.Item_Key
+join SubTeam st on st.SubTeam_No = i.SubTeam_No
 join ItemIdentifier ii on i.Item_key = ii.Item_Key 
 join StoreItem si on si.Store_No = s.Store_No and si.Item_Key = i.Item_Key
 join ValidatedScanCode vsc on vsc.ScanCode = ii.Identifier
