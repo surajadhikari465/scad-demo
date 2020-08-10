@@ -59,8 +59,8 @@ Friend Class frmPricingBatch
             MsgBox(ResourcesIRMA.GetString("BypassNoTagLogicInformationMessage"), MsgBoxStyle.Information, Me.Text)
             'reset the flag
             _operationSucceededWhileIgnoringNoTagLogic = False
-            ' make sure the checkbox is unchecked 
-            If chkIgnoreNoTagLogic.Checked Then
+            ' make sure the checkbox is unchecked if the DisableNoTagLogicCheckboxes IDF is disabled
+            If chkIgnoreNoTagLogic.Checked And Not IsIgnoreNoTagLogicCheckboxDisabled() Then
                 chkIgnoreNoTagLogic.Checked = False
             End If
         End If
