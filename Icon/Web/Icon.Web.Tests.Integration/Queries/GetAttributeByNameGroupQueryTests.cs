@@ -7,6 +7,7 @@ using Icon.Web.Tests.Integration.TestHelpers;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
+    [Ignore("TODO: PBI-39840 - Fix Icon Unit and Integration tests in Icon Web")]
     [TestClass]
     public class GetAttributeByNameGroupQueryTests
     {

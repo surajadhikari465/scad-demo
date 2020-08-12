@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class GetHierarchyLineageQueryTests
     {
         private IconContext context;

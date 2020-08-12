@@ -5,7 +5,7 @@ using Icon.Common.Validators;
 
 namespace Icon.Tests.Validators
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class BusinessUnitValidatorTests
     {
         [TestMethod]

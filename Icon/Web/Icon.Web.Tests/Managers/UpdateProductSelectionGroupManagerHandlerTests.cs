@@ -7,7 +7,7 @@ using Icon.Common.DataAccess;
 
 namespace Icon.Web.Tests.Unit.Managers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class UpdateProductSelectionGroupManagerHandlerTests
     {
         private IconContext context;

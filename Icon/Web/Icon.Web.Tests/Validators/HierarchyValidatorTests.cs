@@ -4,7 +4,7 @@ using Icon.Common.Validators;
 
 namespace Icon.Web.Tests.Unit.Validators
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class HierarchyValidatorTests
     {
         [TestMethod]

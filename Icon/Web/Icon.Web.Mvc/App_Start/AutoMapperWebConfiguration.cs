@@ -57,7 +57,9 @@ namespace Icon.Web.Mvc.App_Start
                 .ForMember(d => d.TeamNumber, o => o.Ignore())
                 .ForMember(d => d.TeamName, o => o.Ignore())
                 .ForMember(d => d.NonAlignedSubteam, o => o.Ignore())
-                .ForMember(d => d.SubteamChanged, o => o.Ignore());
+                .ForMember(d => d.SubteamChanged, o => o.Ignore())
+                .ForMember(d => d.NonMerchandiseTraitChanged, o => o.Ignore())
+                .ForMember(d => d.ProhibitDiscountChanged, o => o.Ignore());
             this.CreateMap<AddHierarchyClassCommand, MessageHierarchyData>()
                 .ForMember(d => d.HierarchyClass, o => o.MapFrom(s => s.NewHierarchyClass))
                 .ForMember(d => d.ClassNameChange, o => o.Ignore())

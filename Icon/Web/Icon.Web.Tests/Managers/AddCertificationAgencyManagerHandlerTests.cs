@@ -9,7 +9,7 @@ using Moq;
 
 namespace Icon.Web.Tests.Unit.Managers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class AddCertificationAgencyManagerHandlerTests
     {
         private AddCertificationAgencyManagerHandler managerHandler;

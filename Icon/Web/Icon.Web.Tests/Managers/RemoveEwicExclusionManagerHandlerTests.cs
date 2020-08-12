@@ -15,7 +15,7 @@ using System.Xml.Linq;
 
 namespace Icon.Web.Tests.Unit.Managers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class RemoveEwicExclusionManagerHandlerTests
     {
         private RemoveEwicExclusionManagerHandler managerHandler;

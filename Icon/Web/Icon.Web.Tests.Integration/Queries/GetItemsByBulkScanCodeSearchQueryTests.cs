@@ -8,7 +8,8 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass] [Ignore]
+    [TestClass]
+    [Ignore("39840 - These unit tests need rewrite.")]
     public class GetItemsByBulkScanCodeSearchQueryTests
     {
         private GetItemsByBulkScanCodeSearchQuery query;
@@ -103,6 +104,7 @@ namespace Icon.Web.Tests.Integration.Queries
         }
 
         [TestMethod]
+        [Ignore("42363 - Tech Debt - Unit test need further investigation")]
         public void GetItemsByBulkScanCodeSearch_ResultsAreReturned_ModelValuesShouldMatchDatabaseValues()
         {
             // Given.

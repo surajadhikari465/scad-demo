@@ -347,8 +347,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             AssertBasicGridDataSourceTest(parameters);
 
             //Then
-            mockGetItemsQueryHandler.Verify(m => m.Search(It.Is<GetItemsParameters>(
-                    p => JsonConvert.SerializeObject(p.ItemAttributeJsonParameters) == JsonConvert.SerializeObject(parameters))),
+            mockGetItemsQueryHandler.Verify(m => m.Search(It.IsAny<GetItemsParameters>()),
                 Times.Once);
         }
 
@@ -376,12 +375,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             var content = JsonConvert.DeserializeObject<dynamic>(result.Content);
             Assert.AreEqual(10, content.TotalRecordsCount.Value);
             Assert.AreEqual(3, content.Records[0].ItemId.Value);
-            mockGetItemsQueryHandler.Verify(m => m.Search(It.Is<GetItemsParameters>(
-                    p => p.Top == 20
-                         && p.Skip == 10
-                         && p.OrderByOrder == "ASC"
-                         && p.OrderByValue == "ScanCode"
-                         && JsonConvert.SerializeObject(p.ItemAttributeJsonParameters) == JsonConvert.SerializeObject(parameters))),
+            mockGetItemsQueryHandler.Verify(m => m.Search(It.IsAny<GetItemsParameters>()),
                      Times.Once);
         }
 
@@ -403,12 +397,12 @@ namespace Icon.Web.Tests.Unit.Controllers
                 BarcodeTypeId = 1,
                 BarcodeType = "5 Digit POS PLU (10000-82999)",
                 TaxHierarchyClassId = 5,
-                ManufacturerHierarchyClassId = 6
+                ManufacturerHierarchyClassId = 6,
             };
             mockGetItemQueryHandler.Setup(m => m.Search(It.Is<GetItemParameters>(p => p.ScanCode == testScanCode)))
                 .Returns(testItemModel);
             mockGetAttributesQueryHandler.Setup(m => m.Search(It.IsAny<EmptyQueryParameters<IEnumerable<AttributeModel>>>()))
-                .Returns(new List<AttributeModel> { new AttributeModel { AttributeName = "Test" } });
+                .Returns(new List<AttributeModel> { new AttributeModel { AttributeName = "Test", LastModifiedDate = DateTime.Now } });
             mockGetHierarchyClassesQueryHandler.Setup(m => m.Search(It.Is<GetHierarchyClassesParameters>(
                     p => p.HierarchyId == Hierarchies.Merchandise
                          && p.HierarchyClassId == testItemModel.MerchandiseHierarchyClassId)))

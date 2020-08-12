@@ -403,7 +403,7 @@ namespace Icon.Web.Tests.Unit.Validators
                 {"test2", "test" },
                 {"test3", "test" }
             };
-
+            itemCreateViewModel.BarcodeTypeId = 1;
             //When
             var result = validator.Validate(itemCreateViewModel);
 

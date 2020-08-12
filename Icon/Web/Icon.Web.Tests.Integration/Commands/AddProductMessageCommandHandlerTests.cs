@@ -1,19 +1,22 @@
 ﻿using Icon.Framework;
 using Icon.Testing.Builders;
 using Icon.Web.DataAccess.Commands;
+using Icon.Web.Tests.Integration.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass]
+    [Ignore("39840 - These unit tests need rewrite.")]
     public class AddProductMessageCommandHandlerTests
     {
         private AddProductMessageCommandHandler commandHandler;
         private IconContext context;
-        private DbContextTransaction transaction;
         private Item testItem;
         private ScanCode testScanCode;
         private HierarchyClass testMerchandiseClass;
@@ -27,19 +30,20 @@ namespace Icon.Web.Tests.Integration.Commands
         private HierarchyClassTrait testKosherTrait;
         private ItemNutrition itemNutrition;
         private ItemSignAttribute itemSignAttribute;
+        private TransactionScope transactionScope;
 
         [TestInitialize]
         public void InitializeData()
         {
+            transactionScope = new TransactionScope();
             context = new IconContext();
             commandHandler = new AddProductMessageCommandHandler(context);
-            transaction = this.context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            this.transaction.Rollback();
+            transactionScope.Dispose();
         }
 
         [TestMethod]
@@ -524,72 +528,79 @@ namespace Icon.Web.Tests.Integration.Commands
                 context.SaveChanges();
 
                 // Item
-                testItem = new Item { ItemTypeId = 1, ItemType = context.ItemType.First(it => it.itemTypeCode == "RTL") };
-                context.Item.Add(testItem);
-                context.SaveChanges();
 
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.ProductDescription, "ProdDes"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PosDescription, "PosDesc"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PackageUnit, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.RetailSize, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.RetailUom, "EA"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.FoodStampEligible, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PosScaleTare, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.DepartmentSale, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.ValidationDate, DateTime.Now.ToString()));
+                ItemTestHelper itemTestHelper = new ItemTestHelper();
+                itemTestHelper.Initialize(context.Database.Connection, false, false);
+                itemTestHelper.TestScanCode = "111222333499";
+                var newItem = itemTestHelper.CreateDefaultTestItem();
+                itemTestHelper.SaveItem(newItem);
+                itemTestHelper.CreateItemNutrition(newItem);
+                testItem = context.Item.First(i => i.ItemId == newItem.ItemId);
+
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.ProductDescription, "ProdDes"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PosDescription, "PosDesc"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PackageUnit, "1"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.RetailSize, "1"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.RetailUom, "EA"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.FoodStampEligible, "1"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PosScaleTare, "1"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.DepartmentSale, "1"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.ValidationDate, DateTime.Now.ToString()));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.Locale, DateTime.Now.ToString()));
 
                 testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testMerchandiseClass.hierarchyClassID));
                 testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testBrowsingClass.hierarchyClassID));
                 testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testBrandClass.hierarchyClassID));
                 testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testTaxClass.hierarchyClassID));
                 testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testNationalClass.hierarchyClassID));
-                
+                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testFinancialClass.hierarchyClassID));
+
                 context.SaveChanges();
 
-                testScanCode = new ScanCode
-                {
-                    itemID = testItem.ItemId,
-                    localeID = Locales.WholeFoods,
-                    scanCodeTypeID = ScanCodeTypes.PosPlu,
-                    scanCode = "111222333499",
-                    Item = context.Item.First(i => i.ItemId == testItem.ItemId),
-                    ScanCodeType = context.ScanCodeType.Single(sct => sct.scanCodeTypeDesc == ScanCodeTypeDescriptions.PosPlu)
-                };
+                //testScanCode = new ScanCode
+                //{
+                //    itemID = testItem.ItemId,
+                //    localeID = Locales.WholeFoods,
+                //    scanCodeTypeID = ScanCodeTypes.PosPlu,
+                //    scanCode = "111222333499",
+                //    Item = context.Item.First(i => i.ItemId == testItem.ItemId),
+                //    ScanCodeType = context.ScanCodeType.Single(sct => sct.scanCodeTypeDesc == ScanCodeTypeDescriptions.PosPlu)
+                //};
 
-                context.ScanCode.Add(testScanCode);
-                context.SaveChanges();
+                //context.ScanCode.Add(testScanCode);
+                //context.SaveChanges();
 
-                itemNutrition = new ItemNutrition
-                {
-                    Plu = "111222333499",
-                    RecipeName = "Integration test recipe",
-                    ServingUnits = 1,
-                    HshRating = 3,
-                    VitaminA = 5
-                };
+                //itemNutrition = new ItemNutrition
+                //{
+                //    Plu = "111222333499",
+                //    RecipeName = "Integration test recipe",
+                //    ServingUnits = 1,
+                //    HshRating = 3,
+                //    VitaminA = 5
+                //};
 
-                context.ItemNutrition.Add(itemNutrition);
-                context.SaveChanges();
+                //context.ItemNutrition.Add(itemNutrition);
+                //context.SaveChanges();
 
-                itemSignAttribute = new ItemSignAttribute
-                {
-                    ItemID = testItem.ItemId,
-                    Biodynamic = true,
-                    CheeseRaw = false,
-                    MadeInHouse = true,
-                    GrassFed = false,
-                    Vegetarian = false,
-                    PremiumBodyCare = false,
-                    Msc = true,
-                    AirChilled = true,
-                    DryAged = true,
-                    FreeRange = false,
-                    PastureRaised = true,
-                    WholeTrade = true
-                };
+                //itemSignAttribute = new ItemSignAttribute
+                //{
+                //    ItemID = testItem.ItemId,
+                //    Biodynamic = true,
+                //    CheeseRaw = false,
+                //    MadeInHouse = true,
+                //    GrassFed = false,
+                //    Vegetarian = false,
+                //    PremiumBodyCare = false,
+                //    Msc = true,
+                //    AirChilled = true,
+                //    DryAged = true,
+                //    FreeRange = false,
+                //    PastureRaised = true,
+                //    WholeTrade = true
+                //};
 
-                context.ItemSignAttribute.Add(itemSignAttribute);
-                context.SaveChanges();
+                //context.ItemSignAttribute.Add(itemSignAttribute);
+                //context.SaveChanges();
             }
             catch(Exception e)
             {
@@ -599,111 +610,120 @@ namespace Icon.Web.Tests.Integration.Commands
 
         private void SetupNonRetailProductMessageTestData()
         {
-            try
-            {
-                // HierarchyClasses
-                testMerchandiseClass = CreateTestHierarchyClass(Hierarchies.Merchandise, "Test Merch", 5);
-                testBrandClass = CreateTestHierarchyClass(Hierarchies.Brands, "Test Brand", 1);
-                testBrowsingClass = CreateTestHierarchyClass(Hierarchies.Browsing, "Test Browsing", 1);
-                testTaxClass = CreateTestHierarchyClass(Hierarchies.Tax, "Test Tax", 1);
-                testFinancialClass = CreateTestHierarchyClass(Hierarchies.Financial, "Financial Class (1234)", 1);
-                testNationalClass = CreateTestHierarchyClass(Hierarchies.National, "Test National", 1);
-                testKosherClass = CreateTestHierarchyClass(Hierarchies.CertificationAgencyManagement, "Test Kosher", 1);
+            //try
+            //{
+            //    // HierarchyClasses
+                //testMerchandiseClass = CreateTestHierarchyClass(Hierarchies.Merchandise, "Test Merch", 5);
+                //testBrandClass = CreateTestHierarchyClass(Hierarchies.Brands, "Test Brand", 1);
+                //testBrowsingClass = CreateTestHierarchyClass(Hierarchies.Browsing, "Test Browsing", 1);
+                //testTaxClass = CreateTestHierarchyClass(Hierarchies.Tax, "Test Tax", 1);
+                //testFinancialClass = CreateTestHierarchyClass(Hierarchies.Financial, "Financial Class (1234)", 1);
+                //testNationalClass = CreateTestHierarchyClass(Hierarchies.National, "Test National", 1);
+                //testKosherClass = CreateTestHierarchyClass(Hierarchies.CertificationAgencyManagement, "Test Kosher", 1);
 
-                context.HierarchyClass.Add(testMerchandiseClass);
-                context.HierarchyClass.Add(testBrowsingClass);
-                context.HierarchyClass.Add(testBrandClass);
-                context.HierarchyClass.Add(testTaxClass);
-                context.HierarchyClass.Add(testFinancialClass);
-                context.HierarchyClass.Add(testNationalClass);
-                context.HierarchyClass.Add(testKosherClass);
-                context.SaveChanges();
+                //context.HierarchyClass.Add(testMerchandiseClass);
+                //context.HierarchyClass.Add(testBrowsingClass);
+                //context.HierarchyClass.Add(testBrandClass);
+                //context.HierarchyClass.Add(testTaxClass);
+                //context.HierarchyClass.Add(testFinancialClass);
+                //context.HierarchyClass.Add(testNationalClass);
+                //context.HierarchyClass.Add(testKosherClass);
+                //context.SaveChanges();
 
-                testFinancialTrait = CreateTestHierarchyClassTrait(
-                    Traits.MerchFinMapping,
-                    testMerchandiseClass.hierarchyClassID,
-                    "Financial Class (1234)");
-                testKosherTrait = CreateTestHierarchyClassTrait(
-                   Traits.Kosher,
-                   testKosherClass.hierarchyClassID,
-                   "1");
+                //testFinancialTrait = CreateTestHierarchyClassTrait(
+                //    Traits.MerchFinMapping,
+                //    testMerchandiseClass.hierarchyClassID,
+                //    "Financial Class (1234)");
+                //testKosherTrait = CreateTestHierarchyClassTrait(
+                //   Traits.Kosher,
+                //   testKosherClass.hierarchyClassID,
+                //   "1");
 
-                context.HierarchyClassTrait.Add(testFinancialTrait);
-                context.HierarchyClassTrait.Add(testKosherTrait);
-                context.SaveChanges();
+                //context.HierarchyClassTrait.Add(testFinancialTrait);
+                //context.HierarchyClassTrait.Add(testKosherTrait);
+                //context.SaveChanges();
 
-                // Item
-                testItem = new Item { ItemTypeId = 1, ItemType = context.ItemType.First(it => it.itemTypeCode == "NRT") };
-                context.Item.Add(testItem);
-                context.SaveChanges();
+                //// Item
+                //testItem = new Item { ItemTypeId = 1, ItemType = context.ItemType.First(it => it.itemTypeCode == "NRT") };
+                //context.Item.Add(testItem);
+                //context.SaveChanges();
 
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.ProductDescription, "ProdDes"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PosDescription, "PosDesc"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PackageUnit, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.RetailSize, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.RetailUom, "EA"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.FoodStampEligible, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PosScaleTare, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.DepartmentSale, "1"));
-                testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.ValidationDate, DateTime.Now.ToString()));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.ProductDescription, "ProdDes"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PosDescription, "PosDesc"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PackageUnit, "1"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.RetailSize, "1"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.RetailUom, "EA"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.FoodStampEligible, "1"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.PosScaleTare, "1"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.DepartmentSale, "1"));
+                //testItem.ItemTrait.Add(CreateTestItemTrait(testItem.ItemId, Traits.ValidationDate, DateTime.Now.ToString()));
 
-                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testMerchandiseClass.hierarchyClassID));
-                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testBrowsingClass.hierarchyClassID));
-                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testBrandClass.hierarchyClassID));
-                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testTaxClass.hierarchyClassID));
-                testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testNationalClass.hierarchyClassID));
+                //testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testMerchandiseClass.hierarchyClassID));
+                //testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testBrowsingClass.hierarchyClassID));
+                //testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testBrandClass.hierarchyClassID));
+                //testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testTaxClass.hierarchyClassID));
+                //testItem.ItemHierarchyClass.Add(CreateTestItemHierarchyClass(testItem.ItemId, testNationalClass.hierarchyClassID));
 
-                context.SaveChanges();
+                //context.SaveChanges();
 
-                testScanCode = new ScanCode
-                {
-                    itemID = testItem.ItemId,
-                    localeID = Locales.WholeFoods,
-                    scanCodeTypeID = ScanCodeTypes.PosPlu,
-                    scanCode = "111222333499",
-                    Item = context.Item.First(i => i.ItemId == testItem.ItemId),
-                    ScanCodeType = context.ScanCodeType.Single(sct => sct.scanCodeTypeDesc == ScanCodeTypeDescriptions.PosPlu)
-                };
+                //testScanCode = new ScanCode
+                //{
+                //    itemID = testItem.ItemId,
+                //    localeID = Locales.WholeFoods,
+                //    scanCodeTypeID = ScanCodeTypes.PosPlu,
+                //    scanCode = "111222333499",
+                //    Item = context.Item.First(i => i.ItemId == testItem.ItemId),
+                //    ScanCodeType = context.ScanCodeType.Single(sct => sct.scanCodeTypeDesc == ScanCodeTypeDescriptions.PosPlu)
+                //};
 
-                context.ScanCode.Add(testScanCode);
-                context.SaveChanges();
+                //context.ScanCode.Add(testScanCode);
+                //context.SaveChanges();
 
-                itemNutrition = new ItemNutrition
-                {
-                    Plu = "111222333499",
-                    RecipeName = "Integration test recipe",
-                    ServingUnits = 1,
-                    HshRating = 3,
-                    VitaminA = 5
-                };
+                //itemNutrition = new ItemNutrition
+                //{
+                //    Plu = "111222333499",
+                //    RecipeName = "Integration test recipe",
+                //    ServingUnits = 1,
+                //    HshRating = 3,
+                //    VitaminA = 5
+                //};
 
-                context.ItemNutrition.Add(itemNutrition);
-                context.SaveChanges();
+                //context.ItemNutrition.Add(itemNutrition);
+                //context.SaveChanges();
 
-                itemSignAttribute = new ItemSignAttribute
-                {
-                    ItemID = testItem.ItemId,
-                    Biodynamic = true,
-                    CheeseRaw = false,
-                    MadeInHouse = true,
-                    GrassFed = false,
-                    Vegetarian = false,
-                    PremiumBodyCare = false,
-                    Msc = true,
-                    AirChilled = true,
-                    DryAged = true,
-                    FreeRange = false,
-                    PastureRaised = true,
-                    WholeTrade = true
-                };
+                //itemSignAttribute = new ItemSignAttribute
+                //{
+                //    ItemID = testItem.ItemId,
+                //    Biodynamic = true,
+                //    CheeseRaw = false,
+                //    MadeInHouse = true,
+                //    GrassFed = false,
+                //    Vegetarian = false,
+                //    PremiumBodyCare = false,
+                //    Msc = true,
+                //    AirChilled = true,
+                //    DryAged = true,
+                //    FreeRange = false,
+                //    PastureRaised = true,
+                //    WholeTrade = true
+                //};
 
-                context.ItemSignAttribute.Add(itemSignAttribute);
-                context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+                //context.ItemSignAttribute.Add(itemSignAttribute);
+                //context.SaveChanges();
+                //}
+                //catch (Exception e)
+                //{
+                //    throw e;
+                //}
+
+                ItemTestHelper itemTestHelper = new ItemTestHelper();
+
+                itemTestHelper.Initialize(context.Database.Connection, false, false);
+                itemTestHelper.TestScanCode = "111222333499";
+                var newItem = itemTestHelper.CreateDefaultTestItem();
+                itemTestHelper.SaveItem(newItem);
+                itemTestHelper.CreateItemNutrition(newItem);
+                testItem = context.Item.First(i => i.ItemId == newItem.ItemId);
         }
 
         private HierarchyClass CreateTestHierarchyClass(int hierarchyId, string hierarchyClassName, int hierarchyClassLevel)

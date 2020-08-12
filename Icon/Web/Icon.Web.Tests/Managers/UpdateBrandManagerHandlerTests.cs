@@ -12,7 +12,7 @@ using System;
 
 namespace Icon.Web.Tests.Unit.Managers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class UpdateBrandManagerHandlerTests
     {
         private BrandManagerHandler managerHandler;

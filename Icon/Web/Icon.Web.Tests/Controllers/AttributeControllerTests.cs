@@ -144,7 +144,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             Assert.AreEqual(result.ViewName, String.Empty); // This will be empty if the view returned is not specified and returning the controller action
         }
 
-
         [TestMethod]
         public void All_Get_ShouldReturnAllAttributes()
         {
@@ -152,7 +151,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             this.mockGetAttributesQuery.Setup(m => m.Search(It.IsAny<EmptyQueryParameters<IEnumerable<AttributeModel>>>()))
                 .Returns(new List<AttributeModel>()
                 {
-                    new AttributeModel { AttributeName = "AttributeName", AttributeId=1, Description="Description"}
+                    new AttributeModel { AttributeName = "AttributeName", AttributeId=1, Description="Description", LastModifiedDate = DateTime.Now.AddDays(-1) }
                 });
 
             //When

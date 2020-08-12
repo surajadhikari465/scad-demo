@@ -80,9 +80,9 @@ namespace Icon.Web.Tests.Unit.Exporters
             Assert.AreEqual("Request Number", itemTemplateNewExporter.spreadsheetColumns[0].HeaderTitle);
             Assert.AreEqual("Barcode Type", itemTemplateNewExporter.spreadsheetColumns[1].HeaderTitle);
             Assert.AreEqual("Inactive", itemTemplateNewExporter.spreadsheetColumns[2].HeaderTitle);
-            Assert.AreEqual("Scan Code", itemTemplateNewExporter.spreadsheetColumns[3].HeaderTitle);
-            Assert.AreEqual("Brands", itemTemplateNewExporter.spreadsheetColumns[4].HeaderTitle);
-            Assert.AreEqual("Product Description", itemTemplateNewExporter.spreadsheetColumns[5].HeaderTitle);
+            Assert.AreEqual("Product Description", itemTemplateNewExporter.spreadsheetColumns[3].HeaderTitle);
+            Assert.AreEqual("POS Description", itemTemplateNewExporter.spreadsheetColumns[4].HeaderTitle);
+            Assert.AreEqual("Customer Friendly Description", itemTemplateNewExporter.spreadsheetColumns[5].HeaderTitle);
         }
 
         [TestMethod]

@@ -11,7 +11,7 @@ using Icon.Common.DataAccess;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
-    [TestClass] [Ignore]
+    [TestClass] 
     public class FinancialControllerTests
     {
         private FinancialController controller;

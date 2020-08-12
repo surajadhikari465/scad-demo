@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Unit.Decorators
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class UpdateSubTeamMammothEventDecoratorTests
     {
         private IconContext context;

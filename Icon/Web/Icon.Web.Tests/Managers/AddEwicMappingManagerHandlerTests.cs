@@ -16,7 +16,7 @@ using Icon.Common.Validators;
 
 namespace Icon.Web.Tests.Unit.Managers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class AddEwicMappingManagerHandlerTests
     {
         private AddEwicMappingManagerHandler managerHandler;

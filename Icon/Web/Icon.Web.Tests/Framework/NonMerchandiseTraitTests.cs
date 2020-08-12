@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Unit.Framework
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class NonMerchandiseTraitTests
     {
         private IconContext context;

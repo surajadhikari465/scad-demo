@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass] [Ignore]
+    [TestClass] 
     public class GetIrmaItemsQueryTests
     {
         private IconContext context;
@@ -257,7 +257,7 @@ namespace Icon.Web.Tests.Integration.Queries
             // Given
             GetIrmaItemsParameters parameters = new GetIrmaItemsParameters
             {
-                Identifier = "99",
+                Identifier = "9988",
                 TaxRomanceName = "Undefined"
             };
 

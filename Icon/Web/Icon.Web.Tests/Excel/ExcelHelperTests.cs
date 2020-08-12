@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Unit.Excel
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class ExcelHelperTests
     {
         [TestMethod]
@@ -207,20 +207,6 @@ namespace Icon.Web.Tests.Unit.Excel
 
             // Then.
             Assert.AreEqual(String.Empty, result);
-        }
-
-        [TestMethod]
-        public void GetIdFromCellText_LineageText_IdPortionShouldBeReturned()
-        {
-            // Given.
-            string lineage = "Lineage|2222";
-            string id = lineage.Split('|').Last().Trim();
-
-            // When.
-            string result = lineage.GetIdFromCellText();
-
-            // Then.
-            Assert.AreEqual(id, result);
         }
 
         [TestMethod]

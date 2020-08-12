@@ -7,6 +7,7 @@ using Infragistics.Documents.Excel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Icon.Web.Tests.Unit.Exporters
 {
@@ -38,16 +39,15 @@ namespace Icon.Web.Tests.Unit.Exporters
             // Then.
             Worksheet brandWorksheet = exportModel.ExcelWorkbook.Worksheets[0];
 
-            Assert.AreEqual("Exported", brandWorksheet.Name);
-            Assert.AreEqual("Brand Name", brandWorksheet.Rows[0].Cells[0].Value, "Column header on the export did not match expected value");
-            Assert.AreEqual("Brand ID", brandWorksheet.Rows[0].Cells[1].Value, "Column header on the export did not match expected value");
-            Assert.AreEqual("Brand Abbreviation", brandWorksheet.Rows[0].Cells[2].Value, "Column header on the export of first row did not match expected value");
-            Assert.AreEqual("Designation", brandWorksheet.Rows[0].Cells[3].Value, "Column header on the export did not match expected value");
-            Assert.AreEqual("Parent Company", brandWorksheet.Rows[0].Cells[4].Value, "Column header on the export did not match expected value");
-            Assert.AreEqual("Zip Code", brandWorksheet.Rows[0].Cells[5].Value, "Column header on the export did not match expected value");
-            Assert.AreEqual("Locality", brandWorksheet.Rows[0].Cells[6].Value, "Column header on the export did not match expected value");
-            
-            Assert.AreEqual("Exported", brandWorksheet.Name);
+            Assert.IsTrue(brandWorksheet.Rows[0].Cells.Any(c => ((string)c.Value) == "Brand Name"));
+            Assert.IsTrue(brandWorksheet.Rows[0].Cells.Any(c => ((string)c.Value) == "Brand ID"));
+            Assert.IsTrue(brandWorksheet.Rows[0].Cells.Any(c => ((string)c.Value) == "Brand Abbreviation"));
+            Assert.IsTrue(brandWorksheet.Rows[0].Cells.Any(c => ((string)c.Value) == "Designation"));
+            Assert.IsTrue(brandWorksheet.Rows[0].Cells.Any(c => ((string)c.Value) == "Parent Company"));
+            Assert.IsTrue(brandWorksheet.Rows[0].Cells.Any(c => ((string)c.Value) == "Zip Code"));
+            Assert.IsTrue(brandWorksheet.Rows[0].Cells.Any(c => ((string)c.Value) == "Locality"));
+
+            Assert.AreEqual("Brands", brandWorksheet.Name);
             Assert.AreEqual("Reference Brands", exportModel.ExcelWorkbook.Worksheets[1].Name);
             Assert.AreEqual("Designation", exportModel.ExcelWorkbook.Worksheets[2].Name);
             Assert.AreEqual("ParentCompany", exportModel.ExcelWorkbook.Worksheets[3].Name);

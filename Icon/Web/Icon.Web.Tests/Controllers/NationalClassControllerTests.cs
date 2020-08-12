@@ -21,7 +21,6 @@ using System.Web.Mvc;
 namespace Icon.Web.Tests.Unit.Controllers
 {
     [TestClass]
-    [Ignore]
     public class NationalClassControllerTests
     {
         private Mock<ILogger> mockLogger;
@@ -245,7 +244,7 @@ namespace Icon.Web.Tests.Unit.Controllers
         public void Edit_SuccessfulUpdate_TempDataShouldContainSuccessMessage()
         {
             // Given.
-            var expected = "Update was successful.";
+            var expected = "Updated Fake Hierarchy Class Name successfully.";
             var viewModel = GetFakeHierarchyClassViewModel(GetFakeHierarchyClass());
 
             // When.

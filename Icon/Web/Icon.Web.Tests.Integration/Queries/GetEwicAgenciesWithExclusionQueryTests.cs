@@ -1,28 +1,35 @@
 ﻿using Icon.Framework;
 using Icon.Testing.Builders;
 using Icon.Web.DataAccess.Queries;
+using Icon.Web.Tests.Integration.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class GetEwicAgenciesWithExclusionQueryTests
     {
         private GetEwicAgenciesWithExclusionQuery query;
         private IconContext context;
-        private DbContextTransaction transaction;
         private string testExclusion;
         private List<Agency> testAgencies;
         private List<string> testAgenciesId;
         private Item testItem;
+        private ItemTestHelper itemTestHelper;
+        private TransactionScope transactionScope;
 
         [TestInitialize]
         public void Initialize()
         {
+            transactionScope = new TransactionScope();
             context = new IconContext();
+            itemTestHelper = new ItemTestHelper();
+            itemTestHelper.Initialize(context.Database.Connection, false, false);
+
             query = new GetEwicAgenciesWithExclusionQuery(this.context);
 
             testExclusion = "22222222228";
@@ -33,14 +40,13 @@ namespace Icon.Web.Tests.Integration.Queries
                 "XX",
                 "YY"
             };
-
-            transaction = context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            context.Dispose();
+            transactionScope.Dispose();
         }
 
         [TestMethod]
@@ -71,9 +77,11 @@ namespace Icon.Web.Tests.Integration.Queries
             context.Agency.AddRange(testAgencies);
             context.SaveChanges();
 
-            testItem = new TestItemBuilder().WithScanCode(testExclusion);
-            context.Item.Add(testItem);
-            context.SaveChanges();
+            itemTestHelper.TestScanCode = testExclusion;
+            var tmpItem = itemTestHelper.CreateDefaultTestItem();
+            itemTestHelper.SaveItem(tmpItem);
+
+            testItem = context.Item.First(i => i.ItemId == tmpItem.ItemId);
 
             testAgencies[0].ScanCode.Add(testItem.ScanCode.Single());
             context.SaveChanges();
@@ -103,10 +111,11 @@ namespace Icon.Web.Tests.Integration.Queries
 
             context.Agency.AddRange(testAgencies);
             context.SaveChanges();
+            itemTestHelper.TestScanCode = testExclusion;
+            var tmpItem = itemTestHelper.CreateDefaultTestItem();
+            itemTestHelper.SaveItem(tmpItem);
 
-            testItem = new TestItemBuilder().WithScanCode(testExclusion);
-            context.Item.Add(testItem);
-            context.SaveChanges();
+            testItem = context.Item.First(i => i.ItemId == tmpItem.ItemId);
 
             testAgencies[0].ScanCode.Add(testItem.ScanCode.Single());
             testAgencies[1].ScanCode.Add(testItem.ScanCode.Single());

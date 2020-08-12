@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Icon.Web.Tests.Unit.Validators
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class ValueRequiredValidatorTests
     {
         [TestCategory("Validator")]

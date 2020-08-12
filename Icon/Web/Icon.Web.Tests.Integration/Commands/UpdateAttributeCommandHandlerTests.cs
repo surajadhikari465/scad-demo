@@ -33,6 +33,7 @@ namespace Icon.Web.Tests.Integration.Commands
             transaction = dbConnection.BeginTransaction();
             updateItemColumnOrderCommandHandler = new UpdateItemColumnOrderCommandHandler(new SqlDbProvider {Connection = dbConnection, Transaction = transaction} );
         }
+
         [TestMethod]
         public void UpdateItemColumnOrderCommandHandler_Update1OrderValue_DBValueIncremented()
         {
@@ -66,7 +67,7 @@ namespace Icon.Web.Tests.Integration.Commands
                         ReferenceId, 
                         h.HierarchyName ReferenceName,
                         d.DisplayOrder 
-                from dbo.ItemDisplayOrder d
+                from dbo.ItemColumnDisplayOrder d
                 inner join dbo.Hierarchy h on d.ReferenceId = h.HierarchyId
 				where d.ColumnType = 'Hierarchy'
 
@@ -76,7 +77,7 @@ namespace Icon.Web.Tests.Integration.Commands
                         ReferenceId, 
                         a.AttributeName ReferenceName,
                         d.DisplayOrder 
-                from dbo.ItemDisplayOrder d
+                from dbo.ItemColumnDisplayOrder d
                 inner join dbo.Attributes a on d.ReferenceId = a.AttributeId
 				where d.ColumnType = 'Attribute'
                 order by DisplayOrder

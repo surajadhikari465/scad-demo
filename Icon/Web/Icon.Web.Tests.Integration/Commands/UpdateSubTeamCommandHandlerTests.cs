@@ -2,6 +2,7 @@
 using Icon.Logging;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Infrastructure;
+using Icon.Web.Tests.Integration.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -9,10 +10,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class UpdateSubTeamCommandHandlerTests
     {
         private IconContext context;
@@ -21,14 +23,16 @@ namespace Icon.Web.Tests.Integration.Commands
         private HierarchyClass subTeam;
         private HierarchyClass merchLevelFive;
         private Item item;
+        private TransactionScope transactionScope;
+
 
         [TestInitialize]
         public void InitializeData()
         {
+            this.transactionScope = new TransactionScope();
             this.context = new IconContext();
             this.logger = new Mock<ILogger>();
             this.handler = new UpdateSubTeamCommandHandler(this.context);
-
             Cleanup();
 
             // Add Test SubTeams To Work With
@@ -46,6 +50,7 @@ namespace Icon.Web.Tests.Integration.Commands
             Cleanup();
 
             this.context.Dispose();
+            this.transactionScope.Dispose();
         }
 
         private void Cleanup()
@@ -343,38 +348,47 @@ namespace Icon.Web.Tests.Integration.Commands
 
         private void AddFakeItemsAssociatedToMerch()
         {
-            this.item = new Item { ItemTypeId = 1, ItemType = this.context.ItemType.First(it => it.itemTypeID == 1) };
-            this.context.Item.Add(item);
-            this.context.SaveChanges();
+            ItemTestHelper itemTestHelper = new ItemTestHelper();
 
-            ScanCode scanCode = new ScanCode { itemID = item.ItemId, localeID = 1, scanCode = "111222444822", scanCodeTypeID = 1, ScanCodeType = this.context.ScanCodeType.First(sct => sct.scanCodeTypeID == 1) };
-            this.context.ScanCode.Add(scanCode);
-            this.context.SaveChanges();
+            itemTestHelper.Initialize(context.Database.Connection, false, false);
+            itemTestHelper.TestScanCode = "111222444822";
+            var newItem = itemTestHelper.CreateDefaultTestItem();
+            itemTestHelper.SaveItem(newItem);
+            itemTestHelper.CreateItemNutrition(newItem);
+            this.item = context.Item.First(i => i.ItemId == newItem.ItemId);
 
-            ItemTrait validationDate = new ItemTrait { itemID = item.ItemId, localeID = 1, traitID = Traits.ValidationDate, traitValue = DateTime.Now.ToString(), Trait = this.context.Trait.First(t => t.traitCode == TraitCodes.ValidationDate) };
-            ItemTrait productDescription = new ItemTrait { itemID = item.ItemId, localeID = 1, traitID = Traits.ProductDescription, traitValue = "update subteam product description trait", Trait = this.context.Trait.First(t => t.traitCode == TraitCodes.ProductDescription) };
-            ItemTrait posDescription = new ItemTrait { itemID = item.ItemId, localeID = 1, traitID = Traits.PosDescription, traitValue = "update subteam pos desc trait", Trait = this.context.Trait.First(t => t.traitCode == TraitCodes.PosDescription) };
-            ItemTrait foodStamp = new ItemTrait { itemID = item.ItemId, localeID = 1, traitID = Traits.FoodStampEligible, traitValue = "0", Trait = this.context.Trait.First(t => t.traitCode == TraitCodes.FoodStampEligible) };
-            ItemTrait posScaleTare = new ItemTrait { itemID = item.ItemId, localeID = 1, traitID = Traits.PosScaleTare, traitValue = "0", Trait = this.context.Trait.First(t => t.traitCode == TraitCodes.PosScaleTare) };
-            ItemTrait packageUnit = new ItemTrait { itemID = item.ItemId, localeID = 1, traitID = Traits.PackageUnit, traitValue = "1", Trait = this.context.Trait.First(t => t.traitCode == TraitCodes.PackageUnit) };
+            //this.item = new Item { ItemTypeId = 1, ItemType = this.context.ItemType.First(it => it.itemTypeID == 1) };
+            //this.context.Item.Add(item);
+            //this.context.SaveChanges();
 
-            this.context.ItemTrait.Add(validationDate);
-            this.context.ItemTrait.Add(productDescription);
-            this.context.ItemTrait.Add(posDescription);
-            this.context.ItemTrait.Add(foodStamp);
-            this.context.ItemTrait.Add(posScaleTare);
-            this.context.ItemTrait.Add(packageUnit);
-            this.context.SaveChanges();
+            //ScanCode scanCode = new ScanCode { itemID = item.ItemId, localeID = 1, scanCode = "111222444822", scanCodeTypeID = 1, ScanCodeType = this.context.ScanCodeType.First(sct => sct.scanCodeTypeID == 1) };
+            //this.context.ScanCode.Add(scanCode);
+            //this.context.SaveChanges();
 
-            int taxId = this.context.HierarchyClass.First(hc => hc.hierarchyID == Hierarchies.Tax).hierarchyClassID;
-            int brandId = this.context.HierarchyClass.First(hc => hc.hierarchyID == Hierarchies.Brands && hc.HierarchyClassTrait.Any(hct => hct.traitID == Traits.SentToEsb)).hierarchyClassID;
-            ItemHierarchyClass itemMerch = new ItemHierarchyClass { hierarchyClassID = this.merchLevelFive.hierarchyClassID, itemID = item.ItemId, localeID = 1 };
-            ItemHierarchyClass itemTax = new ItemHierarchyClass { hierarchyClassID = taxId, itemID = item.ItemId, localeID = 1 };
-            ItemHierarchyClass itemBrand = new ItemHierarchyClass { hierarchyClassID = brandId, itemID = item.ItemId, localeID = 1 };
-            this.context.ItemHierarchyClass.Add(itemMerch);
-            this.context.ItemHierarchyClass.Add(itemTax);
-            this.context.ItemHierarchyClass.Add(itemBrand);
-            this.context.SaveChanges();
+            //ItemTrait validationDate = new ItemTrait { itemID = item.ItemId, localeID = 1, traitID = Traits.ValidationDate, traitValue = DateTime.Now.ToString(), Trait = this.context.Trait.First(t => t.traitCode == TraitCodes.ValidationDate) };
+            //ItemTrait productDescription = new ItemTrait { itemID = item.ItemId, localeID = 1, traitID = Traits.ProductDescription, traitValue = "update subteam product description trait", Trait = this.context.Trait.First(t => t.traitCode == TraitCodes.ProductDescription) };
+            //ItemTrait posDescription = new ItemTrait { itemID = item.ItemId, localeID = 1, traitID = Traits.PosDescription, traitValue = "update subteam pos desc trait", Trait = this.context.Trait.First(t => t.traitCode == TraitCodes.PosDescription) };
+            //ItemTrait foodStamp = new ItemTrait { itemID = item.ItemId, localeID = 1, traitID = Traits.FoodStampEligible, traitValue = "0", Trait = this.context.Trait.First(t => t.traitCode == TraitCodes.FoodStampEligible) };
+            //ItemTrait posScaleTare = new ItemTrait { itemID = item.ItemId, localeID = 1, traitID = Traits.PosScaleTare, traitValue = "0", Trait = this.context.Trait.First(t => t.traitCode == TraitCodes.PosScaleTare) };
+            //ItemTrait packageUnit = new ItemTrait { itemID = item.ItemId, localeID = 1, traitID = Traits.PackageUnit, traitValue = "1", Trait = this.context.Trait.First(t => t.traitCode == TraitCodes.PackageUnit) };
+
+            //this.context.ItemTrait.Add(validationDate);
+            //this.context.ItemTrait.Add(productDescription);
+            //this.context.ItemTrait.Add(posDescription);
+            //this.context.ItemTrait.Add(foodStamp);
+            //this.context.ItemTrait.Add(posScaleTare);
+            //this.context.ItemTrait.Add(packageUnit);
+            //this.context.SaveChanges();
+
+            //int taxId = this.context.HierarchyClass.First(hc => hc.hierarchyID == Hierarchies.Tax).hierarchyClassID;
+            //int brandId = this.context.HierarchyClass.First(hc => hc.hierarchyID == Hierarchies.Brands && hc.HierarchyClassTrait.Any(hct => hct.traitID == Traits.SentToEsb)).hierarchyClassID;
+            //ItemHierarchyClass itemMerch = new ItemHierarchyClass { hierarchyClassID = this.merchLevelFive.hierarchyClassID, itemID = item.ItemId, localeID = 1 };
+            //ItemHierarchyClass itemTax = new ItemHierarchyClass { hierarchyClassID = taxId, itemID = item.ItemId, localeID = 1 };
+            //ItemHierarchyClass itemBrand = new ItemHierarchyClass { hierarchyClassID = brandId, itemID = item.ItemId, localeID = 1 };
+            //this.context.ItemHierarchyClass.Add(itemMerch);
+            //this.context.ItemHierarchyClass.Add(itemTax);
+            //this.context.ItemHierarchyClass.Add(itemBrand);
+            //this.context.SaveChanges();
         }
     }
 }

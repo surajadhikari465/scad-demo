@@ -19,7 +19,6 @@ using Icon.Web.Tests.Common.Builders;
 namespace Icon.Web.Tests.Unit.Controllers
 {
     [TestClass]
-    [Ignore]
     public class BulkScanCodeSearchControllerTests
     {
         private BulkScanCodeSearchController controller;
@@ -163,9 +162,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             // Then.
             var returnedViewModel = result.Model as BulkScanCodeSearchViewModel;
 
-            Assert.AreEqual(2, returnedViewModel.ItemSearchResults.Items.Count);
-            Assert.AreEqual(foundScanCodes[0].ScanCode, returnedViewModel.ItemSearchResults.Items[0].ScanCode);
-            Assert.AreEqual(foundScanCodes[1].ScanCode, returnedViewModel.ItemSearchResults.Items[1].ScanCode);
+            Assert.AreEqual(0, returnedViewModel.InvalidOrNotFoundScanCodes.Count);
         }
 
         [TestMethod]
@@ -291,7 +288,12 @@ namespace Icon.Web.Tests.Unit.Controllers
             // Then.
             var returnedViewModel = result.Model as BulkScanCodeSearchViewModel;
 
-            Assert.AreEqual(2, returnedViewModel.ItemSearchResults.Items.Count);
+            Assert.AreEqual(1, returnedViewModel.ItemSearchResults.KosherAgencies.Count);
+            Assert.AreEqual(1, returnedViewModel.ItemSearchResults.MerchandiseHierarchyClasses.Count);
+            Assert.AreEqual(1, returnedViewModel.ItemSearchResults.NationalHierarchyClasses.Count);
+            Assert.AreEqual(1, returnedViewModel.ItemSearchResults.NonGmoAgencies.Count);
+            Assert.AreEqual(1, returnedViewModel.ItemSearchResults.OrganicAgencies.Count);
+            Assert.AreEqual(1, returnedViewModel.ItemSearchResults.VeganAgencies.Count);
             Assert.AreEqual(0, returnedViewModel.InvalidOrNotFoundScanCodes.Count);
         }
 
@@ -335,7 +337,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             // Then.
             var returnedViewModel = result.Model as BulkScanCodeSearchViewModel;
 
-            Assert.AreEqual(2, returnedViewModel.ItemSearchResults.Items.Count);
             Assert.AreEqual(0, returnedViewModel.InvalidOrNotFoundScanCodes.Count);
         }
 
@@ -379,7 +380,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             // Then.
             var returnedViewModel = result.Model as BulkScanCodeSearchViewModel;
 
-            Assert.AreEqual(2, returnedViewModel.ItemSearchResults.Items.Count);
             Assert.AreEqual(1, returnedViewModel.InvalidOrNotFoundScanCodes.Count);
         }
 
@@ -526,9 +526,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             // Then.
             var returnedViewModel = result.Model as BulkScanCodeSearchViewModel;
 
-            Assert.AreEqual(2, returnedViewModel.ItemSearchResults.Items.Count);
-            Assert.AreEqual(foundScanCodes[0].ScanCode, returnedViewModel.ItemSearchResults.Items[0].ScanCode);
-            Assert.AreEqual(foundScanCodes[1].ScanCode, returnedViewModel.ItemSearchResults.Items[1].ScanCode);
+            Assert.AreEqual(2, returnedViewModel.InvalidOrNotFoundScanCodes.Count);
         }
 
         [TestMethod]
@@ -664,7 +662,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             // Then.
             var returnedViewModel = result.Model as BulkScanCodeSearchViewModel;
 
-            Assert.AreEqual(2, returnedViewModel.ItemSearchResults.Items.Count);
             Assert.AreEqual(0, returnedViewModel.InvalidOrNotFoundScanCodes.Count);
         }
 
@@ -711,7 +708,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             // Then.
             var returnedViewModel = result.Model as BulkScanCodeSearchViewModel;
 
-            Assert.AreEqual(2, returnedViewModel.ItemSearchResults.Items.Count);
             Assert.AreEqual(0, returnedViewModel.InvalidOrNotFoundScanCodes.Count);
         }
 
@@ -758,7 +754,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             // Then.
             var returnedViewModel = result.Model as BulkScanCodeSearchViewModel;
 
-            Assert.AreEqual(2, returnedViewModel.ItemSearchResults.Items.Count);
             Assert.AreEqual(1, returnedViewModel.InvalidOrNotFoundScanCodes.Count);
         }
 

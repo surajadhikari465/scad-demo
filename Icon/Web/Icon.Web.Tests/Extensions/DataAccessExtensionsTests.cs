@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Unit.Extensions
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class DataAccessExtensionsTests
     {
         private IconContext context;

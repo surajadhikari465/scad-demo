@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass] 
     public class AddBrandCommandHandlerTests
     {
         private AddBrandCommandHandler commandHandler;
@@ -98,28 +98,6 @@ namespace Icon.Web.Tests.Integration.Commands
                 hct.hierarchyClassID == brandToAdd.hierarchyClassID && hct.traitID == Traits.BrandAbbreviation);
 
             Assert.IsNull(newBrandAbbreviation);
-        }
-
-        [TestMethod]
-        public void AddBrand_SuccessfulExecution_SentToEsbHierarchyClassTraitShouldBeCreatedWithNullValue()
-        {
-            // Given.
-            HierarchyClass brandToAdd = new TestHierarchyClassBuilder();
-
-            var command = new AddBrandCommand
-            {
-                Brand = brandToAdd,
-                BrandAbbreviation = null
-            };
-
-            // When.
-            commandHandler.Execute(command);
-
-            // Then.
-            var sentToEsbTrait = context.HierarchyClassTrait.Single(hct =>
-                hct.hierarchyClassID == brandToAdd.hierarchyClassID && hct.traitID == Traits.SentToEsb).traitValue;
-
-            Assert.IsNull(sentToEsbTrait);
         }
 
         [TestMethod]

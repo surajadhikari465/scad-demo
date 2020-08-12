@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Icon.Web.Tests.Unit.Attributes
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class AtLeastOneRequiredSpecifiedAttributeTests
     {
         [TestMethod]

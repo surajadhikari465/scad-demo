@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class GetAplScanCodesQueryTests
     {
         private IconContext context;

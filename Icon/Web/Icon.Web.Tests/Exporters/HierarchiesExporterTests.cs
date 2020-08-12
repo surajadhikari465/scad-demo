@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Icon.Web.Tests.Unit.Exporters
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class HierarchiesExporterTests
     {
         private WorkbookFormat excelFormat;

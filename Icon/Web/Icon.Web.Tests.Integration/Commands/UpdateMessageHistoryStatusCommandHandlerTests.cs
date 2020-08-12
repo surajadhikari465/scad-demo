@@ -8,7 +8,7 @@ using Icon.Testing.Builders;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class UpdateMessageHistoryStatusCommandHandlerTests
     {
         private UpdateMessageHistoryStatusCommandHandler commandHandler;

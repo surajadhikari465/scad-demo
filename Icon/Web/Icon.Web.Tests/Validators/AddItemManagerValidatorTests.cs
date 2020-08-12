@@ -13,7 +13,7 @@
 
 //namespace Icon.Web.Tests.Unit.Validators
 //{
-//    [TestClass] [Ignore]
+//    [TestClass]
 //    public class AddItemManagerValidatorTests
 //    {
 //        private AddItemManagerValidator validator;

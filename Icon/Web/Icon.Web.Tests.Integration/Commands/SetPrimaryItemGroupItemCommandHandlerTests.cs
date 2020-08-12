@@ -80,6 +80,15 @@ namespace Icon.Web.Tests.Integration.Commands
             var itemGroupMember2 = result.FirstOrDefault(igm => igm.IsPrimary == true);
             Assert.AreEqual(PrimaryItemScanCode, itemGroupMember1.ScanCode);
             Assert.AreEqual(SecondaryItemScanCode, itemGroupMember2.ScanCode);
+
+            var itemGroupKeyWords = this.connection.QuerySingle<string>(@"
+                SELECT [KeyWords] FROM [Icon].[dbo].[ItemGroup] WHERE [ItemGroupId] = @ItemGroupId;", 
+                new
+                {
+                    ItemGroupId = itemGroupId
+                });
+            Assert.IsTrue(itemGroupKeyWords.Contains(item2.ScanCode));
+            Assert.IsFalse(itemGroupKeyWords.Contains(item1.ScanCode));
         }
 
         /// <summary>

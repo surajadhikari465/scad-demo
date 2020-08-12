@@ -12,7 +12,7 @@ namespace Icon.Web.Tests.Unit.Utility
         {
             // Given
             DateTime dateTime = DateTime.UtcNow;
-            string expectedDateTimeString = dateTime.ToString("yyyy-MM-ddThh:mm:ss.ffffffZ");
+            string expectedDateTimeString = dateTime.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ");
 
             // When
             string formattedDateTime = dateTime.ToFormattedDateTimeString();

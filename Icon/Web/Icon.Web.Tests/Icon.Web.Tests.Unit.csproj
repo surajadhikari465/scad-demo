@@ -124,7 +124,7 @@
       <HintPath>..\packages\Icon.FeatureFlags.2020.7.2.6\lib\netstandard2.0\Icon.FeatureFlags.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2019.12.6.1\lib\net472\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2020.6.23.1\lib\net472\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -136,7 +136,7 @@
       <HintPath>..\packages\Icon.Shared.DataAccess.Dapper.2019.12.16.3\lib\net472\Icon.Shared.DataAccess.Dapper.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Testing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Testing.2019.8.26.7\lib\net472\Icon.Testing.dll</HintPath>
+      <HintPath>..\packages\Icon.Testing.2020.8.4.7\lib\net472\Icon.Testing.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Olap.DataProvider.Adomd.Mvc, Version=5.19.1.22, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <HintPath>..\packages\IgniteUI.MVC.19.1.22\lib\net451\Infragistics.Olap.DataProvider.Adomd.Mvc.dll</HintPath>
@@ -204,8 +204,8 @@
       <HintPath>..\packages\System.IO.Packaging.4.6.0\lib\net46\System.IO.Packaging.dll</HintPath>
     </Reference>
     <Reference Include="System.Messaging" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.6.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />

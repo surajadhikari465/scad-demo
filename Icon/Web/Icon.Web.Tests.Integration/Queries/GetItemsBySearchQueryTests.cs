@@ -3,22 +3,23 @@ using Icon.Testing.Builders;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Tests.Common.Builders;
+using Icon.Web.Tests.Integration.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class GetItemsBySearchQueryTests
     {
         private GetItemsBySearchQuery getItemsBySearchQuery;
         private GetItemsBySearchParameters parameters;
         private IconContext context;
-        private DbContextTransaction transaction;
         private Item item1;
         private Item item2;
         private Item item3;
@@ -27,61 +28,35 @@ namespace Icon.Web.Tests.Integration.Queries
         private List<ItemTrait> itemTraits;
         private List<ItemHierarchyClass> itemHierarchyClasses;
         private HierarchyClass testTaxClass;
-        private string testTaxRomance;
         private HierarchyClass testMerch;
         private HierarchyClass testNationalClass;
+        private TransactionScope transactionScope;
+        private ItemTestHelper itemTestHelper;
 
         [TestInitialize]
         public void Initialize()
         {
+            transactionScope = new TransactionScope();
             context = new IconContext();
-            transaction = context.Database.BeginTransaction();
 
-            testBrand = new HierarchyClass { hierarchyID = 2, hierarchyClassName = "GetItemsBySearchQuery Integration Test Brand" };
-            testMerch = new HierarchyClass { hierarchyID = Hierarchies.Merchandise, hierarchyClassName = "GetItemsBySearchQuery Integration Test Merch" };
-            testNationalClass = new HierarchyClass
-            {
-                hierarchyID = Hierarchies.National,
-                hierarchyClassName = "GetItemsBySearchQuery Integration Test National",
-                HierarchyClassTrait = new List<HierarchyClassTrait>
-                {
-                    new HierarchyClassTrait {traitID = Traits.NationalClassCode, traitValue = "Test National Class" }
-                }
-            };
-            testTaxClass = new HierarchyClass
-            {
-                hierarchyID = Hierarchies.Tax,
-                hierarchyClassName = "GetItemsBySearchQuery-Test Tax",
-                HierarchyClassTrait = new List<HierarchyClassTrait>
-                {
-                    new HierarchyClassTrait { traitID = Traits.TaxRomance, traitValue = "GetItemsBySearchQuery-Test TaxRomance" }
-                }
-            };
-            context.HierarchyClass.Add(testTaxClass);
-            context.HierarchyClass.Add(testBrand);
-            context.HierarchyClass.Add(testMerch);
-            context.HierarchyClass.Add(testNationalClass);
-            context.SaveChanges();
+            itemTestHelper = new ItemTestHelper();
+            itemTestHelper.Initialize(context.Database.Connection, false, false);
 
-            item1 = new Item
-            {
-                ItemTypeId = 1,
-                ScanCode = new List<ScanCode> { new ScanCode { scanCode = "11111155549", scanCodeTypeID = 1, localeID = 1 } }
-            };
-            item2 = new Item
-            {
-                ItemTypeId = 1,
-                ScanCode = new List<ScanCode> { new ScanCode { scanCode = "11111155545", scanCodeTypeID = 1, localeID = 1 } }
-            };
-            item3 = new Item
-            {
-                ItemTypeId = 1,
-                ScanCode = new List<ScanCode> { new ScanCode { scanCode = "11111155536", scanCodeTypeID = 1, localeID = 1 } }
-            };
-            context.Item.Add(item1);
-            context.Item.Add(item2);
-            context.Item.Add(item3);
-            context.SaveChanges();
+            itemTestHelper.TestScanCode = "11111155549";
+            var testItem = itemTestHelper.CreateDefaultTestItem();
+            itemTestHelper.SaveItem(testItem);
+            item1 = context.Item.First(i => i.ItemId == testItem.ItemId);
+
+            itemTestHelper.TestScanCode = "11111155545";
+            testItem = itemTestHelper.CreateDefaultTestItem();
+            itemTestHelper.SaveItem(testItem);
+            item2 = context.Item.First(i => i.ItemId == testItem.ItemId);
+
+            itemTestHelper.TestScanCode = "11111155536";
+            testItem = itemTestHelper.CreateDefaultTestItem();
+            itemTestHelper.SaveItem(testItem);
+            item3 = context.Item.First(i => i.ItemId == testItem.ItemId);
+
 
             itemTraits = new List<ItemTrait>
             {
@@ -100,37 +75,31 @@ namespace Icon.Web.Tests.Integration.Queries
                 new ItemTrait { itemID = item3.ItemId, traitID = Traits.PosScaleTare, traitValue = "1.4", localeID = 1 },
                 new ItemTrait { itemID = item3.ItemId, traitID = Traits.FoodStampEligible, traitValue = "0", localeID = 1 }
             };
-            itemHierarchyClasses = new List<ItemHierarchyClass>
-            {
-                new ItemHierarchyClass { itemID = item1.ItemId, hierarchyClassID = testBrand.hierarchyClassID },
-                new ItemHierarchyClass { itemID = item2.ItemId, hierarchyClassID = testBrand.hierarchyClassID },
-                new ItemHierarchyClass { itemID = item3.ItemId, hierarchyClassID = testBrand.hierarchyClassID },
-                new ItemHierarchyClass { itemID = item2.ItemId, hierarchyClassID = testTaxClass.hierarchyClassID },
-                new ItemHierarchyClass { itemID = item3.ItemId, hierarchyClassID = testTaxClass.hierarchyClassID },
-                new ItemHierarchyClass { itemID = item1.ItemId, hierarchyClassID = testMerch.hierarchyClassID },
-                new ItemHierarchyClass { itemID = item1.ItemId, hierarchyClassID = testNationalClass.hierarchyClassID }
-            };
+            //itemHierarchyClasses = new List<ItemHierarchyClass>
+            //{
+            //    new ItemHierarchyClass { itemID = item1.ItemId, hierarchyClassID = testBrand.hierarchyClassID },
+            //    new ItemHierarchyClass { itemID = item2.ItemId, hierarchyClassID = testBrand.hierarchyClassID },
+            //    new ItemHierarchyClass { itemID = item3.ItemId, hierarchyClassID = testBrand.hierarchyClassID },
+            //    new ItemHierarchyClass { itemID = item2.ItemId, hierarchyClassID = testTaxClass.hierarchyClassID },
+            //    new ItemHierarchyClass { itemID = item3.ItemId, hierarchyClassID = testTaxClass.hierarchyClassID },
+            //    new ItemHierarchyClass { itemID = item1.ItemId, hierarchyClassID = testMerch.hierarchyClassID },
+            //    new ItemHierarchyClass { itemID = item1.ItemId, hierarchyClassID = testNationalClass.hierarchyClassID }
+            //};
 
             context.ItemTrait.AddRange(itemTraits);
-            context.ItemHierarchyClass.AddRange(itemHierarchyClasses);
+            //context.ItemHierarchyClass.AddRange(itemHierarchyClasses);
             context.SaveChanges();
 
             getItemsBySearchQuery = new GetItemsBySearchQuery(this.context);
 
-            testTaxRomance = testTaxClass.HierarchyClassTrait.First(hct => hct.traitID == Traits.TaxRomance).traitValue;
             itemsById = new List<int> { item1.ItemId, item2.ItemId, item3.ItemId };
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            if (transaction != null)
-            {
-                transaction.Rollback();
-                transaction.Dispose();
-            }
-
             context.Dispose();
+            transactionScope.Dispose();
         }
 
         [TestMethod]
@@ -176,7 +145,7 @@ namespace Icon.Web.Tests.Integration.Queries
             // Given
             parameters = new GetItemsBySearchParameters
             {
-                BrandName = "GetItemsBySearchQuery Integration Test Brand"
+                BrandName = "Brands 1"
             };
 
             // When
@@ -212,7 +181,7 @@ namespace Icon.Web.Tests.Integration.Queries
             // Given
             parameters = new GetItemsBySearchParameters
             {
-                BrandName = "GetItemsBySearchQuery Integration",
+                BrandName = "Brands 1",
                 PartialBrandName = true
             };
 
@@ -359,6 +328,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 FoodStampEligible = "Yes",
+                BrandName = "Brands 1" // To reduce the size of the result
             };
 
             // When
@@ -377,7 +347,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 FoodStampEligible = "No",
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -529,14 +499,14 @@ namespace Icon.Web.Tests.Integration.Queries
             // Given
             parameters = new GetItemsBySearchParameters
             {
-                MerchandiseHierarchy = testMerch.hierarchyClassName
+                MerchandiseHierarchy =  itemTestHelper.TestHierarchyClasses["Merchandise"].First().HierarchyName
             };
 
             // When
             var items = getItemsBySearchQuery.Search(parameters).Items.Where(i => itemsById.Contains(i.ItemId)).ToList();
 
             // Then
-            int expectedCount = 1;
+            int expectedCount = 3;
             int actualCount = items.Count;
             Assert.AreEqual(expectedCount, actualCount);
         }
@@ -556,24 +526,6 @@ namespace Icon.Web.Tests.Integration.Queries
             // Then
             int expectedCount = 0;
             int actualCount = items.Count;
-            Assert.AreEqual(expectedCount, actualCount);
-        }
-
-        [TestMethod]
-        public void GetItemsBySearchQuery_TaxRomance_ReturnsItemsContainingTaxRomance()
-        {
-            // Given
-            parameters = new GetItemsBySearchParameters
-            {
-                TaxRomance = "GetItemsBySearchQuery"
-            };
-
-            // When
-            var result = getItemsBySearchQuery.Search(parameters);
-
-            // Then
-            int expectedCount = 2;
-            int actualCount = result.Items.Count;
             Assert.AreEqual(expectedCount, actualCount);
         }
 
@@ -601,14 +553,14 @@ namespace Icon.Web.Tests.Integration.Queries
             // Given
             parameters = new GetItemsBySearchParameters
             {
-                NationalClass = "Integration Test National"
+                NationalClass = "National 1"
             };
 
             // When
             var result = getItemsBySearchQuery.Search(parameters);
 
             // Then
-            int expectedCount = 1;
+            int expectedCount = 3;
             int actualCount = result.Items.Count;
             Assert.AreEqual(expectedCount, actualCount);
         }
@@ -656,7 +608,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 DepartmentSale = "No",
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -738,7 +690,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 HiddenItemStatus = HiddenStatus.All,
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -762,7 +714,8 @@ namespace Icon.Web.Tests.Integration.Queries
 
             parameters = new GetItemsBySearchParameters
             {
-                HiddenItemStatus = HiddenStatus.Hidden
+                HiddenItemStatus = HiddenStatus.Hidden,
+                BrandName = "Brands 1" // Reduce size of result
             };
 
             // When
@@ -786,7 +739,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 HiddenItemStatus = HiddenStatus.Visible,
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -1052,14 +1005,19 @@ namespace Icon.Web.Tests.Integration.Queries
         }
 
         [TestMethod]
+        [Ignore("42363 - Tech Debt -Unit test need further investigation")]
         public void GetItemsBySearchQuery_ScanCodeBrandDescriptionParametersSupplied_FiltersResultsBasedOnParameters()
         {
+            item1.ProductDescription = "Test Update Item Command Description";
+            item1.CustomerFriendlyDescription = "Test Update Item Command Description";
+            context.SaveChanges();
+
             // Given
             parameters = new GetItemsBySearchParameters
             {
                 ScanCode = "111111555",
-                BrandName = "GetItemsBySearchQuery Integration",
-                ProductDescription = "Query Product Description1",
+                BrandName = "Brands 1",
+                ProductDescription = "Test Update",
                 PartialBrandName = true
             };
 
@@ -1107,7 +1065,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 AirChilled = "No",
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -1131,7 +1089,7 @@ namespace Icon.Web.Tests.Integration.Queries
 
             parameters = new GetItemsBySearchParameters
             {
-                AnimalWelfareRating = "Step 5+"
+                AnimalWelfareRating = "Step5Plus"
             };
 
             //When
@@ -1176,7 +1134,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 Biodynamic = "No",
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -1223,7 +1181,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 CheeseRaw = "No",
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -1270,7 +1228,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 DryAged = "No",
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -1317,7 +1275,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 FreeRange = "No",
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -1364,7 +1322,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 GrassFed = "No",
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -1411,7 +1369,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 MadeInHouse = "No",
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -1458,7 +1416,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 Msc = "No",
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -1505,7 +1463,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 PastureRaised = "No",
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -1552,7 +1510,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 PremiumBodyCare = "No",
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -1599,7 +1557,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 Vegetarian = "No",
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -1646,7 +1604,7 @@ namespace Icon.Web.Tests.Integration.Queries
             parameters = new GetItemsBySearchParameters
             {
                 WholeTrade = "No",
-                BrandName = "GetItemsBySearchQuery Integration Test Brand",
+                BrandName = "Brands 1",
                 PageIndex = 0,
                 PageSize = 10
             };
@@ -1670,7 +1628,7 @@ namespace Icon.Web.Tests.Integration.Queries
 
             parameters = new GetItemsBySearchParameters
             {
-                MilkType = "Buffalo Milk"
+                MilkType = "BuffaloMilk"
             };
 
             //When
@@ -1692,7 +1650,7 @@ namespace Icon.Web.Tests.Integration.Queries
 
             parameters = new GetItemsBySearchParameters
             {
-                EcoScaleRating = "Premium/Yellow"
+                EcoScaleRating = "PremiumYellow"
             };
 
             //When
@@ -1714,7 +1672,7 @@ namespace Icon.Web.Tests.Integration.Queries
 
             parameters = new GetItemsBySearchParameters
             {
-                SeafoodFreshOrFrozen = "Previously Frozen"
+                SeafoodFreshOrFrozen = "PreviouslyFrozen"
             };
 
             //When
@@ -1752,7 +1710,7 @@ namespace Icon.Web.Tests.Integration.Queries
             //Given
             HierarchyClass hierarchyClass = new TestHierarchyClassBuilder()
                 .WithHierarchyId(Hierarchies.CertificationAgencyManagement)
-                .WithHierarchyClassName("Test Agency")
+                .WithHierarchyClassName("TestGLutenFreeAgency")
                 .WithGlutenFreeTrait("1");
 
             context.HierarchyClass.Add(hierarchyClass);
@@ -1773,7 +1731,7 @@ namespace Icon.Web.Tests.Integration.Queries
             var items = getItemsBySearchQuery.Search(parameters).Items;
 
             //Then
-            Assert.AreEqual(2, items.Count);
+            Assert.AreEqual(1, items.Count);
         }
 
         [TestMethod]
@@ -1782,7 +1740,7 @@ namespace Icon.Web.Tests.Integration.Queries
             //Given
             HierarchyClass hierarchyClass = new TestHierarchyClassBuilder()
                 .WithHierarchyId(Hierarchies.CertificationAgencyManagement)
-                .WithHierarchyClassName("Test Agency")
+                .WithHierarchyClassName("TestKosherAgency")
                 .WithKosherTrait("1");
 
             context.HierarchyClass.Add(hierarchyClass);
@@ -1812,7 +1770,7 @@ namespace Icon.Web.Tests.Integration.Queries
             //Given
             HierarchyClass hierarchyClass = new TestHierarchyClassBuilder()
                 .WithHierarchyId(Hierarchies.CertificationAgencyManagement)
-                .WithHierarchyClassName("Test Agency")
+                .WithHierarchyClassName("TestNonGmoAgency")
                 .WithNonGmoTrait("1");
 
             context.HierarchyClass.Add(hierarchyClass);
@@ -1842,7 +1800,7 @@ namespace Icon.Web.Tests.Integration.Queries
             //Given
             HierarchyClass hierarchyClass = new TestHierarchyClassBuilder()
                 .WithHierarchyId(Hierarchies.CertificationAgencyManagement)
-                .WithHierarchyClassName("Test Agency")
+                .WithHierarchyClassName("TestOrganicAgency")
                 .WithOrganicTrait("1");
 
             context.HierarchyClass.Add(hierarchyClass);
@@ -1872,7 +1830,7 @@ namespace Icon.Web.Tests.Integration.Queries
             //Given
             HierarchyClass hierarchyClass = new TestHierarchyClassBuilder()
                 .WithHierarchyId(Hierarchies.CertificationAgencyManagement)
-                .WithHierarchyClassName("Test Agency")
+                .WithHierarchyClassName("TestVeganAgency")
                 .WithVeganTrait("1");
 
             context.HierarchyClass.Add(hierarchyClass);

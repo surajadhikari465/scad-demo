@@ -6,7 +6,7 @@ using System.Data.Entity;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class GetBrandsThatExistQueryTests
     {
         private GetExistingBrandsQuery query;

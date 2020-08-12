@@ -10,7 +10,8 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass] [Ignore]
+    [TestClass]
+    [Ignore("39840 - These unit tests need rewrite.")]
     public class GetEwicMappingseQueryTests
     {
         private IconContext context;

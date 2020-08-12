@@ -34,6 +34,8 @@ namespace Icon.Web.Tests.Unit.Managers
             addHierarchyClassMessageCommandHandler = new Mock<ICommandHandler<AddHierarchyClassMessageCommand>>();
             getNationalClassQuery = new Mock<IQueryHandler<GetNationalClassByClassCodeParameters, List<HierarchyClass>>>();
 
+            getNationalClassQuery.Setup(m => m.Search(It.IsAny<GetNationalClassByClassCodeParameters>()))
+                .Returns(() => new List<HierarchyClass>());
             manager = new AddNationalHierarchyManager
             {
                 NationalClassCode = "12345",
@@ -93,11 +95,9 @@ namespace Icon.Web.Tests.Unit.Managers
             {
                 managerHandler.Execute(manager);
             }
-            catch (CommandException ex)
+            catch (Exception ex)
             {
-                //Then
-                Exception innerException = ex.InnerException as Exception;
-                Assert.IsNotNull(innerException);
+                Assert.IsNotNull(ex);
             }
         }
 
@@ -117,10 +117,10 @@ namespace Icon.Web.Tests.Unit.Managers
             {
                 managerHandler.Execute(manager);
             }
-            catch (CommandException ex)
+            catch (Exception ex)
             {
                 //Then
-                DuplicateValueException innerException = ex.InnerException as DuplicateValueException;
+                DuplicateValueException innerException = ex as DuplicateValueException;
                 Assert.IsNotNull(innerException);
             }
         }

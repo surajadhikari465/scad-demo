@@ -4,17 +4,17 @@ using System.Web.Mvc;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class HomeControllerTests
     {
         [TestMethod]
-        public void Index_InitialPageLoad_ShouldReturnViewResult()
+        public void Index_InitialPageLoad_ShouldReturnReditectResult()
         {
             // Given.
             HomeController controller = new HomeController();
 
             // When.
-            ViewResult result = controller.Index() as ViewResult;
+            var result = controller.Index() as RedirectToRouteResult;
 
             // Then.
             Assert.IsNotNull(result);

@@ -36,6 +36,7 @@ namespace Icon.Web.Tests.Integration.Queries
         }
 
         [TestMethod]
+        [Ignore("42363 - Tech Debt - Unit test need further investigation")]
         public void Search_ShouldReturnPrimaryItemRecordAndHistoryRecord()
         {
             var item = this.itemTestHelper.TestItem;

@@ -19,6 +19,9 @@ namespace Icon.Web.Tests.Unit.Exporters
         public void Initialize()
         {
             mockGetItemColumnOrderQueryHandler = new Mock<IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>>>();
+
+            mockGetItemColumnOrderQueryHandler.Setup(m => m.Search(It.IsAny<EmptyQueryParameters<List<ItemColumnOrderModel>>>()))
+                .Returns(new List<ItemColumnOrderModel>());
         }
 
         [TestMethod]

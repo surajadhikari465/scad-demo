@@ -14,7 +14,7 @@ using Icon.Common.DataAccess;
 
 namespace Icon.Web.Tests.Unit.ManagerHandlers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class UpdateSubTeamManagerHandlerTests
     {
         private UpdateSubTeamManagerHandler managerHandler;
@@ -34,6 +34,13 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
         {
             context = new IconContext();
             mapper = AutoMapperWebConfiguration.Configure();
+            updateSubTeamCommandHandler = new Mock<ICommandHandler<UpdateSubTeamCommand>>();
+            addHierarchyClassMessageCommandHandler = new Mock<ICommandHandler<AddHierarchyClassMessageCommand>>();
+            associatedItemsCommandHandler = new Mock<ICommandHandler<AddProductMessagesBySubTeamCommand>>();
+            updateHierarchyClassTraitHandler = new Mock<ICommandHandler<UpdateHierarchyClassTraitCommand>>();
+            addSubTeamEventsCommandHandler = new Mock<ICommandHandler<AddSubTeamEventsCommand>>();
+            getRegionalSettingsBySettingsKeyNameQuery = new Mock<IQueryHandler<GetRegionalSettingsBySettingsKeyNameParameters, System.Collections.Generic.List<RegionalSettingsModel>>>();
+
             managerHandler = new UpdateSubTeamManagerHandler(context,
                 updateSubTeamCommandHandler.Object,
                 addHierarchyClassMessageCommandHandler.Object,
@@ -42,12 +49,6 @@ namespace Icon.Web.Tests.Unit.ManagerHandlers
                 addSubTeamEventsCommandHandler.Object,
                 getRegionalSettingsBySettingsKeyNameQuery.Object,
                 mapper);
-            updateSubTeamCommandHandler = new Mock<ICommandHandler<UpdateSubTeamCommand>>();
-            addHierarchyClassMessageCommandHandler = new Mock<ICommandHandler<AddHierarchyClassMessageCommand>>();
-            associatedItemsCommandHandler = new Mock<ICommandHandler<AddProductMessagesBySubTeamCommand>>();
-            updateHierarchyClassTraitHandler = new Mock<ICommandHandler<UpdateHierarchyClassTraitCommand>>();
-            addSubTeamEventsCommandHandler = new Mock<ICommandHandler<AddSubTeamEventsCommand>>();
-            getRegionalSettingsBySettingsKeyNameQuery = new Mock<IQueryHandler<GetRegionalSettingsBySettingsKeyNameParameters, System.Collections.Generic.List<RegionalSettingsModel>>>();
 
             manager = new UpdateSubTeamManager
                 {

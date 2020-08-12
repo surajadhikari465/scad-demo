@@ -1,30 +1,39 @@
 ﻿using Icon.Framework;
 using Icon.Testing.Builders;
 using Icon.Web.DataAccess.Commands;
+using Icon.Web.Tests.Integration.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class RemoveEwicMappingCommandHandlerTests
     {
         private RemoveEwicMappingCommandHandler commandHandler;
         private IconContext context;
-        private DbContextTransaction transaction;
         private List<string> testWfmScanCodes;
         private List<Agency> testAgencies;
         private List<string> testAgenciesId;
         private List<Item> testItems;
         private string testAplScanCode;
         private List<AuthorizedProductList> testApl;
+        private ItemTestHelper itemTestHelper;
+        private TransactionScope transactionScope;
 
         [TestInitialize]
         public void Initialize()
         {
+            transactionScope = new TransactionScope();
+
             context = new IconContext();
+
+            itemTestHelper = new ItemTestHelper();
+            itemTestHelper.Initialize(context.Database.Connection, false, false);
+
             commandHandler = new RemoveEwicMappingCommandHandler(this.context);
 
             testWfmScanCodes = new List<string>
@@ -42,25 +51,30 @@ namespace Icon.Web.Tests.Integration.Commands
 
             testAplScanCode = "22222222228";
             
-            transaction = context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transactionScope.Dispose();
         }
 
         private void StageTestItems()
         {
+
+            itemTestHelper.TestScanCode = testWfmScanCodes[0];
+            var testItem1 = itemTestHelper.CreateDefaultTestItem();
+            itemTestHelper.SaveItem(testItem1);
+
+            itemTestHelper.TestScanCode = testWfmScanCodes[1];
+            var testItem2 = itemTestHelper.CreateDefaultTestItem();
+            itemTestHelper.SaveItem(testItem2);
             testItems = new List<Item>
             {
-                new TestItemBuilder().WithScanCode(testWfmScanCodes[0]),
-                new TestItemBuilder().WithScanCode(testWfmScanCodes[1])
+                context.Item.First(i => i.ItemId == testItem1.ItemId),
+                context.Item.First(i => i.ItemId == testItem2.ItemId),
             };
 
-            context.Item.AddRange(testItems);
-            context.SaveChanges();
         }
 
         private void StageTestApl()

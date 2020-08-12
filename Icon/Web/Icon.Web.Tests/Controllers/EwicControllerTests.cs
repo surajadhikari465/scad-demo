@@ -16,7 +16,7 @@ using System.Web.Mvc;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class EwicControllerTests
     {
         private EwicController controller;

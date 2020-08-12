@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class UpdateIrmaItemCommandHandlerTests
     {
         private IconContext context;

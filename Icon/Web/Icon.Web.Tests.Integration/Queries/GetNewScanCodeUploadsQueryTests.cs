@@ -2,15 +2,17 @@
 using Icon.Logging;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
+using Icon.Web.Tests.Integration.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class GetNewScanCodeUploadsQueryTests
     {
         private IconContext context;
@@ -19,24 +21,25 @@ namespace Icon.Web.Tests.Integration.Queries
         private Item item;
         private ScanCode upc;
         private int addedItemId;
+        private ItemTestHelper itemTestHelper;
+        private TransactionScope transactionScope;
 
         [TestInitialize]
         public void Initialize()
         {
             mockLogger = new Mock<ILogger>();
+            
+            transactionScope = new TransactionScope();
             context = new IconContext();
+            itemTestHelper = new ItemTestHelper();
+            itemTestHelper.Initialize(context.Database.Connection, false, false);
 
-            item = new Item { ItemTypeId = 1 };
-            context.Item.Add(item);
-            context.SaveChanges();
-            addedItemId = item.ItemId;
+            itemTestHelper.TestScanCode = "424242424242";
+            var tmpItem = itemTestHelper.CreateDefaultTestItem();
+            itemTestHelper.SaveItem(tmpItem);
 
-            if (!context.ScanCode.Any(s => s.scanCode == "424242424242"))
-            {
-                upc = new ScanCode { itemID = item.ItemId, scanCode = "424242424242", scanCodeTypeID = 1, localeID = 1 };
-                context.ScanCode.Add(upc);
-                context.SaveChanges();
-            }
+            item = context.Item.First(i => i.ItemId == tmpItem.ItemId);
+
             getNewScanCodeUploadsQuery = new GetNewScanCodeUploadsQuery(this.mockLogger.Object, this.context);
         }
 
@@ -44,18 +47,8 @@ namespace Icon.Web.Tests.Integration.Queries
         public void Cleanup()
         {
             mockLogger = null;
-
-            item = context.Item.Where(i => i.ItemId == addedItemId).FirstOrDefault();
-            upc = context.ScanCode.Where(sc => sc.itemID == addedItemId).FirstOrDefault();
-            context.Item.Remove(item);
-            if (null != (upc))
-            {
-                context.ScanCode.Remove(upc);
-            }
-            context.Database.CommandTimeout = 180;
-            context.SaveChanges();
-
             context.Dispose();
+            transactionScope.Dispose();
         }
 
         [TestMethod]

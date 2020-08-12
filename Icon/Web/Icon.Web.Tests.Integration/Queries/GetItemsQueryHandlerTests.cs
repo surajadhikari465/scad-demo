@@ -13,6 +13,7 @@ using System.Transactions;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
+    [Ignore("PBI-42251 - ItemQueryBuilder interferes with Unit test due to SET TRANSACTION ISOLATION")]
     [TestClass]
     public class GetItemsQueryHandlerTests
     {

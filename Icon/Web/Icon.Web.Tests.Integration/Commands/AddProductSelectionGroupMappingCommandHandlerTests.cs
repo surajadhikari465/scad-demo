@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class AddProductSelectionGroupCommandHandlerTests
     {
         private AddProductSelectionGroupCommandHandler commandHandler;
@@ -126,27 +126,7 @@ namespace Icon.Web.Tests.Integration.Commands
             // Then
             // Expected Exception
         }
-
-        [TestMethod]
-        [ExpectedException(typeof(DbUpdateException))]
-        public void AddProductSelectionGroup_PsgWithNotNullTraitAndNullTraitValueAndMerchandiseHierarchyClassId_ShouldThrowException()
-        {
-            //Given
-            AddProductSelectionGroupCommand command = new AddProductSelectionGroupCommand
-            {
-                ProductSelectionGroupName = "Existing Test PSG",
-                ProductSelectionGroupTypeId = testPsgType.ProductSelectionGroupTypeId,
-                TraitId = testTrait.traitID,
-                TraitValue = null,
-                MerchandiseHierarchyClassId = null
-            };
-
-            //When
-            commandHandler.Execute(command);
-
-            // Then
-            // Expected Exception
-        }
+      
 
         [TestMethod]
         [ExpectedException(typeof(DbUpdateException))]

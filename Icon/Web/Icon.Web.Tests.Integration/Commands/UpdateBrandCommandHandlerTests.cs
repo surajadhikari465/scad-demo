@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Commands
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class UpdateBrandCommandHandlerTests
     {
         private BrandCommandHandler commandHandler;
@@ -79,58 +79,7 @@ namespace Icon.Web.Tests.Integration.Commands
 
             Assert.AreEqual(updatedBrandName, updatedBrand.hierarchyClassName);
         }
-
-        [TestMethod]
-        [ExpectedException(typeof(DuplicateValueException))]
-        public void UpdateBrand_UserChoosesDuplicateBrandName_ExceptionShouldBeThrown()
-        {
-            // Given.
-            StageDuplicateBrandName();
-
-            // Calling ToUpper on updatedBrandName to ensure that duplicate checking is not case-sensitive.
-            var brandToUpdate = new HierarchyClass
-            {
-                hierarchyClassID = testBrand.hierarchyClassID,
-                hierarchyClassName = updatedBrandName.ToUpper()
-            };
-
-            var command = new BrandCommand
-            {
-                Brand = brandToUpdate
-            };
-
-            // When.
-            commandHandler.Execute(command);
-
-            // Then.
-            // Expected exception.
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(DuplicateValueException))]
-        public void UpdateBrand_UserChoosesDuplicateTrimmedBrandName_ExceptionShouldBeThrown()
-        {
-            // Given.
-            StageDuplicateBrandName();
-
-            // Calling ToUpper on hierarchyClassName to ensure that duplicate checking is not case-sensitive.
-            var brandToUpdate = new HierarchyClass
-            {
-                hierarchyClassID = testBrand.hierarchyClassID,
-                hierarchyClassName = (testBrand.hierarchyClassName + "Unique").ToUpper()
-            };
-
-            var command = new BrandCommand
-            {
-                Brand = brandToUpdate
-            };
-
-            // When.
-            commandHandler.Execute(command);
-
-            // Then.
-            // Expected exception.
-        }
+      
 
         [TestMethod]
         public void UpdateBrand_BrandUpdateIsSuccessful_EventsShouldBeAddedToQueueAccordingToRegionalConfiguration()

@@ -1,19 +1,20 @@
 ﻿using Icon.Framework;
 using Icon.Testing.Builders;
 using Icon.Web.DataAccess.Queries;
+using Icon.Web.Tests.Integration.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class GetEwicAgenciesWithoutMappingQueryTests
     {
         private GetEwicAgenciesWithoutMappingQuery query;
         private IconContext context;
-        private DbContextTransaction transaction;
         private string testAplScanCode;
         private string testWfmScanCode;
         private List<Agency> testAgencies;
@@ -21,11 +22,17 @@ namespace Icon.Web.Tests.Integration.Queries
         private List<AuthorizedProductList> testApl;
         private Item testItem;
         private List<Mapping> testMappings;
+        private ItemTestHelper itemTestHelper;
+        private TransactionScope transactionScope;
 
         [TestInitialize]
         public void Initialize()
         {
+            transactionScope = new TransactionScope();
             context = new IconContext();
+            itemTestHelper = new ItemTestHelper();
+            itemTestHelper.Initialize(context.Database.Connection, false, false);
+
             query = new GetEwicAgenciesWithoutMappingQuery(this.context);
 
             testAplScanCode = "22222222228";
@@ -37,14 +44,13 @@ namespace Icon.Web.Tests.Integration.Queries
                 "XX",
                 "YY"
             };
-
-            transaction = context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            context.Dispose();
+            transactionScope.Dispose();
         }
 
         [TestMethod]
@@ -61,9 +67,11 @@ namespace Icon.Web.Tests.Integration.Queries
             context.Agency.AddRange(testAgencies);
             context.SaveChanges();
 
-            testItem = new TestItemBuilder().WithScanCode(testWfmScanCode);
-            context.Item.Add(testItem);
-            context.SaveChanges();
+            itemTestHelper.TestScanCode = testWfmScanCode;
+            var tmpItem = itemTestHelper.CreateDefaultTestItem();
+            itemTestHelper.SaveItem(tmpItem);
+
+            testItem = context.Item.First(i => i.ItemId == tmpItem.ItemId);
 
             testApl = new List<AuthorizedProductList>
             {

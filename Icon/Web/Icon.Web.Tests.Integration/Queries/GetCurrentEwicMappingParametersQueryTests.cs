@@ -1,20 +1,21 @@
 ﻿using Icon.Framework;
 using Icon.Testing.Builders;
 using Icon.Web.DataAccess.Queries;
+using Icon.Web.Tests.Integration.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class GetCurrentEwicMappingQueryTests
     {
         private IconContext context;
         private GetCurrentEwicMappingQuery query;
-        private DbContextTransaction transaction;
         private List<Agency> testAgencies;
         private List<AuthorizedProductList> testApl;
         private List<Item> testItems;
@@ -22,10 +23,13 @@ namespace Icon.Web.Tests.Integration.Queries
         private List<string> testAgenciesId;
         private List<string> testWfmScanCodes;
         private List<string> testAplScanCodes;
+        private TransactionScope transactionScope;
+
 
         [TestInitialize]
         public void InitializeData()
         {
+            transactionScope = new TransactionScope();
             context = new IconContext();
             query = new GetCurrentEwicMappingQuery(this.context);
 
@@ -49,14 +53,12 @@ namespace Icon.Web.Tests.Integration.Queries
                 "2223",
                 "2224"
             };
-
-            transaction = context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            transactionScope.Dispose();
         }
 
         [TestMethod]
@@ -96,13 +98,16 @@ namespace Icon.Web.Tests.Integration.Queries
             context.AuthorizedProductList.AddRange(testApl);
             context.SaveChanges();
 
+            ItemTestHelper itemTestHelper = new ItemTestHelper();
+            itemTestHelper.Initialize(context.Database.Connection, initializeTestItem:false, saveItem:false);
+            itemTestHelper.TestScanCode = testWfmScanCodes[0];
+            var testItem = itemTestHelper.CreateDefaultTestItem();
+            itemTestHelper.SaveItem(testItem);
+        
             testItems = new List<Item>
             {
-                new TestItemBuilder().WithScanCode(testWfmScanCodes[0])
+                context.Item.First(i=>i.ItemId == testItem.ItemId)
             };
-
-            context.Item.AddRange(testItems);
-            context.SaveChanges();
 
             testMappings = new List<Mapping>
             {
@@ -147,13 +152,17 @@ namespace Icon.Web.Tests.Integration.Queries
             context.AuthorizedProductList.AddRange(testApl);
             context.SaveChanges();
 
+            ItemTestHelper itemTestHelper = new ItemTestHelper();
+            itemTestHelper.Initialize(context.Database.Connection, initializeTestItem: false, saveItem: false);
+            itemTestHelper.TestScanCode = testWfmScanCodes[0];
+            var testItem = itemTestHelper.CreateDefaultTestItem();
+            itemTestHelper.SaveItem(testItem);
+
             testItems = new List<Item>
             {
-                new TestItemBuilder().WithScanCode(testWfmScanCodes[0])
+                context.Item.First(i=>i.ItemId == testItem.ItemId)
             };
 
-            context.Item.AddRange(testItems);
-            context.SaveChanges();
 
             testMappings = new List<Mapping>
             {

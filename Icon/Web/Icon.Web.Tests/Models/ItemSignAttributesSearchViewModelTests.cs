@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace Icon.Web.Tests.Unit.Models
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class ItemSignAttributesSearchViewModelTests
     {
         private ItemSignAttributesSearchViewModel viewModel;

@@ -2,15 +2,17 @@
 using Icon.Logging;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
+using Icon.Web.Tests.Integration.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class GetExistingScanCodeUploadsQueryTests
     {
         private IconContext context;
@@ -19,25 +21,25 @@ namespace Icon.Web.Tests.Integration.Queries
         private Item item;
         private ScanCode upc;
         private int addedItemId;
+        private ItemTestHelper itemTestHelper;
+        private TransactionScope transactionScope;
 
         [TestInitialize]
         public void Initialize()
         {
             mockLogger = new Mock<ILogger>();
+            transactionScope = new TransactionScope();
             context = new IconContext();
+            itemTestHelper = new ItemTestHelper();
+            itemTestHelper.Initialize(context.Database.Connection, false, false);
+            
             context.Database.CommandTimeout = 180;
 
-            context.ScanCode.RemoveRange(context.ScanCode.Where(sc => sc.scanCode == "424242424242"));
-            context.SaveChanges();
+            itemTestHelper.TestScanCode = "424242424242";
+            var tmpItem = itemTestHelper.CreateDefaultTestItem();
+            itemTestHelper.SaveItem(tmpItem);
 
-            item = new Item { ItemTypeId = 1 };
-            context.Item.Add(item);
-            context.SaveChanges();
-            addedItemId = item.ItemId;
-
-            upc = new ScanCode { itemID = item.ItemId, scanCode = "424242424242", scanCodeTypeID = 1, localeID = 1 };
-            context.ScanCode.Add(upc);
-            context.SaveChanges();
+            item = context.Item.First(i => i.ItemId == tmpItem.ItemId);
 
             getExistingScanCodeUploadsQuery = new GetExistingScanCodeUploadsQuery(this.mockLogger.Object, this.context);
         }
@@ -45,13 +47,9 @@ namespace Icon.Web.Tests.Integration.Queries
         [TestCleanup]
         public void Cleanup()
         {
-            item = context.Item.Where(i => i.ItemId == addedItemId).FirstOrDefault();
-            upc = context.ScanCode.Where(sc => sc.itemID == addedItemId).FirstOrDefault();
-            context.Item.Remove(item);
-            context.ScanCode.Remove(upc);
-            context.SaveChanges();
-
             context.Dispose();
+            transactionScope.Dispose();
+
         }
 
         [TestMethod]

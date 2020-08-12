@@ -1,28 +1,35 @@
 ﻿using Icon.Framework;
 using Icon.Testing.Builders;
 using Icon.Web.DataAccess.Queries;
+using Icon.Web.Tests.Integration.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Transactions;
 
 namespace Icon.Web.Tests.Integration.Queries
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class GetEwicAgenciesWithoutExclusionQueryTests
     {
         private GetEwicAgenciesWithoutExclusionQuery query;
         private IconContext context;
-        private DbContextTransaction transaction;
         private string testExclusion;
         private List<Agency> testAgencies;
         private List<string> testAgenciesId;
         private Item testItem;
+        private ItemTestHelper itemTestHelper;
+        private TransactionScope transactionScope;
 
         [TestInitialize]
         public void Initialize()
         {
+            transactionScope = new TransactionScope();
             context = new IconContext();
+            itemTestHelper = new ItemTestHelper();
+            itemTestHelper.Initialize(context.Database.Connection, false, false);
+
             query = new GetEwicAgenciesWithoutExclusionQuery(this.context);
 
             testExclusion = "22222222228";
@@ -33,22 +40,22 @@ namespace Icon.Web.Tests.Integration.Queries
                 "XX",
                 "YY"
             };
-
-            transaction = context.Database.BeginTransaction();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            transaction.Rollback();
+            context.Dispose();
+            transactionScope.Dispose();
         }
 
         private void StageTestItem()
         {
-            testItem = new TestItemBuilder().WithScanCode(testExclusion);
+            itemTestHelper.TestScanCode = testExclusion;
+            var tmpItem = itemTestHelper.CreateDefaultTestItem();
+            itemTestHelper.SaveItem(tmpItem);
 
-            context.Item.Add(testItem);
-            context.SaveChanges();
+            testItem = context.Item.First(i => i.ItemId == tmpItem.ItemId);
         }
 
         [TestMethod]

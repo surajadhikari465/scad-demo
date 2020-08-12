@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Icon.Web.Tests.Unit.Extensions
 {
-    [TestClass] [Ignore]
+    [TestClass]
     public class ExtensionsTests
     {
         ItemSearchViewModel viewModel;
