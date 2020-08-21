@@ -6,16 +6,16 @@
 
 	<appSettings>
 		<!-- identifies this application and the environment it is connected to -->
-		<add key="ApplicationGUID" value="7A07DA8D-DAA4-4BD6-B0C7-A01007C950CF"/>
-		<add key="EnvironmentGUID" value="20C5DDAC-659C-4B81-84F6-5F79CC390D10"/>
+		<add key="ApplicationGUID" value="B2545A74-4808-4ACA-B5B3-82ABC972A450"/>
+		<add key="EnvironmentGUID" value="6A62316D-B6D2-4607-848A-047588CDA1A8"/>
 
 		<!-- Flag set to true if the database connection strings are encrypted -->
 		<add key="encryptedConnectionStrings" value="False"/>
 	</appSettings>
 
 	<connectionStrings>
-		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idd-fl\fld;Initial Catalog=ItemCatalog_Test;User Id=IRSUser;Password=Sup#rm@n!;" />
-		<add name="ODBC" connectionString ="Driver={SQL Server};Server=idd-fl\fld;Database=ItemCatalog_Test;UID=IRSUser;PWD=Sup#rm@n!;APP="/>
+		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="PogeDuK3rM8lZmIiKBu9dNppAjW32Dj84EYWmTx8IF1NrRVSATYjZUa3HxvxtmT9wa5ckL5X6HEb07Cji9ph3IDEBuVOt/EmQJRN6tEXAmdexTH+/7pmdX1NAJh0qT2mUrCwJqcugmPnKILQX4qmIg==" />
+		<add name="ODBC" connectionString ="XYP0rQPBWTAn4nfL8gfEfPeVe5Hs/aZJxuVgfHjCYqfABKoPpmyGGziAoogPvjBnyiP3bKyfzDbwKw1+uCl/wC523PCHoK5thu03f4Rx8w59ZovWrU86Qir8wiR5UrwitOZZUw87ruqqrLqrDJs8og=="/>
 	</connectionStrings>
 
   	<!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->

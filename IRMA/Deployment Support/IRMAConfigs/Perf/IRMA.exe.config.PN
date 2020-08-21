@@ -13,10 +13,10 @@
   </appSettings>
   <connectionStrings>
      <!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
-    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=IRMA-PN-QA-PERF;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=^2&bJ%0bAvwLPe9sirs;" />
+    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="PogeDuK3rM8lZmIiKBu9dFdZges+3OOsS8FWLr2U7DbWNslnD9/aaMAEHeebtC9/ggCIo8krpMmAQsoRuvEONYT1suihBXrEZLgq6Sz2lzgNZl/dvA/bkgRDEDHfLOmborCcmrWiJggm8UolDxFlvw==" />
     
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-	<add name="ODBC" connectionString ="Driver={SQL Server};Server=IRMA-PN-QA-PERF;Database=ItemCatalog;UID=IRSUser;PWD=^2&bJ%0bAvwLPe9sirs;APP="/>
+	<add name="ODBC" connectionString ="XYP0rQPBWTAn4nfL8gfEfPeVe5Hs/aZJxuVgfHjCYqd0U1O0tHwI42wNSv6QNahu2P8cvMeAWJVc5SBpHLRmINgjI3SylTaj0snN8Td0lkQgGK20bTmFixauUvb11Li61DYEZmlqGbdiDEmeees2DA=="/>
   </connectionStrings>
   <!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->
   <log4net>

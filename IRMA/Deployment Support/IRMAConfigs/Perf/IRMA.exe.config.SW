@@ -13,9 +13,9 @@
   </appSettings>
 
   <connectionStrings>
-    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=IRMA-SW-QA-PERF;Initial Catalog=ItemCatalog;User Id=IRSUser;Password=4n4!B3boEAz6nCF2irs;" />
+    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="PogeDuK3rM8lZmIiKBu9dJtbgyy9Kuy01ED8YaMZ+wHaufci60opEq87Hd5ulrkp3Fue3VXXfa0Od9tS1SCosmDuvBWhN6IZGSzVdCs/CSjWglIUPjR1fTVHosL0omtSLzIqq/s0WE+P8wNhGqLbSg==" />
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-		<add name="ODBC" connectionString ="Driver={SQL Server};Server=IRMA-SW-QA-PERF;Database=ItemCatalog;UID=IRSUser;PWD=4n4!B3boEAz6nCF2irs;APP="/>
+		<add name="ODBC" connectionString ="XYP0rQPBWTAn4nfL8gfEfPeVe5Hs/aZJxuVgfHjCYqfzmbmfJKUSOxXEqh/1mGNedym65jYl/HcWu24o7ZMf4g6S119HUzyDs2XGco49Ipg7ozon/T3Wy8lv91PMU5crNRVL303q+8uelWok+ghObQ=="/>
   </connectionStrings>
 
   <!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->

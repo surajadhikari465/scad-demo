@@ -5,8 +5,8 @@
 	</configSections>
   <appSettings>
 	  <!-- identifies this application and the environment it is connected to -->
-		<add key="ApplicationGUID" value="7A07DA8D-DAA4-4BD6-B0C7-A01007C950CF"/>
-		<add key="EnvironmentGUID" value="20C5DDAC-659C-4B81-84F6-5F79CC390D10"/>
+		<add key="ApplicationGUID" value="B2545A74-4808-4ACA-B5B3-82ABC972A450"/>
+		<add key="EnvironmentGUID" value="6A62316D-B6D2-4607-848A-047588CDA1A8"/>
 
 		<!-- Flag set to true if the database connection strings are encrypted -->
 		<add key="encryptedConnectionStrings" value="False"/>
@@ -14,9 +14,9 @@
 
 	<connectionStrings>
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
-		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="Data Source=idT-nc\nct;Initial Catalog=ItemCatalog_Test;User Id=IRSUser;Password=Cedar$R3st;" />
+		<add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="PogeDuK3rM8lZmIiKBu9dI/g/RZpGOU35jQKGjiuqLdZngNRvVWw9F1iOx/rTJiugUCIVILnJYoAHz3FWp7qTBQ08fZHuvpwm6+DnHfLIgtEqnpTkpKZACdYP7wW1ibvoup+xKaAFpe9X3Cf2d1asQ==" />
 		<!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-		<add name="ODBC" connectionString ="Driver={SQL Server};Server=idT-nc\nct;Database=ItemCatalog_Test;UID=IRSUser;PWD=Cedar$R3st;APP="/>
+		<add name="ODBC" connectionString ="XYP0rQPBWTAn4nfL8gfEfPeVe5Hs/aZJxuVgfHjCYqdxAT0fV3ZQIUBaqeeWtltL7daeNnc2w45i7LRZalJLx0GyWcPgq5HRqaDF2rinXq2Y5rEjV+eBLCoAo62fcc0bm26kMEZFVyhbTUTSjSic1Q=="/>
 	</connectionStrings>
 
 	<!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->
