@@ -130,7 +130,7 @@ const InvoiceData = {
             }),
     reparseEInvoice: async (region: string, eInvId: number) => await requests.post(`/${region}/invoicedata/reparseEInvoice`, { EInvId: eInvId }),
     closeOrder: async (region: string, orderId: number, userId: number) => await requests.post(`/${region}/invoicedata/closeorder`, { OrderId: orderId, UserId: userId }),
-    updateOrderBeforeClosing: async (region: string, orderId: number, invoiceNumber: string, invoiceDate: Date | undefined, invoiceCost: number, vendorDocId: string, vendorDocDate: Date | undefined, subteamNo: number, partialShipment: boolean) =>
+    updateOrderBeforeClosing: async (region: string, orderId: number, invoiceNumber: string | undefined , invoiceDate: Date | undefined, invoiceCost: number | undefined, vendorDocId: string | undefined, vendorDocDate: Date | undefined, subteamNo: number, partialShipment: boolean) =>
         await requests.post(`/${region}/invoicedata/updateorderbeforeclosing`,
             {
                 OrderId: orderId,

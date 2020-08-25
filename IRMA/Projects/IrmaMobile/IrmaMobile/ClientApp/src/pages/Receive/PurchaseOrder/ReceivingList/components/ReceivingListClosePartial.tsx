@@ -30,15 +30,18 @@ const ReceivingListClosePartial: React.FC<IProps> = ({ match }) => {
             }
 
             setIsLoading(true);
-            
+
+            // closing Partial, do not set Invoice Info. [PBI 41986]
+            // still making this call because it sets the PartialShipment flag.
+       
             var updateResult = await agent.InvoiceData.updateOrderBeforeClosing(
                 region, 
                 orderDetails.OrderId,
-                orderDetails.InvoiceNumber, 
-                orderDetails.InvoiceDate, 
-                orderDetails.InvoiceCost,
-                orderDetails.VendorDocId ? orderDetails.VendorDocId.toString() : '',
-                orderDetails.VendorDocDate,
+                undefined, // InvoiceNumber
+                undefined, // orderDetails.InvoiceDate, 
+                undefined, // orderDetails.InvoiceCost,
+                undefined, //orderDetails.VendorDocId ? orderDetails.VendorDocId.toString() : '',
+                undefined, //orderDetails.VendorDocDate,
                 orderDetails.SubteamNo,
                 true);
 
