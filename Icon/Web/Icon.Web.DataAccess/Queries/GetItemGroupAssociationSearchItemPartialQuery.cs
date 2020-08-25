@@ -36,7 +36,6 @@ namespace Icon.Web.DataAccess.Queries
 	                INNER JOIN [dbo].[ItemGroup] ig on (igm.ItemGroupId = ig.ItemGroupId)
                 WHERE sc.[scanCode] like @ScanCodePrefix
 		                AND ig.[ItemGroupTypeId] =  @ItemGroupTypeId
-                        AND ig.[ItemGroupId] <> @ExcludeItemGroupId
                 ORDER by sc.[scanCode] ASC;";
 
         /// <summary>

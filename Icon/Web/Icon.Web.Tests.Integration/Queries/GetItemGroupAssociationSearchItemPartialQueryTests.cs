@@ -55,7 +55,6 @@ namespace Icon.Web.Tests.Integration.Queries
             int itemGroupId = CreateTestData(ItemGroupTypeId.Priceline);
 
             // When
-            this.queryParameters.ExcludeItemGroupId = 123;
             this.queryParameters.ItemGroupTypeId = ItemGroupTypeId.Priceline;
             this.queryParameters.ScanCodePrefix = "123456789010%";
             this.queryParameters.MaxResultSize = 1000;

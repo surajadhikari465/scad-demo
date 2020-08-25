@@ -155,7 +155,6 @@ namespace Icon.Web.Mvc.Controllers
                     ItemGroupTypeId = ItemGroupTypeId.Priceline,
                     MaxResultSize = 500,
                     ScanCodePrefix = $"{term}%",
-                    ExcludeItemGroupId = priceLineId
                 });
 
             var autocompleteData = items.Select(i => new

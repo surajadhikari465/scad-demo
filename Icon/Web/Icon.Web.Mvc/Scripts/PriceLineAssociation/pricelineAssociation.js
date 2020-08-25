@@ -170,41 +170,61 @@ function addItemToPriceLine() {
             $("#scanCodeToSearch").autocomplete({
                 minLength: 3,
                 select: function (event, ui) {
-                    var scanCode = ui.item.value.scanCode;
-                    $("#scanCodeToSearch").val(scanCode);
-                    $("#itemToAdd").text(ui.item.value.description);                    
-                    selectedItem = ui.item.value;
-                    selectedItem.scanCode = scanCode
+                    if (ui.item.value != null) {
+                        var scanCode = ui.item.value.scanCode;
+                        $("#scanCodeToSearch").val(scanCode);
+                        $("#itemToAdd").text(ui.item.value.description);
+                        selectedItem = ui.item.value;
+                        selectedItem.scanCode = scanCode
 
-                    if (selectedItem.previousPriceLine != null) {
-                        if (selectedItem.isPrimary && selectedItem.isLastInpreviousPriceLine == false) {
-                            $('#addButton').attr("disabled", true);
-                            $("#previousPriceLine").text(
-                                'This scan code cannot be moved from: "'
-                                + selectedItem.previousPriceLine
-                                + '" because it is the primary item, and it is not the last item.');
-                            $("#previousPriceLinePanel").show();
-                            selectedItem = null;
+                        if (selectedItem.previousPriceLine != null) {
+                            if (selectedItem.isPrimary && selectedItem.isLastInpreviousPriceLine == false) {
+                                $('#addButton').attr("disabled", true);
+                                $("#previousPriceLine").text(
+                                    'This scan code cannot be moved from: "'
+                                    + selectedItem.previousPriceLine
+                                    + '" because it is the primary item, and it is not the last item.');
+                                $("#previousPriceLinePanel").show();
+                                selectedItem = null;
+                            }
+                            else if (selectedItem.previousPriceLineId == priceLineId) {
+                                $('#addButton').attr("disabled", true);
+                                $("#previousPriceLine").text('This scan code is already part of this priceline.');
+                                $("#previousPriceLinePanel").show();
+                                selectedItem = null;
+                            }
+                            else {
+                                $('#addButton').attr("disabled", false);
+                                $("#previousPriceLine").text(
+                                    'This scan code will move from:"'
+                                    + selectedItem.previousPriceLine
+                                    + '" to: "'
+                                    + priceModelDescription
+                                    + '".');
+                                $("#previousPriceLinePanel").show();
+                            }
+                        } else {
+                            $("#previousPriceLinePanel").hide();
+                            $("#previousPriceLine").text('');
                         }
-                        else {
-                            $('#addButton').attr("disabled", false);
-                            $("#previousPriceLine").text(
-                                'This scan code will move from:"'
-                                + selectedItem.previousPriceLine
-                                + '" to: "'
-                                + priceModelDescription
-                                + '".');
-                            $("#previousPriceLinePanel").show();
-                        }
-                    } else {
-                        $("#previousPriceLinePanel").hide();
-                        $("#previousPriceLine").text(''); 
+
                     }
-                                       
-                    previousPriceLine
                     return false;
                 },
-                source: "PriceLineAssociation/SearchItemByPrefix?priceLineId=" + priceLineId,
+                source: function (request, response) {
+                    $.getJSON("PriceLineAssociation/SearchItemByPrefix?priceLineId=" + priceLineId, request,
+                        function (data, status, xhr) {
+                        if (data.length > 0) {
+                            response(data);
+                        }
+                        else {
+                            response([{label:'No Matches', value:null}]);
+                        }
+                        })
+                        .fail(function () {
+                            response([{ label: 'No Matches', value: null }]);
+                        });
+                },                    
                 focus: function (event, ui) {
                     event.preventDefault();
                 }

@@ -23,10 +23,5 @@ namespace Icon.Web.DataAccess.Queries
         /// Max number of results
         /// </summary>
         public int MaxResultSize { get; set; }
-
-        /// <summary>
-        /// Exclude items associated witht this item group.
-        /// </summary>
-        public int ExcludeItemGroupId { get; set; }
     }
 }
