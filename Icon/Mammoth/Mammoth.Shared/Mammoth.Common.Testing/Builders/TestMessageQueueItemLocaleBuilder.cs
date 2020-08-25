@@ -53,8 +53,13 @@ namespace Mammoth.Common.Testing.Builders
         private bool? orderedByInfor;
         private bool? defaultScanCode;
         private int? irmaItemKey;
+        private bool? scaleItem;
+        private bool? forceTare;
+        private int? shelfLife;
+        private string wrappedTareWeight;
+        private string unwrappedTareWeight;
 
-        public TestMessageQueueItemLocaleBuilder()
+    public TestMessageQueueItemLocaleBuilder()
         {
             this.messageQueueId = 0;
             this.messageTypeId = MessageTypes.ItemLocale;
@@ -92,6 +97,11 @@ namespace Mammoth.Common.Testing.Builders
             this.chicagoBaby = null;
             this.tagUom = null;
             this.linkedItem = null;
+            this.scaleItem = null;
+            this.forceTare = null;
+            this.shelfLife = null;
+            this.wrappedTareWeight = null;
+            this.unwrappedTareWeight = null;
             this.scaleExtraText = null;
             this.msrp = null;
             this.inProcessBy = null;
@@ -321,6 +331,33 @@ namespace Mammoth.Common.Testing.Builders
             return this;
         }
 
+        public TestMessageQueueItemLocaleBuilder WithScaleItem(bool scaleItem)
+        {
+          this.scaleItem = scaleItem;
+          return this;
+        }
+        public TestMessageQueueItemLocaleBuilder WithShelfLife(int shelfLife)
+        {
+          this.shelfLife = shelfLife;
+          return this;
+        }
+        public TestMessageQueueItemLocaleBuilder WithForcetare(bool forceTare)
+        {
+          this.forceTare = forceTare;
+          return this;
+        }   
+        public TestMessageQueueItemLocaleBuilder WithWrappedTareWeight(string wrappedTareWeight)
+        {
+          this.wrappedTareWeight = wrappedTareWeight;
+          return this;
+        }
+
+        public TestMessageQueueItemLocaleBuilder WithUnwrappedTareWeight(string unwrappedTareWeight)
+        {
+          this.unwrappedTareWeight = unwrappedTareWeight;
+          return this;
+        }
+
         public TestMessageQueueItemLocaleBuilder WithScaleExtraText(string scaleExtraText)
         {
             this.scaleExtraText = scaleExtraText;
@@ -425,6 +462,11 @@ namespace Mammoth.Common.Testing.Builders
             this.chicagoBaby = "test ChicagoBaby";
             this.tagUom = "test TagUom";
             this.linkedItem = "test LinkedItem";
+            this.scaleItem = false;
+            this.forceTare = false;
+            this.shelfLife = 30;
+            this.wrappedTareWeight = "4";
+            this.unwrappedTareWeight = "2";
             this.scaleExtraText = "test ScaleExtraText";
             this.inProcessBy = null;
             this.processedDate = null;
@@ -481,6 +523,11 @@ namespace Mammoth.Common.Testing.Builders
             messageQueueItemLocale.ChicagoBaby = this.chicagoBaby;
             messageQueueItemLocale.TagUom = this.tagUom;
             messageQueueItemLocale.LinkedItem = this.linkedItem;
+            messageQueueItemLocale.ScaleItem = this.scaleItem;
+            messageQueueItemLocale.ShelfLife = this.shelfLife;
+            messageQueueItemLocale.ForceTare = this.forceTare;
+            messageQueueItemLocale.WrappedTareWeight = this.wrappedTareWeight;
+            messageQueueItemLocale.UnwrappedTareWeight = this.unwrappedTareWeight;
             messageQueueItemLocale.ScaleExtraText = this.scaleExtraText;
             messageQueueItemLocale.Msrp = this.msrp;
             messageQueueItemLocale.InProcessBy = this.inProcessBy;

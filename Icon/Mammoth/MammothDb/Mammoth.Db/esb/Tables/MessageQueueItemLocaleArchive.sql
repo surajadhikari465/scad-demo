@@ -49,5 +49,10 @@
     [AltRetailUOM]               NVARCHAR(25)   NULL,
     [IrmaItemKey]                INT		    NULL,
     [DefaultScanCode]            BIT		    NULL,
+	[ScaleItem]					 BIT			DEFAULT (0) NOT NULL,
+	[ShelfLife]					 NVARCHAR(MAX)  NULL,
+	[ForceTare]					 BIT			NULL,
+	[WrappedTareWeight]			 NVARCHAR(MAX)  NULL,
+	[UnwrappedTareWeight]		 NVARCHAR(MAX)  NULL,
 );
 go

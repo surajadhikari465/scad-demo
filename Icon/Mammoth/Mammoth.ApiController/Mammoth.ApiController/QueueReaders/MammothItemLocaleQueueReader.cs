@@ -165,6 +165,11 @@ namespace Mammoth.ApiController.QueueReaders
                                 CreateTrait(message.AltRetailUOM, Attributes.Codes.AltRetailUom),
                                 CreateTrait(message.DefaultScanCode, Attributes.Codes.DefaultIdentifier),
                                 CreateTrait(message.IrmaItemKey, Attributes.Codes.IrmaItemKey),
+                                CreateTrait(message.ScaleItem, Attributes.Codes.ScaleItem),
+                                CreateTrait(message.ShelfLife, Attributes.Codes.ShelfLife),
+                                CreateTrait(message.ForceTare, Attributes.Codes.ForceTare),
+                                CreateTrait(message.WrappedTareWeight, Attributes.Codes.WrappedTareWeight),
+                                CreateTrait(message.UnwrappedTareWeight, Attributes.Codes.UnwrappedTareWeight),
                             }
                         }
                     }

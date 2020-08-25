@@ -907,6 +907,7 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\PostDeploymentScripts\PostDeploymentScript.sql" />
+    <None Include="Scripts\PostDeploymentScripts\37503_AddScaleItemToAttributes.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\PreDeploymentScripts\Script.PreDeployment.sql" />

@@ -30,53 +30,59 @@ namespace MammothWebApi.DataAccess.Commands
 	                                esb.MessageQueueItemLocale
                                 select
 	                                [MessageTypeId] = @MessageTypeId,
-                                    [MessageStatusId] = @MessageStatusId,
-                                    [MessageHistoryId] = null,
-                                    [MessageActionId] = @MessageActionId,
-                                    [InsertDate] = sysdatetime(),
+                                  [MessageStatusId] = @MessageStatusId,
+                                  [MessageHistoryId] = null,
+                                  [MessageActionId] = @MessageActionId,
+                                  [InsertDate] = sysdatetime(),
 	                                [RegionCode] = @RegionCode,
-                                    [BusinessUnitId] = s.BusinessUnitID,
-                                    [ItemId] = i.ItemID,
-                                    [ItemTypeCode] = it.ItemTypeCode,
-                                    [ItemTypeDesc] = it.ItemTypeDesc,
-                                    [LocaleName] = l.StoreName,
-                                    [ScanCode] = i.ScanCode,
-                                    [CaseDiscount] = s.Discount_Case,
-                                    [TmDiscount] = s.Discount_TM,
-                                    [AgeRestriction] = s.Restriction_Age,
-                                    [RestrictedHours] = s.Restriction_Hours,
-                                    [Authorized] = s.Authorized,
-                                    [Discontinued] = s.Discontinued,
-                                    [LabelTypeDescription] = s.LabelTypeDesc,
-                                    [LocalItem] = s.LocalItem,
-                                    [ProductCode] = s.Product_Code,
-                                    [RetailUnit] = s.RetailUnit,
-                                    [SignDescription] = s.Sign_Desc,
-                                    [Locality] = s.Locality,
-                                    [SignRomanceLong] = s.Sign_RomanceText_Long,
-                                    [SignRomanceShort] = s.Sign_RomanceText_Short,
-                                    [ColorAdded] = ca.AttributeValue,
-                                    [CountryOfProcessing] = cop.AttributeValue,
-                                    [Origin] = o.AttributeValue,
-                                    [ElectronicShelfTag] = est.AttributeValue,
-                                    [Exclusive] = exc.AttributeValue,
-                                    [NumberOfDigitsSentToScale] = num.AttributeValue,
-                                    [ChicagoBaby] = cb.AttributeValue,
-                                    [TagUom] = tag.AttributeValue,
-                                    [LinkedItem] = lnk.AttributeValue,
-                                    [ScaleExtraText] = sce.AttributeValue,
-                                    [Msrp] = s.Msrp,
-                                    [InProcessBy] = null,
-                                    [ProcessedDate] = null,
-                                    [SupplierName] = ils.SupplierName,
-                                    [IrmaVendorKey] = ils.IrmaVendorKey ,
-                                    [SupplierItemID] = ils.SupplierItemID ,
-                                    [SupplierCaseSize] = ils.SupplierCaseSize, 
-                                    [OrderedByInfor] = s.OrderedByInfor,
-                                    [AltRetailSize] = s.AltRetailSize,
-                                    [AltRetailUOM]  = s.AltRetailUOM,
-                                    [IrmaItemKey]  = s.IrmaItemKey,
-                                    [DefaultScanCode]  = s.DefaultScanCode
+                                  [BusinessUnitId] = s.BusinessUnitID,
+                                  [ItemId] = i.ItemID,
+                                  [ItemTypeCode] = it.ItemTypeCode,
+                                  [ItemTypeDesc] = it.ItemTypeDesc,
+                                  [LocaleName] = l.StoreName,
+                                  [ScanCode] = i.ScanCode,
+                                  [CaseDiscount] = s.Discount_Case,
+                                  [TmDiscount] = s.Discount_TM,
+                                  [AgeRestriction] = s.Restriction_Age,
+                                  [RestrictedHours] = s.Restriction_Hours,
+                                  [Authorized] = s.Authorized,
+                                  [Discontinued] = s.Discontinued,
+                                  [LabelTypeDescription] = s.LabelTypeDesc,
+                                  [LocalItem] = s.LocalItem,
+                                  [ProductCode] = s.Product_Code,
+                                  [RetailUnit] = s.RetailUnit,
+                                  [SignDescription] = s.Sign_Desc,
+                                  [Locality] = s.Locality,
+                                  [SignRomanceLong] = s.Sign_RomanceText_Long,
+                                  [SignRomanceShort] = s.Sign_RomanceText_Short,
+                                  [ColorAdded] = ca.AttributeValue,
+                                  [CountryOfProcessing] = cop.AttributeValue,
+                                  [Origin] = o.AttributeValue,
+                                  [ElectronicShelfTag] = est.AttributeValue,
+                                  [Exclusive] = exc.AttributeValue,
+                                  [NumberOfDigitsSentToScale] = num.AttributeValue,
+                                  [ChicagoBaby] = cb.AttributeValue,
+                                  [TagUom] = tag.AttributeValue,
+                                  [LinkedItem] = lnk.AttributeValue,
+                                  [ScaleItem] = s.ScaleItem,
+                                  [ScaleExtraText] = sce.AttributeValue,
+                                  [ShelfLife] = shl.AttributeValue,
+                                  [ForceTare] = fta.AttributeValue,
+                                  [WrappedTareWeight] = wta.AttributeValue,
+                                  [UnwrappedTareWeight] = uta.AttributeValue,
+                                  [Msrp] = s.Msrp,
+                                  [InProcessBy] = null,
+                                  [ProcessedDate] = null,
+                                  [SupplierName] = ils.SupplierName,
+                                  [IrmaVendorKey] = ils.IrmaVendorKey ,
+                                  [SupplierItemID] = ils.SupplierItemID ,
+                                  [SupplierCaseSize] = ils.SupplierCaseSize, 
+                                  [OrderedByInfor] = s.OrderedByInfor,
+                                  [AltRetailSize] = s.AltRetailSize,
+                                  [AltRetailUOM]  = s.AltRetailUOM,
+                                  [IrmaItemKey]  = s.IrmaItemKey,
+                                  [DefaultScanCode]  = s.DefaultScanCode                              
+
                                 from
 	                                stage.ItemLocale s
 	                                join dbo.Items i on s.ScanCode = i.ScanCode
@@ -136,6 +142,26 @@ namespace MammothWebApi.DataAccess.Commands
 												                                AND l.BusinessUnitID = sce.BusinessUnitId
 												                                AND sce.AttributeID = @ScaleExtraTextId
                                                                                 AND sce.TransactionId = @TransactionId
+
+                                  left join stage.ItemLocaleExtended shl  on  i.ScanCode = shl.ScanCode
+												                                AND l.BusinessUnitID = shl.BusinessUnitId
+												                                AND shl.AttributeID = @ShelfLifeId
+                                                                                AND shl.TransactionId = @TransactionId
+
+                                  left join stage.ItemLocaleExtended fta  on  i.ScanCode = fta.ScanCode
+												                                AND l.BusinessUnitID = fta.BusinessUnitId
+												                                AND fta.AttributeID = @ForceTareId
+                                                                                AND fta.TransactionId = @TransactionId
+
+                                  left join stage.ItemLocaleExtended wta  on  i.ScanCode = wta.ScanCode
+												                                AND l.BusinessUnitID = wta.BusinessUnitId
+												                                AND wta.AttributeID = @WrappedTareWeightId
+                                                                                AND wta.TransactionId = @TransactionId
+
+                                  left join stage.ItemLocaleExtended uta  on  i.ScanCode = uta.ScanCode
+												                                AND l.BusinessUnitID = uta.BusinessUnitId
+												                                AND uta.AttributeID = @UnwrappedTareWeightId
+                                                                                AND uta.TransactionId = @TransactionId
                                 where
 	                                s.Region = @RegionCode and
 	                                s.TransactionId = @TransactionId";
@@ -159,7 +185,11 @@ namespace MammothWebApi.DataAccess.Commands
                 ChicagoBabyId = Attributes.ChicagoBaby,
                 TagUomId = Attributes.TagUom,
                 LinkedScanCodeId = Attributes.LinkedScanCode,
-                ScaleExtraTextId = Attributes.ScaleExtraText
+                ScaleExtraTextId = Attributes.ScaleExtraText,
+                ShelfLifeId = Attributes.ShelfLife,
+                ForceTareId = Attributes.ForceTare,
+                WrappedTareWeightId = Attributes.WrappedTareWeight,
+                UnwrappedTareWeightId = Attributes.UnwrappedTareWeight,
             };
 
             int affectedRows = db.Connection.Execute(sql, parameters, transaction: db.Transaction);

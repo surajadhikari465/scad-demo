@@ -74,6 +74,16 @@ namespace Mammoth.Framework
         
         public DateTime? Exclusive { get; set; }
 
+        public bool? ScaleItem { get; set; }
+       
+        public int? ShelfLife { get; set; }
+
+        public bool? ForceTare { get; set; }
+
+        public string WrappedTareWeight { get; set; }
+
+        public string UnwrappedTareWeight { get; set; }
+
         public int? NumberOfDigitsSentToScale { get; set; }
 
         public string ChicagoBaby { get; set; }

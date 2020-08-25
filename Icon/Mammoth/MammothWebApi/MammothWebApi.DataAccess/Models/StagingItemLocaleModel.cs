@@ -34,5 +34,5 @@ namespace MammothWebApi.DataAccess.Models
         public bool ScaleItem { get; set; }
         public DateTime Timestamp { get; set; }
         public Guid TransactionId { get; set; }
-    }
+  }
 }
