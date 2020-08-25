@@ -16,7 +16,7 @@ namespace Icon.Web.Tests.Integration.Queries
     public class GetItemGroupByIdQueryTests
     {
         private const string PrimaryItemScanCode = "1234567890101";
-        private const string ItemGroupDescription = "{\"PriceLineDescription\":\"Evil Cat Litter $.85 1 EA\",\"PriceLineRetailSize\":\"1\",\"PriceLineUOM\":\"EA\"}";
+        private const string ItemGroupDescription = "{\"PriceLineDescription\":\"Evil Cat Litter $.85 1 EA\",\"PriceLineSize\":\"1\",\"PriceLineUOM\":\"EA\"}";
 
         private IDbConnection connection;
         private TransactionScope transaction;
