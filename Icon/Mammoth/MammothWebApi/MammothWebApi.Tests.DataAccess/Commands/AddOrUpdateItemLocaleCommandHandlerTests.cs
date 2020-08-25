@@ -240,7 +240,7 @@ namespace MammothWebApi.Tests.DataAccess.CommandTests
                 expected.Add(new TestItemAttributeLocaleBuilder()
                     .WithRegion(this.region)
                     .WithBusinessUnit(this.bizUnitID)
-                    .WithItemId(existingItems[1].ItemID)
+                    .WithItemId(existingItems[i].ItemID)
                     .WithAddedDate(existingTimestamp)
                     .Build());
             }

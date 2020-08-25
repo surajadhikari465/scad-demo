@@ -64,12 +64,7 @@ namespace MammothWebApi.DataAccess.Commands
                                   [ChicagoBaby] = cb.AttributeValue,
                                   [TagUom] = tag.AttributeValue,
                                   [LinkedItem] = lnk.AttributeValue,
-                                  [ScaleItem] = s.ScaleItem,
                                   [ScaleExtraText] = sce.AttributeValue,
-                                  [ShelfLife] = shl.AttributeValue,
-                                  [ForceTare] = fta.AttributeValue,
-                                  [WrappedTareWeight] = wta.AttributeValue,
-                                  [UnwrappedTareWeight] = uta.AttributeValue,
                                   [Msrp] = s.Msrp,
                                   [InProcessBy] = null,
                                   [ProcessedDate] = null,
@@ -81,7 +76,12 @@ namespace MammothWebApi.DataAccess.Commands
                                   [AltRetailSize] = s.AltRetailSize,
                                   [AltRetailUOM]  = s.AltRetailUOM,
                                   [IrmaItemKey]  = s.IrmaItemKey,
-                                  [DefaultScanCode]  = s.DefaultScanCode                              
+                                  [DefaultScanCode]  = s.DefaultScanCode,                              
+                                  [ScaleItem] = s.ScaleItem,
+                                  [ShelfLife] = shl.AttributeValue,
+                                  [ForceTare] = fta.AttributeValue,
+                                  [WrappedTareWeight] = wta.AttributeValue,
+                                  [UnwrappedTareWeight] = uta.AttributeValue
 
                                 from
 	                                stage.ItemLocale s
