@@ -22,7 +22,7 @@ namespace Icon.Web.DataAccess.Queries
                             WITH ItemGroupData
                             AS (
 	                            SELECT ig.ItemGroupId as SkuId
-		                            ,JSON_VALUE(ItemGroupAttributesJson, '$.SkuDescription') AS SkuDescription
+		                            ,JSON_VALUE(ItemGroupAttributesJson, '$.SKUDescription') AS SkuDescription
 		                            ,ig.LastModifiedBy AS LastModifiedBy
 		                            ,ig.SysStartTimeUtc AS LastModifiedDate
 		                            ,s.scanCode as PrimaryItemUpc

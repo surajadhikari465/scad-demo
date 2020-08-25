@@ -22,7 +22,7 @@ namespace Icon.Web.DataAccess.Queries
 			(
 				SELECT ig.[ItemGroupId]
 						,ig.[ItemGroupTypeId]
-						,CASE WHEN @ItemGroupTypeId = 1 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SkuDescription') ELSE NULL END AS SKUDescription
+						,CASE WHEN @ItemGroupTypeId = 1 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SKUDescription') ELSE NULL END AS SKUDescription
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineDescription') ELSE NULL END AS PriceLineDescription
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineRetailSize') ELSE NULL END AS PriceLineSize
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineUOM') ELSE NULL END AS PriceLineUOM		
@@ -54,7 +54,7 @@ namespace Icon.Web.DataAccess.Queries
 			(
 				SELECT ig.[ItemGroupId]
 						,ig.[ItemGroupTypeId]
-						,JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SkuDescription') as SKUDescription
+						,JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SKUDescription') as SKUDescription
 						,JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineDescription') as PriceLineDescription
 						,JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineRetailSize') as PriceLineSize
 						,JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineUOM') as PriceLineUOM		
@@ -86,7 +86,7 @@ namespace Icon.Web.DataAccess.Queries
 			(
 				SELECT ig.[ItemGroupId]
 						,ig.[ItemGroupTypeId]
-						,CASE WHEN @ItemGroupTypeId = 1 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SkuDescription') ELSE NULL END AS SKUDescription
+						,CASE WHEN @ItemGroupTypeId = 1 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SKUDescription') ELSE NULL END AS SKUDescription
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineDescription') ELSE NULL END AS PriceLineDescription
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineRetailSize') ELSE NULL END AS PriceLineSize
 						,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineUOM') ELSE NULL END AS PriceLineUOM		
@@ -126,7 +126,7 @@ namespace Icon.Web.DataAccess.Queries
 			(
 				SELECT ig.[ItemGroupId]
 						,ig.[ItemGroupTypeId]
-						,JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SkuDescription') as SKUDescription
+						,JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SKUDescription') as SKUDescription
 						,JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineDescription') as PriceLineDescription
 						,JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineRetailSize') as PriceLineSize
 						,JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineUOM') as PriceLineUOM		

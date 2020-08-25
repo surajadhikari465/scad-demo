@@ -17,14 +17,14 @@ namespace Icon.Web.DataAccess.Commands
         {
             this.db.Execute(@"
                 Update itemgroup 
-                SET ItemGroupAttributesJson = JSON_MODIFY(ItemGroupAttributesJson, '$.SkuDescription', @SkuDescription)
+                SET ItemGroupAttributesJson = JSON_MODIFY(ItemGroupAttributesJson, '$.SKUDescription', @SkuDescription)
                 , LastModifiedBy = @ModifiedBy 
                 WHERE ItemGroupId = @skuId;
 
                 UPDATE [dbo].[ItemGroup]
 	            SET KeyWords = CONCAT(
 				            ig.[ItemGroupId]
-				            ,' ', JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SkuDescription')
+				            ,' ', JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SKUDescription')
 				            ,' ', JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineDescription')
 				            ,' ', JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineSize')
 				            ,' ', JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineUOM')

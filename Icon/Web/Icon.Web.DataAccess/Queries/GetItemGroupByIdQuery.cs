@@ -43,7 +43,7 @@ namespace Icon.Web.DataAccess.Queries
 			var result = dbConnection.QueryFirstOrDefault<ItemGroupModel>(@"
 			SELECT ig.[ItemGroupId]
 						,ig.[ItemGroupTypeId]
-						,JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SkuDescription') AS SKUDescription
+						,JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SKUDescription') AS SKUDescription
 						,JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineDescription') AS PriceLineDescription
 						,JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineRetailSize') AS PriceLineSize
 						,JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineUOM') AS PriceLineUOM		

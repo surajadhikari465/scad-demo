@@ -95,7 +95,7 @@ namespace Icon.Web.Tests.Integration.Commands
 
         private string GetSkuDescriptionById(int newItemGroupId)
         {
-            string sql = @"SELECT TOP 1 json_value(ItemGroupAttributesJson,'$.SkuDescription') from Itemgroup where ItemGroupId =@newItemGroupId";
+            string sql = @"SELECT TOP 1 json_value(ItemGroupAttributesJson,'$.SKUDescription') from Itemgroup where ItemGroupId =@newItemGroupId";
             return this.db.Query<string>(sql, new { newItemGroupId = newItemGroupId }).First();
         }
     }

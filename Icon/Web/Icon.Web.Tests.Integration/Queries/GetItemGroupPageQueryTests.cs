@@ -17,7 +17,7 @@ namespace Icon.Web.Tests.Integration.Queries
     public class GetItemGroupPageQueryTests
     {
         private const string PrimaryItemScanCode = "1234567890101";
-        private const string ItemGroupDescription = "{ \"SkuDescription\":\"ItemGroup Descrition Test 1\"}";
+        private const string ItemGroupDescription = "{ \"SKUDescription\":\"ItemGroup Descrition Test 1\", \"PriceLineDescription\":\"ItemGroup Description Test 2\"}";
         private IDbConnection connection;
         private TransactionScope transaction;
         private GetItemGroupParameters queryParameters;
@@ -112,7 +112,7 @@ namespace Icon.Web.Tests.Integration.Queries
             Assert.IsTrue(result.Count > 0);
             var itemGroup = result.FirstOrDefault(sku => sku.ScanCode == PrimaryItemScanCode);
             Assert.IsNotNull(itemGroup);
-            Assert.AreEqual("ItemGroup Descrition Test 1", itemGroup.SKUDescription);
+            Assert.AreEqual("ItemGroup Description Test 2", itemGroup.PriceLineDescription);
             Assert.AreEqual(PrimaryItemScanCode, itemGroup.ScanCode);
         }
 

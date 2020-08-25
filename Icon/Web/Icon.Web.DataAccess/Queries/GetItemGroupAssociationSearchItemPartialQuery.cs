@@ -27,7 +27,7 @@ namespace Icon.Web.DataAccess.Queries
 	                ,sc.[scanCode] as ScanCode
 	                ,i.[CustomerFriendlyDescription] AS CustomerFriendlyDescription
 	                ,ig.[ItemGroupId] AS ItemGroupId
-	                ,CASE WHEN @ItemGroupTypeId = 1 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SkuDescription') ELSE NULL END AS SKUDescription
+	                ,CASE WHEN @ItemGroupTypeId = 1 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.SKUDescription') ELSE NULL END AS SKUDescription
 	                ,CASE WHEN @ItemGroupTypeId = 2 THEN JSON_VALUE(ig.[ItemGroupAttributesJson],'$.PriceLineDescription') ELSE NULL END AS PriceLineDescription
 					,igm.IsPrimary
                 FROM [dbo].[Item] i
