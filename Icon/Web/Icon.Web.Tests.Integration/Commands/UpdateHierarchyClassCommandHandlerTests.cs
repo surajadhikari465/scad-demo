@@ -4,6 +4,7 @@ using Icon.Web.DataAccess.Commands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Icon.Web.Tests.Integration.Commands
@@ -30,11 +31,14 @@ namespace Icon.Web.Tests.Integration.Commands
         private HierarchyClass brick;
         private int irmaItemId;
         private int brandClassId;
+        private DbContextTransaction transaction;
 
         [TestInitialize]
         public void Initialize()
         {
             context = new IconContext();
+            transaction = context.Database.BeginTransaction();
+
             editHierarchyClassCommand = new UpdateHierarchyClassCommand
             {
                 UpdatedHierarchyClass = new HierarchyClass
@@ -145,35 +149,15 @@ namespace Icon.Web.Tests.Integration.Commands
             brandClassId = brandHierarchyClass.hierarchyClassID;
             irmaItemId = irmaItem.irmaItemID;
 
-            context.Dispose();
             mockLogger = new Mock<ILogger>();
-            
-            this.context = new IconContext();
+
             editHierarchyClassCommandHandler = new UpdateHierarchyClassCommandHandler(this.context);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            context = new IconContext();
-
-            // Remove HierarchyClassTraits first
-            context.HierarchyClassTrait.RemoveRange(context.HierarchyClassTrait.Where(hct => hct.HierarchyClass.hierarchyClassName == brick.hierarchyClassName).ToList());
-            context.HierarchyClassTrait.RemoveRange(context.HierarchyClassTrait.Where(hct => hct.HierarchyClass.hierarchyClassName == subBrick.hierarchyClassName).ToList());
-            context.HierarchyClassTrait.RemoveRange(context.HierarchyClassTrait.Where(hct => hct.HierarchyClass.hierarchyClassName == taxHierarchyClass.hierarchyClassName).ToList());
-
-            // Remove HierarchyClasses
-            context.HierarchyClass.RemoveRange(context.HierarchyClass.Where(hc => hc.hierarchyClassName == editHierarchyClassCommand.UpdatedHierarchyClass.hierarchyClassName).ToList());
-            context.HierarchyClass.RemoveRange(context.HierarchyClass.Where(hc => hc.hierarchyClassName == editedHierarchyClass.hierarchyClassName).ToList());
-            context.HierarchyClass.RemoveRange(context.HierarchyClass.Where(hc => hc.hierarchyClassName == secondHierarchyClass.hierarchyClassName).ToList());
-            context.HierarchyClass.RemoveRange(context.HierarchyClass.Where(hc => hc.hierarchyClassName == thirdHierarchyClass.hierarchyClassName).ToList());
-            context.HierarchyClass.RemoveRange(context.HierarchyClass.Where(hc => hc.hierarchyClassName == taxHierarchyClass.hierarchyClassName).ToList());
-            context.HierarchyClass.RemoveRange(context.HierarchyClass.Where(hc => hc.hierarchyClassName == subBrick.hierarchyClassName).ToList());
-            context.HierarchyClass.RemoveRange(context.HierarchyClass.Where(hc => hc.hierarchyClassName == brick.hierarchyClassName).ToList());
-            context.HierarchyClass.RemoveRange(context.HierarchyClass.Where(hc => hc.hierarchyClassName == brandHierarchyClass.hierarchyClassName).ToList());
-            context.IRMAItem.RemoveRange(context.IRMAItem.Where(ii => ii.irmaItemID == irmaItemId).ToList());
-            context.SaveChanges();
-
+            transaction.Rollback();
             context.Dispose();
         }
 

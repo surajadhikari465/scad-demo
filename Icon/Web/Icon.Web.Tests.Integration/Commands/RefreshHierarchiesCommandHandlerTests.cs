@@ -25,7 +25,7 @@ namespace Icon.Web.Tests.Integration.Commands
             settings = new AppSettings();
             refreshHierarchiesCommandHandler = new RefreshHierarchiesCommandHandler(context, settings);
             transaction = context.Database.BeginTransaction();
-            time = DateTime.Now;
+            time = DateTime.Now.AddMinutes(-1); //minus 1 minute to avoid server time synchronization issues.
         }
 
         [TestCleanup]
@@ -41,7 +41,7 @@ namespace Icon.Web.Tests.Integration.Commands
         {
             // Given.
             int hierarchyClassId = 82819;
-            var time = System.DateTime.Now;
+            var time = System.DateTime.Now.AddMinutes(-1); // Add one minute to avoid issue with server time synchronization
             RefreshHierarchiesCommand data = new RefreshHierarchiesCommand
             {
                 HierarchyClassIds = new List<int> { hierarchyClassId }

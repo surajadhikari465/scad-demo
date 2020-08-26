@@ -43,7 +43,7 @@ namespace Icon.Web.Tests.Integration.Commands
         {
             // Given
             var commandParameters = new AddMessageQueueItemByHierarchyClassIdCommand { HierarchyClassId = itemTestHelper.TestItem.MerchandiseHierarchyClassId };
-            DateTime utcNow = DateTime.UtcNow;
+            DateTime utcNow = DateTime.UtcNow.AddMinutes(-1); // Keep 1 minute to avoid probles with Server time synchronization.
 
             // When
             this.commandHandler.Execute(commandParameters);
