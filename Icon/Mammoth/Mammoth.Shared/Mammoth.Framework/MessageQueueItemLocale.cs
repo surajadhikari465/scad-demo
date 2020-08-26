@@ -76,7 +76,7 @@ namespace Mammoth.Framework
 
         public bool? ScaleItem { get; set; }
        
-        public int? ShelfLife { get; set; }
+        public string ShelfLife { get; set; }
 
         public bool? ForceTare { get; set; }
 
