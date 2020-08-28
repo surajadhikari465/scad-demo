@@ -872,6 +872,7 @@
     <None Include="Scripts\PopulateData\36882_PopulateFeatureFlags_Sku_andPriceline.sql" />
     <None Include="Scripts\PopulateData\36202_DeleteSkuPriceLineItemAttribute.sql" />
     <Build Include="app\Stored Procedures\GetAttributebyNameGroup.sql" />
+    <None Include="Scripts\PopulateData\37766-FixSkuPriceLinePattern.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

@@ -112,7 +112,7 @@ BEGIN
 			@scopeIdentity
 			,200
 			,0
-			,'^[a-zA-Z0-9\s]*$'
+			,'^[A-Za-z0-9\s!"#\$%&''\(\)\*\+,\-\./:;<=>\?@\[\\\]\^_`\{\|\}~]*$'
 			)
 
 		INSERT INTO [dbo].[AttributeCharacterSets] (
@@ -198,7 +198,7 @@ BEGIN
 			@scopeIdentity
 			,200
 			,0
-			,'^[a-zA-Z0-9\s]*$'
+			,'^[A-Za-z0-9\s!"#\$%&''\(\)\*\+,\-\./:;<=>\?@\[\\\]\^_`\{\|\}~]*$'
 			)
 
 		INSERT INTO [dbo].[AttributeCharacterSets] (
