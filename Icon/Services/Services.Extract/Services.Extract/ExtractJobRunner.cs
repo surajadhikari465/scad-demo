@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -90,11 +91,43 @@ namespace Services.Extract
                 case "gzip":
                     OutputFiles = GzipFiles(inputFiles);
                     break;
+                case "7-zip":
+                    OutputFiles = SevenZipFiles(inputFiles);
+                    break;
                 default:
                     Logger.Warn($"Unknown Compression Type [{Configuration.CompressionType}]");
                     break;
             }
             return OutputFiles;
+        }
+
+        private List<FileInfo> SevenZipFiles(List<FileInfo> inputFiles)
+        {
+            if (string.IsNullOrWhiteSpace(Configuration.SevenZipArchiveType))
+            {
+                throw new ArgumentException("7-Zip archive type is not set and compression type is set to 7-Zip.");
+            }
+            if (!Constants.SevenZipArchiveTypes.Contains(Configuration.SevenZipArchiveType))
+            {
+                throw new ArgumentException($"7-Zip archive type {Configuration.SevenZipArchiveType} is an unsupported archive type for 7-Zip compression.");
+            }
+            var compressedFiles = new List<FileInfo>();
+            foreach (var inputFile in inputFiles)
+            {
+                string sourceName = inputFile.FullName;
+                string targetName = Path.ChangeExtension(inputFile.FullName, ".gz");
+
+                ProcessStartInfo p = new ProcessStartInfo();
+                p.FileName = ".\\7Zip\\7za.exe";
+
+                p.Arguments = $"a -t{Configuration.SevenZipArchiveType} \"{targetName}\" \"{sourceName}\" -mx=9";
+                p.WindowStyle = ProcessWindowStyle.Hidden;
+
+                Process x = Process.Start(p);
+                x.WaitForExit();
+                compressedFiles.Add(new FileInfo(targetName));
+            }
+            return compressedFiles;
         }
 
         internal List<FileInfo> GzipFiles(List<FileInfo> inputFiles)
@@ -309,7 +342,7 @@ namespace Services.Extract
                                           let extension = Path.GetExtension(Configuration.OutputFileName)
                                           let region = c.Key
                                           let regionalFilename = nameWithoutExtension.Contains("{region}")
-                                              ? nameWithoutExtension.Replace("{region}", $"{region}")
+                                              ? nameWithoutExtension.Replace("{region}", $"{region}") + extension
                                               : $"{nameWithoutExtension}_{region}{extension}"
                                           where Configuration.Regions.Contains(region)
                                                 && Configuration.Source.ToLower() == "irma"

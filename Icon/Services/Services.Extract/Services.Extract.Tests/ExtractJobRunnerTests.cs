@@ -274,7 +274,8 @@ namespace Services.Extract.Tests
                 Regions = "SO".Split(','),
                 OutputFileName = "item_vendor_lane_{region}_{STORE_NUMBER}_{date:yyyyMMdd}.csv",
                 ZipOutput = true,
-                CompressionType = "gzip",
+                CompressionType = "7-Zip",
+                SevenZipArchiveType = "gzip",
                 ConcatenateOutputFiles = false,
                 IncludeHeaders = true,
                 Destination = new Destination

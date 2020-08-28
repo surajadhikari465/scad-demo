@@ -252,6 +252,15 @@
     <Analyzer Include="..\packages\AWSSDK.S3.3.3.109.4\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="7Zip\7za.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="7Zip\7za.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="7Zip\7zxa.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="CodeAssassin.ConfigTransform.Readme.txt" />
   </ItemGroup>
   <ItemGroup />
