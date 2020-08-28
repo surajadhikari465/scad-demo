@@ -641,7 +641,7 @@ namespace Services.Extract
                 JmsUsername = credentials.JmsUsername,
                 JmsPassword = credentials.JmsPassword,
                 SslPassword = credentials.SslPassword,
-                JndiUsername = credentials.JndiPassword,
+                JndiUsername = credentials.JndiUsername,
                 JndiPassword = credentials.JndiPassword,
                 ServerUrl = credentials.ServerUrl,
                 CertificateStoreLocation = credentials.CertificateStoreLocation.ConvertToEnum<StoreLocation>(),
