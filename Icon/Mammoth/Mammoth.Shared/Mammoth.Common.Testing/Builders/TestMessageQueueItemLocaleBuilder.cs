@@ -55,7 +55,7 @@ namespace Mammoth.Common.Testing.Builders
         private int? irmaItemKey;
         private bool? scaleItem;
         private bool? forceTare;
-        private int? shelfLife;
+        private string shelfLife;
         private string wrappedTareWeight;
         private string unwrappedTareWeight;
 
@@ -97,7 +97,7 @@ namespace Mammoth.Common.Testing.Builders
             this.chicagoBaby = null;
             this.tagUom = null;
             this.linkedItem = null;
-            this.scaleItem = null;
+            this.scaleItem = false;
             this.forceTare = null;
             this.shelfLife = null;
             this.wrappedTareWeight = null;
@@ -336,7 +336,7 @@ namespace Mammoth.Common.Testing.Builders
           this.scaleItem = scaleItem;
           return this;
         }
-        public TestMessageQueueItemLocaleBuilder WithShelfLife(int shelfLife)
+        public TestMessageQueueItemLocaleBuilder WithShelfLife(string shelfLife)
         {
           this.shelfLife = shelfLife;
           return this;
@@ -464,7 +464,7 @@ namespace Mammoth.Common.Testing.Builders
             this.linkedItem = "test LinkedItem";
             this.scaleItem = false;
             this.forceTare = false;
-            this.shelfLife = 30;
+            this.shelfLife = "30";
             this.wrappedTareWeight = "4";
             this.unwrappedTareWeight = "2";
             this.scaleExtraText = "test ScaleExtraText";
