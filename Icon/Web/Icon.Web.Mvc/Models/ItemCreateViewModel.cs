@@ -39,6 +39,10 @@ namespace Icon.Web.Mvc.Models
         [Display(Name = "Scan Code")]
         public string ScanCode { get; set; }
 
+        [Display(Name = "SKU")]
+        public int SkuId { get; set; }
+        public bool SkuFeatureFlagEnabled { get; set; }
+
         public List<string> Errors { get; set; }
 
         public Dictionary<string, string> ItemAttributes { get; set; }
