@@ -2,7 +2,6 @@
 using Icon.Common.DataAccess;
 using Icon.Common.Models;
 using Icon.Common.Validators.ItemAttributes;
-using Icon.FeatureFlags;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
@@ -60,7 +59,6 @@ namespace Icon.Web.Controllers
         private IHistoryModelTransformer historyModelTransformer;
         private readonly IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler;
         private IQueryHandler<GetScanCodesParameters, List<string>> getScanCodeQueryHandler;
-        private IFeatureFlagService featureFlagService; 
 
         public ItemController(
             ILogger logger,
@@ -85,8 +83,7 @@ namespace Icon.Web.Controllers
             IHistoryModelTransformer historyModelTransformer,
             IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult> getItemsByIdHandler,
             IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>> getItemColumnOrderQueryHandler,
-            IQueryHandler<GetScanCodesParameters, List<string>> getScanCodeQueryHandler,
-            IFeatureFlagService featureFlagService)
+            IQueryHandler<GetScanCodesParameters, List<string>> getScanCodeQueryHandler)
         {
             this.logger = logger;
             this.settings = settings;
@@ -110,7 +107,6 @@ namespace Icon.Web.Controllers
             this.getItemsByIdHandler = getItemsByIdHandler;
             this.getItemColumnOrderQueryHandler = getItemColumnOrderQueryHandler;
             this.getScanCodeQueryHandler = getScanCodeQueryHandler;
-            this.featureFlagService = featureFlagService;
         }
 
         public ActionResult Index()
@@ -353,17 +349,7 @@ namespace Icon.Web.Controllers
         [WriteAccessAuthorize]
         public ActionResult Create()
         {
-            bool skuManagementFeatureFlag;
-            try
-            {
-              skuManagementFeatureFlag = featureFlagService.IsEnabled("SkuManagement");
-            }
-            catch
-            {
-              skuManagementFeatureFlag = false;
-            }
             ItemCreateViewModel itemCreateViewModel = new ItemCreateViewModel();
-            itemCreateViewModel.SkuFeatureFlagEnabled = skuManagementFeatureFlag;
             BuildItemCreateViewModel(itemCreateViewModel, true);
 
             return View(itemCreateViewModel);
@@ -373,7 +359,6 @@ namespace Icon.Web.Controllers
         [WriteAccessAuthorize]
         public ActionResult Create(ItemCreateViewModel itemCreateViewModel)
         {
-
             try
             {
                 if (!ModelState.IsValid)

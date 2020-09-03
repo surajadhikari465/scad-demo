@@ -8,12 +8,10 @@ using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Attributes;
 using Icon.Web.Mvc.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -152,8 +150,8 @@ namespace Icon.Web.Mvc.Controllers
         }
 
         [HttpPost]
-    [WriteAccessAuthorize]
-    public ActionResult Edit(SkuEditViewModel viewModel)
+        [WriteAccessAuthorize]
+        public ActionResult Edit(SkuEditViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -335,55 +333,6 @@ namespace Icon.Web.Mvc.Controllers
             {
                 throw new ArgumentException(message);
             }
-        }
-
-        public ActionResult BySkuKeywords (string initialSelection)
-        {
-          return ComboDataSource(initialSelection);
-        }
-
-        public ActionResult ComboDataSource(string searchTerms)
-        {
-          string skuKeyWordFilter = null;
-          string filter = this.Request.QueryString["$filter"];
-
-          if (filter != null)
-            {
-                Regex skuClassNameFilterRegex = new Regex(@"^(indexof\(tolower\(QueryDisplayInfo\),')(.*)('\) ge 0)$");
-
-                if (skuClassNameFilterRegex.IsMatch(filter))
-                {
-                    string query = filter
-                        .Replace("indexof(tolower(QueryDisplayInfo),'", "")
-                        .Replace("') ge 0", "")
-                        .Trim();
-                    skuKeyWordFilter = query;
-                }
-            }
-
-          if (string.IsNullOrWhiteSpace(skuKeyWordFilter))
-          {
-            // if the initialSelection was not passed return nothing instead of everything
-            return Content(JsonConvert.SerializeObject(new List<SkuModel>() { }), "application/json");
-          }
-          else if (!string.IsNullOrWhiteSpace(skuKeyWordFilter) && skuKeyWordFilter.Length < 2)
-          {
-            // if the initialSelection is less than 2 characters don't return anything yet. This is to help with searching performance.
-            return Content(JsonConvert.SerializeObject(new List<SkuModel>() { }), "application/json");
-          }
-          else
-          {
-            var skus = getItemGroupPageQuery.Search(new GetItemGroupParameters
-            {
-              ItemGroupTypeId = ItemGroupTypeId.Sku,
-              SortColumn = ItemGroupColumns.ItemGroupId,
-              SortOrder = SortOrder.Ascending,
-              RowsOffset = 1,
-              PageSize = 500,
-              SearchTerm = skuKeyWordFilter
-            });
-            return Content(JsonConvert.SerializeObject(skus), "application/json");
-          }
         }
 
     }

@@ -53,7 +53,5 @@ namespace Icon.Web.DataAccess.Models
         /// Gets or sets the ItemGroupAttributesJson
         /// </summary>
         public string ItemGroupAttributesJson { get; set; }
-
-        public string QueryDisplayInfo { get; set; }
     }
 }

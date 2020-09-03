@@ -531,7 +531,7 @@ namespace Icon.Web.Controllers
             }
             else
             {
-               var hierarchyClasses = getHierarchyClassesQueryHandler.Search(new GetHierarchyClassesParameters
+                var hierarchyClasses = getHierarchyClassesQueryHandler.Search(new GetHierarchyClassesParameters
                 {
                     HierarchyId = hierarchyId,
                     HierarchyLineageFilter = hierarchyLineageFilter,

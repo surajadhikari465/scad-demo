@@ -213,40 +213,14 @@
 
                     if (attribute != null)
                     {
-                        if (attribute.AttributeName.Equals("SKU"))
-                        {
-                            if(Model.SkuFeatureFlagEnabled)
-                            {
-                                <div class="item">
-                                    @Html.Label(@attribute.DisplayName)
-                                    <br />                           
-                                    @(Html.Infragistics()
-                                    .Combo()
-                                    .InputName("SkuId")
-                                    .Virtualization(true)
-                                    .DelayFilteringOnKeyUp(1000)
-                                    .FilteringType(ComboFilteringType.Remote)
-                                    .ValueKey("ItemGroupId")
-                                    .TextKey("QueryDisplayInfo")
-                                    .Width("1000px")
-                                    .DataSource("/Sku/BySkuKeywords?initialSelection=" + Model.SkuId)
-                                    .SelectedValues(new List<int>() { Model.SkuId })
-                                    .DataBind()
-                                    .ValidatorOptions(options => options.Required(false))
-                                    .Render())
-                                </div>
-                            }
-                        }
-                        else
-                        {
-                            <div class="item">
-                                @Html.Label(@attribute.DisplayName)
-                                <br />
+                        <div class="item">
+                            @Html.Label(@attribute.DisplayName)
+                            <br />
 
-                                @if (attribute.IsPickList)
-                                {
-                                    var selectedValue = Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName] : attribute.DefaultValue;
-                                    @(Html.Infragistics()
+                            @if (attribute.IsPickList)
+                            {
+                                var selectedValue = Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName] : attribute.DefaultValue;
+                                @(Html.Infragistics()
                                                     .Combo()
                                                     .InputName("ItemAttributes[" + attribute.AttributeName + "]")
                                                     .DataSource(attribute.PickListData)
@@ -255,94 +229,95 @@
                                                     .ValidatorOptions(options => options.Required(attribute.IsRequired))
                                                     .DataBind()
                                                     .Render())
+                            }
+
+                            else if (attribute.DataTypeName.ToUpper().Equals("BOOLEAN"))
+                            {
+                                var defaultValue = false;
+                                if (attribute.DefaultValue != null)
+                                {
+                                    defaultValue = bool.Parse(attribute.DefaultValue);
                                 }
 
-                                else if (attribute.DataTypeName.ToUpper().Equals("BOOLEAN"))
+                                var checkboxValue = Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? bool.Parse(Model.ItemAttributes[attribute.AttributeName]) : defaultValue;
+                                var checkboxName = "ItemAttributes[" + attribute.AttributeName + "]";
+                                var htmlAttributes = new Dictionary<string, object> { { "id", checkboxName }, { "style", "height: 16px; width: 16px;" } };
+
+                                @(Html.CheckBox(checkboxName, checkboxValue, htmlAttributes))
+
+                            }
+
+                            else if (attribute.DataTypeName.ToUpper().Equals("TEXT") && !attribute.IsPickList)
+                            {
+                                var defaultValue = string.Empty;
+                                if (attribute.DefaultValue != null)
                                 {
-                                    var defaultValue = false;
-                                    if (attribute.DefaultValue != null)
-                                    {
-                                        defaultValue = bool.Parse(attribute.DefaultValue);
-                                    }
-
-                                    var checkboxValue = Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? bool.Parse(Model.ItemAttributes[attribute.AttributeName]) : defaultValue;
-                                    var checkboxName = "ItemAttributes[" + attribute.AttributeName + "]";
-                                    var htmlAttributes = new Dictionary<string, object> { { "id", checkboxName }, { "style", "height: 16px; width: 16px;" } };
-
-                                    @(Html.CheckBox(checkboxName, checkboxValue, htmlAttributes))
-
+                                    defaultValue = attribute.DefaultValue;
                                 }
-                                else if (attribute.DataTypeName.ToUpper().Equals("TEXT") && !attribute.IsPickList)
-                                {
-                                    var defaultValue = string.Empty;
-                                    if (attribute.DefaultValue != null)
-                                    {
-                                        defaultValue = attribute.DefaultValue;
-                                    }
-                                    var textEditor = Html.Infragistics()
-                                        .TextEditor()
-                                        .InputName("ItemAttributes[" + attribute.AttributeName + "]")
-                                        .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : defaultValue)
-                                        .HtmlAttributes(new Dictionary<string, object> { { "class", "form-control form-input" } })
-                                        .ValidatorOptions(options => options.Required(attribute.IsRequired).Pattern(attribute.CharacterSetRegexPattern))
-                                        .ReadOnly(attribute.IsReadOnly);
 
-                                    if (attribute.MaxLengthAllowed.HasValue)
-                                    {
-                                        textEditor.MaxLength(attribute.MaxLengthAllowed.Value);
-                                    }
-
-                                    @(textEditor.Render())
-
-                                }
-                                else if (attribute.DataTypeName.ToUpper().Equals("NUMBER"))
-                                {
-                                    var defaultValue = string.Empty;
-                                    if (attribute.DefaultValue != null)
-                                    {
-                                        defaultValue = attribute.DefaultValue;
-                                    }
-
-                                    @(Html.Infragistics()
+                                var textEditor = Html.Infragistics()
                                     .TextEditor()
                                     .InputName("ItemAttributes[" + attribute.AttributeName + "]")
                                     .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : defaultValue)
-                                    .HtmlAttributes(new Dictionary<string, object>
-                                        {
-                                    { "class", "form-control form-input" },
-                                    { "data-number-of-decimals", attribute.NumberOfDecimals },
-                                        })
-                                    .ValidatorOptions(options => options.Required(attribute.IsRequired)
-                                        .Number(true)
-                                        .ValueRange(double.Parse(attribute.MinimumNumber), double.Parse(attribute.MaximumNumber))
-                                        .Custom("validateNumberOfDecimals", string.Format("A valid number with up to {0} decimals should be entered", attribute.NumberOfDecimals)))
-                                    .TextAlignment(TextEditorTextAlignment.Left)
-                                    .ReadOnly(attribute.IsReadOnly)
-                                    .Render())
-                                }
+                                    .HtmlAttributes(new Dictionary<string, object> { { "class", "form-control form-input" } })
+                                    .ValidatorOptions(options => options.Required(attribute.IsRequired).Pattern(attribute.CharacterSetRegexPattern))
+                                    .ReadOnly(attribute.IsReadOnly);
 
-                                else if (attribute.DataTypeName.ToUpper().Equals("DATE"))
+                                if (attribute.MaxLengthAllowed.HasValue)
                                 {
-                                    var defaultValue = string.Empty;
-                                    if (attribute.DefaultValue != null)
-                                    {
-                                        defaultValue = attribute.DefaultValue;
-                                    }
-
-                                    @(Html.Infragistics()
-                                    .DatePicker()
-                                    .DateDisplayFormat("yyyy-MM-dd")
-                                    .DateInputFormat("yyyy-MM-dd")
-                                    .ID("ItemAttributes[" + attribute.AttributeName + "]")
-                                    .InputName("ItemAttributes[" + attribute.AttributeName + "]")
-                                    .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : (defaultValue == string.Empty ? defaultValue : DateTime.Parse(defaultValue).ToString()))
-                                    .ValidatorOptions(o => o.Required(attribute.IsRequired)
-                                    .ValueRange(Convert.ToDateTime("2000-01-01"), Convert.ToDateTime("2100-12-31"), "A value between 2000-01-01 and 2100-12-31 should be entered"))
-                                    .ReadOnly(attribute.IsReadOnly)
-                                    .Render())
+                                    textEditor.MaxLength(attribute.MaxLengthAllowed.Value);
                                 }
-                            </div>
-                        }
+
+                                @(textEditor.Render())
+                            }
+
+                            else if (attribute.DataTypeName.ToUpper().Equals("NUMBER"))
+                            {
+                                var defaultValue = string.Empty;
+                                if (attribute.DefaultValue != null)
+                                {
+                                    defaultValue = attribute.DefaultValue;
+                                }
+
+                                @(Html.Infragistics()
+                                                    .TextEditor()
+                                                    .InputName("ItemAttributes[" + attribute.AttributeName + "]")
+                                                    .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : defaultValue)
+                                                    .HtmlAttributes(new Dictionary<string, object>
+                                                        {
+                                                    { "class", "form-control form-input" },
+                                                    { "data-number-of-decimals", attribute.NumberOfDecimals },
+                                                        })
+                                                    .ValidatorOptions(options => options.Required(attribute.IsRequired)
+                                                        .Number(true)
+                                                        .ValueRange(double.Parse(attribute.MinimumNumber), double.Parse(attribute.MaximumNumber))
+                                                        .Custom("validateNumberOfDecimals", string.Format("A valid number with up to {0} decimals should be entered", attribute.NumberOfDecimals)))
+                                                    .TextAlignment(TextEditorTextAlignment.Left)
+                                                    .ReadOnly(attribute.IsReadOnly)
+                                                    .Render())
+                            }
+
+                            else if (attribute.DataTypeName.ToUpper().Equals("DATE"))
+                            {
+                                var defaultValue = string.Empty;
+                                if (attribute.DefaultValue != null)
+                                {
+                                    defaultValue = attribute.DefaultValue;
+                                }
+
+                                @(Html.Infragistics()
+                                                    .DatePicker()
+                                                    .DateDisplayFormat("yyyy-MM-dd")
+                                                    .DateInputFormat("yyyy-MM-dd")
+                                                    .ID("ItemAttributes[" + attribute.AttributeName + "]")
+                                                    .InputName("ItemAttributes[" + attribute.AttributeName + "]")
+                                                    .Value(Model.ItemAttributes.ContainsKey(attribute.AttributeName) ? Model.ItemAttributes[attribute.AttributeName].ToString() : (defaultValue == string.Empty ? defaultValue : DateTime.Parse(defaultValue).ToString()))
+                                                    .ValidatorOptions(o => o.Required(attribute.IsRequired)
+                                                    .ValueRange(Convert.ToDateTime("2000-01-01"), Convert.ToDateTime("2100-12-31"), "A value between 2000-01-01 and 2100-12-31 should be entered"))
+                                                    .ReadOnly(attribute.IsReadOnly)
+                                                    .Render())
+                            }
+                        </div>
                     }
                 }
             }

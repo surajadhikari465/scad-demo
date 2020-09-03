@@ -10,6 +10,5 @@
         public string CreatedBy { get; set; }
         public string LastModifiedDate { get; set; }
         public string LastModifiedBy { get; set; }
-        public string KeyWords { get; set; }
     }
 }

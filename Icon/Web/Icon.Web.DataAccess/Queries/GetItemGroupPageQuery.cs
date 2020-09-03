@@ -218,7 +218,6 @@ namespace Icon.Web.DataAccess.Queries
 					foreach (var itemGroup in itemGroupPage)
 					{
 						itemGroup.ItemCount = itemCounts[itemGroup.ItemGroupId]?.ItemCount;
-						itemGroup.QueryDisplayInfo = itemGroup.ItemGroupId.ToString() + " | " + itemGroup.SKUDescription;
 					}
 				}
 				else
@@ -233,6 +232,7 @@ namespace Icon.Web.DataAccess.Queries
 					itemGroupPage = (connection.Query<ItemGroupModel>(effectiveQuery, parameters, commandTimeout: 240))
 								.ToList();
 				}
+
 
 				return itemGroupPage;
 			}

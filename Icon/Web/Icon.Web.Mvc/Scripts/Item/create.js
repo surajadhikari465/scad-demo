@@ -76,8 +76,6 @@ $(document).ready(function () {
                 required: true
             });
         }
-
-        $("#SkuId").igCombo("option", "locale", { placeHolder: "Enter text to search" });
     };
 
     $('input[type="radio"][name="ScanCodeType"]').change(function () {

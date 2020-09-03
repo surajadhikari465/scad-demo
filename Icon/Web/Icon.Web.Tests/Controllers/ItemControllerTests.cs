@@ -31,7 +31,6 @@ using Icon.Web.Mvc.Utility.ItemHistory;
 using Icon.Web.DataAccess.Infrastructure.ItemSearch;
 using Icon.Web.Mvc.Domain.BulkImport;
 using Icon.Web.Tests.Unit.Models;
-using Icon.FeatureFlags;
 
 namespace Icon.Web.Tests.Unit.Controllers
 {
@@ -74,7 +73,6 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult>> mockGetItemsByIdHandler;
         private Mock<IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>>> mockGetItemColumnOrderQueryHandler;
         private Mock<IQueryHandler<GetScanCodesParameters, List<string>>> mockGetScanCodeQueryHandler;
-        private Mock<IFeatureFlagService> mockfeatureFlagService;
 
         [TestInitialize]
         public void Initialize()
@@ -106,9 +104,9 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockGetItemsByIdHandler = new Mock<IQueryHandler<GetItemsByIdSearchParameters, GetItemsResult>>();
             mockGetItemColumnOrderQueryHandler = new Mock<IQueryHandler<EmptyQueryParameters<List<ItemColumnOrderModel>>, List<ItemColumnOrderModel>>>();
             mockGetScanCodeQueryHandler = new Mock<IQueryHandler<GetScanCodesParameters, List<string>>>();
-            mockfeatureFlagService = new Mock<IFeatureFlagService>();
 
-      controller = new ItemController(
+
+            controller = new ItemController(
                 mockLogger.Object,
                 mockGetItemsQueryHandler.Object,
                 mockGetItemHistoryQueryHandler.Object,
@@ -135,8 +133,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                 mockHistoryModelTransformer.Object,
                 mockGetItemsByIdHandler.Object,
                 mockGetItemColumnOrderQueryHandler.Object,
-                mockGetScanCodeQueryHandler.Object,
-                mockfeatureFlagService.Object
+                mockGetScanCodeQueryHandler.Object
                 );
 
             fakeHttpContext.Setup(t => t.User).Returns(principal);
@@ -564,42 +561,6 @@ namespace Icon.Web.Tests.Unit.Controllers
         }
 
         [TestMethod]
-        public void SkuControllerCreate_FeatureFlagTrue_ItemCreateViewModelHasFeatureFlagTrue()
-        {
-          //Given
-          mockfeatureFlagService.Setup(m => m.IsEnabled("SkuManagement")).Returns(true);
-          //When
-          var result = controller.Create() as ViewResult;
-          var model = result.Model as ItemCreateViewModel;
-          //Assert
-          Assert.AreEqual(true, model.SkuFeatureFlagEnabled);
-        }
-
-        [TestMethod]
-        public void SkuControllerCreate_FeatureFlagFalse_ItemCreateViewModelHasFeatureFlagFalse()
-        {
-          //Given
-          mockfeatureFlagService.Setup(m => m.IsEnabled("SkuManagement")).Returns(false);
-          //When
-          var result = controller.Create() as ViewResult;
-          var model = result.Model as ItemCreateViewModel;
-          //Assert
-          Assert.AreEqual(false, model.SkuFeatureFlagEnabled);
-        }
-
-        [TestMethod]
-        public void SkuControllerCreate_FeatureFlagError_ItemCreateViewModelHasFeatureFlagDefaultsFalse()
-        {
-          //Given
-          mockfeatureFlagService.Setup(m => m.IsEnabled("SkuManagement")).Throws(new Exception());
-          //When
-          var result = controller.Create() as ViewResult;
-          var model = result.Model as ItemCreateViewModel;
-          //Assert
-          Assert.AreEqual(false, model.SkuFeatureFlagEnabled);
-        }
-
-        [TestMethod]
         public void Add_AddItemSubmitted_ShouldAddItem()
         {
             //Given
@@ -736,7 +697,6 @@ namespace Icon.Web.Tests.Unit.Controllers
             jObject.NationalHierarchyClassId = 6;
             jObject.ManufacturerHierarchyClassId = 6;
             jObject.ScanCode = "4011";
-            jObject.SkuId = "1234567";
             jObject.ScanCodeTypeId = 0;
             jObject.ItemTypeId = 0;
             jObject.TestAttribute1 = "Test1";
@@ -781,15 +741,15 @@ namespace Icon.Web.Tests.Unit.Controllers
             //When
             controller.GridUpdate();
 
-      //Then
-      mockUpdateItemManagerHandler.Verify(m => m.Execute(It.Is<UpdateItemManager>(
+            //Then
+            mockUpdateItemManagerHandler.Verify(m => m.Execute(It.Is<UpdateItemManager>(
                 uim => uim.ItemId == 1
                        && uim.MerchandiseHierarchyClassId == 2
                        && uim.BrandsHierarchyClassId == 3
                        && uim.TaxHierarchyClassId == 4
                        && uim.FinancialHierarchyClassId == 5
                        && uim.NationalHierarchyClassId == 6
-                       && uim.ItemAttributes.Keys.Count == 8
+                       && uim.ItemAttributes.Keys.Count == 7
                        && uim.ItemAttributes["TestAttribute1"].ToString() == "Test1"
                        && uim.ItemAttributes["TestAttribute2"].ToString() == "Test2"
                        && uim.ItemAttributes[Constants.Attributes.ProhibitDiscount] == "false"
