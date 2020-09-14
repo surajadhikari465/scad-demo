@@ -246,7 +246,7 @@ namespace Services.Extract
 
             foreach (var connection in connections)
             {
-                outputList.Add(connection.Source.Query(sql, buffered: false, commandTimeout: 3000));
+                outputList.Add(connection.Source.Query(sql, buffered: false, commandTimeout: 7200));
             }
 
             Parallel.ForEach(outputList, new ParallelOptions() { MaxDegreeOfParallelism = 6 }, output =>
@@ -276,7 +276,7 @@ namespace Services.Extract
 
             foreach (var connection in connections)
             {
-                connection.Source.Query(sql, dbArgs, buffered: false, commandTimeout: 3000).ToList();
+                connection.Source.Query(sql, dbArgs, buffered: false, commandTimeout: 7200).ToList();
             }
         }
 
@@ -312,7 +312,7 @@ namespace Services.Extract
 
                         outputDataAndFileInformation.Add(new ExtractDataAndFileInformation()
                         {
-                            Data = connection.Source.Query(sql, combinedArgs, buffered: false, commandTimeout: 3000),
+                            Data = connection.Source.Query(sql, combinedArgs, buffered: false, commandTimeout: 7200),
                             FileInformation = new FileInfo(destinationFile)
                         });
                     }
@@ -321,7 +321,7 @@ namespace Services.Extract
                 {
                     outputDataAndFileInformation.Add(new ExtractDataAndFileInformation()
                     {
-                        Data = connection.Source.Query(sql, dbArgs, buffered: false, commandTimeout: 3000),
+                        Data = connection.Source.Query(sql, dbArgs, buffered: false, commandTimeout: 7200),
                         FileInformation = new FileInfo(connection.DestinationFile)
                     });
                 }
