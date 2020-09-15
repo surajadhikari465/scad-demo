@@ -21,20 +21,20 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>348</pd:startX>
-    <pd:startY>35</pd:startY>
+    <pd:startX>130</pd:startX>
+    <pd:startY>64</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>836</pd:endX>
-    <pd:endY>165</pd:endY>
+    <pd:endX>831</pd:endX>
+    <pd:endY>74</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1505404454239</pd:targetNamespace>
     <pd:activity name="ErrorLog Update AppLog">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>610</pd:x>
-        <pd:y>173</pd:y>
+        <pd:x>375</pd:x>
+        <pd:y>76</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -168,6 +168,43 @@ VALUES
             </jdbcUpdateActivityInput>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>584</pd:x>
+        <pd:y>70</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Destinations/InstockLogMessageQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/SharedResources/Properties/JMS-Application-Properties-InventoryManagement.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns02:ActivityInput>
+                <OtherProperties>
+                    <TransactionType>
+                        <xsl:value-of select="&quot;Log&quot;"/>
+                    </TransactionType>
+                    <RegionCode>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </RegionCode>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="string($Start/LogElement)"/>
+                </Body>
+            </ns02:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
         <pd:to>ErrorLog Update AppLog</pd:to>
@@ -177,6 +214,13 @@ VALUES
     </pd:transition>
     <pd:transition>
         <pd:from>ErrorLog Update AppLog</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

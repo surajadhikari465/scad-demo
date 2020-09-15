@@ -33,8 +33,8 @@
     <pd:activity name="AssignEventsExist">
         <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
         <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-        <pd:x>95</pd:x>
-        <pd:y>206</pd:y>
+        <pd:x>85</pd:x>
+        <pd:y>223</pd:y>
         <config>
             <variableName>Events</variableName>
         </config>
@@ -261,8 +261,8 @@
         <pd:activity name="ArchiveEventError">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>856</pd:x>
-            <pd:y>386</pd:y>
+            <pd:x>850</pd:x>
+            <pd:y>378</pd:y>
             <config>
                 <processName>/Processes/ArchiveEvents.process</processName>
                 <spawn>true</spawn>

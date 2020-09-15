@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/DequeueResults.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/DequeueResults.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns02="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="www.tibco.com/plugin/Sleep" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/DequeueResults.xsd" schemaLocation="/Schemas/DequeueResults.xsd"/>
     <pd:name>Processes/DequeueEvents.process</pd:name>
     <pd:startName>Start</pd:startName>
@@ -156,7 +156,7 @@
             <pd:y>244</pd:y>
             <config/>
             <pd:inputBindings>
-                <ns0:SleepInputSchema xmlns:ns0="www.tibco.com/plugin/Sleep">
+                <ns0:SleepInputSchema>
                     <IntervalInMillisec>
                         <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Application/DbRetryDelayInMilliseconds"/>
                     </IntervalInMillisec>
@@ -172,7 +172,7 @@
                 <faultName/>
             </config>
             <pd:inputBindings>
-                <ns0:ActivityInput xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                <ns02:ActivityInput>
                     <message>
                         <xsl:value-of select="concat(&quot;Error Message: &quot;, $_error/ns1:ErrorReport/Msg, &quot;. StackTrace: &quot;, $_error/ns1:ErrorReport/StackTrace)"/>
                     </message>
@@ -181,7 +181,7 @@
                             <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
                         </messageCode>
                     </xsl:if>
-                </ns0:ActivityInput>
+                </ns02:ActivityInput>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>

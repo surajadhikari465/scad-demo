@@ -39,8 +39,8 @@
     <pd:activity name="Archive Inventory Record Message Details">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>714</pd:x>
-        <pd:y>71</pd:y>
+        <pd:x>550</pd:x>
+        <pd:y>67</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -176,9 +176,46 @@ VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</statement>
             </ns14:ActivityInputClass>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>774</pd:x>
+        <pd:y>54</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Destinations/InstockLogMessageQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/SharedResources/Properties/JMS-Application-Properties-InventoryManagement.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns13:ActivityInput>
+                <OtherProperties>
+                    <TransactionType>
+                        <xsl:value-of select="&quot;Log&quot;"/>
+                    </TransactionType>
+                    <RegionCode>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </RegionCode>
+                </OtherProperties>
+                <Body>
+                    <xsl:value-of select="string($Start/Input)"/>
+                </Body>
+            </ns13:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Archive Inventory Record Message Details</pd:from>
-        <pd:to>End</pd:to>
+        <pd:to>JMS Queue Sender</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -193,6 +230,13 @@ VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</statement>
     <pd:transition>
         <pd:from>Render Inventory Record JSON</pd:from>
         <pd:to>Archive Inventory Record Message Details</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

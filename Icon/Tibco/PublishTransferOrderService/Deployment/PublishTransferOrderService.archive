@@ -13,7 +13,7 @@
             <authorProperty>Min.Zhao</authorProperty>
             <processProperty>/Processes/PublishTransferOrderService.process</processProperty>
         </processArchive>
-        <versionProperty>43</versionProperty>
+        <versionProperty>44</versionProperty>
         <authorProperty>Min.Zhao</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PublishTransferOrderService</name>
@@ -22,6 +22,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Users\min.zhao\source\repos\SCAD\Icon\Tibco\DeploymentFiles\PublishTransferOrderService.ear</fileLocationProperty>
+        <fileLocationProperty>C:\dev\SCAD\Icon\Tibco\DeploymentFiles\PublishTransferOrderService.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

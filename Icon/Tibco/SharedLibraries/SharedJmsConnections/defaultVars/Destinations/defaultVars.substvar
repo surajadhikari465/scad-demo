@@ -42,6 +42,15 @@
 			<modTime>1515622385985</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>InstockLogMessageQueue</name>
+			<value>WFMSB1.SupplyChain.Retail.InventoryMgmt.Logs.Queue.V1</value>
+			<description></description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1599679149918</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>InventoryManagementTopic</name>
 			<value>WFMESB.SupplyChain.Retail.InventoryMgmt.Info.Topic.V2</value>
 			<deploymentSettable>true</deploymentSettable>

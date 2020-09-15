@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pfx3="http://schemas.wfm.com/InventoryManagement/InventoryManagementHeaders.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx4="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions">
+<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" xmlns:pfx3="http://schemas.wfm.com/InventoryManagement/InventoryManagementHeaders.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx4="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns02="www.tibco.com/plugin/Sleep" xmlns:BW="java://com.tibco.pe.core.JavaCustomXPATHFunctions">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/MessageHeaders.xsd" schemaLocation="/SharedResources/Schemas/JMS Message/MessageHeaders.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/InventoryManagement/InventoryManagementHeaders.xsd" schemaLocation="/Schemas/InventoryManagementMessageHeaders.xsd"/>
     <xsd:import namespace="http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd" schemaLocation="/SharedResources/Schemas/Irma Honeycrisp/EventQueue.xsd"/>
@@ -28,16 +28,16 @@
     <pd:startY>207</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>591</pd:endX>
-    <pd:endY>395</pd:endY>
+    <pd:endX>581</pd:endX>
+    <pd:endY>421</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1551449306052</pd:targetNamespace>
     <pd:activity name="HeadersToJson">
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>202</pd:x>
-        <pd:y>206</pd:y>
+        <pd:x>228</pd:x>
+        <pd:y>205</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
@@ -52,8 +52,8 @@
     <pd:activity name="Parse XML">
         <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
         <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
-        <pd:x>330</pd:x>
-        <pd:y>95</pd:y>
+        <pd:x>292</pd:x>
+        <pd:y>57</pd:y>
         <config>
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
@@ -69,8 +69,8 @@
     <pd:group name="RetryOnError">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>440</pd:x>
-        <pd:y>22</pd:y>
+        <pd:x>422</pd:x>
+        <pd:y>50</pd:y>
         <pd:width>296</pd:width>
         <pd:height>287</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -117,8 +117,8 @@
         <pd:activity name="JDBC Update">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>583</pd:x>
-            <pd:y>94</pd:y>
+            <pd:x>565</pd:x>
+            <pd:y>120</pd:y>
             <config>
                 <timeout>%%Application/DbCommandTimeoutInSeconds%%</timeout>
                 <commit>false</commit>
@@ -250,27 +250,27 @@
         <pd:activity name="Sleep">
             <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
             <pd:resourceType>ae.activities.sleep</pd:resourceType>
-            <pd:x>580</pd:x>
-            <pd:y>234</pd:y>
+            <pd:x>562</pd:x>
+            <pd:y>260</pd:y>
             <config/>
             <pd:inputBindings>
-                <ns0:SleepInputSchema xmlns:ns0="www.tibco.com/plugin/Sleep">
+                <ns02:SleepInputSchema>
                     <IntervalInMillisec>
                         <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/Application/DbRetryDelayInMilliseconds"/>
                     </IntervalInMillisec>
-                </ns0:SleepInputSchema>
+                </ns02:SleepInputSchema>
             </pd:inputBindings>
         </pd:activity>
         <pd:activity name="Generate Error">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>671</pd:x>
-            <pd:y>233</pd:y>
+            <pd:x>653</pd:x>
+            <pd:y>259</pd:y>
             <config>
                 <faultName/>
             </config>
             <pd:inputBindings>
-                <ns0:ActivityInput xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                <ns0:ActivityInput>
                     <message>
                         <xsl:value-of select="concat(&quot;Error Message: &quot;, $_error/ns1:ErrorReport/Msg, &quot;. StackTrace: &quot;, $_error/ns1:ErrorReport/StackTrace)"/>
                     </message>
@@ -286,8 +286,8 @@
     <pd:activity name="LogError">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>374</pd:x>
-        <pd:y>395</pd:y>
+        <pd:x>428</pd:x>
+        <pd:y>420</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>false</spawn>
@@ -330,21 +330,43 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>132</pd:x>
-        <pd:y>391</pd:y>
+        <pd:x>154</pd:x>
+        <pd:y>418</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
         </config>
         <pd:inputBindings/>
     </pd:activity>
-    <pd:transition>
-        <pd:from>Start</pd:from>
-        <pd:to>HeadersToJson</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>148</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Destinations/InstockLogMessageQueue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/SharedResources/Connections/SB1.sharedjmscon</ConnectionReference>
+            <ApplicationProperties>/SharedResources/Properties/JMS-Application-Properties-InventoryManagement.sharedjmsapp</ApplicationProperties>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <Body>
+                    <xsl:value-of select="string($Start/root)"/>
+                </Body>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>HeadersToJson</pd:from>
         <pd:to>Parse XML</pd:to>
@@ -376,6 +398,14 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
+        <pd:from>HeadersToJson</pd:from>
+        <pd:to>RetryOnError</pd:to>
+        <pd:xpathDescription>else</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
         <pd:from>Parse XML</pd:from>
         <pd:to>RetryOnError</pd:to>
         <pd:lineType>Default</pd:lineType>
@@ -383,11 +413,17 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>HeadersToJson</pd:from>
-        <pd:to>RetryOnError</pd:to>
-        <pd:xpathDescription>else</pd:xpathDescription>
+        <pd:from>Start</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>otherwise</pd:conditionType>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>HeadersToJson</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>
