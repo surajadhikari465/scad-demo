@@ -28,10 +28,10 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("12.1.0.0")>
+<Assembly: AssemblyVersion("12.3.0.0")>
 
 
-<Assembly: AssemblyFileVersionAttribute("12.1.0.0")>
+<Assembly: AssemblyFileVersionAttribute("12.3.0.0")>
 
 ' Specify that the logger is configured using the app.config file 
 <Assembly: log4net.Config.XmlConfigurator()> 
