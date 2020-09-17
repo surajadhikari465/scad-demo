@@ -47,6 +47,7 @@ BEGIN
 		,RIGHT('0000000000000'+ISNULL(ii.Identifier,''),13) AS NAT_UPC
 		,CONVERT(varchar,s.BusinessUnit_ID) AS STORE_NUMBER
 		,CAST(vch.UnitCost AS decimal(16,2)) AS COST
+		,0 AS RowNumber
 	FROM VendorCostHistory vch
 	JOIN UniqueFutureCost vchf ON vch.VendorCostHistoryID = vchf.VendorCostHistoryID 
 	JOIN StoreItemVendor siv ON vch.StoreItemVendorID = siv.StoreItemVendorID
