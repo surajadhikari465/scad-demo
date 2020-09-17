@@ -82,7 +82,7 @@ namespace Services.Extract.Tests
                 .Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
                 .Returns(new JobSchedule { JobName = "Test" });
             var jobRunner = new Mock<IExtractJobRunner>();
-            extractJobRunnerFactory.Setup(m => m.Create(It.IsAny<ILogger<ExtractJobRunner>>(), It.IsAny<IOpsgenieAlert>(), It.IsAny<ICredentialsCacheManager>(), It.IsAny<IFileDestinationCache>()))
+            extractJobRunnerFactory.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<ILogger<ExtractJobRunner>>(), It.IsAny<IOpsgenieAlert>(), It.IsAny<ICredentialsCacheManager>(), It.IsAny<IFileDestinationCache>()))
                     .Returns(jobRunner.Object);
             
             //When
@@ -93,7 +93,7 @@ namespace Services.Extract.Tests
             //Then
             messageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()));
             extractJobConfigurationParser.Verify(m => m.Parse(It.IsAny<string>()));
-            extractJobRunnerFactory.Verify(m => m.Create(It.IsAny<ILogger<ExtractJobRunner>>(), It.IsAny<IOpsgenieAlert>(), It.IsAny<ICredentialsCacheManager>(), It.IsAny<IFileDestinationCache>()));
+            extractJobRunnerFactory.Verify(m => m.Create(It.IsAny<string>(), It.IsAny<ILogger<ExtractJobRunner>>(), It.IsAny<IOpsgenieAlert>(), It.IsAny<ICredentialsCacheManager>(), It.IsAny<IFileDestinationCache>()));
             updateJobStatusCommandHandler.Verify(m => m.Execute(It.Is<UpdateJobStatusCommand>(c => c.Status == Constants.RunningJobStatus)), Times.Once);
             updateJobStatusCommandHandler.Verify(m => m.Execute(It.Is<UpdateJobStatusCommand>(c => c.Status == Constants.ReadyJobStatus)), Times.Once);
             updateJobLastRunEndCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateJobLastRunEndCommand>()));
@@ -112,7 +112,7 @@ namespace Services.Extract.Tests
             var jobRunner = new Mock<IExtractJobRunner>();
             jobRunner.Setup(m => m.Run(It.IsAny<ExtractJobConfiguration>()))
                 .Throws(new Exception("Test Exception"));
-            extractJobRunnerFactory.Setup(m => m.Create(It.IsAny<ILogger<ExtractJobRunner>>(), It.IsAny<IOpsgenieAlert>(), It.IsAny<ICredentialsCacheManager>(), It.IsAny<IFileDestinationCache>()))
+            extractJobRunnerFactory.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<ILogger<ExtractJobRunner>>(), It.IsAny<IOpsgenieAlert>(), It.IsAny<ICredentialsCacheManager>(), It.IsAny<IFileDestinationCache>()))
                     .Returns(jobRunner.Object);
 
             //When
@@ -123,7 +123,7 @@ namespace Services.Extract.Tests
             //Then
             messageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()));
             extractJobConfigurationParser.Verify(m => m.Parse(It.IsAny<string>()));
-            extractJobRunnerFactory.Verify(m => m.Create(It.IsAny<ILogger<ExtractJobRunner>>(), It.IsAny<IOpsgenieAlert>(), It.IsAny<ICredentialsCacheManager>(), It.IsAny<IFileDestinationCache>()));
+            extractJobRunnerFactory.Verify(m => m.Create(It.IsAny<string>(), It.IsAny<ILogger<ExtractJobRunner>>(), It.IsAny<IOpsgenieAlert>(), It.IsAny<ICredentialsCacheManager>(), It.IsAny<IFileDestinationCache>()));
             updateJobStatusCommandHandler.Verify(m => m.Execute(It.Is<UpdateJobStatusCommand>(c => c.Status == Constants.RunningJobStatus)), Times.Once);
             updateJobStatusCommandHandler.Verify(m => m.Execute(It.Is<UpdateJobStatusCommand>(c => c.Status == Constants.ReadyJobStatus)), Times.Once);
             updateJobLastRunEndCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateJobLastRunEndCommand>()));

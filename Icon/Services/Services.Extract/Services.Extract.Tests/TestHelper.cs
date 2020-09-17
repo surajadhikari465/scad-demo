@@ -6,7 +6,7 @@ namespace Services.Extract.Tests
     {
         public static void SetupWorkspace(this ExtractJobRunner runner, string workspacePath)
         {
-            runner.CreateWorksapce(workspacePath);
+            runner.CreateWorkspace(workspacePath);
             runner.CleanWorkspace(workspacePath);
         }
 

@@ -46,16 +46,84 @@ namespace Services.Extract
         private ICredentialsCacheManager CredentialsCacheManager;
         private IFileDestinationCache FileDestinationCache;
 
-        public ExtractJobRunner(ILogger<ExtractJobRunner> logger, IOpsgenieAlert opsGenieAlert, ICredentialsCacheManager credentialsCacheManager, IFileDestinationCache fileDestinationCache)
+        public string JobName { get; set; }
+
+        public ExtractJobRunner(string jobName, ILogger<ExtractJobRunner> logger, IOpsgenieAlert opsGenieAlert, ICredentialsCacheManager credentialsCacheManager, IFileDestinationCache fileDestinationCache)
         {
             OpsGenieApiKey = AppSettingsAccessor.GetStringSetting("OpsGenieApiKey", true);
             OpsGenieUrl = AppSettingsAccessor.GetStringSetting("OpsGenieUri", true);
             CredentialsCacheManager = credentialsCacheManager;
             FileDestinationCache = fileDestinationCache;
             Regions = AppSettingsAccessor.GetStringSetting("Regions", "FL,MA,MW,NA,NC,NE,PN,RM,SO,SP,SW,UK").Split(',');
+            JobName = jobName;
             Logger = logger;
             OpsGenie = opsGenieAlert;
             LoadConnectionConfiguration();
+        }
+
+        public void Run(ExtractJobConfiguration configuration)
+        {
+            try
+            {
+                Logger.Info($"{JobName}: Refreshing CredentialsCache");
+                Configuration = configuration;
+                CredentialsCacheManager.S3CredentialsCache.Refresh();
+                CredentialsCacheManager.SFtpCredentialsCache.Refresh();
+                CredentialsCacheManager.EsbCredentialsCache.Refresh();
+                FileDestinationCache.Refresh();
+
+                Logger.Info($"{JobName}: Creating Workspace");
+                CreateWorkspace(WorkspacePath);
+                CleanWorkspace(WorkspacePath);
+                Logger.Info($"{JobName}: Transforming Filenames");
+                TransformFilenames();
+                GetActiveSourceConnectionsAndDestinationFiles(out ActiveSourcesAndDestinationFiles);
+                if (Configuration.StagingQuery != null && Configuration.StagingQuery.Trim().Length > 0)
+                {
+                    Logger.Info($"{JobName}: Executing Staging Query");
+                    ExecuteStagingQuery(ActiveSourcesAndDestinationFiles.ToArray(), Configuration.StagingQuery,
+                    Configuration.StagingParameters);
+                }
+
+                if (Configuration.DynamicParameterQuery != null && Configuration.DynamicParameterQuery.Trim().Length > 0)
+                {
+                    Logger.Info($"{JobName}: Executing Dynamic Parameters Query");
+                    if (ActiveSourcesAndDestinationFiles.Count() > 1) throw new Exception($"Only one database connection is allowed if DynamicParameterQuery is specified.");
+
+                    LoadDynamicParameters(ActiveSourcesAndDestinationFiles.ToArray(), Configuration.DynamicParameterQuery,
+                    out DynamicParam);
+                }
+
+                Logger.Info($"{JobName}: Executing Extract Query");
+                ExecuteExtractQuery(ActiveSourcesAndDestinationFiles.ToArray(), Configuration.Query,
+                        Configuration.Parameters, DynamicParam, out OutputData);
+
+                Logger.Info($"{JobName}: Getting Headers");
+                GetHeaders(OutputData);
+
+                Logger.Info($"{JobName}: Writing the output files to workspace");
+                OutputFiles.AddRange(WriteDataToFiles(OutputData, ActiveSourcesAndDestinationFiles.Count()));
+                ProcessHeaders(OutputFiles);
+
+                OutputFiles = ConcatenateFiles(Configuration.OutputFileName, OutputFiles);
+                OutputFiles = CompressFiles(OutputFiles,
+                    WorkspacePath + @"\" + configuration.OutputFileName.Replace("{source}", Configuration.Source));
+
+                Logger.Info($"{JobName}: Sending to destination");
+                ProcessDestination();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Job Failed: {JobName}: {ex}");
+                var data = new Dictionary<string, string> { { "Job", JsonConvert.SerializeObject(configuration) } };
+
+                if (AppSettingsAccessor.GetBoolSetting("SendOpsGenieAlerts"))
+                    OpsGenie.CreateOpsgenieAlert(OpsGenieApiKey, OpsGenieUrl, ex.Message, "SCAD Extract Service Alert", data);
+            }
+            finally
+            {
+                Cleanup();
+            }
         }
 
         internal void Cleanup()
@@ -207,7 +275,7 @@ namespace Services.Extract
             return new List<FileInfo> { destinationFileInfo };
         }
 
-        internal void CreateWorksapce(string path)
+        internal void CreateWorkspace(string path)
         {
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
         }
@@ -310,6 +378,7 @@ namespace Services.Extract
                             combinedArgs.Add(dynamicParameter.Key, dynamicParameter.Value);
                         }
 
+                        Logger.Info($"{JobName}: Executing Extract Query with dynamic arguments");
                         outputDataAndFileInformation.Add(new ExtractDataAndFileInformation()
                         {
                             Data = connection.Source.Query(sql, combinedArgs, buffered: false, commandTimeout: 7200),
@@ -319,6 +388,7 @@ namespace Services.Extract
                 }
                 else
                 {
+                    Logger.Info($"{JobName}: Executing Extract Query without dynamic arguments");
                     outputDataAndFileInformation.Add(new ExtractDataAndFileInformation()
                     {
                         Data = connection.Source.Query(sql, dbArgs, buffered: false, commandTimeout: 7200),
@@ -332,7 +402,6 @@ namespace Services.Extract
 
         internal void GetActiveSourceConnectionsAndDestinationFiles(out IEnumerable<ExtractSourcesAndDestinationFile> extractSourcesAndDestinationFiles)
         {
-
             var activeConnections = new List<ExtractSourcesAndDestinationFile>();
 
             if (Configuration.Regions != null)
@@ -365,7 +434,6 @@ namespace Services.Extract
                 };
             activeConnections.AddRange(iconSourcesAndFiles);
 
-
             var mammothSourcesAndFiles =
                 from c in Connections
                 where c.Key.ToLower() == "mammoth" && Configuration.Source.ToLower() == "mammoth"
@@ -375,7 +443,6 @@ namespace Services.Extract
                     DestinationFile = WorkspacePath + @"\" + Configuration.OutputFileName
                 };
             activeConnections.AddRange(mammothSourcesAndFiles);
-
 
             extractSourcesAndDestinationFiles = activeConnections;
         }
@@ -486,61 +553,6 @@ namespace Services.Extract
                     headerStream?.Close();
                     headerStream?.Dispose();
                 }
-            }
-        }
-
-        public void Run(ExtractJobConfiguration configuration)
-        {
-            try
-            {
-                Configuration = configuration;
-                CredentialsCacheManager.S3CredentialsCache.Refresh();
-                CredentialsCacheManager.SFtpCredentialsCache.Refresh();
-                CredentialsCacheManager.EsbCredentialsCache.Refresh();
-                FileDestinationCache.Refresh();
-
-                CreateWorksapce(WorkspacePath);
-                CleanWorkspace(WorkspacePath);
-                TransformFilenames();
-                GetActiveSourceConnectionsAndDestinationFiles(out ActiveSourcesAndDestinationFiles);
-                if (Configuration.StagingQuery != null && Configuration.StagingQuery.Trim().Length > 0)
-                {
-                    ExecuteStagingQuery(ActiveSourcesAndDestinationFiles.ToArray(), Configuration.StagingQuery,
-                    Configuration.StagingParameters);
-                }
-
-                if (Configuration.DynamicParameterQuery != null && Configuration.DynamicParameterQuery.Trim().Length > 0)
-                {
-                    if (ActiveSourcesAndDestinationFiles.Count() > 1) throw new Exception($"Only one database connection is allowed if DynamicParameterQuery is specified.");
-
-                    LoadDynamicParameters(ActiveSourcesAndDestinationFiles.ToArray(), Configuration.DynamicParameterQuery,
-                    out DynamicParam);
-                }
-
-                ExecuteExtractQuery(ActiveSourcesAndDestinationFiles.ToArray(), Configuration.Query,
-                        Configuration.Parameters, DynamicParam, out OutputData);
-
-                GetHeaders(OutputData);
-                OutputFiles.AddRange(WriteDataToFiles(OutputData, ActiveSourcesAndDestinationFiles.Count()));
-                ProcessHeaders(OutputFiles);
-
-                OutputFiles = ConcatenateFiles(Configuration.OutputFileName, OutputFiles);
-                OutputFiles = CompressFiles(OutputFiles,
-                    WorkspacePath + @"\" + configuration.OutputFileName.Replace("{source}", Configuration.Source));
-
-                ProcessDestination();
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex.Message);
-                var data = new Dictionary<string, string> { { "Job", JsonConvert.SerializeObject(configuration) } };
-
-                if (AppSettingsAccessor.GetBoolSetting("SendOpsGenieAlerts"))
-                    OpsGenie.CreateOpsgenieAlert(OpsGenieApiKey, OpsGenieUrl, ex.Message, "SCAD Extract Service Alert", data);
-            }
-            finally
-            {
-                Cleanup();
             }
         }
 
@@ -686,7 +698,6 @@ namespace Services.Extract
 
         internal void CopyFilesToS3(string credentialKey, IS3CredentialsCache credentialsCache, string destinationDir, List<FileInfo> files)
         {
-
             if (!credentialsCache.Credentials.ContainsKey(credentialKey)) throw new Exception($"Unable to find S3 Credentials for Key: {credentialKey}");
             var credentials = credentialsCache.Credentials[credentialKey];
             if (credentials == null) throw new Exception($"Expected to find S3 Credentials for Key: {credentialKey} but they were null");

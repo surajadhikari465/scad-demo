@@ -59,7 +59,7 @@ namespace Services.Extract
             var extractJobConfig = extractJobConfigurationParser.Parse(jobSchedule.XmlObject);
             logger.Info($"Executing Job: {jobSchedule.JobName}");
 
-            var runner = extractJobRunnerFactory.Create(extractJobLogger, opsGenieAlert, credentialsCacheManager, fileDestinationCache);
+            var runner = extractJobRunnerFactory.Create(jobSchedule.JobName, extractJobLogger, opsGenieAlert, credentialsCacheManager, fileDestinationCache);
             try
             {
                 updateJobStatusCommandHandler.Execute(new UpdateJobStatusCommand
@@ -72,8 +72,7 @@ namespace Services.Extract
             }
             catch (Exception ex)
             {
-                logger.Error($"Job Failed: {jobSchedule.JobName}");
-                logger.Error(ex.Message);
+                logger.Error($"Job Failed: {jobSchedule.JobName}. {ex}");
             }
             finally
             {

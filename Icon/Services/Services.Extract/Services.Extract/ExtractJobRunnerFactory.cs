@@ -6,9 +6,9 @@ namespace Services.Extract
 {
     public class ExtractJobRunnerFactory : IExtractJobRunnerFactory
     {
-        public IExtractJobRunner Create(ILogger<ExtractJobRunner> logger, IOpsgenieAlert opsGenieAlert, ICredentialsCacheManager credentialsCacheManager, IFileDestinationCache fileDestinationCache)
+        public IExtractJobRunner Create(string jobName, ILogger<ExtractJobRunner> logger, IOpsgenieAlert opsGenieAlert, ICredentialsCacheManager credentialsCacheManager, IFileDestinationCache fileDestinationCache)
         {
-            return new ExtractJobRunner(logger, opsGenieAlert, credentialsCacheManager, fileDestinationCache);
+            return new ExtractJobRunner(jobName, logger, opsGenieAlert, credentialsCacheManager, fileDestinationCache);
         }
     }
 }

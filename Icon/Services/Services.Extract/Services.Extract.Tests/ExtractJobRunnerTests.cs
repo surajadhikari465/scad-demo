@@ -31,7 +31,7 @@ namespace Services.Extract.Tests
             CredentialsCacheManager = new CredentialsCacheManager(new S3CredentialsCache(), new SFtpCredentialsCache(),
                 new EsbCredentialsCache());
             FileDestinationCache = new FileDestinationsCache();
-            runner = new ExtractJobRunner(logger, OpsGenieAlert, CredentialsCacheManager, FileDestinationCache);
+            runner = new ExtractJobRunner("testjob", logger, OpsGenieAlert, CredentialsCacheManager, FileDestinationCache);
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@ namespace Services.Extract.Tests
         {
 
             const string workspacePath = @".\Workspace";
-            runner.CreateWorksapce(workspacePath);
+            runner.CreateWorkspace(workspacePath);
 
             Assert.IsTrue(Directory.Exists(workspacePath));
 
@@ -292,7 +292,7 @@ namespace Services.Extract.Tests
         [TestMethod]
         public void IconTest()
         {
-            runner = new ExtractJobRunner(logger, OpsGenieAlert, CredentialsCacheManager, FileDestinationCache);
+            runner = new ExtractJobRunner("testjob", logger, OpsGenieAlert, CredentialsCacheManager, FileDestinationCache);
             var config = new ExtractJobConfiguration
             {
                 Delimiter = "|",
@@ -386,7 +386,7 @@ namespace Services.Extract.Tests
         {
             var config = JsonConvert.DeserializeObject<ExtractJobConfiguration>(
                 File.ReadAllText(@".\ExtractTestConfiguration.json"));
-            runner = new ExtractJobRunner(logger, OpsGenieAlert, CredentialsCacheManager, FileDestinationCache);
+            runner = new ExtractJobRunner("testjob", logger, OpsGenieAlert, CredentialsCacheManager, FileDestinationCache);
             runner.Run(config);
         }
 
