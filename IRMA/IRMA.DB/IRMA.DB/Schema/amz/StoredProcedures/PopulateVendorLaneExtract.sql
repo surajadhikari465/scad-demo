@@ -26,7 +26,7 @@ FROM	ItemVendor iv
 CREATE NONCLUSTERED INDEX ix_cleanItemVendor on #CleanItemVendor (item_key, vendor_id) INCLUDE (VIN)
 
 SELECT	vendor_id, 
-		dbo.fn_RemoveSpecialChars(rtrim(companyname), 1) VENDOR_NAME, 
+		dbo.fn_RemoveSpecialChars(rtrim(companyname), 0) VENDOR_NAME, 
 		rtrim(v.PS_Vendor_ID) as VENDOR_NUMBER
 INTO #CleanVendor
 FROM Vendor v
