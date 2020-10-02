@@ -25,6 +25,10 @@ echo on #######################################################################
 
 create queue WFMSB1.SupplyChain.Retail.InventoryMgmt.Logs.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.SupplyChain.Retail.InventoryMgmt.Logs.Queue.V1 group=sb1_HCInventoryMgmtPublisherGroup  receive,send,browse
+grant queue WFMSB1.SupplyChain.Retail.InventoryMgmt.Logs.Queue.V1 group=sb1_HCAdjustmentGroup  receive,send,browse
+grant queue WFMSB1.SupplyChain.Retail.InventoryMgmt.Logs.Queue.V1 group=sb1_HCPurchaseOrderGroup  receive,send,browse
+grant queue WFMSB1.SupplyChain.Retail.InventoryMgmt.Logs.Queue.V1 group=sb1_HCTransferOrderGroup  receive,send,browse
+grant queue WFMSB1.SupplyChain.Retail.InventoryMgmt.Logs.Queue.V1 group=sb1_HCReceiptOrderGroup  receive,send,browse
 addprop queue WFMSB1.SupplyChain.Retail.InventoryMgmt.Logs.Queue.V1 maxRedelivery=3, redeliveryDelay=15
 
 commit
