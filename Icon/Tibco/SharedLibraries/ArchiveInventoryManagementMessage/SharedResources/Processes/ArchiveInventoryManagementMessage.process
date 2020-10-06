@@ -39,8 +39,8 @@
     <pd:activity name="Archive Inventory Record Message Details">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>550</pd:x>
-        <pd:y>67</pd:y>
+        <pd:x>475</pd:x>
+        <pd:y>75</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -176,11 +176,11 @@ VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</statement>
             </ns14:ActivityInputClass>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="JMS Queue Sender">
+    <pd:activity name="Send to InStock Log Message Queue">
         <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
         <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-        <pd:x>774</pd:x>
-        <pd:y>54</pd:y>
+        <pd:x>812</pd:x>
+        <pd:y>56</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
@@ -208,14 +208,52 @@ VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</statement>
                     </RegionCode>
                 </OtherProperties>
                 <Body>
-                    <xsl:value-of select="string($Start/Input)"/>
+                    <xsl:value-of select="$Render-JSON/ns14:ActivityOutputClass/jsonString"/>
                 </Body>
             </ns13:ActivityInput>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>644</pd:x>
+        <pd:y>59</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor>
+                <xsd:element name="Message">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="MessageBody" type="xsd:string"/>
+                            <xsd:element name="EventType" type="xsd:string"/>
+                            <xsd:element name="BusinessUnitID" type="xsd:int"/>
+                            <xsd:element name="KeyID" type="xsd:int"/>
+                            <xsd:element name="SecondaryKeyID" type="xsd:int" minOccurs="0"/>
+                            <xsd:element name="Status" type="xsd:string"/>
+                            <xsd:element name="ErrorDescription" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="LastProcessedTime" type="xsd:time" minOccurs="0"/>
+                            <xsd:element name="MessageNumber" type="xsd:string"/>
+                            <xsd:element name="LastReprocess" type="xsd:time" minOccurs="0"/>
+                            <xsd:element name="LastReprocessID" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns14:ActivityInputClass>
+                <Message>
+                    <xsl:copy-of select="$Start/Input/ancestor-or-self::*/namespace::node()"/>
+                    <xsl:copy-of select="$Start/Input/@*"/>
+                    <xsl:copy-of select="$Start/Input/node()"/>
+                </Message>
+            </ns14:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Archive Inventory Record Message Details</pd:from>
-        <pd:to>JMS Queue Sender</pd:to>
+        <pd:to>Render JSON</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -235,8 +273,15 @@ VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</statement>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>JMS Queue Sender</pd:from>
+        <pd:from>Send to InStock Log Message Queue</pd:from>
         <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>Send to InStock Log Message Queue</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

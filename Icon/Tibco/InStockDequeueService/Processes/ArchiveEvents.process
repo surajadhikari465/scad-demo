@@ -28,16 +28,16 @@
     <pd:startY>207</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>581</pd:endX>
-    <pd:endY>421</pd:endY>
+    <pd:endX>690</pd:endX>
+    <pd:endY>489</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1551449306052</pd:targetNamespace>
     <pd:activity name="HeadersToJson">
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>228</pd:x>
-        <pd:y>205</pd:y>
+        <pd:x>343</pd:x>
+        <pd:y>207</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
@@ -52,8 +52,8 @@
     <pd:activity name="Parse XML">
         <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
         <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
-        <pd:x>292</pd:x>
-        <pd:y>57</pd:y>
+        <pd:x>407</pd:x>
+        <pd:y>59</pd:y>
         <config>
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
@@ -69,8 +69,8 @@
     <pd:group name="RetryOnError">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>422</pd:x>
-        <pd:y>50</pd:y>
+        <pd:x>537</pd:x>
+        <pd:y>53</pd:y>
         <pd:width>296</pd:width>
         <pd:height>287</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -117,8 +117,8 @@
         <pd:activity name="JDBC Update">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>565</pd:x>
-            <pd:y>120</pd:y>
+            <pd:x>680</pd:x>
+            <pd:y>122</pd:y>
             <config>
                 <timeout>%%Application/DbCommandTimeoutInSeconds%%</timeout>
                 <commit>false</commit>
@@ -250,8 +250,8 @@
         <pd:activity name="Sleep">
             <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
             <pd:resourceType>ae.activities.sleep</pd:resourceType>
-            <pd:x>562</pd:x>
-            <pd:y>260</pd:y>
+            <pd:x>677</pd:x>
+            <pd:y>262</pd:y>
             <config/>
             <pd:inputBindings>
                 <ns02:SleepInputSchema>
@@ -264,8 +264,8 @@
         <pd:activity name="Generate Error">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>653</pd:x>
-            <pd:y>259</pd:y>
+            <pd:x>768</pd:x>
+            <pd:y>261</pd:y>
             <config>
                 <faultName/>
             </config>
@@ -286,8 +286,8 @@
     <pd:activity name="LogError">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>428</pd:x>
-        <pd:y>420</pd:y>
+        <pd:x>356</pd:x>
+        <pd:y>495</pd:y>
         <config>
             <processName>/SharedResources/Processes/LogPublisher.process</processName>
             <spawn>false</spawn>
@@ -330,19 +330,19 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>154</pd:x>
-        <pd:y>418</pd:y>
+        <pd:x>82</pd:x>
+        <pd:y>493</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
         </config>
         <pd:inputBindings/>
     </pd:activity>
-    <pd:activity name="JMS Queue Sender">
+    <pd:activity name="Send to Log Message Queue">
         <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
         <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-        <pd:x>148</pd:x>
-        <pd:y>71</pd:y>
+        <pd:x>973</pd:x>
+        <pd:y>494</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
@@ -362,9 +362,85 @@
         <pd:inputBindings>
             <ns3:ActivityInput>
                 <Body>
-                    <xsl:value-of select="string($Start/root)"/>
+                    <xsl:value-of select="$Rendor-JSON-Message/ns:ActivityOutputClass/jsonString"/>
                 </Body>
             </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Rendor JSON Message">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>959</pd:x>
+        <pd:y>221</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor>
+                <xsd:element name="MessageEvent">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="KeyID" type="xsd:int"/>
+                            <xsd:element name="SecondaryKeyID" type="xsd:int" minOccurs="0"/>
+                            <xsd:element name="MessageType" type="xsd:string"/>
+                            <xsd:element name="EventTypeCode" type="xsd:string"/>
+                            <xsd:element name="MessageTimestampUtc" type="xsd:time"/>
+                            <xsd:element name="InsertDate" type="xsd:time"/>
+                            <xsd:element name="Message" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="MessageID" type="xsd:string" minOccurs="0"/>
+                            <xsd:element ref="pfx3:MessageHeaders" minOccurs="0"/>
+                            <xsd:element name="ErrorCode" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="ErrorDetails" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <MessageEvent>
+                    <KeyID>
+                        <xsl:value-of select="$Start/root/KeyID"/>
+                    </KeyID>
+                    <xsl:if test="$Start/root/SecondaryKeyID">
+                        <SecondaryKeyID>
+                            <xsl:value-of select="$Start/root/SecondaryKeyID"/>
+                        </SecondaryKeyID>
+                    </xsl:if>
+                    <MessageType>
+                        <xsl:value-of select="$Start/root/MessageType"/>
+                    </MessageType>
+                    <EventTypeCode>
+                        <xsl:value-of select="$Start/root/EventTypeCode"/>
+                    </EventTypeCode>
+                    <MessageTimestampUtc>
+                        <xsl:value-of select="$Start/root/MessageTimestampUtc"/>
+                    </MessageTimestampUtc>
+                    <InsertDate>
+                        <xsl:value-of select="$Start/root/InsertDate"/>
+                    </InsertDate>
+                    <xsl:if test="$Start/root/Message">
+                        <Message>
+                            <xsl:value-of select="$Start/root/Message"/>
+                        </Message>
+                    </xsl:if>
+                    <xsl:if test="$Start/root/MessageID">
+                        <MessageID>
+                            <xsl:value-of select="$Start/root/MessageID"/>
+                        </MessageID>
+                    </xsl:if>
+                    <xsl:copy-of select="$Start/root/pfx3:MessageHeaders"/>
+                    <xsl:if test="$Start/root/ErrorCode">
+                        <ErrorCode>
+                            <xsl:value-of select="$Start/root/ErrorCode"/>
+                        </ErrorCode>
+                    </xsl:if>
+                    <xsl:if test="$Start/root/ErrorDetails">
+                        <ErrorDetails>
+                            <xsl:value-of select="$Start/root/ErrorDetails"/>
+                        </ErrorDetails>
+                    </xsl:if>
+                </MessageEvent>
+            </ns:ActivityInputClass>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
@@ -378,10 +454,12 @@
     </pd:transition>
     <pd:transition>
         <pd:from>RetryOnError</pd:from>
-        <pd:to>End</pd:to>
+        <pd:to>Rendor JSON Message</pd:to>
+        <pd:xpathDescription>Message Exists</pd:xpathDescription>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length($Start/root/Message) &gt; 0</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>Catch</pd:from>
@@ -413,17 +491,31 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Start</pd:from>
-        <pd:to>JMS Queue Sender</pd:to>
+        <pd:from>Send to Log Message Queue</pd:from>
+        <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>JMS Queue Sender</pd:from>
+        <pd:from>Start</pd:from>
         <pd:to>HeadersToJson</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Rendor JSON Message</pd:from>
+        <pd:to>Send to Log Message Queue</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RetryOnError</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>

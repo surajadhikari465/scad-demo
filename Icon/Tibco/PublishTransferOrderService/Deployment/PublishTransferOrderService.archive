@@ -13,7 +13,7 @@
             <authorProperty>Min.Zhao</authorProperty>
             <processProperty>/Processes/PublishTransferOrderService.process</processProperty>
         </processArchive>
-        <versionProperty>44</versionProperty>
+        <versionProperty>45</versionProperty>
         <authorProperty>Min.Zhao</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>PublishTransferOrderService</name>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLogs.xsd" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns02="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns04="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns03="www.tibco.com/plugin/Sleep">
+<pd:ProcessDefinition xmlns:pfx="http://schemas.wfm.com/Mammoth/AppLog.xsd" xmlns:pfx2="http://schemas.wfm.com/Mammoth/AppLogs.xsd" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns02="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns04="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns03="www.tibco.com/plugin/Sleep">
     <xsd:import namespace="http://schemas.wfm.com/Mammoth/AppLog.xsd"/>
     <pd:name>SharedResources/Processes/LogPublisher.process</pd:name>
     <pd:startName>Start</pd:startName>
@@ -25,8 +25,8 @@
     <pd:startY>64</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>831</pd:endX>
-    <pd:endY>74</pd:endY>
+    <pd:endX>932</pd:endX>
+    <pd:endY>81</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1505404454239</pd:targetNamespace>
@@ -171,8 +171,8 @@ VALUES
     <pd:activity name="JMS Queue Sender">
         <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
         <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-        <pd:x>584</pd:x>
-        <pd:y>70</pd:y>
+        <pd:x>723</pd:x>
+        <pd:y>71</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
@@ -200,9 +200,83 @@ VALUES
                     </RegionCode>
                 </OtherProperties>
                 <Body>
-                    <xsl:value-of select="string($Start/LogElement)"/>
+                    <xsl:value-of select="$Render-Logs-as-JSON/ns3:ActivityOutputClass/jsonString"/>
                 </Body>
             </ns02:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Logs as JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>534</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor>
+                <xsd:element name="LogElement">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="LogDate" type="xsd:time"/>
+                            <xsd:element name="ApplicationID" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="HostName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="UserName" type="xsd:string"/>
+                            <xsd:element name="Thread" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Level" type="xsd:int" minOccurs="0"/>
+                            <xsd:element name="Logger" type="xsd:string"/>
+                            <xsd:element name="Message" type="xsd:string"/>
+                            <xsd:element name="Exception" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="InsertedDate" type="xsd:time"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInputClass>
+                <LogElement>
+                    <LogDate>
+                        <xsl:value-of select="$Start/LogElement/LogDate"/>
+                    </LogDate>
+                    <xsl:if test="$Start/LogElement/ApplicationID">
+                        <ApplicationID>
+                            <xsl:value-of select="$Start/LogElement/ApplicationID"/>
+                        </ApplicationID>
+                    </xsl:if>
+                    <xsl:if test="$Start/LogElement/HostName">
+                        <HostName>
+                            <xsl:value-of select="$Start/LogElement/HostName"/>
+                        </HostName>
+                    </xsl:if>
+                    <UserName>
+                        <xsl:value-of select="$Start/LogElement/UserName"/>
+                    </UserName>
+                    <xsl:if test="$Start/LogElement/Thread">
+                        <Thread>
+                            <xsl:value-of select="$Start/LogElement/Thread"/>
+                        </Thread>
+                    </xsl:if>
+                    <xsl:if test="$Start/LogElement/Level">
+                        <Level>
+                            <xsl:value-of select="$Start/LogElement/Level"/>
+                        </Level>
+                    </xsl:if>
+                    <Logger>
+                        <xsl:value-of select="$Start/LogElement/Logger"/>
+                    </Logger>
+                    <Message>
+                        <xsl:value-of select="$Start/LogElement/Message"/>
+                    </Message>
+                    <xsl:if test="$Start/LogElement/Exception">
+                        <Exception>
+                            <xsl:value-of select="$Start/LogElement/Exception"/>
+                        </Exception>
+                    </xsl:if>
+                    <InsertedDate>
+                        <xsl:value-of select="$Start/LogElement/InsertedDate"/>
+                    </InsertedDate>
+                </LogElement>
+            </ns3:ActivityInputClass>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
@@ -214,7 +288,7 @@ VALUES
     </pd:transition>
     <pd:transition>
         <pd:from>ErrorLog Update AppLog</pd:from>
-        <pd:to>JMS Queue Sender</pd:to>
+        <pd:to>Render Logs as JSON</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -222,6 +296,13 @@ VALUES
     <pd:transition>
         <pd:from>JMS Queue Sender</pd:from>
         <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Logs as JSON</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

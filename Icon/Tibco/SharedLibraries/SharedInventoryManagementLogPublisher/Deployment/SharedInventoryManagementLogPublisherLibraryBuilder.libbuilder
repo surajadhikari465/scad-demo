@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
     <name name="SharedInventoryManagementLogPublisherLibraryBuilder">
-        <version>26</version>
+        <version>29</version>
         <author>Ben.Sims</author>
         <fileLocation>C:\dev\SCAD\Icon\Tibco\SharedLibraries\Libraries\SharedInventoryManagementLogPublisher.projlib</fileLocation>
         <resources>/SharedResources/Processes/LogPublisher.process</resources>
