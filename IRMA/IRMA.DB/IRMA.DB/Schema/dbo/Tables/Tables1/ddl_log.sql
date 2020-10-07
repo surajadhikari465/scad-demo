@@ -40,3 +40,13 @@ GO
 GRANT INSERT
 		 ON OBJECT::[dbo].[ddl_log] TO [IRMAClientRole]
 		 AS [dbo];
+
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[ddl_log] TO [IconInterface]
+    AS [dbo];
+
+GO
+GRANT INSERT
+		 ON OBJECT::[dbo].[ddl_log] TO [IconInterface]
+		 AS [dbo];
