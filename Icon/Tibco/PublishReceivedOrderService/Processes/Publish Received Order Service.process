@@ -40,8 +40,8 @@
     <pd:activity name="ReceiptDataMapper">
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>639</pd:x>
-        <pd:y>245</pd:y>
+        <pd:x>640</pd:x>
+        <pd:y>246</pd:y>
         <config>
             <element ref="pfx2:orderReceipts"/>
         </config>
@@ -86,6 +86,14 @@
                             <pfx2:pastRceiptDate>
                                 <xsl:value-of select="PastReceiptDate"/>
                             </pfx2:pastRceiptDate>
+                        </xsl:if>
+                        <pfx2:purchaseOrderCreateDateTime>
+                            <xsl:value-of select="CreateDateTime"/>
+                        </pfx2:purchaseOrderCreateDateTime>
+                        <xsl:if test="SupplierNumber">
+                            <pfx2:purchaseOrderSupplierNumber>
+                                <xsl:value-of select="SupplierNumber"/>
+                            </pfx2:purchaseOrderSupplierNumber>
                         </xsl:if>
                         <xsl:for-each select="$GetEvents/resultSet/Record">
                             <pfx2:receiptDetail>
@@ -275,8 +283,10 @@
 		ELSE 'Not Received' END AS ReceiptStatus,
 	ISNULL(iv.item_id, 0) as VIN,
 	s.BusinessUnit_ID as StoreNumber,
-                             s.Store_Name as StoreName,
-	ohe.PastReceiptDate
+        s.Store_Name as StoreName,
+	ohe.PastReceiptDate,
+	v.PS_Vendor_ID as SupplierNumber,
+	ISNULL(oh.SentDate, oh.OrderDate) as CreateDateTime
 	FROM 
 	dbo.OrderHeader oh WITH (NOLOCK)
 	JOIN Vendor psl WITH (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID 
@@ -334,7 +344,7 @@
             <QueryOutputCachedSchemaColumns>HostSubTeamNumber</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
             <QueryOutputCachedSchemaColumns>SubTeam</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
@@ -342,7 +352,7 @@
             <QueryOutputCachedSchemaColumns>SubTeamNumber</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
             <QueryOutputCachedSchemaColumns>DateReceived</QueryOutputCachedSchemaColumns>
             <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>datetime</QueryOutputCachedSchemaDataTypesName>
@@ -407,6 +417,14 @@
             <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
             <QueryOutputCachedSchemaDataTypesName>date</QueryOutputCachedSchemaDataTypesName>
             <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SupplierNumber</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CreateDateTime</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>smalldatetime</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
         </config>
         <pd:inputBindings>
             <jdbcQueryActivityInput>

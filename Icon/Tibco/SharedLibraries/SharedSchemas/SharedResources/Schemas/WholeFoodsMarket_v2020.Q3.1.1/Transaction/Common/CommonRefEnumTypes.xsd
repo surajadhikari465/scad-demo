@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 sp1 (x64) (http://www.altova.com) by Arun Purushothaman (WFM) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.78">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../../Common/CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Simple Types                 -->
+	<!-- ================== -->
+	<xs:simpleType name="AccountabilityTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Operator"/>
+			<xs:enumeration value="Register"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipInActionTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Add"/>
+			<xs:enumeration value="Void"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BusinessActionTypeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="AgeConfirmation"/>
+			<xs:enumeration value="ApprovalRequired"/>
+			<xs:enumeration value="ConfirmationRequired"/>
+			<xs:enumeration value="Notification"/>
+			<xs:enumeration value="Prohibit"/>
+			<xs:enumeration value="ReasonCodeRequired"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CheckTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Personal"/>
+			<xs:enumeration value="Company"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CreditDebitCardTypeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Credit"/>
+			<xs:enumeration value="Debit"/>
+			<xs:enumeration value="Affinity"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CreditDebitPaymentMethodCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Once"/>
+			<xs:enumeration value="Revolving"/>
+			<xs:enumeration value="Bonus"/>
+			<xs:enumeration value="Divided"/>
+			<xs:enumeration value="DividedWithBonus"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CryptogramTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="TransactionCertificate"/>
+			<xs:enumeration value="AuthorizationRequestCryptogram"/>
+			<xs:enumeration value="ApplicationAuthenticationCryptogram"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EntryMethodEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Automatic"/>
+			<xs:enumeration value="CardholderNotPresent">
+				<xs:annotation>
+					<xs:documentation>PCMS code = 4</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Ecommerce">
+				<xs:annotation>
+					<xs:documentation>PCMS code = 5</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Imported">
+				<xs:annotation>
+					<xs:documentation>PCMS code = 6</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Imprint">
+				<xs:annotation>
+					<xs:documentation>PCMS code = 3</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IntegratedChipCard">
+				<xs:annotation>
+					<xs:documentation>PCMS code = 2</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Keyed">
+				<xs:annotation>
+					<xs:documentation>PCMS code = 1</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KeyedCoupon">
+				<xs:annotation>
+					<xs:documentation>PCMS code = 8</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MICR"/>
+			<xs:enumeration value="Measured"/>
+			<xs:enumeration value="Moved"/>
+			<xs:enumeration value="NotRelevant">
+				<xs:annotation>
+					<xs:documentation>PCMS code= -1</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MSR">
+				<xs:annotation>
+					<xs:documentation>mag strip reader - when a user passes card through reader</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Promotion"/>
+			<xs:enumeration value="Repeat"/>
+			<xs:enumeration value="RFID"/>
+			<xs:enumeration value="Scanned">
+				<xs:annotation>
+					<xs:documentation>PCMS code= 7; barcode is scanned via register</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SmartCard"/>
+			<xs:enumeration value="Swiped">
+				<xs:annotation>
+					<xs:documentation>PCMS code= 0; this is same thing as MSR - one or other needs to be removed/remapped in future</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Tapped">
+				<xs:annotation>
+					<xs:documentation>PCMS code= 9</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Waved">
+				<xs:annotation>
+					<xs:documentation>when a user waves card over reader</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Weighed"/>
+			<xs:enumeration value="WavedSmartCard">
+				<xs:annotation>
+					<xs:documentation>Added for OnePOS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WavedMSR"/>
+			<xs:enumeration value="X:Moved"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EntryModeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Normal"/>
+			<xs:enumeration value="Manager"/>
+			<xs:enumeration value="Maintenance"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PasswordChangeStatusEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Cancelled"/>
+			<xs:enumeration value="FailedNewPassword"/>
+			<xs:enumeration value="FailedOldPassword"/>
+			<xs:enumeration value="Reset"/>
+			<xs:enumeration value="Successful"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="POSLogDeclineTypeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="DeviceFailure"/>
+			<xs:enumeration value="CustomerRefuses"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="POSLogCouponTypeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="ManufacturersCoupon"/>
+			<xs:enumeration value="ElectronicCoupon"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="POSLogVoucherUnspentDispositionEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="VoucherChange"/>
+			<xs:enumeration value="CashChange"/>
+			<xs:enumeration value="MixedChange"/>
+			<xs:enumeration value="NoChange"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RetailPriceModifierMethodEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="PriceOverride"/>
+			<xs:enumeration value="PriceRule"/>
+			<xs:enumeration value="Promotion"/>
+			<xs:enumeration value="SeniorCitizen"/>
+			<xs:enumeration value="Markdown">
+				<xs:annotation>
+					<xs:documentation>A permanent reduction from original or previous retail price, generally as a result of reduced demand for the item in question or an end of season for a seasonal item.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Coupon">
+				<xs:annotation>
+					<xs:documentation>Retail Coupon is a ticket or document issued by the retailer that allows the customer a reduction in the sales price of an article when
+                        the customer presents the coupon to the retailer. The Purchaser receives an immediate reduction of the selling price at the point of sale. There is no
+                        reimbursement to the retailer for the reduction, and a particular retailer's store coupon is generally of no value at another retailer. Retailer's coupon
+                        is also known as store coupon. This is considered a type of promotion.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="QuantityDiscount">
+				<xs:annotation>
+					<xs:documentation>Quantity Discount is a reduction of the price offered by the retailer at the time of the sale if the purchaser buys more than a certain
+                        number of a particular article. The purchaser receives an immediate reduction of the selling price at the point of sale.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Rebate">
+				<xs:annotation>
+					<xs:documentation>Rebates are offered by the manufacturer to the consumer at the time of the sale. Unless otherwise noted, it is assume that the price reduction is taken at the time of the sale. Rebates may also be issued in  form of a price reduction after the sale and are contingent upon the purchaser taking additional action. For example a mail-in rebate only reduces the selling price after the sale.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CashDiscount">
+				<xs:annotation>
+					<xs:documentation>Cash Discount is an allowance offered by the retailer if the purchaser pays cash at the time of sale rather than deferring payment. The purchaser receives an immediate reduction of the selling price at the point of sale. </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TradeInKind">
+				<xs:annotation>
+					<xs:documentation>While not technically a discount, a trade in kind can be thought of as tender that causes a reduction in the sales price of an item effectuated because the seller accepted an item in trade from the consumer. Trade-in goods are given in whole or, usually, part payment of a purchase.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GeneralDiscount">
+				<xs:annotation>
+					<xs:documentation>General Discount is an allowance offered by the retailer to the purchaser. The retailer may offer a discount if the purchaser pays for  the item or service at the time of sale rather than deferring payment. General discounts are fairly common to certain industries or services and are usually offered across the board to all customers. The purchaser receives an immediate reduction of the selling price at the point of sale.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GiftVoucher">
+				<xs:annotation>
+					<xs:documentation>While not technically a discount, a gift voucher can be thought of as tender that causes a reduction in the sales price of an item. It is a credit issued by a retailer or third party that is exchangeable for goods/services from particular retail merchant(s).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FlexibleDiscount">
+				<xs:annotation>
+					<xs:documentation>Flexible Discount is an allowance offered by the retailer to the purchaser, usually in a spontaneous manner. Flexible discounts can be offered across product lines without the purchaser having to meet any  specific business criteria related to the product or service. The purchaser receives an immediate reduction of the selling price at the point of sale.
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RewardProgram">
+				<xs:annotation>
+					<xs:documentation>A coupon, certificate, or discount provided by a retailer to a customer as part of a reward program. The retailer receives no (third party) reimbursement for the value of the coupon, certificate or discount. This discount type is designed to be broader than a retail coupon. The selling price is reduced after the sale; the reduction is contingent upon further action by the purchaser.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ManufacturerReward">
+				<xs:annotation>
+					<xs:documentation>A coupon, certificate, or discount provided by a manufacturer to a retail purchaser as part of a reward program. The manufacturer (third party) reimburses the retailer for the value of the coupon, certificate or discount. This discount type is designed to be broader than a manufacturer coupon. The selling price is reduced after the sale; the reduction is contingent upon further action by the purchaser.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CreditCardReward">
+				<xs:annotation>
+					<xs:documentation>A coupon, certificate, or discount provided by a credit card company to the credit card holder/patron, as part of a reward program, for use in a subsequent retail purchase from an unrelated vendor. The third party credit card company reimburses the retailer for the value of the coupon, certificate or discount. The selling price is reduced after the sale; the reduction is contingent upon further action by the purchaser.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RetailTransactionItemTypeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Coupon"/>
+			<xs:enumeration value="Deposit"/>
+			<xs:enumeration value="DepositRefund"/>
+			<xs:enumeration value="Fee"/>
+			<xs:enumeration value="FeeRefund"/>
+			<xs:enumeration value="ItemCollection"/>
+			<xs:enumeration value="Service"/>
+			<xs:enumeration value="Tare"/>
+			<xs:enumeration value="Warranty"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RetailTransactionTotalTypeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="TransactionGrossAmount">
+				<xs:annotation>
+					<xs:documentation>TransactionGrossAmount is the total excluding discounts and surcharges without taxes (assuming tax is not included)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransactionNetAmount">
+				<xs:annotation>
+					<xs:documentation>TransactionNetAmount is the total including discounts and surcharges without taxes (assuming tax is not included) The net amount doesn’t include added on taxes (luxury tax) but does include VAT taxes. Grand Amount = Net Amount + Tax 206.25 = 165.00 + 41.25 This is because VAT is included and no one ever see’s it.  It can be reported on the bottom of the receipt but it is basically included in the price shown to the customer. There can also be a Gross Amount Gross Amount = Net Amount + Discounts – Surcharges. So you could have a 10.00 euro item with a 10% discount and included vat. Gross Amount = 10.00 Net Amount = 9.00 Grand Amount = 9.00 (amount the customer pays) </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransactionTaxAmount"/>
+			<xs:enumeration value="TransactionGrandAmount">
+				<xs:annotation>
+					<xs:documentation>TransactionGrandAmount is the TransactionNetAmount + Taxes (assuming tax is not included) So if tax is included then TransactionGrandAmount and TransactionNetAmount would be equal Another way to look at it, TransactionGrandAmount is the amount the customer pays</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransactionTaxExemptAmount">
+				<xs:annotation>
+					<xs:documentation>Diplomats get no tax charged while his aide has a tax reduction of 5%. There can be tax exempt - people who have a tax exempt status a. Old age b. Foreigner c. Non-profit organization d. Duty Free – import or export </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransactionTaxForgivenAmount"/>
+			<xs:enumeration value="TransactionNonSalesAmount">
+				<xs:annotation>
+					<xs:documentation>These are charges during a transaction that are not related to regular sales. Can be things like pay ins, pay outs, rental fees, stamps, .... Depends on how the retailer wants to account for these items.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransactionPurchaseQuantity">
+				<xs:annotation>
+					<xs:documentation>This is the value of the number of items in a transaction. A line is commonly found on the bottom of receipts, "number of items purchased = X". Does this include: voided items, returned items, packages (for example if we sell tomatoes in a package). What is the business around this counter : for example to print number of items on receipts so the supervisor can count the items to verify it’s the correct amount? Yes if it's a package of tomatoes, it would generally be a count increase of "1" per scannable item.
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransactionSubtotal"/>
+			<xs:enumeration value="TransactionTaxFee"/>
+			<xs:enumeration value="TransactionBalanceDueAmount"/>
+			<xs:enumeration value="TransactionFoodstampTotalAmount"/>
+			<xs:enumeration value="TransactionFoodstampBalanceDue"/>
+			<xs:enumeration value="TransactionCouponTotal"/>
+			<xs:enumeration value="TransactionCouponCount"/>
+			<xs:enumeration value="TransactionTotalSavings"/>
+			<xs:enumeration value="TransactionTenderApplied"/>
+			<xs:enumeration value="TransactionTaxIncluded">
+				<xs:annotation>
+					<xs:documentation>R10 addition to arts model.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransactionTaxSurcharge">
+				<xs:annotation>
+					<xs:documentation>R10 addition to arts model.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ItemTaxFee">
+				<xs:annotation>
+					<xs:documentation>R10 addition to arts model.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransactionTotalVoidAmount">
+				<xs:annotation>
+					<xs:documentation>R10 addition to arts model.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransactionTotalReturnAmount">
+				<xs:annotation>
+					<xs:documentation>R10 addition to arts model.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CashbackTotalAmount">
+				<xs:annotation>
+					<xs:documentation>R10 addition to arts model.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransactionMerchandiseAmount">
+				<xs:annotation>
+					<xs:documentation>R10 addition to arts model.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransactionNonMerchandiseAmount">
+				<xs:annotation>
+					<xs:documentation>R10 addition to arts model.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NonResettableGrandTotal">
+				<xs:annotation>
+					<xs:documentation>R10 addition to arts model.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PreviousNonResettableGrandTotal">
+				<xs:annotation>
+					<xs:documentation>R10 addition to arts model.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransactionTotalWICAmount">
+				<xs:annotation>
+					<xs:documentation>R10 addition to arts model.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransactionTotalWICNTEAmount">
+				<xs:annotation>
+					<xs:documentation>R10 addition to arts model.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransactionTotalWICNTELostAmount">
+				<xs:annotation>
+					<xs:documentation>R10 addition to arts model.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PotentialPrimeSavings"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RetailTransactionTotalSubTypeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Estimated"/>
+			<xs:enumeration value="Actual"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ReturnTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="NoneReceiptReturn"/>
+			<xs:enumeration value="GiftReceiptedReturn"/>
+			<xs:enumeration value="BottleDepositReturn"/>
+			<xs:enumeration value="ReturnAll"/>
+			<xs:enumeration value="ReceiptReturn"/>
+			<xs:enumeration value="ReceiptedReturn"/>
+			<xs:enumeration value="NoneReceiptedReturn"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SubTenderTypeCodesEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>Local Cash; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="32">
+				<xs:annotation>
+					<xs:documentation>MasterCard; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="33">
+				<xs:annotation>
+					<xs:documentation>Visa; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="35">
+				<xs:annotation>
+					<xs:documentation>AMEX; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="37">
+				<xs:annotation>
+					<xs:documentation>Visa Debit; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="38">
+				<xs:annotation>
+					<xs:documentation>Maestro; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="40">
+				<xs:annotation>
+					<xs:documentation>Electron; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="45">
+				<xs:annotation>
+					<xs:documentation>Gift Voucher; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="47">
+				<xs:annotation>
+					<xs:documentation>Sterling Travellers Cheques; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="59">
+				<xs:annotation>
+					<xs:documentation>Online Sales; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="60">
+				<xs:annotation>
+					<xs:documentation>Delivery Sale; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="62">
+				<xs:annotation>
+					<xs:documentation>Manufacturer Coupon; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="66">
+				<xs:annotation>
+					<xs:documentation>Healthy Start Coupon; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="90">
+				<xs:annotation>
+					<xs:documentation>Waitrose MasterCard; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="99">
+				<xs:annotation>
+					<xs:documentation>Gift Card (Variable); PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="121">
+				<xs:annotation>
+					<xs:documentation>Unknown Card; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="184">
+				<xs:annotation>
+					<xs:documentation>Debit Mastercard; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Amex"/>
+			<xs:enumeration value="DinersClub"/>
+			<xs:enumeration value="DiscoverCard"/>
+			<xs:enumeration value="Fleet"/>
+			<xs:enumeration value="MasterCard"/>
+			<xs:enumeration value="Visa"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TenderAdjustmentTypeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Summary"/>
+			<xs:enumeration value="Detail"/>
+			<xs:enumeration value="BankDeposit"/>
+			<xs:enumeration value="BankReceipt"/>
+			<xs:enumeration value="BlindPickup"/>
+			<xs:enumeration value="PaidIn"/>
+			<xs:enumeration value="PaidOut"/>
+			<xs:enumeration value="SafeTransfer"/>
+			<xs:enumeration value="TenderDeclaration"/>
+			<xs:enumeration value="TenderPickup"/>
+			<xs:enumeration value="TenderLoan"/>
+			<xs:enumeration value="TillSettles"/>
+			<xs:enumeration value="SafeSettles"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TenderAuthorizationMethodTypeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Automatically"/>
+			<xs:enumeration value="BalanceInquiry"/>
+			<xs:enumeration value="Manually"/>
+			<xs:enumeration value="PreAuthorization"/>
+			<xs:enumeration value="PreAuthorizationCompletion"/>
+			<xs:enumeration value="Systematically"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TenderLedgerTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Actual"/>
+			<xs:enumeration value="Estimated"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TenderLoanTypeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Normal"/>
+			<xs:enumeration value="OpenFloat"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TenderSalesTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Sale"/>
+			<xs:enumeration value="Refund"/>
+			<xs:enumeration value="Reissue"/>
+			<xs:enumeration value="PreAuthorize"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TenderTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation>Cash/Local Currency; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation>CreditDebit; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="6">
+				<xs:annotation>
+					<xs:documentation>Gift Voucher; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="7">
+				<xs:annotation>
+					<xs:documentation>Travellers Cheque; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8">
+				<xs:annotation>
+					<xs:documentation>Coupon; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="10">
+				<xs:annotation>
+					<xs:documentation>Invoice; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="18">
+				<xs:annotation>
+					<xs:documentation>Gift Card; PCMS Value; To be omitted in future release to rid redundancy and use common data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AccountsReceivable"/>
+			<xs:enumeration value="Affinity"/>
+			<xs:enumeration value="AirmilesConversion"/>
+			<xs:enumeration value="CapitalBond"/>
+			<xs:enumeration value="Cash"/>
+			<xs:enumeration value="Check"/>
+			<xs:enumeration value="CheckCard"/>
+			<xs:enumeration value="Cheque"/>
+			<xs:enumeration value="CoPay"/>
+			<xs:enumeration value="Coupon"/>
+			<xs:enumeration value="CreditDebit"/>
+			<xs:enumeration value="CustomerAccount"/>
+			<xs:enumeration value="EBTCash"/>
+			<xs:enumeration value="EBTFoodstamps"/>
+			<xs:enumeration value="ElectronicTollCollection"/>
+			<xs:enumeration value="eWic"/>
+			<xs:enumeration value="FoodStamps"/>
+			<xs:enumeration value="GiftCard"/>
+			<xs:enumeration value="GiftCertificate"/>
+			<xs:enumeration value="HouseAccount"/>
+			<xs:enumeration value="InternationalMaestro"/>
+			<xs:enumeration value="ManufacturerCoupon"/>
+			<xs:enumeration value="Mobile"/>
+			<xs:enumeration value="PurchaseOrder"/>
+			<xs:enumeration value="Refund"/>
+			<xs:enumeration value="StaffDressAllowance"/>
+			<xs:enumeration value="StoredValue"/>
+			<xs:enumeration value="TravelersCheck"/>
+			<xs:enumeration value="UKMaestro"/>
+			<xs:enumeration value="Voucher"/>
+			<xs:enumeration value="WICCheck"/>
+			<xs:enumeration value="Gift Card"/>
+			<xs:enumeration value="ACHPayment"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TerminalActionCodeTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Default"/>
+			<xs:enumeration value="Denial"/>
+			<xs:enumeration value="Online"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TotalSalesTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Sale"/>
+			<xs:enumeration value="Return"/>
+			<xs:enumeration value="PreAuthorize"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TransactionLinkReasonEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="BlindPickup"/>
+			<xs:enumeration value="DeferredBill"/>
+			<xs:enumeration value="FailedSignIn"/>
+			<xs:enumeration value="GiftReceipt"/>
+			<xs:enumeration value="LayAway"/>
+			<xs:enumeration value="PaidOut"/>
+			<xs:enumeration value="ReceiptReprint"/>
+			<xs:enumeration value="SuggestedItem"/>
+			<xs:enumeration value="Reservation"/>
+			<xs:enumeration value="Resume"/>
+			<xs:enumeration value="RetrospectiveLoyalty"/>
+			<xs:enumeration value="Return"/>
+			<xs:enumeration value="UnauthorizedOpen"/>
+			<xs:enumeration value="Voided"/>
+			<xs:enumeration value="WrongData"/>
+			<xs:enumeration value="Merged"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TransactionStatusEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Canceled"/>
+			<xs:enumeration value="Delivered"/>
+			<xs:enumeration value="Failed"/>
+			<xs:enumeration value="Finished"/>
+			<xs:enumeration value="InProcess"/>
+			<xs:enumeration value="PostVoided"/>
+			<xs:enumeration value="Projection"/>
+			<xs:enumeration value="Replaced"/>
+			<xs:enumeration value="Resumed"/>
+			<xs:enumeration value="Returned"/>
+			<xs:enumeration value="Revision"/>
+			<xs:enumeration value="Subtotal"/>
+			<xs:enumeration value="Suspended"/>
+			<xs:enumeration value="SuspendedDeleted"/>
+			<xs:enumeration value="SuspendedRetrieved"/>
+			<xs:enumeration value="Tendered"/>
+			<xs:enumeration value="TransactionVoided"/>
+			<xs:enumeration value="Totaled"/>
+			<xs:enumeration value="Voided"/>
+			<xs:enumeration value="Waste"/>
+			<xs:enumeration value="Unknown"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TransactionTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Selfscan"/>
+			<xs:enumeration value="HomeShopping"/>
+			<xs:enumeration value="WIC"/>
+			<xs:enumeration value="DriveOff"/>
+			<xs:enumeration value="Unpaid"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ScanDataTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Barcode"/>
+			<xs:enumeration value="Coupon"/>
+			<xs:enumeration value="MSR"/>
+			<xs:enumeration value="RFID"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ServiceTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="TopUp"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SubTypeTypeCodeEnum">
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="EmbeddedPrice"/>
+			<xs:enumeration value="EmbeddedAmount"/>
+			<xs:enumeration value="OverrideAmountEmbedded"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VerifiedByPINStatusTypeCodeEnum">
+		<xs:annotation>
+			<xs:documentation>PIN verification status types</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="crf:WfmStrType">
+			<xs:enumeration value="Unknown">
+				<xs:annotation>
+					<xs:documentation>PIN verification information was not received by EPS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Verified">
+				<xs:annotation>
+					<xs:documentation>Payment was verified  by PIN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NotVerified">
+				<xs:annotation>
+					<xs:documentation>Payment was not verified  by PIN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

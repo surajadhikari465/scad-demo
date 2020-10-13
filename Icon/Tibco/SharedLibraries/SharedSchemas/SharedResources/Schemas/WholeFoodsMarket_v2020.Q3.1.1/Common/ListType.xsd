@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2017 sp2 (http://www.altova.com) by Jason Jorgenson (Whole Foods) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/RetailMgmt/ListType/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" targetNamespace="http://schemas.wfm.com/Enterprise/RetailMgmt/ListType/V1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="CommonRefTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Global Elements             -->
+	<!-- ================== -->
+	<xs:element name="lists" type="ListsType"/>
+	<xs:complexType name="ListsType">
+		<xs:sequence>
+			<xs:element name="list" type="ListType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="list" type="ListType"/>
+	<xs:complexType name="ListType">
+		<xs:sequence>
+			<xs:element name="id" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="type" type="ListTypeType"/>
+			<xs:element name="values" type="ListValuesType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="crf:Action"/>
+		<xs:attribute name="isAvailable" type="crf:WfmBoolType"/>
+	</xs:complexType>
+	<xs:complexType name="ListTypeType">
+		<xs:sequence>
+			<xs:element name="code" type="crf:WfmStrType"/>
+			<xs:element name="description" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="type" type="ListTypeType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ListValuesType">
+		<xs:sequence>
+			<xs:element name="value" type="ListValueType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ListValueType">
+		<xs:sequence>
+			<xs:element name="id" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="name" type="crf:WfmStrType"/>
+			<xs:element name="description" type="crf:WfmStrType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="crf:Action"/>
+		<xs:attribute name="Sequence" type="xs:string"/>
+	</xs:complexType>
+</xs:schema>
