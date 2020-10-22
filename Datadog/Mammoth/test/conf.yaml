@@ -1,0 +1,5 @@
+logs:
+  - type: file
+    path: "E:/Mammoth/Item Locale Controller/application-logs.json"
+    service: "Item-Locale-Controller"
+    source: "MAMMOTH-TEST"

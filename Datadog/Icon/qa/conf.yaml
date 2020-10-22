@@ -1,0 +1,81 @@
+logs:
+  - type: file
+    path: "E:/Icon/BulkBrandUploadProcessor/application-logs.json"
+    service: "Bulk-Brand-Upload-Processor"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/Icon/ExtractService/application-logs.json"
+    service: "Extract-Service"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/Icon/Item Movement Listener/application-logs.json"
+    service: "Item-Movement-Listener"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/Icon/NewItemController/application-logs.json"
+    service: "New-Item-Controller"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/Icon/POS Push Controller/application-logs.json"
+    service: "POS-Push-Controller"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/Icon/Tlog Controller/application-logs.json"
+    service: "T-log-Controller"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/Icon/VIM Controller/application-logs.json"
+    service: "VIM-Controller"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/icon/API Controller Phase 2/Hierarchy/application-logs.json"
+    service: "API-Controller-Hierarchy"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/icon/API Controller Phase 2/ItemLocale/application-logs.json"
+    service: "API-Controller-ItemLocale"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/icon/API Controller Phase 2/Locale/application-logs.json"
+    service: "API-Controller-Locale"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/icon/API Controller Phase 2/PSG/application-logs.json"
+    service: "API-Controller-PSG"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/icon/AttributePublisher/application-logs.json"
+    service: "Attribute-Publisher"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/icon/BulkItemUploadProcessor/application-logs.json"
+    service: "Bulk-Item-Upload-Processor"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/icon/CCH Tax Listener/application-logs.json"
+    service: "CCH-Tax-Listener"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/icon/Controller Monitor/application-logs.json"
+    service: "Controller-Monitor"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/icon/eWIC APL Listener/application-logs.json"
+    service: "eWIC-APL-Listener"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/icon/eWIC Error Response Listener/application-logs.json"
+    service: "eWIC-Error-Response-Listener"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/icon/Global Controller/application-logs.json"
+    service: "Global-Controller"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/icon/ItemPublisher/application-logs.json"
+    service: "Item-Publisher"
+    source: "ICON-QA"
+  - type: file
+    path: "E:/icon/R10 Listener/application-logs.json"
+    service: "R10-Listener"
+    source: "ICON-QA"
