@@ -3,3 +3,11 @@ logs:
     path: "E:/Mammoth/Item Locale Controller/application-logs.json"
     service: "Item-Locale-Controller"
     source: "MAMMOTH-TEST"
+  - type: file
+    path: "E:/Mammoth/Product Listener/application-logs.json"
+    service: "Mammoth-Product-Listener"
+    source: "MAMMOTH-TEST"
+  - type: file
+    path: "E:/Mammoth/Price Controller/application-logs.json"
+    service: "Mammoth-Price-Controller"
+    source: "MAMMOTH-TEST"
