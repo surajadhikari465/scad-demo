@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[GetGLUploadTransfersByGroup]
+﻿CREATE PROCEDURE [dbo].[GetGLUploadTransfersByGroup]
     @CurrDate	datetime	= NULL,
 	@Region_Code varchar(3)
 AS
@@ -175,14 +174,6 @@ BEGIN
 			oh.ProductType_ID,
 			sr.BusinessUnit_ID,
 			c.CurrencyCode
-			
-		ORDER BY
-			Unit,
-			TransferUnit,
-			Account,
-			DeptID,
-			[Product],
-			[Description]
 
 	--SELECT * FROM #tmpGLTrans
 
@@ -215,9 +206,6 @@ BEGIN
 			DeptID, 
 			Product,
 			Currency
-		ORDER BY
-			Unit,
-			Account
 		
 	INSERT INTO #tmpStoreGLLines
 		SELECT 
@@ -232,11 +220,8 @@ BEGIN
 			#tmpGLTrans
 		WHERE 
 			Unit <> TransferUnit
-		ORDER BY	
-			Unit,
-			Account
 
-	SELECT * FROM #tmpStoreGLLines ORDER BY SameStore Desc
+	SELECT * FROM #tmpStoreGLLines ORDER BY SameStore DESC, Unit, Account
 	
 	DROP TABLE #tmpGLTrans
 	DROP TABLE #tmpStoreGLLines
@@ -266,4 +251,3 @@ GO
 GRANT EXECUTE
     ON OBJECT::[dbo].[GetGLUploadTransfersByGroup] TO [IRMAReportsRole]
     AS [dbo];
-
