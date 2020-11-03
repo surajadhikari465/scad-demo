@@ -14,10 +14,10 @@
   <connectionStrings>
     <!-- Server: idd-ma   Database: ItemCatalog_Test -->
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.Utility.DataAccess objects -->
-    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="FktsCUEMiAzpkeqE0gu12eIh1mDjn1A9iHKmZqc8G/qq7M1FU5H2l98mt6c5Ar1oLoDvRhMq1acOYy0VTv+nC1BwfduBAFb9luvBBSDZWe1d56vkXEOpjbMUs5AlmkVM" />
+    <add name="ItemCatalog" providerName="System.Data.SqlClient" connectionString="PogeDuK3rM8lZmIiKBu9dBz3fVlygKNAsrjiXzy6NyPxhbsPsyFRgPQw5pvP9LG1WI8YJA3UnihHIPFVTsXDVAT3CEPXsZ3G2It4qxsKiKZUgviBawrayqP8953ocypu76bqj9yerD29604CCgPxyg==" />
     <!-- DATABASE CONNECTIONS: formatted for WholeFoods.IRMA DAO objects -->
-		<add name="ODBC" connectionString ="XYP0rQPBWTAn4nfL8gfEfM9VHViXViIDZAQkPiUlU8exNWK6si95C6ejBMuTW9gT41VJ9mJJ5L1bxCM6u9a/vNJA5DWynPQXOU0od9Z8hYdW3gSwV2acEollhOWiJCmo"/>
-		<add name="ODBCCrystal" connectionString ="XYP0rQPBWTAn4nfL8gfEfM9VHViXViIDZAQkPiUlU8exNWK6si95C6ejBMuTW9gT41VJ9mJJ5L1bxCM6u9a/vAKbx1gvfIfAfeLKnaDu9Cg+E7gXF+sZS9FxRStkVqwQ"/>
+		<add name="ODBC" connectionString ="XYP0rQPBWTAn4nfL8gfEfPeVe5Hs/aZJxuVgfHjCYqfKZtw2wb9I1eIfmL3IAH9M64NsIlmknrG3E3K7yiPOPVXrERGumsGX1I/lJJklMBAPDA+qKp6aRzdlerQDKU8LbsKEC2qVqRu3I4D5HSnybA=="/>
+		<add name="ODBCCrystal" connectionString ="XYP0rQPBWTAn4nfL8gfEfPeVe5Hs/aZJxuVgfHjCYqfKZtw2wb9I1eIfmL3IAH9M64NsIlmknrG3E3K7yiPOPaQrC7yYduBtew6412s5mUXWTNGxrNDRwi+BMfIlfQ+Fd72PxxTTKYBDQbLC8ylf4g=="/>
   </connectionStrings>
 
   <!-- LOG4NET CONFIGURATION OPTIONS.  See http://logging.apache.org/log4net for more details -->
