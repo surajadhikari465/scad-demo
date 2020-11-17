@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using TIBCO.EMS;
 
 namespace Icon.Esb.Producer
@@ -7,8 +9,12 @@ namespace Icon.Esb.Producer
     public class EsbProducer : EsbConnection, IEsbProducer
     {
         private MessageProducer producer;
+        private string lastClientId = null;
 
-        public EsbProducer(EsbConnectionSettings settings) : base(settings) { }
+        public EsbProducer(EsbConnectionSettings settings) : base(settings) 
+        {
+            lastClientId = "Undefined-" + Guid.NewGuid().ToString("N");
+         }
         
 
         public void Send(string message, Dictionary<string, string> messageProperties = null)
@@ -36,34 +42,9 @@ namespace Icon.Esb.Producer
             Send(bytesMessage, messageProperties);
         }
 
-        private void Send(TextMessage textMessage, Dictionary<string, string> messageProperties = null)
-        {
-            if (messageProperties != null)
-            {
-                foreach (var property in messageProperties)
-                {
-                    textMessage.SetStringProperty(property.Key, property.Value);
-                }
-            }
-
-            producer.Send(textMessage);
-        }
-
-        private void Send(BytesMessage byteMessage, Dictionary<string, string> messageProperties = null)
-        {
-            if (messageProperties != null)
-            {
-                foreach (var property in messageProperties)
-                {
-                    byteMessage.SetStringProperty(property.Key, property.Value);
-                }
-            }
-
-            producer.Send(byteMessage);
-        }
-
         public override void OpenConnection(string clientId)
         {
+            this.lastClientId = clientId;
             base.OpenConnection(clientId);
             producer = session.CreateProducer(destination);
             producer.DeliveryMode = DeliveryMode.PERSISTENT;
@@ -78,5 +59,72 @@ namespace Icon.Esb.Producer
 
             base.Dispose();
         }
+
+        private void Send(TextMessage textMessage, Dictionary<string, string> messageProperties = null)
+        {
+            // Set Properties
+            if (messageProperties != null)
+            {
+                foreach (var property in messageProperties)
+                {
+                    textMessage.SetStringProperty(property.Key, property.Value);
+                }
+            }
+
+            // Verify Connection
+            VerifyConnectionAndGracefullyReconnect();
+
+            // Send Message
+            producer.Send(textMessage);
+        }
+
+        private void Send(BytesMessage byteMessage, Dictionary<string, string> messageProperties = null)
+        {
+            // Set Properties
+
+            if (messageProperties != null)
+            {
+                foreach (var property in messageProperties)
+                {
+                    byteMessage.SetStringProperty(property.Key, property.Value);
+                }
+            }
+
+            // Verify Connection
+            VerifyConnectionAndGracefullyReconnect();
+
+            // Send Message
+            producer.Send(byteMessage);
+        }
+
+
+        private void VerifyConnectionAndGracefullyReconnect()
+        {
+            const int maxRetries = 10;
+            const int timeBetweenRetries = 30000;
+            int retryCount = 0;
+            bool retry = true;
+            while (retry == true)
+            {
+                try
+                {
+                    if (base.IsConnected == false)
+                    {
+                        base.OpenConnection(this.lastClientId);
+                    }
+                    retry = false;
+                }
+                catch (Exception)
+                {
+                    retryCount++;
+                    if (retryCount >= maxRetries)
+                    {
+                        throw;
+                    }
+                    Thread.Sleep(timeBetweenRetries);
+                }
+            }
+        }
+
     }
 }
