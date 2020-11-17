@@ -28,43 +28,50 @@
 
         public ApiControllerService()
         {
-          try
-          {
-            int.TryParse(ConfigurationManager.AppSettings["ControllerInstanceId"], out controllerInstanceID);
-            controllerType = ConfigurationManager.AppSettings["ControllerType"].ToString();
-            int.TryParse(ConfigurationManager.AppSettings["MaintenanceDay"], out dayOfTheWeek);
+            try
+            {
+                logger.Info("Initializing ApiControllerService"); 
+                int.TryParse(ConfigurationManager.AppSettings["ControllerInstanceId"], out controllerInstanceID);
+                controllerType = ConfigurationManager.AppSettings["ControllerType"].ToString();
+                int.TryParse(ConfigurationManager.AppSettings["MaintenanceDay"], out dayOfTheWeek);
 
-            DateTime timeStamp;
-            if(!DateTime.TryParse(ConfigurationManager.AppSettings["MaintenanceStartTime"], out timeStamp))
-              throw new ArgumentException("Invalid or missing MaintenanceStartTime configuration setting");
+                DateTime timeStamp;
+                if(!DateTime.TryParse(ConfigurationManager.AppSettings["MaintenanceStartTime"], out timeStamp))
+                    throw new ArgumentException("Invalid or missing MaintenanceStartTime configuration setting");
             
-            startTime = new TimeSpan(timeStamp.Hour, timeStamp.Minute, 0);
+                startTime = new TimeSpan(timeStamp.Hour, timeStamp.Minute, 0);
 
-            if(!DateTime.TryParse(ConfigurationManager.AppSettings["MaintenanceEndTime"], out timeStamp))
-              throw new ArgumentException("Invalid or missing MaintenanceEndTime configuration setting");
+                if(!DateTime.TryParse(ConfigurationManager.AppSettings["MaintenanceEndTime"], out timeStamp))
+                    throw new ArgumentException("Invalid or missing MaintenanceEndTime configuration setting");
             
-            endTime = new TimeSpan(timeStamp.Hour, timeStamp.Minute, 0);
+                endTime = new TimeSpan(timeStamp.Hour, timeStamp.Minute, 0);
 
-            //Validate config settings
-            if(controllerInstanceID < 1)
-                throw new Exception("Please provide an integer greater than zero to be used as the unique instance ID.");
-            if(controllerInstanceID < 1 || string.IsNullOrEmpty(controllerType))
-                throw new Exception("Both the controller type argument and the instance ID argument are required.");
-            if(!StartupOptions.ValidArgs.Contains(controllerType))
-                throw new Exception($"Invalid argument specified.  The valid arguments are: {string.Join(",", StartupOptions.ValidArgs)}");
-
-
-            logger = new NLogLoggerInstance<Program>(ControllerType.Instance.ToString());
-            apiController = ControllerProvider.GetController(controllerType);
+                //Validate config settings
+                if(controllerInstanceID < 1)
+                    throw new Exception("Please provide an integer greater than zero to be used as the unique instance ID.");
+                if(controllerInstanceID < 1 || string.IsNullOrEmpty(controllerType))
+                    throw new Exception("Both the controller type argument and the instance ID argument are required.");
+                if(!StartupOptions.ValidArgs.Contains(controllerType))
+                    throw new Exception($"Invalid argument specified.  The valid arguments are: {string.Join(",", StartupOptions.ValidArgs)}");
 
 
-                //Initilize timer if all settings have been validated
-            int runInterval;
-            int.TryParse(ConfigurationManager.AppSettings["RunInterval"], out runInterval);
-            timer = new System.Timers.Timer(runInterval > 0 ? runInterval : 30000); //Use default interval == 30000 in case if config setting is missing or invalid
-          }
-          catch(Exception ex) { logger.Error(ex.Message); }
+                logger = new NLogLoggerInstance<Program>(ControllerType.Instance.ToString());
+                apiController = ControllerProvider.GetController(controllerType);
+
+
+                 //Initilize timer if all settings have been validated
+                int runInterval;
+                int.TryParse(ConfigurationManager.AppSettings["RunInterval"], out runInterval);
+                timer = new System.Timers.Timer(runInterval > 0 ? runInterval : 30000); //Use default interval == 30000 in case if config setting is missing or invalid
+                logger.Info("ApiControllerService Initialized");
+
+            }
+            catch (Exception ex) 
+            { 
+                logger.Error(ex.ToString()); 
+            }
         }
+
         public void Start()
         {
           if(timer == null) return;

@@ -49,6 +49,8 @@ namespace Icon.ApiController.Tests.HistoryProcessors
             mockIsMessageHistoryANonRetailProductMessageQueryHandler = new Mock<IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool>>();
             mockProducer = new Mock<IEsbProducer>();
             settings = new ApiControllerSettings();
+            mockProducer.Setup(m => m.IsConnected)
+                .Returns(true);
 
             this.historyProcessor = new MessageHistoryProcessor(
                 settings,

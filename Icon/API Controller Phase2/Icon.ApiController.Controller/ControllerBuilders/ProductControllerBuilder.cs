@@ -25,13 +25,17 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 
             var instance = ControllerType.Instance.ToString();
             var baseLogger = new NLogLoggerInstance<ApiControllerBase>(instance);
+            baseLogger.Info("Running ProductControllerBuilder.ComposeController");
+
             var emailClient = new EmailClient(EmailHelper.BuildEmailClientSettings());
             var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("ItemQueueName"));
             var settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
             var computedClientId = $"{settings.Source}ApiController.Type-{settings.ControllerType}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
             var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
 
+            baseLogger.Info("Opening ESB Connection");
             producer.OpenConnection(clientId);
+            baseLogger.Info("ESB Connection Opened");
 
             IconDbContextFactory iconContextFactory = new IconDbContextFactory();
 

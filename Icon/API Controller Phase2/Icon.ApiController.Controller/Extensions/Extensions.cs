@@ -8,7 +8,7 @@ namespace Icon.ApiController.Controller.Extensions
 {
     public static class Extensions
     {
-        public static Decimal ToDecimal (this double? doubleValue)
+        public static Decimal ToDecimal(this double? doubleValue)
         {
             return doubleValue.HasValue ? (decimal)doubleValue.Value : Decimal.Zero;
         }

@@ -216,8 +216,8 @@ namespace Icon.ApiController.Controller.QueueProcessors
             logger.Info(String.Format("Preparing to send message {0}.", messageHistory.MessageHistoryId));
             try
             {
-                messageProperties["IconMessageID"] = messageHistory.MessageHistoryId.ToString();
-                
+                // Send message
+                messageProperties["IconMessageID"] = messageHistory.MessageHistoryId.ToString();                
                 producer.Send(messageHistory.Message, messageProperties);
 
                 return true;

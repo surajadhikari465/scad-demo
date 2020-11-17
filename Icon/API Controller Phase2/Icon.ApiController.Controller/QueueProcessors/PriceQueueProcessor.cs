@@ -247,6 +247,7 @@ namespace Icon.ApiController.Controller.QueueProcessors
 
             try
             {
+                // Send message
                 messageProperties["IconMessageID"] = messageHistoryId.ToString();
                 producer.Send(xml, messageProperties);
                 return true;

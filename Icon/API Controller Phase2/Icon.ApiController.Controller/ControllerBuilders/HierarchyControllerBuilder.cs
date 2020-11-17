@@ -23,6 +23,8 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 
             var instance = ControllerType.Instance.ToString();
             var baseLogger = new NLogLoggerInstance<ApiControllerBase>(instance);
+            baseLogger.Info("Running HierarchyControllerBuilder.ComposeController");
+
             var emailClient = new EmailClient(EmailHelper.BuildEmailClientSettings());
             var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("HierarchyQueueName"));
             var settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
@@ -32,7 +34,10 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 
             IconDbContextFactory iconContextFactory = new IconDbContextFactory();
 
+            baseLogger.Info("Opening ESB Connection");
             producer.OpenConnection(clientId);
+            baseLogger.Info("ESB Connection Opened");
+
             var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Hierarchy, producer, iconContextFactory);
 
             var queueProcessorLogger = new NLogLoggerInstance<HierarchyQueueProcessor>(instance);

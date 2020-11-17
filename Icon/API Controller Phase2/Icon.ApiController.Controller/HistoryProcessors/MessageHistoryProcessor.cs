@@ -67,7 +67,7 @@ namespace Icon.ApiController.Controller.HistoryProcessors
                     {
                         //set message properties
                         var messageProperties = SetMessageProperties(message);
-                        
+
                         //send the message
                         producer.Send(message.Message, messageProperties);
                         messageSent = true;                    

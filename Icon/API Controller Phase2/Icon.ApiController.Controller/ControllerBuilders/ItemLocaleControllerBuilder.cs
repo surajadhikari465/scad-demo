@@ -25,6 +25,8 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 
             var instance = ControllerType.Instance.ToString();
             var baseLogger = new NLogLoggerInstance<ApiControllerBase>(instance);
+            baseLogger.Info("Running ItemLocaleControllerBuilder.ComposeController");
+
             var emailClient = new EmailClient(EmailHelper.BuildEmailClientSettings());
             var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("ItemQueueName"));
             var settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
@@ -33,7 +35,9 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 
             IconDbContextFactory iconContextFactory = new IconDbContextFactory();
 
+            baseLogger.Info("Opening ESB Connection");
             producer.OpenConnection(clientId);
+            baseLogger.Info("ESB Connection Opened");
 
             var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.ItemLocale, producer, iconContextFactory);
 

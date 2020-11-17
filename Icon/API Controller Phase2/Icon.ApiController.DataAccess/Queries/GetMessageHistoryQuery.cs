@@ -5,6 +5,7 @@ using Icon.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using Icon.DbContextFactory;
+using System.Data.Entity;
 
 namespace Icon.ApiController.DataAccess.Queries
 {
@@ -25,6 +26,7 @@ namespace Icon.ApiController.DataAccess.Queries
             {
                 var messages = context.MessageHistory
                     .Where(mh => mh.InProcessBy == parameters.Instance && mh.MessageTypeId == parameters.MessageTypeId)
+                    .Include(mh => mh.MessageQueueHierarchy)
                     .ToList();
       
                 logger.Info(messages.Count > 0 ? string.Format("Controller {0} found {1} MessageHistory entries ready for processing.  Starting with MessageHistoryId {2}.", ControllerType.Instance, messages.Count, messages[0].MessageHistoryId)
