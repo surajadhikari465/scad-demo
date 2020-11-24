@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" xmlns:crf="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" xmlns:tmf="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" xmlns:uom="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" targetNamespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+	<!-- ================== -->
+	<!-- Schema Imports             -->
+	<!-- ================== -->
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/RetailMgmt/CommonRefTypes/V1" schemaLocation="../Common/CommonRefTypes.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2" schemaLocation="../Uom/UnitOfMeasure.xsd"/>
+	<xs:import namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefEnumTypes/V1" schemaLocation="../Transaction/Common/CommonRefEnumTypes.xsd"/>
+	<!-- ================== -->
+	<!-- Simple Types                 -->
+	<!-- ================== -->
+	<xs:simpleType name="InventoryIdType">
+		<xs:restriction base="crf:IdStrType"/>
+	</xs:simpleType>
+	<xs:simpleType name="InventoryTypeCodeType">
+		<xs:restriction base="crf:WfmStrType"/>
+	</xs:simpleType>
+	<xs:complexType name="SubTeamType">
+		<xs:sequence>
+			<xs:element name="subTeamNumber" type="crf:WfmStrType"/>
+			<xs:element name="subTeamName" type="crf:NameType" minOccurs="0"/>
+			<xs:element name="hostSubTeamNumber" type="crf:WfmStrType"/>
+			<xs:element name="hostSubTeamName" type="crf:NameType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserType">
+		<xs:sequence>
+			<xs:element name="idNumber" type="crf:WfmStrType"/>
+			<xs:element name="name" type="crf:NameType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="QuantitiesType">
+		<xs:sequence>
+			<xs:element name="quantity" type="QuantityType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="QuantityType">
+		<xs:sequence>
+			<xs:element name="type" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="value" type="crf:WfmDecimalType"/>
+			<xs:element name="units" type="UnitsType"/>
+			<xs:element name="entryMethod" type="tmf:EntryMethodEnum" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UnitsType">
+		<xs:sequence>
+			<xs:element name="value" type="crf:WfmDecimalType" minOccurs="0"/>
+			<xs:element name="uom" type="uom:UomType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExternalPurchaseOrderReferencesType">
+		<xs:sequence>
+			<xs:element name="externalPurchaseOrderReference" type="ExternalPurchaseOrderReferenceType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExternalPurchaseOrderReferenceType">
+		<xs:sequence>
+			<xs:element name="externalPurchaseOrderNumber" type="crf:WfmStrType" minOccurs="0"/>
+			<xs:element name="externalSource" type="crf:WfmStrType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>	
+</xs:schema>

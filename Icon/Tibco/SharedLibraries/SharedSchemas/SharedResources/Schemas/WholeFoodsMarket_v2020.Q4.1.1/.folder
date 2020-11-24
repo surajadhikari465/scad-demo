@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <folder resourceType="ae.designerfolder" name="WholeFoodsMarket_v2020.Q4.1.1" propLocks="" allowUserToChangeIcon="false" sortContents="false" acceptsResources="true" allowDuplicates="false">
+        <description>PRIMS InStock PurchaseOrder Update for external orders</description>
+        <fixedChildren/>
+    </folder>
+</Repository:repository>

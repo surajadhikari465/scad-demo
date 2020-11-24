@@ -58,6 +58,8 @@
                                 <xsd:element name="ExpectedArrivalDate" type="xsd:dateTime" minOccurs="0"/>
                                 <xsd:element name="EInvoiceQuantity" type="xsd:decimal" minOccurs="0"/>
                                 <xsd:element name="EInvoiceWeight" type="xsd:decimal" minOccurs="0"/>
+                                <xsd:element name="OtherOrderExternalSourceOrderID" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="OtherExternalSourceDescription" type="xsd:string" minOccurs="0"/>
                             </xsd:sequence>
                         </xsd:complexType>
                     </xsd:element>
@@ -155,51 +157,57 @@
                 <emptyStrAsNil>false</emptyStrAsNil>
                 <jdbcSharedConfig>/SharedResources/Connections/IRMA.sharedjdbc</jdbcSharedConfig>
                 <statement>SELECT
-               oh.OrderHeader_ID,
-               e.ExternalOrder_Id,
-               'AMAZON' as ExternalSource,
-               'Purchase Order' as PurchaseType,
-               v.PS_Vendor_ID as SupplierNumber,
-               s.BusinessUnit_ID as LocationNumber,
-               s.Store_Name as LocationName,
-               sb.SubDept_No as OrderSubTeam_No,
-               sb.SubTeam_Name as OrderSubTeam_Name,
-               t.Team_No as OrderTeam_No,
-               t.Team_Name as OrderTeam_Name,
-               Case
-                              When oh.RefuseReceivingReasonID is not null Then 'Refused'
-                              When oh.OriginalCloseDate is not null and oh.ApprovedDate is null Then 'Suspended'
-                              When oh.ApprovedDate is not null Then 'Closed'
-                              Else 'Sent'
-               End as Status,
-               oh.CreatedBy as UserId,
-               uc.UserName as UserName,
-               oh.ApprovedBy as ApproverId,
-               ua.UserName as ApproverName,
-               ISNULL(oh.SentDate, oh.OrderDate) as CreateDateTime,
-               oh.ApprovedDate as ApproveDateTime,
-               oh.OriginalCloseDate as CloseDateTime,
-               oh.AdminNotes as PurchaseOrderComments,
-               oi.OrderItem_ID as PurchaseOrderDetailNumber,
-               oi.Item_Key as SourceItemKey,
-               ii.Identifier as DefaultScanCode,
-               isb.SubDept_No as HostSubTeam_No,
-               isb.SubTeam_Name as HostSubTeam_Name,
-			   CASE oh.Return_Order 
-					WHEN 0
-						THEN oi.QuantityOrdered
-					ELSE oi.QuantityOrdered * -1 
-			   END as QuantityOrdered,
-               iuo.Unit_Abbreviation as OrderedUnitCode,
-               iuo.Unit_Name as OrderedUnit,
-               CAST(oi.Package_Desc1 as int) as PackSize1,
-               CAST(oi.Package_Desc2 as int) as PackSize2,
-               iui.Unit_Name as RetailUnit,
-               oi.UnitCost as ItemCost,
-               oi.DateReceived as EarliestArrivalDate,
-               oh.Expected_Date as ExpectedArrivalDate,
-			   oi.eInvoiceQuantity,
-			   oi.eInvoiceWeight
+    oh.OrderHeader_ID,
+    e.ExternalOrder_Id,
+    'AMAZON' as ExternalSource,
+    'Purchase Order' as PurchaseType,
+    v.PS_Vendor_ID as SupplierNumber,
+    s.BusinessUnit_ID as LocationNumber,
+    s.Store_Name as LocationName,
+    sb.SubDept_No as OrderSubTeam_No,
+    sb.SubTeam_Name as OrderSubTeam_Name,
+    t.Team_No as OrderTeam_No,
+    t.Team_Name as OrderTeam_Name,
+    Case
+        When oh.RefuseReceivingReasonID is not null Then 'Refused'
+        When oh.OriginalCloseDate is not null and oh.ApprovedDate is null Then 'Suspended'
+        When oh.ApprovedDate is not null Then 'Closed'
+        Else 'Sent'
+    End as Status,
+    oh.CreatedBy as UserId,
+    uc.UserName as UserName,
+    oh.ApprovedBy as ApproverId,
+    ua.UserName as ApproverName,
+    ISNULL(oh.SentDate, oh.OrderDate) as CreateDateTime,
+    oh.ApprovedDate as ApproveDateTime,
+    oh.OriginalCloseDate as CloseDateTime,
+    oh.AdminNotes as PurchaseOrderComments,
+    oi.OrderItem_ID as PurchaseOrderDetailNumber,
+    oi.Item_Key as SourceItemKey,
+    ii.Identifier as DefaultScanCode,
+    isb.SubDept_No as HostSubTeam_No,
+    isb.SubTeam_Name as HostSubTeam_Name,
+	CASE oh.Return_Order 
+		WHEN 0
+			THEN oi.QuantityOrdered
+		ELSE oi.QuantityOrdered * -1 
+	END as QuantityOrdered,
+    iuo.Unit_Abbreviation as OrderedUnitCode,
+    iuo.Unit_Name as OrderedUnit,
+    CAST(oi.Package_Desc1 as int) as PackSize1,
+    CAST(oi.Package_Desc2 as int) as PackSize2,
+    iui.Unit_Name as RetailUnit,
+    oi.UnitCost as ItemCost,
+    oi.DateReceived as EarliestArrivalDate,
+    oh.Expected_Date as ExpectedArrivalDate,
+	oi.eInvoiceQuantity,
+	oi.eInvoiceWeight,
+	oh.OrderExternalSourceOrderID,
+	CASE
+		WHEN oh.DVOOrderID IS NOT NULL THEN 'DVO'
+		WHEN oh.DVOOrderID IS NULL AND oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description
+		ELSE NULL
+	END as OtherExternalSourceDescription
 FROM OrderHeader oh (NOLOCK)
 join Vendor psl (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
 JOIN Store s (NOLOCK) on s.Store_No = psl.Store_no
@@ -209,7 +217,8 @@ JOIN Team t (NOLOCK) on t.Team_No = sb.Team_No
 JOIN Users uc (NOLOCK) on uc.User_ID = oh.CreatedBy 
 LEFT JOIN Users ua (NOLOCK) on ua.User_ID = oh.ApprovedBy
 LEFT JOIN ExternalOrderInformation e (NOLOCK) on e.OrderHeader_Id = oh.OrderHeader_ID 
-                                             and e.ExternalSource_Id = (SELECT ID FROM OrderExternalSource (NOLOCK) WHERE Description = 'AMAZON')
+	and e.ExternalSource_Id = (SELECT ID FROM OrderExternalSource (NOLOCK) WHERE Description = 'AMAZON')
+LEFT JOIN OrderExternalSource oes on oh.OrderExternalSourceID = oes.ID
 JOIN OrderItem oi (NOLOCK) on oh.OrderHeader_ID = oi.OrderHeader_ID 
 JOIN Item i (NOLOCK) on i.Item_Key = oi.Item_Key
 JOIN ItemIdentifier ii (NOLOCK) on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
@@ -259,7 +268,7 @@ AND i.Retail_Sale = 1</statement>
                 <QueryOutputCachedSchemaColumns>OrderSubTeam_No</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>OrderSubTeam_Name</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
@@ -323,7 +332,7 @@ AND i.Retail_Sale = 1</statement>
                 <QueryOutputCachedSchemaColumns>HostSubTeam_No</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
-                <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
                 <QueryOutputCachedSchemaColumns>HostSubTeam_Name</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
@@ -371,6 +380,14 @@ AND i.Retail_Sale = 1</statement>
                 <QueryOutputCachedSchemaColumns>eInvoiceWeight</QueryOutputCachedSchemaColumns>
                 <QueryOutputCachedSchemaDataTypes>3</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>decimal</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderExternalSourceOrderID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OtherExternalSourceDescription</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
             </config>
             <pd:inputBindings>
@@ -440,12 +457,19 @@ AND i.Retail_Sale = 1</statement>
 	NULL as EarliestArrivalDate,
 	NULL as ExpectedArrivalDate,
 	NULL as eInvoiceQuantity,
-	NULL as eInvoiceWeight
+	NULL as eInvoiceWeight,
+	oh.OrderExternalSourceOrderID,
+	CASE
+		WHEN oh.DVOOrderID IS NOT NULL THEN 'DVO'
+		WHEN oh.DVOOrderID IS NULL AND oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description
+		ELSE NULL
+	END as OtherExternalSourceDescription
 FROM OrderHeader oh (NOLOCK)
 join Vendor psl (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
 JOIN Store s (NOLOCK) on s.Store_No = psl.Store_no
 LEFT JOIN ExternalOrderInformation e (NOLOCK) on e.OrderHeader_Id = oh.OrderHeader_ID 
-                                             and e.ExternalSource_Id = (SELECT ID FROM OrderExternalSource (NOLOCK) WHERE Description = 'AMAZON')
+	AND e.ExternalSource_Id = (SELECT ID FROM OrderExternalSource (NOLOCK) WHERE Description = 'AMAZON')
+LEFT JOIN OrderExternalSource oes on oh.OrderExternalSourceID = oes.ID
 JOIN amz.DeletedOrderItem oi (NOLOCK) on oh.OrderHeader_ID = oi.OrderHeader_ID and oi.OrderItem_ID = ?
 JOIN Item i (NOLOCK) on i.Item_Key = oi.Item_Key
 JOIN ItemIdentifier ii (NOLOCK) on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
@@ -609,6 +633,14 @@ WHERE oh.OrderHeader_ID = ?
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderExternalSourceOrderID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OtherExternalSourceDescription</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
             </config>
             <pd:inputBindings>
                 <jdbcQueryActivityInput>
@@ -682,13 +714,20 @@ WHERE oh.OrderHeader_ID = ?
 	NULL as EarliestArrivalDate,
 	NULL as ExpectedArrivalDate,
 	NULL as eInvoiceQuantity,
-	NULL as eInvoiceWeight
+	NULL as eInvoiceWeight,
+	oh.OrderExternalSourceOrderID,
+	CASE
+		WHEN oh.DVOOrderID IS NOT NULL THEN 'DVO'
+		WHEN oh.DVOOrderID IS NULL AND oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description
+		ELSE NULL
+	END as OtherExternalSourceDescription
 FROM DeletedOrder oh (NOLOCK)
 join Vendor psl (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
 JOIN Store s (NOLOCK) on s.Store_No = psl.Store_no
 JOIN Users uc (NOLOCK) on uc.User_ID = oh.User_ID 
 LEFT JOIN ExternalOrderInformation e (NOLOCK) on e.OrderHeader_Id = oh.OrderHeader_ID 
-                                             and e.ExternalSource_Id = (SELECT ID FROM OrderExternalSource WHERE Description = 'AMAZON')
+	AND e.ExternalSource_Id = (SELECT ID FROM OrderExternalSource WHERE Description = 'AMAZON')
+LEFT JOIN OrderExternalSource oes on oh.OrderExternalSourceID = oes.ID
 WHERE oh.OrderHeader_ID = ?</statement>
                 <wizardData/>
                 <processInSubsets>false</processInSubsets>
@@ -844,6 +883,14 @@ WHERE oh.OrderHeader_ID = ?</statement>
                 <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
                 <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
                 <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OrderExternalSourceOrderID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>OtherExternalSourceDescription</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
             </config>
             <pd:inputBindings>
                 <jdbcQueryActivityInput>
@@ -909,6 +956,8 @@ WHERE oh.OrderHeader_ID = ?</statement>
                                             <xsd:element name="ExpectedArrivalDate" type="xsd:dateTime" minOccurs="0"/>
                                             <xsd:element name="EInvoiceQuantity" type="xsd:decimal" minOccurs="0"/>
                                             <xsd:element name="EInvoiceWeight" type="xsd:decimal" minOccurs="0"/>
+                                            <xsd:element name="OtherOrderExternalSourceOrderID" type="xsd:int" minOccurs="0"/>
+                                            <xsd:element name="OtherExternalSourceDescription" type="xsd:string" minOccurs="0"/>
                                         </xsd:sequence>
                                     </xsd:complexType>
                                 </xsd:element>
@@ -1067,6 +1116,16 @@ WHERE oh.OrderHeader_ID = ?</statement>
                                             <xsl:value-of select="eInvoiceWeight"/>
                                         </EInvoiceWeight>
                                     </xsl:if>
+                                    <xsl:if test="OrderExternalSourceOrderID">
+                                        <OtherOrderExternalSourceOrderID>
+                                            <xsl:value-of select="OrderExternalSourceOrderID"/>
+                                        </OtherOrderExternalSourceOrderID>
+                                    </xsl:if>
+                                    <xsl:if test="OtherExternalSourceDescription">
+                                        <OtherExternalSourceDescription>
+                                            <xsl:value-of select="OtherExternalSourceDescription"/>
+                                        </OtherExternalSourceDescription>
+                                    </xsl:if>
                                 </POData>
                             </xsl:for-each>
                         </PO>
@@ -1120,6 +1179,16 @@ WHERE oh.OrderHeader_ID = ?</statement>
                                     <DefaultScanCode>
                                         <xsl:value-of select="DefaultScanCode"/>
                                     </DefaultScanCode>
+                                    <xsl:if test="OrderExternalSourceOrderID">
+                                        <OtherOrderExternalSourceOrderID>
+                                            <xsl:value-of select="OrderExternalSourceOrderID"/>
+                                        </OtherOrderExternalSourceOrderID>
+                                    </xsl:if>
+                                    <xsl:if test="OtherExternalSourceDescription">
+                                        <OtherExternalSourceDescription>
+                                            <xsl:value-of select="OtherExternalSourceDescription"/>
+                                        </OtherExternalSourceDescription>
+                                    </xsl:if>
                                 </POData>
                             </xsl:for-each>
                         </PO>
@@ -1159,6 +1228,16 @@ WHERE oh.OrderHeader_ID = ?</statement>
                                     <UserName>
                                         <xsl:value-of select="UserName"/>
                                     </UserName>
+                                    <xsl:if test="OrderExternalSourceOrderID">
+                                        <OtherOrderExternalSourceOrderID>
+                                            <xsl:value-of select="OrderExternalSourceOrderID"/>
+                                        </OtherOrderExternalSourceOrderID>
+                                    </xsl:if>
+                                    <xsl:if test="OtherExternalSourceDescription">
+                                        <OtherExternalSourceDescription>
+                                            <xsl:value-of select="OtherExternalSourceDescription"/>
+                                        </OtherExternalSourceDescription>
+                                    </xsl:if>
                                 </POData>
                             </xsl:for-each>
                         </PO>
