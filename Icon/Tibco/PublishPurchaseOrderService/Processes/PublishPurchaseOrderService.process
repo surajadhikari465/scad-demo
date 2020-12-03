@@ -138,36 +138,38 @@
                                         <xsl:value-of select="if (current()/UserId > 0) then current()/UserName else &quot;&quot;"/>
                                     </ns0:name>
                                 </pfx:cancelUserInfo>
-                                <pfx:externalPurchaseOrderReferences>
-                                    <xsl:if test="exists(ExternalOrder_Id)">
-                                        <ns0:externalPurchaseOrderReference>
-                                            <xsl:if test="ExternalOrder_Id">
-                                                <ns0:externalPurchaseOrderNumber>
-                                                    <xsl:value-of select="ExternalOrder_Id"/>
-                                                </ns0:externalPurchaseOrderNumber>
-                                            </xsl:if>
-                                            <xsl:if test="ExternalSource">
-                                                <ns0:externalSource>
-                                                    <xsl:value-of select="ExternalSource"/>
-                                                </ns0:externalSource>
-                                            </xsl:if>
-                                        </ns0:externalPurchaseOrderReference>
-                                    </xsl:if>
-                                    <xsl:if test="exists(OtherOrderExternalSourceOrderID)">
-                                        <ns0:externalPurchaseOrderReference>
-                                            <xsl:if test="OtherOrderExternalSourceOrderID">
-                                                <ns0:externalPurchaseOrderNumber>
-                                                    <xsl:value-of select="OtherOrderExternalSourceOrderID"/>
-                                                </ns0:externalPurchaseOrderNumber>
-                                            </xsl:if>
-                                            <xsl:if test="OtherExternalSourceDescription">
-                                                <ns0:externalSource>
-                                                    <xsl:value-of select="OtherExternalSourceDescription"/>
-                                                </ns0:externalSource>
-                                            </xsl:if>
-                                        </ns0:externalPurchaseOrderReference>
-                                    </xsl:if>
-                                </pfx:externalPurchaseOrderReferences>
+                                <xsl:if test="exists(OtherOrderExternalSourceOrderID)">
+                                    <pfx:externalPurchaseOrderReferences>
+                                        <xsl:if test="exists(ExternalOrder_Id)">
+                                            <ns0:externalPurchaseOrderReference>
+                                                <xsl:if test="ExternalOrder_Id">
+                                                    <ns0:externalPurchaseOrderNumber>
+                                                        <xsl:value-of select="ExternalOrder_Id"/>
+                                                    </ns0:externalPurchaseOrderNumber>
+                                                </xsl:if>
+                                                <xsl:if test="ExternalSource">
+                                                    <ns0:externalSource>
+                                                        <xsl:value-of select="ExternalSource"/>
+                                                    </ns0:externalSource>
+                                                </xsl:if>
+                                            </ns0:externalPurchaseOrderReference>
+                                        </xsl:if>
+                                        <xsl:if test="exists(OtherOrderExternalSourceOrderID)">
+                                            <ns0:externalPurchaseOrderReference>
+                                                <xsl:if test="OtherOrderExternalSourceOrderID">
+                                                    <ns0:externalPurchaseOrderNumber>
+                                                        <xsl:value-of select="OtherOrderExternalSourceOrderID"/>
+                                                    </ns0:externalPurchaseOrderNumber>
+                                                </xsl:if>
+                                                <xsl:if test="OtherExternalSourceDescription">
+                                                    <ns0:externalSource>
+                                                        <xsl:value-of select="OtherExternalSourceDescription"/>
+                                                    </ns0:externalSource>
+                                                </xsl:if>
+                                            </ns0:externalPurchaseOrderReference>
+                                        </xsl:if>
+                                    </pfx:externalPurchaseOrderReferences>
+                                </xsl:if>
                                 <xsl:for-each select="$GetIrmaData/Output/POData">
                                     <pfx:purchaseOrderDeletionDetail>
                                         <pfx:PurchaseOrderDetailNumber>
@@ -222,36 +224,38 @@
                                         <xsl:value-of select="if (current()/UserId > 0) then current()/UserName else &quot;&quot;"/>
                                     </ns0:name>
                                 </pfx:cancelUserInfo>
-                                <pfx:externalPurchaseOrderReferences>
-                                    <xsl:if test="exists(ExternalOrder_Id)">
-                                        <ns0:externalPurchaseOrderReference>
-                                            <xsl:if test="ExternalOrder_Id">
-                                                <ns0:externalPurchaseOrderNumber>
-                                                    <xsl:value-of select="ExternalOrder_Id"/>
-                                                </ns0:externalPurchaseOrderNumber>
-                                            </xsl:if>
-                                            <xsl:if test="ExternalSource">
-                                                <ns0:externalSource>
-                                                    <xsl:value-of select="ExternalSource"/>
-                                                </ns0:externalSource>
-                                            </xsl:if>
-                                        </ns0:externalPurchaseOrderReference>
-                                    </xsl:if>
-                                    <xsl:if test="exists(OtherOrderExternalSourceOrderID)">
-                                        <ns0:externalPurchaseOrderReference>
-                                            <xsl:if test="OtherOrderExternalSourceOrderID">
-                                                <ns0:externalPurchaseOrderNumber>
-                                                    <xsl:value-of select="OtherOrderExternalSourceOrderID"/>
-                                                </ns0:externalPurchaseOrderNumber>
-                                            </xsl:if>
-                                            <xsl:if test="OtherExternalSourceDescription">
-                                                <ns0:externalSource>
-                                                    <xsl:value-of select="OtherExternalSourceDescription"/>
-                                                </ns0:externalSource>
-                                            </xsl:if>
-                                        </ns0:externalPurchaseOrderReference>
-                                    </xsl:if>
-                                </pfx:externalPurchaseOrderReferences>
+                                <xsl:if test="exists(OtherOrderExternalSourceOrderID)">
+                                    <pfx:externalPurchaseOrderReferences>
+                                        <xsl:if test="exists(ExternalOrder_Id)">
+                                            <ns0:externalPurchaseOrderReference>
+                                                <xsl:if test="ExternalOrder_Id">
+                                                    <ns0:externalPurchaseOrderNumber>
+                                                        <xsl:value-of select="ExternalOrder_Id"/>
+                                                    </ns0:externalPurchaseOrderNumber>
+                                                </xsl:if>
+                                                <xsl:if test="ExternalSource">
+                                                    <ns0:externalSource>
+                                                        <xsl:value-of select="ExternalSource"/>
+                                                    </ns0:externalSource>
+                                                </xsl:if>
+                                            </ns0:externalPurchaseOrderReference>
+                                        </xsl:if>
+                                        <xsl:if test="exists(OtherOrderExternalSourceOrderID)">
+                                            <ns0:externalPurchaseOrderReference>
+                                                <xsl:if test="OtherOrderExternalSourceOrderID">
+                                                    <ns0:externalPurchaseOrderNumber>
+                                                        <xsl:value-of select="OtherOrderExternalSourceOrderID"/>
+                                                    </ns0:externalPurchaseOrderNumber>
+                                                </xsl:if>
+                                                <xsl:if test="OtherExternalSourceDescription">
+                                                    <ns0:externalSource>
+                                                        <xsl:value-of select="OtherExternalSourceDescription"/>
+                                                    </ns0:externalSource>
+                                                </xsl:if>
+                                            </ns0:externalPurchaseOrderReference>
+                                        </xsl:if>
+                                    </pfx:externalPurchaseOrderReferences>
+                                </xsl:if>
                                 <xsl:for-each select=".">
                                     <pfx:purchaseOrderDeletionDetail/>
                                 </xsl:for-each>
@@ -337,32 +341,34 @@
                                         <xsl:value-of select="PurchaseOrderComments"/>
                                     </pfx:purchaseOrderComments>
                                 </xsl:if>
-                                <pfx:externalPurchaseOrderReferences>
-                                    <xsl:if test="exists(ExternalOrder_Id)">
-                                        <ns0:externalPurchaseOrderReference>
-                                            <xsl:if test="ExternalOrder_Id">
+                                <xsl:if test="exists(OtherOrderExternalSourceOrderID)">
+                                    <pfx:externalPurchaseOrderReferences>
+                                        <xsl:if test="exists(ExternalOrder_Id)">
+                                            <ns0:externalPurchaseOrderReference>
+                                                <xsl:if test="ExternalOrder_Id">
+                                                    <ns0:externalPurchaseOrderNumber>
+                                                        <xsl:value-of select="ExternalOrder_Id"/>
+                                                    </ns0:externalPurchaseOrderNumber>
+                                                </xsl:if>
+                                                <xsl:if test="ExternalSource">
+                                                    <ns0:externalSource>
+                                                        <xsl:value-of select="ExternalSource"/>
+                                                    </ns0:externalSource>
+                                                </xsl:if>
+                                            </ns0:externalPurchaseOrderReference>
+                                        </xsl:if>
+                                        <xsl:if test="exists(OtherOrderExternalSourceOrderID)">
+                                            <ns0:externalPurchaseOrderReference>
                                                 <ns0:externalPurchaseOrderNumber>
-                                                    <xsl:value-of select="ExternalOrder_Id"/>
+                                                    <xsl:value-of select="OtherOrderExternalSourceOrderID"/>
                                                 </ns0:externalPurchaseOrderNumber>
-                                            </xsl:if>
-                                            <xsl:if test="ExternalSource">
                                                 <ns0:externalSource>
-                                                    <xsl:value-of select="ExternalSource"/>
+                                                    <xsl:value-of select="OtherExternalSourceDescription"/>
                                                 </ns0:externalSource>
-                                            </xsl:if>
-                                        </ns0:externalPurchaseOrderReference>
-                                    </xsl:if>
-                                    <xsl:if test="exists(OtherOrderExternalSourceOrderID)">
-                                        <ns0:externalPurchaseOrderReference>
-                                            <ns0:externalPurchaseOrderNumber>
-                                                <xsl:value-of select="OtherOrderExternalSourceOrderID"/>
-                                            </ns0:externalPurchaseOrderNumber>
-                                            <ns0:externalSource>
-                                                <xsl:value-of select="OtherExternalSourceDescription"/>
-                                            </ns0:externalSource>
-                                        </ns0:externalPurchaseOrderReference>
-                                    </xsl:if>
-                                </pfx:externalPurchaseOrderReferences>
+                                            </ns0:externalPurchaseOrderReference>
+                                        </xsl:if>
+                                    </pfx:externalPurchaseOrderReferences>
+                                </xsl:if>
                                 <xsl:for-each select="$GetIrmaData/Output/POData">
                                     <pfx:PurchaseOrderDetail>
                                         <pfx:PurchaseOrderDetailNumber>
