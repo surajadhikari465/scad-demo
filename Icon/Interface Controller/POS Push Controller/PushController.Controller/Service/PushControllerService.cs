@@ -88,7 +88,7 @@ namespace PushController.Controller.Service
                         }
                         catch (Exception error)
                         {
-                            logger.Error("Not able to connect to Irma Database: " + region +". Error is:"+ error.Message.ToString());
+                            logger.Error("Not able to connect to Irma Database: " + region +". Error is:"+ error.ToString());
                             continue;
                         }
                     }
