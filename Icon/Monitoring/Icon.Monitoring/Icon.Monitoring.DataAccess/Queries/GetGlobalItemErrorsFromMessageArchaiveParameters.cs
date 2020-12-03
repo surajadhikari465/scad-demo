@@ -3,7 +3,7 @@ using System;
 
 namespace Icon.Monitoring.DataAccess.Queries
 {
-    public class GetMessageArchiveParameters : IQuery<int>
+    public class GetGlobalItemErrorsFromMessageArchaiveParameters : IQuery<int>
     {
         public DateTime LastMonitorDate { get; set; }
     }

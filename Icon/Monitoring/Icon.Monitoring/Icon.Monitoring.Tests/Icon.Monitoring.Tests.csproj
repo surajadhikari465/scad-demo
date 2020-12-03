@@ -187,7 +187,7 @@
     <Compile Include="MonitorServiceTests.cs" />
     <Compile Include="Monitors\ApiControllerMonitorTests.cs" />
     <Compile Include="Monitors\MammothFailedEventsMonitorTests.cs" />
-    <Compile Include="Monitors\MessageArchiveMonitorTests.cs" />
+    <Compile Include="Monitors\MammothGlobalItemMessageArchiveMonitorTests.cs" />
     <Compile Include="Monitors\DeadLetterMonitorTests.cs" />
     <Compile Include="Monitors\DvoBulkImportJobMonitorTests.cs" />
     <Compile Include="Monitors\MammothApiControllerMonitorTests.cs" />

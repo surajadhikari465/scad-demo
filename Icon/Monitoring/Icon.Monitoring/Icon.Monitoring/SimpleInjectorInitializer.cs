@@ -78,6 +78,11 @@
                 .Select(k => k.Replace("Timer", ""))
                 .ToList();
 
+            Console.WriteLine("Monitors From Config:");
+            monitorNamesInAppConfig.ForEach(monitor => Console.WriteLine($"  {monitor}"));
+            Console.WriteLine();
+
+
             return Assembly
                 .GetExecutingAssembly()
                 .GetTypes()

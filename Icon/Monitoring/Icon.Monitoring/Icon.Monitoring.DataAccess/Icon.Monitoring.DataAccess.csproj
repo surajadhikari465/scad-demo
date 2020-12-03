@@ -131,8 +131,8 @@
     <Compile Include="Queries\GetApiMessageUnprocessedRowCountQuery.cs" />
     <Compile Include="Queries\GetMammothFailedEventsParameters.cs" />
     <Compile Include="Queries\GetMammothFailedEventsQuery.cs" />
-    <Compile Include="Queries\GetMessageArchiveQuery.cs" />
-    <Compile Include="Queries\GetMessageArchiveParameters.cs" />
+    <Compile Include="Queries\GetGlobalItemErrorsFromMessageArchiveQuery.cs" />
+    <Compile Include="Queries\GetGlobalItemErrorsFromMessageArchaiveParameters.cs" />
     <Compile Include="Queries\GetIconDeadLetterParameters.cs" />
     <Compile Include="Queries\GetInStockOldestUnprocessedRecordDateByQueueTableParameters.cs" />
     <Compile Include="Queries\GetInStockOldestUnprocessedRecordDateByQueueTableQuery.cs" />

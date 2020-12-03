@@ -13,10 +13,10 @@ using System.Collections.Generic;
 namespace Icon.Monitoring.Tests.Monitors
 {
     [TestClass]
-    public class MessageArchiveMonitorTests
+    public class MammothGlobalItemMessageArchiveMonitorTests
     {
         private Mock<IOpsgenieTrigger> mockOpsgenieTrigger;
-        private Mock<IQueryHandler<GetMessageArchiveParameters, int>> mockMessageQueueQuery;
+        private Mock<IQueryHandlerMammoth<GetGlobalItemErrorsFromMessageArchaiveParameters, int>> mockMessageQueueQuery;
         private Mock<IMonitorSettings> mockSettings;
         private Mock<ILogger> mockLogger;
         private Mock<IDateService> mockDateService;
@@ -27,18 +27,18 @@ namespace Icon.Monitoring.Tests.Monitors
             this.mockOpsgenieTrigger = new Mock<IOpsgenieTrigger>();
             this.mockLogger = new Mock<ILogger>();
             this.mockSettings = new Mock<IMonitorSettings>();
-            this.mockMessageQueueQuery = new Mock<IQueryHandler<GetMessageArchiveParameters, int>>();
+            this.mockMessageQueueQuery = new Mock<IQueryHandlerMammoth<GetGlobalItemErrorsFromMessageArchaiveParameters, int>>();
             this.mockDateService = new Mock<IDateService>();
         }
 
 
         [TestMethod]
-        public void MessageArchiveMonitor_NoRecordsInMessageArchiveQueue_ShouldNotTriggerAlert()
+        public void MammothGlobalItemMessageArchiveMonitor_NoRecordsInMessageArchiveQueue_ShouldNotTriggerAlert()
         {
             // Given.
-            this.mockMessageQueueQuery.Setup(x => x.Search(It.IsAny<GetMessageArchiveParameters>())).Returns(0);
+            this.mockMessageQueueQuery.Setup(x => x.Search(It.IsAny<GetGlobalItemErrorsFromMessageArchaiveParameters>())).Returns(0);
 
-            var monitor = new MessageArchiveMonitor(this.mockSettings.Object,
+            var monitor = new Monitoring.Monitors.MammothGlobalItemMessageArchiveMonitor(this.mockSettings.Object,
                 this.mockOpsgenieTrigger.Object, 
                 this.mockLogger.Object, 
                 this.mockMessageQueueQuery.Object,
@@ -54,12 +54,12 @@ namespace Icon.Monitoring.Tests.Monitors
         
 
         [TestMethod]
-        public void MessageArchiveMonitor_NoMessageArchiveRecords_ShouldNotTriggerAlert()
+        public void MammothGlobalItemMessageArchiveMonitor_NoMessageArchiveRecords_ShouldNotTriggerAlert()
         {
             // Given.
-            this.mockMessageQueueQuery.Setup(x => x.Search(It.IsAny<GetMessageArchiveParameters>())).Returns(0);
+            this.mockMessageQueueQuery.Setup(x => x.Search(It.IsAny<GetGlobalItemErrorsFromMessageArchaiveParameters>())).Returns(0);
 
-            var monitor = new MessageArchiveMonitor(this.mockSettings.Object,
+            var monitor = new Monitoring.Monitors.MammothGlobalItemMessageArchiveMonitor(this.mockSettings.Object,
                 this.mockOpsgenieTrigger.Object,
                 this.mockLogger.Object,
                 this.mockMessageQueueQuery.Object,
@@ -75,12 +75,12 @@ namespace Icon.Monitoring.Tests.Monitors
         }
         
         [TestMethod]
-        public void MessageArchiveMonitor_MessageArchiveRecordsExist_ShouldTriggerAlert()
+        public void MammothGlobalItemMessageArchiveMonitor_MessageArchiveRecordsExist_ShouldTriggerAlert()
         {
             // Given.
-            this.mockMessageQueueQuery.Setup(x => x.Search(It.IsAny<GetMessageArchiveParameters>())).Returns(1);
+            this.mockMessageQueueQuery.Setup(x => x.Search(It.IsAny<GetGlobalItemErrorsFromMessageArchaiveParameters>())).Returns(1);
 
-            var monitor = new MessageArchiveMonitor(this.mockSettings.Object,
+            var monitor = new Monitoring.Monitors.MammothGlobalItemMessageArchiveMonitor(this.mockSettings.Object,
                 this.mockOpsgenieTrigger.Object,
                 this.mockLogger.Object,
                 this.mockMessageQueueQuery.Object,
@@ -98,16 +98,16 @@ namespace Icon.Monitoring.Tests.Monitors
         public void MessageArchiveMonitor_ProcessRuns_LastMonitorDateIsUpdatedAndQueryHandlerCalledWithUpdatedDate()
         {
             // Given.
-            GetMessageArchiveParameters calledParameters = new GetMessageArchiveParameters();
+            GetGlobalItemErrorsFromMessageArchaiveParameters calledParameters = new GetGlobalItemErrorsFromMessageArchaiveParameters();
 
-            this.mockMessageQueueQuery.Setup(x => x.Search(It.IsAny<GetMessageArchiveParameters>())).Returns(0)
-                .Callback<GetMessageArchiveParameters>((obj) => calledParameters = obj);
+            this.mockMessageQueueQuery.Setup(x => x.Search(It.IsAny<GetGlobalItemErrorsFromMessageArchaiveParameters>())).Returns(0)
+                .Callback<GetGlobalItemErrorsFromMessageArchaiveParameters>((obj) => calledParameters = obj);
 
             this.mockDateService.SetupSequence(x => x.UtcNow)
                 .Returns(DateTime.Parse("2001-01-01"))
                 .Returns(DateTime.Parse("2001-01-02"));
 
-            var monitor = new MessageArchiveMonitor(this.mockSettings.Object,
+            var monitor = new Monitoring.Monitors.MammothGlobalItemMessageArchiveMonitor(this.mockSettings.Object,
                 this.mockOpsgenieTrigger.Object,
                 this.mockLogger.Object,
                 this.mockMessageQueueQuery.Object,
