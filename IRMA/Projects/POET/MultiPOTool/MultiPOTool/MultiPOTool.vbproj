@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -18,10 +19,17 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
-    <UpgradeBackupLocation />
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <TargetFrameworkProfile />
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'TEST|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -76,7 +84,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\TEST\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -132,10 +140,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\AjaxControlToolkit.dll</HintPath>
     </Reference>
-    <Reference Include="dao, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\Libraries\dao.dll</HintPath>
-    </Reference>
     <Reference Include="Infragistics35.WebUI.Documents.v10.1, Version=10.1.20101.1011, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\Infragistics35.WebUI.Documents.v10.1.dll</HintPath>
@@ -170,6 +174,10 @@
       <HintPath>..\..\..\Libraries\Infragistics35.WebUI.UltraWebNavigator.v10.1.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
     <Reference Include="Microsoft.Vbe.Interop, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -190,9 +198,6 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WFM.UserAuthentication">
       <HintPath>..\..\Utility\WholeFoods.Utility Solution\WFM.UserAuthentication\bin\WFM.UserAuthentication.dll</HintPath>
-    </Reference>
-    <Reference Include="WholeFoods.Utility">
-      <HintPath>..\..\Utility\WholeFoods.Utility Solution\WholeFoods.Utility\bin\WholeFoods.Utility.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -278,6 +283,7 @@
     <Content Include="App_Themes\Theme1\wfmTheme01.css" />
     <Content Include="Controls\ProgressLoader.ascx" />
     <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -310,6 +316,9 @@
     <Compile Include="ExcelImport\BusinessObjects\PO_Objects\PONumberObject.vb" />
     <Compile Include="ExcelImport\BusinessObjects\PO_Objects\OrderItemObject.vb" />
     <Compile Include="ExcelImport\BusinessObjects\PO_Objects\OrderList.vb" />
+    <Compile Include="Global.asax.vb">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="HelpLinks\BusinessObjects\BOHelpLinks.vb" />
     <Compile Include="HelpLinks\DataAccess\DAOHelpLinks.vb" />
     <Compile Include="PONumbers\BusinessObjects\BOPONumbers.vb" />
@@ -379,6 +388,7 @@
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -503,8 +513,19 @@
     <Folder Include="App_Data\" />
     <Folder Include="SpreadSheetImport\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Utility\WholeFoods.Utility Solution\WholeFoods.Utility\WholeFoods.Utility.vbproj">
+      <Project>{83e129bf-0b0a-4816-8573-639f794299fa}</Project>
+      <Name>WholeFoods.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -516,12 +537,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>5717</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost:5717/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

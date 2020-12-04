@@ -148,6 +148,7 @@
     <Compile Include="FTP\RandomPassword.vb" />
     <Compile Include="FTP\SFTP.vb" />
     <Compile Include="FTP\wodSFTP.vb" />
+    <Compile Include="Log4NetJsonLayout.vb" />
     <Compile Include="Logger.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -187,20 +188,22 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="packages.config" />
     <None Include="WholeFoods.Utility.snk" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Jscape.Ftp, Version=1.8.0.0, Culture=neutral, PublicKeyToken=10508e5aaac3470a">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Libraries\Jscape.Ftp.dll</HintPath>
+    <Reference Include="Jscape.Ftp">
+      <HintPath>..\..\..\Libraries\Jscape.Ftp.dll</HintPath>
     </Reference>
-    <Reference Include="Jscape.Ssh, Version=2.1.2.0, Culture=neutral, PublicKeyToken=504a4aa00214df6f">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Libraries\Jscape.Ssh.dll</HintPath>
+    <Reference Include="Jscape.Ssh">
+      <HintPath>..\..\..\Libraries\Jscape.Ssh.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Libraries\log4net.dll</HintPath>
+      <HintPath>..\..\..\Libraries\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net20\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -224,15 +227,15 @@
     </Reference>
     <Reference Include="WeOnlyDo.Client.SFTP, Version=3.1.2.54, Culture=neutral, PublicKeyToken=305e8ab915f4f7a3">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Libraries\WeOnlyDo.Client.SFTP.dll</HintPath>
+      <HintPath>..\..\..\Libraries\WeOnlyDo.Client.SFTP.dll</HintPath>
     </Reference>
     <Reference Include="WeOnlyDo.Client.SSH, Version=2.2.6.71, Culture=neutral, PublicKeyToken=72e5267712baa5fd">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Libraries\WeOnlyDo.Client.SSH.dll</HintPath>
+      <HintPath>..\..\..\Libraries\WeOnlyDo.Client.SSH.dll</HintPath>
     </Reference>
     <Reference Include="WeOnlyDo.Security.Cryptography.KeyManager, Version=1.0.3.14, Culture=neutral, PublicKeyToken=900ddd6a51580424">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Libraries\WeOnlyDo.Security.Cryptography.KeyManager.dll</HintPath>
+      <HintPath>..\..\..\Libraries\WeOnlyDo.Security.Cryptography.KeyManager.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

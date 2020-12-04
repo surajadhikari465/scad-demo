@@ -1,9 +1,14 @@
+Imports log4net
 Imports Microsoft.VisualBasic
+Imports WholeFoods.Utility
 Imports WholeFoods.Utility.DataAccess
 
 Module PushToIRMA
 
     Sub Main()
+
+        log4net.Config.XmlConfigurator.Configure()
+        Logger.LogInfo("Starting push job", GetType(PushToIRMA))
 
         Dim r As New BOPushToIRMA
         Dim RegionList As ArrayList = r.ListRegions
@@ -22,17 +27,22 @@ Module PushToIRMA
             regionStartTime = System.DateTime.Now
 
             Console.WriteLine("     pushing to region " & RegionID.ToString())
+            Logger.LogInfo("Pushing to region " & RegionID.ToString(), GetType(PushToIRMA))
 
             Try
                 r.PushByRegion(RegionID)
             Catch ex As Exception
                 'Console.WriteLine("!!!error pushing to region " & RegionID.ToString())
+                Logger.LogError("Error pushing to region " & RegionID.ToString(), GetType(PushToIRMA), ex)
+
                 Dim send As New Email
                 send.SendEmail("There was an error pushing POET orders to region  " & RegionID.ToString() & ", check the ErrorLog table for SQL errors..." & vbCrLf & vbCrLf & ex.ToString())
             End Try
 
             regionDuration = System.DateTime.Now - regionStartTime
             jobDuration = System.DateTime.Now - jobStartTime
+
+            Logger.LogInfo("Complegted pushing to region " & RegionID.ToString(), GetType(PushToIRMA))
 
             Console.WriteLine("     done pushing to region " & RegionID.ToString)
             Console.WriteLine("     it took " & regionDuration.ToString())
