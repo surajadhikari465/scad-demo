@@ -16,7 +16,6 @@ namespace IrmaMobile
                 .ConfigureLogging(l =>
                 {
                     l.ClearProviders();
-                    l.AddConsole();
                 })
                 .UseStartup<Startup>();
     }

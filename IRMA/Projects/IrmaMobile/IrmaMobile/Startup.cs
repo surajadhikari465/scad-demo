@@ -1,4 +1,5 @@
 using IrmaMobile.Services;
+using LoggerMiddleware.Extensibility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -75,6 +76,8 @@ namespace IrmaMobile
 
             services.Configure<AppConfiguration>(Configuration.GetSection("IrmaMobile"));
             services.AddSingleton<IIrmaMobileService, IrmaMobileService>();
+            
+            services.AddLoggerAccessor();
 
             services.AddMvc(options =>
             {
@@ -85,6 +88,8 @@ namespace IrmaMobile
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.AddRequestResponseLoggingMiddleware(Configuration);
+
             app.UseHealthChecks("/healthcheck");
 
             if (env.IsDevelopment())

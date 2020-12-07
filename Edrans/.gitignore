@@ -1,0 +1,10 @@
+TestWHFLogger/bin
+TestWHFLogger/obj
+LoggerMiddleware/bin/
+LoggerMiddleware/obj/
+LoggerInspector/bin/
+LoggerInspector/obj/
+.vs/
+IrmaMobile/bin/
+
+IrmaMobile/obj/

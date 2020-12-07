@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <UserSecretsId>0b622c0e-0153-4240-84cc-c6a77bebad44</UserSecretsId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.0.2</Version>
+    <Description>Provides telemetry instrumentation by logging information about incoming requests/responses</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.9" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.7.0" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.7.0" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.7.0" />
+    <PackageReference Include="System.ServiceModel.Security" Version="4.7.0" />
+  </ItemGroup>
+
+</Project>
