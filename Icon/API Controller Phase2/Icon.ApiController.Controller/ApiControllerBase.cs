@@ -5,6 +5,7 @@ using Icon.Common.Email;
 using Icon.Logging;
 using System;
 using System.Reflection;
+using System.Threading;
 using Icon.Esb.Producer;
 
 namespace Icon.ApiController.Controller
@@ -82,6 +83,9 @@ namespace Icon.ApiController.Controller
                     string message = "A failure occurred while attempting to send the alert email.";
                     exceptionLogger.LogException(message, mailEx, this.GetType(), MethodBase.GetCurrentMethod());
                 }
+
+                // sleep on unhandled exception to prevent email/logging floods.
+                Thread.Sleep(30000);
 
                 return;
             }
