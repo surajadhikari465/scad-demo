@@ -479,6 +479,8 @@
     <Compile Include="Queries\EmptyAttributesParameters.cs" />
     <Compile Include="Queries\GetAttributeByNameGroupParameters.cs" />
     <Compile Include="Queries\GetAttributeByNameGroupQueryHandler.cs" />
+    <Compile Include="Queries\GetHealthCheckParameters.cs" />
+    <Compile Include="Queries\GetHealthCheckQuery.cs" />
     <Compile Include="Queries\GetSkuBySkuIdParameters.cs" />
     <Compile Include="Queries\GetSkuBySkuIdQuery.cs" />
     <Compile Include="Queries\GetItemGroupAssociationSearchItemPartialParameters.cs" />

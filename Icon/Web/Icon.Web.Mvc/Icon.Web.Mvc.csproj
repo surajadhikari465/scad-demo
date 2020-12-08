@@ -286,6 +286,7 @@
     <Compile Include="Controllers\BulkUploadController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\FeatureFlagController.cs" />
+    <Compile Include="Controllers\HealthCheckController.cs" />
     <Compile Include="Controllers\ItemColumnDisplayController.cs" />
     <Compile Include="Controllers\ManufacturerController.cs" />
     <Compile Include="Controllers\PriceLineAssociationController.cs" />

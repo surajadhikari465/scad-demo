@@ -873,6 +873,8 @@
     <None Include="Scripts\PopulateData\36202_DeleteSkuPriceLineItemAttribute.sql" />
     <Build Include="app\Stored Procedures\GetAttributebyNameGroup.sql" />
     <None Include="Scripts\PopulateData\37766-FixSkuPriceLinePattern.sql" />
+    <Build Include="app\Tables\HealthCheck.sql" />
+    <None Include="Scripts\PopulateData\PopulateHealthCheck.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.txt" />

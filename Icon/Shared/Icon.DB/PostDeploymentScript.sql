@@ -22,4 +22,5 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\36882_PopulateFeatureFlags_Sku_andPriceline.sql -- 2020-07-08 36882
 :r .\Scripts\PopulateData\40795_Populate_ItemGroup_Keywords.sql -- 2020-07-27 40795
 :r .\Scripts\PopulateData\37766-FixSkuPriceLinePattern.sql -- 2020-08-27 37766
+:r .\Scripts\PopulateData\PopulateHealthCheck.sql
 :r .\Security\Icon.Security.sql
