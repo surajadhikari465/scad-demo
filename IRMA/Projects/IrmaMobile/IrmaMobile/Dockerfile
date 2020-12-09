@@ -8,7 +8,9 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["IrmaMobile/IrmaMobile.csproj", "IrmaMobile/"]
-RUN dotnet restore "IrmaMobile/IrmaMobile.csproj"
+COPY ["IrmaMobile/nuget.config", "IrmaMobile/"]
+RUN ls ./IrmaMobile -la
+RUN dotnet restore "IrmaMobile/IrmaMobile.csproj" --configfile IrmaMobile/nuget.config
 COPY . .
 WORKDIR "/src/IrmaMobile"
 RUN dotnet build "IrmaMobile.csproj" -c Release -o /app/build
