@@ -1,4 +1,5 @@
 Imports log4net
+Imports WholeFoods.Utility.Layout.Json
 
 Namespace WholeFoods.Utility
 
@@ -31,6 +32,7 @@ Namespace WholeFoods.Utility
             Dim log4netHierarchy As log4net.Repository.Hierarchy.Hierarchy = CType(log4net.LogManager.GetRepository(), Repository.Hierarchy.Hierarchy)
             AddAdoNetAppenderIfEnabled(log4netHierarchy)
             AddConsoleAppenderIfEnabled(log4netHierarchy)
+            AddJsonFileAppenderIfEnabled(log4netHierarchy)
             log4netHierarchy.Root.Repository.Configured = True
 
         End Sub
@@ -46,6 +48,19 @@ Namespace WholeFoods.Utility
             End If
 
         End Sub
+
+        Private Shared Sub AddJsonFileAppenderIfEnabled(ByRef log4netHierarchy As log4net.Repository.Hierarchy.Hierarchy)
+            ' Get app setting that controls enabling or disabling a console appender.
+            Dim jsonFileLogEnabled As Boolean = False
+            Try
+                jsonFileLogEnabled = CBool(ConfigurationServices.AppSettings("Log4NetAdoNetLogEnabled")) ' Re-use Log4NetAdoNetLogEnabled
+            Catch ex As Exception
+            End Try
+            If jsonFileLogEnabled Then
+                log4netHierarchy.Root.AddAppender(GetFileAppender())
+            End If
+
+        End Sub
         Private Shared Function GetConsoleAppender() As log4net.Appender.ConsoleAppender
             Dim consoleAppender As log4net.Appender.ConsoleAppender = New log4net.Appender.ConsoleAppender()
             With consoleAppender
@@ -58,6 +73,21 @@ Namespace WholeFoods.Utility
 
             Return consoleAppender
         End Function
+
+        Private Shared Function GetFileAppender() As log4net.Appender.FileAppender
+            Dim fileAppender As log4net.Appender.FileAppender = New log4net.Appender.FileAppender()
+            With fileAppender
+                .Name = "FileAppender"
+                .Layout = New Log4NetJsonLayout()
+                .Threshold = log4net.Core.Level.Info
+                .File = "./" + ConfigurationServices.AppSettings("region") + "/Logs/application-logs.json"
+                .ActivateOptions()
+            End With
+            log4net.Config.BasicConfigurator.Configure(fileAppender)
+
+            Return fileAppender
+        End Function
+
         Private Shared Sub AddAdoNetAppenderIfEnabled(ByRef log4netHierarchy As log4net.Repository.Hierarchy.Hierarchy)
             ' Get app setting that controls enabling or disabling an ADO Net (database-logging) appender.
             ' We are defaulting to true/enabled here because we need some kind of logging.
