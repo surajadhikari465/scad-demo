@@ -31,6 +31,8 @@ import { LifecycleManager, AuthHandler } from '@wfm/mobile';
 //@ts-ignore
 import decode from 'jwt-decode';
 import Config from './config';
+import LogRocket from 'logrocket';
+import { identifyLogRocketUser } from './logger';
 
 const App: React.FC = () => {
   //@ts-ignore
@@ -45,6 +47,7 @@ const App: React.FC = () => {
           AuthHandler.onTokenReceived(function (token: string) {
             let decodedToken = decode(token);
             localStorage.setItem('authToken', JSON.stringify(decodedToken));
+            identifyLogRocketUser(decodedToken);
           });
         } catch (err) {
           console.error(err);
