@@ -1,0 +1,68 @@
+{
+  "product": "Monthly File Archiver",
+  "version": "1.0",
+  "archiverList": [
+    {
+      "regionList": [
+        "FL",
+        "MA",
+        "MW",
+        "NA",
+        "NC",
+        "NE",
+        "PN",
+        "RM",
+        "SO",
+        "SP",
+        "SW",
+        "UK"
+      ],
+      "serverList": [
+        "IRMAQATidal01",
+        "IRMAQA-PerfTidal01"
+      ],
+      "targetPath": "e:\\Data\\DVO_Orders\\%region%\\Backup",
+      "filenameFilterLeftOfDate": "%region%OrderExport_",
+      "filenameFilterRightOfDate": "*.txt",
+      "filenameDateFormat": "",
+      "targetDate": "",
+      "previousMonthsCount": 3,
+      "recurse": false,
+      "archiveID": "DVO Order Data Files %region%",
+      "addFolderToArchiveFileName": false,
+      "deleteFilesAfterZip": true,
+      "whatIfMode": false
+    },
+    {
+      "regionList": [
+        "FL",
+        "MA",
+        "MW",
+        "NA",
+        "NC",
+        "NE",
+        "PN",
+        "RM",
+        "SO",
+        "SP",
+        "SW",
+        "EU"
+      ],
+      "serverList": [
+        "IRMAQATidal01",
+        "IRMAQA-PerfTidal01"
+      ],
+      "targetPath": "e:\\Data\\PSFiles\\%region%",
+      "filenameFilterLeftOfDate": "PS*_%region%_",
+      "filenameFilterRightOfDate": "*.*",
+      "filenameDateFormat": "",
+      "targetDate": "",
+      "previousMonthsCount": 3,
+      "recurse": false,
+      "archiveID": "PS Data Files %region%",
+      "addFolderToArchiveFileName": false,
+      "deleteFilesAfterZip": true,
+      "whatIfMode": false
+    }
+  ]
+}

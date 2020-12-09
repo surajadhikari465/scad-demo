@@ -1,0 +1,27 @@
+{
+  "product": "Monthly File Archiver",
+  "version": "1.0",
+  "archiverList": [
+    {
+      "serverList": [
+        "IRMATest1Web01",
+        "IRMATest1Web02",
+        "IRMATest1Web03",
+        "IRMATest1Web04",
+        "IRMATest1Web05",
+        "IRMATest1Web06"
+      ],
+      "targetPath": "e:\\iislogs",
+      "filenameFilterLeftOfDate": "u_ex",
+      "filenameFilterRightOfDate": "*.log",
+      "filenameDateFormat": "yyMM",
+      "targetDate": "",
+      "previousMonthsCount": 3,
+      "recurse": true,
+      "archiveID": "IIS Logs",
+      "addFolderToArchiveFileName": true,
+      "deleteFilesAfterZip": true,
+      "whatIfMode": false
+    }
+  ]
+}
