@@ -57,49 +57,10 @@ namespace OOSCommon
             string fileName = string.Empty;
             string methodName = string.Empty;
             string lineNumberText = string.Empty;
-            
-                //StackTrace stackTrace = new StackTrace(true);
-                //if (stackTrace != null)
-                //{
-                //    StackFrame stackFrame = stackTrace.GetFrame(2);
-                //    if (stackFrame != null)
-                //    {
-                //        fileName = stackFrame.GetFileName();
-                //        if (!string.IsNullOrEmpty(fileName))
-                //        {
-                //            var parts = fileName.Split('\\');
-                //            fileName = parts[parts.Length - 1];
-                //           // lineNumberText = stackFrame.GetFileLineNumber().ToString();
-                //        }
-                //        //var methodBase = stackFrame.GetMethod();
-                //        //if (methodBase != null)
-                //        //{
-                //        //    methodName = methodBase.Name;
-                //        //    if (string.IsNullOrEmpty(fileName))
-                //        //    {
-                //        //        fileName = (methodBase.ReflectedType == null ? "?" :  methodBase.ReflectedType.FullName);
-                //        //        lineNumberText = "?";
-                //        //    }
-                //        //}
-                //    }
-                //}
-            
-
-
-            //if (this.getSessionId != null)
-            //    sessionID = getSessionId();
-            
             string timeStamp = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff");
             string logEntry = "[" + timeStamp + "] " + level.ToString().PadRight(5, ' ');
-
-            //logEntry = logEntry + oosLogSeparator + "[" + sessionID + "]";
-
-            //if (level == LogLevel.Error || level == LogLevel.Warn || level == LogLevel.Fatal)
-            //    logEntry = "" + logEntry + oosLogSeparator + fileName + " [" + lineNumberText + "]";
             logEntry = logEntry + oosLogSeparator + message;
             oosLogger.Log(level, logEntry);
-            //if (echoEntry != null)
-            //    echoEntry(level, timeStamp, fileName, lineNumberText, methodName, sessionID, message);
         }
 
     }

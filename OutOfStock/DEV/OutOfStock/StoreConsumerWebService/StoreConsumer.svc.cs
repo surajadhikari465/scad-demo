@@ -9,12 +9,12 @@ using StructureMap;
 
 namespace OutOfStock.StoreConsumerWebService
 {
-    public class StoreConsumer : IStoreConsumer
-    {
-        public void Consume(StoreFeed[] feeds)
-        {
-            var consumer = ObjectFactory.GetInstance<StoreFeedConsumerService>();
-            consumer.Consume(feeds);
-        }
-    }
+    //public class StoreConsumer : IStoreConsumer
+    //{
+    //    public void Consume(StoreFeed[] feeds)
+    //    {
+    //        var consumer = ObjectFactory.GetInstance<StoreFeedConsumerService>();
+    //        consumer.Consume(feeds);
+    //    }
+    //}
 }

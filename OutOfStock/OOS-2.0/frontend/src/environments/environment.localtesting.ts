@@ -4,9 +4,10 @@
 
 export const environment = {
   production: false,
-  baseURL: 'http://192.168.137.23:5000/api', 
+  baseURL: 'http://127.0.0.1:5000/api', 
   name: 'local',
-  useAuthToken: true
+  useAuthToken: true,
+  logRocketId: "21g2lq/irma-oos-qa"
 };
 
 /*

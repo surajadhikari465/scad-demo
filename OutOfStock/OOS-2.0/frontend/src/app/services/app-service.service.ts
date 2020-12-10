@@ -5,6 +5,7 @@ import { Store } from '../app.interfaces';
 
 import { WFM_REGION, WFM_STORE } from 'src/app/constants';
 import { environment } from '../../environments/environment';
+import { LogRocketService } from '../services/logrocket.service'
 
 const BASE_URL = environment.baseURL;
 let allowScan = false;
@@ -14,7 +15,7 @@ let enableScanListMenuOptions = false;
   providedIn: 'root'
 })
 export class AppService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private logRocket: LogRocketService) { }
   // API SERVICES
   submitListItems(wfmScanItems: string[]): Observable<any> {
     const url = `${BASE_URL}/items`;

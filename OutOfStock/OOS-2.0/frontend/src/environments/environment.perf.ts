@@ -5,5 +5,6 @@ export const environment = {
   useAuthToken: true,
   fakeUser: {
     "samaccountname": 'Blake.Jones'
-  }
+  },
+  logRocketId: ""
 };

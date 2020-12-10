@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from './services/app-service.service';
-import { Router, NavigationStart, NavigationEnd } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { LifecycleManager, AuthHandler } from '@wfm/mobile';
 import decode from 'jwt-decode';
 import { environment } from '../environments/environment';
+import { LogRocketService } from './services/logrocket.service';
+
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private appService: AppService, private router: Router) { }
+  constructor(private appService: AppService, private router: Router, private logRocket: LogRocketService) { }
 
   ngOnInit() {
     if (environment.useAuthToken) {
@@ -23,6 +24,7 @@ export class AppComponent implements OnInit {
           AuthHandler.onTokenReceived(function (token: string) {
             let decodedToken = decode(token);
             this.appService.saveItem('user', decodedToken);
+            this.logRocket.init();
           }.bind(this));
         } catch (err) {
           console.error(err);
@@ -52,9 +54,26 @@ export class AppComponent implements OnInit {
   }
 
   processNavigationEvent(event: any) {
-    if (event.url == "/list") {
+    if (event.url == "/list") {      
       this.appService.setScan(true);
       this.appService.setEnableScanListMenuOptions(true);
+
+      const wfmRegion = this.appService.currentRegion();
+      const wfmStore = this.appService.currentStore();
+      const user = JSON.parse(localStorage.getItem('user'));
+
+      this.logRocket.init();
+      var identity = {
+        username: user.samaccountname, 
+        useremail: user.email, 
+        region: wfmRegion, 
+        storeBU: wfmStore
+      }
+
+      this.logRocket.identify(identity)
+      
+      
+
     } else {
       this.appService.setScan(false);
       this.appService.setEnableScanListMenuOptions(false);

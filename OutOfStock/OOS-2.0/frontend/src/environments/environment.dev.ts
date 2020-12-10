@@ -6,5 +6,6 @@ export const environment = {
   fakeUser: {
     "samaccountname": 'Blake.Jones', 
     "email":"blake.jones@wholefoods.com"
-  }
+  },
+  logRocketId: ""
 };

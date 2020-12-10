@@ -10,7 +10,8 @@ export const environment = {
   fakeUser: {
     "samaccountname": 'Blake.Jones', 
     "email":"blake.jones@wholefoods.com"
-  }
+  },
+  logRocketId: "21g2lq/irma-oos-qa"
 };
 
 /*
