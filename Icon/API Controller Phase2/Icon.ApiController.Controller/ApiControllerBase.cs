@@ -58,6 +58,8 @@ namespace Icon.ApiController.Controller
                     exceptionLogger.LogException(message, mailEx, this.GetType(), MethodBase.GetCurrentMethod());
                 }
 
+                // Sleep on unhandled exception to prevent email/logging floods.
+                Thread.Sleep(30000);
                 return;
             }
 
@@ -84,7 +86,7 @@ namespace Icon.ApiController.Controller
                     exceptionLogger.LogException(message, mailEx, this.GetType(), MethodBase.GetCurrentMethod());
                 }
 
-                // sleep on unhandled exception to prevent email/logging floods.
+                // Sleep on unhandled exception to prevent email/logging floods.
                 Thread.Sleep(30000);
 
                 return;

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using Icon.ApiController.Controller.ControllerConstants;
+using System.Threading;
 
 namespace Icon.ApiController.Controller.HistoryProcessors
 {
@@ -76,6 +77,7 @@ namespace Icon.ApiController.Controller.HistoryProcessors
                     {
                         logger.Error(string.Format("Failed to send message {0}.  Error: {1}", message.MessageHistoryId, ex.ToString()));
                         messageSent = false;
+                        Thread.Sleep(30000);
                     }
 
                     ProcessResponse(messageSent, message);
