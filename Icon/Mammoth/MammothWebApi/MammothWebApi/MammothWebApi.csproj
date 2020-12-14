@@ -214,6 +214,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BackgroundJobs\JobFactory.cs" />
+    <Compile Include="Controllers\HealthCheckController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\ItemLocaleController.cs" />
     <Compile Include="Controllers\ItemNutritionController.cs" />

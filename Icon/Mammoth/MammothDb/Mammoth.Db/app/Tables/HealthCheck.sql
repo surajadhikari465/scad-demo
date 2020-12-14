@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[HealthCheck]
+(
+	[CheckId] INT NOT NULL,
+ CONSTRAINT [PK_CheckId] PRIMARY KEY CLUSTERED 
+(
+	[CheckId] ASC
+)) ON [PRIMARY];
+
+GO
