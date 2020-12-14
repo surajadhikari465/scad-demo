@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[HealthCheck]
+﻿CREATE TABLE [app].[HealthCheck]
 (
 	[CheckId] INT NOT NULL,
  CONSTRAINT [PK_CheckId] PRIMARY KEY CLUSTERED 

@@ -20,10 +20,8 @@ namespace MammothWebApi.DataAccess.Queries
 
         public int Search(GetHealthCheckQuery parameters)
         {
-            string sql = @"SELECT TOP 1 CheckId 
-                            FROM [dbo].[HealthCheck]";
-            int checkId = this.db.Connection.Query<int>(sql,
-                this.db.Transaction).Single();
+            string sql = @"SELECT TOP 1 CheckId FROM [app].[HealthCheck]";
+            int checkId = db.Connection.Query<int>(sql, null, db.Transaction).Single();
             return checkId;
         }
     }

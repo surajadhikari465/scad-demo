@@ -7,8 +7,8 @@ BEGIN
 	DECLARE @Today DATETIME;
 	SET @Today = GETDATE();
 
-	IF NOT EXISTS (SELECT * FROM HealthCheck WHERE CheckId = 1)
-		INSERT INTO HealthCheck(CheckId) 
+	IF NOT EXISTS (SELECT * FROM app.HealthCheck WHERE CheckId = 1)
+		INSERT INTO app.HealthCheck(CheckId) 
         VALUES (1);
 
 	INSERT INTO app.PostDeploymentScriptHistory VALUES(@scriptKey, getdate())
