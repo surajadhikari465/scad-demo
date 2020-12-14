@@ -18,27 +18,45 @@ namespace Icon.Esb.Producer
         
         public void Send(string message, Dictionary<string, string> messageProperties = null)
         {
-            TextMessage textMessage = session.CreateTextMessage(message);
+            Retry<Exception>(() =>
+            {
+                // Verify Connection
+                VerifyConnectionAndGracefullyReconnect();
 
-            Send(textMessage, messageProperties);
+                TextMessage textMessage = session.CreateTextMessage(message);
+
+                Send(textMessage, messageProperties);
+            });
         }
 
         public void Send(string message, string messageId, Dictionary<string, string> messageProperties = null)
         {
-            TextMessage textMessage = session.CreateTextMessage(message);
-            textMessage.MessageID = messageId;
+            Retry<Exception>(() =>
+            {
+                // Verify Connection
+                VerifyConnectionAndGracefullyReconnect();
 
-            Send(textMessage, messageProperties);
+                TextMessage textMessage = session.CreateTextMessage(message);
+                textMessage.MessageID = messageId;
+
+                Send(textMessage, messageProperties);
+            });
         }
 
         public void Send(byte[] bytes, string messageId, Dictionary<string, string> messageProperties = null)
         {
-            BytesMessage bytesMessage = session.CreateBytesMessage();
-            bytesMessage.WriteBytes(bytes);
+            Retry<Exception>(() =>
+            {
+                // Verify Connection
+                VerifyConnectionAndGracefullyReconnect();
 
-            bytesMessage.MessageID = messageId;
+                BytesMessage bytesMessage = session.CreateBytesMessage();
+                bytesMessage.WriteBytes(bytes);
 
-            Send(bytesMessage, messageProperties);
+                bytesMessage.MessageID = messageId;
+
+                Send(bytesMessage, messageProperties);
+            });
         }
 
         public override void OpenConnection(string clientId)
