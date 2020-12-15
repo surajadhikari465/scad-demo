@@ -16,6 +16,11 @@ namespace LoggerMiddleware.Implementation.Providers.Integrations
             logToFile = _logToFile;
         }
 
+        public void Dispose()
+        {
+            ((IDisposable)logger.Value)?.Dispose();
+        }
+
         public void LogRequest(RequestLogParams parameters)
         {
             Log(parameters.Values().BetweenConcat(" "));

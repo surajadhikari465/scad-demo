@@ -33,5 +33,10 @@ namespace LoggerMiddleware.Implementation.Providers.Integrations
         {
             netcoreLogger.Log(LogLevel.Information, $"[INFO]{ line}");
         }
+
+        public void Dispose()
+        {
+            ((IDisposable)netcoreLogger)?.Dispose();
+        }
     }
 }

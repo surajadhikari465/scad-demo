@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using log4net;
+using System.Diagnostics;
 
 namespace LoggerInspector
 {
@@ -7,16 +8,21 @@ namespace LoggerInspector
         public string CorrelationID { get; }
         public Stopwatch Watch { get; }
 
-        public CorrelationState(string correlationID)
+        public ILog Logger { get; }
+
+        public string methodName { get; }
+
+        public CorrelationState(string correlationID, string methodName, ILog logger)
         {
             CorrelationID = correlationID;
             Watch = new Stopwatch();
+            Logger = logger;
+            this.methodName = methodName;
         }
 
-        public CorrelationState StartWatch()
+        public void StartWatch()
         {
             Watch.Start();
-            return this;
         }
     }
 }

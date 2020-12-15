@@ -32,5 +32,11 @@ namespace LoggerMiddleware.Implementation.Providers.Integrations
         {
             logger.Value.Information(line);
         }
+        public void Dispose()
+        {
+            var dis = ((IDisposable)logger.Value);
+            System.Diagnostics.Debug.WriteLine(dis);
+            dis.Dispose();
+        }
     }
 }

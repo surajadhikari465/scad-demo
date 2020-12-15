@@ -9,7 +9,7 @@ using LoggerMiddleware.Extensibility;
 
 namespace LoggerMiddleware
 {
-    public class RequestResponseLoggingMiddleware
+    public class RequestResponseLoggingMiddleware : IDisposable
     {
         #region Fields
 
@@ -91,6 +91,12 @@ namespace LoggerMiddleware
             }, context);
 
             await next(context);
+        }
+
+        public void Dispose()
+        {
+            foreach (var provider in providers)
+                provider.Value.Dispose();
         }
 
         #endregion
