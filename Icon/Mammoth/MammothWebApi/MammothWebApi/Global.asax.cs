@@ -66,9 +66,11 @@ namespace MammothWebApi
                 DbConnectionQueryHandlerDecorator<GetItemPriceAttributesByStoreAndScanCodeQuery, IEnumerable<ItemStorePriceModel>>>(Lifestyle.Scoped);
             container.RegisterDecorator<IQueryHandler<GetItemsQuery, ItemComposite>,
                 DbConnectionQueryHandlerDecorator<GetItemsQuery, ItemComposite>>(Lifestyle.Scoped);
-
             container.RegisterDecorator<IQueryHandler<GetItemsBySearchCriteriaQuery, IEnumerable<ItemDetail>>,
                DbConnectionQueryHandlerDecorator<GetItemsBySearchCriteriaQuery, IEnumerable<ItemDetail>>>(Lifestyle.Scoped);
+
+            container.RegisterDecorator<IQueryHandler<GetHealthCheckQuery, int>,
+                DbConnectionQueryHandlerDecorator<GetHealthCheckQuery, int>>(Lifestyle.Scoped);
 
             container.RegisterWebApiControllers(GlobalConfiguration.Configuration);
             container.Verify();
