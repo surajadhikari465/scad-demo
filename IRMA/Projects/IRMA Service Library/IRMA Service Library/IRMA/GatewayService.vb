@@ -1,9 +1,11 @@
-﻿Imports WholeFoods.ServiceLibrary.DataAccess
+﻿Imports LoggerInspector
+Imports WholeFoods.ServiceLibrary.DataAccess
 Imports WholeFoods.ServiceLibrary.IRMA.Common
 
 Namespace IRMA
 
     <ServiceBehavior(InstanceContextMode:=InstanceContextMode.PerCall)>
+    <InspectorServiceBehavior>
     Public Class GatewayService
         Implements IGateway
 
