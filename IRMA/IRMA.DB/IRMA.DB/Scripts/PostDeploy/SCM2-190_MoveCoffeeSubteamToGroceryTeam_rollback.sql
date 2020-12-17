@@ -1,6 +1,6 @@
 USE [ItemCatalog]
 BEGIN
-	DECLARE @TeamNo int = (SELECT Team_No FROM Team WHERE Team_Name = 'Grocery')
+	DECLARE @TeamNo int = (SELECT Team_No FROM Team WHERE Team_Name = 'Specialty')
 
     -- Update statement here to modify Team_No for Coffee Subteam
 	UPDATE Subteam
@@ -12,7 +12,7 @@ BEGIN
 	UPDATE sst
 	SET 
 	  sst.Team_No = st.Team_No,
-	  sst.PS_Team_No = 100
+	  sst.PS_Team_No = 140
 	FROM StoreSubTeam sst
 	INNER JOIN SubTeam st ON sst.SubTeam_No = st.SubTeam_No
 	WHERE st.SubTeam_Name = 'Coffee'
