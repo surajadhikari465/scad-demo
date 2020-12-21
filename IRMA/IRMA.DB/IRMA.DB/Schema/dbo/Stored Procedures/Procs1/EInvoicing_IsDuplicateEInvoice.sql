@@ -40,7 +40,7 @@ SET TRANSACTION ISOLATION LEVEL SNAPSHOT
 	DECLARE @PONum_Clean varchar(30)  
 	DECLARE @MatchingPONum_Clean varchar(255) 
 	
-	SET @PoNum_Clean = dbo.RegExReplace(@PONum,'[a-zA-Z\s\D]','')  
+	SET @PoNum_Clean = dbo.ToNumericString(@PONum);
 	
 	/*      
 	ReturnValue:      
@@ -85,7 +85,7 @@ SET TRANSACTION ISOLATION LEVEL SNAPSHOT
 						   ImportDate DESC
 				) 
 			
-			SET @MatchingPONum_clean  = dbo.RegExReplace(@MatchingPONum,'[a-zA-Z\s\D]','')  
+			SET @MatchingPONum_clean  = dbo.ToNumericString(@MatchingPONum);
 
 			-- get the Vendor       
 			SET @MatchingVendorid = (
