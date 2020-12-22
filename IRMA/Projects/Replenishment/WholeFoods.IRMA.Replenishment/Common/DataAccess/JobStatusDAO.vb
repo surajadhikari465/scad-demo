@@ -192,7 +192,7 @@ Namespace WholeFoods.IRMA.Replenishment.Common.DataAccess
         ''' <param name="jobStatus"></param>
         ''' <remarks></remarks>
         Public Shared Sub InsertJobStatus(ByVal classname As String, ByVal jobStatus As DBJobStatus)
-            logger.Debug("InsertJobStatus entry: classname=" + classname + ", jobStatus=" + jobStatus.ToString())
+            logger.Info("InsertJobStatus entry: classname=" + classname + ", jobStatus=" + jobStatus.ToString())
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
             Dim paramList As New ArrayList
             Dim currentParam As DBParam
@@ -234,7 +234,7 @@ Namespace WholeFoods.IRMA.Replenishment.Common.DataAccess
         ''' <param name="jobStatus"></param>
         ''' <remarks></remarks>
         Public Shared Sub UpdateJobStatus(ByVal classname As String, ByVal jobStatus As DBJobStatus)
-            logger.Debug("UpdateJobStatus entry: classname=" + classname + ", jobStatus=" + jobStatus.ToString())
+            logger.Info("UpdateJobStatus entry: classname=" + classname + ", jobStatus=" + jobStatus.ToString())
             Dim factory As New DataFactory(DataFactory.ItemCatalog)
             Dim paramList As New ArrayList
             Dim currentParam As DBParam
