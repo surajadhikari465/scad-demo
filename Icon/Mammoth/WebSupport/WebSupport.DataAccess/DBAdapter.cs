@@ -21,6 +21,8 @@ namespace WebSupport.DataAccess
       Close();
     }
 
+    public IDbConnection Connection { get { return connection;  } }
+
     public void Dispose(){ Close(true); }
 
     void Close(bool bDispose = false)

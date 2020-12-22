@@ -1,0 +1,151 @@
+﻿@using WebSupport.Helpers
+@using WebSupport.Models
+@using System.Data
+
+@model WebSupport.ViewModels.ReQueuePurchaseOrdersViewModel
+@{ ViewBag.Title = "ReQueue Purchase Orders"; }
+
+<h2>Requeue Purchase Orders</h2>
+<br />
+
+@using (Html.BeginForm("Index", "ReQueuePurchaseOrders", null, FormMethod.Post, new { @class = "" }))
+{
+<table class="table-borderless">
+    <tr>
+        <td class="col-sm-offset-0 col-sm-4" style="font-size:small; color:gray" align="left">
+            @Html.LabelFor(x => x.RegionIndex, new { @class = "control-label" })
+
+            @Html.DropDownListFor(x => x.RegionIndex, Model.OptionsForRegion, new { @class = "form-control", id = "Region", onchange = "HideElement()" })
+            @Html.ValidationMessageFor(x => x.RegionIndex, "", new { @class = "text-danger" })
+        </td>
+    </tr>
+    <tr>
+        <td class="col-sm-offset-0 col-sm-4" style="font-size:small; color:gray" align="left">
+            @Html.LabelFor(m => m.PurchaseOrderRequeueText, new { @class = "control-label" })
+            <br />
+            @Html.TextAreaFor(expression: model => Model.PurchaseOrderRequeueText,
+                    rows: 16,
+                    columns: 40,
+                    htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.PurchaseOrderRequeueText, "", new { @class = "text-danger" })
+        </td>
+    </tr>
+    <tr>
+        <td class="col-sm-offset-0 col-sm-2" style="font-size:small; color:gray" align="left">
+            <span>
+                <br />
+                <input type="submit" value="Re-Queue" class="btn btn-primary form-submit" name="btnReQueue" id="btnReQueue" />
+            </span>
+        </td>
+        <td class="col-sm-2" style="width:auto" colspan="2" align="left">
+            &nbsp;
+        </td>
+    </tr>
+</table>
+    <br />
+    <p style="color:red">* Limited to 2000 Purchase Orders</p>
+    <br />
+    <hr />
+    <div id="divView" class="col-sm-12" style="overflow-x:auto">
+        @{if (!Model.IsSuccess)
+            {
+                <div style="background-color:lightyellow; border:2px solid; padding:15px">
+                    <h2 style="text-align:center; color:darkred">Processing error</h2>
+                    <p>@Model.Error</p>
+                    <hr />
+                    <p style="font-style:italic; font-weight:600">Please contact your System Administrator if the issue persist.</p>
+                </div>
+            }
+            else
+            {
+                if (Model.ResultTable != null && Model.ResultTable.Rows.Count == 0)
+                {
+                    <p style="color:lightgray; text-align:center; font-size:xx-large">No records found...</p>
+                }
+            }
+        }
+
+        @{if (Model.IsSuccess && Model.ResultTable != null && Model.ResultTable.Rows.Count > 0)
+            {
+                if (Model.ResultTable.Rows.Count > int.Parse(System.Configuration.ConfigurationManager.AppSettings["MaxEntriesForInStockReq"]))
+                {
+                    <div style="background-color:lightyellow; border:1px solid; padding:2px">
+                        <p style="font-style:italic; font-weight:600">Search result returns more than @System.Configuration.ConfigurationManager.AppSettings["MaxEntriesForInStockReq"] rows. Please refine your search criteria.</p>
+                    </div>
+                    <br />
+                }
+                else
+                {
+                    <div style="background-color:lightyellow; border:1px solid; padding:2px">
+                        @if (Model.RequeueSuccess ?? false)
+                        {
+                            <p style="font-style:italic; font-weight:600">@Model.RecordsProcessed of @Model.PurchaseOrderIdList.Length records requeued successfully.</p>
+                        }
+                        else
+                        {
+                            <p style="font-style:italic; font-weight:600">@Model.ResultTable.Rows.Count rows returned.</p>
+                        }
+                    </div>
+                    <br/>
+                    <table>
+                        <tr>
+                            @foreach (DataColumn column in Model.ResultTable.Columns)
+                            {
+                                <th style="text-align:left; padding:8px; height:30px; background:rgb(220, 218, 218)">@column.Caption.Replace("_", " ")</th>
+                            }
+                        </tr>
+
+                        @foreach (DataRow row in Model.ResultTable.Rows)
+                        {
+                            <tr style="color:@(((string)row["Status"]) == "Not Found"? "red":"black")">
+                                @foreach (var val in row.ItemArray)
+                                {
+                                    if (val.GetType() != typeof(String))
+                                    {
+                                        <td align="right" style="padding-right:15px; padding-right:15px;">@val</td>
+                                    }
+                                    else
+                                    {
+                                        <td align="left"style="padding-right:15px; padding-right:15px;" >@val</td>
+                                    }
+                                }
+                            </tr>
+                        }
+                    </table>
+                    <br />
+                }
+            }
+        }
+    </div>
+}
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).on('change', '#Region,#Queue', function () {
+            var e = document.getElementById("divView");
+            if (e != null) e.style.display = "none";
+        });
+
+        $("#btnSelect").click(function () {
+            var btnSelectControl = document.getElementById("btnSelect");
+            var chk = $('[id^=cbIsSelected]');
+
+            if (btnSelectControl.value == "Select All") {
+                for (i = 0; i < chk.length; i++)
+                    chk[i].checked = true;
+                btnSelectControl.value = "Deselect All";
+            } else {
+                for (i = 0; i < chk.length; i++)
+                    chk[i].checked = false;
+                btnSelectControl.value = "Select All";
+            }
+        });
+
+
+        function HideElement() {
+            return;
+        }
+    </script>
+}

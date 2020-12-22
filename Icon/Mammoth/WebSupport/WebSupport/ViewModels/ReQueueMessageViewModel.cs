@@ -10,18 +10,15 @@ using WebSupport.Helpers;
 
 namespace WebSupport.ViewModels
 {
-	public class MessageExportViewModel
+	public class ReQueueMessageViewModel
 	{
-		public enum QueueName { ArchivedMessage, InventoryEvents, PurchaseOrderEvents, ReceiptEvents, TransferOrderEvents }
 		public enum MessageTypeName { Inventory, PurchaseOrder, Receipt, TransferOrder }
 		public enum StatusName { Failed, Processed, Unprocessed }
-
 		public string Error { get; set; }
 		public bool IsSuccess { get { return String.IsNullOrEmpty(Error); } }
 		public DataTable ResultTable { get; set; }
 		public IEnumerable<SelectListItem> OptionsForRegion { get; set; }
 		public IEnumerable<SelectListItem> OptionsForStores { get; set; }
-		public SelectListItem[] Queues { get; set; }
 		public SelectListItem[] MessageTypes { get; set; }
 		public SelectListItem[] EventTypes { get; set; }
 		public SelectListItem[] Status { get; set; }
@@ -35,17 +32,13 @@ namespace WebSupport.ViewModels
 		public string SecondaryKeyID { get; set; }
 
 		[Required]
-		[Display(Name = "Message / Event Queue")]
-		public int QueueIndex { get; set; }
-
-		[Required]
 		[Display(Name = "Region")]
 		public int RegionIndex { get; set; }
 
-		[Display(Name = "Store (ArchivedMessage Only)")]
-		public int StoreIndex { get; set; }
+		[Display(Name = "Store")]
+		public int[] StoreIndexes { get; set; }
 
-		[Display(Name = "Status (ArchivedMessage Only)")]
+		[Display(Name = "Status")]
 		public int StatusIndex { get; set; }
 
 		[Display(Name = "Message Type")]
@@ -63,7 +56,7 @@ namespace WebSupport.ViewModels
 		public DateTime? EndDatetime { get; set; }
 		public bool? RequeueSuccess { get; set; }
 
-		public MessageExportViewModel()
+		public ReQueueMessageViewModel()
 		{
 			var initialOption = new string[] { "- Select a region first -" };
 			OptionsForStores = SelectListHelper.ArrayToSelectList(initialOption);
@@ -71,23 +64,25 @@ namespace WebSupport.ViewModels
 
 			SelectListItem initialAllItem = new SelectListItem { Text = " - All - ", Value = "0", Selected = true };
 
-			Queues = Enum.GetNames(typeof(QueueName)).Cast<string>().OrderBy(x => x, StringComparer.InvariantCultureIgnoreCase)
-						 .Select((x, i) => new SelectListItem { Text = x, Value = ((int)Enum.Parse(typeof(QueueName), x)).ToString(), Selected = (i == 0) })
-						 .ToArray();
-
-			List<SelectListItem> messageTypeList = Enum.GetNames(typeof(MessageTypeName)).Cast<string>().OrderBy(x => x, StringComparer.InvariantCultureIgnoreCase)
+			List<SelectListItem> messageTypeList = Enum.GetNames(typeof(MessageTypeName))
+						 .Cast<string>()
+						 .OrderBy(x => x, StringComparer.InvariantCultureIgnoreCase)
 						 .Select((x, i) => new SelectListItem { Text = x, Value = (((int)Enum.Parse(typeof(MessageTypeName), x) + 1)).ToString() })
 						 .ToList();
 			messageTypeList.Insert(0, initialAllItem);
 			MessageTypes = messageTypeList.ToArray();
 
-			List<SelectListItem> eventTypeList = QueueEventTypes.Events.OrderBy(x => x.Value)
+			List<SelectListItem> eventTypeList = QueueEventTypes.Events
+				.OrderBy(x => x.Value)
 				.Select((x, i) => new SelectListItem { Text = x.Value, Value = x.Key.ToString() })
 				.OrderBy(x => x.Text).ToList();
 			eventTypeList.Insert(0, initialAllItem);
+
 			EventTypes = eventTypeList.ToArray();
 
-			List<SelectListItem> statusList = Enum.GetNames(typeof(StatusName)).Cast<string>().OrderBy(x => x, StringComparer.InvariantCultureIgnoreCase)
+			List<SelectListItem> statusList = Enum.GetNames(typeof(StatusName))
+						 .Cast<string>()
+						 .OrderBy(x => x, StringComparer.InvariantCultureIgnoreCase)
 						 .Select((x, i) => new SelectListItem { Text = x, Value = (((int)Enum.Parse(typeof(StatusName), x) + 1)).ToString() })
 						 .ToList();
 			statusList.Insert(0, initialAllItem);

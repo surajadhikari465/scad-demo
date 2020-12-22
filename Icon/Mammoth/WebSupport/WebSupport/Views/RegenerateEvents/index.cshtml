@@ -40,8 +40,9 @@
 				<td class="col-sm-3" style="font-size:small; color:gray; width:80px;" align="left">
 					@Html.LabelFor(x => x.StartDatetime, new { @class = "control-label" })<br />
 
-					<div class="input-group date" id="dtpStartDatetime" style="width:180px" align="left">
+					<div class="input-group date" id="dtpStartDatetime" style="width:200px" align="left">
 						@Html.TextBoxFor(model => Model.StartDatetime, new { @class = "form-control" })
+                        <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span> </span>
 					</div>
 
 					<script type="text/javascript">
@@ -54,8 +55,9 @@
 				<td class="col-sm-3" style="font-size:small; color:gray; width:80px;" align="left">
 					@Html.LabelFor(x => x.EndDatetime, new { @class = "control-label" })
 
-					<div class="input-group date" id="dtpEndDatetime" style="width:180px">
+					<div class="input-group date" id="dtpEndDatetime" style="width:200px">
 						@Html.TextBoxFor(model => Model.EndDatetime, new { @class = "form-control" })
+                        <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span> </span>
 					</div>
 
 					<script type="text/javascript">

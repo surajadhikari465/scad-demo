@@ -58,7 +58,7 @@ namespace WebSupport.Controllers
                 logger.Error(JsonConvert.SerializeObject(new
                 {
                     Message = UNEXPECTED_ERROR,
-                    Controller = nameof(MessageExportController),
+                    Controller = nameof(RegenerateEventsController),
                     ViewModel,
                     Exception = ex
                 }));

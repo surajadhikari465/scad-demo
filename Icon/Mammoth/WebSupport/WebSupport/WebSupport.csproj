@@ -55,8 +55,8 @@
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.4.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Dapper, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.78\lib\net461\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
@@ -211,6 +211,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\SimpleInjectorInitializer.cs" />
+    <Compile Include="Controllers\ReQueueEventController.cs" />
+    <Compile Include="Controllers\ReQueueMessageController.cs" />
     <Compile Include="Controllers\PricesAllController.cs" />
     <Compile Include="Controllers\CheckPointRequestController.cs" />
     <Compile Include="Controllers\RegionGpmStatusController.cs" />
@@ -220,8 +222,8 @@
     <Compile Include="Controllers\PriceResetController.cs" />
     <Compile Include="Controllers\EventCreatorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MessageExportController.cs" />
     <Compile Include="Controllers\RegenerateEventsController.cs" />
+    <Compile Include="Controllers\ReQueuePurchaseOrdersController.cs" />
     <Compile Include="EsbProducerFactory\IPriceRefreshEsbProducerFactory.cs" />
     <Compile Include="EsbProducerFactory\NonJndiEsbProducer.cs" />
     <Compile Include="EsbProducerFactory\PriceRefreshEsbProducerFactory.cs" />
@@ -256,6 +258,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\WebSupportCheckPointRequestMessageService.cs" />
     <Compile Include="Services\WebSupportJobScheduleMessageService.cs" />
+    <Compile Include="ViewModels\EventReQueueViewModel.cs" />
     <Compile Include="ViewModels\PricesAllViewModel.cs" />
     <Compile Include="ViewModels\CheckPointRequestViewModel.cs" />
     <Compile Include="ViewModels\JobScheduleViewModel.cs" />
@@ -265,8 +268,9 @@
     <Compile Include="ViewModels\EventCreatorViewModel.cs" />
     <Compile Include="ViewModels\RefreshPsgViewModel.cs" />
     <Compile Include="ViewModels\RegionGpmStatusViewModel.cs" />
-    <Compile Include="ViewModels\MessageExportViewModel.cs" />
+    <Compile Include="ViewModels\ReQueueMessageViewModel.cs" />
     <Compile Include="ViewModels\RegenerateEventViewModel.cs" />
+    <Compile Include="ViewModels\ReQueuePurchaseOrdersViewModel.cs" />
     <Compile Include="ViewModels\StoreViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -368,11 +372,13 @@
     <Content Include="Views\PriceRefresh\Index.cshtml" />
     <Content Include="Views\EPlumESLLoad\Index.cshtml" />
     <Content Include="Views\RegionGpmStatus\Index.cshtml" />
-    <Content Include="Views\MessageExport\Index.cshtml" />
     <Content Include="Views\RegenerateEvents\index.cshtml" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
     <Content Include="Views\PricesAll\Index.cshtml" />
+    <Content Include="Views\ReQueueMessage\Index.cshtml" />
+    <Content Include="Views\ReQueueEvent\Index.cshtml" />
+    <Content Include="Views\ReQueuePurchaseOrders\Index.cshtml" />
     <None Include="Web.Dev.Config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
