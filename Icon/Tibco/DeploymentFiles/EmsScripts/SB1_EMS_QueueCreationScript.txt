@@ -207,6 +207,7 @@ grant queue WFMSB1.Mammoth.Retail.RealTimeArchive.Price.Queue.V1 group=sb1_mammo
 
 create queue WFMSB1.Mammoth.Retail.Errors.Queue.V1 secure,expiration=8hour,store=$sys.failsafe
 grant queue WFMSB1.Mammoth.Retail.Errors.Queue.V1 group=sb1_mammothPriceGroup receive,send,browse
+grant queue WFMSB1.Mammoth.Retail.Errors.Queue.V1 group=sb1_HCInventoryMgmtPublisherGroup send
 addprop queue WFMSB1.Mammoth.Retail.Errors.Queue.V1 maxRedelivery=3, redeliveryDelay=15
 
 
