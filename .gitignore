@@ -256,3 +256,5 @@ paket-files/
 
 #Angular
 dist/
+/IRMA/Projects/IRMA Service Library/IRMA Service Site/application-logs.json
+/IRMA/Projects/IRMA Service Library/IRMA Service Site/Errorlog.txt

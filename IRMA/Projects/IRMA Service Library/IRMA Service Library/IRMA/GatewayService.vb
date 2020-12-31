@@ -4,8 +4,9 @@ Imports WholeFoods.ServiceLibrary.IRMA.Common
 
 Namespace IRMA
 
+    ' InspectorServiceBehavior attribute causes error. commenting out until Edrans can resolve.
+    '<InspectorServiceBehavior>
     <ServiceBehavior(InstanceContextMode:=InstanceContextMode.PerCall)>
-    <InspectorServiceBehavior>
     Public Class GatewayService
         Implements IGateway
 
@@ -869,10 +870,10 @@ Namespace IRMA
 
 #Region "Ordering"
 
-        Public Function GetStoreItem(ByVal iStoreNo As Integer, _
-                                     ByVal iTransferToSubteam_To As Integer, _
-                                     ByVal iUser_ID As Integer, _
-                                     ByVal iItem_Key As Integer, _
+        Public Function GetStoreItem(ByVal iStoreNo As Integer,
+                                     ByVal iTransferToSubteam_To As Integer,
+                                     ByVal iUser_ID As Integer,
+                                     ByVal iItem_Key As Integer,
                                      ByVal sIdentifier As String) As StoreItem Implements IGateway.GetStoreItem
 
             logger.Info("GetStoreItem() - Enter")
@@ -900,8 +901,8 @@ Namespace IRMA
             End Try
         End Function
 
-        Public Function GetVendorPackage(ByVal lStoreID As Integer, _
-                                        ByVal vendorID As Integer, _
+        Public Function GetVendorPackage(ByVal lStoreID As Integer,
+                                        ByVal vendorID As Integer,
                                         ByVal sIdentifier As String) As Decimal Implements IGateway.GetVendorPackage
 
             logger.Info("GetVendorPackage() - Enter")
@@ -940,9 +941,9 @@ Namespace IRMA
             End Try
         End Function
 
-        Public Function GetItemMovement(ByVal lStoreID As Integer, _
-                                        ByVal iTransferToSubteam_To As Integer, _
-                                        ByVal sIdentifier As String, _
+        Public Function GetItemMovement(ByVal lStoreID As Integer,
+                                        ByVal iTransferToSubteam_To As Integer,
+                                        ByVal sIdentifier As String,
                                         ByVal adjustmentID As Integer) As List(Of Lists.ItemMovement) Implements IGateway.GetItemMovement
 
             logger.Info("GetItemMovement() - Enter")
@@ -996,8 +997,8 @@ Namespace IRMA
             End Try
         End Function
 
-        Public Function GetItemBilledQuantity(ByVal lStoreID As Integer, _
-                                        ByVal iTransferToSubteam_To As Integer, _
+        Public Function GetItemBilledQuantity(ByVal lStoreID As Integer,
+                                        ByVal iTransferToSubteam_To As Integer,
                                         ByVal sIdentifier As String) As List(Of Lists.ItemBilledQty) Implements IGateway.GetItemBilledQuantity
 
             logger.Info("GetItemBilledQuantity() - Enter")
@@ -1097,11 +1098,11 @@ Namespace IRMA
             Return Nothing
         End Function
 
-        Public Function AddToOrderQueue(ByVal IsTransfer As Boolean, _
-                                    ByVal IsCredit As Boolean, _
-                                    ByVal Quantity As Decimal, _
-                                    ByVal UnitID As Integer, _
-                                    ByVal iUser_ID As Integer, _
+        Public Function AddToOrderQueue(ByVal IsTransfer As Boolean,
+                                    ByVal IsCredit As Boolean,
+                                    ByVal Quantity As Decimal,
+                                    ByVal UnitID As Integer,
+                                    ByVal iUser_ID As Integer,
                                     ByRef si As StoreItem) As Boolean Implements IGateway.AddToOrderQueue
 
             logger.Info("AddToOrderQueue() - Enter")
@@ -1114,10 +1115,10 @@ Namespace IRMA
             End Try
         End Function
 
-        Public Function AddToReprintSignQueue(ByVal lUser_ID As Long, _
-                                 ByVal iSourceType As Integer, _
+        Public Function AddToReprintSignQueue(ByVal lUser_ID As Long,
+                                 ByVal iSourceType As Integer,
                                  ByVal sItemList As String,
-                                 ByVal sItemListSeperator As String, _
+                                 ByVal sItemListSeperator As String,
                                  ByVal iStoreNo As Integer) As Boolean Implements IGateway.AddToReprintSignQueue
 
             logger.Info("AddToReprintSignQueue() - Enter")
@@ -1141,15 +1142,15 @@ Namespace IRMA
             End Try
         End Function
 
-        Public Function InsertOrderItemRefused( _
-                        ByVal iOrderHeader_ID As Integer, _
-                        ByVal iOrderItem_ID As Integer, _
-                        ByVal sIdentifier As String, _
-                        ByVal sVIN As String, _
-                        ByVal sDescription As String, _
-                        ByVal sUnit As String, _
-                        ByVal dInvoiceQuantity As Decimal, _
-                        ByVal dInvoiceCost As Decimal, _
+        Public Function InsertOrderItemRefused(
+                        ByVal iOrderHeader_ID As Integer,
+                        ByVal iOrderItem_ID As Integer,
+                        ByVal sIdentifier As String,
+                        ByVal sVIN As String,
+                        ByVal sDescription As String,
+                        ByVal sUnit As String,
+                        ByVal dInvoiceQuantity As Decimal,
+                        ByVal dInvoiceCost As Decimal,
                         ByVal reasonCodeID As Integer) As Result Implements IGateway.InsertOrderItemRefused
 
             logger.Info(String.Format("InsertOrderItemRefused() - Enter: PO#: {0}, OrderItemID: {1}, Identifier: {2}", iOrderHeader_ID, iOrderItem_ID, sIdentifier))
@@ -1163,15 +1164,15 @@ Namespace IRMA
             End Try
         End Function
 
-        Public Function UpdateOrderItemRefused( _
-                        ByVal iOrderItemRefused_ID As Integer, _
-                        ByVal sIdentifier As String, _
-                        ByVal sVIN As String, _
-                        ByVal sDescription As String, _
-                        ByVal sUnit As String, _
-                        ByVal dInvoiceQuantity As Decimal, _
-                        ByVal dInvoiceCost As Decimal, _
-                        ByVal reasonCodeID As Integer, _
+        Public Function UpdateOrderItemRefused(
+                        ByVal iOrderItemRefused_ID As Integer,
+                        ByVal sIdentifier As String,
+                        ByVal sVIN As String,
+                        ByVal sDescription As String,
+                        ByVal sUnit As String,
+                        ByVal dInvoiceQuantity As Decimal,
+                        ByVal dInvoiceCost As Decimal,
+                        ByVal reasonCodeID As Integer,
                         ByVal userAddedEntry As Integer) As Result Implements IGateway.UpdateOrderItemRefused
 
             logger.Info("UpdateOrderItemRefused() - Enter")
@@ -1219,13 +1220,13 @@ Namespace IRMA
             End Try
         End Function
 
-        Public Function ReceiveOrderItem(ByVal dQuantity As Decimal, _
-                                    ByVal dWeight As Decimal, _
-                                    ByVal dtDate As DateTime, _
-                                    ByVal bCorrection As Boolean, _
-                                    ByVal iOrderItem_ID As Integer, _
-                                    ByVal reasonCodeID As Integer, _
-                                    Optional ByVal dPackSize As Decimal = 0, _
+        Public Function ReceiveOrderItem(ByVal dQuantity As Decimal,
+                                    ByVal dWeight As Decimal,
+                                    ByVal dtDate As DateTime,
+                                    ByVal bCorrection As Boolean,
+                                    ByVal iOrderItem_ID As Integer,
+                                    ByVal reasonCodeID As Integer,
+                                    Optional ByVal dPackSize As Decimal = 0,
                                     Optional ByVal UserID As Long = 0) As Result Implements IGateway.ReceiveOrderItem
 
             logger.Info("ReceiveOrderItem() - Enter")
@@ -1239,8 +1240,8 @@ Namespace IRMA
             End Try
         End Function
 
-        Public Function GetStoreItemOrderInfo(ByVal iStoreNo As Integer, _
-                                              ByVal iTransferToSubteamNo As Integer, _
+        Public Function GetStoreItemOrderInfo(ByVal iStoreNo As Integer,
+                                              ByVal iTransferToSubteamNo As Integer,
                                               ByVal iItemKey As Integer) As StoreItemOrderInfo Implements IGateway.GetStoreItemOrderInfo
 
             logger.Info("GetStoreItemOrderInfo() - Enter")
@@ -1253,7 +1254,7 @@ Namespace IRMA
             End Try
         End Function
 
-        Public Function GetStoreItemCycleCountInfo(ByVal si As StoreItem, _
+        Public Function GetStoreItemCycleCountInfo(ByVal si As StoreItem,
                                            Optional ByVal lInventoryLocationID As Long = 0) As CycleCountInfo Implements IGateway.GetStoreItemCycleCountInfo
 
             logger.Info("GetStoreItemCycleCountInfo() - Enter")
@@ -1277,12 +1278,12 @@ Namespace IRMA
             End Try
         End Function
 
-        Public Function GetTransferItem(ByVal iItem_Key As Integer, _
-                             ByVal sIdentifier As String, _
-                             ByVal iProductType_ID As Integer, _
-                             ByVal iVendorStore_No As Integer, _
-                             ByVal iVendor_ID As Integer, _
-                             ByVal iTransfer_SubTeam As Integer, _
+        Public Function GetTransferItem(ByVal iItem_Key As Integer,
+                             ByVal sIdentifier As String,
+                             ByVal iProductType_ID As Integer,
+                             ByVal iVendorStore_No As Integer,
+                             ByVal iVendor_ID As Integer,
+                             ByVal iTransfer_SubTeam As Integer,
                              ByVal iSupplySubTeam_No As Integer) As StoreItem Implements IGateway.GetTransferItem
 
             logger.Info("GetTransferItem() - Enter")
@@ -1577,7 +1578,7 @@ Namespace IRMA
             End Try
         End Function
 
-        Public Function GetOrderHeaderByIdentifier(ByVal UPC As String, _
+        Public Function GetOrderHeaderByIdentifier(ByVal UPC As String,
                                                    ByVal StoreNumber As Integer) As List(Of Order) Implements IGateway.GetOrderHeaderByIdentifier
 
             logger.Info(String.Format("GetOrderHeaderByIdentifier() - Enter: Identifier: {0}, StoreNumber: {1}", UPC, StoreNumber))
@@ -1633,27 +1634,27 @@ Namespace IRMA
             End Try
         End Function
 
-        Public Function UpdateOrderBeforeClose(ByVal OrderHeader_ID As Integer, _
-                                            ByVal InvoiceNumber As String, _
-                                            ByVal InvoiceDate As Date, _
-                                            ByVal InvoiceCost As Decimal, _
-                                            ByVal VendorDoc_ID As String, _
-                                            ByVal VendorDocDate As Date, _
-                                            ByVal SubTeam_No As Integer, _
+        Public Function UpdateOrderBeforeClose(ByVal OrderHeader_ID As Integer,
+                                            ByVal InvoiceNumber As String,
+                                            ByVal InvoiceDate As Date,
+                                            ByVal InvoiceCost As Decimal,
+                                            ByVal VendorDoc_ID As String,
+                                            ByVal VendorDocDate As Date,
+                                            ByVal SubTeam_No As Integer,
                                             ByVal PartialShipment As Boolean) As Result Implements IGateway.UpdateOrderBeforeClose
 
             logger.Info(String.Format("UpdateOrderBeforeClose() - Enter: PO#: {0}", OrderHeader_ID))
 
             Try
                 Dim order As New Order
-                Return order.UpdateOrderBeforeClose(OrderHeader_ID, InvoiceNumber, InvoiceDate, InvoiceCost, VendorDoc_ID, _
+                Return order.UpdateOrderBeforeClose(OrderHeader_ID, InvoiceNumber, InvoiceDate, InvoiceCost, VendorDoc_ID,
                                                     VendorDocDate, SubTeam_No, PartialShipment)
             Catch ex As Exception
                 Throw ex
             End Try
         End Function
 
-        Public Function AddInvoiceCharge(ByVal orderHeaderID As Integer, ByVal SACTypeID As Integer, ByVal description As String, _
+        Public Function AddInvoiceCharge(ByVal orderHeaderID As Integer, ByVal SACTypeID As Integer, ByVal description As String,
                                          ByVal subteamNumber As Integer, ByVal allowance As Boolean, ByVal amount As Decimal) As Result Implements IGateway.AddInvoiceCharge
             logger.Info(String.Format("AddInvoiceCharge() - Enter: PO#: {0}", orderHeaderID))
 
@@ -1760,9 +1761,9 @@ Namespace IRMA
             End Try
         End Function
 
-        Public Function CreateCycleCountHeader(ByVal lMasterCountID As Long, _
-                                       ByVal dStartScan As DateTime, _
-                                       ByVal lInventoryLocationId As Long, _
+        Public Function CreateCycleCountHeader(ByVal lMasterCountID As Long,
+                                       ByVal dStartScan As DateTime,
+                                       ByVal lInventoryLocationId As Long,
                                        ByVal bExternal As Boolean) As Object Implements IGateway.CreateCycleCountHeader
 
             logger.Info("CreateCycleCountHeader() - Enter")
@@ -1775,12 +1776,12 @@ Namespace IRMA
             End Try
         End Function
 
-        Public Sub AddCycleCountItem(ByVal lItemKey As Long, _
-                             ByVal dQuantity As Decimal, _
-                             ByVal dWeight As Decimal, _
-                             ByVal dPackSize As Decimal, _
-                             ByVal bIsCaseCnt As Boolean, _
-                             ByVal lCycleCountID As Long, _
+        Public Sub AddCycleCountItem(ByVal lItemKey As Long,
+                             ByVal dQuantity As Decimal,
+                             ByVal dWeight As Decimal,
+                             ByVal dPackSize As Decimal,
+                             ByVal bIsCaseCnt As Boolean,
+                             ByVal lCycleCountID As Long,
                              Optional ByVal lInvLocID As Long = Nothing) Implements IGateway.AddCycleCountItem
 
             logger.Info("AddCycleCountItem() - Enter")
