@@ -1,30 +1,21 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
-using System.Web.Helpers;
+﻿using System;
 using OOS.Model;
 using OOSCommon;
 using OutOfStock.ScanManagement;
 using StructureMap;
-
 
 namespace OutOfStock.WebService
 {
     
     public class OosBackend : IOosBackend
     {
-        private readonly IRawScanRepository _rawScanRepo;
-        private ILogService logService;
-        private IOOSLog _logger;
+        private readonly IRawScanRepository rawScanRepo;
+        private readonly IOOSLog logger;
 
         public OosBackend()
         {
-            _rawScanRepo = ObjectFactory.GetInstance<IRawScanRepository>();
-            _logger = ObjectFactory.GetInstance<ILogService>().GetLogger();
+            rawScanRepo = ObjectFactory.GetInstance<IRawScanRepository>();
+            logger = ObjectFactory.GetInstance<ILogService>().GetLogger();
 
         }
 
@@ -43,39 +34,39 @@ namespace OutOfStock.WebService
                 SessionId = sessionId
             };
 
-            _logger.Debug($"[mobile:scan] {sessionId} upcs:{upcs.Length} user:{userName}");
-            _rawScanRepo.SaveRawScan(Newtonsoft.Json.JsonConvert.SerializeObject(scan));
+            logger.Debug($"[mobile:scan] {sessionId} upcs:{upcs.Length} user:{userName}");
+            rawScanRepo.SaveRawScan(Newtonsoft.Json.JsonConvert.SerializeObject(scan));
         }
 
         public string Configure(string region, string store, string username, string useremail, string sessionId, string ipAddress)
         {
-            _rawScanRepo.Login(username, useremail, region,store, sessionId, ipAddress);
-            return _rawScanRepo.GetConfiguration(region, store,sessionId);
+            rawScanRepo.Login(username, useremail, region,store, sessionId, ipAddress);
+            return rawScanRepo.GetConfiguration(region, store,sessionId);
         }
 
         public string[] RegionNames()
         {
-            return _rawScanRepo.RegionNames();
+            return rawScanRepo.RegionNames();
         }
 
         public string[] StoreNamesFor(string regionName)
         {
-            return _rawScanRepo.StoreNamesFor(regionName);
+            return rawScanRepo.StoreNamesFor(regionName);
         }
 
         public string[] RegionAbbreviations()
         {
-            return _rawScanRepo.RegionAbbreviations();
+            return rawScanRepo.RegionAbbreviations();
         }
 
         public string[] StoreAbbreviationsFor(string regionAbbrev)
         {
-            return _rawScanRepo.StoreAbbreviationsFor(regionAbbrev);
+            return rawScanRepo.StoreAbbreviationsFor(regionAbbrev);
         }
 
         public string ValidateRegionStore(string region, string store, string sessionId)
         {
-            return _rawScanRepo.ValidateRegionStore(region, store, sessionId) ? "valid" : "invalid";
+            return rawScanRepo.ValidateRegionStore(region, store, sessionId) ? "valid" : "invalid";
         }
         
     }

@@ -64,9 +64,7 @@ namespace OutOfStock.Controllers
 
         public JsonResult SaveLocationOverride(SaveLocationOverride data)
         {
-            var returnMessage = string.Empty;
-            var error = false;
-            
+            string returnMessage;
 
             try
             {

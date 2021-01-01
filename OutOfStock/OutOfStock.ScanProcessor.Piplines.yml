@@ -1,0 +1,51 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+name: OOS_ScanProcessor_$(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+- master
+
+pool:
+  name: Default
+  
+variables:
+  projfile: '$(Build.SourcesDirectory)/OutOfStock/DEV/OutOfStock.ScanProcessor/OutOfStock.ScanProcessor.csproj'
+  slnfile: '$(Build.SourcesDirectory)/OutOfStock/DEV/OutOfStock.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(slnfile)'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(projfile)'
+    #msbuildArgs: '/t:OutOfStock:WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl="$(build.artifactStagingDirectory)\OutOfStock.Processor"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+# - task: ArchiveFiles@2
+#   inputs:
+#     rootFolderOrFile: '$(build.artifactStagingDirectory)\OutOfStock'
+#     includeRootFolder: false
+#     archiveType: 'zip'
+#     archiveFile: '$(Build.ArtifactStagingDirectory)/OutOfStock_$(Build.BuildNumber).zip'
+#     replaceExistingArchive: true
+#     verbose: true
+
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#     pathToPublish: '$(Build.ArtifactStagingDirectory)/OutOfStock_$(Build.BuildNumber).zip' 
+#     artifactName: 'drop' 
+#     publishLocation: 'Container' # Options: container, filePath
+
+# - task: VSTest@2
+#   inputs:
+#     platform: '$(buildPlatform)'
+#     configuration: '$(buildConfiguration)'

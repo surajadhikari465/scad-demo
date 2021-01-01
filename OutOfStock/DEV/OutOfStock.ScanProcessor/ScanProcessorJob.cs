@@ -94,14 +94,11 @@ namespace OutOfStock.ScanProcessor
                                 _oosLogService.Warn(ex.Message);
                                 if (ex.InnerException != null)
                                     _oosLogService.Warn(ex.InnerException.Message);
-
-
                             }
                         }
                     }
 
                 }
-
             }
             catch(Exception ex)
             {

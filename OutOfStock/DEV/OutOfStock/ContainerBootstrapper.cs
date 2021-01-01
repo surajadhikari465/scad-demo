@@ -11,7 +11,7 @@ using StructureMap;
 
 namespace OutOfStock
 {
-    public class ContainerBootstrapper
+    public static class ContainerBootstrapper
     {
         public static void Bootstrap()
         {

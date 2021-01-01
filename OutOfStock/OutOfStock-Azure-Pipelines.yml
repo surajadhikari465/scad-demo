@@ -2,6 +2,7 @@
 # Build and test ASP.NET projects.
 # Add steps that publish symbols, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+name: OOSWeb_$(Date:yyyyMMdd)$(Rev:.r)
 
 trigger:
 - master
@@ -35,13 +36,13 @@ steps:
     rootFolderOrFile: '$(build.artifactStagingDirectory)\OutOfStock'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/OutOfStock_$(Build.BuildId).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/OutOfStock_$(Build.BuildNumber).zip'
     replaceExistingArchive: true
     verbose: true
 
 - task: PublishBuildArtifacts@1
   inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)/OutOfStock_$(Build.BuildId).zip' 
+    pathToPublish: '$(Build.ArtifactStagingDirectory)/OutOfStock_$(Build.BuildNumber).zip' 
     artifactName: 'drop' 
     publishLocation: 'Container' # Options: container, filePath
 

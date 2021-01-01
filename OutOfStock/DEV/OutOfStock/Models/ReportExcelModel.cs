@@ -13,11 +13,7 @@ namespace OutOfStock.Models
 {
     public class ReportExcelModel : ICustomReportExcelModel
     {
-        private IOOSLog logger;
-
-        
-
-
+        private readonly IOOSLog logger;
         private Excel.Application excelApp;
         private Excel._Worksheet workSheet;
         private Excel.Workbook workBook;
@@ -45,8 +41,7 @@ namespace OutOfStock.Models
             }
             finally
             {
-                if (excelApp != null)
-                    excelApp.Quit();
+                excelApp?.Quit();
             }
             return string.Empty;
         }
@@ -203,10 +198,9 @@ namespace OutOfStock.Models
                 workSheet.PageSetup.FitToPagesTall = 5000;
                 workSheet.PageSetup.FitToPagesWide = 1;
             }
-            catch (Exception ex)
+            catch 
             {
-                // skip 
-                //logger.Warn(ex.Message + ", Stack=" + ex.StackTrace); 
+                // swallow error. no exception.
             }
 
 

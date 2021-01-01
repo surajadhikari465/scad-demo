@@ -12,8 +12,7 @@ namespace OOSCommon
 
     public class OOSLog : IOOSLog
     {
-        private const string oosLogSeparator = " ";
-        private const string oosLogQuote = "";
+        private const string OosLogSeparator = " ";
         public delegate string GetSessionId();
         public delegate void EchoEntry(NLog.LogLevel level, string timeStamp, string fileName, string lineNumberText, string methodName, string sessionID, string message);
 
@@ -54,12 +53,9 @@ namespace OOSCommon
         /// <param name="message"></param>
         protected void LogInner(LogLevel level, string message)
         {
-            string fileName = string.Empty;
-            string methodName = string.Empty;
-            string lineNumberText = string.Empty;
-            string timeStamp = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff");
-            string logEntry = "[" + timeStamp + "] " + level.ToString().PadRight(5, ' ');
-            logEntry = logEntry + oosLogSeparator + message;
+            var timeStamp = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff");
+            var paddedLevel = level.ToString().PadRight(5, ' ');
+            var logEntry = $"[{timeStamp}] {paddedLevel}{OosLogSeparator}{message}"; 
             oosLogger.Log(level, logEntry);
         }
 
