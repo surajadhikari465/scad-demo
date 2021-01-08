@@ -12,13 +12,7 @@ Post-Deployment Script Template
 
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 
-
---:r .\26539_FutureCostsExtract_JobSchedule.sql --2020-04-01
-:r .\34409_IRMAUserAudit_JobSchedule.sql --2020-05-28
-:r .\34822_ExtractServiceJob_Attributes.sql --2020-06-10
-:r .\33552_ExtractServiceJob_Price.sql --2020-06-15
-:r .\41985_AMZItemVendorLane_JobSchedule.sql --2020-08-04
-:r .\37503_AddScaleItemToAttributes.sql --2020-08-20
 :r .\SCM1-616_PopulateHealthCheck.sql --2020-12-02
+
 -- Run every time (add your script above; keep this at bottom, as last post-deploy script).
 :r ..\..\Security\SecurityGrants.sql
