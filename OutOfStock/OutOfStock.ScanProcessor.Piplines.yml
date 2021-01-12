@@ -26,7 +26,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(projfile)'
-    #msbuildArgs: '/t:OutOfStock:WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl="$(build.artifactStagingDirectory)\OutOfStock.Processor"'
+    msbuildArgs: '/p:OutputPath=$(Build.ArtifactStagingDirectory)/(Build.BuildNumber)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
@@ -39,11 +39,11 @@ steps:
 #     replaceExistingArchive: true
 #     verbose: true
 
-# - task: PublishBuildArtifacts@1
-#   inputs:
-#     pathToPublish: '$(Build.ArtifactStagingDirectory)/OutOfStock_$(Build.BuildNumber).zip' 
-#     artifactName: 'drop' 
-#     publishLocation: 'Container' # Options: container, filePath
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)/(Build.BuildNumber)' 
+    artifactName: 'drop' 
+    publishLocation: 'Container' # Options: container, filePath
 
 # - task: VSTest@2
 #   inputs:

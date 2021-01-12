@@ -9,10 +9,7 @@
 // Architectural overview and usage guide: 
 // http://blogofrab.blogspot.com/2010/08/maintenance-free-mocking-for-unit.html
 //------------------------------------------------------------------------------
-using System;
 using System.Linq;
-using System;
-using System.Data.EntityClient;
 using System.Data.Objects;
 
 namespace OOSCommon.DataContext

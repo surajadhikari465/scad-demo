@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Timers;
 using Newtonsoft.Json;
 using OOS.Model;
@@ -65,19 +66,17 @@ namespace OutOfStock.ScanProcessor
             if (_timer.Interval == _initialDelay) _timer.Interval = _normalDelay;
             try
             {
-
                 while (KeepLooping)
                 {
                     if (Heartbeat(_heartBeatInMinutes)) _oosLogService.Info("Heartbeat <3");
-                    data = _rawScanRepository.GetNextScans(3).ToList();
+                    data = _rawScanRepository.GetNextScans(4).ToList();
                     if (!data.Any())
                     {
                         KeepLooping = false;
                     }
                     else
                     {
-                     
-                        foreach (var scan in data)
+                        Parallel.ForEach(data, scan =>
                         {
                             try
                             {
@@ -89,13 +88,13 @@ namespace OutOfStock.ScanProcessor
                             }
                             catch (Exception ex)
                             {
-                                _rawScanRepository.SetScansAsFailed(new[] {scan.Id});
+                                _rawScanRepository.SetScansAsFailed(new[] { scan.Id });
                                 _oosLogService.Error($"[Failed] ScanId: {scan.Id}");
                                 _oosLogService.Warn(ex.Message);
                                 if (ex.InnerException != null)
                                     _oosLogService.Warn(ex.InnerException.Message);
                             }
-                        }
+                        });
                     }
 
                 }
