@@ -134,7 +134,7 @@ foreach($archiver in $cfg.archiverList){
             # If no region-list was specified, a default value is used so the "region" loop will still execute once, which is desired, but we assume no "%region%" placeholders will be specified in any input param values, so no substitution will take place.
             foreach($region in $regionList){
                 # If a param is not specified in the config, it will be NULL and will result in the SWITCH param (ex: "-recurse:$recurse") being ignored by the function (effectively FALSE).
-                Archive-FilesByMonthRecurse `
+                Archive-FilesByMonth `
                     -computerName $server `
                     -targetPath $archiver.targetPath.Replace("%region%", $region) `
                     -filenameFilterLeftOfDate $archiver.filenameFilterLeftOfDate.Replace("%region%", $region) `
