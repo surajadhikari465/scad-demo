@@ -204,8 +204,7 @@
 	oi.eInvoiceWeight,
 	oh.OrderExternalSourceOrderID,
 	CASE
-		WHEN oh.DVOOrderID IS NOT NULL THEN 'DVO'
-		WHEN oh.DVOOrderID IS NULL AND oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description
+		WHEN oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description
 		ELSE NULL
 	END as OtherExternalSourceDescription
 FROM OrderHeader oh (NOLOCK)
@@ -460,8 +459,7 @@ AND i.Retail_Sale = 1</statement>
 	NULL as eInvoiceWeight,
 	oh.OrderExternalSourceOrderID,
 	CASE
-		WHEN oh.DVOOrderID IS NOT NULL THEN 'DVO'
-		WHEN oh.DVOOrderID IS NULL AND oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description
+		WHEN oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description
 		ELSE NULL
 	END as OtherExternalSourceDescription
 FROM OrderHeader oh (NOLOCK)
@@ -717,8 +715,7 @@ WHERE oh.OrderHeader_ID = ?
 	NULL as eInvoiceWeight,
 	oh.OrderExternalSourceOrderID,
 	CASE
-		WHEN oh.DVOOrderID IS NOT NULL THEN 'DVO'
-		WHEN oh.DVOOrderID IS NULL AND oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description
+		WHEN oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description
 		ELSE NULL
 	END as OtherExternalSourceDescription
 FROM DeletedOrder oh (NOLOCK)
