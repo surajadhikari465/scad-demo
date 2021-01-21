@@ -33,8 +33,8 @@ export class AppService {
       regionCode: wfmRegionId,
       storeName: wfmStoreName,
       items: wfmScanItems,
-      userName: user.samaccountname,
-      userEmail: user.email
+      userName: user.SamAccountName,
+      userEmail: user.Email
     });
   }
 

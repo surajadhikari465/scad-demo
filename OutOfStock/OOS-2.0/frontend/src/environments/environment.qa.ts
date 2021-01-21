@@ -4,7 +4,7 @@ export const environment = {
   name: 'qa',
   useAuthToken: true,
   fakeUser: {
-    "samaccountname": 'Blake.Jones'
+      "SamAccountName": 'Min.Zhao'
   }, 
   logRocketId: "21g2lq/irma-oos-qa"
 };

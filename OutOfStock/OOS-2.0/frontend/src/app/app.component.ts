@@ -22,12 +22,25 @@ export class AppComponent implements OnInit {
       LifecycleManager.onReady(function () {
         try {
           AuthHandler.onTokenReceived(function (token: string) {
-            let decodedToken = decode(token);
-            this.appService.saveItem('user', decodedToken);
-            this.logRocket.init();
+            if(token)
+            {
+              try {
+                console.log("Try decode old token.");
+                let decodedToken = JSON.stringify(decode(token));
+                decodedToken = decodedToken.replace('samaccountname','SamAccountName').replace('email','Email');
+                this.appService.saveItem('user', decodedToken);
+              }
+              catch
+              {
+                console.log("Try reformat new token.");
+                token = token.split('\'').join('\"');
+                this.appService.saveItem('user', token);
+              }
+              this.logRocket.init();
+            }
           }.bind(this));
         } catch (err) {
-          console.error(err);
+          console.log(err);
         }
       }.bind(this));
     } else {
@@ -64,15 +77,13 @@ export class AppComponent implements OnInit {
 
       this.logRocket.init();
       var identity = {
-        username: user.samaccountname, 
-        useremail: user.email, 
-        region: wfmRegion, 
-        storeBU: wfmStore
+        username: user.SamAccountName,
+        useremail: user.Email,  
+        region: user.LocationCode ? user.LocationCode : user.wfm_location.code, 
+        storeBU: user.LocationId ? user.LocationId : user.wfm_location.id
       }
 
       this.logRocket.identify(identity)
-      
-      
 
     } else {
       this.appService.setScan(false);

@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
@@ -31,32 +30,6 @@ namespace WFM.OutOfStock.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var jwtConfiguration = CreateConfigurationServiceInstance(Configuration);
-            var authenticationKey = GetJsonWebKey(jwtConfiguration.AuthenticationServiceUrl, jwtConfiguration.JwtKeyId).Result;
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.IncludeErrorDetails = true;
-                options.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    RequireExpirationTime = false,
-                    RequireSignedTokens = true,
-                    ValidateAudience = false,
-                    ValidateIssuer = true,
-                    IssuerSigningKey = authenticationKey,
-                    ValidIssuer = jwtConfiguration.JwtTokenIssuer,
-                };
-                options.Audience = jwtConfiguration.JwtTokenAudience;
-            });
-
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder =>
@@ -67,11 +40,12 @@ namespace WFM.OutOfStock.API
                 });
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest)
+                    .AddMvcOptions(s => s.EnableEndpointRouting = false);
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc(ApiVersion, new Info
+                c.SwaggerDoc(ApiVersion, new OpenApiInfo
                 {
                     Title = ApiName,
                     Version = ApiVersion,
@@ -108,74 +82,6 @@ namespace WFM.OutOfStock.API
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{ApiName} {ApiVersion}");
             });
-        }
-
-        private static async Task<JsonWebKey> GetJsonWebKey(Uri authenticationServiceRootUrl, string dvoServicesJwtKeyId)
-        {
-            // Get the Json Web Key, retry 10 times if needed.
-            var retryCounter = 10;
-            while (retryCounter > 0)
-            {
-                try
-                {
-                    using (HttpClient httpClient = new HttpClient())
-                    {
-                        Uri url = new Uri(authenticationServiceRootUrl, "api/Authentication/Jwks");
-                        using (var httpResponse = await httpClient.GetAsync(url))
-                        {
-                            httpResponse.EnsureSuccessStatusCode();
-                            var keys = await httpResponse.Content.ReadAsAsync<JsonWebKeySet>();
-                            return keys.Keys.First(k => k.Kid == dvoServicesJwtKeyId);
-                        }
-                    }
-                }
-                catch
-                {
-                    if (retryCounter == 0)
-                    {
-                        throw;
-                    }
-                }
-
-                Thread.Sleep(5000);
-                retryCounter--;
-            }
-
-            throw new TimeoutException("Unable to get JsonWebKey from Auth Service");
-        }
-
-        private static JwtConfiguration CreateConfigurationServiceInstance(IConfiguration configuration)
-        {
-            return new JwtConfiguration
-            {
-                AuthenticationServiceUrl = new Uri(configuration["AuthenticationServiceUrl"]),
-                JwtKeyId = configuration["JwtKeyId"],
-                JwtTokenIssuer = configuration["JwtTokenIssuer"],
-                JwtTokenAudience = configuration["JwtTokenAudience"],
-            };
-        }
-
-        public class JwtConfiguration
-        {
-            /// <summary>
-            /// Gets or sets the Authentication Service Url
-            /// </summary>
-            public Uri AuthenticationServiceUrl { get; set; }
-
-            /// <summary>
-            /// Gets or sets the JwtKeyId for Dvo Services
-            /// </summary>
-            public string JwtKeyId { get; set; }
-
-            /// <summary>
-            /// Gets or sets the Jwt Token Issuer
-            /// </summary>
-            public string JwtTokenIssuer { get; set; }
-
-            /// <summary>
-            /// Gets or sets the Jwt token audience
-            /// </summary>
-            public string JwtTokenAudience { get; set; }
         }
     }
 }

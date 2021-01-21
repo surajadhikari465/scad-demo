@@ -8,8 +8,8 @@ export const environment = {
   name: 'local',
   useAuthToken: false,
   fakeUser: {
-    "samaccountname": 'Blake.Jones', 
-    "email":"blake.jones@wholefoods.com"
+      "SamAccountName": 'Min.Zhao',
+      "Email": "min.zhao@wholefoods.com"
   },
   logRocketId: "21g2lq/irma-oos-qa"
 };

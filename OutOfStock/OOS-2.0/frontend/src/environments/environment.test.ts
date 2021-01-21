@@ -4,7 +4,7 @@ export const environment = {
   name: 'test',
   useAuthToken: true,
   fakeUser: {
-    "samaccountname": 'Blake.Jones'
+      "SamAccountName": 'Min.Zhao'
   },
   logRocketId: ""
 };

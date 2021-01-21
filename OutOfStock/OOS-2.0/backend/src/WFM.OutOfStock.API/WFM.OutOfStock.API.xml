@@ -47,25 +47,5 @@
             Composite exception type covering exceptions encountered relating to Out Of Stock WCF service communication
             </summary>
         </member>
-        <member name="P:WFM.OutOfStock.API.Startup.JwtConfiguration.AuthenticationServiceUrl">
-            <summary>
-            Gets or sets the Authentication Service Url
-            </summary>
-        </member>
-        <member name="P:WFM.OutOfStock.API.Startup.JwtConfiguration.JwtKeyId">
-            <summary>
-            Gets or sets the JwtKeyId for Dvo Services
-            </summary>
-        </member>
-        <member name="P:WFM.OutOfStock.API.Startup.JwtConfiguration.JwtTokenIssuer">
-            <summary>
-            Gets or sets the Jwt Token Issuer
-            </summary>
-        </member>
-        <member name="P:WFM.OutOfStock.API.Startup.JwtConfiguration.JwtTokenAudience">
-            <summary>
-            Gets or sets the Jwt token audience
-            </summary>
-        </member>
     </members>
 </doc>

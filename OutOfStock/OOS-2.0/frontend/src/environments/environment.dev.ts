@@ -4,8 +4,8 @@ export const environment = {
   name: 'dev',
   useAuthToken: true,
   fakeUser: {
-    "samaccountname": 'Blake.Jones', 
-    "email":"blake.jones@wholefoods.com"
-  },
-  logRocketId: ""
+    "SamAccountName": 'Min.Zhao', 
+    "Email":"min.zhao@wholefoods.com"
+    },
+    logRocketId: ""
 };
