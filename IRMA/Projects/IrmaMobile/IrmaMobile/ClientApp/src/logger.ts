@@ -33,33 +33,39 @@ export const logRocketInitOptions = {
 };
   
 interface IUser {
-  wfm_employee_id: string,
-  name: string,
-  email: string,
-  given_name: string,
-  family_name: string,
+  EmployeeId: string,
+  SamAccountName: string,
+  DisplayName: string,
+  Email: string,
+  GivenName: string,
+  FamilyName: string,
   wfm_location: {
     id: string
-  }
+  },
+  LocationId: string
 }
 export const identifyLogRocketUser = (user: IUser) => {
   try{
     const {
-      wfm_employee_id,
-      name,
-      email,
-      given_name,
-      family_name,
-      wfm_location
+      EmployeeId,
+      SamAccountName,
+      DisplayName,
+      Email,
+      GivenName,
+      FamilyName,
+      wfm_location,
+      LocationId
     } = user;
-
-    LogRocket.identify(wfm_employee_id, {
-      name: name,
-      email: email,
-      firstName: given_name,
-      lastName: family_name,
-      storeId: wfm_location && wfm_location.id,
+    
+    LogRocket.identify(EmployeeId, {
+      name: DisplayName,
+      accountName: SamAccountName,
+      email: Email,
+      firstName: GivenName,
+      lastName: FamilyName,
+      storeId: wfm_location? wfm_location.id : LocationId
     });
+  
   }catch({message}){
     console.error(`Unable to identify application user: ${message}`);
   }

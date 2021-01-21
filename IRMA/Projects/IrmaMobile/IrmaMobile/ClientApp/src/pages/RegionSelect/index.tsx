@@ -100,10 +100,30 @@ const RegionSelect: React.FC<RegionProps> = (props) => {
 				const authToken = localStorage.getItem('authToken');
 				if (authToken) {
 					const parsedAuthToken = JSON.parse(authToken);
-					const user = await agent.User.getUser(region, parsedAuthToken.samaccountname);
-					if (!user) {
+					
+					var user: any;
+					if (parsedAuthToken.AccessToken)
+					{
+						user = await agent.User.getUser(region, parsedAuthToken.SamAccountName, parsedAuthToken.AccessToken);
+					}
+					else
+					{
+						user = await agent.User.getOldUser(region, parsedAuthToken.SamAccountName);
+					}
+
+					if (!user || (user.error && user.error.length > 0 && user.error == "IRMA User does not exist.")) {
 						toast.error("You are not authorized to use this application for this region.  Please contact your Regional IRMA Security Admin.");
 						setIsLoading(false);
+					} else if (user.error && user.error.length > 0) {
+						toast.error(user.error + " Please log out and log back in.");
+						setIsLoading(false);
+
+						try {
+							AuthHandler.clearToken(() => {  });
+						} catch (error) {
+							toast.error(`Error logging out. ${error}`);
+							console.error(`Error logging out. ${error}`);
+						}
 					} else if (!user.isAccountEnabled) {
 						toast.error("Your IRMA account is disabled for this region.  Please contact your Regional IRMA Security Admin.");
 						setIsLoading(false);

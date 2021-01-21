@@ -11,5 +11,6 @@
         public bool IsBuyer { get; set; }
         public bool IsDistributor { get; set; }
         public int TelxonStoreLimit { get; set; }
+        public string Error { get; set; }
     }
 }

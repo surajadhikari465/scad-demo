@@ -131,6 +131,7 @@ export interface IUser {
   isBuyer: boolean;
   isDistributor: boolean;
   telxonStoreLimit: number;
+  error: string;
 }
 
 export interface IExternalOrder {

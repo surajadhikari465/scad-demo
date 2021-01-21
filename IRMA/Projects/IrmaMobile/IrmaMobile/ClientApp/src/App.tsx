@@ -31,7 +31,6 @@ import { LifecycleManager, AuthHandler } from '@wfm/mobile';
 //@ts-ignore
 import decode from 'jwt-decode';
 import Config from './config';
-import LogRocket from 'logrocket';
 import { identifyLogRocketUser } from './logger';
 
 const App: React.FC = () => {
@@ -44,17 +43,37 @@ const App: React.FC = () => {
     if (Config.useAuthToken) {
       LifecycleManager.onReady(function () {
         try {
-          AuthHandler.onTokenReceived(function (token: string) {
-            let decodedToken = decode(token);
-            localStorage.setItem('authToken', JSON.stringify(decodedToken));
-            identifyLogRocketUser(decodedToken);
+            AuthHandler.onTokenReceived(function (token: string) {
+            if(token)
+            {
+              //The following try ... catch statement ensures the IRMA mobile app can be rendered by the native mobile app either using the WFM
+              //authentication service (older version) to or using Azure AD SSO (newer version) to authenticate a user. The two versions of native
+              //mobile app will pass different interface object to IRMA mobile. The code in the try block can be removed once the SSO version of native
+              //mobice app has been deployed to all the devices.
+              try
+              {
+                  let decodedToken = decode(token);
+                  token = JSON.stringify(decodedToken);
+        
+                  token = token.replace('wfm_employee_id','EmployeeId').replace('samaccountname', 'SamAccountName').replace('name','DisplayName')
+                       .replace('email','Email').replace('given_name','GivenName').replace('family_name','FamilyName');
+
+                  identifyLogRocketUser(JSON.parse(token));
+              }
+              catch
+              {
+                token = token.split('\'').join('\"');
+                identifyLogRocketUser(JSON.parse(token));
+              }
+              localStorage.setItem('authToken', token);
+            }
           });
         } catch (err) {
           console.error(err);
         }
       });
     } else {
-      localStorage.setItem('authToken', JSON.stringify(Config.fakeUser));
+        localStorage.setItem('authToken', JSON.stringify(Config.fakeUser));
     }
   }, []);
 

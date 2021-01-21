@@ -24,6 +24,16 @@ const requests = {
             .catch(e => {
                 console.log(e);
             }),
+    getWithToken: async (withTokenUrl: string, token: string) =>
+            await axios({
+                    method: 'get',
+                    url: withTokenUrl,
+                    headers: {'Authorization': token}
+            })
+                .then(responseBody)
+                .catch(e => {
+                    console.log(e);
+                }),
     post: async (url: string, body: {}) =>
         await axios
             .post(url, body)
@@ -182,8 +192,10 @@ const Shrink = {
         })
 };
 
-const User = {
-    getUser: async (region: string, userName: string) => await requests.get(`/${region}/users?userName=${userName}`) as IUser | null
+var User = {
+    getUser: async (region: string, userName: string, accessToken: string) => await requests.getWithToken(`/${region}/users?userName=${userName}`, accessToken) as IUser | null,
+    getOldUser: async (region: string, userName: string) => await requests.get(`/${region}/users?userName=${userName}`) as IUser | null
 }
 
 export default { RegionSelect, StoreItem, PurchaseOrder, InvoiceData, Shrink, ReceivingList, Document, Transfer, User };
+
