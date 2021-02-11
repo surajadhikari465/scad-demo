@@ -17,3 +17,7 @@ GO
 CREATE ROLE [dds_eplum_role]
 	AUTHORIZATION [dbo];
 GO
+
+CREATE ROLE [warp-role]
+    AUTHORIZATION [dbo];
+GO
