@@ -290,7 +290,7 @@ INNER JOIN INSERTED I ON I.OrderItem_ID  = OI.OrderItem_ID
 				,SYSUTCDATETIME()
 			FROM inserted i
 			JOIN dbo.OrderHeader oh ON oh.OrderHeader_ID = i.OrderHeader_ID
-			WHERE oh.Sent = 1
+			WHERE oh.Sent = 1 AND oh.OrderType_ID <> 3;
 
 			INSERT INTO amz.ReceiptQueue (
 				EventTypeCode

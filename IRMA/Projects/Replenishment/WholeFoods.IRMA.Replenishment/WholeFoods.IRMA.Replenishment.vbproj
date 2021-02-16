@@ -141,7 +141,7 @@
     </Reference>
     <Reference Include="Microsoft.VisualBasic.Compatibility" />
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\Newtonsoft.Json.12.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\IRMA Client\WholeFoods.IRMA Solution\packages\Newtonsoft.Json.12.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="office, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <SpecificVersion>False</SpecificVersion>
@@ -149,10 +149,10 @@
       <HintPath>..\..\..\Libraries\office.dll</HintPath>
     </Reference>
     <Reference Include="Opsgenie.Alert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\WholeFoods.IRMA.ScheduledJobs\EInvoicing\packages\Opsgenie.Alert.2019.9.17.1\lib\net40\Opsgenie.Alert.dll</HintPath>
+      <HintPath>..\..\IRMA Client\WholeFoods.IRMA Solution\packages\Opsgenie.Alert.2019.9.17.1\lib\net40\Opsgenie.Alert.dll</HintPath>
     </Reference>
     <Reference Include="OpsGenieLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\WholeFoods.IRMA.ScheduledJobs\EInvoicing\packages\OpsGenieLib.2020.3.9.2\lib\net40\OpsGenieLib.dll</HintPath>
+      <HintPath>..\..\IRMA Client\WholeFoods.IRMA Solution\packages\OpsGenieLib.2020.3.9.2\lib\net40\OpsGenieLib.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
