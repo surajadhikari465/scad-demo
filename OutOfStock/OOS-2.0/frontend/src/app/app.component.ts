@@ -24,17 +24,19 @@ export class AppComponent implements OnInit {
           AuthHandler.onTokenReceived(function (token: string) {
             if(token)
             {
-              try {
+              if (token.search('SamAccountName') > 0)
+              {
+                console.log("Try reformat new token.");
+                token = token.split('\'').join('\"');
+                token = token.replace('%', '\'');
+                this.appService.saveItem('user', token);
+              }
+              else
+              {
                 console.log("Try decode old token.");
                 let decodedToken = JSON.stringify(decode(token));
                 decodedToken = decodedToken.replace('samaccountname','SamAccountName').replace('email','Email');
                 this.appService.saveItem('user', decodedToken);
-              }
-              catch
-              {
-                console.log("Try reformat new token.");
-                token = token.split('\'').join('\"');
-                this.appService.saveItem('user', token);
               }
               this.logRocket.init();
             }
