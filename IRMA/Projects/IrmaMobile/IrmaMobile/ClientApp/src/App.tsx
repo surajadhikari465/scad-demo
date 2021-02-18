@@ -46,11 +46,17 @@ const App: React.FC = () => {
             AuthHandler.onTokenReceived(function (token: string) {
             if(token)
             {
-              //The following try ... catch statement ensures the IRMA mobile app can be rendered by the native mobile app either using the WFM
-              //authentication service (older version) to or using Azure AD SSO (newer version) to authenticate a user. The two versions of native
-              //mobile app will pass different interface object to IRMA mobile. The code in the try block can be removed once the SSO version of native
+              //The following try ... catch statement ensures the IRMA mobile app can be rendered by the native mobile app either using Azure AD SSO (newer version)
+              //or using the WFM authentication service (older version) to authenticate a user. The two versions of native
+              //mobile app will pass different interface object to IRMA mobile. The code in the catch block can be removed once the SSO version of native
               //mobice app has been deployed to all the devices.
-              try
+              if (token.search('SamAccountName') > 0)
+              {
+                  token = token.split('\'').join('\"');
+                  token = token.replace('%', '\'');
+                  identifyLogRocketUser(JSON.parse(token)); 
+              }
+              else
               {
                   let decodedToken = decode(token);
                   token = JSON.stringify(decodedToken);
@@ -60,11 +66,7 @@ const App: React.FC = () => {
 
                   identifyLogRocketUser(JSON.parse(token));
               }
-              catch
-              {
-                token = token.split('\'').join('\"');
-                identifyLogRocketUser(JSON.parse(token));
-              }
+
               localStorage.setItem('authToken', token);
             }
           });
