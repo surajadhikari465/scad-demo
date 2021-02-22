@@ -14,6 +14,10 @@ See full details here: https://wholefoods.sharepoint.com/:w:/s/PPS_Sharing_P201/
 UPDATES/NOTES
 (Tom) -- Was seeing errors (file in use) and then found leftover ps-session instances and determined it was because archiver functions were using Disconnect-Session rather than Remove-Session.
 
+2021.01.29 (Tom) -- Needed ability to specify archive destination other than the folder containing the files to be archived:
+- Added 'destArchiveFolder' config option to control where the Zip file is written.
+- We pass the new dest folder and 'archiveLocationProvided' flag so that archiving function knows if it needs to use the alternate dest location.
+
 #>
 
 $scriptFullPath = $MyInvocation.MyCommand.Definition
@@ -79,7 +83,7 @@ foreach($archiver in $cfg.archiverList){
     $archiver
 
     if(-not $archiver.serverList){
-        "[" + (Get-Date) + "] " + "**ERROR -- CANNOT CONTINUE CURRENT ARCHIVER** ServerList value required."
+        "[" + (Get-Date) + "] " + "**ERROR -- CANNOT CONTINUE CURRENT ARCHIVER** 'serverList' value required."
         continue
     }
 
@@ -99,9 +103,20 @@ foreach($archiver in $cfg.archiverList){
             $targetDate = [DateTime]$targetDate
         }
         catch{
-            "[" + (Get-Date) + "] " + "**ERROR -- CANNOT CONTINUE CURRENT ARCHIVER** TargetDate value [" + $targetDate + "] is not a date."
+            "[" + (Get-Date) + "] " + "**ERROR -- CANNOT CONTINUE CURRENT ARCHIVER** 'targetDate' value [" + $targetDate + "] is not a date."
             continue
         }
+    }
+
+    # We cannot test if a provided destination exist (because dozens of servers could be configured in each archive config and we would need to connect to each individually.
+    # So, we just need to pass an indicator to the archiver function to show if a destination-location value was specified at all.
+    # Set default to location provided because if one is not, this var is set to FALSE.
+    $archiveLocationProvided = $true
+    $destArchiveFolder = $archiver.destArchiveFolder
+    if($destArchiveFolder -eq $null){
+        "No archive destination provided: files will be archived to target location.";
+        $archiveLocationProvided = $false;
+        $destArchiveFolder = ".\"
     }
 
     $addFolderToArchiveFileName = $archiver.addFolderToArchiveFileName
@@ -141,6 +156,8 @@ foreach($archiver in $cfg.archiverList){
                     -filenameFilterRightOfDate $archiver.filenameFilterRightOfDate.Replace("%region%", $region) `
                     -filenameDateFormat $filenameDateFormat `
                     -archiveID $archiver.archiveID.Replace("%region%", $region) `
+                    -archiveLocationProvided:$archiveLocationProvided `
+                    -destArchiveFolder $destArchiveFolder `
                     -addFolderToArchiveFileName:$addFolderToArchiveFileName `
                     -deleteFilesAfterZip:$deleteFilesAfterZip `
                     -targetDate $targetDate `

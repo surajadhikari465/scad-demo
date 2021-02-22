@@ -1,0 +1,27 @@
+{
+  "product": "Monthly File Archiver",
+  "version": "1.0",
+  "archiverList": [
+    {
+      "serversDesc": "319=Dev (other Dev server 10318 is dead?), 333+334=QA, 464=UAT",
+      "serverList": [
+        "AWWD10319.wfmcld.com",
+        "AWWD10333.wfmcld.com",
+        "AWWD10334.wfmcld.com",
+        "AWWD10464.wfmcld.com"
+      ],
+      "targetPath": "c:\\inetpub\\logs\\logfiles",
+      "filenameFilterLeftOfDate": "u_ex",
+      "filenameFilterRightOfDate": "*.log",
+      "filenameDateFormat": "yyMM",
+      "targetDate": "",
+      "previousMonthsCount": 3,
+      "recurse": true,
+      "archiveID": "IIS Logs",
+	  "destArchiveFolder": "d:\\IIS-LogFiles-Archive",
+      "addFolderToArchiveFileName": true,
+      "deleteFilesAfterZip": true,
+      "whatIfMode": false
+    }
+  ]
+}

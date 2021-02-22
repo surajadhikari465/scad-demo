@@ -1,0 +1,25 @@
+{
+  "product": "Monthly File Archiver",
+  "version": "1.0",
+  "archiverList": [
+    {
+      "serversDesc": "391+392=QA, 463=UAT",
+      "serverList": [
+        "AWWD10391.wfmcld.com",
+        "AWWD10392.wfmcld.com",
+        "AWWD10463.wfmcld.com"
+      ],
+      "targetPath": "c:\\inetpub\\logs\\logfiles",
+      "filenameFilterLeftOfDate": "u_ex",
+      "filenameFilterRightOfDate": "*.log",
+      "filenameDateFormat": "yyMM",
+      "targetDate": "",
+      "previousMonthsCount": 1,
+      "recurse": true,
+      "archiveID": "IIS Logs",
+      "addFolderToArchiveFileName": true,
+      "deleteFilesAfterZip": true,
+      "whatIfMode": false
+    }
+  ]
+}
