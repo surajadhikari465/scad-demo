@@ -1460,7 +1460,7 @@ Public Class Form_EditUser
         '           Security Admin and User Maintenance can grant Security Admin
         CheckBox_Role_SuperUser.Enabled = False
         CheckBox_Role_SystemConfigurationAdministrator.Enabled = blnSecurityAdmin
-        CheckBox_Role_SecurityAdministrator.Enabled = blnSecurityAdmin Or blnUserMaint
+        CheckBox_Role_SecurityAdministrator.Enabled = blnSecurityAdmin  
     End Sub
 
     Private Function CheckForRoleConflicts() As String
