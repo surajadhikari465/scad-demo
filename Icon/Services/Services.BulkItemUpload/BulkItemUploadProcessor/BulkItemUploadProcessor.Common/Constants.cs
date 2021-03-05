@@ -13,14 +13,17 @@ namespace BulkItemUploadProcessor.Common
             public const string CreatedDateTimeUtc = "CreatedDateTimeUtc";
             public const string ModifiedBy = "ModifiedBy";
             public const string ModifiedDateTimeUtc = "ModifiedDateTimeUtc";
-            public const string ProhibitDiscount = "ProhibitDiscount";
             public const string ItemTypeCode = "ItemTypeCode";
+            public const string FoodStampEligible = "FoodStampEligible";
             public const string Inactive = "Inactive";
+            public const string ProhibitDiscount = "ProhibitDiscount";
         }
 
         public const string ScanCodeColumnHeader = "Scan Code";
         public const string BarcodeTypeColumnHeader = "Barcode Type";
         public const string RemoveExcelValue = "REMOVE";
+        public const string FoodStampEligibleAttributeName = "FoodStampEligible";
+        public const string InactiveAttributeName = "Inactive";
         public const string ProhibitDiscountAttributeName = "ProhibitDiscount";
         public const string JsonTrue = "true";
         public const string JsonFalse = "false";

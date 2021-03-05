@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using static BulkItemUploadProcessor.Common.Constants;
+using static Icon.Common.Constants;
 
 namespace BulkItemUploadProcessor.Service.Mappers
 {
@@ -43,6 +44,21 @@ namespace BulkItemUploadProcessor.Service.Mappers
                     c => c.Name,
                     (a, c) => new { a.AttributeName, c.ColumnIndex, a.IsRequired })
                 .ToList();
+
+            // Get column headers that have boolean dataTypes
+            var booleanAttributeColumnHeaders = attributeModels
+                .Where(a => a.DataTypeName.Equals(DataTypeNames.Boolean, StringComparison.OrdinalIgnoreCase))
+                .Join(columnHeaders,
+                    a => a.DisplayName,
+                    c => c.Name,
+                    (a, c) => new { a.AttributeName })
+                .ToList();
+
+            var booleanAttributeList = new List<string>();
+            foreach (var attribute in booleanAttributeColumnHeaders)
+            {
+                booleanAttributeList.Add(attribute.AttributeName);
+            }
 
             //Create a list of actions that apply hierarchy values to the items only for the hierarchy columns present
             var hierarchyClassActions = columnHeaders
@@ -99,10 +115,19 @@ namespace BulkItemUploadProcessor.Service.Mappers
                             }
                             else
                             {
+                                // ensure any Boolean values are stored in lowercase strings
+                                if (booleanAttributeList.Contains(columnHeader.AttributeName))
+                                {
+                                    rowObject.DictionaryValues[columnHeader.ColumnIndex] =
+                                        value.ToLower() == JsonTrue
+                                            ? JsonTrue
+                                            : JsonFalse;
+                                }
+
                                 itemAttributesJson[columnHeader.AttributeName] = rowObject.DictionaryValues[columnHeader.ColumnIndex];
                             }
                         }
-                    }        
+                    }
                 }
 
                 foreach (var hierarchyClassAction in hierarchyClassActions)

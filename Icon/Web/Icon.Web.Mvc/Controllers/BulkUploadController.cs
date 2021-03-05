@@ -8,7 +8,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.Ajax.Utilities;
 
 namespace Icon.Web.Mvc.Controllers
 {
@@ -86,7 +85,6 @@ namespace Icon.Web.Mvc.Controllers
             // Checking no of files injected in Request object  
             if (Request.Files.Count > 0)
             {
-                var uploadedFileName = string.Empty;
                 var uploadedFileType = Request.Form["fileType"];
                 try
                 {
@@ -100,12 +98,12 @@ namespace Icon.Web.Mvc.Controllers
                             var result = new BulkUploadResultModel { Result = "Error", Message = "No file selected" };
                             return Json(result);
                         }
-
+                        string uploadedFileName;
                         // Checking for Internet Explorer  
                         if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
                         {
-                            string[] testfiles = uploadedFile.FileName.Split(new char[] { '\\' });
-                            uploadedFileName = testfiles[testfiles.Length - 1];
+                            string[] testFiles = uploadedFile.FileName.Split(new char[] { '\\' });
+                            uploadedFileName = testFiles[testFiles.Length - 1];
                         }
                         else
                         {
@@ -123,7 +121,7 @@ namespace Icon.Web.Mvc.Controllers
                                 uploadedFileName,
                                 uploadedData,
                                 User.Identity.Name);
-                            return RequestInfo($"File uploaded uploaded successfully and added to processing queue. You can monitor processing status in the grid.", HttpStatusCode.OK);
+                            return RequestInfo($"File uploaded successfully and added to processing queue. You can monitor processing status in the grid.", HttpStatusCode.OK);
                         }
                         catch
                         {
@@ -169,17 +167,17 @@ namespace Icon.Web.Mvc.Controllers
                     {
                         mem.Write(model.BulkUploadModel.FileContent, 0, model.BulkUploadModel.FileContent.Length);
 
-                        using (var rdr = new Icon.Web.Mvc.Excel.ExcelReader(mem))
+                        using (var rdr = new Excel.ExcelReader(mem))
                         {
                             var links = new DocumentFormat.OpenXml.Spreadsheet.Hyperlinks();
-                            var rowid = 2;
+                            var rowId = 2;
                             foreach (var grp in model.bulkUploadErrorModels.OrderBy(a => a.RowId).GroupBy(a => a.RowId))
                             {
                                 foreach (var val in grp)
                                 {
-                                    links.Append(new DocumentFormat.OpenXml.Spreadsheet.Hyperlink() { Reference = $"A{links.Count() + 2}", Location = $"{bulkUploadDataType}s!A{rowid}", Display = $"Ref ID: {rowid}", Tooltip = val.Message });
+                                    links.Append(new DocumentFormat.OpenXml.Spreadsheet.Hyperlink() { Reference = $"A{links.Count() + 2}", Location = $"{bulkUploadDataType}s!A{rowId}", Display = $"Ref ID: {rowId}", Tooltip = val.Message });
                                 }
-                                rowid++;
+                                rowId++;
                             }
 
                             var listId = model.bulkUploadErrorModels.Select(a => a.RowId).Distinct().ToList();
