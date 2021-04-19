@@ -3367,6 +3367,8 @@
     <None Include="Scripts\PostDeploy\Archive\PBI32245_InsertUploadAttributeEntries.sql" />
     <None Include="Scripts\PostDeploy\Archive\PBI39370_InStock_UpdateRetentionPolicy.sql" />
     <Build Include="Schema\dbo\Functions\ToNumericString.sql" />
+    <Build Include="Security\PrimsShrinkRole.sql" />
+    <Build Include="Schema\amz\StoredProcedures\GetItemStoreCost.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
