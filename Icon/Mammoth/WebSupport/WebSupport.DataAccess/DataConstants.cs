@@ -30,7 +30,7 @@ namespace WebSupport.DataAccess
 		public static string[] DownstreamSystems = new[]
 			{
 				PriceResetConstants.Spice,
-				PriceResetConstants.SLAW,
+				PriceResetConstants.Slaw,
 				PriceResetConstants.DataWarehouse,
 				PriceResetConstants.Pricer
 			};
@@ -63,7 +63,7 @@ namespace WebSupport.DataAccess
 	public static class PriceResetConstants
 	{
 		public const string Spice = "Spice";
-		public const string SLAW = "SLAW";
+		public const string Slaw = "Slaw";
 		public const string DataWarehouse = "DW";
 		public const string Pricer = "Pricer";
 	}
