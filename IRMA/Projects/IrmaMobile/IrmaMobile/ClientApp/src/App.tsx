@@ -30,7 +30,7 @@ import TransferScanSaveOrder from './pages/Transfer/Scan/components/TransferScan
 import { LifecycleManager, AuthHandler } from '@wfm/mobile';
 //@ts-ignore
 import decode from 'jwt-decode';
-import Config from './config';
+import Config, { formatToken } from './config';
 import { identifyLogRocketUser } from './logger';
 
 const App: React.FC = () => {
@@ -60,9 +60,7 @@ const App: React.FC = () => {
               {
                   let decodedToken = decode(token);
                   token = JSON.stringify(decodedToken);
-        
-                  token = token.replace('wfm_employee_id','EmployeeId').replace('samaccountname', 'SamAccountName').replace('name','DisplayName')
-                       .replace('email','Email').replace('given_name','GivenName').replace('family_name','FamilyName');
+                  token = formatToken(token)
 
                   identifyLogRocketUser(JSON.parse(token));
               }
@@ -75,7 +73,8 @@ const App: React.FC = () => {
         }
       });
     } else {
-        localStorage.setItem('authToken', JSON.stringify(Config.fakeUser));
+      const fakeToken = formatToken(JSON.stringify(Config.fakeUser))
+        localStorage.setItem('authToken', fakeToken);
     }
   }, []);
 

@@ -68,6 +68,7 @@
     ]
   },
   "devDependencies": {
+    "@types/logrocket-react": "^3.0.0",
     "@types/react-table": "^6.8.6",
     "react-table": "^6.11.5"
   }

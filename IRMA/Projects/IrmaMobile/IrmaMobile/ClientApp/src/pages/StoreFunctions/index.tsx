@@ -6,6 +6,7 @@ import CurrentLocation from "../../layout/CurrentLocation";
 import { AppContext, types, IMenuItem } from "../../store";
 import { AuthHandler } from '@wfm/mobile';
 import { toast } from 'react-toastify';
+import { initializeLogRocket } from '../../logger';
 
 interface StoreFunctionsProps {
   history: any;
@@ -66,6 +67,7 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
   }
 
   const handleShrinkClick = () => {
+    initializeLogRocket()
     if (!isSelected) {
       setAlertOpen(true);
     }
@@ -101,10 +103,12 @@ const StoreFunctions: React.FC<StoreFunctionsProps> = (props) => {
   }
 
   const handleReceiveClick = () => {
+    initializeLogRocket()
     history.push('/receive/PurchaseOrder/');
   }
 
   const handleTransferClick = () => {
+    initializeLogRocket()
     if (!isSelected) {
       setAlertOpen(true);
     } else {
