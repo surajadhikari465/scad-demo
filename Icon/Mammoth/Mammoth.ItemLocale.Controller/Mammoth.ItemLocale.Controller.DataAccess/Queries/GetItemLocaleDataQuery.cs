@@ -354,7 +354,7 @@ WHERE q.InProcessBy = @JobInstance
 		)
 	AND s.Store_No NOT IN (
 		SELECT Key_Value
-		FROM dbo.fn_Parse_List(@ExcludedStoreNo, '|')
+		FROM dbo.fn_Parse_List_MammothItemLocale(@ExcludedStoreNo, '|')
 		)
 	AND q.Store_No IS NULL;";
 
