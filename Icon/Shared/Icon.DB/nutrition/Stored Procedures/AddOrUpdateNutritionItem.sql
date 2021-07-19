@@ -115,6 +115,10 @@ BEGIN
 		,[IronWeight] = newni.IronWeight
 		,[VitaminDWeight] = newni.VitaminDWeight
 		,[ModifiedDate] = SYSDATETIME()
+		,[ProfitCenter] = newni.ProfitCenter
+		,[CanadaAllergen] = newni.CanadaAllergen
+		,[CanadaIngredient] = newni.CanadaIngredient
+		,[CanadaSugarPercent] = newni.CanadaSugarPercent
 	OUTPUT INSERTED.RecipeId
 		,newni.[Plu]
 		,0
@@ -203,6 +207,10 @@ BEGIN
 		,[CalciumWeight]
 		,[IronWeight]
 		,[VitaminDWeight]
+		,[ProfitCenter]
+		,[CanadaAllergen]
+		,[CanadaIngredient]
+		,[CanadaSugarPercent]
 		)
 	OUTPUT INSERTED.RecipeId
 		,INSERTED.Plu
@@ -283,6 +291,10 @@ BEGIN
 		,[CalciumWeight]
 		,[IronWeight]
 		,[VitaminDWeight]
+		,[ProfitCenter]
+		,[CanadaAllergen]
+		,[CanadaIngredient]
+		,[CanadaSugarPercent]
 	FROM @NutritionItem newItem
 	WHERE NOT EXISTS (
 			SELECT 1

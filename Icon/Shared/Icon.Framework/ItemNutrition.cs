@@ -90,5 +90,11 @@ namespace Icon.Framework
         public Nullable<decimal> CalciumWeight { get; set; }
         public Nullable<decimal> IronWeight { get; set; }
         public Nullable<decimal> VitaminDWeight { get; set; }
+        public System.DateTime SysStartTimeUtc { get; set; }
+        public System.DateTime SysEndTimeUtc { get; set; }
+        public int ProfitCenter { get; set; }
+        public string CanadaAllergen { get; set; }
+        public string CanadaIngredient { get; set; }
+        public Nullable<short> CanadaSugarPercent { get; set; }
     }
 }

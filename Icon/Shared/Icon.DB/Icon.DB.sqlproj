@@ -938,6 +938,7 @@
     <Build Include="Storage\IconFullTextCatalog.sql" />
     <None Include="Scripts\PopulateData\40795_Populate_ItemGroup_Keywords.sql" />
     <None Include="Scripts\PopulateData\SCM2-386_SubTeamRealignment_Add_3100_1410_Update_1750_Rollback.sql" />
+    <None Include="Scripts\PopulateData\SCM4-1889_Add_Canadian_Nutrition_Traits.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Icon.DB.refactorlog" />

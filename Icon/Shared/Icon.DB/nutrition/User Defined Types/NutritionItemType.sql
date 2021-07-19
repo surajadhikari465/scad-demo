@@ -71,5 +71,9 @@
 	[AddedSugarsPercent] [smallint] NULL,
 	[CalciumWeight] [decimal](10, 1) NULL,
 	[IronWeight] [decimal](10, 1) NULL,
-	[VitaminDWeight] [decimal](10, 1) NULL
+	[VitaminDWeight] [decimal](10, 1) NULL,
+	[ProfitCenter] INT NULL,
+    [CanadaAllergen] NCHAR(510) NULL, 
+    [CanadaIngredient] NCHAR(10) NULL, 
+    [CanadaSugarPercent] SMALLINT NULL
 )

@@ -71,13 +71,18 @@ CREATE TABLE [nutrition].ItemNutritionHistory
 	TransfatWeight DECIMAL(10, 1) NULL,
 	InsertDate DATETIME2(7) NOT NULL,
 	ModifiedDate DATETIME2(7) NULL,
-  AddedSugarsWeight DECIMAL(10, 1) NULL,
+    AddedSugarsWeight DECIMAL(10, 1) NULL,
 	AddedSugarsPercent SMALLINT NULL,
 	CalciumWeight DECIMAL(10, 1) NULL,
 	IronWeight DECIMAL(10, 1) NULL,
 	VitaminDWeight DECIMAL(10, 1) NULL,
 	SysStartTimeUtc datetime2  NOT NULL,
-	SysEndTimeUtc datetime2 NOT NULL
+	SysEndTimeUtc datetime2 NOT NULL,
+	ProfitCenter INT NOT NULL
+		CONSTRAINT DF_ItemHistoryProfitCenter DEFAULT 561,
+    CanadaAllergen NCHAR(510) NULL, 
+    CanadaIngredient NCHAR(10) NULL, 
+    CanadaSugarPercent SMALLINT NULL,
 	)
 	ON [FG_History]
 GO

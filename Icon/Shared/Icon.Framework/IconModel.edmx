@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Icon.Framework.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Icon.Framework.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="APIMessageMonitorLog">
           <Key>
             <PropertyRef Name="APIMessageMonitorLogID" />
@@ -228,8 +228,8 @@
           <Property Name="ZipCode" Type="nvarchar" MaxLength="255" />
           <Property Name="Designation" Type="nvarchar" MaxLength="255" />
           <Property Name="Locality" Type="nvarchar" MaxLength="255" />
-		  <Property Name="ParentCompany" Type="nvarchar" MaxLength="255" />
-		  <Property Name="ArCustomerId" Type="nvarchar" MaxLength="255" />
+          <Property Name="ParentCompany" Type="nvarchar" MaxLength="255" />
+          <Property Name="ArCustomerId" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="MessageQueueItemLocale">
           <Key>
@@ -396,6 +396,10 @@
           <Property Name="CalciumWeight" Type="decimal" Precision="10" Scale="1" />
           <Property Name="IronWeight" Type="decimal" Precision="10" Scale="1" />
           <Property Name="VitaminDWeight" Type="decimal" Precision="10" Scale="1" />
+          <Property Name="ProfitCenter" Type="int" />
+          <Property Name="CanadaAllergen" Type="nchar" MaxLength="510" />
+          <Property Name="CanadaIngredient" Type="nchar" MaxLength="10" />
+          <Property Name="CanadaSugarPercent" Type="smallint" />
         </EntityType>
         <EntityType Name="MessageQueuePrice">
           <Key>
@@ -1337,6 +1341,12 @@
           <Property Name="CalciumWeight" Type="decimal" Precision="10" Scale="1" />
           <Property Name="IronWeight" Type="decimal" Precision="10" Scale="1" />
           <Property Name="VitaminDWeight" Type="decimal" Precision="10" Scale="1" />
+          <Property Name="SysStartTimeUtc" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="SysEndTimeUtc" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="ProfitCenter" Type="int" Nullable="false" />
+          <Property Name="CanadaAllergen" Type="nchar" MaxLength="510" />
+          <Property Name="CanadaIngredient" Type="nchar" MaxLength="10" />
+          <Property Name="CanadaSugarPercent" Type="smallint" />
         </EntityType>
         <EntityType Name="EventQueue2">
           <Key>
@@ -3217,7 +3227,8 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="LocaleTrait" EntitySet="LocaleTrait" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Icon.Framework.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3469,7 +3480,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySet Name="PLUCategory" EntityType="Icon.Framework.Model.PLUCategory" />
           <EntitySet Name="ItemMovement" EntityType="Icon.Framework.Model.ItemMovement" />
           <FunctionImport Name="GenerateItemUpdateMessagesByHierarchyClass">
-          <Parameter Name="hierarchyClassID" Mode="In" Type="Int32" />
+            <Parameter Name="hierarchyClassID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="UpdateItemTypeByHierarchyClass">
             <Parameter Name="hierarchyClassID" Mode="In" Type="Int32" />
@@ -3763,7 +3774,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             <End Role="MessageType" EntitySet="MessageType" />
             <End Role="MessageQueueHierarchy" EntitySet="MessageQueueHierarchy" />
           </AssociationSet>
-          </EntityContainer>
+        </EntityContainer>
         <EnumType Name="HierarchyName" a:ExternalTypeName="Icon.Framework.Enums.HierarchyName" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         <EnumType Name="TraitDescription" a:ExternalTypeName="Icon.Framework.Enums.TraitDescription" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         <EntityType Name="ItemType">
@@ -3824,7 +3835,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <NavigationProperty Name="HierarchyPrototype" Relationship="Icon.Framework.Model.HierarchyPrototype_HierarchyClass_FK1" FromRole="HierarchyClass" ToRole="HierarchyPrototype" />
           <NavigationProperty Name="HierarchyClassTrait" Relationship="Icon.Framework.Model.HierarchyClass_HierarchyClassTrait_FK1" FromRole="HierarchyClass" ToRole="HierarchyClassTrait" />
           <NavigationProperty Name="ProductSelectionGroup" Relationship="Icon.Framework.Model.FK__ProductSelectionGroup_MerchandiseHierarchyClass" FromRole="HierarchyClass" ToRole="ProductSelectionGroup" />
-          </EntityType>
+        </EntityType>
         <EntityType Name="HierarchyPrototype">
           <Key>
             <PropertyRef Name="hierarchyID" />
@@ -3995,7 +4006,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="swPLU" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
           <Property Name="ukPLU" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.Item_PLUMap_ItemID_FK" FromRole="PLUMap" ToRole="Item" />
-          </EntityType>
+        </EntityType>
         <EntityType Name="MessageType">
           <Key>
             <PropertyRef Name="MessageTypeId" />
@@ -4011,7 +4022,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <NavigationProperty Name="MessageQueueLocale" Relationship="Icon.Framework.Model.FK_app_MessageQueueLocale_MessageType" FromRole="MessageType" ToRole="MessageQueueLocale" />
           <NavigationProperty Name="MessageQueueProduct" Relationship="Icon.Framework.Model.FK_MessageQueueProduct_MessageTypeId" FromRole="MessageType" ToRole="MessageQueueProduct" />
           <NavigationProperty Name="MessageQueueHierarchy" Relationship="Icon.Framework.Model.FK_MessageQueueHierarchy_MessageTypeId" FromRole="MessageType" ToRole="MessageQueueHierarchy" />
-          </EntityType>
+        </EntityType>
         <EntityType Name="MessageStatus">
           <Key>
             <PropertyRef Name="MessageStatusId" />
@@ -5196,6 +5207,12 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="CalciumWeight" Type="Decimal" Precision="10" Scale="1" />
           <Property Name="IronWeight" Type="Decimal" Precision="10" Scale="1" />
           <Property Name="VitaminDWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="SysStartTimeUtc" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="SysEndTimeUtc" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ProfitCenter" Type="Int32" Nullable="false" />
+          <Property Name="CanadaAllergen" Type="String" MaxLength="510" FixedLength="true" Unicode="true" />
+          <Property Name="CanadaIngredient" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="CanadaSugarPercent" Type="Int16" />
         </EntityType>
         <EntityType Name="MammothEventQueue">
           <Key>
@@ -5366,7 +5383,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <NavigationProperty Name="Locale" Relationship="Icon.Framework.Model.Locale_ItemLink_FK1" FromRole="ItemLink" ToRole="Locale" />
           <NavigationProperty Name="Item" Relationship="Icon.Framework.Model.Item_ItemLink_FK1" FromRole="ItemLink" ToRole="Item" />
           <NavigationProperty Name="Item1" Relationship="Icon.Framework.Model.Item_ItemLink_FK2" FromRole="ItemLink" ToRole="Item" />
-          </EntityType>
+        </EntityType>
         <Association Name="Locale_ItemLink_FK1">
           <End Type="Icon.Framework.Model.Locale" Role="Locale" Multiplicity="1" />
           <End Type="Icon.Framework.Model.ItemLink" Role="ItemLink" Multiplicity="*" />
@@ -5507,7 +5524,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-       
+
         <Association Name="FK_app_MessageQueueLocale_MessageStatus">
           <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
           <End Type="Icon.Framework.Model.MessageQueueLocale" Role="MessageQueueLocale" Multiplicity="*" />
@@ -5716,6 +5733,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="CalciumWeight" Type="Decimal" Precision="10" Scale="1" />
           <Property Name="IronWeight" Type="Decimal" Precision="10" Scale="1" />
           <Property Name="VitaminDWeight" Type="Decimal" Precision="10" Scale="1" />
+          <Property Name="ProfitCenter" Type="Int32" />
+          <Property Name="CanadaAllergen" Type="String" MaxLength="510" FixedLength="true" Unicode="true" />
+          <Property Name="CanadaIngredient" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="CanadaSugarPercent" Type="Int16" />
           <NavigationProperty Name="MessageQueueProduct" Relationship="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId" FromRole="MessageQueueNutrition" ToRole="MessageQueueProduct" />
         </EntityType>
         <EntityType Name="MessageQueueLocale">
@@ -6220,7 +6241,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-       
+
         <Association Name="FK_MessageQueueHierarchy_MessageStatusId">
           <End Type="Icon.Framework.Model.MessageStatus" Role="MessageStatus" Multiplicity="1" />
           <End Type="Icon.Framework.Model.MessageQueueHierarchy" Role="MessageQueueHierarchy" Multiplicity="*" />
@@ -6547,7 +6568,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        </Schema>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -7187,6 +7208,12 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="ItemNutrition">
             <EntityTypeMapping TypeName="Icon.Framework.Model.ItemNutrition">
               <MappingFragment StoreEntitySet="ItemNutrition">
+                <ScalarProperty Name="CanadaSugarPercent" ColumnName="CanadaSugarPercent" />
+                <ScalarProperty Name="CanadaIngredient" ColumnName="CanadaIngredient" />
+                <ScalarProperty Name="CanadaAllergen" ColumnName="CanadaAllergen" />
+                <ScalarProperty Name="ProfitCenter" ColumnName="ProfitCenter" />
+                <ScalarProperty Name="SysEndTimeUtc" ColumnName="SysEndTimeUtc" />
+                <ScalarProperty Name="SysStartTimeUtc" ColumnName="SysStartTimeUtc" />
                 <ScalarProperty Name="VitaminDWeight" ColumnName="VitaminDWeight" />
                 <ScalarProperty Name="IronWeight" ColumnName="IronWeight" />
                 <ScalarProperty Name="CalciumWeight" ColumnName="CalciumWeight" />
@@ -7541,6 +7568,10 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="MessageQueueNutrition">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueNutrition">
               <MappingFragment StoreEntitySet="MessageQueueNutrition">
+                <ScalarProperty Name="CanadaSugarPercent" ColumnName="CanadaSugarPercent" />
+                <ScalarProperty Name="CanadaIngredient" ColumnName="CanadaIngredient" />
+                <ScalarProperty Name="CanadaAllergen" ColumnName="CanadaAllergen" />
+                <ScalarProperty Name="ProfitCenter" ColumnName="ProfitCenter" />
                 <ScalarProperty Name="VitaminDWeight" ColumnName="VitaminDWeight" />
                 <ScalarProperty Name="IronWeight" ColumnName="IronWeight" />
                 <ScalarProperty Name="CalciumWeight" ColumnName="CalciumWeight" />
@@ -8087,7 +8118,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          </EntityContainerMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

@@ -25,4 +25,5 @@ EXAMPLE (showing Icon-DB scripts path):
 :r .\Scripts\PopulateData\PopulateHealthCheck.sql
 :r .\Scripts\PopulateData\SCM2-292_UpdateCoffeeSubteamFinancialHierarchy.sql -- 2020-12-11
 :r .\Scripts\PopulateData\SCM2-386_SubTeamRealignment_Add_3100_1410_Update_1750.sql --2021-01-28
+:r .\Scripts\PopulateData\SCM4-1889_Add_Canadian_Nutrition_Traits.sql --2021-07-16
 :r .\Security\Icon.Security.sql

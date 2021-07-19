@@ -71,7 +71,7 @@ CREATE TABLE [nutrition].ItemNutrition
 	TransfatWeight DECIMAL(10, 1) NULL,
 	InsertDate DATETIME2(7) NOT NULL DEFAULT sysdatetime(),
 	ModifiedDate DATETIME2(7) NULL,
-  AddedSugarsWeight DECIMAL(10, 1) NULL,
+    AddedSugarsWeight DECIMAL(10, 1) NULL,
 	AddedSugarsPercent SMALLINT NULL,
 	CalciumWeight DECIMAL(10, 1) NULL,
 	IronWeight DECIMAL(10, 1) NULL,
@@ -81,7 +81,12 @@ CREATE TABLE [nutrition].ItemNutrition
 	SysEndTimeUtc datetime2 GENERATED ALWAYS AS ROW END HIDDEN
 		CONSTRAINT DF_Item_SysEnd DEFAULT CONVERT(DATETIME2(7), '9999-12-31 23:59:59.99999999'),
 	PERIOD FOR SYSTEM_TIME (SysStartTimeUtc, SysEndTimeUtc),
-	CONSTRAINT [PK_nutrition.ItemNutrition] PRIMARY KEY CLUSTERED ([RecipeId])
+	ProfitCenter INT NOT NULL 
+		CONSTRAINT DF_ItemProfitCenter DEFAULT 561, 
+    CanadaAllergen NCHAR(510) NULL, 
+    CanadaIngredient NCHAR(10) NULL, 
+    CanadaSugarPercent SMALLINT NULL, 
+    CONSTRAINT [PK_nutrition.ItemNutrition] PRIMARY KEY CLUSTERED ([RecipeId])
 	)
 WITH (SYSTEM_VERSIONING = ON (HISTORY_TABLE = nutrition.ItemNutritionHistory));
 GO
