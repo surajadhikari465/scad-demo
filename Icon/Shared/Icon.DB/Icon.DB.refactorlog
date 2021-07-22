@@ -77,4 +77,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Message" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="94fb837c-ed51-4390-bf53-5efda0959273" ChangeDateTime="07/21/2021 02:15:39">
+    <Property Name="ElementName" Value="[app].[MessageQueueNutrition].[CanadaAllergens]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[app].[MessageQueueNutrition]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CanadaAllergens" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="bce5cf24-52d0-471c-91f4-b067894e6fb3" ChangeDateTime="07/21/2021 02:15:44">
+    <Property Name="ElementName" Value="[app].[MessageQueueNutrition].[CanadaIngredients]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[app].[MessageQueueNutrition]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CanadaIngredients" />
+  </Operation>
 </Operations>

@@ -79,8 +79,8 @@ CREATE TABLE [app].[MessageQueueNutrition](
 	[IronWeight] DECIMAL(10, 1) NULL,
 	[VitaminDWeight] DECIMAL(10, 1) NULL,
 	[ProfitCenter] INT NULL,
-    [CanadaAllergen] NCHAR(510) NULL, 
-    [CanadaIngredient] NCHAR(10) NULL, 
+    [CanadaAllergens] NVARCHAR(510) NULL, 
+    [CanadaIngredients] NVARCHAR(4000) NULL, 
     [CanadaSugarPercent] SMALLINT NULL,
  CONSTRAINT [PK_MessageQueueNutrition] PRIMARY KEY CLUSTERED 
 (

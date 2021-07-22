@@ -81,10 +81,9 @@ CREATE TABLE [nutrition].ItemNutrition
 	SysEndTimeUtc datetime2 GENERATED ALWAYS AS ROW END HIDDEN
 		CONSTRAINT DF_Item_SysEnd DEFAULT CONVERT(DATETIME2(7), '9999-12-31 23:59:59.99999999'),
 	PERIOD FOR SYSTEM_TIME (SysStartTimeUtc, SysEndTimeUtc),
-	ProfitCenter INT NOT NULL 
-		CONSTRAINT DF_ItemProfitCenter DEFAULT 561, 
-    CanadaAllergen NCHAR(510) NULL, 
-    CanadaIngredient NCHAR(10) NULL, 
+	ProfitCenter INT NULL,
+    CanadaAllergens NVARCHAR(510) NULL, 
+    CanadaIngredients NVARCHAR(4000) NULL, 
     CanadaSugarPercent SMALLINT NULL, 
     CONSTRAINT [PK_nutrition.ItemNutrition] PRIMARY KEY CLUSTERED ([RecipeId])
 	)

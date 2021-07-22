@@ -93,8 +93,8 @@ namespace Icon.Framework
         public System.DateTime SysStartTimeUtc { get; set; }
         public System.DateTime SysEndTimeUtc { get; set; }
         public int ProfitCenter { get; set; }
-        public string CanadaAllergen { get; set; }
-        public string CanadaIngredient { get; set; }
+        public string CanadaAllergens { get; set; }
+        public string CanadaIngredients { get; set; }
         public Nullable<short> CanadaSugarPercent { get; set; }
     }
 }

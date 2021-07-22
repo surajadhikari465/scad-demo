@@ -79,8 +79,8 @@ SELECT
     ,[IronWeight]
     ,[VitaminDWeight]
     ,[ProfitCenter]
-    ,[CanadaAllergen]
-    ,[CanadaIngredient]
+    ,[CanadaAllergens]
+    ,[CanadaIngredients]
     ,[CanadaSugarPercent]
 FROM [nutrition].[ItemNutrition]
 GO 

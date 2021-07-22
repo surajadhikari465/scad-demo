@@ -78,10 +78,9 @@ CREATE TABLE [nutrition].ItemNutritionHistory
 	VitaminDWeight DECIMAL(10, 1) NULL,
 	SysStartTimeUtc datetime2  NOT NULL,
 	SysEndTimeUtc datetime2 NOT NULL,
-	ProfitCenter INT NOT NULL
-		CONSTRAINT DF_ItemHistoryProfitCenter DEFAULT 561,
-    CanadaAllergen NCHAR(510) NULL, 
-    CanadaIngredient NCHAR(10) NULL, 
+	ProfitCenter INT NULL,
+    CanadaAllergens NVARCHAR(510) NULL, 
+    CanadaIngredients NVARCHAR(4000) NULL, 
     CanadaSugarPercent SMALLINT NULL,
 	)
 	ON [FG_History]
