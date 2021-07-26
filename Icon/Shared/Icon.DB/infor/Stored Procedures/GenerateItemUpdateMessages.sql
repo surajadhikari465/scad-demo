@@ -594,6 +594,10 @@ BEGIN
 		,[CalciumWeight]
 		,[IronWeight]
 		,[VitaminDWeight]
+		,[ProfitCenter]
+		,[CanadaAllergens]
+		,[CanadaIngredients]
+		,[CanadaSugarPercent]
 	  from 
 	  	@distinctProductMessageIDs dpm
 	  	JOIN nutrition.ItemNutrition inn on dpm.scancode = inn.Plu

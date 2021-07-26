@@ -118,7 +118,7 @@ BEGIN
 		,[ProfitCenter] = newni.ProfitCenter
 		,[CanadaAllergens] = newni.CanadaAllergens
 		,[CanadaIngredients] = newni.CanadaIngredients
-		,[CanadaSugarPercent] = newni.CanadaSugarPercents
+		,[CanadaSugarPercent] = newni.CanadaSugarPercent
 	OUTPUT INSERTED.RecipeId
 		,newni.[Plu]
 		,0
