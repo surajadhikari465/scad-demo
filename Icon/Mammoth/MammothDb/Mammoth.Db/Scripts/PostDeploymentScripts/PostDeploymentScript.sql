@@ -12,7 +12,6 @@ Post-Deployment Script Template
 
 -- Please add a date-added comment to the end of your line, to help with tracking, maintenance, and archiving.
 
-:r .\SCM1-616_PopulateHealthCheck.sql --2020-12-02
-
+:r .\SCM4-1906-AddTraitCodesForCanadaNutrition.sql --2021-07-23
 -- Run every time (add your script above; keep this at bottom, as last post-deploy script).
 :r ..\..\Security\SecurityGrants.sql

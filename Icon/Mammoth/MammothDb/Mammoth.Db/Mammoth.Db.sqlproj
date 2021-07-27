@@ -874,6 +874,7 @@
     <None Include="Scripts\PostDeploymentScripts\Archive\37503_AddScaleItemToAttributes.sql" />
     <None Include="Scripts\PostDeploymentScripts\Archive\41985_AMZItemVendorLane_JobSchedule.sql" />
     <Build Include="gpm\Stored Procedures\GetRegPricesByItemStores.sql" />
+    <None Include="Scripts\PostDeploymentScripts\SCM4-1906-AddTraitCodesForCanadaNutrition.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">

@@ -96,7 +96,11 @@ BEGIN
 		AND IsNull(AddedSugarsPercent, 0) <= 0
 		AND IsNull(CalciumWeight, 0) <= 0
 		AND IsNull(IronWeight, 0) <= 0
-		AND IsNull(VitaminDWeight, 0) <= 0;
+		AND IsNull(VitaminDWeight, 0) <= 0
+		AND IsNull(ProfitCenter, 0) <= 0 
+		AND IsNull(CanadaAllergens, '') = ''
+		AND IsNull(CanadaIngredients, '') = ''
+		AND IsNull(CanadaSugarPercent, 0) <= 0 ;
 
 	DELETE A
 	FROM ItemAttributes_Nutrition A
@@ -183,6 +187,10 @@ BEGIN
 		,CalciumWeight
 		,IronWeight
 		,VitaminDWeight
+		,ProfitCenter
+		,CanadaAllergens
+		,CanadaIngredients
+		,CanadaSugarPercent
 	INTO #insertNutrition
 	FROM #nutrition n
 	WHERE NOT EXISTS (
@@ -270,6 +278,10 @@ BEGIN
 				,n.CalciumWeight = t.CalciumWeight
 				,n.IronWeight = t.IronWeight
 				,n.VitaminDWeight = t.VitaminDWeight
+				,n.ProfitCenter = t.ProfitCenter
+				,n.CanadaAllergens = t.CanadaAllergens
+				,n.CanadaIngredients = t.CanadaIngredients
+				,n.CanadaSugarPercent = t.CanadaSugarPercent
 			FROM dbo.ItemAttributes_Nutrition n
 			INNER JOIN #nutrition t ON n.ItemID = t.ItemID
 
@@ -349,6 +361,10 @@ BEGIN
 				,IronWeight
 				,VitaminDWeight
 				,AddedDate
+				,ProfitCenter
+				,CanadaAllergens
+				,CanadaIngredients
+				,CanadaSugarPercent
 				)
 			SELECT ItemID
 				,RecipeName
@@ -424,6 +440,10 @@ BEGIN
 				,IronWeight
 				,VitaminDWeight
 				,@today
+				,ProfitCenter
+				,CanadaAllergens
+				,CanadaIngredients
+				,CanadaSugarPercent
 			FROM #insertNutrition
 
 		COMMIT TRANSACTION

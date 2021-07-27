@@ -75,6 +75,10 @@
     [CalciumWeight]            DECIMAL (10, 1) NULL,
     [IronWeight]               DECIMAL (10, 1) NULL,
     [VitaminDWeight]           DECIMAL (10, 1) NULL,
+    [ProfitCenter]             INT             NULL, 
+    [CanadaAllergens]          NVARCHAR(510)   NULL, 
+    [CanadaIngredients]        NVARCHAR(4000)  NULL, 
+    [CanadaSugarPercent]       SMALLINT        NULL, 
     CONSTRAINT [PK_ItemAttributes_Nutrition] PRIMARY KEY CLUSTERED ([ItemAttributeID] ASC) WITH (FILLFACTOR = 100)
 );
 GO
