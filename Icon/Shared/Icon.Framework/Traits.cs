@@ -228,6 +228,14 @@ namespace Icon.Framework
         public const int ImageUrl = 219;
         public const int SodiumWarningRequired = 220;
         public const int ArCustomerId = 221;
+        public const int CreatedBy = 222;
+        public const int RequestNumber = 223;
+        public const int HierarchyContactUpdateDate = 234;
+        public const int ProfitCenter = 235;
+        public const int CanadaAllergens = 236;
+        public const int CanadaIngredients = 237;
+        public const int CanadaSugarPercentage = 238;
+        public const int CanadaCustomerFriendlyDescription = 239;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -446,7 +454,15 @@ namespace Icon.Framework
 				{ "KD", 218 },
 				{ "URL", 219 },
 				{ "SWR", 220 },
-				{ "ARC", 221 }
+				{ "ARC", 221 },
+				{ "CRB", 222 },
+				{ "RQN", 223 },
+				{ "HCU", 234 },
+				{ "PFC", 235 },
+				{ "CDA", 236 },
+				{ "CDI", 237 },
+				{ "CDS", 238 },
+				{ "CDC", 239 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -668,6 +684,14 @@ namespace Icon.Framework
 			public const string ImageUrl = "Image Url";
 			public const string SodiumWarningRequired = "Sodium Warning Required";
 			public const string ArCustomerId = "AR Customer ID";
+			public const string CreatedBy = "Created By";
+			public const string RequestNumber = "Request Number";
+			public const string HierarchyContactUpdateDate = "Hierarchy Contact Update Date";
+			public const string ProfitCenter = "Profit Center";
+			public const string CanadaAllergens = "Canada Allergens";
+			public const string CanadaIngredients = "Canada Ingredients";
+			public const string CanadaSugarPercentage = "Canada Sugar Percentage";
+			public const string CanadaCustomerFriendlyDescription = "Canada Customer Friendly Description";
 			
 			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
@@ -886,7 +910,15 @@ namespace Icon.Framework
 				{ 218, "Kitchen Description" },
 				{ 219, "Image Url" },
 				{ 220, "Sodium Warning Required" },
-				{ 221, "AR Customer ID" }
+				{ 221, "AR Customer ID" },
+				{ 222, "Created By" },
+				{ 223, "Request Number" },
+				{ 234, "Hierarchy Contact Update Date" },
+				{ 235, "Profit Center" },
+				{ 236, "Canada Allergens" },
+				{ 237, "Canada Ingredients" },
+				{ 238, "Canada Sugar Percentage" },
+				{ 239, "Canada Customer Friendly Description" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -1109,6 +1141,14 @@ namespace Icon.Framework
 			public const string ImageUrl = "URL";
 			public const string SodiumWarningRequired = "SWR";
 			public const string ArCustomerId = "ARC";
+			public const string CreatedBy = "CRB";
+			public const string RequestNumber = "RQN";
+			public const string HierarchyContactUpdateDate = "HCU";
+			public const string ProfitCenter = "PFC";
+			public const string CanadaAllergens = "CDA";
+			public const string CanadaIngredients = "CDI";
+			public const string CanadaSugarPercentage = "CDS";
+			public const string CanadaCustomerFriendlyDescription = "CDC";
 			
 			private static Dictionary<int, string> idToCodesDictionary = new Dictionary<int, string>
 			{
@@ -1327,7 +1367,15 @@ namespace Icon.Framework
 				{ 218, "KD" },
 				{ 219, "URL" },
 				{ 220, "SWR" },
-				{ 221, "ARC" }
+				{ 221, "ARC" },
+				{ 222, "CRB" },
+				{ 223, "RQN" },
+				{ 234, "HCU" },
+				{ 235, "PFC" },
+				{ 236, "CDA" },
+				{ 237, "CDI" },
+				{ 238, "CDS" },
+				{ 239, "CDC" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}

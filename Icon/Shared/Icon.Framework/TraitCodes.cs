@@ -227,5 +227,13 @@ namespace Icon.Framework
         public const string ImageUrl = "URL";
         public const string SodiumWarningRequired = "SWR";
         public const string ArCustomerId = "ARC";
-    }
+        public const string CreatedBy = "CRB";
+        public const string RequestNumber = "RQN";
+        public const string HierarchyContactUpdateDate = "HCU";
+        public const string ProfitCenter = "PFC";
+        public const string CanadaAllergens = "CDA";
+        public const string CanadaIngredients = "CDI";
+        public const string CanadaSugarPercentage = "CDS";
+        public const string CanadaCustomerFriendlyDescription = "CDC";
+	}
 }

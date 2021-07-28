@@ -191,7 +191,7 @@ namespace Icon.Framework
         public const string Ident = @"0|1";
         public const string LiquorLicensing = @"(Beer|Wine|Spirit)$";
         public const string PrimenowMerchantId = @"^[0-9]{11}$";
-        public const string PrimenowMerchantIdEncrypted = @"^[a-zA-Z0-9]{50}$";
+        public const string PrimenowMerchantIdEncrypted = @"^[a-zA-Z0-9]{1,50}$";
         public const string LocalZone = @"^.{1,35}$";
         public const string Designation = @"(Global|Regional)$";
         public const string ParentCompany = @"^[0-9]{1,10}$";
@@ -230,5 +230,10 @@ namespace Icon.Framework
         public const string CreatedBy = @"";
         public const string RequestNumber = @"";
         public const string HierarchyContactUpdateDate = @"";
+        public const string ProfitCenter = @"";
+        public const string CanadaAllergens = @"";
+        public const string CanadaIngredients = @"";
+        public const string CanadaSugarPercentage = @"";
+        public const string CanadaCustomerFriendlyDescription = @"";
 	}
 }

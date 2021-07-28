@@ -92,7 +92,7 @@ namespace Icon.Framework
         public Nullable<decimal> VitaminDWeight { get; set; }
         public System.DateTime SysStartTimeUtc { get; set; }
         public System.DateTime SysEndTimeUtc { get; set; }
-        public int ProfitCenter { get; set; }
+        public Nullable<int> ProfitCenter { get; set; }
         public string CanadaAllergens { get; set; }
         public string CanadaIngredients { get; set; }
         public Nullable<short> CanadaSugarPercent { get; set; }

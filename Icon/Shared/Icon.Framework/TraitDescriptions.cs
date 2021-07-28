@@ -227,5 +227,13 @@ namespace Icon.Framework
         public const string ImageUrl = "Image Url";
         public const string SodiumWarningRequired = "Sodium Warning Required";
         public const string ArCustomerId = "AR Customer ID";
-    }
+        public const string CreatedBy = "Created By";
+        public const string RequestNumber = "Request Number";
+        public const string HierarchyContactUpdateDate = "Hierarchy Contact Update Date";
+        public const string ProfitCenter = "Profit Center";
+        public const string CanadaAllergens = "Canada Allergens";
+        public const string CanadaIngredients = "Canada Ingredients";
+        public const string CanadaSugarPercentage = "Canada Sugar Percentage";
+        public const string CanadaCustomerFriendlyDescription = "Canada Customer Friendly Description";
+	}
 }
