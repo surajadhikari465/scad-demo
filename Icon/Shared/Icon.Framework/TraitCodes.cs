@@ -234,6 +234,5 @@ namespace Icon.Framework
         public const string CanadaAllergens = "CDA";
         public const string CanadaIngredients = "CDI";
         public const string CanadaSugarPercentage = "CDS";
-        public const string CanadaCustomerFriendlyDescription = "CDC";
 	}
 }

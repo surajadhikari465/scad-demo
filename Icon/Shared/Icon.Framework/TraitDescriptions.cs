@@ -196,7 +196,7 @@ namespace Icon.Framework
         public const string Designation = "Designation";
         public const string ParentCompany = "Parent Company";
         public const string DataSource = "Data Source";
-        public const string NonGmoTransparency = "Non-GMO Transparency";
+        public const string NonGmoTransparency = "NON-GMO Transparency";
         public const string ItemDepth = "Item Depth";
         public const string ItemHeight = "Item Height";
         public const string ItemWidth = "Item Width";
@@ -234,6 +234,5 @@ namespace Icon.Framework
         public const string CanadaAllergens = "Canada Allergens";
         public const string CanadaIngredients = "Canada Ingredients";
         public const string CanadaSugarPercentage = "Canada Sugar Percentage";
-        public const string CanadaCustomerFriendlyDescription = "Canada Customer Friendly Description";
 	}
 }
