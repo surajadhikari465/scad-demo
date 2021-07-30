@@ -167,6 +167,7 @@ namespace Mammoth.Common.DataAccess
 		public const int SelfCheckoutItemTareGroup = 154;
 		public const int SeafoodCatchType = 155;
 		public const int SeasonalInAndOutGifting = 156;
+		public const int ShelfLife = 157;
 		public const int SkinType = 158;
 		public const int Sku = 159;
 		public const int Smoked = 160;
@@ -253,13 +254,26 @@ namespace Mammoth.Common.DataAccess
 		public const int CuoMadeWithoutDairyIngred = 241;
 		public const int RawLabel = 242;
 		public const int CuoRetailLocation = 243;
+		public const int 4CuoKetoFriendly = 244;
 		public const int CuoPaleoFriendly = 245;
+		public const int 8CuoPlantBased = 246;
 		public const int MayContainPitsOrPitFragments = 247;
 		public const int SeafoodColorAdded = 248;
 		public const int CuoMadeWithoutGlutenIngred = 249;
 		public const int CaliforniaProp65 = 250;
 		public const int MerchandisableTray = 251;
 		public const int ScaleItem = 252;
+		public const int RichDataStatus = 253;
+		public const int DetailedItemType = 254;
+		public const int ComplianceStatus = 255;
+		public const int SourcedForGood = 256;
+		public const int NormalizedTrayDepthDimension = 257;
+		public const int NormalizedTrayHeightDimension = 258;
+		public const int NormalizedTrayWidthDimension = 259;
+		public const int ProfitCenter = 260;
+		public const int CanadaAllergens = 261;
+		public const int CanadaIngredients = 262;
+		public const int CanadaSugarPercentage = 263;
 		
 		public class Descriptions
 		{
@@ -418,6 +432,7 @@ namespace Mammoth.Common.DataAccess
 			public const string SelfCheckoutItemTareGroup = "Self Checkout Item Tare Group";
 			public const string SeafoodCatchType = "Seafood Catch Type";
 			public const string SeasonalInAndOutGifting = "Seasonal In and Out/Gifting";
+			public const string ShelfLife = "Shelf Life";
 			public const string SkinType = "Skin Type";
 			public const string Sku = "SKU";
 			public const string Smoked = "Smoked";
@@ -504,13 +519,26 @@ namespace Mammoth.Common.DataAccess
 			public const string CuoMadeWithoutDairyIngred = "CUO Made Without Dairy Ingred";
 			public const string RawLabel = "Raw Label";
 			public const string CuoRetailLocation = "CUO Retail Location";
+			public const string 4CuoKetoFriendly = "4.	CUO Keto Friendly";
 			public const string CuoPaleoFriendly = "CUO Paleo Friendly";
+			public const string 8CuoPlantBased = "8.	CUO Plant Based";
 			public const string MayContainPitsOrPitFragments = "May Contain Pits Or Pit Fragments";
 			public const string SeafoodColorAdded = "Seafood Color Added";
 			public const string CuoMadeWithoutGlutenIngred = "CUO Made Without Gluten Ingred";
 			public const string CaliforniaProp65 = "California Prop 65";
 			public const string MerchandisableTray = "Merchandisable Tray";
 			public const string ScaleItem = "Scale Item";
+			public const string RichDataStatus = "Rich Data Status";
+			public const string DetailedItemType = "Detailed Item Type";
+			public const string ComplianceStatus = "Compliance Status";
+			public const string SourcedForGood = "Sourced for Good";
+			public const string NormalizedTrayDepthDimension = "Normalized Tray Depth Dimension";
+			public const string NormalizedTrayHeightDimension = "Normalized Tray Height Dimension";
+			public const string NormalizedTrayWidthDimension = "Normalized Tray Width Dimension";
+			public const string ProfitCenter = "Profit Center";
+			public const string CanadaAllergens = "Canada Allergens";
+			public const string CanadaIngredients = "Canada Ingredients";
+			public const string CanadaSugarPercentage = "Canada Sugar Percentage";
 		
 			private static Dictionary<string, string> codeToDescriptionsDictionary = new Dictionary<string, string>
 			{
@@ -669,6 +697,7 @@ namespace Mammoth.Common.DataAccess
 				{ "ITG", "Self Checkout Item Tare Group" },
 				{ "SFT", "Seafood Catch Type" },
 				{ "SIO", "Seasonal In and Out/Gifting" },
+				{ "SLF", "Shelf Life" },
 				{ "SKT", "Skin Type" },
 				{ "SKU", "SKU" },
 				{ "SMK", "Smoked" },
@@ -755,13 +784,26 @@ namespace Mammoth.Common.DataAccess
 				{ "MWD", "CUO Made Without Dairy Ingred" },
 				{ "RAW", "Raw Label" },
 				{ "CRL", "CUO Retail Location" },
+				{ "KF", "4.	CUO Keto Friendly" },
 				{ "PF", "CUO Paleo Friendly" },
+				{ "PB", "8.	CUO Plant Based" },
 				{ "MCP", "May Contain Pits Or Pit Fragments" },
 				{ "SCA", "Seafood Color Added" },
 				{ "MWG", "CUO Made Without Gluten Ingred" },
 				{ "CP", "California Prop 65" },
 				{ "MT", "Merchandisable Tray" },
-				{ "SCL", "Scale Item" }
+				{ "SCL", "Scale Item" },
+				{ "RDS", "Rich Data Status" },
+				{ "DIT", "Detailed Item Type" },
+				{ "CST", "Compliance Status" },
+				{ "SFG", "Sourced for Good" },
+				{ "NTD", "Normalized Tray Depth Dimension" },
+				{ "NTH", "Normalized Tray Height Dimension" },
+				{ "NTW", "Normalized Tray Width Dimension" },
+				{ "PFC", "Profit Center" },
+				{ "CDA", "Canada Allergens" },
+				{ "CDI", "Canada Ingredients" },
+				{ "CDS", "Canada Sugar Percentage" }
 			};
 			public static Dictionary<string, string> ByCode { get { return codeToDescriptionsDictionary; } }
 		}
@@ -923,6 +965,7 @@ namespace Mammoth.Common.DataAccess
 			public const string SelfCheckoutItemTareGroup = "ITG";
 			public const string SeafoodCatchType = "SFT";
 			public const string SeasonalInAndOutGifting = "SIO";
+			public const string ShelfLife = "SLF";
 			public const string SkinType = "SKT";
 			public const string Sku = "SKU";
 			public const string Smoked = "SMK";
@@ -1009,13 +1052,26 @@ namespace Mammoth.Common.DataAccess
 			public const string CuoMadeWithoutDairyIngred = "MWD";
 			public const string RawLabel = "RAW";
 			public const string CuoRetailLocation = "CRL";
+			public const string 4CuoKetoFriendly = "KF";
 			public const string CuoPaleoFriendly = "PF";
+			public const string 8CuoPlantBased = "PB";
 			public const string MayContainPitsOrPitFragments = "MCP";
 			public const string SeafoodColorAdded = "SCA";
 			public const string CuoMadeWithoutGlutenIngred = "MWG";
 			public const string CaliforniaProp65 = "CP";
 			public const string MerchandisableTray = "MT";
 			public const string ScaleItem = "SCL";
+			public const string RichDataStatus = "RDS";
+			public const string DetailedItemType = "DIT";
+			public const string ComplianceStatus = "CST";
+			public const string SourcedForGood = "SFG";
+			public const string NormalizedTrayDepthDimension = "NTD";
+			public const string NormalizedTrayHeightDimension = "NTH";
+			public const string NormalizedTrayWidthDimension = "NTW";
+			public const string ProfitCenter = "PFC";
+			public const string CanadaAllergens = "CDA";
+			public const string CanadaIngredients = "CDI";
+			public const string CanadaSugarPercentage = "CDS";
 		}
 	}
 }
