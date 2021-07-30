@@ -205,8 +205,12 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
 					AddedSugarsPercent = consumerProductLabel.addedSugarDailyPercentSpecified ? (int)consumerProductLabel.addedSugarDailyPercent : (int?)null,
 					CalciumWeight = consumerProductLabel.calciumMilligramsCountSpecified ? consumerProductLabel.calciumMilligramsCount : (decimal?)null,
 					IronWeight = consumerProductLabel.ironMilligramsCountSpecified ? consumerProductLabel.ironMilligramsCount : (decimal?)null,
-					VitaminDWeight = consumerProductLabel.vitaminDMicrogramsCountSpecified ? consumerProductLabel.vitaminDMicrogramsCount : (decimal?)null
-				};
+					VitaminDWeight = consumerProductLabel.vitaminDMicrogramsCountSpecified ? consumerProductLabel.vitaminDMicrogramsCount : (decimal?)null,
+                    ProfitCenter = GetIntTraitValue(TraitCodes.ProfitCenter, traits),
+                    CanadaAllergens = GetTraitValue(TraitCodes.CanadaAllergens, traits),
+                    CanadaIngredients = GetTraitValue(TraitCodes.CanadaIngredients, traits),
+                    CanadaSugarPercent = GetIntTraitValue(TraitCodes.CanadaSugarPercentage, traits)
+                };
             }
         }
 

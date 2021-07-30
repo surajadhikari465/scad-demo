@@ -706,6 +706,9 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                     CaloriesFat = 5,
                     CaloriesFromTransFat = 6,
                     CaloriesSaturatedFat = 7,
+                    CanadaAllergens = "Canada Test Allergens",
+                    CanadaIngredients = "Canada Test Ingredients",
+                    CanadaSugarPercent = 6,
                     Chloride = 8,
                     CholesterolPercent = 9,
                     CholesterolWeight = 10.7m,
@@ -732,6 +735,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                     PolyunsaturatedFat = 30,
                     PotassiumPercent = 31,
                     PotassiumWeight = 32,
+                    ProfitCenter = 1111,
                     ProteinPercent = 33,
                     ProteinWeight = 34,
                     RecipeName = "Recipe Name",
@@ -934,6 +938,10 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             const int CalciumWeight = 65;
             const int IronWeight = 66;
             const int VitaminDWeight = 67;
+            const int profitCenter = 1111;
+            const string CanadaAllergens = "Canada Allergens Test";
+            const string canadaIngredients = "Canada Ingredients Test";
+            const int canadaSugarPercent = 18;
             #endregion
 
             #region extended attributes
@@ -1004,7 +1012,8 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
 		            Biotin, PantothenicAcid, Phosphorous, Iodine, Magnesium, Zinc,
 		            Copper, TransFat, CaloriesFromTransFat, Om6Fatty, Om3Fatty, Starch,
 		            Chloride, Chromium, VitaminK, Manganese, Molybdenum, Selenium,
-		            TransFatWeight,AddedSugarsWeight,AddedSugarsPercent,CalciumWeight,IronWeight,VitaminDWeight)
+		            TransFatWeight,AddedSugarsWeight,AddedSugarsPercent,CalciumWeight,IronWeight,VitaminDWeight,
+                    ProfitCenter, CanadaAllergens, CanadaIngredients, CanadaSugarPercent)
                 VALUES(
                     @itemID,
                     '{recipeName}', '{allergens}', '{ingredients}', {servingsPerPortion}, '{servingSizeDesc}', '{servingPerContainer}',
@@ -1018,7 +1027,8 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
 		            {biotin}, {pantothenicAcid}, {phosphorous}, {iodine}, {magnesium}, {zinc},
 		            {copper}, {transFat}, {caloriesFromTransFat}, {om6Fatty}, {om3Fatty}, {starch},
 		            {chloride}, {chromium}, {vitaminK}, {manganese}, {molybdenum}, {selenium},
-		            {transFatWeight},{AddedSugarsWeight},{AddedSugarsPercent},{CalciumWeight},{IronWeight},{VitaminDWeight})
+		            {transFatWeight},{AddedSugarsWeight},{AddedSugarsPercent},{CalciumWeight},{IronWeight},{VitaminDWeight}, 
+                    {profitCenter}, '{CanadaAllergens}', '{canadaIngredients}', {canadaSugarPercent} )
 
                 INSERT INTO dbo.ItemAttributes_Ext(ItemID, AttributeID, AttributeValue, AddedDate)
                 VALUES  (@itemID, {Attributes.FairTradeCertified}, '{fairTradeCertified}', GETDATE()),

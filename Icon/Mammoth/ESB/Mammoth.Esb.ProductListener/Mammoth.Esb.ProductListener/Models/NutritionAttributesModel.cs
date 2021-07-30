@@ -75,5 +75,9 @@
         public decimal? CalciumWeight { get; set; }
         public decimal? IronWeight { get; set; }
         public decimal? VitaminDWeight { get; set; }
+        public int? ProfitCenter { get; set; }
+        public string CanadaAllergens { get; set; }
+        public string CanadaIngredients { get; set; }
+        public int? CanadaSugarPercent { get; set; }
     }
 }
