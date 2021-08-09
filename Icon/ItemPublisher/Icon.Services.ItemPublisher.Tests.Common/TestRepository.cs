@@ -292,7 +292,11 @@ namespace Icon.Services.ItemPublisher.Tests.Common
            ,[Selenium]
            ,[TransfatWeight]
            ,[InsertDate]
-           ,[ModifiedDate])
+           ,[ModifiedDate]
+           ,[ProfitCenter]
+           ,[CanadaAllergens]
+           ,[CanadaIngredients]
+           ,[CanadaSugarPercent])
            VALUES
            (@Plu,
            @RecipeName,
@@ -363,7 +367,11 @@ namespace Icon.Services.ItemPublisher.Tests.Common
            @Selenium,
            @TransfatWeight,
            @InsertDate,
-           @ModifiedDate);
+           @ModifiedDate,
+           @ProfitCenter,
+           @CanadaAllergens,
+           @CanadaIngredients,
+           @CanadaSugarPercent);
            SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
             int id = (await this.connectionHelper.ProviderFactory.Provider.Connection.QueryAsync<int>(query,
@@ -438,7 +446,11 @@ namespace Icon.Services.ItemPublisher.Tests.Common
                 Selenium = 1.0,
                 TransfatWeight = 1.0,
                 InsertDate = DateTime.Parse("2019-01-01"),
-                ModifiedDate = DateTime.Parse("2019-01-01")
+                ModifiedDate = DateTime.Parse("2019-01-01"),
+                ProfitCenter = 9999,
+                CanadaAllergens = "Canada Allergens",
+                CanadaIngredients = "Canada Ingredients",
+                CanadaSugarPercent = 16
             },
             connectionHelper.ProviderFactory.Transaction)).First();
 
@@ -620,6 +632,10 @@ namespace Icon.Services.ItemPublisher.Tests.Common
            ,[TransfatWeight]
            ,[InsertDate]
            ,[ModifiedDate]
+           ,[ProfitCenter]
+           ,[CanadaAllergens]
+           ,[CanadaIngredients]
+           ,[CanadaSugarPercent]
             FROM [nutrition].[ItemNutrition]";
         }
 

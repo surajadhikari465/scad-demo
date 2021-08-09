@@ -1721,7 +1721,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             List<TraitType> result = await builder.BuildTraits(new Dictionary<string, string>() { { "test", "B" } }, nutrition, processLogger);
 
             // Then.
-            Assert.AreEqual(50, result.Count);
+            Assert.AreEqual(54, result.Count);
             Assert.AreEqual(ActionEnum.Add, result.First().Action);
             Assert.IsFalse(result.First().ActionSpecified);
             Assert.AreEqual("TraitCode", result.First().code);
@@ -1833,7 +1833,11 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
                 VitaminD = 63,
                 VitaminE = 64,
                 VitaminK = 65,
-                Zinc = 66
+                Zinc = 66,
+                ProfitCenter = 9999,
+                CanadaAllergens = "Canada Allergens",
+                CanadaIngredients = "Canada Ingredients",
+                CanadaSugarPercent = 16
             };
 
             // When.
@@ -2023,6 +2027,22 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Assert.IsTrue(result.Any(x => x.code == Icon.Framework.TraitCodes.SizeWeight
             && x.type.description == Icon.Framework.TraitDescriptions.SizeWeight
             && x.type.value.First().value == "44"));
+
+            Assert.IsTrue(result.Any(x => x.code == Icon.Framework.TraitCodes.ProfitCenter
+            && x.type.description == Icon.Framework.TraitDescriptions.ProfitCenter
+            && x.type.value.First().value == "9999"));
+
+            Assert.IsTrue(result.Any(x => x.code == Icon.Framework.TraitCodes.CanadaAllergens
+            && x.type.description == Icon.Framework.TraitDescriptions.CanadaAllergens
+            && x.type.value.First().value == "Canada Allergens"));
+
+            Assert.IsTrue(result.Any(x => x.code == Icon.Framework.TraitCodes.CanadaIngredients
+            && x.type.description == Icon.Framework.TraitDescriptions.CanadaIngredients
+            && x.type.value.First().value == "Canada Ingredients"));
+
+            Assert.IsTrue(result.Any(x => x.code == Icon.Framework.TraitCodes.CanadaSugarPercentage
+            && x.type.description == Icon.Framework.TraitDescriptions.CanadaSugarPercentage
+            && x.type.value.First().value == "16"));
         }
 
         [TestMethod()]

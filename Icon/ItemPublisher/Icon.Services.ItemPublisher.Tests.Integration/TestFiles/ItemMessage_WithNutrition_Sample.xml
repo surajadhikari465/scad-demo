@@ -1023,6 +1023,42 @@
               </trt:value>
             </tra:type>
           </crf:trait>
+          <crf:trait>
+            <tra:code>PFC</tra:code>
+            <tra:type>
+              <trt:description>Profit Center</trt:description>
+              <trt:value>
+                <trv:value>9999</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>CDA</tra:code>
+            <tra:type>
+              <trt:description>Canada Allergens</trt:description>
+              <trt:value>
+                <trv:value>French Allergens: milk </trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>CDI</tra:code>
+            <tra:type>
+              <trt:description>Canada Ingredients</trt:description>
+              <trt:value>
+                <trv:value>French Ingredients: Ground Pork, Seasoning (paprika, spices, sea salt, organic canola oil, garlic). </trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
+          <crf:trait>
+            <tra:code>CDS</tra:code>
+            <tra:type>
+              <trt:description>Canada Sugar Percentage</trt:description>
+              <trt:value>
+                <trv:value>18</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
         </iea:traits>
         <iea:selectionGroups>
           <psg:group crf:Action="Delete">

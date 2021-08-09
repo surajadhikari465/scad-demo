@@ -417,6 +417,10 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb
             response.Add(this.traitMessageBuilder.BuildTrait(Icon.Framework.TraitCodes.ServingUnits, Icon.Framework.TraitDescriptions.ServingUnits, nutrition.ServingUnits));
             response.Add(this.traitMessageBuilder.BuildTrait(Icon.Framework.TraitCodes.SizeWeight, Icon.Framework.TraitDescriptions.SizeWeight, nutrition.SizeWeight));
             response.Add(this.traitMessageBuilder.BuildTrait(Icon.Framework.TraitCodes.SizeWeight, Icon.Framework.TraitDescriptions.SizeWeight, nutrition.SizeWeight));
+            response.Add(this.traitMessageBuilder.BuildTrait(Icon.Framework.TraitCodes.ProfitCenter, Icon.Framework.TraitDescriptions.ProfitCenter, nutrition.ProfitCenter));
+            response.Add(this.traitMessageBuilder.BuildTrait(Icon.Framework.TraitCodes.CanadaAllergens, Icon.Framework.TraitDescriptions.CanadaAllergens, nutrition.CanadaAllergens));
+            response.Add(this.traitMessageBuilder.BuildTrait(Icon.Framework.TraitCodes.CanadaIngredients, Icon.Framework.TraitDescriptions.CanadaIngredients, nutrition.CanadaIngredients));
+            response.Add(this.traitMessageBuilder.BuildTrait(Icon.Framework.TraitCodes.CanadaSugarPercentage, Icon.Framework.TraitDescriptions.CanadaSugarPercentage, nutrition.CanadaSugarPercent));
 
             return response;
         }

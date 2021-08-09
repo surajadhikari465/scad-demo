@@ -81,5 +81,9 @@ namespace Icon.Services.ItemPublisher.Repositories.Entities
         public decimal? IronWeight { get; set; }
         public decimal? VitaminDWeight { get; set; }
         public bool IsDeleted { get; set; }
+        public int? ProfitCenter { get; set; }
+        public string CanadaAllergens { get; set; }
+        public string CanadaIngredients { get; set; }
+        public short? CanadaSugarPercent { get; set; }
     }
 }

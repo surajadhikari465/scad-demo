@@ -64,7 +64,7 @@ namespace Icon.Services.ItemPublisher.Tests.Integration.Infrastructure.Repositor
             Assert.AreEqual("ErrorMessage", entity.ErrorMessage);
             Assert.AreEqual("Message", entity.Message);
             Assert.IsTrue(entity.ErrorOccurred);
-            Assert.AreEqual(@"""[]""", entity.MessageQueueItemJson);
+            Assert.AreEqual(@"[]", entity.MessageQueueItemJson);
             Assert.IsTrue(!string.IsNullOrWhiteSpace(entity.MessageHeader));
             Assert.AreEqual("WarningMessage", entity.WarningMessage);
             Assert.AreEqual("machine", entity.Machine);

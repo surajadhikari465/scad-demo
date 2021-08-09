@@ -153,7 +153,11 @@ namespace Icon.Services.Newitem.Test.Common
             AddedSugarsWeight = 8,
             CalciumWeight = 9,
             IronWeight = 10,
-            VitaminDWeight = 11
+            VitaminDWeight = 11,
+            ProfitCenter = 9999,
+            CanadaAllergens = "French CONTAINS:MILK.",
+            CanadaIngredients = "French Ingredients: Chai Tea Milk.",
+            CanadaSugarPercent = 16
         };
 
         public MessageQueueItemModel MessageQueueItemModel
