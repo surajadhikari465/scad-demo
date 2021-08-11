@@ -78,5 +78,9 @@ namespace NutritionWebApi.Common.Models
         public decimal? CalciumWeight { get; set; }
         public decimal? IronWeight { get; set; }
         public decimal? VitaminDWeight { get; set; }
+        public string FrenchAllergens { get; set; }
+        public string FrenchIngredients { get; set; }
+        public short? SugerPercent { get; set; }
+        public int? ProfCenterID { get; set; }
     }
 }

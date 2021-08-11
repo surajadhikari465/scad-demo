@@ -99,7 +99,11 @@ namespace NutritionWebApi.DataAccess.Commands
                 AddedSugarsPercent = item.AddedSugarsPercent,
                 CalciumWeight = item.CalciumWeight,
                 IronWeight = item.IronWeight,
-                VitaminDWeight = item.VitaminDWeight
+                VitaminDWeight = item.VitaminDWeight,
+                ProfitCenter = item.ProfCenterID,
+                CanadaAllergens = item.FrenchAllergens,
+                CanadaIngredients = item.FrenchIngredients,
+                CanadaSugarPercent = item.SugerPercent
             });
 
             string result = this.DbConnectionProvider.Connection.Query<string>(

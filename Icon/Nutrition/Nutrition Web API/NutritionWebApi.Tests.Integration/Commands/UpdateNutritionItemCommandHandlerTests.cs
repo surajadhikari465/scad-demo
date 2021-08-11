@@ -81,7 +81,9 @@ namespace NutritionWebApi.Tests.Integration.Commands
 			return itemList;
 		}
 
-		[TestMethod]
+		[Ignore]
+		//The process on generating/queueing product message with nutrition info has changed after Icon Reboot.
+		//This test is not applicable. Keep the code for now since it may be transformed to check if proper nutrition event has been queued.
 		public void UpdateNutritionItemCommandHandler_SuccessfulExecution_ProductMessageIsGenerated()
 		{
 			// Given.
