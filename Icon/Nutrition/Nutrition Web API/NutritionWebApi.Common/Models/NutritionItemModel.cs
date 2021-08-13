@@ -80,7 +80,7 @@ namespace NutritionWebApi.Common.Models
         public decimal? VitaminDWeight { get; set; }
         public string FrenchAllergens { get; set; }
         public string FrenchIngredients { get; set; }
-        public short? SugerPercent { get; set; }
+        public short? SugarPercent { get; set; }
         public int? ProfCenterID { get; set; }
     }
 }

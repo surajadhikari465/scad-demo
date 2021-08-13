@@ -80,7 +80,7 @@ namespace NutritionWebApi.Tests.Common.Builders
         private decimal? VitaminDWeight;
         private string FrenchAllergens;
         private string FrenchIngredients;
-        private short? SugerPercent;
+        private short? SugarPercent;
         private int? ProfCenterID;
 
         public NutritionItemModelBuilder()
@@ -165,7 +165,7 @@ namespace NutritionWebApi.Tests.Common.Builders
         public NutritionItemModelBuilder WithCanadaAllergens(string value) { this.FrenchAllergens = value; return this; }
         public NutritionItemModelBuilder WithCanadaIngredients(string value) { this.FrenchIngredients = value; return this; }
         public NutritionItemModelBuilder WithProfitCenter(int? value) { this.ProfCenterID = value; return this; }
-        public NutritionItemModelBuilder WithCanadaSugarPercent(short? value) { this.SugerPercent = value; return this; }
+        public NutritionItemModelBuilder WithCanadaSugarPercent(short? value) { this.SugarPercent = value; return this; }
 
         private NutritionItemModel Build()
         {
@@ -248,7 +248,7 @@ namespace NutritionWebApi.Tests.Common.Builders
                 ProfCenterID = this.ProfCenterID,
                 FrenchAllergens = this.FrenchAllergens,
                 FrenchIngredients = this.FrenchIngredients,
-                SugerPercent = this.SugerPercent
+                SugarPercent = this.SugarPercent
             };
 
             return nutritionItemModel;

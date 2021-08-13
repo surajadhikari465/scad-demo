@@ -103,7 +103,7 @@ namespace NutritionWebApi.DataAccess.Commands
                 ProfitCenter = item.ProfCenterID,
                 CanadaAllergens = item.FrenchAllergens,
                 CanadaIngredients = item.FrenchIngredients,
-                CanadaSugarPercent = item.SugerPercent
+                CanadaSugarPercent = item.SugarPercent
             });
 
             string result = this.DbConnectionProvider.Connection.Query<string>(
