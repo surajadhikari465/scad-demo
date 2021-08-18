@@ -85,6 +85,7 @@ CREATE TABLE [nutrition].ItemNutrition
     CanadaAllergens NVARCHAR(510) NULL, 
     CanadaIngredients NVARCHAR(4000) NULL, 
     CanadaSugarPercent SMALLINT NULL, 
+    [CanadaServingSizeDesc] NVARCHAR(50) NULL, 
     CONSTRAINT [PK_nutrition.ItemNutrition] PRIMARY KEY CLUSTERED ([RecipeId])
 	)
 WITH (SYSTEM_VERSIONING = ON (HISTORY_TABLE = nutrition.ItemNutritionHistory));

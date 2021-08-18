@@ -109,6 +109,11 @@ WITH NutritionDataWithHistory AS
     ,[CalciumWeight]
     ,[IronWeight]
     ,[VitaminDWeight]
+	,[ProfitCenter]
+	,[CanadaAllergens]
+	,[CanadaIngredients]
+	,[CanadaSugarPercent]
+    ,[CanadaServingSizeDesc]
 	,CASE WHEN SysEndTimeUtc > SYSUTCDATETIME()  THEN 0 ELSE 1 END AS IsDeleted
 FROM nutrition.ItemNutrition FOR SYSTEM_TIME all as inu
 JOIN dbo.ScanCode sc on sc.scanCode = inu.Plu
@@ -192,6 +197,11 @@ SELECT
     ,[CalciumWeight]
     ,[IronWeight]
     ,[VitaminDWeight]
+	,[ProfitCenter]
+	,[CanadaAllergens]
+	,[CanadaIngredients]
+	,[CanadaSugarPercent]
+    ,[CanadaServingSizeDesc]
 	,[IsDeleted]
 FROM NutritionDataWithHistory
 WHERE rowNumber = 1

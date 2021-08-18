@@ -598,6 +598,7 @@ BEGIN
 		,[CanadaAllergens]
 		,[CanadaIngredients]
 		,[CanadaSugarPercent]
+		,[CanadaServingSizeDesc]
 	  from 
 	  	@distinctProductMessageIDs dpm
 	  	JOIN nutrition.ItemNutrition inn on dpm.scancode = inn.Plu

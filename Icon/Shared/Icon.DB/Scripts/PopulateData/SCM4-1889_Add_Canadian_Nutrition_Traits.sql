@@ -11,7 +11,8 @@ BEGIN
 	DECLARE @ProfitCenter nvarchar(3) = 'PFC',
 	        @CanadaAllergen nvarchar(3) = 'CDA',
 			@CanadaIngredient nvarchar(3) = 'CDI',
-			@CanadaSugarPercentage nvarchar(3) = 'CDS'
+			@CanadaSugarPercentage nvarchar(3) = 'CDS',
+			@CanadaServingSize nvarchar(3) = 'CDR'
 
 	IF NOT EXISTS (
 			SELECT 1
@@ -82,6 +83,24 @@ BEGIN
 			   (@CanadaSugarPercentage
 			   ,''
 			   ,'Canada Sugar Percentage'
+			   ,1)
+	END
+
+	IF NOT EXISTS (
+			SELECT 1
+			FROM dbo.Trait
+			WHERE traitCode = @CanadaServingSize
+			)
+	BEGIN
+			INSERT INTO [dbo].[Trait]
+			   ([traitCode]
+			   ,[traitPattern]
+			   ,[traitDesc]
+			   ,[traitGroupID])
+		 VALUES
+			   (@CanadaServingSize
+			   ,''
+			   ,'Canada Serving Size'
 			   ,1)
 	END
 

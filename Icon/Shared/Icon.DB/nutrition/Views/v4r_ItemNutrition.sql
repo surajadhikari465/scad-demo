@@ -82,6 +82,7 @@ SELECT
     ,[CanadaAllergens]
     ,[CanadaIngredients]
     ,[CanadaSugarPercent]
+    ,[CanadaServingSizeDesc]
 FROM [nutrition].[ItemNutrition]
 GO 
 

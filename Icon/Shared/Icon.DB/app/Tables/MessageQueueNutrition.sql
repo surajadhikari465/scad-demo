@@ -82,7 +82,8 @@ CREATE TABLE [app].[MessageQueueNutrition](
     [CanadaAllergens] NVARCHAR(510) NULL, 
     [CanadaIngredients] NVARCHAR(4000) NULL, 
     [CanadaSugarPercent] SMALLINT NULL,
- CONSTRAINT [PK_MessageQueueNutrition] PRIMARY KEY CLUSTERED 
+    [CanadaServingSizeDesc] NVARCHAR(50) NULL, 
+    CONSTRAINT [PK_MessageQueueNutrition] PRIMARY KEY CLUSTERED 
 (
 	[MessageQueueNutritionId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]

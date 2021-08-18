@@ -75,5 +75,6 @@
 	[ProfitCenter] [int] NULL,
     [CanadaAllergens] [nvarchar](510) NULL, 
     [CanadaIngredients] [nvarchar](4000) NULL, 
-    [CanadaSugarPercent] [smallint] NULL
+    [CanadaSugarPercent] [smallint] NULL,
+	[CanadaServingSizeDesc] [nvarchar](50) NULL
 )

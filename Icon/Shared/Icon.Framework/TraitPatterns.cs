@@ -234,5 +234,6 @@ namespace Icon.Framework
         public const string CanadaAllergens = @"";
         public const string CanadaIngredients = @"";
         public const string CanadaSugarPercentage = @"";
+        public const string CanadaServingSize = @"";
 	}
 }

@@ -235,6 +235,7 @@ namespace Icon.Framework
         public const int CanadaAllergens = 236;
         public const int CanadaIngredients = 237;
         public const int CanadaSugarPercentage = 238;
+        public const int CanadaServingSize = 239;
 
 		private static Dictionary<string, int> codesToIdDictionary = new Dictionary<string, int>
 			{
@@ -460,7 +461,8 @@ namespace Icon.Framework
 				{ "PFC", 235 },
 				{ "CDA", 236 },
 				{ "CDI", 237 },
-				{ "CDS", 238 }
+				{ "CDS", 238 },
+				{ "CDR", 239 }
 			};
 		public static Dictionary<string, int> Ids { get { return codesToIdDictionary; } }
 
@@ -689,6 +691,7 @@ namespace Icon.Framework
 			public const string CanadaAllergens = "Canada Allergens";
 			public const string CanadaIngredients = "Canada Ingredients";
 			public const string CanadaSugarPercentage = "Canada Sugar Percentage";
+			public const string CanadaServingSize = "Canada Serving Size";
 			
 			private static Dictionary<int, string> idToDescriptionsDictionary = new Dictionary<int, string>
 			{
@@ -914,7 +917,8 @@ namespace Icon.Framework
 				{ 235, "Profit Center" },
 				{ 236, "Canada Allergens" },
 				{ 237, "Canada Ingredients" },
-				{ 238, "Canada Sugar Percentage" }
+				{ 238, "Canada Sugar Percentage" },
+				{ 239, "Canada Serving Size" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToDescriptionsDictionary; } }
 		}
@@ -1144,6 +1148,7 @@ namespace Icon.Framework
 			public const string CanadaAllergens = "CDA";
 			public const string CanadaIngredients = "CDI";
 			public const string CanadaSugarPercentage = "CDS";
+			public const string CanadaServingSize = "CDR";
 			
 			private static Dictionary<int, string> idToCodesDictionary = new Dictionary<int, string>
 			{
@@ -1369,7 +1374,8 @@ namespace Icon.Framework
 				{ 235, "PFC" },
 				{ 236, "CDA" },
 				{ 237, "CDI" },
-				{ 238, "CDS" }
+				{ 238, "CDS" },
+				{ 239, "CDR" }
 			};
 			public static Dictionary<int, string> AsDictionary { get { return idToCodesDictionary; } }
 		}

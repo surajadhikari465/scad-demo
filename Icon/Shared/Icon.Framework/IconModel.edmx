@@ -400,6 +400,7 @@
           <Property Name="CanadaAllergens" Type="nvarchar" MaxLength="510" />
           <Property Name="CanadaIngredients" Type="nvarchar" MaxLength="4000" />
           <Property Name="CanadaSugarPercent" Type="smallint" />
+          <Property Name="CanadaServingSizeDesc" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="MessageQueuePrice">
           <Key>
@@ -1347,6 +1348,7 @@
           <Property Name="CanadaAllergens" Type="nvarchar" MaxLength="510" />
           <Property Name="CanadaIngredients" Type="nvarchar" MaxLength="4000" />
           <Property Name="CanadaSugarPercent" Type="smallint" />
+          <Property Name="CanadaServingSizeDesc" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="EventQueue2">
           <Key>
@@ -5213,6 +5215,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="CanadaAllergens" Type="String" MaxLength="510" FixedLength="false" Unicode="true" />
           <Property Name="CanadaIngredients" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="CanadaSugarPercent" Type="Int16" />
+          <Property Name="CanadaServingSizeDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MammothEventQueue">
           <Key>
@@ -5737,6 +5740,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <Property Name="CanadaAllergens" Type="String" MaxLength="510" FixedLength="false" Unicode="true" />
           <Property Name="CanadaIngredients" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="CanadaSugarPercent" Type="Int16" />
+          <Property Name="CanadaServingSizeDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MessageQueueProduct" Relationship="Icon.Framework.Model.FK_app__MessageQueueNutrition_MessageQueueId" FromRole="MessageQueueNutrition" ToRole="MessageQueueProduct" />
         </EntityType>
         <EntityType Name="MessageQueueLocale">
@@ -7208,6 +7212,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="ItemNutrition">
             <EntityTypeMapping TypeName="Icon.Framework.Model.ItemNutrition">
               <MappingFragment StoreEntitySet="ItemNutrition">
+                <ScalarProperty Name="CanadaServingSizeDesc" ColumnName="CanadaServingSizeDesc" />
                 <ScalarProperty Name="CanadaSugarPercent" ColumnName="CanadaSugarPercent" />
                 <ScalarProperty Name="CanadaIngredients" ColumnName="CanadaIngredients" />
                 <ScalarProperty Name="CanadaAllergens" ColumnName="CanadaAllergens" />
@@ -7568,6 +7573,7 @@ warning 6035: The relationship 'FK_MessageQueuePrice_CurrencyCode' has columns t
           <EntitySetMapping Name="MessageQueueNutrition">
             <EntityTypeMapping TypeName="Icon.Framework.Model.MessageQueueNutrition">
               <MappingFragment StoreEntitySet="MessageQueueNutrition">
+                <ScalarProperty Name="CanadaServingSizeDesc" ColumnName="CanadaServingSizeDesc" />
                 <ScalarProperty Name="CanadaSugarPercent" ColumnName="CanadaSugarPercent" />
                 <ScalarProperty Name="CanadaIngredients" ColumnName="CanadaIngredients" />
                 <ScalarProperty Name="CanadaAllergens" ColumnName="CanadaAllergens" />

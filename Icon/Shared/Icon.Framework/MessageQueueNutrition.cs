@@ -96,7 +96,8 @@ namespace Icon.Framework
         public string CanadaAllergens { get; set; }
         public string CanadaIngredients { get; set; }
         public Nullable<short> CanadaSugarPercent { get; set; }
-    
+        public string CanadaServingSizeDesc { get; set; }
+
         public virtual MessageQueueProduct MessageQueueProduct { get; set; }
     }
 }

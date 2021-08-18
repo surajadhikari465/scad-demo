@@ -119,6 +119,7 @@ BEGIN
 		,[CanadaAllergens] = newni.CanadaAllergens
 		,[CanadaIngredients] = newni.CanadaIngredients
 		,[CanadaSugarPercent] = newni.CanadaSugarPercent
+		,[CanadaServingSizeDesc] = newni.CanadaServingSizeDesc
 	OUTPUT INSERTED.RecipeId
 		,newni.[Plu]
 		,0
@@ -211,6 +212,7 @@ BEGIN
 		,[CanadaAllergens]
 		,[CanadaIngredients]
 		,[CanadaSugarPercent]
+		,[CanadaServingSizeDesc]
 		)
 	OUTPUT INSERTED.RecipeId
 		,INSERTED.Plu
@@ -295,6 +297,7 @@ BEGIN
 		,[CanadaAllergens]
 		,[CanadaIngredients]
 		,[CanadaSugarPercent]
+		,[CanadaServingSizeDesc]
 	FROM @NutritionItem newItem
 	WHERE NOT EXISTS (
 			SELECT 1
