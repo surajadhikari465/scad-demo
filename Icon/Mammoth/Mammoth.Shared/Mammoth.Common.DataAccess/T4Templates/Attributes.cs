@@ -274,7 +274,8 @@ namespace Mammoth.Common.DataAccess
 		public const int CanadaAllergens = 261;
 		public const int CanadaIngredients = 262;
 		public const int CanadaSugarPercentage = 263;
-		
+		public const int CanadaServingSizeDesc = 264;
+
 		public class Descriptions
 		{
 			public const string AgeRestrict = "Age Restrict";
@@ -539,7 +540,8 @@ namespace Mammoth.Common.DataAccess
 			public const string CanadaAllergens = "Canada Allergens";
 			public const string CanadaIngredients = "Canada Ingredients";
 			public const string CanadaSugarPercentage = "Canada Sugar Percentage";
-		
+			public const string CanadaServingSizeDesc = "Canada Serving Size";
+
 			private static Dictionary<string, string> codeToDescriptionsDictionary = new Dictionary<string, string>
 			{
 				{ "AGE", "Age Restrict" },
@@ -1072,6 +1074,7 @@ namespace Mammoth.Common.DataAccess
 			public const string CanadaAllergens = "CDA";
 			public const string CanadaIngredients = "CDI";
 			public const string CanadaSugarPercentage = "CDS";
+			public const string CanadaServingSizeDesc = "CDR";
 		}
 	}
 }

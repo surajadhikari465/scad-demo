@@ -100,7 +100,8 @@ BEGIN
 		AND IsNull(ProfitCenter, 0) <= 0 
 		AND IsNull(CanadaAllergens, '') = ''
 		AND IsNull(CanadaIngredients, '') = ''
-		AND IsNull(CanadaSugarPercent, 0) <= 0 ;
+		AND IsNull(CanadaSugarPercent, 0) <= 0
+		AND IsNull(CanadaServingSizeDesc, '') = '';
 
 	DELETE A
 	FROM ItemAttributes_Nutrition A
@@ -191,6 +192,7 @@ BEGIN
 		,CanadaAllergens
 		,CanadaIngredients
 		,CanadaSugarPercent
+		,CanadaServingSizeDesc
 	INTO #insertNutrition
 	FROM #nutrition n
 	WHERE NOT EXISTS (
@@ -282,6 +284,7 @@ BEGIN
 				,n.CanadaAllergens = t.CanadaAllergens
 				,n.CanadaIngredients = t.CanadaIngredients
 				,n.CanadaSugarPercent = t.CanadaSugarPercent
+				,n.CanadaServingSizeDesc = t.CanadaServingSizeDesc
 			FROM dbo.ItemAttributes_Nutrition n
 			INNER JOIN #nutrition t ON n.ItemID = t.ItemID
 
@@ -365,6 +368,7 @@ BEGIN
 				,CanadaAllergens
 				,CanadaIngredients
 				,CanadaSugarPercent
+				,CanadaServingSizeDesc
 				)
 			SELECT ItemID
 				,RecipeName
@@ -444,6 +448,7 @@ BEGIN
 				,CanadaAllergens
 				,CanadaIngredients
 				,CanadaSugarPercent
+				,CanadaServingSizeDesc
 			FROM #insertNutrition
 
 		COMMIT TRANSACTION

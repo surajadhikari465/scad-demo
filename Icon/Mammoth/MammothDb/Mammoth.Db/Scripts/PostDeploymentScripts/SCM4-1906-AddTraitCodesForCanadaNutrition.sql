@@ -7,7 +7,8 @@ BEGIN
 	DECLARE @ProfitCenter nvarchar(3) = 'PFC',
 	        @CanadaAllergens nvarchar(3) = 'CDA',
 			@CanadaIngredients nvarchar(3) = 'CDI',
-			@CanadaSugarPercentage nvarchar(3) = 'CDS'
+			@CanadaSugarPercentage nvarchar(3) = 'CDS',
+			@CanadaServingSize nvarchar(3) = 'CDR'
 
 	IF NOT EXISTS (SELECT 1 FROM dbo.Attributes WHERE AttributeCode = @ProfitCenter)
 	BEGIN
@@ -69,6 +70,22 @@ BEGIN
            (3
            ,@CanadaSugarPercentage
            ,'Canada Sugar Percentage'
+           ,GETDATE()
+           ,GETDATE())
+    END
+
+    IF NOT EXISTS (SELECT 1 FROM dbo.Attributes WHERE AttributeCode = @CanadaServingSize)
+	BEGIN
+        INSERT INTO [dbo].[Attributes]
+           ([AttributeGroupID]
+           ,[AttributeCode]
+           ,[AttributeDesc]
+           ,[AddedDate]
+           ,[ModifiedDate])
+        VALUES
+           (3
+           ,@CanadaServingSize
+           ,'Canada Serving Size'
            ,GETDATE()
            ,GETDATE())
     END

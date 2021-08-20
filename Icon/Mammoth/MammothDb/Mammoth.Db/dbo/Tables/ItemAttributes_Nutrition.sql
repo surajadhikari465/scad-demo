@@ -79,6 +79,7 @@
     [CanadaAllergens]          NVARCHAR(510)   NULL, 
     [CanadaIngredients]        NVARCHAR(4000)  NULL, 
     [CanadaSugarPercent]       SMALLINT        NULL, 
+    [CanadaServingSizeDesc]    NVARCHAR(50)    NULL, 
     CONSTRAINT [PK_ItemAttributes_Nutrition] PRIMARY KEY CLUSTERED ([ItemAttributeID] ASC) WITH (FILLFACTOR = 100)
 );
 GO

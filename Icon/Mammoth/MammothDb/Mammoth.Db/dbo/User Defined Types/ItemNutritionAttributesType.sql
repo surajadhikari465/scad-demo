@@ -76,7 +76,8 @@
     [ProfitCenter]             INT             NULL,
     [CanadaAllergens]          NVARCHAR (510)  NULL,
     [CanadaIngredients]        NVARCHAR (4000) NULL,
-    [CanadaSugarPercent]       SMALLINT        NULL
+    [CanadaSugarPercent]       SMALLINT        NULL,
+    [CanadaServingSizeDesc]    NVARCHAR (50)   NULL
 )
 GO
 
