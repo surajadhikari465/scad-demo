@@ -157,7 +157,8 @@ namespace Icon.Services.Newitem.Test.Common
             ProfitCenter = 9999,
             CanadaAllergens = "French CONTAINS:MILK.",
             CanadaIngredients = "French Ingredients: Chai Tea Milk.",
-            CanadaSugarPercent = 16
+            CanadaSugarPercent = 16,
+            CanadaServingSizeDesc = "3 grammes par tasse"
         };
 
         public MessageQueueItemModel MessageQueueItemModel

@@ -1059,6 +1059,15 @@
               </trt:value>
             </tra:type>
           </crf:trait>
+          <crf:trait>
+            <tra:code>CDR</tra:code>
+            <tra:type>
+              <trt:description>Canada Serving Size</trt:description>
+              <trt:value>
+                <trv:value>3 grammes par tasse</trv:value>
+              </trt:value>
+            </tra:type>
+          </crf:trait>
         </iea:traits>
         <iea:selectionGroups>
           <psg:group crf:Action="Delete">

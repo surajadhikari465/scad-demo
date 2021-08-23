@@ -296,7 +296,8 @@ namespace Icon.Services.ItemPublisher.Tests.Common
            ,[ProfitCenter]
            ,[CanadaAllergens]
            ,[CanadaIngredients]
-           ,[CanadaSugarPercent])
+           ,[CanadaSugarPercent]
+           ,[CanadaServingSizeDesc])
            VALUES
            (@Plu,
            @RecipeName,
@@ -371,7 +372,8 @@ namespace Icon.Services.ItemPublisher.Tests.Common
            @ProfitCenter,
            @CanadaAllergens,
            @CanadaIngredients,
-           @CanadaSugarPercent);
+           @CanadaSugarPercent,
+           @CanadaServingSizeDesc);
            SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
             int id = (await this.connectionHelper.ProviderFactory.Provider.Connection.QueryAsync<int>(query,
@@ -450,7 +452,8 @@ namespace Icon.Services.ItemPublisher.Tests.Common
                 ProfitCenter = 9999,
                 CanadaAllergens = "Canada Allergens",
                 CanadaIngredients = "Canada Ingredients",
-                CanadaSugarPercent = 16
+                CanadaSugarPercent = 16,
+                CanadaServingSizeDesc = "3 grammes par tasse"
             },
             connectionHelper.ProviderFactory.Transaction)).First();
 
@@ -636,6 +639,7 @@ namespace Icon.Services.ItemPublisher.Tests.Common
            ,[CanadaAllergens]
            ,[CanadaIngredients]
            ,[CanadaSugarPercent]
+           ,[CanadaServingSizeDesc]
             FROM [nutrition].[ItemNutrition]";
         }
 

@@ -1721,7 +1721,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             List<TraitType> result = await builder.BuildTraits(new Dictionary<string, string>() { { "test", "B" } }, nutrition, processLogger);
 
             // Then.
-            Assert.AreEqual(54, result.Count);
+            Assert.AreEqual(55, result.Count);
             Assert.AreEqual(ActionEnum.Add, result.First().Action);
             Assert.IsFalse(result.First().ActionSpecified);
             Assert.AreEqual("TraitCode", result.First().code);
@@ -1837,7 +1837,8 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
                 ProfitCenter = 9999,
                 CanadaAllergens = "Canada Allergens",
                 CanadaIngredients = "Canada Ingredients",
-                CanadaSugarPercent = 16
+                CanadaSugarPercent = 16,
+                CanadaServingSizeDesc = "3 grammes par tasse"
             };
 
             // When.
@@ -2043,6 +2044,10 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
             Assert.IsTrue(result.Any(x => x.code == Icon.Framework.TraitCodes.CanadaSugarPercentage
             && x.type.description == Icon.Framework.TraitDescriptions.CanadaSugarPercentage
             && x.type.value.First().value == "16"));
+
+            Assert.IsTrue(result.Any(x => x.code == Icon.Framework.TraitCodes.CanadaServingSize
+            && x.type.description == Icon.Framework.TraitDescriptions.CanadaServingSize
+            && x.type.value.First().value == "3 grammes par tasse"));
         }
 
         [TestMethod()]

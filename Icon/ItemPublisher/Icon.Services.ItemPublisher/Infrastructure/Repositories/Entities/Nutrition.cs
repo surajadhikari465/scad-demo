@@ -85,5 +85,6 @@ namespace Icon.Services.ItemPublisher.Repositories.Entities
         public string CanadaAllergens { get; set; }
         public string CanadaIngredients { get; set; }
         public short? CanadaSugarPercent { get; set; }
+        public string CanadaServingSizeDesc { get; set; }
     }
 }
