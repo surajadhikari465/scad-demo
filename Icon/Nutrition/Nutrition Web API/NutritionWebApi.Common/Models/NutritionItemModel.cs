@@ -82,5 +82,6 @@ namespace NutritionWebApi.Common.Models
         public string FrenchIngredients { get; set; }
         public short? SugarPercent { get; set; }
         public int? ProfCenterID { get; set; }
+        public string FrenchServingSizeDesc { get; set; }
     }
 }
