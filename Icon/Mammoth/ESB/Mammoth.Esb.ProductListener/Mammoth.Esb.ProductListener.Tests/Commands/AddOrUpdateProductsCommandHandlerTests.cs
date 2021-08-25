@@ -709,6 +709,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
                     CanadaAllergens = "Canada Test Allergens",
                     CanadaIngredients = "Canada Test Ingredients",
                     CanadaSugarPercent = 6,
+                    CanadaServingSizeDesc = "Canada Test Serving Size Desc",
                     Chloride = 8,
                     CholesterolPercent = 9,
                     CholesterolWeight = 10.7m,
@@ -942,6 +943,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
             const string CanadaAllergens = "Canada Allergens Test";
             const string canadaIngredients = "Canada Ingredients Test";
             const int canadaSugarPercent = 18;
+            const string CanadaServingSizeDesc = "Canada Serving Size Desc";
             #endregion
 
             #region extended attributes
@@ -1013,7 +1015,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
 		            Copper, TransFat, CaloriesFromTransFat, Om6Fatty, Om3Fatty, Starch,
 		            Chloride, Chromium, VitaminK, Manganese, Molybdenum, Selenium,
 		            TransFatWeight,AddedSugarsWeight,AddedSugarsPercent,CalciumWeight,IronWeight,VitaminDWeight,
-                    ProfitCenter, CanadaAllergens, CanadaIngredients, CanadaSugarPercent)
+                    ProfitCenter, CanadaAllergens, CanadaIngredients, CanadaSugarPercent, CanadaServingSizeDesc)
                 VALUES(
                     @itemID,
                     '{recipeName}', '{allergens}', '{ingredients}', {servingsPerPortion}, '{servingSizeDesc}', '{servingPerContainer}',
@@ -1028,7 +1030,7 @@ namespace Mammoth.Esb.ProductListener.Tests.Commands
 		            {copper}, {transFat}, {caloriesFromTransFat}, {om6Fatty}, {om3Fatty}, {starch},
 		            {chloride}, {chromium}, {vitaminK}, {manganese}, {molybdenum}, {selenium},
 		            {transFatWeight},{AddedSugarsWeight},{AddedSugarsPercent},{CalciumWeight},{IronWeight},{VitaminDWeight}, 
-                    {profitCenter}, '{CanadaAllergens}', '{canadaIngredients}', {canadaSugarPercent} )
+                    {profitCenter}, '{CanadaAllergens}', '{canadaIngredients}', {canadaSugarPercent}, '{CanadaServingSizeDesc}' )
 
                 INSERT INTO dbo.ItemAttributes_Ext(ItemID, AttributeID, AttributeValue, AddedDate)
                 VALUES  (@itemID, {Attributes.FairTradeCertified}, '{fairTradeCertified}', GETDATE()),

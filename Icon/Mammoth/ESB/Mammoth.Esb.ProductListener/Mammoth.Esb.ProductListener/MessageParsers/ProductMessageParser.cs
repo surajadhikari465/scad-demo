@@ -209,7 +209,8 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
                     ProfitCenter = GetIntTraitValue(TraitCodes.ProfitCenter, traits),
                     CanadaAllergens = GetTraitValue(TraitCodes.CanadaAllergens, traits),
                     CanadaIngredients = GetTraitValue(TraitCodes.CanadaIngredients, traits),
-                    CanadaSugarPercent = GetIntTraitValue(TraitCodes.CanadaSugarPercentage, traits)
+                    CanadaSugarPercent = GetIntTraitValue(TraitCodes.CanadaSugarPercentage, traits),
+                    CanadaServingSizeDesc = GetTraitValue(TraitCodes.CanadaServingSize, traits)
                 };
             }
         }

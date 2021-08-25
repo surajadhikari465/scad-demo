@@ -79,5 +79,6 @@
         public string CanadaAllergens { get; set; }
         public string CanadaIngredients { get; set; }
         public int? CanadaSugarPercent { get; set; }
+        public string CanadaServingSizeDesc { get; set; }
     }
 }
