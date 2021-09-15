@@ -75,7 +75,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight, setCost
                         setWeight(quantity * 0);
                     }
                 }
-            }
+            }            
         }
     }, [orderDetails, quantity, setWeight, costedByWeight])
 
@@ -365,13 +365,13 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight, setCost
                                         <Grid.Column textAlign="left" style={{ paddingTop: '5px', paddingBottom: '5px' }}>
                                             <Input
                                                 type="number"
-                                                name="Quantity"
+                                                name="Quantity"                               
                                                 onFocus={() => setInputHasFocus(true)}
                                                 onBlur={() => setInputHasFocus(false)}
                                                 onChange={(e) => setQuantity(parseInt(e.target.value))}
-                                                onKeyPress={validateIntegerInput}
+                                                  onKeyPress={validateIntegerInput}
                                                 onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''}
-                                                value={orderDetails?.ItemLoaded ? quantity : ''}
+                                                value={orderDetails?.ItemLoaded ? quantity : ''} 
                                                 fluid
                                                 size="small"
                                                 disabled={!orderDetails.ItemLoaded}
@@ -380,7 +380,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight, setCost
                                     </Grid.Row>
                                     <Grid.Row>
                                         <Grid.Column
-                                            verticalAlign="middle"
+                                                    verticalAlign="middle"
                                             width={8}
                                             textAlign="right"
                                             style={{ paddingTop: '5px', paddingBottom: '5px' }}
@@ -475,14 +475,14 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight, setCost
                                             </div>
                                         </Grid.Column>
                                     </Grid.Row>
-                                    <Grid.Row style={{ backgroundColor: '#f0f0f0' }}>
+                                    <Grid.Row style={{ backgroundColor: '#86D770' }}>
                                         <Grid.Column
                                             verticalAlign="middle"
                                             width={8}
                                             textAlign="right"
                                             style={{ paddingTop: '5px', paddingBottom: '5px' }}
                                         >
-                                            Qty:
+                                            Einv. Qty:
                                     </Grid.Column>
                                         <Grid.Column
                                             verticalAlign="middle"

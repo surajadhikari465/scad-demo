@@ -228,7 +228,7 @@ const ReceivePurchaseOrder: React.FC<IProps> = ({ match }) => {
                         OrderCost: order.orderedCost,
                         ExpectedDate: order.expected_Date,
                         Subteam: order.subTeam_Name,
-                        EInv: order.einvoiceRequired
+                        EInv: order.einvoiceID > 0 ? true : false
                     }
                 )));
                 setDisplaySelectOrderByScanCode(true);
