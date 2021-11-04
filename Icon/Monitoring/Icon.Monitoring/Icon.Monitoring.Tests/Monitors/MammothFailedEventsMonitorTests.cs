@@ -88,7 +88,7 @@ namespace Icon.Monitoring.Tests.Monitors
             mockOpsgenieTrigger.Verify(m => m.TriggerAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void MammothFailedEventsMonitorCheckStatusAndNotify_ExceptionOnOpsGenieAlert_LogException()
         {
             //Given

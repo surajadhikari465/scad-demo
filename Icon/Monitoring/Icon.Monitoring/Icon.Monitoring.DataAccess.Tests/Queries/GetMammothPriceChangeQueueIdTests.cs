@@ -63,7 +63,7 @@ namespace Icon.Monitoring.DataAccess.Tests.Queries
         private int InsertMammothPriceChangeQueueTable()
         {
             return provider.Connection.Query<int>(
-            @"INSERT INTO ItemCatalog_Test.mammoth.PriceChangeQueue
+            @"INSERT INTO ItemCatalog.mammoth.PriceChangeQueue
                ([Item_Key]
                ,[Store_No]
                ,[Identifier]
