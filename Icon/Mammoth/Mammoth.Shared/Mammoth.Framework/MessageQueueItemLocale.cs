@@ -84,6 +84,8 @@ namespace Mammoth.Framework
 
         public string UnwrappedTareWeight { get; set; }
 
+        public int? PosScaleTare { get; set; }
+
         public int? NumberOfDigitsSentToScale { get; set; }
 
         public string ChicagoBaby { get; set; }

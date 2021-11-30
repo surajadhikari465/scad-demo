@@ -54,5 +54,6 @@
 	[ForceTare]					 BIT			NULL,
 	[WrappedTareWeight]			 NVARCHAR(MAX)  NULL,
 	[UnwrappedTareWeight]		 NVARCHAR(MAX)  NULL,
+	[PosScaleTare]				 INT			NULL,
 );
 go
