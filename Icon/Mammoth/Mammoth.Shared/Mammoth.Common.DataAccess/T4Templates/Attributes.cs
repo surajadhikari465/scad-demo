@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace Mammoth.Common.DataAccess
 {
-    /// <summary>
-    /// dbo.Attributes auto generated Ids
-    /// </summary>
+	/// <summary>
+	/// dbo.Attributes auto generated Ids
+	/// </summary>
 
-    [GeneratedCode("TextTemplatingFileGenerator", "10")]
-    public static class Attributes
-    {
+	[GeneratedCode("TextTemplatingFileGenerator", "10")]
+	public static class Attributes
+	{
 		public const int AgeRestrict = 1;
 		public const int AuthorizedForSale = 2;
 		public const int CaseDiscountEligible = 3;
@@ -167,7 +167,6 @@ namespace Mammoth.Common.DataAccess
 		public const int SelfCheckoutItemTareGroup = 154;
 		public const int SeafoodCatchType = 155;
 		public const int SeasonalInAndOutGifting = 156;
-		public const int ShelfLife = 157;
 		public const int SkinType = 158;
 		public const int Sku = 159;
 		public const int Smoked = 160;
@@ -254,9 +253,9 @@ namespace Mammoth.Common.DataAccess
 		public const int CuoMadeWithoutDairyIngred = 241;
 		public const int RawLabel = 242;
 		public const int CuoRetailLocation = 243;
-		public const int 4CuoKetoFriendly = 244;
+		public const int CuoKetoFriendly = 244;
 		public const int CuoPaleoFriendly = 245;
-		public const int 8CuoPlantBased = 246;
+		public const int CuoPlantBased = 246;
 		public const int MayContainPitsOrPitFragments = 247;
 		public const int SeafoodColorAdded = 248;
 		public const int CuoMadeWithoutGlutenIngred = 249;
@@ -433,7 +432,6 @@ namespace Mammoth.Common.DataAccess
 			public const string SelfCheckoutItemTareGroup = "Self Checkout Item Tare Group";
 			public const string SeafoodCatchType = "Seafood Catch Type";
 			public const string SeasonalInAndOutGifting = "Seasonal In and Out/Gifting";
-			public const string ShelfLife = "Shelf Life";
 			public const string SkinType = "Skin Type";
 			public const string Sku = "SKU";
 			public const string Smoked = "Smoked";
@@ -520,9 +518,9 @@ namespace Mammoth.Common.DataAccess
 			public const string CuoMadeWithoutDairyIngred = "CUO Made Without Dairy Ingred";
 			public const string RawLabel = "Raw Label";
 			public const string CuoRetailLocation = "CUO Retail Location";
-			public const string 4CuoKetoFriendly = "4.	CUO Keto Friendly";
+			public const string CuoKetoFriendly = "CUO Keto Friendly";
 			public const string CuoPaleoFriendly = "CUO Paleo Friendly";
-			public const string 8CuoPlantBased = "8.	CUO Plant Based";
+			public const string CuoPlantBased = "CUO Plant Based";
 			public const string MayContainPitsOrPitFragments = "May Contain Pits Or Pit Fragments";
 			public const string SeafoodColorAdded = "Seafood Color Added";
 			public const string CuoMadeWithoutGlutenIngred = "CUO Made Without Gluten Ingred";
@@ -786,9 +784,9 @@ namespace Mammoth.Common.DataAccess
 				{ "MWD", "CUO Made Without Dairy Ingred" },
 				{ "RAW", "Raw Label" },
 				{ "CRL", "CUO Retail Location" },
-				{ "KF", "4.	CUO Keto Friendly" },
+				{ "KF", "CUO Keto Friendly" },
 				{ "PF", "CUO Paleo Friendly" },
-				{ "PB", "8.	CUO Plant Based" },
+				{ "PB", "CUO Plant Based" },
 				{ "MCP", "May Contain Pits Or Pit Fragments" },
 				{ "SCA", "Seafood Color Added" },
 				{ "MWG", "CUO Made Without Gluten Ingred" },
@@ -967,7 +965,6 @@ namespace Mammoth.Common.DataAccess
 			public const string SelfCheckoutItemTareGroup = "ITG";
 			public const string SeafoodCatchType = "SFT";
 			public const string SeasonalInAndOutGifting = "SIO";
-			public const string ShelfLife = "SLF";
 			public const string SkinType = "SKT";
 			public const string Sku = "SKU";
 			public const string Smoked = "SMK";
@@ -1054,9 +1051,9 @@ namespace Mammoth.Common.DataAccess
 			public const string CuoMadeWithoutDairyIngred = "MWD";
 			public const string RawLabel = "RAW";
 			public const string CuoRetailLocation = "CRL";
-			public const string 4CuoKetoFriendly = "KF";
+			public const string CuoKetoFriendly = "KF";
 			public const string CuoPaleoFriendly = "PF";
-			public const string 8CuoPlantBased = "PB";
+			public const string CuoPlantBased = "PB";
 			public const string MayContainPitsOrPitFragments = "MCP";
 			public const string SeafoodColorAdded = "SCA";
 			public const string CuoMadeWithoutGlutenIngred = "MWG";
