@@ -170,6 +170,7 @@ namespace Mammoth.ApiController.QueueReaders
                                 CreateTrait(message.ForceTare, Attributes.Codes.ForceTare),
                                 CreateTrait(message.WrappedTareWeight, Attributes.Codes.WrappedTareWeight),
                                 CreateTrait(message.UnwrappedTareWeight, Attributes.Codes.UnwrappedTareWeight),
+                                CreateTrait(message.PosScaleTare, Attributes.Codes.PosScaleTare)
                             }
                         }
                     }

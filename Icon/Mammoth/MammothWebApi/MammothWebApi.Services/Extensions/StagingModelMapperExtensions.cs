@@ -260,6 +260,18 @@ namespace MammothWebApi.Service.Extensions
 					ScanCode = itemLocale.ScanCode
 				};
 				itemLocalesExtended.Add(model);
+
+				//For Katherine
+				model = new StagingItemLocaleExtendedModel
+				{
+					AttributeId = Attributes.PosScaleTare,
+					AttributeValue = itemLocale.PosScaleTare.ToString(),
+					Region = itemLocale.Region,
+					BusinessUnitId = itemLocale.BusinessUnitId,
+					ScanCode = itemLocale.ScanCode
+				};
+				itemLocalesExtended.Add(model);
+
 			}
 
 			// Set timestamp and transactionId for all rows

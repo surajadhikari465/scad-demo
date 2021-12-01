@@ -81,7 +81,8 @@ namespace MammothWebApi.DataAccess.Commands
                                   [ShelfLife] = shl.AttributeValue,
                                   [ForceTare] = fta.AttributeValue,
                                   [WrappedTareWeight] = wta.AttributeValue,
-                                  [UnwrappedTareWeight] = uta.AttributeValue
+                                  [UnwrappedTareWeight] = uta.AttributeValue,
+                                  [PosScaleTare] = sct.AttributeValue
 
                                 from
 	                                stage.ItemLocale s
@@ -162,6 +163,11 @@ namespace MammothWebApi.DataAccess.Commands
 												                                AND l.BusinessUnitID = uta.BusinessUnitId
 												                                AND uta.AttributeID = @UnwrappedTareWeightId
                                                                                 AND uta.TransactionId = @TransactionId
+
+                                  left join stage.ItemLocaleExtended sct  on  i.ScanCode = sct.ScanCode
+												                                AND l.BusinessUnitID = sct.BusinessUnitId
+												                                AND sct.AttributeID = @PosScaleTare
+                                                                                AND sct.TransactionId = @TransactionId
                                 where
 	                                s.Region = @RegionCode and
 	                                s.TransactionId = @TransactionId";
@@ -190,6 +196,7 @@ namespace MammothWebApi.DataAccess.Commands
                 ForceTareId = Attributes.ForceTare,
                 WrappedTareWeightId = Attributes.WrappedTareWeight,
                 UnwrappedTareWeightId = Attributes.UnwrappedTareWeight,
+                PosScaleTare = Attributes.PosScaleTare
             };
 
             int affectedRows = db.Connection.Execute(sql, parameters, transaction: db.Transaction);

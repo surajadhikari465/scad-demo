@@ -134,6 +134,7 @@ SELECT q.QueueID AS QueueId
         THEN NULL 
         ELSE i.Item_Key 
     END as IrmaItemKey
+    ,p.POSTare as PosScaleTare
 FROM [mammoth].[ItemLocaleChangeQueue] q
 INNER JOIN mammoth.ItemChangeEventType t ON q.EventTypeID = t.EventTypeID
 INNER JOIN Item i ON q.Item_Key = i.Item_Key
@@ -290,6 +291,7 @@ SELECT q.QueueID AS QueueId
         THEN NULL 
         ELSE i.Item_Key 
     END as IrmaItemKey
+    ,p.POSTare as PosScaleTare
 FROM [mammoth].[ItemLocaleChangeQueue] q
 INNER JOIN mammoth.ItemChangeEventType t ON q.EventTypeID = t.EventTypeID
 INNER JOIN Item i ON q.Item_Key = i.Item_Key

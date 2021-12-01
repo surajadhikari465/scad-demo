@@ -91,5 +91,7 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Models
         public string ErrorMessage { get; set; }
         public string ErrorDetails { get; set; }
         public string ErrorSource { get; set; }
+
+        public int? PosScaleTare { get; set; }
     }
 }

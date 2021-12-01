@@ -76,5 +76,7 @@ namespace MammothWebApi.Models
         public string TagUom { get; set; }
         public string LinkedItem { get; set; }
         public string ScaleExtraText { get; set; }
+
+        public int? PosScaleTare { get; set; }
     }
 }
