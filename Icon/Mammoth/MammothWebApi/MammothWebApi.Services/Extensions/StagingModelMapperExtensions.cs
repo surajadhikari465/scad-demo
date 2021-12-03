@@ -265,7 +265,7 @@ namespace MammothWebApi.Service.Extensions
 				model = new StagingItemLocaleExtendedModel
 				{
 					AttributeId = Attributes.PosScaleTare,
-					AttributeValue = itemLocale.PosScaleTare.ToString(),
+					AttributeValue = itemLocale.PosScaleTare.HasValue ? itemLocale.PosScaleTare.ToString(): null,
 					Region = itemLocale.Region,
 					BusinessUnitId = itemLocale.BusinessUnitId,
 					ScanCode = itemLocale.ScanCode
