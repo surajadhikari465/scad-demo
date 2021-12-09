@@ -17,5 +17,7 @@ namespace Icon.Framework
         public const int Associated = 5;
         public const int Staged = 6;
         public const int Consumed = 7;
+        public const int SentToEsb = 8;
+        public const int SentToActiveMq = 9;
 	}
 }

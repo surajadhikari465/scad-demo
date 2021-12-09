@@ -24,3 +24,4 @@ EXAMPLE (showing Icon-DB scripts path):
 --:r .\Scripts\PopulateData\37766-FixSkuPriceLinePattern.sql -- 2020-08-27 37766
 :r .\Scripts\PopulateData\SCM4-1889_Add_Canadian_Nutrition_Traits.sql --2021-07-16
 :r .\Security\Icon.Security.sql
+:r .\Scripts\PopulateData\EsbDeprecation_InsertMessageStatus.sql --2021-12-08
