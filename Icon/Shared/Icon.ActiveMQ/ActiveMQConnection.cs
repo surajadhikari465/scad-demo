@@ -5,7 +5,7 @@ using Apache.NMS;
 
 namespace Icon.ActiveMQ
 {
-    public class ActiveMQConnection
+    public class ActiveMQConnection: IActiveMQConnection
     {
         protected ConnectionFactory factory;
         protected Connection connection;

@@ -7,7 +7,7 @@ using Apache.NMS;
 
 namespace Icon.ActiveMQ.Producer
 {
-    public class ActiveMQProducer : ActiveMQConnection
+    public class ActiveMQProducer : ActiveMQConnection, IActiveMQProducer
     {
         private IMessageProducer producer;
         private string lastClientId;

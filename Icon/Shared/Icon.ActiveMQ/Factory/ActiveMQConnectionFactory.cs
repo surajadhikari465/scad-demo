@@ -3,7 +3,7 @@ using System;
 
 namespace Icon.ActiveMQ.Factory
 {
-    public class ActiveMQConnectionFactory
+    public class ActiveMQConnectionFactory: IActiveMQConnectionFactory
     {
         public ActiveMQConnectionSettings Settings { get; set; }
 
@@ -12,7 +12,7 @@ namespace Icon.ActiveMQ.Factory
             Settings = settings;
         }
 
-        public ActiveMQProducer CreateProducer(string clientId, bool openConnection = true)
+        public IActiveMQProducer CreateProducer(string clientId, bool openConnection = true)
         {
             ActiveMQProducer producer = new ActiveMQProducer(Settings);
             if (openConnection)

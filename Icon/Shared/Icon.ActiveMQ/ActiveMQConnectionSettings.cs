@@ -4,7 +4,7 @@ using Icon.Common;
 
 namespace Icon.ActiveMQ
 {
-    public class ActiveMQConnectionSettings
+    public class ActiveMQConnectionSettings: IActiveMQConnectionSettings
     {
         private string _destinationType;
 
