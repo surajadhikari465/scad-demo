@@ -1,5 +1,5 @@
 ﻿using Icon.Logging;
-using Icon.Services.ItemPublisher.Infrastructure.Esb;
+using Icon.Services.ItemPublisher.Infrastructure.MessageQueue;
 using Icon.Services.ItemPublisher.Infrastructure.Models;
 using Icon.Services.ItemPublisher.Infrastructure.Models.Builders;
 using Icon.Services.ItemPublisher.Infrastructure.Models.Mappers;
@@ -41,13 +41,13 @@ namespace Icon.Services.ItemPublisher.Services.Tests
         {
             // Given.
             mockItemProcessor.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(true));
-            mockItemProcessor.Setup(x => x.ProcessNonRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<EsbSendResult>()
+            mockItemProcessor.Setup(x => x.ProcessNonRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<MessageSendResult>()
             {
-                new EsbSendResult(true,"success")
+                new MessageSendResult(true,"success")
             }));
-            mockItemProcessor.Setup(x => x.ProcessRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<EsbSendResult>()
+            mockItemProcessor.Setup(x => x.ProcessRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<MessageSendResult>()
             {
-                new EsbSendResult(true,"success")
+                new MessageSendResult(true,"success")
             }));
 
             int numerOfCalls = 1;
@@ -95,13 +95,13 @@ namespace Icon.Services.ItemPublisher.Services.Tests
         {
             // Given.
             mockItemProcessor.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(true));
-            mockItemProcessor.Setup(x => x.ProcessNonRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<EsbSendResult>()
+            mockItemProcessor.Setup(x => x.ProcessNonRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<MessageSendResult>()
             {
-                new EsbSendResult(true,"success")
+                new MessageSendResult(true,"success")
             }));
-            mockItemProcessor.Setup(x => x.ProcessRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<EsbSendResult>()
+            mockItemProcessor.Setup(x => x.ProcessRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<MessageSendResult>()
             {
-                new EsbSendResult(true,"success")
+                new MessageSendResult(true,"success")
             }));
 
             int numerOfCalls = 5;
@@ -152,13 +152,13 @@ namespace Icon.Services.ItemPublisher.Services.Tests
         {
             // Given.
             mockItemProcessor.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(true));
-            mockItemProcessor.Setup(x => x.ProcessNonRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<EsbSendResult>()
+            mockItemProcessor.Setup(x => x.ProcessNonRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<MessageSendResult>()
             {
-                new EsbSendResult(true,"success")
+                new MessageSendResult(true,"success")
             }));
-            mockItemProcessor.Setup(x => x.ProcessRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<EsbSendResult>()
+            mockItemProcessor.Setup(x => x.ProcessRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult(new List<MessageSendResult>()
             {
-                new EsbSendResult(true,"success")
+                new MessageSendResult(true,"success")
             }));
 
             int numerOfCalls = 1;

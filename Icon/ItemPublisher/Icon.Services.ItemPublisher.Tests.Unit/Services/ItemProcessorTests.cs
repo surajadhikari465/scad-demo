@@ -1,6 +1,6 @@
 ﻿using Icon.Logging;
 using Icon.Services.ItemPublisher.Infrastructure;
-using Icon.Services.ItemPublisher.Infrastructure.Esb;
+using Icon.Services.ItemPublisher.Infrastructure.MessageQueue;
 using Icon.Services.ItemPublisher.Infrastructure.Models;
 using Icon.Services.Newitem.Test.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,7 +16,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
         [TestMethod]
         public async Task ReadyForProcessing_ESBIsReady_ShouldReturnTrue()
         {
-            Mock<IEsbService> mockEsbService = new Mock<IEsbService>();
+            Mock<IMessageQueueService> mockEsbService = new Mock<IMessageQueueService>();
             Mock<ILogger<ItemProcessor>> loggerMock = new Mock<ILogger<ItemProcessor>>();
             Mock<ISystemListBuilder> mockSystemListBuilder = new Mock<ISystemListBuilder>();
             mockEsbService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(true));
@@ -29,7 +29,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
         [TestMethod]
         public async Task ReadyForProcessing_ESBIsNotReady_ShouldReturnFalse()
         {
-            Mock<IEsbService> mockEsbService = new Mock<IEsbService>();
+            Mock<IMessageQueueService> mockEsbService = new Mock<IMessageQueueService>();
             Mock<ILogger<ItemProcessor>> loggerMock = new Mock<ILogger<ItemProcessor>>();
             Mock<ISystemListBuilder> mockSystemListBuilder = new Mock<ISystemListBuilder>();
             mockEsbService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(false));
@@ -43,7 +43,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
         public async Task ProcessRetail_RecordsAreFilteredAndProcessed()
         {
             // Given.
-            Mock<IEsbService> mockEsbService = new Mock<IEsbService>();
+            Mock<IMessageQueueService> mockEsbService = new Mock<IMessageQueueService>();
             Mock<ILogger<ItemProcessor>> loggerMock = new Mock<ILogger<ItemProcessor>>();
             Mock<ISystemListBuilder> mockSystemListBuilder = new Mock<ISystemListBuilder>();
             mockEsbService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(false));
@@ -70,7 +70,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             modelDepartmentSale.Item.ItemAttributes[ItemPublisherConstants.Attributes.DepartmentSale] = "Yes";
 
             // When.
-            List<EsbSendResult> result = await itemProcessor.ProcessRetailRecords(new List<MessageQueueItemModel>()
+            List<MessageSendResult> result = await itemProcessor.ProcessRetailRecords(new List<MessageQueueItemModel>()
             {
                modelRetailSale,
                modelNonRetailSale,
@@ -92,7 +92,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
         public async Task ProcessNonRetail_RecordsAreFilteredAndProcessed()
         {
             // Given.
-            Mock<IEsbService> mockEsbService = new Mock<IEsbService>();
+            Mock<IMessageQueueService> mockEsbService = new Mock<IMessageQueueService>();
             Mock<ILogger<ItemProcessor>> loggerMock = new Mock<ILogger<ItemProcessor>>();
             Mock<ISystemListBuilder> mockSystemListBuilder = new Mock<ISystemListBuilder>();
             mockEsbService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(false));
@@ -119,7 +119,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             modelDepartmentSale.Item.ItemAttributes[ItemPublisherConstants.Attributes.DepartmentSale] = "Yes";
 
             // When.
-            List<EsbSendResult> result = await itemProcessor.ProcessNonRetailRecords(new List<MessageQueueItemModel>()
+            List<MessageSendResult> result = await itemProcessor.ProcessNonRetailRecords(new List<MessageQueueItemModel>()
             {
                modelRetailSale,
                modelNonRetailSale,
@@ -141,7 +141,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
         public async Task ProcessRetailWithDepartmentSale_RecordsAreFilteredAndProcessed()
         {
             // Given.
-            Mock<IEsbService> mockEsbService = new Mock<IEsbService>();
+            Mock<IMessageQueueService> mockEsbService = new Mock<IMessageQueueService>();
             Mock<ILogger<ItemProcessor>> loggerMock = new Mock<ILogger<ItemProcessor>>();
             Mock<ISystemListBuilder> mockSystemListBuilder = new Mock<ISystemListBuilder>();
             mockEsbService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(false));
@@ -165,7 +165,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             modelNonRetailSale.Item.ItemTypeCode = ItemPublisherConstants.NonRetailSaleTypeCode;
 
             // When.
-            List<EsbSendResult> result = await itemProcessor.ProcessRetailRecords(new List<MessageQueueItemModel>()
+            List<MessageSendResult> result = await itemProcessor.ProcessRetailRecords(new List<MessageQueueItemModel>()
             {
                modelRetailSale,
                modelNonRetailSale

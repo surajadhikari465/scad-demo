@@ -1,6 +1,6 @@
 ﻿using Icon.Logging;
 using Icon.Services.ItemPublisher.Infrastructure;
-using Icon.Services.ItemPublisher.Infrastructure.Esb;
+using Icon.Services.ItemPublisher.Infrastructure.MessageQueue;
 using Icon.Services.ItemPublisher.Infrastructure.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +15,13 @@ namespace Icon.Services.ItemPublisher.Services
     /// </summary>
     public class ItemProcessor : IItemProcessor
     {
-        private readonly IEsbService esbService;
+        private readonly IMessageQueueService esbService;
         private readonly ILogger<ItemProcessor> logger;
         private readonly ServiceSettings serviceSettings;
         private readonly ISystemListBuilder systemListBuilder;
 
         public ItemProcessor(
-            IEsbService esbService,
+            IMessageQueueService esbService,
             ILogger<ItemProcessor> logger,
             ServiceSettings serviceSettings,
             ISystemListBuilder systemListBuilder)
@@ -50,9 +50,9 @@ namespace Icon.Services.ItemPublisher.Services
         /// </summary>
         /// <param name="records"></param>
         /// <returns></returns>
-        public async Task<List<EsbSendResult>> ProcessRetailRecords(List<MessageQueueItemModel> records)
+        public async Task<List<MessageSendResult>> ProcessRetailRecords(List<MessageQueueItemModel> records)
         {
-            List<EsbSendResult> response = new List<EsbSendResult>();
+            List<MessageSendResult> response = new List<MessageSendResult>();
             List<MessageQueueItemModel> retailItems = records.Where(x => x.Item.ItemTypeCode != ItemPublisherConstants.NonRetailSaleTypeCode).ToList();
 
             if (retailItems.Count > 0)
@@ -68,9 +68,9 @@ namespace Icon.Services.ItemPublisher.Services
         /// </summary>
         /// <param name="records"></param>
         /// <returns></returns>
-        public async Task<List<EsbSendResult>> ProcessNonRetailRecords(List<MessageQueueItemModel> records)
+        public async Task<List<MessageSendResult>> ProcessNonRetailRecords(List<MessageQueueItemModel> records)
         {
-            List<EsbSendResult> response = new List<EsbSendResult>();
+            List<MessageSendResult> response = new List<MessageSendResult>();
             List<MessageQueueItemModel> nonRetailItems = records.Where(x => x.Item.ItemTypeCode == ItemPublisherConstants.NonRetailSaleTypeCode).ToList();
 
             if (nonRetailItems.Count > 0)
@@ -86,7 +86,7 @@ namespace Icon.Services.ItemPublisher.Services
         /// </summary>
         /// <param name="records"></param>
         /// <returns></returns>
-        private async Task<EsbSendResult> EsbProcess(List<MessageQueueItemModel> records, List<string> nonReceivingSystems)
+        private async Task<MessageSendResult> EsbProcess(List<MessageQueueItemModel> records, List<string> nonReceivingSystems)
         {
             return await this.esbService.Process(records, nonReceivingSystems);
         }

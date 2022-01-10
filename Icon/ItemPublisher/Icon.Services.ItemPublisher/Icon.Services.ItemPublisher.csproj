@@ -54,6 +54,12 @@
     <OutputPath>bin\Test\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Apache.NMS, Version=1.8.0.0, Culture=neutral, PublicKeyToken=82756feee3957618, processorArchitecture=MSIL">
+      <HintPath>..\packages\Apache.NMS.1.8.0\lib\net40\Apache.NMS.dll</HintPath>
+    </Reference>
+    <Reference Include="Apache.NMS.ActiveMQ, Version=1.8.0.0, Culture=neutral, PublicKeyToken=82756feee3957618, processorArchitecture=MSIL">
+      <HintPath>..\packages\Apache.NMS.ActiveMQ.1.8.0\lib\net40\Apache.NMS.ActiveMQ.dll</HintPath>
+    </Reference>
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
     </Reference>
@@ -65,6 +71,9 @@
     </Reference>
     <Reference Include="Esb.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Esb.Core.2019.7.1.5\lib\net46\Esb.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.ActiveMQ, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.ActiveMQ.2021.12.20.1\lib\net472\Icon.ActiveMQ.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Common.2020.11.11.4\lib\net472\Icon.Common.dll</HintPath>
@@ -121,6 +130,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -143,16 +153,16 @@
     <Compile Include="Application\IItemPublisherApplication.cs" />
     <Compile Include="Application\ApplicationRunner.cs" />
     <Compile Include="Application\ItemPublisherApplication.cs" />
-    <Compile Include="Infrastructure\Esb\Communication\ClientIdManager.cs" />
-    <Compile Include="Infrastructure\Esb\MessageBuilding\HierarchyValueParser.cs" />
-    <Compile Include="Infrastructure\Esb\MessageBuilding\IHierarchyValueParser.cs" />
-    <Compile Include="Infrastructure\Esb\MessageBuilding\IValueFormatter.cs" />
-    <Compile Include="Infrastructure\Esb\MessageBuilding\ValueFormatter.cs" />
+    <Compile Include="Infrastructure\MessageQueue\Communication\ClientIdManager.cs" />
+    <Compile Include="Infrastructure\MessageQueue\MessageBuilding\HierarchyValueParser.cs" />
+    <Compile Include="Infrastructure\MessageQueue\MessageBuilding\IHierarchyValueParser.cs" />
+    <Compile Include="Infrastructure\MessageQueue\MessageBuilding\IValueFormatter.cs" />
+    <Compile Include="Infrastructure\MessageQueue\MessageBuilding\ValueFormatter.cs" />
     <Compile Include="Infrastructure\ItemPublisherConstants.cs" />
-    <Compile Include="Infrastructure\Esb\Communication\ISystemListBuilder.cs" />
-    <Compile Include="Infrastructure\Esb\MessageBuilding\ITraitMessageBuilder.cs" />
-    <Compile Include="Infrastructure\Esb\Communication\SystemListBuilder.cs" />
-    <Compile Include="Infrastructure\Esb\MessageBuilding\TraitMessageBuilder.cs" />
+    <Compile Include="Infrastructure\MessageQueue\Communication\ISystemListBuilder.cs" />
+    <Compile Include="Infrastructure\MessageQueue\MessageBuilding\ITraitMessageBuilder.cs" />
+    <Compile Include="Infrastructure\MessageQueue\Communication\SystemListBuilder.cs" />
+    <Compile Include="Infrastructure\MessageQueue\MessageBuilding\TraitMessageBuilder.cs" />
     <Compile Include="Infrastructure\Models\Mappers\IUomMapper.cs" />
     <Compile Include="Infrastructure\Models\Mappers\UomMapper.cs" />
     <Compile Include="Infrastructure\Repositories\Entities\MessageDeadLetterQueue.cs" />
@@ -160,14 +170,14 @@
     <Compile Include="Services\IItemProcessor.cs" />
     <Compile Include="Services\ItemProcessor.cs" />
     <Compile Include="ServiceSettings.cs" />
-    <Compile Include="Infrastructure\Esb\MessageBuilding\BuildMessageResult.cs" />
-    <Compile Include="Infrastructure\Esb\Communication\EsbHeaderBuilder.cs" />
-    <Compile Include="Infrastructure\Esb\MessageBuilding\EsbMessageBuilder.cs" />
-    <Compile Include="Infrastructure\Esb\Communication\EsbSendResult.cs" />
-    <Compile Include="Infrastructure\Esb\Communication\EsbServiceCache.cs" />
-    <Compile Include="Infrastructure\Esb\Communication\IEsbHeaderBuilder.cs" />
-    <Compile Include="Infrastructure\Esb\MessageBuilding\IEsbMessageBuilder.cs" />
-    <Compile Include="Infrastructure\Esb\Communication\IEsbServiceCache.cs" />
+    <Compile Include="Infrastructure\MessageQueue\MessageBuilding\BuildMessageResult.cs" />
+    <Compile Include="Infrastructure\MessageQueue\Communication\MessageHeaderBuilder.cs" />
+    <Compile Include="Infrastructure\MessageQueue\MessageBuilding\MessageBuilder.cs" />
+    <Compile Include="Infrastructure\MessageQueue\Communication\MessageSendResult.cs" />
+    <Compile Include="Infrastructure\MessageQueue\Communication\MessageServiceCache.cs" />
+    <Compile Include="Infrastructure\MessageQueue\Communication\IMessageHeaderBuilder.cs" />
+    <Compile Include="Infrastructure\MessageQueue\MessageBuilding\IMessageBuilder.cs" />
+    <Compile Include="Infrastructure\MessageQueue\Communication\IMessageServiceCache.cs" />
     <Compile Include="Infrastructure\Extensions.cs" />
     <Compile Include="Infrastructure\Models\Mappers\IItemMapper.cs" />
     <Compile Include="Infrastructure\Models\Mappers\ItemMapper.cs" />
@@ -182,16 +192,16 @@
     <Compile Include="Infrastructure\Repositories\Entities\Item.cs" />
     <Compile Include="Infrastructure\Repositories\Entities\HierarchyCacheItem.cs" />
     <Compile Include="Infrastructure\Repositories\Entities\ProductSelectionGroup.cs" />
-    <Compile Include="Services\EsbService.cs" />
-    <Compile Include="Services\IEsbService.cs" />
+    <Compile Include="Services\MessageQueueService.cs" />
+    <Compile Include="Services\IMessageQueueService.cs" />
     <Compile Include="Infrastructure\Models\MessageQueueItemModel.cs" />
     <Compile Include="Infrastructure\Repositories\Entities\Attributes.cs" />
     <Compile Include="Infrastructure\Repositories\Entities\MessageQueueItemArchive.cs" />
     <Compile Include="Infrastructure\Repositories\CacheRepository.cs" />
     <Compile Include="Infrastructure\Repositories\ICacheRepository.cs" />
     <Compile Include="SimpleInjectorInitializer.cs" />
-    <Compile Include="Infrastructure\Esb\Communication\IEsbClient.cs" />
-    <Compile Include="Infrastructure\Esb\Communication\EsbClient.cs" />
+    <Compile Include="Infrastructure\MessageQueue\Communication\IMessageQueueClient.cs" />
+    <Compile Include="Infrastructure\MessageQueue\Communication\MessageQueueClient.cs" />
     <Compile Include="Infrastructure\Repositories\IItemPublisherRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Entities\MessageQueueItem.cs" />
     <Compile Include="Infrastructure\Repositories\ItemPublisherRepository.cs" />

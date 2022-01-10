@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
+namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue.Tests
 {
     [TestClass()]
     public class MessageQueueItemModelTests

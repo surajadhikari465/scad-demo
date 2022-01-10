@@ -1,5 +1,5 @@
 ﻿using Icon.Logging;
-using Icon.Services.ItemPublisher.Infrastructure.Esb;
+using Icon.Services.ItemPublisher.Infrastructure.MessageQueue;
 using Icon.Services.ItemPublisher.Infrastructure.Models;
 using Icon.Services.ItemPublisher.Infrastructure.Repositories;
 using Icon.Services.ItemPublisher.Repositories.Entities;
@@ -133,7 +133,7 @@ namespace Icon.Services.ItemPublisher.Services
         // Returns true if succeeded otherwise false.
         private async Task<bool> ProcessRecordsAndReturnSuccess(List<MessageQueueItemModel> records)
         {
-            List<EsbSendResult> response = new List<EsbSendResult>();
+            List<MessageSendResult> response = new List<MessageSendResult>();
 
             response.AddRange(await this.itemProcessor.ProcessRetailRecords(records));
             response.AddRange(await this.itemProcessor.ProcessNonRetailRecords(records));
@@ -170,7 +170,7 @@ namespace Icon.Services.ItemPublisher.Services
         /// <param name="records"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        private async Task HandleProcessResult(List<MessageQueueItemModel> records, List<EsbSendResult> results)
+        private async Task HandleProcessResult(List<MessageQueueItemModel> records, List<MessageSendResult> results)
         {
             List<MessageQueueItemArchive> history = new List<MessageQueueItemArchive>();
             results.ForEach(x =>

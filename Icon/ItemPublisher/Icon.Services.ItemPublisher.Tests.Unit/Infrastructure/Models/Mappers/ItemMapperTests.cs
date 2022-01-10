@@ -4,7 +4,7 @@ using Icon.Services.ItemPublisher.Repositories.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace Icon.Services.ItemPublisher.Infrastructure.Esb.Tests
+namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue.Tests
 {
     [TestClass]
     public class ItemMapperTests

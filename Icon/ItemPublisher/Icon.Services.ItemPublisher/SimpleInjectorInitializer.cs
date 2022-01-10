@@ -4,7 +4,7 @@ using Icon.Esb.Factory;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Logging;
 using Icon.Services.ItemPublisher.Infrastructure;
-using Icon.Services.ItemPublisher.Infrastructure.Esb;
+using Icon.Services.ItemPublisher.Infrastructure.MessageQueue;
 using Icon.Services.ItemPublisher.Infrastructure.Models.Builders;
 using Icon.Services.ItemPublisher.Infrastructure.Models.Mappers;
 using Icon.Services.ItemPublisher.Infrastructure.Repositories;
@@ -13,7 +13,9 @@ using Icon.Shared.DataAccess.Dapper.ConnectionBuilders;
 using SimpleInjector;
 using System.Configuration;
 using Icon.Common;
-using Icon.Services.ItemPublisher.Infrastructure.Esb.Communication;
+using Icon.Services.ItemPublisher.Infrastructure.MessageQueue.Communication;
+using Icon.ActiveMQ.Factory;
+using Icon.ActiveMQ;
 
 namespace Icon.Services.ItemPublisher.Application
 {
@@ -38,11 +40,11 @@ namespace Icon.Services.ItemPublisher.Application
             container.Register<IItemMapper, ItemMapper>();
             container.Register<IItemPublisherRepository, ItemPublisherRepository>();
             container.Register<IItemPublisherService, ItemPublisherService>();
-            container.Register<IEsbClient, EsbClient>();
-            container.Register<IEsbService, EsbService>();
-            container.Register<IEsbMessageBuilder, EsbMessageBuilder>();
-            container.Register<IEsbHeaderBuilder, EsbHeaderBuilder>();
-            container.Register<IEsbServiceCache, EsbServiceCache>(Lifestyle.Singleton);
+            container.Register<IMessageQueueClient, MessageQueueClient>();
+            container.Register<IMessageQueueService, MessageQueueService>();
+            container.Register<IMessageBuilder, MessageBuilder>();
+            container.Register<IMessageHeaderBuilder, MessageHeaderBuilder>();
+            container.Register<IMessageServiceCache, MessageServiceCache>(Lifestyle.Singleton);
             container.Register<ICacheRepository, CacheRepository>(Lifestyle.Singleton);
             container.Register<ITraitMessageBuilder, TraitMessageBuilder>();
             container.Register<ISystemListBuilder, SystemListBuilder>();
@@ -60,6 +62,10 @@ namespace Icon.Services.ItemPublisher.Application
             container.Register<IEsbConnectionFactory>(() =>
             {
                 return new EsbConnectionFactory { Settings = EsbConnectionSettings.CreateSettingsFromConfig("QueueName") };
+            });
+            container.Register<IActiveMQConnectionFactory>(() =>
+            {
+                return new ActiveMQConnectionFactory(ActiveMQConnectionSettings.CreateSettingsFromConfig("QueueName"));
             });
             container.Register<IItemPublisherApplication, ItemPublisherApplication>();
             container.Register<ISerializer<items>, SerializerWithoutEncodingType<items>>();

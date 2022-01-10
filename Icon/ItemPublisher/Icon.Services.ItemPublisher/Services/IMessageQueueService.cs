@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace Icon.Services.ItemPublisher.Services
 {
-    public interface IItemProcessor
+    public interface IMessageQueueService
     {
-        Task<List<MessageSendResult>> ProcessNonRetailRecords(List<MessageQueueItemModel> records);
-
-        Task<List<MessageSendResult>> ProcessRetailRecords(List<MessageQueueItemModel> records);
+        Task<MessageSendResult> Process(List<MessageQueueItemModel> records, List<string> nonReceivingSystems);
 
         Task<bool> ReadyForProcessing { get; }
     }
