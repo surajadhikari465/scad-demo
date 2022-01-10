@@ -2,7 +2,7 @@
 
 namespace Icon.ActiveMQ
 {
-    public interface IActiveMQConnection
+    public interface IActiveMQConnection: IDisposable
     {
         string ClientId { get; set; }
         ActiveMQConnectionSettings Settings { get; }

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Transactions;
+using Icon.ActiveMQ.Producer;
 
 namespace Icon.ApiController.Tests.Integration
 {
@@ -31,6 +32,7 @@ namespace Icon.ApiController.Tests.Integration
         private Mock<ICommandHandler<UpdateSentToEsbHierarchyTraitCommand>> mockUpdateSentToEsbHierarchyTraitCommandHandler;
         private Mock<IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool>> mockIsMessageHistoryANonRetailProductMessageQueryHandler;
         private Mock<IEsbProducer> mockProducer;
+        private Mock<IActiveMQProducer> mockActiveMQProducer;
         private ApiControllerSettings settings;
         
         [TestInitialize]
@@ -48,6 +50,7 @@ namespace Icon.ApiController.Tests.Integration
             mockUpdateStagedProductCommandHandler = new Mock<ICommandHandler<UpdateStagedProductStatusCommand>>();
             mockIsMessageHistoryANonRetailProductMessageQueryHandler = new Mock<IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool>>();
             mockProducer = new Mock<IEsbProducer>();
+            mockActiveMQProducer = new Mock<IActiveMQProducer>();
             settings = new ApiControllerSettings();
 
             this.historyProcessor = new MessageHistoryProcessor(
@@ -60,7 +63,8 @@ namespace Icon.ApiController.Tests.Integration
                 mockUpdateSentToEsbHierarchyTraitCommandHandler.Object,
                 mockIsMessageHistoryANonRetailProductMessageQueryHandler.Object,
                 mockProducer.Object,
-                MessageTypes.Product);
+                MessageTypes.Product,
+                mockActiveMQProducer.Object);
         }
 
         [TestCleanup]

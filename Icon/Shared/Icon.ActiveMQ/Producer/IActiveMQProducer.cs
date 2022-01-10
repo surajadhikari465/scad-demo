@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Icon.ActiveMQ.Producer
 {
-    public interface IActiveMQProducer
+    public interface IActiveMQProducer: IActiveMQConnection
     {
         void Send(string message, Dictionary<string, string> messageProperties = null);
 

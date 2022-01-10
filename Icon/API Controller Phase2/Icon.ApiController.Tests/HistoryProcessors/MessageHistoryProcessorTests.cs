@@ -14,6 +14,7 @@ using Icon.Testing.Builders;
 using Icon.Common.DataAccess;
 using Icon.ApiController.Common;
 using Icon.ApiController.Controller.ControllerConstants;
+using Icon.ActiveMQ.Producer;
 
 namespace Icon.ApiController.Tests.HistoryProcessors
 {
@@ -29,6 +30,7 @@ namespace Icon.ApiController.Tests.HistoryProcessors
         private Mock<ICommandHandler<UpdateStagedProductStatusCommand>> mockUpdateStagedProductStatusCommand;
         private Mock<IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool>> mockIsMessageHistoryANonRetailProductMessageQueryHandler;
         private Mock<IEsbProducer> mockProducer;
+        private Mock<IActiveMQProducer> mockActiveMqProducer;
         private ApiControllerSettings settings;
 
         // app config key constants
@@ -48,6 +50,7 @@ namespace Icon.ApiController.Tests.HistoryProcessors
             mockUpdateSentToEsbHierarchyTraitCommand = new Mock<ICommandHandler<UpdateSentToEsbHierarchyTraitCommand>>();
             mockIsMessageHistoryANonRetailProductMessageQueryHandler = new Mock<IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool>>();
             mockProducer = new Mock<IEsbProducer>();
+            mockActiveMqProducer = new Mock<IActiveMQProducer>();
             settings = new ApiControllerSettings();
             mockProducer.Setup(m => m.IsConnected)
                 .Returns(true);
@@ -62,7 +65,8 @@ namespace Icon.ApiController.Tests.HistoryProcessors
                 mockUpdateSentToEsbHierarchyTraitCommand.Object,
                 mockIsMessageHistoryANonRetailProductMessageQueryHandler.Object,
                 mockProducer.Object,
-                MessageTypes.Product);
+                MessageTypes.Product, 
+                mockActiveMqProducer.Object);
         }
 
         [TestMethod]
@@ -185,6 +189,22 @@ namespace Icon.ApiController.Tests.HistoryProcessors
             mockGetMessageHistoryQuery.Setup(q => q.Search(It.IsAny<GetMessageHistoryParameters>())).Returns(fakeQueue.Dequeue);
         }
 
+        protected void SetupMockMessageHistory(int messageTypeId, int messageStatusId, List<MessageHistory>messageHistoryList = null)
+        {
+            const string testMsg = "testMsg";
+            //build the message history data, using any provided parameters
+            var fakeActualMessageHistory = (null == messageHistoryList)
+                ? new List<MessageHistory> { new TestMessageHistoryBuilder().WithMessageTypeId(messageTypeId).WithMessage(testMsg).WithMessageStatusId(messageStatusId) }
+                : messageHistoryList;
+            var fakeEmptyMessageHistory = new List<MessageHistory>();
+            var fakeQueue = new Queue<List<MessageHistory>>();
+            fakeQueue.Enqueue(fakeActualMessageHistory);
+            fakeQueue.Enqueue(fakeEmptyMessageHistory);
+
+            mockGetMessageHistoryQuery = new Mock<IQueryHandler<GetMessageHistoryParameters, List<MessageHistory>>>();
+            mockGetMessageHistoryQuery.Setup(q => q.Search(It.IsAny<GetMessageHistoryParameters>())).Returns(fakeQueue.Dequeue);
+        }
+
         protected void InitMessageHistoryProcessor(ApiControllerSettings settings, int messageTypeId)
         {
             historyProcessor = new MessageHistoryProcessor(
@@ -197,7 +217,8 @@ namespace Icon.ApiController.Tests.HistoryProcessors
               mockUpdateSentToEsbHierarchyTraitCommand.Object,
               mockIsMessageHistoryANonRetailProductMessageQueryHandler.Object,
               mockProducer.Object,
-              messageTypeId);
+              messageTypeId, 
+              mockActiveMqProducer.Object);
         }
 
         protected List<MessageHistory> CreateMessageHistoryForProduct(string itemTypeCode, string testMsg = "testMsg")
@@ -612,5 +633,61 @@ namespace Icon.ApiController.Tests.HistoryProcessors
                     It.Is<Dictionary<string, string>>(dict => dict.ContainsKey(nonReceivingSystemsKey))
                 ), Times.Never);
         }
+
+        [TestMethod]
+        public void HistoryProcessor_Product_WhenMessageStatusSentToEsb_ShouldOnlySendToActiveMq()
+        {
+            // Given.
+            SetupMockMessageHistory(MessageTypes.Product, MessageStatusTypes.SentToEsb);
+
+            settings = new ApiControllerSettings();
+            InitMessageHistoryProcessor(settings, MessageTypes.Product);
+
+            // When.
+            this.historyProcessor.ProcessMessageHistory();
+
+            // Then.
+            // Send only to ActiveMQ and not to ESB
+            mockActiveMqProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            mockProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void HistoryProcessor_Product_WhenMessageStatusSentToActiveMq_ShouldOnlySendToEsb()
+        {
+            // Given.
+            SetupMockMessageHistory(MessageTypes.Product, MessageStatusTypes.SentToActiveMq);
+
+            settings = new ApiControllerSettings();
+            InitMessageHistoryProcessor(settings, MessageTypes.Product);
+
+            // When.
+            this.historyProcessor.ProcessMessageHistory();
+
+            // Then.
+            // Send Only to ESB and not to ActiveMQ
+            mockProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            mockActiveMqProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void HistoryProcessor_Product_WhenMessageStatusReady_ShouldSendToEsbAndActiveMq()
+        {
+            // Given.
+            SetupMockMessageHistory(MessageTypes.Product, MessageStatusTypes.Ready);
+
+            settings = new ApiControllerSettings();
+            InitMessageHistoryProcessor(settings, MessageTypes.Product);
+
+            // When.
+            this.historyProcessor.ProcessMessageHistory();
+
+            // Then.
+            // Send to both ActiveMQ and ESB
+            mockProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            mockActiveMqProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            
+        }
+
     }
 }

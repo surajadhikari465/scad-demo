@@ -6,16 +6,17 @@ using Icon.DbContextFactory;
 using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
+using Icon.ActiveMQ.Producer;
 
 namespace Icon.ApiController.Controller.ControllerBuilders
 {
     public static class BuilderHelpers
     {
-        public static MessageHistoryProcessor BuildMessageHistoryProcessor(string instance, int messageTypeId, IEsbProducer producer, IDbContextFactory<IconContext> iconContextFactory)
+        public static MessageHistoryProcessor BuildMessageHistoryProcessor(string instance, int messageTypeId, IEsbProducer producer, IDbContextFactory<IconContext> iconContextFactory, ActiveMQProducer activeMqProducer = null)
         {
             ApiControllerSettings settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
 
-            var messageHistoryProcessor = new MessageHistoryProcessor(
+            return new MessageHistoryProcessor(
                 settings,
                 new NLogLoggerInstance<MessageHistoryProcessor>(instance),
                 new MarkUnsentMessagesAsInProcessCommandHandler(new NLogLoggerInstance<MarkUnsentMessagesAsInProcessCommandHandler>(instance), iconContextFactory),
@@ -25,9 +26,8 @@ namespace Icon.ApiController.Controller.ControllerBuilders
                 new UpdateSentToEsbHierarchyTraitCommandHandler(new NLogLoggerInstance<UpdateSentToEsbHierarchyTraitCommandHandler>(instance), iconContextFactory),
                 new IsMessageHistoryANonRetailProductMessageQuery(iconContextFactory),
                 producer,
-                messageTypeId);
-
-            return messageHistoryProcessor;
+                messageTypeId,
+                activeMqProducer);
         }
     }
 }

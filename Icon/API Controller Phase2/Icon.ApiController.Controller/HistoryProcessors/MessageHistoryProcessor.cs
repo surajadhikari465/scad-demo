@@ -12,6 +12,7 @@ using System.Configuration;
 using System.Linq;
 using Icon.ApiController.Controller.ControllerConstants;
 using System.Threading;
+using Icon.ActiveMQ.Producer;
 
 namespace Icon.ApiController.Controller.HistoryProcessors
 {
@@ -26,6 +27,7 @@ namespace Icon.ApiController.Controller.HistoryProcessors
         private ICommandHandler<UpdateSentToEsbHierarchyTraitCommand> updateSentToEsbHierarchyTraitCommandHandler;
         private IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool> isMessageHistoryANonRetailProductMessageQueryHandler;
         private IEsbProducer producer;
+        private IActiveMQProducer activeMqProducer;
         private int messageTypeId;
 
         public MessageHistoryProcessor(
@@ -38,7 +40,8 @@ namespace Icon.ApiController.Controller.HistoryProcessors
             ICommandHandler<UpdateSentToEsbHierarchyTraitCommand> updateSentToEsbHierarchyTraitCommandHandler,
             IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool> isMessageHistoryANonRetailProductMessageQueryHandler,
             IEsbProducer producer,
-            int messageTypeId)
+            int messageTypeId,
+            IActiveMQProducer activeMqProducer = null)
         {
             this.settings = settings;
             this.logger = logger;
@@ -50,6 +53,7 @@ namespace Icon.ApiController.Controller.HistoryProcessors
             this.isMessageHistoryANonRetailProductMessageQueryHandler = isMessageHistoryANonRetailProductMessageQueryHandler;
             this.producer = producer;
             this.messageTypeId = messageTypeId;
+            this.activeMqProducer = activeMqProducer;
         }
 
         public void ProcessMessageHistory()
@@ -60,27 +64,28 @@ namespace Icon.ApiController.Controller.HistoryProcessors
 
             while (messagesReadyToSend.Count > 0)
             {
-                bool messageSent;
+                int messageStatusId;
 
                 foreach (var message in messagesReadyToSend)
                 {
-                    try
-                    {
-                        //set message properties
-                        var messageProperties = SetMessageProperties(message);
+                    //set message properties
+                    var messageProperties = SetMessageProperties(message);
 
-                        //send the message
-                        producer.Send(message.Message, messageProperties);
-                        messageSent = true;                    
-                    }
-                    catch (Exception ex)
+                    //send the message
+                    if(messageTypeId == MessageTypes.Product)
                     {
-                        logger.Error(string.Format("Failed to send message {0}.  Error: {1}", message.MessageHistoryId, ex.ToString()));
-                        messageSent = false;
+                        messageStatusId = PublishMessageToEsbAndActiveMq(message, messageProperties);
+                    }
+                    else
+                    {
+                        messageStatusId = PublishMessageToEsb(message, messageProperties);
+                    }
+                    // if failed, puts to sleep
+                    if(messageStatusId != MessageStatusTypes.Sent){
                         Thread.Sleep(30000);
                     }
 
-                    ProcessResponse(messageSent, message);
+                    ProcessResponse(messageStatusId, message);
                 }
 
                 logger.Debug("Ending the main processing loop.  Now preparing to retrieve a new set of unsent messages.");
@@ -187,9 +192,76 @@ namespace Icon.ApiController.Controller.HistoryProcessors
           return messageProperties;
         }
 
-        private void ProcessResponse(bool messageSent, MessageHistory message)
+        // sends message either to ESB or to ActiveMQ or to both based on state
+        private int PublishMessageToEsbAndActiveMq(MessageHistory message, Dictionary<string, string> messageProperties)
         {
-            if (messageSent)
+            int messageStatusId = message.MessageStatusId;
+            bool sentToEsb = false;
+            bool sentToActiveMq = false;
+            if(messageStatusId == MessageStatusTypes.SentToEsb)
+                sentToEsb = true;
+            else if(messageStatusId == MessageStatusTypes.SentToActiveMq)
+                sentToActiveMq = true;
+
+            if(!sentToEsb)
+                sentToEsb = SendToEsb(message, messageProperties);
+            if(!sentToActiveMq)
+                sentToActiveMq = SendToActiveMq(message, messageProperties);
+            
+            if(sentToEsb && sentToActiveMq)
+                return MessageStatusTypes.Sent;
+            else if(sentToEsb && !sentToActiveMq)
+                return MessageStatusTypes.SentToEsb;
+            else if(!sentToEsb && sentToActiveMq)
+                return MessageStatusTypes.SentToActiveMq;
+            else
+                return MessageStatusTypes.Ready;
+        }
+
+        private int PublishMessageToEsb(MessageHistory message, Dictionary<string, string> messageProperties)
+        {
+            bool sent = false;
+            sent = SendToEsb(message, messageProperties);
+            
+            if(sent)
+                return MessageStatusTypes.Sent;
+            else
+                return MessageStatusTypes.Ready;
+        }
+
+        private bool SendToEsb(MessageHistory message, Dictionary<string, string> messageProperties)
+        {
+            bool sent = false;
+            try{
+                producer.Send(message.Message, messageProperties);
+                sent = true;
+            }
+            catch(Exception ex)
+            {
+                logger.Error(string.Format("Failed to send message {0} to ESB.  Error: {1}", message.MessageHistoryId, ex.ToString()));
+                sent = false;
+            }
+            return sent;
+        }
+
+        private bool SendToActiveMq(MessageHistory message, Dictionary<string, string> messageProperties)
+        {
+            bool sent = false;
+            try{
+                activeMqProducer.Send(message.Message, messageProperties);
+                sent = true;
+            }
+            catch(Exception ex)
+            {
+                logger.Error(string.Format("Failed to send message {0} to ActiveMQ.  Error: {1}", message.MessageHistoryId, ex.ToString()));
+                sent = false;
+            }
+            return sent;
+        }
+
+        private void ProcessResponse(int messageStatusId, MessageHistory message)
+        {
+            if (messageStatusId == MessageStatusTypes.Sent)
             {
                 logger.Info(string.Format("Message {0} has been sent successfully.", message.MessageHistoryId));
 
@@ -220,9 +292,21 @@ namespace Icon.ApiController.Controller.HistoryProcessors
                     updateStagedProductStatusCommandHandler.Execute(updateStagedProductStatusCommand);
                 }
             }
+            else if(messageStatusId == MessageStatusTypes.Ready || messageStatusId == message.MessageStatusId)
+            {
+                logger.Error(string.Format("Message {0} failed to send.  The message will remain in existing state for re-processing during the next controller execution.", message.MessageHistoryId));
+            }
             else
             {
-                logger.Error(string.Format("Message {0} failed to send.  The message will remain in Ready state for re-processing during the next controller execution.", message.MessageHistoryId));
+                logger.Error(string.Format("Message {0} has not been sent to one of the two Brokers. It will be resent to that broker during the next controller execution.", message.MessageHistoryId));
+
+                var updateMessageHistoryCommand = new UpdateMessageHistoryStatusCommand<MessageHistory>
+                {
+                    Message = message,
+                    MessageStatusId = messageStatusId
+                };
+
+                updateMessageHistoryCommandHandler.Execute(updateMessageHistoryCommand);
             }
         }
 

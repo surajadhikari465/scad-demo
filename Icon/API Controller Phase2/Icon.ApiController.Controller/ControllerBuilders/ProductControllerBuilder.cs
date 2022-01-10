@@ -14,6 +14,8 @@ using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
+using Icon.ActiveMQ.Producer;
+using Icon.ActiveMQ;
 
 namespace Icon.ApiController.Controller.ControllerBuilders
 {
@@ -29,6 +31,7 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 
             var emailClient = new EmailClient(EmailHelper.BuildEmailClientSettings());
             var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("ItemQueueName"));
+            var activeMqProducer = new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig("ItemQueueName"));
             var settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
             var computedClientId = $"{settings.Source}ApiController.Type-{settings.ControllerType}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
             var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
@@ -37,9 +40,13 @@ namespace Icon.ApiController.Controller.ControllerBuilders
             producer.OpenConnection(clientId);
             baseLogger.Info("ESB Connection Opened");
 
+            baseLogger.Info("Opening ActiveMQ Connection");
+            activeMqProducer.OpenConnection(clientId);
+            baseLogger.Info("ActiveMQ Connection Opened");
+
             IconDbContextFactory iconContextFactory = new IconDbContextFactory();
 
-            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Product, producer, iconContextFactory);
+            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Product, producer, iconContextFactory, activeMqProducer);
 
             var queueProcessorLogger = new NLogLoggerInstance<ProductQueueProcessor>(instance);
             var serializer = new Serializer<Contracts.items>(
@@ -90,7 +97,8 @@ namespace Icon.ApiController.Controller.ControllerBuilders
                 updateMessageQueueStatusCommandHandler,
                 markQueuedEntriesAsInProcessCommandHandler,
                 producer,
-                monitor);
+                monitor,
+                activeMqProducer);
 
             return new ApiControllerBase(baseLogger, emailClient, messageHistoryProcessor, productQueueProcessor, producer);
         }

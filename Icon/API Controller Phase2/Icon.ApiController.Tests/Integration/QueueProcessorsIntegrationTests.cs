@@ -22,6 +22,8 @@ using System.Data.Entity;
 using System.Linq;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 using System.Transactions;
+using Icon.ActiveMQ;
+using Icon.ActiveMQ.Producer;
 
 namespace Icon.ApiController.Tests.Integration
 {
@@ -33,6 +35,7 @@ namespace Icon.ApiController.Tests.Integration
         private TransactionScope transaction;
         private IconDbContextFactory iconContextFactory;
         private Mock<IEsbProducer> mockProducer;
+        private Mock<IActiveMQProducer> mockActiveMqProducer;
 
         [TestInitialize]
         public void Initialize()
@@ -43,6 +46,7 @@ namespace Icon.ApiController.Tests.Integration
             iconContextFactory = new IconDbContextFactory();
 
             mockProducer = new Mock<IEsbProducer>();
+            mockActiveMqProducer = new Mock<IActiveMQProducer>();
             settings = new ApiControllerSettings();
         }
 
@@ -89,6 +93,7 @@ namespace Icon.ApiController.Tests.Integration
             var mockUomMapper = new Mock<IUomMapper>();
 
             mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockGetMessageQueueQuery.Setup(q => q.Search(It.IsAny<GetMessageQueueParameters<MessageQueueProduct>>())).Returns(fakeMessageQueue.Dequeue);
 
             var serializer = new Serializer<Contracts.items>(mockSerializerLogger.Object, mockEmailClient.Object);
@@ -119,7 +124,8 @@ namespace Icon.ApiController.Tests.Integration
                 updateMessageQueueStatusCommandHandler,
                 mockMarkMessagesAsInProcessCommand.Object,
                 mockProducer.Object,
-                mockMonitor.Object);
+                mockMonitor.Object,
+                mockActiveMqProducer.Object);
 
             // When.
             productQueueProcessor.ProcessMessageQueue();
@@ -183,6 +189,7 @@ namespace Icon.ApiController.Tests.Integration
             var mockUomMapper = new Mock<IUomMapper>();
 
             mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockGetMessageQueueQuery.Setup(q => q.Search(It.IsAny<GetMessageQueueParameters<MessageQueueProduct>>())).Returns(fakeMessageQueue.Dequeue);
 
             var serializer = new Serializer<Contracts.items>(mockSerializerLogger.Object, mockEmailClient.Object);
@@ -213,7 +220,8 @@ namespace Icon.ApiController.Tests.Integration
                 updateMessageQueueStatusCommandHandler,
                 mockMarkMessagesAsInProcessCommand.Object,
                 mockProducer.Object,
-                mockMonitor.Object);
+                mockMonitor.Object,
+                mockActiveMqProducer.Object);
 
             // When.
             productQueueProcessor.ProcessMessageQueue();

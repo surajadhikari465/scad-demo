@@ -20,7 +20,7 @@ namespace Icon.ActiveMQ.Tests.Factory
 
             // CreateProducer(clientId, openConnection) Method
             ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(ActiveMQConnectionSettings.CreateSettingsFromConfig());
-            producer = factory.CreateProducer("ClientID");
+            producer = (ActiveMQProducer) factory.CreateProducer("ClientID");
             Assert.IsNotNull(producer);
             producer.Dispose();
         }
@@ -31,7 +31,7 @@ namespace Icon.ActiveMQ.Tests.Factory
             ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(ActiveMQConnectionSettings.CreateSettingsFromConfig());
 
             // openConnection parameter is True, it should create Connection
-            ActiveMQProducer producer = factory.CreateProducer("ClientID", true);
+            ActiveMQProducer producer = (ActiveMQProducer) factory.CreateProducer("ClientID", true);
             Assert.IsTrue(producer.IsConnected);
             producer.Dispose();
         }
@@ -42,7 +42,7 @@ namespace Icon.ActiveMQ.Tests.Factory
             ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(ActiveMQConnectionSettings.CreateSettingsFromConfig());
 
             // openConnection parameter is false, it should not create connection
-            ActiveMQProducer producer = factory.CreateProducer("ClientID", false);
+            ActiveMQProducer producer = (ActiveMQProducer) factory.CreateProducer("ClientID", false);
             Assert.IsFalse(producer.IsConnected);
             producer.Dispose();
         }

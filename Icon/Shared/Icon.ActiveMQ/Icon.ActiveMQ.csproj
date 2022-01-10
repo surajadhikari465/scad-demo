@@ -79,11 +79,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Apache.NMS.ActiveMQ" Version="1.8.0" />
+    <PackageReference Include="Icon.Common" Version="2020.11.11.4" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Common.2020.11.11.4\lib\net472\Icon.Common.dll</HintPath>
-    </Reference>
     <Reference Include="System.Configuration" />
   </ItemGroup>
 </Project>

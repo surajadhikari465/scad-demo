@@ -84,14 +84,23 @@
     <OutputPath>bin\QA1\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Apache.NMS, Version=1.8.0.0, Culture=neutral, PublicKeyToken=82756feee3957618, processorArchitecture=MSIL">
+      <HintPath>..\packages\Apache.NMS.1.8.0\lib\net40\Apache.NMS.dll</HintPath>
+    </Reference>
+    <Reference Include="Apache.NMS.ActiveMQ, Version=1.8.0.0, Culture=neutral, PublicKeyToken=82756feee3957618, processorArchitecture=MSIL">
+      <HintPath>..\packages\Apache.NMS.ActiveMQ.1.8.0\lib\net40\Apache.NMS.ActiveMQ.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Icon.ActiveMQ, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.ActiveMQ.2021.12.20.1\lib\net472\Icon.ActiveMQ.dll</HintPath>
+    </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Common.2019.12.18.1\lib\net472\Icon.Common.dll</HintPath>
+      <HintPath>..\packages\Icon.Common.2020.11.11.4\lib\net472\Icon.Common.dll</HintPath>
     </Reference>
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.DbContextFactory.2019.5.22.1\lib\net472\Icon.DbContextFactory.dll</HintPath>
@@ -100,13 +109,13 @@
       <HintPath>..\packages\Icon.Esb.2020.12.11.1\lib\net472\Icon.Esb.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2019.7.4.2\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2020.5.12.3\lib\net472\Icon.Esb.Schemas.Wfm.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm.PreGpm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.Schemas.Wfm.PreGpm.2019.1.30.1\lib\net46\Icon.Esb.Schemas.Wfm.PreGpm.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2019.12.6.1\lib\net472\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2021.12.14.1\lib\net472\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -134,6 +143,7 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
