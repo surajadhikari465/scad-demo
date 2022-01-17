@@ -42,6 +42,7 @@ const orderUtil = {
       EInvId: order.einvoiceID,
       EInvRequired: order.einvoiceRequired,
       ItemLoaded: orderItem.item_Key,
+      QuantityChanged: false,
       CurrencyId: order.currencyID,
       InvoiceDate: order.invoiceDate,
       VendorDocDate: order.vendorDocDate,

@@ -16,6 +16,7 @@ export interface OrderDetails {
   Vendor: string;
   VendorId: string;
   OrderItemId: number;
+  QuantityChanged: boolean;
   PkgWeight: number;
   PkgQuantity: number;
   OrderUom: string;

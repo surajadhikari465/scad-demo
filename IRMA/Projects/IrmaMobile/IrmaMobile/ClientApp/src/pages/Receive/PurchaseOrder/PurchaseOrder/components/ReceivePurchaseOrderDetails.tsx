@@ -64,6 +64,10 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight, setCost
 
     useEffect(() => {
         if (orderDetails && orderDetails.ItemLoaded) {
+            if (!orderDetails.QtyReceived && !orderDetails.QuantityChanged && orderDetails.EInvQty > 0) {
+                setQuantity(orderDetails.EInvQty);
+            }
+            
             if (costedByWeight) {
                 if (orderDetails.CatchweightRequired) {
                     setCatchweightWarning(true);
@@ -91,6 +95,12 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight, setCost
             setWeight(data.value);
         }
     }
+
+    const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
+        setQuantity(parseInt(data.value));
+        if (orderDetails)
+            orderDetails.QuantityChanged = true;
+}    
 
     const handleDropdownChange = (
         event: SyntheticEvent<HTMLElement, Event>,
@@ -368,7 +378,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight, setCost
                                                 name="Quantity"                               
                                                 onFocus={() => setInputHasFocus(true)}
                                                 onBlur={() => setInputHasFocus(false)}
-                                                onChange={(e) => setQuantity(parseInt(e.target.value))}
+                                                onChange={handleQuantityChange}
                                                   onKeyPress={validateIntegerInput}
                                                 onKeyDown={(e: any) => e.key === 'Enter' ? e.target.blur() : ''}
                                                 value={orderDetails?.ItemLoaded ? quantity : ''} 
@@ -475,7 +485,7 @@ const ReceivePurchaseOrderDetails: React.FC<IProps> = ({ costedByWeight, setCost
                                             </div>
                                         </Grid.Column>
                                     </Grid.Row>
-                                    <Grid.Row style={{ backgroundColor: '#86D770' }}>
+                                    <Grid.Row style={orderDetails.EInvQty > 0 ? { backgroundColor: '#86D770' } : { backgroundColor: '#f0f0f0' }}>
                                         <Grid.Column
                                             verticalAlign="middle"
                                             width={8}
