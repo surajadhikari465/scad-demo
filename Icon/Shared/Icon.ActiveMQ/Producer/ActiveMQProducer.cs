@@ -52,8 +52,8 @@ namespace Icon.ActiveMQ.Producer
                     textMessage.Properties.SetString(property.Key, property.Value);
                 }
             }
-            // The messages are retained in the Broker for 30 days if no consumer consumes them
-            textMessage.NMSTimeToLive = TimeSpan.FromDays(30);
+            // The messages are retained in the Broker for 12 hours if no consumer consumes them
+            textMessage.NMSTimeToLive = TimeSpan.FromHours(12);
 
             VerifyConnectionAndGracefullyReconnect();
             Retry<Exception>(() => {
