@@ -148,7 +148,8 @@ namespace Icon.ApiController.Tests.HistoryProcessors
                 mockUpdateSentToEsbHierarchyTraitCommand.Object,
                 mockIsMessageHistoryANonRetailProductMessageQueryHandler.Object,
                 mockProducer.Object,
-                MessageTypes.Hierarchy);
+                MessageTypes.Hierarchy,
+                mockActiveMqProducer.Object);
 
             var fakeMessageHistory = new List<MessageHistory>
             {
@@ -163,12 +164,14 @@ namespace Icon.ApiController.Tests.HistoryProcessors
 
             mockGetMessageHistoryQuery.Setup(q => q.Search(It.IsAny<GetMessageHistoryParameters>())).Returns(fakeMessageHistoryQueue.Dequeue);
             mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
 
             // When.
             this.historyProcessor.ProcessMessageHistory();
 
             // Then.
             mockProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            mockActiveMqProducer.Verify(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
             mockUpdateSentToEsbHierarchyTraitCommand.Verify(m => m.Execute(It.IsAny<UpdateSentToEsbHierarchyTraitCommand>()), Times.Once);
             mockUpdateStagedProductStatusCommand.Verify(m => m.Execute(It.IsAny<UpdateStagedProductStatusCommand>()), Times.Once);
         }

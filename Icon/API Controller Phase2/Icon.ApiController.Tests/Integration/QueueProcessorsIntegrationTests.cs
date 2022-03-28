@@ -674,6 +674,9 @@ namespace Icon.ApiController.Tests.Integration
                 TestHelpers.GetFakeMessageQueueHierarchy(2, "Segment", true)
             };
 
+            // Both messages should have different HierarchyClassId
+            fakeMessageQueueHierarchies[1].HierarchyClassId = "124";
+
             var fakeEmptyMessageQueueHierarchies = new List<MessageQueueHierarchy>();
 
             var fakeMessageQueue = new Queue<List<MessageQueueHierarchy>>();
@@ -699,6 +702,8 @@ namespace Icon.ApiController.Tests.Integration
             var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueHierarchy>, List<MessageQueueHierarchy>>>();
 
             mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+
             mockGetMessageQueueQuery.Setup(q => q.Search(It.IsAny<GetMessageQueueParameters<MessageQueueHierarchy>>())).Returns(fakeMessageQueue.Dequeue);
 
             var queueReader = new HierarchyQueueReader(
@@ -732,7 +737,8 @@ namespace Icon.ApiController.Tests.Integration
                 mockUpdateSentToEsbHierarchyTraitCommandHandler.Object,
                 new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueHierarchy>(mockMarkQueuedEntriesAsInProcess.Object, iconContextFactory),
                 mockProducer.Object,
-                mockMonitor.Object);
+                mockMonitor.Object,
+                mockActiveMqProducer.Object);
 
             // When.
             hierarchyQueueProcessor.ProcessMessageQueue();

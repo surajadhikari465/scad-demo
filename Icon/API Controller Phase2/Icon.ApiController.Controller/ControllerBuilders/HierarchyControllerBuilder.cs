@@ -12,6 +12,8 @@ using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
+using Icon.ActiveMQ;
+using Icon.ActiveMQ.Producer;
 
 namespace Icon.ApiController.Controller.ControllerBuilders
 {
@@ -27,6 +29,7 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 
             var emailClient = new EmailClient(EmailHelper.BuildEmailClientSettings());
             var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("HierarchyQueueName"));
+            var activeMqProducer = new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig("HierarchyQueueName"));
             var settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
             var computedClientId = $"{settings.Source}ApiController.Type-{settings.ControllerType}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
             var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
@@ -37,6 +40,10 @@ namespace Icon.ApiController.Controller.ControllerBuilders
             baseLogger.Info("Opening ESB Connection");
             producer.OpenConnection(clientId);
             baseLogger.Info("ESB Connection Opened");
+
+            baseLogger.Info("Opening ActiveMQ Connection");
+            activeMqProducer.OpenConnection(clientId);
+            baseLogger.Info("ActiveMQ Connection Opened");
 
             var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Hierarchy, producer, iconContextFactory);
 
@@ -92,7 +99,8 @@ namespace Icon.ApiController.Controller.ControllerBuilders
                 updateSentToEsbHierarchyTraitCommandHandler,
                 markQueuedEntriesAsInProcessCommandHandler,
                 producer,
-                monitor);
+                monitor,
+                activeMqProducer);
 
             return new ApiControllerBase(baseLogger, emailClient, messageHistoryProcessor, hierarchyQueueProcessor, producer);
         }

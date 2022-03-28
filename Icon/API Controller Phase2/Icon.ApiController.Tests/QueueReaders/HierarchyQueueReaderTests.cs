@@ -152,6 +152,8 @@ namespace Icon.ApiController.Tests.QueueReaders
                 TestHelpers.GetFakeMessageQueueHierarchy(1, "Brick", true),
                 TestHelpers.GetFakeMessageQueueHierarchy(1, "Brick", true)
             };
+            // Both messages should have different HierarchyClassId
+            fakeMessageQueueHierarchies[1].HierarchyClassId = "124";
 
             // When.
             var messages = queueReader.GroupMessagesForMiniBulk(fakeMessageQueueHierarchies);

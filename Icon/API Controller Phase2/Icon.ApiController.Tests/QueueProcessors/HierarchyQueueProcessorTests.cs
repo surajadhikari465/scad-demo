@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
+using Icon.ActiveMQ.Producer;
 
 namespace Icon.ApiController.Tests.QueueProcessors
 {
@@ -37,6 +38,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
         private Mock<ICommandHandler<UpdateStagedProductStatusCommand>> mockUpdateStagedProductStatusCommandHandler;
         private Mock<ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueueHierarchy>>> mockMarkQueuedEntriesAsInProcessCommandHandler;
         private Mock<IEsbProducer> mockProducer;
+        private Mock<IActiveMQProducer> mockActiveMqProducer;
         private ApiControllerSettings settings;
         private Mock<IMessageProcessorMonitor> mockMonitor;
         private APIMessageProcessorLogEntry actualMonitorLogEntry;
@@ -50,7 +52,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockSerializer = new Mock<ISerializer<Contracts.HierarchyType>>();
             mockGetFinancialClassesQueryHandler = new Mock<IQueryHandler<GetFinancialHierarchyClassesParameters, List<HierarchyClass>>>();
             mockSaveXmlMessageCommandHandler = new Mock<ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>>>();
-            mockAssociateMessageToQueueCommandHandler = new Mock<ICommandHandler<AssociateMessageToQueueCommand<MessageQueueHierarchy, MessageHistory>>> ();
+            mockAssociateMessageToQueueCommandHandler = new Mock<ICommandHandler<AssociateMessageToQueueCommand<MessageQueueHierarchy, MessageHistory>>>();
             mockSetProcessedDateCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueProcessedDateCommand<MessageQueueHierarchy>>>();
             mockUpdateMessageHistoryCommandHandler = new Mock<ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>>>();
             mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueHierarchy>>>();
@@ -58,6 +60,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockUpdateStagedProductStatusCommandHandler = new Mock<ICommandHandler<UpdateStagedProductStatusCommand>>();
             mockMarkQueuedEntriesAsInProcessCommandHandler = new Mock<ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueueHierarchy>>>();
             mockProducer = new Mock<IEsbProducer>();
+            mockActiveMqProducer = new Mock<IActiveMQProducer>();
             mockMonitor = new Mock<IMessageProcessorMonitor>();
             actualMonitorLogEntry = new APIMessageProcessorLogEntry();
             //set up the mock's RecordResults() method with a callback so that we can examine the data passed to it
@@ -81,7 +84,8 @@ namespace Icon.ApiController.Tests.QueueProcessors
                 mockUpdatePublishedHierarchyTraitCommandHandler.Object,
                 mockMarkQueuedEntriesAsInProcessCommandHandler.Object,
                 mockProducer.Object,
-                mockMonitor.Object);
+                mockMonitor.Object,
+                mockActiveMqProducer.Object);
         }
 
         [TestMethod]
@@ -193,6 +197,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueHierarchy>>())).Returns(new Contracts.HierarchyType { @class = new Contracts.HierarchyClassType[] { new Contracts.HierarchyClassType { id = "1" } } });
             mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.HierarchyType>(), It.IsAny<TextWriter>())).Returns("Test");
             mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
 
             // When.
             queueProcessor.ProcessMessageQueue();
@@ -217,6 +222,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueHierarchy>>())).Returns(new Contracts.HierarchyType { id = Hierarchies.Tax, name = HierarchyNames.Tax, @class = new Contracts.HierarchyClassType[] { new Contracts.HierarchyClassType { id = Hierarchies.Tax.ToString(), name = HierarchyNames.Tax } } });
             mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.HierarchyType>(), It.IsAny<TextWriter>())).Returns("Test");
             mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
 
             // When.
             queueProcessor.ProcessMessageQueue();
@@ -255,6 +261,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
                 .Returns(new Contracts.HierarchyType { @class = new Contracts.HierarchyClassType[] { new Contracts.HierarchyClassType { id = "1" } } });
             mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.HierarchyType>(), It.IsAny<TextWriter>())).Returns("Test");
             mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
 
             // When.
             queueProcessor.ProcessMessageQueue();
@@ -296,6 +303,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
                 .Returns(messageQueue.Count > 3 && !sequenceIndicesToFailSerialization.Contains(3) ? "Test4" : null)
                 .Returns(messageQueue.Count > 4 && !sequenceIndicesToFailSerialization.Contains(4) ? "Test5" : null);
             mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
         }
 
         [TestMethod]
@@ -323,7 +331,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
             Assert.IsNotNull(actualMonitorLogEntry.EndTime);
             Assert.IsTrue(actualMonitorLogEntry.EndTime >= actualMonitorLogEntry.StartTime);
         }
-        
+
         [TestMethod]
         public void ProcessQueuedHierarchyEvents_WhenSerializationErrorForOne_ShouldCallJobMonitor_WithExpectedValues()
         {
@@ -374,6 +382,144 @@ namespace Icon.ApiController.Tests.QueueProcessors
             Assert.IsNotNull(actualMonitorLogEntry.StartTime);
             Assert.IsNotNull(actualMonitorLogEntry.EndTime);
             Assert.IsTrue(actualMonitorLogEntry.EndTime >= actualMonitorLogEntry.StartTime);
+        }
+
+        [TestMethod]
+        public void ProcessQueuedHierarchyEvents_WhenSendingEsbFailActiveMqSucceeds_MessageStatusShouldBeSentToActiveMq()
+        {
+            // Given.
+            var fakeMessageQueueHierarchys = new List<MessageQueueHierarchy> { TestHelpers.GetFakeMessageQueueHierarchy(1, "Test1", true) };
+            var fakeMessageQueueHierarchysEmpty = new List<MessageQueueHierarchy>();
+
+            var queuedMessages = new Queue<List<MessageQueueHierarchy>>();
+            queuedMessages.Enqueue(fakeMessageQueueHierarchys);
+            queuedMessages.Enqueue(fakeMessageQueueHierarchysEmpty);
+
+            mockQueueReader.Setup(qr => qr.GetQueuedMessages()).Returns(queuedMessages.Dequeue);
+            mockQueueReader.Setup(qr => qr.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueueHierarchy>>())).Returns(fakeMessageQueueHierarchys);
+            mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueHierarchy>>()))
+                .Returns(new Contracts.HierarchyType { @class = new Contracts.HierarchyClassType[] { new Contracts.HierarchyClassType { id = "1" } } });
+            mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.HierarchyType>(), It.IsAny<TextWriter>())).Returns("Test");
+            mockMonitor.Setup(m => m.RecordResults(It.IsAny<APIMessageProcessorLogEntry>()));
+
+            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new Exception());
+
+            mockUpdateMessageHistoryCommandHandler.Setup(
+                u => u.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>())
+            ).Callback<UpdateMessageHistoryStatusCommand<MessageHistory>>(
+                (UpdateMessageHistoryStatusCommand<MessageHistory> cmd) =>
+                {
+                    // Checks if message status is SentToActiveMq
+                    Assert.AreEqual(cmd.MessageStatusId, MessageStatusTypes.SentToActiveMq);
+                }
+            );
+
+            // When.
+            queueProcessor.ProcessMessageQueue();
+        }
+
+        [TestMethod]
+        public void ProcessQueuedHierarchyEvents_WhenSendingActiveMqFailEsbSucceeds_MessageStatusShouldBeSentToEsb()
+        {
+            // Given.
+            var fakeMessageQueueHierarchys = new List<MessageQueueHierarchy> { TestHelpers.GetFakeMessageQueueHierarchy(1, "Test1", true) };
+            var fakeMessageQueueHierarchysEmpty = new List<MessageQueueHierarchy>();
+
+            var queuedMessages = new Queue<List<MessageQueueHierarchy>>();
+            queuedMessages.Enqueue(fakeMessageQueueHierarchys);
+            queuedMessages.Enqueue(fakeMessageQueueHierarchysEmpty);
+
+            mockQueueReader.Setup(qr => qr.GetQueuedMessages()).Returns(queuedMessages.Dequeue);
+            mockQueueReader.Setup(qr => qr.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueueHierarchy>>())).Returns(fakeMessageQueueHierarchys);
+            mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueHierarchy>>()))
+                .Returns(new Contracts.HierarchyType { @class = new Contracts.HierarchyClassType[] { new Contracts.HierarchyClassType { id = "1" } } });
+            mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.HierarchyType>(), It.IsAny<TextWriter>())).Returns("Test");
+            mockMonitor.Setup(m => m.RecordResults(It.IsAny<APIMessageProcessorLogEntry>()));
+
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new Exception());
+
+            mockUpdateMessageHistoryCommandHandler.Setup(
+                u => u.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>())
+            ).Callback<UpdateMessageHistoryStatusCommand<MessageHistory>>(
+                (UpdateMessageHistoryStatusCommand<MessageHistory> cmd) =>
+                {
+                    // Checks if message status is SentToActiveMq
+                    Assert.AreEqual(cmd.MessageStatusId, MessageStatusTypes.SentToEsb);
+                }
+            );
+
+            // When.
+            queueProcessor.ProcessMessageQueue();
+        }
+
+        [TestMethod]
+        public void ProcessQueuedHierarchyEvents_WhenSendingEsbAndActiveMqFail_MessageStatusShouldBeReady()
+        {
+            // Given.
+            var fakeMessageQueueHierarchys = new List<MessageQueueHierarchy> { TestHelpers.GetFakeMessageQueueHierarchy(1, "Test1", true) };
+            var fakeMessageQueueHierarchysEmpty = new List<MessageQueueHierarchy>();
+
+            var queuedMessages = new Queue<List<MessageQueueHierarchy>>();
+            queuedMessages.Enqueue(fakeMessageQueueHierarchys);
+            queuedMessages.Enqueue(fakeMessageQueueHierarchysEmpty);
+
+            mockQueueReader.Setup(qr => qr.GetQueuedMessages()).Returns(queuedMessages.Dequeue);
+            mockQueueReader.Setup(qr => qr.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueueHierarchy>>())).Returns(fakeMessageQueueHierarchys);
+            mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueHierarchy>>()))
+                .Returns(new Contracts.HierarchyType { @class = new Contracts.HierarchyClassType[] { new Contracts.HierarchyClassType { id = "1" } } });
+            mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.HierarchyType>(), It.IsAny<TextWriter>())).Returns("Test");
+            mockMonitor.Setup(m => m.RecordResults(It.IsAny<APIMessageProcessorLogEntry>()));
+
+            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new Exception());
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new Exception());
+
+            mockUpdateMessageHistoryCommandHandler.Setup(
+                u => u.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>())
+            ).Callback<UpdateMessageHistoryStatusCommand<MessageHistory>>(
+                (UpdateMessageHistoryStatusCommand<MessageHistory> cmd) =>
+                {
+                // Checks if message status is SentToActiveMq
+                Assert.AreEqual(cmd.MessageStatusId, MessageStatusTypes.Ready);
+                }
+            );
+
+            // When.
+            queueProcessor.ProcessMessageQueue();
+        }
+
+        [TestMethod]
+        public void ProcessQueuedHierarchyEvents_WhenSendingEsbAndActiveMqSucceeds_MessageStatusShouldBeSent()
+        {
+            // Given.
+            var fakeMessageQueueHierarchys = new List<MessageQueueHierarchy> { TestHelpers.GetFakeMessageQueueHierarchy(1, "Test1", true) };
+            var fakeMessageQueueHierarchysEmpty = new List<MessageQueueHierarchy>();
+
+            var queuedMessages = new Queue<List<MessageQueueHierarchy>>();
+            queuedMessages.Enqueue(fakeMessageQueueHierarchys);
+            queuedMessages.Enqueue(fakeMessageQueueHierarchysEmpty);
+
+            mockQueueReader.Setup(qr => qr.GetQueuedMessages()).Returns(queuedMessages.Dequeue);
+            mockQueueReader.Setup(qr => qr.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueueHierarchy>>())).Returns(fakeMessageQueueHierarchys);
+            mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueHierarchy>>()))
+                .Returns(new Contracts.HierarchyType { @class = new Contracts.HierarchyClassType[] { new Contracts.HierarchyClassType { id = "1" } } });
+            mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.HierarchyType>(), It.IsAny<TextWriter>())).Returns("Test");
+            mockMonitor.Setup(m => m.RecordResults(It.IsAny<APIMessageProcessorLogEntry>()));
+
+            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+
+            mockUpdateMessageHistoryCommandHandler.Setup(
+                u => u.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>())
+            ).Callback<UpdateMessageHistoryStatusCommand<MessageHistory>>(
+                (UpdateMessageHistoryStatusCommand<MessageHistory> cmd) =>
+                {
+                    // Checks if message status is SentToActiveMq
+                    Assert.AreEqual(cmd.MessageStatusId, MessageStatusTypes.Sent);
+                }
+            );
+
+            // When.
+            queueProcessor.ProcessMessageQueue();
         }
     }
 }
