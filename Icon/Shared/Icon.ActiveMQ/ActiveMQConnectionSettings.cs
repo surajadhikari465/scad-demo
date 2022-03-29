@@ -23,13 +23,13 @@ namespace Icon.ActiveMQ
         /// <summary>
         /// Fills the class attributes using app.config values
         /// </summary>
-        /// <param name="destinationConfigName">Queue/Topic key name in app.config: Default to "QueueName"</param>
-        public void LoadFromConfig(string destinationConfigName = "QueueName")
+        /// <param name="destinationConfigName">Queue/Topic key name in app.config: Default to "ActiveMqQueueName"</param>
+        public void LoadFromConfig(string destinationConfigName = "ActiveMqQueueName")
         {
             ServerUrl = AppSettingsAccessor.GetStringSetting("ActiveMqServerUrl", false);
             JmsUsername = AppSettingsAccessor.GetStringSetting("ActiveMqJmsUsername", false);
             JmsPassword = AppSettingsAccessor.GetStringSetting("ActiveMqJmsPassword", false);
-            QueueName = AppSettingsAccessor.GetStringSetting("ActiveMq" + destinationConfigName, false);
+            QueueName = AppSettingsAccessor.GetStringSetting(destinationConfigName, false);
             DestinationType = AppSettingsAccessor.GetStringSetting("DestinationType", false);
             ReconnectDelay = AppSettingsAccessor.GetIntSetting("ActiveMqReconnectDelay", false);
             SessionMode = AppSettingsAccessor.GetEnumSetting<AcknowledgementMode>("ActiveMqSessionMode", false);

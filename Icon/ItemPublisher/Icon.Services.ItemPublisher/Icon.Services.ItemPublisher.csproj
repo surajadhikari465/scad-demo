@@ -73,7 +73,7 @@
       <HintPath>..\packages\Esb.Core.2019.7.1.5\lib\net46\Esb.Core.dll</HintPath>
     </Reference>
     <Reference Include="Icon.ActiveMQ, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.ActiveMQ.2022.2.7.2\lib\net472\Icon.ActiveMQ.dll</HintPath>
+      <HintPath>..\packages\Icon.ActiveMQ.2022.3.28.6\lib\net472\Icon.ActiveMQ.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Common.2020.11.11.4\lib\net472\Icon.Common.dll</HintPath>

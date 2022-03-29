@@ -29,7 +29,7 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 
             var emailClient = new EmailClient(EmailHelper.BuildEmailClientSettings());
             var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("HierarchyQueueName"));
-            var activeMqProducer = new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig("HierarchyQueueName"));
+            var activeMqProducer = new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig("ActiveMqHierarchyQueueName"));
             var settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
             var computedClientId = $"{settings.Source}ApiController.Type-{settings.ControllerType}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
             var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));

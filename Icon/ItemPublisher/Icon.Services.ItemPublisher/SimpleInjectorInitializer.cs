@@ -65,7 +65,7 @@ namespace Icon.Services.ItemPublisher.Application
             });
             container.Register<IActiveMQConnectionFactory>(() =>
             {
-                return new ActiveMQConnectionFactory(ActiveMQConnectionSettings.CreateSettingsFromConfig("QueueName"));
+                return new ActiveMQConnectionFactory(ActiveMQConnectionSettings.CreateSettingsFromConfig("ActiveMqQueueName"));
             });
             container.Register<IItemPublisherApplication, ItemPublisherApplication>();
             container.Register<ISerializer<items>, SerializerWithoutEncodingType<items>>();
