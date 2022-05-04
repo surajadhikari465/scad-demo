@@ -27,6 +27,11 @@ BEGIN
 	IF NOT EXISTS (SELECT 1 FROM esb.MessageStatus WHERE MessageStatusName = 'Consumed')
 		INSERT INTO esb.MessageStatus(MessageStatusId, MessageStatusName) VALUES	(6, 'Consumed')
 	
+	IF NOT EXISTS (SELECT 1 FROM esb.MessageStatus WHERE MessageStatusName = 'SentToEsb')
+		INSERT INTO esb.MessageStatus(MessageStatusId, MessageStatusName) VALUES	(7, 'SentToEsb')
+
+	IF NOT EXISTS (SELECT 1 FROM esb.MessageStatus WHERE MessageStatusName = 'SentToActiveMq')
+		INSERT INTO esb.MessageStatus(MessageStatusId, MessageStatusName) VALUES	(8, 'SentToActiveMq')
 
 	SET IDENTITY_INSERT esb.MessageStatus OFF
 	insert into app.PostDeploymentScriptHistory values(@scriptKey, getdate())

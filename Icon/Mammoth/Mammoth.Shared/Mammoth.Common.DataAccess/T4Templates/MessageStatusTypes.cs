@@ -17,5 +17,7 @@ namespace Mammoth.Common.DataAccess
         public const int Associated = 4;
         public const int Staged = 5;
         public const int Consumed = 6;
+        public const int SentToEsb = 7;
+        public const int SentToActiveMq = 8;
 	}
 }
