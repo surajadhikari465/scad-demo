@@ -2,8 +2,8 @@
 using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
-using Icon.Common.Context;
 using Icon.Common.DataAccess;
+using Icon.ActiveMQ.Producer;
 using Icon.Esb.Producer;
 using Icon.Logging;
 using Mammoth.Common.DataAccess;
@@ -27,7 +27,8 @@ namespace Mammoth.ApiController.QueueProcessors
             ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>> updateMessageHistoryCommandHandler,
             ICommandHandler<UpdateMessageQueueStatusCommand<TMessageQueue>> updateMessageQueueStatusCommandHandler,
             ICommandHandler<MarkQueuedEntriesAsInProcessCommand<TMessageQueue>> markQueuedEntriesAsInProcessCommandHandler,
-            IEsbProducer producer,
+            IEsbProducer esbProducer,
+            IActiveMQProducer activeMqProducer,
             ApiControllerSettings settings)
             : base(logger, 
                   queueReader, 
@@ -38,7 +39,8 @@ namespace Mammoth.ApiController.QueueProcessors
                   updateMessageHistoryCommandHandler,
                   updateMessageQueueStatusCommandHandler,
                   markQueuedEntriesAsInProcessCommandHandler,
-                  producer)
+                  esbProducer,
+                  activeMqProducer)
         {
             this.settings = settings;   
         }
@@ -65,19 +67,54 @@ namespace Mammoth.ApiController.QueueProcessors
             return messageHistory.MessageHistoryId.ToString();
         }
 
-        protected override bool PublishMessage(MessageHistory messageHistory)
+        protected override int PublishMessage(MessageHistory messageHistory)
         {
-            logger.Info(string.Format("Preparing to send message {0}.", messageHistory.MessageHistoryId));
+            int messageStatus;
+            bool sentToEsb = true, sentToActiveMq = true;
 
+            logger.Info(string.Format("Preparing to send message {0}.", messageHistory.MessageHistoryId));
+            esbMessageProperties["IconMessageID"] = messageHistory.MessageHistoryId.ToString();
+
+            if(messageHistory.MessageStatusId != MessageStatusTypes.SentToEsb)
+                sentToEsb = PublishMessageToEsb(messageHistory);
+            if(messageHistory.MessageStatusId != MessageStatusTypes.SentToActiveMq)
+                sentToActiveMq = PublishMessageToActiveMq(messageHistory);
+
+            if (sentToEsb && sentToActiveMq)
+                messageStatus = messageSentStatusId;
+            else if (sentToEsb && !sentToActiveMq)
+                messageStatus = messageSentToEsbStatusId;
+            else if (!sentToEsb && sentToActiveMq)
+                messageStatus = messageSentToActiveMqStatusId;
+            else
+                messageStatus = messageFailedStatusId;
+            return messageStatus;
+        }
+
+        private bool PublishMessageToEsb(MessageHistory messageHistory)
+        {
             try
             {
-                esbMessageProperties["IconMessageID"] = messageHistory.MessageHistoryId.ToString();
-                producer.Send(messageHistory.Message, esbMessageProperties);
+                esbProducer.Send(messageHistory.Message, esbMessageProperties);
                 return true;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                logger.Error(string.Format("Failed to send message {0}.  Error details: {1}", messageHistory.MessageHistoryId, ex.ToString()));
+                logger.Error(string.Format("Failed to send message {0} to ESB. Error Details: {1}", messageHistory.MessageHistoryId, ex.ToString()));
+                return false;
+            }
+        }
+
+        private bool PublishMessageToActiveMq(MessageHistory messageHistory)
+        {
+            try
+            {
+                activeMqProducer.Send(messageHistory.Message, esbMessageProperties);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                logger.Error(String.Format("Failed to send message {0} to ActiveMQ. Error Details: {1}", messageHistory.MessageHistoryId, ex.ToString()));
                 return false;
             }
         }
@@ -87,6 +124,8 @@ namespace Mammoth.ApiController.QueueProcessors
             messageFailedStatusId = MessageStatusTypes.Failed;
             messageReadyStatusId = MessageStatusTypes.Ready;
             messageSentStatusId = MessageStatusTypes.Sent;
+            messageSentToEsbStatusId = MessageStatusTypes.SentToEsb;
+            messageSentToActiveMqStatusId = MessageStatusTypes.SentToActiveMq;
         }
     }
 }

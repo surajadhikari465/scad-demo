@@ -11,6 +11,8 @@ using Icon.Common.Email;
 using Icon.DbContextFactory;
 using Icon.Esb;
 using Icon.Esb.Producer;
+using Icon.ActiveMQ;
+using Icon.ActiveMQ.Producer;
 using Icon.Logging;
 using Mammoth.ApiController.HistoryProcessors;
 using Mammoth.ApiController.QueueProcessors;
@@ -34,6 +36,7 @@ namespace Mammoth.ApiController
             container.RegisterSingleton<IDbContextFactory<MammothContext>, MammothContextFactory>();
             container.RegisterSingleton(() => ApiControllerSettings.CreateFromConfig("Mammoth", instance));
             container.Register<IEsbProducer>(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("ItemQueueName")), Lifestyle.Singleton);
+            RegisterActiveMqProducer(container, controllerType, instance);
             container.Register<IQueueReader<MessageQueuePrice, Contracts.items>, MammothPriceQueueReader>();
             container.Register<IQueueReader<MessageQueueItemLocale, Contracts.items>, MammothItemLocaleQueueReader>();
             container.RegisterSingleton<ILogger>(() => new NLogLoggerSingleton(typeof(NLogLoggerSingleton)));
@@ -57,7 +60,7 @@ namespace Mammoth.ApiController
 
             container.Register<ICommandHandler<SaveToMessageHistoryCommand<MessageHistory>>, MammothDataAccess.Commands.SaveToMessageHistoryCommandHandler>();
             container.Register<ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>>, MammothDataAccess.Commands.UpdateMessageHistoryStatusCommandHandler>();
-            
+
             RegisterQueueProcessorImplementation(container, controllerType, instance);
 
 
@@ -77,6 +80,23 @@ namespace Mammoth.ApiController
                 default:
                     throw new ArgumentException(
                         $"No type implementation exists for controller type argument {controllerType}");
+            }
+        }
+
+        private static void RegisterActiveMqProducer(Container container, string controllerType, int instance)
+        {
+            switch (controllerType)
+            {
+                case "i":
+                    // Item Locale
+                    container.Register<IActiveMQProducer>(
+                        () => new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig("ActiveMqItemLocaleQueueName")), Lifestyle.Singleton);
+                    break;
+                case "r":
+                    // Legacy Price
+                    container.Register<IActiveMQProducer>(
+                        () => new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig("ActiveMqLegacyPriceQueueName")), Lifestyle.Singleton);
+                    break;
             }
         }
     }

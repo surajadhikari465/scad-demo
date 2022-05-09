@@ -4,6 +4,7 @@ using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.Common.Context;
 using Icon.Common.DataAccess;
+using Icon.ActiveMQ.Producer;
 using Icon.Esb.Producer;
 using Icon.Logging;
 using Mammoth.Common.DataAccess;
@@ -28,7 +29,8 @@ namespace Mammoth.ApiController.QueueProcessors
             ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>> updateMessageHistoryCommandHandler,
             ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueuePrice>> updateMessageQueueStatusCommandHandler,
             ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueuePrice>> markQueuedEntriesAsInProcessCommandHandler,
-            IEsbProducer producer,
+            IEsbProducer esbProducer,
+            IActiveMQProducer activeMqProducer,
             ApiControllerSettings settings)
             : base(logger,
                   queueReader,
@@ -39,7 +41,8 @@ namespace Mammoth.ApiController.QueueProcessors
                   updateMessageHistoryCommandHandler,
                   updateMessageQueueStatusCommandHandler,
                   markQueuedEntriesAsInProcessCommandHandler,
-                  producer,
+                  esbProducer,
+                  activeMqProducer,
                   settings)
         {
             esbMessageProperties = new Dictionary<string, string>

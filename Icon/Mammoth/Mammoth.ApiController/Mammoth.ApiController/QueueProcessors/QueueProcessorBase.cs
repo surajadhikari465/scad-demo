@@ -5,6 +5,7 @@ using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.Common.DataAccess;
 using Icon.Esb.Producer;
+using Icon.ActiveMQ.Producer;
 using Icon.Logging;
 using System;
 using System.Collections.Generic;
@@ -23,10 +24,13 @@ namespace Mammoth.ApiController.QueueProcessors
         protected ICommandHandler<UpdateMessageHistoryStatusCommand<TMessageHistory>> updateMessageHistoryCommandHandler;
         protected ICommandHandler<UpdateMessageQueueStatusCommand<TMessageQueue>> updateMessageQueueStatusCommandHandler;
         private ICommandHandler<MarkQueuedEntriesAsInProcessCommand<TMessageQueue>> markQueuedEntriesAsInProcessCommandHandler;
-        protected IEsbProducer producer;
+        protected IEsbProducer esbProducer;
+        protected IActiveMQProducer activeMqProducer;
         protected int messageReadyStatusId;
         protected int messageSentStatusId;
         protected int messageFailedStatusId;
+        protected int messageSentToEsbStatusId;
+        protected int messageSentToActiveMqStatusId;
         protected ApiControllerSettings settings;
 
         /// <summary>
@@ -46,7 +50,8 @@ namespace Mammoth.ApiController.QueueProcessors
             ICommandHandler<UpdateMessageHistoryStatusCommand<TMessageHistory>> updateMessageHistoryCommandHandler,
             ICommandHandler<UpdateMessageQueueStatusCommand<TMessageQueue>> updateMessageQueueStatusCommandHandler,
             ICommandHandler<MarkQueuedEntriesAsInProcessCommand<TMessageQueue>> markQueuedEntriesAsInProcessCommandHandler,
-            IEsbProducer producer)
+            IEsbProducer esbProducer,
+            IActiveMQProducer activeMqProducer)
         {
             this.logger = logger;
             this.queueReader = queueReader;
@@ -57,7 +62,8 @@ namespace Mammoth.ApiController.QueueProcessors
             this.updateMessageHistoryCommandHandler = updateMessageHistoryCommandHandler;
             this.updateMessageQueueStatusCommandHandler = updateMessageQueueStatusCommandHandler;
             this.markQueuedEntriesAsInProcessCommandHandler = markQueuedEntriesAsInProcessCommandHandler;
-            this.producer = producer;
+            this.esbProducer = esbProducer;
+            this.activeMqProducer = activeMqProducer;
             SetMessageIds();
         }
 
@@ -82,9 +88,9 @@ namespace Mammoth.ApiController.QueueProcessors
                         TMessageHistory message = BuildMessageFromMiniBulk(miniBulk, messagesReadyToSerialize);
                         if (message != null)
                         {
-                            bool messageSent = PublishMessage(message);
+                            int messageStatus = PublishMessage(message);
 
-                            ProcessResponse(messageSent, message);
+                            ProcessResponse(messageStatus, message);
                         }                            
                     }
                 }
@@ -129,16 +135,19 @@ namespace Mammoth.ApiController.QueueProcessors
             return message;
         }
 
-        private void ProcessResponse(bool messageSent, TMessageHistory message)
+        private void ProcessResponse(int messageStatus, TMessageHistory message)
         {
-            if (messageSent)
+            if (messageStatus != messageFailedStatusId)
             {
-                logger.Info(string.Format("Message {0} has been sent successfully.", GetMessageHistoryId(message)));
+                if (messageStatus == messageSentStatusId)
+                    logger.Info(string.Format("Message {0} has been sent successfully.", GetMessageHistoryId(message)));
+                else
+                    logger.Error(string.Format("Message {0} has not been sent to either ESB or ActiveMQ.", GetMessageHistoryId(message)));
 
                 var updateMessageHistoryCommand = new UpdateMessageHistoryStatusCommand<TMessageHistory>
                 {
                     Message = message,
-                    MessageStatusId = messageSentStatusId
+                    MessageStatusId = messageStatus
                 };
 
                 updateMessageHistoryCommandHandler.Execute(updateMessageHistoryCommand);
@@ -234,11 +243,11 @@ namespace Mammoth.ApiController.QueueProcessors
 
         public virtual void Initialize()
         {
-            if (!producer.IsConnected)
+            if (!esbProducer.IsConnected)
             {
                 var computedClientId = $"{settings.Source}ApiController.Type-{settings.ControllerType}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
                 var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
-                producer.OpenConnection(clientId);
+                esbProducer.OpenConnection(clientId);
             }
         }
 
@@ -250,7 +259,7 @@ namespace Mammoth.ApiController.QueueProcessors
 
         protected abstract string GetMessageHistoryId(TMessageHistory messageHistory);
 
-        protected abstract bool PublishMessage(TMessageHistory messageHistory);
+        protected abstract int PublishMessage(TMessageHistory messageHistory);
         
         protected abstract void SetMessageIds();
     }
