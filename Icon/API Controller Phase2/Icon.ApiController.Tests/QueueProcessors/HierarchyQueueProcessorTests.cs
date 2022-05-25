@@ -453,7 +453,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
         }
 
         [TestMethod]
-        public void ProcessQueuedHierarchyEvents_WhenSendingEsbAndActiveMqFail_MessageStatusShouldBeReady()
+        public void ProcessQueuedHierarchyEvents_WhenSendingEsbAndActiveMqFail_MessageHistoryShouldNotBeUpdated()
         {
             // Given.
             var fakeMessageQueueHierarchys = new List<MessageQueueHierarchy> { TestHelpers.GetFakeMessageQueueHierarchy(1, "Test1", true) };
@@ -473,18 +473,13 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new Exception());
             mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new Exception());
 
-            mockUpdateMessageHistoryCommandHandler.Setup(
-                u => u.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>())
-            ).Callback<UpdateMessageHistoryStatusCommand<MessageHistory>>(
-                (UpdateMessageHistoryStatusCommand<MessageHistory> cmd) =>
-                {
-                // Checks if message status is SentToActiveMq
-                Assert.AreEqual(cmd.MessageStatusId, MessageStatusTypes.Ready);
-                }
-            );
+            mockUpdateMessageHistoryCommandHandler.Setup(u => u.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>()));
 
             // When.
             queueProcessor.ProcessMessageQueue();
+
+            // Then.
+            mockUpdateMessageHistoryCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>()), Times.Never);
         }
 
         [TestMethod]

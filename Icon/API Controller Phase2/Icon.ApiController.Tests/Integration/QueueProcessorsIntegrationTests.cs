@@ -296,6 +296,7 @@ namespace Icon.ApiController.Tests.Integration
             var mockGetNextAvailableBusinessUnitQueryHandler = new Mock<IQueryHandler<GetNextAvailableBusinessUnitParameters, int?>>();
 
             mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockGetMessageQueueQuery.Setup(q => q.Search(It.IsAny<GetMessageQueueParameters<MessageQueueItemLocale>>())).Returns(fakeMessageQueue.Dequeue);
             mockGetNextAvailableBusinessUnitQueryHandler.Setup(q => q.Search(It.IsAny<GetNextAvailableBusinessUnitParameters>())).Returns(fakeNextBusinessUnits.Dequeue);
 
@@ -331,7 +332,8 @@ namespace Icon.ApiController.Tests.Integration
                 mockGetNextAvailableBusinessUnitQueryHandler.Object,
                 mockMarkQueuedEntriesCommandHandler.Object,
                 mockProducer.Object,
-                mockMonitor.Object);
+                mockMonitor.Object,
+                mockActiveMqProducer.Object);
 
             // When.
             itemLocaleQueueProcessor.ProcessMessageQueue();
@@ -409,6 +411,7 @@ namespace Icon.ApiController.Tests.Integration
             var mockMonitor = new Mock<IMessageProcessorMonitor>();
 
             mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockGetMessageQueueQuery.Setup(q => q.Search(It.IsAny<GetMessageQueueParameters<MessageQueueItemLocale>>())).Returns(fakeMessageQueue.Dequeue);
             mockGetItemByScanCodeQuery.Setup(q => q.Search(It.IsAny<GetItemByScanCodeParameters>())).Throws(new Exception());
             mockGetNextAvailableBusinessUnitQueryHandler.Setup(q => q.Search(It.IsAny<GetNextAvailableBusinessUnitParameters>())).Returns(fakeNextBusinessUnits.Dequeue);
@@ -444,7 +447,8 @@ namespace Icon.ApiController.Tests.Integration
                 mockGetNextAvailableBusinessUnitQueryHandler.Object,
                 mockMarkQueuedEntriesCommandHandler.Object,
                 mockProducer.Object,
-                mockMonitor.Object);
+                mockMonitor.Object,
+                mockActiveMqProducer.Object);
 
             // When.
             itemLocaleQueueProcessor.ProcessMessageQueue();

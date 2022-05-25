@@ -6,6 +6,7 @@ using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
 using Icon.Common.DataAccess;
+using Icon.ActiveMQ.Producer;
 using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
@@ -35,6 +36,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
         private Mock<IQueryHandler<GetNextAvailableBusinessUnitParameters, int?>> mockGetNextAvailableBusinessUnitQueryHandler;
         private Mock<ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueueItemLocale>>> mockMarkQueuedEntriesAsInProcessCommandHandler;
         private Mock<IEsbProducer> mockProducer;
+        private Mock<IActiveMQProducer> mockActiveMqProducer;
         private Mock<IMessageProcessorMonitor> mockMonitor;
         private APIMessageProcessorLogEntry actualMonitorLogEntry;
         private ApiControllerSettings settings;
@@ -55,6 +57,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockGetNextAvailableBusinessUnitQueryHandler = new Mock<IQueryHandler<GetNextAvailableBusinessUnitParameters, int?>>();
             mockMarkQueuedEntriesAsInProcessCommandHandler = new Mock<ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueueItemLocale>>>();
             mockProducer = new Mock<IEsbProducer>();
+            mockActiveMqProducer = new Mock<IActiveMQProducer>();
             settings = new ApiControllerSettings();
             mockMonitor = new Mock<IMessageProcessorMonitor>();
             actualMonitorLogEntry = new APIMessageProcessorLogEntry();
@@ -77,7 +80,8 @@ namespace Icon.ApiController.Tests.QueueProcessors
                 mockGetNextAvailableBusinessUnitQueryHandler.Object,
                 mockMarkQueuedEntriesAsInProcessCommandHandler.Object,
                 mockProducer.Object,
-                mockMonitor.Object);
+                mockMonitor.Object,
+                mockActiveMqProducer.Object);
 
             mockGetNextAvailableBusinessUnitQueryHandler.SetupSequence(m => m.Search(It.IsAny<GetNextAvailableBusinessUnitParameters>()))
                 .Returns(12345)
@@ -180,6 +184,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueItemLocale>>())).Returns(TestHelpers.GetFakeItemLocaleMiniBulk(false, ItemTypeCodes.RetailSale));
             mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.items>(), It.IsAny<TextWriter>())).Returns("Test");
             mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
 
             // When.
             queueProcessor.ProcessMessageQueue();
@@ -202,6 +207,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
             //Then
             mockUpdateInProcessBusinessUnitCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateInProcessBusinessUnitCommand>()), Times.Never);
             mockProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
+            mockActiveMqProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             mockLogger.Verify(m => m.Info(It.Is<string>(s => s == "Ending the ItemLocale queue processor.  No further queued messages were found in Ready status.")), Times.Once);
         }
 
@@ -227,6 +233,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueueItemLocale>>())).Returns(TestHelpers.GetFakeItemLocaleMiniBulk(false, ItemTypeCodes.RetailSale));
             mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.items>(), It.IsAny<TextWriter>())).Returns("Test");
             mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
 
             //When
             queueProcessor.ProcessMessageQueue();
@@ -234,6 +241,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
             //Then
             mockUpdateInProcessBusinessUnitCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateInProcessBusinessUnitCommand>()), Times.Exactly(3));
             mockProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(3));
+            mockActiveMqProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(3));
             mockLogger.Verify(m => m.Info(It.Is<string>(s => s == "Ending the ItemLocale queue processor.  No further queued messages were found in Ready status.")), Times.Once);
             mockClearBusinessUnitInProcessCommandHandler.Verify(m => m.Execute(It.IsAny<ClearBusinessUnitInProcessCommand>()), Times.Exactly(3));
         }
@@ -284,6 +292,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
                 .Returns(messageQueue.Count > 3 && !sequenceIndicesToFailSerialization.Contains(3) ? "Test4" : null)
                 .Returns(messageQueue.Count > 4 && !sequenceIndicesToFailSerialization.Contains(4) ? "Test5" : null);
             mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
         }
 
         [TestMethod]
@@ -363,6 +372,107 @@ namespace Icon.ApiController.Tests.QueueProcessors
             Assert.IsNotNull(actualMonitorLogEntry.StartTime);
             Assert.IsNotNull(actualMonitorLogEntry.EndTime);
             Assert.IsTrue(actualMonitorLogEntry.EndTime >= actualMonitorLogEntry.StartTime);
+        }
+
+        [TestMethod]
+        public void ProcessQueuedItemLocaleEvents_WhenSuccessful_MessageStatusShouldBeSent()
+        {
+            // Given.
+            var fakeMessageQueueItemLocales = new List<MessageQueueItemLocale> {
+                TestHelpers.GetFakeMessageQueueItemLocale(1, 1, ItemTypeCodes.RetailSale),
+                TestHelpers.GetFakeMessageQueueItemLocale(2, 2, ItemTypeCodes.RetailSale),
+                TestHelpers.GetFakeMessageQueueItemLocale(3, 3, ItemTypeCodes.RetailSale),
+                TestHelpers.GetFakeMessageQueueItemLocale(4, 4, ItemTypeCodes.RetailSale)
+            };
+            SetupMockMessageQueueSequence(fakeMessageQueueItemLocales);
+            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+
+            mockUpdateMessageHistoryCommandHandler.Setup(u => u.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>()))
+                .Callback<UpdateMessageHistoryStatusCommand<MessageHistory>>((UpdateMessageHistoryStatusCommand<MessageHistory> cmd) => {
+                    // Checks if message status is Sent
+                    Assert.AreEqual(cmd.MessageStatusId, MessageStatusTypes.Sent);
+            });
+
+            // When.
+            queueProcessor.ProcessMessageQueue();
+
+            // Then.
+            mockMonitor.Verify(m => m.RecordResults(It.IsAny<APIMessageProcessorLogEntry>()), Times.Once);
+            Assert.AreEqual(MessageTypes.ItemLocale, actualMonitorLogEntry.MessageTypeID);
+        }
+
+        [TestMethod]
+        public void ProcessQueuedItemLocaleEvents_WhenActiveMqAndEsbFails_MessageHistoryShouldNotBeUpdated()
+        {
+            // Given.
+            var fakeMessageQueueItemLocales = new List<MessageQueueItemLocale> {
+                TestHelpers.GetFakeMessageQueueItemLocale(1, 1, ItemTypeCodes.RetailSale),
+                TestHelpers.GetFakeMessageQueueItemLocale(2, 2, ItemTypeCodes.RetailSale),
+                TestHelpers.GetFakeMessageQueueItemLocale(3, 3, ItemTypeCodes.RetailSale),
+                TestHelpers.GetFakeMessageQueueItemLocale(4, 4, ItemTypeCodes.RetailSale)
+            };
+            SetupMockMessageQueueSequence(fakeMessageQueueItemLocales);
+            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new System.Exception("ESB send failed"));
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new System.Exception("ActiveMq Send failed"));
+
+            mockUpdateMessageHistoryCommandHandler.Setup(u => u.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>()));
+
+            // When.
+            queueProcessor.ProcessMessageQueue();
+
+            // Then.
+            mockMonitor.Verify(m => m.RecordResults(It.IsAny<APIMessageProcessorLogEntry>()), Times.Once);
+            Assert.AreEqual(MessageTypes.ItemLocale, actualMonitorLogEntry.MessageTypeID);
+            mockUpdateMessageHistoryCommandHandler.Verify(u => u.Execute((It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>())), Times.Never);
+        }
+
+        [TestMethod]
+        public void ProcessQueuedItemLocaleEvents_WhenActiveMqSucceedsEsbFails_MessageStatusShouldBeSentToActiveMq()
+        {
+            // Given.
+            var fakeMessageQueueItemLocales = new List<MessageQueueItemLocale> {
+                TestHelpers.GetFakeMessageQueueItemLocale(1, 1, ItemTypeCodes.RetailSale),
+                TestHelpers.GetFakeMessageQueueItemLocale(2, 2, ItemTypeCodes.RetailSale),
+                TestHelpers.GetFakeMessageQueueItemLocale(3, 3, ItemTypeCodes.RetailSale),
+                TestHelpers.GetFakeMessageQueueItemLocale(4, 4, ItemTypeCodes.RetailSale)
+            };
+            SetupMockMessageQueueSequence(fakeMessageQueueItemLocales);
+            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new System.Exception("ESB send failed"));
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+
+            mockUpdateMessageHistoryCommandHandler.Setup(u => u.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>()))
+                .Callback<UpdateMessageHistoryStatusCommand<MessageHistory>>((UpdateMessageHistoryStatusCommand<MessageHistory> cmd) => {
+                    // Checks if message status is SentToActiveMq
+                    Assert.AreEqual(cmd.MessageStatusId, MessageStatusTypes.SentToActiveMq);
+                });
+
+            // When.
+            queueProcessor.ProcessMessageQueue();
+        }
+
+        [TestMethod]
+        public void ProcessQueuedItemLocaleEvents_WhenActiveMqFailsEsbSucceeds_MessageStatusShouldBeSentToEsb()
+        {
+            // Given.
+            var fakeMessageQueueItemLocales = new List<MessageQueueItemLocale> {
+                TestHelpers.GetFakeMessageQueueItemLocale(1, 1, ItemTypeCodes.RetailSale),
+                TestHelpers.GetFakeMessageQueueItemLocale(2, 2, ItemTypeCodes.RetailSale),
+                TestHelpers.GetFakeMessageQueueItemLocale(3, 3, ItemTypeCodes.RetailSale),
+                TestHelpers.GetFakeMessageQueueItemLocale(4, 4, ItemTypeCodes.RetailSale)
+            };
+            SetupMockMessageQueueSequence(fakeMessageQueueItemLocales);
+            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new System.Exception("ActiveMq Send failed"));
+
+            mockUpdateMessageHistoryCommandHandler.Setup(u => u.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>()))
+                .Callback<UpdateMessageHistoryStatusCommand<MessageHistory>>((UpdateMessageHistoryStatusCommand<MessageHistory> cmd) => {
+                    // Checks if message status is SentToEsb
+                    Assert.AreEqual(cmd.MessageStatusId, MessageStatusTypes.SentToEsb);
+                });
+
+            // When.
+            queueProcessor.ProcessMessageQueue();
         }
     }
 }

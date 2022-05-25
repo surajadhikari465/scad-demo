@@ -71,8 +71,8 @@ namespace Icon.ApiController.Controller.HistoryProcessors
                     //set message properties
                     var messageProperties = SetMessageProperties(message);
 
-                    //send the message to ESB and ActiveMQ only for Hierarchy and Product data
-                    if(messageTypeId == MessageTypes.Product || messageTypeId == MessageTypes.Hierarchy)
+                    //send the message to ESB and ActiveMQ only for Hierarchy, Product and ItemLocale data
+                    if(messageTypeId == MessageTypes.Product || messageTypeId == MessageTypes.Hierarchy || messageTypeId == MessageTypes.ItemLocale)
                     {
                         messageStatusId = PublishMessageToEsbAndActiveMq(message, messageProperties);
                     }

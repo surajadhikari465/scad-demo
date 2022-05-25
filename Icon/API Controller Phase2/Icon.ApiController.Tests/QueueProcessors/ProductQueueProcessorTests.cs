@@ -432,7 +432,7 @@ namespace Icon.ApiController.Tests.QueueProcessors
         }
 
         [TestMethod]
-        public void ProcessQueuedProductEvents_WhenEsbAndActiveMqSendFail_MessageStatusShouldBeReady()
+        public void ProcessQueuedProductEvents_WhenEsbAndActiveMqSendFail_MessageHistoryShouldNotBeUpdated()
         {
             // Given.
             var fakeMessageQueueProducts = new List<MessageQueueProduct> { TestHelpers.GetFakeMessageQueueProduct(MessageStatusTypes.Ready, 1, "0", ItemTypeCodes.RetailSale) };
@@ -451,17 +451,13 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockActiveMqProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new Exception());
             mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new Exception());
 
-            mockUpdateMessageHistoryCommandHandler.Setup(
-                u => u.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>())
-            ).Callback<UpdateMessageHistoryStatusCommand<MessageHistory>>(
-                (UpdateMessageHistoryStatusCommand<MessageHistory> cmd) => {
-                    // Checks if message status is Ready
-                    Assert.AreEqual(cmd.MessageStatusId, MessageStatusTypes.Ready);
-                }
-            );
+            mockUpdateMessageHistoryCommandHandler.Setup(u => u.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>()));
 
             // When.
             queueProcessor.ProcessMessageQueue();
+
+            // Then.
+            mockUpdateMessageHistoryCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>()), Times.Never);
         }
     }
 }
