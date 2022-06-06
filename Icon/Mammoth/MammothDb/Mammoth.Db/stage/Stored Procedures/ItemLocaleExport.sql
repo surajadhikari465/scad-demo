@@ -63,6 +63,7 @@ BEGIN
 	DECLARE @UnwrappedTareWeight INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'Unwrapped Tare Weight' ) 
 	DECLARE @UseByEAB INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'Use By EAB' ) 
 	DECLARE @WrappedTareWeight INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'Wrapped Tare Weight' ) 
+	DECLARE @posScaleTare INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'POS Scale Tare' )
 
 	DECLARE @timestamp DATETIME,
 		@msg VARCHAR(255)
@@ -143,7 +144,9 @@ BEGIN
 		s.DefaultScanCode [DefaultScanCode],
 		s.IrmaItemKey [IrmaItemKey],
 		NULL Groupid,
-		0 Processed
+		0 Processed,
+		NULL [PosScaleTare],
+		s.ScaleItem [ScaleItem]
   FROM dbo.ItemLocaleAttributes s
   INNER JOIN dbo.Items i ON s.ItemID = i.ItemID
   INNER JOIN dbo.ItemTypes it ON i.ItemTypeID = it.ItemTypeID
@@ -291,6 +294,13 @@ BEGIN
 	WHERE ext.AttributeId = @UnwrappedTareWeight
 	option (recompile)
 
+	UPDATE il 
+	SET [PosScaleTare] = ext.AttributeValue
+	FROM [stage].ItemLocaleExportStaging il 
+	INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID
+		AND il.LocaleId = ext.LocaleID
+	WHERE ext.AttributeId = @posScaleTare
+	option (recompile)
 
 	
 	UPDATE il

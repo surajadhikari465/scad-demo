@@ -49,7 +49,9 @@
 	[DefaultScanCode] [bit] NOT NULL,
 	[IrmaItemKey] [int] NULL, 
 	[GroupId] INT NULL, 
-	[Processed] BIT NOT NULL CONSTRAINT DF_ItemLocaleExport_Processed DEFAULT (0)
+	[Processed] BIT NOT NULL CONSTRAINT DF_ItemLocaleExport_Processed DEFAULT (0),
+	[PosScaleTare] INT NULL,
+	[ScaleItem] BIT NULL
 )
 GO
 

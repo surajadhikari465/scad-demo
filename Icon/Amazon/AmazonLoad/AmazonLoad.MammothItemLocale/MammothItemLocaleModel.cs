@@ -46,5 +46,11 @@ namespace AmazonLoad.MammothItemLocale
         public bool DefaultScanCode { get; set; }
         public int? IrmaItemKey { get; set; }
         public int GroupId { get; set; }
+        public bool? ForceTare { get; set; }
+        public int? PosScaleTare { get; set; }
+        public bool? ScaleItem { get; set; }
+        public int? ShelfLife { get; set; }
+        public string WrappedTareWeight { get; set; }
+        public string UnwrappedTareWeight { get; set; }
     }
 }

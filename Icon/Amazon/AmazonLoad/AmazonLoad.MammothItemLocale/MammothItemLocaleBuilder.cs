@@ -157,7 +157,9 @@ namespace AmazonLoad.MammothItemLocale
 
                     logger.Info($"pulling data for groups {first}-{last}");
                     var models =
-                        sqlConnection.Query<MammothItemLocaleModel>($"select * from stage.ItemLocaleExportStaging where groupid >= {first} and groupid <= {last}  and processed = 0", commandTimeout: connectionTimeoutSeconds).ToList();
+                        sqlConnection.Query<MammothItemLocaleModel>(
+                            $"select *, [Force Tare] as ForceTare, [Shelf Life] as ShelfLife, [Unwrapped Tare Weight] as UnwrappedTareWeight, [Wrapped Tare Weight] as WrappedTareWeight from stage.ItemLocaleExportStaging where groupid >= {first} and groupid <= {last}  and processed = 0", 
+                            commandTimeout: connectionTimeoutSeconds).ToList();
 
                     try
                     {

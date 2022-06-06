@@ -107,6 +107,12 @@ namespace AmazonLoad.MammothItemLocale
                 CreateTrait(message.AltRetailUOM, Attributes.Codes.AltRetailUom),
                 CreateTrait(message.DefaultScanCode, Attributes.Codes.DefaultIdentifier),
                 CreateTrait(message.IrmaItemKey, Attributes.Codes.IrmaItemKey),
+                CreateTrait(message.ForceTare, Attributes.Codes.ForceTare),
+                CreateTrait(message.PosScaleTare.HasValue ? (message.PosScaleTare.Value * .01).ToString() : "0", Attributes.Codes.PosScaleTare),
+                CreateTrait(message.ScaleItem, Attributes.Codes.ScaleItem),
+                CreateTrait(message.ShelfLife, Attributes.Codes.ShelfLife),
+                CreateTrait(message.UnwrappedTareWeight, Attributes.Codes.UnwrappedTareWeight),
+                CreateTrait(message.WrappedTareWeight, Attributes.Codes.WrappedTareWeight)
             };
         }
 

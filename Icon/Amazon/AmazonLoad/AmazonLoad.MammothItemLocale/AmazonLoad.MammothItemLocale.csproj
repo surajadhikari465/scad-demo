@@ -76,7 +76,7 @@
       <HintPath>..\packages\Icon.RenewableContext.2016.10.19.5\lib\net45\Icon.RenewableContext.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.DataAccess.2019.3.20.1\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.DataAccess.2022.4.28.1\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.Framework.2019.3.20.1\lib\net46\Mammoth.Framework.dll</HintPath>
@@ -94,7 +94,7 @@
       <HintPath>..\packages\NLog.Extended.4.5.10\lib\net45\NLog.Extended.dll</HintPath>
     </Reference>
     <Reference Include="Opsgenie.Alert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Opsgenie.Alert.2019.4.16.3\lib\net40\Opsgenie.Alert.dll</HintPath>
+      <HintPath>..\packages\Opsgenie.Alert.2019.9.17.1\lib\net40\Opsgenie.Alert.dll</HintPath>
     </Reference>
     <Reference Include="OutputColorizer, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OutputColorizer.1.1.0\lib\net45\OutputColorizer.dll</HintPath>
