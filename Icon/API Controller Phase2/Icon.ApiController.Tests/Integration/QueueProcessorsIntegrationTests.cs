@@ -22,7 +22,6 @@ using System.Data.Entity;
 using System.Linq;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 using System.Transactions;
-using Icon.ActiveMQ;
 using Icon.ActiveMQ.Producer;
 
 namespace Icon.ApiController.Tests.Integration
@@ -643,7 +642,8 @@ namespace Icon.ApiController.Tests.Integration
                 updateMessageQueueStatusCommandHandler,
                 new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueLocale>(mockMarkQueuedEntriesAsInProcessLogger.Object, iconContextFactory),
                 mockProducer.Object,
-                mockMonitor.Object);
+                mockMonitor.Object,
+                mockActiveMqProducer.Object);
 
             // When.
             localeQueueProcessor.ProcessMessageQueue();
