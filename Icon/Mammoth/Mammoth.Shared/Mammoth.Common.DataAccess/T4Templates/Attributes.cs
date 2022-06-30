@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace Mammoth.Common.DataAccess
 {
-	/// <summary>
-	/// dbo.Attributes auto generated Ids
-	/// </summary>
+    /// <summary>
+    /// dbo.Attributes auto generated Ids
+    /// </summary>
 
-	[GeneratedCode("TextTemplatingFileGenerator", "10")]
-	public static class Attributes
-	{
+    [GeneratedCode("TextTemplatingFileGenerator", "10")]
+    public static class Attributes
+    {
 		public const int AgeRestrict = 1;
 		public const int AuthorizedForSale = 2;
 		public const int CaseDiscountEligible = 3;
@@ -274,7 +274,8 @@ namespace Mammoth.Common.DataAccess
 		public const int CanadaIngredients = 262;
 		public const int CanadaSugarPercentage = 263;
 		public const int CanadaServingSizeDesc = 264;
-
+		public const int LockedForSale = 265;
+		
 		public class Descriptions
 		{
 			public const string AgeRestrict = "Age Restrict";
@@ -539,7 +540,8 @@ namespace Mammoth.Common.DataAccess
 			public const string CanadaIngredients = "Canada Ingredients";
 			public const string CanadaSugarPercentage = "Canada Sugar Percentage";
 			public const string CanadaServingSizeDesc = "Canada Serving Size";
-
+			public const string LockedForSale = "Locked For Sale";
+		
 			private static Dictionary<string, string> codeToDescriptionsDictionary = new Dictionary<string, string>
 			{
 				{ "AGE", "Age Restrict" },
@@ -803,7 +805,8 @@ namespace Mammoth.Common.DataAccess
 				{ "PFC", "Profit Center" },
 				{ "CDA", "Canada Allergens" },
 				{ "CDI", "Canada Ingredients" },
-				{ "CDS", "Canada Sugar Percentage" }
+				{ "CDS", "Canada Sugar Percentage" },
+				{ "LFS", "Locked For Sale" }
 			};
 			public static Dictionary<string, string> ByCode { get { return codeToDescriptionsDictionary; } }
 		}
@@ -1072,6 +1075,7 @@ namespace Mammoth.Common.DataAccess
 			public const string CanadaIngredients = "CDI";
 			public const string CanadaSugarPercentage = "CDS";
 			public const string CanadaServingSizeDesc = "CDR";
+			public const string LockedForSale = "LFS";
 		}
 	}
 }
