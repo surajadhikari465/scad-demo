@@ -12,6 +12,8 @@ namespace Icon.ActiveMQ.Producer
         private IMessageProducer producer;
         private string lastClientId;
 
+        private const int TIME_TO_LIVE_HOURS = 12;
+
         public ActiveMQProducer(ActiveMQConnectionSettings settings): base(settings)
         {
             lastClientId = "Undefined-" + Guid.NewGuid().ToString("N");
@@ -32,6 +34,18 @@ namespace Icon.ActiveMQ.Producer
         /// <summary>
         /// Verifies the ActiveMQ Connection and sends the message
         /// </summary>
+        /// <param name="message">Message in bytes array that needs to be sent</param>
+        /// <param name="messageProperties">Message properties: Default null</param>
+        public void Send(byte [] message, Dictionary<string, string> messageProperties = null)
+        {
+            VerifyConnectionAndGracefullyReconnect();
+            IBytesMessage bytesMessage = session.CreateBytesMessage(message);
+            Send(bytesMessage, messageProperties);
+        }
+
+        /// <summary>
+        /// Verifies the ActiveMQ Connection and sends the message
+        /// </summary>
         /// <param name="message">Message to be sent</param>
         /// <param name="messageId">To give message ID to the message</param>
         /// <param name="messageProperties">Message properties: Default null</param>
@@ -41,6 +55,20 @@ namespace Icon.ActiveMQ.Producer
             ITextMessage textMessage = session.CreateTextMessage(message);
             textMessage.NMSMessageId = messageId;
             Send(textMessage, messageProperties);
+        }
+
+        /// <summary>
+        /// Verifies the ActiveMQ Connection and sends the message
+        /// </summary>
+        /// <param name="message">Message in byte array that needs to be sent</param>
+        /// <param name="messageId">To give message ID to the message</param>
+        /// <param name="messageProperties">Message properties: Default null</param>
+        public void Send(byte [] message, string messageId, Dictionary<string, string> messageProperties = null)
+        {
+            VerifyConnectionAndGracefullyReconnect();
+            IBytesMessage bytesMessage = session.CreateBytesMessage(message);
+            bytesMessage.NMSMessageId = messageId;
+            Send(bytesMessage, messageProperties);
         }
 
         private void Send(ITextMessage textMessage, Dictionary<string, string> messageProperties = null)
@@ -53,11 +81,29 @@ namespace Icon.ActiveMQ.Producer
                 }
             }
             // The messages are retained in the Broker for 12 hours if no consumer consumes them
-            textMessage.NMSTimeToLive = TimeSpan.FromHours(12);
+            textMessage.NMSTimeToLive = TimeSpan.FromHours(TIME_TO_LIVE_HOURS);
 
             VerifyConnectionAndGracefullyReconnect();
             Retry<Exception>(() => {
                 producer.Send(textMessage);
+            });
+        }
+
+        private void Send(IBytesMessage bytesMessage, Dictionary<string, string> messageProperties = null)
+        {
+            if (messageProperties != null)
+            {
+                foreach (var property in messageProperties)
+                {
+                    bytesMessage.Properties.SetString(property.Key, property.Value);
+                }
+            }
+            // The messages are retained in the Broker for 12 hours if no consumer consumes them
+            bytesMessage.NMSTimeToLive = TimeSpan.FromHours(TIME_TO_LIVE_HOURS);
+
+            VerifyConnectionAndGracefullyReconnect();
+            Retry<Exception>(() => {
+                producer.Send(bytesMessage);
             });
         }
 

@@ -23,6 +23,20 @@ namespace Icon.ActiveMQ.Tests.Producer
         }
 
         [TestMethod]
+        public void SendBytesMethodTest()
+        {
+            ActiveMQConnectionSettings settings = ActiveMQConnectionSettings.CreateSettingsFromConfig();
+            ActiveMQProducer producer = new ActiveMQProducer(settings);
+
+            byte[] message = { 1, 2, 3 };
+            Dictionary<string, string> messageProperties = new Dictionary<string, string> ();
+            messageProperties.Add("messageID", "TestSendByteMessage");
+
+            producer.Send(message, messageProperties);
+            producer.Dispose();
+        }
+
+        [TestMethod]
         public void OpenConnectionMethodTest()
         {
             ActiveMQConnectionSettings settings = ActiveMQConnectionSettings.CreateSettingsFromConfig();
