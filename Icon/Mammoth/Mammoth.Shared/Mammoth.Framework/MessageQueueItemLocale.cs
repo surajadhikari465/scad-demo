@@ -127,5 +127,7 @@ namespace Mammoth.Framework
         public virtual MessageStatus MessageStatu { get; set; }
 
         public virtual MessageType MessageType { get; set; }
+
+        public bool? LockedForSale { get; set; }
     }
 }
