@@ -806,7 +806,7 @@ namespace Mammoth.Common.DataAccess
 				{ "CDA", "Canada Allergens" },
 				{ "CDI", "Canada Ingredients" },
 				{ "CDS", "Canada Sugar Percentage" },
-				{ "LFS", "Locked For Sale" }
+				{ "RS", "Locked For Sale" }
 			};
 			public static Dictionary<string, string> ByCode { get { return codeToDescriptionsDictionary; } }
 		}
@@ -1075,7 +1075,7 @@ namespace Mammoth.Common.DataAccess
 			public const string CanadaIngredients = "CDI";
 			public const string CanadaSugarPercentage = "CDS";
 			public const string CanadaServingSizeDesc = "CDR";
-			public const string LockedForSale = "LFS";
+			public const string LockedForSale = "RS";
 		}
 	}
 }
