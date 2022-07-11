@@ -1,6 +1,8 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Dapper;
+using Icon.ActiveMQ;
+using Icon.ActiveMQ.Producer;
 using Icon.Common;
 using Icon.Esb;
 using Icon.Esb.Producer;
@@ -70,6 +72,7 @@ namespace Services.Extract
                 CredentialsCacheManager.S3CredentialsCache.Refresh();
                 CredentialsCacheManager.SFtpCredentialsCache.Refresh();
                 CredentialsCacheManager.EsbCredentialsCache.Refresh();
+                CredentialsCacheManager.ActiveMqCredentialsCache.Refresh();
                 FileDestinationCache.Refresh();
 
                 Logger.Info($"{JobName}: Creating Workspace");
@@ -696,6 +699,49 @@ namespace Services.Extract
             }
         }
 
+        internal void CopyFilesToActiveMq(string credentialKey, IActiveMqCredentialsCache activeMqCredentialsCache, List<FileInfo> files)
+        {
+            if (!activeMqCredentialsCache.Credentials.ContainsKey(credentialKey)) throw new Exception($"Unable to find ActiveMQ Credentials for Key: {credentialKey}");
+            ActiveMqCredential credentials = activeMqCredentialsCache.Credentials[credentialKey];
+            if (credentials == null) throw new Exception($"Expected to find ActiveMQ Credentials for Key: {credentialKey} but they were null");
+            using (var activeMqProducer = new ActiveMQProducer(credentials.getActiveMQConnectionSettings()))
+            {
+                var computedClientId = $"IconExtractService-{credentialKey}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
+                var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
+
+                activeMqProducer.OpenConnection(clientId);
+
+                foreach (var file in files)
+                {
+                    string dynamicParamKey = "{" + DynamicParam.FirstOrDefault().Key + "}";
+                    string transactionId = credentials.TransactionId;
+
+                    if (credentials.TransactionId.Contains(dynamicParamKey))
+                    {
+                        foreach (var value in DynamicParam.Select(v => v.Value))
+                        {
+                            if (file.Name.Contains(value.ToString()))
+                            {
+                                transactionId = credentials.TransactionId.Replace(dynamicParamKey, value.ToString());
+                                break;
+                            }
+                        }
+                    }
+                    byte[] bytes = File.ReadAllBytes(file.FullName);
+                    var messageProperties = new Dictionary<string, string>
+                    {
+                        { "TransactionType", credentials.TransactionType },
+                        { "TransactionID", transactionId.TransformDateTimeStamp() },
+                        { "FileName", file.Name },
+                        { "Source", Configuration.Source.ToUpper() },
+                        { "MessageType", credentials.MessageType }
+                    };
+
+                    activeMqProducer.Send(bytes, clientId, messageProperties);
+                }
+            }
+        }
+
         internal void CopyFilesToS3(string credentialKey, IS3CredentialsCache credentialsCache, string destinationDir, List<FileInfo> files)
         {
             if (!credentialsCache.Credentials.ContainsKey(credentialKey)) throw new Exception($"Unable to find S3 Credentials for Key: {credentialKey}");
@@ -750,6 +796,13 @@ namespace Services.Extract
                     break;
                 case "esb":
                     CopyFilesToEsb(Configuration.Destination.CredentialsKey, CredentialsCacheManager.EsbCredentialsCache, OutputFiles);
+                    break;
+                case "esb_and_activemq":
+                    CopyFilesToEsb(Configuration.Destination.CredentialsKey, CredentialsCacheManager.EsbCredentialsCache, OutputFiles);
+                    CopyFilesToActiveMq(Configuration.Destination.CredentialsKey, CredentialsCacheManager.ActiveMqCredentialsCache, OutputFiles);
+                    break;
+                case "activemq":
+                    CopyFilesToActiveMq(Configuration.Destination.CredentialsKey, CredentialsCacheManager.ActiveMqCredentialsCache, OutputFiles);
                     break;
                 default:
                     Logger.Warn($"Unknown Destination Type [{Configuration.Destination.Type}]");

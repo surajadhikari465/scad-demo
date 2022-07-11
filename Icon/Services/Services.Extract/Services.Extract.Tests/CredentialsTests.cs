@@ -28,6 +28,7 @@ namespace Services.Extract.Tests
         private ISFtpCredentialsCache SftpCredentials;
         private IS3CredentialsCache S3Credentials;
         private IEsbCredentialsCache EsbCredentials;
+        private IActiveMqCredentialsCache ActiveMqCredentials;
 
         [TestMethod]
         public void CredentialsCache_LoadFromConfig_SFTP_validCredentialsLoaded()
@@ -81,6 +82,24 @@ namespace Services.Extract.Tests
             Assert.AreEqual("TST-ESB-EMS-1.wfm.pvt", testCredentials.TargetHostName);
             Assert.AreEqual("OrderTopicConnectionFactory", testCredentials.ConnectionFactoryName);
             Assert.AreEqual("Topic", testCredentials.DestinationType);
+            Assert.AreEqual("ByteMessage", testCredentials.MessageType);
+            Assert.AreEqual("ItemVendorLane", testCredentials.TransactionType);
+            Assert.AreEqual("{STORE_NUMBER}_{date:yyyyMMdd}.F.2", testCredentials.TransactionId);
+        }
+
+        [TestMethod]
+        public void CredentialsCache_LoadFromCache_ActiveMq_validCredentialsLoaded()
+        {
+            ActiveMqCredentials = new ActiveMqCredentialCache();
+            ActiveMqCredentials.Refresh();
+            Assert.IsTrue(ActiveMqCredentials.Credentials.ContainsKey("inStock"));
+
+            var testCredentials = ActiveMqCredentials.Credentials["inStock"];
+            Assert.AreEqual("failover:(ssl://b-b1a575b2-58e7-4bd5-b17a-03dbdd11e562-1.mq.us-west-2.amazonaws.com:61617,ssl://b-b1a575b2-58e7-4bd5-b17a-03dbdd11e562-2.mq.us-west-2.amazonaws.com:61617)?randomize=true", testCredentials.ServerUrl);
+            Assert.AreEqual("wfmdatavayuactivemqproducer", testCredentials.JmsUsername);
+            Assert.AreEqual("4dsV8hY1zm3HBOtq", testCredentials.JmsPassword);
+            Assert.AreEqual("ItemVendorTestQueue", testCredentials.QueueName);
+            Assert.AreEqual("AutoAcknowledge", testCredentials.SessionMode);
             Assert.AreEqual("ByteMessage", testCredentials.MessageType);
             Assert.AreEqual("ItemVendorLane", testCredentials.TransactionType);
             Assert.AreEqual("{STORE_NUMBER}_{date:yyyyMMdd}.F.2", testCredentials.TransactionId);

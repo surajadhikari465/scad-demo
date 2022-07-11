@@ -34,6 +34,7 @@ namespace Services.Extract
             container.RegisterSingleton<ISFtpCredentialsCache, SFtpCredentialsCache>();
             container.RegisterSingleton<IS3CredentialsCache, S3CredentialsCache>();
             container.RegisterSingleton<IEsbCredentialsCache, EsbCredentialsCache>();
+            container.RegisterSingleton<IActiveMqCredentialsCache, ActiveMqCredentialCache>();
             container.Register<ICredentialsCacheManager, CredentialsCacheManager>();
             container.Register<IFileDestinationCache, FileDestinationsCache>();
             container.Register(typeof(ICommandHandler<>), typeof(UpdateJobLastRunEndCommand).Assembly);
