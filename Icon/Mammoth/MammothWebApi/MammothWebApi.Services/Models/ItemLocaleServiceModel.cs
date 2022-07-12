@@ -92,5 +92,6 @@ namespace MammothWebApi.Service.Models
 				public bool IsNonRetailItem { get { return Regex.IsMatch(ScanCode, @"^[46|48]\d{1,12}$"); }}
 
         public int? PosScaleTare { get; set; }
+        public bool? LockedForSale { get; set; }
     }
 }

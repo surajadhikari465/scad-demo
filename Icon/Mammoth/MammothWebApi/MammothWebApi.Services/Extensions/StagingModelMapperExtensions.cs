@@ -272,6 +272,16 @@ namespace MammothWebApi.Service.Extensions
 				};
 				itemLocalesExtended.Add(model);
 
+				model = new StagingItemLocaleExtendedModel
+				{
+					AttributeId = Attributes.LockedForSale,
+					AttributeValue = itemLocale.LockedForSale.HasValue ? itemLocale.LockedForSale.ToString() : null,
+					Region = itemLocale.Region,
+					BusinessUnitId = itemLocale.BusinessUnitId,
+					ScanCode = itemLocale.ScanCode
+				};
+				itemLocalesExtended.Add(model);
+
 			}
 
 			// Set timestamp and transactionId for all rows

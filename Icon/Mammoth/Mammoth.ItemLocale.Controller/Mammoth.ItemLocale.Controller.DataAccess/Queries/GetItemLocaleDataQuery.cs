@@ -135,6 +135,10 @@ SELECT q.QueueID AS QueueId
         ELSE i.Item_Key 
     END as IrmaItemKey
     ,p.POSTare as PosScaleTare
+    ,CASE WHEN COALESCE(iov.Recall_Flag, i.Recall_Flag,0)=1 OR ISNULL(p.NotAuthorizedForSale,0)=1 
+		                    THEN 1 
+		                    ELSE 0 
+	                    END as LockedForSale
 FROM [mammoth].[ItemLocaleChangeQueue] q
 INNER JOIN mammoth.ItemChangeEventType t ON q.EventTypeID = t.EventTypeID
 INNER JOIN Item i ON q.Item_Key = i.Item_Key
@@ -292,6 +296,10 @@ SELECT q.QueueID AS QueueId
         ELSE i.Item_Key 
     END as IrmaItemKey
     ,p.POSTare as PosScaleTare
+    ,CASE WHEN COALESCE(iov.Recall_Flag, i.Recall_Flag,0)=1 OR ISNULL(p.NotAuthorizedForSale,0)=1 
+		                    THEN 1 
+		                    ELSE 0 
+	                    END as LockedForSale
 FROM [mammoth].[ItemLocaleChangeQueue] q
 INNER JOIN mammoth.ItemChangeEventType t ON q.EventTypeID = t.EventTypeID
 INNER JOIN Item i ON q.Item_Key = i.Item_Key

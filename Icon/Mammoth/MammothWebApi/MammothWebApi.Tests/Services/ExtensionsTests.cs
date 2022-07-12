@@ -227,7 +227,6 @@ namespace MammothWebApi.Tests.Services
                 case Attributes.NutritionRequired: return Attributes.Codes.NutritionRequired;
                 case Attributes.PrimeBeef: return Attributes.Codes.PrimeBeef;
                 case Attributes.RainforestAlliance: return Attributes.Codes.RainforestAlliance;
-                case Attributes.RefrigeratedOrShelfStable: return Attributes.Codes.RefrigeratedOrShelfStable;
                 case Attributes.SmithsonianBirdFriendly: return Attributes.Codes.SmithsonianBirdFriendly;
                 case Attributes.Wic: return Attributes.Codes.Wic;
                 case Attributes.ForceTare: return Attributes.Codes.ForceTare;

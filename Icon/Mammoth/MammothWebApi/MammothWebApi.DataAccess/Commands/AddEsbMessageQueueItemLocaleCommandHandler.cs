@@ -82,7 +82,8 @@ namespace MammothWebApi.DataAccess.Commands
                                   [ForceTare] = fta.AttributeValue,
                                   [WrappedTareWeight] = wta.AttributeValue,
                                   [UnwrappedTareWeight] = uta.AttributeValue,
-                                  [PosScaleTare] = sct.AttributeValue
+                                  [PosScaleTare] = sct.AttributeValue,
+                                  [LockedForSale] = lfs.AttributeValue
 
                                 from
 	                                stage.ItemLocale s
@@ -168,6 +169,11 @@ namespace MammothWebApi.DataAccess.Commands
 												                                AND l.BusinessUnitID = sct.BusinessUnitId
 												                                AND sct.AttributeID = @PosScaleTare
                                                                                 AND sct.TransactionId = @TransactionId
+
+                                  left join stage.ItemLocaleExtended lfs  on  i.ScanCode = lfs.ScanCode
+												                                AND l.BusinessUnitID = lfs.BusinessUnitId
+												                                AND lfs.AttributeID = @LockedForSale
+                                                                                AND lfs.TransactionId = @TransactionId
                                 where
 	                                s.Region = @RegionCode and
 	                                s.TransactionId = @TransactionId";
@@ -196,7 +202,8 @@ namespace MammothWebApi.DataAccess.Commands
                 ForceTareId = Attributes.ForceTare,
                 WrappedTareWeightId = Attributes.WrappedTareWeight,
                 UnwrappedTareWeightId = Attributes.UnwrappedTareWeight,
-                PosScaleTare = Attributes.PosScaleTare
+                PosScaleTare = Attributes.PosScaleTare,
+                LockedForSale = Attributes.LockedForSale
             };
 
             int affectedRows = db.Connection.Execute(sql, parameters, transaction: db.Transaction);

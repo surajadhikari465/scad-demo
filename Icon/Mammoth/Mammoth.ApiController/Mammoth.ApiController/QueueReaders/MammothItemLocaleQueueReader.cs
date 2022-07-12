@@ -170,7 +170,8 @@ namespace Mammoth.ApiController.QueueReaders
                                 CreateTrait(message.ForceTare, Attributes.Codes.ForceTare),
                                 CreateTrait(message.WrappedTareWeight, Attributes.Codes.WrappedTareWeight),
                                 CreateTrait(message.UnwrappedTareWeight, Attributes.Codes.UnwrappedTareWeight),
-                                CreateTrait(message.PosScaleTare.HasValue ? (message.PosScaleTare.Value * .01).ToString() : "0", Attributes.Codes.PosScaleTare)
+                                CreateTrait(message.PosScaleTare.HasValue ? (message.PosScaleTare.Value * .01).ToString() : "0", Attributes.Codes.PosScaleTare),
+                                CreateTrait(message.LockedForSale.HasValue ? message.LockedForSale.Value : false, Attributes.Codes.LockedForSale)
                             }
                         }
                     }

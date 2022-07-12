@@ -93,5 +93,6 @@ namespace Mammoth.ItemLocale.Controller.DataAccess.Models
         public string ErrorSource { get; set; }
 
         public int? PosScaleTare { get; set; }
+        public bool? LockedForSale { get; set; }
     }
 }

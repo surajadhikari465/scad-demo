@@ -78,5 +78,6 @@ namespace MammothWebApi.Models
         public string ScaleExtraText { get; set; }
 
         public int? PosScaleTare { get; set; }
+        public bool? LockedForSale { get; set; }
     }
 }
