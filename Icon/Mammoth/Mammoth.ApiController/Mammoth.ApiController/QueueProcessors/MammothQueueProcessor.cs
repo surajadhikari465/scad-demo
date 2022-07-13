@@ -75,10 +75,13 @@ namespace Mammoth.ApiController.QueueProcessors
             logger.Info(string.Format("Preparing to send message {0}.", messageHistory.MessageHistoryId));
             esbMessageProperties["IconMessageID"] = messageHistory.MessageHistoryId.ToString();
 
+            // Converting utf-16 encoding back to utf-8 before sending to ESB or ActiveMQ
+            string xmlMessage = messageHistory.Message.Replace("utf-16", "utf-8");
+
             if(messageHistory.MessageStatusId != MessageStatusTypes.SentToEsb)
-                sentToEsb = PublishMessageToEsb(messageHistory);
+                sentToEsb = PublishMessageToEsb(xmlMessage);
             if(messageHistory.MessageStatusId != MessageStatusTypes.SentToActiveMq)
-                sentToActiveMq = PublishMessageToActiveMq(messageHistory);
+                sentToActiveMq = PublishMessageToActiveMq(xmlMessage);
 
             if (sentToEsb && sentToActiveMq)
                 messageStatus = messageSentStatusId;
@@ -91,30 +94,30 @@ namespace Mammoth.ApiController.QueueProcessors
             return messageStatus;
         }
 
-        private bool PublishMessageToEsb(MessageHistory messageHistory)
+        private bool PublishMessageToEsb(string xmlMessage)
         {
             try
             {
-                esbProducer.Send(messageHistory.Message, esbMessageProperties);
+                esbProducer.Send(xmlMessage, esbMessageProperties);
                 return true;
             }
             catch(Exception ex)
             {
-                logger.Error(string.Format("Failed to send message {0} to ESB. Error Details: {1}", messageHistory.MessageHistoryId, ex.ToString()));
+                logger.Error(string.Format("Failed to send message {0} to ESB. Error Details: {1}", esbMessageProperties["IconMessageID"], ex.ToString()));
                 return false;
             }
         }
 
-        private bool PublishMessageToActiveMq(MessageHistory messageHistory)
+        private bool PublishMessageToActiveMq(String xmlMessage)
         {
             try
             {
-                activeMqProducer.Send(messageHistory.Message, esbMessageProperties);
+                activeMqProducer.Send(xmlMessage, esbMessageProperties);
                 return true;
             }
             catch(Exception ex)
             {
-                logger.Error(String.Format("Failed to send message {0} to ActiveMQ. Error Details: {1}", messageHistory.MessageHistoryId, ex.ToString()));
+                logger.Error(String.Format("Failed to send message {0} to ActiveMQ. Error Details: {1}", esbMessageProperties["IconMessageID"], ex.ToString()));
                 return false;
             }
         }
