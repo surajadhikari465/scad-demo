@@ -300,8 +300,9 @@ namespace Icon.ApiController.Controller.QueueProcessors
         private bool SendToActiveMq(String xmlMessage, Dictionary<string, string> messageProperties)
         {
             bool sent = false;
+            String utf8XmlMessage = new StringBuilder(xmlMessage).Replace("utf-16", "utf-8").ToString();
             try{
-                activeMqProducer.Send(xmlMessage, messageProperties);
+                activeMqProducer.Send(utf8XmlMessage, messageProperties);
                 sent = true;
             }
             catch(Exception ex)

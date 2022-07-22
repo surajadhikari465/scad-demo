@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Text;
 using Icon.ApiController.Controller.ControllerConstants;
 using System.Threading;
 using Icon.ActiveMQ.Producer;
@@ -247,8 +248,9 @@ namespace Icon.ApiController.Controller.HistoryProcessors
         private bool SendToActiveMq(MessageHistory message, Dictionary<string, string> messageProperties)
         {
             bool sent = false;
+            String utf8XmlMessage = new StringBuilder(message.Message).Replace("utf-16", "utf-8").ToString();
             try{
-                activeMqProducer.Send(message.Message, messageProperties);
+                activeMqProducer.Send(utf8XmlMessage, messageProperties);
                 sent = true;
             }
             catch(Exception ex)
