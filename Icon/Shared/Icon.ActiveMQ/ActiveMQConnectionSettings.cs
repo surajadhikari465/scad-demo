@@ -30,7 +30,7 @@ namespace Icon.ActiveMQ
             JmsUsername = AppSettingsAccessor.GetStringSetting("ActiveMqJmsUsername", false);
             JmsPassword = AppSettingsAccessor.GetStringSetting("ActiveMqJmsPassword", false);
             QueueName = AppSettingsAccessor.GetStringSetting(destinationConfigName, false);
-            DestinationType = AppSettingsAccessor.GetStringSetting("DestinationType", false);
+            DestinationType = AppSettingsAccessor.GetStringSetting("ActiveMqDestinationType", false);
             ReconnectDelay = AppSettingsAccessor.GetIntSetting("ActiveMqReconnectDelay", false);
             SessionMode = AppSettingsAccessor.GetEnumSetting<AcknowledgementMode>("ActiveMqSessionMode", false);
         }
