@@ -388,6 +388,7 @@
     <Compile Include="Models\GetItemsParametersViewModel.cs" />
     <Compile Include="Models\HierarchyViewModel.cs" />
     <Compile Include="Models\ItemDetailViewModel.cs" />
+    <Compile Include="Models\ItemSynchronizationModel.cs" />
     <Compile Include="Models\ItemEditViewModel.cs" />
     <Compile Include="Models\ItemHistory\AbstractRevision.cs" />
     <Compile Include="Models\ItemHistory\Infor\Brand.cs" />

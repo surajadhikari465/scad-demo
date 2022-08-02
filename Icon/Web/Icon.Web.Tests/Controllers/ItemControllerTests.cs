@@ -380,6 +380,154 @@ namespace Icon.Web.Tests.Unit.Controllers
         }
 
         [TestMethod]
+        public void Synchronize_ItemSubmitted_ShouldUpdate()
+        {
+            //Given
+            string testScanCode = "testScanCode";
+
+            var testItemModel = new ItemDbModel
+            {
+                ScanCode = testScanCode,
+                ItemId = 1234,
+                BrandsHierarchyClassId = 1,
+                FinancialHierarchyClassId = 2,
+                ItemAttributesJson = JsonConvert.SerializeObject(new Dictionary<string, string>()
+                {
+                    { Constants.Attributes.CreatedBy, "TestCreate" },
+                    { Constants.Attributes.CreatedDateTimeUtc, "2001-01-01 12:12:12" },
+                    { "Inactive", "false"}
+                }),
+                ItemTypeId = ItemTypes.RetailSale,
+                ItemTypeDescription = Descriptions.RetailSale,
+                MerchandiseHierarchyClassId = 3,
+                NationalHierarchyClassId = 4,
+                BarcodeTypeId = 1,
+                BarcodeType = "5 Digit POS PLU (10000-82999)",
+                TaxHierarchyClassId = 5,
+                ManufacturerHierarchyClassId = 6
+            };
+            
+            var testItemSynchronizationModel = new ItemSynchronizationModel
+            {
+                ScanCode = testScanCode,
+                BrandHierarchyClassId = 10,
+                MerchandiseHierarchyClassId = 20,
+                NationalHierarchyClassId = 30,
+                TaxHierarchyClassId = 40,
+                ManufacturerHierarchyClassId = 50,
+                BarcodeTypeId = 1,
+                ItemAttributes = new Dictionary<string, string>() { { "Inactive", "false"}  }
+
+            };
+
+            mockGetItemQueryHandler.Setup(m => m.Search(It.Is<GetItemParameters>(p => p.ScanCode == testScanCode)))
+                .Returns(testItemModel);
+            
+            mockGetItemPropertiesFromMerchQueryHandler.Setup(m => m.Search(It.IsAny<GetItemPropertiesFromMerchHierarchyParameters>()))
+                .Returns(new MerchDependentItemPropertiesModel { FinancialHierarcyClassId = 20, ProhibitDiscount = false, NonMerchandiseTraitValue = "test" });
+
+            mockGetAttributesQueryHandler.Setup(m => m.Search(It.IsAny<EmptyQueryParameters<IEnumerable<AttributeModel>>>()))
+                .Returns(new List<AttributeModel> { new AttributeModel { AttributeName = "Inactive", DataTypeName = Constants.DataTypeNames.Boolean },
+                    new AttributeModel { AttributeName = "ModifiedDateTimeUtc", DataTypeName = Constants.DataTypeNames.Date }});
+
+            mockUpdateItemManagerHandler.Setup(x => x.Execute(It.IsAny<UpdateItemManager>())).Callback<UpdateItemManager>((item) =>
+            {
+                Assert.AreEqual("2001-01-01 12:12:12", item.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc], "CreatedDateTimeUtc should not change regardless of what the client sends");
+                Assert.AreEqual("TestCreate", item.ItemAttributes[Constants.Attributes.CreatedBy], "CreatedBy should not change regardless of what the client sends");
+                Assert.IsTrue(item.ItemAttributes[Constants.Attributes.ModifiedBy] != null, "ModifiedBy should be set when updating records");
+                Assert.IsTrue(item.ItemAttributes[Constants.Attributes.ModifiedDateTimeUtc] != null, "ModifiedDateTime should be set when updating records");
+                Assert.AreEqual(10, item.BrandsHierarchyClassId);
+                Assert.AreEqual(20, item.MerchandiseHierarchyClassId);
+                Assert.AreEqual(30, item.NationalHierarchyClassId);
+                Assert.AreEqual(40, item.TaxHierarchyClassId);
+                Assert.AreEqual(50, item.ManufacturerHierarchyClassId);
+                Assert.AreEqual(20, item.FinancialHierarchyClassId);
+            });
+
+            var result = controller.SynchronizeItem(testItemSynchronizationModel);
+
+            mockUpdateItemManagerHandler.Verify(x => x.Execute(It.IsAny<UpdateItemManager>()), Times.Once);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(new { ItemId = 1234, Action = "Update" }.ToString(), result.Data.ToString());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Synchronize_ItemSubmitted_ThrowInvalidOperationException()
+        {
+            //Given
+            string testScanCode = "testScanCode";
+            var testItemSynchronizationModel = new ItemSynchronizationModel
+            {
+                ScanCode = testScanCode,
+                BrandHierarchyClassId = 10,
+                MerchandiseHierarchyClassId = 20,
+                NationalHierarchyClassId = 30,
+                TaxHierarchyClassId = 40,
+                ManufacturerHierarchyClassId = 50,
+                BarcodeTypeId = 1,
+                ItemAttributes = new Dictionary<string, string>() { { "Inactive", "false" } }
+            };
+
+            mockGetItemQueryHandler.Setup(m => m.Search(It.Is<GetItemParameters>(p => p.ScanCode == testScanCode)))
+               .Throws(new InvalidOperationException("Unknown exception occurred while searching scancode: " + testScanCode));
+            
+            controller.SynchronizeItem(testItemSynchronizationModel);
+        }
+
+        [TestMethod]
+        public void Synchronize_ItemSubmitted_ShouldCreate()
+        {
+            //Given
+            string testScanCode = "testScanCode";
+
+            var testItemSynchronizationModel = new ItemSynchronizationModel
+            {
+                ScanCode = testScanCode,
+                BrandHierarchyClassId = 10,
+                MerchandiseHierarchyClassId = 20,
+                NationalHierarchyClassId = 30,
+                TaxHierarchyClassId = 40,
+                ManufacturerHierarchyClassId = 50,
+                BarcodeTypeId = 1,
+                ItemAttributes = new Dictionary<string, string>() { { "Inactive", "false" } }
+            };
+
+            mockGetItemQueryHandler.Setup(m => m.Search(It.Is<GetItemParameters>(p => p.ScanCode == testScanCode)))
+                .Throws(new InvalidOperationException("No item was found given item scan code: " + testScanCode));
+
+            mockGetItemPropertiesFromMerchQueryHandler.Setup(m => m.Search(It.IsAny<GetItemPropertiesFromMerchHierarchyParameters>()))
+                .Returns(new MerchDependentItemPropertiesModel { FinancialHierarcyClassId = 20, ProhibitDiscount = false, NonMerchandiseTraitValue = "test" });
+
+            mockGetAttributesQueryHandler.Setup(m => m.Search(It.IsAny<EmptyQueryParameters<IEnumerable<AttributeModel>>>()))
+                .Returns(new List<AttributeModel> { new AttributeModel { AttributeName = "Inactive", DataTypeName = Constants.DataTypeNames.Boolean },
+                    new AttributeModel { AttributeName = "ModifiedDateTimeUtc", DataTypeName = Constants.DataTypeNames.Date }});
+
+            mockAddItemManagerHandler.Setup(x => x.Execute(It.IsAny<AddItemManager>())).Callback<AddItemManager>((item) =>
+            {
+                Assert.IsNotNull(item.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc], "CreatedDateTimeUtc should not change regardless of what the client sends");
+                Assert.IsNotNull(item.ItemAttributes[Constants.Attributes.CreatedBy], "CreatedBy should not change regardless of what the client sends");
+                Assert.IsTrue(item.ItemAttributes.ContainsKey(Constants.Attributes.ProhibitDiscount));
+                Assert.AreEqual(10, item.BrandsHierarchyClassId);
+                Assert.AreEqual(20, item.MerchandiseHierarchyClassId);
+                Assert.AreEqual(30, item.NationalHierarchyClassId);
+                Assert.AreEqual(40, item.TaxHierarchyClassId);
+                Assert.AreEqual(50, item.ManufacturerHierarchyClassId);
+                Assert.AreEqual(20, item.FinancialHierarchyClassId);
+            });
+
+            var result = controller.SynchronizeItem(testItemSynchronizationModel);
+
+            mockAddItemManagerHandler.Verify(x => x.Execute(It.IsAny<AddItemManager>()), Times.Once);
+            Assert.IsNotNull(result);
+            string jsonResult = JsonConvert.SerializeObject(result.Data);
+            var resultData = JsonConvert.DeserializeObject<dynamic>(jsonResult);
+            
+            Assert.IsNotNull(resultData.ItemId);
+            Assert.AreEqual("Create", (string)resultData.Action);
+        }
+
+        [TestMethod]
         public void Detail_ItemIdIsSet_ShouldReturnViewWithItem()
         {
             //Given

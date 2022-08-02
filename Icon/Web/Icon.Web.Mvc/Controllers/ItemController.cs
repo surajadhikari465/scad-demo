@@ -345,6 +345,152 @@ namespace Icon.Web.Controllers
             return View(itemView.ItemHistoryModel);
         }
 
+
+        [HttpPost]
+        [WriteAccessAuthorize]
+        public JsonResult SynchronizeItem(ItemSynchronizationModel itemSynchronizationModel)
+        {
+            ItemDbModel item = null;
+            try
+            {
+               item  = getItemQueryHandler.Search(new GetItemParameters { ScanCode = itemSynchronizationModel.ScanCode });
+            }
+            catch(InvalidOperationException e) 
+            {
+                if(e.Message.Contains("No item was found given item scan code")){
+                    logger.Warn($"sessionID={this.Session.SessionID}, Exception while searching scancode: {e.Message}");
+                }
+                else
+                {
+                    throw e;
+                }
+            }
+
+            if(item == null)
+            {
+                logger.Info($"sessionID={this.Session.SessionID}, Item doesn't exist with scancode: {itemSynchronizationModel.ScanCode}");
+                return CreateFromSynchronizer(itemSynchronizationModel);
+            }
+            else
+            {
+                logger.Info($"sessionID={this.Session.SessionID}, Item exists with scancode: {itemSynchronizationModel.ScanCode}");
+                return UpdateFromSynchronizer(itemSynchronizationModel, item);
+            }
+        }
+
+        private JsonResult CreateFromSynchronizer(ItemSynchronizationModel itemSynchronizationModel)
+        {
+            logger.Info($"sessionID={this.Session.SessionID}, Creating Item with {itemSynchronizationModel.ToString()}");
+            AddItemManager manager = new AddItemManager();
+            manager.MerchandiseHierarchyClassId = itemSynchronizationModel.MerchandiseHierarchyClassId;
+            manager.BrandsHierarchyClassId = itemSynchronizationModel.BrandHierarchyClassId;
+            manager.TaxHierarchyClassId = itemSynchronizationModel.TaxHierarchyClassId;
+            manager.NationalHierarchyClassId = itemSynchronizationModel.NationalHierarchyClassId;
+            manager.ManufacturerHierarchyClassId = itemSynchronizationModel.ManufacturerHierarchyClassId.GetValueOrDefault();
+            manager.BarCodeTypeId = itemSynchronizationModel.BarcodeTypeId;
+            manager.ScanCode = itemSynchronizationModel.ScanCode;
+            if (itemSynchronizationModel.ItemAttributes != null)
+            {
+                manager.ItemAttributes = itemSynchronizationModel.ItemAttributes.Where(i => !string.IsNullOrWhiteSpace(i.Value)).ToDictionary(i => i.Key, i => i.Value);
+            }
+
+            /*derived*/
+            var merchDependentItemPropertiesModel = getItemPropertiesFromMerchQueryHandler.Search(new GetItemPropertiesFromMerchHierarchyParameters
+            {
+                MerchHierarchyClassId = manager.MerchandiseHierarchyClassId,
+            });
+            manager.FinancialHierarchyClassId = merchDependentItemPropertiesModel.FinancialHierarcyClassId;
+            manager.ItemTypeId = ItemTypes.Ids[MerchToItemTypeCodeMapper.GetItemTypeCode(merchDependentItemPropertiesModel.NonMerchandiseTraitValue)];
+            manager.ItemAttributes.Add(Constants.Attributes.ProhibitDiscount, merchDependentItemPropertiesModel.ProhibitDiscount.ToString().ToLower());
+
+            manager.ItemAttributes[Constants.Attributes.CreatedBy] = User.Identity.Name;
+            manager.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc] = DateTime.UtcNow.ToFormattedDateTimeString();
+            manager.ItemAttributes[Constants.Attributes.ModifiedBy] = manager.ItemAttributes[Constants.Attributes.CreatedBy];
+            manager.ItemAttributes[Constants.Attributes.ModifiedDateTimeUtc] = manager.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc];
+
+            manager.ItemAttributes = SanitizeItemAttributes(manager.ItemAttributes);
+
+            addItemManagerHandler.Execute(manager);
+
+            logger.Info($"sessionID={this.Session.SessionID}, Item created with itemId: {manager.ItemId} for scancode: {manager.ScanCode}");
+
+            return Json(new { ItemId = manager.ItemId, Action = "Create" }, JsonRequestBehavior.AllowGet);
+        }
+
+        private JsonResult UpdateFromSynchronizer(ItemSynchronizationModel itemSynchronizationModel, ItemDbModel item)
+        {
+            logger.Info($"sessionID={this.Session.SessionID}, Creating Item with {itemSynchronizationModel.ToString()}");
+            UpdateItemManager manager = new UpdateItemManager();
+            var existingItem = item.ToViewModel();
+
+            manager.ItemId = existingItem.ItemId;
+            manager.ScanCode = existingItem.ScanCode;
+            manager.MerchandiseHierarchyClassId = itemSynchronizationModel.MerchandiseHierarchyClassId;
+            manager.BrandsHierarchyClassId = itemSynchronizationModel.BrandHierarchyClassId;
+            manager.TaxHierarchyClassId = itemSynchronizationModel.TaxHierarchyClassId;
+            manager.NationalHierarchyClassId = itemSynchronizationModel.NationalHierarchyClassId;
+            manager.ManufacturerHierarchyClassId = itemSynchronizationModel.ManufacturerHierarchyClassId.GetValueOrDefault();
+            if (itemSynchronizationModel.ItemAttributes != null)
+            {
+                manager.ItemAttributes = itemSynchronizationModel.ItemAttributes.Where(i => !string.IsNullOrWhiteSpace(i.Value)).ToDictionary(i => i.Key, i => i.Value);
+            }
+
+            /*derived*/
+            var merchDependentItemPropertiesModel = getItemPropertiesFromMerchQueryHandler.Search(new GetItemPropertiesFromMerchHierarchyParameters
+            {
+                MerchHierarchyClassId = manager.MerchandiseHierarchyClassId,
+            });
+            manager.FinancialHierarchyClassId = merchDependentItemPropertiesModel.FinancialHierarcyClassId;
+            manager.ItemTypeId = ItemTypes.Ids[MerchToItemTypeCodeMapper.GetItemTypeCode(merchDependentItemPropertiesModel.NonMerchandiseTraitValue)];
+
+            manager.ItemAttributes[Constants.Attributes.ProhibitDiscount] = merchDependentItemPropertiesModel.ProhibitDiscount.ToString().ToLower();
+            manager.ItemAttributes.Remove(Constants.Attributes.ItemTypeCode);
+            
+            manager.ItemAttributes[Constants.Attributes.ModifiedBy] = User.Identity.Name;
+            manager.ItemAttributes[Constants.Attributes.ModifiedDateTimeUtc] = DateTime.UtcNow.ToFormattedDateTimeString();
+            manager.ItemAttributes[Constants.Attributes.CreatedBy] = existingItem.ItemAttributes[Constants.Attributes.CreatedBy];
+            manager.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc] = existingItem.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc];
+
+            manager.ItemAttributes = SanitizeItemAttributes(manager.ItemAttributes);
+            
+            this.updateItemManagerHandler.Execute(manager);
+            
+            logger.Info($"sessionID={this.Session.SessionID}, Item updated with itemId: {manager.ItemId} for scancode: {manager.ScanCode}");
+
+            return Json(new { ItemId = manager.ItemId, Action = "Update" }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        private Dictionary<String, String> SanitizeItemAttributes(Dictionary<String, String> itemAttributes)
+        {
+            List<AttributeModel> attributes = getAttributesQueryHandler.Search(new EmptyQueryParameters<IEnumerable<AttributeModel>>()).ToList();
+            for (int i = 0; i < attributes.Count; i++)
+            {
+                if (attributes[i].DataTypeName == Constants.DataTypeNames.Boolean)
+                {
+                    if (itemAttributes.ContainsKey(attributes[i].AttributeName))
+                    {
+                        itemAttributes[attributes[i].AttributeName] = itemAttributes[attributes[i].AttributeName].ToLower();
+                    }
+                }
+
+                if (attributes[i].DataTypeName == Constants.DataTypeNames.Date && !attributes[i].IsReadOnly)
+                {
+                    string attributeValue = string.Empty;
+                    if (itemAttributes.TryGetValue(attributes[i].AttributeName, out attributeValue))
+                    {
+                        if (!string.IsNullOrWhiteSpace(attributeValue))
+                        {
+                            itemAttributes[attributes[i].AttributeName] =
+                                Convert.ToDateTime(attributeValue).ToString("yyyy-MM-dd");
+                        }
+                    }
+                }
+            }
+
+            return itemAttributes;
+        }
+
         [HttpGet]
         [WriteAccessAuthorize]
         public ActionResult Create()
