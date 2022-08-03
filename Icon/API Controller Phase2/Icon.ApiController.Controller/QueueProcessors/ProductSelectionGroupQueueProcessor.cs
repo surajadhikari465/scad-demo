@@ -4,6 +4,7 @@ using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.Common.DataAccess;
+using Icon.ActiveMQ.Producer;
 using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
@@ -29,6 +30,7 @@ namespace Icon.ApiController.Controller.QueueProcessors
         private ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProductSelectionGroup>> updateMessageQueueStatusCommandHandler;
         private ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueueProductSelectionGroup>> markQueuedEntriesAsInProcessCommandHandler;
         private IEsbProducer producer;
+        private IActiveMQProducer activeMqProducer;
         private Dictionary<string, string> messageProperties;
         private IMessageProcessorMonitor monitor;
         private APIMessageProcessorLogEntry monitorData;
@@ -45,7 +47,8 @@ namespace Icon.ApiController.Controller.QueueProcessors
             ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueProductSelectionGroup>> updateMessageQueueStatusCommandHandler,
             ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueueProductSelectionGroup>> markQueuedEntriesAsInProcessCommandHandler,
             IEsbProducer producer,
-            IMessageProcessorMonitor monitor)
+            IMessageProcessorMonitor monitor,
+            IActiveMQProducer activeMQProducer)
         {
             this.settings = settings;
             this.logger = logger;
@@ -58,6 +61,7 @@ namespace Icon.ApiController.Controller.QueueProcessors
             this.updateMessageQueueStatusCommandHandler = updateMessageQueueStatusCommandHandler;
             this.markQueuedEntriesAsInProcessCommandHandler = markQueuedEntriesAsInProcessCommandHandler;
             this.producer = producer;
+            this.activeMqProducer = activeMQProducer;
             this.monitor = monitor;
             this.monitorData = new APIMessageProcessorLogEntry()
             {
@@ -101,11 +105,11 @@ namespace Icon.ApiController.Controller.QueueProcessors
 
                             SetProcessedDate(messagesReadyForMiniBulk);
 
-                            bool messageSent = PublishMessage(message.Message, message.MessageHistoryId);
+                            int messageStatusId = PublishMessage(message.Message, message.MessageHistoryId);
 
-                            ProcessResponse(messageSent, message);
+                            ProcessResponse(messageStatusId, message);
 
-                            if (messageSent)
+                            if (messageStatusId == MessageStatusTypes.Sent)
                             {
                                 monitorData.CountProcessedMessages = monitorData.CountProcessedMessages.GetValueOrDefault(0) + messagesReadyToProcess.Count;
                             }
@@ -147,9 +151,9 @@ namespace Icon.ApiController.Controller.QueueProcessors
             }
         }
 
-        private void ProcessResponse(bool messageSent, MessageHistory message)
+        private void ProcessResponse(int messageStatusId, MessageHistory message)
         {
-            if (messageSent)
+            if (messageStatusId == MessageStatusTypes.Sent)
             {
                 logger.Info(string.Format("Message {0} has been sent successfully.", message.MessageHistoryId));
 
@@ -161,28 +165,74 @@ namespace Icon.ApiController.Controller.QueueProcessors
 
                 updateMessageHistoryCommandHandler.Execute(updateMessageHistoryCommand);
             }
+            else if (messageStatusId == MessageStatusTypes.Ready)
+            {
+                logger.Error(String.Format("Message {0} failed to send.  Message will remain in Ready state for re-processing during the next controller execution.", message.MessageHistoryId));
+            }
             else
             {
-                logger.Error(string.Format("Message {0} failed to send.  Message will remain in Ready state for re-processing during the next controller execution.", message.MessageHistoryId));
+                // either sent to ESB or ActiveMQ not both
+                logger.Error(String.Format("Message {0} has not been sent to one of the two Brokers(ESB,ActiveMQ). Message will be resend to that Broker during the next controller execution", message.MessageHistoryId));
+                var updateMessageHistoryCommand = new UpdateMessageHistoryStatusCommand<MessageHistory>
+                {
+                    Message = message,
+                    MessageStatusId = messageStatusId
+                };
+                updateMessageHistoryCommandHandler.Execute(updateMessageHistoryCommand);
             }
         }
 
-        private bool PublishMessage(string xml, int messageHistoryId)
+        private int PublishMessage(string xml, int messageHistoryId)
         {
-            logger.Info(string.Format("Preparing to send message {0}.", messageHistoryId));
+            logger.Info(String.Format("Preparing to send message {0}.", messageHistoryId));
+            bool sentToEsb = false;
+            bool sentToActiveMq = false;
+            messageProperties["IconMessageID"] = messageHistoryId.ToString();   
+            sentToEsb = SendToEsb(xml, messageProperties);
+            sentToActiveMq = SendToActiveMq(xml, messageProperties);
+            
+            // Determining MessageStatus
+            int messageStatusId;
+            if(sentToEsb && sentToActiveMq)
+                messageStatusId = MessageStatusTypes.Sent;
+            else if(sentToEsb && !sentToActiveMq)
+                messageStatusId = MessageStatusTypes.SentToEsb;
+            else if(!sentToEsb && sentToActiveMq)
+                messageStatusId = MessageStatusTypes.SentToActiveMq;
+            else
+                messageStatusId = MessageStatusTypes.Ready;
+            return messageStatusId;
+        }
 
-            try
-            {
-                // Send message
-                messageProperties["IconMessageID"] = messageHistoryId.ToString();
-                producer.Send(xml, messageProperties);
-                return true;
+        private bool SendToEsb(string xmlMessage, Dictionary<string, string> messageProperties)
+        {
+            bool sent = false;
+            try{
+                producer.Send(xmlMessage, messageProperties);
+                sent = true;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                logger.Error(string.Format("Failed to send message {0}.  Error: {1}", messageHistoryId, ex.ToString()));
-                return false;
+                logger.Error(string.Format("Failed to send message {0} to ESB.  Error: {1}", messageProperties["IconMessageID"], ex.ToString()));
+                sent = false;
             }
+            return sent;
+        }
+
+        private bool SendToActiveMq(string xmlMessage, Dictionary<string, string> messageProperties)
+        {
+            bool sent = false;
+            String utf8XmlMessage = new StringBuilder(xmlMessage).Replace("utf-16", "utf-8").ToString();
+            try{
+                activeMqProducer.Send(utf8XmlMessage, messageProperties);
+                sent = true;
+            }
+            catch(Exception ex)
+            {
+                logger.Error(string.Format("Failed to send message {0} to ActiveMQ.  Error: {1}", messageProperties["IconMessageID"], ex.ToString()));
+                sent = false;
+            }
+            return sent;
         }
 
         private void SetProcessedDate(List<MessageQueueProductSelectionGroup> messagesToUpdate)

@@ -832,7 +832,8 @@ namespace Icon.ApiController.Tests.Integration
                 updateMessageQueueStatusCommandHandler,
                 mockMarkMessagesAsInProcessCommand.Object,
                 mockProducer.Object,
-                mockMonitor.Object);
+                mockMonitor.Object,
+                mockActiveMqProducer.Object);
 
             // When.
             queueProcessor.ProcessMessageQueue();
