@@ -1,0 +1,29 @@
+namespace InventoryProducer.Producer
+{
+
+    using Service;
+    using Topshelf;
+    using System.Configuration;
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string apiDescription = ConfigurationManager.AppSettings["ApiDescription"].ToString();
+            string apiDisplayName = ConfigurationManager.AppSettings["ApiDisplayName"].ToString();
+            string apiServiceName = ConfigurationManager.AppSettings["ApiServiceName"].ToString();
+
+            HostFactory.Run(r =>
+            {
+                r.Service<IInventoryProducerService>(s =>
+                {
+                    s.ConstructUsing(c => new InventoryProducerService());
+                    s.WhenStarted(cm => cm.Start());
+                    s.WhenStopped(cm => cm.Stop());
+                });
+                r.SetDescription(apiDescription);
+                r.SetDisplayName(apiDisplayName);
+                r.SetServiceName(apiServiceName);
+            });
+        }
+    }
+}
