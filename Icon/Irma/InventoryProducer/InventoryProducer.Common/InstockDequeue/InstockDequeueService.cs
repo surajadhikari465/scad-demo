@@ -9,7 +9,6 @@ using Mammoth.Framework;
 using InventoryProducer.Common.InstockDequeue.Schemas;
 using InventoryProducer.Common.Serializers;
 using InventoryProducer.Common.Helpers;
-using System.Text;
 
 namespace InventoryProducer.Common.InstockDequeue
 {
@@ -39,40 +38,24 @@ namespace InventoryProducer.Common.InstockDequeue
             this.inventoryLogger = inventoryLogger;
         }
 
-        /*public List<String> getDequeuedMessages() 
-        {
-            bool eventsExist = true;
-            while (eventsExist)
-            {
-                IrmaEvents dequeuedEvents = dequeueEvents.dequeueEventsFromIrma();
-                if (dequeuedEvents.numberOfRecordsDequeued == 0)
-                {
-                    eventsExist = false;
-                } else
-                {
-                    dequeuedEvents.resultsSet = dequeuedEvents.resultsSet.OrderBy(dequeuedEvent => dequeuedEvent.EventTypeCode).ToList();
-                    List<String> uniqueMessageTypes = dequeuedEvents.resultsSet.Select(dequeuedEvent => dequeuedEvent.MessageType).Distinct().ToList();
-                    archiveData(dequeuedEvents.resultsSet);
-                }
-            }
-            return new List<String>();
-        }*/
-
         public List<InstockDequeueResult> GetDequeuedMessages()
         {
             List<InstockDequeueModel> dequeuedEvents = null;
             try
             {
                 dequeuedEvents = dequeueEvents.DequeueEventsFromIrma();
-                if (dequeuedEvents.Count > 0)
+                if (dequeueEvents != null && dequeuedEvents.Count > 0)
                 {
                     dequeuedEvents = dequeuedEvents.OrderBy(dequeuedEvent => dequeuedEvent.EventTypeCode).ToList();
                     return ArchiveData(dequeuedEvents, null);
                 }
             } catch (Exception ex)
             {
-                Dictionary<String, String> messageProperties = new Dictionary<String, String>();
-                string errorMessage = "A failure occurred when parsing dequeue results for " + settings.TransactionType + " type events.";
+                Dictionary<string, string> messageProperties = new Dictionary<string, string>()
+                {
+                    ["TransactionType"] = settings.TransactionType
+                };
+                string errorMessage = $"A failure occurred when parsing dequeue results for {settings.TransactionType} type events";
                 if (dequeuedEvents != null && dequeuedEvents.Count > 0)
                 {
                     try
@@ -82,13 +65,12 @@ namespace InventoryProducer.Common.InstockDequeue
                     {
                         // nothing to do. Already taken care in the respective method.
                     }
-                    errorMessage = "A failure occurred when dequeuing " + settings.TransactionType + " type events. List of KeyIDs: " + dequeuedEvents.Select(dequeuedEvent => dequeuedEvent.KeyID).ToList().ToString();
+                    errorMessage = $"A failure occurred when dequeuing {settings.TransactionType} type events. List of KeyIDs: {string.Join(", ", dequeuedEvents.Select(dequeuedEvent => dequeuedEvent.KeyID).ToList())}";
                 }
-                inventoryLogger.LogError(errorMessage + " Error Message: " + ex.Message, ex.StackTrace);
-                messageProperties["TransactionType"] = settings.TransactionType;
+                inventoryLogger.LogError($"{errorMessage}. Error Message: {ex.Message}", ex.StackTrace);
                 PublishErrorEvents.SendToMammoth(
                         mammothContextFactory,
-                        settings.TransactionType,
+                        $"{settings.TransactionType}InStockDequeueService",
                         "N/A",
                         messageProperties,
                         errorMessage,
@@ -106,8 +88,8 @@ namespace InventoryProducer.Common.InstockDequeue
             List<InstockDequeueResult> instockDequeueResults = new List<InstockDequeueResult>();
             foreach (InstockDequeueModel dequeuedEvent in dequeuedEvents)
             {
-                String messageID = Guid.NewGuid().ToString();
-                Dictionary<String, String> headers = GenerateHeaders(messageID, dequeuedEvent);
+                string messageID = Guid.NewGuid().ToString();
+                Dictionary<string, string> headers = GenerateHeaders(messageID, dequeuedEvent);
                 instockDequeueResults.Add(new InstockDequeueResult(dequeuedEvent, headers));
                 try
                 {
@@ -122,16 +104,14 @@ namespace InventoryProducer.Common.InstockDequeue
                 } catch (Exception ex)
                 {
                     inventoryLogger.LogError(
-                        new StringBuilder()
-                        .AppendFormat("Failed to archive Event Message for ")
-                        .AppendFormat("KeyID: {0}, ", dequeuedEvent.KeyID)
-                        .AppendFormat("SecondaryID: {0}, ", dequeuedEvent.SecondaryKeyID)
-                        .AppendFormat("MessageType: {0}, ", dequeuedEvent.MessageType)
-                        .AppendFormat("EventTypeCode: {0}, ", dequeuedEvent.EventTypeCode)
-                        .AppendFormat("InsertDate: {0 } and ", dequeuedEvent.InsertDate)
-                        .AppendFormat("MessageTimestampUtc: {0}. ", dequeuedEvent.MessageTimestampUtc)
-                        .AppendFormat("Error Message: {0}.", ex.Message)
-                        .ToString()
+                        $@"Failed to archive Event Message for 
+                        KeyID: ${dequeuedEvent.KeyID}, 
+                        SecondaryID: {dequeuedEvent.SecondaryKeyID}, 
+                        MessageType: {dequeuedEvent.MessageType}, 
+                        EventTypeCode: {dequeuedEvent.EventTypeCode}, 
+                        InsertDate: {dequeuedEvent.InsertDate}, 
+                        MessageTimestampUtc: {dequeuedEvent.MessageTimestampUtc}, 
+                        Error Message: {ex.Message}"
                         , ex.StackTrace);
                     throw ex;
                 }
@@ -139,15 +119,17 @@ namespace InventoryProducer.Common.InstockDequeue
             return instockDequeueResults;
         }
 
-        private Dictionary<String, String> GenerateHeaders(string messageID, InstockDequeueModel result)
+        private Dictionary<string, string> GenerateHeaders(string messageID, InstockDequeueModel result)
         {
-            Dictionary<String, String> headers = new Dictionary<String, String>();
-            headers["TransactionID"] = messageID;
-            headers["TransactionType"] = settings.TransactionType;
-            headers["Source"] = "IRMA";
-            headers["MessageType"] = result.MessageType;
-            headers["MessageNumber"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
-            headers["RegionCode"] = settings.RegionCode;
+            Dictionary<string, string> headers = new Dictionary<string, string>
+            {
+                ["TransactionID"] = messageID,
+                ["TransactionType"] = settings.TransactionType,
+                ["Source"] = "IRMA",
+                ["MessageType"] = result.MessageType,
+                ["MessageNumber"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(),
+                ["RegionCode"] = settings.RegionCode
+            };
             return headers;
         }
     }

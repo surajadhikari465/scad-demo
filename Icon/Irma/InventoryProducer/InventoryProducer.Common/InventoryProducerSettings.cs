@@ -19,7 +19,8 @@ namespace InventoryProducer.Common
         public int DbErrorRetryCount { get; set; }
         public int DbRetryDelayInMilliseconds { get; set; }
         public int BatchSize { get; set; }
-        public int MaxRedeliveryCount { get; set; }
+        public int ServiceMaxRetryCount { get; set; }
+        public int ServiceMaxRetryDelayInMilliseconds { get; set; }
 
         public static InventoryProducerSettings CreateFromConfig(string source, int instance)
         {
@@ -39,7 +40,8 @@ namespace InventoryProducer.Common
                 DbErrorRetryCount = AppSettingsAccessor.GetIntSetting("DbErrorRetryCount"),
                 DbRetryDelayInMilliseconds = AppSettingsAccessor.GetIntSetting("DbRetryDelayInMilliseconds"),
                 BatchSize = AppSettingsAccessor.GetIntSetting("BatchSize"),
-                MaxRedeliveryCount = AppSettingsAccessor.GetIntSetting("MaxRedeliveryCount")
+                ServiceMaxRetryCount = AppSettingsAccessor.GetIntSetting("ServiceMaxRetryCount"),
+                ServiceMaxRetryDelayInMilliseconds = AppSettingsAccessor.GetIntSetting("ServiceMaxRetryDelayInMilliseconds")
             };
         }
     }

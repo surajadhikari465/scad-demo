@@ -13,13 +13,14 @@ namespace InventoryProducer.Producer.Service
     class InventoryProducerService : IInventoryProducerService
     {
         private static InventoryLogger<Program> inventoryLogger = new InventoryLogger<Program>(new NLogLogger<Program>());
-        private System.Timers.Timer timer = null;
+        private readonly System.Timers.Timer timer = null;
+        private bool isServiceRunning = false;
         private readonly string producerType;
         private readonly int dayOfTheWeek = 0;
         private TimeSpan startTime;
         private TimeSpan endTime;
         private readonly int producerInstanceID;
-        private InventoryProducerBase inventoryProducerBase;
+        private readonly InventoryProducerBase inventoryProducerBase;
 
         private static string sSource;
         private static string sLog;
@@ -91,6 +92,7 @@ namespace InventoryProducer.Producer.Service
 
             try
             {
+                isServiceRunning = true;
                 inventoryLogger.LogInfo($"Starting Inventory Producer- Type: {ProducerType.Type} - Instance: {ProducerType.Instance}.");
 
                 if (inventoryProducerBase != null)
@@ -121,10 +123,10 @@ namespace InventoryProducer.Producer.Service
                 {
                     sLog = "Application";
 
-                    sEvent = "InventoryProducerService - RunService " + ex.Message;
+                    sEvent = $"InventoryProducerService - RunService {ex.Message}";
 
                     if (ex.InnerException != null)
-                        sEvent = sEvent + " -- " + ex.InnerException.Message;
+                        sEvent = $"{sEvent} -- {ex.InnerException.Message}";
 
                     if (!EventLog.SourceExists(sSource))
                         EventLog.CreateEventSource(sSource, sLog);
@@ -134,23 +136,29 @@ namespace InventoryProducer.Producer.Service
                 }
                 catch (Exception eventLogException)
                 {
-                    inventoryLogger.LogError("Unable to log to the Event Log. Inventory Producer type: " + sSource + ". Error: " + ex.Message, eventLogException.StackTrace);
+                    inventoryLogger.LogError($"Unable to log to the Event Log. Inventory Producer type: {sSource}. Error: {ex.Message}", eventLogException.StackTrace);
                 }
                 finally
                 {
-                    inventoryLogger.LogError("An unexpected error occurred. Inventory Producer type: " + sSource + ". Error: " + ex.Message, ex.StackTrace);
+                    inventoryLogger.LogError($"An unexpected error occurred. Inventory Producer type: {sSource}. Error: {ex.Message}", ex.StackTrace);
                 }
             }
             finally
             {
                 timer.Start();
+                isServiceRunning = false;
             }
         }
 
         public void Stop()
         {
             if (timer == null) return;
-
+            
+            while (isServiceRunning)
+            {
+                inventoryLogger.LogInfo($"Waiting for service run to complete before stopping. Inventory Producer - Type: {ProducerType.Type} - Instance: {ProducerType.Instance}.");
+                Thread.Sleep(30000);
+            }
             timer.Stop();
             timer.Elapsed -= RunService;
         }

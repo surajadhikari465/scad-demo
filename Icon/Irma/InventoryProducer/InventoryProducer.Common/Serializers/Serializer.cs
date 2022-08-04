@@ -1,5 +1,3 @@
-using Icon.Logging;
-using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
@@ -28,8 +26,7 @@ namespace InventoryProducer.Common.Serializers
             XmlWriter xmlWriter = XmlWriter.Create(writer, this.settings);
             XmlSerializer serializer = new XmlSerializer(typeof(T));
             serializer.Serialize(xmlWriter, canonicalObject, this.namespaces);
-            string xml = writer.ToString();
-            return xml;
+            return writer.ToString();
         }
     }
 }

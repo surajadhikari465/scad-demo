@@ -15,7 +15,7 @@ namespace InventoryProducer.Common.Helpers
             IDbContextFactory<MammothContext> mammothContextFactory,
             string applicationName,
             string messageID,
-            Dictionary<String, String> messageProperties,
+            Dictionary<string, string> messageProperties,
             string message,
             string errorCode,
             string errorDetails,
@@ -43,14 +43,14 @@ namespace InventoryProducer.Common.Helpers
             }
         }
 
-        public static ErrorMessage ConvertToErrorMessageCanonical(Dictionary<String, String> messageProperties)
+        public static ErrorMessage ConvertToErrorMessageCanonical(Dictionary<string, string> messageProperties)
         {
             ErrorMessage errorMessage = new ErrorMessage
             {
                 MessageProperties = new NameValuePair[messageProperties.Count]
             };
             int i = 0;
-            foreach (String messageProperty in messageProperties.Keys)
+            foreach (string messageProperty in messageProperties.Keys)
             {
                 errorMessage.MessageProperties[i++] = new NameValuePair
                 {

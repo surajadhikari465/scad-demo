@@ -49,7 +49,7 @@ namespace InventoryProducer.Common
             logger.Info(message);
             if (irmaContextFactory != null && settings != null)
             {
-                using (var irmaContext = irmaContextFactory.CreateContext("Irma_" + settings.RegionCode))
+                using (var irmaContext = irmaContextFactory.CreateContext($"Irma_{settings.RegionCode}"))
                 {
                     irmaContext.Database.CommandTimeout = 10;
                     string archiveSqlStatement = @"INSERT INTO dbo.AppLog(LogDate, ApplicationID, HostName, UserName, Thread, Level, Logger, Message, InsertDate) VALUES (@LogDate, @ApplicationId, @HostName, @UserName, @Thread, @Level, @Logger, @Message, @InsertDate)";
@@ -76,7 +76,7 @@ namespace InventoryProducer.Common
             logger.Error(message);
             if (irmaContextFactory != null && settings != null)
             {
-                using (var irmaContext = irmaContextFactory.CreateContext("Irma_" + settings.RegionCode))
+                using (var irmaContext = irmaContextFactory.CreateContext($"Irma_{settings.RegionCode}"))
                 {
                     irmaContext.Database.CommandTimeout = 10;
                     string archiveSqlStatement = @"INSERT INTO dbo.AppLog(LogDate, ApplicationID, HostName, UserName, Thread, Level, Logger, Message, Exception, InsertDate) VALUES (@LogDate, @ApplicationId, @HostName, @UserName, @Thread, @Level, @Logger, @Message, @Exception, @InsertDate)";

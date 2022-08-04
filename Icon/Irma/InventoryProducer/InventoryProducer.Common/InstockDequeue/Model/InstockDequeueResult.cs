@@ -5,13 +5,13 @@ namespace InventoryProducer.Common.InstockDequeue.Model
 {
     public class InstockDequeueResult
     {
-        public InstockDequeueModel instockDequeueModel;
-        public Dictionary<string, string> headers;
+        public InstockDequeueModel InstockDequeueModel { get; private set; }
+        public Dictionary<string, string> Headers { get; private set; }
 
         public InstockDequeueResult(InstockDequeueModel instockDequeueModel, Dictionary<string, string> headers)
         {
-            this.instockDequeueModel = instockDequeueModel;
-            this.headers = headers;
+            this.InstockDequeueModel = instockDequeueModel;
+            this.Headers = headers;
         }
     }
 }

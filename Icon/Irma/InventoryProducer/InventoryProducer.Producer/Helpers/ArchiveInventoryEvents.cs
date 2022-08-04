@@ -19,7 +19,7 @@ namespace InventoryProducer.Producer.Helpers
 
         public void Archive(string messageBody, string eventType, int businessUnitId, int keyID, int secondaryKeyID, char status, string errorDescription, string messageNumber,string LastReprocessID)
         {
-            using (var irmaContext = irmaContextFactory.CreateContext("Irma_" + settings.RegionCode))
+            using (var irmaContext = irmaContextFactory.CreateContext($"Irma_{settings.RegionCode}"))
             {
                 irmaContext.Database.CommandTimeout = 10;
                 string archiveSqlStatement = @"INSERT INTO amz.MessageArchive(Message, EventType, BusinessUnitID, KeyID, SecondaryKeyID, InsertDate, Status, ErrorDescription, MessageNumber, LastReprocessID) VALUES (@Message, @EventType, @BusinessUnitID, @KeyID, @SecondaryKeyID, @InsertDate, @Status, @ErrorDescription, @MessageNumber, @LastReprocessID)";
