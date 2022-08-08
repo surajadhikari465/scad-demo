@@ -30,43 +30,51 @@ namespace InventoryProducer.Producer.Service
         public InventoryProducerService()
         {
             inventoryLogger.LogInfo("Initializing InventoryProducerService");
-            int.TryParse(ConfigurationManager.AppSettings["ProducerInstanceId"], out producerInstanceID);
-            producerType = ConfigurationManager.AppSettings["ProducerType"].ToString();
-            int.TryParse(ConfigurationManager.AppSettings["MaintenanceDay"], out dayOfTheWeek);
+            try
+            {
+                int.TryParse(ConfigurationManager.AppSettings["ProducerInstanceId"], out producerInstanceID);
+                producerType = ConfigurationManager.AppSettings["ProducerType"].ToString();
+                int.TryParse(ConfigurationManager.AppSettings["MaintenanceDay"], out dayOfTheWeek);
 
-            DateTime timeStamp;
-            if (!DateTime.TryParse(ConfigurationManager.AppSettings["MaintenanceStartTime"], out timeStamp))
-                throw new ArgumentException("Invalid or missing MaintenanceStartTime configuration setting");
+                DateTime timeStamp;
+                if (!DateTime.TryParse(ConfigurationManager.AppSettings["MaintenanceStartTime"], out timeStamp))
+                    throw new ArgumentException("Invalid or missing MaintenanceStartTime configuration setting");
 
-            startTime = new TimeSpan(timeStamp.Hour, timeStamp.Minute, 0);
+                startTime = new TimeSpan(timeStamp.Hour, timeStamp.Minute, 0);
 
-            if (!DateTime.TryParse(ConfigurationManager.AppSettings["MaintenanceEndTime"], out timeStamp))
-                throw new ArgumentException("Invalid or missing MaintenanceEndTime configuration setting");
+                if (!DateTime.TryParse(ConfigurationManager.AppSettings["MaintenanceEndTime"], out timeStamp))
+                    throw new ArgumentException("Invalid or missing MaintenanceEndTime configuration setting");
 
-            endTime = new TimeSpan(timeStamp.Hour, timeStamp.Minute, 0);
+                endTime = new TimeSpan(timeStamp.Hour, timeStamp.Minute, 0);
 
-            //Validate config settings
-            if (producerInstanceID < 1)
-                throw new Exception("Please provide an integer greater than zero to be used as the unique instance ID.");
-            if (producerInstanceID < 1 || string.IsNullOrEmpty(producerType))
-                throw new Exception("Both the producer type argument and the instance ID argument are required.");
-            if (!StartupOptions.ValidArgs.Contains(producerType))
-                throw new Exception($"Invalid argument specified.  The valid arguments are: {string.Join(",", StartupOptions.ValidArgs)}");
+                //Validate config settings
+                if (producerInstanceID < 1)
+                    throw new Exception("Please provide an integer greater than zero to be used as the unique instance ID.");
+                if (producerInstanceID < 1 || string.IsNullOrEmpty(producerType))
+                    throw new Exception("Both the producer type argument and the instance ID argument are required.");
+                if (!StartupOptions.ValidArgs.Contains(producerType))
+                    throw new Exception($"Invalid argument specified.  The valid arguments are: {string.Join(",", StartupOptions.ValidArgs)}");
 
-            InventoryProducerSettings settings = InventoryProducerSettings.CreateFromConfig("IRMA", ProducerType.Instance);
-            inventoryLogger = new InventoryLogger<Program>(
-                new NLogLoggerInstance<Program>(ProducerType.Instance.ToString()),
-                new IrmaDbContextFactory(),
-                settings
-                );
-            inventoryProducerBase = ProducerProvider.GetProducer(settings);
+                InventoryProducerSettings settings = InventoryProducerSettings.CreateFromConfig("IRMA", ProducerType.Instance);
+                inventoryLogger = new InventoryLogger<Program>(
+                    new NLogLoggerInstance<Program>(ProducerType.Instance.ToString()),
+                    new IrmaDbContextFactory(),
+                    settings
+                    );
+                inventoryProducerBase = ProducerProvider.GetProducer(settings);
 
 
-            //Initilize timer if all settings have been validated
-            int runInterval;
-            int.TryParse(ConfigurationManager.AppSettings["RunInterval"], out runInterval);
-            timer = new System.Timers.Timer(runInterval > 0 ? runInterval : 30000); //Use default interval == 30000 in case if config setting is missing or invalid
-            inventoryLogger.LogInfo("InventoryProducerService Initialized");
+                //Initilize timer if all settings have been validated
+                int runInterval;
+                int.TryParse(ConfigurationManager.AppSettings["RunInterval"], out runInterval);
+                timer = new System.Timers.Timer(runInterval > 0 ? runInterval : 30000); //Use default interval == 30000 in case if config setting is missing or invalid
+                inventoryLogger.LogInfo("InventoryProducerService Initialized");
+            } catch (Exception e)
+            {
+                // thrown exceptions are not captured in log, so catching -> logging -> throwing
+                inventoryLogger.LogError(e.ToString(), e.StackTrace);
+                throw e;
+            }
         }
 
         public void Start()
