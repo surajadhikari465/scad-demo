@@ -3369,6 +3369,7 @@
     <Build Include="Schema\dbo\Functions\ToNumericString.sql" />
     <Build Include="Security\PrimsShrinkRole.sql" />
     <Build Include="Schema\amz\StoredProcedures\GetItemStoreCost.sql" />
+    <None Include="Scripts\PostDeploy\GrantPermissionsToIconInterface.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assemblies\RegexProject.dll" />
