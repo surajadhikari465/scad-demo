@@ -30,3 +30,6 @@ GO
 
 GRANT INSERT, UPDATE, SELECT ON gpm.ErrorMessages TO TibcoRole
 GO
+
+GRANT INSERT, UPDATE, SELECT ON gpm.ErrorMessages To IconInterfaceRole;
+GO
