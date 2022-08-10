@@ -8,6 +8,8 @@ using AttributePublisher.Services;
 using Esb.Core.MessageBuilders;
 using Esb.Core.Serializer;
 using Icon.Common.DataAccess;
+using Icon.ActiveMQ;
+using Icon.ActiveMQ.Producer;
 using Icon.Esb;
 using Icon.Esb.Producer;
 using Icon.Esb.Schemas.Attributes.ContractTypes;
@@ -39,23 +41,25 @@ namespace AttributePublisher
                 c => c.Consumer.ImplementationType == typeof(AttributePublisherService));
             container.RegisterConditional<IOperation<AttributePublisherServiceParameters>, BuildMessageOperation>(
                 c => c.Consumer.ImplementationType == typeof(GetAttributesOperation));
-            container.RegisterConditional<IOperation<AttributePublisherServiceParameters>, SendAttributesToEsbOperation>(
+            container.RegisterConditional<IOperation<AttributePublisherServiceParameters>, SendAttributesToConsumerOperation>(
                 c => c.Consumer.ImplementationType == typeof(BuildMessageOperation));
             container.RegisterConditional<IOperation<AttributePublisherServiceParameters>, ArchiveAttributeMessagesOperation>(
-                c => c.Consumer.ImplementationType == typeof(SendAttributesToEsbOperation));
+                c => c.Consumer.ImplementationType == typeof(SendAttributesToConsumerOperation));
             container.RegisterConditional<IOperation<AttributePublisherServiceParameters>, ClearAttributePublisherServiceParametersOperation>(
                 c => c.Consumer.ImplementationType == typeof(ArchiveAttributeMessagesOperation));
 
             container.Register<EsbConnectionSettings>(() => EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("SB1"), Lifestyle.Singleton);
+            container.Register<ActiveMQConnectionSettings>(() => ActiveMQConnectionSettings.CreateSettingsFromConfig("ActiveMqAttributeQueueName"), Lifestyle.Singleton);
             container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString));
             container.Register<IEsbProducer, Sb1EsbProducer>(Lifestyle.Singleton);
+            container.Register<IActiveMQProducer, ActiveMQProducer>(Lifestyle.Singleton);
             container.Register<ILogger>(() => new NLogLogger(typeof(AttributePublisherService)), Lifestyle.Transient);
             container.Register<IMessageBuilder<List<AttributeModel>>, AttributeMessageBuilder>();
             container.Register<IMessageHeaderBuilder, AttributeMessageHeaderBuilder>();
             container.Register<ISerializer<AttributesType>, SerializerWithoutNamepaceAliases<AttributesType>>();
 
-            container.RegisterDecorator(typeof(IOperation<AttributePublisherServiceParameters>), typeof(ManageEsbConnectionOperationDecorator),
-                c => c.ImplementationType == typeof(SendAttributesToEsbOperation));
+            container.RegisterDecorator(typeof(IOperation<AttributePublisherServiceParameters>), typeof(ManageConsumerConnectionOperationDecorator),
+                c => c.ImplementationType == typeof(SendAttributesToConsumerOperation));
             container.RegisterDecorator<IOperation<AttributePublisherServiceParameters>, ErrorHandlingOperationDecorator>();
             container.RegisterDecorator<IOperation<AttributePublisherServiceParameters>, CheckContinueProcessingOperationDecorator>();
 

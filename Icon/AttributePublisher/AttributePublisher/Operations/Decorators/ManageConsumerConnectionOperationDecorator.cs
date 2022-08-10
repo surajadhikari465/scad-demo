@@ -1,5 +1,6 @@
 ﻿using AttributePublisher.Infrastructure.Operations;
 using AttributePublisher.Services;
+using Icon.ActiveMQ.Producer;
 using Icon.Esb.Producer;
 using System;
 using System.Collections.Generic;
@@ -9,26 +10,31 @@ using System.Threading.Tasks;
 
 namespace AttributePublisher.Operations.Decorators
 {
-    public class ManageEsbConnectionOperationDecorator : IOperation<AttributePublisherServiceParameters>
+    public class ManageConsumerConnectionOperationDecorator : IOperation<AttributePublisherServiceParameters>
     {
         private IOperation<AttributePublisherServiceParameters> operation;
         private IEsbProducer producer;
+        private IActiveMQProducer activeMQProducer;
 
-        public ManageEsbConnectionOperationDecorator(
+        public ManageConsumerConnectionOperationDecorator(
             IOperation<AttributePublisherServiceParameters> operation,
-            IEsbProducer producer)
+            IEsbProducer producer,
+            IActiveMQProducer activeMQProducer)
         {
             this.operation = operation;
             this.producer = producer;
+            this.activeMQProducer = activeMQProducer;
         }
 
         public void Execute(AttributePublisherServiceParameters parameters)
         {
+            // activeMQProducer will open connection by itself during send operation
             producer.OpenConnection();
             
             operation.Execute(parameters);
             
             producer.Dispose();
+            activeMQProducer.Dispose();
         }
     }
 }

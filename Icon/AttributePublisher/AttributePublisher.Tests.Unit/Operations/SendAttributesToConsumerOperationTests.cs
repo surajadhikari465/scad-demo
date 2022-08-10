@@ -1,6 +1,7 @@
 ﻿using AttributePublisher.Models;
 using AttributePublisher.Operations;
 using AttributePublisher.Services;
+using Icon.ActiveMQ.Producer;
 using Icon.Esb.Producer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -9,20 +10,22 @@ using System.Collections.Generic;
 namespace AttributePublisher.Tests.Unit.Operations
 {
     [TestClass]
-    public class SendAttributesToEsbOperationTests
+    public class SendAttributesToConsumerOperationTests
     {
-        private SendAttributesToEsbOperation operation;
+        private SendAttributesToConsumerOperation operation;
         private Mock<IEsbProducer> mockProducer;
+        private Mock<IActiveMQProducer> mockActiveMQProducer;
 
         [TestInitialize]
         public void Initialize()
         {
             mockProducer = new Mock<IEsbProducer>();
-            operation = new SendAttributesToEsbOperation(null, mockProducer.Object);
+            mockActiveMQProducer = new Mock<IActiveMQProducer>();
+            operation = new SendAttributesToConsumerOperation(null, mockProducer.Object, mockActiveMQProducer.Object);
         }
 
         [TestMethod]
-        public void SendAttributesToEsbOperation_MessagesExist_SendsMessages()
+        public void SendAttributesToConsumerOperation_MessagesExist_SendsMessages()
         {
             //Given
 
@@ -39,7 +42,8 @@ namespace AttributePublisher.Tests.Unit.Operations
             });
 
             //Then
-            mockProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(4));
+            mockProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(4));
+            mockActiveMQProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(4));
         }
     }
 }
