@@ -13847,7 +13847,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private string reasonCodeField;
         
-        private QuantityType1[] adjustmentQuantityField;
+        private QuantityType[] adjustmentQuantityField;
         
         private inventoryAdjustmentsInventoryAdjustmentInventoryAdjustmentDetailDisposition dispositionField;
         
@@ -13965,8 +13965,8 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("quantity", Namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1", IsNullable=false)]
-        public QuantityType1[] adjustmentQuantity
+        [System.Xml.Serialization.XmlArrayItemAttribute("quantity", Namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable=false)]
+        public QuantityType[] adjustmentQuantity
         {
             get
             {
