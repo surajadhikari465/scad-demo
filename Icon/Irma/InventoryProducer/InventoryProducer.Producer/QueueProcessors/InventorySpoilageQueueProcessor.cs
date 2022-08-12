@@ -179,7 +179,7 @@ namespace InventoryProducer.Producer.QueueProcessors
                 },
                 defaultScanCode = requiredShrinkDataModel.DefaultScanCode,
                 reasonCode = requiredShrinkDataModel.ReasonCode,
-                adjustmentQuantity = new QuantityType1[1],
+                adjustmentQuantity = new QuantityType[1],
                 userInfo = new UserType
                 {
                     idNumber = requiredShrinkDataModel.UserID.ToString(),
@@ -187,10 +187,10 @@ namespace InventoryProducer.Producer.QueueProcessors
                 },
                 createDateTime = requiredShrinkDataModel.CurrentDateTime
             };
-            canonicalObj.inventoryAdjustment[0].inventoryAdjustmentDetail[0].adjustmentQuantity[0] = new QuantityType1
+            canonicalObj.inventoryAdjustment[0].inventoryAdjustmentDetail[0].adjustmentQuantity[0] = new QuantityType
             {
                 value = requiredShrinkDataModel.AdjustmentQuantity,
-                units = new UnitsType1
+                units = new UnitsType
                 {
                     uom = new UomType()
                 }
