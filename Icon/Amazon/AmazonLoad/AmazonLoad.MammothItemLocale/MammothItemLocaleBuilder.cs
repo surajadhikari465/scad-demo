@@ -3,7 +3,6 @@ using Dapper;
 using Icon.Esb.Producer;
 using MoreLinq;
 using Newtonsoft.Json;
-using OutputColorizer;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,6 +14,7 @@ using System.Threading.Tasks;
 using NLog;
 using System.Globalization;
 using System.Configuration;
+using Icon.ActiveMQ.Producer;
 
 namespace AmazonLoad.MammothItemLocale
 {
@@ -103,7 +103,7 @@ namespace AmazonLoad.MammothItemLocale
                 sqlConnection.Execute("update stage.ItemLocaleExportStaging set Processed = 0");
             }
         }
-        public static void StageRecords(string mammothConnectionString, int timeoutInSeconds, string region, int maxNumberOfRows, int numberOfRecordsPerEsbMessage)
+        public static void StageRecords(string mammothConnectionString, int timeoutInSeconds, string region, int maxNumberOfRows, int numberOfRecordsPerMQMessage)
         {
             using (SqlConnection sqlConnection = new SqlConnection(mammothConnectionString))
             {
@@ -116,7 +116,7 @@ namespace AmazonLoad.MammothItemLocale
                     Enumerable.Range(0, 10).ForEach(x => Thread.Sleep(1000));
                 }
 
-                StageMammothtemLocales(sqlConnection, region, maxNumberOfRows, numberOfRecordsPerEsbMessage, timeoutInSeconds);
+                StageMammothtemLocales(sqlConnection, region, maxNumberOfRows, numberOfRecordsPerMQMessage, timeoutInSeconds);
                 
             }
         }
@@ -135,9 +135,9 @@ namespace AmazonLoad.MammothItemLocale
         }
 
         
-            public static void ProcessMammothItemLocalesAndSendMessages(IEsbProducer esbProducer,
+            public static void ProcessMammothItemLocalesAndSendMessages(IActiveMQProducer mqProducer,
             string mammothConnectionString, string region, int maxNumberOfRows, bool saveMessages,
-            string saveMessagesDirectory, string nonReceivingSysName, string transactionType, int numberOfRecordsPerEsbMessage, int clientSideProcessGroupCount, int connectionTimeoutSeconds,  int threadCount, bool sendToEsb)
+            string saveMessagesDirectory, string nonReceivingSysName, string transactionType, int numberOfRecordsPerMQMessage, int clientSideProcessGroupCount, int connectionTimeoutSeconds,  int threadCount, bool sendToMQ)
         {
 
             using (SqlConnection sqlConnection = new SqlConnection(mammothConnectionString))
@@ -147,7 +147,7 @@ namespace AmazonLoad.MammothItemLocale
                 var numberOfGroups = stagingInfo.UnProcessedGroupIds.Count();
                 var GroupRanges = CalculateRanges(stagingInfo.UnProcessedGroupIds, clientSideProcessGroupCount);
 
-                logger.Info($"{numberOfGroups} esb message group(s) created");
+                logger.Info($"{numberOfGroups} mq message group(s) created");
                 logger.Info($"{GroupRanges.Count()} client side data sets will be processed.");
 
                 foreach (var g in GroupRanges)
@@ -168,7 +168,7 @@ namespace AmazonLoad.MammothItemLocale
                         Parallel.ForEach(processingRange, new ParallelOptions { MaxDegreeOfParallelism = threadCount }, (groupId) =>
                           {
                               var chunk = models.Where(w => w.GroupId == groupId);
-                              SendMessagesToEsbServerSideGroups(chunk.ToList(), esbProducer, saveMessages, saveMessagesDirectory, nonReceivingSysName, transactionType, groupId, sendToEsb);
+                              SendMessagesToMQServerSideGroups(chunk.ToList(), mqProducer, saveMessages, saveMessagesDirectory, nonReceivingSysName, transactionType, groupId, sendToMQ);
                           });
                         logger.Info($"finalizing groups {first}-{last}");
                         sqlConnection.Execute($"update stage.ItemLocaleExportStaging set Processed=1 where GroupId>={first} and GroupId <= {last} and Processed=0",commandTimeout: connectionTimeoutSeconds);
@@ -202,14 +202,14 @@ namespace AmazonLoad.MammothItemLocale
         }
         
         
-        internal static int StageMammothtemLocales(SqlConnection mammothSqlConnection, string region, int maxNumberOfRows, int numberOfRecordsPerEsbMessage, int connectionTimeoutSeconds)
+        internal static int StageMammothtemLocales(SqlConnection mammothSqlConnection, string region, int maxNumberOfRows, int numberOfRecordsPerMessage, int connectionTimeoutSeconds)
         {
             mammothSqlConnection.FireInfoMessageEventOnUserErrors = true;
             mammothSqlConnection.InfoMessage += (s, e) => { Console.Out.WriteLineAsync($"(sql) {e.Message}"); };
 
             var paramters = new DynamicParameters();
             paramters.Add("Region", dbType: DbType.String, direction: ParameterDirection.Input, value: region);
-            paramters.Add("GroupSize", dbType: DbType.Int32, direction: ParameterDirection.Input, value: numberOfRecordsPerEsbMessage);
+            paramters.Add("GroupSize", dbType: DbType.Int32, direction: ParameterDirection.Input, value: numberOfRecordsPerMessage);
             paramters.Add("MaxRows", dbType: DbType.Int32, direction: ParameterDirection.Input, value: maxNumberOfRows);
 
             var rowCount = mammothSqlConnection.QueryFirst<int>("stage.ItemLocaleExport", paramters, commandTimeout: connectionTimeoutSeconds, commandType: CommandType.StoredProcedure);
@@ -222,9 +222,9 @@ namespace AmazonLoad.MammothItemLocale
 
         }
 
-        internal static void SendMessagesToEsbServerSideGroups(List<MammothItemLocaleModel> models,
-            IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
-            string nonReceivingSysName, string transactionType, int groupId, bool sendToEsbFlag = true)
+        internal static void SendMessagesToMQServerSideGroups(List<MammothItemLocaleModel> models,
+            IActiveMQProducer mqProducer, bool saveMessages, string saveMessagesDirectory,
+            string nonReceivingSysName, string transactionType, int groupId, bool sendToMQFlag = true)
         {
             string message = "";
             if (!models.Any()) return;
@@ -249,9 +249,9 @@ namespace AmazonLoad.MammothItemLocale
             };
 
   
-                if (sendToEsbFlag)
+                if (sendToMQFlag)
                 {
-                    esbProducer.Send(
+                    mqProducer.Send(
                         message,
                         messageId,
                         headers);
@@ -266,7 +266,7 @@ namespace AmazonLoad.MammothItemLocale
                 }
         }
 
-        [Obsolete("Use SendMessagesToEsbServerSideGroups instead",false)]
+        [Obsolete("Use SendMessagesToMQServerSideGroups instead",false)]
         internal static void SendMessagesToEsb(IEnumerable<MammothItemLocaleModel> models,
            IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
            string nonReceivingSysName, int maxNumberOfRows, string transactionType, bool sendToEsbFlag = true)

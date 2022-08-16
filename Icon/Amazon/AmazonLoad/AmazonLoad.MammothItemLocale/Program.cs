@@ -1,15 +1,12 @@
 ﻿using CommandLine;
 using CommandLine.Attributes;
-using OutputColorizer;
 using Icon.Common;
-using Icon.Esb;
-using Icon.Esb.Factory;
 using System;
 using System.Configuration;
 using System.IO;
 using NLog;
-using AmazonLoad.Common;
-using System.Globalization;
+using Icon.ActiveMQ.Producer;
+using Icon.ActiveMQ;
 
 namespace AmazonLoad.MammothItemLocale
 {
@@ -25,8 +22,8 @@ namespace AmazonLoad.MammothItemLocale
         public static string nonReceivingSysName { get; set; }
         public static int connectionTimeoutSeconds { get; set; }
         public static int clientSideProcessGroupCount { get; set; }
-        public static int numberOfRecordsPerEsbMessage { get; set; }
-        public static bool sendToEsb { get; set; }
+        public static int numberOfRecordsPerMQMessage { get; set; }
+        public static bool sendToMQ { get; set; }
         public static string transactionType { get; set; }
         public static DateTime startTime { get; set; }
         public static int threadCount { get; set; }
@@ -69,11 +66,11 @@ namespace AmazonLoad.MammothItemLocale
             saveMessages = AppSettingsAccessor.GetBoolSetting("SaveMessages");
             saveMessagesDirectory = AppSettingsAccessor.GetStringSetting("SaveMessagesDirectory");
             nonReceivingSysName = AppSettingsAccessor.GetStringSetting("NonReceivingSysName");
-            sendToEsb = AppSettingsAccessor.GetBoolSetting("SendMessagesToEsb", false);
+            sendToMQ = AppSettingsAccessor.GetBoolSetting("SendMessagesToMQ", false);
             mammothConnectionString = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
             transactionType = AppSettingsAccessor.GetStringSetting("TransactionType", "Item/Locale");
             connectionTimeoutSeconds = AppSettingsAccessor.GetIntSetting("ConnectionTimeoutSeconds", 7200);
-            numberOfRecordsPerEsbMessage = AppSettingsAccessor.GetIntSetting("numberOfRecordsPerESBMessage", 100);
+            numberOfRecordsPerMQMessage = AppSettingsAccessor.GetIntSetting("numberOfRecordsPerMQMessage", 100);
             clientSideProcessGroupCount = AppSettingsAccessor.GetIntSetting("ClientSideProcessGroupCount", 1000);
             threadCount = AppSettingsAccessor.GetIntSetting("threadCount", 2);
 
@@ -87,15 +84,15 @@ namespace AmazonLoad.MammothItemLocale
             logger.Info($"  SaveMessages: {saveMessages}");
             logger.Info($"  SaveMessages: \"{saveMessagesDirectory}\"");
             logger.Info($"  NonReceivingSysName: \"{nonReceivingSysName}\"");
-            logger.Info($"  SendMessagesToEsb: {sendToEsb}");
-            logger.Info($"  NumberOfRecordsPerESBMessage: {numberOfRecordsPerEsbMessage}");
+            logger.Info($"  SendMessagesToMQ: {sendToMQ}");
+            logger.Info($"  NumberOfRecordsPerMQMessage: {numberOfRecordsPerMQMessage}");
             logger.Info($"  ClientSideProcessGroupCount: {clientSideProcessGroupCount}");
 
 
 
-            if (!sendToEsb)
+            if (!sendToMQ)
             {
-                logger.Info($"  SendMessagesToEsb: OFF =>: messages not actually sending to ESB queue!");
+                logger.Info($"  SendMessagesToMQ: OFF =>: messages not actually sending to MQ queue!");
             }
             logger.Info("");
 
@@ -152,7 +149,7 @@ namespace AmazonLoad.MammothItemLocale
                 region: region,
                 maxNumberOfRows: maxNumberOfRows,
                 timeoutInSeconds: connectionTimeoutSeconds,
-                numberOfRecordsPerEsbMessage: numberOfRecordsPerEsbMessage);
+                numberOfRecordsPerMQMessage: numberOfRecordsPerMQMessage);
         }
 
         private static void ResetProcessedRecords()
@@ -170,10 +167,10 @@ namespace AmazonLoad.MammothItemLocale
             if (saveMessages && !Directory.Exists(saveMessagesDirectory))
                 Directory.CreateDirectory(saveMessagesDirectory);
 
-            var producer = new EsbConnectionFactory { Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("esb") }.CreateProducer();
+            var producer = new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig("ActiveMqItemLocaleQueueName"));
 
             MammothItemLocaleBuilder.ProcessMammothItemLocalesAndSendMessages(
-                esbProducer: producer,
+                mqProducer: producer,
                 mammothConnectionString: mammothConnectionString,
                 region: region,
                 maxNumberOfRows: maxNumberOfRows,
@@ -183,8 +180,8 @@ namespace AmazonLoad.MammothItemLocale
                 transactionType: transactionType,
                 connectionTimeoutSeconds: connectionTimeoutSeconds,
                 clientSideProcessGroupCount: clientSideProcessGroupCount,
-                numberOfRecordsPerEsbMessage: numberOfRecordsPerEsbMessage,
-                sendToEsb: sendToEsb,
+                numberOfRecordsPerMQMessage: numberOfRecordsPerMQMessage,
+                sendToMQ: sendToMQ,
                 threadCount: threadCount);
 
             logger.Info($"Number of records sent: {MammothItemLocaleBuilder.NumberOfRecordsSent}.");
