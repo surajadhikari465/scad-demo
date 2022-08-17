@@ -225,7 +225,7 @@ JOIN SubTeam isb (NOLOCK) on isb.SubTeam_No = i.SubTeam_No
 JOIN ItemUnit iuo (NOLOCK) on iuo.Unit_ID = oi.QuantityUnit
 JOIN itemUnit iui (NOLOCK) on iui.Unit_ID = i.Retail_Unit_ID
 WHERE oh.OrderHeader_ID = ?
-AND i.Retail_Sale = 1</statement>
+</statement>
                 <wizardData/>
                 <processInSubsets>false</processInSubsets>
                 <Prepared_Param_DataType>
@@ -472,7 +472,7 @@ JOIN amz.DeletedOrderItem oi (NOLOCK) on oh.OrderHeader_ID = oi.OrderHeader_ID a
 JOIN Item i (NOLOCK) on i.Item_Key = oi.Item_Key
 JOIN ItemIdentifier ii (NOLOCK) on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
 WHERE oh.OrderHeader_ID = ?
- AND i.Retail_Sale = 1</statement>
+</statement>
                 <wizardData/>
                 <processInSubsets>false</processInSubsets>
                 <Prepared_Param_DataType>
