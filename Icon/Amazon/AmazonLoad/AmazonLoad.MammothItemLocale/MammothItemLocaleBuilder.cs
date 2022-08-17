@@ -103,7 +103,7 @@ namespace AmazonLoad.MammothItemLocale
                 sqlConnection.Execute("update stage.ItemLocaleExportStaging set Processed = 0");
             }
         }
-        public static void StageRecords(string mammothConnectionString, int timeoutInSeconds, string region, int maxNumberOfRows, int numberOfRecordsPerMQMessage)
+        public static void StageRecords(string mammothConnectionString, int timeoutInSeconds, string region, int maxNumberOfRows, int numberOfRecordsPerMQMessage, int startGroup, int endGroup)
         {
             using (SqlConnection sqlConnection = new SqlConnection(mammothConnectionString))
             {
@@ -116,7 +116,7 @@ namespace AmazonLoad.MammothItemLocale
                     Enumerable.Range(0, 10).ForEach(x => Thread.Sleep(1000));
                 }
 
-                StageMammothtemLocales(sqlConnection, region, maxNumberOfRows, numberOfRecordsPerMQMessage, timeoutInSeconds);
+                StageMammothtemLocales(sqlConnection, region, maxNumberOfRows, numberOfRecordsPerMQMessage, timeoutInSeconds, startGroup, endGroup);
                 
             }
         }
@@ -137,7 +137,8 @@ namespace AmazonLoad.MammothItemLocale
         
             public static void ProcessMammothItemLocalesAndSendMessages(IActiveMQProducer mqProducer,
             string mammothConnectionString, string region, int maxNumberOfRows, bool saveMessages,
-            string saveMessagesDirectory, string nonReceivingSysName, string transactionType, int numberOfRecordsPerMQMessage, int clientSideProcessGroupCount, int connectionTimeoutSeconds,  int threadCount, bool sendToMQ)
+            string saveMessagesDirectory, string nonReceivingSysName, string transactionType, int numberOfRecordsPerMQMessage, int clientSideProcessGroupCount, int connectionTimeoutSeconds,  int threadCount, bool sendToMQ,
+            int startGroup, int endGroup)
         {
 
             using (SqlConnection sqlConnection = new SqlConnection(mammothConnectionString))
@@ -145,7 +146,7 @@ namespace AmazonLoad.MammothItemLocale
 
                 var stagingInfo = GetStagingTableInfo(sqlConnection, connectionTimeoutSeconds);
                 var numberOfGroups = stagingInfo.UnProcessedGroupIds.Count();
-                var GroupRanges = CalculateRanges(stagingInfo.UnProcessedGroupIds, clientSideProcessGroupCount);
+                var GroupRanges = CalculateRanges(stagingInfo.UnProcessedGroupIds, clientSideProcessGroupCount, startGroup, endGroup);
 
                 logger.Info($"{numberOfGroups} mq message group(s) created");
                 logger.Info($"{GroupRanges.Count()} client side data sets will be processed.");
@@ -195,14 +196,14 @@ namespace AmazonLoad.MammothItemLocale
             }
         }
 
-        internal static IEnumerable<GroupRange> CalculateRanges(List<int> unprocessedGroups, int batchSize)
+        internal static IEnumerable<GroupRange> CalculateRanges(List<int> unprocessedGroups, int batchSize, int startGroup, int endGroup)
         {
-            var batches = unprocessedGroups.OrderBy(o => o).Batch(batchSize).Select(s => new GroupRange { Groups= s.ToList() });
+            var batches = unprocessedGroups.Where(a=> a >= startGroup && a <= endGroup).OrderBy(o => o).Batch(batchSize).Select(s => new GroupRange { Groups= s.ToList() });
             return batches;
         }
         
         
-        internal static int StageMammothtemLocales(SqlConnection mammothSqlConnection, string region, int maxNumberOfRows, int numberOfRecordsPerMessage, int connectionTimeoutSeconds)
+        internal static int StageMammothtemLocales(SqlConnection mammothSqlConnection, string region, int maxNumberOfRows, int numberOfRecordsPerMessage, int connectionTimeoutSeconds, int startGroup, int endGroup)
         {
             mammothSqlConnection.FireInfoMessageEventOnUserErrors = true;
             mammothSqlConnection.InfoMessage += (s, e) => { Console.Out.WriteLineAsync($"(sql) {e.Message}"); };
@@ -211,6 +212,8 @@ namespace AmazonLoad.MammothItemLocale
             paramters.Add("Region", dbType: DbType.String, direction: ParameterDirection.Input, value: region);
             paramters.Add("GroupSize", dbType: DbType.Int32, direction: ParameterDirection.Input, value: numberOfRecordsPerMessage);
             paramters.Add("MaxRows", dbType: DbType.Int32, direction: ParameterDirection.Input, value: maxNumberOfRows);
+            paramters.Add("StartRange", dbType: DbType.Int32, direction: ParameterDirection.Input, value: startGroup);
+            paramters.Add("EndRange", dbType: DbType.Int32, direction: ParameterDirection.Input, value: endGroup);
 
             var rowCount = mammothSqlConnection.QueryFirst<int>("stage.ItemLocaleExport", paramters, commandTimeout: connectionTimeoutSeconds, commandType: CommandType.StoredProcedure);
 

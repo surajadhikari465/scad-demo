@@ -27,6 +27,8 @@ namespace AmazonLoad.MammothItemLocale
         public static string transactionType { get; set; }
         public static DateTime startTime { get; set; }
         public static int threadCount { get; set; }
+        public static int startGroup { get; set; }
+        public static int endGroup { get; set; }
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -59,6 +61,8 @@ namespace AmazonLoad.MammothItemLocale
                 Parser.DisplayHelp<Options>();
             }
 
+            startGroup = options.StartGroup;
+            endGroup = options.EndGroup;
             
             startTime = DateTime.Now;
             region = AppSettingsAccessor.GetStringSetting("Region");
@@ -102,6 +106,10 @@ namespace AmazonLoad.MammothItemLocale
                     CheckStagingTable();
                     break;
                 case "stage":
+                    if (options.StartGroup < 0 && options.EndGroup < 0)
+                    {
+                        Console.WriteLine("The staging process will only perform first step. To perform second step rerun the command with -StartRange and -EndRange attributes");
+                    }
                     StageRecords();
                     break;
                 case "process":
@@ -129,8 +137,8 @@ namespace AmazonLoad.MammothItemLocale
 
             var endTime = DateTime.Now;
             logger.Info($"[{endTime}] ({(endTime - startTime):hh\\:mm\\:ss} elapsed)");
-            
-            
+
+            Console.ReadKey();
         }
 
         public static void OpsGenieTest()
@@ -149,7 +157,9 @@ namespace AmazonLoad.MammothItemLocale
                 region: region,
                 maxNumberOfRows: maxNumberOfRows,
                 timeoutInSeconds: connectionTimeoutSeconds,
-                numberOfRecordsPerMQMessage: numberOfRecordsPerMQMessage);
+                numberOfRecordsPerMQMessage: numberOfRecordsPerMQMessage,
+                startGroup: startGroup,
+                endGroup: endGroup);
         }
 
         private static void ResetProcessedRecords()
@@ -182,7 +192,9 @@ namespace AmazonLoad.MammothItemLocale
                 clientSideProcessGroupCount: clientSideProcessGroupCount,
                 numberOfRecordsPerMQMessage: numberOfRecordsPerMQMessage,
                 sendToMQ: sendToMQ,
-                threadCount: threadCount);
+                threadCount: threadCount,
+                startGroup: startGroup,
+                endGroup: endGroup);
 
             logger.Info($"Number of records sent: {MammothItemLocaleBuilder.NumberOfRecordsSent}.");
             logger.Info($"Number of messages sent: {MammothItemLocaleBuilder.NumberOfMessagesSent}.");
@@ -198,6 +210,10 @@ namespace AmazonLoad.MammothItemLocale
     {
         [OptionalArgument("Help", "RunMode", "[ Check | Stage | Process | ClearStaging | ResetProcessed | Help]")]
         public string RunMode { get; set; }
+        [OptionalArgument(-1, "StartGroup", "Starting range for staging or processing")]
+        public int StartGroup { get; set; }
+        [OptionalArgument(-1, "EndGroup", "Ending range for staging or processing")]
+        public int EndGroup { get; set; }
     }
 
 }
