@@ -51,7 +51,8 @@
 	[GroupId] INT NULL, 
 	[Processed] BIT NOT NULL CONSTRAINT DF_ItemLocaleExport_Processed DEFAULT (0),
 	[PosScaleTare] INT NULL,
-	[ScaleItem] BIT NULL
+	[ScaleItem] BIT NULL,
+	[LockedForSale] BIT NULL
 )
 GO
 

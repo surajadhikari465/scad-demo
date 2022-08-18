@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [stage].[ItemLocaleExport]  
- @Region char(2), @GroupSize int = 100, @MaxRows int = 0 , @StartGroup int, @EndGroup int
+ @Region char(2), @GroupSize int = 100, @MaxRows int = 0 , @StartRange int, @EndRange int
  AS  
 BEGIN  
  SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  
@@ -64,6 +64,7 @@ BEGIN
  DECLARE @UseByEAB INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'Use By EAB' )   
  DECLARE @WrappedTareWeight INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'Wrapped Tare Weight' )   
  DECLARE @posScaleTare INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'POS Scale Tare' )  
+ DECLARE @lockedForSale INT = (SELECT AttributeID FROM Attributes WHERE AttributeCode = 'RS' )  
   
  DECLARE @timestamp DATETIME,  
   @msg VARCHAR(255)  
@@ -146,7 +147,8 @@ BEGIN
   NULL Groupid,  
   0 Processed,  
   NULL [PosScaleTare],  
-  s.ScaleItem [ScaleItem]  
+  s.ScaleItem [ScaleItem],
+  NULL [LockedForSale]
   FROM dbo.ItemLocaleAttributes s  
   INNER JOIN dbo.Items i ON s.ItemID = i.ItemID  
   INNER JOIN dbo.ItemTypes it ON i.ItemTypeID = it.ItemTypeID  
@@ -210,7 +212,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @ColorAddedId
- and GroupId >= @StartGroup and GroupId <= @EndGroup
+ and GroupId >= @StartRange and GroupId <= @EndRange
  option (recompile)  
   
  UPDATE il  
@@ -219,7 +221,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @CountryOfProcessingId  
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
  option (recompile)  
   
@@ -229,7 +231,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @OriginId  
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
  option (recompile)  
   
@@ -239,7 +241,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @EstId  
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
  option (recompile)  
   
@@ -249,7 +251,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @ExclusiveId  
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
  option (recompile)  
   
@@ -259,7 +261,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @NumDigitsToScaleId 
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
  option (recompile)  
   
@@ -269,7 +271,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @ChicagoBabyId  
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
  option (recompile)  
   
@@ -279,7 +281,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @TagUomId  
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
  option (recompile)  
   
@@ -289,7 +291,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @LinkedScanCodeId  
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
  option (recompile)  
   
@@ -299,7 +301,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @ScaleExtraTextId 
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
  option (recompile)  
   
@@ -310,7 +312,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @CFSSendtoScale  
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
  option (recompile)  
   
@@ -321,7 +323,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @ForceTare  
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
  option (recompile)  
   
@@ -332,7 +334,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @ShelfLife  
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
  option (recompile)  
   
@@ -343,7 +345,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @UnwrappedTareWeight  
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
  option (recompile)  
   
@@ -353,9 +355,19 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @posScaleTare  
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
- option (recompile)  
+ option (recompile) 
+ 
+  UPDATE il   
+ SET [LockedForSale] = ext.AttributeValue  
+ FROM [stage].ItemLocaleExportStaging il   
+ INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
+  AND il.LocaleId = ext.LocaleID  
+ WHERE ext.AttributeId = @lockedForSale
+  and GroupId >= @StartRange and GroupId <= @EndRange
+
+ option (recompile) 
   
    
  UPDATE il  
@@ -364,7 +376,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @UseByEAB  
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
  option (recompile)  
   
@@ -376,7 +388,7 @@ BEGIN
  INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
   AND il.LocaleId = ext.LocaleID  
  WHERE ext.AttributeId = @WrappedTareWeight 
-  and GroupId >= @StartGroup and GroupId <= @EndGroup
+  and GroupId >= @StartRange and GroupId <= @EndRange
 
  option (recompile)  
   
@@ -384,7 +396,7 @@ BEGIN
   SET [SupplierName] = ils.SupplierName  
   FROM [stage].ItemLocaleExportStaging il  
   INNER JOIN dbo.ItemLocaleSupplier ils ON ils.Region = @Region AND ils.ItemID = il.ItemId AND ils.BusinessUnitID = il.BusinessUnitId  
-   and GroupId >= @StartGroup and GroupId <= @EndGroup
+   and GroupId >= @StartRange and GroupId <= @EndRange
 
   option (recompile);  
   
@@ -392,7 +404,7 @@ BEGIN
   SET [IrmaVendorKey] = ils.IrmaVendorKey  
   FROM [stage].ItemLocaleExportStaging il  
   INNER JOIN dbo.ItemLocaleSupplier ils ON ils.Region = @Region AND ils.ItemID = il.ItemId AND ils.BusinessUnitID = il.BusinessUnitId  
-   and GroupId >= @StartGroup and GroupId <= @EndGroup
+   and GroupId >= @StartRange and GroupId <= @EndRange
 
   option (recompile);  
   
@@ -400,7 +412,7 @@ BEGIN
   SET [SupplierItemID] = ils.SupplierItemID  
   FROM [stage].ItemLocaleExportStaging il  
   INNER JOIN dbo.ItemLocaleSupplier ils ON ils.Region = @Region AND ils.ItemID = il.ItemId AND ils.BusinessUnitID = il.BusinessUnitId  
-   and GroupId >= @StartGroup and GroupId <= @EndGroup
+   and GroupId >= @StartRange and GroupId <= @EndRange
 
   option (recompile);  
   
@@ -408,7 +420,7 @@ BEGIN
   SET [SupplierCaseSize] = ils.SupplierCaseSize  
   FROM [stage].ItemLocaleExportStaging il  
   INNER JOIN dbo.ItemLocaleSupplier ils ON ils.Region = @Region AND ils.ItemID = il.ItemId AND ils.BusinessUnitID = il.BusinessUnitId  
-   and GroupId >= @StartGroup and GroupId <= @EndGroup
+   and GroupId >= @StartRange and GroupId <= @EndRange
 
   option (recompile);  
   

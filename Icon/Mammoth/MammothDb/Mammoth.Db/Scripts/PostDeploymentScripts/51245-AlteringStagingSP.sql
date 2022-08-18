@@ -1,5 +1,4 @@
-﻿--sp_helptext 'stage.ItemLocaleExport'
-ALTER PROCEDURE [stage].[ItemLocaleExport]  
+﻿ALTER PROCEDURE [stage].[ItemLocaleExport]  
  @Region char(2), @GroupSize int = 100, @MaxRows int = 0 , @StartRange int, @EndRange int
  AS  
 BEGIN  
@@ -65,6 +64,7 @@ BEGIN
  DECLARE @UseByEAB INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'Use By EAB' )   
  DECLARE @WrappedTareWeight INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'Wrapped Tare Weight' )   
  DECLARE @posScaleTare INT = (SELECT AttributeID FROM Attributes WHERE AttributeDesc LIKE 'POS Scale Tare' )  
+ DECLARE @lockedForSale INT = (SELECT AttributeID FROM Attributes WHERE AttributeCode = 'RS' )  
   
  DECLARE @timestamp DATETIME,  
   @msg VARCHAR(255)  
@@ -147,7 +147,8 @@ BEGIN
   NULL Groupid,  
   0 Processed,  
   NULL [PosScaleTare],  
-  s.ScaleItem [ScaleItem]  
+  s.ScaleItem [ScaleItem],
+  NULL [LockedForSale]
   FROM dbo.ItemLocaleAttributes s  
   INNER JOIN dbo.Items i ON s.ItemID = i.ItemID  
   INNER JOIN dbo.ItemTypes it ON i.ItemTypeID = it.ItemTypeID  
@@ -356,7 +357,17 @@ BEGIN
  WHERE ext.AttributeId = @posScaleTare  
   and GroupId >= @StartRange and GroupId <= @EndRange
 
- option (recompile)  
+ option (recompile) 
+ 
+  UPDATE il   
+ SET [LockedForSale] = ext.AttributeValue  
+ FROM [stage].ItemLocaleExportStaging il   
+ INNER JOIN dbo.ItemLocaleAttributesExt ext ON ext.region = @region and il.ItemId = ext.ItemID  
+  AND il.LocaleId = ext.LocaleID  
+ WHERE ext.AttributeId = @lockedForSale
+  and GroupId >= @StartRange and GroupId <= @EndRange
+
+ option (recompile) 
   
    
  UPDATE il  
