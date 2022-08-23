@@ -13853,7 +13853,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private UserType userInfoField;
         
-        private System.DateTime createDateTimeField;
+        private string createDateTimeField;
         
         private string documentNumberField;
         
@@ -14005,7 +14005,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public System.DateTime createDateTime
+        public string createDateTime
         {
             get
             {
