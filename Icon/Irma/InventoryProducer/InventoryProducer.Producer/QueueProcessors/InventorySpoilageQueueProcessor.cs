@@ -185,11 +185,12 @@ namespace InventoryProducer.Producer.QueueProcessors
                     idNumber = requiredShrinkDataModel.UserID.ToString(),
                     name = requiredShrinkDataModel.UserName,
                 },
-                createDateTime = requiredShrinkDataModel.CurrentDateTime
+                createDateTime = new DateTimeOffset(requiredShrinkDataModel.CurrentDateTime).ToString("O")
             };
             canonicalObj.inventoryAdjustment[0].inventoryAdjustmentDetail[0].adjustmentQuantity[0] = new QuantityType
             {
                 value = requiredShrinkDataModel.AdjustmentQuantity,
+                valueSpecified = true,
                 units = new UnitsType
                 {
                     uom = new UomType()

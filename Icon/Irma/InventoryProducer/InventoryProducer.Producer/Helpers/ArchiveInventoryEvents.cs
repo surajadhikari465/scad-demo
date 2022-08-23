@@ -32,7 +32,7 @@ namespace InventoryProducer.Producer.Helpers
                     new SqlParameter("@BusinessUnitID", businessUnitId),
                     new SqlParameter("@KeyID", keyID),
                     new SqlParameter("@SecondaryKeyID", (object) secondaryKeyID ?? DBNull.Value),
-                    new SqlParameter("@InsertDate", DateTime.UtcNow),
+                    new SqlParameter("@InsertDate", DateTime.Now),
                     new SqlParameter("@Status", status),
                     new SqlParameter("@ErrorDescription", (object) errorDescription ?? DBNull.Value),
                     new SqlParameter("@MessageNumber", messageNumber),

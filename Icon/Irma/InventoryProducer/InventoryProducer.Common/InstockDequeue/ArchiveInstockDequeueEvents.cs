@@ -84,8 +84,8 @@ namespace InventoryProducer.Common.InstockDequeue
                 EventTypeCode = instockDequeueModel.EventTypeCode,
                 MessageType = instockDequeueModel.MessageType,
                 KeyID = instockDequeueModel.KeyID,
-                InsertDate = instockDequeueModel.InsertDate.ToString("O"),
-                MessageTimestampUtc = instockDequeueModel.MessageTimestampUtc.ToString("O"),
+                InsertDate = new DateTimeOffset(instockDequeueModel.InsertDate).ToString("O"),
+                MessageTimestampUtc = new DateTimeOffset(instockDequeueModel.MessageTimestampUtc).ToString("O"),
             };
             if (instockDequeueModel.SecondaryKeyID.HasValue)
             {
