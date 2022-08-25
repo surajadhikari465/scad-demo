@@ -43,9 +43,9 @@ namespace AmazonLoad.MammothItemLocale
                 {
                     logger.Info($"All records have been processed.");
                 }
-                    logger.Info("");
+                logger.Info("");
             }
-     
+
         }
 
         internal static StagingTableInfo GetStagingTableInfo(SqlConnection connection, int timeoutInSeconds)
@@ -54,14 +54,14 @@ namespace AmazonLoad.MammothItemLocale
 
             var info = new StagingTableInfo();
 
-            info.TotalRecords= connection.QueryFirst<int>("select count(*)  from stage.ItemLocaleExportStaging with (nolock)", commandTimeout: timeoutInSeconds);
+            info.TotalRecords = connection.QueryFirst<int>("select count(*)  from stage.ItemLocaleExportStaging with (nolock)", commandTimeout: timeoutInSeconds);
             if (info.TotalRecords > 0)
             {
                 info.UnprocessedRecords = connection.QueryFirst<int>("select count(*) from stage.ItemLocaleExportStaging with (nolock) where Processed =0 ", commandTimeout: timeoutInSeconds);
                 var groups = connection.Query<int?>("select distinct GroupId from stage.ItemLocaleExportStaging with (nolock) where Processed = 0", commandTimeout: timeoutInSeconds);
-                info.UnProcessedGroupIds = groups.Any(g => g.HasValue) ? groups.Where(g => g.HasValue).Select(g=> g.Value).ToList() : new List<int>();
+                info.UnProcessedGroupIds = groups.Any(g => g.HasValue) ? groups.Where(g => g.HasValue).Select(g => g.Value).ToList() : new List<int>();
             }
-                
+
             return info;
         }
 
@@ -117,7 +117,7 @@ namespace AmazonLoad.MammothItemLocale
                 }
 
                 StageMammothtemLocales(sqlConnection, region, maxNumberOfRows, numberOfRecordsPerMQMessage, timeoutInSeconds, startGroup, endGroup);
-                
+
             }
         }
 
@@ -134,11 +134,11 @@ namespace AmazonLoad.MammothItemLocale
             }
         }
 
-        
-            public static void ProcessMammothItemLocalesAndSendMessages(IActiveMQProducer mqProducer,
-            string mammothConnectionString, string region, int maxNumberOfRows, bool saveMessages,
-            string saveMessagesDirectory, string nonReceivingSysName, string transactionType, int numberOfRecordsPerMQMessage, int clientSideProcessGroupCount, int connectionTimeoutSeconds,  int threadCount, bool sendToMQ,
-            int startGroup, int endGroup)
+
+        public static void ProcessMammothItemLocalesAndSendMessages(IActiveMQProducer mqProducer,
+    string mammothConnectionString, string region, int maxNumberOfRows, bool saveMessages,
+        string saveMessagesDirectory, string nonReceivingSysName, string transactionType, int numberOfRecordsPerMQMessage, int clientSideProcessGroupCount, int connectionTimeoutSeconds, int threadCount, bool sendToMQ,
+        int startGroup, int endGroup)
         {
 
             using (SqlConnection sqlConnection = new SqlConnection(mammothConnectionString))
@@ -159,28 +159,74 @@ namespace AmazonLoad.MammothItemLocale
                     logger.Info($"pulling data for groups {first}-{last}");
                     var models =
                         sqlConnection.Query<MammothItemLocaleModel>(
-                            $"select *, [Force Tare] as ForceTare, [Shelf Life] as ShelfLife, [Unwrapped Tare Weight] as UnwrappedTareWeight, [Wrapped Tare Weight] as WrappedTareWeight from stage.ItemLocaleExportStaging where groupid >= {first} and groupid <= {last}  and processed = 0", 
+                            $@"select [Region]
+      ,[BusinessUnitId]
+      ,[LocaleId]
+      ,[ItemId]
+      ,[ItemTypeCode]
+      ,[ItemTypeDesc]
+      ,[LocaleName]
+      ,[ScanCode]
+      ,[CaseDiscount]
+      ,[TmDiscount]
+      ,[AgeRestriction]
+      ,[RestrictedHours]
+      ,[Authorized]
+      ,[Discontinued]
+      ,[LabelTypeDescription]
+      ,[LocalItem]
+      ,[ProductCode]
+      ,[RetailUnit]
+      ,[SignDescription]
+      ,[Locality]
+      ,[SignRomanceLong]
+      ,[SignRomanceShort]
+      ,[ColorAdded]
+      ,[CountryOfProcessing]
+      ,[Origin]
+      ,[ElectronicShelfTag]
+      ,[Exclusive]
+      ,[NumberOfDigitsSentToScale]
+      ,[ChicagoBaby]
+      ,[TagUom]
+      ,[LinkedItem]
+      ,[ScaleExtraText]
+      ,[Msrp]
+      ,[SupplierName]
+      ,[IrmaVendorKey]
+      ,[SupplierItemID]
+      ,[SupplierCaseSize]
+      ,[OrderedByInfor]
+      ,[AltRetailSize]
+      ,[AltRetailUOM]
+      ,[DefaultScanCode]
+      ,[IrmaItemKey]
+      ,[GroupId]
+      ,[Processed]
+      ,[PosScaleTare]
+      ,[ScaleItem]
+      ,[LockedForSale],[Force Tare] as ForceTare, [Shelf Life] as ShelfLife, [Unwrapped Tare Weight] as UnwrappedTareWeight, [Wrapped Tare Weight] as WrappedTareWeight from stage.ItemLocaleExportStaging where groupid >= {first} and groupid <= {last}  and processed = 0",
                             commandTimeout: connectionTimeoutSeconds).ToList();
 
                     try
                     {
-                        var processingRange = Enumerable.Range(first, last+1);
+                        var processingRange = Enumerable.Range(first, last - first + 1);
                         logger.Info($"processing data for groups {first}-{last}");
                         Parallel.ForEach(processingRange, new ParallelOptions { MaxDegreeOfParallelism = threadCount }, (groupId) =>
-                          {
-                              var chunk = models.Where(w => w.GroupId == groupId);
-                              SendMessagesToMQServerSideGroups(chunk.ToList(), mqProducer, saveMessages, saveMessagesDirectory, nonReceivingSysName, transactionType, groupId, sendToMQ);
-                          });
+                        {
+                            var chunk = models.Where(w => w.GroupId == groupId);
+                            SendMessagesToMQServerSideGroups(chunk.ToList(), mqProducer, saveMessages, saveMessagesDirectory, nonReceivingSysName, transactionType, groupId, sendToMQ);
+                        });
                         logger.Info($"finalizing groups {first}-{last}");
-                        sqlConnection.Execute($"update stage.ItemLocaleExportStaging set Processed=1 where GroupId>={first} and GroupId <= {last} and Processed=0",commandTimeout: connectionTimeoutSeconds);
+                        sqlConnection.Execute($"update stage.ItemLocaleExportStaging set Processed=1 where GroupId>={first} and GroupId <= {last} and Processed=0", commandTimeout: connectionTimeoutSeconds);
 
                     }
                     catch (Exception ex)
                     {
                         logger.Info($"group range {first}-{last} failed");
                         logger.Info(ex.Message);
-                        if (ex.InnerException !=null)
-                                logger.Info(ex.InnerException.Message);
+                        if (ex.InnerException != null)
+                            logger.Info(ex.InnerException.Message);
                         logger.Info("");
 
                         var details = new Dictionary<string, string>()
@@ -198,11 +244,11 @@ namespace AmazonLoad.MammothItemLocale
 
         internal static IEnumerable<GroupRange> CalculateRanges(List<int> unprocessedGroups, int batchSize, int startGroup, int endGroup)
         {
-            var batches = unprocessedGroups.Where(a=> a >= startGroup && a <= endGroup).OrderBy(o => o).Batch(batchSize).Select(s => new GroupRange { Groups= s.ToList() });
+            var batches = unprocessedGroups.Where(a => a >= startGroup && a <= endGroup).OrderBy(o => o).Batch(batchSize).Select(s => new GroupRange { Groups = s.ToList() });
             return batches;
         }
-        
-        
+
+
         internal static int StageMammothtemLocales(SqlConnection mammothSqlConnection, string region, int maxNumberOfRows, int numberOfRecordsPerMessage, int connectionTimeoutSeconds, int startGroup, int endGroup)
         {
             mammothSqlConnection.FireInfoMessageEventOnUserErrors = true;
@@ -251,25 +297,25 @@ namespace AmazonLoad.MammothItemLocale
                 { "TransactionType", transactionType }
             };
 
-  
-                if (sendToMQFlag)
-                {
-                    mqProducer.Send(
+
+            if (sendToMQFlag)
+            {
+                mqProducer.Send(
                         message,
                         messageId,
                         headers);
-                }
-            
-                Interlocked.Add(ref NumberOfRecordsSent, models.Count());
-                Interlocked.Increment(ref NumberOfMessagesSent);
-            
-                if (saveMessages)
-                {
-                    File.AppendAllText($"{saveMessagesDirectory}/{messageId}.xml", JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
-                }
+            }
+
+            Interlocked.Add(ref NumberOfRecordsSent, models.Count());
+            Interlocked.Increment(ref NumberOfMessagesSent);
+
+            if (saveMessages)
+            {
+                File.AppendAllText($"{saveMessagesDirectory}/{messageId}.xml", JsonConvert.SerializeObject(headers) + Environment.NewLine + message);
+            }
         }
 
-        [Obsolete("Use SendMessagesToMQServerSideGroups instead",false)]
+        [Obsolete("Use SendMessagesToMQServerSideGroups instead", false)]
         internal static void SendMessagesToEsb(IEnumerable<MammothItemLocaleModel> models,
            IEsbProducer esbProducer, bool saveMessages, string saveMessagesDirectory,
            string nonReceivingSysName, int maxNumberOfRows, string transactionType, bool sendToEsbFlag = true)

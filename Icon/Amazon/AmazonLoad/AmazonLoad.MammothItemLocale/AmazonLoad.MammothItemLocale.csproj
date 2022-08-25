@@ -88,7 +88,7 @@
       <HintPath>..\packages\Icon.RenewableContext.2019.5.14.2\lib\net472\Icon.RenewableContext.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Common.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mammoth.Common.DataAccess.2022.4.28.1\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
+      <HintPath>..\packages\Mammoth.Common.DataAccess.2022.7.11.2\lib\net46\Mammoth.Common.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Mammoth.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.Framework.2019.3.20.1\lib\net46\Mammoth.Framework.dll</HintPath>

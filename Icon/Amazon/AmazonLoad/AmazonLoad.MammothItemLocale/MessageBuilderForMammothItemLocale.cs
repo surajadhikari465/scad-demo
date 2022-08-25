@@ -108,7 +108,8 @@ namespace AmazonLoad.MammothItemLocale
                 CreateTrait(message.ScaleItem, Attributes.Codes.ScaleItem),
                 CreateTrait(message.ShelfLife, Attributes.Codes.ShelfLife),
                 CreateTrait(message.UnwrappedTareWeight, Attributes.Codes.UnwrappedTareWeight),
-                CreateTrait(message.WrappedTareWeight, Attributes.Codes.WrappedTareWeight)
+                CreateTrait(message.WrappedTareWeight, Attributes.Codes.WrappedTareWeight),
+                CreateTrait(message.LockedForSale.HasValue ? message.LockedForSale.Value: false, Attributes.Codes.LockedForSale)
             };
         }
 

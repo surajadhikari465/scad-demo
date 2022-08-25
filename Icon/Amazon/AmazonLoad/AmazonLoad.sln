@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.PrimeAffinityPsg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.Common.Tests", "AmazonLoad.Common.Tests\AmazonLoad.Common.Tests.csproj", "{59A3A1C4-FEE4-45AC-B9F8-C55EEE118C00}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonLoad.Runner", "AmazonLoad.Runner\AmazonLoad.Runner.csproj", "{3AE6E528-B5F3-40B5-8812-86DE1F3F350A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{59A3A1C4-FEE4-45AC-B9F8-C55EEE118C00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59A3A1C4-FEE4-45AC-B9F8-C55EEE118C00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59A3A1C4-FEE4-45AC-B9F8-C55EEE118C00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AE6E528-B5F3-40B5-8812-86DE1F3F350A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AE6E528-B5F3-40B5-8812-86DE1F3F350A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AE6E528-B5F3-40B5-8812-86DE1F3F350A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AE6E528-B5F3-40B5-8812-86DE1F3F350A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -47,98 +47,106 @@ namespace AmazonLoad.MammothItemLocale
             logger.Info("ResetProcessed: Clear Processed Flags in staging.");
 
         }
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-
-            if (!Parser.TryParse(args, out Options options))
+            try
             {
-                logger.Error("Unable to parse options. Exiting.");
-                return;
-            }
+                if (!Parser.TryParse(args, out Options options))
+                {
+                    logger.Error("Unable to parse options. Exiting.");
+                    return 1;
+                }
 
-            if (options.RunMode == null)
+                if (options.RunMode == null)
+                {
+                    Parser.DisplayHelp<Options>();
+                }
+
+                startGroup = options.StartGroup;
+                endGroup = options.EndGroup;
+
+                startTime = DateTime.Now;
+                region = AppSettingsAccessor.GetStringSetting("Region");
+                maxNumberOfRows = AppSettingsAccessor.GetIntSetting("MaxNumberOfRows", 0);
+                saveMessages = AppSettingsAccessor.GetBoolSetting("SaveMessages");
+                saveMessagesDirectory = AppSettingsAccessor.GetStringSetting("SaveMessagesDirectory");
+                nonReceivingSysName = AppSettingsAccessor.GetStringSetting("NonReceivingSysName");
+                sendToMQ = AppSettingsAccessor.GetBoolSetting("SendMessagesToMQ", false);
+                mammothConnectionString = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
+                transactionType = AppSettingsAccessor.GetStringSetting("TransactionType", "Item/Locale");
+                connectionTimeoutSeconds = AppSettingsAccessor.GetIntSetting("ConnectionTimeoutSeconds", 7200);
+                numberOfRecordsPerMQMessage = AppSettingsAccessor.GetIntSetting("numberOfRecordsPerMQMessage", 100);
+                clientSideProcessGroupCount = AppSettingsAccessor.GetIntSetting("ClientSideProcessGroupCount", 1000);
+                threadCount = AppSettingsAccessor.GetIntSetting("threadCount", 2);
+
+
+                logger.Info($"Current RunMode: {options.RunMode}");
+                logger.Info("");
+                logger.Info("Flags:");
+                logger.Info($"  region: {region}");
+                logger.Info($"  connectionTimeoutSeconds: {connectionTimeoutSeconds}");
+                logger.Info($"  MaxNumberOfRows: {maxNumberOfRows}");
+                logger.Info($"  SaveMessages: {saveMessages}");
+                logger.Info($"  SaveMessages: \"{saveMessagesDirectory}\"");
+                logger.Info($"  NonReceivingSysName: \"{nonReceivingSysName}\"");
+                logger.Info($"  SendMessagesToMQ: {sendToMQ}");
+                logger.Info($"  NumberOfRecordsPerMQMessage: {numberOfRecordsPerMQMessage}");
+                logger.Info($"  ClientSideProcessGroupCount: {clientSideProcessGroupCount}");
+
+
+
+                if (!sendToMQ)
+                {
+                    logger.Info($"  SendMessagesToMQ: OFF =>: messages not actually sending to MQ queue!");
+                }
+                logger.Info("");
+
+                switch (options.RunMode.ToLowerInvariant())
+                {
+                    case "check":
+                        CheckStagingTable();
+                        break;
+                    case "stage":
+                        if (options.StartGroup < 0 && options.EndGroup < 0)
+                        {
+                            Console.WriteLine("The staging process will only perform first step. To perform second step rerun the command with -StartRange and -EndRange attributes");
+                        }
+                        StageRecords();
+                        break;
+                    case "process":
+                        FullExtract();
+                        break;
+                    case "clearstaging":
+                        ClearStagingTable();
+                        break;
+                    case "resetprocessed":
+                        ResetProcessedRecords();
+                        break;
+                    case "opsgenietest":
+                        OpsGenieTest();
+                        break;
+                    case "help":
+                        DisplayHelp();
+                        break;
+                    default:
+                        logger.Info($"Unknown RunMode supplied. {options.RunMode} Exiting.");
+                        break;
+                }
+
+                var endTime = DateTime.Now;
+                logger.Info($"[{endTime}] ({(endTime - startTime):hh\\:mm\\:ss} elapsed)");
+                if(!options.KillAfterCompletion)
+                {
+                    Console.ReadKey();
+                }
+            }
+            catch(Exception e)
             {
-                Parser.DisplayHelp<Options>();
+                logger.Error(e);
+                Console.ReadKey();
+                return 2;
             }
-
-            startGroup = options.StartGroup;
-            endGroup = options.EndGroup;
-            
-            startTime = DateTime.Now;
-            region = AppSettingsAccessor.GetStringSetting("Region");
-            maxNumberOfRows = AppSettingsAccessor.GetIntSetting("MaxNumberOfRows", 0);
-            saveMessages = AppSettingsAccessor.GetBoolSetting("SaveMessages");
-            saveMessagesDirectory = AppSettingsAccessor.GetStringSetting("SaveMessagesDirectory");
-            nonReceivingSysName = AppSettingsAccessor.GetStringSetting("NonReceivingSysName");
-            sendToMQ = AppSettingsAccessor.GetBoolSetting("SendMessagesToMQ", false);
-            mammothConnectionString = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
-            transactionType = AppSettingsAccessor.GetStringSetting("TransactionType", "Item/Locale");
-            connectionTimeoutSeconds = AppSettingsAccessor.GetIntSetting("ConnectionTimeoutSeconds", 7200);
-            numberOfRecordsPerMQMessage = AppSettingsAccessor.GetIntSetting("numberOfRecordsPerMQMessage", 100);
-            clientSideProcessGroupCount = AppSettingsAccessor.GetIntSetting("ClientSideProcessGroupCount", 1000);
-            threadCount = AppSettingsAccessor.GetIntSetting("threadCount", 2);
-
-
-            logger.Info($"Current RunMode: {options.RunMode}");
-            logger.Info("");
-            logger.Info("Flags:");
-            logger.Info($"  region: {region}");
-            logger.Info($"  connectionTimeoutSeconds: {connectionTimeoutSeconds}");
-            logger.Info($"  MaxNumberOfRows: {maxNumberOfRows}");
-            logger.Info($"  SaveMessages: {saveMessages}");
-            logger.Info($"  SaveMessages: \"{saveMessagesDirectory}\"");
-            logger.Info($"  NonReceivingSysName: \"{nonReceivingSysName}\"");
-            logger.Info($"  SendMessagesToMQ: {sendToMQ}");
-            logger.Info($"  NumberOfRecordsPerMQMessage: {numberOfRecordsPerMQMessage}");
-            logger.Info($"  ClientSideProcessGroupCount: {clientSideProcessGroupCount}");
-
-
-
-            if (!sendToMQ)
-            {
-                logger.Info($"  SendMessagesToMQ: OFF =>: messages not actually sending to MQ queue!");
-            }
-            logger.Info("");
-
-            switch (options.RunMode.ToLowerInvariant())
-            {
-                case "check":
-                    CheckStagingTable();
-                    break;
-                case "stage":
-                    if (options.StartGroup < 0 && options.EndGroup < 0)
-                    {
-                        Console.WriteLine("The staging process will only perform first step. To perform second step rerun the command with -StartRange and -EndRange attributes");
-                    }
-                    StageRecords();
-                    break;
-                case "process":
-                    FullExtract();
-                    break;
-                case "clearstaging":
-                    ClearStagingTable();
-                    break;
-                case "resetprocessed":
-                    ResetProcessedRecords();
-                    break;
-                case "opsgenietest":
-                    OpsGenieTest();
-                    break;
-                case "help":
-                    DisplayHelp();
-                    break;
-                default:
-                    logger.Info($"Unknown RunMode supplied. {options.RunMode} Exiting.");
-                    break;
-            }
-
-
-
-
-            var endTime = DateTime.Now;
-            logger.Info($"[{endTime}] ({(endTime - startTime):hh\\:mm\\:ss} elapsed)");
-
-            Console.ReadKey();
+            return 0;
         }
 
         public static void OpsGenieTest()
@@ -178,6 +186,9 @@ namespace AmazonLoad.MammothItemLocale
                 Directory.CreateDirectory(saveMessagesDirectory);
 
             var producer = new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig("ActiveMqItemLocaleQueueName"));
+            string clientId = $"AmazonLoad-{Guid.NewGuid()}";
+            Console.WriteLine($"Client ID: {clientId}");
+            producer.OpenConnection(clientId);
 
             MammothItemLocaleBuilder.ProcessMammothItemLocalesAndSendMessages(
                 mqProducer: producer,
@@ -214,6 +225,8 @@ namespace AmazonLoad.MammothItemLocale
         public int StartGroup { get; set; }
         [OptionalArgument(-1, "EndGroup", "Ending range for staging or processing")]
         public int EndGroup { get; set; }
+        [OptionalArgument(false, "KillAfterCompletion", "Ending range for staging or processing")]
+        public bool KillAfterCompletion { get; set; }
     }
 
 }
