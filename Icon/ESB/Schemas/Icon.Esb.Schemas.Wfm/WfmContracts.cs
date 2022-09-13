@@ -15949,10 +15949,10 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         private SubTeamChangeType subTeamChangeField;
         
         private UserType userInfoField;
+
+        private string createDateTimeField;
         
-        private System.DateTime createDateTimeField;
-        
-        private System.DateTime approveDateTimeField;
+        private string approveDateTimeField;
         
         private bool approveDateTimeFieldSpecified;
         
@@ -16043,7 +16043,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public System.DateTime createDateTime
+        public string createDateTime
         {
             get
             {
@@ -16056,7 +16056,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public System.DateTime approveDateTime
+        public string approveDateTime
         {
             get
             {
@@ -16288,7 +16288,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     public partial class TransferOrderDetailType
     {
         
-        private int transferOrderDetailNumberField;
+        private int? transferOrderDetailNumberField;
         
         private bool transferOrderDetailNumberFieldSpecified;
         
@@ -16300,7 +16300,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private string serialNumberField;
         
-        private int batchNumberField;
+        private int? batchNumberField;
         
         private bool batchNumberFieldSpecified;
         
@@ -16310,7 +16310,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private string tsfStatusField;
         
-        private System.DateTime expectedArrivalDateField;
+        private string expectedArrivalDateField;
         
         private bool expectedArrivalDateFieldSpecified;
         
@@ -16330,12 +16330,12 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private int packSize1Field;
         
-        private int packSize2Field;
+        private int? packSize2Field;
         
         private bool packSize2FieldSpecified;
         
         /// <remarks/>
-        public int transferOrderDetailNumber
+        public int? transferOrderDetailNumber
         {
             get
             {
@@ -16414,7 +16414,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public int batchNumber
+        public int? batchNumber
         {
             get
             {
@@ -16481,7 +16481,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public System.DateTime expectedArrivalDate
+        public string expectedArrivalDate
         {
             get
             {
@@ -16614,7 +16614,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public int packSize2
+        public int? packSize2
         {
             get
             {
@@ -16839,7 +16839,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
     public partial class TransferOrderDeletionDetailType
     {
         
-        private int transferOrderDetailNumberField;
+        private int? transferOrderDetailNumberField;
         
         private bool transferOrderDetailNumberFieldSpecified;
         
@@ -16852,7 +16852,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         private string defaultScanCodeField;
         
         /// <remarks/>
-        public int transferOrderDetailNumber
+        public int? transferOrderDetailNumber
         {
             get
             {
