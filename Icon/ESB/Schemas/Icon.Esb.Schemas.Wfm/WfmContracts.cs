@@ -16304,7 +16304,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private bool batchNumberFieldSpecified;
         
-        private QuantityType1[] transferQuantitiesField;
+        private QuantityType[] transferQuantitiesField;
         
         private InvStatusChangeType invStatusChangeField;
         
@@ -16441,8 +16441,8 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("quantity", Namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1", IsNullable=false)]
-        public QuantityType1[] transferQuantities
+        [System.Xml.Serialization.XmlArrayItemAttribute("quantity", Namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable=false)]
+        public QuantityType[] transferQuantities
         {
             get
             {
