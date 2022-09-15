@@ -10431,7 +10431,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private string typeField;
         
-        private decimal valueField;
+        private decimal? valueField;
         
         private bool valueFieldSpecified;
         
@@ -10455,7 +10455,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public decimal value
+        public decimal? value
         {
             get
             {
