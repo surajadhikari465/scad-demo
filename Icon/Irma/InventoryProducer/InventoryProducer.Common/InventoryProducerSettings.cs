@@ -11,6 +11,7 @@ namespace InventoryProducer.Common
         public int DequeueMinuteOffset { get; set; }
         public string InstockDequeueStoredProcedureName { get; set; }
         public string NonReceivingSystemsSpoilage { get; set; }
+        public string NonReceivingSystemsTransferOrder { get; set; }
         public string ProducerType { get; set; }
         public string TransactionType { get; set; }
         public string RegionCode { get; set; }
@@ -30,6 +31,7 @@ namespace InventoryProducer.Common
                 Instance = instance,
                 ProducerType = AppSettingsAccessor.GetStringSetting("ProducerType", string.Empty),
                 NonReceivingSystemsSpoilage = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsSpoilage", false),
+                NonReceivingSystemsTransferOrder = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsTransferOrder", string.Empty),
                 DequeueMaxRecords = AppSettingsAccessor.GetIntSetting("DequeueMaxRecords"),
                 DequeueMinuteOffset = AppSettingsAccessor.GetIntSetting("DequeueMinuteOffset"),
                 InstockDequeueStoredProcedureName = AppSettingsAccessor.GetStringSetting("InstockDequeueStoredProcedureName"),

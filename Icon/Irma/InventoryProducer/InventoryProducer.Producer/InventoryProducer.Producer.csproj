@@ -64,7 +64,7 @@
       <HintPath>..\packages\Icon.Esb.2020.12.11.1\lib\net472\Icon.Esb.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2022.8.23.6\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2022.9.15.2\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Framework.2019.12.6.1\lib\net472\Icon.Framework.dll</HintPath>
@@ -137,13 +137,25 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\ITransferOrdersDAL.cs" />
+    <Compile Include="DataAccess\TransferOrdersDAL.cs" />
     <Compile Include="Helpers\ArchiveInventoryEvents.cs" />
+    <Compile Include="Helpers\IArchiveInventoryEvents.cs" />
     <Compile Include="InventoryProducerBase.cs" />
+    <Compile Include="Mapper\ITransferOrderCanonicalMapper.cs" />
+    <Compile Include="Mapper\TransferOrderCanonicalMapper.cs" />
+    <Compile Include="Model\DBModel\TransferOrdersModel.cs" />
     <Compile Include="Model\DBModel\ShrinkDataModel.cs" />
     <Compile Include="ProducerBuilders\InventorySpoilageProducerBuilder.cs" />
+    <Compile Include="ProducerBuilders\InventoryTransferProducerBuilder.cs" />
     <Compile Include="ProducerBuilders\IProducerBuilder.cs" />
     <Compile Include="ProducerBuilders\ProducerProvider.cs" />
+    <Compile Include="Publish\ErrorEventPublisher.cs" />
+    <Compile Include="Publish\IErrorEventPublisher.cs" />
+    <Compile Include="Publish\IMessagePublisher.cs" />
+    <Compile Include="Publish\MessagePublisher.cs" />
     <Compile Include="QueueProcessors\InventorySpoilageQueueProcessor.cs" />
+    <Compile Include="QueueProcessors\InventoryTransferQueueProcessor.cs" />
     <Compile Include="QueueProcessors\IQueueProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

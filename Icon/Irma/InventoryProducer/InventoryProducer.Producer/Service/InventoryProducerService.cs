@@ -118,8 +118,11 @@ namespace InventoryProducer.Producer.Service
             {
                 switch (producerType)
                 {
-                    case "spoilage":
+                    case Constants.ProducerType.Spoilage:
                         sSource = "Inventory Producer - Inventory Spoilage";
+                        break;
+                    case Constants.ProducerType.Transfer:
+                        sSource = "Inventory Producer - Inventory Transfer";
                         break;
                     default:
                         sSource = "Inventory Producer - Unknown Type";

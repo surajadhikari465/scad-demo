@@ -64,7 +64,7 @@ namespace InventoryProducer.Producer.QueueProcessors
         public void ProcessMessageQueue()
         {
             inventoryLogger.LogInfo($"Starting {settings.TransactionType} producer.");
-            List<InstockDequeueResult> dequeuedMessages = instockDequeueService.GetDequeuedMessages();
+            IList<InstockDequeueResult> dequeuedMessages = instockDequeueService.GetDequeuedMessages();
             ArchiveInventoryEvents archiveInventoryEvents = new ArchiveInventoryEvents(irmaContextFactory, settings);
             foreach (InstockDequeueResult dequeuedMessage in dequeuedMessages)
             {

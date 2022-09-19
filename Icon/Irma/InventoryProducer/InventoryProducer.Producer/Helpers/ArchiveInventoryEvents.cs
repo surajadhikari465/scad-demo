@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 
 namespace InventoryProducer.Producer.Helpers
 {
-    public class ArchiveInventoryEvents
+    public class ArchiveInventoryEvents: IArchiveInventoryEvents
     {
         private readonly IDbContextFactory<IrmaContext> irmaContextFactory;
         private readonly InventoryProducerSettings settings;

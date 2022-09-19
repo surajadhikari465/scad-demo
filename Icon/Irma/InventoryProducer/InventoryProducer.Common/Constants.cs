@@ -11,5 +11,25 @@ namespace InventoryProducer.Common
             public const string IrmaHoneyCrispEvents = "http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd";
             public const string MammothErrorMessage = "http://schemas.wfm.com/Mammoth/ErrorMessage.xsd";
         }
+
+        public struct EventType
+        {
+            public const string TSF_DEL = "TSF_DEL";
+            public static string TSF_LINE_DEL = "TSF_LINE_DEL";
+        }
+
+        public struct MessageProperty
+        {
+            public const string TransactionID = "TransactionID";
+            public const string MessageType = "MessageType";
+            public const string NonReceivingSystems = "nonReceivingSysName";
+            public const string MessageNumber = "MessageNumber";
+        }
+
+        public struct ProducerType
+        {
+            public const string Spoilage = "spoilage";
+            public const string Transfer = "transfer";
+        }
     }
 }

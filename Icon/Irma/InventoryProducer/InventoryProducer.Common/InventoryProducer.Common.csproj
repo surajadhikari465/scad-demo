@@ -89,6 +89,8 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Helpers\PublishErrorEvents.cs" />
+    <Compile Include="IInventoryLogger.cs" />
+    <Compile Include="InstockDequeue\IInstockDequeueService.cs" />
     <Compile Include="InventoryLogger.cs" />
     <Compile Include="InstockDequeue\ArchiveInstockDequeueEvents.cs" />
     <Compile Include="InstockDequeue\DequeueEvents.cs" />

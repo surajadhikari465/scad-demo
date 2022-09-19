@@ -9,7 +9,10 @@ namespace InventoryProducer.Producer.ProducerBuilders
         private static IDictionary<string, Func<IProducerBuilder>> producerMap = new Dictionary<string, Func<IProducerBuilder>>(StringComparer.InvariantCultureIgnoreCase)
         {
             {
-                "spoilage", () => new InventorySpoilageProducerBuilder()
+                Constants.ProducerType.Spoilage, () => new InventorySpoilageProducerBuilder()
+            },
+            {
+                Constants.ProducerType.Transfer, () => new InventoryTransferProducerBuilder()
             }
         };
 

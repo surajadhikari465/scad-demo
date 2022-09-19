@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace InventoryProducer.Common
 {
-    public class InventoryLogger<T> where T : class
+    public class InventoryLogger<T>: IInventoryLogger<T> where T : class
     {
         private readonly ILogger<T> logger;
         private readonly IDbContextFactory<IrmaContext> irmaContextFactory;

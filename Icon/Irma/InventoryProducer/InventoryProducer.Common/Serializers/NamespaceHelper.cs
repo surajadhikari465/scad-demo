@@ -24,6 +24,10 @@ namespace InventoryProducer.Common.Serializers
             {
                 AddErrorMessageNamespaces(namespaces);
             }
+            else if(t == typeof(transferOrders))
+            {
+                AddInventoryTransferNamespaces(namespaces);
+            }
             else
             {
                 throw new ArgumentException(string.Format("No namespaces set for type {0}", t.ToString()));
@@ -33,6 +37,11 @@ namespace InventoryProducer.Common.Serializers
         }
         private static void AddInventorySpoilageNamespaces(XmlSerializerNamespaces namespaces)
         {
+            namespaces.Add("ns0", Constants.XmlNamespaces.EnterpriseInventoryMgmtCommonRefTypes);
+            namespaces.Add("ns1", Constants.XmlNamespaces.EnterpriseUnitOfMeasureMgmtUnitOfMeasure);
+            namespaces.Add("ns2", Constants.XmlNamespaces.EnterpriseTransactionMgmtCommonRefTypes);
+        }
+        private static void AddInventoryTransferNamespaces(XmlSerializerNamespaces namespaces){
             namespaces.Add("ns0", Constants.XmlNamespaces.EnterpriseInventoryMgmtCommonRefTypes);
             namespaces.Add("ns1", Constants.XmlNamespaces.EnterpriseUnitOfMeasureMgmtUnitOfMeasure);
             namespaces.Add("ns2", Constants.XmlNamespaces.EnterpriseTransactionMgmtCommonRefTypes);

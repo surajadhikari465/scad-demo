@@ -12,7 +12,7 @@ using InventoryProducer.Common.Helpers;
 
 namespace InventoryProducer.Common.InstockDequeue
 {
-    public class InstockDequeueService
+    public class InstockDequeueService: IInstockDequeueService
     {
         private readonly InventoryProducerSettings settings;
         private readonly IDbContextFactory<IrmaContext> irmaContextFactory;
@@ -38,7 +38,7 @@ namespace InventoryProducer.Common.InstockDequeue
             this.inventoryLogger = inventoryLogger;
         }
 
-        public List<InstockDequeueResult> GetDequeuedMessages()
+        public IList<InstockDequeueResult> GetDequeuedMessages()
         {
             List<InstockDequeueModel> dequeuedEvents = null;
             try

@@ -7,7 +7,8 @@ namespace InventoryProducer.Producer
     {
         public static HashSet<string> ValidArgs = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase)
         {
-            "spoilage"
+            "spoilage",
+            "transfer"
         };
     }
 }
