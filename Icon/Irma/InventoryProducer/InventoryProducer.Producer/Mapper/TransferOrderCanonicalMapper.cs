@@ -156,7 +156,7 @@ namespace InventoryProducer.Producer.Mapper
                     expectedArrivalDate = this.GetDateTimeOffset(transferOrdersItem.ExpectedArrivalDate),
                     expectedArrivalDateSpecified = transferOrdersItem.ExpectedArrivalDate.HasValue,
                     packSize1 = (int) Decimal.Round((decimal) transferOrdersItem.PackageDesc1),
-                    packSize2 = (int?) Decimal.Round((decimal) transferOrdersItem.PackageDesc2),
+                    packSize2 = transferOrdersItem.PackageDesc2.HasValue? (int?) Decimal.Round((decimal) transferOrdersItem.PackageDesc2): null,
                     packSize2Specified = transferOrdersItem.PackageDesc2.HasValue,
                     SubTeam = new SubTeamType
                     {

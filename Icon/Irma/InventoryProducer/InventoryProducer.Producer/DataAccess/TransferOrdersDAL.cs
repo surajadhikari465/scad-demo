@@ -172,7 +172,7 @@ namespace InventoryProducer.Producer.DataAccess
                         NULL as FromSubTeamName,
                         NULL as ToSubTeamNumber,
                         NULL as ToSubTeamName,
-                        'NULL' as Status,
+                        'Deleted' as Status,
                         oh.User_ID as UserId,
                         uc.UserName as UserName,
                         oh.ApprovedBy as ApproverId,

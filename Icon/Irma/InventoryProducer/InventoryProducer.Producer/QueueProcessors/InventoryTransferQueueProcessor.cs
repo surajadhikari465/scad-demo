@@ -13,8 +13,6 @@ using Polly.Retry;
 using Polly;
 
 using TransferOrdersCanonical = Icon.Esb.Schemas.Wfm.Contracts.transferOrders;
-using TransferOrdersDeleteCanonical = Icon.Esb.Schemas.Wfm.Contracts.transferOrdersTransferOrderDelete;
-using TransferOrdersNonDeleteCanonical = Icon.Esb.Schemas.Wfm.Contracts.transferOrdersTransferOrder;
 
 
 namespace InventoryProducer.Producer.QueueProcessors
@@ -112,7 +110,7 @@ namespace InventoryProducer.Producer.QueueProcessors
                     string xmlMessage = this.transferOrderXmlCanonicalMapper.SerializeToXml(transferOrdersCanonical);
 
                     Dictionary<string, string> messageHeaders = this.CreateMessageHeaders(dequeuedMessage,
-                        transferOrdersCanonical);
+                        transferOrdersList[0]);
 
                     inventoryLogger.LogInfo("Sending message.");
                     messagePublisher.PublishMessage(
@@ -121,7 +119,7 @@ namespace InventoryProducer.Producer.QueueProcessors
                         onSuccess: () =>
                         {
                             inventoryLogger.LogInfo($"Message: {messageHeaders["TransactionID"]} is sent.");
-                            this.ArchiveInventoryEvent(xmlMessage, transferOrdersCanonical, dequeuedMessage);
+                            this.ArchiveInventoryEvent(xmlMessage, transferOrdersList[0], dequeuedMessage);
                         },
                         onFailure: (Exception ex) =>
                         {
@@ -129,7 +127,7 @@ namespace InventoryProducer.Producer.QueueProcessors
                                 $"Message: {messageHeaders["TransactionID"]} failed due to Exception: {ex.Message}.",
                                 ex.StackTrace
                             );
-                            this.ArchiveInventoryEvent(xmlMessage, transferOrdersCanonical, dequeuedMessage, ex);
+                            this.ArchiveInventoryEvent(xmlMessage, transferOrdersList[0], dequeuedMessage, ex);
                         }
                     );
                 }
@@ -145,12 +143,12 @@ namespace InventoryProducer.Producer.QueueProcessors
             }
         }
 
-        private Dictionary<string, string> CreateMessageHeaders(InstockDequeueResult dequeuedMessage,
-            TransferOrdersCanonical transferOrdersCanonical)
+        private Dictionary<string, string> CreateMessageHeaders(InstockDequeueResult dequeuedMessage, TransferOrdersModel transferOrdersDbItem)
         {
             Dictionary<string, string> messageHeaders = dequeuedMessage.Headers;
+            // skipping RegionCode, Source attributes since they are already in the headers of InstockDequeueResult
             messageHeaders[Constants.MessageProperty.TransactionID] = 
-                this.GetBusinessUnitId(transferOrdersCanonical.Items[0])
+                this.GetBusinessUnitId(transferOrdersDbItem)
                 + this.settings.TransactionType
                 + dequeuedMessage.Headers[Constants.MessageProperty.MessageNumber];
             messageHeaders[Constants.MessageProperty.MessageType] = "Text";
@@ -158,14 +156,14 @@ namespace InventoryProducer.Producer.QueueProcessors
             return messageHeaders;
         }
 
-        private void ArchiveInventoryEvent(string xmlMessage, TransferOrdersCanonical transferOrdersCanonical,
+        private void ArchiveInventoryEvent(string xmlMessage, TransferOrdersModel transferOrdersDbItem,
             InstockDequeueResult dequeuedMessage, Exception exception = null)
         {
             archiveInventoryEvents.Archive(
                 xmlMessage,
                 dequeuedMessage.InstockDequeueModel.EventTypeCode,
                 Int32.Parse(
-                    this.GetBusinessUnitId(transferOrdersCanonical.Items[0])
+                    this.GetBusinessUnitId(transferOrdersDbItem)
                 ),
                 dequeuedMessage.InstockDequeueModel.KeyID,
                 0,
@@ -177,17 +175,9 @@ namespace InventoryProducer.Producer.QueueProcessors
         }
 
 
-        private string GetBusinessUnitId(Object transferOrdersCanonical)
+        private string GetBusinessUnitId(TransferOrdersModel transferOrdersDbItem)
         {
-            if(transferOrdersCanonical is TransferOrdersNonDeleteCanonical transferOrdersNonDeleteCanonical)
-            {
-                return transferOrdersNonDeleteCanonical.locationChange.toLocationNumber;
-            }
-            else if(transferOrdersCanonical is TransferOrdersDeleteCanonical transferOrdersDeleteCanonical)
-            {
-                return transferOrdersDeleteCanonical.locationNumber.ToString();
-            }
-            throw new NotImplementedException($"BusinessUnitId for type {transferOrdersCanonical.GetType()} is not implemented");
+            return transferOrdersDbItem.ToLocationNumber.ToString();
         }
     }
 }
