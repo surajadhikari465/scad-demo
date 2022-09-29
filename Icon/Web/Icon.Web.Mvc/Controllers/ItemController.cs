@@ -5,7 +5,6 @@ using Icon.Common.Validators.ItemAttributes;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Web.Common;
-using Icon.Web.Common.BulkUpload;
 using Icon.Web.Common.Utility;
 using Icon.Web.DataAccess.Infrastructure;
 using Icon.Web.DataAccess.Infrastructure.ItemSearch;
@@ -13,7 +12,6 @@ using Icon.Web.DataAccess.Managers;
 using Icon.Web.DataAccess.Models;
 using Icon.Web.DataAccess.Queries;
 using Icon.Web.Mvc.Attributes;
-using Icon.Web.Mvc.Domain.BulkImport;
 using Icon.Web.Mvc.Exporters;
 using Icon.Web.Mvc.Extensions;
 using Icon.Web.Mvc.InfragisticsHelpers;
@@ -25,7 +23,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -353,11 +350,12 @@ namespace Icon.Web.Controllers
             ItemDbModel item = null;
             try
             {
-               item  = getItemQueryHandler.Search(new GetItemParameters { ScanCode = itemSynchronizationModel.ScanCode });
+                item = getItemQueryHandler.Search(new GetItemParameters { ScanCode = itemSynchronizationModel.ScanCode });
             }
-            catch(InvalidOperationException e) 
+            catch (InvalidOperationException e)
             {
-                if(e.Message.Contains("No item was found given item scan code")){
+                if (e.Message.Contains("No item was found given item scan code"))
+                {
                     logger.Warn($"sessionID={this.Session.SessionID}, Exception while searching scancode: {e.Message}");
                 }
                 else
@@ -366,7 +364,7 @@ namespace Icon.Web.Controllers
                 }
             }
 
-            if(item == null)
+            if (item == null)
             {
                 logger.Info($"sessionID={this.Session.SessionID}, Item doesn't exist with scancode: {itemSynchronizationModel.ScanCode}");
                 return CreateFromSynchronizer(itemSynchronizationModel);
@@ -417,22 +415,30 @@ namespace Icon.Web.Controllers
             return Json(new { ItemId = manager.ItemId, Action = "Create" }, JsonRequestBehavior.AllowGet);
         }
 
-        private JsonResult UpdateFromSynchronizer(ItemSynchronizationModel itemSynchronizationModel, ItemDbModel item)
+        private JsonResult UpdateFromSynchronizer(ItemSynchronizationModel itemSyncModel, ItemDbModel item)
         {
-            logger.Info($"sessionID={this.Session.SessionID}, Creating Item with {itemSynchronizationModel.ToString()}");
+            logger.Info($"sessionID={this.Session.SessionID}, Creating Item with {itemSyncModel.ToString()}");
             UpdateItemManager manager = new UpdateItemManager();
             var existingItem = item.ToViewModel();
 
+            //set existing item attributes
             manager.ItemId = existingItem.ItemId;
             manager.ScanCode = existingItem.ScanCode;
-            manager.MerchandiseHierarchyClassId = itemSynchronizationModel.MerchandiseHierarchyClassId;
-            manager.BrandsHierarchyClassId = itemSynchronizationModel.BrandHierarchyClassId;
-            manager.TaxHierarchyClassId = itemSynchronizationModel.TaxHierarchyClassId;
-            manager.NationalHierarchyClassId = itemSynchronizationModel.NationalHierarchyClassId;
-            manager.ManufacturerHierarchyClassId = itemSynchronizationModel.ManufacturerHierarchyClassId.GetValueOrDefault();
-            if (itemSynchronizationModel.ItemAttributes != null)
+            manager.MerchandiseHierarchyClassId = itemSyncModel.MerchandiseHierarchyClassId != 0 ? itemSyncModel.MerchandiseHierarchyClassId : existingItem.MerchandiseHierarchyClassId;
+            manager.BrandsHierarchyClassId = itemSyncModel.BrandHierarchyClassId != 0 ? itemSyncModel.BrandHierarchyClassId : existingItem.BrandsHierarchyClassId;
+            manager.TaxHierarchyClassId = itemSyncModel.TaxHierarchyClassId != 0 ? itemSyncModel.TaxHierarchyClassId : existingItem.TaxHierarchyClassId;
+            manager.NationalHierarchyClassId = itemSyncModel.NationalHierarchyClassId != 0 ? itemSyncModel.NationalHierarchyClassId : existingItem.NationalHierarchyClassId;
+            manager.ManufacturerHierarchyClassId = (int)(itemSyncModel.ManufacturerHierarchyClassId != null && itemSyncModel.ManufacturerHierarchyClassId != 0 ? itemSyncModel.ManufacturerHierarchyClassId : existingItem.ManufacturerHierarchyClassId.GetValueOrDefault());
+            manager.ItemAttributes = existingItem.ItemAttributes;
+
+            if (itemSyncModel.ItemAttributes != null)
             {
-                manager.ItemAttributes = itemSynchronizationModel.ItemAttributes.Where(i => !string.IsNullOrWhiteSpace(i.Value)).ToDictionary(i => i.Key, i => i.Value);
+                foreach (KeyValuePair<string, string> entry in itemSyncModel.ItemAttributes)
+                {
+                    if (!string.IsNullOrWhiteSpace(entry.Value)) {
+                        manager.ItemAttributes[entry.Key] = entry.Value;
+                    }
+                }
             }
 
             /*derived*/
@@ -445,20 +451,16 @@ namespace Icon.Web.Controllers
 
             manager.ItemAttributes[Constants.Attributes.ProhibitDiscount] = merchDependentItemPropertiesModel.ProhibitDiscount.ToString().ToLower();
             manager.ItemAttributes.Remove(Constants.Attributes.ItemTypeCode);
-            
+
             manager.ItemAttributes[Constants.Attributes.ModifiedBy] = User.Identity.Name;
             manager.ItemAttributes[Constants.Attributes.ModifiedDateTimeUtc] = DateTime.UtcNow.ToFormattedDateTimeString();
-            manager.ItemAttributes[Constants.Attributes.CreatedBy] = existingItem.ItemAttributes[Constants.Attributes.CreatedBy];
-            manager.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc] = existingItem.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc];
-
             manager.ItemAttributes = SanitizeItemAttributes(manager.ItemAttributes);
-            
+
             this.updateItemManagerHandler.Execute(manager);
-            
+
             logger.Info($"sessionID={this.Session.SessionID}, Item updated with itemId: {manager.ItemId} for scancode: {manager.ScanCode}");
 
             return Json(new { ItemId = manager.ItemId, Action = "Update" }, JsonRequestBehavior.AllowGet);
-
         }
 
         private Dictionary<String, String> SanitizeItemAttributes(Dictionary<String, String> itemAttributes)

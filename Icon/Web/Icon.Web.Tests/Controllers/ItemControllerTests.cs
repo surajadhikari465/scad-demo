@@ -395,7 +395,9 @@ namespace Icon.Web.Tests.Unit.Controllers
                 {
                     { Constants.Attributes.CreatedBy, "TestCreate" },
                     { Constants.Attributes.CreatedDateTimeUtc, "2001-01-01 12:12:12" },
-                    { "Inactive", "false"}
+                    { "Inactive", "false"},
+                    { "RetailSize", "2"},
+                    { "UOM", "EA"}
                 }),
                 ItemTypeId = ItemTypes.RetailSale,
                 ItemTypeDescription = Descriptions.RetailSale,
@@ -406,7 +408,7 @@ namespace Icon.Web.Tests.Unit.Controllers
                 TaxHierarchyClassId = 5,
                 ManufacturerHierarchyClassId = 6
             };
-            
+
             var testItemSynchronizationModel = new ItemSynchronizationModel
             {
                 ScanCode = testScanCode,
@@ -416,13 +418,13 @@ namespace Icon.Web.Tests.Unit.Controllers
                 TaxHierarchyClassId = 40,
                 ManufacturerHierarchyClassId = 50,
                 BarcodeTypeId = 1,
-                ItemAttributes = new Dictionary<string, string>() { { "Inactive", "false"}  }
+                ItemAttributes = new Dictionary<string, string>() { { "RetailSize", "1" } }
 
             };
 
             mockGetItemQueryHandler.Setup(m => m.Search(It.Is<GetItemParameters>(p => p.ScanCode == testScanCode)))
                 .Returns(testItemModel);
-            
+
             mockGetItemPropertiesFromMerchQueryHandler.Setup(m => m.Search(It.IsAny<GetItemPropertiesFromMerchHierarchyParameters>()))
                 .Returns(new MerchDependentItemPropertiesModel { FinancialHierarcyClassId = 20, ProhibitDiscount = false, NonMerchandiseTraitValue = "test" });
 
@@ -436,6 +438,8 @@ namespace Icon.Web.Tests.Unit.Controllers
                 Assert.AreEqual("TestCreate", item.ItemAttributes[Constants.Attributes.CreatedBy], "CreatedBy should not change regardless of what the client sends");
                 Assert.IsTrue(item.ItemAttributes[Constants.Attributes.ModifiedBy] != null, "ModifiedBy should be set when updating records");
                 Assert.IsTrue(item.ItemAttributes[Constants.Attributes.ModifiedDateTimeUtc] != null, "ModifiedDateTime should be set when updating records");
+                Assert.AreEqual("1", item.ItemAttributes["RetailSize"]);
+                Assert.AreEqual("EA", item.ItemAttributes["UOM"]);
                 Assert.AreEqual(10, item.BrandsHierarchyClassId);
                 Assert.AreEqual(20, item.MerchandiseHierarchyClassId);
                 Assert.AreEqual(30, item.NationalHierarchyClassId);
@@ -471,7 +475,7 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             mockGetItemQueryHandler.Setup(m => m.Search(It.Is<GetItemParameters>(p => p.ScanCode == testScanCode)))
                .Throws(new InvalidOperationException("Unknown exception occurred while searching scancode: " + testScanCode));
-            
+
             controller.SynchronizeItem(testItemSynchronizationModel);
         }
 
@@ -522,7 +526,7 @@ namespace Icon.Web.Tests.Unit.Controllers
             Assert.IsNotNull(result);
             string jsonResult = JsonConvert.SerializeObject(result.Data);
             var resultData = JsonConvert.DeserializeObject<dynamic>(jsonResult);
-            
+
             Assert.IsNotNull(resultData.ItemId);
             Assert.AreEqual("Create", (string)resultData.Action);
         }
