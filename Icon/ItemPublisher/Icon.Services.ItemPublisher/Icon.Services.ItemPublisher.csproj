@@ -153,6 +153,8 @@
     <Compile Include="Application\IItemPublisherApplication.cs" />
     <Compile Include="Application\ApplicationRunner.cs" />
     <Compile Include="Application\ItemPublisherApplication.cs" />
+    <Compile Include="Infrastructure\Filters\IFilter.cs" />
+    <Compile Include="Infrastructure\Filters\UKItemFilter.cs" />
     <Compile Include="Infrastructure\MessageQueue\Communication\ClientIdManager.cs" />
     <Compile Include="Infrastructure\MessageQueue\MessageBuilding\HierarchyValueParser.cs" />
     <Compile Include="Infrastructure\MessageQueue\MessageBuilding\IHierarchyValueParser.cs" />

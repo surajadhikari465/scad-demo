@@ -15,6 +15,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure
             public const string FoodStampEligible = "FoodStampEligible";
             public const string ProhibitDiscount = "ProhibitDiscount";
             public const string Vegetarian = "Vegetarian";
+            public const string UKItem = "UKItem";
 
             public static readonly List<string> SpecialAttributesWithAgencyNames = new List<string> { Attributes.Vegetarian };
         }

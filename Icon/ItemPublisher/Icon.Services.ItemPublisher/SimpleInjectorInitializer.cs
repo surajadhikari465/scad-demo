@@ -4,6 +4,7 @@ using Icon.Esb.Factory;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Logging;
 using Icon.Services.ItemPublisher.Infrastructure;
+using Icon.Services.ItemPublisher.Infrastructure.Filters;
 using Icon.Services.ItemPublisher.Infrastructure.MessageQueue;
 using Icon.Services.ItemPublisher.Infrastructure.Models.Builders;
 using Icon.Services.ItemPublisher.Infrastructure.Models.Mappers;
@@ -52,6 +53,7 @@ namespace Icon.Services.ItemPublisher.Application
             container.Register<IHierarchyValueParser, HierarchyValueParser>();
             container.Register<IValueFormatter, ValueFormatter>();
             container.Register<IUomMapper, UomMapper>();
+            container.Register<IFilter, UKItemFilter>();
 
             container.Register(() =>
             {

@@ -1,5 +1,6 @@
 ﻿using Icon.Logging;
 using Icon.Services.ItemPublisher.Infrastructure;
+using Icon.Services.ItemPublisher.Infrastructure.Filters;
 using Icon.Services.ItemPublisher.Infrastructure.MessageQueue;
 using Icon.Services.ItemPublisher.Infrastructure.Models;
 using System.Collections.Generic;
@@ -19,17 +20,20 @@ namespace Icon.Services.ItemPublisher.Services
         private readonly ILogger<ItemProcessor> logger;
         private readonly ServiceSettings serviceSettings;
         private readonly ISystemListBuilder systemListBuilder;
+        private readonly IFilter ukItemFilter;
 
         public ItemProcessor(
             IMessageQueueService esbService,
             ILogger<ItemProcessor> logger,
             ServiceSettings serviceSettings,
-            ISystemListBuilder systemListBuilder)
+            ISystemListBuilder systemListBuilder,
+            IFilter ukItemFilter)
         {
             this.esbService = esbService;
             this.logger = logger;
             this.serviceSettings = serviceSettings;
             this.systemListBuilder = systemListBuilder;
+            this.ukItemFilter = ukItemFilter;
         }
 
         /// <summary>
@@ -53,7 +57,12 @@ namespace Icon.Services.ItemPublisher.Services
         public async Task<List<MessageSendResult>> ProcessRetailRecords(List<MessageQueueItemModel> records)
         {
             List<MessageSendResult> response = new List<MessageSendResult>();
-            List<MessageQueueItemModel> retailItems = records.Where(x => x.Item.ItemTypeCode != ItemPublisherConstants.NonRetailSaleTypeCode).ToList();
+            
+            // Added UKItemFilter in addition to RetailItems filter
+            // UKItemFilter might needed to be removed in future
+            List<MessageQueueItemModel> retailItems = records.Where(
+                x => (x.Item.ItemTypeCode != ItemPublisherConstants.NonRetailSaleTypeCode && !ukItemFilter.Filter(x.Item))
+            ).ToList();
 
             if (retailItems.Count > 0)
             {
@@ -71,7 +80,12 @@ namespace Icon.Services.ItemPublisher.Services
         public async Task<List<MessageSendResult>> ProcessNonRetailRecords(List<MessageQueueItemModel> records)
         {
             List<MessageSendResult> response = new List<MessageSendResult>();
-            List<MessageQueueItemModel> nonRetailItems = records.Where(x => x.Item.ItemTypeCode == ItemPublisherConstants.NonRetailSaleTypeCode).ToList();
+
+            // Added UKItemFilter in addition to NonRetailItems filter
+            // UKItemFilter might needed to be removed in future
+            List<MessageQueueItemModel> nonRetailItems = records.Where(
+                x => (x.Item.ItemTypeCode == ItemPublisherConstants.NonRetailSaleTypeCode && !ukItemFilter.Filter(x.Item))
+            ).ToList();
 
             if (nonRetailItems.Count > 0)
             {
