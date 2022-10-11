@@ -16,6 +16,10 @@ go
 -- New perm August, 2022.
 grant exec on [dbo].[UpdateOrderHeaderRefuseReceivingAndClose] to [PrimsReceivingRole]
 
+-- New order-info perms Oct, 2022.
+grant exec on [dbo].[GetOrderItems] to [PrimsReceivingRole]
+grant exec on [dbo].[GetOrderInfo] to [PrimsReceivingRole]
+
 ---------------------------------------------------------
 ---------------------------------------------------------
 
