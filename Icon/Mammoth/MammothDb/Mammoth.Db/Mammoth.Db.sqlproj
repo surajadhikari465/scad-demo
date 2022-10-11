@@ -876,7 +876,6 @@
     <Build Include="gpm\Stored Procedures\GetRegPricesByItemStores.sql" />
     <None Include="Scripts\PostDeploymentScripts\SCM4-1906-AddTraitCodesForCanadaNutrition.sql" />
     <None Include="Scripts\PostDeploymentScripts\51243-AddingLockedForSaleAttribute.sql" />
-    <None Include="Scripts\PostDeploymentScripts\51245-AlteringStagingSP.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mammoth.publish.xml">
