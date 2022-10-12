@@ -1,13 +1,14 @@
 ﻿using GPMService.Producer.ESB.Listener.NearRealTime;
+using Icon.Esb.ListenerApplication;
 
 namespace GPMService.Producer.Service.ESB.Listener
 {
     internal class NearRealTimeProducerService : IGPMProducerService
     {
-        private readonly NearRealTimeMessageListener nearRealTimeMessageListener;
-        public NearRealTimeProducerService()
+        private readonly IListenerApplication nearRealTimeMessageListener;
+        public NearRealTimeProducerService(IListenerApplication listenerApplication)
         {
-            nearRealTimeMessageListener = NearRealTimeMessageListenerBuilder.Build();
+            nearRealTimeMessageListener = listenerApplication;
         }
 
         public void Start()

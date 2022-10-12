@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace GPMService.Producer.Message.Parser
 {
-    internal class NearRealTimeMessageParser : IMessageParser
+    internal interface IMessageParser
     {
-        public void ParseMessage(ReceivedMessage receivedMessage)
-        {
-            throw new NotImplementedException();
-        }
+        // TODO: Modify the return type.
+        void ParseMessage(ReceivedMessage receivedMessage);
     }
 }
