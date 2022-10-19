@@ -15,7 +15,10 @@ namespace InventoryProducer.Common
         public struct EventType
         {
             public const string TSF_DEL = "TSF_DEL";
+            public const string PO_DEL = "PO_DEL";
             public static string TSF_LINE_DEL = "TSF_LINE_DEL";
+            public const string PO_LINE_DEL = "PO_LINE_DEL";
+            public const string DEL = "DEL";
         }
 
         public struct MessageProperty

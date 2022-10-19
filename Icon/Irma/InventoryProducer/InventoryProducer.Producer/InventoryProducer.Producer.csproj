@@ -145,15 +145,21 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\IPurchaseOrdersDAL.cs" />
     <Compile Include="DataAccess\ITransferOrdersDAL.cs" />
+    <Compile Include="DataAccess\PurchaseOrdersDAL.cs" />
     <Compile Include="DataAccess\TransferOrdersDAL.cs" />
     <Compile Include="Helpers\ArchiveInventoryEvents.cs" />
     <Compile Include="Helpers\IArchiveInventoryEvents.cs" />
     <Compile Include="InventoryProducerBase.cs" />
+    <Compile Include="Mapper\IPurchaseOrderCanonicalMapper.cs" />
     <Compile Include="Mapper\ITransferOrderCanonicalMapper.cs" />
+    <Compile Include="Mapper\PurchaseOrderCanonicalMapper.cs" />
     <Compile Include="Mapper\TransferOrderCanonicalMapper.cs" />
+    <Compile Include="Model\DBModel\PurchaseOrdersModel.cs" />
     <Compile Include="Model\DBModel\TransferOrdersModel.cs" />
     <Compile Include="Model\DBModel\ShrinkDataModel.cs" />
+    <Compile Include="ProducerBuilders\InventoryPurchaseOrderProducerBuilder.cs" />
     <Compile Include="ProducerBuilders\InventorySpoilageProducerBuilder.cs" />
     <Compile Include="ProducerBuilders\InventoryTransferProducerBuilder.cs" />
     <Compile Include="ProducerBuilders\IProducerBuilder.cs" />
@@ -162,6 +168,7 @@
     <Compile Include="Publish\IErrorEventPublisher.cs" />
     <Compile Include="Publish\IMessagePublisher.cs" />
     <Compile Include="Publish\MessagePublisher.cs" />
+    <Compile Include="QueueProcessors\InventoryPurchaseOrderQueueProcessor.cs" />
     <Compile Include="QueueProcessors\InventorySpoilageQueueProcessor.cs" />
     <Compile Include="QueueProcessors\InventoryTransferQueueProcessor.cs" />
     <Compile Include="QueueProcessors\IQueueProcessor.cs" />
