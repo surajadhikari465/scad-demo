@@ -14164,9 +14164,9 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         private int receiptNumberField;
         
         private string purchaseOrderNumberField;
-        
-        private int locationNumberField;
-        
+
+        private int? locationNumberField;
+
         private string locationNameField;
         
         private string eventTypeField;
@@ -14181,10 +14181,14 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private string isPastReceiptField;
         
-        private System.DateTime pastRceiptDateField;
+        private string pastRceiptDateField;
         
         private bool pastRceiptDateFieldSpecified;
-        
+
+        private string purchaseOrderCreateDateTimeField;
+
+        private string purchaseOrderSupplierNumberField;
+
         private orderReceiptsOrderReceiptReceiptDetail[] receiptDetailField;
         
         /// <remarks/>
@@ -14214,7 +14218,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public int locationNumber
+        public int? locationNumber
         {
             get
             {
@@ -14318,7 +14322,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public System.DateTime pastRceiptDate
+        public string pastRceiptDate
         {
             get
             {
@@ -14343,7 +14347,32 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
                 this.pastRceiptDateFieldSpecified = value;
             }
         }
-        
+
+        /// <remarks/>
+        public string purchaseOrderCreateDateTime
+        {
+            get
+            {
+                return this.purchaseOrderCreateDateTimeField;
+            }
+            set
+            {
+                this.purchaseOrderCreateDateTimeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string purchaseOrderSupplierNumber               
+        {
+            get
+            {
+                return this.purchaseOrderSupplierNumberField;
+            }
+            set
+            {
+                this.purchaseOrderSupplierNumberField = value;
+            }
+        }
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("receiptDetail")]
         public orderReceiptsOrderReceiptReceiptDetail[] receiptDetail
@@ -14410,7 +14439,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private UserType receiptUserInfoField;
         
-        private System.DateTime createDateTimeField;
+        private string createDateTimeField;
         
         private int documentNumberField;
         
@@ -14694,7 +14723,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public System.DateTime createDateTime
+        public string createDateTime
         {
             get
             {
