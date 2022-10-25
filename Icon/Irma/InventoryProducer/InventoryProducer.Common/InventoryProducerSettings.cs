@@ -23,12 +23,12 @@ namespace InventoryProducer.Common
         public int ServiceMaxRetryCount { get; set; }
         public int ServiceMaxRetryDelayInMilliseconds { get; set; }
 
-        public static InventoryProducerSettings CreateFromConfig(string source, int instance)
+        public static InventoryProducerSettings CreateFromConfig(string sourceConfigValue, int instanceConfigValue)
         {
             return new InventoryProducerSettings
             {
-                Source = source,
-                Instance = instance,
+                Source = sourceConfigValue,
+                Instance = instanceConfigValue,
                 ProducerType = AppSettingsAccessor.GetStringSetting("ProducerType", string.Empty),
                 NonReceivingSystemsSpoilage = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsSpoilage", false),
                 NonReceivingSystemsTransferOrder = AppSettingsAccessor.GetStringSetting("NonReceivingSystemsTransferOrder", string.Empty),

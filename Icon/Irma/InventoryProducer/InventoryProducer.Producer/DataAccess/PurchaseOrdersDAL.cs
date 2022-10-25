@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace InventoryProducer.Producer.DataAccess
 {
-    public class PurchaseOrdersDAL : IPurchaseOrdersDAL
+    public class PurchaseOrdersDAL : IDAL<PurchaseOrdersModel>
     {
         private readonly IDbContextFactory<IrmaContext> irmaContextFactory;
         private readonly InventoryProducerSettings inventoryProducerSettings;
@@ -25,7 +25,7 @@ namespace InventoryProducer.Producer.DataAccess
             this.inventoryProducerSettings = inventoryProducerSettings;
         }
 
-        public IList<PurchaseOrdersModel> GetPurchaseOrders(string eventType, int keyId, int? secondaryKeyId)
+        public IList<PurchaseOrdersModel> Get(string eventType, int keyId, int? secondaryKeyId)
         {
             if (eventType.Contains(Constants.EventType.PO_LINE_DEL))
             {
@@ -35,7 +35,7 @@ namespace InventoryProducer.Producer.DataAccess
             {
                 return GetPODeleteEvent(keyId);
             }
-            else if (!eventType.Contains(Constants.EventType.DEL)) // usually TSF_CRE eventTypeCode
+            else if (!eventType.Contains(Constants.EventType.DEL))
             {
                 return GetNonDeleteEvent(keyId);
             }
@@ -133,42 +133,13 @@ namespace InventoryProducer.Producer.DataAccess
                 string getPoDeleteEventQuery =
                 @"
                 SELECT
-	                oh.OrderHeader_ID,
-	                e.ExternalOrder_Id,
+	                oh.OrderHeader_ID as OrderHeaderId,
+	                e.ExternalOrder_Id as ExternalOrderId,
 	                'AMAZON' as ExternalSource,
-	                NULL as PurchaseType,
-	                NULL as SupplierNumber,
 	                s.BusinessUnit_ID as LocationNumber,
-	                NULL as LocationName,
-	                NULL as OrderSubTeam_No,
-	                NULL as OrderSubTeam_Name,
-	                NULL as OrderTeam_No,
-	                NULL as OrderTeam_Name,
 	                'Deleted' as Status,
 	                oh.User_ID as UserId,
 	                uc.UserName as UserName,
-	                NULL as ApproverId,
-	                NULL as ApproverName,
-	                NULL as CreateDateTime,
-	                NULL as ApproveDateTime,
-	                NULL as CloseDateTime,
-	                NULL as PurchaseOrderComments,
-	                NULL as PurchaseOrderDetailNumber,
-	                NULL as SourceItemKey,
-	                NULL as DefaultScanCode,
-	                NULL as HostSubTeam_No,
-	                NULL as HostSubTeam_Name,
-	                NULL as QuantityOrdered,
-	                NULL as OrderedUnitCode,
-	                NULL as OrderedUnit,
-	                NULL as PackSize1,
-	                NULL as PackSize2,
-	                NULL as RetailUnit,
-	                NULL as ItemCost,
-	                NULL as EarliestArrivalDate,
-	                NULL as ExpectedArrivalDate,
-	                NULL as eInvoiceQuantity,
-	                NULL as eInvoiceWeight,
 	                oh.OrderExternalSourceOrderID,
 	                CASE
 		                WHEN oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description
@@ -198,17 +169,10 @@ namespace InventoryProducer.Producer.DataAccess
                 irmaContext.Database.CommandTimeout = DB_TIMEOUT_SECONDS;
                 string getPoDeleteEventQuery =
                 @"
-                SELECT oh.OrderHeader_ID,
-	                    e.ExternalOrder_Id,
+                SELECT oh.OrderHeader_ID as OrderHeaderId,
+	                    e.ExternalOrder_Id as ExternalOrderId,
 	                    'AMAZON' as ExternalSource,
-	                    NULL as PurchaseType,
-	                    NULL as SupplierNumber,
 	                    s.BusinessUnit_ID as LocationNumber,
-	                    NULL as LocationName,
-	                    NULL as OrderSubTeam_No,
-	                    NULL as OrderSubTeam_Name,
-	                    NULL as OrderTeam_No,
-	                    NULL as OrderTeam_Name,
 	                    Case
 		                    When oh.RefuseReceivingReasonID is not null Then 'Refused'
 		                    When oh.OriginalCloseDate is not null and oh.ApprovedDate is null Then 'Suspended'
@@ -216,29 +180,9 @@ namespace InventoryProducer.Producer.DataAccess
 		                    Else 'Sent'
 	                    End as Status,
 	                    0 as UserId,
-	                    NULL as UserName,
-	                    NULL as ApproverId,
-	                    NULL as ApproverName,
-	                    NULL as CreateDateTime,
-	                    NULL as ApproveDateTime,
-	                    NULL as CloseDateTime,
-	                    NULL as PurchaseOrderComments,
 	                    oi.OrderItem_ID as PurchaseOrderDetailNumber,
 	                    oi.Item_Key as SourceItemKey,
 	                    ii.Identifier as DefaultScanCode,
-	                    NULL as HostSubTeam_No,
-	                    NULL as HostSubTeam_Name,
-	                    NULL as QuantityOrdered,
-	                    NULL as OrderedUnitCode,
-	                    NULL as OrderedUnit,
-	                    NULL as PackSize1,
-	                    NULL as PackSize2,
-	                    NULL as RetailUnit,
-	                    NULL as ItemCost,
-	                    NULL as EarliestArrivalDate,
-	                    NULL as ExpectedArrivalDate,
-	                    NULL as eInvoiceQuantity,
-	                    NULL as eInvoiceWeight,
 	                    oh.OrderExternalSourceOrderID,
 	                    CASE
 		                    WHEN oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description

@@ -33,6 +33,7 @@ namespace InventoryProducer.Common
         {
             public const string Spoilage = "spoilage";
             public const string Transfer = "transfer";
+            public const string PurchaseOrder = "purchaseorder";
         }
     }
 }

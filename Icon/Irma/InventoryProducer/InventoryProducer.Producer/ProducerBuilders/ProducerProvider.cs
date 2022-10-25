@@ -13,6 +13,9 @@ namespace InventoryProducer.Producer.ProducerBuilders
             },
             {
                 Constants.ProducerType.Transfer, () => new InventoryTransferProducerBuilder()
+            },
+            {
+                Constants.ProducerType.PurchaseOrder, () => new InventoryPurchaseOrderProducerBuilder()
             }
         };
 

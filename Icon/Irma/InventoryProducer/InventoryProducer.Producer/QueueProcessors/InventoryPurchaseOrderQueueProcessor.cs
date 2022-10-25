@@ -15,47 +15,20 @@ using System.Collections.Generic;
 
 namespace InventoryProducer.Producer.QueueProcessors
 {
-    public class InventoryPurchaseOrderQueueProcessor : IQueueProcessor
+    public class InventoryPurchaseOrderQueueProcessor : QueueProcessor<PurchaseOrders, PurchaseOrdersModel>
     {
-        private readonly InventoryProducerSettings settings;
-        private readonly IInventoryLogger<InventoryPurchaseOrderQueueProcessor> inventoryLogger;
-        private readonly IInstockDequeueService instockDequeueService;
-        private readonly RetryPolicy retrypolicy;
-        private readonly IArchiveInventoryEvents archiveInventoryEvents;
-        private readonly IPurchaseOrdersDAL purchaseOrdersDAL;
-        private readonly IPurchaseOrderCanonicalMapper purchaseOrderXmlCanonicalMapper;
-        private readonly IMessagePublisher messagePublisher;
-        private readonly IErrorEventPublisher errorEventPublisher;
-
         public InventoryPurchaseOrderQueueProcessor(
             InventoryProducerSettings settings,
             IInventoryLogger<InventoryPurchaseOrderQueueProcessor> inventoryLogger,
             IInstockDequeueService instockDequeueService,
-            IPurchaseOrdersDAL purchaseOrdersDAL,
-            IPurchaseOrderCanonicalMapper purchaseOrderXmlCanonicalMapper,
+            IDAL<PurchaseOrdersModel> dataAccessLayer,
+            ICanonicalMapper<PurchaseOrders, PurchaseOrdersModel> canonicalMapper,
             IMessagePublisher messagePublisher,
             IArchiveInventoryEvents archiveInventoryEvents,
             IErrorEventPublisher errorEventPublisher
-            )
-        {
-            this.settings = settings;
-            this.inventoryLogger = inventoryLogger;
-            this.instockDequeueService = instockDequeueService;
-            this.purchaseOrdersDAL = purchaseOrdersDAL;
-            this.purchaseOrderXmlCanonicalMapper = purchaseOrderXmlCanonicalMapper;
-            this.messagePublisher = messagePublisher;
-            this.archiveInventoryEvents = archiveInventoryEvents;
-            this.errorEventPublisher = errorEventPublisher;
+            ) : base(settings, inventoryLogger, instockDequeueService, archiveInventoryEvents, dataAccessLayer, canonicalMapper, messagePublisher, errorEventPublisher) { }
 
-            this.retrypolicy = RetryPolicy
-                .Handle<Exception>()
-                .WaitAndRetry(
-                    settings.ServiceMaxRetryCount,
-                    retryAttempt => TimeSpan.FromMilliseconds(settings.ServiceMaxRetryDelayInMilliseconds)
-                );
-        }
-
-        public void ProcessMessageQueue()
+        public override void ProcessMessageQueue()
         {
             inventoryLogger.LogInfo($"Starting {settings.TransactionType} producer.");
             IList<InstockDequeueResult> dequeuedMessages = instockDequeueService.GetDequeuedMessages();
@@ -88,7 +61,7 @@ namespace InventoryProducer.Producer.QueueProcessors
                 InstockDequeueModel instockDequeueEvent = dequeuedMessage.InstockDequeueModel;
                 inventoryLogger.LogInfo($"Processing event{dequeuedMessage.Headers[Constants.MessageProperty.MessageNumber]} with EventTypeCode: {instockDequeueEvent.EventTypeCode}.");
 
-                IList<PurchaseOrdersModel> purchaseOrdersList = purchaseOrdersDAL.GetPurchaseOrders(
+                IList<PurchaseOrdersModel> purchaseOrdersList = dataAccessLayer.Get(
                     instockDequeueEvent.EventTypeCode,
                     instockDequeueEvent.KeyID,
                     instockDequeueEvent.SecondaryKeyID
@@ -99,13 +72,13 @@ namespace InventoryProducer.Producer.QueueProcessors
                 {
                     inventoryLogger.LogInfo("Transforming DB model to XML model");
                     PurchaseOrders purchaseOrderCanonicalList =
-                        this.purchaseOrderXmlCanonicalMapper.TransformToXmlCanonical(
+                        this.canonicalMapper.TransformToXmlCanonical(
                             purchaseOrdersList,
                             dequeuedMessage
                         );
 
                     inventoryLogger.LogInfo("Serializing XML model to XML string");
-                    string xmlMessage = this.purchaseOrderXmlCanonicalMapper.SerializeToXml(purchaseOrderCanonicalList);
+                    string xmlMessage = this.canonicalMapper.SerializeToXml(purchaseOrderCanonicalList);
 
                     Dictionary<string, string> messageHeaders = this.CreateMessageHeaders(dequeuedMessage,
                         purchaseOrdersList[0]);

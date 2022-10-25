@@ -10,7 +10,7 @@ using InventoryProducer.Common.Serializers;
 namespace InventoryProducer.Producer.Mapper
 {
     // Transforms PurchaseOrdersModel (DB model) to XML Canonical model
-    public class PurchaseOrderXmlCanonicalMapper: IPurchaseOrderCanonicalMapper
+    public class PurchaseOrderXmlCanonicalMapper: ICanonicalMapper<PurchaseOrders, PurchaseOrdersModel>
     {
 
         private readonly ISerializer<PurchaseOrders> xmlSerializer;
