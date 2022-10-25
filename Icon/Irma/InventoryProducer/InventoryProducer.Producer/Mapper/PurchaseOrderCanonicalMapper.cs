@@ -5,12 +5,12 @@ using InventoryProducer.Producer.Model.DBModel;
 using InventoryProducer.Common;
 using InventoryProducer.Common.InstockDequeue.Model;
 using InventoryProducer.Common.Serializers;
-
+using System.Linq;
 
 namespace InventoryProducer.Producer.Mapper
 {
     // Transforms PurchaseOrdersModel (DB model) to XML Canonical model
-    public class PurchaseOrderXmlCanonicalMapper: ICanonicalMapper<PurchaseOrders, PurchaseOrdersModel>
+    public class PurchaseOrderXmlCanonicalMapper : ICanonicalMapper<PurchaseOrders, PurchaseOrdersModel>
     {
 
         private readonly ISerializer<PurchaseOrders> xmlSerializer;
@@ -20,7 +20,7 @@ namespace InventoryProducer.Producer.Mapper
             this.xmlSerializer = xmlSerializer;
         }
 
-        public PurchaseOrders TransformToXmlCanonical(IList<PurchaseOrdersModel> purchaseOrdersList, 
+        public PurchaseOrders TransformToXmlCanonical(IList<PurchaseOrdersModel> purchaseOrdersList,
             InstockDequeueResult instockDequeueMessage)
         {
             PurchaseOrders purchaseOrderCanonical = new PurchaseOrders
@@ -30,7 +30,7 @@ namespace InventoryProducer.Producer.Mapper
 
             string eventType = instockDequeueMessage.InstockDequeueModel.EventTypeCode;
 
-            if (eventType.Contains(Constants.EventType.PO_DEL) || 
+            if (eventType.Contains(Constants.EventType.PO_DEL) ||
                 eventType.Contains(Constants.EventType.PO_LINE_DEL))
             {
                 purchaseOrderCanonical.Items[0] = this.MapDeleteEvent(purchaseOrdersList, instockDequeueMessage);
@@ -40,20 +40,195 @@ namespace InventoryProducer.Producer.Mapper
             {
                 purchaseOrderCanonical.Items[0] = this.MapNonDeleteEvent(purchaseOrdersList, instockDequeueMessage);
             }
-            
+
             return purchaseOrderCanonical;
         }
 
-        private PurchaseOrdersPurchaseOrderDelete MapDeleteEvent(IList<PurchaseOrdersModel> transferOrdersList, 
+        private PurchaseOrdersPurchaseOrderDelete MapDeleteEvent(IList<PurchaseOrdersModel> purchaseOrderList,
             InstockDequeueResult instockDequeueMessage)
         {
-            throw new NotImplementedException();
+            string eventType = instockDequeueMessage.InstockDequeueModel.EventTypeCode;
+            string messageNumber = instockDequeueMessage.Headers[Constants.MessageProperty.MessageNumber];
+
+            PurchaseOrdersModel purchaseOrder = purchaseOrderList[0];
+            PurchaseOrdersPurchaseOrderDelete canonicalDelete = new PurchaseOrdersPurchaseOrderDelete()
+            {
+                purchaseOrderNumber = purchaseOrder.OrderHeaderId.ToString(),
+                externalPurchaseOrderNumber = Convert.ToString(purchaseOrder.ExternalOrderId),
+                eventType = eventType,
+                messageNumber = messageNumber,
+                locationName = purchaseOrder.LocationName,
+                locationNumber = purchaseOrder.LocationNumber,
+                cancelUserInfo = new UserType()
+                {
+                    idNumber = purchaseOrder.UserId > 0 ? purchaseOrder.UserId.ToString() : "",
+                    name = purchaseOrder.Username
+                }
+
+            };
+
+            if (purchaseOrder.ExternalOrderId.HasValue)
+            {
+                canonicalDelete.externalSource = purchaseOrder.ExternalSource;
+            }
+
+            if (purchaseOrder.OtherOrderExternalSourceOrderID.HasValue)
+            {
+                // Not able to find the element "externalPurchaseOrderReferences" in the Purchase Order delete canonical form
+                // TODO: Add prop in Schema and complete mapping here
+            }
+
+            canonicalDelete.purchaseOrderDeletionDetail = CreatePurchaseOrderDeletionDetail(purchaseOrderList, eventType);
+
+            return canonicalDelete;
         }
 
-        private PurchaseOrdersPurchaseOrder MapNonDeleteEvent(IList<PurchaseOrdersModel> purchaseOrderList, 
+        private PurchaseOrdersPurchaseOrder MapNonDeleteEvent(IList<PurchaseOrdersModel> purchaseOrderList,
             InstockDequeueResult instockDequeueMessage)
         {
-            throw new NotImplementedException();
+            string eventType = instockDequeueMessage.InstockDequeueModel.EventTypeCode;
+            string messageNumber = instockDequeueMessage.Headers[Constants.MessageProperty.MessageNumber];
+
+            PurchaseOrdersModel purchaseOrder = purchaseOrderList[0];
+            PurchaseOrdersPurchaseOrder canonicalNonDelete = new PurchaseOrdersPurchaseOrder()
+            {
+                purchaseOrderNumber = purchaseOrder.OrderHeaderId.ToString(),
+                externalPurchaseOrderNumber = Convert.ToString(purchaseOrder.ExternalOrderId),
+                eventType = eventType,
+                messageNumber = messageNumber,
+                purchaseType = purchaseOrder.PurchaseType,
+                supplierNumber = purchaseOrder.SupplierNumber,
+                locationNumber = purchaseOrder.LocationNumber,
+                locationName = purchaseOrder.LocationName,
+                OrderSubTeam = new OrderSubTeamType()
+                {
+                    orderSubTeamName = purchaseOrder.OrderSubTeamName,
+                    orderSubTeamNumber = Convert.ToString(purchaseOrder.OrderSubTeamNo),
+                    orderTeamName = purchaseOrder.OrderTeamName,
+                    orderTeamNumber = Convert.ToString(purchaseOrder.OrderTeamNo),
+                },
+                status = purchaseOrder.Status,
+                userInfo = new UserType()
+                {
+                    idNumber = purchaseOrder.UserId.ToString(),
+                    name = purchaseOrder.Username
+                },
+                createDateTime = purchaseOrder.CreateDateTime.GetValueOrDefault(),
+                approveDateTimeSpecified = purchaseOrder.ApproveDateTime.HasValue,
+                closeDateTimeSpecified = purchaseOrder.CloseDateTime.HasValue,
+                approveDateTime = purchaseOrder.ApproveDateTime.GetValueOrDefault(),
+                closeDateTime = purchaseOrder.CloseDateTime.GetValueOrDefault(),
+                purchaseOrderComments = purchaseOrder.PurchaseOrderComments,
+            };
+
+            if (purchaseOrder.ExternalOrderId.HasValue)
+            {
+                canonicalNonDelete.externalSource = purchaseOrder.ExternalSource;
+            }
+
+            canonicalNonDelete.PurchaseOrderDetail = CreatePurchaseOrderDetail(purchaseOrderList);
+
+            return canonicalNonDelete;
+        }
+
+        private PurchaseOrdersPurchaseOrderPurchaseOrderDetail[] CreatePurchaseOrderDetail(IList<PurchaseOrdersModel> purchaseOrderList)
+        {
+            IList<PurchaseOrdersPurchaseOrderPurchaseOrderDetail> detailList = new List<PurchaseOrdersPurchaseOrderPurchaseOrderDetail>();
+
+            foreach (var purchaseOrder in purchaseOrderList)
+            {
+                bool uomCodeSpecified = Enum.TryParse(
+                    purchaseOrder.OrderedUnitCode.Trim().ToUpper(),
+                    out WfmUomCodeEnumType uomCode
+                );
+                detailList.Add(new PurchaseOrdersPurchaseOrderPurchaseOrderDetail()
+                {
+                    PurchaseOrderDetailNumber = purchaseOrder.PurchaseOrderDetailNumber.GetValueOrDefault(),
+                    sourceItemKey = Convert.ToString(purchaseOrder.SourceItemKey),
+                    locationId = Convert.ToString(purchaseOrder.LocationNumber),
+                    SubTeam = new SubTeamType()
+                    {
+                        subTeamName = purchaseOrder.OrderSubTeamName,
+                        subTeamNumber = Convert.ToString(purchaseOrder.OrderSubTeamNo),
+                        hostSubTeamName = purchaseOrder.HostSubTeamName,
+                        hostSubTeamNumber = Convert.ToString(purchaseOrder.HostSubTeamNumber)
+                    },
+                    defaultScanCode = purchaseOrder.DefaultScanCode,
+                    quantities = new QuantityType1[]
+                    {
+                        new QuantityType1(){
+                            value = purchaseOrder.QuantityOrdered.GetValueOrDefault(),
+                            units = new UnitsType1()
+                            {
+                                uom = new UomType()
+                                {
+                                    code = uomCode,
+                                    codeSpecified = uomCodeSpecified
+                                }
+                            }
+                        }
+                    },
+                    eInvoiceASNQuantities = new QuantityType1[]
+                    {
+                        new QuantityType1() 
+                        {
+                            value = purchaseOrder.EInvoiceQuantity.GetValueOrDefault(),
+                            units = new UnitsType1()
+                            {
+                                uom = new UomType()
+                                {
+                                    code = uomCode,
+                                    codeSpecified = purchaseOrder.EInvoiceQuantity.HasValue
+                                }
+                            }
+                        }
+                    },
+                    eInvoiceASNWeights = new QuantityType1[]
+                    {
+                        new QuantityType1()
+                        {
+                            value = purchaseOrder.EInvoiceWeight.GetValueOrDefault(),
+                            units = new UnitsType1()
+                            {
+                                uom = new UomType()
+                                {
+                                    code = uomCode,
+                                    codeSpecified = purchaseOrder.EInvoiceQuantity.HasValue
+                                }
+                            }
+                        }
+                    },
+                    packSize1 = purchaseOrder.PackSize1.GetValueOrDefault(),
+                    packSize2 = purchaseOrder.PackSize2.GetValueOrDefault(),
+                    itemCost = purchaseOrder.ItemCost.ToString(),
+                    earliestArrivalDate = purchaseOrder.EarliestArrivalDate.GetValueOrDefault(),
+                    expectedArrivalDate = purchaseOrder.ExpectedArrivalDate.GetValueOrDefault(),
+                    earliestArrivalDateSpecified = purchaseOrder.EarliestArrivalDate.HasValue,
+                    expectedArrivalDateSpecified = purchaseOrder.ExpectedArrivalDate.HasValue,
+                });
+            }
+
+            return detailList.ToArray();
+        }
+
+        private PurchaseOrderDeletionDetailType[] CreatePurchaseOrderDeletionDetail(IList<PurchaseOrdersModel> purchaseOrderList, string eventType)
+        {
+            IList<PurchaseOrderDeletionDetailType> deletionDetailList = new List<PurchaseOrderDeletionDetailType>();
+
+            foreach (var purchaseOrder in purchaseOrderList)
+            {
+                PurchaseOrderDeletionDetailType purchaseOrderDeletionDetailType = new PurchaseOrderDeletionDetailType();
+                if (Constants.EventType.PO_LINE_DEL.Equals(eventType))
+                {
+                    purchaseOrderDeletionDetailType.PurchaseOrderDetailNumber = purchaseOrder.PurchaseOrderDetailNumber.GetValueOrDefault();
+                    purchaseOrderDeletionDetailType.PurchaseOrderDetailNumberSpecified = purchaseOrder.PurchaseOrderDetailNumber.HasValue;
+                    purchaseOrderDeletionDetailType.sourceItemKey = purchaseOrder.SourceItemKey.ToString();
+                    purchaseOrderDeletionDetailType.defaultScanCode = purchaseOrder.DefaultScanCode;
+                }
+                deletionDetailList.Add(purchaseOrderDeletionDetailType);
+            }
+
+            return deletionDetailList.ToArray();
         }
 
         public string SerializeToXml(PurchaseOrders purchaseOrdersCanonical)

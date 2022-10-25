@@ -49,17 +49,17 @@ namespace InventoryProducer.Producer.DataAccess
                 irmaContext.Database.CommandTimeout = DB_TIMEOUT_SECONDS;
                 string getNonDeleteEventQuery =
                     @"SELECT
-                        oh.OrderHeader_ID,
-                        e.ExternalOrder_Id,
+                        oh.OrderHeader_ID as OrderHeaderId,
+	                    e.ExternalOrder_Id as ExternalOrderId,
                         'AMAZON' as ExternalSource,
                         'Purchase Order' as PurchaseType,
                         v.PS_Vendor_ID as SupplierNumber,
                         s.BusinessUnit_ID as LocationNumber,
                         s.Store_Name as LocationName,
-                        sb.SubDept_No as OrderSubTeam_No,
-                        sb.SubTeam_Name as OrderSubTeam_Name,
-                        t.Team_No as OrderTeam_No,
-                        t.Team_Name as OrderTeam_Name,
+                        sb.SubDept_No as OrderSubTeamNo,
+                        sb.SubTeam_Name as OrderSubTeamName,
+                        t.Team_No as OrderTeamNo,
+                        t.Team_Name as OrderTeamName,
                         Case
                             When oh.RefuseReceivingReasonID is not null Then 'Refused'
                             When oh.OriginalCloseDate is not null and oh.ApprovedDate is null Then 'Suspended'
@@ -77,8 +77,8 @@ namespace InventoryProducer.Producer.DataAccess
                         oi.OrderItem_ID as PurchaseOrderDetailNumber,
                         oi.Item_Key as SourceItemKey,
                         ii.Identifier as DefaultScanCode,
-                        isb.SubDept_No as HostSubTeam_No,
-                        isb.SubTeam_Name as HostSubTeam_Name,
+                        isb.SubDept_No as HostSubTeamNumber,
+                        isb.SubTeam_Name as HostSubTeamName,
 	                    CASE oh.Return_Order 
 		                    WHEN 0
 			                    THEN oi.QuantityOrdered

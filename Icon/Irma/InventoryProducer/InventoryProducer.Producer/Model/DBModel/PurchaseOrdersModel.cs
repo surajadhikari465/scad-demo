@@ -12,7 +12,7 @@ namespace InventoryProducer.Producer.Model.DBModel
         public int? ExternalOrderId { get; set; }
         public string ExternalSource { get; set; }
         public string PurchaseType { get; set; }
-        public string SupplierName { get; set; }
+        public string SupplierNumber { get; set; }
         public int LocationNumber { get; set; }
         public string LocationName { get; set; }
         public int? OrderSubTeamNo { get; set; }
@@ -33,5 +33,19 @@ namespace InventoryProducer.Producer.Model.DBModel
         public string DefaultScanCode { get; set; }
         public int? HostSubTeamNumber { get; set; }
         public string HostSubTeamName { get; set; }
+        public decimal? QuantityOrdered { get; set; }
+        public string OrderedUnitCode { get; set; }
+        public string OrderedUnit { get; set; }
+        public int? PackSize1 { get; set; }
+        public int? PackSize2 { get; set; }
+        public string RetailUnit { get; set; }
+        public float? ItemCost { get; set; }
+        public DateTime? EarliestArrivalDate { get; set; }
+        public DateTime? ExpectedArrivalDate { get; set; }
+        public decimal? EInvoiceQuantity { get; set; }
+        public decimal? EInvoiceWeight { get; set; }
+        public int? OtherOrderExternalSourceOrderID { get; set; }
+        public string OtherExternalSourceDescription { get; set; }
+
     }
 }
