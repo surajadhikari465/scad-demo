@@ -116,12 +116,35 @@ namespace InventoryProducer.Producer.QueueProcessors
 
         private void ArchiveInventoryEvent(string xmlMessage, PurchaseOrdersModel purchaseOrdersModel, InstockDequeueResult dequeuedMessage, Exception ex = null)
         {
-            throw new NotImplementedException();
+            archiveInventoryEvents.Archive(
+                xmlMessage,
+                dequeuedMessage.InstockDequeueModel.EventTypeCode,
+                this.GetBusinessUnitId(purchaseOrdersModel),
+                dequeuedMessage.InstockDequeueModel.KeyID,
+                0,
+                ex == null ? 'P' : 'U',
+                ex?.Message,
+                dequeuedMessage.Headers[Constants.MessageProperty.MessageNumber],
+                null
+            );
+        }
+
+        private int GetBusinessUnitId(PurchaseOrdersModel purchaseOrdersModel)
+        {
+            return purchaseOrdersModel.LocationNumber;
         }
 
         private Dictionary<string, string> CreateMessageHeaders(InstockDequeueResult dequeuedMessage, PurchaseOrdersModel purchaseOrdersModel)
         {
-            throw new NotImplementedException();
+            Dictionary<string, string> messageHeaders = dequeuedMessage.Headers;
+            // skipping RegionCode, Source attributes since they are already in the headers of InstockDequeueResult
+            messageHeaders[Constants.MessageProperty.MessageType] = "Text";
+            messageHeaders[Constants.MessageProperty.NonReceivingSystems] = this.settings.NonReceivingSystemsTransferOrder;
+            messageHeaders[Constants.MessageProperty.TransactionID] =
+               this.GetBusinessUnitId(purchaseOrdersModel)
+               + this.settings.TransactionType
+               + dequeuedMessage.Headers[Constants.MessageProperty.MessageNumber];
+            return messageHeaders;
         }
     }
 }

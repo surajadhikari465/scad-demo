@@ -54,7 +54,6 @@ namespace InventoryProducer.Producer.Mapper
             PurchaseOrdersPurchaseOrderDelete canonicalDelete = new PurchaseOrdersPurchaseOrderDelete()
             {
                 purchaseOrderNumber = purchaseOrder.OrderHeaderId.ToString(),
-                externalPurchaseOrderNumber = Convert.ToString(purchaseOrder.ExternalOrderId),
                 eventType = eventType,
                 messageNumber = messageNumber,
                 locationName = purchaseOrder.LocationName,
@@ -70,12 +69,32 @@ namespace InventoryProducer.Producer.Mapper
             if (purchaseOrder.ExternalOrderId.HasValue)
             {
                 canonicalDelete.externalSource = purchaseOrder.ExternalSource;
+                canonicalDelete.externalPurchaseOrderNumber = purchaseOrder.ExternalOrderId.Value.ToString();
             }
 
             if (purchaseOrder.OtherOrderExternalSourceOrderID.HasValue)
             {
-                // Not able to find the element "externalPurchaseOrderReferences" in the Purchase Order delete canonical form
-                // TODO: Add prop in Schema and complete mapping here
+                ExternalPurchaseOrderReference externalPurchaseOrderRef = null;
+                if (purchaseOrder.ExternalOrderId.HasValue)
+                {
+                    externalPurchaseOrderRef = new ExternalPurchaseOrderReference()
+                    {
+                        externalPurchaseOrderNumber = purchaseOrder.ExternalOrderId.Value.ToString(),
+                        externalSource = purchaseOrder.ExternalSource
+                    };
+                }
+                if (purchaseOrder.OtherOrderExternalSourceOrderID.HasValue)
+                {
+                    externalPurchaseOrderRef = new ExternalPurchaseOrderReference()
+                    {
+                        externalPurchaseOrderNumber = purchaseOrder.OtherOrderExternalSourceOrderID.Value.ToString(),
+                        externalSource = purchaseOrder.OtherExternalSourceDescription
+                    };
+                }
+                canonicalDelete.externalPurchaseOrderReferences = new ExternalPurchaseOrderReferences()
+                {
+                    externalPurchaseOrderReference = externalPurchaseOrderRef
+                };
             }
 
             canonicalDelete.purchaseOrderDeletionDetail = CreatePurchaseOrderDeletionDetail(purchaseOrderList, eventType);
@@ -154,11 +173,11 @@ namespace InventoryProducer.Producer.Mapper
                         hostSubTeamNumber = Convert.ToString(purchaseOrder.HostSubTeamNumber)
                     },
                     defaultScanCode = purchaseOrder.DefaultScanCode,
-                    quantities = new QuantityType1[]
+                    quantities = new QuantityType[]
                     {
-                        new QuantityType1(){
+                        new QuantityType(){
                             value = purchaseOrder.QuantityOrdered.GetValueOrDefault(),
-                            units = new UnitsType1()
+                            units = new UnitsType()
                             {
                                 uom = new UomType()
                                 {
@@ -168,12 +187,12 @@ namespace InventoryProducer.Producer.Mapper
                             }
                         }
                     },
-                    eInvoiceASNQuantities = new QuantityType1[]
+                    eInvoiceASNQuantities = new QuantityType[]
                     {
-                        new QuantityType1() 
+                        new QuantityType()
                         {
                             value = purchaseOrder.EInvoiceQuantity.GetValueOrDefault(),
-                            units = new UnitsType1()
+                            units = new UnitsType()
                             {
                                 uom = new UomType()
                                 {
@@ -183,12 +202,12 @@ namespace InventoryProducer.Producer.Mapper
                             }
                         }
                     },
-                    eInvoiceASNWeights = new QuantityType1[]
+                    eInvoiceASNWeights = new QuantityType[]
                     {
-                        new QuantityType1()
+                        new QuantityType()
                         {
                             value = purchaseOrder.EInvoiceWeight.GetValueOrDefault(),
-                            units = new UnitsType1()
+                            units = new UnitsType()
                             {
                                 uom = new UomType()
                                 {
