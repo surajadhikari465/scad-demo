@@ -15256,11 +15256,11 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private string batchNumberField;
         
-        private QuantityType1[] quantitiesField;
+        private QuantityType[] quantitiesField;
         
-        private QuantityType1[] eInvoiceASNQuantitiesField;
+        private QuantityType[] eInvoiceASNQuantitiesField;
         
-        private QuantityType1[] eInvoiceASNWeightsField;
+        private QuantityType[] eInvoiceASNWeightsField;
         
         private int packSize1Field;
         
@@ -15384,8 +15384,8 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("quantity", Namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1", IsNullable=false)]
-        public QuantityType1[] quantities
+        [System.Xml.Serialization.XmlArrayItemAttribute("quantity", Namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable=false)]
+        public QuantityType[] quantities
         {
             get
             {
@@ -15398,8 +15398,8 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("quantity", Namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1", IsNullable=false)]
-        public QuantityType1[] eInvoiceASNQuantities
+        [System.Xml.Serialization.XmlArrayItemAttribute("quantity", Namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable=false)]
+        public QuantityType[] eInvoiceASNQuantities
         {
             get
             {
@@ -15412,8 +15412,8 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("quantity", Namespace="http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1", IsNullable=false)]
-        public QuantityType1[] eInvoiceASNWeights
+        [System.Xml.Serialization.XmlArrayItemAttribute("quantity", Namespace="http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1", IsNullable=false)]
+        public QuantityType[] eInvoiceASNWeights
         {
             get
             {
@@ -15799,8 +15799,21 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
                 this.purchaseOrderDeletionDetailField = value;
             }
         }
+
+        public ExternalPurchaseOrderReferences externalPurchaseOrderReferences { get; set; }
     }
-    
+
+    public partial class ExternalPurchaseOrderReference
+    {
+        public string externalPurchaseOrderNumber { get; set; }
+        public string externalSource { get; set; }
+    }
+
+    public partial class ExternalPurchaseOrderReferences
+    {
+        public ExternalPurchaseOrderReference externalPurchaseOrderReference { get; set; }
+    }
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.168+ga8fba1ebd7")]
     [System.SerializableAttribute()]
