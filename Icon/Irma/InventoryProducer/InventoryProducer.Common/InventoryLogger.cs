@@ -63,7 +63,7 @@ namespace InventoryProducer.Common
                         new SqlParameter("@UserName", Environment.UserName),
                         new SqlParameter("@Thread", Thread.CurrentThread.ManagedThreadId),
                         new SqlParameter("@Level", "Info"),
-                        new SqlParameter("@Logger", typeof(T).FullName),
+                        new SqlParameter("@Logger", typeof(T).FullName.Length <= 255 ? typeof(T).FullName : typeof(T).ToString()),
                         new SqlParameter("@Message", message.Substring(0, message.Length <= 4000 ? message.Length : 4000)),
                         new SqlParameter("@InsertDate", DateTime.Now)
                         );

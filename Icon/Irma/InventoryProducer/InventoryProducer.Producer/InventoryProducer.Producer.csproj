@@ -67,7 +67,7 @@
       <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2022.11.4.1\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Framework.2019.12.6.1\lib\net472\Icon.Framework.dll</HintPath>
+      <HintPath>..\packages\Icon.Framework.2021.12.14.1\lib\net472\Icon.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
@@ -148,6 +148,7 @@
     <Compile Include="DataAccess\IDAL.cs" />
     <Compile Include="DataAccess\ITransferOrdersDAL.cs" />
     <Compile Include="DataAccess\PurchaseOrdersDAL.cs" />
+    <Compile Include="DataAccess\ReceiveDAL.cs" />
     <Compile Include="DataAccess\TransferOrdersDAL.cs" />
     <Compile Include="Helpers\ArchiveInventoryEvents.cs" />
     <Compile Include="Helpers\IArchiveInventoryEvents.cs" />
@@ -155,11 +156,14 @@
     <Compile Include="Mapper\ICanonicalMapper.cs" />
     <Compile Include="Mapper\ITransferOrderCanonicalMapper.cs" />
     <Compile Include="Mapper\PurchaseOrderCanonicalMapper.cs" />
+    <Compile Include="Mapper\ReceiveCanonicalMapper.cs" />
     <Compile Include="Mapper\TransferOrderCanonicalMapper.cs" />
     <Compile Include="Model\DBModel\PurchaseOrdersModel.cs" />
+    <Compile Include="Model\DBModel\ReceiveModel.cs" />
     <Compile Include="Model\DBModel\TransferOrdersModel.cs" />
     <Compile Include="Model\DBModel\ShrinkDataModel.cs" />
     <Compile Include="ProducerBuilders\InventoryPurchaseOrderProducerBuilder.cs" />
+    <Compile Include="ProducerBuilders\InventoryReceiveProducerBuilder.cs" />
     <Compile Include="ProducerBuilders\InventorySpoilageProducerBuilder.cs" />
     <Compile Include="ProducerBuilders\InventoryTransferProducerBuilder.cs" />
     <Compile Include="ProducerBuilders\IProducerBuilder.cs" />
@@ -170,6 +174,7 @@
     <Compile Include="Publish\IMessagePublisher.cs" />
     <Compile Include="Publish\MessagePublisher.cs" />
     <Compile Include="QueueProcessors\InventoryPurchaseOrderQueueProcessor.cs" />
+    <Compile Include="QueueProcessors\InventoryReceiveQueueProcessor.cs" />
     <Compile Include="QueueProcessors\InventorySpoilageQueueProcessor.cs" />
     <Compile Include="QueueProcessors\InventoryTransferQueueProcessor.cs" />
     <Compile Include="QueueProcessors\IQueueProcessor.cs" />

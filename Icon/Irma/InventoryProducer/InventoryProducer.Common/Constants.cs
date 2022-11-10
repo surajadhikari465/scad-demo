@@ -10,6 +10,7 @@ namespace InventoryProducer.Common
             public const string EnterpriseTransactionMgmtCommonRefTypes = "http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1";
             public const string IrmaHoneyCrispEvents = "http://schemas.wfm.com/IrmaHoneycrisp/Events.xsd";
             public const string MammothErrorMessage = "http://schemas.wfm.com/Mammoth/ErrorMessage.xsd";
+            public const string EnterpriseInventoryMgmtOrderReceipt = "http://schemas.wfm.com/Enterprise/InventoryMgmt/OrderReceipt/V1";
         }
 
         public struct EventType
@@ -34,6 +35,7 @@ namespace InventoryProducer.Common
             public const string Spoilage = "spoilage";
             public const string Transfer = "transfer";
             public const string PurchaseOrder = "purchaseorder";
+            public const string Receive = "receive";
         }
     }
 }

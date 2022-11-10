@@ -127,6 +127,9 @@ namespace InventoryProducer.Producer.Service
                     case Constants.ProducerType.PurchaseOrder:
                         sSource = "Inventory Producer - Purchase Order";
                         break;
+                    case Constants.ProducerType.Receive:
+                        sSource = "Inventory Producer - Inventory Receive";
+                        break;
                     default:
                         sSource = "Inventory Producer - Unknown Type";
                         break;

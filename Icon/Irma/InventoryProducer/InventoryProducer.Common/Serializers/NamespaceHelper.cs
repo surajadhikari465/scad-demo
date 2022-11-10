@@ -5,6 +5,7 @@ using InventoryProducer.Common;
 using InventoryProducer.Common.InstockDequeue.Schemas;
 using InventoryProducer.Common.Schemas;
 using System.Collections.Generic;
+using OrderReceipts = Icon.Esb.Schemas.Wfm.Contracts.orderReceipts;
 
 namespace InventoryProducer.Common.Serializers
 {
@@ -13,16 +14,17 @@ namespace InventoryProducer.Common.Serializers
         public static XmlSerializerNamespaces SetupNamespaces(Type t)
         {
             XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
-            IList<Type> canonicalTypes = new List<Type>() 
-            { 
-                typeof(inventoryAdjustments), 
-                typeof(transferOrders), 
-                typeof(PurchaseOrders) 
+            IList<Type> canonicalTypes = new List<Type>()
+            {
+                typeof(inventoryAdjustments),
+                typeof(transferOrders),
+                typeof(PurchaseOrders),
+                typeof(OrderReceipts)
             };
 
             if (canonicalTypes.Contains(t))
             {
-                AddNamespacesForCanonicalTypes(namespaces);
+                AddNamespacesForCanonicalTypes(t, namespaces);
             }
             else if (t == typeof(EventTypes))
             {
@@ -39,11 +41,19 @@ namespace InventoryProducer.Common.Serializers
 
             return namespaces;
         }
-        private static void AddNamespacesForCanonicalTypes(XmlSerializerNamespaces namespaces)
+        private static void AddNamespacesForCanonicalTypes(Type t, XmlSerializerNamespaces namespaces)
         {
-            namespaces.Add("ns0", Constants.XmlNamespaces.EnterpriseInventoryMgmtCommonRefTypes);
-            namespaces.Add("ns1", Constants.XmlNamespaces.EnterpriseUnitOfMeasureMgmtUnitOfMeasure);
-            namespaces.Add("ns2", Constants.XmlNamespaces.EnterpriseTransactionMgmtCommonRefTypes);
+            if (t == typeof(OrderReceipts))
+            {
+                namespaces.Add("ns0", Constants.XmlNamespaces.EnterpriseInventoryMgmtOrderReceipt);
+                namespaces.Add("ns1", Constants.XmlNamespaces.EnterpriseInventoryMgmtCommonRefTypes);
+            }
+            else
+            {
+                namespaces.Add("ns0", Constants.XmlNamespaces.EnterpriseInventoryMgmtCommonRefTypes);
+                namespaces.Add("ns1", Constants.XmlNamespaces.EnterpriseUnitOfMeasureMgmtUnitOfMeasure);
+                namespaces.Add("ns2", Constants.XmlNamespaces.EnterpriseTransactionMgmtCommonRefTypes);
+            }
         }
         private static void AddEventTypesNamespaces(XmlSerializerNamespaces namespaces)
         {

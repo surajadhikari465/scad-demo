@@ -13,7 +13,7 @@ namespace InventoryProducer.Producer.QueueProcessors
     public abstract class QueueProcessor<CanonicalType, InventoryModel> : IQueueProcessor
     {
         protected readonly InventoryProducerSettings settings;
-        protected readonly IInventoryLogger<InventoryPurchaseOrderQueueProcessor> inventoryLogger;
+        protected readonly IInventoryLogger<QueueProcessor<CanonicalType, InventoryModel>> inventoryLogger;
         protected readonly IInstockDequeueService instockDequeueService;
         protected readonly RetryPolicy retrypolicy;
         protected readonly IArchiveInventoryEvents archiveInventoryEvents;
@@ -24,7 +24,7 @@ namespace InventoryProducer.Producer.QueueProcessors
 
         public QueueProcessor(
             InventoryProducerSettings settings,
-            IInventoryLogger<InventoryPurchaseOrderQueueProcessor> inventoryLogger,
+            IInventoryLogger<QueueProcessor<CanonicalType, InventoryModel>> inventoryLogger,
             IInstockDequeueService instockDequeueService,
             IArchiveInventoryEvents archiveInventoryEvents,
             IDAL<InventoryModel> dataAccess,

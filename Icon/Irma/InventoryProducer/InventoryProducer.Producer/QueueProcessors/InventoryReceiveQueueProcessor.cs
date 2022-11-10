@@ -1,28 +1,30 @@
-﻿using Icon.Esb.Schemas.Wfm.Contracts;
-using InventoryProducer.Common;
+﻿using System;
+using System.Collections.Generic;
 using InventoryProducer.Common.InstockDequeue;
+using InventoryProducer.Common;
 using InventoryProducer.Common.InstockDequeue.Model;
 using InventoryProducer.Common.InstockDequeue.Model.DBModel;
 using InventoryProducer.Producer.DataAccess;
+using InventoryProducer.Producer.Model.DBModel;
 using InventoryProducer.Producer.Helpers;
 using InventoryProducer.Producer.Mapper;
-using InventoryProducer.Producer.Model.DBModel;
 using InventoryProducer.Producer.Publish;
-using Polly;
 using Polly.Retry;
-using System;
-using System.Collections.Generic;
+using Polly;
+
+using OrderReceipts = Icon.Esb.Schemas.Wfm.Contracts.orderReceipts;
+
 
 namespace InventoryProducer.Producer.QueueProcessors
 {
-    public class InventoryPurchaseOrderQueueProcessor : QueueProcessor<PurchaseOrders, PurchaseOrdersModel>
+    public class InventoryReceiveQueueProcessor : QueueProcessor<OrderReceipts, ReceiveModel>
     {
-        public InventoryPurchaseOrderQueueProcessor(
+        public InventoryReceiveQueueProcessor(
             InventoryProducerSettings settings,
-            IInventoryLogger<QueueProcessor<PurchaseOrders, PurchaseOrdersModel>> inventoryLogger,
+            IInventoryLogger<QueueProcessor<OrderReceipts, ReceiveModel>> inventoryLogger,
             IInstockDequeueService instockDequeueService,
-            IDAL<PurchaseOrdersModel> dataAccessLayer,
-            ICanonicalMapper<PurchaseOrders, PurchaseOrdersModel> canonicalMapper,
+            IDAL<ReceiveModel> dataAccessLayer,
+            ICanonicalMapper<OrderReceipts, ReceiveModel> canonicalMapper,
             IMessagePublisher messagePublisher,
             IArchiveInventoryEvents archiveInventoryEvents,
             IErrorEventPublisher errorEventPublisher
@@ -32,7 +34,6 @@ namespace InventoryProducer.Producer.QueueProcessors
         {
             inventoryLogger.LogInfo($"Starting {settings.TransactionType} producer.");
             IList<InstockDequeueResult> dequeuedMessages = instockDequeueService.GetDequeuedMessages();
-
             foreach (InstockDequeueResult dequeuedMessage in dequeuedMessages)
             {
                 try
@@ -61,27 +62,27 @@ namespace InventoryProducer.Producer.QueueProcessors
                 InstockDequeueModel instockDequeueEvent = dequeuedMessage.InstockDequeueModel;
                 inventoryLogger.LogInfo($"Processing event{dequeuedMessage.Headers[Constants.MessageProperty.MessageNumber]} with EventTypeCode: {instockDequeueEvent.EventTypeCode}.");
 
-                IList<PurchaseOrdersModel> purchaseOrdersList = dataAccessLayer.Get(
+                IList<ReceiveModel> receiveList = dataAccessLayer.Get(
                     instockDequeueEvent.EventTypeCode,
                     instockDequeueEvent.KeyID,
                     instockDequeueEvent.SecondaryKeyID
                 );
-                inventoryLogger.LogInfo($"Retrieved purchase orders Count: {purchaseOrdersList.Count}.");
+                inventoryLogger.LogInfo($"Retrieved Receives Count: {receiveList.Count}.");
 
-                if (purchaseOrdersList != null && purchaseOrdersList.Count > 0)
+                if (receiveList != null && receiveList.Count > 0)
                 {
                     inventoryLogger.LogInfo("Transforming DB model to XML model");
-                    PurchaseOrders purchaseOrderCanonicalList =
-                        this.canonicalMapper.TransformToXmlCanonical(
-                            purchaseOrdersList,
+                    OrderReceipts orderReceiptsCanonical =
+                        canonicalMapper.TransformToXmlCanonical(
+                            receiveList,
                             dequeuedMessage
                         );
 
                     inventoryLogger.LogInfo("Serializing XML model to XML string");
-                    string xmlMessage = this.canonicalMapper.SerializeToXml(purchaseOrderCanonicalList);
+                    string xmlMessage = canonicalMapper.SerializeToXml(orderReceiptsCanonical);
 
                     Dictionary<string, string> messageHeaders = this.CreateMessageHeaders(dequeuedMessage,
-                        purchaseOrdersList[0]);
+                        receiveList[0]);
 
                     inventoryLogger.LogInfo("Sending message.");
                     messagePublisher.PublishMessage(
@@ -89,22 +90,22 @@ namespace InventoryProducer.Producer.QueueProcessors
                         messageHeaders,
                         onSuccess: () =>
                         {
-                            inventoryLogger.LogInfo($"Message: {messageHeaders["TransactionID"]} is sent.");
-                            this.ArchiveInventoryEvent(xmlMessage, purchaseOrdersList[0], dequeuedMessage);
+                            inventoryLogger.LogInfo($"Message: {messageHeaders[Constants.MessageProperty.TransactionID]} is sent.");
+                            this.ArchiveInventoryEvent(xmlMessage, receiveList[0], dequeuedMessage);
                         },
                         onFailure: (Exception ex) =>
                         {
                             inventoryLogger.LogError(
-                                $"Message: {messageHeaders["TransactionID"]} failed due to Exception: {ex.Message}.",
+                                $"Message: {messageHeaders[Constants.MessageProperty.TransactionID]} failed due to Exception: {ex.Message}.",
                                 ex.StackTrace
                             );
-                            this.ArchiveInventoryEvent(xmlMessage, purchaseOrdersList[0], dequeuedMessage, ex);
+                            this.ArchiveInventoryEvent(xmlMessage, receiveList[0], dequeuedMessage, ex);
                         }
                     );
                 }
                 else
                 {
-                    inventoryLogger.LogInfo($"Skipping transformation and publish, couldn't find purchase orders.");
+                    inventoryLogger.LogInfo($"Skipping transformation and publish, couldn't find receive orders.");
                 }
             }
             catch (Exception ex)
@@ -114,37 +115,33 @@ namespace InventoryProducer.Producer.QueueProcessors
             }
         }
 
-        private void ArchiveInventoryEvent(string xmlMessage, PurchaseOrdersModel purchaseOrdersModel, InstockDequeueResult dequeuedMessage, Exception ex = null)
+        private Dictionary<string, string> CreateMessageHeaders(InstockDequeueResult dequeuedMessage, ReceiveModel receiveDbItem)
+        {   // TransactionType, Source and RegionCode are already present in dequeuedMessage.Headers
+            Dictionary<string, string> messageHeaders = dequeuedMessage.Headers;
+            messageHeaders[Constants.MessageProperty.TransactionID] =
+                receiveDbItem.StoreNumber
+                + this.settings.TransactionType
+                + dequeuedMessage.Headers[Constants.MessageProperty.MessageNumber];
+            messageHeaders[Constants.MessageProperty.MessageType] = "Text";
+            messageHeaders[Constants.MessageProperty.MessageNumber] = dequeuedMessage.Headers[Constants.MessageProperty.MessageNumber];
+            messageHeaders[Constants.MessageProperty.NonReceivingSystems] = this.settings.NonReceivingSystemsReceive;
+            return messageHeaders;
+        }
+
+        private void ArchiveInventoryEvent(string xmlMessage, ReceiveModel receiveDbItem,
+            InstockDequeueResult dequeuedMessage, Exception exception = null)
         {
             archiveInventoryEvents.Archive(
                 xmlMessage,
                 dequeuedMessage.InstockDequeueModel.EventTypeCode,
-                this.GetBusinessUnitId(purchaseOrdersModel),
+                receiveDbItem.StoreNumber != null ? (int)receiveDbItem.StoreNumber : -1,
                 dequeuedMessage.InstockDequeueModel.KeyID,
                 0,
-                ex == null ? 'P' : 'U',
-                ex?.Message,
+                exception == null ? 'P' : 'U',
+                exception?.Message,
                 dequeuedMessage.Headers[Constants.MessageProperty.MessageNumber],
                 null
             );
-        }
-
-        private int GetBusinessUnitId(PurchaseOrdersModel purchaseOrdersModel)
-        {
-            return purchaseOrdersModel.LocationNumber;
-        }
-
-        private Dictionary<string, string> CreateMessageHeaders(InstockDequeueResult dequeuedMessage, PurchaseOrdersModel purchaseOrdersModel)
-        {
-            Dictionary<string, string> messageHeaders = dequeuedMessage.Headers;
-            // skipping RegionCode, Source attributes since they are already in the headers of InstockDequeueResult
-            messageHeaders[Constants.MessageProperty.MessageType] = "Text";
-            messageHeaders[Constants.MessageProperty.NonReceivingSystems] = this.settings.NonReceivingSystemsTransferOrder;
-            messageHeaders[Constants.MessageProperty.TransactionID] =
-               this.GetBusinessUnitId(purchaseOrdersModel)
-               + this.settings.TransactionType
-               + dequeuedMessage.Headers[Constants.MessageProperty.MessageNumber];
-            return messageHeaders;
         }
     }
 }

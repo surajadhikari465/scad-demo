@@ -18,7 +18,7 @@ using System;
 
 namespace InventoryProducer.Producer.ProducerBuilders
 {
-    public abstract class ProducerBuilder<CanonicalType, InventoryModel, QueueProcessor> : IProducerBuilder 
+    public abstract class ProducerBuilder<CanonicalType, InventoryModel, QueueProcessor> : IProducerBuilder
         where QueueProcessor: class
     {
         protected abstract string ActiveMQQueueConfigName { get; }
@@ -27,7 +27,7 @@ namespace InventoryProducer.Producer.ProducerBuilders
         {
             ProducerType.Type = settings.ProducerType;
             var instance = ProducerType.Instance.ToString();
-            
+
             IDbContextFactory<IrmaContext> irmaContextFactory = new IrmaDbContextFactory();
             IDbContextFactory<MammothContext> mammothContextFactory = new MammothContextFactory();
             ISerializer<CanonicalType> serializer = new Serializer<CanonicalType>();
@@ -48,8 +48,8 @@ namespace InventoryProducer.Producer.ProducerBuilders
             activeMqProducer.OpenConnection(clientId);
             logger.LogInfo("ActiveMQ Connection Opened");
 
-            var queueProcessorLogger = new InventoryLogger<QueueProcessor>(
-                new NLogLoggerInstance<QueueProcessor>(instance),
+            var queueProcessorLogger = new InventoryLogger<QueueProcessor<CanonicalType, InventoryModel>>(
+                new NLogLoggerInstance<QueueProcessor<CanonicalType, InventoryModel>>(instance),
                 irmaContextFactory,
                 settings
                 );
@@ -85,8 +85,8 @@ namespace InventoryProducer.Producer.ProducerBuilders
             return new InventoryProducerBase(logger, inventoryProducerQueueProcessor);
         }
         public abstract IQueueProcessor CreateQueueProcessor(
-            InventoryProducerSettings settings, 
-            InventoryLogger<QueueProcessor> logger,
+            InventoryProducerSettings settings,
+            InventoryLogger<QueueProcessor<CanonicalType, InventoryModel>> logger,
             InstockDequeueService instockDequeueService,
             MessagePublisher messagePublisher,
             ArchiveInventoryEvents archiveInventoryEvents,
