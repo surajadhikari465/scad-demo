@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryProducer.Common", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryProducer.Tests", "InventoryProducer.Tests\InventoryProducer.Tests.csproj", "{AA82E97C-9C3D-4212-9D21-228002EB2CC2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryProducer.Validator", "InventoryProducer.Validator\InventoryProducer.Validator.csproj", "{1A6C643B-E5BF-42B6-99FE-2F4FFE9E539B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{AA82E97C-9C3D-4212-9D21-228002EB2CC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA82E97C-9C3D-4212-9D21-228002EB2CC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA82E97C-9C3D-4212-9D21-228002EB2CC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A6C643B-E5BF-42B6-99FE-2F4FFE9E539B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A6C643B-E5BF-42B6-99FE-2F4FFE9E539B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A6C643B-E5BF-42B6-99FE-2F4FFE9E539B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6C643B-E5BF-42B6-99FE-2F4FFE9E539B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
