@@ -116,6 +116,8 @@
     <Compile Include="DvsListenerSettings.cs" />
     <Compile Include="ListenerApplication\IListenerApplication.cs" />
     <Compile Include="ListenerApplication\ListenerApplication.cs" />
+    <Compile Include="MessageParser\IMessageParser.cs" />
+    <Compile Include="MessageParser\MessageParserBase.cs" />
     <Compile Include="Model\DvsMessage.cs" />
     <Compile Include="Model\DvsSqsMessage.cs" />
     <Compile Include="Model\S3Pointer.cs" />

@@ -11,10 +11,10 @@ namespace Icon.Dvs.ListenerApplication
     public abstract class ListenerApplication<TListener> : IListenerApplication
         where TListener : class
     {
-        private readonly DvsListenerSettings settings;
+        protected readonly DvsListenerSettings settings;
         private readonly IEmailClient emailClient;
         private readonly IDvsSubscriber subscriber;
-        private readonly ILogger<TListener> logger;
+        protected readonly ILogger<TListener> logger;
         private bool pollMessages = false;
         private bool processingMessage = false;
 
