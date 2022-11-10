@@ -52,7 +52,7 @@ namespace InventoryProducer.Producer.Mapper
                 isPastReceipt = (receiveItem.PastReceiptDate.Equals(null)) ? "false" : "true",
                 pastRceiptDate = GetDateTimeOffset(receiveItem.PastReceiptDate),
                 pastRceiptDateSpecified = receiveItem.PastReceiptDate.Equals(null) ? false : true,
-                purchaseOrderCreateDateTime = new DateTimeOffset(receiveItem.CreateDateTime).ToString("O"),
+                purchaseOrderCreateDateTime = GetDateTimeOffset(receiveItem.CreateDateTime),
                 purchaseOrderSupplierNumber = receiveItem.SupplierNumber,
                 receiptDetail = CreateReceiptDetail(receiveList),
             };
@@ -102,7 +102,7 @@ namespace InventoryProducer.Producer.Mapper
         private string GetDateTimeOffset(DateTime? dateTime)
         {
             if (dateTime.HasValue)
-                return new DateTimeOffset((DateTime)dateTime).ToString("O");
+                return new DateTimeOffset((DateTime)dateTime, new TimeSpan(-5, 0, 0)).ToString("O");
             else
                 return string.Empty;
         }

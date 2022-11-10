@@ -187,8 +187,8 @@ namespace InventoryProducer.Mapper.Tests
 
             // Then
             Assert.IsNotNull(xmlMessage);
-            string expectedXmlMessage = "<?xml version=\"1.0\" encoding=\"utf-8\"?><transferOrders xmlns:ns2=\"http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1\" " +
-            "xmlns:ns1=\"http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2\" xmlns:ns0=\"http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1\" " +
+            string expectedXmlMessage = "<?xml version=\"1.0\" encoding=\"utf-8\"?><transferOrders xmlns:ns0=\"http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1\" " +
+            "xmlns:ns1=\"http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2\" xmlns:ns2=\"http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1\" " +
             "xmlns=\"http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1\"><transferOrder><transferNumber>1</transferNumber><eventType>TSF_CRE</eventType>" +
             "<messageNumber>1</messageNumber><locationChange><fromLocationNumber>1</fromLocationNumber><fromLocationName>from</fromLocationName><toLocationNumber>2</toLocationNumber>" + 
             "<toLocationName>to</toLocationName></locationChange><subTeamChange><fromSubTeamNumber>1</fromSubTeamNumber><fromSubTeamName>from_subteam</fromSubTeamName>" +
@@ -221,8 +221,8 @@ namespace InventoryProducer.Mapper.Tests
 
             // Then
             Assert.IsNotNull(xmlMessage);
-            string expectedXmlMessage = "<?xml version=\"1.0\" encoding=\"utf-8\"?><transferOrders xmlns:ns2=\"http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1\" " +
-            "xmlns:ns1=\"http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2\" xmlns:ns0=\"http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1\" " +
+            string expectedXmlMessage = "<?xml version=\"1.0\" encoding=\"utf-8\"?><transferOrders xmlns:ns0=\"http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1\" " +
+            "xmlns:ns1=\"http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2\" xmlns:ns2=\"http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1\" " +
             "xmlns=\"http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1\"><transferOrderDelete><transferNumber>1</transferNumber><eventType>TSF_LINE_DEL</eventType>" + 
             "<messageNumber>1</messageNumber><locationNumber>2</locationNumber><locationName>to</locationName><cancelUserInfo><ns0:idNumber>1</ns0:idNumber><ns0:name>user</ns0:name>" +
             "</cancelUserInfo><transferOrderDeletionDetail><transferOrderDetailNumber>0</transferOrderDetailNumber><sourceItemKey>1</sourceItemKey><defaultScanCode>1</defaultScanCode>" + 
@@ -247,8 +247,8 @@ namespace InventoryProducer.Mapper.Tests
 
             // Then
             Assert.IsNotNull(xmlMessage);
-            string expectedXmlMessage = "<?xml version=\"1.0\" encoding=\"utf-8\"?><transferOrders xmlns:ns2=\"http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1\" " +
-            "xmlns:ns1=\"http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2\" xmlns:ns0=\"http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1\" " +
+            string expectedXmlMessage = "<?xml version=\"1.0\" encoding=\"utf-8\"?><transferOrders xmlns:ns0=\"http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1\" " +
+            "xmlns:ns1=\"http://schemas.wfm.com/Enterprise/UnitOfMeasureMgmt/UnitOfMeasure/V2\" xmlns:ns2=\"http://schemas.wfm.com/Enterprise/TransactionMgmt/CommonRefTypes/V1\" " +
             "xmlns=\"http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1\"><transferOrderDelete><transferNumber>1</transferNumber><eventType>TSF_DEL</eventType>" +
             "<messageNumber>1</messageNumber><locationNumber>2</locationNumber><locationName>to</locationName><cancelUserInfo><ns0:idNumber>1</ns0:idNumber><ns0:name>user</ns0:name></cancelUserInfo>" +
             "<transferOrderDeletionDetail /><transferOrderDeletionDetail /></transferOrderDelete></transferOrders>";

@@ -196,7 +196,7 @@ namespace InventoryProducer.Producer.Mapper
         {
             if (dateTime.HasValue)
             {
-                return new DateTimeOffset((DateTime) dateTime).ToString("yyyy-MM-ddThh:mm:sszzz");
+                return new DateTimeOffset((DateTime)dateTime, new TimeSpan(-5, 0, 0)).ToString("yyyy-MM-ddThh:mm:sszzz");
             }
             else
             {

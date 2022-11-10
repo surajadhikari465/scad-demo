@@ -130,7 +130,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InventoryReceiveTestResources.cs" />
+    <Compile Include="Producer\Mapper\ReceiveCanonicalModelTests.cs" />
     <Compile Include="Producer\Publish\MessagePublisherTests.cs" />
+    <Compile Include="Producer\QueueProcessors\InventoryReceiveQueueProcessorTests.cs" />
     <Compile Include="Producer\QueueProcessors\InventoryTransferQueueProcessorTests.cs" />
     <Compile Include="TestResources.cs" />
     <Compile Include="Producer\Mapper\TransferOrderCanonicalModelTests.cs" />
