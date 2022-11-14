@@ -67,8 +67,8 @@ namespace InventoryProducer.Producer.Mapper
             {
                 result[i] = new orderReceiptsOrderReceiptReceiptDetail
                 {
-                    receiptDetailNumber = receiveList[i].OrderItemID,
-                    purchaseOrderDetailNumber = receiveList[i].OrderItemID,
+                    receiptDetailNumber = receiveList[i].OrderItemId,
+                    purchaseOrderDetailNumber = receiveList[i].OrderItemId,
                     sourceItemKey = receiveList[i].ItemKey.ToString(),
                     SubTeam = new SubTeamType
                     {
@@ -89,7 +89,7 @@ namespace InventoryProducer.Producer.Mapper
                     packSize2Specified = true,
                     receiptUserInfo = new UserType
                     {
-                        idNumber = receiveList[i].RecvLogUserID.ToString(),
+                        idNumber = receiveList[i].RecvLogUserId.ToString(),
                         name = receiveList[i].RecvUserName
                     },
                     createDateTime = receiveList[i].DateReceived != null ? GetDateTimeOffset(receiveList[i].DateReceived) : DateTimeOffset.Now.ToString("O"),

@@ -34,8 +34,8 @@ namespace InventoryProducer.Producer.DataAccess
                 irmaContext.Database.CommandTimeout = DB_TIMEOUT_SECONDS;
                 string getEventsReceiveQuery =
                     $@"SELECT  
-	                oh.OrderHeader_ID as OrderHeader_ID,
-	                oi.OrderItem_ID as OrderItem_ID,
+	                oh.OrderHeader_ID as OrderHeaderId,
+	                oi.OrderItem_ID as OrderItemId,
 	                id.Identifier as Identifier,
 	                id.Item_Key as ItemKey,
 	                st.SubTeam_Name as HostSubTeam,
@@ -46,9 +46,9 @@ namespace InventoryProducer.Producer.DataAccess
 	                CAST(oh.Return_Order as int) as CreditPO, 
 	                CAST(ISNULL(oi.QuantityReceived, 0) as int) as QuantityReceived,
 	                CAST(oi.QuantityOrdered as int) as QuantityOrdered,
-	                oi.Package_Desc1 as Package_Desc1,
-	                oi.Package_Desc2 as Package_Desc2,
-	                Oh.RecvLogUser_ID as RecvLogUser_ID,
+	                oi.Package_Desc1 as PackageDesc1,
+	                oi.Package_Desc2 as PackageDesc2,
+	                Oh.RecvLogUser_ID as RecvLogUserId,
 	                IsNull(u.UserName, '') as RecvUserName,
 	                IsNull(u.User_ID, 0)  as RecvUSerID,
 	                iu.Unit_Abbreviation as OrderUom,

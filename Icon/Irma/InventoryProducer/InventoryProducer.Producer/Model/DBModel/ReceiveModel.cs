@@ -6,7 +6,7 @@ namespace InventoryProducer.Producer.Model.DBModel
     public class ReceiveModel
     {
         public int OrderHeaderId { get; set; }
-        public int OrderItemID { get; set; }
+        public int OrderItemId { get; set; }
         public string Identifier { get; set; }
         public int ItemKey { get; set; }
         public string HostSubTeam { get; set; }
@@ -19,7 +19,7 @@ namespace InventoryProducer.Producer.Model.DBModel
         public int? QuantityOrdered { get; set; }
         public decimal PackageDesc1 { get; set; }
         public decimal PackageDesc2 { get; set; }
-        public int? RecvLogUserID { get; set; }
+        public int? RecvLogUserId { get; set; }
         public string RecvUserName { get; set; }
         public string OrderUom { get; set; }
         public string ReceiptUom { get; set; }
@@ -30,5 +30,5 @@ namespace InventoryProducer.Producer.Model.DBModel
         public DateTime? PastReceiptDate { get; set; }
         public string SupplierNumber { get; set; }
         public DateTime CreateDateTime { get; set; }
-    }
+    }  
 }

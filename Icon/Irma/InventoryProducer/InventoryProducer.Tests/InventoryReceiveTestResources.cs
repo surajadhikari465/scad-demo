@@ -14,7 +14,7 @@ namespace InventoryProducer.Tests
             return new ReceiveModel()
             {
                 OrderHeaderId = 21636715,
-                OrderItemID = orderItemID,
+                OrderItemId = orderItemID,
                 Identifier = "82676681171",
                 ItemKey = 346114,
                 HostSubTeam = "Produce",
@@ -27,7 +27,7 @@ namespace InventoryProducer.Tests
                 QuantityOrdered = 1,
                 PackageDesc1 = 6,
                 PackageDesc2 = 1,
-                RecvLogUserID = null,
+                RecvLogUserId = null,
                 RecvUserName = "ol_import",
                 OrderUom = "CS",
                 ReceiptUom = "CS",
