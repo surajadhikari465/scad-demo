@@ -1,5 +1,4 @@
-﻿using Icon.Esb.Subscriber;
-using Mammoth.Common.DataAccess;
+﻿using Icon.Dvs.Model;
 using Mammoth.Esb.AttributeListener.MessageParsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -22,12 +21,10 @@ namespace Mammoth.Esb.AttributeListener.Tests.MessageParsers
         public void ParseMessage_SingleAttributeInMessage()
         {
             //Given
-            Mock<IEsbMessage> message = new Mock<IEsbMessage>();
-            message.Setup(m => m.MessageText)
-                .Returns(File.ReadAllText("TestMessages/AttributeMessage_Single.xml"));
+            var message = new DvsMessage(null, File.ReadAllText("TestMessages/AttributeMessage_Single.xml"));
 
             //When
-            var attributes = parser.ParseMessage(message.Object);
+            var attributes = parser.ParseMessage(message);
 
             //Then
             Assert.AreEqual(1, attributes.Attribute.Length);
@@ -43,13 +40,11 @@ namespace Mammoth.Esb.AttributeListener.Tests.MessageParsers
         [TestMethod]
 		public void ParseMessage_MultipleAttributesInMessage()
 		{
-			//Given
-			Mock<IEsbMessage> message = new Mock<IEsbMessage>();
-			message.Setup(m => m.MessageText)
-				.Returns(File.ReadAllText("TestMessages/AttributeMessage_Multi.xml"));
+            //Given
+            var message = new DvsMessage(null, File.ReadAllText("TestMessages/AttributeMessage_Multi.xml"));
 
 			//When
-            var attributes = parser.ParseMessage(message.Object);
+            var attributes = parser.ParseMessage(message);
 
             //Then
             Assert.AreEqual(2, attributes.Attribute.Length);

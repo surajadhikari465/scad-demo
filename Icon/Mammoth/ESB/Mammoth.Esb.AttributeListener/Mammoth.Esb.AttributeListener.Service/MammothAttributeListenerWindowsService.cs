@@ -15,12 +15,12 @@ namespace Mammoth.Esb.AttributeListener.Service
         protected override void OnStart(string[] args)
         {
             listener = SimpleInjectorInitializer.InitializeContainer().GetInstance<AttributeListener>();
-            listener.Run();
+            listener.Start();
         }
 
         protected override void OnStop()
         {
-            listener.Close();
+            listener.Stop();
         }
     }
 }

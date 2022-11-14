@@ -5,22 +5,22 @@ using System.Data.SqlClient;
 using System.Reflection;
 using Esb.Core.Serializer;
 using Icon.Common.Email;
-using Icon.Esb;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb.MessageParsers;
-using Icon.Esb.Producer;
+using Icon.Dvs;
+using Icon.Dvs.MessageParser;
+using Icon.Dvs.Subscriber;
 using Icon.Esb.Schemas.Attributes.ContractTypes;
 using Icon.Esb.Schemas.Mammoth.ContractTypes;
-using Icon.Esb.Subscriber;
 using Icon.Logging;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.DataAccess.ConnectionBuilders;
 using Mammoth.Common.DataAccess.DbProviders;
 using Mammoth.Common.DataAccess.Decorators;
-using Mammoth.Esb.AttributeListener.Infrastructure.Esb;
 using Mammoth.Esb.AttributeListener.MessageParsers;
+using Mammoth.Esb.AttributeListener.Commands;
 using SimpleInjector;
 using SimpleInjector.Diagnostics;
+using Amazon.S3;
+using Amazon.SQS;
 
 namespace Mammoth.Esb.AttributeListener
 {
@@ -29,16 +29,20 @@ namespace Mammoth.Esb.AttributeListener
         public static Container InitializeContainer()
         {
             var container = new Container();
+            var listenerSettings = DvsListenerSettings.CreateSettingsFromConfig();
 
             container.Register<AttributeListener>();
-            container.Register(() => ListenerApplicationSettings.CreateDefaultSettings("Mammoth Attribute Listener"));
-            container.Register(() => EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("SB1"));
-            container.Register<IEsbSubscriber>(() => new Sb1EsbConsumer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("SB1")));
-            container.Register<IEsbProducer>(() => new Sb1EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("SB1Error")));
+
+            container.Register(() => listenerSettings);
+            container.Register(() => DvsClientUtil.GetS3Client(listenerSettings));
+            container.Register(() => DvsClientUtil.GetSqsClient(listenerSettings));
+            container.Register<IDvsSubscriber, DvsSqsSubscriber>();
+
             container.Register<ISerializer<ErrorMessage>, SerializerWithoutNamepaceAliases<ErrorMessage>>();
             container.Register<ILogger<AttributeListener>, NLogLogger<AttributeListener>>();
             container.Register<IMessageParser<AttributesType>, AttributeMessageParser>();
             container.Register<IEmailClient>(() => EmailClient.CreateFromConfig());
+            container.Register<ErrorMessageHandler>();
 
             //Data Access
             container.RegisterSingleton<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString));
@@ -47,10 +51,10 @@ namespace Mammoth.Esb.AttributeListener
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(DbProviderCommandHandlerDecorator<>), Lifestyle.Singleton);
             container.RegisterSingleton<IDbProvider, SqlDbProvider>();
 
-            Registration subscriberRegistration = container.GetRegistration(typeof(IEsbSubscriber)).Registration;
-            subscriberRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the subscriber is taken care of by the application.");
-            Registration producerRegistration = container.GetRegistration(typeof(IEsbProducer)).Registration;
-            producerRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
+            Registration amazonS3Registration = container.GetRegistration(typeof(IAmazonS3)).Registration;
+            amazonS3Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing IAmazonS3 is taken care of by the application.");
+            Registration amazonSqsRegistration = container.GetRegistration(typeof(IAmazonSQS)).Registration;
+            amazonSqsRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing IAmazonSQS is taken care of by the application.");
             Registration dbConnectionRegistration = container.GetRegistration(typeof(IDbConnection)).Registration;
             dbConnectionRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing IDbConnection is taken care of by the application.");
 

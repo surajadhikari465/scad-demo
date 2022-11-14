@@ -1,5 +1,4 @@
-﻿using Icon.Esb;
-using Icon.Logging;
+﻿using Icon.Logging;
 using Mammoth.PrimeAffinity.Library.Esb;
 using System.ServiceProcess;
 using System.Threading;
@@ -17,7 +16,7 @@ namespace Mammoth.Esb.AttributeListener.Service
             var container = SimpleInjectorInitializer.InitializeContainer();
             container.Verify();
 			var listener = container.GetInstance<AttributeListener>();
-            listener.Run();
+            listener.Start();
             System.Console.ReadLine();
 
             while (true)
