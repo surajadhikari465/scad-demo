@@ -10,6 +10,7 @@ using Icon.Common.Email;
 using Icon.DbContextFactory;
 using Icon.Esb;
 using Icon.Esb.ListenerApplication;
+using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Esb.Subscriber;
 using Icon.Logging;
 using Mammoth.Framework;
@@ -41,7 +42,7 @@ namespace GPMService.Producer
                     container.Register(() => EsbConnectionSettings.CreateSettingsFromConfig());
                     container.Register<IEsbSubscriber, EsbSubscriber>();
                     container.Register<ILogger<NearRealTimeMessageListener>, NLogLogger<NearRealTimeMessageListener>>();
-                    container.Register<IMessageParser, NearRealTimeMessageParser>();
+                    container.Register<IMessageParser<items>, NearRealTimeMessageParser>();
                     container.Register<INearRealTimeProcessorDAL, NearRealTimeProcessorDAL>();
                     container.Register<IMessageProcessor, NearRealTimeMessageProcessor>();
                     container.Register<IListenerApplication, NearRealTimeMessageListener>();
