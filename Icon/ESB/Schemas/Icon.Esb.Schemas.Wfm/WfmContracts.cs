@@ -14841,13 +14841,13 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private UserType approverInfoField;
         
-        private System.DateTime createDateTimeField;
+        private string createDateTimeField;
         
-        private System.DateTime approveDateTimeField;
+        private string approveDateTimeField;
         
         private bool approveDateTimeFieldSpecified;
         
-        private System.DateTime closeDateTimeField;
+        private string closeDateTimeField;
         
         private bool closeDateTimeFieldSpecified;
         
@@ -15042,7 +15042,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public System.DateTime createDateTime
+        public string createDateTime
         {
             get
             {
@@ -15055,7 +15055,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public System.DateTime approveDateTime
+        public string approveDateTime
         {
             get
             {
@@ -15082,7 +15082,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public System.DateTime closeDateTime
+        public string closeDateTime
         {
             get
             {
@@ -15272,15 +15272,15 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private string costTypeField;
         
-        private System.DateTime earliestArrivalDateField;
+        private string earliestArrivalDateField;
         
         private bool earliestArrivalDateFieldSpecified;
         
-        private System.DateTime latestArrivalDateField;
+        private string latestArrivalDateField;
         
         private bool latestArrivalDateFieldSpecified;
         
-        private System.DateTime expectedArrivalDateField;
+        private string expectedArrivalDateField;
         
         private bool expectedArrivalDateFieldSpecified;
         
@@ -15491,7 +15491,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public System.DateTime earliestArrivalDate
+        public string earliestArrivalDate
         {
             get
             {
@@ -15518,7 +15518,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public System.DateTime latestArrivalDate
+        public string latestArrivalDate
         {
             get
             {
@@ -15545,7 +15545,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
         
         /// <remarks/>
-        public System.DateTime expectedArrivalDate
+        public string expectedArrivalDate
         {
             get
             {
