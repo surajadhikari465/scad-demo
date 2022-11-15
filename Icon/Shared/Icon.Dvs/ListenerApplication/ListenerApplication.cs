@@ -15,8 +15,8 @@ namespace Icon.Dvs.ListenerApplication
         private readonly IEmailClient emailClient;
         private readonly IDvsSubscriber subscriber;
         protected readonly ILogger<TListener> logger;
-        private bool pollMessages = false;
         private bool processingMessage = false;
+        private Timer listenerTimer;
 
         public ListenerApplication(
             DvsListenerSettings settings,
@@ -36,28 +36,32 @@ namespace Icon.Dvs.ListenerApplication
         /// </summary>
         public void Start()
         {
-            // TODO: Implement using Timer if applicable
-            pollMessages = true;
-            while (pollMessages)
+            listenerTimer = new Timer(
+                (x) => ProcessMessagesTillQueueIsEmpty(),
+                null,
+                TimeSpan.FromSeconds(0),
+                TimeSpan.FromSeconds(settings.PollInterval)
+            );
+        }
+
+        private void ProcessMessagesTillQueueIsEmpty()
+        {
+            if (!processingMessage)
             {
                 processingMessage = true;
-                bool messageReceived = ProcessDvsMessage();
+                // Processes till Queue is empty
+                while (ProcessDvsMessage()) ;
                 processingMessage = false;
-                if (!messageReceived)
-                {
-                    Thread.Sleep(settings.PollInterval);
-                }
+            }
+            else
+            {
+                logger.Info("The previous timer-execution is still running, skipping the current instance");
             }
         }
 
         public void Stop()
         {
-            pollMessages = false;
-            // Wait till processing is complete
-            while (processingMessage)
-            {
-                Thread.Sleep(1000);
-            }
+            listenerTimer.Dispose();
         }
 
         /// <summary>
