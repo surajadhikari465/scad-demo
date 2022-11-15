@@ -112,6 +112,10 @@ using (var irmaContext = irmaContextFactory.CreateContext($"IRMA_{region}"))
                 File.WriteAllText($"{folderName}/New_{test.NewMessage?.MessageNumber}.xml", test.NewMessage?.RawMessage);
                 File.WriteAllText($"{folderName}/Old_{test.OldMessage?.MessageNumber}.xml", test.OldMessage?.RawMessage);
             }
+            if (test.AreEqual.Value)
+            {
+                Directory.Delete(folderName, true);
+            }
             Console.WriteLine($"Success: {test.Successful}, Old: {test.OldMessage?.MessageNumber}, New: {test.NewMessage?.MessageNumber}");
             successCounter += test.Successful ? 1 : 0;
         }

@@ -92,8 +92,8 @@ namespace InventoryProducer.Producer.DataAccess
                         oi.UnitCost as ItemCost,
                         oi.DateReceived as EarliestArrivalDate,
                         oh.Expected_Date as ExpectedArrivalDate,
-	                    oi.eInvoiceQuantity,
-	                    oi.eInvoiceWeight,
+	                    oi.eInvoiceQuantity as EInvoiceQuantity,
+	                    oi.eInvoiceWeight as EInvoiceWeight,
 	                    oh.OrderExternalSourceOrderID,
 	                    CASE
 		                    WHEN oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description

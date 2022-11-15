@@ -12,7 +12,8 @@ namespace InventoryProducer.Producer.Mapper
     // Transforms PurchaseOrdersModel (DB model) to XML Canonical model
     public class PurchaseOrderXmlCanonicalMapper : ICanonicalMapper<PurchaseOrders, PurchaseOrdersModel>
     {
-
+        private const string DATETIME_FORMAT = "yyyy-MM-ddTHH:mm:sszzz";
+        private const string DATETIME_FORMAT_WITH_MS = "yyyy-MM-ddTHH:mm:ss{}zzz";  //Milliseconds will be filled using FormatDateWithMS function
         private readonly ISerializer<PurchaseOrders> xmlSerializer;
 
         public PurchaseOrderXmlCanonicalMapper(ISerializer<PurchaseOrders> xmlSerializer)
@@ -56,14 +57,13 @@ namespace InventoryProducer.Producer.Mapper
                 purchaseOrderNumber = purchaseOrder.OrderHeaderId.ToString(),
                 eventType = eventType,
                 messageNumber = messageNumber,
-                locationName = purchaseOrder.LocationName,
+                locationName = purchaseOrder.LocationName != null ? purchaseOrder.LocationName : "",
                 locationNumber = purchaseOrder.LocationNumber,
                 cancelUserInfo = new UserType()
                 {
                     idNumber = purchaseOrder.UserId > 0 ? purchaseOrder.UserId.ToString() : "",
-                    name = purchaseOrder.Username
+                    name = purchaseOrder.Username != null ? purchaseOrder.Username : ""
                 }
-
             };
 
             if (purchaseOrder.ExternalOrderId.HasValue)
@@ -112,7 +112,6 @@ namespace InventoryProducer.Producer.Mapper
             PurchaseOrdersPurchaseOrder canonicalNonDelete = new PurchaseOrdersPurchaseOrder()
             {
                 purchaseOrderNumber = purchaseOrder.OrderHeaderId.ToString(),
-                externalPurchaseOrderNumber = Convert.ToString(purchaseOrder.ExternalOrderId),
                 eventType = eventType,
                 messageNumber = messageNumber,
                 purchaseType = purchaseOrder.PurchaseType,
@@ -132,22 +131,30 @@ namespace InventoryProducer.Producer.Mapper
                     idNumber = purchaseOrder.UserId.ToString(),
                     name = purchaseOrder.Username
                 },
-                createDateTime = purchaseOrder.CreateDateTime.GetValueOrDefault(),
+                createDateTime = purchaseOrder.CreateDateTime.GetValueOrDefault().ToString(DATETIME_FORMAT),
                 approveDateTimeSpecified = purchaseOrder.ApproveDateTime.HasValue,
                 closeDateTimeSpecified = purchaseOrder.CloseDateTime.HasValue,
-                approveDateTime = purchaseOrder.ApproveDateTime.GetValueOrDefault(),
-                closeDateTime = purchaseOrder.CloseDateTime.GetValueOrDefault(),
+                approveDateTime = purchaseOrder.ApproveDateTime.GetValueOrDefault().ToString(DATETIME_FORMAT),
+                closeDateTime = FormatDateWithMS(purchaseOrder.CloseDateTime.GetValueOrDefault()),
                 purchaseOrderComments = purchaseOrder.PurchaseOrderComments,
             };
 
             if (purchaseOrder.ExternalOrderId.HasValue)
             {
+                canonicalNonDelete.externalPurchaseOrderNumber = Convert.ToString(purchaseOrder.ExternalOrderId);
                 canonicalNonDelete.externalSource = purchaseOrder.ExternalSource;
             }
 
             canonicalNonDelete.PurchaseOrderDetail = CreatePurchaseOrderDetail(purchaseOrderList);
 
             return canonicalNonDelete;
+        }
+
+        private string FormatDateWithMS(DateTime rawDateTime)
+        {
+            string dateTime = rawDateTime.ToString(DATETIME_FORMAT_WITH_MS);
+            string ms = Helper.ConvertToG29String(rawDateTime.Millisecond * 0.001M);
+            return dateTime.Replace("{}", ms.TrimStart('0'));
         }
 
         private PurchaseOrdersPurchaseOrderPurchaseOrderDetail[] CreatePurchaseOrderDetail(IList<PurchaseOrdersModel> purchaseOrderList)
@@ -176,7 +183,8 @@ namespace InventoryProducer.Producer.Mapper
                     quantities = new QuantityType[]
                     {
                         new QuantityType(){
-                            value = purchaseOrder.QuantityOrdered.GetValueOrDefault(),
+                            value = purchaseOrder.QuantityOrdered,
+                            valueSpecified = purchaseOrder.QuantityOrdered.HasValue,
                             units = new UnitsType()
                             {
                                 uom = new UomType()
@@ -191,7 +199,8 @@ namespace InventoryProducer.Producer.Mapper
                     {
                         new QuantityType()
                         {
-                            value = purchaseOrder.EInvoiceQuantity.GetValueOrDefault(),
+                            value = purchaseOrder.EInvoiceQuantity,
+                            valueSpecified = purchaseOrder.EInvoiceQuantity.HasValue,
                             units = new UnitsType()
                             {
                                 uom = new UomType()
@@ -206,7 +215,8 @@ namespace InventoryProducer.Producer.Mapper
                     {
                         new QuantityType()
                         {
-                            value = purchaseOrder.EInvoiceWeight.GetValueOrDefault(),
+                            value = purchaseOrder.EInvoiceWeight,
+                            valueSpecified = purchaseOrder.EInvoiceWeight.HasValue,
                             units = new UnitsType()
                             {
                                 uom = new UomType()
@@ -219,9 +229,9 @@ namespace InventoryProducer.Producer.Mapper
                     },
                     packSize1 = purchaseOrder.PackSize1.GetValueOrDefault(),
                     packSize2 = purchaseOrder.PackSize2.GetValueOrDefault(),
-                    itemCost = purchaseOrder.ItemCost.ToString(),
-                    earliestArrivalDate = purchaseOrder.EarliestArrivalDate.GetValueOrDefault(),
-                    expectedArrivalDate = purchaseOrder.ExpectedArrivalDate.GetValueOrDefault(),
+                    itemCost = Helper.ConvertToG29String(purchaseOrder.ItemCost),
+                    earliestArrivalDate = FormatDateWithMS(purchaseOrder.EarliestArrivalDate.GetValueOrDefault()),
+                    expectedArrivalDate = purchaseOrder.ExpectedArrivalDate.GetValueOrDefault().ToString(DATETIME_FORMAT),
                     earliestArrivalDateSpecified = purchaseOrder.EarliestArrivalDate.HasValue,
                     expectedArrivalDateSpecified = purchaseOrder.ExpectedArrivalDate.HasValue,
                 });

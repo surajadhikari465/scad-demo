@@ -17,7 +17,7 @@ namespace InventoryProducer.Validator.DAL
         internal MessageArchiveEventDAL(Database database) : base("[amz].[MessageArchiveEvent]", database)
         {
         }
-        internal IList<MessageArchiveEvent> GetList(string[] eventTypeCodes, int maxRecords = 1000, string beforeDate = "2022-01-01 00:00:00.0000000")
+        internal IList<MessageArchiveEvent> GetList(string[] eventTypeCodes, int maxRecords = 1000, string beforeDate = "2022-08-01 00:00:00.0000000")
         {
             var messageArchiveEventsRaw = new List<MessageArchiveEvent>();
             foreach(string eventTypeCode in eventTypeCodes)
