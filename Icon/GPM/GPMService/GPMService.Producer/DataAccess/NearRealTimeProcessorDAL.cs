@@ -3,6 +3,7 @@ using GPMService.Producer.Model;
 using GPMService.Producer.Model.DBModel;
 using GPMService.Producer.Settings;
 using Icon.DbContextFactory;
+using Icon.Framework;
 using Mammoth.Framework;
 using Polly;
 using Polly.Retry;
@@ -93,6 +94,27 @@ VALUES (@ItemID, @BusinessUnitID, @MessageID, @MessageHeaders, @Message, @ErrorC
                     new SqlParameter("@ErrorDetails", (object)errorDetails ?? DBNull.Value)
                     );
             }
+        }
+
+        public IList<GetRegionCodeQueryModel> GetRegionCodeQuery(string businessUnitID)
+        {
+            IList<GetRegionCodeQueryModel> regionQueryData = new List<GetRegionCodeQueryModel>();
+            using (var mammothContext = mammothContextFactory.CreateContext())
+            {
+                mammothContext.Database.CommandTimeout = 10;
+                string regionQuery = $@"SELECT TOP(100) 
+CAST(Region as VARCHAR) AS Region, 
+LocaleID, BusinessUnitID, StoreName, 
+StoreAbbrev 
+FROM dbo.Locale WHERE BusinessUnitID = @BusinessUnitID";
+                regionQueryData = mammothContext
+                    .Database
+                    .SqlQuery<GetRegionCodeQueryModel>(
+                    regionQuery,
+                    new SqlParameter("@BusinessUnitID", businessUnitID)
+                    ).ToList();
+            }
+            return regionQueryData;
         }
     }
 }

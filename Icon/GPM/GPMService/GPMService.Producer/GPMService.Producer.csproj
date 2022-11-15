@@ -120,11 +120,13 @@
     <Compile Include="Message.Parser\NearRealTimeMessageParser.cs" />
     <Compile Include="Message.Processor\IMessageProcessor.cs" />
     <Compile Include="Message.Processor\NearRealTimeMessageProcessor.cs" />
+    <Compile Include="Model\DBModel\GetRegionCodeQueryModel.cs" />
     <Compile Include="Model\DBModel\MessageSequenceModel.cs" />
     <Compile Include="Model\ReceivedMessage.cs" />
     <Compile Include="Model\MessageSequenceOutput.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schema\MammothPrices.cs" />
     <Compile Include="Service\ESB.Listener\NearRealTimeProducerService.cs" />
     <Compile Include="Service\IGPMProducerService.cs" />
     <Compile Include="Settings\GPMProducerServiceSettings.cs" />

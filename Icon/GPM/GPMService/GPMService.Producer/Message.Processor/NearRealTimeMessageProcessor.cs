@@ -5,10 +5,8 @@ using GPMService.Producer.Model;
 using GPMService.Producer.Model.DBModel;
 using GPMService.Producer.Settings;
 using Icon.Esb.Schemas.Wfm.Contracts;
-using Icon.Esb.Subscriber;
 using System;
 using System.Collections.Generic;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace GPMService.Producer.Message.Processor
 {
@@ -33,7 +31,8 @@ namespace GPMService.Producer.Message.Processor
             MessageSequenceOutput messageSequenceOutput = ValidateMessageSequence(receivedMessage);
             if (messageSequenceOutput.IsInSequence || messageSequenceOutput.IsAlreadyProcessed)
             {
-                items gpmReceived = messageParser.ParseMessage(receivedMessage);
+                items gpmReceivedItems = messageParser.ParseMessage(receivedMessage);
+                MammothPricesType mammothPrices = MapToMammothPrices(gpmReceivedItems);
                 // TODO: Add further logic
             } else if (
                 !messageSequenceOutput.IsInSequence
@@ -53,12 +52,88 @@ The current JMSXDelivery count is ${receivedMessage.esbMessage.GetProperty(Const
                 && int.Parse(receivedMessage.esbMessage.GetProperty(Constants.JMSMessageHeaders.JMSXDeliveryCount)) == gpmProducerServiceSettings.MaxRedeliveryCount
                 )
             {
-                string exceptionMessage = $@"Message is out of sequence and has exceeded the redelivery count of ${gpmProducerServiceSettings.MaxRedeliveryCount}. 
+                string exceptionMessage = $@"${Constants.ErrorCodes.MessageOutOfSequence}: Message is out of sequence and has exceeded the redelivery count of ${gpmProducerServiceSettings.MaxRedeliveryCount}. 
 For MessageID: ${receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID)}, 
 PatchFamilyID: ${receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.CorrelationID)}, 
 SequenceID: ${receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.SequenceID)}";
                 throw new Exception(exceptionMessage);
             }
+        }
+
+        private MammothPricesType MapToMammothPrices(items gpmReceivedItems)
+        {
+            MammothPricesType mammothPrices = new MammothPricesType();
+            IList<MammothPriceType> mammothPriceList = new List<MammothPriceType>();
+            foreach(ItemType gpmReceivedItem in gpmReceivedItems.item)
+            {
+                foreach(LocaleType gpmReceivedLocale in gpmReceivedItem.locale)
+                {
+                    GetRegionCodeQueryModel getRegionCodeQueryModel = nearRealTimeProcessorDAL.GetRegionCodeQuery(gpmReceivedLocale.id)[0];
+                    StoreItemAttributesType storeItemAttributes = gpmReceivedLocale.Item as StoreItemAttributesType;
+                    foreach (PriceType price in storeItemAttributes.prices)
+                    {
+                        MammothPriceType mammothPrice = new MammothPriceType()
+                        {
+                            Region = getRegionCodeQueryModel.Region,
+                            BusinessUnit = getRegionCodeQueryModel.BusinessUnitID,
+                            ItemId = gpmReceivedItem.id,
+                            GpmId = price.Id, // TODO: Check if correct during testing
+                            Multiple = price.priceMultiple,
+                            Price = price.priceAmount.amount,
+                            StartDate = price.priceStartDate,
+                            EndDate = price.priceEndDate,
+                            PriceType = nameof(price.type.id), // TODO: Check if correct during testing
+                            PriceTypeAttribute = nameof(price.type.type.id), // TODO: Check if correct during testing
+                            SellableUom = nameof(price.uom.code), // TODO: Check if correct during testing
+                            CurrencyCode = nameof(price.currencyTypeCode), // TODO: Check if correct during testing
+                            Action = nameof(price.Action), // TODO: Check if correct during testing
+                            ItemTypeCode = gpmReceivedItem.@base.type.code, // TODO: Check if correct during testing
+                            StoreName = gpmReceivedLocale.name,
+                            ScanCode = storeItemAttributes.scanCode[0].code,
+                        };
+                        if (price.traits != null && price.traits.Length > 0)
+                        {
+                            TraitType nteTrait = Array.Find(price.traits, trait => "NTE".Equals(trait.code));
+                            if (nteTrait != null && nteTrait.type.value.Length > 0 && String.IsNullOrEmpty(nteTrait.type.value[0].value))
+                            {
+                                mammothPrice.TagExpirationDate = DateTime.Parse(nteTrait.type.value[0].value); // TODO: Check if correct parsing and timezone during testing
+                                mammothPrice.TagExpirationDateSpecified = true;
+                            }
+                        }
+                        mammothPrice.EndDateSpecified = mammothPrice.EndDate != null;
+                        mammothPriceList.Add(mammothPrice);
+                    }
+                    foreach (RewardType reward in storeItemAttributes.rewards)
+                    {
+                        if (reward.rewardPercentage > 0)
+                        {
+                            MammothPriceType mammothPrice = new MammothPriceType()
+                            {
+                                Region = getRegionCodeQueryModel.Region,
+                                BusinessUnit = getRegionCodeQueryModel.BusinessUnitID,
+                                ItemId = gpmReceivedItem.id,
+                                GpmId = reward.Id, // TODO: Check if correct during testing
+                                Multiple = reward.rewardMultiple,
+                                Price = 0,
+                                StartDate = reward.rewardStartDate,
+                                EndDate = reward.rewardEndDate,
+                                PriceType = nameof(reward.type.id), // TODO: Check if correct during testing
+                                PriceTypeAttribute = nameof(reward.type.type.id), // TODO: Check if correct during testing
+                                SellableUom = nameof(reward.uom.code), // TODO: Check if correct during testing
+                                Action = nameof(reward.Action), // TODO: Check if correct during testing
+                                ItemTypeCode = gpmReceivedItem.@base.type.code, // TODO: Check if correct during testing
+                                StoreName = gpmReceivedLocale.name,
+                                ScanCode = storeItemAttributes.scanCode[0].code,
+                                PercentOff = reward.rewardPercentage,
+                                PercentOffSpecified = true // TODO: Test for PercentOff null scenarios
+                            };
+                            mammothPrice.EndDateSpecified = mammothPrice.EndDate != null;
+                            mammothPriceList.Add(mammothPrice);
+                        }
+                    }
+                }
+            }
+            return mammothPrices;
         }
 
         private MessageSequenceOutput ValidateMessageSequence(ReceivedMessage receivedMessage)

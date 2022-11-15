@@ -24,6 +24,7 @@
         public struct ErrorCodes
         {
             public const string OutOfSequenceRedelivery = "OutOfSequenceRedelivery";
+            public const string MessageOutOfSequence = "MessageOutOfSequence";
         }
     }
 }

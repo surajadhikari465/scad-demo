@@ -8,5 +8,6 @@ namespace GPMService.Producer.DataAccess
     {
         IList<MessageSequenceModel> GetLastSequence(string correlationID);
         void ArchiveMessage(ReceivedMessage receivedMessage, string errorCode, string errorDetails);
+        IList<GetRegionCodeQueryModel> GetRegionCodeQuery(string businessUnitID);
     }
 }
