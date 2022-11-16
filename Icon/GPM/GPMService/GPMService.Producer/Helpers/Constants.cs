@@ -23,8 +23,29 @@
         }
         public struct ErrorCodes
         {
+            public const string ActionNotSupplied = "Action Value not supplied.";
+            public const string DataError = "Data Error";
+            public const string DatabaseError = "Database Error";
+            public const string InvalidMessageHeaderError = "InvalidMessageHeader";
+            public const string MappingError = "Error In Mapping";
             public const string OutOfSequenceRedelivery = "OutOfSequenceRedelivery";
-            public const string MessageOutOfSequence = "MessageOutOfSequence";
+            public const string RetryError = "RetryError";
+            public const string ZeroRowsImpacted = "Zero Rows were Impacted";
+        }
+        public struct ErrorTypes
+        {
+            public const string Data = "Data";
+            public const string DatabaseConstraint = "DatabaseConstraint";
+            public const string Schema = "Schema";
+        }
+        public struct MessageTypeNames
+        {
+            public const string ProcessBOD = "ProcessBOD";
+            public const string ConfirmBOD = "ConfirmBOD";
+        }
+        public struct XmlNamespaces
+        {
+            public const string InforOAGIS = "http://schema.infor.com/InforOAGIS/2";
         }
     }
 }

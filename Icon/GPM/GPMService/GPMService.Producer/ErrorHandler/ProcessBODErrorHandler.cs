@@ -1,0 +1,88 @@
+﻿using GPMService.Producer.DataAccess;
+using GPMService.Producer.Helpers;
+using GPMService.Producer.Model;
+using GPMService.Producer.Serializer;
+using GPMService.Producer.Settings;
+using Icon.Common.Xml;
+using Icon.Esb.Producer;
+using Polly;
+using Polly.Retry;
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+namespace GPMService.Producer.ErrorHandler
+{
+    internal class ProcessBODErrorHandler
+    {
+        private readonly INearRealTimeProcessorDAL nearRealTimeProcessorDAL;
+        private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
+        private readonly IEsbProducer esbProducer;
+        private readonly ISerializer<PriceChangeMaster> serializer;
+        private readonly StringWriter utf8StringWriter = new Utf8StringWriter();
+        private readonly RetryPolicy retrypolicy;
+        public ProcessBODErrorHandler(
+            INearRealTimeProcessorDAL nearRealTimeProcessorDAL,
+            GPMProducerServiceSettings gpmProducerServiceSettings,
+            IEsbProducer esbProducer
+            )
+        {
+            this.nearRealTimeProcessorDAL = nearRealTimeProcessorDAL;
+            this.gpmProducerServiceSettings = gpmProducerServiceSettings;
+            this.esbProducer = esbProducer;
+            serializer = new Serializer<PriceChangeMaster>();
+            this.retrypolicy = Policy
+                .Handle<Exception>()
+                .WaitAndRetry(
+                gpmProducerServiceSettings.DbErrorRetryCount,
+                retryAttempt => TimeSpan.FromMilliseconds(gpmProducerServiceSettings.SendMessageRetryDelayInMilliseconds)
+                );
+        }
+        public void HandleError(ReceivedMessage receivedMessage, MessageSequenceOutput messageSequenceOutput)
+        {
+            string patchFamilyID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.CorrelationID);
+            string messageID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID);
+            string transactionType = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionType);
+            string resetFlag = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.ResetFlag);
+            string source = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.Source);
+            int sequenceID = int.Parse(receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.SequenceID));
+            int lastProcessedGpmSequenceID = messageSequenceOutput.LastProcessedGpmSequenceID;
+            for (int i = 0; i <= sequenceID - lastProcessedGpmSequenceID; i++)
+            {
+                PriceChangeMaster priceChangeMaster = new PriceChangeMaster()
+                {
+                    isCheckPoint = false,
+                    BusinessKey = new PriceChangeMasterTypeBusinessKey()
+                    {
+                        variationID = "0",
+                        Value = "00000000-0000-4000-8000-000000000000"
+                    },
+                    PriceChangeHeader = new []
+                    {
+                        new PriceChangeType
+                        {
+                            PatchFamilyID = patchFamilyID,
+                            PatchNum = (lastProcessedGpmSequenceID + i).ToString(),
+                            TimeStamp = DateTimeOffset.Now.ToString("O")
+                        }
+                    }
+                };
+                string processBODXMLMessage = serializer.Serialize(priceChangeMaster, utf8StringWriter);
+                Dictionary<string, string> processBODXMLMessageProperties = new Dictionary<string, string>()
+                {
+                    { "TransactionID", messageID },
+                    { "CorrelationID", patchFamilyID },
+                    { "SequenceID", receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.SequenceID) },
+                    { "ResetFlag", resetFlag },
+                    { "TransactionType", transactionType },
+                    { "Source", source },
+                };
+                retrypolicy.Execute(() =>
+                {
+                    esbProducer.Send(processBODXMLMessage, processBODXMLMessageProperties);
+                });
+                nearRealTimeProcessorDAL.ArchiveErrorResponseMessage(messageID, Constants.MessageTypeNames.ProcessBOD, processBODXMLMessage, processBODXMLMessageProperties);
+            }
+        }
+    }
+}

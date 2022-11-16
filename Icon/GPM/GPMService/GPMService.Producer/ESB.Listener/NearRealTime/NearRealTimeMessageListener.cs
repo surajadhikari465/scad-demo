@@ -1,12 +1,10 @@
-﻿using GPMService.Producer.Message.Parser;
-using GPMService.Producer.Message.Processor;
+﻿using GPMService.Producer.Message.Processor;
 using GPMService.Producer.Model;
 using Icon.Common.Email;
 using Icon.Esb;
 using Icon.Esb.ListenerApplication;
 using Icon.Esb.Subscriber;
 using Icon.Logging;
-using System.Transactions;
 using TIBCO.EMS;
 
 namespace GPMService.Producer.ESB.Listener.NearRealTime

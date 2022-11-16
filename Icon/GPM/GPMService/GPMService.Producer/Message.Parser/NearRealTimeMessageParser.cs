@@ -1,11 +1,5 @@
 ﻿using GPMService.Producer.Model;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Esb;

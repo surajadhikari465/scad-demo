@@ -1,4 +1,5 @@
 ﻿using GPMService.Producer.DataAccess;
+using GPMService.Producer.ErrorHandler;
 using GPMService.Producer.ESB.Listener.NearRealTime;
 using GPMService.Producer.Helpers;
 using GPMService.Producer.Message.Parser;
@@ -10,6 +11,7 @@ using Icon.Common.Email;
 using Icon.DbContextFactory;
 using Icon.Esb;
 using Icon.Esb.ListenerApplication;
+using Icon.Esb.Producer;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Esb.Subscriber;
 using Icon.Logging;
@@ -41,14 +43,19 @@ namespace GPMService.Producer
                     container.Register(() => ListenerApplicationSettings.CreateDefaultSettings<ListenerApplicationSettings>("GPM NearRealTimeMessage Listener"));
                     container.Register(() => EsbConnectionSettings.CreateSettingsFromConfig());
                     container.Register<IEsbSubscriber, EsbSubscriber>();
+                    container.Register<IEsbProducer, EsbProducer>();
                     container.Register<ILogger<NearRealTimeMessageListener>, NLogLogger<NearRealTimeMessageListener>>();
                     container.Register<IMessageParser<items>, NearRealTimeMessageParser>();
                     container.Register<INearRealTimeProcessorDAL, NearRealTimeProcessorDAL>();
                     container.Register<IMessageProcessor, NearRealTimeMessageProcessor>();
                     container.Register<IListenerApplication, NearRealTimeMessageListener>();
                     container.Register<IGPMProducerService, NearRealTimeProducerService>();
+                    container.Register<ConfirmBODErrorHandler>();
+                    container.Register<ProcessBODErrorHandler>();
                     Registration subscriberRegistration = container.GetRegistration(typeof(IEsbSubscriber)).Registration;
                     subscriberRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the subscriber is taken care of by the application.");
+                    Registration producerRegistration = container.GetRegistration(typeof(IEsbProducer)).Registration;
+                    producerRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the subscriber is taken care of by the application.");
                     break;
                 default:
                     throw new ArgumentException(
