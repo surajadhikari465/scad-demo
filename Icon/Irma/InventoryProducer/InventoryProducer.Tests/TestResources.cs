@@ -78,5 +78,88 @@ namespace InventoryProducer.Tests
             };
             return instockDequeueModel;
         }
+        public static ReceiveModel GetReceiveDbObject(int orderItemID = 1)
+        {
+            return new ReceiveModel()
+            {
+                OrderHeaderId = 21636715,
+                OrderItemId = orderItemID,
+                Identifier = "82676681171",
+                ItemKey = 346114,
+                HostSubTeam = "Produce",
+                HostSubTeamNumber = 1700,
+                SubTeam = "Produce",
+                SubTeamNumber = 1700,
+                DateReceived = new DateTime(2022, 10, 28, 6, 39, 36),
+                CreditPO = 0,
+                QuantityReceived = 1,
+                QuantityOrdered = 1,
+                PackageDesc1 = 6,
+                PackageDesc2 = 1,
+                RecvLogUserId = null,
+                RecvUserName = "ol_import",
+                OrderUom = "CS",
+                ReceiptUom = "CS",
+                ReceiptStatus = "Received",
+                VIN = "203569",
+                StoreNumber = 10379,
+                StoreName = "CA NOE VALLEY (NOE)",
+                PastReceiptDate = null,
+                SupplierNumber = "0000210489",
+                CreateDateTime = new DateTime(2022, 05, 25, 10, 46, 00)
+            };
+        }
+        public static PurchaseOrdersModel GetPurchaseOrdersDbObject(int orderItemID = 1)
+        {
+            return new PurchaseOrdersModel()
+            {
+                OrderHeaderId = orderItemID,
+                ExternalSource = "AMAZON",
+                PurchaseType = "Purchase Order",
+                SupplierNumber = "11161777",
+                LocationNumber = 10268,
+                LocationName = "ON SQUARE ONE (SQO)",
+                OrderSubTeamNo = 4900,
+                OrderSubTeamName = "Prepared Foods",
+                OrderTeamNo = 70,
+                OrderTeamName = "Prepared Foods",
+                Status = "Sent",
+                UserId = 16037,
+                Username = "Sarah.Roberts",
+                CreateDateTime = DateTime.Now,
+                PurchaseOrderDetailNumber = 289246108,
+                SourceItemKey = 736066,
+                DefaultScanCode = "1432151031",
+                HostSubTeamNumber = 1400,
+                HostSubTeamName = "Bin Bulk",
+                QuantityOrdered = 1,
+                OrderedUnitCode = "CS",
+                OrderedUnit = "CASE",
+                PackSize1 = 1,
+                PackSize2 = 1,
+                RetailUnit = "EACH",
+                ItemCost = 19.2244m,
+                ExpectedArrivalDate = DateTime.Now
+            };
+        }
+
+        public static IList<ReceiveModel> GetReceiveList(int count = 0)
+        {
+            IList<ReceiveModel> list = new List<ReceiveModel>();
+            for (int i = 0; i < count; i++)
+            {
+                list.Add(GetReceiveDbObject(i));
+            }
+            return list;
+        }
+        public static IList<PurchaseOrdersModel> GetPurchaseOrderList(int count = 0)
+        {
+            IList<PurchaseOrdersModel> list = new List<PurchaseOrdersModel>();
+            for (int i = 0; i < count; i++)
+            {
+                list.Add(GetPurchaseOrdersDbObject(i));
+            }
+            return list;
+        }
     }
 }

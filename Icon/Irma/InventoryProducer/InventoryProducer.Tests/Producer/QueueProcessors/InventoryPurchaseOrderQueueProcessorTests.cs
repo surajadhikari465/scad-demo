@@ -14,23 +14,23 @@ using InventoryProducer.Producer.Publish;
 using InventoryProducer.Producer.Mapper;
 using InventoryProducer.Producer.DataAccess;
 
-using OrderReceipts = Icon.Esb.Schemas.Wfm.Contracts.orderReceipts;
+using PurchaseOrderCanonical = Icon.Esb.Schemas.Wfm.Contracts.PurchaseOrders;
 
 
 namespace InventoryProducer.Tests.Producer.QueueProcessors
 {
     [TestClass]
-    public class InventoryReceiveQueueProcessorTests
+    public class InventoryPurchaseOrderQueueProcessorTests
     {
-        private InventoryReceiveQueueProcessor queueProcessor;
+        private InventoryPurchaseOrderQueueProcessor queueProcessor;
 
-        private Mock<ICanonicalMapper<OrderReceipts, ReceiveModel>> receiveXmlCanonicalMapper;
+        private Mock<ICanonicalMapper<PurchaseOrderCanonical, PurchaseOrdersModel>> purchaseOrderCanonicalMapper;
         private IMessagePublisher messagePublisher;
         private Mock<IErrorEventPublisher> errorEventPublisher;
-        private Mock<IDAL<ReceiveModel>> receiveDAL;
+        private Mock<IDAL<PurchaseOrdersModel>> purchaseOrderDAL;
         private Mock<IInstockDequeueService> instockDequeueService;
         private Mock<IArchiveInventoryEvents> archiveInventoryEvents;
-        private Mock<IInventoryLogger<QueueProcessor<OrderReceipts, ReceiveModel>>> inventoryLogger;
+        private Mock<IInventoryLogger<QueueProcessor<PurchaseOrderCanonical, PurchaseOrdersModel>>> inventoryLogger;
         private Mock<IEsbProducer> esbProducer;
         private Mock<IActiveMQProducer> activeMQProducer;
         private InventoryProducerSettings settings;
@@ -38,12 +38,12 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
         [TestInitialize]
         public void Initialize()
         {
-            receiveXmlCanonicalMapper = new Mock<ICanonicalMapper<OrderReceipts, ReceiveModel>>();
+            purchaseOrderCanonicalMapper = new Mock<ICanonicalMapper<PurchaseOrderCanonical, PurchaseOrdersModel>>();
             errorEventPublisher = new Mock<IErrorEventPublisher>();
-            receiveDAL = new Mock<IDAL<ReceiveModel>>();
+            purchaseOrderDAL = new Mock<IDAL<PurchaseOrdersModel>>();
             instockDequeueService = new Mock<IInstockDequeueService>();
             archiveInventoryEvents = new Mock<IArchiveInventoryEvents>();
-            inventoryLogger = new Mock<IInventoryLogger<QueueProcessor<OrderReceipts, ReceiveModel>>>();
+            inventoryLogger = new Mock<IInventoryLogger<QueueProcessor<PurchaseOrderCanonical, PurchaseOrdersModel>>>();
             settings = new InventoryProducerSettings();
 
             esbProducer = new Mock<IEsbProducer>();
@@ -51,12 +51,12 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
 
             messagePublisher = new MessagePublisher(activeMQProducer.Object, esbProducer.Object);
 
-            queueProcessor = new InventoryReceiveQueueProcessor(
+            queueProcessor = new InventoryPurchaseOrderQueueProcessor(
                 settings,
                 inventoryLogger.Object,
                 instockDequeueService.Object,
-                receiveDAL.Object,
-                receiveXmlCanonicalMapper.Object,
+                purchaseOrderDAL.Object,
+                purchaseOrderCanonicalMapper.Object,
                 messagePublisher,
                 archiveInventoryEvents.Object,
                 errorEventPublisher.Object);
@@ -74,8 +74,8 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             //Assert
             instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
             errorEventPublisher.Verify(e => e.PublishErrorEventToMammoth(It.IsAny<InstockDequeueResult>(), It.IsAny<Exception>()), Times.Never);
-            receiveDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Never);
-            receiveXmlCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<ReceiveModel>>(), It.IsAny<InstockDequeueResult>()), Times.Never);
+            purchaseOrderDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Never);
+            purchaseOrderCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<PurchaseOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Never);
             esbProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             activeMQProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             archiveInventoryEvents.Verify(a => a.Archive(
@@ -89,11 +89,11 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             // Given
             instockDequeueService.Setup(i => i.GetDequeuedMessages()).Returns(
                 new List<InstockDequeueResult> {
-                    TestResources.GetInstockDequeueResult("RCPT_CRE")
+                    TestResources.GetInstockDequeueResult("PO_CRE")
                 }
             );
-            receiveDAL.Setup(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
-                new List<ReceiveModel> { }
+            purchaseOrderDAL.Setup(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
+                new List<PurchaseOrdersModel> { }
             );
 
             // When
@@ -102,8 +102,8 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             // Assert
             instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
             errorEventPublisher.Verify(e => e.PublishErrorEventToMammoth(It.IsAny<InstockDequeueResult>(), It.IsAny<Exception>()), Times.Never);
-            receiveDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Once);
-            receiveXmlCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<ReceiveModel>>(), It.IsAny<InstockDequeueResult>()), Times.Never);
+            purchaseOrderDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Once);
+            purchaseOrderCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<PurchaseOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Never);
             esbProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             activeMQProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             archiveInventoryEvents.Verify(a => a.Archive(
@@ -117,10 +117,10 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             // Given
             instockDequeueService.Setup(i => i.GetDequeuedMessages()).Returns(
                 new List<InstockDequeueResult> {
-                    TestResources.GetInstockDequeueResult("RCPT_CRE")
+                    TestResources.GetInstockDequeueResult("PO_CRE")
                 }
             );
-            receiveDAL.Setup(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Throws(
+            purchaseOrderDAL.Setup(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Throws(
                 new Exception("Test")
             );
 
@@ -130,8 +130,8 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             // Assert
             instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
             errorEventPublisher.Verify(e => e.PublishErrorEventToMammoth(It.IsAny<InstockDequeueResult>(), It.IsAny<Exception>()), Times.Once);
-            receiveDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Exactly(1));
-            receiveXmlCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<ReceiveModel>>(), It.IsAny<InstockDequeueResult>()), Times.Never);
+            purchaseOrderDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Exactly(1));
+            purchaseOrderCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<PurchaseOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Never);
             esbProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             activeMQProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             archiveInventoryEvents.Verify(a => a.Archive(
@@ -145,13 +145,13 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             // Given
             instockDequeueService.Setup(i => i.GetDequeuedMessages()).Returns(
                 new List<InstockDequeueResult> {
-                    TestResources.GetInstockDequeueResult("RCPT_CRE")
+                    TestResources.GetInstockDequeueResult("PO_CRE")
                 }
             );
-            receiveDAL.Setup(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
-                TestResources.GetReceiveList(1)
+            purchaseOrderDAL.Setup(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
+                TestResources.GetPurchaseOrderList(1)
             );
-            receiveXmlCanonicalMapper.Setup(m => m.TransformToXmlCanonical(It.IsAny<IList<ReceiveModel>>(), It.IsAny<InstockDequeueResult>())).Throws(new Exception("Test"));
+            purchaseOrderCanonicalMapper.Setup(m => m.TransformToXmlCanonical(It.IsAny<IList<PurchaseOrdersModel>>(), It.IsAny<InstockDequeueResult>())).Throws(new Exception("Test"));
 
             // When
             queueProcessor.ProcessMessageQueue();
@@ -159,8 +159,8 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             // Assert
             instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
             errorEventPublisher.Verify(e => e.PublishErrorEventToMammoth(It.IsAny<InstockDequeueResult>(), It.IsAny<Exception>()), Times.Once);
-            receiveDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Exactly(1));
-            receiveXmlCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<ReceiveModel>>(), It.IsAny<InstockDequeueResult>()), Times.Once);
+            purchaseOrderDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Exactly(1));
+            purchaseOrderCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<PurchaseOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Once);
             esbProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             activeMQProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             archiveInventoryEvents.Verify(a => a.Archive(
@@ -174,23 +174,23 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             // Given
             instockDequeueService.Setup(i => i.GetDequeuedMessages()).Returns(
                 new List<InstockDequeueResult> {
-                    TestResources.GetInstockDequeueResult("RCPT_CRE")
+                    TestResources.GetInstockDequeueResult("PO_CRE")
                 }
             );
-            receiveDAL.Setup(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
-                TestResources.GetReceiveList(1)
+            purchaseOrderDAL.Setup(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
+                TestResources.GetPurchaseOrderList(1)
             );
-            receiveXmlCanonicalMapper.Setup(m => m.TransformToXmlCanonical(It.IsAny<IList<ReceiveModel>>(), It.IsAny<InstockDequeueResult>())).Returns(new OrderReceipts());
-            receiveXmlCanonicalMapper.Setup(m => m.SerializeToXml(It.IsAny<OrderReceipts>())).Throws(new Exception("Test"));
+            purchaseOrderCanonicalMapper.Setup(m => m.TransformToXmlCanonical(It.IsAny<IList<PurchaseOrdersModel>>(), It.IsAny<InstockDequeueResult>())).Returns(new PurchaseOrderCanonical());
+            purchaseOrderCanonicalMapper.Setup(m => m.SerializeToXml(It.IsAny<PurchaseOrderCanonical>())).Throws(new Exception("Test"));
 
             // When
             queueProcessor.ProcessMessageQueue();
 
             // Assert
             instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
-            receiveDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Once);
-            receiveXmlCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<ReceiveModel>>(), It.IsAny<InstockDequeueResult>()), Times.Once);
-            receiveXmlCanonicalMapper.Verify(t => t.SerializeToXml(It.IsAny<OrderReceipts>()), Times.Once);
+            purchaseOrderDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Once);
+            purchaseOrderCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<PurchaseOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Once);
+            purchaseOrderCanonicalMapper.Verify(t => t.SerializeToXml(It.IsAny<PurchaseOrderCanonical>()), Times.Once);
             esbProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             activeMQProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             archiveInventoryEvents.Verify(a => a.Archive(
@@ -205,14 +205,14 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             // Given
             instockDequeueService.Setup(i => i.GetDequeuedMessages()).Returns(
                 new List<InstockDequeueResult> {
-                    TestResources.GetInstockDequeueResult("RCPT_CRE")
+                    TestResources.GetInstockDequeueResult("PO_CRE")
                 }
             );
-            receiveDAL.Setup(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
-                TestResources.GetReceiveList(1)
+            purchaseOrderDAL.Setup(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
+                TestResources.GetPurchaseOrderList(1)
             );
-            receiveXmlCanonicalMapper.Setup(m => m.TransformToXmlCanonical(It.IsAny<IList<ReceiveModel>>(), It.IsAny<InstockDequeueResult>())).Returns(new OrderReceipts());
-            receiveXmlCanonicalMapper.Setup(m => m.SerializeToXml(It.IsAny<OrderReceipts>())).Returns("XML");
+            purchaseOrderCanonicalMapper.Setup(m => m.TransformToXmlCanonical(It.IsAny<IList<PurchaseOrdersModel>>(), It.IsAny<InstockDequeueResult>())).Returns(new PurchaseOrderCanonical());
+            purchaseOrderCanonicalMapper.Setup(m => m.SerializeToXml(It.IsAny<PurchaseOrderCanonical>())).Returns("XML");
             esbProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             activeMQProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             archiveInventoryEvents.Setup(a => a.Archive(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<char>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
@@ -222,9 +222,9 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
 
             // Assert
             instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
-            receiveDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Exactly(1));
-            receiveXmlCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<ReceiveModel>>(), It.IsAny<InstockDequeueResult>()), Times.Once);
-            receiveXmlCanonicalMapper.Verify(t => t.SerializeToXml(It.IsAny<OrderReceipts>()), Times.Once);
+            purchaseOrderDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Exactly(1));
+            purchaseOrderCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<PurchaseOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Once);
+            purchaseOrderCanonicalMapper.Verify(t => t.SerializeToXml(It.IsAny<PurchaseOrderCanonical>()), Times.Once);
             esbProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
             activeMQProducer.Verify(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
             archiveInventoryEvents.Verify(a => a.Archive(
@@ -234,3 +234,4 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
         }
     }
 }
+

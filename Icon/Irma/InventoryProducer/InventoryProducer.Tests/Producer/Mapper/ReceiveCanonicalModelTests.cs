@@ -30,8 +30,8 @@ namespace InventoryProducer.Mapper.Tests
         public void TransformToXMLCanonical_Test()
         {
             // Given
-            IList<ReceiveModel> receiveList = InventoryReceiveTestResources.GetReceiveList(5);
-            InstockDequeueResult instockDequeueResult = InventoryReceiveTestResources.GetInstockDequeueResult("RCPT_CRE");
+            IList<ReceiveModel> receiveList = TestResources.GetReceiveList(5);
+            InstockDequeueResult instockDequeueResult = TestResources.GetInstockDequeueResult("RCPT_CRE");
 
             // When
             OrderReceipts receiveCanonical = mapper.TransformToXmlCanonical(receiveList, instockDequeueResult);
@@ -89,8 +89,8 @@ namespace InventoryProducer.Mapper.Tests
         public void SerializeToXml_Test()
         {
             // Given
-            IList<ReceiveModel> receiveList = InventoryReceiveTestResources.GetReceiveList(5);
-            InstockDequeueResult instockDequeueResult = InventoryReceiveTestResources.GetInstockDequeueResult("RCPT_CRE");
+            IList<ReceiveModel> receiveList = TestResources.GetReceiveList(5);
+            InstockDequeueResult instockDequeueResult = TestResources.GetInstockDequeueResult("RCPT_CRE");
             serializer.Setup(s => s.Serialize(It.IsAny<OrderReceipts>(), It.IsAny<System.IO.TextWriter>())).Returns("xml");
 
             // When
@@ -106,8 +106,8 @@ namespace InventoryProducer.Mapper.Tests
             // Given
             ISerializer<OrderReceipts> serializer = new Serializer<OrderReceipts>();
             ReceiveXmlCanonicalMapper receiveXmlCanonicalMapper = new ReceiveXmlCanonicalMapper(serializer);
-            IList<ReceiveModel> receiveList = InventoryReceiveTestResources.GetReceiveList(2);
-            InstockDequeueResult instockDequeueResult = InventoryReceiveTestResources.GetInstockDequeueResult("RCPT_CRE");
+            IList<ReceiveModel> receiveList = TestResources.GetReceiveList(2);
+            InstockDequeueResult instockDequeueResult = TestResources.GetInstockDequeueResult("RCPT_CRE");
 
             // When
             OrderReceipts orderReceiptsCanonical = receiveXmlCanonicalMapper.TransformToXmlCanonical(receiveList, instockDequeueResult);
@@ -187,9 +187,9 @@ namespace InventoryProducer.Mapper.Tests
             // Given
             ISerializer<OrderReceipts> serializer = new Serializer<OrderReceipts>();
             ReceiveXmlCanonicalMapper receiveXmlCanonicalMapper = new ReceiveXmlCanonicalMapper(serializer);
-            IList<ReceiveModel> receiveList = InventoryReceiveTestResources.GetReceiveList(2);
+            IList<ReceiveModel> receiveList = TestResources.GetReceiveList(2);
             receiveList[0].PastReceiptDate = new DateTime(2021, 11, 09, 09, 30, 15);
-            InstockDequeueResult instockDequeueResult = InventoryReceiveTestResources.GetInstockDequeueResult("RCPT_CRE");
+            InstockDequeueResult instockDequeueResult = TestResources.GetInstockDequeueResult("RCPT_CRE");
 
             // When
             OrderReceipts orderReceiptsCanonical = receiveXmlCanonicalMapper.TransformToXmlCanonical(receiveList, instockDequeueResult);
