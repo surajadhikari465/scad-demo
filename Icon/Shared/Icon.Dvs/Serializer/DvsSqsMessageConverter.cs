@@ -32,9 +32,11 @@ namespace Icon.Dvs.Serializer
 
             foreach(string key in messageAttributesJson.Keys)
             {
-                messageAttributesJson.TryGetValue(key, out JObject valueJson);
+                JObject valueJson;
+                JToken valueToken;
+                messageAttributesJson.TryGetValue(key, out valueJson);
                 // valueJson has keys (Type, Value). Since In DVS every attribute is string, converting to string by default
-                valueJson.TryGetValue("Value", out JToken valueToken);
+                valueJson.TryGetValue("Value", out valueToken);
                 message.MessageAttributes.Add(key, valueToken.ToString());
             }
 
