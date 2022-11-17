@@ -53,7 +53,7 @@ namespace InventoryProducer.Mapper.Tests
             Assert.AreEqual(orderReceiptsCanonical.isPastReceipt, "false");
             Assert.AreEqual(orderReceiptsCanonical.pastRceiptDate, string.Empty);
             Assert.IsFalse(orderReceiptsCanonical.pastRceiptDateSpecified);
-            Assert.AreEqual(orderReceiptsCanonical.purchaseOrderCreateDateTime, new DateTimeOffset(receiveItem.CreateDateTime, new TimeSpan(-5, 0, 0)).ToString("O"));
+            Assert.AreEqual(orderReceiptsCanonical.purchaseOrderCreateDateTime, new DateTimeOffset(receiveItem.CreateDateTime).ToString("O"));
             Assert.AreEqual(orderReceiptsCanonical.purchaseOrderSupplierNumber, "0000210489");
 
             Assert.AreEqual(orderReceiptsCanonical.receiptDetail.Length, 5);
@@ -79,7 +79,7 @@ namespace InventoryProducer.Mapper.Tests
                 Assert.IsTrue(receiptDetailItem.packSize2Specified);
                 Assert.AreEqual(receiptDetailItem.receiptUserInfo.idNumber, string.Empty);
                 Assert.AreEqual(receiptDetailItem.receiptUserInfo.name, "ol_import");
-                Assert.AreEqual(receiptDetailItem.createDateTime, new DateTimeOffset((DateTime)receiveList[i].DateReceived, new TimeSpan(-5, 0, 0)).ToString("O"));
+                Assert.AreEqual(receiptDetailItem.createDateTime, new DateTimeOffset((DateTime)receiveList[i].DateReceived).ToString("O"));
                 Assert.IsFalse(receiptDetailItem.documentNumberSpecified);
                 i++;
             }

@@ -102,7 +102,7 @@ namespace InventoryProducer.Producer.Mapper
         private string GetDateTimeOffset(DateTime? dateTime)
         {
             if (dateTime.HasValue)
-                return new DateTimeOffset((DateTime)dateTime, new TimeSpan(-5, 0, 0)).ToString("O");
+                return new DateTimeOffset(dateTime.Value).ToString("O");
             else
                 return string.Empty;
         }
