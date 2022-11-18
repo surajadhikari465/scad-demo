@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceProcess;
-using System.Text;
+﻿using System.ServiceProcess;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Mammoth.Esb.LocaleListener.Service
 {
@@ -16,7 +11,7 @@ namespace Mammoth.Esb.LocaleListener.Service
         static void Main()
         {
 #if DEBUG
-            SimpleInjectorInitializer.InitializeContainer().GetInstance<MammothLocaleListener>().Run();
+            SimpleInjectorInitializer.InitializeContainer().GetInstance<MammothLocaleListener>().Start();
 
             System.Console.ReadLine();
 

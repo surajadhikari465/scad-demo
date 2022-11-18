@@ -1,9 +1,9 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Common.Email;
-using Icon.Esb;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb.MessageParsers;
-using Icon.Esb.Subscriber;
+using Icon.Dvs;
+using Icon.Dvs.MessageParser;
+using Icon.Dvs.Subscriber;
+using Icon.Dvs.Model;
 using Icon.Logging;
 using Mammoth.Esb.LocaleListener.Commands;
 using Mammoth.Esb.LocaleListener.Models;
@@ -11,7 +11,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using TIBCO.EMS;
 
 namespace Mammoth.Esb.LocaleListener.Tests
 {
@@ -19,31 +18,26 @@ namespace Mammoth.Esb.LocaleListener.Tests
     public class MammothLocaleListenerTests
     {
         private MammothLocaleListener listener;
-        private ListenerApplicationSettings listenerApplicationSettings;
-        private EsbConnectionSettings esbConnectionSettings;
-        private Mock<IEsbSubscriber> mockSubscriber;
+        private DvsListenerSettings listenerApplicationSettings;
+        private Mock<IDvsSubscriber> mockSubscriber;
         private Mock<IEmailClient> mockEmailClient;
         private Mock<ILogger<MammothLocaleListener>> mockLogger;
         private Mock<IMessageParser<List<LocaleModel>>> mockMessageParser;
         private Mock<ICommandHandler<AddOrUpdateLocalesCommand>> mockAddOrUpdateLocalesCommandHandler;
-        private EsbMessageEventArgs eventArgs;
-        private Mock<IEsbMessage> mockMessage;
+        private DvsMessage mockMessage;
 
         [TestInitialize]
         public void Initialize()
         {
-            listenerApplicationSettings = new ListenerApplicationSettings();
-            esbConnectionSettings = new EsbConnectionSettings();
-            mockSubscriber = new Mock<IEsbSubscriber>();
+            listenerApplicationSettings = DvsListenerSettings.CreateSettingsFromConfig();
+            mockSubscriber = new Mock<IDvsSubscriber>();
             mockEmailClient = new Mock<IEmailClient>();
             mockLogger = new Mock<ILogger<MammothLocaleListener>>();
             mockMessageParser = new Mock<IMessageParser<List<LocaleModel>>>();
             mockAddOrUpdateLocalesCommandHandler = new Mock<ICommandHandler<AddOrUpdateLocalesCommand>>();
-            mockMessage = new Mock<IEsbMessage>();
-            eventArgs = new EsbMessageEventArgs { Message = mockMessage.Object };
+            mockMessage = new DvsMessage(new DvsSqsMessage(), "");
 
             listener = new MammothLocaleListener(listenerApplicationSettings,
-                esbConnectionSettings,
                 mockSubscriber.Object,
                 mockEmailClient.Object,
                 mockLogger.Object,
@@ -55,13 +49,13 @@ namespace Mammoth.Esb.LocaleListener.Tests
         public void HandleMessage_ParseSuccessful_ShouldAddOrUpdateLocales()
         {
             //Given
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>())).Returns(new List<LocaleModel> { new LocaleModel() });
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>())).Returns(new List<LocaleModel> { new LocaleModel() });
 
             //When
-            listener.HandleMessage(null, eventArgs);
+            listener.HandleMessage(mockMessage);
 
             //Then
-            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()), Times.Once);
+            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<DvsMessage>()), Times.Once);
             mockAddOrUpdateLocalesCommandHandler.Verify(m => m.Execute(It.IsAny<AddOrUpdateLocalesCommand>()), Times.Once);
         }
 
@@ -69,71 +63,41 @@ namespace Mammoth.Esb.LocaleListener.Tests
         public void HandleMessage_ParseNotSuccessful_ShouldLogAndNotify()
         {
             //Given
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>())).Throws(new Exception());
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>())).Throws(new Exception("Test Exception"));
 
-            //When
-            listener.HandleMessage(null, eventArgs);
-
-            //Then
-            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()), Times.Once);
-            mockAddOrUpdateLocalesCommandHandler.Verify(m => m.Execute(It.IsAny<AddOrUpdateLocalesCommand>()), Times.Never);
-            mockLogger.Verify(m => m.Error(It.IsAny<string>()), Times.Once);
-            mockEmailClient.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            try
+            {
+                //When
+                listener.HandleMessage(mockMessage);
+            }
+            catch (Exception ex)
+            {
+                //Then
+                Assert.AreEqual(ex.Message, "Test Exception");
+                mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<DvsMessage>()), Times.Once);
+                mockAddOrUpdateLocalesCommandHandler.Verify(m => m.Execute(It.IsAny<AddOrUpdateLocalesCommand>()), Times.Never);
+            }
         }
 
         [TestMethod]
         public void HandleMessage_UpdateNotSuccessful_ShouldLogAndNotify()
         {
             //Given
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>())).Returns(new List<LocaleModel> { new LocaleModel() });
-            mockAddOrUpdateLocalesCommandHandler.Setup(m => m.Execute(It.IsAny<AddOrUpdateLocalesCommand>())).Throws(new Exception());
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>())).Returns(new List<LocaleModel> { new LocaleModel() });
+            mockAddOrUpdateLocalesCommandHandler.Setup(m => m.Execute(It.IsAny<AddOrUpdateLocalesCommand>())).Throws(new Exception("Test Exception"));
 
-            //When
-            listener.HandleMessage(null, eventArgs);
-
-            //Then
-            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()), Times.Once);
-            mockAddOrUpdateLocalesCommandHandler.Verify(m => m.Execute(It.IsAny<AddOrUpdateLocalesCommand>()), Times.Once);
-            mockLogger.Verify(m => m.Error(It.IsAny<string>()), Times.Once);
-            mockEmailClient.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
-        }
-
-        [TestMethod]
-        public void HandleMessage_SessionTypeIsNotClientAcknowledge_ShouldNotAcknowledgeMessage()
-        {
-            //Given
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>())).Returns(new List<LocaleModel> { new LocaleModel() });
-            mockAddOrUpdateLocalesCommandHandler.Setup(m => m.Execute(It.IsAny<AddOrUpdateLocalesCommand>())).Throws(new Exception());
-            esbConnectionSettings.SessionMode = SessionMode.NoAcknowledge;
-
-            //When
-            listener.HandleMessage(null, eventArgs);
-
-            //Then
-            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()), Times.Once);
-            mockAddOrUpdateLocalesCommandHandler.Verify(m => m.Execute(It.IsAny<AddOrUpdateLocalesCommand>()), Times.Once);
-            mockLogger.Verify(m => m.Error(It.IsAny<string>()), Times.Once);
-            mockEmailClient.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
-            mockMessage.Verify(m => m.Acknowledge(), Times.Never);
-        }
-
-        [TestMethod]
-        public void HandleMessage_SessionTypeIsClientAcknowledgeAndErrorsAreThrown_ShouldAlwaysAcknowledgeMessage()
-        {
-            //Given
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>())).Returns(new List<LocaleModel> { new LocaleModel() });
-            mockAddOrUpdateLocalesCommandHandler.Setup(m => m.Execute(It.IsAny<AddOrUpdateLocalesCommand>())).Throws(new Exception());
-            esbConnectionSettings.SessionMode = SessionMode.ClientAcknowledge;
-
-            //When
-            listener.HandleMessage(null, eventArgs);
-
-            //Then
-            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()), Times.Once);
-            mockAddOrUpdateLocalesCommandHandler.Verify(m => m.Execute(It.IsAny<AddOrUpdateLocalesCommand>()), Times.Once);
-            mockLogger.Verify(m => m.Error(It.IsAny<string>()), Times.Once);
-            mockEmailClient.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
-            mockMessage.Verify(m => m.Acknowledge(), Times.Once);
+            try
+            {
+                //When
+                listener.HandleMessage(mockMessage);
+            }
+            catch (Exception ex)
+            {
+                //Then
+                Assert.AreEqual(ex.Message, "Test Exception");
+                mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<DvsMessage>()), Times.Once);
+                mockAddOrUpdateLocalesCommandHandler.Verify(m => m.Execute(It.IsAny<AddOrUpdateLocalesCommand>()), Times.Once);
+            }
         }
     }
 }

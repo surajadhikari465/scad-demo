@@ -1,8 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mammoth.Esb.LocaleListener.MessageParsers;
-using Icon.Esb.Subscriber;
-using Moq;
+using Icon.Dvs.Model;
 using System.IO;
 
 namespace Mammoth.Esb.LocaleListener.Tests.MessageParsers
@@ -11,23 +10,21 @@ namespace Mammoth.Esb.LocaleListener.Tests.MessageParsers
     public class LocaleMessageParserTests
     {
         private LocaleMessageParser messageParser;
-        private Mock<IEsbMessage> mockMessage;
 
         [TestInitialize]
         public void Initialize()
         {
             messageParser = new LocaleMessageParser();
-            mockMessage = new Mock<IEsbMessage>();
         }
 
         [TestMethod]
         public void ParseMessage_ValidMessage_ShouldReturnLocaleModel()
         {
             //Given
-            mockMessage.SetupGet(m => m.MessageText).Returns(File.ReadAllText(@"TestMessages\valid_message.xml"));
+            DvsMessage mockMessage = new DvsMessage(new DvsSqsMessage(), File.ReadAllText(@"TestMessages\valid_message.xml"));
 
             //When
-            var models = messageParser.ParseMessage(mockMessage.Object);
+            var models = messageParser.ParseMessage(mockMessage);
 
             //Then
             Assert.AreEqual(1, models.Count);
@@ -53,10 +50,10 @@ namespace Mammoth.Esb.LocaleListener.Tests.MessageParsers
         public void ParseMessage_ValidMessageWithMinCloseDate_ShouldReturnLocaleModel()
         {
             //Given
-            mockMessage.SetupGet(m => m.MessageText).Returns(File.ReadAllText(@"TestMessages\valid_message_with_min_close_date.xml"));
+            DvsMessage mockMessage = new DvsMessage(new DvsSqsMessage(), File.ReadAllText(@"TestMessages\valid_message_with_min_close_date.xml"));
 
             //When
-            var models = messageParser.ParseMessage(mockMessage.Object);
+            var models = messageParser.ParseMessage(mockMessage);
 
             //Then
             Assert.IsFalse(models[0].LocaleCloseDate.HasValue);

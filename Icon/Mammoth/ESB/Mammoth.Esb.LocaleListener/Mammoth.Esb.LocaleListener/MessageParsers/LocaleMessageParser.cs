@@ -1,6 +1,6 @@
-﻿using Icon.Esb.MessageParsers;
+﻿using Icon.Dvs.MessageParser;
 using Icon.Esb.Schemas.Wfm.Contracts;
-using Icon.Esb.Subscriber;
+using Icon.Dvs.Model;
 using Mammoth.Esb.LocaleListener.Models;
 using System;
 using System.Collections.Generic;
@@ -50,12 +50,12 @@ namespace Mammoth.Esb.LocaleListener.MessageParsers
             serializer = new XmlSerializer(typeof(LocaleType));
         }
 
-        public List<LocaleModel> ParseMessage(IEsbMessage message)
+        public List<LocaleModel> ParseMessage(DvsMessage message)
         {
             List<LocaleModel> locales = new List<LocaleModel>();
 
             LocaleType localeMessage;
-            using (textReader = new StringReader(message.MessageText))
+            using (textReader = new StringReader(message.MessageContent))
             {
                 localeMessage = serializer.Deserialize(textReader) as LocaleType;
             }
