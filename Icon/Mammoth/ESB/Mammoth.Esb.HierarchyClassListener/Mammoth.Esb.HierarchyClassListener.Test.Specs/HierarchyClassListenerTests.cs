@@ -1,15 +1,14 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Icon.Esb.Subscriber;
 using Moq;
+using Icon.Dvs.Subscriber;
+using Icon.Dvs.Model;
 using System.IO;
 using Dapper;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Linq;
 using Mammoth.Esb.HierarchyClassListener.Models;
-using System.Collections.Generic;
-using System.Xml.Linq;
 
 namespace Mammoth.Esb.HierarchyClassListener.Test.Specs
 {
@@ -28,7 +27,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Test.Specs
 
             var container = SimpleInjectorInitializer.Initialize();
             container.Options.AllowOverridingRegistrations = true;
-            container.RegisterSingleton<IEsbSubscriber>(() => new Mock<IEsbSubscriber>().Object);
+            container.RegisterSingleton<IDvsSubscriber>(() => new Mock<IDvsSubscriber>().Object);
 
             listener = container.GetInstance<MammothHierarchyClassListener>();
 
@@ -55,7 +54,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Test.Specs
 
             var container = SimpleInjectorInitializer.Initialize();
             container.Options.AllowOverridingRegistrations = true;
-            container.RegisterSingleton<IEsbSubscriber>(() => new Mock<IEsbSubscriber>().Object);
+            container.RegisterSingleton<IDvsSubscriber>(() => new Mock<IDvsSubscriber>().Object);
 
             listener = container.GetInstance<MammothHierarchyClassListener>();
 
@@ -123,10 +122,9 @@ namespace Mammoth.Esb.HierarchyClassListener.Test.Specs
         {
             string text = File.ReadAllText(filePath);
 
-            Mock<IEsbMessage> message = new Mock<IEsbMessage>();
-            message.SetupGet(m => m.MessageText).Returns(text);
+            DvsMessage message = new DvsMessage(new DvsSqsMessage(), text);
 
-            listener.HandleMessage(null, new EsbMessageEventArgs { Message = message.Object });
+            listener.HandleMessage(message);
         }
     }
 }

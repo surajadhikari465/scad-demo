@@ -1,6 +1,5 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Common.Email;
-using Icon.Esb.ListenerApplication;
 using Icon.Logging;
 using Mammoth.Common.DataAccess;
 using Mammoth.Common.DataAccess.Models;
@@ -22,7 +21,6 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
         private ValidateItemAssociationForDeleteBrandDecorator decorator;
         private DeleteBrandRequest request;
         private Mock<IQueryHandler<IGetAssociatedItemsParameter, IEnumerable<Item>>> mockGetItemsByBrandQuery;
-        private ListenerApplicationSettings settings;
         private Mock<IEmailClient> mockEmailClient;
         private Mock<ILogger<MammothHierarchyClassListener>> mockLogger;
         private List<HierarchyClassModel> brands;
@@ -32,14 +30,12 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.Services
         public void InitializeTest()
         {
             this.mockLogger = new Mock<ILogger<MammothHierarchyClassListener>>();
-            this.settings = new ListenerApplicationSettings();
             this.mockEmailClient = new Mock<IEmailClient>();
             this.mockGetItemsByBrandQuery = new Mock<IQueryHandler<IGetAssociatedItemsParameter, IEnumerable<Item>>>();
             this.mockService = new Mock<IHierarchyClassService<IHierarchyClassRequest>>();
             this.decorator = new ValidateItemAssociationForDeleteBrandDecorator(
                 this.mockService.Object,
                 this.mockGetItemsByBrandQuery.Object,
-                this.settings,
                 this.mockEmailClient.Object,
                 this.mockLogger.Object);
             this.request = new DeleteBrandRequest();

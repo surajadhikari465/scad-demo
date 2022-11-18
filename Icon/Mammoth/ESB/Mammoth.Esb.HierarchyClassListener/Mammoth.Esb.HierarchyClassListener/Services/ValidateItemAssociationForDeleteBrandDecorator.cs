@@ -1,7 +1,6 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Common.Email;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb.Schemas.Wfm.Contracts;using Icon.Logging;
+using Icon.Logging;
 using Mammoth.Common.DataAccess;
 using Mammoth.Common.DataAccess.Models;
 using Mammoth.Esb.HierarchyClassListener.Models;
@@ -9,7 +8,6 @@ using Mammoth.Esb.HierarchyClassListener.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Mammoth.Esb.HierarchyClassListener.Services
 {
@@ -34,10 +32,9 @@ namespace Mammoth.Esb.HierarchyClassListener.Services
         public ValidateItemAssociationForDeleteBrandDecorator(
             IHierarchyClassService<IHierarchyClassRequest> deleteBrandService,
             IQueryHandler<IGetAssociatedItemsParameter, IEnumerable<Item>> getAssociatedItemsQuery,
-            ListenerApplicationSettings settings,
             IEmailClient emailClient,
             ILogger<MammothHierarchyClassListener> logger)
-            : base(deleteBrandService, getAssociatedItemsQuery, settings, emailClient, logger) { }
+            : base(deleteBrandService, getAssociatedItemsQuery, emailClient, logger) { }
 
         protected override IGetAssociatedItemsParameter BuildQueryParameter(IList<int> hierarchyClassIDs)
         {

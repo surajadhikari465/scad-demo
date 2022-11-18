@@ -22,12 +22,12 @@ namespace Mammoth.Esb.HierarchyClassListener.Service
         protected override void OnStart(string[] args)
         {
             listener = SimpleInjectorInitializer.Initialize().GetInstance<MammothHierarchyClassListener>();
-            listener.Run();
+            listener.Start();
         }
 
         protected override void OnStop()
         {
-            listener.Close();
+            listener.Stop();
         }
     }
 }

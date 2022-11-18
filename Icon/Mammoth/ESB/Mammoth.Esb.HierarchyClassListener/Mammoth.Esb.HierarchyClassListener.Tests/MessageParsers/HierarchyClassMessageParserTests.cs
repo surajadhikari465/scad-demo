@@ -1,14 +1,9 @@
-﻿using Icon.Esb.Subscriber;
+﻿using Icon.Dvs.Model;
 using Mammoth.Common.DataAccess;
 using Mammoth.Esb.HierarchyClassListener.MessageParsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mammoth.Esb.HierarchyClassListener.Tests.MessageParsers
 {
@@ -16,14 +11,11 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.MessageParsers
     public class HierarchyClassMessageParserTests
     {
         private HierarchyClassMessageParser messageParser;
-        private Mock<IEsbMessage> mockEsbMessage;
 
         [TestInitialize]
         public void Initialize()
         {
             messageParser = new HierarchyClassMessageParser();
-
-            mockEsbMessage = new Mock<IEsbMessage>();
         }
 
         [TestMethod]
@@ -31,11 +23,10 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.MessageParsers
         {
             //Given
             var messageText = File.ReadAllText(@"TestMessages/BrandMessage.xml");
-            mockEsbMessage.SetupGet(m => m.MessageText)
-                .Returns(messageText);
+            var message = new DvsMessage(new DvsSqsMessage(), messageText);
 
             //When
-            var brand = messageParser.ParseMessage(mockEsbMessage.Object).Single();
+            var brand = messageParser.ParseMessage(message).Single();
 
             //Then
             Assert.AreEqual(68950, brand.HierarchyClassId);
@@ -50,11 +41,10 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests.MessageParsers
         {
             //Given
             var messageText = File.ReadAllText(@"TestMessages/MerchandiseMessage.xml");
-            mockEsbMessage.SetupGet(m => m.MessageText)
-                .Returns(messageText);
+            var message = new DvsMessage(new DvsSqsMessage(), messageText);
 
             //When
-            var merchandise = messageParser.ParseMessage(mockEsbMessage.Object).Single();
+            var merchandise = messageParser.ParseMessage(message).Single();
 
             //Then
             Assert.AreEqual(83426, merchandise.HierarchyClassId);

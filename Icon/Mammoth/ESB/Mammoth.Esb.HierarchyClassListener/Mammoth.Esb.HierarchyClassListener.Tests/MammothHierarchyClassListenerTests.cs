@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Icon.Common.Email;
-using Icon.Esb;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb.MessageParsers;
-using Icon.Esb.Subscriber;
+using Icon.Dvs;
+using Icon.Dvs.ListenerApplication;
+using Icon.Dvs.MessageParser;
+using Icon.Dvs.Model;
+using Icon.Dvs.Subscriber;
 using Icon.Logging;
 using Mammoth.Esb.HierarchyClassListener.Models;
 using Mammoth.Esb.HierarchyClassListener.Services;
@@ -21,8 +22,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
     public class MammothHierarchyClassListenerTests
     {
         private MammothHierarchyClassListener listener;
-        private EsbConnectionSettings esbConnectionSettings;
-        private ListenerApplicationSettings listenerApplicationSettings;
+        private DvsListenerSettings listenerSettings;
         private Mock<IEmailClient> mockEmailClient;
         private Mock<IHierarchyClassService<AddOrUpdateHierarchyClassRequest>> mockAddOrUpdateHierarchyClassService;
         private Mock<IHierarchyClassService<DeleteBrandRequest>> mockDeleteBrandService;
@@ -30,16 +30,14 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
         private Mock<IHierarchyClassService<DeleteNationalClassRequest>> mockDeleteNationalService;
         private Mock<ILogger<MammothHierarchyClassListener>> mockLogger;
         private Mock<IMessageParser<List<HierarchyClassModel>>> mockMessageParser;
-        private Mock<IEsbSubscriber> mockSubscriber;
-        private EsbMessageEventArgs eventArgs;
-        private Mock<IEsbMessage> mockEsbMessage;
+        private Mock<IDvsSubscriber> mockSubscriber;
+        private DvsMessage mockDvsMessage;
         private Mock<IHierarchyClassService<DeleteManufacturerRequest>> mockDeleteManufacturerService;
 
         [TestInitialize]
         public void Initialize()
         {
-            esbConnectionSettings = new EsbConnectionSettings { SessionMode = SessionMode.ClientAcknowledge };
-            listenerApplicationSettings = new ListenerApplicationSettings();
+            listenerSettings = new DvsListenerSettings();
             mockEmailClient = new Mock<IEmailClient>();
             mockAddOrUpdateHierarchyClassService = new Mock<IHierarchyClassService<AddOrUpdateHierarchyClassRequest>>();
             mockDeleteBrandService = new Mock<IHierarchyClassService<DeleteBrandRequest>>();
@@ -47,11 +45,10 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
             mockDeleteNationalService = new Mock<IHierarchyClassService<DeleteNationalClassRequest>>();
             mockLogger = new Mock<ILogger<MammothHierarchyClassListener>>();
             mockMessageParser = new Mock<IMessageParser<List<HierarchyClassModel>>>();
-            mockSubscriber = new Mock<IEsbSubscriber>();
+            mockSubscriber = new Mock<IDvsSubscriber>();
             mockDeleteManufacturerService = new Mock<IHierarchyClassService<DeleteManufacturerRequest>>();
 
-            this.listener = new MammothHierarchyClassListener(listenerApplicationSettings,
-                esbConnectionSettings,
+            this.listener = new MammothHierarchyClassListener(listenerSettings,
                 mockSubscriber.Object,
                 mockEmailClient.Object,
                 mockLogger.Object,
@@ -62,15 +59,14 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
                 mockDeleteNationalService.Object,
                 mockDeleteManufacturerService.Object);
 
-            mockEsbMessage = new Mock<IEsbMessage>();
-            eventArgs = new EsbMessageEventArgs { Message = mockEsbMessage.Object };
+            mockDvsMessage = new DvsMessage(new DvsSqsMessage(), "");
         }
 
         [TestMethod]
         public void HandleMessage_SuccessfulAddOrUpdateMessage_ShouldAcknowledgeMessageAndNotLogError()
         {
             //Given
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>()))
                 .Returns(new List<HierarchyClassModel>
                 {
                     new HierarchyClassModel
@@ -83,39 +79,39 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
                 });
 
             //When
-            listener.HandleMessage(null, eventArgs);
+            listener.HandleMessage(mockDvsMessage);
 
             //Then
             mockEmailClient.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
             mockLogger.Verify(m => m.Error(It.IsAny<string>()), Times.Never);
-            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()), Times.Once);
+            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<DvsMessage>()), Times.Once);
             mockAddOrUpdateHierarchyClassService.Verify(m => m.ProcessHierarchyClasses(It.IsAny<AddOrUpdateHierarchyClassRequest>()), Times.Once);
-            mockEsbMessage.Verify(m => m.Acknowledge(), Times.Once);
         }
 
         [TestMethod]
-        public void HandleMessage_ErrorParsingMessage_ShouldLogAndNotifyException()
+        public void HandleMessage_ErrorParsingMessage_ShouldThrowException()
         {
             //Given
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
-                .Throws(new Exception());
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>()))
+                .Throws(new Exception("TestMessage"));
 
-            //When
-            listener.HandleMessage(null, eventArgs);
-
-            //Then
-            mockEmailClient.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
-            mockLogger.Verify(m => m.Error(It.IsAny<string>()), Times.Once);
-            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()), Times.Once);
-            mockAddOrUpdateHierarchyClassService.Verify(m => m.ProcessHierarchyClasses(It.IsAny<AddOrUpdateHierarchyClassRequest>()), Times.Never);
-            mockEsbMessage.Verify(m => m.Acknowledge(), Times.Once);
+            try
+            {
+                // When
+                listener.HandleMessage(mockDvsMessage);
+            }
+            catch (Exception ex)
+            {
+                // Then
+                Assert.AreEqual(ex.Message, "TestMessage");
+            }
         }
 
         [TestMethod]
-        public void HandleMessage_ErrorCallingHierarchyClasses_ShouldLogAndNotifyException()
+        public void HandleMessage_ErrorCallingHierarchyClasses_ShouldThrowException()
         {
             //Given
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>()))
                 .Returns(new List<HierarchyClassModel>
                 {
                     new HierarchyClassModel
@@ -127,17 +123,18 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
                     }
                 });
             mockAddOrUpdateHierarchyClassService.Setup(m => m.ProcessHierarchyClasses(It.IsAny<AddOrUpdateHierarchyClassRequest>()))
-                .Throws(new Exception());
+                .Throws(new Exception("TestMessage"));
 
-            //When
-            listener.HandleMessage(null, eventArgs);
-
-            //Then
-            mockEmailClient.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
-            mockLogger.Verify(m => m.Error(It.IsAny<string>()), Times.Once);
-            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()), Times.Once);
-            mockAddOrUpdateHierarchyClassService.Verify(m => m.ProcessHierarchyClasses(It.IsAny<AddOrUpdateHierarchyClassRequest>()), Times.Once);
-            mockEsbMessage.Verify(m => m.Acknowledge(), Times.Once);
+            try
+            {
+                // When
+                listener.HandleMessage(mockDvsMessage);
+            }
+            catch (Exception ex)
+            {
+                // Then
+                Assert.AreEqual(ex.Message, "TestMessage");
+            }            
         }
 
         [TestMethod]
@@ -155,11 +152,11 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
                 Timestamp = DateTime.UtcNow
             });
 
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>()))
                 .Returns(brands);
 
             // When
-            listener.HandleMessage(null, eventArgs);
+            listener.HandleMessage(mockDvsMessage);
 
             // Then
             mockAddOrUpdateHierarchyClassService.Verify(ds => ds.ProcessHierarchyClasses(It.IsAny<AddOrUpdateHierarchyClassRequest>()), Times.Never);
@@ -186,11 +183,11 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
                 Timestamp = DateTime.UtcNow
             });
 
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>()))
                 .Returns(nationalClasses);
 
             // When
-            listener.HandleMessage(null, eventArgs);
+            listener.HandleMessage(mockDvsMessage);
 
             // Then
             mockAddOrUpdateHierarchyClassService.Verify(ds => ds.ProcessHierarchyClasses(It.IsAny<AddOrUpdateHierarchyClassRequest>()), Times.Never);
@@ -217,11 +214,11 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
                 Timestamp = DateTime.UtcNow
             });
 
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>()))
                 .Returns(merchandiseClasses);
 
             // When
-            listener.HandleMessage(null, eventArgs);
+            listener.HandleMessage(mockDvsMessage);
 
             // Then
             mockAddOrUpdateHierarchyClassService.Verify(ds => ds.ProcessHierarchyClasses(It.IsAny<AddOrUpdateHierarchyClassRequest>()), Times.Never);
@@ -248,11 +245,11 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
                 Timestamp = DateTime.UtcNow
             });
 
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>()))
                 .Returns(brands);
 
             // When
-            listener.HandleMessage(null, eventArgs);
+            listener.HandleMessage(mockDvsMessage);
 
             // Then
             mockDeleteBrandService.Verify(ds => ds.ProcessHierarchyClasses(It.IsAny<DeleteBrandRequest>()), Times.Never);
@@ -268,7 +265,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
         public void HandleMessage_SuccessfulAddOrUpdateManufacturerMessage_ShouldAcknowledgeMessageAndNotLogError()
         {
             //Given
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>()))
                 .Returns(new List<HierarchyClassModel>
                 {
                     new HierarchyClassModel
@@ -281,14 +278,13 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
                 });
 
             //When
-            listener.HandleMessage(null, eventArgs);
+            listener.HandleMessage(mockDvsMessage);
 
             //Then
             mockEmailClient.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
             mockLogger.Verify(m => m.Error(It.IsAny<string>()), Times.Never);
-            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()), Times.Once);
+            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<DvsMessage>()), Times.Once);
             mockAddOrUpdateHierarchyClassService.Verify(m => m.ProcessHierarchyClasses(It.IsAny<AddOrUpdateHierarchyClassRequest>()), Times.Once);
-            mockEsbMessage.Verify(m => m.Acknowledge(), Times.Once);
         }
 
         [TestMethod]
@@ -306,11 +302,11 @@ namespace Mammoth.Esb.HierarchyClassListener.Tests
                 Timestamp = DateTime.UtcNow
             });
 
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>()))
                 .Returns(manufacturer);
 
             // When
-            listener.HandleMessage(null, eventArgs);
+            listener.HandleMessage(mockDvsMessage);
 
             // Then
             mockAddOrUpdateHierarchyClassService.Verify(ds => ds.ProcessHierarchyClasses(It.IsAny<AddOrUpdateHierarchyClassRequest>()), Times.Never);

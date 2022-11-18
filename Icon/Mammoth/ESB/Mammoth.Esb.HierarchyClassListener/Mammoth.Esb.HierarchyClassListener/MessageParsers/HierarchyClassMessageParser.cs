@@ -1,5 +1,5 @@
-﻿using Icon.Esb.MessageParsers;
-using Icon.Esb.Subscriber;
+﻿using Icon.Dvs.MessageParser;
+using Icon.Dvs.Model;
 using Mammoth.Common.DataAccess;
 using Mammoth.Esb.HierarchyClassListener.Models;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ namespace Mammoth.Esb.HierarchyClassListener.MessageParsers
 {
     public class HierarchyClassMessageParser : MessageParserBase<Contracts.HierarchyType, List<HierarchyClassModel>>
     {
-        public override List<HierarchyClassModel> ParseMessage(IEsbMessage message)
+        public override List<HierarchyClassModel> ParseMessage(DvsMessage message)
         {
             var contract = DeserializeMessage(message);
 

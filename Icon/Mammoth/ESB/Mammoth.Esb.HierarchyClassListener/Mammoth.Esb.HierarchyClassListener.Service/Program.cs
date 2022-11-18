@@ -16,7 +16,7 @@ namespace Mammoth.Esb.HierarchyClassListener.Service
         static void Main()
         {
 #if DEBUG
-            SimpleInjectorInitializer.Initialize().GetInstance<MammothHierarchyClassListener>().Run();
+            SimpleInjectorInitializer.Initialize().GetInstance<MammothHierarchyClassListener>().Start();
 
             System.Console.ReadLine();
 

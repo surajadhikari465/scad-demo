@@ -1,9 +1,7 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Common.Email;
-using Icon.Esb.ListenerApplication;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Logging;
-using Mammoth.Common.DataAccess;
 using Mammoth.Common.DataAccess.Models;
 using Mammoth.Esb.HierarchyClassListener.Models;
 using Mammoth.Esb.HierarchyClassListener.Queries;
@@ -18,7 +16,6 @@ namespace Mammoth.Esb.HierarchyClassListener.Services
     {
         private IHierarchyClassService<IHierarchyClassRequest> deleteHierarchyClassesService;
         private IQueryHandler<IGetAssociatedItemsParameter, IEnumerable<Item>> getAssociatedItemsQueryHandler;
-        private ListenerApplicationSettings settings;
         private IEmailClient emailClient;
         private ILogger<MammothHierarchyClassListener> logger;
         protected abstract int HierarchyId { get; }
@@ -28,13 +25,11 @@ namespace Mammoth.Esb.HierarchyClassListener.Services
         public DeleteHierarchyClassValidationDecoratorBase(
             IHierarchyClassService<IHierarchyClassRequest> deleteService,
             IQueryHandler<IGetAssociatedItemsParameter, IEnumerable<Item>> getAssociatedItemsQuery,
-            ListenerApplicationSettings settings,
             IEmailClient emailClient,
             ILogger<MammothHierarchyClassListener> logger)
         {
             this.deleteHierarchyClassesService = deleteService;
             this.getAssociatedItemsQueryHandler = getAssociatedItemsQuery;
-            this.settings = settings;
             this.emailClient = emailClient;
             this.logger = logger;
         }
