@@ -5,7 +5,6 @@ using Icon.Esb;
 using Icon.Esb.ListenerApplication;
 using Icon.Esb.Subscriber;
 using Icon.Logging;
-using TIBCO.EMS;
 
 namespace GPMService.Producer.ESB.Listener.NearRealTime
 {
@@ -39,12 +38,6 @@ namespace GPMService.Producer.ESB.Listener.NearRealTime
                     and Region Code: ${receivedMessage.esbMessage.GetProperty("RegionCode")}"
                 );
             messageProcessor.ProcessMessage(receivedMessage);
-            if ((esbConnectionSettings.SessionMode == SessionMode.ClientAcknowledge ||
-                esbConnectionSettings.SessionMode == SessionMode.ExplicitClientAcknowledge ||
-                esbConnectionSettings.SessionMode == SessionMode.ExplicitClientDupsOkAcknowledge))
-            {
-                args.Message.Acknowledge();
-            }
         }
     }
 }

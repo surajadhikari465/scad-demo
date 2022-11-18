@@ -13,11 +13,19 @@ namespace GPMService.Producer.Serializer
             {
                 AddConfirmBODTypeNamespaces(namespaces);
             }
+            else if (t == typeof(PriceMessageArchiveType))
+            {
+                AddPriceMessageArchiveTypeNamespaces(namespaces);
+            }
             return namespaces;
         }
         private static void AddConfirmBODTypeNamespaces(XmlSerializerNamespaces namespaces)
         {
             namespaces.Add("ns0", Constants.XmlNamespaces.InforOAGIS);
+        }
+        private static void AddPriceMessageArchiveTypeNamespaces(XmlSerializerNamespaces namespaces)
+        {
+            namespaces.Add("ns0", Constants.XmlNamespaces.MammothPriceMessageArchive);
         }
     }
 }

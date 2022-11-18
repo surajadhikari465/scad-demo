@@ -4,10 +4,15 @@ using GPMService.Producer.ESB.Listener.NearRealTime;
 using GPMService.Producer.Helpers;
 using GPMService.Producer.Message.Parser;
 using GPMService.Producer.Message.Processor;
+using GPMService.Producer.Publish;
+using GPMService.Producer.Serializer;
 using GPMService.Producer.Service;
 using GPMService.Producer.Service.ESB.Listener;
 using GPMService.Producer.Settings;
+using Icon.ActiveMQ;
+using Icon.ActiveMQ.Producer;
 using Icon.Common.Email;
+using Icon.Common.Xml;
 using Icon.DbContextFactory;
 using Icon.Esb;
 using Icon.Esb.ListenerApplication;
@@ -15,10 +20,12 @@ using Icon.Esb.Producer;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Esb.Subscriber;
 using Icon.Logging;
+using InventoryProducer.Common.Schemas;
 using Mammoth.Framework;
 using SimpleInjector;
 using SimpleInjector.Diagnostics;
 using System;
+using System.IO;
 
 namespace GPMService.Producer
 {
@@ -30,6 +37,10 @@ namespace GPMService.Producer
             container.Register<IEmailClient>(() => { return EmailClient.CreateFromConfig(); }, Lifestyle.Singleton);
             container.Register<IDbContextFactory<MammothContext>, MammothContextFactory>();
             container.Register(() => GPMProducerServiceSettings.CreateSettings());
+            container.Register<ILogger<MessagePublisher>, NLogLogger<MessagePublisher>>();
+            container.Register<IMessagePublisher, MessagePublisher>();
+            container.Register<ErrorEventPublisher>();
+            container.Register<ISerializer<ErrorMessage>, Serializer<ErrorMessage>>();
             RegisterServiceImplementation(container, serviceType);
             container.Verify();
             return container;
@@ -42,9 +53,14 @@ namespace GPMService.Producer
                 case Constants.ProducerType.NearRealTime:
                     container.Register(() => ListenerApplicationSettings.CreateDefaultSettings<ListenerApplicationSettings>("GPM NearRealTimeMessage Listener"));
                     container.Register(() => EsbConnectionSettings.CreateSettingsFromConfig());
+                    container.Register(() => ActiveMQConnectionSettings.CreateSettingsFromConfig());
                     container.Register<IEsbSubscriber, EsbSubscriber>();
                     container.Register<IEsbProducer, EsbProducer>();
+                    container.Register<IActiveMQProducer, ActiveMQProducer>();
                     container.Register<ILogger<NearRealTimeMessageListener>, NLogLogger<NearRealTimeMessageListener>>();
+                    container.Register<ILogger<NearRealTimeMessageProcessor>, NLogLogger<NearRealTimeMessageProcessor>>();
+                    container.Register<ILogger<NearRealTimeProcessorDAL>, NLogLogger<NearRealTimeProcessorDAL>>();
+                    container.Register<ILogger<NearRealTimeProducerService>, NLogLogger<NearRealTimeProducerService>>();
                     container.Register<IMessageParser<items>, NearRealTimeMessageParser>();
                     container.Register<INearRealTimeProcessorDAL, NearRealTimeProcessorDAL>();
                     container.Register<IMessageProcessor, NearRealTimeMessageProcessor>();
@@ -52,10 +68,16 @@ namespace GPMService.Producer
                     container.Register<IGPMProducerService, NearRealTimeProducerService>();
                     container.Register<ConfirmBODErrorHandler>();
                     container.Register<ProcessBODErrorHandler>();
+                    container.Register<ISerializer<ConfirmBODType>, Serializer<ConfirmBODType>>();
+                    container.Register<ISerializer<PriceChangeMaster>, Serializer<PriceChangeMaster>>();
+                    container.Register<ISerializer<MammothPriceType>, Serializer<MammothPriceType>>();
+                    container.Register<ISerializer<PriceMessageArchiveType>, Serializer<PriceMessageArchiveType>>();
                     Registration subscriberRegistration = container.GetRegistration(typeof(IEsbSubscriber)).Registration;
                     subscriberRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the subscriber is taken care of by the application.");
                     Registration producerRegistration = container.GetRegistration(typeof(IEsbProducer)).Registration;
-                    producerRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the subscriber is taken care of by the application.");
+                    producerRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
+                    Registration activeMQProducerRegistration = container.GetRegistration(typeof(IActiveMQProducer)).Registration;
+                    activeMQProducerRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the ActiveMQ producer is taken care of by the application.");
                     break;
                 default:
                     throw new ArgumentException(

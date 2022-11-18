@@ -19,18 +19,18 @@ namespace GPMService.Producer.ErrorHandler
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly IEsbProducer esbProducer;
         private readonly ISerializer<PriceChangeMaster> serializer;
-        private readonly StringWriter utf8StringWriter = new Utf8StringWriter();
         private readonly RetryPolicy retrypolicy;
         public ProcessBODErrorHandler(
             INearRealTimeProcessorDAL nearRealTimeProcessorDAL,
             GPMProducerServiceSettings gpmProducerServiceSettings,
-            IEsbProducer esbProducer
+            IEsbProducer esbProducer,
+            ISerializer<PriceChangeMaster> serializer
             )
         {
             this.nearRealTimeProcessorDAL = nearRealTimeProcessorDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.esbProducer = esbProducer;
-            serializer = new Serializer<PriceChangeMaster>();
+            this.serializer = serializer;
             this.retrypolicy = Policy
                 .Handle<Exception>()
                 .WaitAndRetry(
@@ -67,13 +67,13 @@ namespace GPMService.Producer.ErrorHandler
                         }
                     }
                 };
-                string processBODXMLMessage = serializer.Serialize(priceChangeMaster, utf8StringWriter);
+                string processBODXMLMessage = serializer.Serialize(priceChangeMaster, new Utf8StringWriter());
                 Dictionary<string, string> processBODXMLMessageProperties = new Dictionary<string, string>()
                 {
                     { "TransactionID", messageID },
                     { "CorrelationID", patchFamilyID },
                     { "SequenceID", receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.SequenceID) },
-                    { "ResetFlag", resetFlag },
+                    { "ResetFlag", Constants.ResetFlagValues.ResetFlagTrueValue.Equals(resetFlag) ? "true" : "false" },
                     { "TransactionType", transactionType },
                     { "Source", source },
                 };

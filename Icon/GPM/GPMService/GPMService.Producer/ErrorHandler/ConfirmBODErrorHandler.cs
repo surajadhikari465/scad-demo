@@ -10,7 +10,6 @@ using Polly;
 using Polly.Retry;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace GPMService.Producer.ErrorHandler
 {
@@ -21,18 +20,18 @@ namespace GPMService.Producer.ErrorHandler
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly IEsbProducer esbProducer;
         private readonly ISerializer<ConfirmBODType> serializer;
-        private readonly StringWriter utf8StringWriter = new Utf8StringWriter();
         private readonly RetryPolicy retrypolicy;
         public ConfirmBODErrorHandler(
             INearRealTimeProcessorDAL nearRealTimeProcessorDAL,
             GPMProducerServiceSettings gpmProducerServiceSettings,
-            IEsbProducer esbProducer
+            IEsbProducer esbProducer,
+            ISerializer<ConfirmBODType> serializer
             )
         {
             this.nearRealTimeProcessorDAL = nearRealTimeProcessorDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.esbProducer = esbProducer;
-            serializer = new Serializer<ConfirmBODType>();
+            this.serializer = serializer;
             this.retrypolicy = Policy
                 .Handle<Exception>()
                 .WaitAndRetry(
@@ -109,7 +108,7 @@ namespace GPMService.Producer.ErrorHandler
                     }
                 }
             };
-            string confirmBODXMLMessage = serializer.Serialize(confirmBODType, utf8StringWriter);
+            string confirmBODXMLMessage = serializer.Serialize(confirmBODType, new Utf8StringWriter());
             retrypolicy.Execute(() =>
             {
                 esbProducer.Send(confirmBODXMLMessage, new Dictionary<string, string>());

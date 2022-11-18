@@ -5,10 +5,15 @@ using GPMService.Producer.Helpers;
 using GPMService.Producer.Message.Parser;
 using GPMService.Producer.Model;
 using GPMService.Producer.Model.DBModel;
+using GPMService.Producer.Publish;
 using GPMService.Producer.Settings;
+using Icon.Esb;
 using Icon.Esb.Schemas.Wfm.Contracts;
+using Icon.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using TIBCO.EMS;
 
 namespace GPMService.Producer.Message.Processor
 {
@@ -19,12 +24,18 @@ namespace GPMService.Producer.Message.Processor
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly ProcessBODErrorHandler processBODHandler;
         private readonly ConfirmBODErrorHandler confirmBODHandler;
+        private readonly EsbConnectionSettings esbConnectionSettings;
+        private readonly IMessagePublisher messagePublisher;
+        private readonly ILogger<NearRealTimeMessageProcessor> logger;
         public NearRealTimeMessageProcessor(
             IMessageParser<items> messageParser,
             INearRealTimeProcessorDAL nearRealTimeProcessorDAL,
             GPMProducerServiceSettings gpmProducerServiceSettings,
             ProcessBODErrorHandler processBODHandler,
-            ConfirmBODErrorHandler confirmBODHandler
+            ConfirmBODErrorHandler confirmBODHandler,
+            EsbConnectionSettings esbConnectionSettings,
+            IMessagePublisher messagePublisher,
+            ILogger<NearRealTimeMessageProcessor> logger
             )
         {
             this.messageParser = messageParser;
@@ -32,10 +43,16 @@ namespace GPMService.Producer.Message.Processor
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.processBODHandler = processBODHandler;
             this.confirmBODHandler = confirmBODHandler;
+            this.esbConnectionSettings = esbConnectionSettings;
+            this.messagePublisher = messagePublisher;
+            this.logger = logger;
         }
 
         public void ProcessMessage(ReceivedMessage receivedMessage)
         {
+            string transactionID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID);
+            string correlationID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.CorrelationID);
+            string sequenceID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.SequenceID);
             MessageSequenceOutput messageSequenceOutput = null;
             try
             {
@@ -44,7 +61,35 @@ namespace GPMService.Producer.Message.Processor
                 {
                     items gpmReceivedItems = messageParser.ParseMessage(receivedMessage);
                     MammothPricesType mammothPrices = MapToMammothPrices(gpmReceivedItems);
-                    // TODO: Add further logic
+                    if (messageSequenceOutput.IsInSequence)
+                    {
+                        nearRealTimeProcessorDAL.ProcessPriceMessage(receivedMessage, mammothPrices);
+                    }
+                    AcknowledgeEsbMessage(receivedMessage);
+                    if (!(messageSequenceOutput.IsAlreadyProcessed && !messageSequenceOutput.IsInSequence))
+                    {
+                        Dictionary<string, string> messageProperties = new Dictionary<string, string>()
+                        {
+                            {"TransactionID", transactionID},
+                            {"CorrelationID", correlationID},
+                            {"SequenceID", sequenceID},
+                            {"ResetFlag", 
+                                receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.ResetFlag)},
+                            {"TransactionType", 
+                                receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionType)},
+                            {"Source", 
+                                receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.Source)},
+                            {"nonReceivingSysName", 
+                                receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.nonReceivingSysName)},
+                        };
+                        messagePublisher.PublishMessage(receivedMessage.esbMessage.MessageText, messageProperties);
+                        HandleEmergencyPrices(mammothPrices);
+                    }
+                    nearRealTimeProcessorDAL.ArchiveMessage(receivedMessage, null, null);
+                    logger.Info($@"Successfully processed 
+MessageID: ${transactionID}, 
+PatchFamilyID: ${correlationID}, 
+SequenceID: ${sequenceID}.");
                 }
                 else if (
                     !messageSequenceOutput.IsInSequence
@@ -53,6 +98,11 @@ namespace GPMService.Producer.Message.Processor
                     || int.Parse(receivedMessage.esbMessage.GetProperty(Constants.JMSMessageHeaders.JMSXDeliveryCount)) < gpmProducerServiceSettings.MaxRedeliveryCount)
                     )
                 {
+                    logger.Warn($@"Requesting redelivery for 
+MessageID: ${transactionID}, 
+and PatchFamilyID: ${correlationID}. 
+Current JMSXDeliveryCount is ${receivedMessage.esbMessage.GetProperty(Constants.JMSMessageHeaders.JMSXDeliveryCount ?? "1")}."
+);
                     string errorDetails = $@"MessageID [${receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID)}] is out of sequence. 
 Putting back into the queue for redelivery. 
 The current JMSXDelivery count is ${receivedMessage.esbMessage.GetProperty(Constants.JMSMessageHeaders.JMSXDeliveryCount) ?? "1"}.";
@@ -66,14 +116,14 @@ The current JMSXDelivery count is ${receivedMessage.esbMessage.GetProperty(Const
                     )
                 {
                     string exceptionMessage = $@"Message is out of sequence and has exceeded the redelivery count of ${gpmProducerServiceSettings.MaxRedeliveryCount}. 
-For MessageID: ${receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID)}, 
-PatchFamilyID: ${receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.CorrelationID)}, 
-SequenceID: ${receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.SequenceID)}";
-                    throw new Exception(exceptionMessage);
+For MessageID: ${transactionID}, 
+PatchFamilyID: ${correlationID}, 
+SequenceID: ${sequenceID}";
+                    throw new MessageOutOfSequenceException(exceptionMessage);
                 }
             } catch (Exception exception)
             {
-                // logger.Error($@"There was an error processing MessageID: ${receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID)}. ErrorMessage: ${exception.Message}");
+                logger.Error($@"There was an error processing MessageID: ${transactionID}. ErrorMessage: ${exception.Message}");
                 if (exception is MessageOutOfSequenceException)
                 {
                     processBODHandler.HandleError(receivedMessage, messageSequenceOutput);
@@ -89,7 +139,36 @@ SequenceID: ${receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.Se
                 {
                     confirmBODHandler.HandleError(receivedMessage, exception);
                 }
+                AcknowledgeEsbMessage(receivedMessage);
                 nearRealTimeProcessorDAL.ArchiveMessage(receivedMessage, "ERROR CODE", exception.Message); // TODO: Fix error code logic
+            }
+        }
+
+        private void HandleEmergencyPrices(MammothPricesType mammothPrices)
+        {
+            MammothPriceType[] emergencyPrices = mammothPrices
+                .MammothPrice
+                .Where((mammothPrice) => DateTime.Compare(mammothPrice.StartDate.Date, DateTime.Today.Date) <= 0)
+                .ToArray();
+            if (emergencyPrices.Length > 0)
+            { 
+                MammothPricesType emergencyMammothPrices = new MammothPricesType()
+                {
+                    MammothPrice = emergencyPrices
+                };
+                nearRealTimeProcessorDAL.InsertEmergencyPrices(emergencyMammothPrices);
+            }
+        }
+
+        private void AcknowledgeEsbMessage(ReceivedMessage receivedMessage)
+        {
+            if (
+                esbConnectionSettings.SessionMode == SessionMode.ClientAcknowledge
+                || esbConnectionSettings.SessionMode == SessionMode.ExplicitClientAcknowledge
+                || esbConnectionSettings.SessionMode == SessionMode.ExplicitClientDupsOkAcknowledge
+               )
+            {
+                receivedMessage.esbMessage.Acknowledge();
             }
         }
 
@@ -172,28 +251,33 @@ SequenceID: ${receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.Se
             {
                 throw new MappingException(e.Message, e);
             }
+            mammothPrices.MammothPrice = mammothPriceList.ToArray();
             return mammothPrices;
         }
 
         private MessageSequenceOutput ValidateMessageSequence(ReceivedMessage receivedMessage)
         {
-            string sequenceID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.SequenceID);
-            string correlationID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.CorrelationID);
-            if (string.IsNullOrEmpty(sequenceID) || int.Parse(sequenceID) < 1 || string.IsNullOrEmpty(correlationID))
+            string messageID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID) ?? "";
+            string sequenceIDString = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.SequenceID);
+            string patchFamilyID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.CorrelationID);
+            string resetFlag = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.ResetFlag) ?? Constants.ResetFlagValues.ResetFlagFalseValue;
+            if (string.IsNullOrEmpty(sequenceIDString) || int.Parse(sequenceIDString) < 1 || string.IsNullOrEmpty(patchFamilyID))
             {
-                throw new InvalidMessageHeaderException($@"Message Sequence ID or CorrelationID is invalid.SequenceID must be greater than 0 or CorrelationID must not be empty. MessageID: ${receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID)}, CorrelationID(PatchFamilyID): ${correlationID}, SequenceID: ${sequenceID}");
+                throw new InvalidMessageHeaderException($@"Message Sequence ID or CorrelationID is invalid.SequenceID must be greater than 0 or CorrelationID must not be empty. MessageID: ${messageID}, CorrelationID(PatchFamilyID): ${patchFamilyID}, SequenceID: ${sequenceIDString}");
             }
-            IList<MessageSequenceModel> messageSequenceData = nearRealTimeProcessorDAL.GetLastSequence(correlationID);
+            int sequenceID = int.Parse(sequenceIDString);
+            IList<MessageSequenceModel> messageSequenceData = nearRealTimeProcessorDAL.GetLastSequence(patchFamilyID);
             bool messageSequenceDataAvailable = messageSequenceData.Count > 0;
+            int lastProcessedGpmSequenceID = messageSequenceDataAvailable ? int.Parse(messageSequenceData[0].LastProcessedGpmSequenceID) : 0;
             return new MessageSequenceOutput
             {
-                PatchFamilyId = correlationID,
-                SequenceID = int.Parse(sequenceID),
-                LastProcessedGpmSequenceID = messageSequenceDataAvailable ? int.Parse(messageSequenceData[0].LastProcessedGpmSequenceID) : 0,
-                IsInSequence = (messageSequenceDataAvailable && int.Parse(sequenceID) == int.Parse(messageSequenceData[0].LastProcessedGpmSequenceID) + 1)
-                || (int.Parse(sequenceID) == 1 && !messageSequenceDataAvailable)
-                || (int.Parse(receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.ResetFlag)) == gpmProducerServiceSettings.ResetFlagTrueValue),
-                IsAlreadyProcessed = int.Parse(sequenceID) <= int.Parse(messageSequenceData[0].LastProcessedGpmSequenceID)
+                PatchFamilyId = patchFamilyID,
+                SequenceID = sequenceID,
+                LastProcessedGpmSequenceID = lastProcessedGpmSequenceID,
+                IsInSequence = (messageSequenceDataAvailable && sequenceID == int.Parse(messageSequenceData[0].LastProcessedGpmSequenceID) + 1)
+                || (sequenceID == 1 && !messageSequenceDataAvailable)
+                || Constants.ResetFlagValues.ResetFlagTrueValue.Equals(resetFlag),
+                IsAlreadyProcessed = sequenceID <= lastProcessedGpmSequenceID
             };
         }
     }

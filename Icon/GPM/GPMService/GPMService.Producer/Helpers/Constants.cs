@@ -46,6 +46,18 @@
         public struct XmlNamespaces
         {
             public const string InforOAGIS = "http://schema.infor.com/InforOAGIS/2";
+            public const string MammothPriceMessageArchive = "http://schemas.wfm.com/Mammoth/PriceMessageArchive.xsd";
+        }
+        public struct PriceActions
+        {
+            public const string Add = "Add";
+            public const string Update = "Update";
+            public const string Delete = "Delete";
+        }
+        public struct ResetFlagValues
+        {
+            public const string ResetFlagTrueValue = "1";
+            public const string ResetFlagFalseValue = "0";
         }
     }
 }

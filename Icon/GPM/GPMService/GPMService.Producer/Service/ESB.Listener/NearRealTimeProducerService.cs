@@ -1,30 +1,33 @@
-﻿using GPMService.Producer.ESB.Listener.NearRealTime;
-using Icon.Esb.ListenerApplication;
+﻿using Icon.Esb.ListenerApplication;
+using Icon.Logging;
 
 namespace GPMService.Producer.Service.ESB.Listener
 {
     internal class NearRealTimeProducerService : IGPMProducerService
     {
         private readonly IListenerApplication nearRealTimeMessageListener;
-        public NearRealTimeProducerService(IListenerApplication listenerApplication)
+        private readonly ILogger<NearRealTimeProducerService> logger;
+        public NearRealTimeProducerService(
+            IListenerApplication listenerApplication,
+            ILogger<NearRealTimeProducerService> logger
+            )
         {
-            nearRealTimeMessageListener = listenerApplication;
+            this.nearRealTimeMessageListener = listenerApplication;
+            this.logger = logger;
         }
 
         public void Start()
         {
-            if (nearRealTimeMessageListener != null)
-            {
-                nearRealTimeMessageListener.Run();
-            }
+            logger.Info("Starting NearRealTime Listener");
+            nearRealTimeMessageListener.Run();
+            logger.Info("Started NearRealTime Listener");
         }
 
         public void Stop()
         {
-            if (nearRealTimeMessageListener != null)
-            {
-                nearRealTimeMessageListener.Close();
-            }
+            logger.Info("Stopping NearRealTime Listener");
+            nearRealTimeMessageListener.Close();
+            logger.Info("Stopped NearRealTime Listener");
         }
     }
 }
