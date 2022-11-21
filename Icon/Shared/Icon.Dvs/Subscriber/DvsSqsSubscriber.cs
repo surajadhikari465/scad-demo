@@ -56,14 +56,14 @@ namespace Icon.Dvs.Subscriber
         /// Returns an object containing both DvsSqsMessage and S3 message content
         /// </summary>
         /// <returns>DvsMessage</returns>
-        public DvsMessage ReceiveDvsMessage()
+        public async Task<DvsMessage> ReceiveDvsMessage()
         {
             DvsMessage message = null;
-            IList<DvsSqsMessage> dataVayuSqsMessages = ReceiveDvsSqsMessages(1).Result;
+            IList<DvsSqsMessage> dataVayuSqsMessages = await ReceiveDvsSqsMessages(1);
             if (dataVayuSqsMessages.Count > 0)
             {
                 var dataVayuSqsMessage = dataVayuSqsMessages[0];
-                string messageContent = GetS3ObjectAsString(dataVayuSqsMessage.S3BucketName, dataVayuSqsMessage.S3Key).Result;
+                string messageContent = await GetS3ObjectAsString(dataVayuSqsMessage.S3BucketName, dataVayuSqsMessage.S3Key);
                 message = new DvsMessage(dataVayuSqsMessage, messageContent);
             }
 
@@ -103,15 +103,15 @@ namespace Icon.Dvs.Subscriber
         /// </summary>
         /// <param name="receiptHandle">receipt handle of SQS message</param>
         /// <returns></returns>
-        public DeleteMessageResponse DeleteSqsMessage(string receiptHandle)
+        public async Task<DeleteMessageResponse> DeleteSqsMessage(string receiptHandle)
         {
-            DeleteMessageResponse response = sqsClient.DeleteMessageAsync(
+            DeleteMessageResponse response = await sqsClient.DeleteMessageAsync(
                 new DeleteMessageRequest()
                 {
                     QueueUrl = settings.SqsQueueUrl,
                     ReceiptHandle = receiptHandle
                 }
-            ).Result;
+            );
             return response;
         }
 

@@ -9,8 +9,8 @@ namespace Icon.Dvs.Subscriber
     public interface IDvsSubscriber
     {
         Task<IList<DvsSqsMessage>> ReceiveDvsSqsMessages(int count);
-        DvsMessage ReceiveDvsMessage();
+        Task<DvsMessage> ReceiveDvsMessage();
         Task<string> GetS3ObjectAsString(string bucketName, string s3Key);
-        DeleteMessageResponse DeleteSqsMessage(string receiptHandle);
+        Task<DeleteMessageResponse> DeleteSqsMessage(string receiptHandle);
     }
 }

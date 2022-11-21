@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Icon.Common.Email;
 using Icon.Dvs.Subscriber;
 using Icon.Dvs.Model;
@@ -44,13 +45,13 @@ namespace Icon.Dvs.ListenerApplication
             );
         }
 
-        private void ProcessMessagesTillQueueIsEmpty()
+        private async void ProcessMessagesTillQueueIsEmpty()
         {
             if (!processingMessage)
             {
                 processingMessage = true;
                 // Processes till Queue is empty
-                while (ProcessDvsMessage()) ;
+                while (await ProcessDvsMessage()) ;
                 processingMessage = false;
             }
             else
@@ -68,14 +69,14 @@ namespace Icon.Dvs.ListenerApplication
         /// Receives DvsMessage, handles the message and deletes the message if there's no error
         /// </summary>
         /// <returns>true, if message was received</returns>
-        private bool ProcessDvsMessage()
+        private async Task<bool> ProcessDvsMessage()
         {
             DvsMessage message = null;
             bool messageReceived = false;
 
             try
             {
-                message = subscriber.ReceiveDvsMessage();
+                message = await subscriber.ReceiveDvsMessage();
             }
             catch (Exception ex)
             {
@@ -89,7 +90,7 @@ namespace Icon.Dvs.ListenerApplication
                 try
                 {
                     HandleMessage(message);
-                    subscriber.DeleteSqsMessage(message.SqsMessage.SqsReceiptHandle);
+                    await subscriber.DeleteSqsMessage(message.SqsMessage.SqsReceiptHandle);
                 }
                 catch (Exception ex)
                 {
