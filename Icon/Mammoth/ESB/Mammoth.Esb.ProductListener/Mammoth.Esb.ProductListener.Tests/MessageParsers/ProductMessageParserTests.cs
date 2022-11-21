@@ -1,4 +1,4 @@
-﻿using Icon.Esb.Subscriber;
+﻿using Icon.Dvs.Model;
 using Mammoth.Common.DataAccess;
 using Mammoth.Esb.ProductListener.MessageParsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,12 +22,10 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
 		public void ParseMessage_1ItemInMessageWithNoHospitalityData_ReturnItemModelWithNoHospitalityData()
 		{
 			//Given
-			Mock<IEsbMessage> message = new Mock<IEsbMessage>();
-			message.Setup(m => m.MessageText)
-				.Returns(File.ReadAllText("TestMessages/ItemWithNoHospitalityElements.xml"));
+			var message = new DvsMessage(new DvsSqsMessage(), System.IO.File.ReadAllText("TestMessages/ItemWithNoHospitalityElements.xml"));
 
 			//When
-			var itemModels = parser.ParseMessage(message.Object);
+			var itemModels = parser.ParseMessage(message);
 
 			//Then
 			var item = itemModels[0];
@@ -43,12 +41,10 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
 		public void ParseMessage_1ItemInMessageWithAllAttributes_ReturnItemModel()
 		{
 			//Given
-			Mock<IEsbMessage> message = new Mock<IEsbMessage>();
-			message.Setup(m => m.MessageText)
-				.Returns(File.ReadAllText("TestMessages/ItemWithAllAttributes.xml"));
+			var message = new DvsMessage(new DvsSqsMessage(), System.IO.File.ReadAllText("TestMessages/ItemWithAllAttributes.xml"));
 
 			//When
-			var itemModels = parser.ParseMessage(message.Object);
+			var itemModels = parser.ParseMessage(message);
 
 			//Then
 			Assert.AreEqual(1, itemModels.Count);
@@ -173,12 +169,10 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
 		public void ParseMessage_1ItemInMessageWithAFewMissingExtendedAttributes_ReturnItemModel()
 		{
 			//Given
-			Mock<IEsbMessage> message = new Mock<IEsbMessage>();
-			message.Setup(m => m.MessageText)
-				.Returns(File.ReadAllText("TestMessages/ItemWithMissingExtendedAttributes.xml"));
+			var message = new DvsMessage(new DvsSqsMessage(), System.IO.File.ReadAllText("TestMessages/ItemWithMissingExtendedAttributes.xml"));
 
 			//When
-			var itemModels = parser.ParseMessage(message.Object);
+			var itemModels = parser.ParseMessage(message);
 
 			//Then
 			Assert.AreEqual(1, itemModels.Count);
@@ -303,12 +297,10 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
 		public void ParseMessage_1ItemInMessageWithoutExtendedAttributes_ReturnItemModel()
 		{
 			//Given
-			Mock<IEsbMessage> message = new Mock<IEsbMessage>();
-			message.Setup(m => m.MessageText)
-				.Returns(File.ReadAllText("TestMessages/ItemWithoutExtendedAttributes.xml"));
+			var message = new DvsMessage(new DvsSqsMessage(), System.IO.File.ReadAllText("TestMessages/ItemWithoutExtendedAttributes.xml"));
 
 			//When
-			var itemModels = parser.ParseMessage(message.Object);
+			var itemModels = parser.ParseMessage(message);
 
 			//Then
 			Assert.AreEqual(1, itemModels.Count);
@@ -423,12 +415,10 @@ namespace Mammoth.Esb.ProductListener.Tests.MessageParsers
 		{
 
 			//Given
-			Mock<IEsbMessage> message = new Mock<IEsbMessage>();
-			message.Setup(m => m.MessageText)
-				.Returns(File.ReadAllText("TestMessages/ItemWithNoNutritionAttributes.xml"));
+			var message = new DvsMessage(new DvsSqsMessage(), System.IO.File.ReadAllText("TestMessages/ItemWithNoNutritionAttributes.xml"));
 
 			//When
-			var itemModels = parser.ParseMessage(message.Object);
+			var itemModels = parser.ParseMessage(message);
 
 			//Then
 			Assert.AreEqual(1, itemModels.Count);

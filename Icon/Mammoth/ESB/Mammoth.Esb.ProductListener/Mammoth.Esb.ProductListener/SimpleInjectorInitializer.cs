@@ -1,8 +1,9 @@
 ﻿using Icon.Common.Email;
-using Icon.Esb;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb.MessageParsers;
-using Icon.Esb.Subscriber;
+using Icon.Dvs;
+using Icon.Dvs.MessageParser;
+using Icon.Dvs.Subscriber;
+using Amazon.S3;
+using Amazon.SQS;
 using Icon.Logging;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Common.DataAccess.ConnectionBuilders;
@@ -28,11 +29,14 @@ namespace Mammoth.Esb.ProductListener
         public static Container InitializeContainer()
         {
             var container = new Container();
+            var listenerSettings = DvsListenerSettings.CreateSettingsFromConfig();
 
             container.Register<ProductListener>();
-            container.Register<ListenerApplicationSettings>(() => ListenerApplicationSettings.CreateDefaultSettings("Mammoth Product Listener"));
-            container.Register<EsbConnectionSettings>(() => EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("ESB"));
-            container.Register<IEsbSubscriber>(() => new EsbSubscriber(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("ESB")));
+            container.RegisterSingleton(() => listenerSettings);
+            container.RegisterSingleton(() => DvsClientUtil.GetS3Client(listenerSettings));
+            container.RegisterSingleton(() => DvsClientUtil.GetSqsClient(listenerSettings));
+            container.Register<IDvsSubscriber, DvsSqsSubscriber>();
+
             container.Register<ILogger<ProductListener>, NLogLogger<ProductListener>>();
             container.Register<IMessageParser<List<ItemModel>>, ProductMessageParser>();
             container.Register<IEmailClient>(() => EmailClient.CreateFromConfig());
@@ -48,12 +52,14 @@ namespace Mammoth.Esb.ProductListener
             container.RegisterDecorator(typeof(ICommandHandler<>), typeof(DbProviderCommandHandlerDecorator<>), Lifestyle.Singleton);
             container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(DbProviderQueryHandlerDecorator<,>), Lifestyle.Singleton);
 
-            Registration subscriberRegistration = container.GetRegistration(typeof(IEsbSubscriber)).Registration;
-            subscriberRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the subscriber is taken care of by the application.");
             Registration dbConnectionRegistration = container.GetRegistration(typeof(IDbConnection)).Registration;
             dbConnectionRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing IDbConnection is taken care of by the application.");
+            Registration amazonS3Registration = container.GetRegistration(typeof(IAmazonS3)).Registration;
+            amazonS3Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing IAmazonS3 is taken care of by the application.");
+            Registration amazonSqsRegistration = container.GetRegistration(typeof(IAmazonSQS)).Registration;
+            amazonSqsRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing IAmazonSQS is taken care of by the application.");
 
-			container.Verify();
+            container.Verify();
             return container;
         }
     }

@@ -14,7 +14,7 @@ namespace Mammoth.Esb.ProductListener.Service
             var container = SimpleInjectorInitializer.InitializeContainer();
             container.Verify();
 			var listener = container.GetInstance<ProductListener>();
-            listener.Run();
+            listener.Start();
             System.Console.ReadLine();
 
             while (true)

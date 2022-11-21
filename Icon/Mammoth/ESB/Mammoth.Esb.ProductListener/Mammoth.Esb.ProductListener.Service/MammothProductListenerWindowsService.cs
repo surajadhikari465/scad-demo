@@ -15,12 +15,12 @@ namespace Mammoth.Esb.ProductListener.Service
         protected override void OnStart(string[] args)
         {
             listener = SimpleInjectorInitializer.InitializeContainer().GetInstance<ProductListener>();
-            listener.Run();
+            listener.Start();
         }
 
         protected override void OnStop()
         {
-            listener.Close();
+            listener.Stop();
         }
     }
 }

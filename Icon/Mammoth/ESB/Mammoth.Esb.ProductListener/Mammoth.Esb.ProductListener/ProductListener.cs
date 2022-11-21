@@ -1,8 +1,9 @@
 ﻿using Icon.Common.Email;
-using Icon.Esb;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb.MessageParsers;
-using Icon.Esb.Subscriber;
+using Icon.Dvs;
+using Icon.Dvs.ListenerApplication;
+using Icon.Dvs.MessageParser;
+using Icon.Dvs.Subscriber;
+using Icon.Dvs.Model;
 using Icon.Logging;
 using Mammoth.Common.DataAccess.CommandQuery;
 using Mammoth.Esb.ProductListener.Commands;
@@ -11,11 +12,12 @@ using Mammoth.Esb.ProductListener.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Newtonsoft.Json;
 
 namespace Mammoth.Esb.ProductListener
 {
-    public class ProductListener : ListenerApplication<ProductListener, ListenerApplicationSettings>
+    public class ProductListener : ListenerApplication<ProductListener>
     {
         private int processCounter;
         private IMessageParser<List<ItemModel>> messageParser;
@@ -27,10 +29,10 @@ namespace Mammoth.Esb.ProductListener
         private ICommandHandler<MessageArchiveCommand> messageArchiveCommandHandler;
         private MessageArchiveCommand messageArchiveCommand;
 
-        private const string NonReceivingSystemsProperty = "nonReceivingSysName";
-        public ProductListener(ListenerApplicationSettings listenerApplicationSettings,
-            EsbConnectionSettings esbConnectionSettings,
-            IEsbSubscriber subscriber,
+        private const string ToBeReceivedByProperty = "toBeReceivedBy";
+        private const string IconMessageIdProperty = "IconMessageID";
+        public ProductListener(DvsListenerSettings listenerSettings,
+            IDvsSubscriber subscriber,
             IEmailClient emailClient,
             ILogger<ProductListener> logger,
             IMessageParser<List<ItemModel>> messageParser,
@@ -38,7 +40,7 @@ namespace Mammoth.Esb.ProductListener
             ICommandHandler<AddOrUpdateProductsCommand> addOrUpdateProductsCommandHandler,
 			ICommandHandler<DeleteProductsExtendedAttributesCommand> deleteProductsExtendedAttrCommandHandler,
             ICommandHandler<MessageArchiveCommand> messageArchiveCommandHandler)
-            : base(listenerApplicationSettings, esbConnectionSettings, subscriber, emailClient, logger)
+            : base(listenerSettings, subscriber, emailClient, logger)
         {
             this.messageParser = messageParser;
             this.hierarchyClassIdMapper = hierarchyClassIdMapper;
@@ -50,7 +52,7 @@ namespace Mammoth.Esb.ProductListener
             this.messageArchiveCommand = new MessageArchiveCommand();
         }
 
-        public override void HandleMessage(object sender, EsbMessageEventArgs args)
+        public override void HandleMessage(DvsMessage message)
         {
             bool isSuccess = true;
             List<ItemModel> items = null;
@@ -58,36 +60,30 @@ namespace Mammoth.Esb.ProductListener
             try
             {
                 processCounter = 0;
-                items = messageParser.ParseMessage(args.Message);
-                isSuccess = ProcessItems(items, args);
+                items = messageParser.ParseMessage(message);
+                isSuccess = ProcessItems(items, message);
+
+                if (!isSuccess)
+                {
+                    throw new Exception("There was an issue in processing the message");
+                }
             }
             catch (Exception e)
             {
                 isSuccess = false;
-                LogAndNotifyErrorWithMessage(e, args);
+                ArchiveMessage(message);
+                // Throwing for logging & retry
+                throw e;
             }
-            if (!isSuccess)
+            finally
             {
-                try
-                {                      
-                    messageArchiveCommand.MessageId = Guid.NewGuid().ToString();
-                    List<string> lstnonReceivingSystemsProduct = new List<string>() { args.Message.GetProperty("nonReceivingSysName") };
-                    var header = BuildMessageHeader(lstnonReceivingSystemsProduct, messageArchiveCommand.MessageId.ToString());
-                    messageArchiveCommand.MessageHeadersJson = JsonConvert.SerializeObject(header);
-                    messageArchiveCommand.MessageBody = args.Message.MessageText;
-                    messageArchiveCommand.InsertDateUtc = DateTime.UtcNow;
-                    messageArchiveCommandHandler.Execute(messageArchiveCommand);
-                }
-                catch (Exception e)
-                {
-                    LogAndNotifyErrorWithMessage(e, args);
-                }
+                string iconMessageId;
+                message.SqsMessage.MessageAttributes.TryGetValue(IconMessageIdProperty, out iconMessageId);
+                logger.Info($"{(isSuccess ? "Successfully" : "Error(s) in")} processed Message ID '{iconMessageId}'. Process times: {processCounter}.");
             }
-            AcknowledgeMessage(args);
-            logger.Info($"{(isSuccess ? "Successfully" : "Error(s) in")} processed Message ID '{args.Message.GetProperty("IconMessageID")}'. Process times: {processCounter}.");
         }
 
-        bool ProcessItems(List<ItemModel> items, EsbMessageEventArgs args)
+        bool ProcessItems(List<ItemModel> items, DvsMessage message)
         {
             bool isOK = true;
 
@@ -111,13 +107,13 @@ namespace Mammoth.Esb.ProductListener
                 catch (Exception e)
                 {
                     isOK = false;
-                    LogAndNotifyErrorWithMessage(e, args);                   
+                    LogAndNotifyErrorWithMessage(e, message);             
                     
                     if(items.Count > 1)
                     { 
                         foreach(var item in items)
                         {
-                            ProcessItems(new List<ItemModel>(){ item }, args);
+                            ProcessItems(new List<ItemModel>(){ item }, message);
                         }
                     }
                 }
@@ -125,16 +121,49 @@ namespace Mammoth.Esb.ProductListener
 
             return isOK;
         }
-        public Dictionary<string, string> BuildMessageHeader(List<string> nonReceivingSystemsProduct, string messageId)
+
+        private void LogAndNotifyErrorWithMessage(Exception ex, DvsMessage message)
+        {
+            string messageId;
+            message.SqsMessage.MessageAttributes.TryGetValue(IconMessageIdProperty, out messageId);
+            string errorMessage = $@"
+                An error occurred while processing message. <br/> MessageID : { messageId }
+                <br /> SQS MessageID : { message.SqsMessage.MessageId }
+                <br /> S3 Bucket Name : { message.SqsMessage.S3BucketName }
+                <br /> S3 Key : { message.SqsMessage.S3Key }
+                <br/> Message: { message.SqsMessage.MessageAttributes }
+            ";
+            LogAndNotifyError(errorMessage, ex);
+        }
+
+        private void ArchiveMessage(DvsMessage message)
+        {
+            try
+            {
+                string toBeReceivedBy;
+                message.SqsMessage.MessageAttributes.TryGetValue(ToBeReceivedByProperty, out toBeReceivedBy);
+                messageArchiveCommand.MessageId = Guid.NewGuid().ToString();
+                var header = BuildMessageHeader(toBeReceivedBy, messageArchiveCommand.MessageId.ToString());
+                messageArchiveCommand.MessageHeadersJson = JsonConvert.SerializeObject(header);
+                messageArchiveCommand.MessageBody = message.MessageContent;
+                messageArchiveCommand.InsertDateUtc = DateTime.UtcNow;
+                messageArchiveCommandHandler.Execute(messageArchiveCommand);
+            }
+            catch (Exception ex)
+            {
+                LogAndNotifyErrorWithMessage(ex, message);
+            }
+        }
+
+        public Dictionary<string, string> BuildMessageHeader(string toBeReceivedBy, string messageId)
         {
             var messageProperties = new Dictionary<string, string>
             {
-               { "IconMessageID", messageId},
-               { "Source", "Icon" },
-               { "TransactionType", "Global Item" }               
+                { "IconMessageID", messageId},
+                { "Source", "Icon" },
+                { "TransactionType", "Global Item" },
+                { ToBeReceivedByProperty, toBeReceivedBy }
             };
-
-           messageProperties.Add(NonReceivingSystemsProperty, String.Join(",", nonReceivingSystemsProduct));
 
             return messageProperties;
         }

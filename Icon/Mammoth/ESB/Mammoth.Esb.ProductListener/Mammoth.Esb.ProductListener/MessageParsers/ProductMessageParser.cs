@@ -1,6 +1,6 @@
-﻿using Icon.Esb.MessageParsers;
+﻿using Icon.Dvs.MessageParser;
 using Icon.Esb.Schemas.Wfm.Contracts;
-using Icon.Esb.Subscriber;
+using Icon.Dvs.Model;
 using Icon.Framework;
 using Mammoth.Common.DataAccess;
 using Mammoth.Esb.ProductListener.Models;
@@ -16,7 +16,7 @@ namespace Mammoth.Esb.ProductListener.MessageParsers
     {
 		HashSet<string> traitCodes = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
 
-        public override List<ItemModel> ParseMessage(IEsbMessage message)
+        public override List<ItemModel> ParseMessage(DvsMessage message)
         {
             List<ItemModel> itemModelCollection = new List<ItemModel>();
             Contracts.items items = DeserializeMessage(message);
