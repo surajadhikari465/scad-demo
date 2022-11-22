@@ -5,6 +5,12 @@
         public struct ProducerType
         {
             public const string NearRealTime = "NearRealTime";
+            public struct JustInTime
+            {
+                public const string ActivePrice = "ActivePrice";
+                public const string ExpiringTpr = "ExpiringTpr";
+                public const string EmergencyPrice = "EmergencyPrice";
+            }
         }
         public struct MessageHeaders
         {
@@ -16,6 +22,7 @@
             public const string Source = "Source";
             public const string nonReceivingSysName = "nonReceivingSysName";
             public const string SequenceID = "SequenceID";
+            public const string RegionCode = "RegionCode";
         }
         public struct JMSMessageHeaders
         {
@@ -47,6 +54,7 @@
         {
             public const string InforOAGIS = "http://schema.infor.com/InforOAGIS/2";
             public const string MammothPriceMessageArchive = "http://schemas.wfm.com/Mammoth/PriceMessageArchive.xsd";
+            public const string MammothMammothPrices = "http://schemas.wfm.com/Mammoth/MammothPrices.xsd";
         }
         public struct PriceActions
         {
@@ -58,6 +66,11 @@
         {
             public const string ResetFlagTrueValue = "1";
             public const string ResetFlagFalseValue = "0";
+        }
+        public struct Sources
+        {
+            public const string NearRealTimeSource = "Infor";
+            public const string JustInTimeSource = "Mammoth";
         }
     }
 }

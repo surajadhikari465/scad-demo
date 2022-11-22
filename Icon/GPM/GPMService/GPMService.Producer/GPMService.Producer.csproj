@@ -104,6 +104,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Messaging" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.4.3.1\lib\net462\System.Runtime.dll</HintPath>
       <Private>True</Private>
@@ -134,11 +135,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\ActivePriceProcessorDAL.cs" />
+    <Compile Include="DataAccess\IActivePriceProcessorDAL.cs" />
     <Compile Include="DataAccess\INearRealTimeProcessorDAL.cs" />
     <Compile Include="DataAccess\NearRealTimeProcessorDAL.cs" />
     <Compile Include="ErrorHandler\ConfirmBODErrorHandler.cs" />
     <Compile Include="ErrorHandler\ErrorEventPublisher.cs" />
     <Compile Include="ErrorHandler\ProcessBODErrorHandler.cs" />
+    <Compile Include="ESB.Listener\JustInTime\ActivePriceMessageListener.cs" />
     <Compile Include="ESB.Listener\NearRealTime\NearRealTimeMessageListener.cs" />
     <Compile Include="GPMException\ActionNotSuppliedException.cs" />
     <Compile Include="GPMException\DatabaseErrorException.cs" />
@@ -148,10 +152,13 @@
     <Compile Include="GPMException\MessageOutOfSequenceException.cs" />
     <Compile Include="GPMException\ZeroRowsImpactedException.cs" />
     <Compile Include="Helpers\Constants.cs" />
+    <Compile Include="Message.Parser\ActivePriceMessageParser.cs" />
     <Compile Include="Message.Parser\IMessageParser.cs" />
     <Compile Include="Message.Parser\NearRealTimeMessageParser.cs" />
+    <Compile Include="Message.Processor\ActivePriceMessageProcessor.cs" />
     <Compile Include="Message.Processor\IMessageProcessor.cs" />
     <Compile Include="Message.Processor\NearRealTimeMessageProcessor.cs" />
+    <Compile Include="Model\DBModel\GetActivePricesQueryModel.cs" />
     <Compile Include="Model\DBModel\GetRegionCodeQueryModel.cs" />
     <Compile Include="Model\DBModel\MessageSequenceModel.cs" />
     <Compile Include="Model\ReceivedMessage.cs" />
@@ -162,12 +169,14 @@
     <Compile Include="Publish\MessagePublisher.cs" />
     <Compile Include="Schema\ConfirmBOD.cs" />
     <Compile Include="Schema\ErrorMessage.cs" />
+    <Compile Include="Schema\JobSchedule.cs" />
     <Compile Include="Schema\MammothPrices.cs" />
     <Compile Include="Schema\PriceChangeMaster.cs" />
     <Compile Include="Schema\PriceMessageArchive.cs" />
     <Compile Include="Serializer\ISerializer.cs" />
     <Compile Include="Serializer\NamespaceHelper.cs" />
     <Compile Include="Serializer\Serializer.cs" />
+    <Compile Include="Service\ESB.Listener\ActivePriceProducerService.cs" />
     <Compile Include="Service\ESB.Listener\NearRealTimeProducerService.cs" />
     <Compile Include="Service\IGPMProducerService.cs" />
     <Compile Include="Settings\GPMProducerServiceSettings.cs" />

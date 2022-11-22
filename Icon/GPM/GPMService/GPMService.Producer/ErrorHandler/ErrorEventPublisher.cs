@@ -5,7 +5,6 @@ using InventoryProducer.Common.Schemas;
 using Mammoth.Framework;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.IO;
 namespace GPMService.Producer.ErrorHandler
 {
     internal class ErrorEventPublisher

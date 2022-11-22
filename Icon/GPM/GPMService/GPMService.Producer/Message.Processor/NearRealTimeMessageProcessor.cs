@@ -17,7 +17,7 @@ using TIBCO.EMS;
 
 namespace GPMService.Producer.Message.Processor
 {
-    internal class NearRealTimeMessageProcessor: IMessageProcessor
+    internal class NearRealTimeMessageProcessor : IMessageProcessor
     {
         private readonly IMessageParser<items> messageParser;
         private readonly INearRealTimeProcessorDAL nearRealTimeProcessorDAL;
@@ -214,7 +214,7 @@ SequenceID: ${sequenceID}";
                                     mammothPrice.TagExpirationDateSpecified = true;
                                 }
                             }
-                            mammothPrice.EndDateSpecified = mammothPrice.EndDate != null;
+                            mammothPrice.EndDateSpecified = mammothPrice.EndDate.HasValue;
                             mammothPriceList.Add(mammothPrice);
                         }
                         foreach (RewardType reward in storeItemAttributes.rewards)
@@ -241,7 +241,7 @@ SequenceID: ${sequenceID}";
                                     PercentOff = reward.rewardPercentage,
                                     PercentOffSpecified = true // TODO: Test for PercentOff null scenarios
                                 };
-                                mammothPrice.EndDateSpecified = mammothPrice.EndDate != null;
+                                mammothPrice.EndDateSpecified = mammothPrice.EndDate.HasValue;
                                 mammothPriceList.Add(mammothPrice);
                             }
                         }

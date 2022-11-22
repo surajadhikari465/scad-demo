@@ -17,8 +17,18 @@ namespace GPMService.Producer.Serializer
             {
                 AddPriceMessageArchiveTypeNamespaces(namespaces);
             }
+            else if (t == typeof(MammothPricesType) || t == typeof(MammothPriceType))
+            {
+                AddMammothPricesTypeNamespaces(namespaces);
+            }
             return namespaces;
         }
+
+        private static void AddMammothPricesTypeNamespaces(XmlSerializerNamespaces namespaces)
+        {
+            namespaces.Add("ns0", Constants.XmlNamespaces.MammothMammothPrices);
+        }
+
         private static void AddConfirmBODTypeNamespaces(XmlSerializerNamespaces namespaces)
         {
             namespaces.Add("ns0", Constants.XmlNamespaces.InforOAGIS);

@@ -8,7 +8,7 @@ namespace GPMService.Producer.Message.Parser
 {
     internal class NearRealTimeMessageParser : IMessageParser<items>
     {
-        private XmlSerializer serializer;
+        private readonly XmlSerializer serializer;
         private TextReader textReader;
 
         public NearRealTimeMessageParser()

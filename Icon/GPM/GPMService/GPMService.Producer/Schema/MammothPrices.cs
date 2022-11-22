@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Numerics;
 using System.Xml.Serialization;
 
 // 
@@ -27,7 +28,7 @@ public partial class MammothPriceType
 
     private string regionField;
 
-    private long priceIDField;
+    private BigInteger priceIDField;
 
     private bool priceIDFieldSpecified;
 
@@ -41,13 +42,13 @@ public partial class MammothPriceType
 
     private decimal priceField;
 
-    private decimal percentOffField;
+    private decimal? percentOffField;
 
     private bool percentOffFieldSpecified;
 
     private System.DateTime startDateField;
 
-    private System.DateTime endDateField;
+    private System.DateTime? endDateField;
 
     private bool endDateFieldSpecified;
 
@@ -59,7 +60,7 @@ public partial class MammothPriceType
 
     private string currencyCodeField;
 
-    private System.DateTime tagExpirationDateField;
+    private System.DateTime? tagExpirationDateField;
 
     private bool tagExpirationDateFieldSpecified;
 
@@ -71,7 +72,7 @@ public partial class MammothPriceType
 
     private string scanCodeField;
 
-    private int subTeamNumberField;
+    private int? subTeamNumberField;
 
     private bool subTeamNumberFieldSpecified;
 
@@ -89,7 +90,7 @@ public partial class MammothPriceType
     }
 
     /// <remarks/>
-    public long PriceID
+    public BigInteger PriceID
     {
         get
         {
@@ -181,7 +182,7 @@ public partial class MammothPriceType
     }
 
     /// <remarks/>
-    public decimal PercentOff
+    public decimal? PercentOff
     {
         get
         {
@@ -221,7 +222,7 @@ public partial class MammothPriceType
     }
 
     /// <remarks/>
-    public System.DateTime EndDate
+    public System.DateTime? EndDate
     {
         get
         {
@@ -300,7 +301,7 @@ public partial class MammothPriceType
     }
 
     /// <remarks/>
-    public System.DateTime TagExpirationDate
+    public System.DateTime? TagExpirationDate
     {
         get
         {
@@ -379,7 +380,7 @@ public partial class MammothPriceType
     }
 
     /// <remarks/>
-    public int SubTeamNumber
+    public int? SubTeamNumber
     {
         get
         {
