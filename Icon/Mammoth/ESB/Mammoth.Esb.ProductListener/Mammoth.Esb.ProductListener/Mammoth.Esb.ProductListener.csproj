@@ -108,7 +108,7 @@
       <HintPath>..\packages\Icon.DbContextFactory.2019.5.22.1\lib\net472\Icon.DbContextFactory.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Dvs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Dvs.2022.11.17.4\lib\net472\Icon.Dvs.dll</HintPath>
+      <HintPath>..\packages\Icon.Dvs.2022.11.21.1\lib\net472\Icon.Dvs.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.2020.12.11.1\lib\net472\Icon.Esb.dll</HintPath>
