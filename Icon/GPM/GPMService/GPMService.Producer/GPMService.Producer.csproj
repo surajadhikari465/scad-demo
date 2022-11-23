@@ -136,13 +136,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess\ActivePriceProcessorDAL.cs" />
+    <Compile Include="DataAccess\CommonDAL.cs" />
+    <Compile Include="DataAccess\ExpiringTprProcessorDAL.cs" />
     <Compile Include="DataAccess\IActivePriceProcessorDAL.cs" />
+    <Compile Include="DataAccess\ICommonDAL.cs" />
+    <Compile Include="DataAccess\IExpiringTprProcessorDAL.cs" />
     <Compile Include="DataAccess\INearRealTimeProcessorDAL.cs" />
     <Compile Include="DataAccess\NearRealTimeProcessorDAL.cs" />
     <Compile Include="ErrorHandler\ConfirmBODErrorHandler.cs" />
     <Compile Include="ErrorHandler\ErrorEventPublisher.cs" />
     <Compile Include="ErrorHandler\ProcessBODErrorHandler.cs" />
     <Compile Include="ESB.Listener\JustInTime\ActivePriceMessageListener.cs" />
+    <Compile Include="ESB.Listener\JustInTime\ExpiringTprMessageListener.cs" />
     <Compile Include="ESB.Listener\NearRealTime\NearRealTimeMessageListener.cs" />
     <Compile Include="GPMException\ActionNotSuppliedException.cs" />
     <Compile Include="GPMException\DatabaseErrorException.cs" />
@@ -153,12 +158,15 @@
     <Compile Include="GPMException\ZeroRowsImpactedException.cs" />
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Message.Parser\ActivePriceMessageParser.cs" />
+    <Compile Include="Message.Parser\ExpiringTprMessageParser.cs" />
     <Compile Include="Message.Parser\IMessageParser.cs" />
     <Compile Include="Message.Parser\NearRealTimeMessageParser.cs" />
     <Compile Include="Message.Processor\ActivePriceMessageProcessor.cs" />
+    <Compile Include="Message.Processor\ExpiringTprMessageProcessor.cs" />
     <Compile Include="Message.Processor\IMessageProcessor.cs" />
     <Compile Include="Message.Processor\NearRealTimeMessageProcessor.cs" />
     <Compile Include="Model\DBModel\GetActivePricesQueryModel.cs" />
+    <Compile Include="Model\DBModel\GetExpiringTprsQueryModel.cs" />
     <Compile Include="Model\DBModel\GetRegionCodeQueryModel.cs" />
     <Compile Include="Model\DBModel\MessageSequenceModel.cs" />
     <Compile Include="Model\ReceivedMessage.cs" />
@@ -177,6 +185,7 @@
     <Compile Include="Serializer\NamespaceHelper.cs" />
     <Compile Include="Serializer\Serializer.cs" />
     <Compile Include="Service\ESB.Listener\ActivePriceProducerService.cs" />
+    <Compile Include="Service\ESB.Listener\ExpiringTprProducerService.cs" />
     <Compile Include="Service\ESB.Listener\NearRealTimeProducerService.cs" />
     <Compile Include="Service\IGPMProducerService.cs" />
     <Compile Include="Settings\GPMProducerServiceSettings.cs" />

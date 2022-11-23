@@ -3,7 +3,6 @@ using GPMService.Producer.Settings;
 using Icon.DbContextFactory;
 using Icon.Logging;
 using Mammoth.Framework;
-using Polly.Retry;
 using System.Data.SqlClient;
 using GPMService.Producer.Model.DBModel;
 using System.Linq;
@@ -17,51 +16,16 @@ namespace GPMService.Producer.DataAccess
         private readonly IDbContextFactory<MammothContext> mammothContextFactory;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly ILogger<ActivePriceProcessorDAL> logger;
-        private readonly ErrorEventPublisher errorEventPublisher;
 
         public ActivePriceProcessorDAL(
             IDbContextFactory<MammothContext> mammothContextFactory,
             GPMProducerServiceSettings gpmProducerServiceSettings,
-            ILogger<ActivePriceProcessorDAL> logger,
-            ErrorEventPublisher errorEventPublisher
+            ILogger<ActivePriceProcessorDAL> logger
             )
         {
             this.mammothContextFactory = mammothContextFactory;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.logger = logger;
-            this.errorEventPublisher = errorEventPublisher;
-        }
-        public void UpdateStatusToRunning(int jobScheduleID)
-        {
-            string updateStatusToRunningSqlStatement = $@"update app.JobSchedule 
-set status = 'running' 
-where JobScheduleId = @JobScheduleId";
-            using (var mammothContext = mammothContextFactory.CreateContext())
-            {
-                mammothContext.Database.CommandTimeout = DB_TIMEOUT_IN_SECONDS;
-                mammothContext
-                        .Database
-                        .ExecuteSqlCommand(
-                        updateStatusToRunningSqlStatement,
-                        new SqlParameter("@JobScheduleId", jobScheduleID)
-                        );
-            }
-        }
-        public void UpdateStatusToReady(int jobScheduleID)
-        {
-            string updateStatusToReadySqlStatement = $@"update app.JobSchedule
-set status = 'ready', LastRunEndDateTimeUtc = GETUTCDATE()
-where JobScheduleId  = @JobScheduleId";
-            using (var mammothContext = mammothContextFactory.CreateContext())
-            {
-                mammothContext.Database.CommandTimeout = DB_TIMEOUT_IN_SECONDS;
-                mammothContext
-                        .Database
-                        .ExecuteSqlCommand(
-                        updateStatusToReadySqlStatement,
-                        new SqlParameter("@JobScheduleId", jobScheduleID)
-                        );
-            }
         }
         public IEnumerable<GetActivePricesQueryModel> GetActivePrices(MammothContext mammothContext, string region)
         {

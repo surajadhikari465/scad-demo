@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 namespace GPMService.Producer.DataAccess
 {
-    internal interface IActivePriceProcessorDAL
+    internal interface IExpiringTprProcessorDAL
     {
-        IEnumerable<GetActivePricesQueryModel> GetActivePrices(MammothContext mammothContext, string region);
+        IEnumerable<GetExpiringTprsQueryModel> GetExpiringTprs(MammothContext mammothContext, string region);
     }
 }

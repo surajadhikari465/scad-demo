@@ -23,6 +23,7 @@
             public const string nonReceivingSysName = "nonReceivingSysName";
             public const string SequenceID = "SequenceID";
             public const string RegionCode = "RegionCode";
+            public const string Region = "Region";
         }
         public struct JMSMessageHeaders
         {
@@ -61,6 +62,7 @@
             public const string Add = "Add";
             public const string Update = "Update";
             public const string Delete = "Delete";
+            public const string AddOrUpdate = "AddOrUpdate";
         }
         public struct ResetFlagValues
         {

@@ -10,8 +10,10 @@ namespace GPMService.Producer.Settings
         public int SendMessageRetryCount { get; set; }
         public int SendMessageRetryDelayInMilliseconds { get; set; }
         public int ActivePriceSubsetSize { get; set; }
+        public int ExpiringTprSubsetSize { get; set; }
         public int JdbcQueryTimeoutInSeconds { get; set; }
-        public int ActivePriceBatchsize { get; set; }
+        public int ActivePriceBatchSize { get; set; }
+        public int ExpiringTprBatchSize { get; set; }
         public static GPMProducerServiceSettings CreateSettings()
         {
             return new GPMProducerServiceSettings
@@ -22,8 +24,10 @@ namespace GPMService.Producer.Settings
                 SendMessageRetryCount = AppSettingsAccessor.GetIntSetting("SendMessageRetryCount", 3),
                 SendMessageRetryDelayInMilliseconds = AppSettingsAccessor.GetIntSetting("SendMessageRetryDelayInMilliseconds", 3000),
                 ActivePriceSubsetSize = AppSettingsAccessor.GetIntSetting("ActivePriceSubsetSize", 5000),
+                ExpiringTprSubsetSize = AppSettingsAccessor.GetIntSetting("ExpiringTprSubsetSize", 1000),
                 JdbcQueryTimeoutInSeconds = AppSettingsAccessor.GetIntSetting("JdbcQueryTimeoutInSeconds", 120),
-                ActivePriceBatchsize = AppSettingsAccessor.GetIntSetting("ActivePriceBatchsize", 100)
+                ActivePriceBatchSize = AppSettingsAccessor.GetIntSetting("ActivePriceBatchSize", 100),
+                ExpiringTprBatchSize = AppSettingsAccessor.GetIntSetting("ExpiringTprBatchSize", 100)
             };
         }
     }

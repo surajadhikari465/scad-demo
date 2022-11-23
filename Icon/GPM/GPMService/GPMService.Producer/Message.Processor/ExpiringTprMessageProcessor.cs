@@ -1,29 +1,29 @@
 ﻿using GPMService.Producer.DataAccess;
 using GPMService.Producer.ErrorHandler;
-using GPMService.Producer.Helpers;
-using GPMService.Producer.Message.Parser;
-using GPMService.Producer.Model;
 using GPMService.Producer.Model.DBModel;
+using GPMService.Producer.Model;
 using GPMService.Producer.Publish;
 using GPMService.Producer.Serializer;
 using GPMService.Producer.Settings;
 using Icon.Common.Xml;
-using Icon.DbContextFactory;
-using Icon.Esb;
 using Icon.Esb.Producer;
+using Icon.Esb;
 using Icon.Logging;
 using Mammoth.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GPMService.Producer.Message.Parser;
+using Icon.DbContextFactory;
+using GPMService.Producer.Helpers;
 using TIBCO.EMS;
 
 namespace GPMService.Producer.Message.Processor
 {
-    internal class ActivePriceMessageProcessor : IMessageProcessor
+    internal class ExpiringTprMessageProcessor : IMessageProcessor
     {
         private readonly IMessageParser<JobSchedule> messageParser;
-        private readonly IActivePriceProcessorDAL activePriceProcessorDAL;
+        private readonly IExpiringTprProcessorDAL expiringTprProcessorDAL;
         private readonly ICommonDAL commonDAL;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly EsbConnectionSettings esbConnectionSettings;
@@ -32,10 +32,10 @@ namespace GPMService.Producer.Message.Processor
         private readonly ISerializer<MammothPricesType> serializer;
         private readonly IEsbProducer esbProducer;
         private readonly ErrorEventPublisher errorEventPublisher;
-        private readonly ILogger<ActivePriceMessageProcessor> logger;
-        public ActivePriceMessageProcessor(
+        private readonly ILogger<ExpiringTprMessageProcessor> logger;
+        public ExpiringTprMessageProcessor(
             IMessageParser<JobSchedule> messageParser,
-            IActivePriceProcessorDAL activePriceProcessorDAL,
+            IExpiringTprProcessorDAL expiringTprProcessorDAL,
             ICommonDAL commonDAL,
             GPMProducerServiceSettings gpmProducerServiceSettings,
             EsbConnectionSettings esbConnectionSettings,
@@ -44,11 +44,11 @@ namespace GPMService.Producer.Message.Processor
             ISerializer<MammothPricesType> serializer,
             IEsbProducer esbProducer,
             ErrorEventPublisher errorEventPublisher,
-            ILogger<ActivePriceMessageProcessor> logger
+            ILogger<ExpiringTprMessageProcessor> logger
             )
         {
             this.messageParser = messageParser;
-            this.activePriceProcessorDAL = activePriceProcessorDAL;
+            this.expiringTprProcessorDAL = expiringTprProcessorDAL;
             this.commonDAL = commonDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.esbConnectionSettings = esbConnectionSettings;
@@ -66,22 +66,28 @@ namespace GPMService.Producer.Message.Processor
             try
             {
                 jobScheduleMessage = messageParser.ParseMessage(receivedMessage);
-                commonDAL.UpdateStatusToRunning(jobScheduleMessage.JobScheduleId);
-                DateTimeOffset currentDateTime = DateTimeOffset.Now;
-                logger.Info($@"Region: ${jobScheduleMessage.Region}. Starting Mammoth Active Price Service.");
-                ProcessActivePrices(jobScheduleMessage, currentDateTime);
-                commonDAL.UpdateStatusToReady(jobScheduleMessage.JobScheduleId);
-                logger.Info($@"Region: ${jobScheduleMessage.Region}. Ending Mammoth Active Price Service successfully.");
+                if ("running".Equals(jobScheduleMessage.Status))
+                {
+                    logger.Info($@"Region: ${jobScheduleMessage.Region}. Tpr Service Already running So Service will not run.");
+                }
+                else
+                {
+                    commonDAL.UpdateStatusToRunning(jobScheduleMessage.JobScheduleId);
+                    logger.Info($@"Region: ${jobScheduleMessage.Region}. Starting Expiring TPR service.");
+                    ProcessExpiringTprs(jobScheduleMessage);
+                    commonDAL.UpdateStatusToReady(jobScheduleMessage.JobScheduleId);
+                    logger.Info($@"Region: ${jobScheduleMessage.Region}. Ending Expiring TPR service successfully.");
+                }
             }
             catch (Exception e)
             {
-                logger.Error($@"Region: ${jobScheduleMessage?.Region}, Mammoth Active Price Service error occurred. ${e}");
+                logger.Error($@"Region: ${jobScheduleMessage?.Region}, Expiring TPR Service error occurred. ${e}");
                 errorEventPublisher.PublishErrorEvent(
-                    "MammothActivePrice", 
+                    "ExpiringTpr",
                     receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID),
                     new Dictionary<string, string>()
                     {
-                        { Constants.MessageHeaders.RegionCode, receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.RegionCode) }
+                        { Constants.MessageHeaders.Region, receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.RegionCode) }
                     },
                     receivedMessage.esbMessage.MessageText,
                     e.GetType().ToString(),
@@ -102,69 +108,69 @@ namespace GPMService.Producer.Message.Processor
             }
         }
 
-        private void ProcessActivePrices(JobSchedule jobScheduleMessage, DateTimeOffset currentDateTime)
+        private void ProcessExpiringTprs(JobSchedule jobScheduleMessage)
         {
             using (var mammothContext = mammothContextFactory.CreateContext())
             {
-                IEnumerable<GetActivePricesQueryModel> activePricesEnumerable = activePriceProcessorDAL.GetActivePrices(mammothContext, jobScheduleMessage.Region);
-                IList<GetActivePricesQueryModel> activePricesSubset = new List<GetActivePricesQueryModel>();
-                foreach (GetActivePricesQueryModel activePrice in activePricesEnumerable)
+                IEnumerable<GetExpiringTprsQueryModel> expiringTprsEnumerable = expiringTprProcessorDAL.GetExpiringTprs(mammothContext, jobScheduleMessage.Region);
+                IList<GetExpiringTprsQueryModel> expiringTprsSubset = new List<GetExpiringTprsQueryModel>();
+                foreach (GetExpiringTprsQueryModel expiringTpr in expiringTprsEnumerable)
                 {
-                    activePricesSubset.Add(activePrice);
-                    if (activePricesSubset.Count == gpmProducerServiceSettings.ActivePriceSubsetSize)
+                    expiringTprsSubset.Add(expiringTpr);
+                    if (expiringTprsSubset.Count == gpmProducerServiceSettings.ExpiringTprSubsetSize)
                     {
-                        ProcessActivePricesSubset(jobScheduleMessage, activePricesSubset, currentDateTime);
-                        activePricesSubset.Clear();
+                        ProcessExpiringTprsSubset(jobScheduleMessage, expiringTprsSubset);
+                        expiringTprsSubset.Clear();
                     }
                 }
             }
         }
 
-        private void ProcessActivePricesSubset(JobSchedule jobScheduleMessage, IList<GetActivePricesQueryModel> activePricesSubset, DateTimeOffset currentDateTime)
+        private void ProcessExpiringTprsSubset(JobSchedule jobScheduleMessage, IList<GetExpiringTprsQueryModel> expiringTprsSubset)
         {
-            IEnumerable<int> uniqueBusinessUnits = activePricesSubset.Select(x => x.BusinessUnitID).Distinct();
+            IEnumerable<int> uniqueBusinessUnits = expiringTprsSubset.Select(x => x.BusinessUnitID).Distinct();
             IList<MammothPriceType> mammothPriceList = new List<MammothPriceType>();
             foreach (int businessUnit in uniqueBusinessUnits)
             {
-                IEnumerable<GetActivePricesQueryModel> currentBusinessUnitActivePrices = activePricesSubset.Where(x => x.BusinessUnitID == businessUnit);
+                IEnumerable<GetExpiringTprsQueryModel> currentBusinessUnitExpiringTprs = expiringTprsSubset.Where(x => x.BusinessUnitID == businessUnit);
                 MammothPricesType mammothPrices = new MammothPricesType();
-                foreach (GetActivePricesQueryModel currentBusinessUnitActivePrice in currentBusinessUnitActivePrices)
+                foreach (GetExpiringTprsQueryModel currentBusinessUnitExpiringTpr in currentBusinessUnitExpiringTprs)
                 {
                     MammothPriceType mammothPrice = new MammothPriceType()
                     {
-                        Region = currentBusinessUnitActivePrice.Region,
-                        PriceID = currentBusinessUnitActivePrice.PriceID,
+                        Region = currentBusinessUnitExpiringTpr.Region,
+                        PriceID = currentBusinessUnitExpiringTpr.PriceID,
                         PriceIDSpecified = true,
-                        BusinessUnit = currentBusinessUnitActivePrice.BusinessUnitID,
-                        ItemId = currentBusinessUnitActivePrice.ItemID,
-                        GpmId= currentBusinessUnitActivePrice.GpmID,
-                        Multiple = currentBusinessUnitActivePrice.Multiple,
-                        Price = currentBusinessUnitActivePrice.Price,
-                        StartDate = currentBusinessUnitActivePrice.StartDate,
-                        EndDate = currentBusinessUnitActivePrice.EndDate,
-                        EndDateSpecified = currentBusinessUnitActivePrice.EndDate.HasValue,
-                        PriceType = currentBusinessUnitActivePrice.PriceType,
-                        PriceTypeAttribute = currentBusinessUnitActivePrice.PriceTypeAttribute,
-                        SellableUom = currentBusinessUnitActivePrice.SellableUOM,
-                        CurrencyCode = currentBusinessUnitActivePrice.CurrencyCode,
-                        TagExpirationDate = currentBusinessUnitActivePrice.TagExpirationDate,
-                        TagExpirationDateSpecified = currentBusinessUnitActivePrice.TagExpirationDate.HasValue,
-                        Action = Constants.PriceActions.AddOrUpdate,
-                        ItemTypeCode = currentBusinessUnitActivePrice.ItemTypeCode,
-                        StoreName = currentBusinessUnitActivePrice.StoreName,
-                        ScanCode = currentBusinessUnitActivePrice.ScanCode,
-                        SubTeamNumber = currentBusinessUnitActivePrice.SubTeamNumber,
-                        SubTeamNumberSpecified = currentBusinessUnitActivePrice.SubTeamNumber.HasValue,
-                        PercentOff = currentBusinessUnitActivePrice.PercentOff,
-                        PercentOffSpecified = currentBusinessUnitActivePrice.PercentOff.HasValue
+                        BusinessUnit = currentBusinessUnitExpiringTpr.BusinessUnitID,
+                        ItemId = currentBusinessUnitExpiringTpr.ItemID,
+                        GpmId= currentBusinessUnitExpiringTpr.GpmID,
+                        Multiple = currentBusinessUnitExpiringTpr.Multiple,
+                        Price = currentBusinessUnitExpiringTpr.Price,
+                        StartDate = currentBusinessUnitExpiringTpr.StartDate,
+                        EndDate = currentBusinessUnitExpiringTpr.EndDate,
+                        EndDateSpecified = currentBusinessUnitExpiringTpr.EndDate.HasValue,
+                        PriceType = currentBusinessUnitExpiringTpr.PriceType,
+                        PriceTypeAttribute = currentBusinessUnitExpiringTpr.PriceTypeAttribute,
+                        SellableUom = currentBusinessUnitExpiringTpr.SellableUOM,
+                        CurrencyCode = currentBusinessUnitExpiringTpr.CurrencyCode,
+                        TagExpirationDate = currentBusinessUnitExpiringTpr.TagExpirationDate,
+                        TagExpirationDateSpecified = currentBusinessUnitExpiringTpr.TagExpirationDate.HasValue,
+                        Action = Constants.PriceActions.Delete,
+                        ItemTypeCode = currentBusinessUnitExpiringTpr.ItemTypeCode,
+                        StoreName = currentBusinessUnitExpiringTpr.StoreName,
+                        ScanCode = currentBusinessUnitExpiringTpr.ScanCode,
+                        SubTeamNumber = currentBusinessUnitExpiringTpr.SubTeamNumber,
+                        SubTeamNumberSpecified = currentBusinessUnitExpiringTpr.SubTeamNumber.HasValue,
+                        PercentOff = currentBusinessUnitExpiringTpr.PercentOff,
+                        PercentOffSpecified = currentBusinessUnitExpiringTpr.PercentOff.HasValue
                     };
                 }
                 mammothPrices.MammothPrice = mammothPriceList.ToArray();
-                int counterLimit = (int) Math.Ceiling((double) mammothPrices.MammothPrice.Length / gpmProducerServiceSettings.ActivePriceBatchSize);
+                int counterLimit = (int)Math.Ceiling((double)mammothPrices.MammothPrice.Length / gpmProducerServiceSettings.ExpiringTprBatchSize);
                 for (int counter = 0; counter < counterLimit; counter++)
                 {
-                    int startPosition = counter * gpmProducerServiceSettings.ActivePriceBatchSize;
-                    int endPosition = (counter + 1) * gpmProducerServiceSettings.ActivePriceBatchSize;
+                    int startPosition = counter * gpmProducerServiceSettings.ExpiringTprBatchSize;
+                    int endPosition = (counter + 1) * gpmProducerServiceSettings.ExpiringTprBatchSize;
                     MammothPricesType mammothPricesToBeSent = new MammothPricesType()
                     {
                         MammothPrice = mammothPrices.MammothPrice.Where((x, i) => i >= startPosition && i < endPosition).ToArray()
@@ -172,16 +178,16 @@ namespace GPMService.Producer.Message.Processor
                     Dictionary<string, string> messageProperties = new Dictionary<string, string>()
                         {
                             { Constants.MessageHeaders.TransactionID, Guid.NewGuid().ToString() },
-                            { Constants.MessageHeaders.CorrelationID, currentDateTime.ToString("O") },
+                            { Constants.MessageHeaders.nonReceivingSysName, "ExpiredPriceReductionToPOS" },
                             { Constants.MessageHeaders.ResetFlag, "false" },
-                            { Constants.MessageHeaders.TransactionType, "Price" },
+                            { Constants.MessageHeaders.TransactionType, "Expirng Tprs" },
                             { Constants.MessageHeaders.Source, Constants.Sources.JustInTimeSource },
                             { Constants.MessageHeaders.RegionCode, jobScheduleMessage.Region },
                         };
                     try
                     {
                         PublishMessage(serializer.Serialize(mammothPricesToBeSent, new Utf8StringWriter()), messageProperties);
-                        logger.Info($@"Region: ${jobScheduleMessage.Region} | BusinessUnitID ${businessUnit} | Number of records sent to EMS: ${mammothPricesToBeSent.MammothPrice.Length}");
+                        logger.Info($@"Region: ${jobScheduleMessage.Region} | BusinessUnitID ${businessUnit} | Number of expiring TPR Records sent to EMS: ${mammothPricesToBeSent.MammothPrice.Length}");
                     }
                     catch (Exception ex)
                     {
@@ -194,13 +200,14 @@ namespace GPMService.Producer.Message.Processor
 
         private void ProcessRowByRow(MammothPricesType mammothPricesToBeSent, Dictionary<string, string> messageProperties)
         {
-            logger.Info($@"Region: ${messageProperties[Constants.MessageHeaders.RegionCode]}. Started sending Row By Row.");
+            logger.Info($@"Region: ${messageProperties[Constants.MessageHeaders.RegionCode]}. Started sending Row By Row Expiring Tprs.");
+            messageProperties[Constants.MessageHeaders.nonReceivingSysName] = "MammothR10";
             for (int i = 0; i < mammothPricesToBeSent.MammothPrice.Length; i++)
             {
                 MammothPricesType currentMammothPrices = new MammothPricesType()
                 {
                     MammothPrice = new MammothPriceType[1]
-                    { 
+                    {
                         mammothPricesToBeSent.MammothPrice[i]
                     }
                 };
@@ -210,7 +217,7 @@ namespace GPMService.Producer.Message.Processor
                 }
                 catch (Exception ex)
                 {
-                    logger.Error($@"Error while processing record with Item ID: ${currentMammothPrices.MammothPrice[0].ItemId}, Business Unit ID: ${currentMammothPrices.MammothPrice[0].BusinessUnit}, Error is: ${ex}");
+                    logger.Error($@"Error while sending expiring Tpr for Item ID: ${currentMammothPrices.MammothPrice[0].ItemId}, Business Unit ID: ${currentMammothPrices.MammothPrice[0].BusinessUnit}, Error is: ${ex}");
                 }
             }
         }
