@@ -137,9 +137,11 @@
   <ItemGroup>
     <Compile Include="DataAccess\ActivePriceProcessorDAL.cs" />
     <Compile Include="DataAccess\CommonDAL.cs" />
+    <Compile Include="DataAccess\EmergencyPriceProcessorDAL.cs" />
     <Compile Include="DataAccess\ExpiringTprProcessorDAL.cs" />
     <Compile Include="DataAccess\IActivePriceProcessorDAL.cs" />
     <Compile Include="DataAccess\ICommonDAL.cs" />
+    <Compile Include="DataAccess\IEmergencyPriceProcessorDAL.cs" />
     <Compile Include="DataAccess\IExpiringTprProcessorDAL.cs" />
     <Compile Include="DataAccess\INearRealTimeProcessorDAL.cs" />
     <Compile Include="DataAccess\NearRealTimeProcessorDAL.cs" />
@@ -162,10 +164,13 @@
     <Compile Include="Message.Parser\IMessageParser.cs" />
     <Compile Include="Message.Parser\NearRealTimeMessageParser.cs" />
     <Compile Include="Message.Processor\ActivePriceMessageProcessor.cs" />
+    <Compile Include="Message.Processor\EmergencyPriceMessageProcessor.cs" />
     <Compile Include="Message.Processor\ExpiringTprMessageProcessor.cs" />
     <Compile Include="Message.Processor\IMessageProcessor.cs" />
     <Compile Include="Message.Processor\NearRealTimeMessageProcessor.cs" />
+    <Compile Include="Model\DBModel\EmergencyPricesExistQueryModel.cs" />
     <Compile Include="Model\DBModel\GetActivePricesQueryModel.cs" />
+    <Compile Include="Model\DBModel\GetEmergencyPricesQueryModel.cs" />
     <Compile Include="Model\DBModel\GetExpiringTprsQueryModel.cs" />
     <Compile Include="Model\DBModel\GetRegionCodeQueryModel.cs" />
     <Compile Include="Model\DBModel\MessageSequenceModel.cs" />
@@ -174,7 +179,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Publish\IMessagePublisher.cs" />
-    <Compile Include="Publish\MessagePublisher.cs" />
+    <Compile Include="Publish\JustInTimeMessagePublisher.cs" />
+    <Compile Include="Publish\NearRealTimeMessagePublisher.cs" />
     <Compile Include="Schema\ConfirmBOD.cs" />
     <Compile Include="Schema\ErrorMessage.cs" />
     <Compile Include="Schema\JobSchedule.cs" />
@@ -184,6 +190,7 @@
     <Compile Include="Serializer\ISerializer.cs" />
     <Compile Include="Serializer\NamespaceHelper.cs" />
     <Compile Include="Serializer\Serializer.cs" />
+    <Compile Include="Service\EmergencyPriceProducerService.cs" />
     <Compile Include="Service\ESB.Listener\ActivePriceProducerService.cs" />
     <Compile Include="Service\ESB.Listener\ExpiringTprProducerService.cs" />
     <Compile Include="Service\ESB.Listener\NearRealTimeProducerService.cs" />

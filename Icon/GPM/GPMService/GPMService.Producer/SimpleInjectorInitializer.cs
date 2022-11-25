@@ -36,8 +36,6 @@ namespace GPMService.Producer
             container.Register<IEmailClient>(() => { return EmailClient.CreateFromConfig(); }, Lifestyle.Singleton);
             container.Register<IDbContextFactory<MammothContext>, MammothContextFactory>();
             container.Register(() => GPMProducerServiceSettings.CreateSettings());
-            container.Register<ILogger<MessagePublisher>, NLogLogger<MessagePublisher>>();
-            container.Register<IMessagePublisher, MessagePublisher>();
             container.Register<ErrorEventPublisher>();
             container.Register<ISerializer<ErrorMessage>, Serializer<ErrorMessage>>();
             RegisterServiceImplementation(container, serviceType);
@@ -56,6 +54,8 @@ namespace GPMService.Producer
                     container.Register<IEsbSubscriber, EsbSubscriber>();
                     container.Register<IEsbProducer, EsbProducer>();
                     container.Register<IActiveMQProducer, ActiveMQProducer>();
+                    container.Register<IMessagePublisher, NearRealTimeMessagePublisher>();
+                    container.Register<ILogger<NearRealTimeMessagePublisher>, NLogLogger<NearRealTimeMessagePublisher>>();
                     container.Register<ILogger<NearRealTimeMessageListener>, NLogLogger<NearRealTimeMessageListener>>();
                     container.Register<ILogger<NearRealTimeMessageProcessor>, NLogLogger<NearRealTimeMessageProcessor>>();
                     container.Register<ILogger<NearRealTimeProcessorDAL>, NLogLogger<NearRealTimeProcessorDAL>>();
@@ -71,6 +71,7 @@ namespace GPMService.Producer
                     container.Register<ISerializer<PriceChangeMaster>, Serializer<PriceChangeMaster>>();
                     container.Register<ISerializer<MammothPriceType>, Serializer<MammothPriceType>>();
                     container.Register<ISerializer<PriceMessageArchiveType>, Serializer<PriceMessageArchiveType>>();
+                    container.Register<ISerializer<items>, Serializer<items>>();
                     // adding suppressions
                     container.GetRegistration(typeof(IEsbSubscriber)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the subscriber is taken care of by the application.");
                     container.GetRegistration(typeof(IEsbProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
@@ -83,6 +84,8 @@ namespace GPMService.Producer
                     container.Register<IEsbSubscriber, EsbSubscriber>();
                     container.Register<IEsbProducer, EsbProducer>();
                     container.Register<IActiveMQProducer, ActiveMQProducer>();
+                    container.Register<IMessagePublisher, JustInTimeMessagePublisher>();
+                    container.Register<ILogger<JustInTimeMessagePublisher>, NLogLogger<JustInTimeMessagePublisher>>();
                     container.Register<ILogger<ActivePriceMessageListener>, NLogLogger<ActivePriceMessageListener>>();
                     container.Register<ILogger<ActivePriceMessageProcessor>, NLogLogger<ActivePriceMessageProcessor>>();
                     container.Register<ILogger<ActivePriceProcessorDAL>, NLogLogger<ActivePriceProcessorDAL>>();
@@ -95,6 +98,7 @@ namespace GPMService.Producer
                     container.Register<IListenerApplication, ActivePriceMessageListener>();
                     container.Register<IGPMProducerService, ActivePriceProducerService>();
                     container.Register<ISerializer<MammothPricesType>, Serializer<MammothPricesType>>();
+                    container.Register<ISerializer<JobSchedule>, Serializer<JobSchedule>>();
                     // adding suppressions
                     container.GetRegistration(typeof(IEsbSubscriber)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the subscriber is taken care of by the application.");
                     container.GetRegistration(typeof(IEsbProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
@@ -107,20 +111,43 @@ namespace GPMService.Producer
                     container.Register<IEsbSubscriber, EsbSubscriber>();
                     container.Register<IEsbProducer, EsbProducer>();
                     container.Register<IActiveMQProducer, ActiveMQProducer>();
+                    container.Register<IMessagePublisher, JustInTimeMessagePublisher>();
+                    container.Register<ILogger<JustInTimeMessagePublisher>, NLogLogger<JustInTimeMessagePublisher>>();
                     container.Register<ILogger<ExpiringTprMessageListener>, NLogLogger<ExpiringTprMessageListener>>();
                     container.Register<ILogger<ExpiringTprMessageProcessor>, NLogLogger<ExpiringTprMessageProcessor>>();
                     container.Register<ILogger<ExpiringTprProcessorDAL>, NLogLogger<ExpiringTprProcessorDAL>>();
                     container.Register<ILogger<CommonDAL>, NLogLogger<CommonDAL>>();
                     container.Register<ILogger<ExpiringTprProducerService>, NLogLogger<ExpiringTprProducerService>>();
-                    container.Register<IMessageParser<JobSchedule>, ActivePriceMessageParser>();
+                    container.Register<IMessageParser<JobSchedule>, ExpiringTprMessageParser>();
                     container.Register<IExpiringTprProcessorDAL, ExpiringTprProcessorDAL>();
                     container.Register<ICommonDAL, CommonDAL>();
                     container.Register<IMessageProcessor, ExpiringTprMessageProcessor>();
                     container.Register<IListenerApplication, ExpiringTprMessageListener>();
                     container.Register<IGPMProducerService, ExpiringTprProducerService>();
                     container.Register<ISerializer<MammothPricesType>, Serializer<MammothPricesType>>();
+                    container.Register<ISerializer<JobSchedule>, Serializer<JobSchedule>>();
                     // adding suppressions
                     container.GetRegistration(typeof(IEsbSubscriber)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the subscriber is taken care of by the application.");
+                    container.GetRegistration(typeof(IEsbProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
+                    container.GetRegistration(typeof(IActiveMQProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the ActiveMQ producer is taken care of by the application.");
+                    break;
+                case Constants.ProducerType.JustInTime.EmergencyPrice:
+                    container.Register(() => ListenerApplicationSettings.CreateDefaultSettings<ListenerApplicationSettings>("GPM ExpiringTpr Listener"));
+                    container.Register(() => EsbConnectionSettings.CreateSettingsFromConfig());
+                    container.Register(() => ActiveMQConnectionSettings.CreateSettingsFromConfig());
+                    container.Register<IEsbProducer, EsbProducer>();
+                    container.Register<IActiveMQProducer, ActiveMQProducer>();
+                    container.Register<IMessagePublisher, JustInTimeMessagePublisher>();
+                    container.Register<ILogger<JustInTimeMessagePublisher>, NLogLogger<JustInTimeMessagePublisher>>();
+                    container.Register<ILogger<EmergencyPriceMessageProcessor>, NLogLogger<EmergencyPriceMessageProcessor>>();
+                    container.Register<ILogger<EmergencyPriceProcessorDAL>, NLogLogger<EmergencyPriceProcessorDAL>>();
+                    container.Register<ILogger<EmergencyPriceProducerService>, NLogLogger<EmergencyPriceProducerService>>();
+                    container.Register<IEmergencyPriceProcessorDAL, EmergencyPriceProcessorDAL>();
+                    container.Register<IMessageProcessor, EmergencyPriceMessageProcessor>();
+                    container.Register<IGPMProducerService, EmergencyPriceProducerService>();
+                    container.Register<ISerializer<MammothPricesType>, Serializer<MammothPricesType>>();
+                    container.Register<ISerializer<MammothPriceType>, Serializer<MammothPriceType>>();
+                    // adding suppressions
                     container.GetRegistration(typeof(IEsbProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
                     container.GetRegistration(typeof(IActiveMQProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the ActiveMQ producer is taken care of by the application.");
                     break;

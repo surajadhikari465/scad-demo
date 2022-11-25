@@ -37,7 +37,7 @@ namespace GPMService.Producer.ESB.Listener.NearRealTime
                     SequenceId: ${receivedMessage.esbMessage.GetProperty("SequenceID")} 
                     and Region Code: ${receivedMessage.esbMessage.GetProperty("RegionCode")}"
                 );
-            messageProcessor.ProcessMessage(receivedMessage);
+            messageProcessor.ProcessReceivedMessage(receivedMessage);
         }
     }
 }

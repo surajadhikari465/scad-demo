@@ -1,25 +1,25 @@
 ﻿using GPMService.Producer.Model;
+using GPMService.Producer.Serializer;
 using Icon.Esb;
 using System.IO;
-using System.Xml.Serialization;
 
 namespace GPMService.Producer.Message.Parser
 {
     internal class ExpiringTprMessageParser : IMessageParser<JobSchedule>
     {
-        private readonly XmlSerializer serializer;
+        private readonly ISerializer<JobSchedule> serializer;
         private TextReader textReader;
 
-        public ExpiringTprMessageParser()
+        public ExpiringTprMessageParser(ISerializer<JobSchedule> serializer)
         {
-            serializer = new XmlSerializer(typeof(JobSchedule));
+            this.serializer = serializer;
         }
         public JobSchedule ParseMessage(ReceivedMessage receivedMessage)
         {
             JobSchedule expiringTprJobScheduleParsed;
             using (textReader = new StringReader(Utility.RemoveUnusableCharactersFromXml(receivedMessage.esbMessage.MessageText)))
             {
-                expiringTprJobScheduleParsed = serializer.Deserialize(textReader) as JobSchedule;
+                expiringTprJobScheduleParsed = serializer.Deserialize(textReader);
             }
             return expiringTprJobScheduleParsed;
         }

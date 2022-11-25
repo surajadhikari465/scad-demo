@@ -4,6 +4,7 @@ namespace GPMService.Producer.Message.Processor
 {
     internal interface IMessageProcessor
     {
-        void ProcessMessage(ReceivedMessage receivedMessage);
+        void ProcessReceivedMessage(ReceivedMessage receivedMessage);
+        void Process();
     }
 }

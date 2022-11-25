@@ -1,5 +1,4 @@
 ﻿using Icon.Esb.Subscriber;
-using System.Collections.Generic;
 
 namespace GPMService.Producer.Model
 {

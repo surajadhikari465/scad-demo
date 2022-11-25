@@ -48,7 +48,7 @@ namespace GPMService.Producer.Message.Processor
             this.logger = logger;
         }
 
-        public void ProcessMessage(ReceivedMessage receivedMessage)
+        public void ProcessReceivedMessage(ReceivedMessage receivedMessage)
         {
             string transactionID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID);
             string correlationID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.CorrelationID);
@@ -70,16 +70,16 @@ namespace GPMService.Producer.Message.Processor
                     {
                         Dictionary<string, string> messageProperties = new Dictionary<string, string>()
                         {
-                            {"TransactionID", transactionID},
-                            {"CorrelationID", correlationID},
-                            {"SequenceID", sequenceID},
-                            {"ResetFlag", 
+                            { Constants.MessageHeaders.TransactionID, transactionID},
+                            { Constants.MessageHeaders.CorrelationID, correlationID},
+                            { Constants.MessageHeaders.SequenceID, sequenceID},
+                            { Constants.MessageHeaders.ResetFlag, 
                                 receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.ResetFlag)},
-                            {"TransactionType", 
+                            { Constants.MessageHeaders.TransactionType, 
                                 receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionType)},
-                            {"Source", 
+                            { Constants.MessageHeaders.Source, 
                                 receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.Source)},
-                            {"nonReceivingSysName", 
+                            { Constants.MessageHeaders.nonReceivingSysName, 
                                 receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.nonReceivingSysName)},
                         };
                         messagePublisher.PublishMessage(receivedMessage.esbMessage.MessageText, messageProperties);
@@ -279,6 +279,11 @@ SequenceID: ${sequenceID}";
                 || Constants.ResetFlagValues.ResetFlagTrueValue.Equals(resetFlag),
                 IsAlreadyProcessed = sequenceID <= lastProcessedGpmSequenceID
             };
+        }
+
+        public void Process()
+        {
+            throw new NotImplementedException();
         }
     }
 }

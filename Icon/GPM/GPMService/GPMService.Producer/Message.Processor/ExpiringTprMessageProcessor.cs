@@ -27,10 +27,9 @@ namespace GPMService.Producer.Message.Processor
         private readonly ICommonDAL commonDAL;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly EsbConnectionSettings esbConnectionSettings;
-        private readonly IMessagePublisher messagePublisher;
         private readonly IDbContextFactory<MammothContext> mammothContextFactory;
         private readonly ISerializer<MammothPricesType> serializer;
-        private readonly IEsbProducer esbProducer;
+        private readonly IMessagePublisher messagePublisher;
         private readonly ErrorEventPublisher errorEventPublisher;
         private readonly ILogger<ExpiringTprMessageProcessor> logger;
         public ExpiringTprMessageProcessor(
@@ -39,10 +38,9 @@ namespace GPMService.Producer.Message.Processor
             ICommonDAL commonDAL,
             GPMProducerServiceSettings gpmProducerServiceSettings,
             EsbConnectionSettings esbConnectionSettings,
-            IMessagePublisher messagePublisher,
             IDbContextFactory<MammothContext> mammothContextFactory,
             ISerializer<MammothPricesType> serializer,
-            IEsbProducer esbProducer,
+            IMessagePublisher messagePublisher,
             ErrorEventPublisher errorEventPublisher,
             ILogger<ExpiringTprMessageProcessor> logger
             )
@@ -52,15 +50,14 @@ namespace GPMService.Producer.Message.Processor
             this.commonDAL = commonDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.esbConnectionSettings = esbConnectionSettings;
-            this.messagePublisher = messagePublisher;
             this.mammothContextFactory = mammothContextFactory;
             this.serializer = serializer;
-            this.esbProducer = esbProducer;
+            this.messagePublisher = messagePublisher;
             this.errorEventPublisher = errorEventPublisher;
             this.logger = logger;
         }
 
-        public void ProcessMessage(ReceivedMessage receivedMessage)
+        public void ProcessReceivedMessage(ReceivedMessage receivedMessage)
         {
             JobSchedule jobScheduleMessage = null;
             try
@@ -180,13 +177,13 @@ namespace GPMService.Producer.Message.Processor
                             { Constants.MessageHeaders.TransactionID, Guid.NewGuid().ToString() },
                             { Constants.MessageHeaders.nonReceivingSysName, "ExpiredPriceReductionToPOS" },
                             { Constants.MessageHeaders.ResetFlag, "false" },
-                            { Constants.MessageHeaders.TransactionType, "Expirng Tprs" },
+                            { Constants.MessageHeaders.TransactionType, Constants.TransactionTypes.ExpiringTprs },
                             { Constants.MessageHeaders.Source, Constants.Sources.JustInTimeSource },
                             { Constants.MessageHeaders.RegionCode, jobScheduleMessage.Region },
                         };
                     try
                     {
-                        PublishMessage(serializer.Serialize(mammothPricesToBeSent, new Utf8StringWriter()), messageProperties);
+                        messagePublisher.PublishMessage(serializer.Serialize(mammothPricesToBeSent, new Utf8StringWriter()), messageProperties);
                         logger.Info($@"Region: ${jobScheduleMessage.Region} | BusinessUnitID ${businessUnit} | Number of expiring TPR Records sent to EMS: ${mammothPricesToBeSent.MammothPrice.Length}");
                     }
                     catch (Exception ex)
@@ -213,7 +210,7 @@ namespace GPMService.Producer.Message.Processor
                 };
                 try
                 {
-                    PublishMessage(serializer.Serialize(currentMammothPrices, new Utf8StringWriter()), messageProperties);
+                    messagePublisher.PublishMessage(serializer.Serialize(currentMammothPrices, new Utf8StringWriter()), messageProperties);
                 }
                 catch (Exception ex)
                 {
@@ -222,9 +219,9 @@ namespace GPMService.Producer.Message.Processor
             }
         }
 
-        private void PublishMessage(string xmlPayload, Dictionary<string, string> messageProperties)
+        public void Process()
         {
-            esbProducer.Send(xmlPayload, messageProperties);
+            throw new NotImplementedException();
         }
     }
 }

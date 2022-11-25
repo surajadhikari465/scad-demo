@@ -74,5 +74,10 @@
             public const string NearRealTimeSource = "Infor";
             public const string JustInTimeSource = "Mammoth";
         }
+        public struct TransactionTypes
+        {
+            public const string Price = "Price";
+            public const string ExpiringTprs = "Expirng Tprs";
+        }
     }
 }

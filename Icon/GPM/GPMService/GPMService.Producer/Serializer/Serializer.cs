@@ -1,16 +1,19 @@
 ﻿using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
+using Icon.Esb;
 
 namespace GPMService.Producer.Serializer
 {
     public class Serializer<T> : ISerializer<T>
     {
+        private readonly XmlSerializer serializer;
         private readonly XmlWriterSettings settings;
         private readonly XmlSerializerNamespaces namespaces;
 
         public Serializer()
         {
+            this.serializer = new XmlSerializer(typeof(T));
             this.settings = new XmlWriterSettings
             {
                 NewLineHandling = NewLineHandling.None, //prevent newline character from appearing in the serialized string.
@@ -21,10 +24,14 @@ namespace GPMService.Producer.Serializer
             this.namespaces = NamespaceHelper.SetupNamespaces(typeof(T));
         }
 
+        public T Deserialize(TextReader reader)
+        {
+            return (T)serializer.Deserialize(reader);
+        }
+
         public string Serialize(T canonicalObject, TextWriter writer)
         {
             XmlWriter xmlWriter = XmlWriter.Create(writer, this.settings);
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
             serializer.Serialize(xmlWriter, canonicalObject, this.namespaces);
             return writer.ToString();
         }

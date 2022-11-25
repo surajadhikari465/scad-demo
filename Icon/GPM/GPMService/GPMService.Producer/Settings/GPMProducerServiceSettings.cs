@@ -14,6 +14,8 @@ namespace GPMService.Producer.Settings
         public int JdbcQueryTimeoutInSeconds { get; set; }
         public int ActivePriceBatchSize { get; set; }
         public int ExpiringTprBatchSize { get; set; }
+        public int TimerProcessRunIntervalInMilliseconds { get; set; }
+        public int EmergencyPriceDequeueCount { get; set; }
         public static GPMProducerServiceSettings CreateSettings()
         {
             return new GPMProducerServiceSettings
@@ -27,7 +29,9 @@ namespace GPMService.Producer.Settings
                 ExpiringTprSubsetSize = AppSettingsAccessor.GetIntSetting("ExpiringTprSubsetSize", 1000),
                 JdbcQueryTimeoutInSeconds = AppSettingsAccessor.GetIntSetting("JdbcQueryTimeoutInSeconds", 120),
                 ActivePriceBatchSize = AppSettingsAccessor.GetIntSetting("ActivePriceBatchSize", 100),
-                ExpiringTprBatchSize = AppSettingsAccessor.GetIntSetting("ExpiringTprBatchSize", 100)
+                ExpiringTprBatchSize = AppSettingsAccessor.GetIntSetting("ExpiringTprBatchSize", 100),
+                TimerProcessRunIntervalInMilliseconds = AppSettingsAccessor.GetIntSetting("TimerProcessRunIntervalInMilliseconds", 120000),
+                EmergencyPriceDequeueCount = AppSettingsAccessor.GetIntSetting("EmergencyPriceDequeueCount", 100)
             };
         }
     }

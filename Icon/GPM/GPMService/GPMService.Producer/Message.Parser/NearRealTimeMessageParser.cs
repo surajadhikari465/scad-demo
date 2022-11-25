@@ -1,26 +1,26 @@
 ﻿using GPMService.Producer.Model;
 using System.IO;
-using System.Xml.Serialization;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Esb;
+using GPMService.Producer.Serializer;
 
 namespace GPMService.Producer.Message.Parser
 {
     internal class NearRealTimeMessageParser : IMessageParser<items>
     {
-        private readonly XmlSerializer serializer;
+        private readonly ISerializer<items> serializer;
         private TextReader textReader;
 
-        public NearRealTimeMessageParser()
+        public NearRealTimeMessageParser(ISerializer<items> serializer)
         {
-            serializer = new XmlSerializer(typeof(items));
+            this.serializer = serializer;
         }
         public items ParseMessage(ReceivedMessage receivedMessage)
         {
             items gpmParsed;
             using (textReader = new StringReader(Utility.RemoveUnusableCharactersFromXml(receivedMessage.esbMessage.MessageText)))
             {
-                gpmParsed = serializer.Deserialize(textReader) as items;
+                gpmParsed = serializer.Deserialize(textReader);
             }
             return gpmParsed;
         }

@@ -9,19 +9,19 @@ using System.Collections.Generic;
 
 namespace GPMService.Producer.Publish
 {
-    internal class MessagePublisher : IMessagePublisher
+    internal class NearRealTimeMessagePublisher : IMessagePublisher
     {
         private readonly IActiveMQProducer activeMQProducer;
         private readonly IEsbProducer esbProducer;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly RetryPolicy sendMessageRetryPolicy;
-        private readonly ILogger<MessagePublisher> logger;
+        private readonly ILogger<NearRealTimeMessagePublisher> logger;
 
-        public MessagePublisher(
+        public NearRealTimeMessagePublisher(
             IActiveMQProducer activeMQProducer,
             IEsbProducer esbProducer,
             GPMProducerServiceSettings gpmProducerServiceSettings,
-            ILogger<MessagePublisher> logger
+            ILogger<NearRealTimeMessagePublisher> logger
             )
         {
             this.activeMQProducer = activeMQProducer;
@@ -36,12 +36,12 @@ namespace GPMService.Producer.Publish
                 );
         }
 
-        public void PublishMessage(string xmlMessage, Dictionary<string, string> messageProperties)
+        public void PublishMessage(string message, Dictionary<string, string> messageProperties)
         {
             try
             {
-                sendMessageRetryPolicy.Execute(() => PublishToEsb(xmlMessage, messageProperties));
-                sendMessageRetryPolicy.Execute(() => PublishToActiveMq(xmlMessage, messageProperties));
+                sendMessageRetryPolicy.Execute(() => PublishToEsb(message, messageProperties));
+                sendMessageRetryPolicy.Execute(() => PublishToActiveMq(message, messageProperties));
             }
             catch (Exception e)
             {
@@ -49,14 +49,14 @@ namespace GPMService.Producer.Publish
             }
         }
 
-        private void PublishToEsb(string xmlMessage, Dictionary<string, string> messageProperties)
+        private void PublishToEsb(string message, Dictionary<string, string> messageProperties)
         {
-            esbProducer.Send(xmlMessage, messageProperties);
+            esbProducer.Send(message, messageProperties);
         }
 
-        private void PublishToActiveMq(string xmlMessage, Dictionary<string, string> messageProperties)
+        private void PublishToActiveMq(string message, Dictionary<string, string> messageProperties)
         {
-            activeMQProducer.Send(xmlMessage, messageProperties);
+            activeMQProducer.Send(message, messageProperties);
         }
     }
 }

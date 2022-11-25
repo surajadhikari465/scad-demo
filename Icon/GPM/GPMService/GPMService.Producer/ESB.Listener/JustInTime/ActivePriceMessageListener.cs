@@ -30,7 +30,7 @@ namespace GPMService.Producer.ESB.Listener.JustInTime
             {
                 esbMessage = args.Message
             };
-            messageProcessor.ProcessMessage(receivedMessage);
+            messageProcessor.ProcessReceivedMessage(receivedMessage);
         }
     }
 }
