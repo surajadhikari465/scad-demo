@@ -73,13 +73,13 @@ namespace GPMService.Producer.Message.Processor
                             { Constants.MessageHeaders.TransactionID, transactionID},
                             { Constants.MessageHeaders.CorrelationID, correlationID},
                             { Constants.MessageHeaders.SequenceID, sequenceID},
-                            { Constants.MessageHeaders.ResetFlag, 
+                            { Constants.MessageHeaders.ResetFlag,
                                 receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.ResetFlag)},
-                            { Constants.MessageHeaders.TransactionType, 
+                            { Constants.MessageHeaders.TransactionType,
                                 receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionType)},
-                            { Constants.MessageHeaders.Source, 
+                            { Constants.MessageHeaders.Source,
                                 receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.Source)},
-                            { Constants.MessageHeaders.nonReceivingSysName, 
+                            { Constants.MessageHeaders.nonReceivingSysName,
                                 receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.nonReceivingSysName)},
                         };
                         messagePublisher.PublishMessage(receivedMessage.esbMessage.MessageText, messageProperties);
@@ -121,7 +121,8 @@ PatchFamilyID: ${correlationID},
 SequenceID: ${sequenceID}";
                     throw new MessageOutOfSequenceException(exceptionMessage);
                 }
-            } catch (Exception exception)
+            }
+            catch (Exception exception)
             {
                 logger.Error($@"There was an error processing MessageID: ${transactionID}. ErrorMessage: ${exception.Message}");
                 if (exception is MessageOutOfSequenceException)
@@ -151,7 +152,7 @@ SequenceID: ${sequenceID}";
                 .Where((mammothPrice) => DateTime.Compare(mammothPrice.StartDate.Date, DateTime.Today.Date) <= 0)
                 .ToArray();
             if (emergencyPrices.Length > 0)
-            { 
+            {
                 MammothPricesType emergencyMammothPrices = new MammothPricesType()
                 {
                     MammothPrice = emergencyPrices
@@ -247,7 +248,8 @@ SequenceID: ${sequenceID}";
                         }
                     }
                 }
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 throw new MappingException(e.Message, e);
             }

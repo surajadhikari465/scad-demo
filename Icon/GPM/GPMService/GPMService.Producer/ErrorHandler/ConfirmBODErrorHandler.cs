@@ -57,7 +57,7 @@ namespace GPMService.Producer.ErrorHandler
                             Value = "Price Listener"
                         }
                     },
-                    BOD = new []
+                    BOD = new[]
                     {
                         new BODType
                         {
@@ -82,11 +82,13 @@ namespace GPMService.Producer.ErrorHandler
             {
                 errorType = Constants.ErrorTypes.Schema;
                 errorReasonCode = Constants.ErrorCodes.MappingError;
-            } else if ( exception is ZeroRowsImpactedException)
+            }
+            else if (exception is ZeroRowsImpactedException)
             {
-                errorType =  Constants.ErrorTypes.Data;
-                errorReasonCode =  Constants.ErrorCodes.ZeroRowsImpacted;
-            } else if ( exception is ActionNotSuppliedException)
+                errorType = Constants.ErrorTypes.Data;
+                errorReasonCode = Constants.ErrorCodes.ZeroRowsImpacted;
+            }
+            else if (exception is ActionNotSuppliedException)
             {
                 errorType = Constants.ErrorTypes.DatabaseConstraint;
                 errorReasonCode = Constants.ErrorCodes.DatabaseError;

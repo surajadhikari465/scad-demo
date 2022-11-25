@@ -1,5 +1,4 @@
-﻿using GPMService.Producer.ErrorHandler;
-using GPMService.Producer.Model.DBModel;
+﻿using GPMService.Producer.Model.DBModel;
 using GPMService.Producer.Settings;
 using Icon.DbContextFactory;
 using Icon.Logging;

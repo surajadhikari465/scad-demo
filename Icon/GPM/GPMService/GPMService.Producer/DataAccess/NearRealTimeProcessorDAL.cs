@@ -53,7 +53,7 @@ namespace GPMService.Producer.DataAccess
                 gpmProducerServiceSettings.DbErrorRetryCount,
                 retryAttempt => TimeSpan.FromMilliseconds(gpmProducerServiceSettings.DbRetryDelayInMilliseconds)
                 );
-        }  
+        }
 
         public IList<MessageSequenceModel> GetLastSequence(string patchFamilyID)
         {
@@ -127,7 +127,8 @@ VALUES (@ItemID, @BusinessUnitID, @MessageID, @MessageHeaders, @Message, @ErrorC
                         new SqlParameter("@ErrorDetails", (object)priceMessageArchive.ErrorDetails ?? DBNull.Value)
                         );
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 logger.Error($@"Failed to archive 
 MessageID ${transactionID}, 
@@ -135,7 +136,7 @@ MessageHeaders: ${messageHeaders}.
 ErrorMsg: ${ex.Message}");
                 errorEventPublisher.PublishErrorEvent(
                     "GPMNearRealTime",
-                    priceMessageArchive.MessageID, 
+                    priceMessageArchive.MessageID,
                     new Dictionary<string, string>()
                     { {"MessageHeaders", priceMessageArchive.MessageHeaders } },
                     priceMessageArchiveSerializer.Serialize(priceMessageArchive, new Utf8StringWriter()),
@@ -216,13 +217,14 @@ SELECT
                                 }
                                 // foreach cannot be used as MammothPrices does not have enumerator.
                                 int i = 0;
-                                for (i = 0; i<mammothPrices.MammothPrice.Length; i++)
+                                for (i = 0; i < mammothPrices.MammothPrice.Length; i++)
                                 {
                                     ExecutePriceCommand(mammothContext, mammothPrices.MammothPrice[i]);
                                 }
-                                AddOrUpdateMessageSequence(mammothContext, mammothPrices.MammothPrice[i-1].ItemId, mammothPrices.MammothPrice[i-1].BusinessUnit, patchFamilyID, patchFamilySequenceID, messageID);
+                                AddOrUpdateMessageSequence(mammothContext, mammothPrices.MammothPrice[i - 1].ItemId, mammothPrices.MammothPrice[i - 1].BusinessUnit, patchFamilyID, patchFamilySequenceID, messageID);
                                 transaction.Commit();
-                            } catch (Exception e)
+                            }
+                            catch (Exception e)
                             {
                                 transaction.Rollback();
                                 throw e;
@@ -254,7 +256,7 @@ SELECT
 
         private void ExecutePriceCommand(MammothContext mammothContext, MammothPriceType mammothPriceType)
         {
-            if(!ValidAction(mammothPriceType))
+            if (!ValidAction(mammothPriceType))
             {
                 throw new ActionNotSuppliedException($@"Price Not supplied, Item Id: ${mammothPriceType.ItemId}, Business Unit ID: ${mammothPriceType.BusinessUnit}, Region: ${mammothPriceType.Region}");
             }
@@ -267,7 +269,8 @@ SELECT
                     {
                         throw new ZeroRowsImpactedException($@"Zero Rows were affected for the ${mammothPriceType.Action} action. Item ID: ${mammothPriceType.ItemId}, Region: ${mammothPriceType.Region}, BusinessUnit: ${mammothPriceType.BusinessUnit}");
                     }
-                } else if (Constants.PriceActions.Update.Equals(mammothPriceType.Action))
+                }
+                else if (Constants.PriceActions.Update.Equals(mammothPriceType.Action))
                 {
                     int updateAffectedRows = UpdatePrice(mammothContext, mammothPriceType);
                     if (updateAffectedRows == 0)
@@ -338,21 +341,21 @@ SELECT
             mammothContext
                 .Database
                 .ExecuteSqlCommand(
-                updatePriceStoredProcedure,     
+                updatePriceStoredProcedure,
                 new SqlParameter("@Region", mammothPriceType.Region),
-                new SqlParameter("@GpmID", (object) mammothPriceType.GpmId ?? DBNull.Value),
+                new SqlParameter("@GpmID", (object)mammothPriceType.GpmId ?? DBNull.Value),
                 new SqlParameter("@ItemID", mammothPriceType.ItemId),
                 new SqlParameter("@BusinessUnitID", mammothPriceType.BusinessUnit),
                 new SqlParameter("@Price", mammothPriceType.Price),
                 new SqlParameter("@StartDate", mammothPriceType.StartDate),
-                new SqlParameter("@EndDate", (object) mammothPriceType.EndDate ?? DBNull.Value),
+                new SqlParameter("@EndDate", (object)mammothPriceType.EndDate ?? DBNull.Value),
                 new SqlParameter("@PriceType", mammothPriceType.PriceType),
                 new SqlParameter("@PriceTypeAttribute", mammothPriceType.PriceTypeAttribute),
                 new SqlParameter("@SellableUOM", mammothPriceType.SellableUom),
-                new SqlParameter("@CurrencyCode", (object) mammothPriceType.CurrencyCode ?? DBNull.Value),
+                new SqlParameter("@CurrencyCode", (object)mammothPriceType.CurrencyCode ?? DBNull.Value),
                 new SqlParameter("@Multiple", mammothPriceType.Multiple),
-                new SqlParameter("@TagExpirationDate", (object) mammothPriceType.TagExpirationDate ?? DBNull.Value),
-                new SqlParameter("@PercentOff", (object) mammothPriceType.PercentOff ?? DBNull.Value),
+                new SqlParameter("@TagExpirationDate", (object)mammothPriceType.TagExpirationDate ?? DBNull.Value),
+                new SqlParameter("@PercentOff", (object)mammothPriceType.PercentOff ?? DBNull.Value),
                 numberOfRowsUpdatedParameter
                 );
             return int.Parse(numberOfRowsUpdatedParameter.Value.ToString());

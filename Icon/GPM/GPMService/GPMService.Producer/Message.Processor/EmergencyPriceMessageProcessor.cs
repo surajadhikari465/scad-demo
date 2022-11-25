@@ -25,20 +25,20 @@ namespace GPMService.Producer.Message.Processor
 
         public EmergencyPriceMessageProcessor
             (
-            IEmergencyPriceProcessorDAL emergencyPriceProcessorDAL, 
+            IEmergencyPriceProcessorDAL emergencyPriceProcessorDAL,
             GPMProducerServiceSettings gpmProducerServiceSettings,
             ISerializer<MammothPricesType> mammothPricesSerializer,
             ISerializer<MammothPriceType> mammothPriceSerializer,
-            IMessagePublisher messagePublisher, 
+            IMessagePublisher messagePublisher,
             ILogger<EmergencyPriceMessageProcessor> logger
             )
         {
-            this.emergencyPriceProcessorDAL=emergencyPriceProcessorDAL;
-            this.gpmProducerServiceSettings=gpmProducerServiceSettings;
-            this.mammothPricesSerializer=mammothPricesSerializer;
-            this.mammothPriceSerializer=mammothPriceSerializer;
-            this.messagePublisher=messagePublisher;
-            this.logger=logger;
+            this.emergencyPriceProcessorDAL = emergencyPriceProcessorDAL;
+            this.gpmProducerServiceSettings = gpmProducerServiceSettings;
+            this.mammothPricesSerializer = mammothPricesSerializer;
+            this.mammothPriceSerializer = mammothPriceSerializer;
+            this.messagePublisher = messagePublisher;
+            this.logger = logger;
         }
 
         public void Process()
@@ -58,7 +58,7 @@ namespace GPMService.Producer.Message.Processor
                             SendEmergencyPrices(emergencyMammothPrices);
                             messageSendErrorCount = 0;
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             messageSendErrorCount++;
                             logger.Error($"Error occurred when attempting to send prices to ESB. Will attempt to requeue emergency prices. Error: ${ex}");
@@ -82,7 +82,7 @@ namespace GPMService.Producer.Message.Processor
                 }
                 logger.Info("Ending Mammoth Emergency Price Service successfully.");
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 logger.Error($"Error occurred in the Mammoth Emergency Price Service. Error: ${ex}");
             }
@@ -106,7 +106,7 @@ namespace GPMService.Producer.Message.Processor
             List<GetEmergencyPricesQueryModel> emergencyPricesDB = emergencyPriceProcessorDAL.GetEmergencyPrices();
             List<MammothPriceType> mammothPriceList = new List<MammothPriceType>();
             MammothPricesType emergencyMammothPrices = new MammothPricesType();
-            foreach(GetEmergencyPricesQueryModel emergencyPriceDB in emergencyPricesDB)
+            foreach (GetEmergencyPricesQueryModel emergencyPriceDB in emergencyPricesDB)
             {
                 using (TextReader textReader = new StringReader(Utility.RemoveUnusableCharactersFromXml(emergencyPriceDB.MammothPriceXml)))
                 {

@@ -6,7 +6,6 @@ using GPMService.Producer.Publish;
 using GPMService.Producer.Serializer;
 using GPMService.Producer.Settings;
 using Icon.Common.Xml;
-using Icon.Esb.Producer;
 using Icon.Esb;
 using Icon.Logging;
 using Mammoth.Framework;
@@ -140,7 +139,7 @@ namespace GPMService.Producer.Message.Processor
                         PriceIDSpecified = true,
                         BusinessUnit = currentBusinessUnitExpiringTpr.BusinessUnitID,
                         ItemId = currentBusinessUnitExpiringTpr.ItemID,
-                        GpmId= currentBusinessUnitExpiringTpr.GpmID,
+                        GpmId = currentBusinessUnitExpiringTpr.GpmID,
                         Multiple = currentBusinessUnitExpiringTpr.Multiple,
                         Price = currentBusinessUnitExpiringTpr.Price,
                         StartDate = currentBusinessUnitExpiringTpr.StartDate,

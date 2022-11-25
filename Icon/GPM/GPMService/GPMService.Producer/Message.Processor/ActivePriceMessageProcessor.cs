@@ -10,7 +10,6 @@ using GPMService.Producer.Settings;
 using Icon.Common.Xml;
 using Icon.DbContextFactory;
 using Icon.Esb;
-using Icon.Esb.Producer;
 using Icon.Logging;
 using Mammoth.Framework;
 using System;
@@ -74,7 +73,7 @@ namespace GPMService.Producer.Message.Processor
             {
                 logger.Error($@"Region: ${jobScheduleMessage?.Region}, Mammoth Active Price Service error occurred. ${e}");
                 errorEventPublisher.PublishErrorEvent(
-                    "MammothActivePrice", 
+                    "MammothActivePrice",
                     receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID),
                     new Dictionary<string, string>()
                     {
@@ -134,7 +133,7 @@ namespace GPMService.Producer.Message.Processor
                         PriceIDSpecified = true,
                         BusinessUnit = currentBusinessUnitActivePrice.BusinessUnitID,
                         ItemId = currentBusinessUnitActivePrice.ItemID,
-                        GpmId= currentBusinessUnitActivePrice.GpmID,
+                        GpmId = currentBusinessUnitActivePrice.GpmID,
                         Multiple = currentBusinessUnitActivePrice.Multiple,
                         Price = currentBusinessUnitActivePrice.Price,
                         StartDate = currentBusinessUnitActivePrice.StartDate,
@@ -157,7 +156,7 @@ namespace GPMService.Producer.Message.Processor
                     };
                 }
                 mammothPrices.MammothPrice = mammothPriceList.ToArray();
-                int counterLimit = (int) Math.Ceiling((double) mammothPrices.MammothPrice.Length / gpmProducerServiceSettings.ActivePriceBatchSize);
+                int counterLimit = (int)Math.Ceiling((double)mammothPrices.MammothPrice.Length / gpmProducerServiceSettings.ActivePriceBatchSize);
                 for (int counter = 0; counter < counterLimit; counter++)
                 {
                     int startPosition = counter * gpmProducerServiceSettings.ActivePriceBatchSize;
@@ -197,7 +196,7 @@ namespace GPMService.Producer.Message.Processor
                 MammothPricesType currentMammothPrices = new MammothPricesType()
                 {
                     MammothPrice = new MammothPriceType[1]
-                    { 
+                    {
                         mammothPricesToBeSent.MammothPrice[i]
                     }
                 };

@@ -15,15 +15,15 @@ namespace GPMService.Producer.Publish
         private readonly RetryPolicy sendMessageRetryPolicy;
         private readonly ILogger<JustInTimeMessagePublisher> logger;
 
-        public JustInTimeMessagePublisher (
-            IEsbProducer esbProducer, 
+        public JustInTimeMessagePublisher(
+            IEsbProducer esbProducer,
             GPMProducerServiceSettings gpmProducerServiceSettings,
             ILogger<JustInTimeMessagePublisher> logger
             )
         {
-            this.esbProducer=esbProducer;
-            this.gpmProducerServiceSettings=gpmProducerServiceSettings;
-            this.logger=logger;
+            this.esbProducer = esbProducer;
+            this.gpmProducerServiceSettings = gpmProducerServiceSettings;
+            this.logger = logger;
             this.sendMessageRetryPolicy = Policy
                 .Handle<Exception>()
                 .WaitAndRetry(

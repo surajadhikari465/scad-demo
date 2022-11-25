@@ -2,7 +2,7 @@
 {
     internal class MessageSequenceModel
     {
-        public int MessageSequenceID { get; set; } 
+        public int MessageSequenceID { get; set; }
         public string PatchFamilyID { get; set; }
         public string LastProcessedGpmSequenceID { get; set; }
     }

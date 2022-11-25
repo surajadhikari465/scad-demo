@@ -24,7 +24,7 @@ namespace GPMService.Producer.DataAccess
         private readonly RetryPolicy retryPolicy;
 
         public EmergencyPriceProcessorDAL(
-            IDbContextFactory<MammothContext> mammothContextFactory, 
+            IDbContextFactory<MammothContext> mammothContextFactory,
             GPMProducerServiceSettings gpmProducerServiceSettings,
             ISerializer<MammothPriceType> mammothPriceSerializer,
             ILogger<EmergencyPriceProcessorDAL> logger
@@ -33,7 +33,7 @@ namespace GPMService.Producer.DataAccess
             this.mammothContextFactory = mammothContextFactory;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.mammothPriceSerializer = mammothPriceSerializer;
-            this.logger=logger;
+            this.logger = logger;
             this.retryPolicy = Policy
                 .Handle<Exception>()
                 .WaitAndRetry(

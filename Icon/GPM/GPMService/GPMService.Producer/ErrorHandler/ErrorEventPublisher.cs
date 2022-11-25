@@ -18,8 +18,8 @@ namespace GPMService.Producer.ErrorHandler
             ISerializer<ErrorMessage> serializer
             )
         {
-            this.mammothContextFactory=mammothContextFactory;
-            this.serializer=serializer;
+            this.mammothContextFactory = mammothContextFactory;
+            this.serializer = serializer;
         }
 
         public void PublishErrorEvent(

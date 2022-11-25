@@ -9,7 +9,6 @@ using Polly;
 using Polly.Retry;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace GPMService.Producer.ErrorHandler
 {
@@ -57,7 +56,7 @@ namespace GPMService.Producer.ErrorHandler
                         variationID = "0",
                         Value = "00000000-0000-4000-8000-000000000000"
                     },
-                    PriceChangeHeader = new []
+                    PriceChangeHeader = new[]
                     {
                         new PriceChangeType
                         {

@@ -14,7 +14,7 @@ namespace GPMService.Producer.Service
         private readonly System.Timers.Timer timer = null;
         private bool isServiceRunning = false;
 
-        public EmergencyPriceProducerService (IMessageProcessor messageProcessor, GPMProducerServiceSettings gpmProducerServiceSettings, ILogger<EmergencyPriceProducerService> logger)
+        public EmergencyPriceProducerService(IMessageProcessor messageProcessor, GPMProducerServiceSettings gpmProducerServiceSettings, ILogger<EmergencyPriceProducerService> logger)
         {
             this.messageProcessor = messageProcessor;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
@@ -36,7 +36,7 @@ namespace GPMService.Producer.Service
                 isServiceRunning = true;
                 messageProcessor.Process();
             }
-            finally 
+            finally
             {
                 timer.Start();
                 isServiceRunning = false;
