@@ -17,7 +17,7 @@ namespace Icon.Dvs.ListenerApplication
         private readonly IDvsSubscriber subscriber;
         protected readonly ILogger<TListener> logger;
         private bool processingMessage = false;
-        private Timer listenerTimer;
+        protected Timer listenerTimer;
 
         public ListenerApplication(
             DvsListenerSettings settings,
@@ -37,21 +37,30 @@ namespace Icon.Dvs.ListenerApplication
         /// </summary>
         public void Start()
         {
-            listenerTimer = new Timer(
-                (x) => ProcessMessagesTillQueueIsEmpty(),
-                null,
-                TimeSpan.FromSeconds(0),
-                TimeSpan.FromSeconds(settings.PollInterval)
-            );
+            try
+            {
+                logger.Info("Starting the service");
+                listenerTimer = new Timer(
+                    (x) => ProcessMessagesTillQueueIsEmpty(),
+                    null,
+                    TimeSpan.FromSeconds(0),
+                    TimeSpan.FromSeconds(settings.PollInterval)
+                );
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                throw ex;
+            }
         }
 
-        private async void ProcessMessagesTillQueueIsEmpty()
+        private void ProcessMessagesTillQueueIsEmpty()
         {
             if (!processingMessage)
             {
                 processingMessage = true;
                 // Processes till Queue is empty
-                while (await ProcessDvsMessage()) ;
+                while (ProcessDvsMessage().Result) ;
                 processingMessage = false;
             }
             else
@@ -62,6 +71,7 @@ namespace Icon.Dvs.ListenerApplication
 
         public void Stop()
         {
+            logger.Info("Stopping the service");
             listenerTimer.Dispose();
         }
 
