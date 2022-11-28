@@ -13,8 +13,7 @@ namespace GPMService.Producer
             string apiDisplayName = ConfigurationManager.AppSettings["ApiDisplayName"].ToString();
             string apiServiceName = ConfigurationManager.AppSettings["ApiServiceName"].ToString();
             string serviceType = ConfigurationManager.AppSettings["ServiceType"].ToString();
-            string producerInstanceId = ConfigurationManager.AppSettings["ProducerInstanceId"].ToString();
-            Container container = SimpleInjectorInitializer.InitializeContainer(int.Parse(producerInstanceId), serviceType);
+            Container container = SimpleInjectorInitializer.InitializeContainer(serviceType);
 
             HostFactory.Run(r =>
             {

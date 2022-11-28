@@ -4,6 +4,7 @@ namespace GPMService.Producer.Settings
 {
     internal class GPMProducerServiceSettings
     {
+        public string ServiceType { get; set; }
         public int MaxRedeliveryCount { get; set; }
         public int DbErrorRetryCount { get; set; }
         public int DbRetryDelayInMilliseconds { get; set; }
@@ -20,6 +21,7 @@ namespace GPMService.Producer.Settings
         {
             return new GPMProducerServiceSettings
             {
+                ServiceType = AppSettingsAccessor.GetStringSetting("ServiceType"),
                 MaxRedeliveryCount = AppSettingsAccessor.GetIntSetting("MaxRedeliveryCount", 3),
                 DbErrorRetryCount = AppSettingsAccessor.GetIntSetting("DbErrorRetryCount", 5),
                 DbRetryDelayInMilliseconds = AppSettingsAccessor.GetIntSetting("DbRetryDelayInMilliseconds", 3000),

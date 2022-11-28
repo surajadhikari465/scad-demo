@@ -6,6 +6,7 @@ using GPMService.Producer.Serializer;
 using GPMService.Producer.Settings;
 using Icon.Common.Xml;
 using Icon.Esb.Producer;
+using Icon.Logging;
 using Polly;
 using Polly.Retry;
 using System;
@@ -20,6 +21,7 @@ namespace GPMService.Producer.ErrorHandler
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly IEsbProducer confirmBODEsbProducer;
         private readonly ISerializer<ConfirmBODType> serializer;
+        private readonly ILogger<ConfirmBODErrorHandler> logger;
         private readonly RetryPolicy retrypolicy;
         public ConfirmBODErrorHandler(
             INearRealTimeProcessorDAL nearRealTimeProcessorDAL,
@@ -27,19 +29,27 @@ namespace GPMService.Producer.ErrorHandler
             // Using named injection.
             // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
             IEsbProducer confirmBODEsbProducer,
-            ISerializer<ConfirmBODType> serializer
+            ISerializer<ConfirmBODType> serializer,
+            ILogger<ConfirmBODErrorHandler> logger
             )
         {
             this.nearRealTimeProcessorDAL = nearRealTimeProcessorDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.confirmBODEsbProducer = confirmBODEsbProducer;
             this.serializer = serializer;
+            this.logger = logger;
             this.retrypolicy = Policy
                 .Handle<Exception>()
                 .WaitAndRetry(
                 gpmProducerServiceSettings.DbErrorRetryCount,
                 retryAttempt => TimeSpan.FromMilliseconds(gpmProducerServiceSettings.SendMessageRetryDelayInMilliseconds)
                 );
+            string serviceType = gpmProducerServiceSettings.ServiceType;
+            var computedClientId = $"GPMService.Type-{serviceType}.{Environment.MachineName}.{Guid.NewGuid()}";
+            var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
+            logger.Info("Opening ConfirmBOD publisher ESB Connection");
+            confirmBODEsbProducer.OpenConnection(clientId);
+            logger.Info("ConfirmBOD publisher ESB Connection Opened");
         }
         public void HandleError(ReceivedMessage receivedMessage, Exception exception)
         {

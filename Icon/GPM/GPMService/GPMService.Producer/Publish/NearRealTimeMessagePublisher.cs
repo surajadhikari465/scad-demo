@@ -1,6 +1,8 @@
-﻿using GPMService.Producer.Settings;
+﻿using Apache.NMS.ActiveMQ.Commands;
+using GPMService.Producer.Settings;
 using Icon.ActiveMQ.Producer;
 using Icon.Esb.Producer;
+using Icon.Framework;
 using Icon.Logging;
 using Polly;
 using Polly.Retry;
@@ -35,7 +37,17 @@ namespace GPMService.Producer.Publish
                 .WaitAndRetry(
                 gpmProducerServiceSettings.SendMessageRetryCount,
                 retryAttempt => TimeSpan.FromMilliseconds(gpmProducerServiceSettings.SendMessageRetryDelayInMilliseconds)
-                );
+            );
+            string serviceType = gpmProducerServiceSettings.ServiceType;
+            var computedClientId = $"GPMService.Type-{serviceType}.{Environment.MachineName}.{Guid.NewGuid()}";
+            var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
+            logger.Info("Opening NearRealTime publisher ESB Connection");
+            nearRealTimeEsbProducer.OpenConnection(clientId);
+            logger.Info("NearRealTime publisher ESB Connection Opened");
+
+            logger.Info("Opening NearRealTime publisher ActiveMQ Connection");
+            activeMQProducer.OpenConnection(clientId);
+            logger.Info("NearRealTime publisher ActiveMQ Connection Opened");
         }
 
         public void PublishMessage(string message, Dictionary<string, string> messageProperties)

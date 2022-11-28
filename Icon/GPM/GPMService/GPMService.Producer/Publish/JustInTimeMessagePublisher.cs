@@ -1,4 +1,5 @@
 ﻿using GPMService.Producer.Settings;
+using Icon.ActiveMQ.Producer;
 using Icon.Esb.Producer;
 using Icon.Logging;
 using Polly;
@@ -30,6 +31,12 @@ namespace GPMService.Producer.Publish
                 gpmProducerServiceSettings.SendMessageRetryCount,
                 retryAttempt => TimeSpan.FromMilliseconds(gpmProducerServiceSettings.SendMessageRetryDelayInMilliseconds)
                 );
+            string serviceType = gpmProducerServiceSettings.ServiceType;
+            var computedClientId = $"GPMService.Type-{serviceType}.{Environment.MachineName}.{Guid.NewGuid()}";
+            var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
+            logger.Info($"Opening {serviceType} ESB Connection");
+            justInTimeEsbProducer.OpenConnection(clientId);
+            logger.Info($"{serviceType} ESB Connection Opened");
         }
 
         public void PublishMessage(string message, Dictionary<string, string> messageProperties)

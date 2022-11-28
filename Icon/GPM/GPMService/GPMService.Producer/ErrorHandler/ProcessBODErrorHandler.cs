@@ -5,6 +5,7 @@ using GPMService.Producer.Serializer;
 using GPMService.Producer.Settings;
 using Icon.Common.Xml;
 using Icon.Esb.Producer;
+using Icon.Logging;
 using Polly;
 using Polly.Retry;
 using System;
@@ -18,6 +19,7 @@ namespace GPMService.Producer.ErrorHandler
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly IEsbProducer processBODEsbProducer;
         private readonly ISerializer<PriceChangeMaster> serializer;
+        private readonly ILogger<ProcessBODErrorHandler> logger;
         private readonly RetryPolicy retrypolicy;
         public ProcessBODErrorHandler(
             INearRealTimeProcessorDAL nearRealTimeProcessorDAL,
@@ -25,19 +27,27 @@ namespace GPMService.Producer.ErrorHandler
             // Using named injection.
             // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
             IEsbProducer processBODEsbProducer,
-            ISerializer<PriceChangeMaster> serializer
+            ISerializer<PriceChangeMaster> serializer,
+            ILogger<ProcessBODErrorHandler> logger
             )
         {
             this.nearRealTimeProcessorDAL = nearRealTimeProcessorDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.processBODEsbProducer = processBODEsbProducer;
             this.serializer = serializer;
+            this.logger = logger;
             this.retrypolicy = Policy
                 .Handle<Exception>()
                 .WaitAndRetry(
                 gpmProducerServiceSettings.DbErrorRetryCount,
                 retryAttempt => TimeSpan.FromMilliseconds(gpmProducerServiceSettings.SendMessageRetryDelayInMilliseconds)
                 );
+            string serviceType = gpmProducerServiceSettings.ServiceType;
+            var computedClientId = $"GPMService.Type-{serviceType}.{Environment.MachineName}.{Guid.NewGuid()}";
+            var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
+            logger.Info("Opening ProcessBOD publisher ESB Connection");
+            processBODEsbProducer.OpenConnection(clientId);
+            logger.Info("ProcessBOD publisher ESB Connection Opened");
         }
         public void HandleError(ReceivedMessage receivedMessage, MessageSequenceOutput messageSequenceOutput)
         {

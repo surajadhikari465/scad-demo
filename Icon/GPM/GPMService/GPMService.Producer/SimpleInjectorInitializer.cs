@@ -31,7 +31,7 @@ namespace GPMService.Producer
 {
     internal class SimpleInjectorInitializer
     {
-        public static Container InitializeContainer(int instance, string serviceType)
+        public static Container InitializeContainer(string serviceType)
         {
             Container container = new Container();
             container.Register<IEmailClient>(() => { return EmailClient.CreateFromConfig(); }, Lifestyle.Singleton);
@@ -75,6 +75,8 @@ namespace GPMService.Producer
                     container.Register<ILogger<NearRealTimeMessageProcessor>, NLogLogger<NearRealTimeMessageProcessor>>();
                     container.Register<ILogger<NearRealTimeProcessorDAL>, NLogLogger<NearRealTimeProcessorDAL>>();
                     container.Register<ILogger<NearRealTimeProducerService>, NLogLogger<NearRealTimeProducerService>>();
+                    container.Register<ILogger<ConfirmBODErrorHandler>, NLogLogger<ConfirmBODErrorHandler>>();
+                    container.Register<ILogger<ProcessBODErrorHandler>, NLogLogger<ProcessBODErrorHandler>>();
                     container.Register<IMessageParser<items>, NearRealTimeMessageParser>();
                     container.Register<INearRealTimeProcessorDAL, NearRealTimeProcessorDAL>();
                     container.Register<IMessageProcessor, NearRealTimeMessageProcessor>();
