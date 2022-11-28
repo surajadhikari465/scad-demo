@@ -13,13 +13,15 @@ namespace GPMService.Producer.ESB.Listener.NearRealTime
         private readonly IMessageProcessor messageProcessor;
         public NearRealTimeMessageListener(
             ListenerApplicationSettings listenerApplicationSettings,
-            EsbConnectionSettings esbConnectionSettings,
+            // Using named injection.
+            // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
+            EsbConnectionSettings nearRealTimeListenerEsbConnectionSettings,
             IEsbSubscriber subscriber,
             IEmailClient emailClient,
             ILogger<NearRealTimeMessageListener> logger,
             IMessageProcessor messageProcessor
             )
-            : base(listenerApplicationSettings, esbConnectionSettings, subscriber, emailClient, logger)
+            : base(listenerApplicationSettings, nearRealTimeListenerEsbConnectionSettings, subscriber, emailClient, logger)
         {
             this.messageProcessor = messageProcessor;
         }

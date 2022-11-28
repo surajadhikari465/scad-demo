@@ -24,7 +24,7 @@ namespace GPMService.Producer.Message.Processor
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly ProcessBODErrorHandler processBODHandler;
         private readonly ConfirmBODErrorHandler confirmBODHandler;
-        private readonly EsbConnectionSettings esbConnectionSettings;
+        private readonly EsbConnectionSettings nearRealTimeListenerEsbConnectionSettings;
         private readonly IMessagePublisher messagePublisher;
         private readonly ILogger<NearRealTimeMessageProcessor> logger;
         public NearRealTimeMessageProcessor(
@@ -33,7 +33,9 @@ namespace GPMService.Producer.Message.Processor
             GPMProducerServiceSettings gpmProducerServiceSettings,
             ProcessBODErrorHandler processBODHandler,
             ConfirmBODErrorHandler confirmBODHandler,
-            EsbConnectionSettings esbConnectionSettings,
+            // Using named injection.
+            // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
+            EsbConnectionSettings nearRealTimeListenerEsbConnectionSettings,
             IMessagePublisher messagePublisher,
             ILogger<NearRealTimeMessageProcessor> logger
             )
@@ -43,7 +45,7 @@ namespace GPMService.Producer.Message.Processor
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.processBODHandler = processBODHandler;
             this.confirmBODHandler = confirmBODHandler;
-            this.esbConnectionSettings = esbConnectionSettings;
+            this.nearRealTimeListenerEsbConnectionSettings = nearRealTimeListenerEsbConnectionSettings;
             this.messagePublisher = messagePublisher;
             this.logger = logger;
         }
@@ -164,9 +166,9 @@ SequenceID: ${sequenceID}";
         private void AcknowledgeEsbMessage(ReceivedMessage receivedMessage)
         {
             if (
-                esbConnectionSettings.SessionMode == SessionMode.ClientAcknowledge
-                || esbConnectionSettings.SessionMode == SessionMode.ExplicitClientAcknowledge
-                || esbConnectionSettings.SessionMode == SessionMode.ExplicitClientDupsOkAcknowledge
+                nearRealTimeListenerEsbConnectionSettings.SessionMode == SessionMode.ClientAcknowledge
+                || nearRealTimeListenerEsbConnectionSettings.SessionMode == SessionMode.ExplicitClientAcknowledge
+                || nearRealTimeListenerEsbConnectionSettings.SessionMode == SessionMode.ExplicitClientDupsOkAcknowledge
                )
             {
                 receivedMessage.esbMessage.Acknowledge();

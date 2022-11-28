@@ -13,13 +13,15 @@ namespace GPMService.Producer.ESB.Listener.JustInTime
         private readonly IMessageProcessor messageProcessor;
         public ExpiringTprMessageListener(
             ListenerApplicationSettings listenerApplicationSettings,
-            EsbConnectionSettings esbConnectionSettings,
+            // Using named injection.
+            // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
+            EsbConnectionSettings expiringTprListenerEsbConnectionSettings,
             IEsbSubscriber subscriber,
             IEmailClient emailClient,
             ILogger<ExpiringTprMessageListener> logger,
             IMessageProcessor messageProcessor
             )
-            : base(listenerApplicationSettings, esbConnectionSettings, subscriber, emailClient, logger)
+            : base(listenerApplicationSettings, expiringTprListenerEsbConnectionSettings, subscriber, emailClient, logger)
         {
             this.messageProcessor = messageProcessor;
         }

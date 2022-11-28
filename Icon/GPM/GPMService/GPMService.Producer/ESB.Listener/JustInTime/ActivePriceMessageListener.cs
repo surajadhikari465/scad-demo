@@ -13,13 +13,15 @@ namespace GPMService.Producer.ESB.Listener.JustInTime
         private readonly IMessageProcessor messageProcessor;
         public ActivePriceMessageListener(
             ListenerApplicationSettings listenerApplicationSettings,
-            EsbConnectionSettings esbConnectionSettings,
+            // Using named injection.
+            // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
+            EsbConnectionSettings activePriceListenerEsbConnectionSettings,
             IEsbSubscriber subscriber,
             IEmailClient emailClient,
             ILogger<ActivePriceMessageListener> logger,
             IMessageProcessor messageProcessor
             )
-            : base(listenerApplicationSettings, esbConnectionSettings, subscriber, emailClient, logger)
+            : base(listenerApplicationSettings, activePriceListenerEsbConnectionSettings, subscriber, emailClient, logger)
         {
             this.messageProcessor = messageProcessor;
         }

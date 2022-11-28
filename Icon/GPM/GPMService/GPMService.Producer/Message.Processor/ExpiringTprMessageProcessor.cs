@@ -25,7 +25,7 @@ namespace GPMService.Producer.Message.Processor
         private readonly IExpiringTprProcessorDAL expiringTprProcessorDAL;
         private readonly ICommonDAL commonDAL;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
-        private readonly EsbConnectionSettings esbConnectionSettings;
+        private readonly EsbConnectionSettings expiringTprListenerEsbConnectionSettings;
         private readonly IDbContextFactory<MammothContext> mammothContextFactory;
         private readonly ISerializer<MammothPricesType> serializer;
         private readonly IMessagePublisher messagePublisher;
@@ -36,7 +36,9 @@ namespace GPMService.Producer.Message.Processor
             IExpiringTprProcessorDAL expiringTprProcessorDAL,
             ICommonDAL commonDAL,
             GPMProducerServiceSettings gpmProducerServiceSettings,
-            EsbConnectionSettings esbConnectionSettings,
+            // Using named injection.
+            // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
+            EsbConnectionSettings expiringTprListenerEsbConnectionSettings,
             IDbContextFactory<MammothContext> mammothContextFactory,
             ISerializer<MammothPricesType> serializer,
             IMessagePublisher messagePublisher,
@@ -48,7 +50,7 @@ namespace GPMService.Producer.Message.Processor
             this.expiringTprProcessorDAL = expiringTprProcessorDAL;
             this.commonDAL = commonDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
-            this.esbConnectionSettings = esbConnectionSettings;
+            this.expiringTprListenerEsbConnectionSettings = expiringTprListenerEsbConnectionSettings;
             this.mammothContextFactory = mammothContextFactory;
             this.serializer = serializer;
             this.messagePublisher = messagePublisher;
@@ -94,9 +96,9 @@ namespace GPMService.Producer.Message.Processor
             finally
             {
                 if (
-                    esbConnectionSettings.SessionMode == SessionMode.ClientAcknowledge
-                    || esbConnectionSettings.SessionMode == SessionMode.ExplicitClientAcknowledge
-                    || esbConnectionSettings.SessionMode == SessionMode.ExplicitClientDupsOkAcknowledge
+                    expiringTprListenerEsbConnectionSettings.SessionMode == SessionMode.ClientAcknowledge
+                    || expiringTprListenerEsbConnectionSettings.SessionMode == SessionMode.ExplicitClientAcknowledge
+                    || expiringTprListenerEsbConnectionSettings.SessionMode == SessionMode.ExplicitClientDupsOkAcknowledge
                 )
                 {
                     receivedMessage.esbMessage.Acknowledge();

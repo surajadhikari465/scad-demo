@@ -10,18 +10,18 @@ namespace GPMService.Producer.Publish
 {
     internal class JustInTimeMessagePublisher : IMessagePublisher
     {
-        private readonly IEsbProducer esbProducer;
+        private readonly IEsbProducer justInTimeEsbProducer;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly RetryPolicy sendMessageRetryPolicy;
         private readonly ILogger<JustInTimeMessagePublisher> logger;
 
         public JustInTimeMessagePublisher(
-            IEsbProducer esbProducer,
+            IEsbProducer justInTimeEsbProducer,
             GPMProducerServiceSettings gpmProducerServiceSettings,
             ILogger<JustInTimeMessagePublisher> logger
             )
         {
-            this.esbProducer = esbProducer;
+            this.justInTimeEsbProducer = justInTimeEsbProducer;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.logger = logger;
             this.sendMessageRetryPolicy = Policy
@@ -36,7 +36,7 @@ namespace GPMService.Producer.Publish
         {
             sendMessageRetryPolicy.Execute(() =>
             {
-                esbProducer.Send(message, messageProperties);
+                justInTimeEsbProducer.Send(message, messageProperties);
             });
         }
     }

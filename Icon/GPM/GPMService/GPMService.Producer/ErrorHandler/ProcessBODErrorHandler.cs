@@ -16,19 +16,21 @@ namespace GPMService.Producer.ErrorHandler
     {
         private readonly INearRealTimeProcessorDAL nearRealTimeProcessorDAL;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
-        private readonly IEsbProducer esbProducer;
+        private readonly IEsbProducer processBODEsbProducer;
         private readonly ISerializer<PriceChangeMaster> serializer;
         private readonly RetryPolicy retrypolicy;
         public ProcessBODErrorHandler(
             INearRealTimeProcessorDAL nearRealTimeProcessorDAL,
             GPMProducerServiceSettings gpmProducerServiceSettings,
-            IEsbProducer esbProducer,
+            // Using named injection.
+            // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
+            IEsbProducer processBODEsbProducer,
             ISerializer<PriceChangeMaster> serializer
             )
         {
             this.nearRealTimeProcessorDAL = nearRealTimeProcessorDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
-            this.esbProducer = esbProducer;
+            this.processBODEsbProducer = processBODEsbProducer;
             this.serializer = serializer;
             this.retrypolicy = Policy
                 .Handle<Exception>()
@@ -78,7 +80,7 @@ namespace GPMService.Producer.ErrorHandler
                 };
                 retrypolicy.Execute(() =>
                 {
-                    esbProducer.Send(processBODXMLMessage, processBODXMLMessageProperties);
+                    processBODEsbProducer.Send(processBODXMLMessage, processBODXMLMessageProperties);
                 });
                 nearRealTimeProcessorDAL.ArchiveErrorResponseMessage(messageID, Constants.MessageTypeNames.ProcessBOD, processBODXMLMessage, processBODXMLMessageProperties);
             }

@@ -25,7 +25,7 @@ namespace GPMService.Producer.Message.Processor
         private readonly IActivePriceProcessorDAL activePriceProcessorDAL;
         private readonly ICommonDAL commonDAL;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
-        private readonly EsbConnectionSettings esbConnectionSettings;
+        private readonly EsbConnectionSettings activePriceListenerEsbConnectionSettings;
         private readonly IDbContextFactory<MammothContext> mammothContextFactory;
         private readonly ISerializer<MammothPricesType> serializer;
         private readonly IMessagePublisher messagePublisher;
@@ -36,7 +36,9 @@ namespace GPMService.Producer.Message.Processor
             IActivePriceProcessorDAL activePriceProcessorDAL,
             ICommonDAL commonDAL,
             GPMProducerServiceSettings gpmProducerServiceSettings,
-            EsbConnectionSettings esbConnectionSettings,
+            // Using named injection.
+            // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
+            EsbConnectionSettings activePriceListenerEsbConnectionSettings,
             IDbContextFactory<MammothContext> mammothContextFactory,
             ISerializer<MammothPricesType> serializer,
             IMessagePublisher messagePublisher,
@@ -48,7 +50,7 @@ namespace GPMService.Producer.Message.Processor
             this.activePriceProcessorDAL = activePriceProcessorDAL;
             this.commonDAL = commonDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
-            this.esbConnectionSettings = esbConnectionSettings;
+            this.activePriceListenerEsbConnectionSettings = activePriceListenerEsbConnectionSettings;
             this.mammothContextFactory = mammothContextFactory;
             this.serializer = serializer;
             this.messagePublisher = messagePublisher;
@@ -88,9 +90,9 @@ namespace GPMService.Producer.Message.Processor
             finally
             {
                 if (
-                    esbConnectionSettings.SessionMode == SessionMode.ClientAcknowledge
-                    || esbConnectionSettings.SessionMode == SessionMode.ExplicitClientAcknowledge
-                    || esbConnectionSettings.SessionMode == SessionMode.ExplicitClientDupsOkAcknowledge
+                    activePriceListenerEsbConnectionSettings.SessionMode == SessionMode.ClientAcknowledge
+                    || activePriceListenerEsbConnectionSettings.SessionMode == SessionMode.ExplicitClientAcknowledge
+                    || activePriceListenerEsbConnectionSettings.SessionMode == SessionMode.ExplicitClientDupsOkAcknowledge
                 )
                 {
                     receivedMessage.esbMessage.Acknowledge();

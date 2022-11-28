@@ -18,19 +18,21 @@ namespace GPMService.Producer.ErrorHandler
 
         private readonly INearRealTimeProcessorDAL nearRealTimeProcessorDAL;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
-        private readonly IEsbProducer esbProducer;
+        private readonly IEsbProducer confirmBODEsbProducer;
         private readonly ISerializer<ConfirmBODType> serializer;
         private readonly RetryPolicy retrypolicy;
         public ConfirmBODErrorHandler(
             INearRealTimeProcessorDAL nearRealTimeProcessorDAL,
             GPMProducerServiceSettings gpmProducerServiceSettings,
-            IEsbProducer esbProducer,
+            // Using named injection.
+            // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
+            IEsbProducer confirmBODEsbProducer,
             ISerializer<ConfirmBODType> serializer
             )
         {
             this.nearRealTimeProcessorDAL = nearRealTimeProcessorDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
-            this.esbProducer = esbProducer;
+            this.confirmBODEsbProducer = confirmBODEsbProducer;
             this.serializer = serializer;
             this.retrypolicy = Policy
                 .Handle<Exception>()
@@ -113,7 +115,7 @@ namespace GPMService.Producer.ErrorHandler
             string confirmBODXMLMessage = serializer.Serialize(confirmBODType, new Utf8StringWriter());
             retrypolicy.Execute(() =>
             {
-                esbProducer.Send(confirmBODXMLMessage, new Dictionary<string, string>());
+                confirmBODEsbProducer.Send(confirmBODXMLMessage, new Dictionary<string, string>());
             });
             string patchFamilyID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.CorrelationID);
             string messageID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID);

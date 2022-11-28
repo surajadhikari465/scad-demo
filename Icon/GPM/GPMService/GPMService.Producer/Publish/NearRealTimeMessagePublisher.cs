@@ -12,20 +12,22 @@ namespace GPMService.Producer.Publish
     internal class NearRealTimeMessagePublisher : IMessagePublisher
     {
         private readonly IActiveMQProducer activeMQProducer;
-        private readonly IEsbProducer esbProducer;
+        private readonly IEsbProducer nearRealTimeEsbProducer;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly RetryPolicy sendMessageRetryPolicy;
         private readonly ILogger<NearRealTimeMessagePublisher> logger;
 
         public NearRealTimeMessagePublisher(
             IActiveMQProducer activeMQProducer,
-            IEsbProducer esbProducer,
+            // Using named injection.
+            // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
+            IEsbProducer nearRealTimeEsbProducer,
             GPMProducerServiceSettings gpmProducerServiceSettings,
             ILogger<NearRealTimeMessagePublisher> logger
             )
         {
             this.activeMQProducer = activeMQProducer;
-            this.esbProducer = esbProducer;
+            this.nearRealTimeEsbProducer = nearRealTimeEsbProducer;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.logger = logger;
             this.sendMessageRetryPolicy = Policy
@@ -51,7 +53,7 @@ namespace GPMService.Producer.Publish
 
         private void PublishToEsb(string message, Dictionary<string, string> messageProperties)
         {
-            esbProducer.Send(message, messageProperties);
+            nearRealTimeEsbProducer.Send(message, messageProperties);
         }
 
         private void PublishToActiveMq(string message, Dictionary<string, string> messageProperties)

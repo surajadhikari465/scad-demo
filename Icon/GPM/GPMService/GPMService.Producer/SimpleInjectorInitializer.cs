@@ -49,10 +49,24 @@ namespace GPMService.Producer
             {
                 case Constants.ProducerType.NearRealTime:
                     container.Register(() => ListenerApplicationSettings.CreateDefaultSettings<ListenerApplicationSettings>("GPM NearRealTimeMessage Listener"));
-                    container.Register(() => EsbConnectionSettings.CreateSettingsFromConfig());
                     container.Register(() => ActiveMQConnectionSettings.CreateSettingsFromConfig());
-                    container.Register<IEsbSubscriber, EsbSubscriber>();
-                    container.Register<IEsbProducer, EsbProducer>();
+                    EsbConnectionSettings nearRealTimeListenerEsbSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMNearRealTimeListenerEmsConnection");
+                    container.RegisterConditional<EsbConnectionSettings>(
+                        Lifestyle.Transient.CreateRegistration(() => nearRealTimeListenerEsbSettings, container),
+                        c => c.Consumer.Target.Name.Equals("nearRealTimeListenerEsbConnectionSettings"));
+                    container.Register<IEsbSubscriber>(() => new EsbSubscriber(nearRealTimeListenerEsbSettings));
+                    Registration nearRealTimeEsbProducerRegistration = Lifestyle.Transient.CreateRegistration(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMNearRealTimeProducerEmsConnection")), container);
+                    container.RegisterConditional<IEsbProducer>(
+                        nearRealTimeEsbProducerRegistration, 
+                        c => !c.HasConsumer || c.Consumer.Target.Name.Equals("nearRealTimeEsbProducer"));
+                    Registration processBODEsbProducerRegistration = Lifestyle.Transient.CreateRegistration(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMProcessBODProducerEmsConnection")), container);
+                    container.RegisterConditional<IEsbProducer>(
+                        processBODEsbProducerRegistration,
+                        c => !c.HasConsumer || c.Consumer.Target.Name.Equals("processBODEsbProducer"));
+                    Registration confirmBODEsbProducerRegistration = Lifestyle.Transient.CreateRegistration(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMConfirmBODProducerEmsConnection")), container);
+                    container.RegisterConditional<IEsbProducer>(
+                        confirmBODEsbProducerRegistration,
+                        c => !c.HasConsumer || c.Consumer.Target.Name.Equals("confirmBODEsbProducer"));
                     container.Register<IActiveMQProducer, ActiveMQProducer>();
                     container.Register<IMessagePublisher, NearRealTimeMessagePublisher>();
                     container.Register<ILogger<NearRealTimeMessagePublisher>, NLogLogger<NearRealTimeMessagePublisher>>();
@@ -74,16 +88,19 @@ namespace GPMService.Producer
                     container.Register<ISerializer<items>, Serializer<items>>();
                     // adding suppressions
                     container.GetRegistration(typeof(IEsbSubscriber)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the subscriber is taken care of by the application.");
-                    container.GetRegistration(typeof(IEsbProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
+                    nearRealTimeEsbProducerRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
+                    processBODEsbProducerRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
+                    confirmBODEsbProducerRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
                     container.GetRegistration(typeof(IActiveMQProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the ActiveMQ producer is taken care of by the application.");
                     break;
                 case Constants.ProducerType.JustInTime.ActivePrice:
                     container.Register(() => ListenerApplicationSettings.CreateDefaultSettings<ListenerApplicationSettings>("GPM ActivePrice Listener"));
-                    container.Register(() => EsbConnectionSettings.CreateSettingsFromConfig());
-                    container.Register(() => ActiveMQConnectionSettings.CreateSettingsFromConfig());
-                    container.Register<IEsbSubscriber, EsbSubscriber>();
-                    container.Register<IEsbProducer, EsbProducer>();
-                    container.Register<IActiveMQProducer, ActiveMQProducer>();
+                    EsbConnectionSettings activePriceListenerEsbSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMActivePriceListenerEmsConnection");
+                    container.RegisterConditional<EsbConnectionSettings>(
+                        Lifestyle.Transient.CreateRegistration(() => activePriceListenerEsbSettings, container),
+                        c => c.Consumer.Target.Name.Equals("activePriceListenerEsbConnectionSettings"));
+                    container.Register<IEsbSubscriber>(() => new EsbSubscriber(activePriceListenerEsbSettings));
+                    container.Register<IEsbProducer>(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMJustInTimeProducerEmsConnection")));
                     container.Register<IMessagePublisher, JustInTimeMessagePublisher>();
                     container.Register<ILogger<JustInTimeMessagePublisher>, NLogLogger<JustInTimeMessagePublisher>>();
                     container.Register<ILogger<ActivePriceMessageListener>, NLogLogger<ActivePriceMessageListener>>();
@@ -102,15 +119,15 @@ namespace GPMService.Producer
                     // adding suppressions
                     container.GetRegistration(typeof(IEsbSubscriber)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the subscriber is taken care of by the application.");
                     container.GetRegistration(typeof(IEsbProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
-                    container.GetRegistration(typeof(IActiveMQProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the ActiveMQ producer is taken care of by the application.");
                     break;
                 case Constants.ProducerType.JustInTime.ExpiringTpr:
                     container.Register(() => ListenerApplicationSettings.CreateDefaultSettings<ListenerApplicationSettings>("GPM ExpiringTpr Listener"));
-                    container.Register(() => EsbConnectionSettings.CreateSettingsFromConfig());
-                    container.Register(() => ActiveMQConnectionSettings.CreateSettingsFromConfig());
-                    container.Register<IEsbSubscriber, EsbSubscriber>();
-                    container.Register<IEsbProducer, EsbProducer>();
-                    container.Register<IActiveMQProducer, ActiveMQProducer>();
+                    EsbConnectionSettings expiringTprListenerEsbSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMExpiringTprListenerEmsConnection");
+                    container.RegisterConditional<EsbConnectionSettings>(
+                        Lifestyle.Transient.CreateRegistration(() => expiringTprListenerEsbSettings, container),
+                        c => c.Consumer.Target.Name.Equals("expiringTprListenerEsbConnectionSettings"));
+                    container.Register<IEsbSubscriber>(() => new EsbSubscriber(expiringTprListenerEsbSettings));
+                    container.Register<IEsbProducer>(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMJustInTimeProducerEmsConnection")));
                     container.Register<IMessagePublisher, JustInTimeMessagePublisher>();
                     container.Register<ILogger<JustInTimeMessagePublisher>, NLogLogger<JustInTimeMessagePublisher>>();
                     container.Register<ILogger<ExpiringTprMessageListener>, NLogLogger<ExpiringTprMessageListener>>();
@@ -129,14 +146,10 @@ namespace GPMService.Producer
                     // adding suppressions
                     container.GetRegistration(typeof(IEsbSubscriber)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the subscriber is taken care of by the application.");
                     container.GetRegistration(typeof(IEsbProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
-                    container.GetRegistration(typeof(IActiveMQProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the ActiveMQ producer is taken care of by the application.");
                     break;
                 case Constants.ProducerType.JustInTime.EmergencyPrice:
                     container.Register(() => ListenerApplicationSettings.CreateDefaultSettings<ListenerApplicationSettings>("GPM ExpiringTpr Listener"));
-                    container.Register(() => EsbConnectionSettings.CreateSettingsFromConfig());
-                    container.Register(() => ActiveMQConnectionSettings.CreateSettingsFromConfig());
-                    container.Register<IEsbProducer, EsbProducer>();
-                    container.Register<IActiveMQProducer, ActiveMQProducer>();
+                    container.Register<IEsbProducer>(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMJustInTimeProducerEmsConnection")));
                     container.Register<IMessagePublisher, JustInTimeMessagePublisher>();
                     container.Register<ILogger<JustInTimeMessagePublisher>, NLogLogger<JustInTimeMessagePublisher>>();
                     container.Register<ILogger<EmergencyPriceMessageProcessor>, NLogLogger<EmergencyPriceMessageProcessor>>();
@@ -149,7 +162,6 @@ namespace GPMService.Producer
                     container.Register<ISerializer<MammothPriceType>, Serializer<MammothPriceType>>();
                     // adding suppressions
                     container.GetRegistration(typeof(IEsbProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
-                    container.GetRegistration(typeof(IActiveMQProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the ActiveMQ producer is taken care of by the application.");
                     break;
                 default:
                     throw new ArgumentException(
