@@ -1,4 +1,5 @@
-﻿using GPMService.Producer.DataAccess;
+﻿using GPMService.Producer.Archive;
+using GPMService.Producer.DataAccess;
 using GPMService.Producer.ErrorHandler;
 using GPMService.Producer.ESB.Listener.JustInTime;
 using GPMService.Producer.ESB.Listener.NearRealTime;
@@ -108,6 +109,8 @@ namespace GPMService.Producer
                     container.Register<ILogger<ActivePriceProcessorDAL>, NLogLogger<ActivePriceProcessorDAL>>();
                     container.Register<ILogger<CommonDAL>, NLogLogger<CommonDAL>>();
                     container.Register<ILogger<ActivePriceProducerService>, NLogLogger<ActivePriceProducerService>>();
+                    container.Register<ILogger<JustInTimePriceArchiver>, NLogLogger<JustInTimePriceArchiver>>();
+                    container.Register<JustInTimePriceArchiver>();
                     container.Register<IMessageParser<JobSchedule>, ActivePriceMessageParser>();
                     container.Register<IActivePriceProcessorDAL, ActivePriceProcessorDAL>();
                     container.Register<ICommonDAL, CommonDAL>();
@@ -135,6 +138,8 @@ namespace GPMService.Producer
                     container.Register<ILogger<ExpiringTprProcessorDAL>, NLogLogger<ExpiringTprProcessorDAL>>();
                     container.Register<ILogger<CommonDAL>, NLogLogger<CommonDAL>>();
                     container.Register<ILogger<ExpiringTprProducerService>, NLogLogger<ExpiringTprProducerService>>();
+                    container.Register<ILogger<JustInTimePriceArchiver>, NLogLogger<JustInTimePriceArchiver>>();
+                    container.Register<JustInTimePriceArchiver>();
                     container.Register<IMessageParser<JobSchedule>, ExpiringTprMessageParser>();
                     container.Register<IExpiringTprProcessorDAL, ExpiringTprProcessorDAL>();
                     container.Register<ICommonDAL, CommonDAL>();
@@ -155,7 +160,11 @@ namespace GPMService.Producer
                     container.Register<ILogger<EmergencyPriceMessageProcessor>, NLogLogger<EmergencyPriceMessageProcessor>>();
                     container.Register<ILogger<EmergencyPriceProcessorDAL>, NLogLogger<EmergencyPriceProcessorDAL>>();
                     container.Register<ILogger<EmergencyPriceProducerService>, NLogLogger<EmergencyPriceProducerService>>();
+                    container.Register<ILogger<CommonDAL>, NLogLogger<CommonDAL>>();
+                    container.Register<ILogger<JustInTimePriceArchiver>, NLogLogger<JustInTimePriceArchiver>>();
+                    container.Register<JustInTimePriceArchiver>();
                     container.Register<IEmergencyPriceProcessorDAL, EmergencyPriceProcessorDAL>();
+                    container.Register<ICommonDAL, CommonDAL>();
                     container.Register<IMessageProcessor, EmergencyPriceMessageProcessor>();
                     container.Register<IGPMProducerService, EmergencyPriceProducerService>();
                     container.Register<ISerializer<MammothPricesType>, Serializer<MammothPricesType>>();

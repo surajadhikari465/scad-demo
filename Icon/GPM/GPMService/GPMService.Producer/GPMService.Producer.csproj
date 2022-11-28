@@ -135,6 +135,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Archive\JustInTimePriceArchiver.cs" />
     <Compile Include="DataAccess\ActivePriceProcessorDAL.cs" />
     <Compile Include="DataAccess\CommonDAL.cs" />
     <Compile Include="DataAccess\EmergencyPriceProcessorDAL.cs" />

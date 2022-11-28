@@ -1,4 +1,5 @@
-﻿using GPMService.Producer.DataAccess;
+﻿using GPMService.Producer.Archive;
+using GPMService.Producer.DataAccess;
 using GPMService.Producer.ErrorHandler;
 using GPMService.Producer.Helpers;
 using GPMService.Producer.Message.Parser;
@@ -30,6 +31,7 @@ namespace GPMService.Producer.Message.Processor
         private readonly ISerializer<MammothPricesType> serializer;
         private readonly IMessagePublisher messagePublisher;
         private readonly ErrorEventPublisher errorEventPublisher;
+        private readonly JustInTimePriceArchiver justInTimePriceArchiver;
         private readonly ILogger<ActivePriceMessageProcessor> logger;
         public ActivePriceMessageProcessor(
             IMessageParser<JobSchedule> messageParser,
@@ -43,6 +45,7 @@ namespace GPMService.Producer.Message.Processor
             ISerializer<MammothPricesType> serializer,
             IMessagePublisher messagePublisher,
             ErrorEventPublisher errorEventPublisher,
+            JustInTimePriceArchiver justInTimePriceArchiver,
             ILogger<ActivePriceMessageProcessor> logger
             )
         {
@@ -55,6 +58,7 @@ namespace GPMService.Producer.Message.Processor
             this.serializer = serializer;
             this.messagePublisher = messagePublisher;
             this.errorEventPublisher = errorEventPublisher;
+            this.justInTimePriceArchiver = justInTimePriceArchiver;
             this.logger = logger;
         }
 
@@ -84,7 +88,7 @@ namespace GPMService.Producer.Message.Processor
                     receivedMessage.esbMessage.MessageText,
                     e.GetType().ToString(),
                     e.Message,
-                    "FATAL"
+                    "Fatal"
                     );
             }
             finally
@@ -180,6 +184,7 @@ namespace GPMService.Producer.Message.Processor
                     {
                         messagePublisher.PublishMessage(serializer.Serialize(mammothPricesToBeSent, new Utf8StringWriter()), messageProperties);
                         logger.Info($@"Region: ${jobScheduleMessage.Region} | BusinessUnitID ${businessUnit} | Number of records sent to EMS: ${mammothPricesToBeSent.MammothPrice.Length}");
+                        justInTimePriceArchiver.ArchivePrice(mammothPricesToBeSent, messageProperties);
                     }
                     catch (Exception ex)
                     {
@@ -205,6 +210,7 @@ namespace GPMService.Producer.Message.Processor
                 try
                 {
                     messagePublisher.PublishMessage(serializer.Serialize(currentMammothPrices, new Utf8StringWriter()), messageProperties);
+                    justInTimePriceArchiver.ArchivePrice(mammothPricesToBeSent, messageProperties);
                 }
                 catch (Exception ex)
                 {

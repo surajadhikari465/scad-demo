@@ -142,7 +142,7 @@ ErrorMsg: ${ex.Message}");
                     priceMessageArchiveSerializer.Serialize(priceMessageArchive, new Utf8StringWriter()),
                     ex.GetType().ToString(),
                     ex.Message,
-                    "FATAL"
+                    "Fatal"
                     );
             }
         }

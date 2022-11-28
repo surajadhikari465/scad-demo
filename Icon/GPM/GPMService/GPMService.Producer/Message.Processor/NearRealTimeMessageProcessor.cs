@@ -7,6 +7,7 @@ using GPMService.Producer.Model;
 using GPMService.Producer.Model.DBModel;
 using GPMService.Producer.Publish;
 using GPMService.Producer.Settings;
+using Icon.Common.Xml;
 using Icon.Esb;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Logging;
@@ -24,6 +25,7 @@ namespace GPMService.Producer.Message.Processor
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly ProcessBODErrorHandler processBODHandler;
         private readonly ConfirmBODErrorHandler confirmBODHandler;
+        private readonly ErrorEventPublisher errorEventPublisher;
         private readonly EsbConnectionSettings nearRealTimeListenerEsbConnectionSettings;
         private readonly IMessagePublisher messagePublisher;
         private readonly ILogger<NearRealTimeMessageProcessor> logger;
@@ -33,6 +35,7 @@ namespace GPMService.Producer.Message.Processor
             GPMProducerServiceSettings gpmProducerServiceSettings,
             ProcessBODErrorHandler processBODHandler,
             ConfirmBODErrorHandler confirmBODHandler,
+            ErrorEventPublisher errorEventPublisher,
             // Using named injection.
             // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
             EsbConnectionSettings nearRealTimeListenerEsbConnectionSettings,
@@ -55,6 +58,20 @@ namespace GPMService.Producer.Message.Processor
             string transactionID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID);
             string correlationID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.CorrelationID);
             string sequenceID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.SequenceID);
+            Dictionary<string, string> messageProperties = new Dictionary<string, string>()
+            {
+                { Constants.MessageHeaders.TransactionID, transactionID},
+                { Constants.MessageHeaders.CorrelationID, correlationID},
+                { Constants.MessageHeaders.SequenceID, sequenceID},
+                { Constants.MessageHeaders.ResetFlag,
+                    receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.ResetFlag)},
+                { Constants.MessageHeaders.TransactionType,
+                    receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionType)},
+                { Constants.MessageHeaders.Source,
+                    receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.Source)},
+                { Constants.MessageHeaders.nonReceivingSysName,
+                    receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.nonReceivingSysName)},
+            };
             MessageSequenceOutput messageSequenceOutput = null;
             try
             {
@@ -70,20 +87,6 @@ namespace GPMService.Producer.Message.Processor
                     AcknowledgeEsbMessage(receivedMessage);
                     if (!(messageSequenceOutput.IsAlreadyProcessed && !messageSequenceOutput.IsInSequence))
                     {
-                        Dictionary<string, string> messageProperties = new Dictionary<string, string>()
-                        {
-                            { Constants.MessageHeaders.TransactionID, transactionID},
-                            { Constants.MessageHeaders.CorrelationID, correlationID},
-                            { Constants.MessageHeaders.SequenceID, sequenceID},
-                            { Constants.MessageHeaders.ResetFlag,
-                                receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.ResetFlag)},
-                            { Constants.MessageHeaders.TransactionType,
-                                receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionType)},
-                            { Constants.MessageHeaders.Source,
-                                receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.Source)},
-                            { Constants.MessageHeaders.nonReceivingSysName,
-                                receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.nonReceivingSysName)},
-                        };
                         messagePublisher.PublishMessage(receivedMessage.esbMessage.MessageText, messageProperties);
                         HandleEmergencyPrices(mammothPrices);
                     }
@@ -143,7 +146,16 @@ SequenceID: ${sequenceID}";
                     confirmBODHandler.HandleError(receivedMessage, exception);
                 }
                 AcknowledgeEsbMessage(receivedMessage);
-                nearRealTimeProcessorDAL.ArchiveMessage(receivedMessage, "ERROR CODE", exception.Message); // TODO: Fix error code logic
+                errorEventPublisher.PublishErrorEvent(
+                    "GPMNearRealTime",
+                    transactionID,
+                    messageProperties,
+                    receivedMessage.esbMessage.MessageText,
+                    exception.GetType().ToString(),
+                    exception.Message,
+                    "Fatal"
+                    );
+                nearRealTimeProcessorDAL.ArchiveMessage(receivedMessage, exception.GetType().ToString(), exception.Message);
             }
         }
 

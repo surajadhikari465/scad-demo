@@ -1,4 +1,5 @@
-﻿using GPMService.Producer.DataAccess;
+﻿using GPMService.Producer.Archive;
+using GPMService.Producer.DataAccess;
 using GPMService.Producer.Helpers;
 using GPMService.Producer.Model;
 using GPMService.Producer.Model.DBModel;
@@ -21,6 +22,7 @@ namespace GPMService.Producer.Message.Processor
         private readonly ISerializer<MammothPricesType> mammothPricesSerializer;
         private readonly ISerializer<MammothPriceType> mammothPriceSerializer;
         private readonly IMessagePublisher messagePublisher;
+        private readonly JustInTimePriceArchiver justInTimePriceArchiver;
         private readonly ILogger<EmergencyPriceMessageProcessor> logger;
 
         public EmergencyPriceMessageProcessor
@@ -30,6 +32,7 @@ namespace GPMService.Producer.Message.Processor
             ISerializer<MammothPricesType> mammothPricesSerializer,
             ISerializer<MammothPriceType> mammothPriceSerializer,
             IMessagePublisher messagePublisher,
+            JustInTimePriceArchiver justInTimePriceArchiver,
             ILogger<EmergencyPriceMessageProcessor> logger
             )
         {
@@ -38,6 +41,7 @@ namespace GPMService.Producer.Message.Processor
             this.mammothPricesSerializer = mammothPricesSerializer;
             this.mammothPriceSerializer = mammothPriceSerializer;
             this.messagePublisher = messagePublisher;
+            this.justInTimePriceArchiver = justInTimePriceArchiver;
             this.logger = logger;
         }
 
@@ -53,9 +57,18 @@ namespace GPMService.Producer.Message.Processor
                     MammothPricesType emergencyMammothPrices = GetEmergencyPrices();
                     if (emergencyMammothPrices.MammothPrice != null && emergencyMammothPrices.MammothPrice.Length > 0)
                     {
+                        Dictionary<string, string> messageProperties = new Dictionary<string, string>()
+                        {
+                            { Constants.MessageHeaders.TransactionID, Guid.NewGuid().ToString() },
+                            { Constants.MessageHeaders.ResetFlag, "false" },
+                            { Constants.MessageHeaders.TransactionType, Constants.TransactionTypes.Price },
+                            { Constants.MessageHeaders.Source, Constants.Sources.JustInTimeSource },
+                            { Constants.MessageHeaders.RegionCode, emergencyMammothPrices.MammothPrice[0].Region }
+                        };
                         try
                         {
-                            SendEmergencyPrices(emergencyMammothPrices);
+                            SendEmergencyPrices(emergencyMammothPrices, messageProperties);
+                            justInTimePriceArchiver.ArchivePrice(emergencyMammothPrices, messageProperties);
                             messageSendErrorCount = 0;
                         }
                         catch (Exception ex)
@@ -88,16 +101,8 @@ namespace GPMService.Producer.Message.Processor
             }
         }
 
-        private void SendEmergencyPrices(MammothPricesType emergencyMammothPrices)
+        private void SendEmergencyPrices(MammothPricesType emergencyMammothPrices, Dictionary<string, string> messageProperties)
         {
-            Dictionary<string, string> messageProperties = new Dictionary<string, string>()
-            {
-                { Constants.MessageHeaders.TransactionID, Guid.NewGuid().ToString() },
-                { Constants.MessageHeaders.ResetFlag, "false" },
-                { Constants.MessageHeaders.TransactionType, Constants.TransactionTypes.Price },
-                { Constants.MessageHeaders.Source, Constants.Sources.JustInTimeSource },
-                { Constants.MessageHeaders.RegionCode, emergencyMammothPrices.MammothPrice[0].Region }
-            };
             messagePublisher.PublishMessage(mammothPricesSerializer.Serialize(emergencyMammothPrices, new Utf8StringWriter()), messageProperties);
         }
 
