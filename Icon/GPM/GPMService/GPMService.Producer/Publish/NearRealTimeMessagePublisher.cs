@@ -1,8 +1,6 @@
-﻿using Apache.NMS.ActiveMQ.Commands;
-using GPMService.Producer.Settings;
+﻿using GPMService.Producer.Settings;
 using Icon.ActiveMQ.Producer;
 using Icon.Esb.Producer;
-using Icon.Framework;
 using Icon.Logging;
 using Polly;
 using Polly.Retry;
