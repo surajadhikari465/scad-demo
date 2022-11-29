@@ -149,6 +149,7 @@
     <Compile Include="ErrorHandler\ConfirmBODErrorHandler.cs" />
     <Compile Include="ErrorHandler\ErrorEventPublisher.cs" />
     <Compile Include="ErrorHandler\ProcessBODErrorHandler.cs" />
+    <Compile Include="ESB.Infrastructure\Sb1EsbConsumer.cs" />
     <Compile Include="ESB.Listener\JustInTime\ActivePriceMessageListener.cs" />
     <Compile Include="ESB.Listener\JustInTime\ExpiringTprMessageListener.cs" />
     <Compile Include="ESB.Listener\NearRealTime\NearRealTimeMessageListener.cs" />
