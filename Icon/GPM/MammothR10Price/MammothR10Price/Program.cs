@@ -15,9 +15,7 @@ namespace MammothR10Price
             string apiServiceName = ConfigurationManager.AppSettings["ApiServiceName"].ToString();
             string producerInstanceId = ConfigurationManager.AppSettings["ProducerInstanceId"].ToString();
 
-            Container container = SimpleInjectorInitializer.InitializeContainer(
-                int.Parse(producerInstanceId)
-            );
+            Container container = SimpleInjectorInitializer.InitializeContainer();
             HostFactory.Run(r =>
             {
                 r.Service<IProducerService>(s =>

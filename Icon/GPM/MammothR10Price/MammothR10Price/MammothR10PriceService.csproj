@@ -90,6 +90,9 @@
     <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
     </Reference>
+    <Reference Include="Polly, Version=7.0.0.0, Culture=neutral, PublicKeyToken=c8a3ffc3f8f825cc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Polly.7.1.1\lib\netstandard2.0\Polly.dll</HintPath>
+    </Reference>
     <Reference Include="SimpleInjector, Version=5.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
       <HintPath>..\packages\SimpleInjector.5.0.3\lib\net461\SimpleInjector.dll</HintPath>
     </Reference>
@@ -131,7 +134,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="Esb.Listener\MammothR10PriceListener.cs" />
+    <Compile Include="MammothR10PriceServiceSettings.cs" />
+    <Compile Include="Mapper\IMapper.cs" />
     <Compile Include="Message.Processor\IMessageProcessor.cs" />
     <Compile Include="Message.Processor\MammothR10PriceProcessor.cs" />
     <Compile Include="Program.cs" />

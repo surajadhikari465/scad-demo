@@ -5,8 +5,14 @@ namespace MammothR10Price.Service
 {
     public class MammothR10PriceService: IProducerService
     {
-        private IListenerApplication mammothR10PriceListener;
-        private ILogger<MammothR10PriceService> logger;
+        private readonly IListenerApplication mammothR10PriceListener;
+        private readonly ILogger<MammothR10PriceService> logger;
+
+        public MammothR10PriceService(IListenerApplication mammothR10PriceListener, ILogger<MammothR10PriceService> logger)
+        {
+            this.mammothR10PriceListener = mammothR10PriceListener;
+            this.logger = logger;
+        }
 
         public void Start()
         {
