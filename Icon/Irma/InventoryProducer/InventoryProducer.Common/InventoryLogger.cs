@@ -89,8 +89,8 @@ namespace InventoryProducer.Common
                         new SqlParameter("@HostName", Environment.MachineName),
                         new SqlParameter("@UserName", Environment.UserName),
                         new SqlParameter("@Thread", Thread.CurrentThread.ManagedThreadId),
-                        new SqlParameter("@Level", "Info"),
-                        new SqlParameter("@Logger", typeof(T).FullName),
+                        new SqlParameter("@Level", "Error"),
+                        new SqlParameter("@Logger", typeof(T).FullName.Length <= 255 ? typeof(T).FullName : typeof(T).ToString()),
                         new SqlParameter("@Message", message.Substring(0, message.Length <= 4000 ? message.Length : 4000)),
                         new SqlParameter("@Exception", exception.Substring(0, exception.Length <= 2000 ? exception.Length : 2000)),
                         new SqlParameter("@InsertDate", DateTime.Now)
