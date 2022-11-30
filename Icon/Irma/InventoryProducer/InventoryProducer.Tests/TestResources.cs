@@ -126,7 +126,7 @@ namespace InventoryProducer.Tests
                 Status = "Sent",
                 UserId = 16037,
                 Username = "Sarah.Roberts",
-                CreateDateTime = DateTime.Now,
+                CreateDateTime = new DateTime(2022, 05, 25, 10, 46, 00),
                 PurchaseOrderDetailNumber = 289246108,
                 SourceItemKey = 736066,
                 DefaultScanCode = "1432151031",
@@ -139,7 +139,7 @@ namespace InventoryProducer.Tests
                 PackSize2 = 1,
                 RetailUnit = "EACH",
                 ItemCost = 19.2244m,
-                ExpectedArrivalDate = DateTime.Now
+                ExpectedArrivalDate = new DateTime(2022, 05, 25, 10, 46, 00)
             };
         }
 
