@@ -34,10 +34,10 @@ namespace GPMService.Producer.ESB.Listener.NearRealTime
             };
             logger.Info(
                     $@"Received Message with 
-                    MessageID: ${receivedMessage.esbMessage.GetProperty("TransactionID")}, 
-                    PatchFamilyID: ${receivedMessage.esbMessage.GetProperty("CorrelationID")}, 
-                    SequenceId: ${receivedMessage.esbMessage.GetProperty("SequenceID")} 
-                    and Region Code: ${receivedMessage.esbMessage.GetProperty("RegionCode")}"
+                    MessageID: {receivedMessage.esbMessage.GetProperty("TransactionID")}, 
+                    PatchFamilyID: {receivedMessage.esbMessage.GetProperty("CorrelationID")}, 
+                    SequenceId: {receivedMessage.esbMessage.GetProperty("SequenceID")} 
+                    and Region Code: {receivedMessage.esbMessage.GetProperty("RegionCode")}"
                 );
             messageProcessor.ProcessReceivedMessage(receivedMessage);
         }

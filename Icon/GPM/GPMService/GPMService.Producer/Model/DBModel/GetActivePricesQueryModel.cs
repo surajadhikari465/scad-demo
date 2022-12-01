@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Numerics;
 
 namespace GPMService.Producer.Model.DBModel
 {
     internal class GetActivePricesQueryModel
     {
-        public BigInteger PriceID { get; set; }
+        public long PriceID { get; set; }
         public string Region { get; set; }
         public string GpmID { get; set; }
         public int ItemID { get; set; }
@@ -17,7 +16,7 @@ namespace GPMService.Producer.Model.DBModel
         public string PriceTypeAttribute { get; set; }
         public string SellableUOM { get; set; }
         public string CurrencyCode { get; set; }
-        public int Multiple { get; set; }
+        public byte Multiple { get; set; }
         public DateTime? TagExpirationDate { get; set; }
         public DateTime InsertDateUtc { get; set; }
         public DateTime? ModifiedDateUtc { get; set; }

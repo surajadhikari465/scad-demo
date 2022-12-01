@@ -70,20 +70,20 @@ namespace GPMService.Producer.Message.Processor
                 jobScheduleMessage = messageParser.ParseMessage(receivedMessage);
                 if ("running".Equals(jobScheduleMessage.Status))
                 {
-                    logger.Info($@"Region: ${jobScheduleMessage.Region}. Tpr Service Already running So Service will not run.");
+                    logger.Info($@"Region: {jobScheduleMessage.Region}. Tpr Service Already running So Service will not run.");
                 }
                 else
                 {
                     commonDAL.UpdateStatusToRunning(jobScheduleMessage.JobScheduleId);
-                    logger.Info($@"Region: ${jobScheduleMessage.Region}. Starting Expiring TPR service.");
+                    logger.Info($@"Region: {jobScheduleMessage.Region}. Starting Expiring TPR service.");
                     ProcessExpiringTprs(jobScheduleMessage);
                     commonDAL.UpdateStatusToReady(jobScheduleMessage.JobScheduleId);
-                    logger.Info($@"Region: ${jobScheduleMessage.Region}. Ending Expiring TPR service successfully.");
+                    logger.Info($@"Region: {jobScheduleMessage.Region}. Ending Expiring TPR service successfully.");
                 }
             }
             catch (Exception e)
             {
-                logger.Error($@"Region: ${jobScheduleMessage?.Region}, Expiring TPR Service error occurred. ${e}");
+                logger.Error($@"Region: {jobScheduleMessage?.Region}, Expiring TPR Service error occurred. {e}");
                 errorEventPublisher.PublishErrorEvent(
                     "ExpiringTpr",
                     receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID),
@@ -99,6 +99,7 @@ namespace GPMService.Producer.Message.Processor
             }
             finally
             {
+                commonDAL.UpdateStatusToReady(jobScheduleMessage.JobScheduleId);
                 if (
                     expiringTprListenerEsbConnectionSettings.SessionMode == SessionMode.ClientAcknowledge
                     || expiringTprListenerEsbConnectionSettings.SessionMode == SessionMode.ExplicitClientAcknowledge
@@ -125,17 +126,23 @@ namespace GPMService.Producer.Message.Processor
                         expiringTprsSubset.Clear();
                     }
                 }
+                // process last subset if items are still there
+                if (expiringTprsSubset.Count > 0)
+                {
+                    ProcessExpiringTprsSubset(jobScheduleMessage, expiringTprsSubset);
+                    expiringTprsSubset.Clear();
+                }
             }
         }
 
         private void ProcessExpiringTprsSubset(JobSchedule jobScheduleMessage, IList<GetExpiringTprsQueryModel> expiringTprsSubset)
         {
             IEnumerable<int> uniqueBusinessUnits = expiringTprsSubset.Select(x => x.BusinessUnitID).Distinct();
-            IList<MammothPriceType> mammothPriceList = new List<MammothPriceType>();
             foreach (int businessUnit in uniqueBusinessUnits)
             {
                 IEnumerable<GetExpiringTprsQueryModel> currentBusinessUnitExpiringTprs = expiringTprsSubset.Where(x => x.BusinessUnitID == businessUnit);
                 MammothPricesType mammothPrices = new MammothPricesType();
+                IList<MammothPriceType> mammothPriceList = new List<MammothPriceType>();
                 foreach (GetExpiringTprsQueryModel currentBusinessUnitExpiringTpr in currentBusinessUnitExpiringTprs)
                 {
                     MammothPriceType mammothPrice = new MammothPriceType()
@@ -166,6 +173,7 @@ namespace GPMService.Producer.Message.Processor
                         PercentOff = currentBusinessUnitExpiringTpr.PercentOff,
                         PercentOffSpecified = currentBusinessUnitExpiringTpr.PercentOff.HasValue
                     };
+                    mammothPriceList.Add(mammothPrice);
                 }
                 mammothPrices.MammothPrice = mammothPriceList.ToArray();
                 int counterLimit = (int)Math.Ceiling((double)mammothPrices.MammothPrice.Length / gpmProducerServiceSettings.ExpiringTprBatchSize);
@@ -189,12 +197,12 @@ namespace GPMService.Producer.Message.Processor
                     try
                     {
                         messagePublisher.PublishMessage(serializer.Serialize(mammothPricesToBeSent, new Utf8StringWriter()), messageProperties);
-                        logger.Info($@"Region: ${jobScheduleMessage.Region} | BusinessUnitID ${businessUnit} | Number of expiring TPR Records sent to EMS: ${mammothPricesToBeSent.MammothPrice.Length}");
+                        logger.Info($@"Region: {jobScheduleMessage.Region} | BusinessUnitID {businessUnit} | Number of expiring TPR Records sent to EMS: {mammothPricesToBeSent.MammothPrice.Length}");
                         justInTimePriceArchiver.ArchivePrice(mammothPricesToBeSent, messageProperties);
                     }
                     catch (Exception ex)
                     {
-                        logger.Error($@"Region: ${jobScheduleMessage.Region}. ${ex}");
+                        logger.Error($@"Region: {jobScheduleMessage.Region}. {ex}");
                         ProcessRowByRow(mammothPricesToBeSent, messageProperties);
                     }
                 }
@@ -203,8 +211,10 @@ namespace GPMService.Producer.Message.Processor
 
         private void ProcessRowByRow(MammothPricesType mammothPricesToBeSent, Dictionary<string, string> messageProperties)
         {
-            logger.Info($@"Region: ${messageProperties[Constants.MessageHeaders.RegionCode]}. Started sending Row By Row Expiring Tprs.");
-            messageProperties[Constants.MessageHeaders.nonReceivingSysName] = "MammothR10";
+            logger.Info($@"Region: {messageProperties[Constants.MessageHeaders.RegionCode]}. Started sending Row By Row Expiring Tprs.");
+            // TODO: Having this property as 'MammothR10', only for RowByRow operations looks to be a bug in the Tibco app.
+            // Check if this should be uncommented.
+            // messageProperties[Constants.MessageHeaders.nonReceivingSysName] = "MammothR10";
             for (int i = 0; i < mammothPricesToBeSent.MammothPrice.Length; i++)
             {
                 MammothPricesType currentMammothPrices = new MammothPricesType()
@@ -217,11 +227,11 @@ namespace GPMService.Producer.Message.Processor
                 try
                 {
                     messagePublisher.PublishMessage(serializer.Serialize(currentMammothPrices, new Utf8StringWriter()), messageProperties);
-                    justInTimePriceArchiver.ArchivePrice(mammothPricesToBeSent, messageProperties);
+                    justInTimePriceArchiver.ArchivePrice(currentMammothPrices, messageProperties);
                 }
                 catch (Exception ex)
                 {
-                    logger.Error($@"Error while sending expiring Tpr for Item ID: ${currentMammothPrices.MammothPrice[0].ItemId}, Business Unit ID: ${currentMammothPrices.MammothPrice[0].BusinessUnit}, Error is: ${ex}");
+                    logger.Error($@"Error while sending expiring Tpr for Item ID: {currentMammothPrices.MammothPrice[0].ItemId}, Business Unit ID: {currentMammothPrices.MammothPrice[0].BusinessUnit}, Error is: {ex}");
                 }
             }
         }

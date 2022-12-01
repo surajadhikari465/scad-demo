@@ -57,7 +57,7 @@ namespace GPMService.Producer.Publish
             }
             catch (Exception e)
             {
-                logger.Error($"Error trying to send data to JMS Queue: ${e}");
+                logger.Error($"Error trying to send data to JMS Queue: {e}");
             }
         }
 

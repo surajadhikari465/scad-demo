@@ -37,13 +37,13 @@ namespace GPMService.Producer.Archive
                 List<string> logList = new List<string>();
                 foreach (MammothPriceType archivedPrice in archivedPrices)
                 {
-                    logList.Add($@"{{Region:${archivedPrice.Region}, PriceID:${archivedPrice.PriceID}}}");
+                    logList.Add($@"{{Region:{archivedPrice.Region}, PriceID:{archivedPrice.PriceID}}}");
                 }
-                logger.Info($@"{{Archived Prices:{{TransactionID:${priceProperties[Constants.MessageHeaders.TransactionID]}, Prices: ${logList}}}");
+                logger.Info($@"{{Archived Prices:{{TransactionID:{priceProperties[Constants.MessageHeaders.TransactionID]}, Prices: {string.Join(",", logList)}}}");
             }
             catch (Exception e)
             {
-                logger.Error($@"ArchivePriceError: MessageID:'${priceProperties[Constants.MessageHeaders.TransactionID]}', Msg:'${e.Message}', StackTrace: ${e.StackTrace}");
+                logger.Error($@"ArchivePriceError: MessageID:'{priceProperties[Constants.MessageHeaders.TransactionID]}', Msg:'{e.Message}', StackTrace: {e.StackTrace}");
                 errorEventPublisher.PublishErrorEvent(
                     "MammothActivePriceArchiver",
                     priceProperties[Constants.MessageHeaders.TransactionID],

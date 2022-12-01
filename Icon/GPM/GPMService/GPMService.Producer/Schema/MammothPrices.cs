@@ -8,7 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Numerics;
 using System.Xml.Serialization;
 
 // 
@@ -28,7 +27,7 @@ public partial class MammothPriceType
 
     private string regionField;
 
-    private BigInteger priceIDField;
+    private long priceIDField;
 
     private bool priceIDFieldSpecified;
 
@@ -90,7 +89,7 @@ public partial class MammothPriceType
     }
 
     /// <remarks/>
-    public BigInteger PriceID
+    public long PriceID
     {
         get
         {

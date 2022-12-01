@@ -82,7 +82,7 @@ namespace GPMService.Producer.ErrorHandler
                             },
                             OriginalBOD = new OriginalBODType
                             {
-                                MessageContent = $@"<![CDATA[""${Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(receivedMessage.esbMessage.MessageText))}""]]>"
+                                MessageContent = $@"<[CDATA[""{Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(receivedMessage.esbMessage.MessageText))}""]]>"
                             }
                         }
                     }

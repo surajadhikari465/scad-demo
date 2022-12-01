@@ -92,9 +92,9 @@ namespace GPMService.Producer.Message.Processor
                     }
                     nearRealTimeProcessorDAL.ArchiveMessage(receivedMessage, null, null);
                     logger.Info($@"Successfully processed 
-MessageID: ${transactionID}, 
-PatchFamilyID: ${correlationID}, 
-SequenceID: ${sequenceID}.");
+MessageID: {transactionID}, 
+PatchFamilyID: {correlationID}, 
+SequenceID: {sequenceID}.");
                 }
                 else if (
                     !messageSequenceOutput.IsInSequence
@@ -104,13 +104,13 @@ SequenceID: ${sequenceID}.");
                     )
                 {
                     logger.Warn($@"Requesting redelivery for 
-MessageID: ${transactionID}, 
-and PatchFamilyID: ${correlationID}. 
-Current JMSXDeliveryCount is ${receivedMessage.esbMessage.GetProperty(Constants.JMSMessageHeaders.JMSXDeliveryCount ?? "1")}."
+MessageID: {transactionID}, 
+and PatchFamilyID: {correlationID}. 
+Current JMSXDeliveryCount is {receivedMessage.esbMessage.GetProperty(Constants.JMSMessageHeaders.JMSXDeliveryCount ?? "1")}."
 );
-                    string errorDetails = $@"MessageID [${receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID)}] is out of sequence. 
+                    string errorDetails = $@"MessageID [{receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID)}] is out of sequence. 
 Putting back into the queue for redelivery. 
-The current JMSXDelivery count is ${receivedMessage.esbMessage.GetProperty(Constants.JMSMessageHeaders.JMSXDeliveryCount) ?? "1"}.";
+The current JMSXDelivery count is {receivedMessage.esbMessage.GetProperty(Constants.JMSMessageHeaders.JMSXDeliveryCount) ?? "1"}.";
                     nearRealTimeProcessorDAL.ArchiveMessage(receivedMessage, Constants.ErrorCodes.OutOfSequenceRedelivery, errorDetails);
                 }
                 else if (
@@ -120,16 +120,16 @@ The current JMSXDelivery count is ${receivedMessage.esbMessage.GetProperty(Const
                     && int.Parse(receivedMessage.esbMessage.GetProperty(Constants.JMSMessageHeaders.JMSXDeliveryCount)) == gpmProducerServiceSettings.MaxRedeliveryCount
                     )
                 {
-                    string exceptionMessage = $@"Message is out of sequence and has exceeded the redelivery count of ${gpmProducerServiceSettings.MaxRedeliveryCount}. 
-For MessageID: ${transactionID}, 
-PatchFamilyID: ${correlationID}, 
-SequenceID: ${sequenceID}";
+                    string exceptionMessage = $@"Message is out of sequence and has exceeded the redelivery count of {gpmProducerServiceSettings.MaxRedeliveryCount}. 
+For MessageID: {transactionID}, 
+PatchFamilyID: {correlationID}, 
+SequenceID: {sequenceID}";
                     throw new MessageOutOfSequenceException(exceptionMessage);
                 }
             }
             catch (Exception exception)
             {
-                logger.Error($@"There was an error processing MessageID: ${transactionID}. ErrorMessage: ${exception.Message}");
+                logger.Error($@"There was an error processing MessageID: {transactionID}. ErrorMessage: {exception.Message}");
                 if (exception is MessageOutOfSequenceException)
                 {
                     processBODHandler.HandleError(receivedMessage, messageSequenceOutput);
@@ -279,7 +279,7 @@ SequenceID: ${sequenceID}";
             string resetFlag = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.ResetFlag) ?? Constants.ResetFlagValues.ResetFlagFalseValue;
             if (string.IsNullOrEmpty(sequenceIDString) || int.Parse(sequenceIDString) < 1 || string.IsNullOrEmpty(patchFamilyID))
             {
-                throw new InvalidMessageHeaderException($@"Message Sequence ID or CorrelationID is invalid.SequenceID must be greater than 0 or CorrelationID must not be empty. MessageID: ${messageID}, CorrelationID(PatchFamilyID): ${patchFamilyID}, SequenceID: ${sequenceIDString}");
+                throw new InvalidMessageHeaderException($@"Message Sequence ID or CorrelationID is invalid.SequenceID must be greater than 0 or CorrelationID must not be empty. MessageID: {messageID}, CorrelationID(PatchFamilyID): {patchFamilyID}, SequenceID: {sequenceIDString}");
             }
             int sequenceID = int.Parse(sequenceIDString);
             IList<MessageSequenceModel> messageSequenceData = nearRealTimeProcessorDAL.GetLastSequence(patchFamilyID);

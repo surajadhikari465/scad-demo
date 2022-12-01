@@ -74,7 +74,7 @@ namespace GPMService.Producer.Message.Processor
                         catch (Exception ex)
                         {
                             messageSendErrorCount++;
-                            logger.Error($"Error occurred when attempting to send prices to ESB. Will attempt to requeue emergency prices. Error: ${ex}");
+                            logger.Error($"Error occurred when attempting to send prices to ESB. Will attempt to requeue emergency prices. Error: {ex}");
                             emergencyPriceProcessorDAL.InsertPricesIntoEmergencyQueue(emergencyMammothPrices);
                         }
                         if (messageSendErrorCount == 0 || messageSendErrorCount < gpmProducerServiceSettings.SendMessageRetryCount)
@@ -83,7 +83,7 @@ namespace GPMService.Producer.Message.Processor
                         }
                         else
                         {
-                            logger.Error($"Exceeded max number of send errors - ${gpmProducerServiceSettings.SendMessageRetryCount}. Will retry sending emergency prices on next run.");
+                            logger.Error($"Exceeded max number of send errors - {gpmProducerServiceSettings.SendMessageRetryCount}. Will retry sending emergency prices on next run.");
                             emergencyPricesExist = false;
                         }
                     }
@@ -97,7 +97,7 @@ namespace GPMService.Producer.Message.Processor
             }
             catch (Exception ex)
             {
-                logger.Error($"Error occurred in the Mammoth Emergency Price Service. Error: ${ex}");
+                logger.Error($"Error occurred in the Mammoth Emergency Price Service. Error: {ex}");
             }
         }
 

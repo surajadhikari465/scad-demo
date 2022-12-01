@@ -89,13 +89,13 @@ namespace GPMService.Producer.DataAccess
             string itemID = correlationID.Substring(0, correlationID.IndexOf("-"));
             string businessUnitID = correlationID.Substring(correlationID.IndexOf("-") + 1);
             string messageHeaders = $@"
-{{""TransactionID"":""${transactionID}"", 
-""CorrelationID"":""${correlationID}"", 
-""SequenceID"":""${sequenceID}"", 
-""TransactionType"":""${transactionType}"", 
-""ResetFlag"":""${resetFlag}"", 
-""Source"":""${source}"", 
-""nonReceivingSysName"":""${nonReceivingSysName}""}}";
+{{""TransactionID"":""{transactionID}"", 
+""CorrelationID"":""{correlationID}"", 
+""SequenceID"":""{sequenceID}"", 
+""TransactionType"":""{transactionType}"", 
+""ResetFlag"":""{resetFlag}"", 
+""Source"":""{source}"", 
+""nonReceivingSysName"":""{nonReceivingSysName}""}}";
             PriceMessageArchiveType priceMessageArchive = new PriceMessageArchiveType()
             {
                 ItemID = int.Parse(itemID),
@@ -131,9 +131,9 @@ VALUES (@ItemID, @BusinessUnitID, @MessageID, @MessageHeaders, @Message, @ErrorC
             catch (Exception ex)
             {
                 logger.Error($@"Failed to archive 
-MessageID ${transactionID}, 
-MessageHeaders: ${messageHeaders}. 
-ErrorMsg: ${ex.Message}");
+MessageID {transactionID}, 
+MessageHeaders: {messageHeaders}. 
+ErrorMsg: {ex.Message}");
                 errorEventPublisher.PublishErrorEvent(
                     "GPMNearRealTime",
                     priceMessageArchive.MessageID,
@@ -258,7 +258,7 @@ SELECT
         {
             if (!ValidAction(mammothPriceType))
             {
-                throw new ActionNotSuppliedException($@"Price Not supplied, Item Id: ${mammothPriceType.ItemId}, Business Unit ID: ${mammothPriceType.BusinessUnit}, Region: ${mammothPriceType.Region}");
+                throw new ActionNotSuppliedException($@"Price Not supplied, Item Id: {mammothPriceType.ItemId}, Business Unit ID: {mammothPriceType.BusinessUnit}, Region: {mammothPriceType.Region}");
             }
             else
             {
@@ -267,7 +267,7 @@ SELECT
                     int affectedRows = AddPrice(mammothContext, mammothPriceType);
                     if (affectedRows == 0)
                     {
-                        throw new ZeroRowsImpactedException($@"Zero Rows were affected for the ${mammothPriceType.Action} action. Item ID: ${mammothPriceType.ItemId}, Region: ${mammothPriceType.Region}, BusinessUnit: ${mammothPriceType.BusinessUnit}");
+                        throw new ZeroRowsImpactedException($@"Zero Rows were affected for the {mammothPriceType.Action} action. Item ID: {mammothPriceType.ItemId}, Region: {mammothPriceType.Region}, BusinessUnit: {mammothPriceType.BusinessUnit}");
                     }
                 }
                 else if (Constants.PriceActions.Update.Equals(mammothPriceType.Action))
@@ -278,7 +278,7 @@ SELECT
                         int addAffectedRows = AddPrice(mammothContext, mammothPriceType);
                         if (addAffectedRows == 0)
                         {
-                            throw new ZeroRowsImpactedException($@"Zero Rows were affected for the ${mammothPriceType.Action} action. Item ID: ${mammothPriceType.ItemId}, Region: ${mammothPriceType.Region}, BusinessUnit: ${mammothPriceType.BusinessUnit}");
+                            throw new ZeroRowsImpactedException($@"Zero Rows were affected for the {mammothPriceType.Action} action. Item ID: {mammothPriceType.ItemId}, Region: {mammothPriceType.Region}, BusinessUnit: {mammothPriceType.BusinessUnit}");
                         }
                     }
                 }
@@ -287,7 +287,7 @@ SELECT
                     int affectedRows = DeletePrice(mammothContext, mammothPriceType);
                     if (affectedRows == 0)
                     {
-                        throw new ZeroRowsImpactedException($@"Zero Rows were affected for the ${mammothPriceType.Action} action. Item ID: ${mammothPriceType.ItemId}, Region: ${mammothPriceType.Region}, BusinessUnit: ${mammothPriceType.BusinessUnit}");
+                        throw new ZeroRowsImpactedException($@"Zero Rows were affected for the {mammothPriceType.Action} action. Item ID: {mammothPriceType.ItemId}, Region: {mammothPriceType.Region}, BusinessUnit: {mammothPriceType.BusinessUnit}");
                     }
                 }
             }

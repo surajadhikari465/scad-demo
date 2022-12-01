@@ -95,6 +95,7 @@ VALUES (@Region, @PriceID, SYSUTCDATETIME())";
                                     new SqlParameter("@PriceID", mammothPrice.PriceID)
                                     );
                             }
+                            transaction.Commit();
                         }
                         catch (Exception ex)
                         {

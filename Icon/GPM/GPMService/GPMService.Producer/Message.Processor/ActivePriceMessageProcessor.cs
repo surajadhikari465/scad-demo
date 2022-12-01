@@ -70,14 +70,14 @@ namespace GPMService.Producer.Message.Processor
                 jobScheduleMessage = messageParser.ParseMessage(receivedMessage);
                 commonDAL.UpdateStatusToRunning(jobScheduleMessage.JobScheduleId);
                 DateTimeOffset currentDateTime = DateTimeOffset.Now;
-                logger.Info($@"Region: ${jobScheduleMessage.Region}. Starting Mammoth Active Price Service.");
+                logger.Info($@"Region: {jobScheduleMessage.Region}. Starting Mammoth Active Price Service.");
                 ProcessActivePrices(jobScheduleMessage, currentDateTime);
                 commonDAL.UpdateStatusToReady(jobScheduleMessage.JobScheduleId);
-                logger.Info($@"Region: ${jobScheduleMessage.Region}. Ending Mammoth Active Price Service successfully.");
+                logger.Info($@"Region: {jobScheduleMessage.Region}. Ending Mammoth Active Price Service successfully.");
             }
             catch (Exception e)
             {
-                logger.Error($@"Region: ${jobScheduleMessage?.Region}, Mammoth Active Price Service error occurred. ${e}");
+                logger.Error($@"Region: {jobScheduleMessage?.Region}, Mammoth Active Price Service error occurred. {e}");
                 errorEventPublisher.PublishErrorEvent(
                     "MammothActivePrice",
                     receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID),
@@ -119,17 +119,23 @@ namespace GPMService.Producer.Message.Processor
                         activePricesSubset.Clear();
                     }
                 }
+                // process last subset if items are still there
+                if (activePricesSubset.Count > 0)
+                {
+                    ProcessActivePricesSubset(jobScheduleMessage, activePricesSubset, currentDateTime);
+                    activePricesSubset.Clear();
+                }
             }
         }
 
         private void ProcessActivePricesSubset(JobSchedule jobScheduleMessage, IList<GetActivePricesQueryModel> activePricesSubset, DateTimeOffset currentDateTime)
         {
             IEnumerable<int> uniqueBusinessUnits = activePricesSubset.Select(x => x.BusinessUnitID).Distinct();
-            IList<MammothPriceType> mammothPriceList = new List<MammothPriceType>();
             foreach (int businessUnit in uniqueBusinessUnits)
             {
                 IEnumerable<GetActivePricesQueryModel> currentBusinessUnitActivePrices = activePricesSubset.Where(x => x.BusinessUnitID == businessUnit);
                 MammothPricesType mammothPrices = new MammothPricesType();
+                IList<MammothPriceType> mammothPriceList = new List<MammothPriceType>();
                 foreach (GetActivePricesQueryModel currentBusinessUnitActivePrice in currentBusinessUnitActivePrices)
                 {
                     MammothPriceType mammothPrice = new MammothPriceType()
@@ -160,6 +166,7 @@ namespace GPMService.Producer.Message.Processor
                         PercentOff = currentBusinessUnitActivePrice.PercentOff,
                         PercentOffSpecified = currentBusinessUnitActivePrice.PercentOff.HasValue
                     };
+                    mammothPriceList.Add(mammothPrice);
                 }
                 mammothPrices.MammothPrice = mammothPriceList.ToArray();
                 int counterLimit = (int)Math.Ceiling((double)mammothPrices.MammothPrice.Length / gpmProducerServiceSettings.ActivePriceBatchSize);
@@ -183,12 +190,12 @@ namespace GPMService.Producer.Message.Processor
                     try
                     {
                         messagePublisher.PublishMessage(serializer.Serialize(mammothPricesToBeSent, new Utf8StringWriter()), messageProperties);
-                        logger.Info($@"Region: ${jobScheduleMessage.Region} | BusinessUnitID ${businessUnit} | Number of records sent to EMS: ${mammothPricesToBeSent.MammothPrice.Length}");
+                        logger.Info($@"Region: {jobScheduleMessage.Region} | BusinessUnitID {businessUnit} | Number of records sent to EMS: {mammothPricesToBeSent.MammothPrice.Length}");
                         justInTimePriceArchiver.ArchivePrice(mammothPricesToBeSent, messageProperties);
                     }
                     catch (Exception ex)
                     {
-                        logger.Error($@"Region: ${jobScheduleMessage.Region}. ${ex}");
+                        logger.Error($@"Region: {jobScheduleMessage.Region}. {ex}");
                         ProcessRowByRow(mammothPricesToBeSent, messageProperties);
                     }
                 }
@@ -197,7 +204,7 @@ namespace GPMService.Producer.Message.Processor
 
         private void ProcessRowByRow(MammothPricesType mammothPricesToBeSent, Dictionary<string, string> messageProperties)
         {
-            logger.Info($@"Region: ${messageProperties[Constants.MessageHeaders.RegionCode]}. Started sending Row By Row.");
+            logger.Info($@"Region: {messageProperties[Constants.MessageHeaders.RegionCode]}. Started sending Row By Row.");
             for (int i = 0; i < mammothPricesToBeSent.MammothPrice.Length; i++)
             {
                 MammothPricesType currentMammothPrices = new MammothPricesType()
@@ -210,11 +217,11 @@ namespace GPMService.Producer.Message.Processor
                 try
                 {
                     messagePublisher.PublishMessage(serializer.Serialize(currentMammothPrices, new Utf8StringWriter()), messageProperties);
-                    justInTimePriceArchiver.ArchivePrice(mammothPricesToBeSent, messageProperties);
+                    justInTimePriceArchiver.ArchivePrice(currentMammothPrices, messageProperties);
                 }
                 catch (Exception ex)
                 {
-                    logger.Error($@"Error while processing record with Item ID: ${currentMammothPrices.MammothPrice[0].ItemId}, Business Unit ID: ${currentMammothPrices.MammothPrice[0].BusinessUnit}, Error is: ${ex}");
+                    logger.Error($@"Error while processing record with Item ID: {currentMammothPrices.MammothPrice[0].ItemId}, Business Unit ID: {currentMammothPrices.MammothPrice[0].BusinessUnit}, Error is: {ex}");
                 }
             }
         }
