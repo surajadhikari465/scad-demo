@@ -70,18 +70,19 @@ namespace GPMService.Producer.DataAccess
         public List<GetEmergencyPricesQueryModel> GetEmergencyPrices()
         {
             string dequeueEmergencyPricesStoredProcedure = "EXEC gpm.DequeueEmergencyPrices @emergencyPriceCount";
+            List<GetEmergencyPricesQueryModel> emergencyPrices = new List<GetEmergencyPricesQueryModel>();
             retryPolicy.Execute(() =>
             {
                 using (var mammothContext = mammothContextFactory.CreateContext())
                 {
                     mammothContext.Database.CommandTimeout = DB_TIMEOUT_IN_SECONDS;
-                    return mammothContext.Database.SqlQuery<GetEmergencyPricesQueryModel>(
+                    emergencyPrices = mammothContext.Database.SqlQuery<GetEmergencyPricesQueryModel>(
                         dequeueEmergencyPricesStoredProcedure,
                         new SqlParameter("@emergencyPriceCount", gpmProducerServiceSettings.EmergencyPriceDequeueCount)
                     ).ToList();
                 }
             });
-            return new List<GetEmergencyPricesQueryModel>();
+            return emergencyPrices;
         }
 
         public void InsertPricesIntoEmergencyQueue(MammothPricesType emergencyMammothPrices)

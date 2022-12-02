@@ -1,5 +1,4 @@
 ﻿using GPMService.Producer.Settings;
-using Icon.Common.Xml;
 using Icon.DbContextFactory;
 using Icon.Logging;
 using Mammoth.Framework;
@@ -73,7 +72,7 @@ where JobScheduleId = @JobScheduleId";
         {
             IEnumerable<MammothPriceType> mammothPricesWithPriceID = mammothPrices
                 .MammothPrice
-                .Where(x => x.PriceID != null);
+                .Where(x => x.PriceIDSpecified);
             string archiveActivePriceSqlStatement = $@"INSERT INTO gpm.ActivePriceSentArchive (Region, PriceID, InsertDateUtc)
 VALUES (@Region, @PriceID, SYSUTCDATETIME())";
             retryPolicy.Execute(() =>
