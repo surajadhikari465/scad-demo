@@ -105,7 +105,7 @@ namespace InventoryProducer.Common.InstockDequeue
                 {
                     inventoryLogger.LogError(
                         $@"Failed to archive Event Message for 
-                        KeyID: ${dequeuedEvent.KeyID}, 
+                        KeyID: {dequeuedEvent.KeyID}, 
                         SecondaryID: {dequeuedEvent.SecondaryKeyID}, 
                         MessageType: {dequeuedEvent.MessageType}, 
                         EventTypeCode: {dequeuedEvent.EventTypeCode}, 

@@ -99,7 +99,10 @@ namespace GPMService.Producer.Message.Processor
             }
             finally
             {
-                commonDAL.UpdateStatusToReady(jobScheduleMessage.JobScheduleId);
+                if (jobScheduleMessage != null)
+                {
+                    commonDAL.UpdateStatusToReady(jobScheduleMessage.JobScheduleId);
+                }
                 if (
                     expiringTprListenerEsbConnectionSettings.SessionMode == SessionMode.ClientAcknowledge
                     || expiringTprListenerEsbConnectionSettings.SessionMode == SessionMode.ExplicitClientAcknowledge
@@ -152,7 +155,7 @@ namespace GPMService.Producer.Message.Processor
                         PriceIDSpecified = true,
                         BusinessUnit = currentBusinessUnitExpiringTpr.BusinessUnitID,
                         ItemId = currentBusinessUnitExpiringTpr.ItemID,
-                        GpmId = currentBusinessUnitExpiringTpr.GpmID,
+                        GpmId = currentBusinessUnitExpiringTpr.GpmID.ToString(),
                         Multiple = currentBusinessUnitExpiringTpr.Multiple,
                         Price = currentBusinessUnitExpiringTpr.Price,
                         StartDate = currentBusinessUnitExpiringTpr.StartDate,

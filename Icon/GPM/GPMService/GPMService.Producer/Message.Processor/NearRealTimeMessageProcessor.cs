@@ -48,6 +48,7 @@ namespace GPMService.Producer.Message.Processor
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.processBODHandler = processBODHandler;
             this.confirmBODHandler = confirmBODHandler;
+            this.errorEventPublisher = errorEventPublisher;
             this.nearRealTimeListenerEsbConnectionSettings = nearRealTimeListenerEsbConnectionSettings;
             this.messagePublisher = messagePublisher;
             this.logger = logger;

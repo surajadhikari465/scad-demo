@@ -6,7 +6,7 @@ namespace GPMService.Producer.Model.DBModel
     {
         public long PriceID { get; set; }
         public string Region { get; set; }
-        public string GpmID { get; set; }
+        public Guid GpmID { get; set; }
         public int ItemID { get; set; }
         public int BusinessUnitID { get; set; }
         public DateTime StartDate { get; set; }
