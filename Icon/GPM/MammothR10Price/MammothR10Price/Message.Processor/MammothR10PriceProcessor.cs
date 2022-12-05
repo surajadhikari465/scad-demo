@@ -9,6 +9,7 @@ using Icon.Logging;
 using Polly;
 using Polly.Retry;
 using MammothR10Price.Mapper;
+using MammothR10Price.Message.Archive;
 using MammothR10Price.Publish;
 using TIBCO.EMS;
 
@@ -22,6 +23,7 @@ namespace MammothR10Price.Message.Processor
         private readonly IMessageParser<MammothPricesType> messageParser;
         private readonly IErrorEventPublisher errorEventPublisher;
         private readonly IMessagePublisher messagePublisher;
+        private readonly IMessageArchiver messageArchiver;
         private readonly ILogger<MammothR10PriceProcessor> logger;
         private readonly EsbConnectionSettings esbConnectionSettings;
         private readonly IMapper<IList<MammothPriceType>, Items> itemPriceCanonicalMapper;
@@ -87,7 +89,7 @@ namespace MammothR10Price.Message.Processor
                         }
 
                         messagePublisher.Publish(xmlMessage, messageProperties);
-                        ArchiveMessage(businessUnitPrices, itemPriceCanonical, messageProperties);
+                        messageArchiver.ArchiveMessage(businessUnitPrices, xmlMessage, messageProperties);
                     });
                 }
 
@@ -117,12 +119,6 @@ namespace MammothR10Price.Message.Processor
             {
                 AcknowledgeMessage(message);
             }
-        }
-
-        // TODO: Complete the Archiving Part
-        private void ArchiveMessage(IList<MammothPriceType> mammothPrices, Items itemPriceCanonical, IDictionary<string, string> messageProperties)
-        {
-
         }
 
         private void AcknowledgeMessage(IEsbMessage message)
