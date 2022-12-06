@@ -39,47 +39,47 @@ BEGIN
 END
 GO
 GRANT SELECT
-    ON OBJECT::[dbo].[fn_Parse_List] TO [IRMASupportRole]
+    ON OBJECT::[dbo].[fn_Parse_List_MammothItemLocale] TO [IRMASupportRole]
     AS [dbo];
 
 
 GO
 GRANT SELECT
-    ON OBJECT::[dbo].[fn_Parse_List] TO [IRMAClientRole]
+    ON OBJECT::[dbo].[fn_Parse_List_MammothItemLocale] TO [IRMAClientRole]
     AS [dbo];
 
 
 GO
 GRANT SELECT
-    ON OBJECT::[dbo].[fn_Parse_List] TO [IRMASchedJobsRole]
+    ON OBJECT::[dbo].[fn_Parse_List_MammothItemLocale] TO [IRMASchedJobsRole]
     AS [dbo];
 
 
 GO
 GRANT SELECT
-    ON OBJECT::[dbo].[fn_Parse_List] TO [IRMAReportsRole]
+    ON OBJECT::[dbo].[fn_Parse_List_MammothItemLocale] TO [IRMAReportsRole]
     AS [dbo];
 
 
 GO
 GRANT SELECT
-    ON OBJECT::[dbo].[fn_Parse_List] TO [IRMAAVCIRole]
+    ON OBJECT::[dbo].[fn_Parse_List_MammothItemLocale] TO [IRMAAVCIRole]
     AS [dbo];
 
 
 GO
 GRANT SELECT
-    ON OBJECT::[dbo].[fn_Parse_List] TO [IRMASLIMRole]
+    ON OBJECT::[dbo].[fn_Parse_List_MammothItemLocale] TO [IRMASLIMRole]
     AS [dbo];
 
 
 GO
 GRANT SELECT
-    ON OBJECT::[dbo].[fn_Parse_List] TO [MammothRole]
+    ON OBJECT::[dbo].[fn_Parse_List_MammothItemLocale] TO [MammothRole]
     AS [dbo];
 
 GO
 
 GRANT SELECT
-    ON OBJECT::[dbo].[fn_Parse_List] TO [IRMAPDXExtractRole]
+    ON OBJECT::[dbo].[fn_Parse_List_MammothItemLocale] TO [IRMAPDXExtractRole]
     AS [dbo];
