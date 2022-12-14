@@ -13,7 +13,6 @@ namespace MammothR10Price
             string apiDescription = ConfigurationManager.AppSettings["ApiDescription"].ToString();
             string apiDisplayName = ConfigurationManager.AppSettings["ApiDisplayName"].ToString();
             string apiServiceName = ConfigurationManager.AppSettings["ApiServiceName"].ToString();
-            string producerInstanceId = ConfigurationManager.AppSettings["ProducerInstanceId"].ToString();
 
             Container container = SimpleInjectorInitializer.InitializeContainer();
             HostFactory.Run(r =>

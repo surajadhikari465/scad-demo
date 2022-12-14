@@ -139,11 +139,13 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Esb.Listener\MammothR10PriceListener.cs" />
+    <Compile Include="Esb.Subscriber\Sb1EsbSubscriber.cs" />
     <Compile Include="MammothR10PriceServiceSettings.cs" />
     <Compile Include="Mapper\IMapper.cs" />
     <Compile Include="Mapper\ItemPriceCanonicalMapper.cs" />
     <Compile Include="Message.Archive\IMessageArchiver.cs" />
     <Compile Include="Message.Archive\MessageArchiver.cs" />
+    <Compile Include="Message.Parser\MammothPriceParser.cs" />
     <Compile Include="Message.Processor\IMessageProcessor.cs" />
     <Compile Include="Message.Processor\MammothR10PriceProcessor.cs" />
     <Compile Include="Model\PriceMessageDetail.cs" />
