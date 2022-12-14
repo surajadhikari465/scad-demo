@@ -35,3 +35,6 @@ GO
 
 GRANT SELECT ON [dbo].[Items] TO [TibcoRole]
 GO
+
+GRANT SELECT ON [dbo].[Items] TO [MammothRole]
+GO

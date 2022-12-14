@@ -19,3 +19,6 @@ GO
 
 GRANT UPDATE,INSERT on [esb].[PriceMessageArchiveDetail] to [TibcoRole]
 GO
+
+GRANT UPDATE, INSERT on [esb].[PriceMessageArchiveDetail] to [MammothRole]
+GO

@@ -89,3 +89,6 @@ GO
 
 GRANT SELECT, INSERT, UPDATE, DELETE on gpm.Price_SP to [TibcoRole]
 GO
+
+GRANT SELECT, INSERT, UPDATE, DELETE on gpm.Price_SP to [MammothRole]
+GO

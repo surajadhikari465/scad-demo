@@ -31,3 +31,6 @@ END
 GO
 GRANT EXEC ON [gpm].[DeleteAllPricesForItemIdBusinessUnitId] TO TibcoRole
 GO
+    
+GRANT EXEC ON [gpm].[DeleteAllPricesForItemIdBusinessUnitId] TO MammothRole
+GO

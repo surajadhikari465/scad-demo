@@ -42,3 +42,6 @@ GO
 
 GRANT EXEC ON [gpm].[DeletePrice] TO TibcoRole
 GO
+    
+GRANT EXEC ON [gpm].[DeletePrice] TO MammothRole
+GO

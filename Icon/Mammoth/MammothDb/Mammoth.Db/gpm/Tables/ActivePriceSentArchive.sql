@@ -12,3 +12,6 @@ GO
 
 GRANT SELECT, UPDATE, INSERT ON [gpm].[ActivePriceSentArchive] TO [TibcoRole]
 GO
+
+GRANT SELECT, UPDATE, INSERT ON [gpm].[ActivePriceSentArchive] TO [MammothRole]
+GO

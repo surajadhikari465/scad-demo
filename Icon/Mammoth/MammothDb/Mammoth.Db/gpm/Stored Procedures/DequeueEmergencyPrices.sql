@@ -19,3 +19,6 @@ GO
 
 GRANT EXEC ON [gpm].[DequeueEmergencyPrices] TO TibcoRole
 GO
+    
+GRANT EXEC ON [gpm].[DequeueEmergencyPrices] TO MammothRole
+GO

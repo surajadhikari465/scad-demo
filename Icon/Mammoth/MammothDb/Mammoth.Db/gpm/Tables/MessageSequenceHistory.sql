@@ -20,3 +20,6 @@ GO
 
 GRANT UPDATE, INSERT, SELECT ON [gpm].[MessageSequenceHistory] TO [TibcoRole]
 GO
+
+GRANT UPDATE, INSERT, SELECT ON [gpm].[MessageSequenceHistory] TO [MammothRole]
+GO

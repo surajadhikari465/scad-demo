@@ -53,3 +53,6 @@ GO
 
 GRANT INSERT, UPDATE, SELECT ON [gpm].[MessageSequence] TO [TibcoRole]
 GO
+
+GRANT INSERT, UPDATE, SELECT ON [gpm].[MessageSequence] TO [MammothRole]
+GO

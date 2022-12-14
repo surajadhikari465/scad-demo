@@ -41,3 +41,6 @@ GO
 
 GRANT SELECT ON [dbo].[Locale] TO TibcoRole
 GO
+
+GRANT SELECT ON [dbo].[Locale] TO MammothRole
+GO

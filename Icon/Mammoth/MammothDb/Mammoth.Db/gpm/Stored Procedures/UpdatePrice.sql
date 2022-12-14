@@ -78,3 +78,6 @@ GO
 
 GRANT EXEC ON gpm.UpdatePrice TO TibcoRole;
 GO
+
+GRANT EXEC ON gpm.UpdatePrice TO MammothRole
+GO

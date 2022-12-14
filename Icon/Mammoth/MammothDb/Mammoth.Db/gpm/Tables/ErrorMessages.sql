@@ -33,3 +33,6 @@ GO
 
 GRANT INSERT, UPDATE, SELECT ON gpm.ErrorMessages To IconInterfaceRole;
 GO
+
+GRANT INSERT, UPDATE, SELECT ON gpm.ErrorMessages TO MammothRole
+GO

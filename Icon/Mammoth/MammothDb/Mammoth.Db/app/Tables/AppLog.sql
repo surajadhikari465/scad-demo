@@ -40,3 +40,6 @@ GO
 
 GRANT INSERT, SELECT ON [app].[AppLog] TO [TibcoRole]
 GO
+
+GRANT INSERT, SELECT ON [app].[AppLog] to [MammothRole]
+GO

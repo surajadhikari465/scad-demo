@@ -14,6 +14,9 @@
 );
 GO
 
+GRANT SELECT ON [dbo].[Locales_UK] TO [MammothRole]
+GO
+
 CREATE NONCLUSTERED INDEX [IX_Locales_UK_BusinessUnitId]
     ON [dbo].[Locales_UK]([BusinessUnitID] ASC) WITH (FILLFACTOR = 80)
     ON [FG_UK];

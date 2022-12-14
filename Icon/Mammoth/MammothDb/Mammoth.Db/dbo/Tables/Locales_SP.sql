@@ -18,6 +18,8 @@ GO
 GRANT SELECT ON [dbo].[Locales_SP] TO [TibcoRole]
 GO
 
+GRANT SELECT ON [dbo].[Locales_SP] TO [MammothRole]
+GO
 
 CREATE NONCLUSTERED INDEX [IX_Locales_SP_BusinessUnitId]
     ON [dbo].[Locales_SP]([BusinessUnitID] ASC) WITH (FILLFACTOR = 80)

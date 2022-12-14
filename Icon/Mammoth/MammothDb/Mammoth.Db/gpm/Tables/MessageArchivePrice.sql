@@ -18,3 +18,6 @@ GO
 
 GRANT INSERT on [gpm].[MessageArchivePrice] to [TibcoRole]
 GO
+
+GRANT INSERT on [gpm].[MessageArchivePrice] to [MammothRole]
+GO

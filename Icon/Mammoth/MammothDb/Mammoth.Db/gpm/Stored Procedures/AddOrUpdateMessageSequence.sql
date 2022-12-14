@@ -26,3 +26,6 @@ GO
 
 GRANT EXEC ON [gpm].[AddOrUpdateMessageSequence] TO TibcoRole
 GO
+    
+GRANT EXEC ON [gpm].[AddOrUpdateMessageSequence] TO MammothRole
+GO

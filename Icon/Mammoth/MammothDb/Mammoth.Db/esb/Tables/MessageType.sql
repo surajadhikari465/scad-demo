@@ -7,3 +7,6 @@ GO
 
 GRANT SELECT on [esb].[MessageType] to [TibcoRole]
 GO
+
+GRANT SELECT on [esb].[MessageType] to [MammothRole]
+GO

@@ -42,3 +42,6 @@ GO
 
 GRANT SELECT ON [gpm].[Prices] TO [TibcoRole]
 GO
+
+GRANT SELECT ON [gpm].[Prices] TO [MammothRole]
+GO

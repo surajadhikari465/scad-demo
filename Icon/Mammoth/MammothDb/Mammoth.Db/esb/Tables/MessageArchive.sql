@@ -18,3 +18,6 @@ GO
 
 GRANT INSERT on [esb].[MessageArchive] to [TibcoRole]
 GO
+    
+GRANT INSERT on [esb].[MessageArchive] to [MammothRole]
+GO

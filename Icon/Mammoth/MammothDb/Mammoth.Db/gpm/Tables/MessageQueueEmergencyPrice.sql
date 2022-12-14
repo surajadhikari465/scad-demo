@@ -17,3 +17,6 @@ GO
 
 GRANT UPDATE, SELECT, INSERT, DELETE ON gpm.MessageQueueEmergencyPrice TO TibcoRole
 GO
+
+GRANT UPDATE, SELECT, INSERT, DELETE ON gpm.MessageQueueEmergencyPrice TO MammothRole
+GO
