@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace MammothR10Price
 {
     internal class Constants
@@ -20,9 +15,33 @@ namespace MammothR10Price
             public const string MammothMessageId = "MammothMessageID";
         }
 
+        public struct PriceType
+        {
+            public const string RWD = "RWD";
+            public const string TPR = "TPR";
+            public const string REG = "REG";
+            public const string PMI = "PMI";
+            public const string PMD = "PMD";
+        }
+
+        public struct Description
+        {
+            public const string Reward = "Reward";
+            public const string Rewards = "Rewards";
+            public const string TemporaryPriceReduction = "Temperorary Price Reduction";
+            public const string RegularPrice = "Regular Price";
+            public const string PrimeMemberIncremental = "Prime Member Incremental";
+            public const string PrimeMemberDeal = "Prime Member Deal";
+        }
+
         public struct Source
         {
             public const string Mammoth = "Mammoth";
+        }
+
+        public struct Action
+        {
+            public const string DELETE = "DELETE";
         }
     }
 }

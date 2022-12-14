@@ -141,6 +141,7 @@
     <Compile Include="Esb.Listener\MammothR10PriceListener.cs" />
     <Compile Include="MammothR10PriceServiceSettings.cs" />
     <Compile Include="Mapper\IMapper.cs" />
+    <Compile Include="Mapper\ItemPriceCanonicalMapper.cs" />
     <Compile Include="Message.Archive\IMessageArchiver.cs" />
     <Compile Include="Message.Archive\MessageArchiver.cs" />
     <Compile Include="Message.Processor\IMessageProcessor.cs" />

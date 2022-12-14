@@ -7,6 +7,11 @@ using MammothR10Price.Esb.Listener;
 using MammothR10Price.Publish;
 using MammothR10Price.Message.Processor;
 using MammothR10Price.Service;
+using MammothR10Price.Mapper;
+using System.Collections.Generic;
+using Icon.Esb.Schemas.Mammoth;
+using Icon.Esb.Schemas.Wfm.Contracts;
+using MammothR10Price.Serializer;
 
 namespace MammothR10Price
 {
@@ -24,6 +29,9 @@ namespace MammothR10Price
             container.RegisterSingleton(() => serviceSettings);
             container.RegisterSingleton(() => EsbConnectionSettings.CreateSettingsFromConfig());
             container.RegisterSingleton(() => ListenerApplicationSettings.CreateDefaultSettings(serviceSettings.ApplicationName));
+            container.RegisterSingleton<IMapper<IList<MammothPriceType>, items>, ItemPriceCanonicalMapper>();
+            container.RegisterSingleton<ISerializer<items>, Serializer<items>>();
+            container.RegisterSingleton<ILogger<ItemPriceCanonicalMapper>, NLogLogger<ItemPriceCanonicalMapper>>();
             container.RegisterSingleton<ILogger<MammothR10PriceProcessor>, NLogLogger<MammothR10PriceProcessor>>();
             container.RegisterSingleton<ILogger<MammothR10PriceService>, NLogLogger<MammothR10PriceService>>();
             container.RegisterSingleton<ILogger<MammothR10PriceListener>, NLogLogger<MammothR10PriceListener>>();
