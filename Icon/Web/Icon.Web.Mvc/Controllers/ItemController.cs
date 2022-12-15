@@ -405,8 +405,15 @@ namespace Icon.Web.Controllers
             manager.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc] = DateTime.UtcNow.ToFormattedDateTimeString();
             manager.ItemAttributes[Constants.Attributes.ModifiedBy] = manager.ItemAttributes[Constants.Attributes.CreatedBy];
             manager.ItemAttributes[Constants.Attributes.ModifiedDateTimeUtc] = manager.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc];
-
             manager.ItemAttributes = SanitizeItemAttributes(manager.ItemAttributes);
+
+            List<string> validationErrors = validateItemAttributes(manager.ItemAttributes);
+            if (validationErrors.Count > 0)
+            {
+                logger.Error($"sessionID={this.Session.SessionID}, Item failed validation: {manager.ItemId} for scancode: {manager.ScanCode}");
+                logger.Error($"sessionID={this.Session.SessionID}, List of validation errors: {validationErrors} for scancode: {manager.ScanCode}");
+                return Json(new { ScanCode = manager.ScanCode, Errors = validationErrors }, JsonRequestBehavior.AllowGet);
+            }
 
             addItemManagerHandler.Execute(manager);
 
@@ -455,12 +462,31 @@ namespace Icon.Web.Controllers
             manager.ItemAttributes[Constants.Attributes.ModifiedBy] = User.Identity.Name;
             manager.ItemAttributes[Constants.Attributes.ModifiedDateTimeUtc] = DateTime.UtcNow.ToFormattedDateTimeString();
             manager.ItemAttributes = SanitizeItemAttributes(manager.ItemAttributes);
+            
+            List<string> validationErrors = validateItemAttributes(manager.ItemAttributes);
+            if (validationErrors.Count > 0)
+            {
+                logger.Error($"sessionID={this.Session.SessionID}, Item failed validation: {manager.ItemId} for scancode: {manager.ScanCode}");
+                logger.Error($"sessionID={this.Session.SessionID}, List of validation errors: {validationErrors} for scancode: {manager.ScanCode}");
+                return Json(new { ScanCode = manager.ScanCode, Errors = validationErrors }, JsonRequestBehavior.AllowGet);
+            }
 
             this.updateItemManagerHandler.Execute(manager);
 
             logger.Info($"sessionID={this.Session.SessionID}, Item updated with itemId: {manager.ItemId} for scancode: {manager.ScanCode}");
 
             return Json(new { ItemId = manager.ItemId, Action = "Update" }, JsonRequestBehavior.AllowGet);
+        }
+
+        private List<string> validateItemAttributes(Dictionary<String, String> itemAttributes)
+        {
+            var attributeValidationErrors = itemAttributes
+                .Select(kvp => itemAttributesValidatorFactory.CreateItemAttributesJsonValidator(kvp.Key).Validate(kvp.Value))
+                .Where(r => !r.IsValid)
+                .SelectMany(r => r.ErrorMessages)
+                .ToList();
+
+            return attributeValidationErrors;
         }
 
         private Dictionary<String, String> SanitizeItemAttributes(Dictionary<String, String> itemAttributes)

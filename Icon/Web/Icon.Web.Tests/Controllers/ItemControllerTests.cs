@@ -432,6 +432,10 @@ namespace Icon.Web.Tests.Unit.Controllers
                 .Returns(new List<AttributeModel> { new AttributeModel { AttributeName = "Inactive", DataTypeName = Constants.DataTypeNames.Boolean },
                     new AttributeModel { AttributeName = "ModifiedDateTimeUtc", DataTypeName = Constants.DataTypeNames.Date }});
 
+            mockItemAttributesValidatorFactory
+                .Setup(v => v.CreateItemAttributesJsonValidator(It.IsAny<string>()).Validate(It.IsAny<string>()))
+                .Returns(new ItemAttributesValidationResult { ErrorMessages = null, IsValid = true });
+
             mockUpdateItemManagerHandler.Setup(x => x.Execute(It.IsAny<UpdateItemManager>())).Callback<UpdateItemManager>((item) =>
             {
                 Assert.AreEqual("2001-01-01 12:12:12", item.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc], "CreatedDateTimeUtc should not change regardless of what the client sends");
@@ -453,6 +457,75 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockUpdateItemManagerHandler.Verify(x => x.Execute(It.IsAny<UpdateItemManager>()), Times.Once);
             Assert.IsNotNull(result);
             Assert.AreEqual(new { ItemId = 1234, Action = "Update" }.ToString(), result.Data.ToString());
+        }
+
+        [TestMethod]
+        public void Synchronize_ItemSubmitted_ShouldUpdate_throwValidationErrors()
+        {
+            //Given
+            string testScanCode = "testScanCode";
+
+            var testItemModel = new ItemDbModel
+            {
+                ScanCode = testScanCode,
+                ItemId = 1234,
+                BrandsHierarchyClassId = 1,
+                FinancialHierarchyClassId = 2,
+                ItemAttributesJson = JsonConvert.SerializeObject(new Dictionary<string, string>()
+                {
+                    { Constants.Attributes.CreatedBy, "TestCreate" },
+                    { Constants.Attributes.CreatedDateTimeUtc, "2001-01-01 12:12:12" },
+                    { "Inactive", "false"},
+                    { "RetailSize", "2"},
+                    { "UOM", "EA"}
+                }),
+                ItemTypeId = ItemTypes.RetailSale,
+                ItemTypeDescription = Descriptions.RetailSale,
+                MerchandiseHierarchyClassId = 3,
+                NationalHierarchyClassId = 4,
+                BarcodeTypeId = 1,
+                BarcodeType = "5 Digit POS PLU (10000-82999)",
+                TaxHierarchyClassId = 5,
+                ManufacturerHierarchyClassId = 6
+            };
+
+            var testItemSynchronizationModel = new ItemSynchronizationModel
+            {
+                ScanCode = testScanCode,
+                BrandHierarchyClassId = 10,
+                MerchandiseHierarchyClassId = 20,
+                NationalHierarchyClassId = 30,
+                TaxHierarchyClassId = 40,
+                ManufacturerHierarchyClassId = 50,
+                BarcodeTypeId = 1,
+                ItemAttributes = new Dictionary<string, string>() { { "RetailSize", "1" }, { "DrainedWeight", "stringValue" } }
+
+            };
+
+            mockGetItemQueryHandler.Setup(m => m.Search(It.Is<GetItemParameters>(p => p.ScanCode == testScanCode)))
+                .Returns(testItemModel);
+
+            mockGetItemPropertiesFromMerchQueryHandler.Setup(m => m.Search(It.IsAny<GetItemPropertiesFromMerchHierarchyParameters>()))
+                .Returns(new MerchDependentItemPropertiesModel { FinancialHierarcyClassId = 20, ProhibitDiscount = false, NonMerchandiseTraitValue = "test" });
+
+            mockGetAttributesQueryHandler.Setup(m => m.Search(It.IsAny<EmptyQueryParameters<IEnumerable<AttributeModel>>>()))
+                .Returns(new List<AttributeModel> { new AttributeModel { AttributeName = "Inactive", DataTypeName = Constants.DataTypeNames.Boolean },
+                    new AttributeModel { AttributeName = "ModifiedDateTimeUtc", DataTypeName = Constants.DataTypeNames.Date }});
+           
+            mockItemAttributesValidatorFactory
+                .Setup(v => v.CreateItemAttributesJsonValidator(It.IsAny<string>()).Validate(It.IsAny<string>()))
+                .Returns(new ItemAttributesValidationResult { ErrorMessages = null, IsValid = true });
+
+            mockItemAttributesValidatorFactory
+                .Setup(v => v.CreateItemAttributesJsonValidator("DrainedWeight").Validate("stringValue"))
+                .Returns(new ItemAttributesValidationResult { ErrorMessages = new List<string>{ "Drained Weight is not a valid number." }, IsValid = false });
+
+
+            var result = controller.SynchronizeItem(testItemSynchronizationModel);
+
+            mockUpdateItemManagerHandler.Verify(x => x.Execute(It.IsAny<UpdateItemManager>()), Times.Never);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(new { ScanCode = "testScanCode", Errors = new List<string>{"Drained Weight is not a valid number."} }.ToString(), result.Data.ToString());
         }
 
         [TestMethod]
@@ -507,6 +580,10 @@ namespace Icon.Web.Tests.Unit.Controllers
                 .Returns(new List<AttributeModel> { new AttributeModel { AttributeName = "Inactive", DataTypeName = Constants.DataTypeNames.Boolean },
                     new AttributeModel { AttributeName = "ModifiedDateTimeUtc", DataTypeName = Constants.DataTypeNames.Date }});
 
+            mockItemAttributesValidatorFactory
+                .Setup(v => v.CreateItemAttributesJsonValidator(It.IsAny<string>()).Validate(It.IsAny<string>()))
+                .Returns(new ItemAttributesValidationResult { ErrorMessages = null, IsValid = true });
+
             mockAddItemManagerHandler.Setup(x => x.Execute(It.IsAny<AddItemManager>())).Callback<AddItemManager>((item) =>
             {
                 Assert.IsNotNull(item.ItemAttributes[Constants.Attributes.CreatedDateTimeUtc], "CreatedDateTimeUtc should not change regardless of what the client sends");
@@ -529,6 +606,49 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             Assert.IsNotNull(resultData.ItemId);
             Assert.AreEqual("Create", (string)resultData.Action);
+        }
+
+        [TestMethod]
+        public void Synchronize_ItemSubmitted_ShouldCreate_throwValidationErrors()
+        {
+            //Given
+            string testScanCode = "testScanCode";
+
+            var testItemSynchronizationModel = new ItemSynchronizationModel
+            {
+                ScanCode = testScanCode,
+                BrandHierarchyClassId = 10,
+                MerchandiseHierarchyClassId = 20,
+                NationalHierarchyClassId = 30,
+                TaxHierarchyClassId = 40,
+                ManufacturerHierarchyClassId = 50,
+                BarcodeTypeId = 1,
+                ItemAttributes = new Dictionary<string, string>() { { "Inactive", "false"},{ "DrainedWeight", "stringValue" } }
+            };
+
+            mockGetItemQueryHandler.Setup(m => m.Search(It.Is<GetItemParameters>(p => p.ScanCode == testScanCode)))
+                .Throws(new InvalidOperationException("No item was found given item scan code: " + testScanCode));
+
+            mockGetItemPropertiesFromMerchQueryHandler.Setup(m => m.Search(It.IsAny<GetItemPropertiesFromMerchHierarchyParameters>()))
+                .Returns(new MerchDependentItemPropertiesModel { FinancialHierarcyClassId = 20, ProhibitDiscount = false, NonMerchandiseTraitValue = "test" });
+
+            mockGetAttributesQueryHandler.Setup(m => m.Search(It.IsAny<EmptyQueryParameters<IEnumerable<AttributeModel>>>()))
+                .Returns(new List<AttributeModel> { new AttributeModel { AttributeName = "Inactive", DataTypeName = Constants.DataTypeNames.Boolean },
+                    new AttributeModel { AttributeName = "ModifiedDateTimeUtc", DataTypeName = Constants.DataTypeNames.Date }});
+
+            mockItemAttributesValidatorFactory
+                .Setup(v => v.CreateItemAttributesJsonValidator(It.IsAny<string>()).Validate(It.IsAny<string>()))
+                .Returns(new ItemAttributesValidationResult { ErrorMessages = null, IsValid = true });
+
+            mockItemAttributesValidatorFactory
+                .Setup(v => v.CreateItemAttributesJsonValidator("DrainedWeight").Validate("stringValue"))
+                .Returns(new ItemAttributesValidationResult { ErrorMessages = new List<string> { "Drained Weight is not a valid number." }, IsValid = false });
+
+            var result = controller.SynchronizeItem(testItemSynchronizationModel);
+
+            mockAddItemManagerHandler.Verify(x => x.Execute(It.IsAny<AddItemManager>()), Times.Never);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(new { ScanCode = "testScanCode", Errors = new List<string> { "Drained Weight is not a valid number." } }.ToString(), result.Data.ToString());
         }
 
         [TestMethod]
