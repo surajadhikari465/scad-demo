@@ -30,8 +30,8 @@ namespace MammothR10Price
         {
             var container = new Container();
             var serviceSettings = MammothR10PriceServiceSettings.CreateSettingsFromConfig();
-            var sb1Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("MammothR10PriceSb1Queue");
-            var esbSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("MammothR10PriceEsbQueue");
+            var sb1Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("MammothR10PriceSb1Consumer");
+            var esbSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("MammothR10PriceEsbProducer");
 
             var sb1Subscriber = new Sb1EsbConsumer(sb1Settings);
             var esbProducer = new EsbProducer(esbSettings);
