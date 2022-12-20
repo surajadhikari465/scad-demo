@@ -1,0 +1,110 @@
+{
+  "id": "FF8A6CCD-CBED-4F58-9167-0D75127D2437",
+  "name": "SqlJobWaiter",
+  "friendlyName": "SQL Server Job Waiter",
+  "description": "Waits on SQL Jobs that may be running on a SQL Server",
+  "helpMarkDown": "",
+  "category": "Deploy",
+  "visibility": [
+    "Release",
+    "Build"
+  ],
+  "author": "WFM IRMA/ICON Team",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 12
+  },
+  "demands": [
+  ],
+  "minimumAgentVersion": "1.96.2",
+  "groups": [
+    {
+      "name": "jobDetails",
+      "displayName": "Job Details",
+      "isExpanded": true
+    }
+
+  ],
+  "inputs": [
+    {
+      "name": "serverHost",
+      "type": "string",
+      "label": "Machine",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "The target machine"
+    },
+    {
+      "name": "AdminUserName",
+      "type": "string",
+      "label": "Admin Login",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide the administrator's login of the target machine."
+    },
+    {
+      "name": "AdminPassword",
+      "type": "string",
+      "label": "Password",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide the administrator's password of the target machine. <br>The best practice is to create a variable in the Build or Release definition, and mark it as 'Secret' to secure it, and then use it here, like '$(adminPassword)'."
+    },
+    {
+      "name": "SQLServer",
+      "type": "string",
+      "label": "Server",
+      "defaultValue": "",
+      "required": true,
+      "groupName": "jobDetails",
+      "helpMarkDown": ""
+    },
+    {
+      "name": "JobNames",
+      "type": "multiLine",
+      "label": "Job Names",
+      "defaultValue": "",
+      "required": true,
+      "groupName": "jobDetails",
+      "helpMarkDown": "Comma delimited list of job names."
+    },
+    {
+      "name": "WindowsAuthentication",
+      "type": "boolean",
+      "label": "Windows Authentication",
+      "required": true,
+      "defaultValue": "true",
+      "groupName": "jobDetails",
+      "helpMarkDown": "Use the credentials of the Build Server to connect to the SQL Server"
+    },
+    {
+      "name": "Login",
+      "type": "string",
+      "label": "Sql Login",
+      "defaultValue": "",
+      "required": false,
+      "groupName": "jobDetails",
+      "visibleRule": "WindowsAuthentication = false",
+      "helpMarkDown": "Login for the sql server"
+    },
+    {
+      "name": "Password",
+      "type": "string",
+      "label": "SQL Password",
+      "defaultValue": "",
+      "required": false,
+      "groupName": "jobDetails",
+      "visibleRule": "WindowsAuthentication = false",
+      "helpMarkDown": "Password for the sql server"
+    }
+  ],
+  "instanceNameFormat": "Wait on SQL Jobs on $(SQLServer)",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\Main.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "id": "42355317-0A89-4267-9333-0951BD1FCC16",
+  "name": "StopWindowsScheduledTasks",
+  "friendlyName": "Stop Windows Scheduled Tasks",
+  "description": "Iterates through a list of Windows Servers, and stops any schedule tasks found in the list of schedule tasks to stop.",
+  "helpMarkDown": "",
+  "category": "Deploy",
+  "visibility": [
+    "Release",
+    "Build"  
+  ],
+  "author": "WFM IRMA/ICON Team",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 12
+  },
+  "demands": [
+  ],
+  "minimumAgentVersion": "1.96.2",
+  "groups": [
+  ],
+  "inputs": [
+    {
+      "name": "machineList",
+      "type": "multiLine",
+      "label": "Machines",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide a comma separated list of the machine(s) IP addresses or FQDNs. <br>For example, dbserver.fabrikam.com, dbserver_int.fabrikam.com, 192.168.12.34"
+    },
+    {
+      "name": "taskList",
+      "type": "multiLine",
+      "label": "Tasks To Stop",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide a comma separated list of Windows Schedule Tasks"
+    },
+    {
+      "name": "AdminUserName",
+      "type": "string",
+      "label": "Admin Login",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide the administrator's login of the target machines."
+    },
+    {
+      "name": "AdminPassword",
+      "type": "string",
+      "label": "Password",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide the administrator's password of the target machines. <br>The best practice is to create a variable in the Build or Release definition, and mark it as 'Secret' to secure it, and then use it here, like '$(adminPassword)'."
+    }
+  ],
+  "instanceNameFormat": "Stop Windows Schedule Jobs $(taskList) on $(machineList)",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\Main.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}

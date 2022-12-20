@@ -1,0 +1,41 @@
+{
+  "id": "1C4635AC-C2DF-4FDC-B937-1727A630D511",
+  "name": "UserAccountEnabler",
+  "friendlyName": "User Account Enabler",
+  "description": "Enable a user account that the build agent can find (same AD domain as the build agent)",
+  "helpMarkDown": "",
+  "category": "Deploy",
+  "visibility": [
+    "Release",
+    "Build"  
+  ],
+  "author": "WFM IRMA/ICON Team",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 12
+  },
+  "demands": [
+  ],
+  "minimumAgentVersion": "1.96.2",
+  "groups": [
+  ],
+  "inputs": [
+    {
+      "name": "AccountToEnable",
+      "type": "string",
+      "label": "User Account to enable",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "User to look up in AD and enable"
+    }
+  ],
+  "instanceNameFormat": "Enable $(AccountToEnable)",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\Main.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}

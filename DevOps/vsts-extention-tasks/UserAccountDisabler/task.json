@@ -1,0 +1,41 @@
+{
+  "id": "A3F98B10-AA50-4AE8-A61A-1D688024331F",
+  "name": "UserAccountDisable",
+  "friendlyName": "User Account Disabler",
+  "description": "Disables a user account that the build agent can find (same AD domain as the build agent)",
+  "helpMarkDown": "",
+  "category": "Deploy",
+  "visibility": [
+    "Release",
+    "Build"  
+  ],
+  "author": "WFM IRMA/ICON Team",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 12
+  },
+  "demands": [
+  ],
+  "minimumAgentVersion": "1.96.2",
+  "groups": [
+  ],
+  "inputs": [
+    {
+      "name": "AccountToDisable",
+      "type": "string",
+      "label": "User Account to Disable",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "User to look up in AD and disable"
+    }
+  ],
+  "instanceNameFormat": "Disable $(AccountToDisable)",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\Main.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}

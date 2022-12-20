@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="93fb74f3-e521-4acf-a9b5-b662619e9bc0" ChangeDateTime="09/02/2016 14:19:37">
+    <Property Name="ElementName" Value="[dbo].[PostDeploymentScriptHistory].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PostDeploymentScriptHistory]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ScriptKey" />
+  </Operation>
+</Operations>

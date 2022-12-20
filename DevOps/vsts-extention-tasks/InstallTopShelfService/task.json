@@ -1,0 +1,113 @@
+{
+  "id": "9506E3DB-8F8F-4842-80D0-F16C0321BE1F",
+  "name": "InstallTopShelfService",
+  "friendlyName": "TopShelf Service Installer",
+  "description": "Installs Topshelf based services",
+  "helpMarkDown": "",
+  "category": "Deploy",
+  "visibility": [
+    "Release",
+    "Build"
+  ],
+  "author": "WFM IRMA/ICON Team",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 12
+  },
+  "demands": [
+  ],
+  "minimumAgentVersion": "1.96.2",
+  "groups": [
+  ],
+  "inputs": [
+    {
+      "name": "machineList",
+      "type": "multiLine",
+      "label": "Machines",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide a comma separated list of the machine(s) IP addresses or FQDNs. <br>For example, dbserver.fabrikam.com, dbserver_int.fabrikam.com, 192.168.12.34"
+    },
+    {
+      "name": "AdminUserName",
+      "type": "string",
+      "label": "Admin Login",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide the administrator's login of the target machine."
+    },
+    {
+      "name": "AdminPassword",
+      "type": "string",
+      "label": "Password",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide the administrator's password of the target machine. <br>The best practice is to create a variable in the Build or Release definition, and mark it as 'Secret' to secure it, and then use it here, like '$(adminPassword)'."
+    },
+    {
+      "name": "TopshelfExe",
+      "type": "multiLine",
+      "label": "Topshelf Exe Paths",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Full path to topshelf executable."
+    },
+    {
+      "name": "specialUser",
+      "type": "radio",
+      "label": "Special User",
+      "required": true,
+      "defaultValue": "custom",
+      "options": {
+        "custom": "Custom",
+        "localsystem": "Local System",
+        "localservice": "Local Service",
+        "networkservice": "Network Service"
+      },
+      "helpMarkDown": "The account type the service will run under."
+    },
+    {
+      "name": "ServiceUsername",
+      "type": "string",
+      "label": "Service Username",
+      "defaultValue": "",
+      "visibleRule": "specialUser = custom",
+      "required": false,
+      "helpMarkDown": "Username to run the service as."
+    },
+    {
+      "name": "ServicePassword",
+      "type": "string",
+      "label": "Service Password",
+      "defaultValue": "",
+      "visibleRule": "specialUser = custom",
+      "required": false,
+      "helpMarkDown": "Password for the service account"
+    },
+    {
+      "name": "InstanceName",
+      "type": "string",
+      "label": "Instance Name",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "An instance name if neccessary."
+    },
+    {
+      "name": "UninstallFirst",
+      "type": "boolean",
+      "label": "UnInstall service first",
+      "defaultValue": "true",
+      "required": true,
+      "helpMarkDown": "Check to uninstall the services before installation, effectivly resetting any manual changes. This will also stop services if running. (not reccomend as timeout it not controllable)"
+    }
+  ],
+  "instanceNameFormat": "Install $(TopshelfExe)",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\Main.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}

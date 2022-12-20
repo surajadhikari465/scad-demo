@@ -1,0 +1,242 @@
+{
+  "manifestVersion": 1,
+  "id": "WFM-IRMA-ICON-Custom-VSTS-Tasks",
+  "name": "WFM IRMA/ICON VSTS Extension Tasks",
+  "version": "0.0.0",
+  "publisher": "joshhandel-catapult",
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "description": "Build and Release Management extensions for use at WFM for building and deploying IRMA and ICON suites",
+  "categories": [
+    "Build and release"
+  ],
+  "tags": [
+    "Extension",
+    "WFM",
+    "Private"
+  ],
+  "branding": {
+    "color": "rgb(36, 43, 50)",
+    "theme": "dark"
+  },
+  "icons": {
+    "default": "extension/images/extension-icon.png"
+  },
+  "files": [
+    {
+      "path": "SqlServerDacpacDeployment"
+    },
+    {
+      "path": "SqlServerJobRunner"
+    },
+    {
+      "path": "SqlServerScriptRunner"
+    },
+    {
+      "path": "StartWindowsScheduledTasks"
+    },
+    {
+      "path": "StartWindowsServices"
+    },
+    {
+      "path": "StopWindowsServices"
+    },
+    {
+      "path": "StopWindowsScheduledTasks"
+    },
+    {
+      "path": "CodeAssassinConfigTransformPicker"
+    },
+    {
+      "path": "WindowsMachineFileDelete"
+    },
+    {
+      "path": "GNDNTask"
+    },
+    {
+      "path": "SetServiceConfigsOnServer"
+    },
+    {
+      "path": "InstallTopShelfService"
+    },
+    {
+      "path": "InstallWindowsService"
+    },
+    {
+      "path": "SqlJobWaiter"
+    },
+    {
+      "path": "UninstallTopShelfService"
+    },
+    {
+      "path": "TokenReplacement"
+    },
+    {
+      "path": "UserAccountDisabler"
+    },
+    {
+      "path": "UserAccountEnabler"
+    },
+    {
+      "path": "RefreshNotificationEmail"
+    }
+
+  ],
+  "contributions": [
+    {
+      "id": "SqlServerDacpacDeployment",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "SqlServerDacpacDeployment"
+      }
+    },
+    {
+      "id": "SqlServerScriptRunner",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "SqlServerScriptRunner"
+      }
+    },
+    {
+      "id": "SqlServerJobRunner",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "SqlServerJobRunner"
+      }
+    },
+    {
+      "id": "StartWindowsScheduledTasks",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "StartWindowsScheduledTasks"
+      }
+    },
+    {
+      "id": "StartWindowsServices",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "StartWindowsServices"
+      }
+    },
+    {
+      "id": "StopWindowsServices",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "StopWindowsServices"
+      }
+    },
+    {
+      "id": "StopWindowsScheduledTasks",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "StopWindowsScheduledTasks"
+      }
+    },
+    {
+      "id": "CodeAssassinConfigTransformPicker",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "CodeAssassinConfigTransformPicker"
+      }
+    },
+    {
+      "id": "WindowsMachineFileDelete",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "WindowsMachineFileDelete"
+      }
+    },
+    {
+      "id": "GNDNTask",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "GNDNTask"
+      }
+    },
+    {
+      "id": "SetServiceConfigsOnServer",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "SetServiceConfigsOnServer"
+      }
+    },
+    {
+      "id": "InstallTopShelfService",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "InstallTopShelfService"
+      }
+    },
+    {
+      "id": "InstallWindowsService",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "InstallWindowsService"
+      }
+    },
+    {
+      "id": "SqlJobWaiter",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "SqlJobWaiter"
+      }
+    },
+    {
+      "id": "UninstallTopShelfService",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "UninstallTopShelfService"
+      }
+    },
+    {
+      "id": "TokenReplacement",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "TokenReplacement"
+      }
+    },
+    {
+      "id": "UserAccountDisabler",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "UserAccountDisabler"
+      }
+    },
+    {
+      "id": "UserAccountEnabler",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "UserAccountEnabler"
+      }
+    },
+    {
+      "id": "RefreshNotificationEmail",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties": {
+        "name": "RefreshNotificationEmail"
+      }
+    }
+  ]
+}

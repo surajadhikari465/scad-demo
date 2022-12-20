@@ -1,0 +1,76 @@
+{
+  "id": "BF61025F-3A19-4754-A37D-1CA3864A8CA9",
+  "name": "RefreshNotificationEmail",
+  "friendlyName": "Send DB Refresh Email Notification",
+  "description": "Sends DB-refresh status.",
+  "helpMarkDown": "",
+  "category": "Deploy",
+  "visibility": [
+    "Release",
+    "Build"
+  ],
+  "author": "WFM IRMA/ICON Team",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 1
+  },
+  "demands": [
+  ],
+  "minimumAgentVersion": "1.96.2",
+  "groups": [
+  ],
+  "inputs": [
+    {
+      "name": "paramTo",
+      "type": "multiLine",
+      "label": "Mail To",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Semicolon- or comma-delimited list of email addresses."
+    },
+    {
+      "name": "paramEnv",
+      "type": "radio",
+      "label": "Environment For DB Being Refreshed",
+      "defaultValue": "",
+      "options": {
+        "Dev": "Dev",
+        "Test": "Test",
+        "QA": "QA",
+        "Production": "Prd"
+      },
+      "required": true,
+      "helpMarkDown": "Select the environment where the refreshed DB lives."
+    },
+    {
+      "name": "paramDbInstanceId",
+      "type": "string",
+      "label": "DB Identifier",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Specify the instance identifier for the DB. <br>For IRMA DBs, use the 2-letter region abbreviation, then 'Icon' or 'Mammoth' appropriately."
+    },
+    {
+      "name": "paramStatus",
+      "type": "radio",
+      "label": "Refresh Status",
+      "defaultValue": "",
+      "options": {
+        "Start": "Start",
+        "Finish": "Finish",
+        "Fail": "Fail"
+      },
+      "required": true,
+      "helpMarkDown": "Provide the administrator's password of the target machines. <br>The best practice is to create a variable in the Build or Release definition, and mark it as 'Secret' to secure it, and then use it here, like '$(adminPassword)'."
+    }
+  ],
+  "instanceNameFormat": "Email Notification For $(paramDbInstanceId) $(paramEnv) DB Refresh $(paramStatus)",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\Main.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}

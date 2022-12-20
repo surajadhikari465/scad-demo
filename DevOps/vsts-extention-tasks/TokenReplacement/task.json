@@ -1,0 +1,73 @@
+{
+  "id": "7279FC4C-3E3E-4F00-A450-3468C4F75030",
+  "name": "TokenReplacement",
+  "friendlyName": "Token Replacement",
+  "description": "Replaces a list of Tokens with a list of values for a list of files on a list of servers.. (try saying that 3 times fast)",
+  "helpMarkDown": "",
+  "category": "Deploy",
+  "visibility": [
+    "Release",
+    "Build"  
+  ],
+  "author": "WFM IRMA/ICON Team",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 12
+  },
+  "demands": [
+  ],
+  "minimumAgentVersion": "1.96.2",
+  "groups": [
+  ],
+  "inputs": [
+    {
+      "name": "machineList",
+      "type": "multiLine",
+      "label": "Machines",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide a comma separated list of the machine(s) IP addresses or FQDNs. <br>For example, dbserver.fabrikam.com, dbserver_int.fabrikam.com, 192.168.12.34"
+    },
+    {
+      "name": "AdminUserName",
+      "type": "string",
+      "label": "Admin Login",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide the administrator's login of the target machines."
+    },
+    {
+      "name": "AdminPassword",
+      "type": "string",
+      "label": "Password",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide the administrator's password of the target machines. <br>The best practice is to create a variable in the Build or Release definition, and mark it as 'Secret' to secure it, and then use it here, like '$(adminPassword)'."
+    },
+    {
+      "name": "fileList",
+      "type": "multiLine",
+      "label": "Files",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "File List, one file per line"
+    },
+    {
+      "name": "replacementValues",
+      "type": "multiLine",
+      "label": "Replacement Values",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Place one Replacement Key and value on each line with a | between them (example: InstanceID|1 or ServiceDescription|This is a cool service)"
+    }
+  ],
+  "instanceNameFormat": "Replace tokens with a value of ${key} with a value specified values in $(configName)",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\Main.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}

@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{da8f7b99-bed5-4d41-bfc3-7b8f1ad1a55e}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MyApplication</RootNamespace>
+    <AssemblyName>MyApplication</AssemblyName>
+    <Name>TestLib</Name>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="TestHelpersModule\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="InstallWindowsService.tests.ps1" />
+    <Compile Include="InstallTopShelfService.tests.ps1" />
+    <Compile Include="TokenReplacement.tests.ps1" />
+    <Compile Include="SetServiceConfigsOnServer.tests.ps1" />
+    <Compile Include="SqlServerDacpacDeployment.tests.ps1" />
+    <Compile Include="SqlJobWaiter.tests.ps1" />
+    <Compile Include="UserAccountEnabler.tests.ps1" />
+    <Compile Include="UserAccountDisable.tests.ps1" />
+    <Compile Include="WindowsMachineFileDelete.tests.ps1" />
+    <Compile Include="DeployToSqlServer.Tests.ps1" />
+    <Compile Include="CodeAssassinConfigTransformPicker.tests.ps1" />
+    <Compile Include="StopWindowsScheduledTasks.Tests.ps1" />
+    <Compile Include="SqlServerJobRunner.tests.ps1" />
+    <Compile Include="StopWindowsServices.Tests.ps1" />
+    <Compile Include="StartWindowsServices.Tests.ps1" />
+    <Compile Include="StartWindowsScheduledTasks.Tests.ps1" />
+    <Compile Include="Initialize-Test.ps1" />
+    <Compile Include="InvokeRemoteDeployment.tests.ps1" />
+    <Compile Include="SqlPackageOnTargetMachines.Tests.ps1" />
+    <Compile Include="SqlServerScriptRunner.tests.ps1" />
+    <Compile Include="Start-TestRunner.ps1" />
+    <Compile Include="TestHelpersModule\PrivateFunctions.ps1" />
+    <Compile Include="TestHelpersModule\PublicFunctions.ps1" />
+    <Compile Include="TestHelpersModule\TestHelpersModule.psm1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestHelpersModule\README.md" />
+    <Content Include="testSQL.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Target Name="Build" />
+</Project>

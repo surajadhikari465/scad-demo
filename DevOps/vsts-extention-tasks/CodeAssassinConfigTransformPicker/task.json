@@ -1,0 +1,90 @@
+{
+  "id": "B0AE67EF-51DF-4B7C-BBC3-A0840861DFE0",
+  "name": "CodeAssassinConfigTransformPicker",
+  "friendlyName": "Config Picker for CodeAssassin:ConfigTransformer based Configs",
+  "description": "replaces the App/Web.config with the specific config tranformation picked.",
+  "helpMarkDown": "",
+  "category": "Deploy",
+  "visibility": [
+    "Release",
+    "Build"
+  ],
+  "author": "WFM IRMA/ICON Team",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 12
+  },
+  "demands": [
+  ],
+  "minimumAgentVersion": "1.96.2",
+  "groups": [
+    {
+      "name": "configDetails",
+      "displayName": "Config Details",
+      "isExpanded": true
+    }
+
+  ],
+  "inputs": [
+    {
+      "name": "machineList",
+      "type": "multiLine",
+      "label": "Machines",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide a comma separated list of the machine(s) IP addresses or FQDNs. <br>For example, dbserver.fabrikam.com, dbserver_int.fabrikam.com, 192.168.12.34"
+    },
+    {
+      "name": "AdminUserName",
+      "type": "string",
+      "label": "Admin Login",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide the administrator's login of the target machine."
+    },
+    {
+      "name": "AdminPassword",
+      "type": "string",
+      "label": "Password",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide the administrator's password of the target machine. <br>The best practice is to create a variable in the Build or Release definition, and mark it as 'Secret' to secure it, and then use it here, like '$(adminPassword)'."
+    },
+    {
+      "name": "installPath",
+      "type": "string",
+      "label": "App Install Path",
+      "defaultValue": "",
+      "required": true,
+      "groupName": "configDetails",
+      "helpMarkDown": "The folder that the App/web.config and the transformations can be found"
+    },
+    {
+      "name": "configName",
+      "type": "string",
+      "label": "App/Web Config Name",
+      "defaultValue": "web.config",
+      "required": true,
+      "groupName": "configDetails",
+      "helpMarkDown": "Name of the Application config (or web.config if its a web project) to be replaced"
+    },
+    {
+      "name": "transform",
+      "type": "string",
+      "label": "Transformation",
+      "defaultValue": "",
+      "required": false,
+      "groupName": "configDetails",
+      "helpMarkDown": "The Transformation to replace. This value is only the enviroment/build name; the filename will be calculated. (example : Debug, QA, Test, Release)" 
+    }
+  ],
+  "instanceNameFormat": "Use $(transform) config in $(configName) on $(serverHost)",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\Main.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}

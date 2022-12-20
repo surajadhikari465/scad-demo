@@ -1,0 +1,73 @@
+{
+  "id": "CD103717-E144-46FE-97B1-403F927DB48E",
+  "name": "WindowsMachineFileDelete",
+  "friendlyName": "Windows Machine File Delete",
+  "description": "Deletes a file on a remote windows computer.",
+  "helpMarkDown": "",
+  "category": "Deploy",
+  "visibility": [
+    "Release",
+    "Build"
+  ],
+  "author": "WFM IRMA/ICON Team",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 12
+  },
+  "demands": [
+  ],
+  "minimumAgentVersion": "1.96.2",
+  "groups": [
+  ],
+  "inputs": [
+    {
+      "name": "machineList",
+      "type": "multiLine",
+      "label": "Machines",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide a comma separated list of the machine(s) IP addresses or FQDNs. <br>For example, dbserver.fabrikam.com, dbserver_int.fabrikam.com, 192.168.12.34"
+    },
+    {
+      "name": "AdminUserName",
+      "type": "string",
+      "label": "Admin Login",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide the administrator's login of the target machine."
+    },
+    {
+      "name": "AdminPassword",
+      "type": "string",
+      "label": "Password",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Provide the administrator's password of the target machine. <br>The best practice is to create a variable in the Build or Release definition, and mark it as 'Secret' to secure it, and then use it here, like '$(adminPassword)'."
+    },
+    {
+      "name": "fileToDelete",
+      "type": "string",
+      "label": "Delete Location",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "File or Folder to be deleted on the server"
+    },
+        {
+      "name": "isDirectory",
+      "type": "boolean",
+      "label": "Is Folder",
+      "defaultValue": "false",
+      "required": true,
+      "helpMarkDown": "Is the Location a folder"
+    }
+  ],
+  "instanceNameFormat": "Delete $(fileToDelete) on $(serverHost)",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\Main.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}

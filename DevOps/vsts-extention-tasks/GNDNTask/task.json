@@ -1,0 +1,41 @@
+{
+  "id": "75EA7C61-9C1B-4485-9E21-9DAE423E9411",
+  "name": "GNDNTask",
+  "friendlyName": "G.N.D.N Task",
+  "description": "This is a do nothing task to help visually break up sections of the deployment",
+  "helpMarkDown": "",
+  "category": "Deploy",
+  "visibility": [
+    "Release",
+    "Build"
+  ],
+  "author": "WFM IRMA/ICON Team",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 12
+  },
+  "demands": [
+  ],
+  "minimumAgentVersion": "1.96.2",
+  "groups": [
+  ],
+  "inputs": [
+    {
+      "name": "message",
+      "type": "string",
+      "label": "Message",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "The Title of the Task"
+    }
+  ],
+  "instanceNameFormat": "------|   $(message)   |-------",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\Main.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}
