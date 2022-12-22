@@ -146,9 +146,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess\IDAL.cs" />
+    <Compile Include="DataAccess\IRepublishInventoryDAL.cs" />
     <Compile Include="DataAccess\ITransferOrdersDAL.cs" />
     <Compile Include="DataAccess\PurchaseOrdersDAL.cs" />
     <Compile Include="DataAccess\ReceiveDAL.cs" />
+    <Compile Include="DataAccess\RepublishInventoryDAL.cs" />
     <Compile Include="DataAccess\TransferOrdersDAL.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Helpers\ArchiveInventoryEvents.cs" />
@@ -159,6 +161,7 @@
     <Compile Include="Mapper\PurchaseOrderCanonicalMapper.cs" />
     <Compile Include="Mapper\ReceiveCanonicalMapper.cs" />
     <Compile Include="Mapper\TransferOrderCanonicalMapper.cs" />
+    <Compile Include="Model\DBModel\ArchivedMessageModel.cs" />
     <Compile Include="Model\DBModel\PurchaseOrdersModel.cs" />
     <Compile Include="Model\DBModel\ReceiveModel.cs" />
     <Compile Include="Model\DBModel\TransferOrdersModel.cs" />
@@ -170,6 +173,7 @@
     <Compile Include="ProducerBuilders\IProducerBuilder.cs" />
     <Compile Include="ProducerBuilders\ProducerBuilder.cs" />
     <Compile Include="ProducerBuilders\ProducerProvider.cs" />
+    <Compile Include="ProducerBuilders\RepublishInventoryProducerBuilder.cs" />
     <Compile Include="Publish\ErrorEventPublisher.cs" />
     <Compile Include="Publish\IErrorEventPublisher.cs" />
     <Compile Include="Publish\IMessagePublisher.cs" />
@@ -182,6 +186,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueueProcessors\QueueProcessor.cs" />
+    <Compile Include="QueueProcessors\RepublishInventoryQueueProcessor.cs" />
     <Compile Include="Service\IInventoryProducerService.cs" />
     <Compile Include="Service\InventoryProducerService.cs" />
     <Compile Include="StartupOptions.cs" />
