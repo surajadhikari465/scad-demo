@@ -13,6 +13,7 @@ namespace MammothR10Price
             public const string ResetFlag = "ResetFlag";
             public const string NonReceivingSystems = "NonReceivingSystems";
             public const string MammothMessageId = "MammothMessageID";
+            public const string MessageId = "MessageID";
         }
 
         public struct PriceType

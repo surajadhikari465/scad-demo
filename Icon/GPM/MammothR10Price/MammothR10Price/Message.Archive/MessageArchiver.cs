@@ -27,12 +27,14 @@ namespace MammothR10Price.Message.Archive
         public void ArchiveMessage(
             IList<MammothPriceType> mammothPrices,
             string itemPriceXml,
-            IDictionary<string, string> messageProperties)
+            IDictionary<string, string> receivedMessageProperties,
+            IDictionary<string, string> dbArchiveMessageProperties
+            )
         {
             try
             {
-                ArchiveMammothR10Prices(mammothPrices, messageProperties);
-                ArchiveItemPriceXml(itemPriceXml, messageProperties);
+                ArchiveMammothR10Prices(mammothPrices, receivedMessageProperties, dbArchiveMessageProperties);
+                ArchiveItemPriceXml(itemPriceXml, receivedMessageProperties, dbArchiveMessageProperties);
             }
             catch(Exception ex)
             {
@@ -41,8 +43,10 @@ namespace MammothR10Price.Message.Archive
         }
 
         private void ArchiveMammothR10Prices(
-            IList<MammothPriceType> mammothPrices, 
-            IDictionary<string, string> messageProperties)
+            IList<MammothPriceType> mammothPrices,
+            IDictionary<string, string> receivedMessageProperties,
+            IDictionary<string, string> dbArchiveMessageProperties
+            )
         {
             string archiveMessageDetailsSqlStatement = @"
                 INSERT INTO [gpm].[MessageArchivePriceR10](ItemID, BusinessUnitID, PriceType, StartDate, MessageID, MessageDetailJson)
@@ -61,20 +65,22 @@ namespace MammothR10Price.Message.Archive
                             {
                                 ItemID = mammothPrice.ItemId.ToString(),
                                 BusinessUnitID = mammothPrice.BusinessUnit.ToString(),
-                                MessageID = messageProperties[Constants.MessageProperty.TransactionId],
-                                MessageHeaders = messageProperties,
+                                MessageID = dbArchiveMessageProperties[Constants.MessageProperty.MessageId],
+                                MessageHeaders = receivedMessageProperties,
                                 MammothPrice = mammothPrice,
-                                MammothMessageID = messageProperties[Constants.MessageProperty.MammothMessageId]
+                                MammothMessageID = dbArchiveMessageProperties.ContainsKey(Constants.MessageProperty.MammothMessageId) ? dbArchiveMessageProperties[Constants.MessageProperty.MammothMessageId] : null
                             };
 
-                            string messageDetailJson = JsonConvert.SerializeObject(messageDetail);
+                            string messageDetailJson = JsonConvert.SerializeObject(
+                                new Dictionary<string, PriceMessageDetail>() { { "MessageDetail", messageDetail } }
+                                );
                             mammothContext.Database.ExecuteSqlCommand(
                                archiveMessageDetailsSqlStatement,
                                new SqlParameter("@ItemId", mammothPrice.ItemId),
                                new SqlParameter("@BusinessUnitId", mammothPrice.BusinessUnit),
                                new SqlParameter("@PriceType", mammothPrice.PriceType),
                                new SqlParameter("@StartDate", mammothPrice.StartDate),
-                               new SqlParameter("@MessageId", messageProperties[Constants.MessageProperty.MammothMessageId]),
+                               new SqlParameter("@MessageId", dbArchiveMessageProperties[Constants.MessageProperty.MessageId]),
                                new SqlParameter("@MessageDetailJson", messageDetailJson)
                             );
                         }
@@ -91,9 +97,13 @@ namespace MammothR10Price.Message.Archive
 
         private void ArchiveItemPriceXml(
             string itemPriceXml,
-            IDictionary<string, string> messageProperties)
+            IDictionary<string, string> receivedMessageProperties,
+            IDictionary<string, string> dbArchiveMessageProperties
+            )
         {
-            string messagePropertiesJson = JsonConvert.SerializeObject(messageProperties);
+            string messagePropertiesJson = JsonConvert.SerializeObject(
+                new Dictionary<string, IDictionary<string, string>>() { { "MessageHeaders", receivedMessageProperties } }
+                );
             string archiveItemPriceXmlSqlStatement = @"
                 INSERT INTO [esb].[MessageArchive] (MessageID, MessageTypeID, MessageStatusID, MessageHeadersJson, MessageBody)
                 SELECT 
@@ -108,7 +118,7 @@ namespace MammothR10Price.Message.Archive
                 mammothContext.Database.CommandTimeout = DB_TIMEOUT_IN_SECONDS;
                 mammothContext.Database.ExecuteSqlCommand(
                     archiveItemPriceXmlSqlStatement,
-                    new SqlParameter("@MessageId", messageProperties[Constants.MessageProperty.TransactionId]),
+                    new SqlParameter("@MessageId", dbArchiveMessageProperties[Constants.MessageProperty.MessageId]),
                     new SqlParameter("@MessageHeadersJson", messagePropertiesJson),
                     new SqlParameter("@MessageBody", itemPriceXml.Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", ""))
                 );

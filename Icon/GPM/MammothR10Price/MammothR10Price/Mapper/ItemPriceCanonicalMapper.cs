@@ -4,7 +4,6 @@ using Icon.Esb.Schemas.Mammoth;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Logging;
 using MammothR10Price.Serializer;
-using UomCodes = Icon.Framework.UomCodes;
 using Items = Icon.Esb.Schemas.Wfm.Contracts.items;
 using Icon.Common.Xml;
 
@@ -54,6 +53,7 @@ namespace MammothR10Price.Mapper
             return new LocaleType()
             {
                 Action = Constants.Action.DELETE.Equals(mammothPrice.Action.ToUpper()) ? ActionEnum.Delete : ActionEnum.AddOrUpdate,
+                ActionSpecified = true,
                 id = mammothPrice.BusinessUnit.ToString(),
                 name = mammothPrice.StoreName,
                 type = new LocaleTypeType()
@@ -179,10 +179,9 @@ namespace MammothR10Price.Mapper
 
         private WfmUomCodeEnumType GetUomCode(string uomCode, string scanCode)
         {
-            string uomEnumString = UomCodes.ByName[uomCode.ToUpper()];
             WfmUomCodeEnumType uomEnum;
 
-            if (Enum.TryParse(uomEnumString, out uomEnum))
+            if (Enum.TryParse(uomCode, out uomEnum))
             {
                 return uomEnum;
             }

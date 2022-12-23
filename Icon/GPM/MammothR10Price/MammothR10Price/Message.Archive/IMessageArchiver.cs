@@ -5,6 +5,11 @@ namespace MammothR10Price.Message.Archive
 {
     public interface IMessageArchiver
     {
-        void ArchiveMessage(IList<MammothPriceType> mammothPrices, string itemPriceXml, IDictionary<string, string> messageProperties);
+        void ArchiveMessage(
+            IList<MammothPriceType> mammothPrices,
+            string itemPriceXml,
+            IDictionary<string, string> receivedMessageProperties,
+            IDictionary<string, string> dbArchiveMessageProperties
+            );
     }
 }

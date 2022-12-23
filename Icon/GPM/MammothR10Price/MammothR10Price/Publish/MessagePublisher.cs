@@ -14,8 +14,6 @@ namespace MammothR10Price.Publish
 
         public MessagePublisher(
             IActiveMQProducer activeMQProducer,
-            // Using named injection.
-            // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
             IEsbProducer esbProducer,
             ILogger<MessagePublisher> logger
             )
@@ -23,19 +21,20 @@ namespace MammothR10Price.Publish
             this.activeMQProducer = activeMQProducer;
             this.esbProducer = esbProducer;
             this.logger = logger;
+            var computedClientId = $"MammothR10PriceService.{Environment.MachineName}.{Guid.NewGuid()}";
+            var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
+            logger.Info("Opening ESB producer connection");
+            this.esbProducer.OpenConnection(clientId);
+            logger.Info("ESB producer connection opened");
+            logger.Info("Opening ActiveMQ producer connection");
+            this.activeMQProducer.OpenConnection(clientId);
+            logger.Info("ActiveMQ producer connection opened");
         }
 
         public void Publish(string message, Dictionary<string, string> messageProperties)
         {
-            try
-            {
-                PublishToEsb(message, messageProperties);
-                PublishToActiveMq(message, messageProperties);
-            }
-            catch (Exception e)
-            {
-                logger.Error($"Error trying to send data to JMS Queue: ${e}");
-            }
+            PublishToEsb(message, messageProperties);
+            PublishToActiveMq(message, messageProperties);
         }
 
         private void PublishToEsb(string message, Dictionary<string, string> messageProperties)

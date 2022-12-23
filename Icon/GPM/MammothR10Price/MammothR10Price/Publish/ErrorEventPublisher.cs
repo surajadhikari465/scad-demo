@@ -26,7 +26,7 @@ namespace MammothR10Price.Publish
         public void PublishErrorEvent(
             string applicationName,
             string messageID,
-            Dictionary<string, string> messageProperties,
+            IDictionary<string, string> messageProperties,
             string message,
             string errorCode,
             string errorDetails,
@@ -52,7 +52,7 @@ namespace MammothR10Price.Publish
             }
         }
 
-        public ErrorMessage ConvertToErrorMessageCanonical(Dictionary<string, string> messageProperties)
+        public ErrorMessage ConvertToErrorMessageCanonical(IDictionary<string, string> messageProperties)
         {
             ErrorMessage errorMessage = new ErrorMessage
             {

@@ -112,15 +112,34 @@ namespace Icon.ActiveMQ.Producer
         /// </summary>
         /// <param name="clientId">An identifier to identify the specific connection. Using
         /// existing open connection's clientID will throw Exception</param>
-        /// <param name="maxRetries">Max times to retry: Default 10 times</param>
-        public void OpenConnection(string clientId, int maxRetries = 10)
+        /// <param name="maxRetries">Max times to retry</param>
+        public void OpenConnection(string clientId, int maxRetries)
+        {
+            this.lastClientId = clientId;
+            Retry<Exception>(() =>
+            {
+                OpenConnectionAndCreateProducer(clientId);
+            }, maxRetries);
+        }
+
+        /// <summary>
+        /// Opens a new connection with the given clientId
+        /// </summary>
+        /// <param name="clientId">An identifier to identify the specific connection. Using
+        /// existing open connection's clientID will throw Exception</param>
+        public override void OpenConnection(string clientId)
         {
             this.lastClientId = clientId;
             Retry<Exception>(() => {
-                base.OpenConnection(clientId);
-                producer = session.CreateProducer(destination);
-                producer.DeliveryMode = MsgDeliveryMode.Persistent;
-            }, maxRetries);
+                OpenConnectionAndCreateProducer(clientId);
+            });
+        }
+
+        private void OpenConnectionAndCreateProducer(string clientId)
+        {
+            base.OpenConnection(clientId);
+            producer = session.CreateProducer(destination);
+            producer.DeliveryMode = MsgDeliveryMode.Persistent;
         }
 
         private void VerifyConnectionAndGracefullyReconnect(int maxRetries = 10)

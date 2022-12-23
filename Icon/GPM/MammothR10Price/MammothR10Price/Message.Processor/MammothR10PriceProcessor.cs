@@ -34,6 +34,7 @@ namespace MammothR10Price.Message.Processor
             IMessageParser<MammothPricesType> messageParser,
             IErrorEventPublisher errorEventPublisher,
             IMessagePublisher messagePublisher,
+            IMessageArchiver messageArchiver,
             ILogger<MammothR10PriceProcessor> logger,
             EsbConnectionSettings esbConnectionSettings,
             IMapper<IList<MammothPriceType>, Items> itemPriceCanonicalMapper
@@ -43,6 +44,7 @@ namespace MammothR10Price.Message.Processor
             this.messageParser = messageParser;
             this.errorEventPublisher = errorEventPublisher;
             this.messagePublisher = messagePublisher;
+            this.messageArchiver = messageArchiver;
             this.logger = logger;
             this.esbConnectionSettings = esbConnectionSettings;
             this.itemPriceCanonicalMapper = itemPriceCanonicalMapper;
@@ -57,7 +59,7 @@ namespace MammothR10Price.Message.Processor
 
         public void ProcessReceivedMessage(IEsbMessage message)
         {
-            var messageProperties = new Dictionary<string, string>()
+            IDictionary<string, string> receivedMessageProperties = new Dictionary<string, string>()
             {
                 { Constants.MessageProperty.TransactionId, message.GetProperty(Constants.MessageProperty.TransactionId) },
                 { Constants.MessageProperty.TransactionType, message.GetProperty(Constants.MessageProperty.TransactionType) },
@@ -77,22 +79,31 @@ namespace MammothR10Price.Message.Processor
                 {
                     this.retryPolicy.Execute(() =>
                     {
+                        string messageId = Guid.NewGuid().ToString();
                         IList<MammothPriceType> businessUnitPrices = mammothPrices.MammothPrice.Where(x => x.BusinessUnit == businessUnit).ToList();
                         var itemPriceCanonical = itemPriceCanonicalMapper.Transform(businessUnitPrices);
                         string xmlMessage = itemPriceCanonicalMapper.ToXml(itemPriceCanonical);
-
-                        if (Constants.Source.Mammoth.Equals(messageProperties[Constants.MessageProperty.Source]))
+                        Dictionary<string, string> esbMessageProperties = new Dictionary<string, string>(receivedMessageProperties);
+                        Dictionary<string, string> dbArchiveMessageProperties = new Dictionary<string, string>();
+                        dbArchiveMessageProperties[Constants.MessageProperty.MessageId] = receivedMessageProperties[Constants.MessageProperty.TransactionId];
+                        if (Constants.Source.Mammoth.Equals(receivedMessageProperties[Constants.MessageProperty.Source]))
                         {
-                            string messageId = Guid.NewGuid().ToString();
-                            messageProperties[Constants.MessageProperty.TransactionId] = messageId;
-                            messageProperties[Constants.MessageProperty.MammothMessageId] = messageId;
+                            esbMessageProperties[Constants.MessageProperty.TransactionId] = messageId;
+                            esbMessageProperties[Constants.MessageProperty.MammothMessageId] = 
+                            esbMessageProperties[Constants.MessageProperty.TransactionId];
+                            dbArchiveMessageProperties[Constants.MessageProperty.MessageId] = messageId;
+                            dbArchiveMessageProperties[Constants.MessageProperty.MammothMessageId] =
+                            receivedMessageProperties[Constants.MessageProperty.TransactionId];
                         }
-
-                        messagePublisher.Publish(xmlMessage, messageProperties);
-                        messageArchiver.ArchiveMessage(businessUnitPrices, xmlMessage, messageProperties);
+                        messagePublisher.Publish(xmlMessage, esbMessageProperties);
+                        messageArchiver.ArchiveMessage(
+                            businessUnitPrices,
+                            xmlMessage,
+                            receivedMessageProperties,
+                            dbArchiveMessageProperties
+                            );
                     });
                 }
-
                 logger.Info($"Successfully processed Mammoth Price  MessageID: {message.GetProperty(Constants.MessageProperty.TransactionId)}");
             }
             catch (Exception ex)
@@ -102,10 +113,10 @@ namespace MammothR10Price.Message.Processor
                 {
                     errorEventPublisher.PublishErrorEvent(
                         serviceSettings.ApplicationName,
-                        messageProperties[Constants.MessageProperty.TransactionId],
-                        messageProperties,
-                        ex.Message,
-                        $"Exception : {ex.GetType()}",
+                        receivedMessageProperties[Constants.MessageProperty.TransactionId],
+                        receivedMessageProperties,
+                        message.MessageText,
+                        ex.GetType().ToString(),
                         ex.ToString(),
                         "Fatal"
                     );

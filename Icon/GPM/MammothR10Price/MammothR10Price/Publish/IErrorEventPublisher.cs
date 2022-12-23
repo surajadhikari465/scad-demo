@@ -7,7 +7,7 @@ namespace MammothR10Price.Publish
         void PublishErrorEvent(
             string applicationName,
             string messageId,
-            Dictionary<string, string> messageProperties,
+            IDictionary<string, string> messageProperties,
             string message,
             string errorCode,
             string errorDetails,

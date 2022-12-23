@@ -21,6 +21,7 @@ using MammothR10Price.Message.Parser;
 using Icon.Esb.Producer;
 using Icon.Esb.Subscriber;
 using Mammoth.Framework;
+using MammothR10Price.Message.Archive;
 
 namespace MammothR10Price
 {
@@ -32,13 +33,10 @@ namespace MammothR10Price
             var serviceSettings = MammothR10PriceServiceSettings.CreateSettingsFromConfig();
             var sb1Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("MammothR10PriceSb1Consumer");
             var esbSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("MammothR10PriceEsbProducer");
-
             var sb1Subscriber = new Sb1EsbConsumer(sb1Settings);
             var esbProducer = new EsbProducer(esbSettings);
-
             container.RegisterSingleton<IEsbSubscriber>(() => sb1Subscriber);
             container.RegisterSingleton<IEsbProducer>(() => esbProducer);
-
             container.RegisterSingleton(() => ActiveMQConnectionSettings.CreateSettingsFromConfig());
             container.RegisterSingleton<IActiveMQProducer, ActiveMQProducer>();
             container.RegisterSingleton<IDbContextFactory<MammothContext>, MammothContextFactory>();
@@ -59,10 +57,12 @@ namespace MammothR10Price
             container.RegisterSingleton<ILogger<MammothR10PriceService>, NLogLogger<MammothR10PriceService>>();
             container.RegisterSingleton<ILogger<MammothR10PriceListener>, NLogLogger<MammothR10PriceListener>>();
             container.RegisterSingleton<ILogger<MessagePublisher>, NLogLogger<MessagePublisher>>();
+            container.RegisterSingleton<ILogger<MessageArchiver>, NLogLogger<MessageArchiver>>();
             container.RegisterSingleton<IMessagePublisher, MessagePublisher>();
+            container.RegisterSingleton<IMessageArchiver, MessageArchiver>();
             container.RegisterSingleton<IProducerService, MammothR10PriceService>();
             container.RegisterSingleton<IListenerApplication, MammothR10PriceListener>();
-            
+            container.Verify();
             return container;
         }
     }
