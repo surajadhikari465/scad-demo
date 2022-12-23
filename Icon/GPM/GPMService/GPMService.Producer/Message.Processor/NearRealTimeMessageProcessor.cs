@@ -9,6 +9,7 @@ using GPMService.Producer.Publish;
 using GPMService.Producer.Settings;
 using Icon.Common.Xml;
 using Icon.Esb;
+using Icon.Esb.Schemas.Mammoth;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Logging;
 using System;

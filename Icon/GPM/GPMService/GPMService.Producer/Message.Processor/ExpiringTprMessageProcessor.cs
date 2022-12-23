@@ -17,6 +17,7 @@ using Icon.DbContextFactory;
 using GPMService.Producer.Helpers;
 using TIBCO.EMS;
 using GPMService.Producer.Archive;
+using Icon.Esb.Schemas.Mammoth;
 
 namespace GPMService.Producer.Message.Processor
 {

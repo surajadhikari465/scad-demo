@@ -1,7 +1,7 @@
 ﻿using GPMService.Producer.Serializer;
 using Icon.Common.Xml;
 using Icon.DbContextFactory;
-using InventoryProducer.Common.Schemas;
+using Icon.Esb.Schemas.Mammoth;
 using Mammoth.Framework;
 using System.Collections.Generic;
 using System.Data.SqlClient;

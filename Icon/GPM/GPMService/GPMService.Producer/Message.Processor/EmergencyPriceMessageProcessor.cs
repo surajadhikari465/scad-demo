@@ -8,6 +8,7 @@ using GPMService.Producer.Serializer;
 using GPMService.Producer.Settings;
 using Icon.Common.Xml;
 using Icon.Esb;
+using Icon.Esb.Schemas.Mammoth;
 using Icon.Logging;
 using System;
 using System.Collections.Generic;

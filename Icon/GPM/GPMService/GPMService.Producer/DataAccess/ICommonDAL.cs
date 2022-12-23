@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Icon.Esb.Schemas.Mammoth;
+using System.Collections.Generic;
 
 namespace GPMService.Producer.DataAccess
 {

@@ -1,6 +1,7 @@
 ﻿using GPMService.Producer.Model;
 using GPMService.Producer.Serializer;
 using Icon.Esb;
+using Icon.Esb.Schemas.Mammoth;
 using System.IO;
 
 namespace GPMService.Producer.Message.Parser

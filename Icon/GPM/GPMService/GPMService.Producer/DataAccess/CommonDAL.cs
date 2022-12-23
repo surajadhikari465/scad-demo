@@ -1,5 +1,6 @@
 ﻿using GPMService.Producer.Settings;
 using Icon.DbContextFactory;
+using Icon.Esb.Schemas.Mammoth;
 using Icon.Logging;
 using Mammoth.Framework;
 using Polly;

@@ -40,11 +40,11 @@ namespace GPMService.Producer.Publish
             var computedClientId = $"GPMService.Type-{serviceType}.{Environment.MachineName}.{Guid.NewGuid()}";
             var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
             logger.Info("Opening NearRealTime publisher ESB Connection");
-            nearRealTimeEsbProducer.OpenConnection(clientId);
+            this.nearRealTimeEsbProducer.OpenConnection(clientId);
             logger.Info("NearRealTime publisher ESB Connection Opened");
 
             logger.Info("Opening NearRealTime publisher ActiveMQ Connection");
-            activeMQProducer.OpenConnection(clientId);
+            this.activeMQProducer.OpenConnection(clientId);
             logger.Info("NearRealTime publisher ActiveMQ Connection Opened");
         }
 

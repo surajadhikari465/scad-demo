@@ -49,7 +49,7 @@
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Icon.ActiveMQ, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.ActiveMQ.2022.10.6.1\lib\net472\Icon.ActiveMQ.dll</HintPath>
+      <HintPath>..\packages\Icon.ActiveMQ.2022.12.23.13\lib\net472\Icon.ActiveMQ.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Common.2020.11.11.4\lib\net472\Icon.Common.dll</HintPath>
@@ -60,8 +60,14 @@
     <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.2020.12.11.1\lib\net472\Icon.Esb.dll</HintPath>
     </Reference>
+    <Reference Include="Icon.Esb.Schemas.Infor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Infor.2022.12.23.2\lib\net46\Icon.Esb.Schemas.Infor.dll</HintPath>
+    </Reference>
+    <Reference Include="Icon.Esb.Schemas.Mammoth, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Mammoth.2022.12.23.3\lib\net46\Icon.Esb.Schemas.Mammoth.dll</HintPath>
+    </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2022.11.4.1\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2022.11.15.1\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Framework.2019.12.6.1\lib\net472\Icon.Framework.dll</HintPath>
@@ -183,12 +189,6 @@
     <Compile Include="Publish\IMessagePublisher.cs" />
     <Compile Include="Publish\JustInTimeMessagePublisher.cs" />
     <Compile Include="Publish\NearRealTimeMessagePublisher.cs" />
-    <Compile Include="Schema\ConfirmBOD.cs" />
-    <Compile Include="Schema\ErrorMessage.cs" />
-    <Compile Include="Schema\JobSchedule.cs" />
-    <Compile Include="Schema\MammothPrices.cs" />
-    <Compile Include="Schema\PriceChangeMaster.cs" />
-    <Compile Include="Schema\PriceMessageArchive.cs" />
     <Compile Include="Serializer\ISerializer.cs" />
     <Compile Include="Serializer\NamespaceHelper.cs" />
     <Compile Include="Serializer\Serializer.cs" />

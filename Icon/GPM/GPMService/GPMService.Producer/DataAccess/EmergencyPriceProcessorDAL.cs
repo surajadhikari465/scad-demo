@@ -3,6 +3,7 @@ using GPMService.Producer.Serializer;
 using GPMService.Producer.Settings;
 using Icon.Common.Xml;
 using Icon.DbContextFactory;
+using Icon.Esb.Schemas.Mammoth;
 using Icon.Logging;
 using Mammoth.Framework;
 using Polly;

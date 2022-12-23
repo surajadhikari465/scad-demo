@@ -1,4 +1,6 @@
 ﻿using GPMService.Producer.Helpers;
+using Icon.Esb.Schemas.Infor;
+using Icon.Esb.Schemas.Mammoth;
 using System;
 using System.Xml.Serialization;
 

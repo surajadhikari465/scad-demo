@@ -5,6 +5,7 @@ using GPMService.Producer.Serializer;
 using GPMService.Producer.Settings;
 using Icon.Common.Xml;
 using Icon.Esb.Producer;
+using Icon.Esb.Schemas.Infor;
 using Icon.Logging;
 using Polly;
 using Polly.Retry;

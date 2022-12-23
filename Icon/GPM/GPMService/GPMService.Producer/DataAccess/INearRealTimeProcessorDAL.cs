@@ -1,5 +1,6 @@
 ﻿using GPMService.Producer.Model;
 using GPMService.Producer.Model.DBModel;
+using Icon.Esb.Schemas.Mammoth;
 using System.Collections.Generic;
 
 namespace GPMService.Producer.DataAccess
