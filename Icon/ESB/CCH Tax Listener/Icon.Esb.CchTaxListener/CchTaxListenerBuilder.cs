@@ -1,11 +1,11 @@
 ﻿using Icon.Common.Email;
+using Icon.Dvs;
+using Icon.Dvs.Subscriber;
 using Icon.Esb.CchTax.Commands;
 using Icon.Esb.CchTax.Decorator;
 using Icon.Esb.CchTax.Infrastructure;
 using Icon.Esb.CchTax.MessageParsers;
 using Icon.Esb.CchTax.Models;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb.Subscriber;
 using Icon.Logging;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,16 +17,16 @@ namespace Icon.Esb.CchTax
         public static CchTaxListener Build()
         {
             var applicationSettings = CchTaxListenerApplicationSettings.CreateDefaultSettings<CchTaxListenerApplicationSettings>("CCH Tax Listener");
-            var connectionSettings = EsbConnectionSettings.CreateSettingsFromConfig();
-            
+            var listenerSettings = DvsListenerSettings.CreateSettingsFromConfig();
+
             IMessageParser<List<TaxHierarchyClassModel>> messageParser = new CchTaxMessageParser();
+
             DataConnectionManager manager = new DataConnectionManager();
             string mammothConnectionString = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
 
             CchTaxListener listener = new CchTaxListener(
-                applicationSettings,
-                connectionSettings,
-                new EsbSubscriber(connectionSettings),
+                listenerSettings,
+                new DvsSqsSubscriber(DvsClientUtil.GetS3Client(listenerSettings), DvsClientUtil.GetSqsClient(listenerSettings), listenerSettings),
                 messageParser,
                 EmailClient.CreateFromConfig(),
                 new NLogLogger<CchTaxListener>(),

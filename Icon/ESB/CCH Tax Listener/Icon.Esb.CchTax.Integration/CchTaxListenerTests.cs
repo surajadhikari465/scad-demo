@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Icon.Esb.ListenerApplication;
+using Icon.Dvs;
+using Icon.Dvs.Model;
+using Icon.Dvs.Subscriber;
 using Icon.Esb.Subscriber;
 using Icon.Esb.CchTax.Models;
 using System.Collections.Generic;
@@ -26,17 +28,16 @@ namespace Icon.Esb.CchTax.Tests.Integration
         private DataConnectionManager dataConnectionManager;
         private string connectionString;
         private CchTaxListenerApplicationSettings applicationSettings;
-        private EsbConnectionSettings connectionSettings;
-        private Mock<IEsbSubscriber> mockSubscriber;
+        private DvsListenerSettings listenerSettings;
+        private Mock<IDvsSubscriber> mockSubscriber;
         private CchTaxMessageParser messageParser;
         private Mock<IEmailClient> mockEmailClient;
         private Mock<ILogger<CchTaxListener>> mockLogger;
         private SaveTaxHierarchyClassesCommandHandler saveTaxHierarchyClassCommandHandler;
         private SaveTaxToMammothCommandHandler saveTaxToMammothCommandHandler;
         private List<RegionModel> regions;
-        private Mock<IEsbMessage> mockMessage;
+        private DvsSqsMessage sqsMessage;
         private IconContext context;
-
         private List<string> taxHierarchyClassNamesBeforeUpdate = new List<string>
             {
                 "1111111 TEST TAX1 BEFORE UPDATE",
@@ -63,18 +64,26 @@ namespace Icon.Esb.CchTax.Tests.Integration
             connectionString = ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString;
             dataConnectionManager.InitializeConnection(connectionString);
             applicationSettings = new CchTaxListenerApplicationSettings { UpdateMammoth = true, GenerateGlobalEvents = true };
-            connectionSettings = new EsbConnectionSettings();
-            mockSubscriber = new Mock<IEsbSubscriber>();
+            listenerSettings = DvsListenerSettings.CreateSettingsFromConfig();
+            mockSubscriber = new Mock<IDvsSubscriber>();
             messageParser = new CchTaxMessageParser();
             mockEmailClient = new Mock<IEmailClient>();
             mockLogger = new Mock<ILogger<CchTaxListener>>();
             saveTaxHierarchyClassCommandHandler = new SaveTaxHierarchyClassesCommandHandler(applicationSettings);
             saveTaxToMammothCommandHandler = new SaveTaxToMammothCommandHandler(dataConnectionManager, applicationSettings);
             regions = new List<RegionModel>();
-            mockMessage = new Mock<IEsbMessage>();
+            sqsMessage = new DvsSqsMessage()
+            {
+                MessageAttributes = new Dictionary<string, string>() {
+                    { "IconMessageID", "1" },
+                    { "toBeReceivedBy", "ALL" }
+                },
+                S3BucketName = "SampleBucket",
+                S3Key = "SampleS3Key"
+            };
 
-            listener = new CchTaxListener(applicationSettings,
-                connectionSettings,
+            listener = new CchTaxListener(
+                listenerSettings,
                 mockSubscriber.Object,
                 messageParser,
                 mockEmailClient.Object,
@@ -149,11 +158,10 @@ namespace Icon.Esb.CchTax.Tests.Integration
                     new RegionModel { RegionAbbr = "NE"}
                 });
 
-            var message = File.ReadAllText(@"TestMessages\test_tax_message.xml");
-            mockMessage.SetupGet(m => m.MessageText).Returns(message);
+            var message = new DvsMessage(sqsMessage, System.IO.File.ReadAllText(@"TestMessages\test_tax_message.xml"));
 
             //When
-            listener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
+            listener.HandleMessage(message);
 
             //Then
             if (context != null)
@@ -221,10 +229,7 @@ namespace Icon.Esb.CchTax.Tests.Integration
                 Assert.AreEqual(taxHierarchyClassesAfterUpdate[i].hierarchyClassID, actualTaxesInMammoth[i].HierarchyClassID);
                 Assert.AreEqual(this.taxHierarchyClassNamesAfterUpdate[i], actualTaxesInMammoth[i].HierarchyClassName);
                 Assert.AreEqual(this.taxHierarchyClassNamesAfterUpdate[i].Substring(0, 7), actualTaxesInMammoth[i].TaxCode);
-            }
-
-            //Assert Logging
-            mockLogger.Verify(m => m.Info(It.Is<string>(s => s == "Processed 6 tax messages and generated events for regions FL, SP, NE.")), Times.Once);
+            }            
         }
 
         [TestMethod]
@@ -248,12 +253,10 @@ namespace Icon.Esb.CchTax.Tests.Integration
             context.SaveChanges();
 
             regions.Clear();
-
-            var message = File.ReadAllText(@"TestMessages\test_tax_message.xml");
-            mockMessage.SetupGet(m => m.MessageText).Returns(message);
+            var message = new DvsMessage(sqsMessage, System.IO.File.ReadAllText(@"TestMessages\test_tax_message.xml"));
 
             //When
-            listener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
+            listener.HandleMessage(message);
 
             //Then
             if (context != null)
@@ -322,8 +325,6 @@ namespace Icon.Esb.CchTax.Tests.Integration
                 Assert.AreEqual(this.taxHierarchyClassNamesAfterUpdate[i].Substring(0, 7), actualTaxesInMammoth[i].TaxCode);
             }
 
-            //Assert Logging
-            mockLogger.Verify(m => m.Info(It.Is<string>(s => s == "Processed 6 tax messages.")), Times.Once);
         }
 
         [TestMethod]
@@ -353,11 +354,10 @@ namespace Icon.Esb.CchTax.Tests.Integration
                     new RegionModel { RegionAbbr = "NE"}
                 });
 
-            var message = File.ReadAllText(@"TestMessages\test_tax_message.xml");
-            mockMessage.SetupGet(m => m.MessageText).Returns(message);
+            var message = new DvsMessage(sqsMessage, System.IO.File.ReadAllText(@"TestMessages\test_tax_message.xml"));
 
             //When
-            listener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
+            listener.HandleMessage(message);
 
             //Then
             if (context != null)
@@ -386,11 +386,10 @@ namespace Icon.Esb.CchTax.Tests.Integration
         public void HandleMessage_FullTaxLoad_ShouldNotFail()
         {
             //Given
-            string messageText = File.ReadAllText(@"TestMessages/full_tax_load_from_QA_message.xml");
-            mockMessage.Setup(m => m.MessageText).Returns(messageText);
+            var message = new DvsMessage(sqsMessage, System.IO.File.ReadAllText(@"TestMessages/full_tax_load_from_QA_message.xml"));
 
             //When
-            listener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
+            listener.HandleMessage(message);
 
             //Then
             Assert.IsTrue(true);

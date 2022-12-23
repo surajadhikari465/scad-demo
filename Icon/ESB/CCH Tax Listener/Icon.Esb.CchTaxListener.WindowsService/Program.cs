@@ -11,7 +11,7 @@ namespace Icon.Esb.CchTax.WindowsService
         static void Main()
         {
 #if DEBUG
-            CchTaxListenerBuilder.Build().Run();
+            CchTaxListenerBuilder.Build().Start();
 
             while (true)
             {

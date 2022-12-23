@@ -1,13 +1,4 @@
-﻿using Icon.Common.Email;
-using Icon.Esb.CchTax.Commands;
-using Icon.Esb.CchTax.Models;
-using Icon.Esb.Factory;
-using Icon.Logging;
-using System;
-using System.Configuration;
-using System.Linq;
-using System.ServiceProcess;
-using System.Threading;
+﻿using System.ServiceProcess;
 
 namespace Icon.Esb.CchTax.WindowsService
 {
@@ -23,12 +14,12 @@ namespace Icon.Esb.CchTax.WindowsService
         protected override void OnStart(string[] args)
         {
             listener = CchTaxListenerBuilder.Build();
-            listener.Run();
+            listener.Start();
         }
 
         protected override void OnStop()
         {
-            listener.Close();
+            listener.Stop();
         }
     }
 }

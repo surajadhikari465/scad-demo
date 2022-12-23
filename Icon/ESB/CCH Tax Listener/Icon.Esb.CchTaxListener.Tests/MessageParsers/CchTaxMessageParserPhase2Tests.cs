@@ -1,5 +1,5 @@
 ﻿using Icon.Esb.CchTax.MessageParsers;
-using Icon.Esb.Subscriber;
+using Icon.Dvs.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -26,12 +26,11 @@ namespace Icon.Esb.CchTax.Tests.MessageParsers
         public void ParseMessage_ValidPhase2Message_ShouldParseMessageSuccessfully()
         {
             //Given
-            var message = File.ReadAllText(@"TestMessages\test_tax_message_phase_2.xml");
-            var mockEsbMessage = new Mock<IEsbMessage>();
-            mockEsbMessage.SetupGet(m => m.MessageText).Returns(message);
+            var message = new DvsMessage(null, File.ReadAllText(@"TestMessages\test_tax_message_phase_2.xml"));
+            
 
             //When
-            var taxHierarchyClasses = messageParser.ParseMessage(mockEsbMessage.Object);
+            var taxHierarchyClasses = messageParser.ParseMessage(message);
 
             //Then
             Assert.AreEqual(225, taxHierarchyClasses.Count);

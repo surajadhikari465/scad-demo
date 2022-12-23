@@ -1,14 +1,9 @@
-﻿using Icon.Esb.Subscriber;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Icon.Dvs.Model;
 
 namespace Icon.Esb.CchTax.MessageParsers
 {
     public interface IMessageParser<T>
     {
-        T ParseMessage(IEsbMessage message);
+        T ParseMessage(DvsMessage message);
     }
 }

@@ -3,15 +3,16 @@ using Icon.Common.Email;
 using Icon.Esb.CchTax.Commands;
 using Icon.Esb.CchTax.MessageParsers;
 using Icon.Esb.CchTax.Models;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb.Subscriber;
 using Icon.Logging;
+using Icon.Dvs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using TIBCO.EMS;
+using Icon.Dvs.Model;
+using Icon.Dvs.Subscriber;
 
 namespace Icon.Esb.CchTax.Tests
 {
@@ -20,32 +21,42 @@ namespace Icon.Esb.CchTax.Tests
     {
         private CchTaxListener listener;
         private CchTaxListenerApplicationSettings applicationSettings;
-        private EsbConnectionSettings connectionSettings;
-        private Mock<IEsbSubscriber> mockSubscriber;
+        private DvsListenerSettings listenerSettings;
+        private Mock<IDvsSubscriber> mockSubscriber;
         private Mock<IMessageParser<List<TaxHierarchyClassModel>>> mockMessageParser;
         private Mock<IEmailClient> mockEmailClient;
         private Mock<ILogger<CchTaxListener>> mockLogger;
         private Mock<ICommandHandler<SaveTaxHierarchyClassesCommand>> mockSaveTaxHierarchyClassCommandHandler;
         private List<RegionModel> regions;
-        private Mock<IEsbMessage> mockMessage;
+        private DvsSqsMessage sqsMessage;
         private Mock<ICommandHandler<SaveTaxToMammothCommand>> mockSaveTaxMammothCommandHandler;
+        private String exceptionMessage;
 
         [TestInitialize]
         public void Initialize()
         {
             applicationSettings = new CchTaxListenerApplicationSettings();
-            connectionSettings = new EsbConnectionSettings { SessionMode = SessionMode.ClientAcknowledge };
-            mockSubscriber = new Mock<IEsbSubscriber>();
+            listenerSettings = DvsListenerSettings.CreateSettingsFromConfig();
             mockMessageParser = new Mock<IMessageParser<List<TaxHierarchyClassModel>>>();
             mockEmailClient = new Mock<IEmailClient>();
             mockLogger = new Mock<ILogger<CchTaxListener>>();
             mockSaveTaxHierarchyClassCommandHandler = new Mock<ICommandHandler<SaveTaxHierarchyClassesCommand>>();
             regions = new List<RegionModel>();
-            mockMessage = new Mock<IEsbMessage>();
+            exceptionMessage = "Test Exception";
+            sqsMessage = new DvsSqsMessage()
+            {
+                MessageAttributes = new Dictionary<string, string>() {
+                    { "IconMessageID", "1" },
+                    { "toBeReceivedBy", "ALL" }
+                },
+                S3BucketName = "SampleBucket",
+                S3Key = "SampleS3Key"
+            };
             mockSaveTaxMammothCommandHandler = new Mock<ICommandHandler<SaveTaxToMammothCommand>>();
+            mockSubscriber = new Mock<IDvsSubscriber>();
 
-            listener = new CchTaxListener(applicationSettings,
-                connectionSettings,
+            listener = new CchTaxListener(
+                listenerSettings,
                 mockSubscriber.Object,
                 mockMessageParser.Object,
                 mockEmailClient.Object,
@@ -59,65 +70,70 @@ namespace Icon.Esb.CchTax.Tests
         public void HandleMessage_ValidMessage_ShouldSaveMessages()
         {
             //Given 
-            var message = File.ReadAllText(@"TestMessages\test_tax_message.xml");
-            mockMessage.SetupGet(m => m.MessageText)
-                .Returns(message);
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+            var message = new DvsMessage(sqsMessage, System.IO.File.ReadAllText(@"TestMessages\test_tax_message.xml"));
+
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>()))
                 .Returns(new List<TaxHierarchyClassModel>());
 
             //When
-            listener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
+            listener.HandleMessage(message);
 
             //Then
-            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()), Times.Once);
+            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<DvsMessage>()), Times.Once);
             mockSaveTaxHierarchyClassCommandHandler.Verify(m => m.Execute(It.IsAny<SaveTaxHierarchyClassesCommand>()), Times.Once);
             mockLogger.Verify(m => m.Error(It.IsAny<string>()), Times.Never);
             mockEmailClient.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
-            mockMessage.Verify(m => m.Acknowledge(), Times.Once);
+           
         }
 
         [TestMethod]
         public void HandleMessage_ErrorSavingMessage_ShouldLogAndNotifyError()
         {
             //Given 
-            var message = File.ReadAllText(@"TestMessages\test_tax_message.xml");
-            mockMessage.SetupGet(m => m.MessageText)
-                .Returns(message);
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+            var message = new DvsMessage(sqsMessage, System.IO.File.ReadAllText(@"TestMessages\test_tax_message.xml"));
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>()))
                 .Returns(new List<TaxHierarchyClassModel>());
+            var exceptionMessageExpected = "Test Exception";
             mockSaveTaxHierarchyClassCommandHandler.Setup(m => m.Execute(It.IsAny<SaveTaxHierarchyClassesCommand>()))
-                .Throws(new Exception("Test Exception"));
-
+                .Throws(new Exception(exceptionMessageExpected));
+            var exceptionMessageCaught = "did not catch an exception";
             //When
-            listener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
-
+            try
+            {
+                listener.HandleMessage(message);
+            }
             //Then
-            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()), Times.Once);
-            mockSaveTaxHierarchyClassCommandHandler.Verify(m => m.Execute(It.IsAny<SaveTaxHierarchyClassesCommand>()), Times.Once);
-            mockLogger.Verify(m => m.Error(It.IsAny<string>()), Times.Once);
-            mockEmailClient.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
-            mockMessage.Verify(m => m.Acknowledge(), Times.Once);
+            catch(Exception e)
+            {
+                exceptionMessageCaught = e.Message;
+                mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<DvsMessage>()), Times.Once);
+                mockSaveTaxHierarchyClassCommandHandler.Verify(m => m.Execute(It.IsAny<SaveTaxHierarchyClassesCommand>()), Times.Once);
+            }
+            Assert.AreEqual(exceptionMessageExpected, exceptionMessageCaught);
         }
 
         [TestMethod]
         public void HandleMessage_ErrorParsingMessage_ShouldLogAndNotifyError()
         {
             //Given 
-            var message = File.ReadAllText(@"TestMessages\test_tax_message.xml");
-            mockMessage.SetupGet(m => m.MessageText)
-                .Returns(message);
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
-                .Throws(new Exception("Test Exception"));
-
+            var message = new DvsMessage(sqsMessage, System.IO.File.ReadAllText(@"TestMessages\test_tax_message.xml"));
+            var exceptionMessageExpected = "Test Exception";
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>()))
+                .Throws(new Exception(exceptionMessage));
+            var exceptionMessageCaught = "did not catch an exception";
             //When
-            listener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
-
+            try
+            {
+                listener.HandleMessage(message);
+            }
             //Then
-            mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()), Times.Once);
-            mockSaveTaxHierarchyClassCommandHandler.Verify(m => m.Execute(It.IsAny<SaveTaxHierarchyClassesCommand>()), Times.Never);
-            mockLogger.Verify(m => m.Error(It.IsAny<string>()), Times.Once);
-            mockEmailClient.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
-            mockMessage.Verify(m => m.Acknowledge(), Times.Once);
+            catch (Exception e)
+            {
+                exceptionMessageCaught = e.Message;
+                mockMessageParser.Verify(m => m.ParseMessage(It.IsAny<DvsMessage>()), Times.Once);
+                mockSaveTaxHierarchyClassCommandHandler.Verify(m => m.Execute(It.IsAny<SaveTaxHierarchyClassesCommand>()), Times.Never);
+            }
+            Assert.AreEqual(exceptionMessageCaught, exceptionMessageExpected);
         }
 
         [TestMethod]
@@ -130,10 +146,8 @@ namespace Icon.Esb.CchTax.Tests
                 new TaxHierarchyClassModel { HierarchyClassId = 0 },
                 new TaxHierarchyClassModel { HierarchyClassId = 0 }
             };
-            var message = File.ReadAllText(@"TestMessages\test_tax_message.xml");
-            mockMessage.SetupGet(m => m.MessageText)
-                .Returns(message);
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+            var message = new DvsMessage(sqsMessage, System.IO.File.ReadAllText(@"TestMessages\test_tax_message.xml"));
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>()))
                 .Returns(testTaxHierarchyClasses);
             //Update the tax HierarchyClassIds when SaveTaxHierarchyClassesCommandHandler is called
             mockSaveTaxHierarchyClassCommandHandler.Setup(m => m.Execute(It.IsAny<SaveTaxHierarchyClassesCommand>()))
@@ -146,7 +160,7 @@ namespace Icon.Esb.CchTax.Tests
                 });
 
             // When
-            listener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
+            listener.HandleMessage(message);
 
             // Then
             mockSaveTaxMammothCommandHandler.Verify(
@@ -163,21 +177,24 @@ namespace Icon.Esb.CchTax.Tests
         public void HandleMessage_SaveMessageToMammothCommandHandlerThrowsException_ShouldLogAndNotify()
         {
             //Given
-            var message = File.ReadAllText(@"TestMessages\test_tax_message.xml");
-            mockMessage.SetupGet(m => m.MessageText)
-                .Returns(message);
-            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+            var message = new DvsMessage(sqsMessage, System.IO.File.ReadAllText(@"TestMessages\test_tax_message.xml"));
+            mockMessageParser.Setup(m => m.ParseMessage(It.IsAny<DvsMessage>()))
                 .Returns(new List<TaxHierarchyClassModel>());
+            var expectedExceptionMessage = "Test Mammoth Exception";
             mockSaveTaxMammothCommandHandler.Setup(m => m.Execute(It.IsAny<SaveTaxToMammothCommand>()))
-                .Throws(new Exception("Test Mammoth Exception"));
+                .Throws(new Exception(expectedExceptionMessage));
 
             //When
-            listener.HandleMessage(null, new EsbMessageEventArgs { Message = mockMessage.Object });
-
+            var exceptionCaughtMessage = "did not catch and Exception";
+            try
+            {
+                listener.HandleMessage(message);
+            }
             //Then
-            mockLogger.Verify(m => m.Error(It.Is<string>(s => s.Contains("Test Mammoth Exception"))), Times.Once, "The logger was not called.");
-            mockEmailClient.Verify(m => m.Send(It.Is<string>(s => s.Contains("Test Mammoth Exception")), It.IsAny<string>()), Times.Once, "The email client was not called.");
-            mockMessage.Verify(m => m.Acknowledge(), Times.Once, "The message was not acknowledged.");
+            catch(Exception e) {
+                exceptionCaughtMessage = e.Message;
+            }
+            Assert.AreEqual(expectedExceptionMessage, exceptionCaughtMessage);
         }
     }
 }
