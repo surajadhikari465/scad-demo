@@ -59,6 +59,9 @@
     <None Include="Schemas\MammothPrices.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Schemas\PriceMessageArchive.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
