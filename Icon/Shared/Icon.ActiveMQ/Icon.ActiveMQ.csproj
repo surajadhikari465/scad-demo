@@ -86,7 +86,9 @@
     <Compile Include="Factory\IActiveMQConnectionFactory.cs" />
     <Compile Include="IActiveMQConnection.cs" />
     <Compile Include="IActiveMQConnectionSettings.cs" />
+    <Compile Include="Producer\ActiveMQDynamicProducer.cs" />
     <Compile Include="Producer\ActiveMQProducer.cs" />
+    <Compile Include="Producer\IActiveMQDynamicProducer.cs" />
     <Compile Include="Producer\IActiveMQProducer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

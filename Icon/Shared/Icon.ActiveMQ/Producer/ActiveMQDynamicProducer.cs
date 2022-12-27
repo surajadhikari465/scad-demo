@@ -7,14 +7,17 @@ using Apache.NMS;
 
 namespace Icon.ActiveMQ.Producer
 {
-    public class ActiveMQProducer : ActiveMQConnection, IActiveMQProducer
+    /// <summary>
+    /// This producer can be used when the queue will be known only during Send operation
+    /// </summary>
+    public class ActiveMQDynamicProducer : ActiveMQConnection, IActiveMQDynamicProducer
     {
         private IMessageProducer producer;
         private string lastClientId;
 
         private const int TIME_TO_LIVE_HOURS = 12;
 
-        public ActiveMQProducer(ActiveMQConnectionSettings settings): base(settings)
+        public ActiveMQDynamicProducer(ActiveMQConnectionSettings settings) : base(settings)
         {
             lastClientId = "Undefined-" + Guid.NewGuid().ToString("N");
         }
@@ -22,60 +25,21 @@ namespace Icon.ActiveMQ.Producer
         /// <summary>
         /// Verifies the ActiveMQ Connection and sends the message
         /// </summary>
+        /// <param name="queueName">queue to send the message</param>
         /// <param name="message">Message to be sent</param>
         /// <param name="messageProperties">Message properties: Default null</param>
-        public void Send(string message, Dictionary<string, string> messageProperties = null)
+        public void Send(string queueName, string message, Dictionary<string, string> messageProperties = null)
         {
             VerifyConnectionAndGracefullyReconnect();
             ITextMessage textMessage = session.CreateTextMessage(message);
-            Send(textMessage, messageProperties);
+            Send(queueName, textMessage, messageProperties);
         }
 
-        /// <summary>
-        /// Verifies the ActiveMQ Connection and sends the message
-        /// </summary>
-        /// <param name="message">Message in bytes array that needs to be sent</param>
-        /// <param name="messageProperties">Message properties: Default null</param>
-        public void Send(byte [] message, Dictionary<string, string> messageProperties = null)
+        private void Send(string queueName, ITextMessage textMessage, Dictionary<string, string> messageProperties = null)
         {
-            VerifyConnectionAndGracefullyReconnect();
-            IBytesMessage bytesMessage = session.CreateBytesMessage(message);
-            Send(bytesMessage, messageProperties);
-        }
-
-        /// <summary>
-        /// Verifies the ActiveMQ Connection and sends the message
-        /// </summary>
-        /// <param name="message">Message to be sent</param>
-        /// <param name="messageId">To give message ID to the message</param>
-        /// <param name="messageProperties">Message properties: Default null</param>
-        public void Send(string message, string messageId, Dictionary<string, string> messageProperties = null)
-        {
-            VerifyConnectionAndGracefullyReconnect();
-            ITextMessage textMessage = session.CreateTextMessage(message);
-            textMessage.NMSMessageId = messageId;
-            Send(textMessage, messageProperties);
-        }
-
-        /// <summary>
-        /// Verifies the ActiveMQ Connection and sends the message
-        /// </summary>
-        /// <param name="message">Message in byte array that needs to be sent</param>
-        /// <param name="messageId">To give message ID to the message</param>
-        /// <param name="messageProperties">Message properties: Default null</param>
-        public void Send(byte [] message, string messageId, Dictionary<string, string> messageProperties = null)
-        {
-            VerifyConnectionAndGracefullyReconnect();
-            IBytesMessage bytesMessage = session.CreateBytesMessage(message);
-            bytesMessage.NMSMessageId = messageId;
-            Send(bytesMessage, messageProperties);
-        }
-
-        private void Send(ITextMessage textMessage, Dictionary<string, string> messageProperties = null)
-        {
-            if(messageProperties != null)
+            if (messageProperties != null)
             {
-                foreach(var property in messageProperties)
+                foreach (var property in messageProperties)
                 {
                     textMessage.Properties.SetString(property.Key, property.Value);
                 }
@@ -85,25 +49,7 @@ namespace Icon.ActiveMQ.Producer
 
             VerifyConnectionAndGracefullyReconnect();
             Retry<Exception>(() => {
-                producer.Send(textMessage);
-            });
-        }
-
-        private void Send(IBytesMessage bytesMessage, Dictionary<string, string> messageProperties = null)
-        {
-            if (messageProperties != null)
-            {
-                foreach (var property in messageProperties)
-                {
-                    bytesMessage.Properties.SetString(property.Key, property.Value);
-                }
-            }
-            // The messages are retained in the Broker for 12 hours if no consumer consumes them
-            bytesMessage.NMSTimeToLive = TimeSpan.FromHours(TIME_TO_LIVE_HOURS);
-
-            VerifyConnectionAndGracefullyReconnect();
-            Retry<Exception>(() => {
-                producer.Send(bytesMessage);
+                producer.Send(GetDestination(queueName), textMessage);
             });
         }
 
@@ -138,7 +84,7 @@ namespace Icon.ActiveMQ.Producer
         private void OpenConnectionAndCreateProducer(string clientId)
         {
             base.OpenConnection(clientId);
-            producer = session.CreateProducer(GetDestination());
+            producer = session.CreateProducer();
             producer.DeliveryMode = MsgDeliveryMode.Persistent;
         }
 
@@ -157,7 +103,7 @@ namespace Icon.ActiveMQ.Producer
         /// <param name="action">Action to execute and retry if needed.</param>
         /// <param name="maxRetries">Max times to retry: Default 10 times</param>
         /// <param name="timeBetweenRetries">Time in milliseconds to wait between retries.: Default 30 seconds.</param>
-        private void Retry<TException>(Action action, int maxRetries = 10, int timeBetweenRetries = 30000) where TException: Exception
+        private void Retry<TException>(Action action, int maxRetries = 10, int timeBetweenRetries = 30000) where TException : Exception
         {
             int retryCount = 0;
             bool retry = true;
@@ -195,7 +141,7 @@ namespace Icon.ActiveMQ.Producer
         private int EvaluateFurtherRetry(Exception exception, int retryCount, int maxRetries, int timeBetweenRetries)
         {
             retryCount++;
-            if(retryCount >= maxRetries)
+            if (retryCount >= maxRetries)
             {
                 throw exception;
             }
@@ -203,9 +149,9 @@ namespace Icon.ActiveMQ.Producer
             return retryCount;
         }
 
-        private IDestination GetDestination()
+        private IDestination GetDestination(string queueName)
         {
-            if (Settings.DestinationType.ToLower().Contains("topic"))
+            if (queueName.ToLower().Contains("topic"))
             {
                 return session.GetTopic(Settings.QueueName);
             }

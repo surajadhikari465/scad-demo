@@ -1,6 +1,5 @@
 ﻿using System;
 using Apache.NMS.ActiveMQ;
-using Apache.NMS;
 
 
 namespace Icon.ActiveMQ
@@ -10,7 +9,6 @@ namespace Icon.ActiveMQ
         protected ConnectionFactory factory;
         protected Connection connection;
         protected Session session;
-        protected IDestination destination;
 
         public string ClientId {
             get => connection.ClientId;
@@ -49,24 +47,11 @@ namespace Icon.ActiveMQ
                 connection.ClientId = clientId;
 
                 session = (Session)connection.CreateSession(Settings.SessionMode);
-                GetDestination();
             }
             catch(Exception)
             {
                 this.Dispose();
                 throw;
-            }
-        }
-
-        protected virtual void GetDestination()
-        {
-            if (Settings.DestinationType.ToLower().Contains("topic"))
-            {
-                destination = session.GetTopic(Settings.QueueName);
-            }
-            else
-            {
-                destination = session.GetQueue(Settings.QueueName);
             }
         }
 
