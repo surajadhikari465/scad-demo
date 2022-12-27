@@ -4,6 +4,6 @@ namespace JobScheduler.Service.Publish
 {
     internal interface IMessagePublisher
     {
-        void PublishMessage(string message, Dictionary<string, string> messageProperties);
+        void PublishMessage(string queueName, string message, Dictionary<string, string> messageProperties);
     }
 }

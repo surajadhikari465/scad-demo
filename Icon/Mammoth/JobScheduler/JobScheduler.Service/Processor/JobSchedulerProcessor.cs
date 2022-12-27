@@ -72,7 +72,8 @@ namespace JobScheduler.Service.Processor
         {
             logger.Info($@"Starting Job: {jobSchedule.JobName}, Region: {jobSchedule.Region}, DestinationQueueName: {jobSchedule.DestinationQueueName})");
             JobSchedule jobScheduleCanonical = MapToJobScheduleCanonical(jobSchedule);
-            messagePublisher.PublishMessage(serializer.Serialize(jobScheduleCanonical, new Utf8StringWriter()), new Dictionary<string, string>());
+            messagePublisher.PublishMessage(jobSchedule.DestinationQueueName, serializer.Serialize(jobScheduleCanonical, new Utf8StringWriter()), new Dictionary<string, string>());
+            logger.Info($@"Completed Job: {jobSchedule.JobName}, Region: {jobSchedule.Region}, DestinationQueueName: {jobSchedule.DestinationQueueName})");
         }
 
         private JobSchedule MapToJobScheduleCanonical(GetJobSchedulesQueryModel jobSchedule)
