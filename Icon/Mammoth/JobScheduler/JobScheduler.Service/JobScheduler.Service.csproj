@@ -48,6 +48,9 @@
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.DbContextFactory.2019.5.22.1\lib\net472\Icon.DbContextFactory.dll</HintPath>
     </Reference>
+    <Reference Include="Icon.Esb.Schemas.Mammoth, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Esb.Schemas.Mammoth.2022.12.23.3\lib\net46\Icon.Esb.Schemas.Mammoth.dll</HintPath>
+    </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Framework.2019.12.6.1\lib\net472\Icon.Framework.dll</HintPath>
     </Reference>
@@ -95,10 +98,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\IJobScheduerDAL.cs" />
+    <Compile Include="DataAccess\JobScheduerDAL.cs" />
+    <Compile Include="ErrorHandler\ErrorEventPublisher.cs" />
+    <Compile Include="ErrorHandler\IErrorEventPublisher.cs" />
+    <Compile Include="Helper\Constants.cs" />
+    <Compile Include="Model\DBModel\GetJobSchedulesQueryModel.cs" />
     <Compile Include="Processor\IJobSchedulerProcessor.cs" />
     <Compile Include="Processor\JobSchedulerProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Publish\IMessagePublisher.cs" />
+    <Compile Include="Publish\MesssagePublisher.cs" />
+    <Compile Include="Serializer\ISerializer.cs" />
+    <Compile Include="Serializer\NamespaceHelper.cs" />
+    <Compile Include="Serializer\Serializer.cs" />
     <Compile Include="Service\IJobSchedulerService.cs" />
     <Compile Include="Service\JobSchedulerService.cs" />
     <Compile Include="Settings\JobSchedulerServiceSettings.cs" />
