@@ -102,8 +102,8 @@ namespace Icon.ActiveMQ.Producer
         /// <typeparam name="TException">Type of exception to retry.</typeparam>
         /// <param name="action">Action to execute and retry if needed.</param>
         /// <param name="maxRetries">Max times to retry: Default 10 times</param>
-        /// <param name="timeBetweenRetries">Time in milliseconds to wait between retries.: Default 30 seconds.</param>
-        private void Retry<TException>(Action action, int maxRetries = 10, int timeBetweenRetries = 30000) where TException : Exception
+        /// <param name="timeBetweenRetries">Time in milliseconds to wait between retries.: Default 3 seconds.</param>
+        private void Retry<TException>(Action action, int maxRetries = 10, int timeBetweenRetries = 3000) where TException : Exception
         {
             int retryCount = 0;
             bool retry = true;
@@ -151,13 +151,13 @@ namespace Icon.ActiveMQ.Producer
 
         private IDestination GetDestination(string queueName)
         {
-            if (queueName.ToLower().Contains("topic"))
+            if (Settings.DestinationType.ToLower().Contains("topic"))
             {
-                return session.GetTopic(Settings.QueueName);
+                return session.GetTopic(queueName);
             }
             else
             {
-                return session.GetQueue(Settings.QueueName);
+                return session.GetQueue(queueName);
             }
         }
     }
