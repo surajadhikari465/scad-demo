@@ -1,6 +1,4 @@
-﻿using Icon.ActiveMQ.Producer;
-using Icon.ActiveMQ;
-using Icon.Esb.Producer;
+﻿using Icon.Esb.Producer;
 using Icon.Esb;
 using Icon.Logging;
 using InventoryProducer.Common;
@@ -9,6 +7,10 @@ using Irma.Framework;
 using Mammoth.Framework;
 using System;
 using Icon.DbContextFactory;
+using Icon.ActiveMQ.Producer;
+using Icon.ActiveMQ;
+using InventoryProducer.Producer.Publish;
+using InventoryProducer.Producer.DataAccess;
 
 namespace InventoryProducer.Producer.ProducerBuilders
 {
@@ -16,13 +18,13 @@ namespace InventoryProducer.Producer.ProducerBuilders
     {
         public InventoryProducerBase ComposeProducer(InventoryProducerSettings inventoryProducerSettings)
         {
-            string applicationName = "RepublishInventoryMessagesService";
             var instance = ProducerType.Instance.ToString();
             InventoryProducerSettings settings = InventoryProducerSettings.CreateFromConfig("IRMA", ProducerType.Instance);
             IDbContextFactory<IrmaContext> irmaContextFactory = new IrmaDbContextFactory();
             IDbContextFactory<MammothContext> mammothContextFactory = new MammothContextFactory();
 
             var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("InventoryTopicName"));
+            var activeMqProducer = new ActiveMQDynamicProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig());
 
             var computedClientId = $"{settings.Source}InventoryProducer.Type-{settings.ProducerType}.{Environment.MachineName}.{Guid.NewGuid()}";
             var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
@@ -34,13 +36,26 @@ namespace InventoryProducer.Producer.ProducerBuilders
             producer.OpenConnection(clientId);
             baseLogger.LogInfo("ESB Connection Opened");
 
-            var queueProcessorLogger = new InventoryLogger<InventoryTransferQueueProcessor>(
-                new NLogLoggerInstance<InventoryTransferQueueProcessor>(instance),
+            baseLogger.LogInfo("Opening ActiveMQ Connection");
+            activeMqProducer.OpenConnection(clientId);
+            baseLogger.LogInfo("ActiveMQ Connection Opened");
+
+            var messagePublisher = new RepublishInventoryMessagePublisher(activeMqProducer, producer);
+            var republishInventoryDal = new RepublishInventoryDAL(irmaContextFactory, settings);
+
+            var queueProcessorLogger = new InventoryLogger<RepublishInventoryQueueProcessor>(
+                new NLogLoggerInstance<RepublishInventoryQueueProcessor>(instance),
                 irmaContextFactory,
                 settings
             );
 
-            var republishInventoryQueueProcessor = new RepublishInventoryQueueProcessor();
+            var republishInventoryQueueProcessor = new RepublishInventoryQueueProcessor(
+                settings,
+                republishInventoryDal,
+                messagePublisher,
+                mammothContextFactory,
+                queueProcessorLogger
+            );
 
             return new InventoryProducerBase(baseLogger, republishInventoryQueueProcessor);
         }

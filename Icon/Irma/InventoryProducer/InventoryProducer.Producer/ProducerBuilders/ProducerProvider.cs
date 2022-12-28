@@ -19,6 +19,9 @@ namespace InventoryProducer.Producer.ProducerBuilders
             },
             {
                 Constants.ProducerType.Receive, () => new InventoryReceiveProducerBuilder()
+            },
+            {
+                Constants.ProducerType.RepublishInventory, () => new RepublishInventoryProducerBuilder()
             }
         };
 

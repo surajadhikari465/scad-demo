@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace InventoryProducer.Producer.Model.DBModel
 {
     internal class ArchivedMessageModel
@@ -6,7 +8,7 @@ namespace InventoryProducer.Producer.Model.DBModel
         public int MessageArchiveID { get; set; }
         public string EventType { get; set; }
         public int BusinessUnitID { get; set; }
-        public string MessageNumber { get; set; }
+        public Int64 MessageNumber { get; set; }
         public string Message { get; set; }
     }
 }

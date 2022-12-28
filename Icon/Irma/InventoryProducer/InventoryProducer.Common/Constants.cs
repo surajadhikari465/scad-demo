@@ -28,6 +28,9 @@ namespace InventoryProducer.Common
             public const string MessageType = "MessageType";
             public const string NonReceivingSystems = "nonReceivingSysName";
             public const string MessageNumber = "MessageNumber";
+            public const string TransactionType = "TransactionType";
+            public const string Source = "Source";
+            public const string RegionCode = "RegionCode";
         }
 
         public struct ProducerType
@@ -36,6 +39,15 @@ namespace InventoryProducer.Common
             public const string Transfer = "transfer";
             public const string PurchaseOrder = "purchaseorder";
             public const string Receive = "receive";
+            public const string RepublishInventory = "republishinventory";
+        }
+
+        public struct TransactionType
+        {
+            public const string PurchaseOrders = "PurchaseOrders";
+            public const string ReceiptOrders = "ReceiptOrders";
+            public const string TransferOrders = "TransferOrders";
+            public const string InventorySpoilage = "InventorySpoilage";
         }
     }
 }

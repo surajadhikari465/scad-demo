@@ -13,7 +13,8 @@ namespace InventoryProducer.Producer.DataAccess
         IDbContextFactory<IrmaContext> dbContextFactory;
         InventoryProducerSettings inventoryProducerSettings;
 
-        public RepublishInventoryDAL(IDbContextFactory<IrmaContext> dbContextFactory, InventoryProducerSettings inventoryProducerSettings)
+        public RepublishInventoryDAL(IDbContextFactory<IrmaContext> dbContextFactory, 
+            InventoryProducerSettings inventoryProducerSettings)
         {
             this.dbContextFactory = dbContextFactory;
             this.inventoryProducerSettings = inventoryProducerSettings;
@@ -24,9 +25,10 @@ namespace InventoryProducer.Producer.DataAccess
             using(var irmaContext = dbContextFactory.CreateContext($"Irma_{inventoryProducerSettings.RegionCode}"))
             {
                 irmaContext.Database.CommandTimeout = 30;
+                var batchSize = new SqlParameter("@batchSize", System.Data.SqlDbType.BigInt) { Value = 50 };
                 return irmaContext.Database.SqlQuery<ArchivedMessageModel>(
-                    "exec [amz].[GetUnsentInStockMessages] @batchSize", 
-                    new SqlParameter("@batchSize", 1)
+                    "exec [amz].[GetUnsentInStockMessages] @batchSize",
+                    batchSize
                 ).ToList();
             }
         }
