@@ -22,16 +22,14 @@ namespace Icon.Esb.EwicAplListener.MappingGenerators
         private ICommandHandler<AddMappingsParameters> addMappingsCommand;
         private ICommandHandler<SaveToMessageHistoryParameters> saveToMessageHistoryCommandHandler;
         private ICommandHandler<UpdateMessageHistoryMessageParameters> updateMessageHistoryMessageCommandHandler;
-        private IMessageProducer esbMessageProducer;
-
         public MappingGenerator(
             ILogger<MappingGenerator> logger,
             ISerializer<EwicMappingMessageModel> mappingSerializer,
             IQueryHandler<GetExistingMappingsParameters, List<ScanCodeModel>> getExistingMappingsQuery,
             ICommandHandler<AddMappingsParameters> addMappingsCommand,
             ICommandHandler<SaveToMessageHistoryParameters> saveToMessageHistoryCommandHandler,
-            ICommandHandler<UpdateMessageHistoryMessageParameters> updateMessageHistoryMessageCommandHandler,
-            IMessageProducer esbMessageProducer)
+            ICommandHandler<UpdateMessageHistoryMessageParameters> updateMessageHistoryMessageCommandHandler
+           )
         {
             this.logger = logger;
             this.mappingSerializer = mappingSerializer;
@@ -39,7 +37,6 @@ namespace Icon.Esb.EwicAplListener.MappingGenerators
             this.addMappingsCommand = addMappingsCommand;
             this.saveToMessageHistoryCommandHandler = saveToMessageHistoryCommandHandler;
             this.updateMessageHistoryMessageCommandHandler = updateMessageHistoryMessageCommandHandler;
-            this.esbMessageProducer = esbMessageProducer;
         }
 
         public void GenerateMappings(EwicItemModel item)
@@ -58,7 +55,6 @@ namespace Icon.Esb.EwicAplListener.MappingGenerators
 
                 PopulateMessageXml(serializedMessages, messages);
 
-                TransmitMappings(messages);
 
                 logger.Info(String.Format("Successfully saved and transmitted the mapping messages for APL scan code {0} and agency {1} to R10.",
                     item.ScanCode, item.AgencyId));
@@ -164,11 +160,6 @@ namespace Icon.Esb.EwicAplListener.MappingGenerators
             addMappingsCommand.Execute(commandParameters);
 
             logger.Info(String.Format("Successfully added all mappings for APL scan code {0}.", aplScanCode));
-        }
-
-        private void TransmitMappings(List<MessageHistory> messagesToTransmit)
-        {
-            esbMessageProducer.SendMessages(messagesToTransmit);
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using Icon.Esb.Subscriber;
+﻿using Icon.Dvs.Model;
 
 namespace Icon.Esb.EwicAplListener.MessageParsers
 {
     public interface IMessageParser<T>
     {
-        T ParseMessage(IEsbMessage message);
+        T ParseMessage(DvsMessage message);
     }
 }

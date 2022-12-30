@@ -1,9 +1,10 @@
 ﻿using Icon.Esb.EwicAplListener.MessageParsers;
-using Icon.Esb.Subscriber;
+using Icon.Dvs.Model;
 using Icon.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Icon.Esb.EwicAplListener.Tests.Unit.MessageParsers
 {
@@ -11,27 +12,33 @@ namespace Icon.Esb.EwicAplListener.Tests.Unit.MessageParsers
     public class AplMessageParserTests
     {
         private AplMessageParser parser;
+        private DvsSqsMessage sqsMessage;
+
         private Mock<ILogger<AplMessageParser>> mockLogger;
-        private Mock<IEsbMessage> esbMessage;
 
         [TestInitialize]
         public void Initialize()
         {
             mockLogger = new Mock<ILogger<AplMessageParser>>();
-
-            esbMessage = new Mock<IEsbMessage>();
             parser = new AplMessageParser(mockLogger.Object);
+            sqsMessage = new DvsSqsMessage()
+            {
+                MessageAttributes = new Dictionary<string, string>() {
+                    { "IconMessageID", "1" },
+                    { "toBeReceivedBy", "ALL" }
+                },
+                S3BucketName = "SampleBucket",
+                S3Key = "SampleS3Key"
+            };
         }
 
         [TestMethod]
         public void ParseMessage_MessageWithAllFieldsPopulated_ReturnsPopulatedModel()
         {
             // Given.
-            var message = File.ReadAllText(@"TestMessages/sample_ewic_message.xml");
-            esbMessage.SetupGet(m => m.MessageText).Returns(message);
-            
+            DvsMessage dvsMessage = new DvsMessage(sqsMessage, System.IO.File.ReadAllText(@"TestMessages/sample_ewic_message.xml"));
             // When.
-            var result = parser.ParseMessage(esbMessage.Object);
+            var result = parser.ParseMessage(dvsMessage);
 
             // Then.
             var item = result.Items[0];
@@ -53,11 +60,10 @@ namespace Icon.Esb.EwicAplListener.Tests.Unit.MessageParsers
         public void ParseMessage_MessageWithOnlyRequiredFieldsPopulated_ReturnsPopulatedModel()
         {
             // Given.
-            var message = File.ReadAllText(@"TestMessages/sample_ewic_message_optionals_excluded.xml");
-            esbMessage.SetupGet(m => m.MessageText).Returns(message);
+            DvsMessage dvsMessage = new DvsMessage(sqsMessage, System.IO.File.ReadAllText(@"TestMessages/sample_ewic_message_optionals_excluded.xml"));
 
             // When.
-            var result = parser.ParseMessage(esbMessage.Object);
+            var result = parser.ParseMessage(dvsMessage);
 
             // Then.
             var item = result.Items[0];

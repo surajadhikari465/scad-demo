@@ -8,8 +8,9 @@ using Icon.Esb.EwicAplListener.MessageParsers;
 using Icon.Esb.EwicAplListener.NewAplProcessors;
 using Icon.Esb.EwicAplListener.StorageServices;
 using Icon.Esb.EwicAplListener.Transactions;
+using Icon.Dvs;
+using Icon.Dvs.Subscriber;
 using Icon.Esb.Factory;
-using Icon.Esb.Subscriber;
 using Icon.Ewic.Serialization.Serializers;
 using Icon.Ewic.Transmission.Producers;
 using Icon.Framework;
@@ -27,16 +28,17 @@ namespace Icon.Esb.EwicAplListener
             globalContext = new GlobalIconContext(new IconContext());
 
             var applicationSettings = EwicAplListenerApplicationSettings.CreateDefaultSettings<EwicAplListenerApplicationSettings>("eWIC APL Listener");
-            var connectionSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("listener");
             var messageParser = new AplMessageParser(new NLogLogger<AplMessageParser>());
             var storageService = BuildStorageService();
             var newAplProcessor = BuildNewAplProcessor();
+            var listenerSettings = DvsListenerSettings.CreateSettingsFromConfig();
+            var dvsSqsSubscriber = new DvsSqsSubscriber(DvsClientUtil.GetS3Client(listenerSettings), DvsClientUtil.GetSqsClient(listenerSettings), listenerSettings);
 
             var listener = new EwicAplListener(
                 globalContext,
                 applicationSettings,
-                connectionSettings,
-                new EsbSubscriber(connectionSettings),
+                listenerSettings,
+                dvsSqsSubscriber,
                 EmailClient.CreateFromConfig(),
                 new NLogLogger<EwicAplListener>(),
                 messageParser,
@@ -86,8 +88,7 @@ namespace Icon.Esb.EwicAplListener
                 new GetExclusionQuery(globalContext),
                 new AddExclusionCommand(globalContext),
                 new SaveToMessageHistoryCommand(globalContext),
-                new UpdateMessageHistoryMessageCommand(globalContext),
-                new EwicMessageProducer(new EsbConnectionFactory()));
+                new UpdateMessageHistoryMessageCommand(globalContext));
 
             return new ExclusionGeneratorTransaction(exclusionGenerator, globalContext);
         }
@@ -100,8 +101,7 @@ namespace Icon.Esb.EwicAplListener
                 new GetExistingMappingsQuery(globalContext),
                 new AddMappingsCommand(globalContext),
                 new SaveToMessageHistoryCommand(globalContext),
-                new UpdateMessageHistoryMessageCommand(globalContext),
-                new EwicMessageProducer(new EsbConnectionFactory()));
+                new UpdateMessageHistoryMessageCommand(globalContext));
 
             return new MappingGeneratorTransaction(mappingGenerator, globalContext);
         }

@@ -80,8 +80,7 @@ namespace Icon.Esb.EwicAplListener.Tests.Integration.NewAplProcessorsbr
                 new GetExclusionQuery(globalContext),
                 new AddExclusionCommand(globalContext),
                 new SaveToMessageHistoryCommand(globalContext),
-                new UpdateMessageHistoryMessageCommand(globalContext),
-                new EwicMessageProducer(mockConnectionFactory.Object));
+                new UpdateMessageHistoryMessageCommand(globalContext));
 
             mappingGenerator = new MappingGenerator(
                 new Mock<ILogger<MappingGenerator>>().Object,
@@ -89,8 +88,7 @@ namespace Icon.Esb.EwicAplListener.Tests.Integration.NewAplProcessorsbr
                 new GetExistingMappingsQuery(globalContext),
                 new AddMappingsCommand(globalContext),
                 new SaveToMessageHistoryCommand(globalContext),
-                new UpdateMessageHistoryMessageCommand(globalContext),
-                new EwicMessageProducer(mockConnectionFactory.Object));
+                new UpdateMessageHistoryMessageCommand(globalContext));
 
             processor = new AutoMappingAndExclusionProcessor(
                 mockLogger.Object,

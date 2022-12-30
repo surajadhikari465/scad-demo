@@ -1,4 +1,5 @@
-﻿using Icon.Esb.Subscriber;
+﻿using Icon.Dvs.Model;
+using Icon.Esb.Subscriber;
 using System;
 using System.ServiceProcess;
 using System.Threading;
@@ -21,21 +22,16 @@ namespace Icon.Esb.EwicAplListener.WindowsService
             {
                 string path = @"";
                 string xml = XDocument.Load(path).ToString();
-                var textMessage = new TextMessage(null, xml);
-                var esbMessage = new EsbMessage(textMessage);
-                    
+                DvsSqsMessage dvsSqsMessage = new DvsSqsMessage();
+                var dvsMessage = new DvsMessage(dvsSqsMessage, xml);
+
                 var listener = EwicAplListenerBuilder.Build();
 
-                var args = new EsbMessageEventArgs
-                {
-                    Message = esbMessage
-                };
-
-                listener.HandleMessage(null, args);
+                listener.HandleMessage(dvsMessage);
             }
             else
             {
-                EwicAplListenerBuilder.Build().Run();
+                EwicAplListenerBuilder.Build().Start();
 
                 Console.ReadLine();
 

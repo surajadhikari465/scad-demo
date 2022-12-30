@@ -25,7 +25,6 @@ namespace Icon.Esb.EwicAplListener.Tests.Unit.ExclusionGenerators
         private Mock<ICommandHandler<AddExclusionParameters>> mockAddExclusionCommand;
         private Mock<ICommandHandler<SaveToMessageHistoryParameters>> mockSaveToMessageHistoryCommand;
         private Mock<ICommandHandler<UpdateMessageHistoryMessageParameters>> mockUpdateMessageHistoryMessageCommand;
-        private Mock<IMessageProducer> mockProducer;
 
         [TestInitialize]
         public void Initialize()
@@ -36,7 +35,6 @@ namespace Icon.Esb.EwicAplListener.Tests.Unit.ExclusionGenerators
             mockAddExclusionCommand = new Mock<ICommandHandler<AddExclusionParameters>>();
             mockSaveToMessageHistoryCommand = new Mock<ICommandHandler<SaveToMessageHistoryParameters>>();
             mockUpdateMessageHistoryMessageCommand = new Mock<ICommandHandler<UpdateMessageHistoryMessageParameters>>();
-            mockProducer = new Mock<IMessageProducer>();
 
             generator = new ExclusionGenerator(
                 mockLogger.Object,
@@ -44,8 +42,7 @@ namespace Icon.Esb.EwicAplListener.Tests.Unit.ExclusionGenerators
                 mockExclusionExistsQuery.Object,
                 mockAddExclusionCommand.Object,
                 mockSaveToMessageHistoryCommand.Object,
-                mockUpdateMessageHistoryMessageCommand.Object,
-                mockProducer.Object);
+                mockUpdateMessageHistoryMessageCommand.Object);
 
             var mockXml = new XDocument(new XElement("body"));
             mockSerializer.Setup(s => s.Serialize(It.IsAny<EwicExclusionMessageModel>())).Returns(mockXml.ToString());
@@ -68,7 +65,6 @@ namespace Icon.Esb.EwicAplListener.Tests.Unit.ExclusionGenerators
             mockUpdateMessageHistoryMessageCommand.Verify(c => c.Execute(It.IsAny<UpdateMessageHistoryMessageParameters>()), Times.Once);
             mockSerializer.Verify(s => s.Serialize(It.IsAny<EwicExclusionMessageModel>()), Times.Once);
             mockSaveToMessageHistoryCommand.Verify(c => c.Execute(It.IsAny<SaveToMessageHistoryParameters>()), Times.Once);
-            mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Once);
         }
 
         [TestMethod]
@@ -88,7 +84,6 @@ namespace Icon.Esb.EwicAplListener.Tests.Unit.ExclusionGenerators
             mockUpdateMessageHistoryMessageCommand.Verify(c => c.Execute(It.IsAny<UpdateMessageHistoryMessageParameters>()), Times.Never);
             mockSerializer.Verify(s => s.Serialize(It.IsAny<EwicExclusionMessageModel>()), Times.Never);
             mockSaveToMessageHistoryCommand.Verify(c => c.Execute(It.IsAny<SaveToMessageHistoryParameters>()), Times.Never);
-            mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Never);
         }
     }
 }

@@ -18,12 +18,12 @@ namespace Icon.Esb.EwicAplListener.WindowsService
             logger.Info("Starting eWIC APL listener...");
 
             ewicListener = EwicAplListenerBuilder.Build();
-            ewicListener.Run();
+            ewicListener.Start();
         }
 
         protected override void OnStop()
         {
-            ewicListener.Close();
+            ewicListener.Stop();
         }
     }
 }

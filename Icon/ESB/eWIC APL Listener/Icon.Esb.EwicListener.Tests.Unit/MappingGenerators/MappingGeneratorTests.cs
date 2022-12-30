@@ -25,7 +25,6 @@ namespace Icon.Esb.EwicAplListener.Tests.Unit.MappingGenerators
         private Mock<ICommandHandler<AddMappingsParameters>> mockAddMappingsCommand;
         private Mock<ICommandHandler<SaveToMessageHistoryParameters>> mockSaveToMessageHistoryCommand;
         private Mock<ICommandHandler<UpdateMessageHistoryMessageParameters>> mockUpdateMessageHistoryMessageCommand;
-        private Mock<IMessageProducer> mockProducer;
 
         [TestInitialize]
         public void Initialize()
@@ -36,7 +35,6 @@ namespace Icon.Esb.EwicAplListener.Tests.Unit.MappingGenerators
             mockAddMappingsCommand = new Mock<ICommandHandler<AddMappingsParameters>>();
             mockSaveToMessageHistoryCommand = new Mock<ICommandHandler<SaveToMessageHistoryParameters>>();
             mockUpdateMessageHistoryMessageCommand = new Mock<ICommandHandler<UpdateMessageHistoryMessageParameters>>();
-            mockProducer = new Mock<IMessageProducer>();
 
             generator = new MappingGenerator(
                 mockLogger.Object,
@@ -44,8 +42,7 @@ namespace Icon.Esb.EwicAplListener.Tests.Unit.MappingGenerators
                 mockGetExistingMappingsQuery.Object,
                 mockAddMappingsCommand.Object,
                 mockSaveToMessageHistoryCommand.Object,
-                mockUpdateMessageHistoryMessageCommand.Object,
-                mockProducer.Object);
+                mockUpdateMessageHistoryMessageCommand.Object);
 
             var mockXml = new XDocument(new XElement("body"));
             mockSerializer.Setup(s => s.Serialize(It.IsAny<EwicMappingMessageModel>())).Returns(mockXml.ToString());
@@ -67,7 +64,6 @@ namespace Icon.Esb.EwicAplListener.Tests.Unit.MappingGenerators
             mockUpdateMessageHistoryMessageCommand.Verify(c => c.Execute(It.IsAny<UpdateMessageHistoryMessageParameters>()), Times.Once);
             mockSerializer.Verify(s => s.Serialize(It.IsAny<EwicMappingMessageModel>()), Times.Once);
             mockSaveToMessageHistoryCommand.Verify(c => c.Execute(It.IsAny<SaveToMessageHistoryParameters>()), Times.Once);
-            mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Once);
         }
 
         [TestMethod]
@@ -87,7 +83,6 @@ namespace Icon.Esb.EwicAplListener.Tests.Unit.MappingGenerators
             mockUpdateMessageHistoryMessageCommand.Verify(c => c.Execute(It.IsAny<UpdateMessageHistoryMessageParameters>()), Times.Never);
             mockSerializer.Verify(s => s.Serialize(It.IsAny<EwicMappingMessageModel>()), Times.Never);
             mockSaveToMessageHistoryCommand.Verify(c => c.Execute(It.IsAny<SaveToMessageHistoryParameters>()), Times.Never);
-            mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Never);
         }
     }
 }

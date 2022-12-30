@@ -1,60 +1,56 @@
 ﻿using Icon.RenewableContext;
 using Icon.Common.Email;
+using Icon.Dvs;
+using Icon.Dvs.ListenerApplication;
+using Icon.Dvs.Model;
+using Icon.Dvs.Subscriber;
 using Icon.Esb.EwicAplListener.Common;
 using Icon.Esb.EwicAplListener.Common.Models;
 using Icon.Esb.EwicAplListener.MessageParsers;
 using Icon.Esb.EwicAplListener.NewAplProcessors;
 using Icon.Esb.EwicAplListener.StorageServices;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb.Subscriber;
 using Icon.Framework;
 using Icon.Logging;
 using System;
 using System.Text;
 using System.Xml.Linq;
-using TIBCO.EMS;
+using Icon.Esb.ListenerApplication;
 
 namespace Icon.Esb.EwicAplListener
 {
-    public class EwicAplListener : ListenerApplication<EwicAplListener, ListenerApplicationSettings>
+    public class EwicAplListener : ListenerApplication<EwicAplListener>
     {
         private IRenewableContext<IconContext> globalContext;
         private IMessageParser<AuthorizedProductListModel> messageParser;
         private IAplStorageService storageService;
         private INewAplProcessor newAplProcessor;
+        private IEmailClient emailClient;
+        private ListenerApplicationSettings listenerApplicationSettings;
 
         public EwicAplListener(
             IRenewableContext<IconContext> globalContext,
             ListenerApplicationSettings listenerApplicationSettings,
-            EsbConnectionSettings esbConnectionSettings,
-            IEsbSubscriber subscriber,
+            DvsListenerSettings listenerSettings,
+            IDvsSubscriber subscriber,
             IEmailClient emailClient,
             ILogger<EwicAplListener> logger,
             IMessageParser<AuthorizedProductListModel> messageParser,
             IAplStorageService storageService,
             INewAplProcessor newAplProcessor)
-            : base(listenerApplicationSettings, esbConnectionSettings, subscriber, emailClient, logger)
+            : base(listenerSettings, subscriber, emailClient, logger)
         {
             this.globalContext = globalContext;
             this.messageParser = messageParser;
             this.storageService = storageService;
             this.newAplProcessor = newAplProcessor;
+            this.emailClient = emailClient;
+            this.listenerApplicationSettings = listenerApplicationSettings;
         }
 
-        public override void HandleMessage(object sender, EsbMessageEventArgs args)
+        public override void HandleMessage(DvsMessage message)
         {
             AuthorizedProductListModel aplModel;
-
-            try
-            {
-                aplModel = messageParser.ParseMessage(args.Message);
-            }
-            catch (Exception ex)
-            {
-                LogAndNotify(args, ex, Constants.UnsuccessfulParse);
-                AcknowledgeMessage(args.Message);
-                return;
-            }
+            aplModel = messageParser.ParseMessage(message);
 
             try
             {
@@ -62,8 +58,7 @@ namespace Icon.Esb.EwicAplListener
             }
             catch (Exception ex)
             {
-                LogAndNotify(args, ex, Constants.UnsuccessfulSave);
-                AcknowledgeMessage(args.Message);
+                LogAndNotify(message, ex, Constants.UnsuccessfulSave);
                 return;
             }
 
@@ -73,26 +68,13 @@ namespace Icon.Esb.EwicAplListener
             }
             catch (Exception ex)
             {
-                LogAndNotify(args, ex, Constants.UnsuccessfulProcessing);
-                AcknowledgeMessage(args.Message);
+                LogAndNotify(message, ex, Constants.UnsuccessfulProcessing);
                 return;
             }
-
-            AcknowledgeMessage(args.Message);
 
             globalContext.Refresh();
 
             logger.Info("Message processing complete.");
-        }
-
-        private void AcknowledgeMessage(IEsbMessage message)
-        {
-            if (esbConnectionSettings.SessionMode == SessionMode.ClientAcknowledge ||
-                esbConnectionSettings.SessionMode == SessionMode.ExplicitClientAcknowledge ||
-                esbConnectionSettings.SessionMode == SessionMode.ExplicitClientDupsOkAcknowledge)
-            {
-                message.Acknowledge();
-            }
         }
 
         private void ApplyAutomaticBusinessLogic(AuthorizedProductListModel aplModel)
@@ -101,23 +83,23 @@ namespace Icon.Esb.EwicAplListener
             newAplProcessor.ApplyExclusions(aplModel);
         }
 
-        private void LogAndNotify(EsbMessageEventArgs args, Exception ex, string errorMessage)
+        private void LogAndNotify(DvsMessage message, Exception ex, string errorMessage)
         {
             StringBuilder builder = new StringBuilder();
 
-            string emailTable = BuildEmailTable(args, ex.ToString());
+            string emailTable = BuildEmailTable(message, ex.ToString());
 
             builder.Append("<h3>").Append(errorMessage).Append("</h3>").Append(emailTable);
 
             logger.Error(String.Format("{0} Message: {1}, Exception: {2}",
                 errorMessage,
-                args.Message,
+                message,
                 ex.ToString()));
 
             emailClient.Send(builder.ToString(), listenerApplicationSettings.EmailSubjectError);
         }
 
-        private string BuildEmailTable(EsbMessageEventArgs args, string errorMessage)
+        private string BuildEmailTable(DvsMessage message, string errorMessage)
         {
             string emailTable = new XElement("table",
                 new XAttribute("style", "border-spacing:2px;border: 1px solid #bbb;border-collapse:collapse;table-layout:fixed;width:1200px;word-break:break-word;"),
@@ -142,7 +124,7 @@ namespace Icon.Esb.EwicAplListener
                             "Message"),
                         new XElement("td",
                             new XAttribute("style", "border:1px solid #bbb;"),
-                            args.Message)),
+                            message)),
                     new XElement("tr",
                         new XElement("td",
                             new XAttribute("style", "border:1px solid #bbb;"),

@@ -1,5 +1,4 @@
 ﻿using Icon.Esb.EwicAplListener.Common.Models;
-using Icon.Esb.Subscriber;
 using Icon.Logging;
 using System;
 using System.Collections.Generic;
@@ -7,6 +6,7 @@ using System.IO;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Contracts = Icon.Esb.Schemas.Ewic.ContractTypes;
+using Icon.Dvs.Model;
 
 namespace Icon.Esb.EwicAplListener.MessageParsers
 {
@@ -22,11 +22,11 @@ namespace Icon.Esb.EwicAplListener.MessageParsers
             this.serializer = new XmlSerializer(typeof(Contracts.eWICExport));
         }
 
-        public AuthorizedProductListModel ParseMessage(IEsbMessage message)
+        public AuthorizedProductListModel ParseMessage(DvsMessage message)
         {
             Contracts.eWICExport deserializedMessage;
 
-            using (textReader = new StringReader(Utility.RemoveUnusableCharactersFromXml(message.MessageText)))
+            using (textReader = new StringReader(Utility.RemoveUnusableCharactersFromXml(message.MessageContent)))
             {
                 deserializedMessage = serializer.Deserialize(textReader) as Contracts.eWICExport;
             }
@@ -39,7 +39,7 @@ namespace Icon.Esb.EwicAplListener.MessageParsers
             {
                 var aplModel = new AuthorizedProductListModel
                 {
-                    MessageXml = XDocument.Parse(message.MessageText).ToString(),
+                    MessageXml = XDocument.Parse(message.MessageContent).ToString(),
                     Items = new List<EwicItemModel>()
                 };
 

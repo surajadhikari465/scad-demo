@@ -21,7 +21,6 @@ namespace Icon.Esb.EwicAplListener.ExclusionGenerators
         private ICommandHandler<AddExclusionParameters> addExclusionCommand;
         private ICommandHandler<SaveToMessageHistoryParameters> saveToMessageHistoryCommand;
         private ICommandHandler<UpdateMessageHistoryMessageParameters> updateMessageHistoryMessageCommandHandler;
-        private IMessageProducer esbMessageProducer;
 
         public ExclusionGenerator(
             ILogger<ExclusionGenerator> logger,
@@ -29,8 +28,7 @@ namespace Icon.Esb.EwicAplListener.ExclusionGenerators
             IQueryHandler<GetExclusionParameters, ScanCodeModel> getExclusionQuery,
             ICommandHandler<AddExclusionParameters> addExclusionCommand,
             ICommandHandler<SaveToMessageHistoryParameters> saveToMessageHistoryCommand,
-            ICommandHandler<UpdateMessageHistoryMessageParameters> updateMessageHistoryMessageCommandHandler,
-            IMessageProducer esbMessageProducer)
+            ICommandHandler<UpdateMessageHistoryMessageParameters> updateMessageHistoryMessageCommandHandler)
         {
             this.logger = logger;
             this.exclusionSerializer = exclusionSerializer;
@@ -38,7 +36,6 @@ namespace Icon.Esb.EwicAplListener.ExclusionGenerators
             this.addExclusionCommand = addExclusionCommand;
             this.saveToMessageHistoryCommand = saveToMessageHistoryCommand;
             this.updateMessageHistoryMessageCommandHandler = updateMessageHistoryMessageCommandHandler;
-            this.esbMessageProducer = esbMessageProducer;
         }
 
         public void GenerateExclusions(EwicItemModel item)
@@ -57,7 +54,6 @@ namespace Icon.Esb.EwicAplListener.ExclusionGenerators
 
                 PopulateMessageXml(serializedMessage, message);
 
-                TransmitExclusion(message);
 
                 logger.Info(String.Format("Successfully transmitted the exclusion for scan code {0} and agency {1} to R10.",
                     item.ScanCode, item.AgencyId));
@@ -131,9 +127,5 @@ namespace Icon.Esb.EwicAplListener.ExclusionGenerators
                 scanCode, agencyId));
         }
 
-        private void TransmitExclusion(MessageHistory messageToTransmit)
-        {
-            esbMessageProducer.SendMessages(new List<MessageHistory> { messageToTransmit });
-        }
     }
 }
