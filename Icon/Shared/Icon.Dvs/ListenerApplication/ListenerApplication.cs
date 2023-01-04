@@ -6,6 +6,7 @@ using Icon.Common.Email;
 using Icon.Dvs.Subscriber;
 using Icon.Dvs.Model;
 using Icon.Logging;
+using Amazon.SQS.Model;
 
 namespace Icon.Dvs.ListenerApplication
 {
@@ -13,11 +14,12 @@ namespace Icon.Dvs.ListenerApplication
         where TListener : class
     {
         protected readonly DvsListenerSettings settings;
-        private readonly IEmailClient emailClient;
-        private readonly IDvsSubscriber subscriber;
+        protected readonly IEmailClient emailClient;
+        protected readonly IDvsSubscriber subscriber;
         protected readonly ILogger<TListener> logger;
         private bool processingMessage = false;
         protected Timer listenerTimer;
+        protected bool AcknowledgeMessageOnException { get; set; } = true;
 
         public ListenerApplication(
             DvsListenerSettings settings,
@@ -100,10 +102,14 @@ namespace Icon.Dvs.ListenerApplication
                 try
                 {
                     HandleMessage(message);
-                    await subscriber.DeleteSqsMessage(message.SqsMessage.SqsReceiptHandle);
+                    Acknowledge(message);
                 }
                 catch (Exception ex)
                 {
+                    if (AcknowledgeMessageOnException)
+                    {
+                        Acknowledge(message);
+                    }
                     HandleException(ex, message);
                 }
             }
@@ -132,6 +138,11 @@ namespace Icon.Dvs.ListenerApplication
         {
             string errorMessage = $"An error occurred in the {settings.ListenerApplicationName} while processing DVS message with MessageId: {message.SqsMessage.MessageId}";
             LogAndNotifyError(errorMessage, ex);
+        }
+
+        protected DeleteMessageResponse Acknowledge(DvsMessage message)
+        {
+             return subscriber.DeleteSqsMessage(message.SqsMessage.SqsReceiptHandle).Result;
         }
 
         protected void LogAndNotifyError(string errorMessage, Exception ex)
