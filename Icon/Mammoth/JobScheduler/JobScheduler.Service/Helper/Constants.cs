@@ -23,9 +23,14 @@
 
         public struct ConsumerS3Buckets
         {
-            public const string ExtractServiceBucketName = "extractservice";
-            public const string ActivePriceServiceBucketName = "activepriceservice";
-            public const string ExpiringTprServiceBucketName = "expiringtprservice";
+            public const string ExtractServiceBucketName = "jobscheduler-extractservice";
+            public const string ActivePriceServiceBucketName = "jobscheduler-activepriceservice";
+            public const string ExpiringTprServiceBucketName = "jobscheduler-expiringtprservice";
+        }
+        public struct ErrorSeverity
+        {
+            public const string Fatal = "Fatal";
+            public const string Error = "Error";
         }
     }
 }

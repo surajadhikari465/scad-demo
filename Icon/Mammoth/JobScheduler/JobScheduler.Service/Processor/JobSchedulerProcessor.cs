@@ -62,8 +62,7 @@ namespace JobScheduler.Service.Processor
                     },
                     currentJobName,
                     e.GetType().ToString(),
-                    e.Message,
-                    "Fatal"
+                    e.Message
                     );
             }
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using JobScheduler.Service.Helper;
+using System.Collections.Generic;
 
 namespace JobScheduler.Service.ErrorHandler
 {
@@ -11,7 +12,7 @@ namespace JobScheduler.Service.ErrorHandler
             string message,
             string errorCode,
             string errorDetails,
-            string errorSeverity
+            string errorSeverity = Constants.ErrorSeverity.Error
             );
     }
 }

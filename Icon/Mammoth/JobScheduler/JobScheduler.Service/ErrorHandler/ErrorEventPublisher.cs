@@ -1,10 +1,12 @@
 ﻿using Icon.Common.Xml;
 using Icon.DbContextFactory;
 using Icon.Esb.Schemas.Mammoth;
+using JobScheduler.Service.Helper;
 using JobScheduler.Service.Serializer;
 using Mammoth.Framework;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace JobScheduler.Service.ErrorHandler
 {
@@ -13,6 +15,11 @@ namespace JobScheduler.Service.ErrorHandler
         private const int DB_TIMEOUT_IN_SECONDS = 10;
         private readonly IDbContextFactory<MammothContext> mammothContextFactory;
         private readonly ISerializer<ErrorMessage> serializer;
+        private readonly IList<string> fatalErrors = new List<string>()
+        {
+            "Connection is closed",
+            "com.microsoft.sqlserver.jdbc.SQLServerException"
+        };
 
         public ErrorEventPublisher(
             IDbContextFactory<MammothContext> mammothContextFactory,
@@ -30,9 +37,13 @@ namespace JobScheduler.Service.ErrorHandler
             string message,
             string errorCode,
             string errorDetails,
-            string errorSeverity
+            string errorSeverity = Constants.ErrorSeverity.Error
             )
         {
+            if (fatalErrors.Any((fatalError) => errorDetails.Contains(fatalError) || errorCode.Contains(fatalError)))
+            {
+                errorSeverity = Constants.ErrorSeverity.Fatal;
+            }
             using (var mammothContext = mammothContextFactory.CreateContext())
             {
                 mammothContext.Database.CommandTimeout = DB_TIMEOUT_IN_SECONDS;

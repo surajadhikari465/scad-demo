@@ -7,6 +7,7 @@ using Polly;
 using Polly.Retry;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace JobScheduler.Service.Publish
 {
@@ -74,10 +75,15 @@ namespace JobScheduler.Service.Publish
             {
                 consumerServiceEsbProducerMap[queueNameConsumerServiceMap[queueName]].Send(message, messageProperties);
             });
-            /*sendMessageRetryPolicy.Execute(() =>
+            sendMessageRetryPolicy.Execute(() =>
             {
-                s3Facade.PutObject($"{consumerServiceS3BucketMap[queueNameConsumerServiceMap[queueName]]}-{jobSchedulerServiceSettings.AwsAccountId}", Guid.NewGuid().ToString(), message, messageProperties);
-            });*/
+                s3Facade.PutObject(
+                    $"{consumerServiceS3BucketMap[queueNameConsumerServiceMap[queueName]]}-{jobSchedulerServiceSettings.AwsAccountId}",
+                    $"{System.DateTime.UtcNow.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture)}/{Guid.NewGuid()}",
+                    message,
+                    messageProperties
+                    );
+            });
         }
 
         private void OpenEsbConnection()
