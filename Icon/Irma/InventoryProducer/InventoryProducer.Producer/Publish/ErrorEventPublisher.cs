@@ -37,9 +37,8 @@ namespace InventoryProducer.Producer.Publish
                 instockDequeueResult.Headers["MessageNumber"],
                 instockDequeueResult.Headers,
                 instockDequeueModelXmlPayload,
-                "Data Issue",
-                exception.StackTrace,
-                "Fatal"
+                exception.GetType().ToString(),
+                exception.Message
             );
         }
     }

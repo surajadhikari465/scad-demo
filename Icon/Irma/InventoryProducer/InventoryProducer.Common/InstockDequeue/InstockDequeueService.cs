@@ -74,7 +74,7 @@ namespace InventoryProducer.Common.InstockDequeue
                         "N/A",
                         messageProperties,
                         errorMessage,
-                        "Data Issue",
+                        ex.GetType().ToString(),
                         ex.StackTrace,
                         "Fatal"
                         );

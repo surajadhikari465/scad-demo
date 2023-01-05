@@ -51,8 +51,7 @@ namespace GPMService.Producer.Archive
                     priceProperties,
                     mammothPricesSerializer.Serialize(pricesToArchive, new Utf8StringWriter()),
                     e.GetType().ToString(),
-                    e.Message,
-                    "Fatal"
+                    e.Message
                     );
             }
         }

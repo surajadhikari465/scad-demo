@@ -41,7 +41,7 @@ namespace InventoryProducer.Producer.QueueProcessors
             this.retryPolicy = Policy
                 .Handle<Exception>()
                 .WaitAndRetry(
-                    DB_ERROR_RETRY_COUNT, 
+                    DB_ERROR_RETRY_COUNT,
                     retryAttempt => TimeSpan.FromMilliseconds(DB_ERROR_RETRY_INTERVAL_MILLISECONDS)
                 );
         }
@@ -71,21 +71,21 @@ namespace InventoryProducer.Producer.QueueProcessors
                                     { "", "" } // Referred from Existing DB records created by TIBCO app
                                 },
                                 unsentMessage.Message,
+                                ex.GetType().ToString(),
                                 ex.Message,
-                                ex.ToString(),
                                 "Fatal"
                             );
                             logger.LogError(ex.Message, ex.ToString());
                             republishInventoryDal.UpdateMessageArchiveWithError(
-                                unsentMessage.MessageArchiveID, 
-                                DB_ERROR_RETRY_COUNT, 
+                                unsentMessage.MessageArchiveID,
+                                DB_ERROR_RETRY_COUNT,
                                 ex.Message
                             );
                         }
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError(ex.Message, ex.ToString());
                 PublishErrorEvents.SendToMammoth(
@@ -96,9 +96,9 @@ namespace InventoryProducer.Producer.QueueProcessors
                     {
                         { "", "" } // Referred from Existing DB records created by TIBCO app
                     },
+                    "-",
                     ex.GetType().ToString(),
                     ex.Message,
-                    ex.ToString(),
                     "Fatal"
                 );
             }

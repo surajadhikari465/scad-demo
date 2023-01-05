@@ -84,9 +84,8 @@ namespace InventoryProducer.Producer.QueueProcessors
                         dequeuedMessage.Headers["MessageNumber"],
                         dequeuedMessage.Headers,
                         instockDequeueModelXmlPayload,
-                        "Data Issue",
-                        ex.StackTrace,
-                        "Fatal"
+                        ex.GetType().ToString(),
+                        ex.Message
                         );
                 }
             }

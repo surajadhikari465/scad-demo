@@ -49,5 +49,10 @@ namespace InventoryProducer.Common
             public const string TransferOrders = "TransferOrders";
             public const string InventorySpoilage = "InventorySpoilage";
         }
+        public struct ErrorSeverity
+        {
+            public const string Fatal = "Fatal";
+            public const string Error = "Error";
+        }
     }
 }

@@ -79,5 +79,10 @@
             public const string Price = "Price";
             public const string ExpiringTprs = "Expirng Tprs";
         }
+        public struct ErrorSeverity
+        {
+            public const string Fatal = "Fatal";
+            public const string Error = "Error";
+        }
     }
 }

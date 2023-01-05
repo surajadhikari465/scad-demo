@@ -88,8 +88,7 @@ namespace GPMService.Producer.Message.Processor
                     },
                     receivedMessage.esbMessage.MessageText,
                     e.GetType().ToString(),
-                    e.Message,
-                    "Fatal"
+                    e.Message
                     );
             }
             finally
@@ -186,7 +185,7 @@ namespace GPMService.Producer.Message.Processor
                             { Constants.MessageHeaders.ResetFlag, "false" },
                             { Constants.MessageHeaders.TransactionType, Constants.TransactionTypes.Price },
                             { Constants.MessageHeaders.Source, Constants.Sources.JustInTimeSource },
-                            { Constants.MessageHeaders.RegionCode, jobScheduleMessage.Region },
+                            { Constants.MessageHeaders.RegionCode, jobScheduleMessage.Region }
                         };
                     try
                     {

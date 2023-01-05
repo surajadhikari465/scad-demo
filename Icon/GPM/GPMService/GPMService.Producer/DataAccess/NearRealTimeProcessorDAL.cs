@@ -141,8 +141,7 @@ ErrorMsg: {ex.Message}");
                     { {"MessageHeaders", priceMessageArchive.MessageHeaders } },
                     priceMessageArchiveSerializer.Serialize(priceMessageArchive, new Utf8StringWriter()),
                     ex.GetType().ToString(),
-                    ex.Message,
-                    "Fatal"
+                    ex.Message
                     );
             }
         }

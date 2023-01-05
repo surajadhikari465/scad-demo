@@ -11,7 +11,7 @@ namespace MammothR10Price.Publish
             string message,
             string errorCode,
             string errorDetails,
-            string errorSeverity
+            string errorSeverity = Constants.ErrorSeverity.Error
         );
     }
 }

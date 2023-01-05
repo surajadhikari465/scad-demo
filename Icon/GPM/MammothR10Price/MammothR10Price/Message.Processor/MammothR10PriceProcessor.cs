@@ -104,7 +104,7 @@ namespace MammothR10Price.Message.Processor
                             );
                     });
                 }
-                logger.Info($"Successfully processed Mammoth Price  MessageID: {message.GetProperty(Constants.MessageProperty.TransactionId)}");
+                logger.Info($"Successfully processed Mammoth Price MessageID: {message.GetProperty(Constants.MessageProperty.TransactionId)}, mapped it to the ESB price canonical, and sent a message to queue.");
             }
             catch (Exception ex)
             {
@@ -117,8 +117,7 @@ namespace MammothR10Price.Message.Processor
                         receivedMessageProperties,
                         message.MessageText,
                         ex.GetType().ToString(),
-                        ex.ToString(),
-                        "Fatal"
+                        ex.Message
                     );
                 }
                 catch(Exception errorPublisherException)

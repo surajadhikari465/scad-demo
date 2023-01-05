@@ -94,8 +94,7 @@ namespace GPMService.Producer.Message.Processor
                     },
                     receivedMessage.esbMessage.MessageText,
                     e.GetType().ToString(),
-                    e.Message,
-                    "Fatal"
+                    e.Message
                     );
             }
             finally

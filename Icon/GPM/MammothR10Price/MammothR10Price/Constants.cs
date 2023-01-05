@@ -44,5 +44,10 @@ namespace MammothR10Price
         {
             public const string DELETE = "DELETE";
         }
+        public struct ErrorSeverity
+        {
+            public const string Fatal = "Fatal";
+            public const string Error = "Error";
+        }
     }
 }

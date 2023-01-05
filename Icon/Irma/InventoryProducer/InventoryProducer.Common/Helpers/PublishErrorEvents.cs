@@ -2,14 +2,19 @@ using Icon.DbContextFactory;
 using InventoryProducer.Common.Schemas;
 using InventoryProducer.Common.Serializers;
 using Mammoth.Framework;
-using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace InventoryProducer.Common.Helpers
 {
     public class PublishErrorEvents
     {
+        private static readonly IList<string> fatalErrors = new List<string>()
+        {
+            "Connection is closed",
+            "com.microsoft.sqlserver.jdbc.SQLServerException"
+        };
         // publishes errors to gpm.ErrorMessages table using which alert is generated
         public static void SendToMammoth(
             IDbContextFactory<MammothContext> mammothContextFactory,
@@ -19,11 +24,14 @@ namespace InventoryProducer.Common.Helpers
             string message,
             string errorCode,
             string errorDetails,
-            string errorSeverity
+            string errorSeverity = Constants.ErrorSeverity.Error
             )
         {
+            if (fatalErrors.Any((fatalError) => errorDetails.Contains(fatalError) || errorCode.Contains(fatalError)))
+            {
+                errorSeverity = Constants.ErrorSeverity.Fatal;
+            }
             ISerializer<ErrorMessage> serializer = new Serializer<ErrorMessage>();
-
             using (var mammothContext = mammothContextFactory.CreateContext())
             {
                 mammothContext.Database.CommandTimeout = 10;

@@ -154,8 +154,7 @@ SequenceID: {sequenceID}";
                     messageProperties,
                     receivedMessage.esbMessage.MessageText,
                     exception.GetType().ToString(),
-                    exception.Message,
-                    "Fatal"
+                    exception.Message
                     );
                 nearRealTimeProcessorDAL.ArchiveMessage(receivedMessage, exception.GetType().ToString(), exception.Message);
             }
