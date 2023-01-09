@@ -59,15 +59,14 @@ namespace MammothR10Price.Message.Processor
 
         public void ProcessReceivedMessage(IEsbMessage message)
         {
-            IDictionary<string, string> receivedMessageProperties = new Dictionary<string, string>()
+            IDictionary<string, string> messageProperties = new Dictionary<string, string>()
             {
                 { Constants.MessageProperty.TransactionId, message.GetProperty(Constants.MessageProperty.TransactionId) },
                 { Constants.MessageProperty.TransactionType, message.GetProperty(Constants.MessageProperty.TransactionType) },
                 { Constants.MessageProperty.CorrelationId, message.GetProperty(Constants.MessageProperty.CorrelationId) },
                 { Constants.MessageProperty.Source, message.GetProperty(Constants.MessageProperty.Source) },
                 { Constants.MessageProperty.SequenceId, message.GetProperty(Constants.MessageProperty.SequenceId) },
-                { Constants.MessageProperty.ResetFlag, message.GetProperty(Constants.MessageProperty.ResetFlag) },
-                { Constants.MessageProperty.NonReceivingSystems, message.GetProperty(Constants.MessageProperty.NonReceivingSystems) }
+                { Constants.MessageProperty.ResetFlag, message.GetProperty(Constants.MessageProperty.ResetFlag) }
             };
 
             try
@@ -83,23 +82,24 @@ namespace MammothR10Price.Message.Processor
                         IList<MammothPriceType> businessUnitPrices = mammothPrices.MammothPrice.Where(x => x.BusinessUnit == businessUnit).ToList();
                         var itemPriceCanonical = itemPriceCanonicalMapper.Transform(businessUnitPrices);
                         string xmlMessage = itemPriceCanonicalMapper.ToXml(itemPriceCanonical);
-                        Dictionary<string, string> esbMessageProperties = new Dictionary<string, string>(receivedMessageProperties);
+                        messageProperties[Constants.MessageProperty.nonReceivingSysName] = serviceSettings.NonReceivingSystems;
+                        Dictionary<string, string> esbMessageProperties = new Dictionary<string, string>(messageProperties);
                         Dictionary<string, string> dbArchiveMessageProperties = new Dictionary<string, string>();
-                        dbArchiveMessageProperties[Constants.MessageProperty.MessageId] = receivedMessageProperties[Constants.MessageProperty.TransactionId];
-                        if (Constants.Source.Mammoth.Equals(receivedMessageProperties[Constants.MessageProperty.Source]))
+                        dbArchiveMessageProperties[Constants.MessageProperty.MessageId] = messageProperties[Constants.MessageProperty.TransactionId];
+                        if (Constants.Source.Mammoth.Equals(messageProperties[Constants.MessageProperty.Source]))
                         {
                             esbMessageProperties[Constants.MessageProperty.TransactionId] = messageId;
-                            esbMessageProperties[Constants.MessageProperty.MammothMessageId] = 
-                            esbMessageProperties[Constants.MessageProperty.TransactionId];
+                            esbMessageProperties[Constants.MessageProperty.MammothMessageId] =
+                            messageProperties[Constants.MessageProperty.TransactionId];
                             dbArchiveMessageProperties[Constants.MessageProperty.MessageId] = messageId;
                             dbArchiveMessageProperties[Constants.MessageProperty.MammothMessageId] =
-                            receivedMessageProperties[Constants.MessageProperty.TransactionId];
+                            messageProperties[Constants.MessageProperty.TransactionId];
                         }
                         messagePublisher.Publish(xmlMessage, esbMessageProperties);
                         messageArchiver.ArchiveMessage(
                             businessUnitPrices,
                             xmlMessage,
-                            receivedMessageProperties,
+                            messageProperties,
                             dbArchiveMessageProperties
                             );
                     });
@@ -113,8 +113,8 @@ namespace MammothR10Price.Message.Processor
                 {
                     errorEventPublisher.PublishErrorEvent(
                         serviceSettings.ApplicationName,
-                        receivedMessageProperties[Constants.MessageProperty.TransactionId],
-                        receivedMessageProperties,
+                        messageProperties[Constants.MessageProperty.TransactionId],
+                        messageProperties,
                         message.MessageText,
                         ex.GetType().ToString(),
                         ex.Message

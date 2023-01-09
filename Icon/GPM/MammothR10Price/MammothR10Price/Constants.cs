@@ -11,7 +11,7 @@ namespace MammothR10Price
             public const string TransactionType = "TransactionType";
             public const string Source = "Source";
             public const string ResetFlag = "ResetFlag";
-            public const string NonReceivingSystems = "NonReceivingSystems";
+            public const string nonReceivingSysName = "nonReceivingSysName";
             public const string MammothMessageId = "MammothMessageID";
             public const string MessageId = "MessageID";
         }
