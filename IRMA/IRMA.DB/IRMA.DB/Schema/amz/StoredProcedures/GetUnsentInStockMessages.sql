@@ -14,5 +14,5 @@ BEGIN
 END
 GO
 GRANT EXECUTE
-    ON OBJECT::[amz].[GetUnsentInStockMessages] TO [TibcoDataWriter]
+    ON OBJECT::[amz].[GetUnsentInStockMessages] TO [TibcoDataWriter], [IconInterface]
     AS [dbo];

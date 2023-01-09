@@ -30,7 +30,7 @@ CREATE NONCLUSTERED INDEX [IdxMessageArchive_Status] ON [amz].[MessageArchive]
 GO
 
 GRANT SELECT, UPDATE
-    ON OBJECT::[amz].[MessageArchive] TO [MammothRole], [TibcoDataWriter]
+    ON OBJECT::[amz].[MessageArchive] TO [MammothRole], [TibcoDataWriter], [IconInterface]
     AS [dbo];
 
 GO
