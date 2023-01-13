@@ -74,26 +74,26 @@ namespace InventoryProducer.Producer.Mapper
 
             if (purchaseOrder.OtherOrderExternalSourceOrderID.HasValue)
             {
-                ExternalPurchaseOrderReference externalPurchaseOrderRef = null;
+                List<ExternalPurchaseOrderReference> externalPurchaseOrderReferenceList = new List<ExternalPurchaseOrderReference>();
                 if (purchaseOrder.ExternalOrderId.HasValue)
                 {
-                    externalPurchaseOrderRef = new ExternalPurchaseOrderReference()
+                    externalPurchaseOrderReferenceList.Add(new ExternalPurchaseOrderReference()
                     {
                         externalPurchaseOrderNumber = purchaseOrder.ExternalOrderId.Value.ToString(),
                         externalSource = purchaseOrder.ExternalSource
-                    };
+                    });
                 }
                 if (purchaseOrder.OtherOrderExternalSourceOrderID.HasValue)
                 {
-                    externalPurchaseOrderRef = new ExternalPurchaseOrderReference()
+                    externalPurchaseOrderReferenceList.Add(new ExternalPurchaseOrderReference()
                     {
                         externalPurchaseOrderNumber = purchaseOrder.OtherOrderExternalSourceOrderID.Value.ToString(),
                         externalSource = purchaseOrder.OtherExternalSourceDescription
-                    };
+                    });
                 }
                 canonicalDelete.externalPurchaseOrderReferences = new ExternalPurchaseOrderReferences()
                 {
-                    externalPurchaseOrderReference = externalPurchaseOrderRef
+                    externalPurchaseOrderReference = externalPurchaseOrderReferenceList.ToArray()
                 };
             }
 
@@ -147,26 +147,26 @@ namespace InventoryProducer.Producer.Mapper
 
             if (purchaseOrder.OtherOrderExternalSourceOrderID.HasValue)
             {
-                ExternalPurchaseOrderReference externalPurchaseOrderRef = null;
+                List<ExternalPurchaseOrderReference> externalPurchaseOrderReferenceList = new List<ExternalPurchaseOrderReference>();
                 if (purchaseOrder.ExternalOrderId.HasValue)
                 {
-                    externalPurchaseOrderRef = new ExternalPurchaseOrderReference()
+                    externalPurchaseOrderReferenceList.Add(new ExternalPurchaseOrderReference()
                     {
                         externalPurchaseOrderNumber = purchaseOrder.ExternalOrderId.Value.ToString(),
                         externalSource = purchaseOrder.ExternalSource
-                    };
+                    });
                 }
                 if (purchaseOrder.OtherOrderExternalSourceOrderID.HasValue)
                 {
-                    externalPurchaseOrderRef = new ExternalPurchaseOrderReference()
+                    externalPurchaseOrderReferenceList.Add(new ExternalPurchaseOrderReference()
                     {
                         externalPurchaseOrderNumber = purchaseOrder.OtherOrderExternalSourceOrderID.Value.ToString(),
                         externalSource = purchaseOrder.OtherExternalSourceDescription
-                    };
+                    });
                 }
                 canonicalNonDelete.externalPurchaseOrderReferences = new ExternalPurchaseOrderReferences()
                 {
-                    externalPurchaseOrderReference = externalPurchaseOrderRef
+                    externalPurchaseOrderReference = externalPurchaseOrderReferenceList.ToArray()
                 };
             }
 
