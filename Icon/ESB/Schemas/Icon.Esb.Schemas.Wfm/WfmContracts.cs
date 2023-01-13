@@ -15804,15 +15804,28 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         public ExternalPurchaseOrderReferences externalPurchaseOrderReferences { get; set; }
     }
 
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.168+ga8fba1ebd7")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1", IsNullable = true)]
     public partial class ExternalPurchaseOrderReference
     {
         public string externalPurchaseOrderNumber { get; set; }
         public string externalSource { get; set; }
     }
 
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.168+ga8fba1ebd7")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1", IsNullable = true)]
     public partial class ExternalPurchaseOrderReferences
     {
-        public ExternalPurchaseOrderReference externalPurchaseOrderReference { get; set; }
+        [System.Xml.Serialization.XmlArrayItemAttribute("externalPurchaseOrderReference", Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1", IsNullable=true)]
+        public ExternalPurchaseOrderReference[] externalPurchaseOrderReference { get; set; }
     }
 
     /// <remarks/>
