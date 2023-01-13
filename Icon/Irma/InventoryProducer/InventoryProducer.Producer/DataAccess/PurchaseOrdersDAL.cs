@@ -94,7 +94,7 @@ namespace InventoryProducer.Producer.DataAccess
                         oh.Expected_Date as ExpectedArrivalDate,
 	                    oi.eInvoiceQuantity as EInvoiceQuantity,
 	                    oi.eInvoiceWeight as EInvoiceWeight,
-	                    oh.OrderExternalSourceOrderID,
+	                    oh.OrderExternalSourceOrderID as OtherOrderExternalSourceOrderID,
 	                    CASE
 		                    WHEN oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description
 		                    ELSE NULL
@@ -140,7 +140,7 @@ namespace InventoryProducer.Producer.DataAccess
 	                'Deleted' as Status,
 	                oh.User_ID as UserId,
 	                uc.UserName as UserName,
-	                oh.OrderExternalSourceOrderID,
+	                oh.OrderExternalSourceOrderID as OtherOrderExternalSourceOrderID,
 	                CASE
 		                WHEN oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description
 		                ELSE NULL
@@ -183,7 +183,7 @@ namespace InventoryProducer.Producer.DataAccess
 	                    oi.OrderItem_ID as PurchaseOrderDetailNumber,
 	                    oi.Item_Key as SourceItemKey,
 	                    ii.Identifier as DefaultScanCode,
-	                    oh.OrderExternalSourceOrderID,
+	                    oh.OrderExternalSourceOrderID as OtherOrderExternalSourceOrderID,
 	                    CASE
 		                    WHEN oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description
 		                    ELSE NULL

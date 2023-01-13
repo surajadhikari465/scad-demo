@@ -145,6 +145,31 @@ namespace InventoryProducer.Producer.Mapper
                 canonicalNonDelete.externalSource = purchaseOrder.ExternalSource;
             }
 
+            if (purchaseOrder.OtherOrderExternalSourceOrderID.HasValue)
+            {
+                ExternalPurchaseOrderReference externalPurchaseOrderRef = null;
+                if (purchaseOrder.ExternalOrderId.HasValue)
+                {
+                    externalPurchaseOrderRef = new ExternalPurchaseOrderReference()
+                    {
+                        externalPurchaseOrderNumber = purchaseOrder.ExternalOrderId.Value.ToString(),
+                        externalSource = purchaseOrder.ExternalSource
+                    };
+                }
+                if (purchaseOrder.OtherOrderExternalSourceOrderID.HasValue)
+                {
+                    externalPurchaseOrderRef = new ExternalPurchaseOrderReference()
+                    {
+                        externalPurchaseOrderNumber = purchaseOrder.OtherOrderExternalSourceOrderID.Value.ToString(),
+                        externalSource = purchaseOrder.OtherExternalSourceDescription
+                    };
+                }
+                canonicalNonDelete.externalPurchaseOrderReferences = new ExternalPurchaseOrderReferences()
+                {
+                    externalPurchaseOrderReference = externalPurchaseOrderRef
+                };
+            }
+
             canonicalNonDelete.PurchaseOrderDetail = CreatePurchaseOrderDetail(purchaseOrderList);
 
             return canonicalNonDelete;
