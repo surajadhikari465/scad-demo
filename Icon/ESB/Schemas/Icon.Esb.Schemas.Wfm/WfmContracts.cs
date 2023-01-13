@@ -15160,6 +15160,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
                 this.purchaseOrderDetailField = value;
             }
         }
+        public ExternalPurchaseOrderReferences externalPurchaseOrderReferences { get; set; }
     }
     
     /// <remarks/>
