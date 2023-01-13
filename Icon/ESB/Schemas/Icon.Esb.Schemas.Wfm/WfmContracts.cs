@@ -15146,7 +15146,10 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
                 this.purchaseOrderCommentsField = value;
             }
         }
-        
+
+        [System.Xml.Serialization.XmlArrayItemAttribute("externalPurchaseOrderReference", Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1", IsNullable = true)]
+        public ExternalPurchaseOrderReference[] externalPurchaseOrderReferences { get; set; }
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("PurchaseOrderDetail")]
         public PurchaseOrdersPurchaseOrderPurchaseOrderDetail[] PurchaseOrderDetail
@@ -15160,9 +15163,6 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
                 this.purchaseOrderDetailField = value;
             }
         }
-
-        [System.Xml.Serialization.XmlArrayItemAttribute("externalPurchaseOrderReference", Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1", IsNullable = true)]
-        public ExternalPurchaseOrderReference[] externalPurchaseOrderReferences { get; set; }
     }
     
     /// <remarks/>
@@ -15788,7 +15788,10 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
                 this.cancelDateTimeFieldSpecified = value;
             }
         }
-        
+
+        [System.Xml.Serialization.XmlArrayItemAttribute("externalPurchaseOrderReference", Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1", IsNullable = true)]
+        public ExternalPurchaseOrderReference[] externalPurchaseOrderReferences { get; set; }
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("purchaseOrderDeletionDetail")]
         public PurchaseOrderDeletionDetailType[] purchaseOrderDeletionDetail
@@ -15802,9 +15805,6 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
                 this.purchaseOrderDeletionDetailField = value;
             }
         }
-
-        [System.Xml.Serialization.XmlArrayItemAttribute("externalPurchaseOrderReference", Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1", IsNullable = true)]
-        public ExternalPurchaseOrderReference[] externalPurchaseOrderReferences { get; set; }
     }
 
     [System.CodeDom.Compiler.GeneratedCodeAttribute("MSBuild", "15.8.168+ga8fba1ebd7")]
