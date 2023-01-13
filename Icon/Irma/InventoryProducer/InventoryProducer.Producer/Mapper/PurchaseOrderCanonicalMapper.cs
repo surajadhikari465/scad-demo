@@ -91,10 +91,7 @@ namespace InventoryProducer.Producer.Mapper
                         externalSource = purchaseOrder.OtherExternalSourceDescription
                     });
                 }
-                canonicalDelete.externalPurchaseOrderReferences = new ExternalPurchaseOrderReferences()
-                {
-                    externalPurchaseOrderReference = externalPurchaseOrderReferenceList.ToArray()
-                };
+                canonicalDelete.externalPurchaseOrderReferences = externalPurchaseOrderReferenceList.ToArray();
             }
 
             canonicalDelete.purchaseOrderDeletionDetail = CreatePurchaseOrderDeletionDetail(purchaseOrderList, eventType);
@@ -164,10 +161,7 @@ namespace InventoryProducer.Producer.Mapper
                         externalSource = purchaseOrder.OtherExternalSourceDescription
                     });
                 }
-                canonicalNonDelete.externalPurchaseOrderReferences = new ExternalPurchaseOrderReferences()
-                {
-                    externalPurchaseOrderReference = externalPurchaseOrderReferenceList.ToArray()
-                };
+                canonicalNonDelete.externalPurchaseOrderReferences = externalPurchaseOrderReferenceList.ToArray();
             }
 
             canonicalNonDelete.PurchaseOrderDetail = CreatePurchaseOrderDetail(purchaseOrderList);
