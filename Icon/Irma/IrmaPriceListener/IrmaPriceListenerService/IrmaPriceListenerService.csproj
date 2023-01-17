@@ -72,6 +72,9 @@
     <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.RenewableContext.2019.5.14.2\lib\net472\Icon.RenewableContext.dll</HintPath>
     </Reference>
+    <Reference Include="Irma.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Irma.Framework.2019.12.20.2\lib\net472\Irma.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -138,6 +141,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="DataAccess\IIrmaPriceDAL.cs" />
     <Compile Include="DataAccess\IrmaPriceDAL.cs" />
+    <Compile Include="IrmaPriceListenerServiceSettings.cs" />
     <Compile Include="Listener\IrmaPriceListener.cs" />
     <Compile Include="Model\MammothPriceWithErrorType.cs" />
     <Compile Include="Parser\MammothPriceParser.cs" />

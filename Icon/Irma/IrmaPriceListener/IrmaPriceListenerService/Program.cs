@@ -10,6 +10,7 @@ namespace IrmaPriceListenerService
             var container = SimpleInjectorInitializer.InitializeContainer();
             container.Verify();
             var listener = container.GetInstance<IrmaPriceListener>();
+            var serviceSettings = container.GetInstance<IrmaPriceListenerServiceSettings>();
 
             HostFactory.Run(r =>
             {
@@ -19,9 +20,9 @@ namespace IrmaPriceListenerService
                     s.WhenStarted(cm => cm.Start());
                     s.WhenStopped(cm => cm.Stop());
                 });
-                r.SetDescription("Listens to Mammoth Prices and Updates the prices in IRMA DB");
-                r.SetDisplayName("Irma Price Listener Service");
-                r.SetServiceName("IrmaPriceListenerService");
+                r.SetDescription($"Listens to Mammoth Prices and Updates the prices in IRMA DB-{serviceSettings.IrmaRegionCode} Region");
+                r.SetDisplayName($"Irma Price Listener Service - {serviceSettings.IrmaRegionCode}");
+                r.SetServiceName($"IrmaPriceListenerService-{serviceSettings.IrmaRegionCode}");
             });
         }
     }
