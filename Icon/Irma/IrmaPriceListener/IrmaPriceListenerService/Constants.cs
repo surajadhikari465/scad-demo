@@ -18,5 +18,11 @@ namespace IrmaPriceListenerService
         {
             public const string Delete = "DELETE";
         }
+
+        public struct ErrorSeverity
+        {
+            public const string Fatal = "Fatal";
+            public const string Error = "Error";
+        }
     }
 }
