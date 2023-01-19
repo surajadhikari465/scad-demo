@@ -14,7 +14,8 @@ using JobScheduler.Service.Settings;
 using Mammoth.Framework;
 using SimpleInjector;
 using SimpleInjector.Diagnostics;
-using JobScheduler.Service.Infra;
+using Wfm.Aws.S3;
+using Wfm.Aws.S3.Settings;
 
 namespace JobScheduler.Service
 {
@@ -48,6 +49,7 @@ namespace JobScheduler.Service
             container.RegisterConditional<IEsbProducer>(
                 expiringTprEsbProducerRegistration,
                 c => !c.HasConsumer || c.Consumer.Target.Name.Equals("expiringTprServiceEsbProducer"));
+            container.RegisterSingleton(() => S3FacadeSettings.CreateSettingsFromConfig());
             container.RegisterSingleton<IS3Facade, S3Facade>();
             // adding suppressions
             extractServiceEsbProducerRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");

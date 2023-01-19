@@ -1,13 +1,13 @@
 ﻿using Icon.Esb.Producer;
 using Icon.Logging;
 using JobScheduler.Service.Helper;
-using JobScheduler.Service.Infra;
 using JobScheduler.Service.Settings;
 using Polly;
 using Polly.Retry;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Wfm.Aws.S3;
 
 namespace JobScheduler.Service.Publish
 {
