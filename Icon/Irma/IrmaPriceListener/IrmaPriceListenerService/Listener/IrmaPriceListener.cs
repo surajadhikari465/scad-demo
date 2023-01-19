@@ -94,7 +94,7 @@ namespace IrmaPriceListenerService.Listener
             }
             finally
             {
-                ArchivePriceMessage(mammothPrices, mammothPricesWithErrors, guid);
+                messageArchiver.ArchivePriceMessage(message, mammothPrices, mammothPricesWithErrors);
             }
         }
 
@@ -177,11 +177,6 @@ namespace IrmaPriceListenerService.Listener
             {
                 irmaPriceDAL.DeleteStagedMammothPrices(guid);
             });
-        }
-
-        private void ArchivePriceMessage(IList<MammothPriceType> mammothPrices, IList<MammothPriceWithErrorType> mammothPriceWithErrors, string guid)
-        {
-            throw new NotImplementedException();
         }
     }
 }
