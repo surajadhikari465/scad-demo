@@ -57,6 +57,9 @@
     <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.RenewableContext.2019.5.14.2\lib\net472\Icon.RenewableContext.dll</HintPath>
     </Reference>
+    <Reference Include="Mammoth.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mammoth.Framework.2022.7.11.1\lib\net46\Mammoth.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
     </Reference>
@@ -86,9 +89,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\ErrorMessagesMonitorDAL.cs" />
+    <Compile Include="DataAccess\IErrorMessagesMonitorDAL.cs" />
+    <Compile Include="Message.Processor\ErrorMessagesProcessor.cs" />
     <Compile Include="Message.Processor\IErrorMessagesProcessor.cs" />
+    <Compile Include="Model\ErrorDetailsCanonicalModel.cs" />
+    <Compile Include="Model\ErrorDetailsModel.cs" />
+    <Compile Include="Model\ErrorMessageModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serializer\ISerializer.cs" />
+    <Compile Include="Serializer\Serializer.cs" />
     <Compile Include="Service\ErrorMessagesMonitorService.cs" />
     <Compile Include="Service\IErrorMessagesMonitorService.cs" />
     <Compile Include="Settings\ErrorMessagesMonitorServiceSettings.cs" />
