@@ -24,7 +24,16 @@ namespace JobScheduler.Service.Service
 
         public void Start()
         {
-            logger.Info("Starting JobScheduler service.");
+            // Introducing delay so that multiple instances don't process the data at the same time.
+            // InstanceNumber iteration starts with 1 in pipeline.
+            int startDelayInSeconds = (jobSchedulerServiceSettings.InstanceNumber - 1) * jobSchedulerServiceSettings.DelayOffsetInSeconds;
+            if (startDelayInSeconds < 0)
+            {
+                logger.Warn($"Invalid value computed for startDelayInSeconds - '{startDelayInSeconds}'. Setting to 0.");
+                startDelayInSeconds = 0;
+            }
+            logger.Info($"Starting JobScheduler service in {startDelayInSeconds} seconds.");
+            Thread.Sleep(startDelayInSeconds * 1000);
             timer.Elapsed += RunService;
             timer.Start();
             logger.Info("Started JobScheduler service.");
