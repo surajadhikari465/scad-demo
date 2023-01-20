@@ -11,9 +11,9 @@ namespace Icon.ActiveMQ.Tests
         public void CreateSettingsFromConfigMethodTest()
         {
             // App.config values - Needed to match exactly with App.config
-            string serverUrl = "failover:(ssl://b-b1a575b2-58e7-4bd5-b17a-03dbdd11e562-1.mq.us-west-2.amazonaws.com:61617,ssl://b-b1a575b2-58e7-4bd5-b17a-03dbdd11e562-2.mq.us-west-2.amazonaws.com:61617)?randomize=true";
-            string username = "wfmdatavayuactivemqproducer";
-            string password = "4dsV8hY1zm3HBOtq";
+            string serverUrl = "failover:(ssl://b-30e2193f-fe4b-4212-831e-58ef6e0e2784-1.mq.us-west-2.amazonaws.com:61617,ssl://b-ebf4b796-b53d-4480-960c-caa3e8e06722-1.mq.us-west-2.amazonaws.com:61617)?randomize=true";
+            string username = "wfmdatavayuactivemqv2producer";
+            string password = "f16WTI8Uqbh3CCIq";
             string queueName = "test.ActiveMQLibrary";
             int reconnectDelay = 30000;
             AcknowledgementMode sessionMode = AcknowledgementMode.AutoAcknowledge;
