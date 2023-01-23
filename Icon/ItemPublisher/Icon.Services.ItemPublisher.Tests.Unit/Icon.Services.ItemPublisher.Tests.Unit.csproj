@@ -154,7 +154,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\ItemPublisherApplicationTests.cs" />
-    <Compile Include="Infrastructure\Filters\UKItemFilterTests.cs" />
     <Compile Include="Infrastructure\MessageQueue\MessageQueueClientTests.cs" />
     <Compile Include="Infrastructure\MessageQueue\MessageHeaderBuilderTests.cs" />
     <Compile Include="Infrastructure\MessageQueue\MessageBuilderTests.cs" />

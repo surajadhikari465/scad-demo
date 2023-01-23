@@ -1,6 +1,5 @@
 ﻿using Icon.Logging;
 using Icon.Services.ItemPublisher.Infrastructure;
-using Icon.Services.ItemPublisher.Infrastructure.Filters;
 using Icon.Services.ItemPublisher.Infrastructure.MessageQueue;
 using Icon.Services.ItemPublisher.Infrastructure.Models;
 using System.Collections.Generic;
@@ -20,20 +19,17 @@ namespace Icon.Services.ItemPublisher.Services
         private readonly ILogger<ItemProcessor> logger;
         private readonly ServiceSettings serviceSettings;
         private readonly ISystemListBuilder systemListBuilder;
-        private readonly IFilter ukItemFilter;
 
         public ItemProcessor(
             IMessageQueueService esbService,
             ILogger<ItemProcessor> logger,
             ServiceSettings serviceSettings,
-            ISystemListBuilder systemListBuilder,
-            IFilter ukItemFilter)
+            ISystemListBuilder systemListBuilder)
         {
             this.esbService = esbService;
             this.logger = logger;
             this.serviceSettings = serviceSettings;
             this.systemListBuilder = systemListBuilder;
-            this.ukItemFilter = ukItemFilter;
         }
 
         /// <summary>
@@ -58,10 +54,8 @@ namespace Icon.Services.ItemPublisher.Services
         {
             List<MessageSendResult> response = new List<MessageSendResult>();
             
-            // Added UKItemFilter in addition to RetailItems filter
-            // UKItemFilter might needed to be removed in future
             List<MessageQueueItemModel> retailItems = records.Where(
-                x => (x.Item.ItemTypeCode != ItemPublisherConstants.NonRetailSaleTypeCode && !ukItemFilter.Filter(x.Item))
+                x => (x.Item.ItemTypeCode != ItemPublisherConstants.NonRetailSaleTypeCode)
             ).ToList();
 
             if (retailItems.Count > 0)
@@ -81,10 +75,8 @@ namespace Icon.Services.ItemPublisher.Services
         {
             List<MessageSendResult> response = new List<MessageSendResult>();
 
-            // Added UKItemFilter in addition to NonRetailItems filter
-            // UKItemFilter might needed to be removed in future
             List<MessageQueueItemModel> nonRetailItems = records.Where(
-                x => (x.Item.ItemTypeCode == ItemPublisherConstants.NonRetailSaleTypeCode && !ukItemFilter.Filter(x.Item))
+                x => (x.Item.ItemTypeCode == ItemPublisherConstants.NonRetailSaleTypeCode)
             ).ToList();
 
             if (nonRetailItems.Count > 0)
