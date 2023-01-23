@@ -22,10 +22,15 @@ namespace IrmaPriceListenerService.Archive
             "com.microsoft.sqlserver.jdbc.SQLServerException"
         };
 
-        public ErrorEventPublisher(IDbContextFactory<MammothContext> mammothContextFactory, IrmaPriceListenerServiceSettings settings)
+        public ErrorEventPublisher(
+            IDbContextFactory<MammothContext> mammothContextFactory,
+            IrmaPriceListenerServiceSettings settings,
+            ISerializer<ErrorMessage> serializer
+        )
         {
             this.mammothContextFactory = mammothContextFactory;
             this.settings = settings;
+            this.serializer = serializer;
         }
 
         public void PublishErrorMessage(DvsMessage message, Exception ex)

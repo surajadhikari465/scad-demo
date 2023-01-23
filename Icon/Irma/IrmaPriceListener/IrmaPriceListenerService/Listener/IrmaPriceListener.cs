@@ -19,11 +19,11 @@ namespace IrmaPriceListenerService.Listener
 {
     public class IrmaPriceListener : ListenerApplication<IrmaPriceListener>
     {
-        private IIrmaPriceDAL irmaPriceDAL;
-        private IMessageArchiver messageArchiver;
-        private IErrorEventPublisher errorEventPublisher;
-        private IMessageParser<MammothPricesType> messageParser;
-        private RetryPolicy retryPolicy;
+        private readonly IIrmaPriceDAL irmaPriceDAL;
+        private readonly IMessageArchiver messageArchiver;
+        private readonly IErrorEventPublisher errorEventPublisher;
+        private readonly MessageParserBase<MammothPricesType, MammothPricesType> messageParser;
+        private readonly RetryPolicy retryPolicy;
 
         private const int DB_TIMEOUT_RETRY_COUNT = 3;
         private const int RETRY_INTERVAL_MILLISECONDS = 0;
@@ -34,11 +34,13 @@ namespace IrmaPriceListenerService.Listener
             IEmailClient emailClient,
             ILogger<IrmaPriceListener> logger,
             IIrmaPriceDAL irmaPriceDAL,
+            MessageParserBase<MammothPricesType, MammothPricesType> messageParser,
             IMessageArchiver messageArchiver,
             IErrorEventPublisher errorEventPublisher
         ): base(settings, subscriber, emailClient, logger)
         {
             this.irmaPriceDAL = irmaPriceDAL;
+            this.messageParser = messageParser;
             this.messageArchiver = messageArchiver;
             this.errorEventPublisher = errorEventPublisher;
             this.retryPolicy = RetryPolicy
