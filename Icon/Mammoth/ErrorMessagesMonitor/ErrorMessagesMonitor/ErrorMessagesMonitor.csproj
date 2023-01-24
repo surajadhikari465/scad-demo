@@ -60,11 +60,17 @@
     <Reference Include="Mammoth.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mammoth.Framework.2022.7.11.1\lib\net46\Mammoth.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="OpsgenieAlert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpsgenieAlert.2019.1.31.5\lib\netstandard2.0\OpsgenieAlert.dll</HintPath>
     </Reference>
     <Reference Include="SimpleInjector, Version=5.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
       <HintPath>..\packages\SimpleInjector.5.0.3\lib\net461\SimpleInjector.dll</HintPath>
@@ -93,6 +99,7 @@
     <Compile Include="DataAccess\IErrorMessagesMonitorDAL.cs" />
     <Compile Include="Message.Processor\ErrorMessagesProcessor.cs" />
     <Compile Include="Message.Processor\IErrorMessagesProcessor.cs" />
+    <Compile Include="Model\ContentModel.cs" />
     <Compile Include="Model\ErrorDetailsCanonicalModel.cs" />
     <Compile Include="Model\ErrorDetailsModel.cs" />
     <Compile Include="Model\ErrorMessageModel.cs" />
@@ -113,7 +120,7 @@
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
     </None>
-    <None Include="App.Test.config">
+	<None Include="App.Test.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
     </None>

@@ -4,6 +4,5 @@
     {
         public string MessageID { get; set; }
         public string ErrorDetails { get; set; }
-
     }
 }

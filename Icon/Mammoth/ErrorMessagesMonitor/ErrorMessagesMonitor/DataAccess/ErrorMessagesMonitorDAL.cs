@@ -25,6 +25,7 @@ namespace ErrorMessagesMonitor.DataAccess
                 WHERE 
                     ProcessedDateUtc is null AND 
                     InstanceID is null";
+
             using (var mammothContext = mammothContextFactory.CreateContext())
             {
                 mammothContext.Database.CommandTimeout = DB_TIMEOUT_IN_SECONDS;
@@ -46,6 +47,7 @@ namespace ErrorMessagesMonitor.DataAccess
                 FROM gpm.ErrorMessages
                 WHERE InstanceID = @InstanceID
                 GROUP BY Application, ErrorCode, ErrorSeverity";
+
             using (var mammothContext = mammothContextFactory.CreateContext())
             {
                 mammothContext.Database.CommandTimeout = DB_TIMEOUT_IN_SECONDS;
@@ -68,6 +70,7 @@ namespace ErrorMessagesMonitor.DataAccess
                     Application = @Application AND 
                     ErrorCode = @ErrorCode AND 
                     ErrorSeverity = @ErrorSeverity";
+
             using (var mammothContext = mammothContextFactory.CreateContext())
             {
                 mammothContext.Database.CommandTimeout = DB_TIMEOUT_IN_SECONDS;
@@ -87,6 +90,7 @@ namespace ErrorMessagesMonitor.DataAccess
                 $@"UPDATE gpm.ErrorMessages
             SET ProcessedDateUtc = SYSUTCDATETIME()
             WHERE InstanceID = @InstanceID";
+
             using (var mammothContext = mammothContextFactory.CreateContext())
             {
                 mammothContext.Database.CommandTimeout = DB_TIMEOUT_IN_SECONDS;

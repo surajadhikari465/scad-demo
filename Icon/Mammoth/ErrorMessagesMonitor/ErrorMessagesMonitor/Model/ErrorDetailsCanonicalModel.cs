@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ErrorMessagesMonitor.Model
 {
@@ -12,6 +8,5 @@ namespace ErrorMessagesMonitor.Model
         public string Application { get; set; }
         public string ErrorCode { get; set; }
         public string ErrorSeverity { get; set; }
-
     }
 }
