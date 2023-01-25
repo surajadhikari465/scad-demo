@@ -76,6 +76,7 @@
     <Compile Include="S3\Settings\S3FacadeSettingsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SNS\Settings\SNSFacadeSettingsTests.cs" />
+    <Compile Include="SQS\Settings\SQSFacadeSettingsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

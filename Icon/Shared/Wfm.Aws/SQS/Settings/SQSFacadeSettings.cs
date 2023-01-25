@@ -2,28 +2,28 @@
 using System;
 using Wfm.Aws.ConfigurationReader;
 
-namespace Wfm.Aws.SNS.Settings
+namespace Wfm.Aws.SQS.Settings
 {
-    public class SNSFacadeSettings
+    public class SQSFacadeSettings
     {
         public string AwsAccessKey { get; set; }
         public string AwsSecretKey { get; set; }
         public string AwsRegion { get; set; }
 
-        public static SNSFacadeSettings CreateSettingsFromNamedConfig(string configurationName)
+        public static SQSFacadeSettings CreateSettingsFromNamedConfig(string configurationName)
         {
-            var snsFacadeConfiguration = WfmAwsConfigurationReader.GetConfig();
-            if (snsFacadeConfiguration == null)
+            var sqsFacadeConfigurations = WfmAwsConfigurationReader.GetConfig();
+            if (sqsFacadeConfigurations == null)
             {
                 throw new ArgumentException($"Could not find {Constants.NamedConfigurationProperties.WfmAwsConfigurations}");
             }
-            var namedConfiguration = snsFacadeConfiguration.SNSFacadeConfigurations[configurationName];
+            var namedConfiguration = sqsFacadeConfigurations.SQSFacadeConfigurations[configurationName];
             if (namedConfiguration == null)
             {
-                throw new ArgumentException($"Could not find '{configurationName}' in {Constants.NamedConfigurationProperties.SNSFacadeConfigurations}");
+                throw new ArgumentException($"Could not find '{configurationName}' in {Constants.NamedConfigurationProperties.SQSFacadeConfigurations}");
             }
 
-            return new SNSFacadeSettings
+            return new SQSFacadeSettings
             {
                 AwsAccessKey = namedConfiguration.AwsAccessKey,
                 AwsSecretKey = namedConfiguration.AwsSecretKey,
@@ -31,9 +31,9 @@ namespace Wfm.Aws.SNS.Settings
             };
         }
 
-        public static SNSFacadeSettings CreateSettingsFromConfig()
+        public static SQSFacadeSettings CreateSettingsFromConfig()
         {
-            return new SNSFacadeSettings
+            return new SQSFacadeSettings
             {
                 AwsAccessKey = AppSettingsAccessor.GetStringSetting(Constants.ConfigurationProperties.AwsAccessKey),
                 AwsSecretKey = AppSettingsAccessor.GetStringSetting(Constants.ConfigurationProperties.AwsSecretKey),

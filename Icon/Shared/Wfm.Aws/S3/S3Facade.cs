@@ -30,5 +30,15 @@ namespace Wfm.Aws.S3
             }
             return amazonS3Client.PutObject(putObjectRequest);
         }
+
+        public GetObjectResponse GetObject(string s3BucketName, string s3Key)
+        {
+            GetObjectRequest getObjectRequest = new GetObjectRequest()
+            {
+                BucketName = s3BucketName,
+                Key = s3Key
+            };
+            return amazonS3Client.GetObject(getObjectRequest);
+        }
     }
 }

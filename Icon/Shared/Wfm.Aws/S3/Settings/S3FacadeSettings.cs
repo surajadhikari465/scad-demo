@@ -17,7 +17,7 @@ namespace Wfm.Aws.S3.Settings
             {
                 throw new ArgumentException($"Could not find {Constants.NamedConfigurationProperties.WfmAwsConfigurations}");
             }
-            var namedConfiguration = s3FacadeConfiguration.BasicAWSConfigurations[configurationName];
+            var namedConfiguration = s3FacadeConfiguration.S3FacadeConfigurations[configurationName];
             if (namedConfiguration == null)
             {
                 throw new ArgumentException($"Could not find '{configurationName}' in {Constants.NamedConfigurationProperties.S3FacadeConfigurations}");

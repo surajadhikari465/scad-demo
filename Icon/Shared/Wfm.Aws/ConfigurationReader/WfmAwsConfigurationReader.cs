@@ -11,7 +11,7 @@ namespace Wfm.Aws.ConfigurationReader
 
         [ConfigurationProperty(Constants.NamedConfigurationProperties.S3FacadeConfigurations)]
         [ConfigurationCollection(typeof(BasicAWSConfigurations), AddItemName = Constants.NamedConfigurationProperties.S3FacadeConfiguration)]
-        public BasicAWSConfigurations BasicAWSConfigurations
+        public BasicAWSConfigurations S3FacadeConfigurations
         {
             get
             {
@@ -21,11 +21,21 @@ namespace Wfm.Aws.ConfigurationReader
 
         [ConfigurationProperty(Constants.NamedConfigurationProperties.SNSFacadeConfigurations)]
         [ConfigurationCollection(typeof(BasicAWSConfigurations), AddItemName = Constants.NamedConfigurationProperties.SNSFacadeConfiguration)]
-        public BasicAWSConfigurations SNSExtendedClientConfigurations
+        public BasicAWSConfigurations SNSFacadeConfigurations
         {
             get
             {
                 return (BasicAWSConfigurations)base[Constants.NamedConfigurationProperties.SNSFacadeConfigurations];
+            }
+        }
+
+        [ConfigurationProperty(Constants.NamedConfigurationProperties.SQSFacadeConfigurations)]
+        [ConfigurationCollection(typeof(BasicAWSConfigurations), AddItemName = Constants.NamedConfigurationProperties.SQSFacadeConfiguration)]
+        public BasicAWSConfigurations SQSFacadeConfigurations
+        {
+            get
+            {
+                return (BasicAWSConfigurations)base[Constants.NamedConfigurationProperties.SQSFacadeConfigurations];
             }
         }
     }

@@ -15,6 +15,8 @@
             public const string S3FacadeConfiguration = "s3FacadeConfiguration";
             public const string SNSFacadeConfigurations = "snsFacadeConfigurations";
             public const string SNSFacadeConfiguration = "snsFacadeConfiguration";
+            public const string SQSFacadeConfigurations = "sqsFacadeConfigurations";
+            public const string SQSFacadeConfiguration = "sqsFacadeConfiguration";
             public const string Name = "name";
             public const string AwsAccessKey = "awsAccessKey";
             public const string AwsSecretKey = "awsSecretKey";
