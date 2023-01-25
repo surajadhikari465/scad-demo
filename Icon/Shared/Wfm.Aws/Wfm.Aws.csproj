@@ -82,6 +82,7 @@
     </Reference>
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -93,6 +94,12 @@
   <ItemGroup>
     <Compile Include="ConfigurationReader\WfmAwsConfigurationReader.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="ExtendedClient\Model\ExtendedClientMessageModel.cs" />
+    <Compile Include="ExtendedClient\Serializer\ExtendedClientMessageSerializer.cs" />
+    <Compile Include="ExtendedClient\Serializer\IExtendedClientMessageSerializer.cs" />
+    <Compile Include="ExtendedClient\Serializer\S3EventMessageSerializer.cs" />
+    <Compile Include="ExtendedClient\SNS\ISNSExtendedClient.cs" />
+    <Compile Include="ExtendedClient\SNS\SNSExtendedClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="S3\IS3Facade.cs" />
     <Compile Include="S3\S3Facade.cs" />
@@ -108,6 +115,9 @@
   <ItemGroup>
     <Analyzer Include="..\packages\AWSSDK.S3.3.5.1\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
     <Analyzer Include="..\packages\AWSSDK.SimpleNotificationService.3.5.1\analyzers\dotnet\cs\AWSSDK.SimpleNotificationService.CodeAnalysis.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ExtendedClient\SQS\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

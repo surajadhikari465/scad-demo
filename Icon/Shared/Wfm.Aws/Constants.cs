@@ -1,6 +1,6 @@
 ﻿namespace Wfm.Aws
 {
-    internal class Constants
+    public class Constants
     {
         public struct ConfigurationProperties
         {
