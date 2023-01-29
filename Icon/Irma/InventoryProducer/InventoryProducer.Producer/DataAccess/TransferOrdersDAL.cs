@@ -36,7 +36,7 @@ namespace InventoryProducer.Producer.DataAccess
             {
                 return this.GetPODeleteEvent(keyId);
             }
-            else if (!eventType.Contains("DEL")) // usually TSF_CRE eventTypeCode
+            else if (!eventType.Contains(Constants.EventType.DEL)) // usually TSF_CRE eventTypeCode
             {
                 return this.GetNonDeleteEvent(keyId);
             }

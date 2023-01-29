@@ -71,7 +71,8 @@ namespace InventoryProducer.Producer.QueueProcessors
                 try
                 {
                     this.retrypolicy.Execute(() => PublishInventorySpoilageService(archiveInventoryEvents, dequeuedMessage));
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     // this exception will happen after all retries
                     string instockDequeueModelXmlPayload = instockDequeueSerializer.Serialize(
@@ -81,7 +82,7 @@ namespace InventoryProducer.Producer.QueueProcessors
                     PublishErrorEvents.SendToMammoth(
                         mammothContextFactory,
                         "PublishInventorySpoilageService",
-                        dequeuedMessage.Headers["MessageNumber"],
+                        dequeuedMessage.Headers[Constants.MessageProperty.MessageNumber],
                         dequeuedMessage.Headers,
                         instockDequeueModelXmlPayload,
                         ex.GetType().ToString(),
@@ -97,17 +98,18 @@ namespace InventoryProducer.Producer.QueueProcessors
             try
             {
                 List<ShrinkDataModel> shrinkData = GetShrinkData(dequeuedMessage);
+                inventoryLogger.LogInfo($"Retrieved shrink data count: {shrinkData?.Count}.");
                 if (shrinkData != null && shrinkData.Count > 0)
                 {
                     inventoryAdjustments inventoryAdjustmentsCanonical = CreateInventorySpoilageCanonical(dequeuedMessage, shrinkData.ElementAt(0));
                     string inventoryAdjustmentsXmlPayload = serializer.Serialize(inventoryAdjustmentsCanonical, new Utf8StringWriter());
 
-                    dequeuedMessage.Headers["TransactionID"] =
+                    dequeuedMessage.Headers[Constants.MessageProperty.TransactionID] =
                     inventoryAdjustmentsCanonical.inventoryAdjustment[0].locationNumber.ToString()
                     + settings.TransactionType
                     + inventoryAdjustmentsCanonical.inventoryAdjustment[0].messageNumber;
-                    dequeuedMessage.Headers["MessageType"] = "Text";
-                    dequeuedMessage.Headers["nonReceivingSysName"] = settings.NonReceivingSystemsSpoilage;
+                    dequeuedMessage.Headers[Constants.MessageProperty.MessageType] = "Text";
+                    dequeuedMessage.Headers[Constants.MessageProperty.NonReceivingSystems] = settings.NonReceivingSystemsSpoilage;
                     try
                     {
                         PublishMessage(inventoryAdjustmentsXmlPayload, dequeuedMessage.Headers);
@@ -158,7 +160,7 @@ namespace InventoryProducer.Producer.QueueProcessors
                 adjustmentNumber = requiredShrinkDataModel.AdjustmentNumber,
                 adjustmentNumberSpecified = true,
                 eventType = dequeuedMessage.InstockDequeueModel.EventTypeCode,
-                messageNumber = dequeuedMessage.Headers["MessageNumber"],
+                messageNumber = dequeuedMessage.Headers[Constants.MessageProperty.MessageNumber],
                 locationNumber = requiredShrinkDataModel.LocationNumber,
                 locationName = requiredShrinkDataModel.LocationName,
                 invAdjustmentSource = "IRMA",
@@ -209,7 +211,7 @@ namespace InventoryProducer.Producer.QueueProcessors
             using (var irmaContext = irmaContextFactory.CreateContext($"Irma_{settings.RegionCode}"))
             {
                 irmaContext.Database.CommandTimeout = 120;
-                string shrinkDataSQLQuery = 
+                string shrinkDataSQLQuery =
                     $@"SELECT TOP({settings.BatchSize}) 
                     ih.ItemHistoryID as AdjustmentNumber, 
                     s.BusinessUnit_ID LocationNumber, 
@@ -239,7 +241,7 @@ namespace InventoryProducer.Producer.QueueProcessors
                     WHERE ii.Default_Identifier = 1 
                     and ih.ItemHistoryID = @KeyId";
                 List<ShrinkDataModel> shrinkData = irmaContext.Database.SqlQuery<ShrinkDataModel>(
-                    shrinkDataSQLQuery, 
+                    shrinkDataSQLQuery,
                     new SqlParameter("@KeyID", dequeuedMessage.InstockDequeueModel.KeyID)
                     ).ToList();
                 return shrinkData;
@@ -248,10 +250,10 @@ namespace InventoryProducer.Producer.QueueProcessors
 
         private void PublishMessage(string xmlPayload, Dictionary<string, string> headers)
         {
-            inventoryLogger.LogInfo(string.Format("Preparing to send message {0}.", headers["TransactionID"]));
+            inventoryLogger.LogInfo(string.Format("Preparing to send message {0}.", headers[Constants.MessageProperty.TransactionID]));
             SendToActiveMq(xmlPayload, headers);
             SendToEsb(xmlPayload, headers);
-            inventoryLogger.LogInfo(string.Format("Sent message {0}.", headers["TransactionID"]));
+            inventoryLogger.LogInfo(string.Format("Sent message {0}.", headers[Constants.MessageProperty.TransactionID]));
         }
 
         private void SendToEsb(string xmlMessage, Dictionary<string, string> messageProperties)

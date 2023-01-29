@@ -80,6 +80,8 @@ namespace InventoryProducer.Producer.Service
         public void Start()
         {
             if (timer == null) return;
+            int.TryParse(ConfigurationManager.AppSettings["StartDelayInSeconds"], out int startDelayInSeconds);
+            Thread.Sleep((startDelayInSeconds > 0 ? startDelayInSeconds : 5) * 1000);
             timer.Elapsed += RunService;
             timer.Start();
         }
