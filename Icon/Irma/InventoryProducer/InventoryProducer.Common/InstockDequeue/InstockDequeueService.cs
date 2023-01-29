@@ -96,6 +96,7 @@ namespace InventoryProducer.Common.InstockDequeue
                 // Delete message types are: TransferOrderDelete, PurchaseOrderDelete, PurchaseLineDelete, TransferLineDelete
                 if (currentMessageType.ToLower().Contains("delete"))
                 {
+                    inventoryLogger.LogInfo($"Processing delete event. Message type: {currentMessageType}. Each event will be treated unique.");
                     eventsWithCurrentMessageType.ForEach(eventWithCurrentMessageType =>
                     {
                         GenerateInstockDequeuResult(eventWithCurrentMessageType, instockDequeueResults);
@@ -104,6 +105,7 @@ namespace InventoryProducer.Common.InstockDequeue
                 else
                 {
                     List<InstockDequeueModel> eventsWithUniqueKeyID = eventsWithCurrentMessageType.GroupBy(eventWithCurrentMessageType => eventWithCurrentMessageType.KeyID).Select(group => group.First()).ToList();
+                    inventoryLogger.LogInfo($"Total non delete events: {eventsWithCurrentMessageType.Count}. Non delete events with unique KeyID: {eventsWithUniqueKeyID.Count}. Events with same KeyID will be treated as one event as these are non delete events. Message type: {currentMessageType}.");
                     eventsWithUniqueKeyID.ForEach(eventWithUniqueKeyID =>
                     {
                         GenerateInstockDequeuResult(eventWithUniqueKeyID, instockDequeueResults);
