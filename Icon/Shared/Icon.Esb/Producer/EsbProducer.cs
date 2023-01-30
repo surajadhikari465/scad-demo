@@ -119,7 +119,7 @@ namespace Icon.Esb.Producer
         private void VerifyConnectionAndGracefullyReconnect()
         {
             Retry<Exception>(() => {
-                if (this.IsConnected == false)
+                if (!this.IsConnected || session.IsClosed)
                 {
                     this.OpenConnection(this.lastClientId);
                 }

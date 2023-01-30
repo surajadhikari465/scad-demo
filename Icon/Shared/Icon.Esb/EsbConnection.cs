@@ -42,18 +42,20 @@ namespace Icon.Esb
 
         public virtual void OpenConnection(string clientId)
         {
-            LookupContext lookupContext = CreateLookupContext();
+            if (!IsConnected)
+            {
+                LookupContext lookupContext = CreateLookupContext();
 
-            factory = (ConnectionFactory)lookupContext.Lookup(Settings.ConnectionFactoryName);
-            factory.SetTargetHostName(Settings.TargetHostName);
+                factory = (ConnectionFactory)lookupContext.Lookup(Settings.ConnectionFactoryName);
+                factory.SetTargetHostName(Settings.TargetHostName);
 
-            connection = factory.CreateConnection(Settings.JmsUsername, Settings.JmsPassword);
-            connection.ClientID = clientId;
+                connection = factory.CreateConnection(Settings.JmsUsername, Settings.JmsPassword);
+                connection.ClientID = clientId;
 
+                connection.ExceptionHandler += ConnectionExceptionHandler;
+            }
             session = connection.CreateSession(false, Settings.SessionMode);
             CreateDestination();
-
-            connection.ExceptionHandler += ConnectionExceptionHandler;
         }
 
         protected virtual void CreateDestination()
@@ -63,7 +65,7 @@ namespace Icon.Esb
                 destination = session.CreateTopic(Settings.QueueName);
             }
             else
-            { 
+            {
                 destination = session.CreateQueue(Settings.QueueName);
             }
         }
