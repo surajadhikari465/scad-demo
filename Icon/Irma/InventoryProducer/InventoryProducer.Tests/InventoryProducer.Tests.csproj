@@ -56,7 +56,7 @@
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Icon.ActiveMQ, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.ActiveMQ.2022.10.6.1\lib\net472\Icon.ActiveMQ.dll</HintPath>
+      <HintPath>..\packages\Icon.ActiveMQ.2022.12.27.1\lib\net472\Icon.ActiveMQ.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Common.2020.11.11.4\lib\net472\Icon.Common.dll</HintPath>
@@ -65,10 +65,10 @@
       <HintPath>..\packages\Icon.DbContextFactory.2019.5.22.1\lib\net472\Icon.DbContextFactory.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.2020.12.11.1\lib\net472\Icon.Esb.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.2023.1.29.2\lib\net472\Icon.Esb.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Esb.Schemas.Wfm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2022.11.15.1\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
+      <HintPath>..\packages\Icon.Esb.Schemas.Wfm.2023.1.13.3\lib\net46\Icon.Esb.Schemas.Wfm.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Framework.2019.12.6.1\lib\net472\Icon.Framework.dll</HintPath>
