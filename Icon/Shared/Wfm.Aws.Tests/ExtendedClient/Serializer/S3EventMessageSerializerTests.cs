@@ -132,13 +132,14 @@ namespace Wfm.Aws.Tests.ExtendedClient.Serializer
             S3EventMessageSerializer s3EventMessageSerializer = new S3EventMessageSerializer();
 
             // When
-            IList<ExtendedClientMessageModel> extendedClientMessageModels = s3EventMessageSerializer.Deserialize(s3EventWithSingleRecord);
+            ExtendedClientMessageModel extendedClientMessageModel = s3EventMessageSerializer.Deserialize(s3EventWithSingleRecord);
 
             // Then
-            Assert.IsNotNull(extendedClientMessageModels);
-            Assert.AreEqual(1, extendedClientMessageModels.Count);
-            Assert.AreEqual("mybucket", extendedClientMessageModels[0].S3BucketName);
-            Assert.AreEqual("canonical/year=2022/month=11/day=15/HappyFace.jpg", extendedClientMessageModels[0].S3Key);
+            Assert.IsNotNull(extendedClientMessageModel);
+            Assert.AreEqual(1, extendedClientMessageModel.S3Details.Count);
+            Assert.AreEqual("mybucket", extendedClientMessageModel.S3Details[0].S3BucketName);
+            Assert.AreEqual("canonical/year=2022/month=11/day=15/HappyFace.jpg", extendedClientMessageModel.S3Details[0].S3Key);
+            Assert.IsNull(extendedClientMessageModel.MessageAttributes);
         }
 
         [TestMethod]
@@ -148,16 +149,16 @@ namespace Wfm.Aws.Tests.ExtendedClient.Serializer
             S3EventMessageSerializer s3EventMessageSerializer = new S3EventMessageSerializer();
 
             // When
-            IList<ExtendedClientMessageModel> extendedClientMessageModels = s3EventMessageSerializer.Deserialize(s3EventWithMultipleRecords);
+            ExtendedClientMessageModel extendedClientMessageModel = s3EventMessageSerializer.Deserialize(s3EventWithMultipleRecords);
 
             // Then
-            Assert.IsNotNull(extendedClientMessageModels);
-            Assert.AreEqual(2, extendedClientMessageModels.Count);
-            Assert.AreEqual("mybucket1", extendedClientMessageModels[0].S3BucketName);
-            Assert.AreEqual("canonical/year=2022/month=11/day=15/HappyFace1.jpg", extendedClientMessageModels[0].S3Key);
-            Assert.AreEqual("mybucket2", extendedClientMessageModels[1].S3BucketName);
-            Assert.AreEqual("canonical/year=2022/month=11/day=16/HappyFace2.jpg", extendedClientMessageModels[1].S3Key);
-            Assert.IsNull(extendedClientMessageModels[1].MessageAttributes);
+            Assert.IsNotNull(extendedClientMessageModel);
+            Assert.AreEqual(2, extendedClientMessageModel.S3Details.Count);
+            Assert.AreEqual("mybucket1", extendedClientMessageModel.S3Details[0].S3BucketName);
+            Assert.AreEqual("canonical/year=2022/month=11/day=15/HappyFace1.jpg", extendedClientMessageModel.S3Details[0].S3Key);
+            Assert.AreEqual("mybucket2", extendedClientMessageModel.S3Details[1].S3BucketName);
+            Assert.AreEqual("canonical/year=2022/month=11/day=16/HappyFace2.jpg", extendedClientMessageModel.S3Details[1].S3Key);
+            Assert.IsNull(extendedClientMessageModel.MessageAttributes);
         }
     }
 }

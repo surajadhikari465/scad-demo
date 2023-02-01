@@ -16,10 +16,10 @@ namespace Wfm.Aws.SQS
             this.amazonSQSClient = amazonSQSClient;
         }
 
-        public SendMessageResponse SendMessage(string queueURL, string message, IDictionary<string, string> attributes)
+        public SendMessageResponse SendMessage(string queueURL, string message, IDictionary<string, string> messageAttributes)
         {
             Dictionary<string, MessageAttributeValue> sqsMessageAttributes = new Dictionary<string, MessageAttributeValue>();
-            foreach (KeyValuePair<string, string> attribute in attributes)
+            foreach (KeyValuePair<string, string> attribute in messageAttributes)
             {
                 sqsMessageAttributes[attribute.Key] = new MessageAttributeValue()
                 {
@@ -29,7 +29,7 @@ namespace Wfm.Aws.SQS
             }
             SendMessageRequest sendMessageRequest = new SendMessageRequest()
             {
-                QueueUrl= queueURL,
+                QueueUrl = queueURL,
                 MessageBody = message,
                 MessageAttributes = sqsMessageAttributes
             };
@@ -40,11 +40,21 @@ namespace Wfm.Aws.SQS
         {
             ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest()
             {
-                QueueUrl= queueURL,
+                QueueUrl = queueURL,
                 MaxNumberOfMessages = maxNumberOfMessages,
                 WaitTimeSeconds = waitTimeInSeconds
             };
             return amazonSQSClient.ReceiveMessage(receiveMessageRequest);
+        }
+
+        public DeleteMessageResponse DeleteMessage(string queueURL, string receiptHandle)
+        {
+            DeleteMessageRequest deleteMessageRequest = new DeleteMessageRequest()
+            {
+                QueueUrl = queueURL,
+                ReceiptHandle = receiptHandle
+            };
+            return amazonSQSClient.DeleteMessage(deleteMessageRequest);
         }
     }
 }

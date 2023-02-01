@@ -8,20 +8,23 @@ namespace Wfm.Aws.ExtendedClient.Serializer
 {
     public class S3EventMessageSerializer : IExtendedClientMessageSerializer
     {
-        public IList<ExtendedClientMessageModel> Deserialize(string message)
+        public ExtendedClientMessageModel Deserialize(string message)
         {
             S3EventNotification s3EventNotification = S3EventNotification.ParseJson(message);
-            IList<ExtendedClientMessageModel> extendedClientMessageModels = new List<ExtendedClientMessageModel>();
+            IList<ExtendedClientMessageModelS3Detail> s3Details = new List<ExtendedClientMessageModelS3Detail>();
             s3EventNotification.Records.ForEach(record =>
             {
-                extendedClientMessageModels.Add(
-                    new ExtendedClientMessageModel
+                s3Details.Add(
+                    new ExtendedClientMessageModelS3Detail()
                     {
                         S3BucketName = record.S3.Bucket.Name,
                         S3Key = HttpUtility.UrlDecode(record.S3.Object.Key)
                     });
             });
-            return extendedClientMessageModels;
+            return new ExtendedClientMessageModel()
+            {
+                S3Details = s3Details
+            };
         }
 
         public string Serialize(string s3BucketName, string s3Key, IDictionary<string, string> MessageAttributes)
