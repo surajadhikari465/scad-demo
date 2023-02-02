@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Amazon.SQS.Model;
+using System.Collections.Generic;
 
 namespace Wfm.Aws.ExtendedClient.SQS.Model
 {
@@ -6,7 +7,7 @@ namespace Wfm.Aws.ExtendedClient.SQS.Model
     {
         public IList<SQSExtendedClientReceiveModelS3Detail> S3Details { get; set; }
         public IDictionary<string, string> MessageAttributes { get; set; }
-        public string RawSQS { get; set; }
+        public Message SQSMessage { get; set; }
         public string SQSMessageID { get; set; }
         public string SQSReceiptHandle { get; set; }
     }

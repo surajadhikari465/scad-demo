@@ -7,6 +7,10 @@
             public const string AwsAccessKey = "AwsAccessKey";
             public const string AwsSecretKey = "AwsSecretKey";
             public const string AwsRegion = "AwsRegion";
+            public const string SQSListenerApplicationName = "SQSListenerApplicationName";
+            public const string SQSListenerQueueUrl = "SQSListenerQueueUrl";
+            public const string SQSListenerTimeoutInSeconds = "SQSListenerTimeoutInSeconds";
+            public const string SQSListenerPollIntervalInSeconds = "SQSListenerPollIntervalInSeconds";
         }
         public struct NamedConfigurationProperties
         {
@@ -17,10 +21,16 @@
             public const string SNSFacadeConfiguration = "snsFacadeConfiguration";
             public const string SQSFacadeConfigurations = "sqsFacadeConfigurations";
             public const string SQSFacadeConfiguration = "sqsFacadeConfiguration";
+            public const string SQSExtendedClientListenerConfigurations = "sqsExtendedClientListenerConfigurations";
+            public const string SQSExtendedClientListenerConfiguration = "sqsExtendedClientListenerConfiguration";
             public const string Name = "name";
             public const string AwsAccessKey = "awsAccessKey";
             public const string AwsSecretKey = "awsSecretKey";
             public const string AwsRegion = "awsRegion";
+            public const string SQSListenerApplicationName = "sqsListenerApplicationName";
+            public const string SQSListenerQueueUrl = "sqsListenerQueueUrl";
+            public const string SQSListenerTimeoutInSeconds = "sqsListenerTimeoutInSeconds";
+            public const string SQSListenerPollIntervalInSeconds = "sqsListenerPollIntervalInSeconds";
         }
     }
 }

@@ -9,6 +9,7 @@ using Wfm.Aws.ExtendedClient.Model;
 using Wfm.Aws.ExtendedClient.Serializer;
 using Wfm.Aws.ExtendedClient.SNS;
 using Wfm.Aws.ExtendedClient.SQS;
+using Wfm.Aws.ExtendedClient.SQS.Model;
 using Wfm.Aws.S3;
 using Wfm.Aws.SNS;
 using Wfm.Aws.SQS;
@@ -99,12 +100,13 @@ namespace Wfm.Aws.Tests.ExtendedClient.SQS
                 .Returns(GenerateGetObjectResponse(s3Data));
 
             // When
-            sqsExtendedClient.ReceiveMessage(queueURL, 2, 0);
+            IList<SQSExtendedClientReceiveModel> sqsExtendedClientReceives = sqsExtendedClient.ReceiveMessage(queueURL, 2, 0);
 
             // Then
             extendedClientMessageSerializerMock.Verify(serializer => serializer.Deserialize(It.IsAny<string>()), Times.Exactly(2));
             s3FacadeMock.Verify(s3 => s3.GetObject(s3Bucket, s3Key), Times.Exactly(4));
             sqsFacadeMock.Verify(sqs => sqs.ReceiveMessage(queueURL, 2, 0), Times.Once);
+            Assert.AreEqual(2, sqsExtendedClientReceives.Count);
         }
 
         [TestMethod]

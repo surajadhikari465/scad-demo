@@ -12,8 +12,8 @@ namespace Wfm.Aws.ExtendedClient.SQS
 {
     public class SQSExtendedClient : ISQSExtendedClient
     {
-        private readonly ISQSFacade sqsFacade;
-        private readonly IS3Facade s3Facade;
+        public ISQSFacade sqsFacade { get; private set; }
+        public IS3Facade s3Facade { get; private set; }
         private readonly IExtendedClientMessageSerializer extendedClientMessageSerializer;
 
         public SQSExtendedClient(ISQSFacade sqsFacade, IS3Facade s3Facade, IExtendedClientMessageSerializer extendedClientMessageSerializer)
@@ -27,7 +27,7 @@ namespace Wfm.Aws.ExtendedClient.SQS
         {
             IList<SQSExtendedClientReceiveModel> sqsExtendedClientReceives = new List<SQSExtendedClientReceiveModel>();
             ReceiveMessageResponse receiveMessageResponse = sqsFacade.ReceiveMessage(queueURL, maxNumberOfMessages, waitTimeInSeconds);
-            receiveMessageResponse.Messages.ForEach(message =>
+            foreach (Message message in receiveMessageResponse.Messages)
             {
                 IList<SQSExtendedClientReceiveModelS3Detail> sqsExtendedClientReceiveModelS3Details = new List<SQSExtendedClientReceiveModelS3Detail>();
                 ExtendedClientMessageModel extendedClientMessageModel = extendedClientMessageSerializer.Deserialize(message.Body);
@@ -48,7 +48,7 @@ namespace Wfm.Aws.ExtendedClient.SQS
                     }
                     ICollection<string> metadataKeys = s3GetObjectResponse.Metadata.Keys;
                     IDictionary<string, string> metadata = new Dictionary<string, string>();
-                    foreach(string metadataKey in metadataKeys)
+                    foreach (string metadataKey in metadataKeys)
                     {
                         metadata[metadataKey] = s3GetObjectResponse.Metadata[metadataKey];
                     }
@@ -63,9 +63,12 @@ namespace Wfm.Aws.ExtendedClient.SQS
                 sqsExtendedClientReceives.Add(new SQSExtendedClientReceiveModel()
                 {
                     S3Details = sqsExtendedClientReceiveModelS3Details,
-                    MessageAttributes = extendedClientMessageModel.MessageAttributes
+                    MessageAttributes = extendedClientMessageModel.MessageAttributes,
+                    SQSMessage = message,
+                    SQSMessageID = message.MessageId,
+                    SQSReceiptHandle = message.ReceiptHandle,
                 });
-            });
+            }
             return sqsExtendedClientReceives;
         }
 

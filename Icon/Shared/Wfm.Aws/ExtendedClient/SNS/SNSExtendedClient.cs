@@ -8,8 +8,8 @@ namespace Wfm.Aws.ExtendedClient.SNS
 {
     public class SNSExtendedClient : ISNSExtendedClient
     {
-        private readonly ISNSFacade snsFacade;
-        private readonly IS3Facade s3Facade;
+        public ISNSFacade snsFacade { get; private set; }
+        public IS3Facade s3Facade { get; private set; }
         private readonly IExtendedClientMessageSerializer extendedClientMessageSerializer;
 
         public SNSExtendedClient(ISNSFacade snsFacade, IS3Facade s3Facade, IExtendedClientMessageSerializer extendedClientMessageSerializer)

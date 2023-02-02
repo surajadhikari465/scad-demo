@@ -38,6 +38,16 @@ namespace Wfm.Aws.ConfigurationReader
                 return (BasicAWSConfigurations)base[Constants.NamedConfigurationProperties.SQSFacadeConfigurations];
             }
         }
+
+        [ConfigurationProperty(Constants.NamedConfigurationProperties.SQSExtendedClientListenerConfigurations)]
+        [ConfigurationCollection(typeof(BasicAWSSQSListenerConfigurations), AddItemName = Constants.NamedConfigurationProperties.SQSExtendedClientListenerConfiguration)]
+        public BasicAWSSQSListenerConfigurations SQSExtendedClientListenerConfigurations
+        {
+            get
+            {
+                return (BasicAWSSQSListenerConfigurations)base[Constants.NamedConfigurationProperties.SQSExtendedClientListenerConfigurations];
+            }
+        }
     }
 
     public class BasicAWSConfigurations : ConfigurationElementCollection
@@ -95,5 +105,64 @@ namespace Wfm.Aws.ConfigurationReader
 
         [ConfigurationProperty(Constants.NamedConfigurationProperties.AwsRegion, IsRequired = true)]
         public string AwsRegion { get { return (string)base[Constants.NamedConfigurationProperties.AwsRegion]; } }
+    }
+
+    public class BasicAWSSQSListenerConfigurations : ConfigurationElementCollection
+    {
+        protected override ConfigurationElement CreateNewElement()
+        {
+            return new BasicAWSSQSListenerConfiguration();
+        }
+
+        protected override object GetElementKey(ConfigurationElement element)
+        {
+            return (element as BasicAWSSQSListenerConfiguration).Name;
+        }
+
+        public BasicAWSSQSListenerConfiguration this[int index]
+        {
+            get
+            {
+                return (BasicAWSSQSListenerConfiguration)base.BaseGet(index);
+            }
+            set
+            {
+                if (base.BaseGet(index) != null)
+                {
+                    base.BaseRemoveAt(index);
+                }
+                base.BaseAdd(index, value);
+            }
+        }
+
+        public new BasicAWSSQSListenerConfiguration this[string name]
+        {
+            get { return (BasicAWSSQSListenerConfiguration)base.BaseGet(name); }
+            set
+            {
+                if (BaseGet(name) != null)
+                {
+                    BaseRemoveAt(BaseIndexOf(BaseGet(name)));
+                }
+                BaseAdd(value);
+            }
+        }
+    }
+    public class BasicAWSSQSListenerConfiguration : ConfigurationElement
+    {
+        [ConfigurationProperty(Constants.NamedConfigurationProperties.Name, IsRequired = true)]
+        public string Name { get { return (string)base[Constants.NamedConfigurationProperties.Name]; } }
+
+        [ConfigurationProperty(Constants.NamedConfigurationProperties.SQSListenerApplicationName, IsRequired = true)]
+        public string SQSListenerApplicationName { get { return (string)base[Constants.NamedConfigurationProperties.SQSListenerApplicationName]; } }
+
+        [ConfigurationProperty(Constants.NamedConfigurationProperties.SQSListenerQueueUrl, IsRequired = true)]
+        public string SQSListenerQueueUrl { get { return (string)base[Constants.NamedConfigurationProperties.SQSListenerQueueUrl]; } }
+
+        [ConfigurationProperty(Constants.NamedConfigurationProperties.SQSListenerTimeoutInSeconds, IsRequired = false, DefaultValue = 30)]
+        public int SQSListenerTimeoutInSeconds { get { return (int)base[Constants.NamedConfigurationProperties.SQSListenerTimeoutInSeconds]; } }
+
+        [ConfigurationProperty(Constants.NamedConfigurationProperties.SQSListenerPollIntervalInSeconds, IsRequired = false, DefaultValue = 30)]
+        public int SQSListenerPollIntervalInSeconds { get { return (int)base[Constants.NamedConfigurationProperties.SQSListenerPollIntervalInSeconds]; } }
     }
 }

@@ -61,11 +61,20 @@
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Framework.2019.12.6.1\lib\net472\Icon.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="Icon.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\Icon.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="Icon.RenewableContext, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.RenewableContext.2019.5.14.2\lib\net472\Icon.RenewableContext.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Extended, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Icon.Logging.2016.10.18.4\lib\NLog.Extended.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -100,6 +109,9 @@
   <ItemGroup>
     <Compile Include="ConfigurationReader\WfmAwsConfigurationReader.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="ExtendedClient\Listener\SQS\ISQSExtendedClientListener.cs" />
+    <Compile Include="ExtendedClient\Listener\SQS\Settings\SQSExtendedClientListenerSettings.cs" />
+    <Compile Include="ExtendedClient\Listener\SQS\SQSExtendedClientListener.cs" />
     <Compile Include="ExtendedClient\Model\ExtendedClientMessageModel.cs" />
     <Compile Include="ExtendedClient\Serializer\ExtendedClientMessageSerializer.cs" />
     <Compile Include="ExtendedClient\Serializer\IExtendedClientMessageSerializer.cs" />
