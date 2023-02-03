@@ -1,31 +1,31 @@
 ﻿using Icon.Common.Email;
-using Icon.Esb;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb.Subscriber;
+using Icon.Dvs;
+using Icon.Dvs.ListenerApplication;
+using Icon.Dvs.Model;
+using Icon.Dvs.Subscriber;
 using Icon.Logging;
 using MammothR10Price.Message.Processor;
 
 namespace MammothR10Price.Esb.Listener
 {
-    public class MammothR10PriceListener: ListenerApplication<MammothR10PriceListener, ListenerApplicationSettings>
+    public class MammothR10PriceListener: ListenerApplication<MammothR10PriceListener>
     {
         private readonly IMessageProcessor messageProcessor;
         public MammothR10PriceListener(
-            ListenerApplicationSettings listenerApplicationSettings,
-            EsbConnectionSettings esbConnectionSettings,
-            IEsbSubscriber subscriber,
+            DvsListenerSettings dvsListenerSettings,
+            IDvsSubscriber subscriber,
             IEmailClient emailClient,
             ILogger<MammothR10PriceListener> logger,
             IMessageProcessor messageProcessor
             )
-            : base(listenerApplicationSettings, esbConnectionSettings, subscriber, emailClient, logger)
+            : base(dvsListenerSettings, subscriber, emailClient, logger)
         {
             this.messageProcessor = messageProcessor;
         }
 
-        public override void HandleMessage(object sender, EsbMessageEventArgs args)
+        public override void HandleMessage(DvsMessage dvsMessage)
         {
-            messageProcessor.ProcessReceivedMessage(args.Message);
+            messageProcessor.ProcessReceivedMessage(dvsMessage);
         }
     }
 }

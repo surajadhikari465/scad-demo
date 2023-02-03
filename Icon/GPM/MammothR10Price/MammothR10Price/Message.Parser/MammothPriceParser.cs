@@ -1,28 +1,14 @@
-﻿using Icon.Esb;
-using Icon.Esb.MessageParsers;
+﻿using Icon.Dvs.MessageParser;
+using Icon.Dvs.Model;
 using Icon.Esb.Schemas.Mammoth;
-using Icon.Esb.Subscriber;
-using MammothR10Price.Serializer;
-using System.IO;
 
 namespace MammothR10Price.Message.Parser
 {
-    internal class MammothPriceParser : IMessageParser<MammothPricesType>
+    public class MammothPriceParser : MessageParserBase<MammothPricesType, MammothPricesType>
     {
-        private readonly ISerializer<MammothPricesType> serializer;
-
-        public MammothPriceParser(ISerializer<MammothPricesType> serializer)
+        public override MammothPricesType ParseMessage(DvsMessage message)
         {
-            this.serializer = serializer;
-        }
-
-        public MammothPricesType ParseMessage(IEsbMessage receivedMessage)
-        {
-            MammothPricesType parsedPrice;
-            using (TextReader textReader = new StringReader(Utility.RemoveUnusableCharactersFromXml(receivedMessage.MessageText)))
-            {
-                parsedPrice = serializer.Deserialize(textReader);
-            }
+            MammothPricesType parsedPrice = DeserializeMessage(message);
             return parsedPrice;
         }
     }

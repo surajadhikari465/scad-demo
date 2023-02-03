@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Icon.Esb;
-using Icon.Esb.Subscriber;
-using Icon.Esb.MessageParsers;
+using Icon.Dvs.MessageParser;
 using Icon.Esb.Schemas.Mammoth;
 using Icon.Logging;
 using Polly;
@@ -11,32 +9,30 @@ using Polly.Retry;
 using MammothR10Price.Mapper;
 using MammothR10Price.Message.Archive;
 using MammothR10Price.Publish;
-using TIBCO.EMS;
 
 using Items = Icon.Esb.Schemas.Wfm.Contracts.items;
+using Icon.Dvs.Model;
 
 namespace MammothR10Price.Message.Processor
 {
     public class MammothR10PriceProcessor: IMessageProcessor
     {
         private readonly MammothR10PriceServiceSettings serviceSettings;
-        private readonly IMessageParser<MammothPricesType> messageParser;
+        private readonly MessageParserBase<MammothPricesType, MammothPricesType> messageParser;
         private readonly IErrorEventPublisher errorEventPublisher;
         private readonly IMessagePublisher messagePublisher;
         private readonly IMessageArchiver messageArchiver;
         private readonly ILogger<MammothR10PriceProcessor> logger;
-        private readonly EsbConnectionSettings esbConnectionSettings;
         private readonly IMapper<IList<MammothPriceType>, Items> itemPriceCanonicalMapper;
         private readonly RetryPolicy retryPolicy;
 
         public MammothR10PriceProcessor(
             MammothR10PriceServiceSettings serviceSettings,
-            IMessageParser<MammothPricesType> messageParser,
+            MessageParserBase<MammothPricesType, MammothPricesType> messageParser,
             IErrorEventPublisher errorEventPublisher,
             IMessagePublisher messagePublisher,
             IMessageArchiver messageArchiver,
             ILogger<MammothR10PriceProcessor> logger,
-            EsbConnectionSettings esbConnectionSettings,
             IMapper<IList<MammothPriceType>, Items> itemPriceCanonicalMapper
         )
         {
@@ -46,7 +42,6 @@ namespace MammothR10Price.Message.Processor
             this.messagePublisher = messagePublisher;
             this.messageArchiver = messageArchiver;
             this.logger = logger;
-            this.esbConnectionSettings = esbConnectionSettings;
             this.itemPriceCanonicalMapper = itemPriceCanonicalMapper;
 
             retryPolicy = Policy
@@ -57,16 +52,16 @@ namespace MammothR10Price.Message.Processor
                 );
         }
 
-        public void ProcessReceivedMessage(IEsbMessage message)
+        public void ProcessReceivedMessage(DvsMessage message)
         {
             IDictionary<string, string> messageProperties = new Dictionary<string, string>()
             {
-                { Constants.MessageProperty.TransactionId, message.GetProperty(Constants.MessageProperty.TransactionId) },
-                { Constants.MessageProperty.TransactionType, message.GetProperty(Constants.MessageProperty.TransactionType) },
-                { Constants.MessageProperty.CorrelationId, message.GetProperty(Constants.MessageProperty.CorrelationId) },
-                { Constants.MessageProperty.Source, message.GetProperty(Constants.MessageProperty.Source) },
-                { Constants.MessageProperty.SequenceId, message.GetProperty(Constants.MessageProperty.SequenceId) },
-                { Constants.MessageProperty.ResetFlag, message.GetProperty(Constants.MessageProperty.ResetFlag) }
+                { Constants.MessageProperty.TransactionId, message.SqsMessage.MessageAttributes[Constants.MessageProperty.TransactionId] },
+                { Constants.MessageProperty.TransactionType, message.SqsMessage.MessageAttributes[Constants.MessageProperty.TransactionType] },
+                { Constants.MessageProperty.CorrelationId, message.SqsMessage.MessageAttributes[Constants.MessageProperty.CorrelationId] },
+                { Constants.MessageProperty.Source, message.SqsMessage.MessageAttributes[Constants.MessageProperty.Source] },
+                { Constants.MessageProperty.SequenceId, message.SqsMessage.MessageAttributes[Constants.MessageProperty.SequenceId] },
+                { Constants.MessageProperty.ResetFlag, message.SqsMessage.MessageAttributes[Constants.MessageProperty.ResetFlag] }
             };
 
             try
@@ -104,7 +99,7 @@ namespace MammothR10Price.Message.Processor
                             );
                     });
                 }
-                logger.Info($"Successfully processed Mammoth Price MessageID: {message.GetProperty(Constants.MessageProperty.TransactionId)}, mapped it to the ESB price canonical, and sent a message to queue.");
+                logger.Info($"Successfully processed Mammoth Price MessageID: {message.SqsMessage.MessageAttributes[Constants.MessageProperty.TransactionId]}, mapped it to the price canonical, and sent a message to queue.");
             }
             catch (Exception ex)
             {
@@ -115,32 +110,17 @@ namespace MammothR10Price.Message.Processor
                         serviceSettings.ApplicationName,
                         messageProperties[Constants.MessageProperty.TransactionId],
                         messageProperties,
-                        message.MessageText,
+                        message.MessageContent,
                         ex.GetType().ToString(),
                         ex.Message
                     );
                 }
-                catch(Exception errorPublisherException)
+                catch (Exception errorPublisherException)
                 {
-                    logger.Error($"Publishing Error Event failed with following Exception: {errorPublisherException}");    
+                    logger.Error($"Publishing Error Event failed with following Exception: {errorPublisherException}");
                 }
             }
-            finally
-            {
-                AcknowledgeMessage(message);
-            }
-        }
-
-        private void AcknowledgeMessage(IEsbMessage message)
-        {
-            if (
-                esbConnectionSettings.SessionMode == SessionMode.ClientAcknowledge
-                || esbConnectionSettings.SessionMode == SessionMode.ExplicitClientAcknowledge
-                || esbConnectionSettings.SessionMode == SessionMode.ExplicitClientDupsOkAcknowledge
-               )
-            {
-                message.Acknowledge();
-            }
+            // Messages from SQS are automatically acknowledged
         }
     }
 }

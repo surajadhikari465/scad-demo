@@ -1,9 +1,9 @@
-﻿using Icon.Esb.Subscriber;
+﻿using Icon.Dvs.Model;
 
 namespace MammothR10Price.Message.Processor
 {
     public interface IMessageProcessor
     {
-        void ProcessReceivedMessage(IEsbMessage message);
+        void ProcessReceivedMessage(DvsMessage message);
     }
 }
