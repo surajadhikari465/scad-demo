@@ -73,16 +73,16 @@ namespace JobScheduler.Service.Publish
         {
             sendMessageRetryPolicy.Execute(() =>
             {
-                consumerServiceEsbProducerMap[queueNameConsumerServiceMap[queueName]].Send(message, messageProperties);
-            });
-            sendMessageRetryPolicy.Execute(() =>
-            {
                 s3Facade.PutObject(
                     $"{consumerServiceS3BucketMap[queueNameConsumerServiceMap[queueName]]}-{jobSchedulerServiceSettings.AwsAccountId}",
                     $"{System.DateTime.UtcNow.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture)}/{Guid.NewGuid()}",
                     message,
                     messageProperties
                     );
+            });
+            sendMessageRetryPolicy.Execute(() =>
+            {
+                consumerServiceEsbProducerMap[queueNameConsumerServiceMap[queueName]].Send(message, messageProperties);
             });
         }
 
