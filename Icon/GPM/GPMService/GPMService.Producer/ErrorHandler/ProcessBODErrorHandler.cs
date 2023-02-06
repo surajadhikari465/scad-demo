@@ -11,6 +11,8 @@ using Polly;
 using Polly.Retry;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using Wfm.Aws.S3;
 
 namespace GPMService.Producer.ErrorHandler
 {
@@ -19,6 +21,7 @@ namespace GPMService.Producer.ErrorHandler
         private readonly INearRealTimeProcessorDAL nearRealTimeProcessorDAL;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly IEsbProducer processBODEsbProducer;
+        private readonly IS3Facade s3Facade;
         private readonly ISerializer<PriceChangeMaster> serializer;
         private readonly ILogger<ProcessBODErrorHandler> logger;
         private readonly RetryPolicy retrypolicy;
@@ -28,6 +31,7 @@ namespace GPMService.Producer.ErrorHandler
             // Using named injection.
             // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
             IEsbProducer processBODEsbProducer,
+            S3Facade s3Facade,
             ISerializer<PriceChangeMaster> serializer,
             ILogger<ProcessBODErrorHandler> logger
             )
@@ -35,6 +39,7 @@ namespace GPMService.Producer.ErrorHandler
             this.nearRealTimeProcessorDAL = nearRealTimeProcessorDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.processBODEsbProducer = processBODEsbProducer;
+            this.s3Facade= s3Facade;
             this.serializer = serializer;
             this.logger = logger;
             this.retrypolicy = Policy
@@ -89,6 +94,15 @@ namespace GPMService.Producer.ErrorHandler
                     { "TransactionType", transactionType },
                     { "Source", source },
                 };
+                retrypolicy.Execute(() =>
+                {
+                    s3Facade.PutObject(
+                        gpmProducerServiceSettings.GpmProcessBODBucket,
+                        $"{System.DateTime.UtcNow.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture)}/{Guid.NewGuid()}",
+                        processBODXMLMessage,
+                        processBODXMLMessageProperties
+);
+                });
                 retrypolicy.Execute(() =>
                 {
                     processBODEsbProducer.Send(processBODXMLMessage, processBODXMLMessageProperties);

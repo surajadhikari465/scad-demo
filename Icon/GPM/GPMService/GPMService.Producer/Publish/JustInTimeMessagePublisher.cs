@@ -1,17 +1,20 @@
 ﻿using GPMService.Producer.Settings;
 using Icon.ActiveMQ.Producer;
+using Wfm.Aws.ExtendedClient.SNS;
 using Icon.Esb.Producer;
 using Icon.Logging;
 using Polly;
 using Polly.Retry;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace GPMService.Producer.Publish
 {
     internal class JustInTimeMessagePublisher : IMessagePublisher
     {
         private readonly IEsbProducer justInTimeEsbProducer;
+        private readonly SNSExtendedClient snsExtendedClient;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly RetryPolicy sendMessageRetryPolicy;
         private readonly ILogger<JustInTimeMessagePublisher> logger;
@@ -19,12 +22,14 @@ namespace GPMService.Producer.Publish
         public JustInTimeMessagePublisher(
             IEsbProducer justInTimeEsbProducer,
             GPMProducerServiceSettings gpmProducerServiceSettings,
+            SNSExtendedClient snsExtendedClient,
             ILogger<JustInTimeMessagePublisher> logger
             )
         {
             this.justInTimeEsbProducer = justInTimeEsbProducer;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.logger = logger;
+            this.snsExtendedClient= snsExtendedClient;
             this.sendMessageRetryPolicy = Policy
                 .Handle<Exception>()
                 .WaitAndRetry(
@@ -41,6 +46,16 @@ namespace GPMService.Producer.Publish
 
         public void PublishMessage(string message, Dictionary<string, string> messageProperties)
         {
+            sendMessageRetryPolicy.Execute(() =>
+            {
+                snsExtendedClient.Publish(
+                    gpmProducerServiceSettings.GpmJustInTimeTopicArn,
+                    gpmProducerServiceSettings.GpmJustInTimeBucket,
+                    $"{DateTime.UtcNow.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture)}/{Guid.NewGuid()}",
+                    message,
+                    messageProperties
+                    );
+            });
             sendMessageRetryPolicy.Execute(() =>
             {
                 justInTimeEsbProducer.Send(message, messageProperties);

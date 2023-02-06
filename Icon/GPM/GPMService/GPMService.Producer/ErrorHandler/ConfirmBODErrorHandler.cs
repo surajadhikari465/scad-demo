@@ -12,6 +12,9 @@ using Polly;
 using Polly.Retry;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using Wfm.Aws.S3;
+using Wfm.Aws.S3.Settings;
 
 namespace GPMService.Producer.ErrorHandler
 {
@@ -21,6 +24,7 @@ namespace GPMService.Producer.ErrorHandler
         private readonly INearRealTimeProcessorDAL nearRealTimeProcessorDAL;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly IEsbProducer confirmBODEsbProducer;
+        private readonly S3Facade s3Facade;
         private readonly ISerializer<ConfirmBODType> serializer;
         private readonly ILogger<ConfirmBODErrorHandler> logger;
         private readonly RetryPolicy retrypolicy;
@@ -30,6 +34,7 @@ namespace GPMService.Producer.ErrorHandler
             // Using named injection.
             // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
             IEsbProducer confirmBODEsbProducer,
+            S3Facade s3Facade,
             ISerializer<ConfirmBODType> serializer,
             ILogger<ConfirmBODErrorHandler> logger
             )
@@ -39,6 +44,7 @@ namespace GPMService.Producer.ErrorHandler
             this.confirmBODEsbProducer = confirmBODEsbProducer;
             this.serializer = serializer;
             this.logger = logger;
+            this.s3Facade = s3Facade;
             this.retrypolicy = Policy
                 .Handle<Exception>()
                 .WaitAndRetry(
@@ -124,6 +130,15 @@ namespace GPMService.Producer.ErrorHandler
                 }
             };
             string confirmBODXMLMessage = serializer.Serialize(confirmBODType, new Utf8StringWriter());
+            retrypolicy.Execute(() =>
+            {
+                s3Facade.PutObject(
+                    gpmProducerServiceSettings.GpmConfirmBODBucket,
+                    $"{System.DateTime.UtcNow.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture)}/{Guid.NewGuid()}",
+                    confirmBODXMLMessage,
+                    new Dictionary<string, string>()
+                );
+            });
             retrypolicy.Execute(() =>
             {
                 confirmBODEsbProducer.Send(confirmBODXMLMessage, new Dictionary<string, string>());

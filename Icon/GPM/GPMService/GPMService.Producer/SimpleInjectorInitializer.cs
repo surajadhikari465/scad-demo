@@ -28,6 +28,12 @@ using Mammoth.Framework;
 using SimpleInjector;
 using SimpleInjector.Diagnostics;
 using System;
+using Wfm.Aws.ExtendedClient.Serializer;
+using Wfm.Aws.ExtendedClient.SNS;
+using Wfm.Aws.S3;
+using Wfm.Aws.S3.Settings;
+using Wfm.Aws.SNS;
+using Wfm.Aws.SNS.Settings;
 
 namespace GPMService.Producer
 {
@@ -36,9 +42,16 @@ namespace GPMService.Producer
         public static Container InitializeContainer(string serviceType)
         {
             Container container = new Container();
+            S3FacadeSettings s3FacadeSettings = S3FacadeSettings.CreateSettingsFromConfig();
+            SNSFacadeSettings snsFacadeSettings = SNSFacadeSettings.CreateSettingsFromConfig();
+            S3Facade s3Facade = new S3Facade(s3FacadeSettings);
+            SNSFacade snsFacade = new SNSFacade(snsFacadeSettings);
             container.RegisterSingleton<IEmailClient>(() => { return EmailClient.CreateFromConfig(); });
             container.RegisterSingleton<IDbContextFactory<MammothContext>, MammothContextFactory>();
             container.RegisterSingleton(() => GPMProducerServiceSettings.CreateSettings());
+            container.RegisterSingleton(() => s3Facade);
+            container.RegisterSingleton(() => snsFacade);
+            container.RegisterSingleton(() => new SNSExtendedClient(snsFacade, s3Facade, new ExtendedClientMessageSerializer()));
             container.RegisterSingleton<ErrorEventPublisher>();
             container.RegisterSingleton<ISerializer<ErrorMessage>, Serializer<ErrorMessage>>();
             RegisterServiceImplementation(container, serviceType);
