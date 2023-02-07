@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using ErrorMessagesMonitor.DataAccess;
 using ErrorMessagesMonitor.Model;
-using ErrorMessagesMonitor.Serializer;
 using ErrorMessagesMonitor.Settings;
 using Icon.Common.Email;
+using Icon.Logging;
 using Newtonsoft.Json;
 using OpsgenieAlert;
 
@@ -14,21 +14,21 @@ namespace ErrorMessagesMonitor.Message.Processor
     {
         private readonly ErrorMessagesMonitorServiceSettings serviceSettings;
         private readonly IErrorMessagesMonitorDAL errorMessagesMonitorDAL;
-        private readonly ISerializer<ErrorDetailsCanonicalModel> serializer;
+        private readonly ILogger<ErrorMessagesProcessor> logger;
         private readonly IEmailClient emailClient;
         private readonly IOpsgenieAlert opsGenieAlert;
 
         public ErrorMessagesProcessor(
             ErrorMessagesMonitorServiceSettings serviceSettings,
             IErrorMessagesMonitorDAL errorMessagesMonitorDAL,
-            ISerializer<ErrorDetailsCanonicalModel> serializer,
+            ILogger<ErrorMessagesProcessor> logger,
             IEmailClient emailClient,
             IOpsgenieAlert opsGenieAlert
         )
         {
             this.serviceSettings = serviceSettings;
             this.errorMessagesMonitorDAL = errorMessagesMonitorDAL;
-            this.serializer = serializer;
+            this.logger = logger;
             this.emailClient = emailClient;
             this.opsGenieAlert = opsGenieAlert;
         }
@@ -37,12 +37,14 @@ namespace ErrorMessagesMonitor.Message.Processor
         {
             try
             {
+                logger.Info("Starting Error Messages Monitor Processor");
                 string instanceID = Guid.NewGuid().ToString();
                 errorMessagesMonitorDAL.MarkErrorMessageRecordsAsInProcess(instanceID);
                 IList<ErrorMessageModel> errorMessageList = errorMessagesMonitorDAL.GetErrorMessages(instanceID);
-                try
+                logger.Info("Starting sending error notification process");
+                foreach (var errorMessage in errorMessageList)
                 {
-                    foreach (var errorMessage in errorMessageList)
+                    try
                     {
                         IList<ErrorDetailsModel> errorDetailsList =
                             errorMessagesMonitorDAL.GetErrorDetails(instanceID, errorMessage);
@@ -78,17 +80,17 @@ namespace ErrorMessagesMonitor.Message.Processor
                             );
                         }
                     }
+                    catch (Exception sendErrorNotificationException)
+                    {
+                        logger.Error($"Error occurred while sending error notification. Error: {sendErrorNotificationException}");
+                    }
                 }
-                catch (Exception errorNotificationException)
-                {
-                    // TODO - Log Error for Send Error Notifications - logger.error($"ErrorMessage: {errorNotificationException}");
-                }
-
                 errorMessagesMonitorDAL.MarkErrorMessagesAsProcessed(instanceID);
+                logger.Info("Ending Error Messages Monitor Processor successfully");
             }
             catch (Exception processErrorMessagesException)
             {
-                // TODO - Log Error for Process Error Messages - logger.error($"ErrorMessage: {processErrorMessagesException}");
+                logger.Error($"Error occurred in Error Messages Monitor Processor. Error: {processErrorMessagesException}");
             }
         }
 

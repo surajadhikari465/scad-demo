@@ -1,4 +1,5 @@
-﻿using ErrorMessagesMonitor.Service;
+﻿using ErrorMessagesMonitor.Message.Processor;
+using ErrorMessagesMonitor.Service;
 using ErrorMessagesMonitor.Settings;
 using Icon.Common.Email;
 using Icon.Logging;
@@ -18,7 +19,7 @@ namespace ErrorMessagesMonitor
             container.RegisterSingleton<IErrorMessagesMonitorService, ErrorMessagesMonitorService>();
             container.RegisterSingleton<IEmailClient>(() => { return EmailClient.CreateFromConfig(); });
             container.RegisterSingleton<IOpsgenieAlert, OpsgenieAlert.OpsgenieAlert>();
-            // TODO - Add more attributes 
+            container.RegisterSingleton<ILogger<ErrorMessagesProcessor>, NLogLogger<ErrorMessagesProcessor>>();
             container.Verify();
             return container;
         }
