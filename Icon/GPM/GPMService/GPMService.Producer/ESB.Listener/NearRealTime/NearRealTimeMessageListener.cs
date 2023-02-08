@@ -1,43 +1,52 @@
 ﻿using GPMService.Producer.Message.Processor;
 using GPMService.Producer.Model;
 using Icon.Common.Email;
-using Icon.Esb;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb.Subscriber;
 using Icon.Logging;
+using Wfm.Aws.ExtendedClient.SQS.Model;
+using Wfm.Aws.ExtendedClient.Listener.SQS;
+using Wfm.Aws.ExtendedClient.Listener.SQS.Settings;
+using Wfm.Aws.ExtendedClient.SQS;
+using NLog;
+using GPMService.Producer.Helpers;
 
 namespace GPMService.Producer.ESB.Listener.NearRealTime
 {
-    internal class NearRealTimeMessageListener : ListenerApplication<NearRealTimeMessageListener, ListenerApplicationSettings>
+    internal class NearRealTimeMessageListener : SQSExtendedClientListener<NearRealTimeMessageListener>
     {
         private readonly IMessageProcessor messageProcessor;
+        private readonly ISQSExtendedClient sQSExtendedClient;
+        private readonly SQSExtendedClientListenerSettings listenerApplicationSettings;
         public NearRealTimeMessageListener(
-            ListenerApplicationSettings listenerApplicationSettings,
+            SQSExtendedClientListenerSettings listenerApplicationSettings,
             // Using named injection.
             // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
-            EsbConnectionSettings nearRealTimeListenerEsbConnectionSettings,
-            IEsbSubscriber subscriber,
             IEmailClient emailClient,
+            ISQSExtendedClient sqsExtendedClient,
             ILogger<NearRealTimeMessageListener> logger,
             IMessageProcessor messageProcessor
             )
-            : base(listenerApplicationSettings, nearRealTimeListenerEsbConnectionSettings, subscriber, emailClient, logger)
+            : base(listenerApplicationSettings, emailClient, sqsExtendedClient, logger)
         {
             this.messageProcessor = messageProcessor;
+            this.sQSExtendedClient = sqsExtendedClient;
+            this.listenerApplicationSettings = listenerApplicationSettings;
         }
 
-        public override void HandleMessage(object sender, EsbMessageEventArgs args)
+        public override void HandleMessage(SQSExtendedClientReceiveModel message)
         {
             ReceivedMessage receivedMessage = new ReceivedMessage
             {
-                esbMessage = args.Message
+                sqsExtendedClientMessage = message,
+                sqsExtendedClient = sQSExtendedClient,
+                sqsExtendedClientSettings = listenerApplicationSettings
             };
+            //received S3Details list will have only one SQSExtendedClientReceiveModelS3Detail element , hence fetching the first element  
             logger.Info(
                     $@"Received Message with 
-                    MessageID: {receivedMessage.esbMessage.GetProperty("TransactionID")}, 
-                    PatchFamilyID: {receivedMessage.esbMessage.GetProperty("CorrelationID")}, 
-                    SequenceId: {receivedMessage.esbMessage.GetProperty("SequenceID")} 
-                    and Region Code: {receivedMessage.esbMessage.GetProperty("RegionCode")}"
+                    MessageID:{message.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()]}, 
+                    PatchFamilyID: {message.S3Details[0].Metadata[Constants.MessageHeaders.CorrelationID.ToLower()]}, 
+                    SequenceId: {message.S3Details[0].Metadata[Constants.MessageHeaders.SequenceID.ToLower()]} 
+                    and Region Code: {message.S3Details[0].Metadata[Constants.MessageHeaders.RegionCode.ToLower()]}"
                 );
             messageProcessor.ProcessReceivedMessage(receivedMessage);
         }

@@ -1,4 +1,5 @@
-﻿using GPMService.Producer.Archive;
+﻿using Amazon.SQS;
+using GPMService.Producer.Archive;
 using GPMService.Producer.DataAccess;
 using GPMService.Producer.ErrorHandler;
 using GPMService.Producer.ESB.Infrastructure;
@@ -28,12 +29,17 @@ using Mammoth.Framework;
 using SimpleInjector;
 using SimpleInjector.Diagnostics;
 using System;
+using Wfm.Aws.ExtendedClient.Listener.SQS;
+using Wfm.Aws.ExtendedClient.Listener.SQS.Settings;
 using Wfm.Aws.ExtendedClient.Serializer;
 using Wfm.Aws.ExtendedClient.SNS;
+using Wfm.Aws.ExtendedClient.SQS;
 using Wfm.Aws.S3;
 using Wfm.Aws.S3.Settings;
 using Wfm.Aws.SNS;
 using Wfm.Aws.SNS.Settings;
+using Wfm.Aws.SQS;
+using Wfm.Aws.SQS.Settings;
 
 namespace GPMService.Producer
 {
@@ -42,16 +48,9 @@ namespace GPMService.Producer
         public static Container InitializeContainer(string serviceType)
         {
             Container container = new Container();
-            S3FacadeSettings s3FacadeSettings = S3FacadeSettings.CreateSettingsFromConfig();
-            SNSFacadeSettings snsFacadeSettings = SNSFacadeSettings.CreateSettingsFromConfig();
-            S3Facade s3Facade = new S3Facade(s3FacadeSettings);
-            SNSFacade snsFacade = new SNSFacade(snsFacadeSettings);
             container.RegisterSingleton<IEmailClient>(() => { return EmailClient.CreateFromConfig(); });
             container.RegisterSingleton<IDbContextFactory<MammothContext>, MammothContextFactory>();
             container.RegisterSingleton(() => GPMProducerServiceSettings.CreateSettings());
-            container.RegisterSingleton(() => s3Facade);
-            container.RegisterSingleton(() => snsFacade);
-            container.RegisterSingleton(() => new SNSExtendedClient(snsFacade, s3Facade, new ExtendedClientMessageSerializer()));
             container.RegisterSingleton<ErrorEventPublisher>();
             container.RegisterSingleton<ISerializer<ErrorMessage>, Serializer<ErrorMessage>>();
             RegisterServiceImplementation(container, serviceType);
@@ -64,6 +63,13 @@ namespace GPMService.Producer
             switch (serviceType)
             {
                 case Constants.ProducerType.NearRealTime:
+                    container.RegisterSingleton(() => S3FacadeSettings.CreateSettingsFromConfig());
+                    container.RegisterSingleton(() => SQSFacadeSettings.CreateSettingsFromConfig());
+                    container.RegisterSingleton(() => SQSExtendedClientListenerSettings.CreateSettingsFromConfig());
+                    container.RegisterSingleton<IS3Facade, S3Facade>();
+                    container.RegisterSingleton<ISQSFacade, SQSFacade>();
+                    container.RegisterSingleton<IExtendedClientMessageSerializer, S3EventMessageSerializer>();
+                    container.RegisterSingleton<ISQSExtendedClient, SQSExtendedClient>();
                     container.RegisterSingleton(() => ListenerApplicationSettings.CreateDefaultSettings<ListenerApplicationSettings>("GPM NearRealTimeMessage Listener"));
                     container.RegisterSingleton(() => ActiveMQConnectionSettings.CreateSettingsFromConfig());
                     EsbConnectionSettings nearRealTimeListenerEsbSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMNearRealTimeListenerEmsConnection");
@@ -73,7 +79,7 @@ namespace GPMService.Producer
                     container.RegisterSingleton<IEsbSubscriber>(() => new EsbSubscriber(nearRealTimeListenerEsbSettings));
                     Registration nearRealTimeEsbProducerRegistration = Lifestyle.Singleton.CreateRegistration(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMNearRealTimeProducerEmsConnection")), container);
                     container.RegisterConditional<IEsbProducer>(
-                        nearRealTimeEsbProducerRegistration, 
+                        nearRealTimeEsbProducerRegistration,
                         c => !c.HasConsumer || c.Consumer.Target.Name.Equals("nearRealTimeEsbProducer"));
                     Registration processBODEsbProducerRegistration = Lifestyle.Singleton.CreateRegistration(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMProcessBODProducerEmsConnection")), container);
                     container.RegisterConditional<IEsbProducer>(
@@ -95,7 +101,7 @@ namespace GPMService.Producer
                     container.RegisterSingleton<IMessageParser<items>, NearRealTimeMessageParser>();
                     container.RegisterSingleton<INearRealTimeProcessorDAL, NearRealTimeProcessorDAL>();
                     container.RegisterSingleton<IMessageProcessor, NearRealTimeMessageProcessor>();
-                    container.RegisterSingleton<IListenerApplication, NearRealTimeMessageListener>();
+                    container.RegisterSingleton<SQSExtendedClientListener<NearRealTimeMessageListener>, NearRealTimeMessageListener>();
                     container.RegisterSingleton<IGPMProducerService, NearRealTimeProducerService>();
                     container.RegisterSingleton<ConfirmBODErrorHandler>();
                     container.RegisterSingleton<ProcessBODErrorHandler>();

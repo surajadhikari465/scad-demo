@@ -18,7 +18,7 @@ namespace GPMService.Producer.Message.Parser
         public items ParseMessage(ReceivedMessage receivedMessage)
         {
             items gpmParsed;
-            using (textReader = new StringReader(Utility.RemoveUnusableCharactersFromXml(receivedMessage.esbMessage.MessageText)))
+            using (textReader = new StringReader(Utility.RemoveUnusableCharactersFromXml(receivedMessage.sqsExtendedClientMessage.S3Details[0].Data)))
             {
                 gpmParsed = serializer.Deserialize(textReader);
             }

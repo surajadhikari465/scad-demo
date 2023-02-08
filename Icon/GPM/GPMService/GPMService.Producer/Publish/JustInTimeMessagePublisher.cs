@@ -14,7 +14,7 @@ namespace GPMService.Producer.Publish
     internal class JustInTimeMessagePublisher : IMessagePublisher
     {
         private readonly IEsbProducer justInTimeEsbProducer;
-        private readonly SNSExtendedClient snsExtendedClient;
+        private readonly ISNSExtendedClient snsExtendedClient;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly RetryPolicy sendMessageRetryPolicy;
         private readonly ILogger<JustInTimeMessagePublisher> logger;
@@ -22,7 +22,7 @@ namespace GPMService.Producer.Publish
         public JustInTimeMessagePublisher(
             IEsbProducer justInTimeEsbProducer,
             GPMProducerServiceSettings gpmProducerServiceSettings,
-            SNSExtendedClient snsExtendedClient,
+            ISNSExtendedClient snsExtendedClient,
             ILogger<JustInTimeMessagePublisher> logger
             )
         {

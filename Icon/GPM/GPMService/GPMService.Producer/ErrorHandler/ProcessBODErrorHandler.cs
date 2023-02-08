@@ -31,7 +31,7 @@ namespace GPMService.Producer.ErrorHandler
             // Using named injection.
             // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
             IEsbProducer processBODEsbProducer,
-            S3Facade s3Facade,
+            IS3Facade s3Facade,
             ISerializer<PriceChangeMaster> serializer,
             ILogger<ProcessBODErrorHandler> logger
             )
@@ -39,7 +39,7 @@ namespace GPMService.Producer.ErrorHandler
             this.nearRealTimeProcessorDAL = nearRealTimeProcessorDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.processBODEsbProducer = processBODEsbProducer;
-            this.s3Facade= s3Facade;
+            this.s3Facade = s3Facade;
             this.serializer = serializer;
             this.logger = logger;
             this.retrypolicy = Policy
@@ -57,12 +57,12 @@ namespace GPMService.Producer.ErrorHandler
         }
         public void HandleError(ReceivedMessage receivedMessage, MessageSequenceOutput messageSequenceOutput)
         {
-            string patchFamilyID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.CorrelationID);
-            string messageID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID);
-            string transactionType = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionType);
-            string resetFlag = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.ResetFlag);
-            string source = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.Source);
-            int sequenceID = int.Parse(receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.SequenceID));
+            string patchFamilyID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.CorrelationID.ToLower()];
+            string messageID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()];
+            string transactionType = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionType.ToLower()];
+            string resetFlag = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.ResetFlag.ToLower()];
+            string source = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.Source.ToLower()];
+            int sequenceID = int.Parse(receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.SequenceID.ToLower()]);
             int lastProcessedGpmSequenceID = messageSequenceOutput.LastProcessedGpmSequenceID;
             for (int i = 0; i <= sequenceID - lastProcessedGpmSequenceID; i++)
             {
@@ -87,12 +87,12 @@ namespace GPMService.Producer.ErrorHandler
                 string processBODXMLMessage = serializer.Serialize(priceChangeMaster, new Utf8StringWriter());
                 Dictionary<string, string> processBODXMLMessageProperties = new Dictionary<string, string>()
                 {
-                    { "TransactionID", messageID },
-                    { "CorrelationID", patchFamilyID },
-                    { "SequenceID", receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.SequenceID) },
-                    { "ResetFlag", Constants.ResetFlagValues.ResetFlagTrueValue.Equals(resetFlag) ? "true" : "false" },
-                    { "TransactionType", transactionType },
-                    { "Source", source },
+                    { Constants.MessageHeaders.TransactionID, messageID },
+                    { Constants.MessageHeaders.CorrelationID, patchFamilyID },
+                    { Constants.MessageHeaders.SequenceID, receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.SequenceID.ToLower()] },
+                    { Constants.MessageHeaders.ResetFlag, Constants.ResetFlagValues.ResetFlagTrueValue.Equals(resetFlag) ? "true" : "false" },
+                    { Constants.MessageHeaders.TransactionType, transactionType },
+                    { Constants.MessageHeaders.Source, source },
                 };
                 retrypolicy.Execute(() =>
                 {

@@ -24,10 +24,7 @@
             public const string SequenceID = "SequenceID";
             public const string RegionCode = "RegionCode";
             public const string Region = "Region";
-        }
-        public struct JMSMessageHeaders
-        {
-            public const string JMSXDeliveryCount = "JMSXDeliveryCount";
+            public const string ApproximateReceiveCount = "ApproximateReceiveCount";
         }
         public struct ErrorCodes
         {

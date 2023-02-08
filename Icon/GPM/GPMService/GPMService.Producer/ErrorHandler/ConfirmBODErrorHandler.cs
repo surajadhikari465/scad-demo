@@ -24,7 +24,7 @@ namespace GPMService.Producer.ErrorHandler
         private readonly INearRealTimeProcessorDAL nearRealTimeProcessorDAL;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly IEsbProducer confirmBODEsbProducer;
-        private readonly S3Facade s3Facade;
+        private readonly IS3Facade s3Facade;
         private readonly ISerializer<ConfirmBODType> serializer;
         private readonly ILogger<ConfirmBODErrorHandler> logger;
         private readonly RetryPolicy retrypolicy;
@@ -34,7 +34,7 @@ namespace GPMService.Producer.ErrorHandler
             // Using named injection.
             // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
             IEsbProducer confirmBODEsbProducer,
-            S3Facade s3Facade,
+            IS3Facade s3Facade,
             ISerializer<ConfirmBODType> serializer,
             ILogger<ConfirmBODErrorHandler> logger
             )
@@ -89,7 +89,7 @@ namespace GPMService.Producer.ErrorHandler
                             },
                             OriginalBOD = new OriginalBODType
                             {
-                                MessageContent = $@"<[CDATA[""{Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(receivedMessage.esbMessage.MessageText))}""]]>"
+                                MessageContent = $@"<[CDATA[""{Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(receivedMessage.sqsExtendedClientMessage.S3Details[0].Data))}""]]>"
                             }
                         }
                     }
@@ -143,22 +143,22 @@ namespace GPMService.Producer.ErrorHandler
             {
                 confirmBODEsbProducer.Send(confirmBODXMLMessage, new Dictionary<string, string>());
             });
-            string patchFamilyID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.CorrelationID);
-            string messageID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID);
-            string transactionType = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionType);
-            string resetFlag = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.ResetFlag);
-            string source = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.Source);
-            string sequenceID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.SequenceID);
-            string nonReceivingSysName = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.nonReceivingSysName);
+            string patchFamilyID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.CorrelationID.ToLower()];
+            string messageID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()];
+            string transactionType = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionType.ToLower()];
+            string resetFlag = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.ResetFlag.ToLower()];
+            string source = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.Source.ToLower()];
+            string sequenceID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.SequenceID.ToLower()];
+            string nonReceivingSysName = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.nonReceivingSysName.ToLower()];
             Dictionary<string, string> receivedMessageProperties = new Dictionary<string, string>()
                 {
-                    { "TransactionID", messageID },
-                    { "CorrelationID", patchFamilyID },
-                    { "SequenceID", sequenceID },
-                    { "ResetFlag", resetFlag },
-                    { "TransactionType", transactionType },
-                    { "Source", source },
-                    { "nonReceivingSysName", source },
+                    { Constants.MessageHeaders.TransactionID, messageID },
+                    { Constants.MessageHeaders.CorrelationID, patchFamilyID },
+                    { Constants.MessageHeaders.SequenceID, sequenceID },
+                    { Constants.MessageHeaders.ResetFlag, resetFlag },
+                    { Constants.MessageHeaders.TransactionType, transactionType },
+                    { Constants.MessageHeaders.Source, source },
+                    { Constants.MessageHeaders.nonReceivingSysName, nonReceivingSysName },
                 };
             nearRealTimeProcessorDAL.ArchiveErrorResponseMessage(messageID, Constants.MessageTypeNames.ConfirmBOD, confirmBODXMLMessage, receivedMessageProperties);
         }

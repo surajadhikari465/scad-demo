@@ -79,13 +79,13 @@ namespace GPMService.Producer.DataAccess
 
         public void ArchiveMessage(ReceivedMessage receivedMessage, string errorCode, string errorDetails)
         {
-            string correlationID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.CorrelationID);
-            string transactionID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID);
-            string transactionType = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionType);
-            string resetFlag = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.ResetFlag);
-            string source = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.Source);
-            string nonReceivingSysName = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.nonReceivingSysName);
-            string sequenceID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.SequenceID);
+            string correlationID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.CorrelationID.ToLower()];
+            string transactionID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()];
+            string transactionType = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionType.ToLower()];
+            string resetFlag = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.ResetFlag.ToLower()];
+            string source = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.Source.ToLower()];
+            string nonReceivingSysName = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.nonReceivingSysName.ToLower()];
+            string sequenceID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.SequenceID.ToLower()];
             string itemID = correlationID.Substring(0, correlationID.IndexOf("-"));
             string businessUnitID = correlationID.Substring(correlationID.IndexOf("-") + 1);
             string messageHeaders = $@"
@@ -102,7 +102,7 @@ namespace GPMService.Producer.DataAccess
                 BusinessUnitID = int.Parse(businessUnitID),
                 MessageID = transactionID,
                 MessageHeaders = messageHeaders,
-                MessageBody = receivedMessage.esbMessage.MessageText,
+                MessageBody = receivedMessage.sqsExtendedClientMessage.S3Details[0].Data,
                 ErrorCode = errorCode,
                 ErrorDetails = errorDetails,
             };
@@ -194,10 +194,10 @@ SELECT
 
         public void ProcessPriceMessage(ReceivedMessage receivedMessage, MammothPricesType mammothPrices)
         {
-            string messageID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID) ?? "";
-            string resetFlag = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.ResetFlag);
-            string patchFamilyID = receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.CorrelationID);
-            int patchFamilySequenceID = int.Parse(receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.SequenceID));
+            string messageID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()] ?? "";
+            string resetFlag = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.ResetFlag.ToLower()];
+            string patchFamilyID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.CorrelationID.ToLower()];
+            int patchFamilySequenceID = int.Parse(receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.SequenceID.ToLower()]);
             try
             {
                 retryPolicy.Execute(() =>
