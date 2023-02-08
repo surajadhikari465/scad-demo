@@ -22,12 +22,8 @@ namespace WebSupport.Clients
         {
             this.awsAccountId = AppSettingsAccessor.GetStringSetting("MammothGpmBridgeAwsAccount");
             this.s3Facade = new S3Facade(S3FacadeSettings.CreateSettingsFromNamedConfig("MammothGpmS3Settings"));
-
             var sqsFacadeSettings = SQSFacadeSettings.CreateSettingsFromNamedConfig("MammothGpmSqsSettings");
-            ISQSFacade sqsFacade = new SQSFacade(
-                sqsFacadeSettings, 
-                new Amazon.SQS.AmazonSQSClient(sqsFacadeSettings.AwsAccessKey, sqsFacadeSettings.AwsSecretKey, sqsFacadeSettings.AwsRegion)
-            );
+            ISQSFacade sqsFacade = new SQSFacade(sqsFacadeSettings);
             this.sqsExtendedClient = new SQSExtendedClient(
                 sqsFacade, 
                 s3Facade, 

@@ -252,7 +252,7 @@
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
     </Reference>
     <Reference Include="Wfm.Aws, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Wfm.Aws.2023.2.2.1\lib\net472\Wfm.Aws.dll</HintPath>
+      <HintPath>..\packages\Wfm.Aws.2023.2.8.1\lib\net472\Wfm.Aws.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
