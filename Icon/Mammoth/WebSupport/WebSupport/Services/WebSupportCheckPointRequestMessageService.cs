@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebSupport.Clients;
 using WebSupport.DataAccess.Commands;
 using WebSupport.DataAccess.Models;
 using WebSupport.DataAccess.Queries;
@@ -27,6 +28,7 @@ namespace WebSupport.Services
         private ICommandHandler<ArchiveCheckpointMessageCommandParameters> archiveCheckpointMessageCommandHandler;
 		private IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>> searchScanCodes;
         private IClientIdManager clientIdManager;
+        private IMammothGpmBridgeClient mammothGpmBridgeClient;
 
         public WebSupportCheckPointRequestMessageService(
             ILogger logger,
@@ -36,7 +38,8 @@ namespace WebSupport.Services
             IQueryHandler<GetCheckPointMessageParameters, IEnumerable<CheckPointMessageModel>> GetCheckPointMessageQuery,
             ICommandHandler<ArchiveCheckpointMessageCommandParameters> archiveCheckpointMessageCommandHandler,
 			IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>> searchScanCodes,
-            IClientIdManager clientIdManager)
+            IClientIdManager clientIdManager,
+            IMammothGpmBridgeClient mammothGpmBridgeClient)
         {
             this.logger = logger;
             this.esbConnectionFactory = esbConnectionFactory;
@@ -46,6 +49,7 @@ namespace WebSupport.Services
             this.archiveCheckpointMessageCommandHandler = archiveCheckpointMessageCommandHandler;
 			this.searchScanCodes = searchScanCodes;
             this.clientIdManager = clientIdManager;
+            this.mammothGpmBridgeClient = mammothGpmBridgeClient;
         }
 
         public EsbConnectionSettings Settings { get; set; }
@@ -104,6 +108,8 @@ namespace WebSupport.Services
                                         { EsbConstants.SourceKey, EsbConstants.MammothSourceValueName }
                                     };
 
+                                // Send to Process BOD Queue
+                                mammothGpmBridgeClient.SendToGpmProcessBod(message, messageId.ToString(), messageProperties);
                                 using (var esbProducer = esbConnectionFactory.CreateProducer(Settings))
                                 {
                                     esbProducer.OpenConnection(clientIdManager.GetClientId());

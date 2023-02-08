@@ -18,6 +18,7 @@ using Icon.Esb.Producer;
 using WebSupport.DataAccess.Commands;
 using WebSupport.Managers;
 using WebSupport.Services;
+using WebSupport.Clients;
 
 namespace WebSupport.Tests.Models
 {
@@ -34,6 +35,7 @@ namespace WebSupport.Tests.Models
         private Mock<IEsbProducer> mockProducer;
         private Mock<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>> mockSearchScanCodes;
         private IClientIdManager clientIdManager;
+        private Mock<IDvsNearRealTimePriceClient> mockDvsNearRealTimeClient;
         [TestInitialize]
         public void Initialize()
         {
@@ -45,6 +47,7 @@ namespace WebSupport.Tests.Models
             mockProducer = new Mock<IEsbProducer>();
             mockSearchScanCodes = new Mock<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>>();
             clientIdManager = new ClientIdManager();
+            mockDvsNearRealTimeClient = new Mock<IDvsNearRealTimePriceClient>();
             clientIdManager.Initialize("WebSupportTests");
 
             webSupportPriceMessageService = new WebSupportPriceMessageService(
@@ -54,7 +57,8 @@ namespace WebSupport.Tests.Models
                 mockGetPriceResetPricesQuery.Object,
                 mockSaveSentMessageCommandHandler.Object,
                 mockSearchScanCodes.Object,
-                clientIdManager);
+                clientIdManager,
+                mockDvsNearRealTimeClient.Object);
             request = new PriceResetRequestViewModel
             {
                 RegionIndex = 1,

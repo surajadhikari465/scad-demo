@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using TIBCO.EMS;
+using WebSupport.Clients;
 using WebSupport.Models;
 using Contracts = Icon.Esb.Schemas.Mammoth.ContractTypes;
 
@@ -16,15 +17,18 @@ namespace WebSupport.Services
     {
         private ISerializer<Contracts.JobSchedule> serializer;
         private ILogger logger;
+        private IJobSchedulerBridgeClient jobSchedulerS3Client;
 
         public EsbConnectionSettings Settings { get; set; }
 
         public WebSupportJobScheduleMessageService(
             ISerializer<Contracts.JobSchedule> serializer,
-            ILogger logger)
+            ILogger logger,
+            IJobSchedulerBridgeClient jobSchedulerS3Client)
         {
             this.serializer = serializer;
             this.logger = logger;
+            this.jobSchedulerS3Client = jobSchedulerS3Client;
         }
 
         public EsbServiceResponse Send(JobScheduleModel request)
@@ -83,6 +87,12 @@ namespace WebSupport.Services
                 XmlObject = request.XmlObject
             });
 
+            this.jobSchedulerS3Client.Send(request, message, messageId.ToString(), messageProperties);
+            SendToEsb(request, message, messageId.ToString(), messageProperties);
+        }
+
+        private void SendToEsb(JobScheduleModel request, string message, string messageId, Dictionary<string, string> messageProperties)
+        {
             EMSSSLFileStoreInfo storeInfo = new EMSSSLFileStoreInfo();
             storeInfo.SetSSLPassword(Settings.SslPassword.ToCharArray());
             storeInfo.SetSSLClientIdentity(GetEsbCert());

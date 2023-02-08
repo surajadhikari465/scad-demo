@@ -15,6 +15,8 @@ using WebSupport.Managers;
 using WebSupport.Models;
 using WebSupport.ViewModels;
 using Newtonsoft.Json;
+using WebSupport.Clients;
+using WebSupport.Helpers;
 
 namespace WebSupport.Services
 {
@@ -29,6 +31,7 @@ namespace WebSupport.Services
         private IMessageBuilder<PriceResetMessageBuilderModel> messageBuilder;
         private IQueryHandler<GetPricesAllParameters, List<PriceResetPrice>> getPricesQuery;
         private ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler;
+        private IDvsNearRealTimePriceClient dvsNearRealTimePriceClient;
 
         public EsbConnectionSettings Settings { get; set; }
 
@@ -39,7 +42,8 @@ namespace WebSupport.Services
             IMessageBuilder<PriceResetMessageBuilderModel> messageBuilder,
             IQueryHandler<GetPricesAllParameters, List<PriceResetPrice>> getPricesQuery,
             ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler,
-            IClientIdManager clientIdManager)
+            IClientIdManager clientIdManager,
+            IDvsNearRealTimePriceClient dvsNearRealTimePriceClient)
         {
             this.logger = logger;
             this.Settings = settings;
@@ -48,6 +52,7 @@ namespace WebSupport.Services
             this.getPricesQuery = getPricesQuery;
             this.saveSentMessageCommandHandler = saveSentMessageCommandHandler;
             this.clientIdManager = clientIdManager;
+            this.dvsNearRealTimePriceClient = dvsNearRealTimePriceClient;
         }
 
         public EsbServiceResponse Send(PricesAllViewModel viewModel)
@@ -122,7 +127,7 @@ namespace WebSupport.Services
 
         private void SendMessage(IEsbProducer producer, string sequenceId, string patchFamilyId, List<PriceResetPrice> prices)
         {
-            var messageId = Guid.NewGuid();
+            var messageId = Guid.NewGuid().ToString();
             var message = messageBuilder.BuildMessage(new PriceResetMessageBuilderModel { PriceResetPrices = prices });
 
             var messageProperties = new Dictionary<string, string>
@@ -131,12 +136,13 @@ namespace WebSupport.Services
                     { EsbConstants.TransactionIdKey, messageId.ToString() },
                     { EsbConstants.CorrelationIdKey, patchFamilyId },
                     { EsbConstants.SequenceIdKey, sequenceId },
-                    { EsbConstants.SourceKey, EsbConstants.MammothSourceValueName },
+                    { EsbConstants.SourceKey, Constants.Source.Infor },
                     { EsbConstants.NonReceivingSystemsKey, this.nonReceiving },
                     { EsbConstants.PriceResetKey,  EsbConstants.PriceResetFalseValue }
                 };
 
-            producer.Send(message, messageId.ToString(), messageProperties);
+            dvsNearRealTimePriceClient.Send(message, messageId, messageProperties);
+            producer.Send(message, messageId, messageProperties);
 
             //There's lots of message (100K+). Should we log them at all?
             //The code below is working. Uncoment it when needed.

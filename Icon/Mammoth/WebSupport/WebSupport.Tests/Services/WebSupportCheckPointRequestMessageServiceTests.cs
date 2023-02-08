@@ -18,6 +18,7 @@ using WebSupport.MessageBuilders;
 using WebSupport.Models;
 using WebSupport.Services;
 using WebSupport.ViewModels;
+using WebSupport.Clients;
 
 namespace WebSupport.Tests.Services
 {
@@ -35,6 +36,7 @@ namespace WebSupport.Tests.Services
         private Mock<ICommandHandler<ArchiveCheckpointMessageCommandParameters>> mockArchiveCheckpointMessageQuery;
         private Mock<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>> mockSearchScanCodes;
         private IClientIdManager ClientIdManager;
+        private Mock<IMammothGpmBridgeClient> mockMammothGpmClient;
         private Mock<EsbConnection> mockEsbConnection;
 
         [TestInitialize]
@@ -51,6 +53,7 @@ namespace WebSupport.Tests.Services
             ClientIdManager = new Managers.ClientIdManager();
             ClientIdManager.Initialize("WebSupportTests");
             mockEsbConnection = new Mock<EsbConnection>();
+            mockMammothGpmClient = new Mock<IMammothGpmBridgeClient>();
 
             mockEsbProducer.SetupGet(s => s.ClientId).Returns(ClientIdManager.GetClientId()).Verifiable();
             mockEsbConnectionFactory.Setup(f => f.CreateProducer(fakeEsbSettings)).Returns(mockEsbProducer.Object);
@@ -65,7 +68,8 @@ namespace WebSupport.Tests.Services
                 mockGetCheckpointMessageQuery.Object,
                 mockArchiveCheckpointMessageQuery.Object,
 	            mockSearchScanCodes.Object,
-                ClientIdManager);
+                ClientIdManager,
+                mockMammothGpmClient.Object);
         }
 
         [TestMethod]

@@ -32,6 +32,7 @@ namespace WebSupport.App_Start
     using WebSupport.DataAccess.Commands;
     using MessageBuilders;
     using WebSupport.EsbProducerFactory;
+    using WebSupport.Clients;
 
     public class SimpleInjectorInitializer
     {
@@ -78,6 +79,9 @@ namespace WebSupport.App_Start
             container.Register<IPriceRefreshEsbProducerFactory, PriceRefreshEsbProducerFactory>();
             container.Register<IPriceRefreshMessageBuilderFactory, PriceRefreshMessageBuilderFactory>();
             container.Register(typeof(ILogger<>), typeof(NLogLogger<>));
+            container.Register<IDvsNearRealTimePriceClient, DvsNearRealTimePriceClient>();
+            container.Register<IMammothGpmBridgeClient, MammothGpmBridgeClient>();
+            container.Register<IJobSchedulerBridgeClient, JobSchedulerBridgeClient>();
         }
 
         private static WebSupportPriceMessageService CreatePriceResetMessageService(Container container)
@@ -89,7 +93,8 @@ namespace WebSupport.App_Start
                 container.GetInstance<IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>>>(),
                 container.GetInstance<ICommandHandler<SaveSentMessageCommand>>(),
                 container.GetInstance<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>>(),
-                container.GetInstance<IClientIdManager>());
+                container.GetInstance<IClientIdManager>(),
+                container.GetInstance<IDvsNearRealTimePriceClient>());
         }
 
         private static WebSupportCheckPointRequestMessageService CreateCheckPointRequestMessageService(Container container)
@@ -102,15 +107,16 @@ namespace WebSupport.App_Start
                 container.GetInstance<IQueryHandler<GetCheckPointMessageParameters, IEnumerable<CheckPointMessageModel>>>(),
                 container.GetInstance<ICommandHandler<ArchiveCheckpointMessageCommandParameters>>(),
                 container.GetInstance<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>>(), 
-                container.GetInstance<IClientIdManager>()
-                );
+                container.GetInstance<IClientIdManager>(),
+                container.GetInstance<IMammothGpmBridgeClient>());
         }
 
         private static WebSupportJobScheduleMessageService CreateJobScheduleMessageService(Container container)
         {
             return new WebSupportJobScheduleMessageService(
                 container.GetInstance<ISerializer<Icon.Esb.Schemas.Mammoth.ContractTypes.JobSchedule>>(),
-                container.GetInstance<ILogger>())
+                container.GetInstance<ILogger>(),
+                container.GetInstance<IJobSchedulerBridgeClient>())
             {
                 Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("Sb1EmsConnection")
             };
@@ -125,7 +131,8 @@ namespace WebSupport.App_Start
                 container.GetInstance<IMessageBuilder<PriceResetMessageBuilderModel>>(),
                 container.GetInstance<IQueryHandler<GetPricesAllParameters, List<PriceResetPrice>>>(),
                 container.GetInstance<ICommandHandler<SaveSentMessageCommand>>(),
-                container.GetInstance<IClientIdManager>());
+                container.GetInstance<IClientIdManager>(),
+                container.GetInstance<IDvsNearRealTimePriceClient>());
         }
     }
 }

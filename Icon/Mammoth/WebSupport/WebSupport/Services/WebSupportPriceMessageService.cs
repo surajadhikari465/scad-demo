@@ -7,9 +7,11 @@ using Icon.Esb.Producer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebSupport.Clients;
 using WebSupport.DataAccess.Commands;
 using WebSupport.DataAccess.Models;
 using WebSupport.DataAccess.Queries;
+using WebSupport.Helpers;
 using WebSupport.Managers;
 using WebSupport.Models;
 using WebSupport.ViewModels;
@@ -24,6 +26,7 @@ namespace WebSupport.Services
         private ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler;
         private IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>> searchScanCodes;
         private IClientIdManager clientIdManager;
+        private IDvsNearRealTimePriceClient dvsNearRealTimePriceClient;
 
         public EsbConnectionSettings Settings { get; set; }
 
@@ -34,7 +37,8 @@ namespace WebSupport.Services
             IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>> getPriceResetPricesQuery,
             ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler,
             IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>> searchScanCodes,
-            IClientIdManager clientIdManager)
+            IClientIdManager clientIdManager,
+            IDvsNearRealTimePriceClient dvsNearRealTimePriceClient)
         {
             this.esbConnectionFactory = esbConnectionFactory;
             this.Settings = settings;
@@ -43,6 +47,7 @@ namespace WebSupport.Services
             this.saveSentMessageCommandHandler = saveSentMessageCommandHandler;
             this.searchScanCodes = searchScanCodes;
             this.clientIdManager = clientIdManager;
+            this.dvsNearRealTimePriceClient = dvsNearRealTimePriceClient;
         }
 
         public EsbServiceResponse Send(PriceResetRequestViewModel request)
@@ -141,10 +146,12 @@ namespace WebSupport.Services
                                 { EsbConstants.TransactionIdKey, messageId.ToString() },
                                 { EsbConstants.CorrelationIdKey, patchFamilyId },
                                 { EsbConstants.SequenceIdKey, sequenceId },
-                                { EsbConstants.SourceKey, EsbConstants.MammothSourceValueName },
+                                { EsbConstants.SourceKey, Constants.Source.Infor },
                                 { EsbConstants.NonReceivingSystemsKey, GetNonReceivingSystems(chosenSystems) },
                                 { EsbConstants.PriceResetKey, EsbConstants.PriceResetTrueValue }
                             };
+
+            dvsNearRealTimePriceClient.Send(message, messageId.ToString(), messageProperties);
             producer.Send(message, messageId.ToString(), messageProperties);
             saveSentMessageCommandHandler.Execute(new SaveSentMessageCommand
             {

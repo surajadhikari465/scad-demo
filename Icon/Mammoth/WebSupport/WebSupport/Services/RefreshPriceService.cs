@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebSupport.Clients;
 using WebSupport.DataAccess;
 using WebSupport.DataAccess.Models;
 using WebSupport.DataAccess.Queries;
@@ -28,6 +29,7 @@ namespace WebSupport.Services
         private string selectedRegion;
         private Dictionary<string, string> nonReceivingSystems;
         private Dictionary<string, Esb.Core.MessageBuilders.IMessageBuilder<List<GpmPrice>>> messageBuilders;
+        private IMammothGpmBridgeClient mammothGpmClient;
 
         public int InvalidScanCodeCount { get; private set; }
 
@@ -38,7 +40,8 @@ namespace WebSupport.Services
             IQueryHandler<GetGpmPricesParameters, List<GpmPrice>> getGpmPricesQuery,
             IQueryHandler<DoesScanCodeExistParameters, bool> doesScanCodeExistQuery,
             IQueryHandler<DoesStoreExistParameters, bool> doesStoreExistQuery,
-            IClientIdManager clientIdManager)
+            IClientIdManager clientIdManager,
+            IMammothGpmBridgeClient mammothGpmClient)
         {
             this.logger = logger;
             this.priceRefreshEsbProducerFactory = priceRefreshEsbProducerFactory;
@@ -47,6 +50,7 @@ namespace WebSupport.Services
             this.doesScanCodeExistQuery = doesScanCodeExistQuery;
             this.doesStoreExistQuery = doesStoreExistQuery;
             this.clientIdManager = clientIdManager;
+            this.mammothGpmClient = mammothGpmClient;
         }
 
         public RefreshPriceResponse RefreshPrices(
@@ -214,11 +218,13 @@ namespace WebSupport.Services
                     foreach(var grp in prices.GroupBy(x => x.ItemId))
                     {
                         var priceList = grp.ToList();
-                        properties[EsbConstants.SourceKey] = priceList[0].SequenceId;
+                        properties[EsbConstants.SequenceIdKey] = priceList[0].SequenceId;
                         properties[EsbConstants.CorrelationIdKey] = priceList[0].PatchFamilyId;
                         properties[EsbConstants.TransactionIdKey] = Guid.NewGuid().ToString();
 
                         var message = builder.Value.BuildMessage(priceList);
+
+                        this.mammothGpmClient.SendToJustInTimeConsumers(message, properties, this.selectedRegion, builder.Key);
                         esbProducer.Send(message, properties);
 
                         logger.Debug(JsonConvert.SerializeObject(

@@ -5,6 +5,7 @@ using Icon.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
+using WebSupport.Clients;
 using WebSupport.DataAccess.Models;
 using WebSupport.DataAccess.Queries;
 using WebSupport.EsbProducerFactory;
@@ -32,6 +33,7 @@ namespace WebSupport.Tests.Services
         private Mock<IMessageBuilder<List<GpmPrice>>> messageBuilder;
         private Mock<IEsbProducer> producer;
         private IClientIdManager clientIdManager;
+        private Mock<IMammothGpmBridgeClient> mockMammothGpmClient;
 
         [TestInitialize]
         public void Initialize()
@@ -43,6 +45,7 @@ namespace WebSupport.Tests.Services
             doesScanCodeExistQuery = new Mock<IQueryHandler<DoesScanCodeExistParameters, bool>>();
             doesStoreExistQuery = new Mock<IQueryHandler<DoesStoreExistParameters, bool>>();
             clientIdManager = new ClientIdManager();
+            mockMammothGpmClient = new Mock<IMammothGpmBridgeClient>();
             clientIdManager.Initialize("WebSupportTests");
 
             service = new RefreshPriceService(
@@ -52,7 +55,8 @@ namespace WebSupport.Tests.Services
                 getGpmPricesQuery.Object,
                 doesScanCodeExistQuery.Object,
                 doesStoreExistQuery.Object,
-                clientIdManager);
+                clientIdManager,
+                mockMammothGpmClient.Object);
 
             testRegion = "FL";
             testSystems = new List<string> { "R10" };
