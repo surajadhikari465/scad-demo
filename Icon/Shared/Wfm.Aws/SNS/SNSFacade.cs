@@ -1,4 +1,5 @@
-﻿using Amazon.SimpleNotificationService;
+﻿using Amazon;
+using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 using System.Collections.Generic;
 using Wfm.Aws.SNS.Settings;
@@ -13,7 +14,7 @@ namespace Wfm.Aws.SNS
         public SNSFacade(SNSFacadeSettings snsFacadeSettings)
         {
             this.snsFacadeSettings = snsFacadeSettings;
-            this.amazonSNSClient = new AmazonSimpleNotificationServiceClient(snsFacadeSettings.AwsAccessKey, snsFacadeSettings.AwsSecretKey);
+            this.amazonSNSClient = new AmazonSimpleNotificationServiceClient(snsFacadeSettings.AwsAccessKey, snsFacadeSettings.AwsSecretKey, RegionEndpoint.GetBySystemName(snsFacadeSettings.AwsRegion));
         }
 
         public PublishResponse Publish(string topicArn, string message, IDictionary<string, string> attributes)

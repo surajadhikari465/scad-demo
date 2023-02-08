@@ -1,4 +1,5 @@
-﻿using Amazon.S3;
+﻿using Amazon;
+using Amazon.S3;
 using Amazon.S3.Model;
 using System.Collections.Generic;
 using Wfm.Aws.S3.Settings;
@@ -13,7 +14,7 @@ namespace Wfm.Aws.S3
         public S3Facade(S3FacadeSettings s3FacadeSettings)
         {
             this.s3FacadeSettings = s3FacadeSettings;
-            this.amazonS3Client = new AmazonS3Client(s3FacadeSettings.AwsAccessKey, s3FacadeSettings.AwsSecretKey);
+            this.amazonS3Client = new AmazonS3Client(s3FacadeSettings.AwsAccessKey, s3FacadeSettings.AwsSecretKey, RegionEndpoint.GetBySystemName(s3FacadeSettings.AwsRegion));
         }
 
         public PutObjectResponse PutObject(string s3BucketName, string s3Key, string data, IDictionary<string, string> metadata)

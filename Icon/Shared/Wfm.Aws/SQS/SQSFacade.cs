@@ -1,4 +1,5 @@
-﻿using Amazon.SQS;
+﻿using Amazon;
+using Amazon.SQS;
 using Amazon.SQS.Model;
 using System.Collections.Generic;
 using Wfm.Aws.SQS.Settings;
@@ -10,10 +11,10 @@ namespace Wfm.Aws.SQS
         private readonly SQSFacadeSettings sqsFacadeSettings;
         public AmazonSQSClient amazonSQSClient { get; private set; }
 
-        public SQSFacade(SQSFacadeSettings sqsFacadeSettings, AmazonSQSClient amazonSQSClient)
+        public SQSFacade(SQSFacadeSettings sqsFacadeSettings)
         {
             this.sqsFacadeSettings = sqsFacadeSettings;
-            this.amazonSQSClient = amazonSQSClient;
+            this.amazonSQSClient = new AmazonSQSClient(sqsFacadeSettings.AwsAccessKey, sqsFacadeSettings.AwsSecretKey, RegionEndpoint.GetBySystemName(sqsFacadeSettings.AwsRegion));
         }
 
         public SendMessageResponse SendMessage(string queueURL, string message, IDictionary<string, string> messageAttributes)
