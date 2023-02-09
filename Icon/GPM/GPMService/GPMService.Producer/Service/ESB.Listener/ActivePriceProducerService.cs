@@ -1,14 +1,16 @@
-﻿using Icon.Esb.ListenerApplication;
+﻿using GPMService.Producer.ESB.Listener.JustInTime;
+using Icon.Esb.ListenerApplication;
 using Icon.Logging;
+using Wfm.Aws.ExtendedClient.Listener.SQS;
 
 namespace GPMService.Producer.Service.ESB.Listener
 {
     internal class ActivePriceProducerService : IGPMProducerService
     {
-        private readonly IListenerApplication activePriceMessageListener;
+        private readonly SQSExtendedClientListener<ActivePriceMessageListener> activePriceMessageListener;
         private readonly ILogger<ActivePriceProducerService> logger;
         public ActivePriceProducerService(
-            IListenerApplication listenerApplication,
+            SQSExtendedClientListener<ActivePriceMessageListener> listenerApplication,
             ILogger<ActivePriceProducerService> logger
             )
         {
@@ -19,14 +21,14 @@ namespace GPMService.Producer.Service.ESB.Listener
         public void Start()
         {
             logger.Info("Starting JustInTime-ActivePrice Listener");
-            activePriceMessageListener.Run();
+            activePriceMessageListener.Start();
             logger.Info("Started JustInTime-ActivePrice Listener");
         }
 
         public void Stop()
         {
             logger.Info("Stopping JustInTime-ActivePrice Listener");
-            activePriceMessageListener.Close();
+            activePriceMessageListener.Stop();
             logger.Info("Stopped JustInTime-ActivePrice Listener");
         }
     }

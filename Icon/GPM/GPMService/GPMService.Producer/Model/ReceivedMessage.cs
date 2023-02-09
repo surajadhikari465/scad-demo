@@ -7,7 +7,6 @@ namespace GPMService.Producer.Model
 {
     internal class ReceivedMessage
     {
-        public IEsbMessage esbMessage { get; set; }
         public SQSExtendedClientReceiveModel sqsExtendedClientMessage { get; set; }
         public ISQSExtendedClient sqsExtendedClient { get; set; }
         public SQSExtendedClientListenerSettings sqsExtendedClientSettings { get; set; }

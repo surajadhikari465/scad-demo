@@ -8,7 +8,6 @@ using GPMService.Producer.Model.DBModel;
 using GPMService.Producer.Publish;
 using GPMService.Producer.Settings;
 using Icon.Common.Xml;
-using Icon.Esb;
 using Icon.Esb.Schemas.Mammoth;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Logging;
@@ -17,7 +16,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using TIBCO.EMS;
 
 namespace GPMService.Producer.Message.Processor
 {

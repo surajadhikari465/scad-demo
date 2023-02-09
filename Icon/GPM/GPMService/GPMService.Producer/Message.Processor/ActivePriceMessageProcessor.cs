@@ -10,14 +10,12 @@ using GPMService.Producer.Serializer;
 using GPMService.Producer.Settings;
 using Icon.Common.Xml;
 using Icon.DbContextFactory;
-using Icon.Esb;
 using Icon.Esb.Schemas.Mammoth;
 using Icon.Logging;
 using Mammoth.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TIBCO.EMS;
 
 namespace GPMService.Producer.Message.Processor
 {
@@ -27,7 +25,6 @@ namespace GPMService.Producer.Message.Processor
         private readonly IActivePriceProcessorDAL activePriceProcessorDAL;
         private readonly ICommonDAL commonDAL;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
-        private readonly EsbConnectionSettings activePriceListenerEsbConnectionSettings;
         private readonly IDbContextFactory<MammothContext> mammothContextFactory;
         private readonly ISerializer<MammothPricesType> serializer;
         private readonly IMessagePublisher messagePublisher;
@@ -41,7 +38,6 @@ namespace GPMService.Producer.Message.Processor
             GPMProducerServiceSettings gpmProducerServiceSettings,
             // Using named injection.
             // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
-            EsbConnectionSettings activePriceListenerEsbConnectionSettings,
             IDbContextFactory<MammothContext> mammothContextFactory,
             ISerializer<MammothPricesType> serializer,
             IMessagePublisher messagePublisher,
@@ -54,7 +50,6 @@ namespace GPMService.Producer.Message.Processor
             this.activePriceProcessorDAL = activePriceProcessorDAL;
             this.commonDAL = commonDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
-            this.activePriceListenerEsbConnectionSettings = activePriceListenerEsbConnectionSettings;
             this.mammothContextFactory = mammothContextFactory;
             this.serializer = serializer;
             this.messagePublisher = messagePublisher;
@@ -81,26 +76,22 @@ namespace GPMService.Producer.Message.Processor
                 logger.Error($@"Region: {jobScheduleMessage?.Region}, Mammoth Active Price Service error occurred. {e}");
                 errorEventPublisher.PublishErrorEvent(
                     "MammothActivePrice",
-                    receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID),
+                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()],
                     new Dictionary<string, string>()
                     {
-                        { Constants.MessageHeaders.RegionCode, receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.RegionCode) }
+                        { Constants.MessageHeaders.RegionCode, receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.RegionCode.ToLower()] }
                     },
-                    receivedMessage.esbMessage.MessageText,
+                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Data,
                     e.GetType().ToString(),
                     e.Message
                     );
             }
             finally
             {
-                if (
-                    activePriceListenerEsbConnectionSettings.SessionMode == SessionMode.ClientAcknowledge
-                    || activePriceListenerEsbConnectionSettings.SessionMode == SessionMode.ExplicitClientAcknowledge
-                    || activePriceListenerEsbConnectionSettings.SessionMode == SessionMode.ExplicitClientDupsOkAcknowledge
-                )
-                {
-                    receivedMessage.esbMessage.Acknowledge();
-                }
+                receivedMessage.sqsExtendedClient.DeleteMessage(
+                    receivedMessage.sqsExtendedClientSettings.SQSListenerQueueUrl,
+                    receivedMessage.sqsExtendedClientMessage.SQSReceiptHandle
+                ); 
             }
         }
 

@@ -1,14 +1,16 @@
-﻿using Icon.Esb.ListenerApplication;
+﻿using GPMService.Producer.ESB.Listener.NearRealTime;
+using Icon.Esb.ListenerApplication;
 using Icon.Logging;
+using Wfm.Aws.ExtendedClient.Listener.SQS;
 
 namespace GPMService.Producer.Service.ESB.Listener
 {
     internal class NearRealTimeProducerService : IGPMProducerService
     {
-        private readonly IListenerApplication nearRealTimeMessageListener;
+        private readonly SQSExtendedClientListener<NearRealTimeMessageListener> nearRealTimeMessageListener;
         private readonly ILogger<NearRealTimeProducerService> logger;
         public NearRealTimeProducerService(
-            IListenerApplication listenerApplication,
+            SQSExtendedClientListener<NearRealTimeMessageListener> listenerApplication,
             ILogger<NearRealTimeProducerService> logger
             )
         {
@@ -19,14 +21,14 @@ namespace GPMService.Producer.Service.ESB.Listener
         public void Start()
         {
             logger.Info("Starting NearRealTime Listener");
-            nearRealTimeMessageListener.Run();
+            nearRealTimeMessageListener.Start();
             logger.Info("Started NearRealTime Listener");
         }
 
         public void Stop()
         {
             logger.Info("Stopping NearRealTime Listener");
-            nearRealTimeMessageListener.Close();
+            nearRealTimeMessageListener.Stop();
             logger.Info("Stopped NearRealTime Listener");
         }
     }

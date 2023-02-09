@@ -18,7 +18,7 @@ namespace GPMService.Producer.Message.Parser
         public JobSchedule ParseMessage(ReceivedMessage receivedMessage)
         {
             JobSchedule activePriceJobScheduleParsed;
-            using (textReader = new StringReader(Utility.RemoveUnusableCharactersFromXml(receivedMessage.esbMessage.MessageText)))
+            using (textReader = new StringReader(Utility.RemoveUnusableCharactersFromXml(receivedMessage.sqsExtendedClientMessage.S3Details[0].Data)))
             {
                 activePriceJobScheduleParsed = serializer.Deserialize(textReader);
             }

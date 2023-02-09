@@ -27,7 +27,6 @@ namespace GPMService.Producer.Message.Processor
         private readonly IExpiringTprProcessorDAL expiringTprProcessorDAL;
         private readonly ICommonDAL commonDAL;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
-        private readonly EsbConnectionSettings expiringTprListenerEsbConnectionSettings;
         private readonly IDbContextFactory<MammothContext> mammothContextFactory;
         private readonly ISerializer<MammothPricesType> serializer;
         private readonly IMessagePublisher messagePublisher;
@@ -41,7 +40,6 @@ namespace GPMService.Producer.Message.Processor
             GPMProducerServiceSettings gpmProducerServiceSettings,
             // Using named injection.
             // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
-            EsbConnectionSettings expiringTprListenerEsbConnectionSettings,
             IDbContextFactory<MammothContext> mammothContextFactory,
             ISerializer<MammothPricesType> serializer,
             IMessagePublisher messagePublisher,
@@ -54,7 +52,6 @@ namespace GPMService.Producer.Message.Processor
             this.expiringTprProcessorDAL = expiringTprProcessorDAL;
             this.commonDAL = commonDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
-            this.expiringTprListenerEsbConnectionSettings = expiringTprListenerEsbConnectionSettings;
             this.mammothContextFactory = mammothContextFactory;
             this.serializer = serializer;
             this.messagePublisher = messagePublisher;
@@ -87,12 +84,12 @@ namespace GPMService.Producer.Message.Processor
                 logger.Error($@"Region: {jobScheduleMessage?.Region}, Expiring TPR Service error occurred. {e}");
                 errorEventPublisher.PublishErrorEvent(
                     "ExpiringTpr",
-                    receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.TransactionID),
+                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()],
                     new Dictionary<string, string>()
                     {
-                        { Constants.MessageHeaders.Region, receivedMessage.esbMessage.GetProperty(Constants.MessageHeaders.RegionCode) }
+                        { Constants.MessageHeaders.Region, receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.RegionCode.ToLower()] }
                     },
-                    receivedMessage.esbMessage.MessageText,
+                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Data,
                     e.GetType().ToString(),
                     e.Message
                     );
@@ -103,14 +100,12 @@ namespace GPMService.Producer.Message.Processor
                 {
                     commonDAL.UpdateStatusToReady(jobScheduleMessage.JobScheduleId);
                 }
-                if (
-                    expiringTprListenerEsbConnectionSettings.SessionMode == SessionMode.ClientAcknowledge
-                    || expiringTprListenerEsbConnectionSettings.SessionMode == SessionMode.ExplicitClientAcknowledge
-                    || expiringTprListenerEsbConnectionSettings.SessionMode == SessionMode.ExplicitClientDupsOkAcknowledge
-                )
-                {
-                    receivedMessage.esbMessage.Acknowledge();
-                }
+
+                receivedMessage.sqsExtendedClient.DeleteMessage(
+                    receivedMessage.sqsExtendedClientSettings.SQSListenerQueueUrl,
+                    receivedMessage.sqsExtendedClientMessage.SQSReceiptHandle
+                );
+       
             }
         }
 
