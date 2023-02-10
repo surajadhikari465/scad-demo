@@ -78,6 +78,8 @@ namespace ErrorMessagesMonitor.Message.Processor
                                 contentJsonString,
                                 "Send Opsgenie Alert for Fatal Error"
                             );
+
+                            logger.Info("Sending error notification is successful");
                         }
                     }
                     catch (Exception sendErrorNotificationException)
