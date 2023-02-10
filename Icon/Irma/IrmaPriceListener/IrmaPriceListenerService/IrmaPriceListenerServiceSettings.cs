@@ -17,7 +17,7 @@ namespace IrmaPriceListenerService
 
         private string GetSqsQueueUrl()
         {
-            return $"https://sqs.{AwsRegion}.amazonaws.com/{AwsAccountId}/IrmaPriceListener-{IrmaRegionCode}-Incoming";
+            return $"https://sqs.{AwsRegion}.amazonaws.com/{AwsAccountId}/MammothGpmIrmaQueue-{IrmaRegionCode}";
         }
 
         private string GetApplicationName()
