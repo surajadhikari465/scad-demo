@@ -12,7 +12,6 @@ namespace WebSupport.Clients
         public DvsNearRealTimePriceClient()
         {
             producer = new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig());
-            producer.OpenConnection(Guid.NewGuid().ToString());
         }
 
         public void Send(string message, string messageId, Dictionary<string, string> messageProperties)

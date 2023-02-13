@@ -63,6 +63,9 @@ namespace WebSupport.App_Start
             container.Register<IIrmaContextFactory, IrmaContextFactory>(Lifestyle.Scoped);
             container.Register(typeof(ICommandHandler<>), new[] { Assembly.Load("WebSupport.DataAccess") }, Lifestyle.Scoped);
             container.Register(typeof(IQueryHandler<,>), new[] { Assembly.Load("WebSupport.DataAccess") }, Lifestyle.Scoped);
+            container.RegisterSingleton<IDvsNearRealTimePriceClient, DvsNearRealTimePriceClient>();
+            container.RegisterSingleton<IMammothGpmBridgeClient, MammothGpmBridgeClient>();
+            container.RegisterSingleton<IJobSchedulerBridgeClient, JobSchedulerBridgeClient>();
             container.Register<IEsbService<JobScheduleModel>>(() => CreateJobScheduleMessageService(container), Lifestyle.Scoped);
             container.Register<IEsbService<PriceResetRequestViewModel>>(() => CreatePriceResetMessageService(container), Lifestyle.Scoped);
             container.Register<IEsbService<PricesAllViewModel>>(() => CreatePricesAllMessageService(container), Lifestyle.Scoped);
@@ -79,9 +82,6 @@ namespace WebSupport.App_Start
             container.Register<IPriceRefreshEsbProducerFactory, PriceRefreshEsbProducerFactory>();
             container.Register<IPriceRefreshMessageBuilderFactory, PriceRefreshMessageBuilderFactory>();
             container.Register(typeof(ILogger<>), typeof(NLogLogger<>));
-            container.Register<IDvsNearRealTimePriceClient, DvsNearRealTimePriceClient>();
-            container.Register<IMammothGpmBridgeClient, MammothGpmBridgeClient>();
-            container.Register<IJobSchedulerBridgeClient, JobSchedulerBridgeClient>();
         }
 
         private static WebSupportPriceMessageService CreatePriceResetMessageService(Container container)
