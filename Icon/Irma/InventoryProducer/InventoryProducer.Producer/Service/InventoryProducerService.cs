@@ -176,7 +176,7 @@ namespace InventoryProducer.Producer.Service
             while (isServiceRunning)
             {
                 inventoryLogger.LogInfo($"Waiting for service run to complete before stopping. Inventory Producer - Type: {ProducerType.Type} - Instance: {ProducerType.Instance}.");
-                Thread.Sleep(30000);
+                Thread.Sleep(15000);
             }
             timer.Stop();
             timer.Elapsed -= RunService;

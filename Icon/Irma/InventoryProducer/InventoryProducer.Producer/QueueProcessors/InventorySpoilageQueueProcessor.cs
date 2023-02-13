@@ -66,29 +66,33 @@ namespace InventoryProducer.Producer.QueueProcessors
             inventoryLogger.LogInfo($"Starting {settings.TransactionType} producer.");
             IList<InstockDequeueResult> dequeuedMessages = instockDequeueService.GetDequeuedMessages();
             ArchiveInventoryEvents archiveInventoryEvents = new ArchiveInventoryEvents(irmaContextFactory, settings);
-            foreach (InstockDequeueResult dequeuedMessage in dequeuedMessages)
+            while (dequeuedMessages != null && dequeuedMessages.Count > 0)
             {
-                try
+                foreach (InstockDequeueResult dequeuedMessage in dequeuedMessages)
                 {
-                    this.retrypolicy.Execute(() => PublishInventorySpoilageService(archiveInventoryEvents, dequeuedMessage));
+                    try
+                    {
+                        this.retrypolicy.Execute(() => PublishInventorySpoilageService(archiveInventoryEvents, dequeuedMessage));
+                    }
+                    catch (Exception ex)
+                    {
+                        // this exception will happen after all retries
+                        string instockDequeueModelXmlPayload = instockDequeueSerializer.Serialize(
+                            ArchiveInstockDequeueEvents.ConvertToEventTypesCanonical(dequeuedMessage.InstockDequeueModel),
+                            new Utf8StringWriter()
+                            ).Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "");
+                        PublishErrorEvents.SendToMammoth(
+                            mammothContextFactory,
+                            "PublishInventorySpoilageService",
+                            dequeuedMessage.Headers[Constants.MessageProperty.MessageNumber],
+                            dequeuedMessage.Headers,
+                            instockDequeueModelXmlPayload,
+                            ex.GetType().ToString(),
+                            ex.Message
+                            );
+                    }
                 }
-                catch (Exception ex)
-                {
-                    // this exception will happen after all retries
-                    string instockDequeueModelXmlPayload = instockDequeueSerializer.Serialize(
-                        ArchiveInstockDequeueEvents.ConvertToEventTypesCanonical(dequeuedMessage.InstockDequeueModel),
-                        new Utf8StringWriter()
-                        ).Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "");
-                    PublishErrorEvents.SendToMammoth(
-                        mammothContextFactory,
-                        "PublishInventorySpoilageService",
-                        dequeuedMessage.Headers[Constants.MessageProperty.MessageNumber],
-                        dequeuedMessage.Headers,
-                        instockDequeueModelXmlPayload,
-                        ex.GetType().ToString(),
-                        ex.Message
-                        );
-                }
+                dequeuedMessages = instockDequeueService.GetDequeuedMessages();
             }
             inventoryLogger.LogInfo($"Ending {settings.TransactionType} producer.");
         }

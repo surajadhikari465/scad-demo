@@ -61,24 +61,27 @@ namespace InventoryProducer.Producer.QueueProcessors
         {
             inventoryLogger.LogInfo($"Starting {settings.TransactionType} producer.");
             IList<InstockDequeueResult> dequeuedMessages = instockDequeueService.GetDequeuedMessages();
-
-            foreach (InstockDequeueResult dequeuedMessage in dequeuedMessages)
+            while (dequeuedMessages != null && dequeuedMessages.Count > 0)
             {
-                try
+                foreach (InstockDequeueResult dequeuedMessage in dequeuedMessages)
                 {
-                    this.retrypolicy.Execute(
-                        () =>
-                        {
-                            this.ProcessInstockDequeueEvent(dequeuedMessage);
-                        }
-                    );
+                    try
+                    {
+                        this.retrypolicy.Execute(
+                            () =>
+                            {
+                                this.ProcessInstockDequeueEvent(dequeuedMessage);
+                            }
+                        );
+                    }
+                    catch (Exception ex)
+                    {
+                        // this will happen after all retries
+                        inventoryLogger.LogError(ex.Message, ex.StackTrace);
+                        this.errorEventPublisher.PublishErrorEventToMammoth(dequeuedMessage, ex);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    // this will happen after all retries
-                    inventoryLogger.LogError(ex.Message, ex.StackTrace);
-                    this.errorEventPublisher.PublishErrorEventToMammoth(dequeuedMessage, ex);
-                }
+                dequeuedMessages = instockDequeueService.GetDequeuedMessages();
             }
             inventoryLogger.LogInfo($"Ending {settings.TransactionType} producer.");
         }
@@ -89,7 +92,7 @@ namespace InventoryProducer.Producer.QueueProcessors
             {
                 InstockDequeueModel instockDequeueEvent = dequeuedMessage.InstockDequeueModel;
                 inventoryLogger.LogInfo($"Processing event{dequeuedMessage.Headers[Constants.MessageProperty.MessageNumber]} with EventTypeCode: {instockDequeueEvent.EventTypeCode}.");
-                
+
                 IList<TransferOrdersModel> transferOrdersList = this.transferOrdersDal.GetTransferOrders(
                     instockDequeueEvent.EventTypeCode,
                     instockDequeueEvent.KeyID,
@@ -100,9 +103,9 @@ namespace InventoryProducer.Producer.QueueProcessors
                 if (transferOrdersList != null && transferOrdersList.Count > 0)
                 {
                     inventoryLogger.LogInfo("Transforming DB model to XML model");
-                    TransferOrdersCanonical transferOrdersCanonical = 
+                    TransferOrdersCanonical transferOrdersCanonical =
                         this.transferOrderXmlCanonicalMapper.TransformToXmlCanonical(
-                            transferOrdersList, 
+                            transferOrdersList,
                             dequeuedMessage
                         );
 
@@ -136,7 +139,7 @@ namespace InventoryProducer.Producer.QueueProcessors
                     inventoryLogger.LogInfo($"Skipping transformation and publish, couldn't find transferOrders.");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 inventoryLogger.LogError(ex.Message, ex.StackTrace);
                 throw ex;
@@ -147,7 +150,7 @@ namespace InventoryProducer.Producer.QueueProcessors
         {
             Dictionary<string, string> messageHeaders = dequeuedMessage.Headers;
             // skipping RegionCode, Source attributes since they are already in the headers of InstockDequeueResult
-            messageHeaders[Constants.MessageProperty.TransactionID] = 
+            messageHeaders[Constants.MessageProperty.TransactionID] =
                 this.GetBusinessUnitId(transferOrdersDbItem)
                 + this.settings.TransactionType
                 + dequeuedMessage.Headers[Constants.MessageProperty.MessageNumber];

@@ -32,24 +32,27 @@ namespace InventoryProducer.Producer.QueueProcessors
         {
             inventoryLogger.LogInfo($"Starting {settings.TransactionType} producer.");
             IList<InstockDequeueResult> dequeuedMessages = instockDequeueService.GetDequeuedMessages();
-
-            foreach (InstockDequeueResult dequeuedMessage in dequeuedMessages)
+            while (dequeuedMessages != null && dequeuedMessages.Count > 0)
             {
-                try
+                foreach (InstockDequeueResult dequeuedMessage in dequeuedMessages)
                 {
-                    this.retrypolicy.Execute(
-                        () =>
-                        {
-                            this.ProcessInstockDequeueEvent(dequeuedMessage);
-                        }
-                    );
+                    try
+                    {
+                        this.retrypolicy.Execute(
+                            () =>
+                            {
+                                this.ProcessInstockDequeueEvent(dequeuedMessage);
+                            }
+                        );
+                    }
+                    catch (Exception ex)
+                    {
+                        // this will happen after all retries
+                        inventoryLogger.LogError(ex.Message, ex.StackTrace);
+                        this.errorEventPublisher.PublishErrorEventToMammoth(dequeuedMessage, ex);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    // this will happen after all retries
-                    inventoryLogger.LogError(ex.Message, ex.StackTrace);
-                    this.errorEventPublisher.PublishErrorEventToMammoth(dequeuedMessage, ex);
-                }
+                dequeuedMessages = instockDequeueService.GetDequeuedMessages();
             }
             inventoryLogger.LogInfo($"Ending {settings.TransactionType} producer.");
         }
