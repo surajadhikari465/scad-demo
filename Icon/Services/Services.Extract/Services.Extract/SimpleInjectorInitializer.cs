@@ -1,9 +1,6 @@
 ﻿using Icon.Common.Email;
 using Icon.Esb;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb.Subscriber;
 using Icon.Logging;
-using Services.Extract.Infrastructure.Esb;
 using SimpleInjector;
 using OpsgenieAlert;
 using Services.Extract.Credentials;
@@ -13,8 +10,16 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using SimpleInjector.Diagnostics;
-using Icon.Esb.MessageParsers;
 using Services.Extract.Models;
+using Services.Extract.Message.Parser;
+using Wfm.Aws.ExtendedClient.Listener.SQS.Settings;
+using Wfm.Aws.ExtendedClient.SQS;
+using Wfm.Aws.S3.Settings;
+using Wfm.Aws.SQS.Settings;
+using Wfm.Aws.S3;
+using Wfm.Aws.SQS;
+using Wfm.Aws.ExtendedClient.Serializer;
+using Wfm.Aws.ExtendedClient.Listener.SQS;
 
 namespace Services.Extract
 {
@@ -23,13 +28,17 @@ namespace Services.Extract
         public static Container Init()
         {
             var container = new Container();
-            var esbSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("Sb1EmsConnection");
-            container.Register(() => ListenerApplicationSettings.CreateDefaultSettings("ExtractService"));
-            container.Register(() => esbSettings);
+            container.RegisterSingleton(() => S3FacadeSettings.CreateSettingsFromConfig());
+            container.RegisterSingleton(() => SQSFacadeSettings.CreateSettingsFromConfig());
+            container.RegisterSingleton(() => SQSExtendedClientListenerSettings.CreateSettingsFromConfig());
             container.Register<IEmailClient>(EmailClient.CreateFromConfig);
             container.Register(typeof(ILogger<>), typeof(NLogLogger<>));
-            container.Register<IEsbSubscriber>(() => new Sb1EsbConsumer(esbSettings), Lifestyle.Singleton);
             container.Register<ExtractServiceListener>();
+            container.RegisterSingleton<IS3Facade, S3Facade>();
+            container.RegisterSingleton<ISQSFacade, SQSFacade>();
+            container.RegisterSingleton<IExtendedClientMessageSerializer, S3EventMessageSerializer>();
+            container.Register<SQSExtendedClientListener<ExtractServiceListener>, ExtractServiceListener>();
+            container.RegisterSingleton<ISQSExtendedClient, SQSExtendedClient>();
             container.RegisterSingleton<IOpsgenieAlert, OpsgenieAlert.OpsgenieAlert>();
             container.RegisterSingleton<ISFtpCredentialsCache, SFtpCredentialsCache>();
             container.RegisterSingleton<IS3CredentialsCache, S3CredentialsCache>();

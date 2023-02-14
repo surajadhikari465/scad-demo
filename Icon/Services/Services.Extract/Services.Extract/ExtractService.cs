@@ -16,14 +16,14 @@ namespace Services.Extract
 
         public void Start()
         {
-            listenerApplication.Run();
+            listenerApplication.Start();
         }
 
         public void Stop()
         {
             try
             {
-                listenerApplication.Close();
+                listenerApplication.Stop();
             }
             catch (TIBCO.EMS.IllegalStateException tibcoEx)
             {

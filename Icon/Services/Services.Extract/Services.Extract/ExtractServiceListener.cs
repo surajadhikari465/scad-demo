@@ -1,37 +1,38 @@
 ﻿using System;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
-using Icon.Esb;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb.MessageParsers;
-using Icon.Esb.Subscriber;
 using Icon.Logging;
 using OpsgenieAlert;
 using Services.Extract.Credentials;
 using Services.Extract.DataAccess.Commands;
+using Services.Extract.Message.Parser;
 using Services.Extract.Models;
+using Wfm.Aws.ExtendedClient.Listener.SQS;
+using Wfm.Aws.ExtendedClient.Listener.SQS.Settings;
+using Wfm.Aws.ExtendedClient.SQS;
+using Wfm.Aws.ExtendedClient.SQS.Model;
 
 namespace Services.Extract
 {
-    public class ExtractServiceListener : ListenerApplication<ExtractServiceListener, ExtractServiceListenerApplicationSettings>
+    public class ExtractServiceListener : SQSExtendedClientListener<ExtractServiceListener>
     {
+        private readonly SQSExtendedClientListenerSettings listenerApplicationSettings;
         private readonly ILogger<ExtractJobRunner> extractJobLogger;
         private readonly IOpsgenieAlert opsGenieAlert;
         private readonly ICommandHandler<UpdateJobLastRunEndCommand> updateJobLastRunEndCommandHandler;
         private readonly ICommandHandler<UpdateJobStatusCommand> updateJobStatusCommandHandler;
         private readonly ICredentialsCacheManager credentialsCacheManager;
         private readonly IFileDestinationCache fileDestinationCache;
-        private readonly IMessageParser<JobSchedule> messageParser;
+        private readonly IMessageParser<JobSchedule> messageParser; 
         private readonly IExtractJobConfigurationParser extractJobConfigurationParser;
         private readonly IExtractJobRunnerFactory extractJobRunnerFactory;
 
         public ExtractServiceListener(
-            ListenerApplicationSettings listenerApplicationSettings,
-            EsbConnectionSettings esbConnectionSettings,
-            IEsbSubscriber subscriber,
+            SQSExtendedClientListenerSettings listenerApplicationSettings,
+            ISQSExtendedClient sqsExtendedClient,
             IEmailClient emailClient,
             ILogger<ExtractServiceListener> serviceLogger,
-            ILogger<ExtractJobRunner> extractJoblogger,
+            ILogger<ExtractJobRunner> extractJobLogger,
             ICredentialsCacheManager credentialsCacheManager,
             IFileDestinationCache fileDestinationCache,
             IOpsgenieAlert opsGenieAlert,
@@ -40,9 +41,10 @@ namespace Services.Extract
             IMessageParser<JobSchedule> messageParser,
             IExtractJobConfigurationParser extractJobConfigurationParser,
             IExtractJobRunnerFactory extractJobRunnerFactory
-        ) : base(listenerApplicationSettings, esbConnectionSettings, subscriber, emailClient, serviceLogger)
+        ) : base(listenerApplicationSettings, emailClient, sqsExtendedClient, serviceLogger)
         {
-            this.extractJobLogger = extractJoblogger;
+            this.listenerApplicationSettings = listenerApplicationSettings;
+            this.extractJobLogger = extractJobLogger;
             this.opsGenieAlert = opsGenieAlert;
             this.updateJobLastRunEndCommandHandler = updateJobLastRunEndCommandHandler;
             this.updateJobStatusCommandHandler = updateJobStatusCommandHandler;
@@ -53,9 +55,11 @@ namespace Services.Extract
             this.extractJobRunnerFactory = extractJobRunnerFactory; 
         }
 
-        public override void HandleMessage(object sender, EsbMessageEventArgs args)
+        public override void HandleMessage(SQSExtendedClientReceiveModel message)
         {
-            var jobSchedule = messageParser.ParseMessage(args.Message);
+            string receivedMessage = message.S3Details[0].Data;
+            Acknowledge(message);
+            var jobSchedule = messageParser.ParseMessage(receivedMessage);
             var extractJobConfig = extractJobConfigurationParser.Parse(jobSchedule.XmlObject);
             logger.Info($"Executing Job: {jobSchedule.JobName}");
 

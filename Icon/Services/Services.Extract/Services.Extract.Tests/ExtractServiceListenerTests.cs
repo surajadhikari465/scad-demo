@@ -1,21 +1,21 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Common.Email;
-using Icon.Esb;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb.MessageParsers;
-using Icon.Esb.Subscriber;
 using Icon.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using OpsgenieAlert;
 using Services.Extract.Credentials;
 using Services.Extract.DataAccess.Commands;
+using Services.Extract.Message.Parser;
 using Services.Extract.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Wfm.Aws.ExtendedClient.Listener.SQS.Settings;
+using Wfm.Aws.ExtendedClient.Serializer;
+using Wfm.Aws.ExtendedClient.SQS;
+using Wfm.Aws.ExtendedClient.SQS.Model;
+using Wfm.Aws.S3;
+using Wfm.Aws.SQS;
 
 namespace Services.Extract.Tests
 {
@@ -23,9 +23,12 @@ namespace Services.Extract.Tests
     public class ExtractServiceListenerTests
     {
         private ExtractServiceListener listener;
-        private ListenerApplicationSettings listenerApplicationSettings;
-        private EsbConnectionSettings esbConnectionSettings;
-        private Mock<IEsbSubscriber> subscriber;
+        private SQSExtendedClientListenerSettings listenerApplicationSettings;
+        private SQSExtendedClient sqsExtendedClient;
+
+        private Mock<ISQSFacade> sqsFacadeMock;
+        private Mock<IS3Facade> s3FacadeMock;
+        private Mock<IExtendedClientMessageSerializer> extendedClientMessageSerializerMock;
         private Mock<IEmailClient> emailClient;
         private Mock<ILogger<ExtractServiceListener>> serviceLogger;
         private Mock<ILogger<ExtractJobRunner>> extractJoblogger;
@@ -41,9 +44,16 @@ namespace Services.Extract.Tests
         [TestInitialize]
         public void Initialize()
         {
-            listenerApplicationSettings = new ListenerApplicationSettings();
-            esbConnectionSettings = new EsbConnectionSettings();
-            subscriber = new Mock<IEsbSubscriber>();
+            listenerApplicationSettings = SQSExtendedClientListenerSettings.CreateSettingsFromConfig();
+
+            s3FacadeMock = new Mock<IS3Facade>();
+            sqsFacadeMock = new Mock<ISQSFacade>();
+            extendedClientMessageSerializerMock = new Mock<IExtendedClientMessageSerializer>();
+            
+
+            sqsExtendedClient = new SQSExtendedClient(sqsFacadeMock.Object, s3FacadeMock.Object, extendedClientMessageSerializerMock.Object);
+
+
             emailClient = new Mock<IEmailClient>();
             serviceLogger = new Mock<ILogger<ExtractServiceListener>>();
             extractJoblogger = new Mock<ILogger<ExtractJobRunner>>();
@@ -58,8 +68,7 @@ namespace Services.Extract.Tests
 
             listener = new ExtractServiceListener(
                 listenerApplicationSettings,
-                esbConnectionSettings,
-                subscriber.Object,
+                sqsExtendedClient,
                 emailClient.Object,
                 serviceLogger.Object,
                 extractJoblogger.Object,
@@ -77,21 +86,23 @@ namespace Services.Extract.Tests
         public void HandleMessage_ReceivesMessageWithNoError_RunsExtractAndUpdatesStatus()
         {
             //Given
-            Mock<IEsbMessage> mockMessage = new Mock<IEsbMessage>();
+            Mock<SQSExtendedClientReceiveModelS3Detail> s3Detail = new Mock<SQSExtendedClientReceiveModelS3Detail>();
+            SQSExtendedClientReceiveModel message = new SQSExtendedClientReceiveModel();
+            message.S3Details = new List<SQSExtendedClientReceiveModelS3Detail>() { s3Detail.Object };
+            string receivedMessage = message.S3Details[0].Data;
+
             messageParser
-                .Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+                .Setup(m => m.ParseMessage(It.IsAny<string>()))
                 .Returns(new JobSchedule { JobName = "Test" });
             var jobRunner = new Mock<IExtractJobRunner>();
             extractJobRunnerFactory.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<ILogger<ExtractJobRunner>>(), It.IsAny<IOpsgenieAlert>(), It.IsAny<ICredentialsCacheManager>(), It.IsAny<IFileDestinationCache>()))
                     .Returns(jobRunner.Object);
-            
+
             //When
-            listener.HandleMessage(
-                null, 
-                new EsbMessageEventArgs { Message = mockMessage.Object });
+            listener.HandleMessage(message);
 
             //Then
-            messageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()));
+            messageParser.Verify(m => m.ParseMessage(It.IsAny<string>()));
             extractJobConfigurationParser.Verify(m => m.Parse(It.IsAny<string>()));
             extractJobRunnerFactory.Verify(m => m.Create(It.IsAny<string>(), It.IsAny<ILogger<ExtractJobRunner>>(), It.IsAny<IOpsgenieAlert>(), It.IsAny<ICredentialsCacheManager>(), It.IsAny<IFileDestinationCache>()));
             updateJobStatusCommandHandler.Verify(m => m.Execute(It.Is<UpdateJobStatusCommand>(c => c.Status == Constants.RunningJobStatus)), Times.Once);
@@ -105,30 +116,31 @@ namespace Services.Extract.Tests
         public void HandleMessage_ReceivesMessageWithError_CatchExceptionAndUpdatesStatus()
         {
             //Given
-            Mock<IEsbMessage> mockMessage = new Mock<IEsbMessage>();
+            Mock<SQSExtendedClientReceiveModelS3Detail> s3Detail = new Mock<SQSExtendedClientReceiveModelS3Detail>();
+            SQSExtendedClientReceiveModel message = new SQSExtendedClientReceiveModel();
+            message.S3Details = new List<SQSExtendedClientReceiveModelS3Detail>() { s3Detail.Object };
+            string receivedMessage = message.S3Details[0].Data;
+
             messageParser
-                .Setup(m => m.ParseMessage(It.IsAny<IEsbMessage>()))
+                .Setup(m => m.ParseMessage(It.IsAny<string>()))
                 .Returns(new JobSchedule { JobName = "Test" });
             var jobRunner = new Mock<IExtractJobRunner>();
             jobRunner.Setup(m => m.Run(It.IsAny<ExtractJobConfiguration>()))
                 .Throws(new Exception("Test Exception"));
             extractJobRunnerFactory.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<ILogger<ExtractJobRunner>>(), It.IsAny<IOpsgenieAlert>(), It.IsAny<ICredentialsCacheManager>(), It.IsAny<IFileDestinationCache>()))
                     .Returns(jobRunner.Object);
-
             //When
-            listener.HandleMessage(
-                null,
-                new EsbMessageEventArgs { Message = mockMessage.Object });
+            listener.HandleMessage(message);
 
             //Then
-            messageParser.Verify(m => m.ParseMessage(It.IsAny<IEsbMessage>()));
+            messageParser.Verify(m => m.ParseMessage(It.IsAny<string>()));
             extractJobConfigurationParser.Verify(m => m.Parse(It.IsAny<string>()));
             extractJobRunnerFactory.Verify(m => m.Create(It.IsAny<string>(), It.IsAny<ILogger<ExtractJobRunner>>(), It.IsAny<IOpsgenieAlert>(), It.IsAny<ICredentialsCacheManager>(), It.IsAny<IFileDestinationCache>()));
             updateJobStatusCommandHandler.Verify(m => m.Execute(It.Is<UpdateJobStatusCommand>(c => c.Status == Constants.RunningJobStatus)), Times.Once);
             updateJobStatusCommandHandler.Verify(m => m.Execute(It.Is<UpdateJobStatusCommand>(c => c.Status == Constants.ReadyJobStatus)), Times.Once);
             updateJobLastRunEndCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateJobLastRunEndCommand>()));
             jobRunner.Verify(m => m.Run(It.IsAny<ExtractJobConfiguration>()));
-            serviceLogger.Verify(m => m.Error("Job Failed: Test"));
+            serviceLogger.Verify(m => m.Error(It.IsAny<String>()), Times.Once);
         }
     }
 }
