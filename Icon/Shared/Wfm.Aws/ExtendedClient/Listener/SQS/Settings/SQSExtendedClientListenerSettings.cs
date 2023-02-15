@@ -39,7 +39,7 @@ namespace Wfm.Aws.ExtendedClient.Listener.SQS.Settings
             {
                 SQSListenerApplicationName = AppSettingsAccessor.GetStringSetting(Constants.ConfigurationProperties.SQSListenerApplicationName),
                 SQSListenerQueueUrl = AppSettingsAccessor.GetStringSetting(Constants.ConfigurationProperties.SQSListenerQueueUrl),
-                SQSListenerTimeoutInSeconds = AppSettingsAccessor.GetIntSetting(Constants.ConfigurationProperties.SQSListenerTimeoutInSeconds, 30),
+                SQSListenerTimeoutInSeconds = AppSettingsAccessor.GetIntSetting(Constants.ConfigurationProperties.SQSListenerTimeoutInSeconds, 15),
                 SQSListenerPollIntervalInSeconds = AppSettingsAccessor.GetIntSetting(Constants.ConfigurationProperties.SQSListenerPollIntervalInSeconds, 30),
             };
         }

@@ -159,7 +159,7 @@ namespace Wfm.Aws.ConfigurationReader
         [ConfigurationProperty(Constants.NamedConfigurationProperties.SQSListenerQueueUrl, IsRequired = true)]
         public string SQSListenerQueueUrl { get { return (string)base[Constants.NamedConfigurationProperties.SQSListenerQueueUrl]; } }
 
-        [ConfigurationProperty(Constants.NamedConfigurationProperties.SQSListenerTimeoutInSeconds, IsRequired = false, DefaultValue = 30)]
+        [ConfigurationProperty(Constants.NamedConfigurationProperties.SQSListenerTimeoutInSeconds, IsRequired = false, DefaultValue = 15)]
         public int SQSListenerTimeoutInSeconds { get { return (int)base[Constants.NamedConfigurationProperties.SQSListenerTimeoutInSeconds]; } }
 
         [ConfigurationProperty(Constants.NamedConfigurationProperties.SQSListenerPollIntervalInSeconds, IsRequired = false, DefaultValue = 30)]
