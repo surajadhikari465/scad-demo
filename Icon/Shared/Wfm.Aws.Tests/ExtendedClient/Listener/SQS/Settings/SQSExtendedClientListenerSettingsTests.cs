@@ -32,7 +32,7 @@ namespace Wfm.Aws.Tests.ExtendedClient.Listener.SQS.Settings
             Assert.AreEqual("TestSQSListenerApplicationName1", settings.SQSListenerApplicationName);
             Assert.AreEqual("TestSQSListenerQueueUrl1", settings.SQSListenerQueueUrl);
             Assert.AreEqual(30, settings.SQSListenerPollIntervalInSeconds);
-            Assert.AreEqual(30, settings.SQSListenerTimeoutInSeconds);
+            Assert.AreEqual(15, settings.SQSListenerTimeoutInSeconds);
         }
 
         [TestMethod]
