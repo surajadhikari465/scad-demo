@@ -21,6 +21,7 @@ using MammothR10Price.Message.Parser;
 using Icon.Esb.Producer;
 using Mammoth.Framework;
 using MammothR10Price.Message.Archive;
+using Icon.Dvs.Subscriber;
 
 namespace MammothR10Price
 {
@@ -31,6 +32,7 @@ namespace MammothR10Price
             var container = new Container();
             var serviceSettings = MammothR10PriceServiceSettings.CreateSettingsFromConfig();
             var esbSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("MammothR10PriceEsbProducer");
+            var listenerSettings = DvsListenerSettings.CreateSettingsFromConfig();
             var esbProducer = new EsbProducer(esbSettings);
             container.RegisterSingleton<IEsbProducer>(() => esbProducer);
             container.RegisterSingleton(() => ActiveMQConnectionSettings.CreateSettingsFromConfig());
@@ -38,11 +40,13 @@ namespace MammothR10Price
             container.RegisterSingleton<IDbContextFactory<MammothContext>, MammothContextFactory>();
             container.RegisterSingleton<IEmailClient>(() => { return EmailClient.CreateFromConfig(); });
             container.RegisterSingleton<IErrorEventPublisher, ErrorEventPublisher>();
+            container.RegisterSingleton(() => listenerSettings);
+            container.RegisterSingleton(() => DvsClientUtil.GetS3Client(listenerSettings));
+            container.RegisterSingleton(() => DvsClientUtil.GetSqsClient(listenerSettings));
+            container.RegisterSingleton<IDvsSubscriber, DvsSqsSubscriber>();
             container.RegisterSingleton<IMessageProcessor, MammothR10PriceProcessor>();
-            container.RegisterSingleton<MammothR10PriceListener>();
             container.RegisterSingleton(() => serviceSettings);
             container.RegisterSingleton(() => EsbConnectionSettings.CreateSettingsFromConfig());
-            container.RegisterSingleton(() => DvsListenerSettings.CreateSettingsFromConfig());
             container.RegisterSingleton<IMapper<IList<MammothPriceType>, items>, ItemPriceCanonicalMapper>();
             container.RegisterSingleton<ISerializer<items>, Serializer<items>>();
             container.RegisterSingleton<ISerializer<ErrorMessage>, Serializer<ErrorMessage>>();
@@ -57,7 +61,7 @@ namespace MammothR10Price
             container.RegisterSingleton<IMessagePublisher, MessagePublisher>();
             container.RegisterSingleton<IMessageArchiver, MessageArchiver>();
             container.RegisterSingleton<IProducerService, MammothR10PriceService>();
-            container.RegisterSingleton<ListenerApplication<MammothR10PriceListener>, MammothR10PriceListener>();
+            container.RegisterSingleton<IListenerApplication, MammothR10PriceListener>();
             container.Verify();
             return container;
         }
