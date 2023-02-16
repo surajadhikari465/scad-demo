@@ -14816,7 +14816,9 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         private string purchaseOrderNumberField;
         
         private string externalPurchaseOrderNumberField;
-        
+
+        private int invoiceNumberField;
+
         private string externalSourceField;
         
         private string eventTypeField;
@@ -14826,6 +14828,8 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         private string purchaseTypeField;
         
         private string supplierNumberField;
+
+        private string supplierNameField;
         
         private int locationNumberField;
         
@@ -14884,7 +14888,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
                 this.externalPurchaseOrderNumberField = value;
             }
         }
-        
+
+        /// <remarks/>
+        public int invoiceNumber
+        {
+            get
+            {
+                return this.invoiceNumberField;
+            }
+            set
+            {
+                this.invoiceNumberField = value;
+            }
+        }
+
         /// <remarks/>
         public string externalSource
         {
@@ -14949,7 +14966,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
                 this.supplierNumberField = value;
             }
         }
-        
+
+        /// <remarks/>
+        public string supplierName
+        {
+            get
+            {
+                return this.supplierNameField;
+            }
+            set
+            {
+                this.supplierNameField = value;
+            }
+        }
+
         /// <remarks/>
         public int locationNumber
         {
@@ -15248,7 +15278,9 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         private int purchaseOrderDetailNumberField;
         
         private string sourceItemKeyField;
-        
+
+        private string vendorItemNumberField;
+
         private string locationIdField;
         
         private SubTeamType subTeamField;
@@ -15270,6 +15302,8 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         private int packSize2Field;
         
         private string uomConvRetailUomField;
+
+        private int costedByWeightField;
         
         private string itemCostField;
         
@@ -15320,7 +15354,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
                 this.sourceItemKeyField = value;
             }
         }
-        
+
+        /// <remarks/>
+        public string vendorItemNumber
+        {
+            get
+            {
+                return this.vendorItemNumberField;
+            }
+            set
+            {
+                this.vendorItemNumberField = value;
+            }
+        }
+
         /// <remarks/>
         public string locationId
         {
@@ -15466,7 +15513,20 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
                 this.uomConvRetailUomField = value;
             }
         }
-        
+
+        /// <remarks/>
+        public int costedByWeight
+        {
+            get
+            {
+                return this.costedByWeightField;
+            }
+            set
+            {
+                this.costedByWeightField = value;
+            }
+        }
+
         /// <remarks/>
         public string itemCost
         {
