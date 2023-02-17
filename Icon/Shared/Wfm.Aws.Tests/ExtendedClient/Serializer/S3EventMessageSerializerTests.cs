@@ -152,7 +152,8 @@ namespace Wfm.Aws.Tests.ExtendedClient.Serializer
             Assert.AreEqual(1, extendedClientMessageModel.S3Details.Count);
             Assert.AreEqual("mybucket", extendedClientMessageModel.S3Details[0].S3BucketName);
             Assert.AreEqual("canonical/year=2022/month=11/day=15/HappyFace.jpg", extendedClientMessageModel.S3Details[0].S3Key);
-            Assert.IsNull(extendedClientMessageModel.MessageAttributes);
+            Assert.IsNotNull(extendedClientMessageModel.MessageAttributes);
+            Assert.AreEqual(0, extendedClientMessageModel.MessageAttributes.Count);
         }
 
         [TestMethod]
@@ -171,7 +172,8 @@ namespace Wfm.Aws.Tests.ExtendedClient.Serializer
             Assert.AreEqual("canonical/year=2022/month=11/day=15/HappyFace1.jpg", extendedClientMessageModel.S3Details[0].S3Key);
             Assert.AreEqual("mybucket2", extendedClientMessageModel.S3Details[1].S3BucketName);
             Assert.AreEqual("canonical/year=2022/month=11/day=16/HappyFace2.jpg", extendedClientMessageModel.S3Details[1].S3Key);
-            Assert.IsNull(extendedClientMessageModel.MessageAttributes);
+            Assert.IsNotNull(extendedClientMessageModel.MessageAttributes);
+            Assert.AreEqual(0, extendedClientMessageModel.MessageAttributes.Count);
         }
 
         [TestMethod]
@@ -188,7 +190,8 @@ namespace Wfm.Aws.Tests.ExtendedClient.Serializer
             Assert.AreEqual(1, extendedClientMessageModel.S3Details.Count);
             Assert.AreEqual("gpm-price-us-west-2-gamma", extendedClientMessageModel.S3Details[0].S3BucketName);
             Assert.AreEqual("ID:AWD0002110-58712-1676415226274-7:4:26:1:1-20230216T202023371928968Z", extendedClientMessageModel.S3Details[0].S3Key);
-            Assert.IsNull(extendedClientMessageModel.MessageAttributes);
+            Assert.IsNotNull(extendedClientMessageModel.MessageAttributes);
+            Assert.AreEqual(0, extendedClientMessageModel.MessageAttributes.Count);
         }
     }
 }
