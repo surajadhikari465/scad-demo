@@ -84,10 +84,10 @@ namespace GPMService.Producer.Message.Processor
                 logger.Error($@"Region: {jobScheduleMessage?.Region}, Expiring TPR Service error occurred. {e}");
                 errorEventPublisher.PublishErrorEvent(
                     "ExpiringTpr",
-                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()],
+                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.TransactionID.ToLower()),
                     new Dictionary<string, string>()
                     {
-                        { Constants.MessageHeaders.Region, receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.RegionCode.ToLower()] }
+                        { Constants.MessageHeaders.Region, receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.RegionCode.ToLower()) }
                     },
                     receivedMessage.sqsExtendedClientMessage.S3Details[0].Data,
                     e.GetType().ToString(),

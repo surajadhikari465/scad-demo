@@ -76,10 +76,10 @@ namespace GPMService.Producer.Message.Processor
                 logger.Error($@"Region: {jobScheduleMessage?.Region}, Mammoth Active Price Service error occurred. {e}");
                 errorEventPublisher.PublishErrorEvent(
                     "MammothActivePrice",
-                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()],
+                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.TransactionID.ToLower()),
                     new Dictionary<string, string>()
                     {
-                        { Constants.MessageHeaders.RegionCode, receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.RegionCode.ToLower()] }
+                        { Constants.MessageHeaders.RegionCode, receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.RegionCode.ToLower()) }
                     },
                     receivedMessage.sqsExtendedClientMessage.S3Details[0].Data,
                     e.GetType().ToString(),

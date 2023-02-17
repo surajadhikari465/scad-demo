@@ -53,10 +53,10 @@ namespace GPMService.Producer.ErrorHandler
                     .ExecuteSqlCommand(
                     storeErrorSqlStatement,
                     new SqlParameter("@Application", applicationName),
-                    new SqlParameter("@MessageID", messageID),
+                    new SqlParameter("@MessageID", messageID.Substring(0, messageID.Length <= 100 ? messageID.Length : 100)),
                     new SqlParameter("@MessageProperties", serializer.Serialize(ConvertToErrorMessageCanonical(messageProperties), new Utf8StringWriter())),
                     new SqlParameter("@Message", message),
-                    new SqlParameter("@ErrorCode", errorCode),
+                    new SqlParameter("@ErrorCode", errorCode.Substring(0, errorCode.Length <= 100 ? errorCode.Length : 100)),
                     new SqlParameter("@ErrorDetails", errorDetails),
                     new SqlParameter("@ErrorSeverity", errorSeverity)
                     );

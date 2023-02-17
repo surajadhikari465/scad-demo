@@ -143,13 +143,13 @@ namespace GPMService.Producer.ErrorHandler
             {
                 confirmBODEsbProducer.Send(confirmBODXMLMessage, new Dictionary<string, string>());
             });
-            string patchFamilyID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.CorrelationID.ToLower()];
-            string messageID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()];
-            string transactionType = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionType.ToLower()];
-            string resetFlag = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.ResetFlag.ToLower()];
-            string source = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.Source.ToLower()];
-            string sequenceID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.SequenceID.ToLower()];
-            string nonReceivingSysName = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.nonReceivingSysName.ToLower()];
+            string patchFamilyID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.CorrelationID.ToLower());
+            string messageID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.TransactionID.ToLower());
+            string transactionType = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.TransactionType.ToLower());
+            string resetFlag = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.ResetFlag.ToLower());
+            string source = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.Source.ToLower());
+            string sequenceID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.SequenceID.ToLower());
+            string nonReceivingSysName = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.nonReceivingSysName.ToLower());
             Dictionary<string, string> receivedMessageProperties = new Dictionary<string, string>()
                 {
                     { Constants.MessageHeaders.TransactionID, messageID },

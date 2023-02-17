@@ -57,12 +57,12 @@ namespace GPMService.Producer.ErrorHandler
         }
         public void HandleError(ReceivedMessage receivedMessage, MessageSequenceOutput messageSequenceOutput)
         {
-            string patchFamilyID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.CorrelationID.ToLower()];
-            string messageID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()];
-            string transactionType = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionType.ToLower()];
-            string resetFlag = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.ResetFlag.ToLower()];
-            string source = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.Source.ToLower()];
-            int sequenceID = int.Parse(receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.SequenceID.ToLower()]);
+            string patchFamilyID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.CorrelationID.ToLower());
+            string messageID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.TransactionID.ToLower());
+            string transactionType = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.TransactionType.ToLower());
+            string resetFlag = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.ResetFlag.ToLower());
+            string source = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.Source.ToLower());
+            int sequenceID = int.Parse(receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.SequenceID.ToLower()));
             int lastProcessedGpmSequenceID = messageSequenceOutput.LastProcessedGpmSequenceID;
             for (int i = 0; i <= sequenceID - lastProcessedGpmSequenceID; i++)
             {
@@ -89,7 +89,7 @@ namespace GPMService.Producer.ErrorHandler
                 {
                     { Constants.MessageHeaders.TransactionID, messageID },
                     { Constants.MessageHeaders.CorrelationID, patchFamilyID },
-                    { Constants.MessageHeaders.SequenceID, receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.SequenceID.ToLower()] },
+                    { Constants.MessageHeaders.SequenceID, receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.SequenceID.ToLower()) },
                     { Constants.MessageHeaders.ResetFlag, Constants.ResetFlagValues.ResetFlagTrueValue.Equals(resetFlag) ? "true" : "false" },
                     { Constants.MessageHeaders.TransactionType, transactionType },
                     { Constants.MessageHeaders.Source, source },

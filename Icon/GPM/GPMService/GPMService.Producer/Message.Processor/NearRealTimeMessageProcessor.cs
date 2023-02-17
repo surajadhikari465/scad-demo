@@ -7,14 +7,11 @@ using GPMService.Producer.Model;
 using GPMService.Producer.Model.DBModel;
 using GPMService.Producer.Publish;
 using GPMService.Producer.Settings;
-using Icon.Common.Xml;
 using Icon.Esb.Schemas.Mammoth;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Logging;
-using Mammoth.Framework;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace GPMService.Producer.Message.Processor
@@ -54,22 +51,22 @@ namespace GPMService.Producer.Message.Processor
 
         public void ProcessReceivedMessage(ReceivedMessage receivedMessage)
         {
-            string transactionID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()];
-            string correlationID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.CorrelationID.ToLower()];
-            string sequenceID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.SequenceID.ToLower()];
+            string transactionID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.TransactionID.ToLower());
+            string correlationID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.CorrelationID.ToLower());
+            string sequenceID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.SequenceID.ToLower());
             Dictionary<string, string> messageProperties = new Dictionary<string, string>()
             {
                 { Constants.MessageHeaders.TransactionID, transactionID},
                 { Constants.MessageHeaders.CorrelationID, correlationID},
                 { Constants.MessageHeaders.SequenceID, sequenceID},
                 { Constants.MessageHeaders.ResetFlag,
-                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.ResetFlag.ToLower()]},
+                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.ResetFlag.ToLower())},
                 { Constants.MessageHeaders.TransactionType,
-                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionType.ToLower()]},
+                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.TransactionType.ToLower())},
                 { Constants.MessageHeaders.Source,
-                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.Source.ToLower()]},
+                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.Source.ToLower())},
                 { Constants.MessageHeaders.nonReceivingSysName,
-                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.nonReceivingSysName.ToLower()]},
+                    receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.nonReceivingSysName.ToLower()) ?? ""},
             };
             MessageSequenceOutput messageSequenceOutput = null;
             try
@@ -98,25 +95,25 @@ SequenceID: {sequenceID}.");
                 else if (
                     !messageSequenceOutput.IsInSequence
                     && !messageSequenceOutput.IsAlreadyProcessed
-                    && (receivedMessage.sqsExtendedClientMessage.MessageAttributes[Constants.MessageHeaders.ApproximateReceiveCount.ToLower()] == null
-                    || int.Parse(receivedMessage.sqsExtendedClientMessage.MessageAttributes[Constants.MessageHeaders.ApproximateReceiveCount.ToLower()]) < gpmProducerServiceSettings.MaxRedeliveryCount)
+                    && (receivedMessage.sqsExtendedClientMessage.MessageAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount.ToLower()) == null
+                    || int.Parse(receivedMessage.sqsExtendedClientMessage.MessageAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount.ToLower())) < gpmProducerServiceSettings.MaxRedeliveryCount)
                     )
                 {
                     logger.Warn($@"Requesting redelivery for 
 MessageID: {transactionID}, 
 and PatchFamilyID: {correlationID}. 
-Current {Constants.MessageHeaders.ApproximateReceiveCount} is {receivedMessage.sqsExtendedClientMessage.MessageAttributes[Constants.MessageHeaders.ApproximateReceiveCount.ToLower() ?? "1"]}."
+Current {Constants.MessageHeaders.ApproximateReceiveCount} is {receivedMessage.sqsExtendedClientMessage.MessageAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount.ToLower()) ?? "1"}."
 );
-                    string errorDetails = $@"MessageID [{receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()]}] is out of sequence. 
+                    string errorDetails = $@"MessageID [{receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.TransactionID.ToLower())}] is out of sequence. 
 Putting back into the queue for redelivery. 
-The current {Constants.MessageHeaders.ApproximateReceiveCount} is {receivedMessage.sqsExtendedClientMessage.MessageAttributes[Constants.MessageHeaders.ApproximateReceiveCount.ToLower()] ?? "1"}.";
+The current {Constants.MessageHeaders.ApproximateReceiveCount} is {receivedMessage.sqsExtendedClientMessage.MessageAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount.ToLower()) ?? "1"}.";
                     nearRealTimeProcessorDAL.ArchiveMessage(receivedMessage, Constants.ErrorCodes.OutOfSequenceRedelivery, errorDetails);
                 }
                 else if (
                     !messageSequenceOutput.IsInSequence
                     && !messageSequenceOutput.IsAlreadyProcessed
-                    && receivedMessage.sqsExtendedClientMessage.MessageAttributes[Constants.MessageHeaders.ApproximateReceiveCount.ToLower()] != null
-                    && int.Parse(receivedMessage.sqsExtendedClientMessage.MessageAttributes[Constants.MessageHeaders.ApproximateReceiveCount.ToLower()]) == gpmProducerServiceSettings.MaxRedeliveryCount
+                    && receivedMessage.sqsExtendedClientMessage.MessageAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount.ToLower()) != null
+                    && int.Parse(receivedMessage.sqsExtendedClientMessage.MessageAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount.ToLower())) == gpmProducerServiceSettings.MaxRedeliveryCount
                     )
                 {
                     string exceptionMessage = $@"Message is out of sequence and has exceeded the redelivery count of {gpmProducerServiceSettings.MaxRedeliveryCount}. 
@@ -267,10 +264,10 @@ SequenceID: {sequenceID}";
 
         private MessageSequenceOutput ValidateMessageSequence(ReceivedMessage receivedMessage)
         {
-            string messageID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()] ?? "";
-            string sequenceIDString = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.SequenceID.ToLower()];
-            string patchFamilyID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.CorrelationID.ToLower()];
-            string resetFlag = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.ResetFlag.ToLower()] ?? Constants.ResetFlagValues.ResetFlagFalseValue;
+            string messageID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.TransactionID.ToLower()) ?? "";
+            string sequenceIDString = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.SequenceID.ToLower());
+            string patchFamilyID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.CorrelationID.ToLower());
+            string resetFlag = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.ResetFlag.ToLower()) ?? Constants.ResetFlagValues.ResetFlagFalseValue;
             if (string.IsNullOrEmpty(sequenceIDString) || int.Parse(sequenceIDString) < 1 || string.IsNullOrEmpty(patchFamilyID))
             {
                 throw new InvalidMessageHeaderException($@"Message Sequence ID or CorrelationID is invalid.SequenceID must be greater than 0 or CorrelationID must not be empty. MessageID: {messageID}, CorrelationID(PatchFamilyID): {patchFamilyID}, SequenceID: {sequenceIDString}");

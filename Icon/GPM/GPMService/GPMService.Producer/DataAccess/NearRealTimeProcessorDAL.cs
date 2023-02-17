@@ -79,13 +79,13 @@ namespace GPMService.Producer.DataAccess
 
         public void ArchiveMessage(ReceivedMessage receivedMessage, string errorCode, string errorDetails)
         {
-            string correlationID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.CorrelationID.ToLower()];
-            string transactionID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()];
-            string transactionType = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionType.ToLower()];
-            string resetFlag = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.ResetFlag.ToLower()];
-            string source = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.Source.ToLower()];
-            string nonReceivingSysName = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.nonReceivingSysName.ToLower()];
-            string sequenceID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.SequenceID.ToLower()];
+            string correlationID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.CorrelationID.ToLower());
+            string transactionID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.TransactionID.ToLower());
+            string transactionType = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.TransactionType.ToLower());
+            string resetFlag = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.ResetFlag.ToLower());
+            string source = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.Source.ToLower());
+            string nonReceivingSysName = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.nonReceivingSysName.ToLower());
+            string sequenceID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.SequenceID.ToLower());
             string itemID = correlationID.Substring(0, correlationID.IndexOf("-"));
             string businessUnitID = correlationID.Substring(correlationID.IndexOf("-") + 1);
             string messageHeaders = $@"
@@ -120,9 +120,10 @@ VALUES (@ItemID, @BusinessUnitID, @MessageID, @MessageHeaders, @Message, @ErrorC
                         archiveSQLStatement,
                         new SqlParameter("@ItemID", priceMessageArchive.ItemID),
                         new SqlParameter("@BusinessUnitID", priceMessageArchive.BusinessUnitID),
-                        new SqlParameter("@MessageID", priceMessageArchive.MessageID),
+                        new SqlParameter("@MessageID", priceMessageArchive.MessageID.Substring(0, priceMessageArchive.MessageID.Length <= 50 ? priceMessageArchive.MessageID.Length : 50)),
                         new SqlParameter("@MessageHeaders", priceMessageArchive.MessageHeaders),
-                        new SqlParameter("@Message", priceMessageArchive.MessageBody),
+                        // DB persist doesn't support utf-8 encoding
+                        new SqlParameter("@Message", priceMessageArchive.MessageBody.Replace("UTF-8", "utf-16")),
                         new SqlParameter("@ErrorCode", (object)priceMessageArchive.ErrorCode ?? DBNull.Value),
                         new SqlParameter("@ErrorDetails", (object)priceMessageArchive.ErrorDetails ?? DBNull.Value)
                         );
@@ -194,10 +195,10 @@ SELECT
 
         public void ProcessPriceMessage(ReceivedMessage receivedMessage, MammothPricesType mammothPrices)
         {
-            string messageID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.TransactionID.ToLower()] ?? "";
-            string resetFlag = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.ResetFlag.ToLower()];
-            string patchFamilyID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.CorrelationID.ToLower()];
-            int patchFamilySequenceID = int.Parse(receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata[Constants.MessageHeaders.SequenceID.ToLower()]);
+            string messageID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.TransactionID.ToLower()) ?? "";
+            string resetFlag = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.ResetFlag.ToLower());
+            string patchFamilyID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.CorrelationID.ToLower());
+            int patchFamilySequenceID = int.Parse(receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.SequenceID.ToLower()));
             try
             {
                 retryPolicy.Execute(() =>
