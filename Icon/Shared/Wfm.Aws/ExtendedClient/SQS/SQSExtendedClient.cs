@@ -50,7 +50,7 @@ namespace Wfm.Aws.ExtendedClient.SQS
                     IDictionary<string, string> metadata = new Dictionary<string, string>();
                     foreach (string metadataKey in metadataKeys)
                     {
-                        metadata[metadataKey] = s3GetObjectResponse.Metadata[metadataKey];
+                        metadata[metadataKey.Replace("x-amz-meta-", "")] = s3GetObjectResponse.Metadata[metadataKey];
                     }
                     sqsExtendedClientReceiveModelS3Details.Add(new SQSExtendedClientReceiveModelS3Detail()
                     {

@@ -125,6 +125,19 @@ namespace Wfm.Aws.Tests.ExtendedClient.Serializer
    ]
 }
 ";
+        private readonly string snstoSQSS3Event = @"{
+    ""Type"": ""Notification"",
+    ""MessageId"": ""6ca747f7-9487-5f73-973f-1b9f06cf1d2c"",
+    ""TopicArn"": ""arn:aws:sns:us-west-2:385627060817:MammothGPMIngressTopic"",
+    ""Subject"": ""Amazon S3 Notification"",
+    ""Message"": ""{\""Records\"":[{\""eventVersion\"":\""2.1\"",\""eventSource\"":\""aws:s3\"",\""awsRegion\"":\""us-west-2\"",\""eventTime\"":\""2023-02-16T20:20:23.405Z\"",\""eventName\"":\""ObjectCreated:Put\"",\""userIdentity\"":{\""principalId\"":\""AWS:AROAV7CI6BENKMACDNJ3R:021cbeb41fe24a6bb9d912bd8c21b9d1\""},\""requestParameters\"":{\""sourceIPAddress\"":\""10.0.173.28\""},\""responseElements\"":{\""x-amz-request-id\"":\""2V706R30GNPT349K\"",\""x-amz-id-2\"":\""voLXYF1uWrY3seA6KvnuGxd1bqrOggXp2ARk6vDqXUhSky9wZj/9+9u3q5RGJ1B06rcl1KD0bGrC7Ix08aNCFCwFvb/Q+0a3\""},\""s3\"":{\""s3SchemaVersion\"":\""1.0\"",\""configurationId\"":\""ZGI4YmQyOTMtZGRkOS00NDczLWE3NmQtNjRkOTExZTI4ZGM0\"",\""bucket\"":{\""name\"":\""gpm-price-us-west-2-gamma\"",\""ownerIdentity\"":{\""principalId\"":\""A3V4PCDWX6GHO\""},\""arn\"":\""arn:aws:s3:::gpm-price-us-west-2-gamma\""},\""object\"":{\""key\"":\""ID%3AAWD0002110-58712-1676415226274-7%3A4%3A26%3A1%3A1-20230216T202023371928968Z\"",\""size\"":5570,\""eTag\"":\""f839d1c79cf1ddc7106b97bea26da1b9\"",\""sequencer\"":\""0063EE90075FC6B9EE\""}}}]}"",
+    ""Timestamp"": ""2023-02-16T20:20:24.264Z"",
+    ""SignatureVersion"": ""1"",
+    ""Signature"": ""CpMe5+GJil6tus5Q0JW8k/up2lwcZCeiMU4wuw8ybGWo6NlMD8gOnIFjlMPCLDakkJGrFUqWgFWgsaY9HZqFUh3yNiiB2Id592Gyi9y38P3k+6oBn+uerTxHmZvp/GK7pVCncinElafz9rZC0tRZL4eNYk3woeO6j+SGRtQltdJnZYJStCaH4zUWRsve4JuBFVULMtV/6yoOn08KIyHjQfpXLrcW4ozKZ0CiRnhz7LEb+Fn1OqVmOKWACjEm8NR+oRa4zMgh+ZJwyd37lk/o46UPt9lO7Q8fQbQr3YsuzlCcSKUY150NuZpKP4bJpORbEpVwL0GVU1++l5fCg/+exA=="",
+    ""SigningCertURL"": ""https://sns.us-west-2.amazonaws.com/SimpleNotificationService-56e67fcb41f6fec09b0196692625d385.pem"",
+    ""UnsubscribeURL"": ""https://sns.us-west-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-west-2:385627060817:MammothGPMIngressTopic:d969f7ac-86f4-4963-9fce-db6760682b4f""
+}";
+
         [TestMethod]
         public void Deserialize_ValidTest()
         {
@@ -158,6 +171,23 @@ namespace Wfm.Aws.Tests.ExtendedClient.Serializer
             Assert.AreEqual("canonical/year=2022/month=11/day=15/HappyFace1.jpg", extendedClientMessageModel.S3Details[0].S3Key);
             Assert.AreEqual("mybucket2", extendedClientMessageModel.S3Details[1].S3BucketName);
             Assert.AreEqual("canonical/year=2022/month=11/day=16/HappyFace2.jpg", extendedClientMessageModel.S3Details[1].S3Key);
+            Assert.IsNull(extendedClientMessageModel.MessageAttributes);
+        }
+
+        [TestMethod]
+        public void Deserialize_SNSToSQSS3Event_ValidTest()
+        {
+            // Given
+            S3EventMessageSerializer s3EventMessageSerializer = new S3EventMessageSerializer();
+
+            // When
+            ExtendedClientMessageModel extendedClientMessageModel = s3EventMessageSerializer.Deserialize(snstoSQSS3Event);
+
+            // Then
+            Assert.IsNotNull(extendedClientMessageModel);
+            Assert.AreEqual(1, extendedClientMessageModel.S3Details.Count);
+            Assert.AreEqual("gpm-price-us-west-2-gamma", extendedClientMessageModel.S3Details[0].S3BucketName);
+            Assert.AreEqual("ID:AWD0002110-58712-1676415226274-7:4:26:1:1-20230216T202023371928968Z", extendedClientMessageModel.S3Details[0].S3Key);
             Assert.IsNull(extendedClientMessageModel.MessageAttributes);
         }
     }
