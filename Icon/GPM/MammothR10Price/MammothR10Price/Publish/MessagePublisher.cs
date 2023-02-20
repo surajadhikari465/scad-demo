@@ -33,8 +33,8 @@ namespace MammothR10Price.Publish
 
         public void Publish(string message, Dictionary<string, string> messageProperties)
         {
-            PublishToEsb(message, messageProperties);
             PublishToActiveMq(message, messageProperties);
+            PublishToEsb(message, messageProperties);
         }
 
         private void PublishToEsb(string message, Dictionary<string, string> messageProperties)

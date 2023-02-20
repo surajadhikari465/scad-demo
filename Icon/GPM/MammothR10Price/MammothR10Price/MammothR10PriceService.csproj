@@ -182,7 +182,7 @@
       <HintPath>..\packages\Topshelf.4.2.1\lib\net452\Topshelf.dll</HintPath>
     </Reference>
     <Reference Include="Wfm.Aws, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Wfm.Aws.2023.2.20.1\lib\net472\Wfm.Aws.dll</HintPath>
+      <HintPath>..\packages\Wfm.Aws.2023.2.20.2\lib\net472\Wfm.Aws.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>

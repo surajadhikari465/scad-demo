@@ -56,19 +56,17 @@ namespace MammothR10Price.Message.Processor
         {
             IDictionary<string, string> messageProperties = new Dictionary<string, string>()
             {
-                { Constants.MessageProperty.TransactionId, message.SQSAttributes[Constants.MessageProperty.TransactionId] },
-                { Constants.MessageProperty.TransactionType, message.SQSAttributes[Constants.MessageProperty.TransactionType] },
-                { Constants.MessageProperty.CorrelationId, message.SQSAttributes[Constants.MessageProperty.CorrelationId] },
-                { Constants.MessageProperty.Source, message.SQSAttributes[Constants.MessageProperty.Source] },
-                { Constants.MessageProperty.SequenceId, message.SQSAttributes[Constants.MessageProperty.SequenceId] },
-                { Constants.MessageProperty.ResetFlag, message.SQSAttributes[Constants.MessageProperty.ResetFlag] }
+                { Constants.MessageProperty.TransactionId, message.MessageAttributes[Constants.MessageProperty.TransactionId] },
+                { Constants.MessageProperty.TransactionType, message.MessageAttributes[Constants.MessageProperty.TransactionType] },
+                { Constants.MessageProperty.CorrelationId, message.MessageAttributes[Constants.MessageProperty.CorrelationId] },
+                { Constants.MessageProperty.Source, message.MessageAttributes[Constants.MessageProperty.Source] },
+                { Constants.MessageProperty.SequenceId, message.MessageAttributes[Constants.MessageProperty.SequenceId] },
+                { Constants.MessageProperty.ResetFlag, message.MessageAttributes[Constants.MessageProperty.ResetFlag] }
             };
-
             try
             {
                 var mammothPrices = messageParser.ParseMessage(message);
                 IEnumerable<int> distinctBusinessUnits = mammothPrices.MammothPrice.Select(x => x.BusinessUnit).Distinct();
-
                 foreach (int businessUnit in distinctBusinessUnits)
                 {
                     this.retryPolicy.Execute(() =>
@@ -99,7 +97,7 @@ namespace MammothR10Price.Message.Processor
                             );
                     });
                 }
-                logger.Info($"Successfully processed Mammoth Price MessageID: {message.SQSAttributes[Constants.MessageProperty.TransactionId]}, mapped it to the price canonical, and sent a message to queue.");
+                logger.Info($"Successfully processed Mammoth Price MessageID: {message.MessageAttributes[Constants.MessageProperty.TransactionId]}, mapped it to the price canonical, and sent a message to queue.");
             }
             catch (Exception ex)
             {
