@@ -4,14 +4,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using Wfm.Aws.ExtendedClient.Model;
 using Wfm.Aws.ExtendedClient.Serializer;
-using Wfm.Aws.ExtendedClient.SNS;
 using Wfm.Aws.ExtendedClient.SQS;
 using Wfm.Aws.ExtendedClient.SQS.Model;
 using Wfm.Aws.S3;
-using Wfm.Aws.SNS;
 using Wfm.Aws.SQS;
 
 namespace Wfm.Aws.Tests.ExtendedClient.SQS

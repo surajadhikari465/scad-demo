@@ -32,5 +32,10 @@
             public const string SQSListenerTimeoutInSeconds = "sqsListenerTimeoutInSeconds";
             public const string SQSListenerPollIntervalInSeconds = "sqsListenerPollIntervalInSeconds";
         }
+        public struct EventSources
+        {
+            public const string SQS = "SQS";
+            public const string SNS = "SNS";
+        }
     }
 }

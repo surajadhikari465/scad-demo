@@ -3,6 +3,8 @@ using Wfm.Aws.ExtendedClient.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Diagnostics.Tracing;
+using System;
 
 namespace Wfm.Aws.ExtendedClient.Serializer
 {
@@ -10,30 +12,42 @@ namespace Wfm.Aws.ExtendedClient.Serializer
     {
         public ExtendedClientMessageModel Deserialize(string message)
         {
-            JsonReader jsonReader = new JsonTextReader(new StringReader(message));
-            JObject messageJson = JObject.Load(jsonReader);
-            JArray s3PointerArray = JsonConvert.DeserializeObject<JArray>(messageJson.GetValue("Message").ToString());
-            ExtendedClientMessageSerializerS3Pointer s3PointerMap = s3PointerArray[1].ToObject<ExtendedClientMessageSerializerS3Pointer>();
-            IDictionary<string, JObject> messageAttributesJson = messageJson.GetValue("MessageAttributes").ToObject<IDictionary<string, JObject>>();
+            JArray s3PointerArray = null;
+            string eventSource = Constants.EventSources.SQS;
             IDictionary<string, string> messageAttributes = new Dictionary<string, string>();
-            foreach (string key in messageAttributesJson.Keys)
+            var jsonObj = JsonConvert.DeserializeObject(message);
+            if (((JToken)jsonObj).Type.Equals(JTokenType.Array))
             {
-                messageAttributesJson.TryGetValue(key, out JObject valueJson);
-                // valueJson has keys (Type, Value). Converting to string by default
-                valueJson.TryGetValue("Value", out JToken valueToken);
-                messageAttributes[key] = valueToken.ToString();
+                s3PointerArray = JsonConvert.DeserializeObject<JArray>(message);
             }
+            else if (((JToken)jsonObj).Type.Equals(JTokenType.Object))
+            {
+                JsonReader jsonReader = new JsonTextReader(new StringReader(message));
+                JObject messageJson = JObject.Load(jsonReader);
+                eventSource = Constants.EventSources.SNS;
+                s3PointerArray = JsonConvert.DeserializeObject<JArray>(messageJson.GetValue("Message").ToString());
+                IDictionary<string, JObject> messageAttributesJson = messageJson.GetValue("MessageAttributes").ToObject<IDictionary<string, JObject>>();
+                foreach (string key in messageAttributesJson.Keys)
+                {
+                    messageAttributesJson.TryGetValue(key, out JObject valueJson);
+                    // valueJson has keys (Type, Value). Converting to string by default
+                    valueJson.TryGetValue("Value", out JToken valueToken);
+                    messageAttributes[key] = valueToken.ToString();
+                }
+            }
+            ExtendedClientMessageSerializerS3Pointer s3PointerMap = s3PointerArray[1].ToObject<ExtendedClientMessageSerializerS3Pointer>();
             return new ExtendedClientMessageModel()
             {
+                EventSource = eventSource,
                 MessageAttributes = messageAttributes,
                 S3Details = new List<ExtendedClientMessageModelS3Detail>()
-                {
-                    new ExtendedClientMessageModelS3Detail()
                     {
-                        S3BucketName = s3PointerMap.S3BucketName,
-                        S3Key = s3PointerMap.S3Key
+                        new ExtendedClientMessageModelS3Detail()
+                        {
+                            S3BucketName = s3PointerMap.S3BucketName,
+                            S3Key = s3PointerMap.S3Key
+                        }
                     }
-                }
             };
         }
 

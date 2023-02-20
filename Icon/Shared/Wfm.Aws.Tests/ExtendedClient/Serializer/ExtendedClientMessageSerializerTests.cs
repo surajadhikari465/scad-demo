@@ -100,6 +100,7 @@ namespace Wfm.Aws.Tests.ExtendedClient.Serializer
             Assert.IsNotNull(extendedClientMessageModel);
             Assert.IsNotNull(extendedClientMessageModel.S3Details);
             Assert.IsNotNull(extendedClientMessageModel.MessageAttributes);
+            Assert.AreEqual(Constants.EventSources.SNS, extendedClientMessageModel.EventSource);
             Assert.AreEqual(1, extendedClientMessageModel.S3Details.Count);
             Assert.AreEqual(8, extendedClientMessageModel.MessageAttributes.Count);
             Assert.AreEqual(S3_BUCKET_NAME, extendedClientMessageModel.S3Details[0].S3BucketName);
@@ -112,6 +113,26 @@ namespace Wfm.Aws.Tests.ExtendedClient.Serializer
             Assert.AreEqual(extendedClientMessageModel.MessageAttributes[SOURCE_ATTRIBUTE], SOURCE_ATTRIBUTE_VALUE);
             Assert.AreEqual(extendedClientMessageModel.MessageAttributes[TRANSACTION_ID_ATTRIBUTE], TRANSACTION_ID_ATTRIBUTE_VALUE);
             Assert.AreEqual(extendedClientMessageModel.MessageAttributes[SEQUENCE_ID_ATTRIBUTE], SEQUENCE_ID_ATTRIBUTE_VALUE);
+        }
+
+        [TestMethod]
+        public void Deserialize_SQS_ValidTest()
+        {
+            // Given
+            ExtendedClientMessageSerializer extendedClientMessageSerializer = new ExtendedClientMessageSerializer();
+
+            // When
+            ExtendedClientMessageModel extendedClientMessageModel = extendedClientMessageSerializer.Deserialize(EXTENDED_CLIENT_MESSAGE);
+
+            // Then
+            Assert.IsNotNull(extendedClientMessageModel);
+            Assert.IsNotNull(extendedClientMessageModel.S3Details);
+            Assert.IsNotNull(extendedClientMessageModel.MessageAttributes);
+            Assert.AreEqual(Constants.EventSources.SQS, extendedClientMessageModel.EventSource);
+            Assert.AreEqual(1, extendedClientMessageModel.S3Details.Count);
+            Assert.AreEqual(0, extendedClientMessageModel.MessageAttributes.Count);
+            Assert.AreEqual(S3_BUCKET_NAME, extendedClientMessageModel.S3Details[0].S3BucketName);
+            Assert.AreEqual(S3_KEY, extendedClientMessageModel.S3Details[0].S3Key);
         }
     }
 }

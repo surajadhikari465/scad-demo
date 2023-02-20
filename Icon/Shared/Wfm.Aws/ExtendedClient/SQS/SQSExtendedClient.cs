@@ -1,5 +1,6 @@
 ﻿using Amazon.S3.Model;
 using Amazon.SQS.Model;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Wfm.Aws.ExtendedClient.Model;
@@ -60,10 +61,23 @@ namespace Wfm.Aws.ExtendedClient.SQS
                         Metadata = metadata
                     });
                 }
+                IDictionary<string, string> messageAttributes = new Dictionary<string, string>();
+                // When directly published to SQS, attributes come up as SQS attributes, not as part of body.
+                if (Constants.EventSources.SQS.Equals(extendedClientMessageModel.EventSource))
+                {
+                    foreach (KeyValuePair<string, MessageAttributeValue> entry in message.MessageAttributes)
+                    {
+                        messageAttributes.Add(entry.Key, entry.Value.StringValue);
+                    }
+                }
+                else
+                {
+                    messageAttributes = extendedClientMessageModel.MessageAttributes;
+                }
                 sqsExtendedClientReceives.Add(new SQSExtendedClientReceiveModel()
                 {
                     S3Details = sqsExtendedClientReceiveModelS3Details,
-                    MessageAttributes = extendedClientMessageModel.MessageAttributes,
+                    MessageAttributes = messageAttributes,
                     SQSAttributes = message.Attributes,
                     SQSMessage = message,
                     SQSMessageID = message.MessageId,

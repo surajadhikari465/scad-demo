@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 
 namespace Wfm.Aws.ExtendedClient.Model
 {
     public class ExtendedClientMessageModel
     {
+        public string EventSource { get; set; }
         public IList<ExtendedClientMessageModelS3Detail> S3Details { get; set; }
         public IDictionary<string, string> MessageAttributes { get; set; }
     }

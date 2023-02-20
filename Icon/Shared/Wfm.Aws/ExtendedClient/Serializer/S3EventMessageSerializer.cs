@@ -16,8 +16,10 @@ namespace Wfm.Aws.ExtendedClient.Serializer
             string s3EventJsonString = message;
             JsonReader jsonReader = new JsonTextReader(new StringReader(message));
             JObject messageJson = JObject.Load(jsonReader);
+            string eventSource = Constants.EventSources.SQS;
             if (messageJson.GetValue("Type") != null && "Notification".Equals(messageJson.GetValue("Type").ToString()))
             {
+                eventSource = Constants.EventSources.SNS;
                 s3EventJsonString = messageJson.GetValue("Message").ToString();
             }
             S3EventNotification s3EventNotification = S3EventNotification.ParseJson(s3EventJsonString);
@@ -33,6 +35,7 @@ namespace Wfm.Aws.ExtendedClient.Serializer
             });
             return new ExtendedClientMessageModel()
             {
+                EventSource = eventSource,
                 MessageAttributes = new Dictionary<string, string>(),
                 S3Details = s3Details
             };
