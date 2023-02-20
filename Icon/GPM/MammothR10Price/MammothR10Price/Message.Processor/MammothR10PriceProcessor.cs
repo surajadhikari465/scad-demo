@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Icon.Dvs.MessageParser;
 using Icon.Esb.Schemas.Mammoth;
 using Icon.Logging;
 using Polly;
@@ -11,14 +10,15 @@ using MammothR10Price.Message.Archive;
 using MammothR10Price.Publish;
 
 using Items = Icon.Esb.Schemas.Wfm.Contracts.items;
-using Icon.Dvs.Model;
+using Wfm.Aws.ExtendedClient.SQS.Model;
+using MammothR10Price.Message.Parser;
 
 namespace MammothR10Price.Message.Processor
 {
     public class MammothR10PriceProcessor: IMessageProcessor
     {
         private readonly MammothR10PriceServiceSettings serviceSettings;
-        private readonly MessageParserBase<MammothPricesType, MammothPricesType> messageParser;
+        private readonly IMessageParser<MammothPricesType> messageParser;
         private readonly IErrorEventPublisher errorEventPublisher;
         private readonly IMessagePublisher messagePublisher;
         private readonly IMessageArchiver messageArchiver;
@@ -28,7 +28,7 @@ namespace MammothR10Price.Message.Processor
 
         public MammothR10PriceProcessor(
             MammothR10PriceServiceSettings serviceSettings,
-            MessageParserBase<MammothPricesType, MammothPricesType> messageParser,
+            IMessageParser<MammothPricesType> messageParser,
             IErrorEventPublisher errorEventPublisher,
             IMessagePublisher messagePublisher,
             IMessageArchiver messageArchiver,
@@ -52,16 +52,16 @@ namespace MammothR10Price.Message.Processor
                 );
         }
 
-        public void ProcessReceivedMessage(DvsMessage message)
+        public void ProcessReceivedMessage(SQSExtendedClientReceiveModel message)
         {
             IDictionary<string, string> messageProperties = new Dictionary<string, string>()
             {
-                { Constants.MessageProperty.TransactionId, message.SqsMessage.MessageAttributes[Constants.MessageProperty.TransactionId] },
-                { Constants.MessageProperty.TransactionType, message.SqsMessage.MessageAttributes[Constants.MessageProperty.TransactionType] },
-                { Constants.MessageProperty.CorrelationId, message.SqsMessage.MessageAttributes[Constants.MessageProperty.CorrelationId] },
-                { Constants.MessageProperty.Source, message.SqsMessage.MessageAttributes[Constants.MessageProperty.Source] },
-                { Constants.MessageProperty.SequenceId, message.SqsMessage.MessageAttributes[Constants.MessageProperty.SequenceId] },
-                { Constants.MessageProperty.ResetFlag, message.SqsMessage.MessageAttributes[Constants.MessageProperty.ResetFlag] }
+                { Constants.MessageProperty.TransactionId, message.SQSAttributes[Constants.MessageProperty.TransactionId] },
+                { Constants.MessageProperty.TransactionType, message.SQSAttributes[Constants.MessageProperty.TransactionType] },
+                { Constants.MessageProperty.CorrelationId, message.SQSAttributes[Constants.MessageProperty.CorrelationId] },
+                { Constants.MessageProperty.Source, message.SQSAttributes[Constants.MessageProperty.Source] },
+                { Constants.MessageProperty.SequenceId, message.SQSAttributes[Constants.MessageProperty.SequenceId] },
+                { Constants.MessageProperty.ResetFlag, message.SQSAttributes[Constants.MessageProperty.ResetFlag] }
             };
 
             try
@@ -99,7 +99,7 @@ namespace MammothR10Price.Message.Processor
                             );
                     });
                 }
-                logger.Info($"Successfully processed Mammoth Price MessageID: {message.SqsMessage.MessageAttributes[Constants.MessageProperty.TransactionId]}, mapped it to the price canonical, and sent a message to queue.");
+                logger.Info($"Successfully processed Mammoth Price MessageID: {message.SQSAttributes[Constants.MessageProperty.TransactionId]}, mapped it to the price canonical, and sent a message to queue.");
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@ namespace MammothR10Price.Message.Processor
                         serviceSettings.ApplicationName,
                         messageProperties[Constants.MessageProperty.TransactionId],
                         messageProperties,
-                        message.MessageContent,
+                        message.S3Details[0].Data,
                         ex.GetType().ToString(),
                         ex.Message
                     );
@@ -120,7 +120,6 @@ namespace MammothR10Price.Message.Processor
                     logger.Error($"Publishing Error Event failed with following Exception: {errorPublisherException}");
                 }
             }
-            // Messages from SQS are automatically acknowledged
         }
     }
 }

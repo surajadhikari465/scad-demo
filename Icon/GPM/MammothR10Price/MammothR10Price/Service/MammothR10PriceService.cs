@@ -1,14 +1,14 @@
-﻿using Icon.Dvs.ListenerApplication;
-using Icon.Logging;
+﻿using Icon.Logging;
+using Wfm.Aws.ExtendedClient.Listener.SQS;
 
 namespace MammothR10Price.Service
 {
     public class MammothR10PriceService: IProducerService
     {
-        private readonly IListenerApplication mammothR10PriceListener;
+        private readonly ISQSExtendedClientListener mammothR10PriceListener;
         private readonly ILogger<MammothR10PriceService> logger;
 
-        public MammothR10PriceService(IListenerApplication mammothR10PriceListener, ILogger<MammothR10PriceService> logger)
+        public MammothR10PriceService(ISQSExtendedClientListener mammothR10PriceListener, ILogger<MammothR10PriceService> logger)
         {
             this.mammothR10PriceListener = mammothR10PriceListener;
             this.logger = logger;

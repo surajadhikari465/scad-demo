@@ -1,31 +1,38 @@
 ﻿using Icon.Common.Email;
-using Icon.Dvs;
-using Icon.Dvs.ListenerApplication;
-using Icon.Dvs.Model;
-using Icon.Dvs.Subscriber;
 using Icon.Logging;
 using MammothR10Price.Message.Processor;
+using Wfm.Aws.ExtendedClient.Listener.SQS;
+using Wfm.Aws.ExtendedClient.Listener.SQS.Settings;
+using Wfm.Aws.ExtendedClient.SQS;
+using Wfm.Aws.ExtendedClient.SQS.Model;
 
 namespace MammothR10Price.Esb.Listener
 {
-    public class MammothR10PriceListener: ListenerApplication<MammothR10PriceListener>
+    public class MammothR10PriceListener: SQSExtendedClientListener<MammothR10PriceListener>
     {
         private readonly IMessageProcessor messageProcessor;
         public MammothR10PriceListener(
-            DvsListenerSettings dvsListenerSettings,
-            IDvsSubscriber subscriber,
+            SQSExtendedClientListenerSettings listenerApplicationSettings,
+            ISQSExtendedClient sqsExtendedClient,
             IEmailClient emailClient,
             ILogger<MammothR10PriceListener> logger,
             IMessageProcessor messageProcessor
             )
-            : base(dvsListenerSettings, subscriber, emailClient, logger)
+            : base(listenerApplicationSettings, emailClient, sqsExtendedClient, logger)
         {
             this.messageProcessor = messageProcessor;
         }
 
-        public override void HandleMessage(DvsMessage dvsMessage)
+        public override void HandleMessage(SQSExtendedClientReceiveModel message)
         {
-            messageProcessor.ProcessReceivedMessage(dvsMessage);
+            try
+            {
+                messageProcessor.ProcessReceivedMessage(message);
+            }
+            finally
+            {
+                Acknowledge(message);
+            }
         }
     }
 }
