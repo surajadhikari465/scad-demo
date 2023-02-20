@@ -44,6 +44,7 @@ namespace Wfm.Aws.SQS
                 QueueUrl = queueURL,
                 MaxNumberOfMessages = maxNumberOfMessages,
                 WaitTimeSeconds = waitTimeInSeconds,
+                MessageAttributeNames = new List<string> { "All" },
                 AttributeNames = new List<string>() { "All" }
             };
             return amazonSQSClient.ReceiveMessage(receiveMessageRequest);
