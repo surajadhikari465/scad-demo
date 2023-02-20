@@ -13,7 +13,6 @@ namespace GPMService.Producer.ESB.Listener.NearRealTime
     internal class NearRealTimeMessageListener : SQSExtendedClientListener<NearRealTimeMessageListener>
     {
         private readonly IMessageProcessor messageProcessor;
-        private readonly ISQSExtendedClient sQSExtendedClient;
         private readonly SQSExtendedClientListenerSettings listenerApplicationSettings;
         public NearRealTimeMessageListener(
             SQSExtendedClientListenerSettings listenerApplicationSettings,
@@ -27,7 +26,6 @@ namespace GPMService.Producer.ESB.Listener.NearRealTime
             : base(listenerApplicationSettings, emailClient, sqsExtendedClient, logger)
         {
             this.messageProcessor = messageProcessor;
-            this.sQSExtendedClient = sqsExtendedClient;
             this.listenerApplicationSettings = listenerApplicationSettings;
         }
 
@@ -36,7 +34,7 @@ namespace GPMService.Producer.ESB.Listener.NearRealTime
             ReceivedMessage receivedMessage = new ReceivedMessage
             {
                 sqsExtendedClientMessage = message,
-                sqsExtendedClient = sQSExtendedClient,
+                sqsExtendedClient = sqsExtendedClient,
                 sqsExtendedClientSettings = listenerApplicationSettings
             };
             //received S3Details list will have only one SQSExtendedClientReceiveModelS3Detail element , hence fetching the first element  

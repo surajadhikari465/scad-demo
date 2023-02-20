@@ -14,13 +14,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Wfm.Aws.S3;
-using Wfm.Aws.S3.Settings;
 
 namespace GPMService.Producer.ErrorHandler
 {
     internal class ConfirmBODErrorHandler
     {
-
         private readonly INearRealTimeProcessorDAL nearRealTimeProcessorDAL;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly IEsbProducer confirmBODEsbProducer;
@@ -63,6 +61,8 @@ namespace GPMService.Producer.ErrorHandler
             ConfirmBODType confirmBODType = new ConfirmBODType()
             {
                 releaseID = "9.2",
+                systemEnvironmentCode = "Production",
+                languageCode = "en-US",
                 ApplicationArea = new ApplicationAreaType()
                 {
                     CreationDateTime = DateTimeOffset.Now.ToString("O"),

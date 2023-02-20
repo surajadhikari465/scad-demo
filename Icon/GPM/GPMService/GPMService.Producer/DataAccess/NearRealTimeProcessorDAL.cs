@@ -185,7 +185,7 @@ SELECT
                     .Database
                     .ExecuteSqlCommand(
                     archiveErrorResponseSQLStatement,
-                    new SqlParameter("@MessageID", messageID),
+                    new SqlParameter("@MessageID", messageID.Substring(0, messageID.Length <= 50 ? messageID.Length : 50)),
                     new SqlParameter("@MessageTypeName", messageTypeName),
                     new SqlParameter("@MessageHeadersJson", jsonPropertiesString),
                     new SqlParameter("@MessageBody", xmlMessagePayload.Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", ""))

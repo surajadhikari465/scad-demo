@@ -69,6 +69,7 @@ namespace GPMService.Producer.ErrorHandler
                 PriceChangeMaster priceChangeMaster = new PriceChangeMaster()
                 {
                     isCheckPoint = false,
+                    isCheckPointSpecified = true,
                     BusinessKey = new PriceChangeMasterTypeBusinessKey()
                     {
                         variationID = "0",
@@ -80,7 +81,8 @@ namespace GPMService.Producer.ErrorHandler
                         {
                             PatchFamilyID = patchFamilyID,
                             PatchNum = (lastProcessedGpmSequenceID + i).ToString(),
-                            TimeStamp = DateTimeOffset.Now.ToString("O")
+                            TimeStamp = DateTimeOffset.Now.ToString("O"),
+                            TimeStampSpecified = true
                         }
                     }
                 };

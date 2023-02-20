@@ -95,25 +95,25 @@ SequenceID: {sequenceID}.");
                 else if (
                     !messageSequenceOutput.IsInSequence
                     && !messageSequenceOutput.IsAlreadyProcessed
-                    && (receivedMessage.sqsExtendedClientMessage.MessageAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount.ToLower()) == null
-                    || int.Parse(receivedMessage.sqsExtendedClientMessage.MessageAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount.ToLower())) < gpmProducerServiceSettings.MaxRedeliveryCount)
+                    && (receivedMessage.sqsExtendedClientMessage.SQSAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount) == null
+                    || int.Parse(receivedMessage.sqsExtendedClientMessage.SQSAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount)) < gpmProducerServiceSettings.MaxRedeliveryCount)
                     )
                 {
                     logger.Warn($@"Requesting redelivery for 
 MessageID: {transactionID}, 
 and PatchFamilyID: {correlationID}. 
-Current {Constants.MessageHeaders.ApproximateReceiveCount} is {receivedMessage.sqsExtendedClientMessage.MessageAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount.ToLower()) ?? "1"}."
+Current {Constants.MessageHeaders.ApproximateReceiveCount} is {receivedMessage.sqsExtendedClientMessage.SQSAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount) ?? "1"}."
 );
                     string errorDetails = $@"MessageID [{receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.TransactionID.ToLower())}] is out of sequence. 
 Putting back into the queue for redelivery. 
-The current {Constants.MessageHeaders.ApproximateReceiveCount} is {receivedMessage.sqsExtendedClientMessage.MessageAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount.ToLower()) ?? "1"}.";
+The current {Constants.MessageHeaders.ApproximateReceiveCount} is {receivedMessage.sqsExtendedClientMessage.SQSAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount) ?? "1"}.";
                     nearRealTimeProcessorDAL.ArchiveMessage(receivedMessage, Constants.ErrorCodes.OutOfSequenceRedelivery, errorDetails);
                 }
                 else if (
                     !messageSequenceOutput.IsInSequence
                     && !messageSequenceOutput.IsAlreadyProcessed
-                    && receivedMessage.sqsExtendedClientMessage.MessageAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount.ToLower()) != null
-                    && int.Parse(receivedMessage.sqsExtendedClientMessage.MessageAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount.ToLower())) == gpmProducerServiceSettings.MaxRedeliveryCount
+                    && receivedMessage.sqsExtendedClientMessage.SQSAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount) != null
+                    && int.Parse(receivedMessage.sqsExtendedClientMessage.SQSAttributes.GetValueOrDefault(Constants.MessageHeaders.ApproximateReceiveCount)) >= gpmProducerServiceSettings.MaxRedeliveryCount
                     )
                 {
                     string exceptionMessage = $@"Message is out of sequence and has exceeded the redelivery count of {gpmProducerServiceSettings.MaxRedeliveryCount}. 
