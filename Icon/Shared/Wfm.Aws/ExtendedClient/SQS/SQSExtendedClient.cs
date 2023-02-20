@@ -64,6 +64,7 @@ namespace Wfm.Aws.ExtendedClient.SQS
                 {
                     S3Details = sqsExtendedClientReceiveModelS3Details,
                     MessageAttributes = extendedClientMessageModel.MessageAttributes,
+                    SQSAttributes = message.Attributes,
                     SQSMessage = message,
                     SQSMessageID = message.MessageId,
                     SQSReceiptHandle = message.ReceiptHandle,

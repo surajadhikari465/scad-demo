@@ -2931,11 +2931,11 @@ namespace Icon.Esb.Schemas.Infor
 
         private string languageCodeField;
 
-        public BusinessObjectDocumentType()
+        /*public BusinessObjectDocumentType()
         {
             this.systemEnvironmentCodeField = "Production";
             this.languageCodeField = "en-US";
-        }
+        }*/
 
         /// <remarks/>
         public ApplicationAreaType ApplicationArea
@@ -2979,8 +2979,9 @@ namespace Icon.Esb.Schemas.Infor
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Production")]
+        /*[System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute("en-US")]*/
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "normalizedString")]
         public string systemEnvironmentCode
         {
             get
@@ -2994,8 +2995,9 @@ namespace Icon.Esb.Schemas.Infor
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("en-US")]
+        /*[System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute("en-US")]*/
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType = "normalizedString")]
         public string languageCode
         {
             get

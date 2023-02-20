@@ -7,6 +7,7 @@ namespace Wfm.Aws.ExtendedClient.SQS.Model
     {
         public IList<SQSExtendedClientReceiveModelS3Detail> S3Details { get; set; }
         public IDictionary<string, string> MessageAttributes { get; set; }
+        public IDictionary<string, string> SQSAttributes { get; set; }
         public Message SQSMessage { get; set; }
         public string SQSMessageID { get; set; }
         public string SQSReceiptHandle { get; set; }
