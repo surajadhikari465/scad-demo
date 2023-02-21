@@ -24,7 +24,7 @@ namespace IrmaPriceListenerService.Archive
         public void ArchivePriceMessage(SQSExtendedClientReceiveModel message, IList<MammothPriceType> mammothPrices, IList<MammothPriceWithErrorType> mammothPriceWithErrors)
         {
             ArchiveMessageToDb(message);
-            if(mammothPrices != null)
+            if (mammothPrices != null)
             {
                 var pricesAddedWithErrorDetails = AddErrorDetailsToAllPrices(mammothPrices, mammothPriceWithErrors);
                 ArchivePricesWithErrorToDb(pricesAddedWithErrorDetails, message);
@@ -68,7 +68,7 @@ namespace IrmaPriceListenerService.Archive
 
         private void ArchivePricesWithErrorToDb(IList<MammothPriceWithErrorType> mammothPricesWithError, SQSExtendedClientReceiveModel message)
         {
-            using(var mammothContext = mammothDbContextFactory.CreateContext())
+            using (var mammothContext = mammothDbContextFactory.CreateContext())
             {
                 mammothContext.Database.CommandTimeout = DB_TIMEOUT_SECONDS;
 
@@ -85,7 +85,7 @@ namespace IrmaPriceListenerService.Archive
                         ErrorDetails)
                     VALUES(@MessageAction, @Region, @GpmId, @ItemId, @BusinessUnitId, @MessageId, @MessageJson, @ErrorCode, @ErrorDetails)";
 
-                using(var transaction = mammothContext.Database.BeginTransaction())
+                using (var transaction = mammothContext.Database.BeginTransaction())
                 {
                     try
                     {
@@ -103,13 +103,13 @@ namespace IrmaPriceListenerService.Archive
                                 new SqlParameter("@BusinessUnitId", mammothPrice.BusinessUnit),
                                 new SqlParameter("@MessageId", message.MessageAttributes[Constants.MessageAttribute.TransactionId]),
                                 new SqlParameter("@MessageJson", mammothPriceJson),
-                                new SqlParameter("@ErrorCode", mammothPriceWithError.ErrorCode),
-                                new SqlParameter("@ErrorDetails", mammothPriceWithError.ErrorDetails)
+                                new SqlParameter("@ErrorCode", (object)mammothPriceWithError.ErrorCode ?? DBNull.Value),
+                                new SqlParameter("@ErrorDetails", (object)mammothPriceWithError.ErrorDetails ?? DBNull.Value)
                             );
                         }
                         transaction.Commit();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         transaction.Rollback();
                         throw ex;
