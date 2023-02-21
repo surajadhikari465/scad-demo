@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using Irma.Framework;
+using System.Data.SqlTypes;
 
 namespace IrmaPriceListenerService.DataAccess
 {
@@ -119,7 +120,7 @@ namespace IrmaPriceListenerService.DataAccess
                 new SqlParameter("@Multiple", mammothPrice.Multiple),
                 new SqlParameter("@Price", mammothPrice.Price),
                 new SqlParameter("@StartDate", mammothPrice.StartDate),
-                new SqlParameter("@EndDate", endDate),
+                new SqlParameter("@EndDate", endDate.HasValue? endDate.Value : SqlDateTime.Null),
                 new SqlParameter("@PriceType", mammothPrice.PriceType),
                 new SqlParameter("@PriceTypeAttribute", mammothPrice.PriceTypeAttribute),
                 new SqlParameter("@SellableUom", mammothPrice.SellableUom),

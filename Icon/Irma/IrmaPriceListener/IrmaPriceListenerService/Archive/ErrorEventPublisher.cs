@@ -53,7 +53,7 @@ namespace IrmaPriceListenerService.Archive
                     new SqlParameter("@MessageID", message.MessageAttributes[Constants.MessageAttribute.TransactionId]),
                     new SqlParameter("@MessageProperties", ConvertPropertiesToXml(message.MessageAttributes)),
                     new SqlParameter("@Message", message.S3Details[0].Data),
-                    new SqlParameter("@ErrorCode", ex.GetType()),
+                    new SqlParameter("@ErrorCode", ex.GetType().ToString()),
                     new SqlParameter("@ErrorDetails", ex.Message),
                     new SqlParameter("@ErrorSeverity", errorSeverity)
                 );

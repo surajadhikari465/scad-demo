@@ -101,7 +101,7 @@ namespace IrmaPriceListenerService.Archive
                                 new SqlParameter("@GpmId", mammothPrice.GpmId),
                                 new SqlParameter("@ItemId", mammothPrice.ItemId),
                                 new SqlParameter("@BusinessUnitId", mammothPrice.BusinessUnit),
-                                new SqlParameter("@MessageId", message.SQSAttributes[Constants.MessageAttribute.TransactionId]),
+                                new SqlParameter("@MessageId", message.MessageAttributes[Constants.MessageAttribute.TransactionId]),
                                 new SqlParameter("@MessageJson", mammothPriceJson),
                                 new SqlParameter("@ErrorCode", mammothPriceWithError.ErrorCode),
                                 new SqlParameter("@ErrorDetails", mammothPriceWithError.ErrorDetails)
