@@ -1,6 +1,5 @@
 ﻿using Icon.Common;
-using Icon.Dvs;
-using System;
+using Wfm.Aws.ExtendedClient.Listener.SQS.Settings;
 
 namespace IrmaPriceListenerService
 {
@@ -10,8 +9,6 @@ namespace IrmaPriceListenerService
         public string ApplicationName { get => GetApplicationName(); }
         public string AwsAccountId { get; set; }
         public string AwsRegion { get; set; }
-        public string AwsAccessKey { get; set; }
-        public string AwsSecretKey { get; set; }
         public string SqsQueueUrl { get => GetSqsQueueUrl(); }
         public int PollInterval { get; set; } = 30;
 
@@ -25,16 +22,13 @@ namespace IrmaPriceListenerService
             return $"IrmaPriceListenerService-{IrmaRegionCode}";
         }
 
-        public DvsListenerSettings GetDvsListenerSettings()
+        public SQSExtendedClientListenerSettings GetGpmBridgeListenerSettings()
         {
-            return new DvsListenerSettings
+            return new SQSExtendedClientListenerSettings
             {
-                SqsQueueUrl = SqsQueueUrl,
-                AwsAccessKey = AwsAccessKey,
-                AwsSecretKey = AwsSecretKey,
-                ListenerApplicationName = ApplicationName,
-                Region = AwsRegion,
-                PollInterval = PollInterval
+                SQSListenerQueueUrl = SqsQueueUrl,
+                SQSListenerApplicationName = ApplicationName,
+                SQSListenerPollIntervalInSeconds = PollInterval
             };
         }
 
@@ -42,8 +36,6 @@ namespace IrmaPriceListenerService
         {
             return new IrmaPriceListenerServiceSettings()
             {
-                AwsAccessKey = AppSettingsAccessor.GetStringSetting("AwsAccessKey"),
-                AwsSecretKey = AppSettingsAccessor.GetStringSetting("AwsSecretKey"),
                 AwsAccountId = AppSettingsAccessor.GetStringSetting("AwsAccountId"),
                 AwsRegion = AppSettingsAccessor.GetStringSetting("AwsRegion"),
                 IrmaRegionCode = AppSettingsAccessor.GetStringSetting("IrmaRegionCode")

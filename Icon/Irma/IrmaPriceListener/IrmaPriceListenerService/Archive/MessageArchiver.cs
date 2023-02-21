@@ -1,5 +1,4 @@
 ﻿using Icon.DbContextFactory;
-using Icon.Dvs.Model;
 using Icon.Esb.Schemas.Mammoth;
 using IrmaPriceListenerService.Model;
 using Mammoth.Framework;
@@ -8,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using Wfm.Aws.ExtendedClient.SQS.Model;
 
 namespace IrmaPriceListenerService.Archive
 {
@@ -21,7 +21,7 @@ namespace IrmaPriceListenerService.Archive
             this.mammothDbContextFactory = mammothContextFactory;
         }
 
-        public void ArchivePriceMessage(DvsMessage message, IList<MammothPriceType> mammothPrices, IList<MammothPriceWithErrorType> mammothPriceWithErrors)
+        public void ArchivePriceMessage(SQSExtendedClientReceiveModel message, IList<MammothPriceType> mammothPrices, IList<MammothPriceWithErrorType> mammothPriceWithErrors)
         {
             ArchiveMessageToDb(message);
             if(mammothPrices != null)
@@ -66,7 +66,7 @@ namespace IrmaPriceListenerService.Archive
             return mammothPricesAddedWithErrorDetails;
         }
 
-        private void ArchivePricesWithErrorToDb(IList<MammothPriceWithErrorType> mammothPricesWithError, DvsMessage message)
+        private void ArchivePricesWithErrorToDb(IList<MammothPriceWithErrorType> mammothPricesWithError, SQSExtendedClientReceiveModel message)
         {
             using(var mammothContext = mammothDbContextFactory.CreateContext())
             {
@@ -101,7 +101,7 @@ namespace IrmaPriceListenerService.Archive
                                 new SqlParameter("@GpmId", mammothPrice.GpmId),
                                 new SqlParameter("@ItemId", mammothPrice.ItemId),
                                 new SqlParameter("@BusinessUnitId", mammothPrice.BusinessUnit),
-                                new SqlParameter("@MessageId", message.SqsMessage.MessageAttributes[Constants.MessageAttribute.TransactionId]),
+                                new SqlParameter("@MessageId", message.SQSAttributes[Constants.MessageAttribute.TransactionId]),
                                 new SqlParameter("@MessageJson", mammothPriceJson),
                                 new SqlParameter("@ErrorCode", mammothPriceWithError.ErrorCode),
                                 new SqlParameter("@ErrorDetails", mammothPriceWithError.ErrorDetails)
@@ -118,10 +118,10 @@ namespace IrmaPriceListenerService.Archive
             }
         }
 
-        private void ArchiveMessageToDb(DvsMessage message)
+        private void ArchiveMessageToDb(SQSExtendedClientReceiveModel message)
         {
-            string messageAttributesJson = JsonConvert.SerializeObject(message.SqsMessage.MessageAttributes);
-            string messageBodyUtf16 = message.MessageContent.Replace("UTF-8", "UTF-16");
+            string messageAttributesJson = JsonConvert.SerializeObject(message.MessageAttributes);
+            string messageBodyUtf16 = message.S3Details[0].Data.Replace("UTF-8", "UTF-16");
 
             using (var mammothContext = mammothDbContextFactory.CreateContext())
             {
@@ -143,7 +143,7 @@ namespace IrmaPriceListenerService.Archive
 
                 mammothContext.Database.ExecuteSqlCommand(
                     messageArchiveQuery,
-                    new SqlParameter("@MessageId", message.SqsMessage.MessageAttributes[Constants.MessageAttribute.TransactionId]),
+                    new SqlParameter("@MessageId", message.MessageAttributes[Constants.MessageAttribute.TransactionId]),
                     new SqlParameter("@MessageType", "Irma Price"),
                     new SqlParameter("@MessageHeadersJson", messageAttributesJson),
                     new SqlParameter("@MessageBody", messageBodyUtf16)

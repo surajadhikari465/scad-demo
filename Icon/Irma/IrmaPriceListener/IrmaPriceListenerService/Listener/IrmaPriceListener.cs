@@ -1,43 +1,43 @@
 ﻿using System;
 using System.Linq;
-using Icon.Dvs.ListenerApplication;
-using Icon.Dvs.Model;
-using Icon.Dvs;
-using Icon.Dvs.Subscriber;
 using Icon.Common.Email;
 using Icon.Logging;
 using IrmaPriceListenerService.DataAccess;
 using IrmaPriceListenerService.Archive;
-using Icon.Dvs.MessageParser;
 using Icon.Esb.Schemas.Mammoth;
 using Polly;
 using Polly.Retry;
 using System.Collections.Generic;
 using IrmaPriceListenerService.Model;
+using Wfm.Aws.ExtendedClient.Listener.SQS;
+using Wfm.Aws.ExtendedClient.Listener.SQS.Settings;
+using Wfm.Aws.ExtendedClient.SQS;
+using IrmaPriceListenerService.Service.Parser;
+using Wfm.Aws.ExtendedClient.SQS.Model;
 
 namespace IrmaPriceListenerService.Listener
 {
-    public class IrmaPriceListener : ListenerApplication<IrmaPriceListener>
+    public class IrmaPriceListener : SQSExtendedClientListener<IrmaPriceListener>
     {
         private readonly IIrmaPriceDAL irmaPriceDAL;
         private readonly IMessageArchiver messageArchiver;
         private readonly IErrorEventPublisher errorEventPublisher;
-        private readonly MessageParserBase<MammothPricesType, MammothPricesType> messageParser;
+        private readonly IMessageParser<MammothPricesType> messageParser;
         private readonly RetryPolicy retryPolicy;
 
         private const int DB_TIMEOUT_RETRY_COUNT = 3;
         private const int RETRY_INTERVAL_MILLISECONDS = 0;
 
         public IrmaPriceListener(
-            DvsListenerSettings settings,
-            IDvsSubscriber subscriber,
+            SQSExtendedClientListenerSettings settings,
+            ISQSExtendedClient sqsExtendedClient,
             IEmailClient emailClient,
             ILogger<IrmaPriceListener> logger,
             IIrmaPriceDAL irmaPriceDAL,
-            MessageParserBase<MammothPricesType, MammothPricesType> messageParser,
+            IMessageParser<MammothPricesType> messageParser,
             IMessageArchiver messageArchiver,
             IErrorEventPublisher errorEventPublisher
-        ): base(settings, subscriber, emailClient, logger)
+        ): base(settings, emailClient, sqsExtendedClient, logger)
         {
             this.irmaPriceDAL = irmaPriceDAL;
             this.messageParser = messageParser;
@@ -51,7 +51,7 @@ namespace IrmaPriceListenerService.Listener
                 );
         }
 
-        public override void HandleMessage(DvsMessage message)
+        public override void HandleMessage(SQSExtendedClientReceiveModel message)
         {
             string guid = Guid.NewGuid().ToString();
             MammothPriceType[] mammothPrices = null;
@@ -59,7 +59,7 @@ namespace IrmaPriceListenerService.Listener
 
             try
             {
-                logger.Info($"Received Message: {message.SqsMessage.MessageAttributes[Constants.MessageAttribute.TransactionId]}");
+                logger.Info($"Received Message: {message.MessageAttributes[Constants.MessageAttribute.TransactionId]}");
                 mammothPrices = messageParser.ParseMessage(message).MammothPrice;
 
                 var mammothPricesWithoutRwd = mammothPrices.Where<MammothPriceType>(
@@ -67,7 +67,7 @@ namespace IrmaPriceListenerService.Listener
                 ).ToList();
 
                 logger.Info(
-                    $@"{{""TransactionID"": ""{message.SqsMessage.MessageAttributes[Constants.MessageAttribute.TransactionId]}"",
+                    $@"{{""TransactionID"": ""{message.MessageAttributes[Constants.MessageAttribute.TransactionId]}"",
                 ""Message"": ""Filtering RWD prices from message."",
                 ""NumberOfPrices"": ""{mammothPrices.Length}"",
                 ""NumberOfRwdPrices"": ""{mammothPrices.Length - mammothPricesWithoutRwd.Count}""}}"
@@ -83,19 +83,20 @@ namespace IrmaPriceListenerService.Listener
                 else
                 {
                     logger.Info(
-                        $@"{{""TransactionID"": ""{message.SqsMessage.MessageAttributes[Constants.MessageAttribute.TransactionId]}"",
+                        $@"{{""TransactionID"": ""{message.MessageAttributes[Constants.MessageAttribute.TransactionId]}"",
                     ""Message"": ""Filtered all prices out of IRMA update because they were all RWD prices.""}}"
                     );
                 }
             }
             catch(Exception ex)
             {
-                logger.Error($"Error occurred on Message: {message.SqsMessage.MessageAttributes[Constants.MessageAttribute.TransactionId]}, Error Details: {ex}");
+                logger.Error($"Error occurred on Message: {message.MessageAttributes[Constants.MessageAttribute.TransactionId]}, Error Details: {ex}");
                 this.errorEventPublisher.PublishErrorMessage(message, ex);
                 DeleteStagedMammothPrice(guid);
             }
             finally
             {
+                Acknowledge(message);
                 messageArchiver.ArchivePriceMessage(message, mammothPrices, mammothPricesWithErrors);
             }
         }

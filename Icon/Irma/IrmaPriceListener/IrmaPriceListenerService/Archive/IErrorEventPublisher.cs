@@ -1,10 +1,10 @@
-﻿using Icon.Dvs.Model;
-using System;
+﻿using System;
+using Wfm.Aws.ExtendedClient.SQS.Model;
 
 namespace IrmaPriceListenerService.Archive
 {
     public interface IErrorEventPublisher
     {
-        void PublishErrorMessage(DvsMessage message, Exception ex);
+        void PublishErrorMessage(SQSExtendedClientReceiveModel message, Exception ex);
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Icon.Common.Xml;
 using Icon.DbContextFactory;
-using Icon.Dvs.Model;
 using Icon.Esb.Schemas.Mammoth;
 using IrmaPriceListenerService.Serializer;
 using Mammoth.Framework;
@@ -8,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using Wfm.Aws.ExtendedClient.SQS.Model;
 
 namespace IrmaPriceListenerService.Archive
 {
@@ -33,7 +33,7 @@ namespace IrmaPriceListenerService.Archive
             this.serializer = serializer;
         }
 
-        public void PublishErrorMessage(DvsMessage message, Exception ex)
+        public void PublishErrorMessage(SQSExtendedClientReceiveModel message, Exception ex)
         {
             string errorSeverity = Constants.ErrorSeverity.Error;
             if (fatalErrors.Any((fatalError) => ex.Message.Contains(fatalError) || ex.Message.Contains(fatalError)))
@@ -50,9 +50,9 @@ namespace IrmaPriceListenerService.Archive
                 mammothContext.Database.ExecuteSqlCommand(
                     storeErrorSqlStatement,
                     new SqlParameter("@Application", settings.ApplicationName),
-                    new SqlParameter("@MessageID", message.SqsMessage.MessageAttributes[Constants.MessageAttribute.TransactionId]),
-                    new SqlParameter("@MessageProperties", ConvertPropertiesToXml(message.SqsMessage.MessageAttributes)),
-                    new SqlParameter("@Message", message.MessageContent),
+                    new SqlParameter("@MessageID", message.MessageAttributes[Constants.MessageAttribute.TransactionId]),
+                    new SqlParameter("@MessageProperties", ConvertPropertiesToXml(message.MessageAttributes)),
+                    new SqlParameter("@Message", message.S3Details[0].Data),
                     new SqlParameter("@ErrorCode", ex.GetType()),
                     new SqlParameter("@ErrorDetails", ex.Message),
                     new SqlParameter("@ErrorSeverity", errorSeverity)

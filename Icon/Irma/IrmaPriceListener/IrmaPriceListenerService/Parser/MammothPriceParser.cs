@@ -1,14 +1,28 @@
-﻿using Icon.Dvs.MessageParser;
-using Icon.Dvs.Model;
+﻿using Icon.Esb;
 using Icon.Esb.Schemas.Mammoth;
+using IrmaPriceListenerService.Service.Parser;
+using IrmaPriceListenerService.Serializer;
+using System.IO;
+using Wfm.Aws.ExtendedClient.SQS.Model;
 
 namespace IrmaPriceListenerService.Parser
 {
-    public class MammothPriceParser : MessageParserBase<MammothPricesType, MammothPricesType>
+    public class MammothPriceParser : IMessageParser<MammothPricesType>
     {
-        public override MammothPricesType ParseMessage(DvsMessage message)
+        private readonly ISerializer<MammothPricesType> serializer;
+        private TextReader textReader;
+
+        public MammothPriceParser(ISerializer<MammothPricesType> serializer)
         {
-            MammothPricesType parsedPrice = DeserializeMessage(message);
+            this.serializer = serializer;
+        }
+        public MammothPricesType ParseMessage(SQSExtendedClientReceiveModel receivedMessage)
+        {
+            MammothPricesType parsedPrice;
+            using (textReader = new StringReader(Utility.RemoveUnusableCharactersFromXml(receivedMessage.S3Details[0].Data)))
+            {
+                parsedPrice = serializer.Deserialize(textReader);
+            }
             return parsedPrice;
         }
     }
