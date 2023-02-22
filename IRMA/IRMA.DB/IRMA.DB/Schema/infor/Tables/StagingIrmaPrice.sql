@@ -21,15 +21,15 @@
 GO
 
 GRANT INSERT
-    ON OBJECT::[infor].[StagingIrmaPrice] TO [TibcoDataWriter]
+    ON OBJECT::[infor].[StagingIrmaPrice] TO [TibcoDataWriter], [MammothRole]
     AS [dbo];
 
 GO
 GRANT SELECT
-    ON OBJECT::[infor].[StagingIrmaPrice] TO [TibcoDataWriter]
+    ON OBJECT::[infor].[StagingIrmaPrice] TO [TibcoDataWriter], [MammothRole]
     AS [dbo];
 
 GO
 GRANT DELETE
-    ON OBJECT::[infor].[StagingIrmaPrice] TO [TibcoDataWriter]
+    ON OBJECT::[infor].[StagingIrmaPrice] TO [TibcoDataWriter], [MammothRole]
     AS [dbo];
