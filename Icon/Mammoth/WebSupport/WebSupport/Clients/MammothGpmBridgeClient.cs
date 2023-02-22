@@ -46,7 +46,7 @@ namespace WebSupport.Clients
                     s3Bucket,
                     messageId,
                     message,
-                    messageProperties
+                    RemoveNullSqsAttributes(messageProperties)
                 );
             }
             else if(PriceRefreshConstants.IRMA.Equals(system))
@@ -64,7 +64,7 @@ namespace WebSupport.Clients
                     s3Bucket,
                     messageId,
                     message,
-                    messageProperties
+                    RemoveNullSqsAttributes(messageProperties)
                 );
             }
             else
@@ -77,6 +77,20 @@ namespace WebSupport.Clients
         {
             string s3Bucket = $"{Helpers.Constants.ConsumerS3Buckets.ProcessBodBucket}-{awsAccountId}";
             s3Facade.PutObject(s3Bucket, messageId, message, messageProperties);
+        }
+
+        // Null is not supported as a valid value in SQS attributes, hence removing them in case it's sent to the client
+        private static Dictionary<string, string> RemoveNullSqsAttributes(Dictionary<string, string> properties)
+        {
+            Dictionary<string, string> newProperties = new Dictionary<string, string>();
+            foreach (var key in properties.Keys)
+            {
+                if (properties[key] != null)
+                {
+                    newProperties[key] = properties[key];
+                }
+            }
+            return newProperties;
         }
     }
 }
