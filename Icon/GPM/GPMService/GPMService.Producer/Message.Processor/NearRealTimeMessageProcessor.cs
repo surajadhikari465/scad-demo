@@ -13,6 +13,7 @@ using Icon.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Wfm.Aws.Helpers;
 
 namespace GPMService.Producer.Message.Processor
 {

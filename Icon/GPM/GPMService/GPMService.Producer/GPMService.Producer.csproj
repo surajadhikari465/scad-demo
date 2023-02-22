@@ -167,7 +167,7 @@
       <HintPath>..\packages\Topshelf.4.2.1\lib\net452\Topshelf.dll</HintPath>
     </Reference>
     <Reference Include="Wfm.Aws, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Wfm.Aws.2023.2.19.1\lib\net472\Wfm.Aws.dll</HintPath>
+      <HintPath>..\packages\Wfm.Aws.2023.2.22.2\lib\net472\Wfm.Aws.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -198,7 +198,6 @@
     <Compile Include="GPMException\MessageOutOfSequenceException.cs" />
     <Compile Include="GPMException\ZeroRowsImpactedException.cs" />
     <Compile Include="Helpers\Constants.cs" />
-    <Compile Include="Helpers\UtilityFunctions.cs" />
     <Compile Include="Message.Parser\ActivePriceMessageParser.cs" />
     <Compile Include="Message.Parser\ExpiringTprMessageParser.cs" />
     <Compile Include="Message.Parser\IMessageParser.cs" />

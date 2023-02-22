@@ -18,6 +18,7 @@ using GPMService.Producer.Helpers;
 using TIBCO.EMS;
 using GPMService.Producer.Archive;
 using Icon.Esb.Schemas.Mammoth;
+using Wfm.Aws.Helpers;
 
 namespace GPMService.Producer.Message.Processor
 {

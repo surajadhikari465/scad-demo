@@ -12,6 +12,7 @@ using MammothR10Price.Publish;
 using Items = Icon.Esb.Schemas.Wfm.Contracts.items;
 using Wfm.Aws.ExtendedClient.SQS.Model;
 using MammothR10Price.Message.Parser;
+using Wfm.Aws.Helpers;
 
 namespace MammothR10Price.Message.Processor
 {
@@ -56,12 +57,12 @@ namespace MammothR10Price.Message.Processor
         {
             IDictionary<string, string> messageProperties = new Dictionary<string, string>()
             {
-                { Constants.MessageProperty.TransactionId, message.MessageAttributes[Constants.MessageProperty.TransactionId] },
-                { Constants.MessageProperty.TransactionType, message.MessageAttributes[Constants.MessageProperty.TransactionType] },
-                { Constants.MessageProperty.CorrelationId, message.MessageAttributes[Constants.MessageProperty.CorrelationId] },
-                { Constants.MessageProperty.Source, message.MessageAttributes[Constants.MessageProperty.Source] },
-                { Constants.MessageProperty.SequenceId, message.MessageAttributes[Constants.MessageProperty.SequenceId] },
-                { Constants.MessageProperty.ResetFlag, message.MessageAttributes[Constants.MessageProperty.ResetFlag] }
+                { Constants.MessageProperty.TransactionId, message.MessageAttributes.GetValueOrDefault(Constants.MessageProperty.TransactionId) },
+                { Constants.MessageProperty.TransactionType, message.MessageAttributes.GetValueOrDefault(Constants.MessageProperty.TransactionType) },
+                { Constants.MessageProperty.CorrelationId, message.MessageAttributes.GetValueOrDefault(Constants.MessageProperty.CorrelationId) },
+                { Constants.MessageProperty.Source, message.MessageAttributes.GetValueOrDefault(Constants.MessageProperty.Source) },
+                { Constants.MessageProperty.SequenceId, message.MessageAttributes.GetValueOrDefault(Constants.MessageProperty.SequenceId) },
+                { Constants.MessageProperty.ResetFlag, message.MessageAttributes.GetValueOrDefault(Constants.MessageProperty.ResetFlag) }
             };
             try
             {

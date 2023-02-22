@@ -12,6 +12,7 @@ using Polly.Retry;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Wfm.Aws.Helpers;
 using Wfm.Aws.S3;
 
 namespace GPMService.Producer.ErrorHandler

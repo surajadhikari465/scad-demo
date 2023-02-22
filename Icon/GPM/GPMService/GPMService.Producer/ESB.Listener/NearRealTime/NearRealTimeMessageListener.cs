@@ -7,6 +7,7 @@ using Wfm.Aws.ExtendedClient.Listener.SQS;
 using Wfm.Aws.ExtendedClient.Listener.SQS.Settings;
 using Wfm.Aws.ExtendedClient.SQS;
 using GPMService.Producer.Helpers;
+using Wfm.Aws.Helpers;
 
 namespace GPMService.Producer.ESB.Listener.NearRealTime
 {
