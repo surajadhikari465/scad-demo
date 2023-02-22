@@ -11,6 +11,7 @@ namespace Wfm.Aws.ExtendedClient.Listener.SQS.Settings
         public int SQSListenerTimeoutInSeconds { get; set; }
         public int SQSListenerPollIntervalInSeconds { get; set; }
         public int SQSListenerSafeStopCheckInSeconds { get; set; }
+        public bool SQSListenerSafeStopCheckEnabled { get; set; }
 
         public static SQSExtendedClientListenerSettings CreateSettingsFromNamedConfig(string configurationName)
         {
@@ -31,7 +32,8 @@ namespace Wfm.Aws.ExtendedClient.Listener.SQS.Settings
                 SQSListenerQueueUrl = namedConfiguration.SQSListenerQueueUrl,
                 SQSListenerTimeoutInSeconds = namedConfiguration.SQSListenerTimeoutInSeconds,
                 SQSListenerPollIntervalInSeconds = namedConfiguration.SQSListenerPollIntervalInSeconds,
-                SQSListenerSafeStopCheckInSeconds = namedConfiguration.SQSListenerSafeStopCheckInSeconds
+                SQSListenerSafeStopCheckInSeconds = namedConfiguration.SQSListenerSafeStopCheckInSeconds,
+                SQSListenerSafeStopCheckEnabled = namedConfiguration.SQSListenerSafeStopCheckEnabled
             };
         }
 
@@ -44,6 +46,7 @@ namespace Wfm.Aws.ExtendedClient.Listener.SQS.Settings
                 SQSListenerTimeoutInSeconds = AppSettingsAccessor.GetIntSetting(Constants.ConfigurationProperties.SQSListenerTimeoutInSeconds, 15),
                 SQSListenerPollIntervalInSeconds = AppSettingsAccessor.GetIntSetting(Constants.ConfigurationProperties.SQSListenerPollIntervalInSeconds, 30),
                 SQSListenerSafeStopCheckInSeconds = AppSettingsAccessor.GetIntSetting(Constants.ConfigurationProperties.SQSListenerSafeStopCheckInSeconds, 15),
+                SQSListenerSafeStopCheckEnabled = AppSettingsAccessor.GetBoolSetting(Constants.ConfigurationProperties.SQSListenerSafeStopCheckEnabled, false),
             };
         }
     }

@@ -137,10 +137,13 @@ namespace Wfm.Aws.ExtendedClient.Listener.SQS
         public void Stop()
         {
             logger.Info($"Stopping the listener - {settings.SQSListenerApplicationName}");
-            while (isServiceRunning)
+            if (settings.SQSListenerSafeStopCheckEnabled)
             {
-                logger.Info($"Waiting {settings.SQSListenerSafeStopCheckInSeconds} seconds for the listener - {settings.SQSListenerApplicationName} to complete processing before stopping.");
-                System.Threading.Thread.Sleep(settings.SQSListenerSafeStopCheckInSeconds * 1000);
+                while (isServiceRunning)
+                {
+                    logger.Info($"Waiting {settings.SQSListenerSafeStopCheckInSeconds} seconds for the listener - {settings.SQSListenerApplicationName} to complete processing before stopping.");
+                    System.Threading.Thread.Sleep(settings.SQSListenerSafeStopCheckInSeconds * 1000);
+                }
             }
             listenerTimer.Stop();
             listenerTimer.Elapsed -= RunService;

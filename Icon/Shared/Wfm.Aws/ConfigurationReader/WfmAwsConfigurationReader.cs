@@ -167,5 +167,8 @@ namespace Wfm.Aws.ConfigurationReader
 
         [ConfigurationProperty(Constants.NamedConfigurationProperties.SQSListenerSafeStopCheckInSeconds, IsRequired = false, DefaultValue = 15)]
         public int SQSListenerSafeStopCheckInSeconds { get { return (int)base[Constants.NamedConfigurationProperties.SQSListenerSafeStopCheckInSeconds]; } }
+        
+        [ConfigurationProperty(Constants.NamedConfigurationProperties.SQSListenerSafeStopCheckEnabled, IsRequired = false, DefaultValue = false)]
+        public bool SQSListenerSafeStopCheckEnabled { get { return (bool)base[Constants.NamedConfigurationProperties.SQSListenerSafeStopCheckEnabled]; } }
     }
 }

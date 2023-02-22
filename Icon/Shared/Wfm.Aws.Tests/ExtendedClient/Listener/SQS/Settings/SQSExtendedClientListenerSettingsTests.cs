@@ -20,6 +20,7 @@ namespace Wfm.Aws.Tests.ExtendedClient.Listener.SQS.Settings
             Assert.AreEqual(30, settings.SQSListenerPollIntervalInSeconds);
             Assert.AreEqual(5, settings.SQSListenerTimeoutInSeconds);
             Assert.AreEqual(20, settings.SQSListenerSafeStopCheckInSeconds);
+            Assert.AreEqual(false, settings.SQSListenerSafeStopCheckEnabled);
         }
 
         [TestMethod]
@@ -35,6 +36,7 @@ namespace Wfm.Aws.Tests.ExtendedClient.Listener.SQS.Settings
             Assert.AreEqual(30, settings.SQSListenerPollIntervalInSeconds);
             Assert.AreEqual(15, settings.SQSListenerTimeoutInSeconds);
             Assert.AreEqual(15, settings.SQSListenerSafeStopCheckInSeconds);
+            Assert.AreEqual(false, settings.SQSListenerSafeStopCheckEnabled);
         }
 
         [TestMethod]
@@ -50,6 +52,7 @@ namespace Wfm.Aws.Tests.ExtendedClient.Listener.SQS.Settings
             Assert.AreEqual(15, settings.SQSListenerPollIntervalInSeconds);
             Assert.AreEqual(5, settings.SQSListenerTimeoutInSeconds);
             Assert.AreEqual(20, settings.SQSListenerSafeStopCheckInSeconds);
+            Assert.AreEqual(true, settings.SQSListenerSafeStopCheckEnabled);
         }
     }
 }
