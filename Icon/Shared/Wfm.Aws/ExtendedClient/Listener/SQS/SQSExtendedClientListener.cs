@@ -20,6 +20,7 @@ namespace Wfm.Aws.ExtendedClient.Listener.SQS
         private readonly Timer listenerTimer;
         // keeping default as false because in ESB we had to explicitly call Acknowledge().
         protected bool AcknowledgeMessage { get; set; } = false;
+        private bool isServiceRunning = false;
 
         public SQSExtendedClientListener(SQSExtendedClientListenerSettings settings, IEmailClient emailClient, ISQSExtendedClient sqsExtendedClient, ILogger<TListener> logger)
         {
@@ -45,11 +46,13 @@ namespace Wfm.Aws.ExtendedClient.Listener.SQS
             listenerTimer.Stop();
             try
             {
+                isServiceRunning = true;
                 ProcessMessagesTillQueueIsEmpty();
             }
             finally
             {
                 listenerTimer.Start();
+                isServiceRunning = false;
             }
         }
 
@@ -134,6 +137,11 @@ namespace Wfm.Aws.ExtendedClient.Listener.SQS
         public void Stop()
         {
             logger.Info($"Stopping the listener - {settings.SQSListenerApplicationName}");
+            while (isServiceRunning)
+            {
+                logger.Info($"Waiting {settings.SQSListenerSafeStopCheckInSeconds} seconds for the listener - {settings.SQSListenerApplicationName} to complete processing before stopping.");
+                System.Threading.Thread.Sleep(settings.SQSListenerSafeStopCheckInSeconds * 1000);
+            }
             listenerTimer.Stop();
             listenerTimer.Elapsed -= RunService;
             logger.Info($"Stopped the listener - {settings.SQSListenerApplicationName}");

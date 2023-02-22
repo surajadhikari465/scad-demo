@@ -11,6 +11,7 @@
             public const string SQSListenerQueueUrl = "SQSListenerQueueUrl";
             public const string SQSListenerTimeoutInSeconds = "SQSListenerTimeoutInSeconds";
             public const string SQSListenerPollIntervalInSeconds = "SQSListenerPollIntervalInSeconds";
+            public const string SQSListenerSafeStopCheckInSeconds = "SQSListenerSafeStopCheckInSeconds";
         }
         public struct NamedConfigurationProperties
         {
@@ -31,6 +32,7 @@
             public const string SQSListenerQueueUrl = "sqsListenerQueueUrl";
             public const string SQSListenerTimeoutInSeconds = "sqsListenerTimeoutInSeconds";
             public const string SQSListenerPollIntervalInSeconds = "sqsListenerPollIntervalInSeconds";
+            public const string SQSListenerSafeStopCheckInSeconds = "sqsListenerSafeStopCheckInSeconds";
         }
         public struct EventSources
         {

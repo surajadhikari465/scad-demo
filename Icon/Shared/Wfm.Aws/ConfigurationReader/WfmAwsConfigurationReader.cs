@@ -164,5 +164,8 @@ namespace Wfm.Aws.ConfigurationReader
 
         [ConfigurationProperty(Constants.NamedConfigurationProperties.SQSListenerPollIntervalInSeconds, IsRequired = false, DefaultValue = 30)]
         public int SQSListenerPollIntervalInSeconds { get { return (int)base[Constants.NamedConfigurationProperties.SQSListenerPollIntervalInSeconds]; } }
+
+        [ConfigurationProperty(Constants.NamedConfigurationProperties.SQSListenerSafeStopCheckInSeconds, IsRequired = false, DefaultValue = 15)]
+        public int SQSListenerSafeStopCheckInSeconds { get { return (int)base[Constants.NamedConfigurationProperties.SQSListenerSafeStopCheckInSeconds]; } }
     }
 }

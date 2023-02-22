@@ -121,6 +121,7 @@
     <Compile Include="ExtendedClient\SQS\ISQSExtendedClient.cs" />
     <Compile Include="ExtendedClient\SQS\Model\SQSExtendedClientReceiveModel.cs" />
     <Compile Include="ExtendedClient\SQS\SQSExtendedClient.cs" />
+    <Compile Include="Helpers\UtilityFunctions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="S3\IS3Facade.cs" />
     <Compile Include="S3\S3Facade.cs" />
