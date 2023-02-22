@@ -52,8 +52,8 @@ namespace GPMService.Producer.Publish
         {
             try
             {
-                sendMessageRetryPolicy.Execute(() => PublishToEsb(message, messageProperties));
                 sendMessageRetryPolicy.Execute(() => PublishToActiveMq(message, messageProperties));
+                sendMessageRetryPolicy.Execute(() => PublishToEsb(message, messageProperties));
             }
             catch (Exception e)
             {

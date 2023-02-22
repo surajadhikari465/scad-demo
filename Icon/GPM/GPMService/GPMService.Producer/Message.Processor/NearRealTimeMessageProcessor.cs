@@ -190,65 +190,73 @@ SequenceID: {sequenceID}";
                     {
                         GetRegionCodeQueryModel getRegionCodeQueryModel = nearRealTimeProcessorDAL.GetRegionCodeQuery(gpmReceivedLocale.id)[0];
                         StoreItemAttributesType storeItemAttributes = gpmReceivedLocale.Item as StoreItemAttributesType;
-                        foreach (PriceType price in storeItemAttributes.prices)
+                        if (storeItemAttributes.prices != null)
                         {
-                            MammothPriceType mammothPrice = new MammothPriceType()
-                            {
-                                Region = getRegionCodeQueryModel.Region,
-                                BusinessUnit = getRegionCodeQueryModel.BusinessUnitID,
-                                ItemId = gpmReceivedItem.id,
-                                GpmId = price.Id, // TODO: Check if correct during testing
-                                Multiple = price.priceMultiple,
-                                Price = price.priceAmount.amount,
-                                StartDate = price.priceStartDate,
-                                EndDate = price.priceEndDate,
-                                PriceType = nameof(price.type.id), // TODO: Check if correct during testing
-                                PriceTypeAttribute = nameof(price.type.type.id), // TODO: Check if correct during testing
-                                SellableUom = nameof(price.uom.code), // TODO: Check if correct during testing
-                                CurrencyCode = nameof(price.currencyTypeCode), // TODO: Check if correct during testing
-                                Action = nameof(price.Action), // TODO: Check if correct during testing
-                                ItemTypeCode = gpmReceivedItem.@base.type.code, // TODO: Check if correct during testing
-                                StoreName = gpmReceivedLocale.name,
-                                ScanCode = storeItemAttributes.scanCode[0].code,
-                            };
-                            if (price.traits != null && price.traits.Length > 0)
-                            {
-                                TraitType nteTrait = Array.Find(price.traits, trait => "NTE".Equals(trait.code));
-                                if (nteTrait != null && nteTrait.type.value.Length > 0 && String.IsNullOrEmpty(nteTrait.type.value[0].value))
-                                {
-                                    mammothPrice.TagExpirationDate = DateTime.Parse(nteTrait.type.value[0].value); // TODO: Check if correct parsing and timezone during testing
-                                    mammothPrice.TagExpirationDateSpecified = true;
-                                }
-                            }
-                            mammothPrice.EndDateSpecified = mammothPrice.EndDate.HasValue;
-                            mammothPriceList.Add(mammothPrice);
-                        }
-                        foreach (RewardType reward in storeItemAttributes.rewards)
-                        {
-                            if (reward.rewardPercentage > 0)
+                            foreach (PriceType price in storeItemAttributes.prices)
                             {
                                 MammothPriceType mammothPrice = new MammothPriceType()
                                 {
                                     Region = getRegionCodeQueryModel.Region,
                                     BusinessUnit = getRegionCodeQueryModel.BusinessUnitID,
                                     ItemId = gpmReceivedItem.id,
-                                    GpmId = reward.Id, // TODO: Check if correct during testing
-                                    Multiple = reward.rewardMultiple,
-                                    Price = 0,
-                                    StartDate = reward.rewardStartDate,
-                                    EndDate = reward.rewardEndDate,
-                                    PriceType = nameof(reward.type.id), // TODO: Check if correct during testing
-                                    PriceTypeAttribute = nameof(reward.type.type.id), // TODO: Check if correct during testing
-                                    SellableUom = nameof(reward.uom.code), // TODO: Check if correct during testing
-                                    Action = nameof(reward.Action), // TODO: Check if correct during testing
+                                    GpmId = price.Id, // TODO: Check if correct during testing
+                                    Multiple = price.priceMultiple,
+                                    Price = price.priceAmount.amount,
+                                    StartDate = price.priceStartDate,
+                                    // default(DateTime?) sets value to null
+                                    EndDate = price.priceEndDate == default(DateTime) ? default(DateTime?) : price.priceEndDate,
+                                    PriceType = Convert.ToString(price.type.id), // TODO: Check if correct during testing
+                                    PriceTypeAttribute = Convert.ToString(price.type.type.id), // TODO: Check if correct during testing
+                                    SellableUom = Convert.ToString(price.uom.code), // TODO: Check if correct during testing
+                                    CurrencyCode = Convert.ToString(price.currencyTypeCode), // TODO: Check if correct during testing
+                                    Action = Convert.ToString(price.Action), // TODO: Check if correct during testing
                                     ItemTypeCode = gpmReceivedItem.@base.type.code, // TODO: Check if correct during testing
                                     StoreName = gpmReceivedLocale.name,
                                     ScanCode = storeItemAttributes.scanCode[0].code,
-                                    PercentOff = reward.rewardPercentage,
-                                    PercentOffSpecified = true // TODO: Test for PercentOff null scenarios
                                 };
+                                if (price.traits != null && price.traits.Length > 0)
+                                {
+                                    TraitType nteTrait = Array.Find(price.traits, trait => "NTE".Equals(trait.code));
+                                    if (nteTrait?.type?.value?.Length > 0 && !String.IsNullOrEmpty(nteTrait.type.value[0].value))
+                                    {
+                                        mammothPrice.TagExpirationDate = DateTime.Parse(nteTrait.type.value[0].value); // TODO: Check if correct parsing and timezone during testing
+                                        mammothPrice.TagExpirationDateSpecified = true;
+                                    }
+                                }
                                 mammothPrice.EndDateSpecified = mammothPrice.EndDate.HasValue;
                                 mammothPriceList.Add(mammothPrice);
+                            }
+                        }
+                        if (storeItemAttributes.rewards != null)
+                        {
+                            foreach (RewardType reward in storeItemAttributes.rewards)
+                            {
+                                if (reward.rewardPercentage > 0)
+                                {
+                                    MammothPriceType mammothPrice = new MammothPriceType()
+                                    {
+                                        Region = getRegionCodeQueryModel.Region,
+                                        BusinessUnit = getRegionCodeQueryModel.BusinessUnitID,
+                                        ItemId = gpmReceivedItem.id,
+                                        GpmId = reward.Id, // TODO: Check if correct during testing
+                                        Multiple = reward.rewardMultiple,
+                                        Price = 0,
+                                        StartDate = reward.rewardStartDate,
+                                        // default(DateTime?) sets value to null
+                                        EndDate = reward.rewardEndDate == default(DateTime) ? default(DateTime?) : reward.rewardEndDate,
+                                        PriceType = Convert.ToString(reward.type.id), // TODO: Check if correct during testing
+                                        PriceTypeAttribute = Convert.ToString(reward.type.type.id), // TODO: Check if correct during testing
+                                        SellableUom = Convert.ToString(reward.uom.code), // TODO: Check if correct during testing
+                                        Action = Convert.ToString(reward.Action), // TODO: Check if correct during testing
+                                        ItemTypeCode = gpmReceivedItem.@base.type.code, // TODO: Check if correct during testing
+                                        StoreName = gpmReceivedLocale.name,
+                                        ScanCode = storeItemAttributes.scanCode[0].code,
+                                        PercentOff = reward.rewardPercentage,
+                                        PercentOffSpecified = true // TODO: Test for PercentOff null scenarios
+                                    };
+                                    mammothPrice.EndDateSpecified = mammothPrice.EndDate.HasValue;
+                                    mammothPriceList.Add(mammothPrice);
+                                }
                             }
                         }
                     }
