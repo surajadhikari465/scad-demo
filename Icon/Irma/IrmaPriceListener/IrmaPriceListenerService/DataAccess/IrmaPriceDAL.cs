@@ -12,7 +12,7 @@ namespace IrmaPriceListenerService.DataAccess
     {
         private IDbContextFactory<IrmaContext> irmaDbContextFactory;
         private IrmaPriceListenerServiceSettings serviceSettings;
-        private const int DB_TIMEOUT_IN_SECONDS = 5;
+        private const int DB_TIMEOUT_IN_SECONDS = 15;
 
         private const string StagingQuery = @"INSERT INTO [infor].[StagingMammothPrice]
             ([BusinessUnit_ID]

@@ -25,8 +25,8 @@ namespace IrmaPriceListenerService.Listener
         private readonly IMessageParser<MammothPricesType> messageParser;
         private readonly RetryPolicy retryPolicy;
 
-        private const int DB_TIMEOUT_RETRY_COUNT = 3;
-        private const int RETRY_INTERVAL_MILLISECONDS = 0;
+        private const int DB_TIMEOUT_RETRY_COUNT = 10;
+        private const int RETRY_INTERVAL_MILLISECONDS = 5000;
 
         public IrmaPriceListener(
             SQSExtendedClientListenerSettings settings,
