@@ -38,8 +38,6 @@ namespace MammothR10Price
             var esbSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("MammothR10PriceEsbProducer");
             var esbProducer = new EsbProducer(esbSettings);
             container.RegisterSingleton<IEsbProducer>(() => esbProducer);
-            container.RegisterSingleton(() => ActiveMQConnectionSettings.CreateSettingsFromConfig());
-            container.RegisterSingleton<IActiveMQProducer, ActiveMQProducer>();
             container.RegisterSingleton<IDbContextFactory<MammothContext>, MammothContextFactory>();
             container.RegisterSingleton<IEmailClient>(() => { return EmailClient.CreateFromConfig(); });
             container.RegisterSingleton<IErrorEventPublisher, ErrorEventPublisher>();

@@ -8,6 +8,7 @@ namespace MammothR10Price
         public int SendMessageRetryCount { get; set; }
         public int SendMessageRetryDelayInMilliseconds { get; set; }
         public string NonReceivingSystems { get; set; }
+        public string DvsGpmSourceBucket { get; set; }
 
         public static MammothR10PriceServiceSettings CreateSettingsFromConfig()
         {
@@ -17,6 +18,7 @@ namespace MammothR10Price
                 SendMessageRetryCount = AppSettingsAccessor.GetIntSetting("SendMessageRetryCount", 3),
                 SendMessageRetryDelayInMilliseconds = AppSettingsAccessor.GetIntSetting("SendMessageRetryDelayInMilliseconds", 3000),
                 NonReceivingSystems = AppSettingsAccessor.GetStringSetting("NonReceivingSystems"),
+                DvsGpmSourceBucket = AppSettingsAccessor.GetStringSetting("DvsGpmSourceBucket"),
             };
         }
     }
