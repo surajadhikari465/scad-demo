@@ -1,22 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using Icon.ActiveMQ;
-using Icon.ActiveMQ.Producer;
+﻿using System.Collections.Generic;
+using Icon.Common;
+using Wfm.Aws.S3;
+using Wfm.Aws.S3.Settings;
 
 namespace WebSupport.Clients
 {
     public class DvsNearRealTimePriceClient: IDvsNearRealTimePriceClient
     {
-        private IActiveMQProducer producer;
+        private IS3Facade s3Facade;
+        private string dvsNrtGpmPriceBucket;
 
         public DvsNearRealTimePriceClient()
         {
-            producer = new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig());
+            s3Facade = new S3Facade(S3FacadeSettings.CreateSettingsFromNamedConfig("MammothGpmS3Settings"));
+            string dvsAwsAccount = AppSettingsAccessor.GetStringSetting("DvsAwsAccount");
+            dvsNrtGpmPriceBucket = $"gpmsourcebucket-{dvsAwsAccount}";
         }
 
         public void Send(string message, string messageId, Dictionary<string, string> messageProperties)
         {
-            producer.Send(message, messageId, messageProperties);
+            s3Facade.PutObject(dvsNrtGpmPriceBucket, messageId, message, messageProperties);
         }
     }
 }
