@@ -9,6 +9,7 @@ namespace GPMService.Producer.Settings
         public string GpmProcessBODBucket { get; set; }
         public string GpmJustInTimeBucket { get; set; }
         public string GpmJustInTimeTopicArn { get; set; }
+        public string DvsGpmSourceBucket { get; set; }
         public int MaxRedeliveryCount { get; set; }
         public int DbErrorRetryCount { get; set; }
         public int DbRetryDelayInMilliseconds { get; set; }
@@ -30,6 +31,7 @@ namespace GPMService.Producer.Settings
                 GpmConfirmBODBucket = AppSettingsAccessor.GetStringSetting("GpmConfirmBODBucket"),
                 GpmProcessBODBucket = AppSettingsAccessor.GetStringSetting("GpmProcessBODBucket"),
                 GpmJustInTimeTopicArn = AppSettingsAccessor.GetStringSetting("GpmJustInTimeTopicArn"),
+                DvsGpmSourceBucket = AppSettingsAccessor.GetStringSetting("DvsGpmSourceBucket"),
                 MaxRedeliveryCount = AppSettingsAccessor.GetIntSetting("MaxRedeliveryCount", 8),
                 DbErrorRetryCount = AppSettingsAccessor.GetIntSetting("DbErrorRetryCount", 5),
                 DbRetryDelayInMilliseconds = AppSettingsAccessor.GetIntSetting("DbRetryDelayInMilliseconds", 3000),

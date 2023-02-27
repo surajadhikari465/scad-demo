@@ -200,18 +200,18 @@ SequenceID: {sequenceID}";
                                     Region = getRegionCodeQueryModel.Region,
                                     BusinessUnit = getRegionCodeQueryModel.BusinessUnitID,
                                     ItemId = gpmReceivedItem.id,
-                                    GpmId = price.Id, // TODO: Check if correct during testing
+                                    GpmId = price.Id,
                                     Multiple = price.priceMultiple,
                                     Price = price.priceAmount.amount,
                                     StartDate = price.priceStartDate,
                                     // default(DateTime?) sets value to null
                                     EndDate = price.priceEndDate == default(DateTime) ? default(DateTime?) : price.priceEndDate,
-                                    PriceType = Convert.ToString(price.type.id), // TODO: Check if correct during testing
-                                    PriceTypeAttribute = Convert.ToString(price.type.type.id), // TODO: Check if correct during testing
-                                    SellableUom = Convert.ToString(price.uom.code), // TODO: Check if correct during testing
-                                    CurrencyCode = Convert.ToString(price.currencyTypeCode), // TODO: Check if correct during testing
-                                    Action = Convert.ToString(price.Action), // TODO: Check if correct during testing
-                                    ItemTypeCode = gpmReceivedItem.@base.type.code, // TODO: Check if correct during testing
+                                    PriceType = Convert.ToString(price.type.id),
+                                    PriceTypeAttribute = Convert.ToString(price.type.type.id),
+                                    SellableUom = Convert.ToString(price.uom.code),
+                                    CurrencyCode = Convert.ToString(price.currencyTypeCode),
+                                    Action = Convert.ToString(price.Action),
+                                    ItemTypeCode = gpmReceivedItem.@base.type.code,
                                     StoreName = gpmReceivedLocale.name,
                                     ScanCode = storeItemAttributes.scanCode[0].code,
                                 };
@@ -220,7 +220,7 @@ SequenceID: {sequenceID}";
                                     TraitType nteTrait = Array.Find(price.traits, trait => "NTE".Equals(trait.code));
                                     if (nteTrait?.type?.value?.Length > 0 && !String.IsNullOrEmpty(nteTrait.type.value[0].value))
                                     {
-                                        mammothPrice.TagExpirationDate = DateTime.Parse(nteTrait.type.value[0].value); // TODO: Check if correct parsing and timezone during testing
+                                        mammothPrice.TagExpirationDate = DateTime.Parse(nteTrait.type.value[0].value);
                                         mammothPrice.TagExpirationDateSpecified = true;
                                     }
                                 }
@@ -239,21 +239,21 @@ SequenceID: {sequenceID}";
                                         Region = getRegionCodeQueryModel.Region,
                                         BusinessUnit = getRegionCodeQueryModel.BusinessUnitID,
                                         ItemId = gpmReceivedItem.id,
-                                        GpmId = reward.Id, // TODO: Check if correct during testing
+                                        GpmId = reward.Id,
                                         Multiple = reward.rewardMultiple,
                                         Price = 0,
                                         StartDate = reward.rewardStartDate,
                                         // default(DateTime?) sets value to null
                                         EndDate = reward.rewardEndDate == default(DateTime) ? default(DateTime?) : reward.rewardEndDate,
-                                        PriceType = Convert.ToString(reward.type.id), // TODO: Check if correct during testing
-                                        PriceTypeAttribute = Convert.ToString(reward.type.type.id), // TODO: Check if correct during testing
-                                        SellableUom = Convert.ToString(reward.uom.code), // TODO: Check if correct during testing
-                                        Action = Convert.ToString(reward.Action), // TODO: Check if correct during testing
-                                        ItemTypeCode = gpmReceivedItem.@base.type.code, // TODO: Check if correct during testing
+                                        PriceType = Convert.ToString(reward.type.id),
+                                        PriceTypeAttribute = Convert.ToString(reward.type.type.id),
+                                        SellableUom = Convert.ToString(reward.uom.code),
+                                        Action = Convert.ToString(reward.Action),
+                                        ItemTypeCode = gpmReceivedItem.@base.type.code,
                                         StoreName = gpmReceivedLocale.name,
                                         ScanCode = storeItemAttributes.scanCode[0].code,
                                         PercentOff = reward.rewardPercentage,
-                                        PercentOffSpecified = true // TODO: Test for PercentOff null scenarios
+                                        PercentOffSpecified = true
                                     };
                                     mammothPrice.EndDateSpecified = mammothPrice.EndDate.HasValue;
                                     mammothPriceList.Add(mammothPrice);

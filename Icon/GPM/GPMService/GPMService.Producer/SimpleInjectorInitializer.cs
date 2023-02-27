@@ -1,8 +1,6 @@
-﻿using Amazon.SQS;
-using GPMService.Producer.Archive;
+﻿using GPMService.Producer.Archive;
 using GPMService.Producer.DataAccess;
 using GPMService.Producer.ErrorHandler;
-using GPMService.Producer.ESB.Infrastructure;
 using GPMService.Producer.ESB.Listener.JustInTime;
 using GPMService.Producer.ESB.Listener.NearRealTime;
 using GPMService.Producer.Helpers;
@@ -12,10 +10,7 @@ using GPMService.Producer.Publish;
 using GPMService.Producer.Serializer;
 using GPMService.Producer.Service;
 using GPMService.Producer.Service.ESB.Listener;
-using GPMService.Producer.Settings;
-using Icon.ActiveMQ;
-using Icon.ActiveMQ.Producer;
-using Icon.Common.Email;
+using GPMService.Producer.Settings;using Icon.Common.Email;
 using Icon.DbContextFactory;
 using Icon.Esb;
 using Icon.Esb.ListenerApplication;
@@ -23,7 +18,6 @@ using Icon.Esb.Producer;
 using Icon.Esb.Schemas.Infor;
 using Icon.Esb.Schemas.Mammoth;
 using Icon.Esb.Schemas.Wfm.Contracts;
-using Icon.Esb.Subscriber;
 using Icon.Logging;
 using Mammoth.Framework;
 using SimpleInjector;
@@ -71,7 +65,6 @@ namespace GPMService.Producer
                     container.RegisterSingleton<IExtendedClientMessageSerializer, S3EventMessageSerializer>();
                     container.RegisterSingleton<ISQSExtendedClient, SQSExtendedClient>();
                     container.RegisterSingleton(() => ListenerApplicationSettings.CreateDefaultSettings<ListenerApplicationSettings>("GPM NearRealTimeMessage Listener"));
-                    container.RegisterSingleton(() => ActiveMQConnectionSettings.CreateSettingsFromConfig());
                     Registration nearRealTimeEsbProducerRegistration = Lifestyle.Singleton.CreateRegistration(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMNearRealTimeProducerEmsConnection")), container);
                     container.RegisterConditional<IEsbProducer>(
                         nearRealTimeEsbProducerRegistration,
@@ -84,7 +77,6 @@ namespace GPMService.Producer
                     container.RegisterConditional<IEsbProducer>(
                         confirmBODEsbProducerRegistration,
                         c => !c.HasConsumer || c.Consumer.Target.Name.Equals("confirmBODEsbProducer"));
-                    container.RegisterSingleton<IActiveMQProducer, ActiveMQProducer>();
                     container.RegisterSingleton<IMessagePublisher, NearRealTimeMessagePublisher>();
                     container.RegisterSingleton<ILogger<NearRealTimeMessagePublisher>, NLogLogger<NearRealTimeMessagePublisher>>();
                     container.RegisterSingleton<ILogger<NearRealTimeMessageListener>, NLogLogger<NearRealTimeMessageListener>>();
@@ -109,7 +101,6 @@ namespace GPMService.Producer
                     nearRealTimeEsbProducerRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
                     processBODEsbProducerRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
                     confirmBODEsbProducerRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
-                    container.GetRegistration(typeof(IActiveMQProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the ActiveMQ producer is taken care of by the application.");
                     break;
                 case Constants.ProducerType.JustInTime.ActivePrice:
                     S3FacadeSettings activePricePublishS3Settings = S3FacadeSettings.CreateSettingsFromConfig();

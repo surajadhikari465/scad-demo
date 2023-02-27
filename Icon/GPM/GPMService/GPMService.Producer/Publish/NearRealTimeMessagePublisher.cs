@@ -1,24 +1,25 @@
 ﻿using GPMService.Producer.Settings;
-using Icon.ActiveMQ.Producer;
 using Icon.Esb.Producer;
 using Icon.Logging;
 using Polly;
 using Polly.Retry;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using Wfm.Aws.S3;
 
 namespace GPMService.Producer.Publish
 {
     internal class NearRealTimeMessagePublisher : IMessagePublisher
     {
-        private readonly IActiveMQProducer activeMQProducer;
+        private readonly IS3Facade s3Facade;
         private readonly IEsbProducer nearRealTimeEsbProducer;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
         private readonly RetryPolicy sendMessageRetryPolicy;
         private readonly ILogger<NearRealTimeMessagePublisher> logger;
 
         public NearRealTimeMessagePublisher(
-            IActiveMQProducer activeMQProducer,
+            IS3Facade s3Facade,
             // Using named injection.
             // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
             IEsbProducer nearRealTimeEsbProducer,
@@ -26,7 +27,7 @@ namespace GPMService.Producer.Publish
             ILogger<NearRealTimeMessagePublisher> logger
             )
         {
-            this.activeMQProducer = activeMQProducer;
+            this.s3Facade = s3Facade;
             this.nearRealTimeEsbProducer = nearRealTimeEsbProducer;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
             this.logger = logger;
@@ -42,17 +43,13 @@ namespace GPMService.Producer.Publish
             logger.Info("Opening NearRealTime publisher ESB Connection");
             this.nearRealTimeEsbProducer.OpenConnection(clientId);
             logger.Info("NearRealTime publisher ESB Connection Opened");
-
-            logger.Info("Opening NearRealTime publisher ActiveMQ Connection");
-            this.activeMQProducer.OpenConnection(clientId);
-            logger.Info("NearRealTime publisher ActiveMQ Connection Opened");
         }
 
         public void PublishMessage(string message, Dictionary<string, string> messageProperties)
         {
             try
             {
-                sendMessageRetryPolicy.Execute(() => PublishToActiveMq(message, messageProperties));
+                sendMessageRetryPolicy.Execute(() => PublishToS3(message, messageProperties));
                 sendMessageRetryPolicy.Execute(() => PublishToEsb(message, messageProperties));
             }
             catch (Exception e)
@@ -66,9 +63,14 @@ namespace GPMService.Producer.Publish
             nearRealTimeEsbProducer.Send(message, messageProperties);
         }
 
-        private void PublishToActiveMq(string message, Dictionary<string, string> messageProperties)
+        private void PublishToS3(string message, Dictionary<string, string> messageProperties)
         {
-            activeMQProducer.Send(message, messageProperties);
+            s3Facade.PutObject(
+                gpmProducerServiceSettings.DvsGpmSourceBucket,
+                $"NearRealTime/{DateTime.UtcNow.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture)}/{Guid.NewGuid()}",
+                message,
+                messageProperties
+                );
         }
     }
 }
