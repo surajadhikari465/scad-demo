@@ -53,6 +53,7 @@ namespace WebSupport.App_Start
         private static void InitializeContainer(Container container)
         {
             // TODO: Have reviewed by someone for lifetime management.
+            container.Register(() => CreateClientIdManagerInstance());
             container.RegisterSingleton<ILogger>(() => new NLogLoggerSingleton(typeof(NLogLoggerSingleton)));
             container.Register<IIrmaContextFactory, IrmaContextFactory>(Lifestyle.Scoped);
             container.Register(typeof(ICommandHandler<>), new[] { Assembly.Load("WebSupport.DataAccess") }, Lifestyle.Scoped);
