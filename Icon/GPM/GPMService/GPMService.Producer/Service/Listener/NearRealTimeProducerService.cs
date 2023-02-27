@@ -1,9 +1,8 @@
-﻿using GPMService.Producer.ESB.Listener.NearRealTime;
-using Icon.Esb.ListenerApplication;
+﻿using GPMService.Producer.Listener.NearRealTime;
 using Icon.Logging;
 using Wfm.Aws.ExtendedClient.Listener.SQS;
 
-namespace GPMService.Producer.Service.ESB.Listener
+namespace GPMService.Producer.Service.Listener
 {
     internal class NearRealTimeProducerService : IGPMProducerService
     {

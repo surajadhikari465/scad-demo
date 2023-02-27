@@ -1,11 +1,9 @@
-﻿using Icon.ActiveMQ;
-using Icon.ActiveMQ.Producer;
-using Icon.Common.Email;
+﻿using Icon.Common.Email;
 using Icon.DbContextFactory;
 using Icon.Esb;
 using Icon.Logging;
 using SimpleInjector;
-using MammothR10Price.Esb.Listener;
+using MammothR10Price.Listener;
 using MammothR10Price.Publish;
 using MammothR10Price.Message.Processor;
 using MammothR10Price.Service;

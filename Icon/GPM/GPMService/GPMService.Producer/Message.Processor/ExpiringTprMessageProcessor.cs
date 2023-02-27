@@ -196,7 +196,7 @@ namespace GPMService.Producer.Message.Processor
                     try
                     {
                         messagePublisher.PublishMessage(serializer.Serialize(mammothPricesToBeSent, new Utf8StringWriter()), messageProperties);
-                        logger.Info($@"Region: {jobScheduleMessage.Region} | BusinessUnitID {businessUnit} | Number of expiring TPR Records sent to EMS: {mammothPricesToBeSent.MammothPrice.Length}");
+                        logger.Info($@"Region: {jobScheduleMessage.Region} | BusinessUnitID {businessUnit} | Number of expiring TPR Records sent: {mammothPricesToBeSent.MammothPrice.Length}");
                         justInTimePriceArchiver.ArchivePrice(mammothPricesToBeSent, messageProperties);
                     }
                     catch (Exception ex)

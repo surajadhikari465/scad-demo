@@ -1,9 +1,8 @@
-﻿using GPMService.Producer.ESB.Listener.JustInTime;
-using Icon.Esb.ListenerApplication;
+﻿using GPMService.Producer.Listener.JustInTime;
 using Icon.Logging;
 using Wfm.Aws.ExtendedClient.Listener.SQS;
 
-namespace GPMService.Producer.Service.ESB.Listener
+namespace GPMService.Producer.Service.Listener
 {
     internal class ExpiringTprProducerService : IGPMProducerService
     {

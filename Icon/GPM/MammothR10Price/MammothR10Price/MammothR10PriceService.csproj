@@ -188,7 +188,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="Esb.Listener\MammothR10PriceListener.cs" />
+    <Compile Include="Listener\MammothR10PriceListener.cs" />
     <Compile Include="MammothR10PriceServiceSettings.cs" />
     <Compile Include="Mapper\IMapper.cs" />
     <Compile Include="Mapper\ItemPriceCanonicalMapper.cs" />

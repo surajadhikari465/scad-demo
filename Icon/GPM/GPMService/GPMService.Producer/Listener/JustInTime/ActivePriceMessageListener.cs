@@ -1,16 +1,13 @@
 ﻿using GPMService.Producer.Message.Processor;
 using GPMService.Producer.Model;
 using Icon.Common.Email;
-using Icon.Esb.ListenerApplication;
-using Icon.Esb.Subscriber;
-using Icon.Esb;
 using Icon.Logging;
 using Wfm.Aws.ExtendedClient.Listener.SQS.Settings;
 using Wfm.Aws.ExtendedClient.SQS;
 using Wfm.Aws.ExtendedClient.Listener.SQS;
 using Wfm.Aws.ExtendedClient.SQS.Model;
 
-namespace GPMService.Producer.ESB.Listener.JustInTime
+namespace GPMService.Producer.Listener.JustInTime
 {
     internal class ActivePriceMessageListener : SQSExtendedClientListener<ActivePriceMessageListener>
     {

@@ -186,10 +186,9 @@
     <Compile Include="ErrorHandler\ConfirmBODErrorHandler.cs" />
     <Compile Include="ErrorHandler\ErrorEventPublisher.cs" />
     <Compile Include="ErrorHandler\ProcessBODErrorHandler.cs" />
-    <Compile Include="ESB.Infrastructure\Sb1EsbConsumer.cs" />
-    <Compile Include="ESB.Listener\JustInTime\ActivePriceMessageListener.cs" />
-    <Compile Include="ESB.Listener\JustInTime\ExpiringTprMessageListener.cs" />
-    <Compile Include="ESB.Listener\NearRealTime\NearRealTimeMessageListener.cs" />
+    <Compile Include="Listener\JustInTime\ActivePriceMessageListener.cs" />
+    <Compile Include="Listener\JustInTime\ExpiringTprMessageListener.cs" />
+    <Compile Include="Listener\NearRealTime\NearRealTimeMessageListener.cs" />
     <Compile Include="GPMException\ActionNotSuppliedException.cs" />
     <Compile Include="GPMException\DatabaseErrorException.cs" />
     <Compile Include="GPMException\DataErrorException.cs" />
@@ -224,9 +223,9 @@
     <Compile Include="Serializer\NamespaceHelper.cs" />
     <Compile Include="Serializer\Serializer.cs" />
     <Compile Include="Service\EmergencyPriceProducerService.cs" />
-    <Compile Include="Service\ESB.Listener\ActivePriceProducerService.cs" />
-    <Compile Include="Service\ESB.Listener\ExpiringTprProducerService.cs" />
-    <Compile Include="Service\ESB.Listener\NearRealTimeProducerService.cs" />
+    <Compile Include="Service\Listener\ActivePriceProducerService.cs" />
+    <Compile Include="Service\Listener\ExpiringTprProducerService.cs" />
+    <Compile Include="Service\Listener\NearRealTimeProducerService.cs" />
     <Compile Include="Service\IGPMProducerService.cs" />
     <Compile Include="Settings\GPMProducerServiceSettings.cs" />
     <Compile Include="SimpleInjectorInitializer.cs" />

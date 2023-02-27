@@ -1,5 +1,4 @@
-﻿using Icon.Esb.Subscriber;
-using Wfm.Aws.ExtendedClient.Listener.SQS.Settings;
+﻿using Wfm.Aws.ExtendedClient.Listener.SQS.Settings;
 using Wfm.Aws.ExtendedClient.SQS;
 using Wfm.Aws.ExtendedClient.SQS.Model;
 

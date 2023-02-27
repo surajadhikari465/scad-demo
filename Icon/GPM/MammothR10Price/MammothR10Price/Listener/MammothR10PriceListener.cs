@@ -6,7 +6,7 @@ using Wfm.Aws.ExtendedClient.Listener.SQS.Settings;
 using Wfm.Aws.ExtendedClient.SQS;
 using Wfm.Aws.ExtendedClient.SQS.Model;
 
-namespace MammothR10Price.Esb.Listener
+namespace MammothR10Price.Listener
 {
     public class MammothR10PriceListener: SQSExtendedClientListener<MammothR10PriceListener>
     {
