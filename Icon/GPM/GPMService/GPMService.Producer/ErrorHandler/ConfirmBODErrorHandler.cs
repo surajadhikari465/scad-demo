@@ -98,17 +98,17 @@ namespace GPMService.Producer.ErrorHandler
             };
             string errorType = Constants.ErrorTypes.DatabaseConstraint;
             string errorReasonCode = Constants.ErrorCodes.DataError;
-            if (exception is MappingException)
+            if (exception is MappingException || exception.InnerException is MappingException)
             {
                 errorType = Constants.ErrorTypes.Schema;
                 errorReasonCode = Constants.ErrorCodes.MappingError;
             }
-            else if (exception is ZeroRowsImpactedException)
+            else if (exception is ZeroRowsImpactedException || exception.InnerException is ZeroRowsImpactedException)
             {
                 errorType = Constants.ErrorTypes.Data;
                 errorReasonCode = Constants.ErrorCodes.ZeroRowsImpacted;
             }
-            else if (exception is ActionNotSuppliedException)
+            else if (exception is ActionNotSuppliedException || exception.InnerException is ActionNotSuppliedException)
             {
                 errorType = Constants.ErrorTypes.DatabaseConstraint;
                 errorReasonCode = Constants.ErrorCodes.DatabaseError;
