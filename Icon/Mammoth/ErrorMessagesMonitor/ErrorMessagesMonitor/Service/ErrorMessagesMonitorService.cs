@@ -24,8 +24,11 @@ namespace ErrorMessagesMonitor.Service
 
         public void Start()
         {
+            logger.Info($"Starting ErrorMessagesMonitor service in {errorMessagesMonitorServiceSettings.StartDelayInSeconds} seconds.");
+            Thread.Sleep(errorMessagesMonitorServiceSettings.StartDelayInSeconds * 1000);
             timer.Elapsed += RunService;
             timer.Start();
+            logger.Info("Started ErrorMessagesMonitor service.");
         }
 
         private void RunService(object sender, ElapsedEventArgs e)
@@ -47,11 +50,12 @@ namespace ErrorMessagesMonitor.Service
         {
             while (isServiceRunning)
             {
-                logger.Info($"Waiting for service run to complete before stopping.");
+                logger.Info($"Waiting for ErrorMessagesMonitor service run to complete before stopping.");
                 Thread.Sleep(15000);
             }
             timer.Stop();
             timer.Elapsed -= RunService;
+            logger.Info("Stopped ErrorMessagesMonitor service.");
         }
     }
 }

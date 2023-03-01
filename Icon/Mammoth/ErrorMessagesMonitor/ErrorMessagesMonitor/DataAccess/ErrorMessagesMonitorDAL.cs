@@ -39,7 +39,7 @@ namespace ErrorMessagesMonitor.DataAccess
         public IList<ErrorMessageModel> GetErrorMessages(string instanceID)
         {
             string getErrorMessages =
-                $@"SELECT TOP(100)
+                $@"SELECT
             	    Application,
             	    ErrorCode,
             	    ErrorSeverity,
@@ -61,7 +61,7 @@ namespace ErrorMessagesMonitor.DataAccess
         public IList<ErrorDetailsModel> GetErrorDetails(string instanceID, ErrorMessageModel errorMessage)
         {
             string getErrorDetails =
-                $@"SELECT TOP(100)
+                $@"SELECT
                     MessageID, 
                     ErrorDetails 
                 FROM gpm.ErrorMessages
