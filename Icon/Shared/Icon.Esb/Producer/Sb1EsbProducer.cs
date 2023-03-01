@@ -1,8 +1,7 @@
-﻿using Icon.Esb;
-using Icon.Esb.Producer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using TIBCO.EMS;
 
 namespace Icon.Esb.Producer
@@ -14,7 +13,8 @@ namespace Icon.Esb.Producer
         private Session session;
         private Destination destination;
         private MessageProducer producer;
-        
+        private string lastClientId = null;
+
         public string ClientId
         {
             get => connection.ClientID;
@@ -43,6 +43,7 @@ namespace Icon.Esb.Producer
         public Sb1EsbProducer(EsbConnectionSettings settings)
         {
             this.Settings = settings;
+            lastClientId = "Undefined-" + Guid.NewGuid().ToString("N");
         }
 
 
@@ -61,16 +62,20 @@ namespace Icon.Esb.Producer
 
         public void OpenConnection(string clientId)
         {
-            EMSSSLFileStoreInfo storeInfo = new EMSSSLFileStoreInfo();
-            storeInfo.SetSSLPassword(Settings.SslPassword.ToCharArray());
-            storeInfo.SetSSLClientIdentity(GetEsbCert());
+            this.lastClientId = clientId;
+            if (!IsConnected)
+            {
+                EMSSSLFileStoreInfo storeInfo = new EMSSSLFileStoreInfo();
+                storeInfo.SetSSLPassword(Settings.SslPassword.ToCharArray());
+                storeInfo.SetSSLClientIdentity(GetEsbCert());
 
-            factory = new ConnectionFactory(Settings.ServerUrl);
-            factory.SetTargetHostName(Settings.TargetHostName);
-            factory.SetCertificateStoreType(EMSSSLStoreType.EMSSSL_STORE_TYPE_FILE, storeInfo);
+                factory = new ConnectionFactory(Settings.ServerUrl);
+                factory.SetTargetHostName(Settings.TargetHostName);
+                factory.SetCertificateStoreType(EMSSSLStoreType.EMSSSL_STORE_TYPE_FILE, storeInfo);
 
-            connection = factory.CreateConnection(Settings.JmsUsername, Settings.JmsPassword);
-            connection.ClientID = clientId;
+                connection = factory.CreateConnection(Settings.JmsUsername, Settings.JmsPassword);
+                connection.ClientID = clientId;
+            }
 
             session = connection.CreateSession(false, Settings.SessionMode);
             destination = session.CreateQueue(Settings.QueueName);
@@ -80,21 +85,34 @@ namespace Icon.Esb.Producer
 
         public void Send(string message, Dictionary<string, string> messageProperties = null)
         {
-            TextMessage textMessage = session.CreateTextMessage(message);
+            Retry<Exception>(() =>
+            {
+                // Verify Connection
+                VerifyConnectionAndGracefullyReconnect();
 
-            Send(textMessage, messageProperties);
+                TextMessage textMessage = session.CreateTextMessage(message);
+
+                Send(textMessage, messageProperties);
+            });
         }
 
         public void Send(string message, string messageId, Dictionary<string, string> messageProperties = null)
         {
-            TextMessage textMessage = session.CreateTextMessage(message);
-            textMessage.MessageID = messageId;
+            Retry<Exception>(() =>
+            {
+                // Verify Connection
+                VerifyConnectionAndGracefullyReconnect();
 
-            Send(textMessage, messageProperties);
+                TextMessage textMessage = session.CreateTextMessage(message);
+                textMessage.MessageID = messageId;
+
+                Send(textMessage, messageProperties);
+            });
         }
 
         private void Send(TextMessage textMessage, Dictionary<string, string> messageProperties = null)
         {
+            // Set Properties
             if (messageProperties != null)
             {
                 foreach (var property in messageProperties)
@@ -103,7 +121,11 @@ namespace Icon.Esb.Producer
                 }
             }
 
-            producer.Send(textMessage);
+            // Verify Connection
+            VerifyConnectionAndGracefullyReconnect();
+
+            // Send Message, Retry on TIBCO.EMS.IllegalStateException 10 times with 30s between tries
+            Retry<IllegalStateException>(() => { producer.Send(textMessage); });
         }
 
 
@@ -120,6 +142,46 @@ namespace Icon.Esb.Producer
             catch (Exception ex)
             {
                 throw new Exception($"Unable to find certificate: {Settings.CertificateName}, ESB certificate is missing or invalid", ex);
+            }
+        }
+
+        private void VerifyConnectionAndGracefullyReconnect()
+        {
+            Retry<Exception>(() => {
+                if (!this.IsConnected || session.IsClosed)
+                {
+                    this.OpenConnection(this.lastClientId);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Retry an action maxRetries times, and waits timeBetweenRetries milliseconds between retries.
+        /// </summary>
+        /// <typeparam name="TException">Type of exception to retry.</typeparam>
+        /// <param name="action">Action to execute and retry if needed.</param>
+        /// <param name="maxRetries">Max times to retry: Default 10 times</param>
+        /// <param name="timeBetweenRetries">Time in milliseconds to wait between retries.: Default 30 seconds.</param>
+        private void Retry<TException>(Action action, int maxRetries = 10, int timeBetweenRetries = 30000) where TException : Exception
+        {
+            int retryCount = 0;
+            bool retry = true;
+            while (retry == true)
+            {
+                try
+                {
+                    action();
+                    retry = false;
+                }
+                catch (TException)
+                {
+                    retryCount++;
+                    if (retryCount >= maxRetries)
+                    {
+                        throw;
+                    }
+                    Thread.Sleep(timeBetweenRetries);
+                }
             }
         }
     }
