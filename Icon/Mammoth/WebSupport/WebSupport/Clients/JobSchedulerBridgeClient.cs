@@ -1,5 +1,7 @@
 ﻿using Icon.Common;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using WebSupport.Models;
 using Wfm.Aws.S3;
 using Wfm.Aws.S3.Settings;
@@ -30,7 +32,7 @@ namespace WebSupport.Clients
         {
             s3Facade.PutObject(
                 $"{queueNameConsumerS3Map[request.DestinationQueueName]}-{awsAccountId}",
-                messageId,
+                $"MammothWebSupport/{DateTime.UtcNow.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture)}/{messageId}",
                 message,
                 messageProperties
             );

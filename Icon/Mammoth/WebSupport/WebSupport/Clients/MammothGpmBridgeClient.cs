@@ -1,6 +1,7 @@
 ﻿using Icon.Common;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using WebSupport.DataAccess;
 using Wfm.Aws.ExtendedClient.Serializer;
 using Wfm.Aws.ExtendedClient.SQS;
@@ -44,7 +45,7 @@ namespace WebSupport.Clients
                 sqsExtendedClient.SendMessage(
                     queueUrl,
                     s3Bucket,
-                    messageId,
+                    $"MammothWebSupport/{DateTime.UtcNow.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture)}/{messageId}",
                     message,
                     RemoveNullSqsAttributes(messageProperties)
                 );
@@ -62,7 +63,7 @@ namespace WebSupport.Clients
                 sqsExtendedClient.SendMessage(
                     queueUrl,
                     s3Bucket,
-                    messageId,
+                    $"MammothWebSupport/{DateTime.UtcNow.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture)}/{messageId}",
                     message,
                     RemoveNullSqsAttributes(messageProperties)
                 );
@@ -76,7 +77,12 @@ namespace WebSupport.Clients
         public void SendToGpmProcessBod(string message, string messageId, Dictionary<string, string> messageProperties)
         {
             string s3Bucket = $"{Helpers.Constants.ConsumerS3Buckets.ProcessBodBucket}-{awsAccountId}";
-            s3Facade.PutObject(s3Bucket, messageId, message, messageProperties);
+            s3Facade.PutObject(
+                s3Bucket,
+                $"MammothWebSupport/{DateTime.UtcNow.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture)}/{messageId}",
+                message,
+                messageProperties
+                );
         }
 
         // Null is not supported as a valid value in SQS attributes, hence removing them in case it's sent to the client

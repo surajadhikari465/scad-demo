@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using Icon.Common;
 using Wfm.Aws.S3;
 using Wfm.Aws.S3.Settings;
@@ -19,7 +21,12 @@ namespace WebSupport.Clients
 
         public void Send(string message, string messageId, Dictionary<string, string> messageProperties)
         {
-            s3Facade.PutObject(dvsNrtGpmPriceBucket, messageId, message, messageProperties);
+            s3Facade.PutObject(
+                dvsNrtGpmPriceBucket,
+                $"MammothWebSupport/NearRealTime/{DateTime.UtcNow.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture)}/{messageId}",
+                message,
+                messageProperties
+                );
         }
     }
 }
