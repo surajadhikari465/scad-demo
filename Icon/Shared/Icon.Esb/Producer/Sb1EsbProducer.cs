@@ -78,7 +78,7 @@ namespace Icon.Esb.Producer
             }
 
             session = connection.CreateSession(false, Settings.SessionMode);
-            destination = session.CreateQueue(Settings.QueueName);
+            CreateDestination();
             producer = session.CreateProducer(destination);
             producer.DeliveryMode = DeliveryMode.PERSISTENT;
         }
@@ -142,6 +142,18 @@ namespace Icon.Esb.Producer
             catch (Exception ex)
             {
                 throw new Exception($"Unable to find certificate: {Settings.CertificateName}, ESB certificate is missing or invalid", ex);
+            }
+        }
+
+        protected void CreateDestination()
+        {
+            if (Settings.DestinationType.ToLower().Contains("topic"))
+            {
+                destination = session.CreateTopic(Settings.QueueName);
+            }
+            else
+            {
+                destination = session.CreateQueue(Settings.QueueName);
             }
         }
 
