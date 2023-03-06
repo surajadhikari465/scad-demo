@@ -15303,7 +15303,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private string uomConvRetailUomField;
 
-        private int costedByWeightField;
+        private bool costedByWeightField;
         
         private string itemCostField;
         
@@ -15515,7 +15515,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        public int costedByWeight
+        public bool costedByWeight
         {
             get
             {
