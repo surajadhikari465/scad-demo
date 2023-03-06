@@ -114,9 +114,11 @@ namespace InventoryProducer.Tests
             return new PurchaseOrdersModel()
             {
                 OrderHeaderId = orderItemID,
+                InvoiceNumber = 123456,
                 ExternalSource = "AMAZON",
                 PurchaseType = "Purchase Order",
                 SupplierNumber = "11161777",
+                SupplierName = "TestSupplierName",
                 LocationNumber = 10268,
                 LocationName = "ON SQUARE ONE (SQO)",
                 OrderSubTeamNo = 4900,
@@ -132,14 +134,18 @@ namespace InventoryProducer.Tests
                 DefaultScanCode = "1432151031",
                 HostSubTeamNumber = 1400,
                 HostSubTeamName = "Bin Bulk",
-                QuantityOrdered = 1,
+                QuantityOrdered = 4,
                 OrderedUnitCode = "CS",
                 OrderedUnit = "CASE",
-                PackSize1 = 1,
+                PackSize1 = 30,
                 PackSize2 = 1,
-                RetailUnit = "EACH",
+                RetailUnit = "LB",
+                CostedByWeight = 1,
                 ItemCost = 19.2244m,
-                ExpectedArrivalDate = new DateTime(2022, 05, 25, 10, 46, 00)
+                ExpectedArrivalDate = new DateTime(2022, 05, 25, 10, 46, 00),
+                EInvoiceQuantity = 4,
+                EInvoiceWeight = 120,
+                VendorItemNumber = "39283"
             };
         }
 

@@ -54,6 +54,7 @@ namespace InventoryProducer.Producer.DataAccess
                         'AMAZON' as ExternalSource,
                         'Purchase Order' as PurchaseType,
                         v.PS_Vendor_ID as SupplierNumber,
+                        v.CompanyName as SupplierName,
                         s.BusinessUnit_ID as LocationNumber,
                         s.Store_Name as LocationName,
                         sb.SubDept_No as OrderSubTeamNo,
@@ -89,6 +90,7 @@ namespace InventoryProducer.Producer.DataAccess
                         CAST(oi.Package_Desc1 as int) as PackSize1,
                         CAST(oi.Package_Desc2 as int) as PackSize2,
                         iui.Unit_Name as RetailUnit,
+                        i.CostedByWeight as CostedByWeight,
                         oi.UnitCost as ItemCost,
                         oi.DateReceived as EarliestArrivalDate,
                         oh.Expected_Date as ExpectedArrivalDate,
@@ -99,6 +101,8 @@ namespace InventoryProducer.Producer.DataAccess
 		                    WHEN oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description
 		                    ELSE NULL
 	                    END as OtherExternalSourceDescription
+                        iv.item_id as VendorItemNumber,
+                        oh.InvoiceNumber as InvoiceNumber
                     FROM OrderHeader oh (NOLOCK)
                     join Vendor psl (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
                     JOIN Store s (NOLOCK) on s.Store_No = psl.Store_no

@@ -208,7 +208,7 @@ namespace InventoryProducer.Mapper.Tests
             "<ns0:messageNumber>1</ns0:messageNumber>" +
             "<ns0:receiptStatus>Received</ns0:receiptStatus>" +
             "<ns0:isPastReceipt>true</ns0:isPastReceipt>" +
-            "<ns0:pastRceiptDate>2021-11-09T09:30:15.0000000-05:00</ns0:pastRceiptDate>" +
+            "<ns0:pastRceiptDate>2021-11-09T09:30:15.0000000-06:00</ns0:pastRceiptDate>" +
             "<ns0:purchaseOrderCreateDateTime>2022-05-25T10:46:00.0000000-05:00</ns0:purchaseOrderCreateDateTime>" +
             "<ns0:purchaseOrderSupplierNumber>0000210489</ns0:purchaseOrderSupplierNumber>" +
             "<ns0:receiptDetail>" +

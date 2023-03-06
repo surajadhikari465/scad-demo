@@ -10,9 +10,11 @@ namespace InventoryProducer.Producer.Model.DBModel
     {
         public int OrderHeaderId { get; set; }
         public int? ExternalOrderId { get; set; }
+        public int InvoiceNumber { get; set; }
         public string ExternalSource { get; set; }
         public string PurchaseType { get; set; }
         public string SupplierNumber { get; set; }
+        public string SupplierName { get; set; }
         public int LocationNumber { get; set; }
         public string LocationName { get; set; }
         public int? OrderSubTeamNo { get; set; }
@@ -39,6 +41,7 @@ namespace InventoryProducer.Producer.Model.DBModel
         public int? PackSize1 { get; set; }
         public int? PackSize2 { get; set; }
         public string RetailUnit { get; set; }
+        public int CostedByWeight { get; set; }
         public decimal? ItemCost { get; set; }
         public DateTime? EarliestArrivalDate { get; set; }
         public DateTime? ExpectedArrivalDate { get; set; }
@@ -46,6 +49,6 @@ namespace InventoryProducer.Producer.Model.DBModel
         public decimal? EInvoiceWeight { get; set; }
         public int? OtherOrderExternalSourceOrderID { get; set; }
         public string OtherExternalSourceDescription { get; set; }
-
+        public string VendorItemNumber { get; set; }
     }
 }

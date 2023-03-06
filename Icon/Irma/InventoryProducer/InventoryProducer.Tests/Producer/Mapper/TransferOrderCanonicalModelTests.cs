@@ -202,7 +202,6 @@ namespace InventoryProducer.Mapper.Tests
             "<ns0:hostSubTeamNumber>1</ns0:hostSubTeamNumber><ns0:hostSubTeamName>host_subteam</ns0:hostSubTeamName></SubTeam><defaultScanCode>1</defaultScanCode><transferQuantities><ns2:quantity>" +
             "<ns2:value>1</ns2:value><ns2:units><ns2:uom><ns1:code>EA</ns1:code></ns2:uom></ns2:units></ns2:quantity></transferQuantities><tsfStatus>status</tsfStatus>" +
             "<expectedArrivalDate>2022-10-11T01:30:30-05:00</expectedArrivalDate><packSize1>1</packSize1><packSize2>2</packSize2></transferOrderDetail></transferOrder></transferOrders>";
-
             Assert.AreEqual(xmlMessage, expectedXmlMessage);
         }
 
@@ -228,7 +227,6 @@ namespace InventoryProducer.Mapper.Tests
             "</cancelUserInfo><transferOrderDeletionDetail><transferOrderDetailNumber>0</transferOrderDetailNumber><sourceItemKey>1</sourceItemKey><defaultScanCode>1</defaultScanCode>" + 
             "</transferOrderDeletionDetail><transferOrderDeletionDetail><transferOrderDetailNumber>1</transferOrderDetailNumber><sourceItemKey>1</sourceItemKey>" + 
             "<defaultScanCode>1</defaultScanCode></transferOrderDeletionDetail></transferOrderDelete></transferOrders>";
-
             Assert.AreEqual(xmlMessage, expectedXmlMessage);
         }
 
@@ -252,7 +250,6 @@ namespace InventoryProducer.Mapper.Tests
             "xmlns=\"http://schemas.wfm.com/Enterprise/InventoryMgmt/TransferOrder/V1\"><transferOrderDelete><transferNumber>1</transferNumber><eventType>TSF_DEL</eventType>" +
             "<messageNumber>1</messageNumber><locationNumber>2</locationNumber><locationName>to</locationName><cancelUserInfo><ns0:idNumber>1</ns0:idNumber><ns0:name>user</ns0:name></cancelUserInfo>" +
             "<transferOrderDeletionDetail /><transferOrderDeletionDetail /></transferOrderDelete></transferOrders>";
-
             Assert.AreEqual(xmlMessage, expectedXmlMessage);
         }
     }

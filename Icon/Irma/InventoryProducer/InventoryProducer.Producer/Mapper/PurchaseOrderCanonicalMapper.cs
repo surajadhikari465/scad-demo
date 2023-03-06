@@ -93,7 +93,7 @@ namespace InventoryProducer.Producer.Mapper
                 }
                 canonicalDelete.externalPurchaseOrderReferences = externalPurchaseOrderReferenceList.ToArray();
             }
-
+            
             canonicalDelete.purchaseOrderDeletionDetail = CreatePurchaseOrderDeletionDetail(purchaseOrderList, eventType);
 
             return canonicalDelete;
@@ -113,6 +113,8 @@ namespace InventoryProducer.Producer.Mapper
                 messageNumber = messageNumber,
                 purchaseType = purchaseOrder.PurchaseType,
                 supplierNumber = purchaseOrder.SupplierNumber,
+                supplierName = purchaseOrder.SupplierName,
+                invoiceNumber = purchaseOrder.InvoiceNumber,
                 locationNumber = purchaseOrder.LocationNumber,
                 locationName = purchaseOrder.LocationName,
                 OrderSubTeam = new OrderSubTeamType()
@@ -186,6 +188,10 @@ namespace InventoryProducer.Producer.Mapper
                     purchaseOrder.OrderedUnitCode.Trim().ToUpper(),
                     out WfmUomCodeEnumType uomCode
                 );
+                bool eInvoiceWeightUomCodeSpecified = Enum.TryParse(
+                    purchaseOrder.RetailUnit.Trim().ToUpper(),
+                    out WfmUomCodeEnumType weightUomCode
+                );
                 detailList.Add(new PurchaseOrdersPurchaseOrderPurchaseOrderDetail()
                 {
                     PurchaseOrderDetailNumber = purchaseOrder.PurchaseOrderDetailNumber.GetValueOrDefault(),
@@ -199,6 +205,8 @@ namespace InventoryProducer.Producer.Mapper
                         hostSubTeamNumber = Convert.ToString(purchaseOrder.HostSubTeamNumber)
                     },
                     defaultScanCode = purchaseOrder.DefaultScanCode,
+                    vendorItemNumber = purchaseOrder.VendorItemNumber,
+                    costedByWeight = purchaseOrder.CostedByWeight,
                     quantities = new QuantityType[]
                     {
                         new QuantityType(){
@@ -240,8 +248,8 @@ namespace InventoryProducer.Producer.Mapper
                             {
                                 uom = new UomType()
                                 {
-                                    code = uomCode,
-                                    codeSpecified = purchaseOrder.EInvoiceQuantity.HasValue
+                                    code = weightUomCode,
+                                    codeSpecified = eInvoiceWeightUomCodeSpecified
                                 }
                             }
                         }
