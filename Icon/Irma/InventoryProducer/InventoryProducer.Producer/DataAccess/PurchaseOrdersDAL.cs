@@ -97,12 +97,12 @@ namespace InventoryProducer.Producer.DataAccess
 	                    oi.eInvoiceQuantity as EInvoiceQuantity,
 	                    oi.eInvoiceWeight as EInvoiceWeight,
 	                    oh.OrderExternalSourceOrderID as OtherOrderExternalSourceOrderID,
+                        iv.item_id as VendorItemNumber,
+                        oh.InvoiceNumber as InvoiceNumber,
 	                    CASE
 		                    WHEN oh.OrderExternalSourceOrderID IS NOT NULL THEN oes.Description
 		                    ELSE NULL
 	                    END as OtherExternalSourceDescription
-                        iv.item_id as VendorItemNumber,
-                        oh.InvoiceNumber as InvoiceNumber
                     FROM OrderHeader oh (NOLOCK)
                     join Vendor psl (NOLOCK) on oh.PurchaseLocation_ID = psl.Vendor_ID
                     JOIN Store s (NOLOCK) on s.Store_No = psl.Store_no
@@ -120,6 +120,7 @@ namespace InventoryProducer.Producer.DataAccess
                     JOIN SubTeam isb (NOLOCK) on isb.SubTeam_No = i.SubTeam_No
                     JOIN ItemUnit iuo (NOLOCK) on iuo.Unit_ID = oi.QuantityUnit
                     JOIN itemUnit iui (NOLOCK) on iui.Unit_ID = i.Retail_Unit_ID
+                    JOIN itemvendor iv (NOLOCK) on i.item_key = iv.item_key and v.Vendor_ID = iv.Vendor_ID
                     WHERE oh.OrderHeader_ID = @KeyId";
 
                 return irmaContext.Database.SqlQuery<PurchaseOrdersModel>(
