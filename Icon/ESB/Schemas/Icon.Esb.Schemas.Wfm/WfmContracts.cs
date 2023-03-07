@@ -14817,7 +14817,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private string externalPurchaseOrderNumberField;
 
-        private int invoiceNumberField;
+        private string invoiceNumberField;
 
         private string externalSourceField;
         
@@ -14890,7 +14890,7 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         }
 
         /// <remarks/>
-        public int invoiceNumber
+        public string invoiceNumber
         {
             get
             {
