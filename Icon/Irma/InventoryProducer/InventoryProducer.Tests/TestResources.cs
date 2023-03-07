@@ -114,7 +114,7 @@ namespace InventoryProducer.Tests
             return new PurchaseOrdersModel()
             {
                 OrderHeaderId = orderItemID,
-                InvoiceNumber = 123456,
+                InvoiceNumber = "123456",
                 ExternalSource = "AMAZON",
                 PurchaseType = "Purchase Order",
                 SupplierNumber = "11161777",

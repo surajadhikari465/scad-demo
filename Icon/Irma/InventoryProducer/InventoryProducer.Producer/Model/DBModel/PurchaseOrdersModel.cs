@@ -10,7 +10,7 @@ namespace InventoryProducer.Producer.Model.DBModel
     {
         public int OrderHeaderId { get; set; }
         public int? ExternalOrderId { get; set; }
-        public int InvoiceNumber { get; set; }
+        public string InvoiceNumber { get; set; }
         public string ExternalSource { get; set; }
         public string PurchaseType { get; set; }
         public string SupplierNumber { get; set; }
