@@ -41,7 +41,7 @@ namespace InventoryProducer.Producer.Model.DBModel
         public int? PackSize1 { get; set; }
         public int? PackSize2 { get; set; }
         public string RetailUnit { get; set; }
-        public int CostedByWeight { get; set; }
+        public bool CostedByWeight { get; set; }
         public decimal? ItemCost { get; set; }
         public DateTime? EarliestArrivalDate { get; set; }
         public DateTime? ExpectedArrivalDate { get; set; }

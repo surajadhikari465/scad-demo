@@ -140,7 +140,7 @@ namespace InventoryProducer.Tests
                 PackSize1 = 30,
                 PackSize2 = 1,
                 RetailUnit = "LB",
-                CostedByWeight = 1,
+                CostedByWeight = true,
                 ItemCost = 19.2244m,
                 ExpectedArrivalDate = new DateTime(2022, 05, 25, 10, 46, 00),
                 EInvoiceQuantity = 4,
