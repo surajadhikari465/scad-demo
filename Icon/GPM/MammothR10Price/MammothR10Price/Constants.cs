@@ -29,7 +29,7 @@ namespace MammothR10Price
         {
             public const string Reward = "Reward";
             public const string Rewards = "Rewards";
-            public const string TemporaryPriceReduction = "Temperorary Price Reduction";
+            public const string TemporaryPriceReduction = "Temporary Price Reduction";
             public const string RegularPrice = "Regular Price";
             public const string PrimeMemberIncremental = "Prime Member Incremental";
             public const string PrimeMemberDeal = "Prime Member Deal";
