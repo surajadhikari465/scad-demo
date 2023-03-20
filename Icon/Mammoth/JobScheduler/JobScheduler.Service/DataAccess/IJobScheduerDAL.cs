@@ -5,7 +5,9 @@ namespace JobScheduler.Service.DataAccess
 {
     internal interface IJobScheduerDAL
     {
+        void AcquireLock();
         List<GetJobSchedulesQueryModel> GetJobSchedules();
         void UpdateLastRunDateTime(int jobScheduleId);
+        void ReleaseLock();
     }
 }

@@ -19,22 +19,16 @@ namespace JobScheduler.Service.Service
             this.jobSchedulerProcessor = messageProcessor;
             this.jobSchedulerServiceSettings = jobSchedulerServiceSettings;
             this.logger = logger;
-            this.timer = new System.Timers.Timer(jobSchedulerServiceSettings.TimerProcessRunIntervalInMilliseconds);
+            long serviceRunIntervalInMilliseconds = jobSchedulerServiceSettings.ServiceRunIntervalInMinutes * 60 * 1000;
+            this.timer = new System.Timers.Timer(serviceRunIntervalInMilliseconds);
         }
 
         public void Start()
         {
-            // Introducing delay so that multiple instances don't process the data at the same time.
-            if (jobSchedulerServiceSettings.StartDelayInSeconds < 0)
-            {
-                logger.Warn($"Invalid value computed for StartDelayInSeconds - '{jobSchedulerServiceSettings.StartDelayInSeconds}'. Setting to 0.");
-                jobSchedulerServiceSettings.StartDelayInSeconds = 0;
-            }
-            logger.Info($"Starting JobScheduler service in {jobSchedulerServiceSettings.StartDelayInSeconds} seconds.");
-            Thread.Sleep(jobSchedulerServiceSettings.StartDelayInSeconds * 1000);
+            logger.Info($"Starting JobScheduler service with InstanceId: {jobSchedulerServiceSettings.InstanceId}.");
             timer.Elapsed += RunService;
             timer.Start();
-            logger.Info("Started JobScheduler service.");
+            logger.Info($"Started JobScheduler service with InstanceId: {jobSchedulerServiceSettings.InstanceId}.");
         }
 
         private void RunService(object sender, ElapsedEventArgs e)
@@ -54,15 +48,15 @@ namespace JobScheduler.Service.Service
 
         public void Stop()
         {
-            logger.Info("Stopping JobScheduler service.");
+            logger.Info($"Stopping JobScheduler service with InstanceId: {jobSchedulerServiceSettings.InstanceId}.");
             while (isServiceRunning)
             {
-                logger.Info($"Waiting for JobScheduler service run to complete before stopping.");
+                logger.Info($"Waiting for JobScheduler service run with InstanceId: {jobSchedulerServiceSettings.InstanceId} to complete before stopping.");
                 Thread.Sleep(15000);
             }
             timer.Stop();
             timer.Elapsed -= RunService;
-            logger.Info("Stopped JobScheduler service.");
+            logger.Info($"Stopped JobScheduler service with InstanceId: {jobSchedulerServiceSettings.InstanceId}.");
         }
     }
 }

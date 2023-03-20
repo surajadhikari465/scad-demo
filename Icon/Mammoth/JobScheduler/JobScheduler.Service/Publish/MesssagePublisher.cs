@@ -92,9 +92,9 @@ namespace JobScheduler.Service.Publish
             {
                 var computedClientId = $"JobScheduler.Type-{entry.Key}.{Environment.MachineName}.{Guid.NewGuid()}";
                 var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
-                logger.Info($"Opening JobScheduler-{entry.Key} ESB Connection");
+                logger.Info($"Opening JobScheduler-{entry.Key} ESB Connection with InstanceId: {jobSchedulerServiceSettings.InstanceId}.");
                 entry.Value.OpenConnection(clientId);
-                logger.Info($"JobScheduler-{entry.Key} ESB Connection Opened");
+                logger.Info($"JobScheduler-{entry.Key} ESB Connection Opened with InstanceId: {jobSchedulerServiceSettings.InstanceId}.");
             }
         }
     }

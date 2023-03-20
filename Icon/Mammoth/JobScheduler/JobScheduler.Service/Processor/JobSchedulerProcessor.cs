@@ -6,6 +6,7 @@ using JobScheduler.Service.ErrorHandler;
 using JobScheduler.Service.Model.DBModel;
 using JobScheduler.Service.Publish;
 using JobScheduler.Service.Serializer;
+using JobScheduler.Service.Settings;
 using System;
 using System.Collections.Generic;
 
@@ -18,13 +19,15 @@ namespace JobScheduler.Service.Processor
         private readonly ISerializer<JobSchedule> serializer;
         private readonly IErrorEventPublisher errorEventPublisher;
         private readonly ILogger<JobSchedulerProcessor> logger;
+        private readonly JobSchedulerServiceSettings jobSchedulerServiceSettings;
 
         public JobSchedulerProcessor(
             IJobScheduerDAL jobSchedulerDAL,
             IMessagePublisher messagePublisher,
             ISerializer<JobSchedule> serializer,
             IErrorEventPublisher errorEventPublisher,
-            ILogger<JobSchedulerProcessor> logger
+            ILogger<JobSchedulerProcessor> logger,
+            JobSchedulerServiceSettings jobSchedulerServiceSettings
             )
         {
             this.jobSchedulerDAL = jobSchedulerDAL;
@@ -32,6 +35,7 @@ namespace JobScheduler.Service.Processor
             this.serializer = serializer;
             this.errorEventPublisher = errorEventPublisher;
             this.logger = logger;
+            this.jobSchedulerServiceSettings = jobSchedulerServiceSettings;
         }
 
         public void Process()
@@ -39,8 +43,12 @@ namespace JobScheduler.Service.Processor
             string currentJobName = "UNDEFINED";
             try
             {
+                logger.Info($@"Started JobScheduler service instance with InstanceId: {jobSchedulerServiceSettings.InstanceId}.");
+                jobSchedulerDAL.AcquireLock();
                 List<GetJobSchedulesQueryModel> jobSchedules = jobSchedulerDAL.GetJobSchedules();
-                if (jobSchedules.Count > 0)
+                int totalJobsFetched = jobSchedules.Count;
+                logger.Info($@"Fetched {totalJobsFetched} jobs for JobScheduler service instance with InstanceId: {jobSchedulerServiceSettings.InstanceId}.");
+                if (totalJobsFetched > 0)
                 {
                     foreach (GetJobSchedulesQueryModel jobSchedule in jobSchedules)
                     {
@@ -52,7 +60,7 @@ namespace JobScheduler.Service.Processor
             }
             catch (Exception e)
             {
-                logger.Error($"Error occurred in JobScheduler. {e}");
+                logger.Error($"Error occurred in JobScheduler with InstanceId: {jobSchedulerServiceSettings.InstanceId}. {e}");
                 errorEventPublisher.PublishErrorEvent(
                     "JobScheduler",
                     "JobScheduler",
@@ -65,14 +73,20 @@ namespace JobScheduler.Service.Processor
                     e.Message
                     );
             }
+            finally
+            {
+                jobSchedulerDAL.ReleaseLock();
+                logger.Info($@"Released acquired locks, if any, for JobScheduler service instance with InstanceId: {jobSchedulerServiceSettings.InstanceId}.");
+                logger.Info($@"Ended JobScheduler service instance with InstanceId: {jobSchedulerServiceSettings.InstanceId}.");
+            }
         }
 
         private void StartJob(GetJobSchedulesQueryModel jobSchedule)
         {
-            logger.Info($@"Starting Job: {jobSchedule.JobName}, Region: {jobSchedule.Region}, DestinationQueueName: {jobSchedule.DestinationQueueName})");
+            logger.Info($@"Starting Job: {jobSchedule.JobName}, Region: {jobSchedule.Region}, DestinationQueueName: {jobSchedule.DestinationQueueName} with InstanceId: {jobSchedulerServiceSettings.InstanceId}.");
             JobSchedule jobScheduleCanonical = MapToJobScheduleCanonical(jobSchedule);
             messagePublisher.PublishMessage(jobSchedule.DestinationQueueName, serializer.Serialize(jobScheduleCanonical, new Utf8StringWriter()), new Dictionary<string, string>());
-            logger.Info($@"Completed Job: {jobSchedule.JobName}, Region: {jobSchedule.Region}, DestinationQueueName: {jobSchedule.DestinationQueueName})");
+            logger.Info($@"Completed Job: {jobSchedule.JobName}, Region: {jobSchedule.Region}, DestinationQueueName: {jobSchedule.DestinationQueueName} with InstanceId: {jobSchedulerServiceSettings.InstanceId}.");
         }
 
         private JobSchedule MapToJobScheduleCanonical(GetJobSchedulesQueryModel jobSchedule)
