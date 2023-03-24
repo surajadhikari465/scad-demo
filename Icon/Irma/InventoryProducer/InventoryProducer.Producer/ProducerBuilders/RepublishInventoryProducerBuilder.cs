@@ -1,6 +1,4 @@
-﻿using Icon.Esb.Producer;
-using Icon.Esb;
-using Icon.Logging;
+﻿using Icon.Logging;
 using InventoryProducer.Common;
 using InventoryProducer.Producer.QueueProcessors;
 using Irma.Framework;
@@ -23,7 +21,6 @@ namespace InventoryProducer.Producer.ProducerBuilders
             IDbContextFactory<IrmaContext> irmaContextFactory = new IrmaDbContextFactory();
             IDbContextFactory<MammothContext> mammothContextFactory = new MammothContextFactory();
 
-            var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("InventoryTopicName"));
             var activeMqProducer = new ActiveMQDynamicProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig());
 
             var computedClientId = $"{settings.Source}InventoryProducer.Type-{settings.ProducerType}.{Environment.MachineName}.{Guid.NewGuid()}";
@@ -32,15 +29,11 @@ namespace InventoryProducer.Producer.ProducerBuilders
             var baseLogger = new InventoryLogger<InventoryProducerBase>(new NLogLoggerInstance<InventoryProducerBase>(instance), irmaContextFactory, settings);
             baseLogger.LogInfo("Running RepublishInventoryProducerBuilder.ComposeProducer");
 
-            baseLogger.LogInfo("Opening ESB Connection");
-            producer.OpenConnection(clientId);
-            baseLogger.LogInfo("ESB Connection Opened");
-
             baseLogger.LogInfo("Opening ActiveMQ Connection");
             activeMqProducer.OpenConnection(clientId);
             baseLogger.LogInfo("ActiveMQ Connection Opened");
 
-            var messagePublisher = new RepublishInventoryMessagePublisher(activeMqProducer, producer);
+            var messagePublisher = new RepublishInventoryMessagePublisher(activeMqProducer);
             var republishInventoryDal = new RepublishInventoryDAL(irmaContextFactory, settings);
 
             var queueProcessorLogger = new InventoryLogger<RepublishInventoryQueueProcessor>(

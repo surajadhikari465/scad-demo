@@ -1,10 +1,4 @@
-﻿using System;
-using Icon.Esb;
-using Icon.Esb.Producer;
-using Icon.ActiveMQ;
-using Icon.ActiveMQ.Producer;
-using Icon.Logging;
-using Irma.Framework;
+﻿using Irma.Framework;
 using InventoryProducer.Common;
 using InventoryProducer.Producer.QueueProcessors;
 using InventoryProducer.Producer.DataAccess;
@@ -12,11 +6,8 @@ using InventoryProducer.Producer.Helpers;
 using InventoryProducer.Producer.Mapper;
 using InventoryProducer.Producer.Publish;
 using InventoryProducer.Common.InstockDequeue;
-using Mammoth.Framework;
 using OrderReceipts = Icon.Esb.Schemas.Wfm.Contracts.orderReceipts;
 using InventoryProducer.Common.Serializers;
-using Icon.Esb.Schemas.Wfm.Contracts;
-using InventoryProducer.Common.InstockDequeue.Schemas;
 using Icon.DbContextFactory;
 using InventoryProducer.Producer.Model.DBModel;
 

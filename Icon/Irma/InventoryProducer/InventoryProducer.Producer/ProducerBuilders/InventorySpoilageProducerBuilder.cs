@@ -1,6 +1,4 @@
 using System;
-using Icon.Esb;
-using Icon.Esb.Producer;
 using Icon.ActiveMQ;
 using Icon.ActiveMQ.Producer;
 using Icon.Logging;
@@ -27,17 +25,12 @@ namespace InventoryProducer.Producer.ProducerBuilders
             IDbContextFactory<MammothContext> mammothContextFactory = new MammothContextFactory();
             ISerializer<inventoryAdjustments> serializer = new Serializer<inventoryAdjustments>();
             ISerializer<EventTypes> instockDequeueSerializer = new Serializer<EventTypes>();
-            var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("InventoryTopicName"));
             var activeMqProducer = new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig("ActiveMqInventorySpoilageQueueName"));
             var computedClientId = $"{settings.Source}InventoryProducer.Type-{settings.ProducerType}.{Environment.MachineName}.{Guid.NewGuid()}";
             var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
 
             var baseLogger = new InventoryLogger<InventoryProducerBase>(new NLogLoggerInstance<InventoryProducerBase>(instance), irmaContextFactory, settings);
             baseLogger.LogInfo("Running InventorySpoilageProducerBuilder.ComposeProducer");
-
-            baseLogger.LogInfo("Opening ESB Connection");
-            producer.OpenConnection(clientId);
-            baseLogger.LogInfo("ESB Connection Opened");
 
             baseLogger.LogInfo("Opening ActiveMQ Connection");
             activeMqProducer.OpenConnection(clientId);
@@ -70,7 +63,6 @@ namespace InventoryProducer.Producer.ProducerBuilders
                 instockDequeueService,
                 serializer,
                 instockDequeueSerializer,
-                producer,
                 activeMqProducer);
 
             return new InventoryProducerBase(baseLogger, inventorySpoilageQueueProcessor);

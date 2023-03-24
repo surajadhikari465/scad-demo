@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Icon.ActiveMQ.Producer;
-using Icon.Esb.Producer;
 using InventoryProducer.Producer.Publish;
 
 namespace InventoryProducer.Tests.Producer.Publish
@@ -12,15 +11,13 @@ namespace InventoryProducer.Tests.Producer.Publish
     public class MessagePublisherTests
     {
         private IMessagePublisher messagePublisher;
-        private Mock<IEsbProducer> esbProducerMock;
         private Mock<IActiveMQProducer> activeMqProducerMock;
 
         [TestInitialize]
         public void Initialize()
         {
-            esbProducerMock = new Mock<IEsbProducer>();
             activeMqProducerMock = new Mock<IActiveMQProducer>();
-            messagePublisher = new MessagePublisher(activeMqProducerMock.Object, esbProducerMock.Object);
+            messagePublisher = new MessagePublisher(activeMqProducerMock.Object);
         }
 
         [TestMethod]
@@ -28,14 +25,12 @@ namespace InventoryProducer.Tests.Producer.Publish
         {
             // Given
             activeMqProducerMock.Setup(a => a.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
-            esbProducerMock.Setup(a => a.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
 
             // When
             messagePublisher.PublishMessage("message", null, null, null);
 
             // Assert
             activeMqProducerMock.Verify(a => a.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
-            esbProducerMock.Verify(a => a.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
 
         [TestMethod]
@@ -45,7 +40,6 @@ namespace InventoryProducer.Tests.Producer.Publish
             var onSuccessInvoked = false;
             var onErrorInvoked = false;
             activeMqProducerMock.Setup(a => a.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
-            esbProducerMock.Setup(a => a.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
 
             // When
             messagePublisher.PublishMessage("message", null, () =>
@@ -58,7 +52,6 @@ namespace InventoryProducer.Tests.Producer.Publish
 
             // Assert
             activeMqProducerMock.Verify(a => a.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
-            esbProducerMock.Verify(a => a.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
             Assert.IsTrue(onSuccessInvoked);
             Assert.IsFalse(onErrorInvoked);
         }
@@ -70,7 +63,6 @@ namespace InventoryProducer.Tests.Producer.Publish
             var onSuccessInvoked = false;
             var onErrorInvoked = false;
             activeMqProducerMock.Setup(a => a.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
-            esbProducerMock.Setup(a => a.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new Exception("Test"));
 
             // When
             messagePublisher.PublishMessage("message", null, () =>
@@ -83,7 +75,6 @@ namespace InventoryProducer.Tests.Producer.Publish
 
             // Assert
             activeMqProducerMock.Verify(a => a.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
-            esbProducerMock.Verify(a => a.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
             Assert.IsTrue(onErrorInvoked);
             Assert.IsFalse(onSuccessInvoked);
         }

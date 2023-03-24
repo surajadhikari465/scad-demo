@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Icon.Esb.Producer;
 using Icon.ActiveMQ.Producer;
 using InventoryProducer.Common.InstockDequeue;
 using InventoryProducer.Common;
@@ -30,7 +29,6 @@ namespace InventoryProducer.Producer.QueueProcessors
         private readonly InstockDequeueService instockDequeueService;
         private readonly ISerializer<inventoryAdjustments> serializer;
         private readonly ISerializer<EventTypes> instockDequeueSerializer;
-        private readonly IEsbProducer producer;
         private readonly IActiveMQProducer activeMqProducer;
         private readonly RetryPolicy retrypolicy;
         public InventorySpoilageQueueProcessor(
@@ -41,7 +39,6 @@ namespace InventoryProducer.Producer.QueueProcessors
             InstockDequeueService instockDequeueService,
             ISerializer<inventoryAdjustments> serializer,
             ISerializer<EventTypes> instockDequeueSerializer,
-            IEsbProducer producer,
             IActiveMQProducer activeMqProducer)
         {
             this.irmaContextFactory = irmaContextFactory;
@@ -51,7 +48,6 @@ namespace InventoryProducer.Producer.QueueProcessors
             this.instockDequeueService = instockDequeueService;
             this.serializer = serializer;
             this.instockDequeueSerializer = instockDequeueSerializer;
-            this.producer = producer;
             this.activeMqProducer = activeMqProducer;
             this.retrypolicy = RetryPolicy
                 .Handle<Exception>()
@@ -256,13 +252,7 @@ namespace InventoryProducer.Producer.QueueProcessors
         {
             inventoryLogger.LogInfo(string.Format("Preparing to send message {0}.", headers[Constants.MessageProperty.TransactionID]));
             SendToActiveMq(xmlPayload, headers);
-            SendToEsb(xmlPayload, headers);
             inventoryLogger.LogInfo(string.Format("Sent message {0}.", headers[Constants.MessageProperty.TransactionID]));
-        }
-
-        private void SendToEsb(string xmlMessage, Dictionary<string, string> messageProperties)
-        {
-            producer.Send(xmlMessage, messageProperties);
         }
 
         private void SendToActiveMq(string xmlMessage, Dictionary<string, string> messageProperties)

@@ -1,14 +1,11 @@
 ﻿using Icon.ActiveMQ;
 using Icon.ActiveMQ.Producer;
 using Icon.DbContextFactory;
-using Icon.Esb;
-using Icon.Esb.Producer;
 using Icon.Logging;
 using InventoryProducer.Common;
 using InventoryProducer.Common.InstockDequeue;
 using InventoryProducer.Common.InstockDequeue.Schemas;
 using InventoryProducer.Common.Serializers;
-using InventoryProducer.Producer.DataAccess;
 using InventoryProducer.Producer.Helpers;
 using InventoryProducer.Producer.Publish;
 using InventoryProducer.Producer.QueueProcessors;
@@ -32,17 +29,12 @@ namespace InventoryProducer.Producer.ProducerBuilders
             IDbContextFactory<MammothContext> mammothContextFactory = new MammothContextFactory();
             ISerializer<CanonicalType> serializer = new Serializer<CanonicalType>();
             ISerializer<EventTypes> instockDequeueSerializer = new Serializer<EventTypes>();
-            var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("InventoryTopicName"));
             var activeMqProducer = new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig(this.ActiveMQQueueConfigName));
             var computedClientId = $"{settings.Source}InventoryProducer.Type-{settings.ProducerType}.{Environment.MachineName}.{Guid.NewGuid()}";
             var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
 
             var logger = new InventoryLogger<InventoryProducerBase>(new NLogLoggerInstance<InventoryProducerBase>(instance), irmaContextFactory, settings);
             logger.LogInfo($"Running {ApplicationName}.ComposeProducer");
-
-            logger.LogInfo("Opening ESB Connection");
-            producer.OpenConnection(clientId);
-            logger.LogInfo("ESB Connection Opened");
 
             logger.LogInfo("Opening ActiveMQ Connection");
             activeMqProducer.OpenConnection(clientId);
@@ -67,7 +59,7 @@ namespace InventoryProducer.Producer.ProducerBuilders
                     )
                 );
 
-            var messagePublisher = new MessagePublisher(activeMqProducer, producer);
+            var messagePublisher = new MessagePublisher(activeMqProducer);
             var archiveInventoryEvents = new ArchiveInventoryEvents(irmaContextFactory, settings);
             var errorEventPublisher = new ErrorEventPublisher(mammothContextFactory, instockDequeueSerializer, ApplicationName);
 

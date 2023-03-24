@@ -1,6 +1,5 @@
 ﻿using Icon.ActiveMQ.Producer;
 using Icon.Common;
-using Icon.Esb.Producer;
 using InvConstants = InventoryProducer.Common.Constants;
 using TransactionType = InventoryProducer.Common.Constants.TransactionType;
 using System;
@@ -11,17 +10,14 @@ namespace InventoryProducer.Producer.Publish
     internal class RepublishInventoryMessagePublisher : IMessagePublisher
     {
         IActiveMQDynamicProducer activeMqProducer;
-        IEsbProducer esbProducer;
 
-        public RepublishInventoryMessagePublisher(IActiveMQDynamicProducer activeMqProducer, IEsbProducer esbProducer)
+        public RepublishInventoryMessagePublisher(IActiveMQDynamicProducer activeMqProducer)
         {
             this.activeMqProducer = activeMqProducer;
-            this.esbProducer = esbProducer;
         }
 
         public void PublishMessage(string message, Dictionary<string, string> messageProperties, Action onSuccess, Action<Exception> onFailure)
         {
-            esbProducer.Send(message, messageProperties);
             activeMqProducer.Send(
                 GetActiveMqQueueName(messageProperties[InvConstants.MessageProperty.TransactionType]),
                 message,
