@@ -78,9 +78,9 @@ namespace ErrorMessagesMonitor.Message.Processor
                                 contentJsonString,
                                 "Send Opsgenie Alert for Fatal Error"
                             );
-
-                            logger.Info("Sending error notification is successful");
+                            logger.Info($"Opsgenie alert generated successfully for Application: {errorDetailsCanonicalModel.Application}, Error Code: {errorDetailsCanonicalModel.ErrorCode} Error Severity: {errorDetailsCanonicalModel.ErrorSeverity}");
                         }
+                        logger.Info($"Sending error notification is successful for Application: {errorDetailsCanonicalModel.Application}, Error Code: {errorDetailsCanonicalModel.ErrorCode} Error Severity: {errorDetailsCanonicalModel.ErrorSeverity}");
                     }
                     catch (Exception sendErrorNotificationException)
                     {
