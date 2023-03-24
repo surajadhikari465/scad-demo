@@ -82,11 +82,11 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
         public void QueueProcessor_ProcessMessageQueue_WhenReceiveDAL_ReturnsEmpty()
         {
             // Given
-            instockDequeueService.Setup(i => i.GetDequeuedMessages()).Returns(
+            instockDequeueService.SetupSequence(i => i.GetDequeuedMessages()).Returns(
                 new List<InstockDequeueResult> {
                     TestResources.GetInstockDequeueResult("PO_CRE")
                 }
-            );
+            ).Returns(new List<InstockDequeueResult> { });
             purchaseOrderDAL.Setup(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
                 new List<PurchaseOrdersModel> { }
             );
@@ -95,7 +95,7 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             queueProcessor.ProcessMessageQueue();
 
             // Assert
-            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
+            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Exactly(2));
             errorEventPublisher.Verify(e => e.PublishErrorEventToMammoth(It.IsAny<InstockDequeueResult>(), It.IsAny<Exception>()), Times.Never);
             purchaseOrderDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Once);
             purchaseOrderCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<PurchaseOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Never);
@@ -109,11 +109,11 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
         public void QueueProcessor_ProcessMessageQueue_WhenReceiveDAL_ThrowsException()
         {
             // Given
-            instockDequeueService.Setup(i => i.GetDequeuedMessages()).Returns(
+            instockDequeueService.SetupSequence(i => i.GetDequeuedMessages()).Returns(
                 new List<InstockDequeueResult> {
                     TestResources.GetInstockDequeueResult("PO_CRE")
                 }
-            );
+            ).Returns(new List<InstockDequeueResult> { });
             purchaseOrderDAL.Setup(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Throws(
                 new Exception("Test")
             );
@@ -122,7 +122,7 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             queueProcessor.ProcessMessageQueue();
 
             // Assert
-            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
+            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Exactly(2));
             errorEventPublisher.Verify(e => e.PublishErrorEventToMammoth(It.IsAny<InstockDequeueResult>(), It.IsAny<Exception>()), Times.Once);
             purchaseOrderDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Exactly(1));
             purchaseOrderCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<PurchaseOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Never);
@@ -136,11 +136,11 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
         public void QueueProcessor_ProcessMessageQueue_WhenMapper_ThrowsError()
         {
             // Given
-            instockDequeueService.Setup(i => i.GetDequeuedMessages()).Returns(
+            instockDequeueService.SetupSequence(i => i.GetDequeuedMessages()).Returns(
                 new List<InstockDequeueResult> {
                     TestResources.GetInstockDequeueResult("PO_CRE")
                 }
-            );
+            ).Returns(new List<InstockDequeueResult> { });
             purchaseOrderDAL.Setup(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
                 TestResources.GetPurchaseOrderList(1)
             );
@@ -150,7 +150,7 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             queueProcessor.ProcessMessageQueue();
 
             // Assert
-            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
+            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Exactly(2));
             errorEventPublisher.Verify(e => e.PublishErrorEventToMammoth(It.IsAny<InstockDequeueResult>(), It.IsAny<Exception>()), Times.Once);
             purchaseOrderDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Exactly(1));
             purchaseOrderCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<PurchaseOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Once);
@@ -164,11 +164,11 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
         public void QueueProcessor_ProcessMessageQueue_WhenMapperSerialization_ThrowsError()
         {
             // Given
-            instockDequeueService.Setup(i => i.GetDequeuedMessages()).Returns(
+            instockDequeueService.SetupSequence(i => i.GetDequeuedMessages()).Returns(
                 new List<InstockDequeueResult> {
                     TestResources.GetInstockDequeueResult("PO_CRE")
                 }
-            );
+            ).Returns(new List<InstockDequeueResult> { });
             purchaseOrderDAL.Setup(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
                 TestResources.GetPurchaseOrderList(1)
             );
@@ -179,7 +179,7 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             queueProcessor.ProcessMessageQueue();
 
             // Assert
-            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
+            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Exactly(2));
             purchaseOrderDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Once);
             purchaseOrderCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<PurchaseOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Once);
             purchaseOrderCanonicalMapper.Verify(t => t.SerializeToXml(It.IsAny<PurchaseOrderCanonical>()), Times.Once);
@@ -194,11 +194,11 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
         public void QueueProcessor_ProcessMessageQueue_WhenNoError()
         {
             // Given
-            instockDequeueService.Setup(i => i.GetDequeuedMessages()).Returns(
+            instockDequeueService.SetupSequence(i => i.GetDequeuedMessages()).Returns(
                 new List<InstockDequeueResult> {
                     TestResources.GetInstockDequeueResult("PO_CRE")
                 }
-            );
+            ).Returns(new List<InstockDequeueResult> { });
             purchaseOrderDAL.Setup(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
                 TestResources.GetPurchaseOrderList(1)
             );
@@ -211,7 +211,7 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             queueProcessor.ProcessMessageQueue();
 
             // Assert
-            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
+            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Exactly(2));
             purchaseOrderDAL.Verify(t => t.Get(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Exactly(1));
             purchaseOrderCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<PurchaseOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Once);
             purchaseOrderCanonicalMapper.Verify(t => t.SerializeToXml(It.IsAny<PurchaseOrderCanonical>()), Times.Once);

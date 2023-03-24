@@ -62,7 +62,7 @@ namespace InventoryProducer.Tests.Producer.Publish
             // Given
             var onSuccessInvoked = false;
             var onErrorInvoked = false;
-            activeMqProducerMock.Setup(a => a.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
+            activeMqProducerMock.Setup(a => a.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new Exception("Test"));
 
             // When
             messagePublisher.PublishMessage("message", null, () =>

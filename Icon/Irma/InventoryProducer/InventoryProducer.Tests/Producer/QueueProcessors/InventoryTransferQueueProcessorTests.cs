@@ -83,11 +83,11 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
         public void QueueProcessor_ProcessMessageQueue_WhenTransferOrdersDal_ReturnsEmpty()
         {
             // Given
-            instockDequeueService.Setup(i => i.GetDequeuedMessages()).Returns(
+            instockDequeueService.SetupSequence(i => i.GetDequeuedMessages()).Returns(
                 new List<InstockDequeueResult> {
                     TestResources.GetInstockDequeueResult("TSF_CRE")
                 }
-            );
+            ).Returns(new List<InstockDequeueResult> { });
             transferOrdersDal.Setup(t => t.GetTransferOrders(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
                 new List<TransferOrdersModel> { }
             );
@@ -96,7 +96,7 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             queueProcessor.ProcessMessageQueue();
 
             // Assert
-            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
+            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Exactly(2));
             errorEventPublisher.Verify(e => e.PublishErrorEventToMammoth(It.IsAny<InstockDequeueResult>(), It.IsAny<Exception>()), Times.Never);
             transferOrdersDal.Verify(t => t.GetTransferOrders(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Once);
             transferOrderXmlCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<TransferOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Never);
@@ -110,11 +110,11 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
         public void QueueProcessor_ProcessMessageQueue_WhenTransferOrdersDal_ThrowsException()
         {
             // Given
-            instockDequeueService.Setup(i => i.GetDequeuedMessages()).Returns(
+            instockDequeueService.SetupSequence(i => i.GetDequeuedMessages()).Returns(
                 new List<InstockDequeueResult> {
                     TestResources.GetInstockDequeueResult("TSF_CRE")
                 }
-            );
+            ).Returns(new List<InstockDequeueResult> { });
             transferOrdersDal.Setup(t => t.GetTransferOrders(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Throws(
                 new Exception("Test")
             );
@@ -123,7 +123,7 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             queueProcessor.ProcessMessageQueue();
 
             // Assert
-            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
+            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Exactly(2));
             errorEventPublisher.Verify(e => e.PublishErrorEventToMammoth(It.IsAny<InstockDequeueResult>(), It.IsAny<Exception>()), Times.Once);
             transferOrdersDal.Verify(t => t.GetTransferOrders(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Exactly(1));
             transferOrderXmlCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<TransferOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Never);
@@ -137,11 +137,11 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
         public void QueueProcessor_ProcessMessageQueue_WhenMapper_ThrowsError()
         {
             // Given
-            instockDequeueService.Setup(i => i.GetDequeuedMessages()).Returns(
+            instockDequeueService.SetupSequence(i => i.GetDequeuedMessages()).Returns(
                 new List<InstockDequeueResult> {
                     TestResources.GetInstockDequeueResult("TSF_CRE")
                 }
-            );
+            ).Returns(new List<InstockDequeueResult> { });
             transferOrdersDal.Setup(t => t.GetTransferOrders(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
                 TestResources.GetTransferOrdersList(1)
             );
@@ -151,7 +151,7 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             queueProcessor.ProcessMessageQueue();
 
             // Assert
-            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
+            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Exactly(2));
             errorEventPublisher.Verify(e => e.PublishErrorEventToMammoth(It.IsAny<InstockDequeueResult>(), It.IsAny<Exception>()), Times.Once);
             transferOrdersDal.Verify(t => t.GetTransferOrders(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Exactly(1));
             transferOrderXmlCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<TransferOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Once);
@@ -165,11 +165,11 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
         public void QueueProcessor_ProcessMessageQueue_WhenMapperSerialization_ThrowsError()
         {
             // Given
-            instockDequeueService.Setup(i => i.GetDequeuedMessages()).Returns(
+            instockDequeueService.SetupSequence(i => i.GetDequeuedMessages()).Returns(
                 new List<InstockDequeueResult> {
                     TestResources.GetInstockDequeueResult("TSF_CRE")
                 }
-            );
+            ).Returns(new List<InstockDequeueResult> { });
             transferOrdersDal.Setup(t => t.GetTransferOrders(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
                 TestResources.GetTransferOrdersList(1)
             );
@@ -180,7 +180,7 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             queueProcessor.ProcessMessageQueue();
 
             // Assert
-            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
+            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Exactly(2));
             transferOrdersDal.Verify(t => t.GetTransferOrders(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Once);
             transferOrderXmlCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<TransferOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Once);
             transferOrderXmlCanonicalMapper.Verify(t => t.SerializeToXml(It.IsAny<TransferOrdersCanonical>()), Times.Once);
@@ -195,11 +195,11 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
         public void QueueProcessor_ProcessMessageQueue_WhenNoError()
         {
             // Given
-            instockDequeueService.Setup(i => i.GetDequeuedMessages()).Returns(
+            instockDequeueService.SetupSequence(i => i.GetDequeuedMessages()).Returns(
                 new List<InstockDequeueResult> {
                     TestResources.GetInstockDequeueResult("TSF_CRE")
                 }
-            );
+            ).Returns(new List<InstockDequeueResult> { });
             transferOrdersDal.Setup(t => t.GetTransferOrders(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>())).Returns(
                 TestResources.GetTransferOrdersList(1)
             );
@@ -212,7 +212,7 @@ namespace InventoryProducer.Tests.Producer.QueueProcessors
             queueProcessor.ProcessMessageQueue();
 
             // Assert
-            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Once);
+            instockDequeueService.Verify(i => i.GetDequeuedMessages(), Times.Exactly(2));
             transferOrdersDal.Verify(t => t.GetTransferOrders(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int?>()), Times.Exactly(1));
             transferOrderXmlCanonicalMapper.Verify(t => t.TransformToXmlCanonical(It.IsAny<IList<TransferOrdersModel>>(), It.IsAny<InstockDequeueResult>()), Times.Once);
             transferOrderXmlCanonicalMapper.Verify(t => t.SerializeToXml(It.IsAny<TransferOrdersCanonical>()), Times.Once);
