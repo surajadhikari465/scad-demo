@@ -47,7 +47,6 @@ namespace GPMService.Producer
             container.RegisterSingleton<ErrorEventPublisher>();
             container.RegisterSingleton<ISerializer<ErrorMessage>, Serializer<ErrorMessage>>();
             RegisterServiceImplementation(container, serviceType);
-            container.Verify();
             return container;
         }
 

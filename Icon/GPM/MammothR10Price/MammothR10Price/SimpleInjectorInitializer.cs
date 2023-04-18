@@ -64,7 +64,6 @@ namespace MammothR10Price
             container.RegisterSingleton<IMessageArchiver, MessageArchiver>();
             container.RegisterSingleton<IProducerService, MammothR10PriceService>();
             container.RegisterSingleton<ISQSExtendedClientListener, MammothR10PriceListener>();
-            container.Verify();
             return container;
         }
     }
