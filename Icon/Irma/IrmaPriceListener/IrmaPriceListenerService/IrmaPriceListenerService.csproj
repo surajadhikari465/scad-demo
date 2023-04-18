@@ -206,12 +206,10 @@
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
-      <SubType>Designer</SubType>
     </None>
     <None Include="App.Test.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
-      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
