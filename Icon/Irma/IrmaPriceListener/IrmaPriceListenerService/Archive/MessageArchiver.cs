@@ -121,7 +121,7 @@ namespace IrmaPriceListenerService.Archive
         private void ArchiveMessageToDb(SQSExtendedClientReceiveModel message)
         {
             string messageAttributesJson = JsonConvert.SerializeObject(message.MessageAttributes);
-            string messageBodyUtf16 = message.S3Details[0].Data.Replace("UTF-8", "UTF-16");
+            string messageBody = message.S3Details[0].Data.Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "");
 
             using (var mammothContext = mammothDbContextFactory.CreateContext())
             {
@@ -146,7 +146,7 @@ namespace IrmaPriceListenerService.Archive
                     new SqlParameter("@MessageId", message.MessageAttributes[Constants.MessageAttribute.TransactionId]),
                     new SqlParameter("@MessageType", "Irma Price"),
                     new SqlParameter("@MessageHeadersJson", messageAttributesJson),
-                    new SqlParameter("@MessageBody", messageBodyUtf16)
+                    new SqlParameter("@MessageBody", messageBody)
                 );
             }
         }
