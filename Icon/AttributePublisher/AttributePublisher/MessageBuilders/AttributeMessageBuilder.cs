@@ -2,7 +2,6 @@
 using Esb.Core.MessageBuilders;
 using Esb.Core.Serializer;
 using Icon.Esb.Schemas.Attributes.ContractTypes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

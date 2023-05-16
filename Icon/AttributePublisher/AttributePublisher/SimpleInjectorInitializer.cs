@@ -10,19 +10,15 @@ using Esb.Core.Serializer;
 using Icon.Common.DataAccess;
 using Icon.ActiveMQ;
 using Icon.ActiveMQ.Producer;
-using Icon.Esb;
-using Icon.Esb.Producer;
 using Icon.Esb.Schemas.Attributes.ContractTypes;
 using Icon.Logging;
 using SimpleInjector;
 using SimpleInjector.Diagnostics;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
-using TIBCO.EMS;
 
 namespace AttributePublisher
 {
@@ -48,10 +44,8 @@ namespace AttributePublisher
             container.RegisterConditional<IOperation<AttributePublisherServiceParameters>, ClearAttributePublisherServiceParametersOperation>(
                 c => c.Consumer.ImplementationType == typeof(ArchiveAttributeMessagesOperation));
 
-            container.Register<EsbConnectionSettings>(() => EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("SB1"), Lifestyle.Singleton);
             container.Register<ActiveMQConnectionSettings>(() => ActiveMQConnectionSettings.CreateSettingsFromConfig("ActiveMqAttributeQueueName"), Lifestyle.Singleton);
             container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Icon"].ConnectionString));
-            container.Register<IEsbProducer, Sb1EsbProducer>(Lifestyle.Singleton);
             container.Register<IActiveMQProducer, ActiveMQProducer>(Lifestyle.Singleton);
             container.Register<ILogger>(() => new NLogLogger(typeof(AttributePublisherService)), Lifestyle.Transient);
             container.Register<IMessageBuilder<List<AttributeModel>>, AttributeMessageBuilder>();
@@ -67,10 +61,6 @@ namespace AttributePublisher
             container.Register(typeof(IQueryHandler<,>), new[] { Assembly.Load("AttributePublisher.DataAccess") });
 
             container.GetRegistration(typeof(IDbConnection)).Registration
-                .SuppressDiagnosticWarning(
-                    DiagnosticType.DisposableTransientComponent,
-                    "Reason of suppression");
-            container.GetRegistration(typeof(IEsbProducer)).Registration
                 .SuppressDiagnosticWarning(
                     DiagnosticType.DisposableTransientComponent,
                     "Reason of suppression");
