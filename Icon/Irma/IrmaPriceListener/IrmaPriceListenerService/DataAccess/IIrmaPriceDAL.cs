@@ -1,6 +1,4 @@
 ﻿using Icon.Esb.Schemas.Mammoth;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace IrmaPriceListenerService.DataAccess

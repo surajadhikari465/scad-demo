@@ -10,34 +10,9 @@ namespace IrmaPriceListenerService.DataAccess
 {
     public class IrmaPriceDAL : IIrmaPriceDAL
     {
-        private IDbContextFactory<IrmaContext> irmaDbContextFactory;
-        private IrmaPriceListenerServiceSettings serviceSettings;
+        private readonly IDbContextFactory<IrmaContext> irmaDbContextFactory;
+        private readonly IrmaPriceListenerServiceSettings serviceSettings;
         private const int DB_TIMEOUT_IN_SECONDS = 15;
-
-        private const string StagingQuery = @"INSERT INTO [infor].[StagingMammothPrice]
-            ([BusinessUnit_ID]
-            ,[ItemId]
-            ,[Multiple]
-            ,[Price]
-            ,[StartDate]
-            ,[EndDate]
-            ,[PriceType]
-            ,[PriceTypeAttribute]
-            ,[SellableUOM]
-	        ,[Action]
-	        , [TransactionId])
-        VALUES
-            (@BusinessUnitId,
-            @ItemId, 
-            @Multiple, 
-            @Price, 
-            @StartDate, 
-            @EndDate, 
-            @PriceType, 
-            @PriceTypeAttribute, 
-            @SellableUom,
-            @Action, 
-            @TransactionId)";
 
         public IrmaPriceDAL(IDbContextFactory<IrmaContext> irmaDbContextFactory, IrmaPriceListenerServiceSettings serviceSettings)
         {
@@ -66,37 +41,119 @@ namespace IrmaPriceListenerService.DataAccess
 
         public void LoadMammothPricesBatch(IList<MammothPriceType> mammothPrices, string transactionId)
         {
+            string stagingQuery = @"INSERT INTO [infor].[StagingMammothPrice]
+            ([BusinessUnit_ID]
+            ,[ItemId]
+            ,[Multiple]
+            ,[Price]
+            ,[StartDate]
+            ,[EndDate]
+            ,[PriceType]
+            ,[PriceTypeAttribute]
+            ,[SellableUOM]
+	        ,[Action]
+	        , [TransactionId])
+        VALUES
+            ";
+            List<SqlParameter> batchInsertSqlParameters = new List<SqlParameter>();
+            int elementIndex = 0;
+            foreach (var mammothPrice in mammothPrices)
+            {
+                DateTime? endDate = ProcessEndDate(mammothPrice);
+                SqlParameter businessUnitIdParam = new SqlParameter($"@BusinessUnitId{elementIndex}", mammothPrice.BusinessUnit);
+                SqlParameter itemIdParam = new SqlParameter($"@ItemId{elementIndex}", mammothPrice.ItemId);
+                SqlParameter multipleParam = new SqlParameter($"@Multiple{elementIndex}", mammothPrice.Multiple);
+                SqlParameter priceParam = new SqlParameter($"@Price{elementIndex}", mammothPrice.Price);
+                SqlParameter startDateParam = new SqlParameter($"@StartDate{elementIndex}", mammothPrice.StartDate);
+                SqlParameter endDateParam = new SqlParameter($"@EndDate{elementIndex}", endDate ?? SqlDateTime.Null);
+                SqlParameter priceTypeParam = new SqlParameter($"@PriceType{elementIndex}", mammothPrice.PriceType);
+                SqlParameter priceTypeAttributeParam = new SqlParameter($"@PriceTypeAttribute{elementIndex}", mammothPrice.PriceTypeAttribute);
+                SqlParameter sellableUomParam = new SqlParameter($"@SellableUom{elementIndex}", mammothPrice.SellableUom);
+                SqlParameter actionParam = new SqlParameter($"@Action{elementIndex}", mammothPrice.Action);
+                SqlParameter transactionIdParam = new SqlParameter($"@TransactionId{elementIndex}", transactionId);
+                batchInsertSqlParameters.Add(businessUnitIdParam);
+                batchInsertSqlParameters.Add(itemIdParam);
+                batchInsertSqlParameters.Add(multipleParam);
+                batchInsertSqlParameters.Add(priceParam);
+                batchInsertSqlParameters.Add(startDateParam);
+                batchInsertSqlParameters.Add(endDateParam);
+                batchInsertSqlParameters.Add(priceTypeParam);
+                batchInsertSqlParameters.Add(priceTypeAttributeParam);
+                batchInsertSqlParameters.Add(sellableUomParam);
+                batchInsertSqlParameters.Add(actionParam);
+                batchInsertSqlParameters.Add(transactionIdParam);
+                elementIndex++;
+                stagingQuery += $@"(
+{businessUnitIdParam.ParameterName}, 
+{itemIdParam.ParameterName}, 
+{multipleParam.ParameterName}, 
+{priceParam.ParameterName}, 
+{startDateParam.ParameterName}, 
+{endDateParam.ParameterName},
+{priceTypeParam.ParameterName}, 
+{priceTypeAttributeParam.ParameterName}, 
+{sellableUomParam.ParameterName}, 
+{actionParam.ParameterName}, 
+{transactionIdParam.ParameterName}
+), ";
+            }
+            // remove trailing comma and space from SQL command
+            stagingQuery = stagingQuery.Remove(stagingQuery.Length - 2);
             using (var irmaContext = irmaDbContextFactory.CreateContext($"Irma_{serviceSettings.IrmaRegionCode}"))
             {
                 irmaContext.Database.CommandTimeout = DB_TIMEOUT_IN_SECONDS;
-                using (var transaction = irmaContext.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        foreach (var mammothPrice in mammothPrices)
-                        {
-                            LoadMammothPricesSingle(mammothPrice, transactionId, irmaContext);
-                        }
-                        transaction.Commit();
-                    }
-                    catch(Exception ex)
-                    {
-                        transaction.Rollback();
-                        throw ex;
-                    }
-                }
+                irmaContext.Database.ExecuteSqlCommand(stagingQuery, batchInsertSqlParameters.ToArray());
             }
         }
 
         public void LoadMammothPricesSingle(MammothPriceType mammothPrice, string transactionId)
         {
+            string StagingQuery = @"INSERT INTO [infor].[StagingMammothPrice]
+            ([BusinessUnit_ID]
+            ,[ItemId]
+            ,[Multiple]
+            ,[Price]
+            ,[StartDate]
+            ,[EndDate]
+            ,[PriceType]
+            ,[PriceTypeAttribute]
+            ,[SellableUOM]
+	        ,[Action]
+	        , [TransactionId])
+        VALUES
+            (@BusinessUnitId,
+            @ItemId, 
+            @Multiple, 
+            @Price, 
+            @StartDate, 
+            @EndDate, 
+            @PriceType, 
+            @PriceTypeAttribute, 
+            @SellableUom,
+            @Action, 
+            @TransactionId)";
+            DateTime? endDate = ProcessEndDate(mammothPrice);
             using (var irmaContext = irmaDbContextFactory.CreateContext($"Irma_{serviceSettings.IrmaRegionCode}"))
             {
-                LoadMammothPricesSingle(mammothPrice, transactionId, irmaContext);
+                irmaContext.Database.CommandTimeout = DB_TIMEOUT_IN_SECONDS;
+                irmaContext.Database.ExecuteSqlCommand(
+                StagingQuery,
+                new SqlParameter("@BusinessUnitId", mammothPrice.BusinessUnit),
+                new SqlParameter("@ItemId", mammothPrice.ItemId),
+                new SqlParameter("@Multiple", mammothPrice.Multiple),
+                new SqlParameter("@Price", mammothPrice.Price),
+                new SqlParameter("@StartDate", mammothPrice.StartDate),
+                new SqlParameter("@EndDate", endDate ?? SqlDateTime.Null),
+                new SqlParameter("@PriceType", mammothPrice.PriceType),
+                new SqlParameter("@PriceTypeAttribute", mammothPrice.PriceTypeAttribute),
+                new SqlParameter("@SellableUom", mammothPrice.SellableUom),
+                new SqlParameter("@Action", mammothPrice.Action),
+                new SqlParameter("@TransactionId", transactionId)
+            );
             }
         }
 
-        private void LoadMammothPricesSingle(MammothPriceType mammothPrice, string transactionId, IrmaContext irmaContext)
+        private static DateTime? ProcessEndDate(MammothPriceType mammothPrice)
         {
             DateTime? endDate = null;
             if (mammothPrice.EndDate.HasValue)
@@ -113,20 +170,7 @@ namespace IrmaPriceListenerService.DataAccess
                 }
             }
 
-            irmaContext.Database.ExecuteSqlCommand(
-                StagingQuery,
-                new SqlParameter("@BusinessUnitId", mammothPrice.BusinessUnit),
-                new SqlParameter("@ItemId", mammothPrice.ItemId),
-                new SqlParameter("@Multiple", mammothPrice.Multiple),
-                new SqlParameter("@Price", mammothPrice.Price),
-                new SqlParameter("@StartDate", mammothPrice.StartDate),
-                new SqlParameter("@EndDate", endDate.HasValue? endDate.Value : SqlDateTime.Null),
-                new SqlParameter("@PriceType", mammothPrice.PriceType),
-                new SqlParameter("@PriceTypeAttribute", mammothPrice.PriceTypeAttribute),
-                new SqlParameter("@SellableUom", mammothPrice.SellableUom),
-                new SqlParameter("@Action", mammothPrice.Action),
-                new SqlParameter("@TransactionId", transactionId)
-            );
+            return endDate;
         }
 
         public void UpdateIrmaPrice(string transactionId)

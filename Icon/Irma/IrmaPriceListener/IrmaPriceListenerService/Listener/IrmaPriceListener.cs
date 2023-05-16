@@ -79,6 +79,10 @@ namespace IrmaPriceListenerService.Listener
                     mammothPricesWithErrors = LoadMammothPricesToIrma(orderedPrices, guid);
                     UpdateIrmaPrice(guid);
                     DeleteStagedMammothPrice(guid);
+                    logger.Info(
+                        $@"{{""TransactionID"": ""{message.MessageAttributes[Constants.MessageAttribute.TransactionId]}"",
+                    ""Message"": ""Successfully processed IRMA Price update.""}}"
+                    );
                 }
                 else
                 {
