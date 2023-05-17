@@ -8,7 +8,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue.Tests
     public class MessageHeaderBuilderTests
     {
         /// <summary>
-        /// Tests that when we build an ESB message header that it is returned in the correct format and has an IconMessageID set
+        /// Tests that when we build an DVS message header that it is returned in the correct format and has an IconMessageID set
         /// </summary>
         [TestMethod]
         public void BuildMessageHeader_NoExcludedSystems_HeaderIsReturnedInCorrectFormat()

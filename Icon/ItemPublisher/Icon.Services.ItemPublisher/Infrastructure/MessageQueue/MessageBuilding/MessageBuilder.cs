@@ -14,7 +14,7 @@ using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue
 {
     /// <summary>
-    /// EsbMessageBuilder creates messages from a list of message queue items
+    /// MessageBuilder creates messages from a list of message queue items
     /// </summary>
     public class MessageBuilder : IMessageBuilder
     {
@@ -310,12 +310,12 @@ namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue
                 Attributes cacheItem = await this.messageServiceCache.AttributeFromCache(attribute.Key);
                 if (cacheItem == null)
                 {
-                    processLogger($"Trait {attribute.Key} was not found in the attribute cache and will not be sent in the ESB message");
+                    processLogger($"Trait {attribute.Key} was not found in the attribute cache and will not be sent in the DVS message");
                     continue;
                 }
                 else if (cacheItem.TraitCode == null)
                 {
-                    processLogger($"Trait {attribute.Key} has a null trait code and will not be sent in the ESB message");
+                    processLogger($"Trait {attribute.Key} has a null trait code and will not be sent in the DVS message");
                     continue;
                 }
 

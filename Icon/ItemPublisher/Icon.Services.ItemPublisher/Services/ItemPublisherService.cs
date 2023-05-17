@@ -56,7 +56,7 @@ namespace Icon.Services.ItemPublisher.Services
 
         /// <summary>
         /// ProcessInternal loads a batch of records from the esb.MessageQueueItem table and then
-        /// processes those records one at a time generating an esb message and putting that on the esb.
+        /// processes those records one at a time generating a esb message and putting that on the esb.
         /// The queue records are then moved to the esb.MessageQueueItemArchive table.
         /// </summary>
         /// <returns></returns>
@@ -64,7 +64,7 @@ namespace Icon.Services.ItemPublisher.Services
         {
             if (!(await this.itemProcessor.ReadyForProcessing))
             {
-                this.logger.Info($"Esb service not ready yet");
+                this.logger.Info($"Service not ready yet");
                 return;
             }
 
@@ -165,7 +165,7 @@ namespace Icon.Services.ItemPublisher.Services
         }
 
         /// <summary>
-        /// Takes a list of models and the results from the ESB and inserts a record into the history table
+        /// Takes a list of models and the results from the DVS and inserts a record into the history table
         /// </summary>
         /// <param name="records"></param>
         /// <param name="result"></param>

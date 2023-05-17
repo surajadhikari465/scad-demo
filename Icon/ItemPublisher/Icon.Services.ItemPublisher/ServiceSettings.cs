@@ -21,7 +21,7 @@ namespace Icon.Services.ItemPublisher.Services
         public int TimerIntervalInMilliseconds { get; set; }
 
         /// <summary>
-        /// A List of systems that will be included in the ESB header for property NonReceivingSystemsJmsProperty
+        /// A List of systems that will be included in the DVS header for property NonReceivingSystemsJmsProperty
         /// </summary>
         public List<string> NonReceivingSystemsProduct { get; set; } = new List<string>();
 

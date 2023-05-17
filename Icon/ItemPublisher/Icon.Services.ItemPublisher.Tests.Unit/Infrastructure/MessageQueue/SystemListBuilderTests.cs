@@ -9,7 +9,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue.Tests
     public class SystemListServiceTests
     {
         /// <summary>
-        /// Tests that R10 is excluded from the ESB message for non retail items
+        /// Tests that R10 is excluded from a message for non retail items
         /// </summary>
         [TestMethod]
         public void BuildNonReceivingSystem_NonRetailItem_R10IsExcluded()
@@ -25,7 +25,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue.Tests
         }
 
         /// <summary>
-        /// Tests that R10 is excluded from the ESB message for non retail items and also globally excluded items are excluded
+        /// Tests that R10 is excluded from a message for non retail items and also globally excluded items are excluded
         /// </summary>
         [TestMethod]
         public void BuildNonReceivingSystem_NonRetailItemAndOtherExcluded_R10AndOthersAreExcluded()

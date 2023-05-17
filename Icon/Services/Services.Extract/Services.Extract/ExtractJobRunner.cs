@@ -4,8 +4,6 @@ using Dapper;
 using Icon.ActiveMQ;
 using Icon.ActiveMQ.Producer;
 using Icon.Common;
-using Icon.Esb;
-using Icon.Esb.Producer;
 using Icon.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -71,7 +69,6 @@ namespace Services.Extract
                 Configuration = configuration;
                 CredentialsCacheManager.S3CredentialsCache.Refresh();
                 CredentialsCacheManager.SFtpCredentialsCache.Refresh();
-                CredentialsCacheManager.EsbCredentialsCache.Refresh();
                 CredentialsCacheManager.ActiveMqCredentialsCache.Refresh();
                 FileDestinationCache.Refresh();
 
@@ -638,67 +635,6 @@ namespace Services.Extract
             }
         }
 
-        internal void CopyFilesToEsb(string credentialKey, IEsbCredentialsCache credentialsCache, List<FileInfo> files)
-        {
-            if (!credentialsCache.Credentials.ContainsKey(credentialKey)) throw new Exception($"Unable to find ESB Credentials for Key: {credentialKey}");
-            var credentials = credentialsCache.Credentials[credentialKey];
-            if (credentials == null) throw new Exception($"Expected to find ESB Credentials for Key: {credentialKey} but they were null");
-
-            using (var producer = new EsbProducer(new EsbConnectionSettings()
-            {
-                ConnectionFactoryName = credentials.ConnectionFactoryName,
-                CertificateStoreName = credentials.CertificateStoreName.ConvertToEnum<StoreName>(),
-                CertificateName = credentials.CertificateName,
-                TargetHostName = credentials.TargetHostName,
-                SessionMode = credentials.SessionMode.ConvertToEnum<SessionMode>(),
-                QueueName = credentials.QueueName,
-                DestinationType = credentials.DestinationType,
-                JmsUsername = credentials.JmsUsername,
-                JmsPassword = credentials.JmsPassword,
-                SslPassword = credentials.SslPassword,
-                JndiUsername = credentials.JndiUsername,
-                JndiPassword = credentials.JndiPassword,
-                ServerUrl = credentials.ServerUrl,
-                CertificateStoreLocation = credentials.CertificateStoreLocation.ConvertToEnum<StoreLocation>(),
-                ReconnectDelay = String.IsNullOrEmpty(credentials.ReconnectDelay) ? 0 : int.Parse(credentials.ReconnectDelay)
-            }))
-            {
-                var computedClientId = $"IconExtractService-{credentialKey}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
-                var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
-
-                producer.OpenConnection(clientId);
-
-                foreach (var file in files)
-                {
-                    string dynamicParamKey = "{" + DynamicParam.FirstOrDefault().Key + "}";
-                    string transactionId = credentials.TransactionId;
-
-                    if (credentials.TransactionId.Contains(dynamicParamKey))
-                    {
-                        foreach (var value in DynamicParam.Select(v => v.Value))
-                        {
-                            if (file.Name.Contains(value.ToString()))
-                            {
-                                transactionId = credentials.TransactionId.Replace(dynamicParamKey, value.ToString());
-                                break;
-                            }
-                        }
-                    }
-                    byte[] bytes = File.ReadAllBytes(file.FullName);
-                    var messageProperties = new Dictionary<string, string>
-                    {
-                        { "TransactionType", credentials.TransactionType },
-                        { "TransactionID", transactionId.TransformDateTimeStamp() },
-                        { "FileName", file.Name },
-                        { "Source", Configuration.Source.ToUpper() },
-                        { "MessageType", credentials.MessageType }
-                    };
-
-                    producer.Send(bytes, clientId, messageProperties);
-                }
-            }
-        }
-
         internal void CopyFilesToActiveMq(string credentialKey, IActiveMqCredentialsCache activeMqCredentialsCache, List<FileInfo> files)
         {
             if (!activeMqCredentialsCache.Credentials.ContainsKey(credentialKey)) throw new Exception($"Unable to find ActiveMQ Credentials for Key: {credentialKey}");
@@ -794,11 +730,7 @@ namespace Services.Extract
                 case "sftp":
                     CopyFilesToSFtp(Configuration.Destination.CredentialsKey, CredentialsCacheManager.SFtpCredentialsCache, Configuration.Destination.Path, OutputFiles);
                     break;
-                case "esb":
-                    CopyFilesToEsb(Configuration.Destination.CredentialsKey, CredentialsCacheManager.EsbCredentialsCache, OutputFiles);
-                    break;
                 case "esb_and_activemq":
-                    CopyFilesToEsb(Configuration.Destination.CredentialsKey, CredentialsCacheManager.EsbCredentialsCache, OutputFiles);
                     CopyFilesToActiveMq(Configuration.Destination.CredentialsKey, CredentialsCacheManager.ActiveMqCredentialsCache, OutputFiles);
                     break;
                 case "activemq":

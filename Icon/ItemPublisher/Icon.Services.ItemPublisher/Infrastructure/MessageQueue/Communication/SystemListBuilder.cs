@@ -5,7 +5,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue
 {
     /// <summary>
     /// This class is responsible for creating the NonReceivingSystme list of systems
-    /// that will not recieve an ESB message
+    /// that will not recieve a DVS message
     /// </summary>
     public class SystemListBuilder : ISystemListBuilder
     {

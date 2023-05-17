@@ -31,11 +31,11 @@ namespace Icon.Services.ItemPublisher.Repositories.Entities
         {
         }
 
-        public MessageQueueItemArchive(List<MessageQueueItemModel> messageQueueItem, Guid messageId, string esbMessage, Dictionary<string, string> esbMessageHeaders, string errorMessage, List<string> warningMessages, DateTime insertDateUTC, string machine, bool success)
+        public MessageQueueItemArchive(List<MessageQueueItemModel> messageQueueItem, Guid messageId, string message, Dictionary<string, string> messageHeaders, string errorMessage, List<string> warningMessages, DateTime insertDateUTC, string machine, bool success)
         {
-            this.Message = esbMessage;
+            this.Message = message;
             this.MessageId = messageId;
-            this.MessageHeader = JsonConvert.SerializeObject(esbMessageHeaders);
+            this.MessageHeader = JsonConvert.SerializeObject(messageHeaders);
             this.ErrorMessage = errorMessage;
             this.WarningMessage = string.Join(Environment.NewLine, warningMessages.ToArray());
             this.MessageQueueItemJson = JsonConvert.SerializeObject(messageQueueItem);

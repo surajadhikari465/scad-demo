@@ -27,9 +27,9 @@ namespace Icon.Services.ItemPublisher.Services
         }
 
         /// <summary>
-        /// Determines if we are ready to construct and send esb messages.
+        /// Determines if we are ready to construct and send dvs messages.
         /// Is the cache loaded?
-        /// Is the ESB client connection working?
+        /// Is the DVS client connection working?
         /// </summary>
         public Task<bool> ReadyForProcessing
         {
@@ -40,7 +40,7 @@ namespace Icon.Services.ItemPublisher.Services
         }
 
         /// <summary>
-        /// Creates ESB messages and sends them to the ESB
+        /// Creates DVS messages and sends them to the DVS
         /// </summary>
         /// <param name="records"></param>
         /// <returns></returns>
@@ -50,9 +50,9 @@ namespace Icon.Services.ItemPublisher.Services
 
             if (result.Contract != null && result.Contract.item.Length > 0)
             {
-                string esbMessage = this.serializer.Serialize(result.Contract);
-                this.logger.Debug($"Message to be sent. Message={esbMessage}");
-                MessageSendResult sendResult = await this.messageQueueClient.SendMessage(esbMessage, nonReceivingSystems);
+                string message = this.serializer.Serialize(result.Contract);
+                this.logger.Debug($"Message to be sent. Message={message}");
+                MessageSendResult sendResult = await this.messageQueueClient.SendMessage(message, nonReceivingSystems);
                 sendResult.SetWarnings(result.Errors);
                 return sendResult;
             }

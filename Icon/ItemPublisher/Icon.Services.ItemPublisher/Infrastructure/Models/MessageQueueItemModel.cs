@@ -5,7 +5,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Models
 {
     /// <summary>
     /// This model represents everything we need to load from the database
-    /// to create an ESB message
+    /// to create a DVS message
     /// </summary>
     public class MessageQueueItemModel
     {

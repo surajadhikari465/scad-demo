@@ -21,7 +21,7 @@ namespace Icon.Services.ItemPublisher.Application
                 });
                 r.SetServiceName(AppSettingsAccessor.GetStringSetting("ServiceName", "IconItemPublisherService"));
                 r.SetDisplayName(AppSettingsAccessor.GetStringSetting("ServiceDisplayName", "Icon Item Publisher Service"));
-                r.SetDescription(AppSettingsAccessor.GetStringSetting("ServiceDescription", "Service that publishes Icon item changes to the ESB"));
+                r.SetDescription(AppSettingsAccessor.GetStringSetting("ServiceDescription", "Service that publishes Icon item changes to DVS"));
                 r.UseNLog();
             });
 

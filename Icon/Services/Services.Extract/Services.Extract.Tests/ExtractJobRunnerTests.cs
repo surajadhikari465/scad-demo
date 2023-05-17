@@ -1,8 +1,5 @@
 ﻿using Icon.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Icon.ActiveMQ.Producer;
-using Icon.Esb.Producer;
 using Newtonsoft.Json;
 using OpsgenieAlert;
 using Services.Extract.Credentials;
@@ -31,8 +28,7 @@ namespace Services.Extract.Tests
         {
             logger = new NLogLogger<ExtractJobRunner>();
             OpsGenieAlert = new OpsgenieAlert.OpsgenieAlert();
-            CredentialsCacheManager = new CredentialsCacheManager(new S3CredentialsCache(), new SFtpCredentialsCache(),
-                new EsbCredentialsCache(), new ActiveMqCredentialCache());
+            CredentialsCacheManager = new CredentialsCacheManager(new S3CredentialsCache(), new SFtpCredentialsCache(), new ActiveMqCredentialCache());
             FileDestinationCache = new FileDestinationsCache();
             runner = new ExtractJobRunner("testjob", logger, OpsGenieAlert, CredentialsCacheManager, FileDestinationCache);
         }
@@ -254,45 +250,6 @@ namespace Services.Extract.Tests
 
         [Ignore("Not a real test. Used to execute runner in debug environment.")]
         [TestMethod]
-        public void IrmaTest_FilesByStores()
-        {
-            var sw = new Stopwatch();
-            sw.Start();
-
-            var config = new ExtractJobConfiguration
-            {
-                Delimiter = "|",
-                Source = "Irma",
-                StagingQuery = "Exec [dbo].[UpdateTitle] @TitleID, @TitleDesc ",
-                StagingParameters = new[]
-                {
-                    new ExtractJobParameter() {Key = "@TitleID", Value = 32},
-                    new ExtractJobParameter() {Key = "@TitleDesc", Value = "System - Do Not Use"}
-                },
-                DynamicParameterQuery =
-                    "select distinct(STORE_NUMBER) as Value, 'STORE_NUMBER' as [Key] from [dbo].[VendorLaneExtract]",
-                Query =
-                    "select top 100 * from dbo.VendorLaneExtract where STORE_NUMBER = @STORE_NUMBER AND ITEM_KEY = @ITEM_KEY",
-                Parameters = new[] { new ExtractJobParameter() { Key = "@ITEM_KEY", Value = 158800 } },
-                Regions = "SO".Split(','),
-                OutputFileName = "item_vendor_lane_{region}_{STORE_NUMBER}_{date:yyyyMMdd}.csv",
-                ZipOutput = true,
-                CompressionType = "7-Zip",
-                SevenZipArchiveType = "gzip",
-                ConcatenateOutputFiles = false,
-                IncludeHeaders = true,
-                Destination = new Destination
-                {
-                    Type = "esb",
-                    CredentialsKey = "inStock",
-                }
-            };
-            runner.Run(config);
-            sw.Stop();
-        }
-
-        [Ignore("Not a real test. Used to execute runner in debug environment.")]
-        [TestMethod]
         public void IrmaTest_FilesByStores_EsbAndActiveMq()
         {
             var sw = new Stopwatch();
@@ -329,6 +286,8 @@ namespace Services.Extract.Tests
             runner.Run(config);
             sw.Stop();
         }
+
+
 
         [Ignore("Not a real test. Used to execute runner in debug environment.")]
         [TestMethod]

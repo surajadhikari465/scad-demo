@@ -1,5 +1,4 @@
 ﻿using Icon.Common.Email;
-using Icon.Esb;
 using Icon.Logging;
 using SimpleInjector;
 using OpsgenieAlert;
@@ -42,7 +41,6 @@ namespace Services.Extract
             container.RegisterSingleton<IOpsgenieAlert, OpsgenieAlert.OpsgenieAlert>();
             container.RegisterSingleton<ISFtpCredentialsCache, SFtpCredentialsCache>();
             container.RegisterSingleton<IS3CredentialsCache, S3CredentialsCache>();
-            container.RegisterSingleton<IEsbCredentialsCache, EsbCredentialsCache>();
             container.RegisterSingleton<IActiveMqCredentialsCache, ActiveMqCredentialCache>();
             container.Register<ICredentialsCacheManager, CredentialsCacheManager>();
             container.Register<IFileDestinationCache, FileDestinationsCache>();

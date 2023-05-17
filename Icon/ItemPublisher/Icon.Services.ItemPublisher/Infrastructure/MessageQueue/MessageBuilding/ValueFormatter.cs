@@ -3,7 +3,7 @@
 namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue
 {
     /// <summary>
-    /// This class is responsible for converting and formatting values that are sent in ESB messages.
+    /// This class is responsible for converting and formatting values that are sent in DVS messages.
     /// There are business rules that state that Yes/No boolean attributes should be sent as 0 and 1
     /// along with other exceptions and special cases.
     /// </summary>

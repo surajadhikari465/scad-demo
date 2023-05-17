@@ -13,7 +13,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue.Tests
     {
         /// <summary>
         /// This tests test that hospitality and kitchen attributed are removed from the attribute collection because
-        /// they are elements not attributes in the ESB message
+        /// they are elements not attributes in message
         /// </summary>
         [TestMethod]
         public void Build_WhenModelLoaded_KitchenAttributesExist_KitchenAttributesAreRemovedFromAttributeCollection()

@@ -20,19 +20,19 @@ namespace Icon.Services.ItemPublisher.Services.Tests
     public class MessageQueueServiceTests
     {
         /// <summary>
-        /// Tests that when the ESB service returns success that it is handled
+        /// Tests that when the DVS service returns success that it is handled
         /// </summary>
         /// <returns></returns>
         [TestMethod]
         public async Task Process_Succeeds_ShouldSendMessageAndReturnSuccess()
         {
             // Given.
-            Mock<IMessageQueueClient> esbClientMock = new Mock<IMessageQueueClient>();
-            Mock<IMessageBuilder> esbMessageBuilderMock = new Mock<IMessageBuilder>();
+            Mock<IMessageQueueClient> dvsClientMock = new Mock<IMessageQueueClient>();
+            Mock<IMessageBuilder> dvsMessageBuilderMock = new Mock<IMessageBuilder>();
             Mock<ILogger<ItemPublisherService>> loggerMock = new Mock<ILogger<ItemPublisherService>>();
             Mock<ISerializer<Icon.Esb.Schemas.Wfm.Contracts.items>> serializerMock = new Mock<ISerializer<Icon.Esb.Schemas.Wfm.Contracts.items>>();
 
-            items esbItems = new items
+            items dvsItems = new items
             {
                 item = new ItemType[]
                 {
@@ -52,14 +52,14 @@ namespace Icon.Services.ItemPublisher.Services.Tests
                  }
             };
 
-            esbMessageBuilderMock.Setup(x => x.BuildItem(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult<BuildMessageResult>(new BuildMessageResult(true, esbItems, new List<string>() { })));
+            dvsMessageBuilderMock.Setup(x => x.BuildItem(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult<BuildMessageResult>(new BuildMessageResult(true, dvsItems, new List<string>() { })));
 
             MessageQueueService service = new MessageQueueService(serializerMock.Object,
-                esbClientMock.Object,
-                esbMessageBuilderMock.Object,
+                dvsClientMock.Object,
+                dvsMessageBuilderMock.Object,
                 loggerMock.Object);
 
-            esbClientMock.Setup(x => x.SendMessage(It.IsAny<string>(), It.IsAny<List<string>>())).Returns(Task.FromResult(new MessageSendResult(true, "test", "request", new Dictionary<string, string>() { }, Guid.Parse("48a5364b-5748-493d-80ee-748cd3008869"))));
+            dvsClientMock.Setup(x => x.SendMessage(It.IsAny<string>(), It.IsAny<List<string>>())).Returns(Task.FromResult(new MessageSendResult(true, "test", "request", new Dictionary<string, string>() { }, Guid.Parse("48a5364b-5748-493d-80ee-748cd3008869"))));
             MessageQueueItemModelBuilder messageQueueItemModelBuilder = new MessageQueueItemModelBuilder(new ItemMapper());
 
             List<MessageQueueItemModel> models = new List<MessageQueueItemModel>()
@@ -78,23 +78,23 @@ namespace Icon.Services.ItemPublisher.Services.Tests
 
             // Then.
             Assert.IsTrue(result.Success, "The service sent a message and we should have received a success response");
-            esbClientMock.Verify(x => x.SendMessage(It.IsAny<string>(), It.IsAny<List<string>>()));
+            dvsClientMock.Verify(x => x.SendMessage(It.IsAny<string>(), It.IsAny<List<string>>()));
         }
 
         /// <summary>
-        /// Tests that if an error is returned from the ESB client that the error is returned correctly
+        /// Tests that if an error is returned from the DVS client that the error is returned correctly
         /// </summary>
         /// <returns></returns>
         [TestMethod]
         public async Task Process_Fails_ShouldReturnErrors()
         {
             // Given.
-            Mock<IMessageQueueClient> esbClientMock = new Mock<IMessageQueueClient>();
-            Mock<IMessageBuilder> esbMessageBuilderMock = new Mock<IMessageBuilder>();
+            Mock<IMessageQueueClient> dvsClientMock = new Mock<IMessageQueueClient>();
+            Mock<IMessageBuilder> dvsMessageBuilderMock = new Mock<IMessageBuilder>();
             Mock<ILogger<ItemPublisherService>> loggerMock = new Mock<ILogger<ItemPublisherService>>();
             Mock<ISerializer<Icon.Esb.Schemas.Wfm.Contracts.items>> serializerMock = new Mock<ISerializer<Icon.Esb.Schemas.Wfm.Contracts.items>>();
 
-            items esbItems = new items
+            items dvsItems = new items
             {
                 item = new ItemType[]
                 {
@@ -114,13 +114,13 @@ namespace Icon.Services.ItemPublisher.Services.Tests
                 }
             };
 
-            esbMessageBuilderMock.Setup(x => x.BuildItem(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult<BuildMessageResult>(new BuildMessageResult(false, esbItems, new List<string>() { })));
+            dvsMessageBuilderMock.Setup(x => x.BuildItem(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult<BuildMessageResult>(new BuildMessageResult(false, dvsItems, new List<string>() { })));
 
-            esbClientMock.Setup(x => x.SendMessage(It.IsAny<string>(), It.IsAny<List<string>>())).Returns(Task.FromResult(new MessageSendResult(false, "Error Occurred", "request", new Dictionary<string, string>() { }, Guid.Parse("48a5364b-5748-493d-80ee-748cd3008869"))));
+            dvsClientMock.Setup(x => x.SendMessage(It.IsAny<string>(), It.IsAny<List<string>>())).Returns(Task.FromResult(new MessageSendResult(false, "Error Occurred", "request", new Dictionary<string, string>() { }, Guid.Parse("48a5364b-5748-493d-80ee-748cd3008869"))));
 
             MessageQueueService service = new MessageQueueService(serializerMock.Object,
-                esbClientMock.Object,
-                esbMessageBuilderMock.Object,
+                dvsClientMock.Object,
+                dvsMessageBuilderMock.Object,
                 loggerMock.Object);
 
             MessageQueueItemModelBuilder messageQueueItemModelBuilder = new MessageQueueItemModelBuilder(new ItemMapper());
@@ -139,7 +139,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             MessageSendResult result = await service.Process(models, new List<string>() { });
 
             // Then.
-            Assert.IsFalse(result.Success, "The ESB should have returned an error");
+            Assert.IsFalse(result.Success, "The DVS should have returned an error");
             Assert.AreEqual("Error Occurred", result.Message);
         }
 
@@ -153,12 +153,12 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             // Given.
             string expectedWarning = "Trait not found";
 
-            Mock<IMessageQueueClient> esbClientMock = new Mock<IMessageQueueClient>();
-            Mock<IMessageBuilder> esbMessageBuilderMock = new Mock<IMessageBuilder>();
+            Mock<IMessageQueueClient> dvsClientMock = new Mock<IMessageQueueClient>();
+            Mock<IMessageBuilder> dvsMessageBuilderMock = new Mock<IMessageBuilder>();
             Mock<ILogger<ItemPublisherService>> loggerMock = new Mock<ILogger<ItemPublisherService>>();
             Mock<ISerializer<Icon.Esb.Schemas.Wfm.Contracts.items>> serializerMock = new Mock<ISerializer<Icon.Esb.Schemas.Wfm.Contracts.items>>();
 
-            items esbItems = new items
+            items dvsItems = new items
             {
                 item = new ItemType[]
                 {
@@ -178,13 +178,13 @@ namespace Icon.Services.ItemPublisher.Services.Tests
                 }
             };
 
-            esbMessageBuilderMock.Setup(x => x.BuildItem(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult<BuildMessageResult>(new BuildMessageResult(true, esbItems, new List<string>() { expectedWarning })));
+            dvsMessageBuilderMock.Setup(x => x.BuildItem(It.IsAny<List<MessageQueueItemModel>>())).Returns(Task.FromResult<BuildMessageResult>(new BuildMessageResult(true, dvsItems, new List<string>() { expectedWarning })));
 
-            esbClientMock.Setup(x => x.SendMessage(It.IsAny<string>(), It.IsAny<List<string>>())).Returns(Task.FromResult(new MessageSendResult(true, "", "request", new Dictionary<string, string>() { }, Guid.Parse("48a5364b-5748-493d-80ee-748cd3008869"))));
+            dvsClientMock.Setup(x => x.SendMessage(It.IsAny<string>(), It.IsAny<List<string>>())).Returns(Task.FromResult(new MessageSendResult(true, "", "request", new Dictionary<string, string>() { }, Guid.Parse("48a5364b-5748-493d-80ee-748cd3008869"))));
 
             MessageQueueService service = new MessageQueueService(serializerMock.Object,
-                esbClientMock.Object,
-                esbMessageBuilderMock.Object,
+                dvsClientMock.Object,
+                dvsMessageBuilderMock.Object,
                 loggerMock.Object);
 
             MessageQueueItemModelBuilder messageQueueItemModelBuilder = new MessageQueueItemModelBuilder(new ItemMapper());

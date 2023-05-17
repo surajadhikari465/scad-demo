@@ -238,11 +238,11 @@ namespace Icon.Services.ItemPublisher.Services.Tests
         }
 
         [TestMethod]
-        public async Task Process_ESBFailureOccurred_RecordsShouldBeSentToDeadLetterQueue()
+        public async Task Process_DVSFailureOccurred_RecordsShouldBeSentToDeadLetterQueue()
         {
             // Given.
             mockItemProcessor.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(true));
-            mockItemProcessor.Setup(x => x.ProcessRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Throws(new Exception("ESB exception"));
+            mockItemProcessor.Setup(x => x.ProcessRetailRecords(It.IsAny<List<MessageQueueItemModel>>())).Throws(new Exception("DVS exception"));
 
             mockRepository.SetupSequence(m => m.DequeueMessageQueueItems(It.IsAny<int>()))
                 .ReturnsAsync(new List<MessageQueueItem> { new MessageQueueItem { } })

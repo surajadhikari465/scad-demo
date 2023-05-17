@@ -14,28 +14,28 @@ namespace Icon.Services.ItemPublisher.Services.Tests
     public class ItemProcessorTests
     {
         [TestMethod]
-        public async Task ReadyForProcessing_ESBIsReady_ShouldReturnTrue()
+        public async Task ReadyForProcessing_DVSIsReady_ShouldReturnTrue()
         {
-            Mock<IMessageQueueService> mockEsbService = new Mock<IMessageQueueService>();
+            Mock<IMessageQueueService> mockDvsService = new Mock<IMessageQueueService>();
             Mock<ILogger<ItemProcessor>> loggerMock = new Mock<ILogger<ItemProcessor>>();
             Mock<ISystemListBuilder> mockSystemListBuilder = new Mock<ISystemListBuilder>();
-            mockEsbService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(true));
+            mockDvsService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(true));
 
-            var itemProcessor = new ItemProcessor(mockEsbService.Object, loggerMock.Object, new ServiceSettings(), 
+            var itemProcessor = new ItemProcessor(mockDvsService.Object, loggerMock.Object, new ServiceSettings(), 
                 mockSystemListBuilder.Object);
 
             Assert.IsTrue(await itemProcessor.ReadyForProcessing);
         }
 
         [TestMethod]
-        public async Task ReadyForProcessing_ESBIsNotReady_ShouldReturnFalse()
+        public async Task ReadyForProcessing_DVSIsNotReady_ShouldReturnFalse()
         {
-            Mock<IMessageQueueService> mockEsbService = new Mock<IMessageQueueService>();
+            Mock<IMessageQueueService> mockDvsService = new Mock<IMessageQueueService>();
             Mock<ILogger<ItemProcessor>> loggerMock = new Mock<ILogger<ItemProcessor>>();
             Mock<ISystemListBuilder> mockSystemListBuilder = new Mock<ISystemListBuilder>();
-            mockEsbService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(false));
+            mockDvsService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(false));
 
-            var itemProcessor = new ItemProcessor(mockEsbService.Object, loggerMock.Object, new ServiceSettings(), 
+            var itemProcessor = new ItemProcessor(mockDvsService.Object, loggerMock.Object, new ServiceSettings(), 
                 mockSystemListBuilder.Object);
 
             Assert.IsFalse(await itemProcessor.ReadyForProcessing);
@@ -45,16 +45,16 @@ namespace Icon.Services.ItemPublisher.Services.Tests
         public async Task ProcessRetail_RecordsAreFilteredAndProcessed()
         {
             // Given.
-            Mock<IMessageQueueService> mockEsbService = new Mock<IMessageQueueService>();
+            Mock<IMessageQueueService> mockDvsService = new Mock<IMessageQueueService>();
             Mock<ILogger<ItemProcessor>> loggerMock = new Mock<ILogger<ItemProcessor>>();
             Mock<ISystemListBuilder> mockSystemListBuilder = new Mock<ISystemListBuilder>();
-            mockEsbService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(false));
+            mockDvsService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(false));
             mockSystemListBuilder.Setup(x => x.BuildRetailNonReceivingSystemsList()).Returns(new List<string>()
             {
                 "Test"
             });
             TestDataFactory testDataFactory = new TestDataFactory();
-            var itemProcessor = new ItemProcessor(mockEsbService.Object, loggerMock.Object, new ServiceSettings()
+            var itemProcessor = new ItemProcessor(mockDvsService.Object, loggerMock.Object, new ServiceSettings()
             {
                 NonReceivingSystemsProduct = new List<string>()
                 {
@@ -82,7 +82,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             // Then.
             mockSystemListBuilder.Verify(x => x.BuildRetailNonReceivingSystemsList(), Times.Once);
 
-            mockEsbService.Verify(x => x.Process(It.Is<List<MessageQueueItemModel>>(a =>
+            mockDvsService.Verify(x => x.Process(It.Is<List<MessageQueueItemModel>>(a =>
                 a.Count == 2 && a[0].Item.ItemTypeCode == ItemPublisherConstants.RetailSaleTypeCode
             ),
             It.Is<List<string>>(b =>
@@ -94,16 +94,16 @@ namespace Icon.Services.ItemPublisher.Services.Tests
         public async Task ProcessNonRetail_RecordsAreFilteredAndProcessed()
         {
             // Given.
-            Mock<IMessageQueueService> mockEsbService = new Mock<IMessageQueueService>();
+            Mock<IMessageQueueService> mockDvsService = new Mock<IMessageQueueService>();
             Mock<ILogger<ItemProcessor>> loggerMock = new Mock<ILogger<ItemProcessor>>();
             Mock<ISystemListBuilder> mockSystemListBuilder = new Mock<ISystemListBuilder>();
-            mockEsbService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(false));
+            mockDvsService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(false));
             mockSystemListBuilder.Setup(x => x.BuildNonRetailReceivingSystemsList()).Returns(new List<string>()
             {
                 "Test"
             });
             TestDataFactory testDataFactory = new TestDataFactory();
-            var itemProcessor = new ItemProcessor(mockEsbService.Object, loggerMock.Object, new ServiceSettings()
+            var itemProcessor = new ItemProcessor(mockDvsService.Object, loggerMock.Object, new ServiceSettings()
             {
                 NonReceivingSystemsProduct = new List<string>()
                 {
@@ -131,7 +131,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             // Then.
             mockSystemListBuilder.Verify(x => x.BuildNonRetailReceivingSystemsList(), Times.Once);
 
-            mockEsbService.Verify(x => x.Process(It.Is<List<MessageQueueItemModel>>(a =>
+            mockDvsService.Verify(x => x.Process(It.Is<List<MessageQueueItemModel>>(a =>
                 a.Count == 1 && a[0].Item.ItemTypeCode == ItemPublisherConstants.NonRetailSaleTypeCode
             ),
             It.Is<List<string>>(b =>
@@ -143,16 +143,16 @@ namespace Icon.Services.ItemPublisher.Services.Tests
         public async Task ProcessRetailWithDepartmentSale_RecordsAreFilteredAndProcessed()
         {
             // Given.
-            Mock<IMessageQueueService> mockEsbService = new Mock<IMessageQueueService>();
+            Mock<IMessageQueueService> mockDvsService = new Mock<IMessageQueueService>();
             Mock<ILogger<ItemProcessor>> loggerMock = new Mock<ILogger<ItemProcessor>>();
             Mock<ISystemListBuilder> mockSystemListBuilder = new Mock<ISystemListBuilder>();
-            mockEsbService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(false));
+            mockDvsService.Setup(x => x.ReadyForProcessing).Returns(Task.FromResult(false));
             mockSystemListBuilder.Setup(x => x.BuildRetailNonReceivingSystemsList()).Returns(new List<string>()
             {
                 "Test"
             });
             TestDataFactory testDataFactory = new TestDataFactory();
-            var itemProcessor = new ItemProcessor(mockEsbService.Object, loggerMock.Object, new ServiceSettings()
+            var itemProcessor = new ItemProcessor(mockDvsService.Object, loggerMock.Object, new ServiceSettings()
             {
                 NonReceivingSystemsProduct = new List<string>()
                 {
@@ -176,7 +176,7 @@ namespace Icon.Services.ItemPublisher.Services.Tests
             // Then.
             mockSystemListBuilder.Verify(x => x.BuildRetailNonReceivingSystemsList(), Times.Once);
 
-            mockEsbService.Verify(x => x.Process(It.Is<List<MessageQueueItemModel>>(a =>
+            mockDvsService.Verify(x => x.Process(It.Is<List<MessageQueueItemModel>>(a =>
                 a.Count == 1 && a[0].Item.ItemAttributes[ItemPublisherConstants.Attributes.DepartmentSale] == "Yes"
             ),
             It.Is<List<string>>(b =>

@@ -8,7 +8,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue
         private Exception exception;
 
         /// <summary>
-        /// Whether the ESB call was successful
+        /// Whether the call to DVS was successful
         /// </summary>
         public bool Success { get; private set; }
 
@@ -18,22 +18,22 @@ namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue
         public string Message { get; private set; }
 
         /// <summary>
-        /// The request sent to the ESB
+        /// The request sent to the DVS
         /// </summary>
         public string Request { get; private set; }
 
         /// <summary>
-        /// ESB message headers
+        /// DVS message headers
         /// </summary>
         public Dictionary<string, string> Headers { get; private set; }
 
         /// <summary>
-        /// Correlation id for the ESB
+        /// Correlation id for the DVS
         /// </summary>
         public Guid MessageId { get; private set; }
 
         /// <summary>
-        /// Warnings that did not prevent us from sending to the ESB but we want to log
+        /// Warnings that did not prevent us from sending to the DVS but we want to log
         /// </summary>
         public List<string> Warnings { get; private set; }
 

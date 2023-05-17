@@ -1589,7 +1589,7 @@ namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue.Tests
 
         /// <summary>
         /// Tests that if the "new" nutrition elements AddedSugarsPercent, AddedSugarsWeight, CalciumWeight, IronWeight,VitaminDWeight
-        /// are null that the specified property is false in the ESB message.
+        /// are null that the specified property is false in the DVS message.
         /// </summary>
         /// <returns></returns>
         [TestMethod]

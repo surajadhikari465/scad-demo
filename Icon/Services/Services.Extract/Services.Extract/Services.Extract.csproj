@@ -215,9 +215,6 @@
     <Compile Include="Config\ActiveMqCredentialConfigItem.cs" />
     <Compile Include="Config\ActiveMqCredentialConfigItems.cs" />
     <Compile Include="Config\ActiveMqCredentialConfigSection.cs" />
-    <Compile Include="Config\EsbCredentialConfigItem.cs" />
-    <Compile Include="Config\EsbCredentialConfigItems.cs" />
-    <Compile Include="Config\EsbCredentialConfigSection.cs" />
     <Compile Include="Config\FileDestinationConfigItem.cs" />
     <Compile Include="Config\FileDestinationConfigItems.cs" />
     <Compile Include="Config\FileDestinationConfigSection.cs" />
@@ -225,12 +222,9 @@
     <Compile Include="Credentials\ActiveMqCredential.cs" />
     <Compile Include="Credentials\ActiveMqCredentialCache.cs" />
     <Compile Include="Credentials\CredentialsCacheManager.cs" />
-    <Compile Include="Credentials\ESBCredential.cs" />
-    <Compile Include="Credentials\EsbCredentialsCache.cs" />
     <Compile Include="Credentials\FileDestination.cs" />
     <Compile Include="Credentials\FileDestinationsCache.cs" />
     <Compile Include="Credentials\IActiveMqCredentialsCache.cs" />
-    <Compile Include="Credentials\IEsbCredentialsCache.cs" />
     <Compile Include="Credentials\IFileDestinationCache.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Credentials\ICredentialsCacheManager.cs" />
@@ -246,7 +240,6 @@
     <Compile Include="Models\ExtractJobConfiguration.cs" />
     <Compile Include="Models\ExtractJobParameter.cs" />
     <Compile Include="ExtractServiceListener.cs" />
-    <Compile Include="Models\ExtractServiceListenerApplicationSettings.cs" />
     <Compile Include="Credentials\IS3CredentialsCache.cs" />
     <Compile Include="Credentials\ISFtpCredentialsCache.cs" />
     <Compile Include="Message.Parser\IMessageParser.cs" />

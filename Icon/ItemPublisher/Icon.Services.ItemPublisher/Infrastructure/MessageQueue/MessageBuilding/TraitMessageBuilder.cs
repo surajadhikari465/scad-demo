@@ -4,7 +4,7 @@ using System.Linq;
 namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue
 {
     /// <summary>
-    /// TraitMessageBuilder handles translating traits into the ESB TraitType class
+    /// TraitMessageBuilder handles translating traits into the DVS TraitType class
     /// </summary>
     public class TraitMessageBuilder : ITraitMessageBuilder
     {

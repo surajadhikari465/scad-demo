@@ -4,14 +4,14 @@ using System.Collections.Generic;
 namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue
 {
     /// <summary>
-    /// Class that handles all logic around populating the ESB message header
+    /// Class that handles all logic around populating the DVS message header
     /// </summary>
     public class MessageHeaderBuilder : IMessageHeaderBuilder
     {
         private const string NonReceivingSystemsJmsProperty = "nonReceivingSysName";
 
         /// <summary>
-        /// Returns a dictionary for the ESB message header. Includes setting NonReceivingSystemsJmsProperty.
+        /// Returns a dictionary for the DVS message header. Includes setting NonReceivingSystemsJmsProperty.
         /// </summary>
         /// <param name="nonReceivingSystemsProduct"></param>
         /// <returns></returns>

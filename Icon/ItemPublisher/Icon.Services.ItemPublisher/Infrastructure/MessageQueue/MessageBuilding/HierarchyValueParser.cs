@@ -3,7 +3,7 @@
 namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue
 {
     /// <summary>
-    /// This class is responsible for parsing hierarchy names and ids into the correct format for ESB messages.
+    /// This class is responsible for parsing hierarchy names and ids into the correct format for DVS messages.
     /// </summary>
     public class HierarchyValueParser : IHierarchyValueParser
     {

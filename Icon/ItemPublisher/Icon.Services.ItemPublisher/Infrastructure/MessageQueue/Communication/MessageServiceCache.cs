@@ -7,8 +7,8 @@ using Icon.Services.ItemPublisher.Services;
 namespace Icon.Services.ItemPublisher.Infrastructure.MessageQueue.Communication
 {
     /// <summary>
-    /// EsbServiceCache is a class that manages the cache of database records our
-    /// application needs to build ESB messages. Cuurently the cache is loaded when the app starts
+    /// ServiceCache is a class that manages the cache of database records our
+    /// application needs to build DVS messages. Currently, the cache is loaded when the app starts
     /// and does not periodically refresh itself.
     /// </summary>
     public class MessageServiceCache : IMessageServiceCache

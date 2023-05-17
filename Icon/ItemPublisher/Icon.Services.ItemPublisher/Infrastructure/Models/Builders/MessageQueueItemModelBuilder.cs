@@ -19,9 +19,9 @@ namespace Icon.Services.ItemPublisher.Infrastructure.Models.Builders
         /// <summary>
         /// Builds a MessageQueueItemModel from the supplied arguments.
         /// Translates attributes to item properties and vice versa. There is an issue
-        /// where typically attributes in Icon are sent as traits in the ESB message but
-        /// there are some exceptions. Some Item properties are traits in the ESB message and
-        /// some attributes are actual properties in the ESB message. This method handles the translation
+        /// where typically attributes in Icon are sent as traits in the DVS message but
+        /// there are some exceptions. Some Item properties are traits in the DVS message and
+        /// some attributes are actual properties in the DVS message. This method handles the translation
         /// and constructs a MessageQueueItemModel that is correct.
         /// </summary>
         /// <param name="item"></param>

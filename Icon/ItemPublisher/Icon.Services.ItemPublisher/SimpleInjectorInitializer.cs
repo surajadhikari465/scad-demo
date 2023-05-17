@@ -1,6 +1,4 @@
 ﻿using Esb.Core.Serializer;
-using Icon.Esb;
-using Icon.Esb.Factory;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.Logging;
 using Icon.Services.ItemPublisher.Infrastructure;
@@ -58,10 +56,6 @@ namespace Icon.Services.ItemPublisher.Application
                 var settings = new ServiceSettings();
                 settings.LoadSettings();
                 return settings;
-            });
-            container.Register<IEsbConnectionFactory>(() =>
-            {
-                return new EsbConnectionFactory { Settings = EsbConnectionSettings.CreateSettingsFromConfig("QueueName") };
             });
             container.Register<IActiveMQConnectionFactory>(() =>
             {
