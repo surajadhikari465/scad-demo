@@ -7,9 +7,7 @@ namespace Icon.Web.Mvc.App_Start
     using FluentValidation;
     using Icon.Common;
     using Icon.Common.DataAccess;
-    using Icon.Esb.Factory;
     using Icon.Ewic.Serialization.Serializers;
-    using Icon.Ewic.Transmission.Producers;
     using Icon.FeatureFlags;
     using Icon.Framework;
     using Icon.Logging;
@@ -63,8 +61,6 @@ namespace Icon.Web.Mvc.App_Start
             container.Register<IRegionalItemCatalogFactory, RegionalItemCatalogFactory>();
             container.Register<IObjectValidator<AddEwicExclusionManager>, AddEwicExclusionManagerValidator>(Lifestyle.Transient);
             container.Register<IObjectValidator<AddEwicMappingManager>, AddEwicMappingManagerValidator>(Lifestyle.Transient);
-            container.Register<IMessageProducer, EwicMessageProducer>(Lifestyle.Singleton);
-            container.Register<IEsbConnectionFactory, EsbConnectionFactory>(Lifestyle.Singleton);
             container.Register<IInfragisticsHelper, InfragisticsHelper>(Lifestyle.Singleton);
             container.RegisterSingleton(() => IconWebAppSettings.CreateSettingsFromConfig());
 

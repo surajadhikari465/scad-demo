@@ -1,7 +1,6 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Ewic.Models;
 using Icon.Ewic.Serialization.Serializers;
-using Icon.Ewic.Transmission.Producers;
 using Icon.Framework;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
@@ -26,7 +25,6 @@ namespace Icon.Web.Tests.Unit.Managers
         private Mock<ICommandHandler<AddEwicMappingCommand>> mockAddEwicMappingCommandHandler;
         private Mock<ICommandHandler<SaveToMessageHistoryCommand>> mockSaveToMessageHistoryCommandHandler;
         private Mock<ICommandHandler<UpdateMessageHistoryMessageCommand>> mockUpdateMessageHistoryMessageCommandHandler;
-        private Mock<IMessageProducer> mockProducer;
         private string testAplScanCode;
         private string testWfmScanCode;
 
@@ -42,7 +40,6 @@ namespace Icon.Web.Tests.Unit.Managers
             mockAddEwicMappingCommandHandler = new Mock<ICommandHandler<AddEwicMappingCommand>>();
             mockSaveToMessageHistoryCommandHandler = new Mock<ICommandHandler<SaveToMessageHistoryCommand>>();
             mockUpdateMessageHistoryMessageCommandHandler = new Mock<ICommandHandler<UpdateMessageHistoryMessageCommand>>();
-            mockProducer = new Mock<IMessageProducer>();
 
             managerHandler = new AddEwicMappingManagerHandler(
                 mockValidator.Object,
@@ -50,8 +47,7 @@ namespace Icon.Web.Tests.Unit.Managers
                 mockGetEwicAgenciesWithoutMappingQuery.Object,
                 mockAddEwicMappingCommandHandler.Object,
                 mockSaveToMessageHistoryCommandHandler.Object,
-                mockUpdateMessageHistoryMessageCommandHandler.Object,
-                mockProducer.Object);
+                mockUpdateMessageHistoryMessageCommandHandler.Object);
 
             mockValidator.Setup(v => v.Validate(It.IsAny<AddEwicMappingManager>())).Returns(new ObjectValidationResult { IsValid = true });
             mockGetEwicAgenciesWithoutMappingQuery.Setup(q => q.Search(It.IsAny<GetEwicAgenciesWithoutMappingParameters>())).Returns(new List<Agency> { new Agency() });
@@ -213,10 +209,9 @@ namespace Icon.Web.Tests.Unit.Managers
             mockSaveToMessageHistoryCommandHandler.Verify(c => c.Execute(It.IsAny<SaveToMessageHistoryCommand>()), Times.Once);
             mockSerializer.Verify(s => s.Serialize(It.Is<EwicMappingMessageModel>(m => m.ActionTypeId == MessageActionTypes.AddOrUpdate)), Times.Once);
             mockUpdateMessageHistoryMessageCommandHandler.Verify(c => c.Execute(It.IsAny<UpdateMessageHistoryMessageCommand>()), Times.Once);
-            mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Once);
         }
 
-        [TestMethod]
+        /*[TestMethod]
         [ExpectedException(typeof(CommandException))]
         public void AddEwicMapping_SendMessageCommandThrowsException_ExceptionShouldBeThrownToCaller()
         {
@@ -236,7 +231,7 @@ namespace Icon.Web.Tests.Unit.Managers
             mockAddEwicMappingCommandHandler.Verify(c => c.Execute(It.IsAny<AddEwicMappingCommand>()), Times.Once);
             mockSerializer.Verify(s => s.Serialize(It.Is<EwicMappingMessageModel>(m => m.ActionTypeId == MessageActionTypes.AddOrUpdate)), Times.Once);
             mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Once);
-        }
+        }*/
 
         [TestMethod]
         public void AddEwicMapping_SendMessageCommandIsSuccessful_MessageShouldBeSavedToMessageHistory()
@@ -254,7 +249,6 @@ namespace Icon.Web.Tests.Unit.Managers
             // Then.
             mockAddEwicMappingCommandHandler.Verify(c => c.Execute(It.IsAny<AddEwicMappingCommand>()), Times.Once);
             mockSerializer.Verify(s => s.Serialize(It.Is<EwicMappingMessageModel>(m => m.ActionTypeId == MessageActionTypes.AddOrUpdate)), Times.Once);
-            mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Once);
             mockSaveToMessageHistoryCommandHandler.Verify(c => c.Execute(It.Is<SaveToMessageHistoryCommand>(h =>
                 h.Messages.TrueForAll(m =>
                     m.MessageTypeId == MessageTypes.Ewic &&

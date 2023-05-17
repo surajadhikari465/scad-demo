@@ -1,7 +1,6 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Ewic.Models;
 using Icon.Ewic.Serialization.Serializers;
-using Icon.Ewic.Transmission.Producers;
 using Icon.Framework;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
@@ -24,7 +23,6 @@ namespace Icon.Web.Tests.Unit.Managers
         private Mock<ICommandHandler<RemoveEwicExclusionCommand>> mockRemoveEwicExclusionCommandHandler;
         private Mock<ICommandHandler<SaveToMessageHistoryCommand>> mockSaveToMessageHistoryCommandHandler;
         private Mock<ICommandHandler<UpdateMessageHistoryMessageCommand>> mockUpdateMessageHistoryMessageCommandHandler;
-        private Mock<IMessageProducer> mockProducer;
         private string testScanCode;
 
         [TestInitialize]
@@ -37,15 +35,13 @@ namespace Icon.Web.Tests.Unit.Managers
             mockRemoveEwicExclusionCommandHandler = new Mock<ICommandHandler<RemoveEwicExclusionCommand>>();
             mockSaveToMessageHistoryCommandHandler = new Mock<ICommandHandler<SaveToMessageHistoryCommand>>();
             mockUpdateMessageHistoryMessageCommandHandler = new Mock<ICommandHandler<UpdateMessageHistoryMessageCommand>>();
-            mockProducer = new Mock<IMessageProducer>();
 
             managerHandler = new RemoveEwicExclusionManagerHandler(
                 mockSerializer.Object,
                 mockGetEwicAgenciesWithExclusionQuery.Object,
                 mockRemoveEwicExclusionCommandHandler.Object,
                 mockSaveToMessageHistoryCommandHandler.Object,
-                mockUpdateMessageHistoryMessageCommandHandler.Object,
-                mockProducer.Object);
+                mockUpdateMessageHistoryMessageCommandHandler.Object);
 
             mockGetEwicAgenciesWithExclusionQuery.Setup(q => q.Search(It.IsAny<GetEwicAgenciesWithExclusionParameters>())).Returns(new List<Agency> { new Agency() });
 
@@ -159,10 +155,9 @@ namespace Icon.Web.Tests.Unit.Managers
             // Then.
             mockRemoveEwicExclusionCommandHandler.Verify(c => c.Execute(It.IsAny<RemoveEwicExclusionCommand>()), Times.Once);
             mockSerializer.Verify(s => s.Serialize(It.Is<EwicExclusionMessageModel>(m => m.ActionTypeId == MessageActionTypes.Delete)), Times.Once);
-            mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Once);
         }
 
-        [TestMethod]
+        /*[TestMethod]
         [ExpectedException(typeof(CommandException))]
         public void RemoveEwicExclusion_SendMessageCommandEncountersError_ExceptionShouldBeThrown()
         {
@@ -181,7 +176,7 @@ namespace Icon.Web.Tests.Unit.Managers
             mockRemoveEwicExclusionCommandHandler.Verify(c => c.Execute(It.IsAny<RemoveEwicExclusionCommand>()), Times.Once);
             mockSerializer.Verify(s => s.Serialize(It.Is<EwicExclusionMessageModel>(m => m.ActionTypeId == MessageActionTypes.Delete)), Times.Once);
             mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Once);
-        }
+        }*/
 
         [TestMethod]
         public void RemoveEwicExclusion_SendIsSuccessful_MessagesShouldBeSaved()
@@ -198,7 +193,6 @@ namespace Icon.Web.Tests.Unit.Managers
             // Then.
             mockRemoveEwicExclusionCommandHandler.Verify(c => c.Execute(It.IsAny<RemoveEwicExclusionCommand>()), Times.Once);
             mockSerializer.Verify(s => s.Serialize(It.Is<EwicExclusionMessageModel>(m => m.ActionTypeId == MessageActionTypes.Delete)), Times.Once);
-            mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Once);
             mockSaveToMessageHistoryCommandHandler.Verify(c => c.Execute(It.Is<SaveToMessageHistoryCommand>(h =>
                 h.Messages.TrueForAll(m =>
                     m.MessageTypeId == MessageTypes.Ewic &&

@@ -2,7 +2,6 @@
 using Icon.Common.Validators;
 using Icon.Ewic.Models;
 using Icon.Ewic.Serialization.Serializers;
-using Icon.Ewic.Transmission.Producers;
 using Icon.Framework;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
@@ -23,7 +22,6 @@ namespace Icon.Web.DataAccess.Managers
         private ICommandHandler<AddEwicExclusionCommand> addEwicExclusionCommandHandler;
         private ICommandHandler<SaveToMessageHistoryCommand> saveToMessageHistoryCommandHandler;
         private ICommandHandler<UpdateMessageHistoryMessageCommand> updateMessageHistoryMessageCommandHandler;
-        private IMessageProducer esbMessageProducer;
 
         public AddEwicExclusionManagerHandler(
             IObjectValidator<AddEwicExclusionManager> addEwicExclusionValidator,
@@ -31,8 +29,7 @@ namespace Icon.Web.DataAccess.Managers
             IQueryHandler<GetEwicAgenciesWithoutExclusionParameters, List<Agency>> getEwicAgenciesWithoutExclusionQueryHandler,
             ICommandHandler<AddEwicExclusionCommand> addEwicExclusionCommandHandler,
             ICommandHandler<SaveToMessageHistoryCommand> saveToMessageHistoryCommandHandler,
-            ICommandHandler<UpdateMessageHistoryMessageCommand> updateMessageHistoryMessageCommandHandler,
-            IMessageProducer esbMessageProducer)
+            ICommandHandler<UpdateMessageHistoryMessageCommand> updateMessageHistoryMessageCommandHandler)
         {
             this.addEwicExclusionValidator = addEwicExclusionValidator;
             this.exclusionSerializer = exclusionSerializer;
@@ -40,7 +37,6 @@ namespace Icon.Web.DataAccess.Managers
             this.addEwicExclusionCommandHandler = addEwicExclusionCommandHandler;
             this.saveToMessageHistoryCommandHandler = saveToMessageHistoryCommandHandler;
             this.updateMessageHistoryMessageCommandHandler = updateMessageHistoryMessageCommandHandler;
-            this.esbMessageProducer = esbMessageProducer;
         }
 
         public void Execute(AddEwicExclusionManager data)
@@ -73,7 +69,11 @@ namespace Icon.Web.DataAccess.Managers
         {
             try
             {
-                esbMessageProducer.SendMessages(messagesToTransmit);
+                // Just commenting out as there is no replacement for this.
+                // It is to be decided if this flow is needed.
+                // This flow doesn't even work as of now.
+
+                // esbMessageProducer.SendMessages(messagesToTransmit);
             }
             catch (Exception ex)
             {

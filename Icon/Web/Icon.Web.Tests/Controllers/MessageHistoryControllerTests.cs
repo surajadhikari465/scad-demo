@@ -1,5 +1,4 @@
 ﻿using Icon.Common.DataAccess;
-using Icon.Ewic.Transmission.Producers;
 using Icon.Framework;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Models;
@@ -23,7 +22,6 @@ namespace Icon.Web.Tests.Unit.Controllers
         private Mock<IQueryHandler<GetMessageHistoryParameters, List<MessageHistory>>> mockGetMessageHistoryXmlQueryHandler;
         private Mock<ICommandHandler<ReprocessFailedMessagesCommand>> mockReprocessFailedMessagesCommandHandler;
         private Mock<ICommandHandler<UpdateMessageHistoryStatusCommand>> mockUpdateMessageHistoryStatusCommandHandler;
-        private Mock<IMessageProducer> mockProducer;
 
         [TestInitialize]
         public void Initialize()
@@ -32,14 +30,12 @@ namespace Icon.Web.Tests.Unit.Controllers
             mockGetMessageHistoryXmlQueryHandler = new Mock<IQueryHandler<GetMessageHistoryParameters, List<MessageHistory>>>();
             mockReprocessFailedMessagesCommandHandler = new Mock<ICommandHandler<ReprocessFailedMessagesCommand>>();
             mockUpdateMessageHistoryStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageHistoryStatusCommand>>();
-            mockProducer = new Mock<IMessageProducer>();
 
             controller = new MessageHistoryController(
                 mockGetFailedMessagesQueryHandler.Object,
                 mockGetMessageHistoryXmlQueryHandler.Object,
                 mockReprocessFailedMessagesCommandHandler.Object,
-                mockUpdateMessageHistoryStatusCommandHandler.Object,
-                mockProducer.Object);
+                mockUpdateMessageHistoryStatusCommandHandler.Object);
         }
 
         [TestMethod]
@@ -115,7 +111,6 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             // Then.
             mockGetMessageHistoryXmlQueryHandler.Verify(q => q.Search(It.IsAny<GetMessageHistoryParameters>()), Times.Once);
-            mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Once);
             mockReprocessFailedMessagesCommandHandler.Verify(c => c.Execute(It.IsAny<ReprocessFailedMessagesCommand>()), Times.Never);
         }
 
@@ -134,7 +129,6 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             // Then.
             mockGetMessageHistoryXmlQueryHandler.Verify(q => q.Search(It.IsAny<GetMessageHistoryParameters>()), Times.Never);
-            mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Never);
             mockReprocessFailedMessagesCommandHandler.Verify(c => c.Execute(It.IsAny<ReprocessFailedMessagesCommand>()), Times.Once);
         }
 
@@ -155,7 +149,6 @@ namespace Icon.Web.Tests.Unit.Controllers
 
             // Then.
             mockGetMessageHistoryXmlQueryHandler.Verify(q => q.Search(It.IsAny<GetMessageHistoryParameters>()), Times.Once);
-            mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Once);
             mockReprocessFailedMessagesCommandHandler.Verify(c => c.Execute(It.IsAny<ReprocessFailedMessagesCommand>()), Times.Once);
         }
 
@@ -182,7 +175,6 @@ namespace Icon.Web.Tests.Unit.Controllers
         public void Reprocess_SendEwicMessagesQueryThrowsException_ErrorJsonShouldBeReturned()
         {
             // Given.
-            mockProducer.Setup(p => p.SendMessages(It.IsAny<List<MessageHistory>>())).Throws(new Exception());
 
             var viewModels = new List<FailedMessageViewModel>();
 

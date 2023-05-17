@@ -1,7 +1,6 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Ewic.Models;
 using Icon.Ewic.Serialization.Serializers;
-using Icon.Ewic.Transmission.Producers;
 using Icon.Framework;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
@@ -21,22 +20,19 @@ namespace Icon.Web.DataAccess.Managers
         private ICommandHandler<RemoveEwicExclusionCommand> removeEwicExclusionCommandHandler;
         private ICommandHandler<SaveToMessageHistoryCommand> saveToMessageHistoryCommandHandler;
         private ICommandHandler<UpdateMessageHistoryMessageCommand> updateMessageHistoryMessageCommandHandler;
-        private IMessageProducer esbMessageProducer;
 
         public RemoveEwicExclusionManagerHandler(
             ISerializer<EwicExclusionMessageModel> exclusionSerializer,
             IQueryHandler<GetEwicAgenciesWithExclusionParameters, List<Agency>> getEwicAgenciesWithExclusionQueryHandler,
             ICommandHandler<RemoveEwicExclusionCommand> removeEwicExclusionCommandHandler,
             ICommandHandler<SaveToMessageHistoryCommand> saveToMessageHistoryCommandHandler,
-            ICommandHandler<UpdateMessageHistoryMessageCommand> updateMessageHistoryMessageCommandHandler,
-            IMessageProducer esbMessageProducer)
+            ICommandHandler<UpdateMessageHistoryMessageCommand> updateMessageHistoryMessageCommandHandler)
         {
             this.exclusionSerializer = exclusionSerializer;
             this.getEwicAgenciesWithExclusionQueryHandler = getEwicAgenciesWithExclusionQueryHandler;
             this.removeEwicExclusionCommandHandler = removeEwicExclusionCommandHandler;
             this.saveToMessageHistoryCommandHandler = saveToMessageHistoryCommandHandler;
             this.updateMessageHistoryMessageCommandHandler = updateMessageHistoryMessageCommandHandler;
-            this.esbMessageProducer = esbMessageProducer;
         }
 
         public void Execute(RemoveEwicExclusionManager data)
@@ -62,7 +58,11 @@ namespace Icon.Web.DataAccess.Managers
         {
             try
             {
-                esbMessageProducer.SendMessages(messagesToTransmit);
+                // Just commenting out as there is no replacement for this.
+                // It is to be decided if this flow is needed.
+                // This flow doesn't even work as of now.
+                
+                // esbMessageProducer.SendMessages(messagesToTransmit);
             }
             catch (Exception ex)
             {

@@ -1,7 +1,6 @@
 ﻿using Icon.Common.DataAccess;
 using Icon.Ewic.Models;
 using Icon.Ewic.Serialization.Serializers;
-using Icon.Ewic.Transmission.Producers;
 using Icon.Framework;
 using Icon.Web.Common;
 using Icon.Web.DataAccess.Commands;
@@ -26,7 +25,6 @@ namespace Icon.Web.Tests.Unit.Managers
         private Mock<ICommandHandler<AddEwicExclusionCommand>> mockAddEwicExclusionCommandHandler;
         private Mock<ICommandHandler<SaveToMessageHistoryCommand>> mockSaveToMessageHistoryCommandHandler;
         private Mock<ICommandHandler<UpdateMessageHistoryMessageCommand>> mockUpdateMessageHistoryMessageCommandHandler;
-        private Mock<IMessageProducer> mockProducer;
         private string testScanCode;
 
         [TestInitialize]
@@ -40,7 +38,6 @@ namespace Icon.Web.Tests.Unit.Managers
             mockAddEwicExclusionCommandHandler = new Mock<ICommandHandler<AddEwicExclusionCommand>>();
             mockSaveToMessageHistoryCommandHandler = new Mock<ICommandHandler<SaveToMessageHistoryCommand>>();
             mockUpdateMessageHistoryMessageCommandHandler = new Mock<ICommandHandler<UpdateMessageHistoryMessageCommand>>();
-            mockProducer = new Mock<IMessageProducer>();
 
             managerHandler = new AddEwicExclusionManagerHandler(
                 mockValidator.Object,
@@ -48,8 +45,7 @@ namespace Icon.Web.Tests.Unit.Managers
                 mockGetEwicAgenciesWithoutExclusionQuery.Object,
                 mockAddEwicExclusionCommandHandler.Object,
                 mockSaveToMessageHistoryCommandHandler.Object,
-                mockUpdateMessageHistoryMessageCommandHandler.Object,
-                mockProducer.Object);
+                mockUpdateMessageHistoryMessageCommandHandler.Object);
 
             mockValidator.Setup(v => v.Validate(It.IsAny<AddEwicExclusionManager>())).Returns(new ObjectValidationResult { IsValid = true });
             mockGetEwicAgenciesWithoutExclusionQuery.Setup(q => q.Search(It.IsAny<GetEwicAgenciesWithoutExclusionParameters>())).Returns(new List<Agency> { new Agency() });
@@ -222,10 +218,9 @@ namespace Icon.Web.Tests.Unit.Managers
             mockSaveToMessageHistoryCommandHandler.Verify(c => c.Execute(It.IsAny<SaveToMessageHistoryCommand>()), Times.Once);
             mockSerializer.Verify(s => s.Serialize(It.Is<EwicExclusionMessageModel>(m => m.ActionTypeId == MessageActionTypes.AddOrUpdate)), Times.Once);
             mockUpdateMessageHistoryMessageCommandHandler.Verify(c => c.Execute(It.IsAny<UpdateMessageHistoryMessageCommand>()), Times.Once);
-            mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Once);
         }
 
-        [TestMethod]
+        /*[TestMethod]
         [ExpectedException(typeof(CommandException))]
         public void AddEwicExclusion_SendMessageCommandEncountersError_ExceptionShouldBeThrown()
         {
@@ -245,7 +240,7 @@ namespace Icon.Web.Tests.Unit.Managers
             mockSaveToMessageHistoryCommandHandler.Verify(c => c.Execute(It.IsAny<SaveToMessageHistoryCommand>()), Times.Once);
             mockSerializer.Verify(s => s.Serialize(It.Is<EwicExclusionMessageModel>(m => m.ActionTypeId == MessageActionTypes.AddOrUpdate)), Times.Once);
             mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Once);
-        }
+        }*/
 
         [TestMethod]
         public void AddEwicExclusion_SendMessageCommandIsSuccessful_MessageShouldBeSavedToMessageHistory()
@@ -263,7 +258,6 @@ namespace Icon.Web.Tests.Unit.Managers
             mockAddEwicExclusionCommandHandler.Verify(c => c.Execute(It.IsAny<AddEwicExclusionCommand>()), Times.Once);
             mockSaveToMessageHistoryCommandHandler.Verify(c => c.Execute(It.IsAny<SaveToMessageHistoryCommand>()), Times.Once);
             mockSerializer.Verify(s => s.Serialize(It.Is<EwicExclusionMessageModel>(m => m.ActionTypeId == MessageActionTypes.AddOrUpdate)), Times.Once);
-            mockProducer.Verify(p => p.SendMessages(It.IsAny<List<MessageHistory>>()), Times.Once);
             mockSaveToMessageHistoryCommandHandler.Verify(c => c.Execute(It.Is<SaveToMessageHistoryCommand>(h =>
                 h.Messages.TrueForAll(m =>
                     m.MessageTypeId == MessageTypes.Ewic &&

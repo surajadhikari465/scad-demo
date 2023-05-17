@@ -1,5 +1,4 @@
 ﻿using Icon.Common.DataAccess;
-using Icon.Ewic.Transmission.Producers;
 using Icon.Framework;
 using Icon.Web.DataAccess.Commands;
 using Icon.Web.DataAccess.Models;
@@ -20,20 +19,17 @@ namespace Icon.Web.Mvc.Controllers
         private IQueryHandler<GetMessageHistoryParameters, List<MessageHistory>> getMessageHistoryQueryHandler;
         private ICommandHandler<ReprocessFailedMessagesCommand> reprocessFailedMessagesCommandHandler;
         private ICommandHandler<UpdateMessageHistoryStatusCommand> updateMessageHistoryStatusCommandHandler;
-        private IMessageProducer esbMessageProducer;
 
         public MessageHistoryController(
             IQueryHandler<GetFailedMessagesParameters, List<MessageModel>> getFailedMessagesQueryHandler,
             IQueryHandler<GetMessageHistoryParameters, List<MessageHistory>> getMessageHistoryQueryHandler,
             ICommandHandler<ReprocessFailedMessagesCommand> reprocessFailedMessagesCommandHandler,
-            ICommandHandler<UpdateMessageHistoryStatusCommand> updateMessageHistoryStatusCommandHandler,
-            IMessageProducer esbMessageProducer)
+            ICommandHandler<UpdateMessageHistoryStatusCommand> updateMessageHistoryStatusCommandHandler)
         {
             this.getFailedMessagesQueryHandler = getFailedMessagesQueryHandler;
             this.getMessageHistoryQueryHandler = getMessageHistoryQueryHandler;
             this.reprocessFailedMessagesCommandHandler = reprocessFailedMessagesCommandHandler;
             this.updateMessageHistoryStatusCommandHandler = updateMessageHistoryStatusCommandHandler;
-            this.esbMessageProducer = esbMessageProducer;
         }
 
         public ActionResult Index()
@@ -138,7 +134,11 @@ namespace Icon.Web.Mvc.Controllers
 
         private void TransmitEwicMessages(List<MessageHistory> messages)
         {
-            esbMessageProducer.SendMessages(messages);
+            // Just commenting out as there is no replacement for this.
+            // It is to be decided if this flow is needed.
+            // This flow doesn't even work as of now.
+
+            // esbMessageProducer.SendMessages(messages);
         }
     }
 }

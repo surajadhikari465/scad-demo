@@ -89,9 +89,6 @@
     <Reference Include="Icon.DbContextFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.DbContextFactory.2019.5.22.1\lib\net472\Icon.DbContextFactory.dll</HintPath>
     </Reference>
-    <Reference Include="Icon.Esb, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Esb.2019.7.1.3\lib\net46\Icon.Esb.dll</HintPath>
-    </Reference>
     <Reference Include="Icon.Esb.Schemas.Ewic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Esb.Schemas.Ewic.2016.10.20.1\lib\net45\Icon.Esb.Schemas.Ewic.dll</HintPath>
     </Reference>
@@ -100,9 +97,6 @@
     </Reference>
     <Reference Include="Icon.Ewic.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Ewic.Serialization.2019.5.15.1\lib\net46\Icon.Ewic.Serialization.dll</HintPath>
-    </Reference>
-    <Reference Include="Icon.Ewic.Transmission, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Icon.Ewic.Transmission.2019.5.15.2\lib\net46\Icon.Ewic.Transmission.dll</HintPath>
     </Reference>
     <Reference Include="Icon.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Icon.Framework.2019.12.6.1\lib\net472\Icon.Framework.dll</HintPath>
