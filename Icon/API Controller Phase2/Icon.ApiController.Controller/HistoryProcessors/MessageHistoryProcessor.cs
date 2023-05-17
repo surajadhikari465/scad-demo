@@ -242,21 +242,9 @@ namespace Icon.ApiController.Controller.HistoryProcessors
                     updateStagedProductStatusCommandHandler.Execute(updateStagedProductStatusCommand);
                 }
             }
-            else if(messageStatusId == MessageStatusTypes.Ready || messageStatusId == message.MessageStatusId)
-            {
-                logger.Error(string.Format("Message {0} failed to send.  The message will remain in existing state for re-processing during the next controller execution.", message.MessageHistoryId));
-            }
             else
             {
-                logger.Error(string.Format("Message {0} has not been sent to one of the two Brokers. It will be resent to that broker during the next controller execution.", message.MessageHistoryId));
-
-                var updateMessageHistoryCommand = new UpdateMessageHistoryStatusCommand<MessageHistory>
-                {
-                    Message = message,
-                    MessageStatusId = messageStatusId
-                };
-
-                updateMessageHistoryCommandHandler.Execute(updateMessageHistoryCommand);
+                logger.Error(string.Format("Message {0} failed to send.  The message will remain in existing state for re-processing during the next controller execution.", message.MessageHistoryId));
             }
         }
 
