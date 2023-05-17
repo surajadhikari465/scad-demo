@@ -75,7 +75,7 @@ namespace GPMService.Producer.Message.Processor
                         catch (Exception ex)
                         {
                             messageSendErrorCount++;
-                            logger.Error($"Error occurred when attempting to send prices to ESB. Will attempt to requeue emergency prices. Error: {ex}");
+                            logger.Error($"Error occurred when attempting to send prices. Will attempt to requeue emergency prices. Error: {ex}");
                             emergencyPriceProcessorDAL.InsertPricesIntoEmergencyQueue(emergencyMammothPrices);
                         }
                         if (messageSendErrorCount == 0 || messageSendErrorCount < gpmProducerServiceSettings.SendMessageRetryCount)

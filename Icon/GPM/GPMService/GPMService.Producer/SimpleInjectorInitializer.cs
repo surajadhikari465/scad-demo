@@ -12,8 +12,6 @@ using GPMService.Producer.Service;
 using GPMService.Producer.Service.Listener;
 using GPMService.Producer.Settings;using Icon.Common.Email;
 using Icon.DbContextFactory;
-using Icon.Esb;
-using Icon.Esb.Producer;
 using Icon.Esb.Schemas.Infor;
 using Icon.Esb.Schemas.Mammoth;
 using Icon.Esb.Schemas.Wfm.Contracts;
@@ -62,18 +60,6 @@ namespace GPMService.Producer
                     container.RegisterSingleton<ISQSFacade, SQSFacade>();
                     container.RegisterSingleton<IExtendedClientMessageSerializer, S3EventMessageSerializer>();
                     container.RegisterSingleton<ISQSExtendedClient, SQSExtendedClient>();
-                    Registration nearRealTimeEsbProducerRegistration = Lifestyle.Singleton.CreateRegistration(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMNearRealTimeProducerEmsConnection")), container);
-                    container.RegisterConditional<IEsbProducer>(
-                        nearRealTimeEsbProducerRegistration,
-                        c => !c.HasConsumer || c.Consumer.Target.Name.Equals("nearRealTimeEsbProducer"));
-                    Registration processBODEsbProducerRegistration = Lifestyle.Singleton.CreateRegistration(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMProcessBODProducerEmsConnection")), container);
-                    container.RegisterConditional<IEsbProducer>(
-                        processBODEsbProducerRegistration,
-                        c => !c.HasConsumer || c.Consumer.Target.Name.Equals("processBODEsbProducer"));
-                    Registration confirmBODEsbProducerRegistration = Lifestyle.Singleton.CreateRegistration(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMConfirmBODProducerEmsConnection")), container);
-                    container.RegisterConditional<IEsbProducer>(
-                        confirmBODEsbProducerRegistration,
-                        c => !c.HasConsumer || c.Consumer.Target.Name.Equals("confirmBODEsbProducer"));
                     container.RegisterSingleton<IMessagePublisher, NearRealTimeMessagePublisher>();
                     container.RegisterSingleton<ILogger<NearRealTimeMessagePublisher>, NLogLogger<NearRealTimeMessagePublisher>>();
                     container.RegisterSingleton<ILogger<NearRealTimeMessageListener>, NLogLogger<NearRealTimeMessageListener>>();
@@ -94,10 +80,6 @@ namespace GPMService.Producer
                     container.RegisterSingleton<ISerializer<MammothPriceType>, Serializer<MammothPriceType>>();
                     container.RegisterSingleton<ISerializer<PriceMessageArchiveType>, Serializer<PriceMessageArchiveType>>();
                     container.RegisterSingleton<ISerializer<items>, Serializer<items>>();
-                    // adding suppressions
-                    nearRealTimeEsbProducerRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
-                    processBODEsbProducerRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
-                    confirmBODEsbProducerRegistration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
                     break;
                 case Constants.ProducerType.JustInTime.ActivePrice:
                     S3FacadeSettings activePricePublishS3Settings = S3FacadeSettings.CreateSettingsFromConfig();
@@ -113,7 +95,6 @@ namespace GPMService.Producer
                     container.RegisterSingleton(() => SQSExtendedClientListenerSettings.CreateSettingsFromNamedConfig("ActivePriceListenerSQSExtendedClientConfig"));
                     container.RegisterSingleton<ISQSExtendedClient>(() => new SQSExtendedClient(activePriceListenerSQSFacade, activePriceListenerS3Facade, new S3EventMessageSerializer()));
 
-                    container.RegisterSingleton<IEsbProducer>(() => new Sb1EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMJustInTimeProducerEmsConnection")));
                     container.RegisterSingleton<IMessagePublisher, JustInTimeMessagePublisher>();
                     container.RegisterSingleton<ILogger<JustInTimeMessagePublisher>, NLogLogger<JustInTimeMessagePublisher>>();
                     container.RegisterSingleton<ILogger<ActivePriceMessageListener>, NLogLogger<ActivePriceMessageListener>>();
@@ -131,8 +112,6 @@ namespace GPMService.Producer
                     container.RegisterSingleton<IGPMProducerService, ActivePriceProducerService>();
                     container.RegisterSingleton<ISerializer<MammothPricesType>, Serializer<MammothPricesType>>();
                     container.RegisterSingleton<ISerializer<JobSchedule>, Serializer<JobSchedule>>();
-                    // adding suppressions
-                    container.GetRegistration(typeof(IEsbProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
                     break;
                 case Constants.ProducerType.JustInTime.ExpiringTpr:
                     S3FacadeSettings expiringTPRPublishS3Settings = S3FacadeSettings.CreateSettingsFromConfig();
@@ -148,7 +127,6 @@ namespace GPMService.Producer
                     container.RegisterSingleton(() => SQSExtendedClientListenerSettings.CreateSettingsFromNamedConfig("ExpiringTPRListenerSQSExtendedClientConfig"));
                     container.RegisterSingleton<ISQSExtendedClient>(() => new SQSExtendedClient(expiringTPRListenerSQSFacade, expiringTPRListenerS3Facade, new S3EventMessageSerializer()));
                     
-                    container.RegisterSingleton<IEsbProducer>(() => new Sb1EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMJustInTimeProducerEmsConnection")));
                     container.RegisterSingleton<IMessagePublisher, JustInTimeMessagePublisher>();
                     container.RegisterSingleton<ILogger<JustInTimeMessagePublisher>, NLogLogger<JustInTimeMessagePublisher>>();
                     container.RegisterSingleton<ILogger<ExpiringTprMessageListener>, NLogLogger<ExpiringTprMessageListener>>();
@@ -166,8 +144,6 @@ namespace GPMService.Producer
                     container.RegisterSingleton<IGPMProducerService, ExpiringTprProducerService>();
                     container.RegisterSingleton<ISerializer<MammothPricesType>, Serializer<MammothPricesType>>();
                     container.RegisterSingleton<ISerializer<JobSchedule>, Serializer<JobSchedule>>();
-                    // adding suppressions
-                    container.GetRegistration(typeof(IEsbProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
                     break;
                 case Constants.ProducerType.JustInTime.EmergencyPrice:
                     container.RegisterSingleton(() => S3FacadeSettings.CreateSettingsFromConfig());
@@ -177,7 +153,6 @@ namespace GPMService.Producer
                     container.RegisterSingleton<IExtendedClientMessageSerializer, ExtendedClientMessageSerializer>();
                     container.RegisterSingleton<ISNSExtendedClient, SNSExtendedClient>();
 
-                    container.RegisterSingleton<IEsbProducer>(() => new Sb1EsbProducer(EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("GPMJustInTimeProducerEmsConnection")));
                     container.RegisterSingleton<IMessagePublisher, JustInTimeMessagePublisher>();
                     container.RegisterSingleton<ILogger<JustInTimeMessagePublisher>, NLogLogger<JustInTimeMessagePublisher>>();
                     container.RegisterSingleton<ILogger<EmergencyPriceMessageProcessor>, NLogLogger<EmergencyPriceMessageProcessor>>();
@@ -192,8 +167,6 @@ namespace GPMService.Producer
                     container.RegisterSingleton<IGPMProducerService, EmergencyPriceProducerService>();
                     container.RegisterSingleton<ISerializer<MammothPricesType>, Serializer<MammothPricesType>>();
                     container.RegisterSingleton<ISerializer<MammothPriceType>, Serializer<MammothPriceType>>();
-                    // adding suppressions
-                    container.GetRegistration(typeof(IEsbProducer)).Registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "Disposing of the producer is taken care of by the application.");
                     break;
                 default:
                     throw new ArgumentException(

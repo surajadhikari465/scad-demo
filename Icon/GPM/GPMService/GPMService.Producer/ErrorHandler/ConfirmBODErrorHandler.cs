@@ -5,7 +5,6 @@ using GPMService.Producer.Model;
 using GPMService.Producer.Serializer;
 using GPMService.Producer.Settings;
 using Icon.Common.Xml;
-using Icon.Esb.Producer;
 using Icon.Esb.Schemas.Infor;
 using Icon.Logging;
 using Polly;
@@ -22,7 +21,6 @@ namespace GPMService.Producer.ErrorHandler
     {
         private readonly INearRealTimeProcessorDAL nearRealTimeProcessorDAL;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
-        private readonly IEsbProducer confirmBODEsbProducer;
         private readonly IS3Facade s3Facade;
         private readonly ISerializer<ConfirmBODType> serializer;
         private readonly ILogger<ConfirmBODErrorHandler> logger;
@@ -30,9 +28,6 @@ namespace GPMService.Producer.ErrorHandler
         public ConfirmBODErrorHandler(
             INearRealTimeProcessorDAL nearRealTimeProcessorDAL,
             GPMProducerServiceSettings gpmProducerServiceSettings,
-            // Using named injection.
-            // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
-            IEsbProducer confirmBODEsbProducer,
             IS3Facade s3Facade,
             ISerializer<ConfirmBODType> serializer,
             ILogger<ConfirmBODErrorHandler> logger
@@ -40,7 +35,6 @@ namespace GPMService.Producer.ErrorHandler
         {
             this.nearRealTimeProcessorDAL = nearRealTimeProcessorDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
-            this.confirmBODEsbProducer = confirmBODEsbProducer;
             this.serializer = serializer;
             this.logger = logger;
             this.s3Facade = s3Facade;
@@ -53,9 +47,6 @@ namespace GPMService.Producer.ErrorHandler
             string serviceType = gpmProducerServiceSettings.ServiceType;
             var computedClientId = $"GPMService.Type-{serviceType}.{Environment.MachineName}.{Guid.NewGuid()}";
             var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
-            logger.Info("Opening ConfirmBOD publisher ESB Connection");
-            confirmBODEsbProducer.OpenConnection(clientId);
-            logger.Info("ConfirmBOD publisher ESB Connection Opened");
         }
         public void HandleError(ReceivedMessage receivedMessage, Exception exception)
         {
@@ -139,10 +130,6 @@ namespace GPMService.Producer.ErrorHandler
                     confirmBODXMLMessage,
                     new Dictionary<string, string>()
                 );
-            });
-            retrypolicy.Execute(() =>
-            {
-                confirmBODEsbProducer.Send(confirmBODXMLMessage, new Dictionary<string, string>());
             });
             string patchFamilyID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.CorrelationID.ToLower());
             string messageID = receivedMessage.sqsExtendedClientMessage.S3Details[0].Metadata.GetValueOrDefault(Constants.MessageHeaders.TransactionID.ToLower());

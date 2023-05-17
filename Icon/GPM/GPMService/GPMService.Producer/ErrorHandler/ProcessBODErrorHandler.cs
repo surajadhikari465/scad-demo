@@ -4,7 +4,6 @@ using GPMService.Producer.Model;
 using GPMService.Producer.Serializer;
 using GPMService.Producer.Settings;
 using Icon.Common.Xml;
-using Icon.Esb.Producer;
 using Icon.Esb.Schemas.Infor;
 using Icon.Logging;
 using Polly;
@@ -21,7 +20,6 @@ namespace GPMService.Producer.ErrorHandler
     {
         private readonly INearRealTimeProcessorDAL nearRealTimeProcessorDAL;
         private readonly GPMProducerServiceSettings gpmProducerServiceSettings;
-        private readonly IEsbProducer processBODEsbProducer;
         private readonly IS3Facade s3Facade;
         private readonly ISerializer<PriceChangeMaster> serializer;
         private readonly ILogger<ProcessBODErrorHandler> logger;
@@ -29,9 +27,6 @@ namespace GPMService.Producer.ErrorHandler
         public ProcessBODErrorHandler(
             INearRealTimeProcessorDAL nearRealTimeProcessorDAL,
             GPMProducerServiceSettings gpmProducerServiceSettings,
-            // Using named injection.
-            // Changing the variable name would require change in SimpleInjectiorInitializer.cs file as well.
-            IEsbProducer processBODEsbProducer,
             IS3Facade s3Facade,
             ISerializer<PriceChangeMaster> serializer,
             ILogger<ProcessBODErrorHandler> logger
@@ -39,7 +34,6 @@ namespace GPMService.Producer.ErrorHandler
         {
             this.nearRealTimeProcessorDAL = nearRealTimeProcessorDAL;
             this.gpmProducerServiceSettings = gpmProducerServiceSettings;
-            this.processBODEsbProducer = processBODEsbProducer;
             this.s3Facade = s3Facade;
             this.serializer = serializer;
             this.logger = logger;
@@ -52,9 +46,6 @@ namespace GPMService.Producer.ErrorHandler
             string serviceType = gpmProducerServiceSettings.ServiceType;
             var computedClientId = $"GPMService.Type-{serviceType}.{Environment.MachineName}.{Guid.NewGuid()}";
             var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
-            logger.Info("Opening ProcessBOD publisher ESB Connection");
-            processBODEsbProducer.OpenConnection(clientId);
-            logger.Info("ProcessBOD publisher ESB Connection Opened");
         }
         public void HandleError(ReceivedMessage receivedMessage, MessageSequenceOutput messageSequenceOutput)
         {
@@ -105,10 +96,6 @@ namespace GPMService.Producer.ErrorHandler
                         processBODXMLMessage,
                         processBODXMLMessageProperties
 );
-                });
-                retrypolicy.Execute(() =>
-                {
-                    processBODEsbProducer.Send(processBODXMLMessage, processBODXMLMessageProperties);
                 });
                 nearRealTimeProcessorDAL.ArchiveErrorResponseMessage(messageID, Constants.MessageTypeNames.ProcessBOD, processBODXMLMessage, processBODXMLMessageProperties);
             }

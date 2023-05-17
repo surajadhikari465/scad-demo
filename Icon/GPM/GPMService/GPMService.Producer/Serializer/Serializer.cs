@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
-using Icon.Esb;
 
 namespace GPMService.Producer.Serializer
 {
@@ -18,7 +17,7 @@ namespace GPMService.Producer.Serializer
             {
                 NewLineHandling = NewLineHandling.None, //prevent newline character from appearing in the serialized string.
                 Indent = false,                         //prevent tab from appearing in the serialized string.
-                Encoding = System.Text.Encoding.UTF8    // UTF-8 is the desired format for ESB.
+                Encoding = System.Text.Encoding.UTF8    // UTF-8 is the desired format for DVS.
             };
 
             this.namespaces = NamespaceHelper.SetupNamespaces(typeof(T));
