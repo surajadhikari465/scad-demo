@@ -1,8 +1,6 @@
 ﻿using Esb.Core.EsbServices;
 using Esb.Core.MessageBuilders;
 using Icon.Common.DataAccess;
-using Icon.Esb;
-using Icon.Esb.Factory;
 using Icon.Esb.Producer;
 using Icon.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,7 +10,6 @@ using System.Collections.Generic;
 using WebSupport.DataAccess.Models;
 using WebSupport.DataAccess.Queries;
 using WebSupport.DataAccess.Commands;
-using WebSupport.EsbProducerFactory;
 using WebSupport.Managers;
 using WebSupport.MessageBuilders;
 using WebSupport.Models;
@@ -28,42 +25,27 @@ namespace WebSupport.Tests.Services
         private WebSupportCheckPointRequestMessageService service;
 
         private Mock<ILogger> mockLogger;
-        private Mock<IEsbConnectionFactory> mockEsbConnectionFactory;
-        private EsbConnectionSettings fakeEsbSettings;
-        private Mock<IEsbProducer> mockEsbProducer;
         private Mock<IMessageBuilder<CheckPointRequestBuilderModel>> mockRequestMessageBuilder;
         private Mock<IQueryHandler<GetCheckPointMessageParameters, IEnumerable<CheckPointMessageModel>>> mockGetCheckpointMessageQuery;
         private Mock<ICommandHandler<ArchiveCheckpointMessageCommandParameters>> mockArchiveCheckpointMessageQuery;
         private Mock<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>> mockSearchScanCodes;
         private IClientIdManager ClientIdManager;
         private Mock<IMammothGpmBridgeClient> mockMammothGpmClient;
-        private Mock<EsbConnection> mockEsbConnection;
-
+        
         [TestInitialize]
         public void Initialize()
         {
             mockLogger = new Mock<ILogger>();
-            mockEsbConnectionFactory = new Mock<IEsbConnectionFactory>();
-            fakeEsbSettings = new EsbConnectionSettings();
-            mockEsbProducer = new Mock<IEsbProducer>();
             mockRequestMessageBuilder = new Mock<IMessageBuilder<CheckPointRequestBuilderModel>>();
             mockGetCheckpointMessageQuery = new Mock<IQueryHandler<GetCheckPointMessageParameters, IEnumerable<CheckPointMessageModel>>>();
             mockArchiveCheckpointMessageQuery = new Mock<ICommandHandler<ArchiveCheckpointMessageCommandParameters>>();
             mockSearchScanCodes = new Mock<IQueryHandler<GetMammothItemIdsToScanCodesParameters, List<string>>>();
             ClientIdManager = new Managers.ClientIdManager();
             ClientIdManager.Initialize("WebSupportTests");
-            mockEsbConnection = new Mock<EsbConnection>();
             mockMammothGpmClient = new Mock<IMammothGpmBridgeClient>();
-
-            mockEsbProducer.SetupGet(s => s.ClientId).Returns(ClientIdManager.GetClientId()).Verifiable();
-            mockEsbConnectionFactory.Setup(f => f.CreateProducer(fakeEsbSettings)).Returns(mockEsbProducer.Object);
-
-
 
             service = new WebSupportCheckPointRequestMessageService(
                 mockLogger.Object,
-                mockEsbConnectionFactory.Object,
-                fakeEsbSettings,
                 mockRequestMessageBuilder.Object,
                 mockGetCheckpointMessageQuery.Object,
                 mockArchiveCheckpointMessageQuery.Object,
@@ -117,7 +99,7 @@ namespace WebSupport.Tests.Services
             var result = service.Send(viewModel);
 
             //Then
-            mockEsbProducer.Verify(p => p.Send(testMessageA, It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            mockMammothGpmClient.Verify(p => p.SendToGpmProcessBod(testMessageA, It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
 
         [TestMethod]
@@ -194,8 +176,8 @@ namespace WebSupport.Tests.Services
             var result = service.Send(viewModel);
 
             //Then
-            mockEsbProducer.Verify(p => p.Send(testMessageA, It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
-            mockEsbProducer.Verify(p => p.Send(testMessageB, It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            mockMammothGpmClient.Verify(p => p.SendToGpmProcessBod(testMessageA, It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            mockMammothGpmClient.Verify(p => p.SendToGpmProcessBod(testMessageB, It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
 
         [TestMethod]

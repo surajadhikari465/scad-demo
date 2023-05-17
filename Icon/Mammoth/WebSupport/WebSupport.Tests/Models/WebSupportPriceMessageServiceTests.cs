@@ -6,8 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using WebSupport.Models;
 using WebSupport.ViewModels;
-using Icon.Esb.Factory;
-using Icon.Esb;
 using Esb.Core.MessageBuilders;
 using Icon.Common.DataAccess;
 using WebSupport.DataAccess.Models;
@@ -27,8 +25,6 @@ namespace WebSupport.Tests.Models
     {
         private WebSupportPriceMessageService webSupportPriceMessageService;
         private PriceResetRequestViewModel request;
-        private Mock<IEsbConnectionFactory> mockEsbConnectionFactory;
-        private EsbConnectionSettings settings;
         private Mock<IMessageBuilder<PriceResetMessageBuilderModel>> mockPriceResetMessageBuilder;
         private Mock<IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>>> mockGetPriceResetPricesQuery;
         private Mock<ICommandHandler<SaveSentMessageCommand>> mockSaveSentMessageCommandHandler;
@@ -39,8 +35,6 @@ namespace WebSupport.Tests.Models
         [TestInitialize]
         public void Initialize()
         {
-            mockEsbConnectionFactory = new Mock<IEsbConnectionFactory>();
-            settings = new EsbConnectionSettings();
             mockPriceResetMessageBuilder = new Mock<IMessageBuilder<PriceResetMessageBuilderModel>>();
             mockGetPriceResetPricesQuery = new Mock<IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>>>();
             mockSaveSentMessageCommandHandler = new Mock<ICommandHandler<SaveSentMessageCommand>>();
@@ -51,8 +45,6 @@ namespace WebSupport.Tests.Models
             clientIdManager.Initialize("WebSupportTests");
 
             webSupportPriceMessageService = new WebSupportPriceMessageService(
-                mockEsbConnectionFactory.Object,
-                settings,
                 mockPriceResetMessageBuilder.Object,
                 mockGetPriceResetPricesQuery.Object,
                 mockSaveSentMessageCommandHandler.Object,
@@ -66,9 +58,6 @@ namespace WebSupport.Tests.Models
                 Stores = new[] { "1234" },
                 Items = "12345"
             };
-
-            mockEsbConnectionFactory.Setup(m => m.CreateProducer(settings))
-                .Returns(mockProducer.Object);
         }
 
         [TestMethod]

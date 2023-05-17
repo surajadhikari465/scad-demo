@@ -5,8 +5,6 @@ using Icon.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using TIBCO.EMS;
 using WebSupport.Clients;
 using WebSupport.Models;
 using Contracts = Icon.Esb.Schemas.Mammoth.ContractTypes;
@@ -88,43 +86,6 @@ namespace WebSupport.Services
             });
 
             this.jobSchedulerS3Client.Send(request, message, messageId.ToString(), messageProperties);
-            SendToEsb(request, message, messageId.ToString(), messageProperties);
-        }
-
-        private void SendToEsb(JobScheduleModel request, string message, string messageId, Dictionary<string, string> messageProperties)
-        {
-            EMSSSLFileStoreInfo storeInfo = new EMSSSLFileStoreInfo();
-            storeInfo.SetSSLPassword(Settings.SslPassword.ToCharArray());
-            storeInfo.SetSSLClientIdentity(GetEsbCert());
-
-            ConnectionFactory connectionFactory = new ConnectionFactory(Settings.ServerUrl);
-            connectionFactory.SetCertificateStoreType(EMSSSLStoreType.EMSSSL_STORE_TYPE_FILE, storeInfo);
-            connectionFactory.SetTargetHostName(Settings.TargetHostName);
-
-            Session session = connectionFactory.CreateConnection(Settings.JmsUsername, Settings.JmsPassword)
-                .CreateSession(false, Settings.SessionMode);
-            Destination destination = session.CreateQueue(request.DestinationQueueName);
-            MessageProducer producer = session.CreateProducer(destination);
-
-            TextMessage textMessage = session.CreateTextMessage(message);
-            textMessage.MessageID = messageId.ToString();
-            foreach (var keyValuePair in messageProperties)
-            {
-                textMessage.SetStringProperty(keyValuePair.Key, keyValuePair.Value);
-            }
-
-            producer.Send(textMessage);
-
-            session.Connection.Close();
-        }
-
-        private X509Certificate GetEsbCert()
-        {
-            var store = new X509Store(Settings.CertificateStoreName, Settings.CertificateStoreLocation);
-            store.Open(OpenFlags.ReadOnly);
-            var cert = store.Certificates.Find(X509FindType.FindBySubjectDistinguishedName, Settings.CertificateName, true)[0];
-            store.Close();
-            return cert;
         }
     }
 }

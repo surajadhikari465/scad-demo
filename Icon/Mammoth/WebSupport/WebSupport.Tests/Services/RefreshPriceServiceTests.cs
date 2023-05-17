@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using WebSupport.Clients;
 using WebSupport.DataAccess.Models;
 using WebSupport.DataAccess.Queries;
-using WebSupport.EsbProducerFactory;
 using WebSupport.Managers;
 using WebSupport.MessageBuilders;
 using WebSupport.Services;
@@ -21,7 +20,6 @@ namespace WebSupport.Tests.Services
     {
         private RefreshPriceService service;
         private Mock<ILogger> logger;
-        private Mock<IPriceRefreshEsbProducerFactory> priceRefreshEsbProducerFactory;
         private Mock<IPriceRefreshMessageBuilderFactory> priceRefreshMessageBuilderFactory;
         private Mock<IQueryHandler<GetGpmPricesParameters, List<GpmPrice>>> getGpmPricesQuery;
         private Mock<IQueryHandler<DoesScanCodeExistParameters, bool>> doesScanCodeExistQuery;
@@ -39,7 +37,6 @@ namespace WebSupport.Tests.Services
         public void Initialize()
         {
             logger = new Mock<ILogger>();
-            priceRefreshEsbProducerFactory = new Mock<IPriceRefreshEsbProducerFactory>();
             priceRefreshMessageBuilderFactory = new Mock<IPriceRefreshMessageBuilderFactory>();
             getGpmPricesQuery = new Mock<IQueryHandler<GetGpmPricesParameters, List<GpmPrice>>>();
             doesScanCodeExistQuery = new Mock<IQueryHandler<DoesScanCodeExistParameters, bool>>();
@@ -50,7 +47,6 @@ namespace WebSupport.Tests.Services
 
             service = new RefreshPriceService(
                 logger.Object,
-                priceRefreshEsbProducerFactory.Object,
                 priceRefreshMessageBuilderFactory.Object,
                 getGpmPricesQuery.Object,
                 doesScanCodeExistQuery.Object,
@@ -76,8 +72,6 @@ namespace WebSupport.Tests.Services
                 .Returns(true);
             getGpmPricesQuery.Setup(m => m.Search(It.IsAny<GetGpmPricesParameters>()))
                 .Returns(new List<GpmPrice> { new GpmPrice { PatchFamilyId = "1-1", SequenceId = "1" } });
-            priceRefreshEsbProducerFactory.Setup(m => m.CreateEsbProducer(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(producer.Object);
             priceRefreshMessageBuilderFactory.Setup(m => m.CreateMessageBuilder(It.IsAny<string>()))
                 .Returns(messageBuilder.Object);
 

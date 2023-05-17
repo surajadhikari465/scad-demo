@@ -69,7 +69,7 @@
         $("#dlgSubmit").attr('disabled', !isOK);
         $("#headerText").text('User Confirmation Required');
         $("#dlgHeader").removeClass("bg-danger").addClass("bg-info");
-        $("#dlgText").text(isOK ? 'Are you sure you would like to send GPM price messages to ESB?' : 'Validation failed. Please verify your selection and try again.');
+        $("#dlgText").text(isOK ? 'Are you sure you would like to send GPM price messages?' : 'Validation failed. Please verify your selection and try again.');
 
         if(!isR10) {
             $("#dlgR10Warning").hide();

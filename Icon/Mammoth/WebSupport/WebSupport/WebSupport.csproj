@@ -277,9 +277,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RegenerateEventsController.cs" />
     <Compile Include="Controllers\ReQueuePurchaseOrdersController.cs" />
-    <Compile Include="EsbProducerFactory\IPriceRefreshEsbProducerFactory.cs" />
-    <Compile Include="EsbProducerFactory\NonJndiEsbProducer.cs" />
-    <Compile Include="EsbProducerFactory\PriceRefreshEsbProducerFactory.cs" />
     <Compile Include="Filters\ErrorLogActionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

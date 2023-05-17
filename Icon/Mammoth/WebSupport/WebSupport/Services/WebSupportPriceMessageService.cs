@@ -20,7 +20,6 @@ namespace WebSupport.Services
 {
     public class WebSupportPriceMessageService : IEsbService<PriceResetRequestViewModel>
     {
-        private IEsbConnectionFactory esbConnectionFactory;
         private IMessageBuilder<PriceResetMessageBuilderModel> priceResetMessageBuilder;
         private IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>> getPriceResetPricesQuery;
         private ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler;
@@ -31,8 +30,6 @@ namespace WebSupport.Services
         public EsbConnectionSettings Settings { get; set; }
 
         public WebSupportPriceMessageService(
-            IEsbConnectionFactory esbConnectionFactory,
-            EsbConnectionSettings settings,
             IMessageBuilder<PriceResetMessageBuilderModel> priceResetMessageBuilder,
             IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>> getPriceResetPricesQuery,
             ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler,
@@ -40,8 +37,6 @@ namespace WebSupport.Services
             IClientIdManager clientIdManager,
             IDvsNearRealTimePriceClient dvsNearRealTimePriceClient)
         {
-            this.esbConnectionFactory = esbConnectionFactory;
-            this.Settings = settings;
             this.priceResetMessageBuilder = priceResetMessageBuilder;
             this.getPriceResetPricesQuery = getPriceResetPricesQuery;
             this.saveSentMessageCommandHandler = saveSentMessageCommandHandler;
@@ -79,37 +74,35 @@ namespace WebSupport.Services
                 if (priceResetPrices.Any())
                 {
                     List<string> errors = new List<string>();
-                    using (var producer = esbConnectionFactory.CreateProducer(Settings))
+                    
+                    foreach (var priceGroup in priceResetPrices.GroupBy(p => new { p.BusinessUnitId, p.ItemId, p.ScanCode }))
                     {
-                        producer.OpenConnection(clientIdManager.GetClientId());
-                        foreach (var priceGroup in priceResetPrices.GroupBy(p => new { p.BusinessUnitId, p.ItemId, p.ScanCode }))
-                        {
-                            var sequenceId = priceGroup.First().SequenceId;
-                            var patchFamilyId = priceGroup.First().PatchFamilyId;
+                        var sequenceId = priceGroup.First().SequenceId;
+                        var patchFamilyId = priceGroup.First().PatchFamilyId;
 
-                            if (!string.IsNullOrWhiteSpace(sequenceId) && !string.IsNullOrWhiteSpace(patchFamilyId))
-                            {
-                                SendPriceResetMessage(producer, sequenceId, patchFamilyId, priceGroup, chosenSystems);
-                            }
-                            else
-                            {
-                                errors.Add($"Mammoth cannot send a Price Reset for {{ScanCode:{priceGroup.Key.ScanCode},BusinessUnitID:{priceGroup.Key.BusinessUnitId}}} since GPM has not sent a price for this item yet.");
-                            }
-                        }
-
-                        if (errors.Any())
+                        if (!string.IsNullOrWhiteSpace(sequenceId) && !string.IsNullOrWhiteSpace(patchFamilyId))
                         {
-                            response.Status = EsbServiceResponseStatus.Failed;
-                            response.ErrorCode = ErrorConstants.Codes.SequenceIdOrPatchFamilyIdNotExist;
-                            response.ErrorDetails = string.Join("|", errors);
+                            SendPriceResetMessage(sequenceId, patchFamilyId, priceGroup, chosenSystems);
                         }
                         else
                         {
-                            response.Status = EsbServiceResponseStatus.Sent;
+                            errors.Add($"Mammoth cannot send a Price Reset for {{ScanCode:{priceGroup.Key.ScanCode}, BusinessUnitID:{priceGroup.Key.BusinessUnitId}}} since GPM has not sent a price for this item yet.");
                         }
-
-                        return response;
                     }
+
+                    if (errors.Any())
+                    {
+                        response.Status = EsbServiceResponseStatus.Failed;
+                        response.ErrorCode = ErrorConstants.Codes.SequenceIdOrPatchFamilyIdNotExist;
+                        response.ErrorDetails = string.Join("|", errors);
+                    }
+                    else
+                    {
+                        response.Status = EsbServiceResponseStatus.Sent;
+                    }
+
+                    return response;
+                    
                 }
                 else
                 {
@@ -128,7 +121,6 @@ namespace WebSupport.Services
         }
 
         private void SendPriceResetMessage(
-            IEsbProducer producer,
             string sequenceId, 
             string patchFamilyId, 
             IEnumerable<PriceResetPrice> prices, 
@@ -152,7 +144,6 @@ namespace WebSupport.Services
                             };
 
             dvsNearRealTimePriceClient.Send(message, messageId.ToString(), messageProperties);
-            producer.Send(message, messageId.ToString(), messageProperties);
             saveSentMessageCommandHandler.Execute(new SaveSentMessageCommand
             {
                 Message = message,

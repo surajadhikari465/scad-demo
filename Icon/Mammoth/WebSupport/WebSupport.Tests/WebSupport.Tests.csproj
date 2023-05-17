@@ -200,7 +200,6 @@
     <Compile Include="Controllers\PriceResetControllerTest.cs" />
     <Compile Include="Controllers\EPlumESLLoadControllerTest.cs" />
     <Compile Include="Controllers\RegenerateEventsControllerTest.cs" />
-    <Compile Include="EsbProducerFactory\PriceRefreshEsbProducerFactoryTests.cs" />
     <Compile Include="Helpers\ItemPriceTypes.cs" />
     <Compile Include="Helpers\ScheduledJobHelpersTests.cs" />
     <Compile Include="Helpers\TextAreaHelperTests.cs" />

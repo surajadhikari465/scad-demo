@@ -54,7 +54,7 @@ namespace WebSupport.Clients
             {
                 if (RegionNameConstants.TS.Equals(irmaRegion))
                 {
-                    // ESB Logic - all the 365 stores are stores in RM region in IRMA.
+                    // Logic - all the 365 stores are stores in RM region in IRMA.
                     irmaRegion = RegionNameConstants.RM;
                 }
 

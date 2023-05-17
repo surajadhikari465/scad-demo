@@ -1,5 +1,4 @@
 ﻿using Icon.Common.DataAccess;
-using Icon.Esb.Producer;
 using Icon.Logging;
 using Newtonsoft.Json;
 using System;
@@ -9,7 +8,6 @@ using WebSupport.Clients;
 using WebSupport.DataAccess;
 using WebSupport.DataAccess.Models;
 using WebSupport.DataAccess.Queries;
-using WebSupport.EsbProducerFactory;
 using WebSupport.Managers;
 using WebSupport.MessageBuilders;
 using WebSupport.Models;
@@ -20,7 +18,6 @@ namespace WebSupport.Services
     {
         const string RefreshPrice = "RefreshPrice";
         private ILogger logger;
-        private IPriceRefreshEsbProducerFactory priceRefreshEsbProducerFactory;
         private IPriceRefreshMessageBuilderFactory priceRefreshMessageBuilderFactory;
         private IQueryHandler<GetGpmPricesParameters, List<GpmPrice>> getGpmPricesQuery;
         private IQueryHandler<DoesScanCodeExistParameters, bool> doesScanCodeExistQuery;
@@ -35,7 +32,6 @@ namespace WebSupport.Services
 
         public RefreshPriceService(
             ILogger logger,
-            IPriceRefreshEsbProducerFactory priceRefreshEsbProducerFactory,
             IPriceRefreshMessageBuilderFactory priceRefreshMessageBuilderFactory,
             IQueryHandler<GetGpmPricesParameters, List<GpmPrice>> getGpmPricesQuery,
             IQueryHandler<DoesScanCodeExistParameters, bool> doesScanCodeExistQuery,
@@ -44,7 +40,6 @@ namespace WebSupport.Services
             IMammothGpmBridgeClient mammothGpmClient)
         {
             this.logger = logger;
-            this.priceRefreshEsbProducerFactory = priceRefreshEsbProducerFactory;
             this.priceRefreshMessageBuilderFactory = priceRefreshMessageBuilderFactory;
             this.getGpmPricesQuery = getGpmPricesQuery;
             this.doesScanCodeExistQuery = doesScanCodeExistQuery;
@@ -122,8 +117,8 @@ namespace WebSupport.Services
                             }
                             catch (Exception ex)
                             {
-                                response.Errors.Add($"Unable to refresh price for Business Unit: {businessUnitId} because an unexpected error occurred while connecting to the ESB. Check logs and connection settings for more information.");
-                                logger.Error($"Unable to refresh price for Business Unit: {businessUnitId} because an unexpected error occurred while connecting to the ESB. Error: {ex.ToString()}");
+                                response.Errors.Add($"Unable to refresh price for Business Unit: {businessUnitId} because an unexpected error occurred while connecting to Mammoth GPM AWS bridge. Check logs and connection settings for more information.");
+                                logger.Error($"Unable to refresh price for Business Unit: {businessUnitId} because an unexpected error occurred while connecting to Mammoth GPM AWS bridge. Error: {ex.ToString()}");
                             }
                         }
 
@@ -211,32 +206,27 @@ namespace WebSupport.Services
                     { EsbConstants.PriceResetKey, EsbConstants.PriceResetFalseValue }
                 };  
 
-                using (IEsbProducer esbProducer = priceRefreshEsbProducerFactory.CreateEsbProducer(builder.Key, this.selectedRegion))
+                foreach(var grp in prices.GroupBy(x => x.ItemId))
                 {
-                    esbProducer.OpenConnection(clientIdManager.GetClientId());
+                    var priceList = grp.ToList();
+                    properties[EsbConstants.SequenceIdKey] = priceList[0].SequenceId;
+                    properties[EsbConstants.CorrelationIdKey] = priceList[0].PatchFamilyId;
+                    properties[EsbConstants.TransactionIdKey] = Guid.NewGuid().ToString();
 
-                    foreach(var grp in prices.GroupBy(x => x.ItemId))
-                    {
-                        var priceList = grp.ToList();
-                        properties[EsbConstants.SequenceIdKey] = priceList[0].SequenceId;
-                        properties[EsbConstants.CorrelationIdKey] = priceList[0].PatchFamilyId;
-                        properties[EsbConstants.TransactionIdKey] = Guid.NewGuid().ToString();
+                    var message = builder.Value.BuildMessage(priceList);
 
-                        var message = builder.Value.BuildMessage(priceList);
-
-                        this.mammothGpmClient.SendToJustInTimeConsumers(message, properties, this.selectedRegion, builder.Key);
-                        esbProducer.Send(message, properties);
-
-                        logger.Debug(JsonConvert.SerializeObject(
-                            new
-                            {
-                                Action = RefreshPrice,
-                                Region = this.selectedRegion,
-                                System = builder.Key,
-                                Message = message
-                            }));
-                    }
+                    this.mammothGpmClient.SendToJustInTimeConsumers(message, properties, this.selectedRegion, builder.Key);
+                   
+                    logger.Debug(JsonConvert.SerializeObject(
+                        new
+                        {
+                            Action = RefreshPrice,
+                            Region = this.selectedRegion,
+                            System = builder.Key,
+                            Message = message
+                        }));
                 }
+                
             }
         }
 

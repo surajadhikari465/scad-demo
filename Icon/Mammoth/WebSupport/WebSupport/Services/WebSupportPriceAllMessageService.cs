@@ -27,7 +27,6 @@ namespace WebSupport.Services
         private string nonReceiving;
         private ILogger logger;
         private IClientIdManager clientIdManager;
-        private IEsbConnectionFactory esbConnection;
         private IMessageBuilder<PriceResetMessageBuilderModel> messageBuilder;
         private IQueryHandler<GetPricesAllParameters, List<PriceResetPrice>> getPricesQuery;
         private ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler;
@@ -37,8 +36,6 @@ namespace WebSupport.Services
 
         public WebSupportPriceAllMessageService(
             ILogger logger,
-            IEsbConnectionFactory esbConnectionFactory,
-            EsbConnectionSettings settings,
             IMessageBuilder<PriceResetMessageBuilderModel> messageBuilder,
             IQueryHandler<GetPricesAllParameters, List<PriceResetPrice>> getPricesQuery,
             ICommandHandler<SaveSentMessageCommand> saveSentMessageCommandHandler,
@@ -46,8 +43,6 @@ namespace WebSupport.Services
             IDvsNearRealTimePriceClient dvsNearRealTimePriceClient)
         {
             this.logger = logger;
-            this.Settings = settings;
-            this.esbConnection = esbConnectionFactory;
             this.messageBuilder = messageBuilder;
             this.getPricesQuery = getPricesQuery;
             this.saveSentMessageCommandHandler = saveSentMessageCommandHandler;
@@ -78,35 +73,29 @@ namespace WebSupport.Services
                 {
                     List<string> errors = new List<string>();
 
-                    using(var producer = esbConnection.CreateProducer(this.Settings))
-                    {
-                        producer.OpenConnection(clientIdManager.GetClientId());
+                   foreach(var grp in prices.GroupBy(p => new { p.BusinessUnitId, p.ItemId }))
+                   {
+                       var firstItem = grp.First();
+                       var sequenceId = firstItem.SequenceId;
+                       var patchFamilyId = firstItem.PatchFamilyId;
 
-                        foreach(var grp in prices.GroupBy(p => new { p.BusinessUnitId, p.ItemId }))
-                        {
-                            var firstItem = grp.First();
-                            var sequenceId = firstItem.SequenceId;
-                            var patchFamilyId = firstItem.PatchFamilyId;
+                       if (!string.IsNullOrWhiteSpace(sequenceId) && !string.IsNullOrWhiteSpace(patchFamilyId))
+                       {
+                           SendMessage(sequenceId, patchFamilyId, grp.ToList());
+                       }
+                   }
 
-                            if (!string.IsNullOrWhiteSpace(sequenceId) && !string.IsNullOrWhiteSpace(patchFamilyId))
-                            {
-                                SendMessage(producer, sequenceId, patchFamilyId, grp.ToList());
-                            }
-                        }
-
-                        if (errors.Any())
-                        {
-                            response.Status = EsbServiceResponseStatus.Failed;
-                            response.ErrorCode = ErrorConstants.Codes.SequenceIdOrPatchFamilyIdNotExist;
-                            response.ErrorDetails = String.Join("|", errors);
-                        }
-                        else
-                        {
-                            response.Status = EsbServiceResponseStatus.Sent;
-                        }
-                    }
-
-                    return response;
+                   if (errors.Any())
+                   {
+                       response.Status = EsbServiceResponseStatus.Failed;
+                       response.ErrorCode = ErrorConstants.Codes.SequenceIdOrPatchFamilyIdNotExist;
+                       response.ErrorDetails = String.Join("|", errors);
+                   }
+                   else
+                   {
+                       response.Status = EsbServiceResponseStatus.Sent;
+                   }
+                   return response;
                 }
                 else
                 {
@@ -125,7 +114,7 @@ namespace WebSupport.Services
             return response;
         }
 
-        private void SendMessage(IEsbProducer producer, string sequenceId, string patchFamilyId, List<PriceResetPrice> prices)
+        private void SendMessage(string sequenceId, string patchFamilyId, List<PriceResetPrice> prices)
         {
             var messageId = Guid.NewGuid().ToString();
             var message = messageBuilder.BuildMessage(new PriceResetMessageBuilderModel { PriceResetPrices = prices });
@@ -142,8 +131,7 @@ namespace WebSupport.Services
                 };
 
             dvsNearRealTimePriceClient.Send(message, messageId, messageProperties);
-            producer.Send(message, messageId, messageProperties);
-
+            
             //There's lots of message (100K+). Should we log them at all?
             //The code below is working. Uncoment it when needed.
             /*saveSentMessageCommandHandler.Execute(new SaveSentMessageCommand

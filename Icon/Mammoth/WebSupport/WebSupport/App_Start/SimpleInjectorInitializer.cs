@@ -31,7 +31,6 @@ namespace WebSupport.App_Start
     using System.Collections.Generic;
     using WebSupport.DataAccess.Commands;
     using MessageBuilders;
-    using WebSupport.EsbProducerFactory;
     using WebSupport.Clients;
 
     public class SimpleInjectorInitializer
@@ -65,7 +64,6 @@ namespace WebSupport.App_Start
             container.Register<IEsbService<PriceResetRequestViewModel>>(() => CreatePriceResetMessageService(container), Lifestyle.Scoped);
             container.Register<IEsbService<PricesAllViewModel>>(() => CreatePricesAllMessageService(container), Lifestyle.Scoped);
             container.Register<IEsbMultipleMessageService<CheckPointRequestViewModel>>(() => CreateCheckPointRequestMessageService(container), Lifestyle.Scoped);
-            container.Register<IEsbConnectionFactory, EsbConnectionFactory>(Lifestyle.Scoped);
             container.Register<MammothContext>(Lifestyle.Scoped);
             container.Register<IMessageBuilder<PriceResetMessageBuilderModel>, PriceResetMessageBuilder>(Lifestyle.Scoped);
             container.Register<IMessageBuilder<CheckPointRequestBuilderModel>, CheckPointRequestMessageBuilder>(Lifestyle.Scoped);
@@ -74,7 +72,6 @@ namespace WebSupport.App_Start
             container.Register<ISerializer<Icon.Esb.Schemas.Infor.ContractTypes.PriceChangeMaster>, SerializerWithoutNamepaceAliases<Icon.Esb.Schemas.Infor.ContractTypes.PriceChangeMaster>>(Lifestyle.Scoped);
             container.Register<IDbConnection>(() => new SqlConnection(ConfigurationManager.ConnectionStrings["Mammoth"].ConnectionString), Lifestyle.Scoped);
             container.Register<IRefreshPriceService, RefreshPriceService>();
-            container.Register<IPriceRefreshEsbProducerFactory, PriceRefreshEsbProducerFactory>();
             container.Register<IPriceRefreshMessageBuilderFactory, PriceRefreshMessageBuilderFactory>();
             container.Register(typeof(ILogger<>), typeof(NLogLogger<>));
         }
@@ -82,8 +79,6 @@ namespace WebSupport.App_Start
         private static WebSupportPriceMessageService CreatePriceResetMessageService(Container container)
         {
             return new WebSupportPriceMessageService(
-                container.GetInstance<IEsbConnectionFactory>(),
-                EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("EsbEmsConnection"),
                 container.GetInstance<IMessageBuilder<PriceResetMessageBuilderModel>>(),
                 container.GetInstance<IQueryHandler<GetPriceResetPricesParameters, List<PriceResetPrice>>>(),
                 container.GetInstance<ICommandHandler<SaveSentMessageCommand>>(),
@@ -96,8 +91,6 @@ namespace WebSupport.App_Start
         {
             return new WebSupportCheckPointRequestMessageService(
                 container.GetInstance<ILogger>(),
-                container.GetInstance<IEsbConnectionFactory>(),
-                EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("EsbEmsCheckPointRequestConnection"),
                 container.GetInstance<IMessageBuilder<CheckPointRequestBuilderModel>>(),
                 container.GetInstance<IQueryHandler<GetCheckPointMessageParameters, IEnumerable<CheckPointMessageModel>>>(),
                 container.GetInstance<ICommandHandler<ArchiveCheckpointMessageCommandParameters>>(),
@@ -111,18 +104,13 @@ namespace WebSupport.App_Start
             return new WebSupportJobScheduleMessageService(
                 container.GetInstance<ISerializer<Icon.Esb.Schemas.Mammoth.ContractTypes.JobSchedule>>(),
                 container.GetInstance<ILogger>(),
-                container.GetInstance<IJobSchedulerBridgeClient>())
-            {
-                Settings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("Sb1EmsConnection")
-            };
+                container.GetInstance<IJobSchedulerBridgeClient>());
         }
 
         private static WebSupportPriceAllMessageService CreatePricesAllMessageService(Container container)
         {
             return new WebSupportPriceAllMessageService(
                 container.GetInstance<ILogger>(),
-                container.GetInstance<IEsbConnectionFactory>(),
-                EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("EsbEmsConnection"),
                 container.GetInstance<IMessageBuilder<PriceResetMessageBuilderModel>>(),
                 container.GetInstance<IQueryHandler<GetPricesAllParameters, List<PriceResetPrice>>>(),
                 container.GetInstance<ICommandHandler<SaveSentMessageCommand>>(),
