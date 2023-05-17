@@ -1,6 +1,5 @@
 ﻿using Icon.Common.Email;
 using Icon.DbContextFactory;
-using Icon.Esb;
 using Icon.Logging;
 using SimpleInjector;
 using MammothR10Price.Listener;
@@ -13,7 +12,6 @@ using Icon.Esb.Schemas.Mammoth;
 using Icon.Esb.Schemas.Wfm.Contracts;
 using MammothR10Price.Serializer;
 using MammothR10Price.Message.Parser;
-using Icon.Esb.Producer;
 using Mammoth.Framework;
 using MammothR10Price.Message.Archive;
 using Wfm.Aws.ExtendedClient.Listener.SQS;
@@ -33,9 +31,6 @@ namespace MammothR10Price
         {
             var container = new Container();
             var serviceSettings = MammothR10PriceServiceSettings.CreateSettingsFromConfig();
-            var esbSettings = EsbConnectionSettings.CreateSettingsFromNamedConnectionConfig("MammothR10PriceEsbProducer");
-            var esbProducer = new EsbProducer(esbSettings);
-            container.RegisterSingleton<IEsbProducer>(() => esbProducer);
             container.RegisterSingleton<IDbContextFactory<MammothContext>, MammothContextFactory>();
             container.RegisterSingleton<IEmailClient>(() => { return EmailClient.CreateFromConfig(); });
             container.RegisterSingleton<IErrorEventPublisher, ErrorEventPublisher>();
@@ -48,7 +43,6 @@ namespace MammothR10Price
             container.RegisterSingleton<ISQSExtendedClient, SQSExtendedClient>();
             container.RegisterSingleton<IMessageProcessor, MammothR10PriceProcessor>();
             container.RegisterSingleton(() => serviceSettings);
-            container.RegisterSingleton(() => EsbConnectionSettings.CreateSettingsFromConfig());
             container.RegisterSingleton<IMapper<IList<MammothPriceType>, items>, ItemPriceCanonicalMapper>();
             container.RegisterSingleton<ISerializer<items>, Serializer<items>>();
             container.RegisterSingleton<ISerializer<ErrorMessage>, Serializer<ErrorMessage>>();
