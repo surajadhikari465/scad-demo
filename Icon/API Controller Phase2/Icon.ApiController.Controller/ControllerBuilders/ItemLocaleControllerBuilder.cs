@@ -7,12 +7,9 @@ using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
-using Icon.RenewableContext;
 using Icon.Common.Email;
 using Icon.ActiveMQ;
 using Icon.ActiveMQ.Producer;
-using Icon.Esb;
-using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
@@ -30,7 +27,6 @@ namespace Icon.ApiController.Controller.ControllerBuilders
             baseLogger.Info("Running ItemLocaleControllerBuilder.ComposeController");
 
             var emailClient = new EmailClient(EmailHelper.BuildEmailClientSettings());
-            var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("ItemQueueName"));
             var activeMqProducer = new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig("ActiveMqItemLocaleQueueName"));
             var settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
             var computedClientId = $"{settings.Source}ApiController.Type-{settings.ControllerType}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
@@ -38,15 +34,11 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 
             IconDbContextFactory iconContextFactory = new IconDbContextFactory();
 
-            baseLogger.Info("Opening ESB Connection");
-            producer.OpenConnection(clientId);
-            baseLogger.Info("ESB Connection Opened");
-
             baseLogger.Info("Opening ActiveMQ Connection");
             activeMqProducer.OpenConnection(clientId);
             baseLogger.Info("ActiveMQ Connection Opened");
 
-            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.ItemLocale, producer, iconContextFactory, activeMqProducer);
+            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.ItemLocale, iconContextFactory, activeMqProducer);
 
             var queueProcessorLogger = new NLogLoggerInstance<ItemLocaleQueueProcessor>(instance);
             var serializer = new Serializer<Contracts.items>(
@@ -98,11 +90,10 @@ namespace Icon.ApiController.Controller.ControllerBuilders
                 clearBusinessUnitInProcessCommandHandler,
                 getNextAvailableBusinessUnitQueryHandler,
                 markQueuedEntriesAsInProcessCommandHandler,
-                producer,
                 monitor,
                 activeMqProducer);
 
-            return new ApiControllerBase(baseLogger, emailClient, messageHistoryProcessor, itemLocaleQueueProcessor, producer);
+            return new ApiControllerBase(baseLogger, emailClient, messageHistoryProcessor, itemLocaleQueueProcessor);
         }
     }
 }

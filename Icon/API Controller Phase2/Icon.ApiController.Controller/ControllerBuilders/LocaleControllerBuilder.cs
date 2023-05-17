@@ -9,8 +9,6 @@ using Icon.ApiController.DataAccess.Queries;
 using Icon.Common.Email;
 using Icon.ActiveMQ;
 using Icon.ActiveMQ.Producer;
-using Icon.Esb;
-using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
@@ -28,15 +26,10 @@ namespace Icon.ApiController.Controller.ControllerBuilders
             baseLogger.Info("Running LocaleControllerBuilder.ComposeController");
 
             var emailClient = new EmailClient(EmailHelper.BuildEmailClientSettings());
-            var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("LocaleQueueName"));
             var activeMQProducer = new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig("ActiveMqLocaleQueueName"));
             var settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
             var computedClientId = $"{settings.Source}ApiController.Type-{settings.ControllerType}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
             var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
-
-            baseLogger.Info("Opening ESB Connection");
-            producer.OpenConnection(clientId);
-            baseLogger.Info("ESB Connection Opened");
 
             baseLogger.Info("Opening ActiveMQ Connection");
             activeMQProducer.OpenConnection(clientId);
@@ -44,7 +37,7 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 
             IconDbContextFactory iconContextFactory = new IconDbContextFactory();
 
-            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Locale, producer, iconContextFactory, activeMQProducer);
+            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Locale, iconContextFactory, activeMQProducer);
 
             var queueProcessorLogger = new NLogLoggerInstance<LocaleQueueProcessor>(instance);
             var serializer = new Serializer<Contracts.LocaleType>(
@@ -89,11 +82,10 @@ namespace Icon.ApiController.Controller.ControllerBuilders
                 updateMessageHistoryCommandHandler,
                 updateMessageQueueStatusCommandHandler,
                 markQueuedEntriesAsInProcessCommandHandler,
-                producer,
                 monitor,
                 activeMQProducer);
 
-            return new ApiControllerBase(baseLogger, emailClient, messageHistoryProcessor, localeQueueProcessor, producer);
+            return new ApiControllerBase(baseLogger, emailClient, messageHistoryProcessor, localeQueueProcessor);
         }
     }
 }

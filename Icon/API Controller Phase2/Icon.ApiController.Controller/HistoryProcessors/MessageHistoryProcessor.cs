@@ -1,9 +1,7 @@
 ﻿using Icon.ApiController.Common;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
-using Icon.RenewableContext;
 using Icon.Common.DataAccess;
-using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
 using System;
@@ -27,7 +25,6 @@ namespace Icon.ApiController.Controller.HistoryProcessors
         private ICommandHandler<UpdateStagedProductStatusCommand> updateStagedProductStatusCommandHandler;
         private ICommandHandler<UpdateSentToEsbHierarchyTraitCommand> updateSentToEsbHierarchyTraitCommandHandler;
         private IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool> isMessageHistoryANonRetailProductMessageQueryHandler;
-        private IEsbProducer producer;
         private IActiveMQProducer activeMqProducer;
         private int messageTypeId;
 
@@ -40,7 +37,6 @@ namespace Icon.ApiController.Controller.HistoryProcessors
             ICommandHandler<UpdateStagedProductStatusCommand> updateStagedProductStatusCommandHandler,
             ICommandHandler<UpdateSentToEsbHierarchyTraitCommand> updateSentToEsbHierarchyTraitCommandHandler,
             IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool> isMessageHistoryANonRetailProductMessageQueryHandler,
-            IEsbProducer producer,
             int messageTypeId,
             IActiveMQProducer activeMqProducer = null)
         {
@@ -52,7 +48,6 @@ namespace Icon.ApiController.Controller.HistoryProcessors
             this.updateStagedProductStatusCommandHandler = updateStagedProductStatusCommandHandler;
             this.updateSentToEsbHierarchyTraitCommandHandler = updateSentToEsbHierarchyTraitCommandHandler;
             this.isMessageHistoryANonRetailProductMessageQueryHandler = isMessageHistoryANonRetailProductMessageQueryHandler;
-            this.producer = producer;
             this.messageTypeId = messageTypeId;
             this.activeMqProducer = activeMqProducer;
         }
@@ -72,15 +67,9 @@ namespace Icon.ApiController.Controller.HistoryProcessors
                     //set message properties
                     var messageProperties = SetMessageProperties(message);
 
-                    //send the message to ESB and ActiveMQ only for Hierarchy, Product, ItemLocale, Locale, ProductSelectionGroup data
-                    if(messageTypeId == MessageTypes.Product || messageTypeId == MessageTypes.Hierarchy || messageTypeId == MessageTypes.ItemLocale || messageTypeId == MessageTypes.Locale || messageTypeId == MessageTypes.ProductSelectionGroup)
-                    {
-                        messageStatusId = PublishMessageToEsbAndActiveMq(message, messageProperties);
-                    }
-                    else
-                    {
-                        messageStatusId = PublishMessageToEsb(message, messageProperties);
-                    }
+                    //send the message to ActiveMQ
+                    messageStatusId = PublishMessageToActiveMq(message, messageProperties);
+
                     // if failed, puts to sleep
                     if(messageStatusId != MessageStatusTypes.Sent){
                         Thread.Sleep(30000);
@@ -193,56 +182,15 @@ namespace Icon.ApiController.Controller.HistoryProcessors
           return messageProperties;
         }
 
-        // sends message either to ESB or to ActiveMQ or to both based on state
-        private int PublishMessageToEsbAndActiveMq(MessageHistory message, Dictionary<string, string> messageProperties)
+        // sends message to ActiveMQ based on state
+        private int PublishMessageToActiveMq(MessageHistory message, Dictionary<string, string> messageProperties)
         {
-            int messageStatusId = message.MessageStatusId;
-            bool sentToEsb = false;
-            bool sentToActiveMq = false;
-            if(messageStatusId == MessageStatusTypes.SentToEsb)
-                sentToEsb = true;
-            else if(messageStatusId == MessageStatusTypes.SentToActiveMq)
-                sentToActiveMq = true;
-
-            if(!sentToEsb)
-                sentToEsb = SendToEsb(message, messageProperties);
-            if(!sentToActiveMq)
-                sentToActiveMq = SendToActiveMq(message, messageProperties);
+            bool sentToActiveMq = SendToActiveMq(message, messageProperties);
             
-            if(sentToEsb && sentToActiveMq)
-                return MessageStatusTypes.Sent;
-            else if(sentToEsb && !sentToActiveMq)
-                return MessageStatusTypes.SentToEsb;
-            else if(!sentToEsb && sentToActiveMq)
-                return MessageStatusTypes.SentToActiveMq;
-            else
-                return MessageStatusTypes.Ready;
-        }
-
-        private int PublishMessageToEsb(MessageHistory message, Dictionary<string, string> messageProperties)
-        {
-            bool sent = false;
-            sent = SendToEsb(message, messageProperties);
-            
-            if(sent)
+            if(sentToActiveMq)
                 return MessageStatusTypes.Sent;
             else
                 return MessageStatusTypes.Ready;
-        }
-
-        private bool SendToEsb(MessageHistory message, Dictionary<string, string> messageProperties)
-        {
-            bool sent = false;
-            try{
-                producer.Send(message.Message, messageProperties);
-                sent = true;
-            }
-            catch(Exception ex)
-            {
-                logger.Error(string.Format("Failed to send message {0} to ESB.  Error: {1}", message.MessageHistoryId, ex.ToString()));
-                sent = false;
-            }
-            return sent;
         }
 
         private bool SendToActiveMq(MessageHistory message, Dictionary<string, string> messageProperties)

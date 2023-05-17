@@ -6,7 +6,6 @@ using Icon.Logging;
 using System;
 using System.Reflection;
 using System.Threading;
-using Icon.Esb.Producer;
 
 namespace Icon.ApiController.Controller
 {
@@ -16,21 +15,17 @@ namespace Icon.ApiController.Controller
         private IEmailClient emailClient;
         private IHistoryProcessor historyProcessor;
         private IQueueProcessor queueProcessor;
-        private IEsbProducer producer;
 
         public ApiControllerBase(
             ILogger<ApiControllerBase> logger,
             IEmailClient emailClient,
             IHistoryProcessor historyProcessor, 
-            IQueueProcessor queueProcessor,
-            IEsbProducer producer)
+            IQueueProcessor queueProcessor)
         {
             this.logger = logger;
             this.emailClient = emailClient;
             this.historyProcessor = historyProcessor;
             this.queueProcessor = queueProcessor;
-
-            this.producer = producer;
         }
 
         public void Execute()

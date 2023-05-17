@@ -3,8 +3,8 @@ using System.Text;
 
 namespace Icon.ApiController.Controller.Serializers
 {
-    // ESB wants the xml in utf-8 format, but StringWriters produce utf-16 strings by default.  This override will be used to ensure that we create utf-8 strings
-    // for sending to ESB.
+    // DVS wants the xml in utf-8 format, but StringWriters produce utf-16 strings by default.  This override will be used to ensure that we create utf-8 strings
+    // for sending to DVS.
 
     public class Utf8StringWriter : StringWriter
     {

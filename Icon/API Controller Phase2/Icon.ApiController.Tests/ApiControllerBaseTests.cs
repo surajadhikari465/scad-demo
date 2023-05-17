@@ -7,7 +7,6 @@ using Icon.Common.Email;
 using Icon.ApiController.Controller.HistoryProcessors;
 using Icon.ApiController.Controller.QueueProcessors;
 using Icon.ApiController.Common;
-using Icon.Esb.Producer;
 
 namespace Icon.ApiController.Tests
 {
@@ -20,7 +19,6 @@ namespace Icon.ApiController.Tests
         private Mock<IEmailClient> mockEmailClient;
         private Mock<IHistoryProcessor> mockHistoryProcessor;
         private Mock<IQueueProcessor> mockQueueProcessor;
-        private Mock<IEsbProducer> mockProducer;
 
         [TestInitialize]
         public void Initialize()
@@ -29,11 +27,9 @@ namespace Icon.ApiController.Tests
             mockEmailClient = new Mock<IEmailClient>();
             mockHistoryProcessor = new Mock<IHistoryProcessor>();
             mockQueueProcessor = new Mock<IQueueProcessor>();
-            mockProducer = new Mock<IEsbProducer>();
-            mockProducer.SetupGet(m => m.IsConnected).Returns(true);
 
             ControllerType.Type = "Product";
-            controller = new ApiControllerBase(mockLogger.Object, mockEmailClient.Object, mockHistoryProcessor.Object, mockQueueProcessor.Object, mockProducer.Object);
+            controller = new ApiControllerBase(mockLogger.Object, mockEmailClient.Object, mockHistoryProcessor.Object, mockQueueProcessor.Object);
         }
 
         [TestMethod]
@@ -63,20 +59,6 @@ namespace Icon.ApiController.Tests
             // Then.
             mockEmailClient.Verify(e => e.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
             
-        }
-
-        [TestMethod]
-        public void ExecuteQueueProcessor_ProducerNotConnected_ShouldNotCallDispose()
-        {
-            // Given.
-            mockProducer.SetupGet(m => m.IsConnected).Returns(false);
-
-            // When.
-            controller.Execute();
-
-            // Then.
-            mockEmailClient.Verify(e => e.Send(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
-            mockProducer.Verify(p => p.Dispose(), Times.Never);
         }
     }
 }

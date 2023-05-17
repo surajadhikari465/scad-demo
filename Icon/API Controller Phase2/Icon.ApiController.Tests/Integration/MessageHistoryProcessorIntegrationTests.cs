@@ -2,16 +2,13 @@
 using Icon.ApiController.Controller.HistoryProcessors;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
-using Icon.RenewableContext;
 using Icon.Common.DataAccess;
-using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
 using Icon.Testing.Builders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Transactions;
 using Icon.ActiveMQ.Producer;
@@ -31,7 +28,6 @@ namespace Icon.ApiController.Tests.Integration
         private Mock<ICommandHandler<UpdateStagedProductStatusCommand>> mockUpdateStagedProductCommandHandler;
         private Mock<ICommandHandler<UpdateSentToEsbHierarchyTraitCommand>> mockUpdateSentToEsbHierarchyTraitCommandHandler;
         private Mock<IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool>> mockIsMessageHistoryANonRetailProductMessageQueryHandler;
-        private Mock<IEsbProducer> mockProducer;
         private Mock<IActiveMQProducer> mockActiveMQProducer;
         private ApiControllerSettings settings;
         
@@ -49,7 +45,6 @@ namespace Icon.ApiController.Tests.Integration
             mockUpdateSentToEsbHierarchyTraitCommandHandler = new Mock<ICommandHandler<UpdateSentToEsbHierarchyTraitCommand>>();
             mockUpdateStagedProductCommandHandler = new Mock<ICommandHandler<UpdateStagedProductStatusCommand>>();
             mockIsMessageHistoryANonRetailProductMessageQueryHandler = new Mock<IQueryHandler<IsMessageHistoryANonRetailProductMessageParameters, bool>>();
-            mockProducer = new Mock<IEsbProducer>();
             mockActiveMQProducer = new Mock<IActiveMQProducer>();
             settings = new ApiControllerSettings();
 
@@ -62,7 +57,6 @@ namespace Icon.ApiController.Tests.Integration
                 mockUpdateStagedProductCommandHandler.Object,
                 mockUpdateSentToEsbHierarchyTraitCommandHandler.Object,
                 mockIsMessageHistoryANonRetailProductMessageQueryHandler.Object,
-                mockProducer.Object,
                 MessageTypes.Product,
                 mockActiveMQProducer.Object);
         }

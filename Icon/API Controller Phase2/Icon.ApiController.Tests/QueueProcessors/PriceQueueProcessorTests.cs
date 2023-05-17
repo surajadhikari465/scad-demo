@@ -2,21 +2,17 @@
 using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
-using Icon.RenewableContext;
 using Icon.Common.DataAccess;
-using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 using Icon.ApiController.Common;
 using Icon.ApiController.DataAccess.Queries;
 using Icon.ApiController.Controller.Monitoring;
-using System.Linq;
 
 namespace Icon.ApiController.Tests.QueueProcessors
 {
@@ -36,7 +32,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
         private Mock<ICommandHandler<ClearBusinessUnitInProcessCommand>> mockClearBusinessUnitInProcessCommandHandler;
         private Mock<IQueryHandler<GetNextAvailableBusinessUnitParameters, int?>> mockGetNextAvailableBusinessUnitQueryHandler;
         private Mock<ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueuePrice>>> mockMarkQueuedEntriesAsInProcessCommandHandler;
-        private Mock<IEsbProducer> mockProducer;
         private ApiControllerSettings settings;
         private Mock<IMessageProcessorMonitor> mockMonitor;
         private APIMessageProcessorLogEntry actualMonitorLogEntry;
@@ -52,7 +47,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockSetProcessedDateCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueProcessedDateCommand<MessageQueuePrice>>>();
             mockUpdateMessageHistoryCommandHandler = new Mock<ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>>>();
             mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueuePrice>>>();
-            mockProducer = new Mock<IEsbProducer>();
             settings = new ApiControllerSettings();
             mockUpdateInProcessBusinessUnitCommandHandler = new Mock<ICommandHandler<UpdateInProcessBusinessUnitCommand>>();
             mockClearBusinessUnitInProcessCommandHandler = new Mock<ICommandHandler<ClearBusinessUnitInProcessCommand>>();
@@ -78,7 +72,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
                 mockClearBusinessUnitInProcessCommandHandler.Object,
                 mockGetNextAvailableBusinessUnitQueryHandler.Object,
                 mockMarkQueuedEntriesAsInProcessCommandHandler.Object,
-                mockProducer.Object,
                 mockMonitor.Object);
 
             mockGetNextAvailableBusinessUnitQueryHandler.SetupSequence(m => m.Search(It.IsAny<GetNextAvailableBusinessUnitParameters>()))
@@ -181,7 +174,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockQueueReader.Setup(qr => qr.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueuePrice>>())).Returns(fakeMessageQueuePrices);
             mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueuePrice>>())).Returns(new Contracts.items { item = new Contracts.ItemType[] { new Contracts.ItemType { id = 1 } } });
             mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.items>(), It.IsAny<TextWriter>())).Returns("Test");
-            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
 
             // When.
             queueProcessor.ProcessMessageQueue();
@@ -202,7 +194,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
 
             //Then
             mockUpdateInProcessBusinessUnitCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateInProcessBusinessUnitCommand>()), Times.Never);
-            mockProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Never);
             mockLogger.Verify(m => m.Info(It.Is<string>(s => s == "Ending the Price queue processor.  No further queued messages were found in Ready status.")), Times.Once);
         }
 
@@ -227,14 +218,12 @@ namespace Icon.ApiController.Tests.QueueProcessors
             mockQueueReader.Setup(qr => qr.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueuePrice>>())).Returns(fakeMessageQueuePrices);
             mockQueueReader.Setup(qr => qr.BuildMiniBulk(It.IsAny<List<MessageQueuePrice>>())).Returns(new Contracts.items { item = new Contracts.ItemType[] { new Contracts.ItemType { id = 1 } } });
             mockSerializer.Setup(s => s.Serialize(It.IsAny<Contracts.items>(), It.IsAny<TextWriter>())).Returns("Test");
-            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
 
             //When
             queueProcessor.ProcessMessageQueue();
 
             //Then
             mockUpdateInProcessBusinessUnitCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateInProcessBusinessUnitCommand>()), Times.Exactly(3));
-            mockProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(3));
             mockLogger.Verify(m => m.Info(It.Is<string>(s => s == "Ending the Price queue processor.  No further queued messages were found in Ready status.")), Times.Once);
             mockClearBusinessUnitInProcessCommandHandler.Verify(m => m.Execute(It.IsAny<ClearBusinessUnitInProcessCommand>()), Times.Exactly(3));
         }
@@ -284,7 +273,6 @@ namespace Icon.ApiController.Tests.QueueProcessors
                 .Returns(messageQueue.Count > 2 && !sequenceIndicesToFailSerialization.Contains(2) ? "Test3" : null)
                 .Returns(messageQueue.Count > 3 && !sequenceIndicesToFailSerialization.Contains(3) ? "Test4" : null)
                 .Returns(messageQueue.Count > 4 && !sequenceIndicesToFailSerialization.Contains(4) ? "Test5" : null);
-            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
         }
 
         [TestMethod]

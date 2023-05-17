@@ -6,12 +6,9 @@ using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
-using Icon.RenewableContext;
 using Icon.Common.Email;
 using Icon.ActiveMQ;
 using Icon.ActiveMQ.Producer;
-using Icon.Esb;
-using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
@@ -29,15 +26,10 @@ namespace Icon.ApiController.Controller.ControllerBuilders
             baseLogger.Info("Running ProductSelectionGroupControllerBuilder.ComposeController");
 
             var emailClient = new EmailClient(EmailHelper.BuildEmailClientSettings()); 
-            var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("ProductSelectionGroupQueueName"));
             var activeMQProducer = new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig("ActiveMqProductSelectionGroupQueueName"));
             var settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
             var computedClientId = $"{settings.Source}ApiController.Type-{settings.ControllerType}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
             var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
-
-            baseLogger.Info("Opening ESB Connection");
-            producer.OpenConnection(clientId);
-            baseLogger.Info("ESB Connection Opened");
 
             baseLogger.Info("Opening ActiveMQ Connection");
             activeMQProducer.OpenConnection(clientId);
@@ -45,7 +37,7 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 
             IconDbContextFactory iconContextFactory = new IconDbContextFactory();
 
-            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.ProductSelectionGroup, producer, iconContextFactory, activeMQProducer);
+            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.ProductSelectionGroup, iconContextFactory, activeMQProducer);
 
             var processorLogger = new NLogLoggerInstance<ProductSelectionGroupQueueProcessor>(instance);
             var queueReader = new ProductSelectionGroupQueueReader(new NLogLoggerInstance<ProductSelectionGroupQueueReader>(instance),
@@ -76,7 +68,6 @@ namespace Icon.ApiController.Controller.ControllerBuilders
                 updateMessageHistoryStatusCommandHandler,
                 updateMessageQueueStatusCommandHandler,
                 markQueuedEntriesAsInProcessCommandHandler,
-                producer,
                 monitor,
                 activeMQProducer);
 
@@ -84,8 +75,7 @@ namespace Icon.ApiController.Controller.ControllerBuilders
                 new NLogLoggerInstance<ApiControllerBase>(ControllerType.Instance.ToString()), 
                 emailClient,
                 messageHistoryProcessor, 
-                psgQueueProcessor, 
-                producer);
+                psgQueueProcessor);
         }
     }
 }

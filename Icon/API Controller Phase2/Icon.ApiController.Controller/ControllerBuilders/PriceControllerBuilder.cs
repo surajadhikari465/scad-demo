@@ -6,10 +6,7 @@ using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
-using Icon.RenewableContext;
 using Icon.Common.Email;
-using Icon.Esb;
-using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
@@ -27,18 +24,13 @@ namespace Icon.ApiController.Controller.ControllerBuilders
             baseLogger.Info("Running PriceControllerBuilder.ComposeController");
 
             var emailClient = new EmailClient(EmailHelper.BuildEmailClientSettings());
-            var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("ItemQueueName"));
             var settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
             var computedClientId = $"{settings.Source}ApiController.Type-{settings.ControllerType}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
             var clientId = computedClientId.Substring(0, Math.Min(computedClientId.Length, 255));
 
-            baseLogger.Info("Opening ESB Connection");
-            producer.OpenConnection(clientId);
-            baseLogger.Info("ESB Connection Opened");
-
             IconDbContextFactory iconContextFactory = new IconDbContextFactory();
 
-            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Price, producer, iconContextFactory);
+            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Price, iconContextFactory);
 
             var queueProcessorLogger = new NLogLoggerInstance<PriceQueueProcessor>(instance);
             var serializer = new Serializer<Contracts.items>(
@@ -94,10 +86,9 @@ namespace Icon.ApiController.Controller.ControllerBuilders
                 clearBusinessUnitInProcessCommandHandler,
                 getNextAvailableBusinessUnitQueryHandler,
                 markQueuedEntriesAsInProcessCommandHandler,
-                producer,
                 monitor);
 
-            return new ApiControllerBase(baseLogger, emailClient, messageHistoryProcessor, priceQueueProcessor, producer);
+            return new ApiControllerBase(baseLogger, emailClient, messageHistoryProcessor, priceQueueProcessor);
         }
     }
 }

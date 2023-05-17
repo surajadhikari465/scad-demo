@@ -7,8 +7,6 @@ using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.ApiController.DataAccess.Queries;
 using Icon.Common.Email;
-using Icon.Esb;
-using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
@@ -28,7 +26,6 @@ namespace Icon.ApiController.Controller.ControllerBuilders
             baseLogger.Info("Running HierarchyControllerBuilder.ComposeController");
 
             var emailClient = new EmailClient(EmailHelper.BuildEmailClientSettings());
-            var producer = new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("HierarchyQueueName"));
             var activeMqProducer = new ActiveMQProducer(ActiveMQConnectionSettings.CreateSettingsFromConfig("ActiveMqHierarchyQueueName"));
             var settings = ApiControllerSettings.CreateFromConfig("Icon", ControllerType.Instance);
             var computedClientId = $"{settings.Source}ApiController.Type-{settings.ControllerType}.{Environment.MachineName}.{Guid.NewGuid().ToString()}";
@@ -37,15 +34,11 @@ namespace Icon.ApiController.Controller.ControllerBuilders
 
             IconDbContextFactory iconContextFactory = new IconDbContextFactory();
 
-            baseLogger.Info("Opening ESB Connection");
-            producer.OpenConnection(clientId);
-            baseLogger.Info("ESB Connection Opened");
-
             baseLogger.Info("Opening ActiveMQ Connection");
             activeMqProducer.OpenConnection(clientId);
             baseLogger.Info("ActiveMQ Connection Opened");
 
-            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Hierarchy, producer, iconContextFactory);
+            var messageHistoryProcessor = BuilderHelpers.BuildMessageHistoryProcessor(instance, MessageTypes.Hierarchy, iconContextFactory);
 
             var queueProcessorLogger = new NLogLoggerInstance<HierarchyQueueProcessor>(instance);
             var queueReader = new HierarchyQueueReader(
@@ -98,11 +91,10 @@ namespace Icon.ApiController.Controller.ControllerBuilders
                 updateStagedProductStatusCommandHandler,
                 updateSentToEsbHierarchyTraitCommandHandler,
                 markQueuedEntriesAsInProcessCommandHandler,
-                producer,
                 monitor,
                 activeMqProducer);
 
-            return new ApiControllerBase(baseLogger, emailClient, messageHistoryProcessor, hierarchyQueueProcessor, producer);
+            return new ApiControllerBase(baseLogger, emailClient, messageHistoryProcessor, hierarchyQueueProcessor);
         }
     }
 }

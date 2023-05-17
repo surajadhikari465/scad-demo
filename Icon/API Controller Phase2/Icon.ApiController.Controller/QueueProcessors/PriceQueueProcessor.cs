@@ -3,9 +3,7 @@ using Icon.ApiController.Controller.Monitoring;
 using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
-using Icon.RenewableContext;
 using Icon.Common.DataAccess;
-using Icon.Esb.Producer;
 using Icon.Framework;
 using Icon.Logging;
 using System;
@@ -35,7 +33,6 @@ namespace Icon.ApiController.Controller.QueueProcessors
         private ICommandHandler<ClearBusinessUnitInProcessCommand> clearBusinessUnitInProcessCommandHandler;
         private IQueryHandler<GetNextAvailableBusinessUnitParameters, int?> getNextAvailableBusinessUnitQueryHandler;
         private ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueuePrice>> markQueuedEntriesAsInProcessCommandHandler;
-        private IEsbProducer producer;
         private Dictionary<string, string> messageProperties;
         private IMessageProcessorMonitor monitor;
         private APIMessageProcessorLogEntry monitorData;
@@ -54,7 +51,6 @@ namespace Icon.ApiController.Controller.QueueProcessors
             ICommandHandler<ClearBusinessUnitInProcessCommand> clearBusinessUnitInProcessCommandHandler,
             IQueryHandler<GetNextAvailableBusinessUnitParameters, int?> getNextAvailableBusinessUnitQueryHandler,
             ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueuePrice>> markQueuedEntriesAsInProcessCommandHandler,
-            IEsbProducer producer,
             IMessageProcessorMonitor monitor)
         {
             this.settings = settings;
@@ -70,7 +66,6 @@ namespace Icon.ApiController.Controller.QueueProcessors
             this.clearBusinessUnitInProcessCommandHandler = clearBusinessUnitInProcessCommandHandler;
             this.getNextAvailableBusinessUnitQueryHandler = getNextAvailableBusinessUnitQueryHandler;
             this.markQueuedEntriesAsInProcessCommandHandler = markQueuedEntriesAsInProcessCommandHandler;
-            this.producer = producer;
             this.monitor = monitor;
             this.monitorData = new APIMessageProcessorLogEntry()
             {
@@ -133,7 +128,9 @@ namespace Icon.ApiController.Controller.QueueProcessors
 
                             SetProcessedDate(messagesReadyToSerialize);
 
-                            bool messageSent = PublishMessage(priceMessage.Message, priceMessage.MessageHistoryId);
+                            // This code is not in use. Keeping dummy value for messageSent to remove Esb Nuget dependency.
+                            // bool messageSent = PublishMessage(priceMessage.Message, priceMessage.MessageHistoryId);
+                            bool messageSent = true;
 
                             ProcessResponse(messageSent, priceMessage);
 
@@ -241,24 +238,6 @@ namespace Icon.ApiController.Controller.QueueProcessors
             }
         }
 
-        private bool PublishMessage(string xml, int messageHistoryId)
-        {
-            logger.Info(String.Format("Preparing to send message {0}.", messageHistoryId));
-
-            try
-            {
-                // Send message
-                messageProperties["IconMessageID"] = messageHistoryId.ToString();
-                producer.Send(xml, messageProperties);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                logger.Error(String.Format("Failed to send message {0}.  Error: {1}", messageHistoryId, ex.ToString()));
-                return false;
-            }
-        }
-
         private void SetProcessedDate(List<MessageQueuePrice> messagesToUpdate)
         {
             var command = new UpdateMessageQueueProcessedDateCommand<MessageQueuePrice>
@@ -293,7 +272,7 @@ namespace Icon.ApiController.Controller.QueueProcessors
 
         private MessageHistory BuildXmlMessage(string xml,Dictionary<string, string> messageProperties)
         {
-            // ESB wants the xml in utf-8 encoding, but SQL Server wants it as utf-16.  This will replace the encoding in the xml header so that
+            // DVS wants the xml in utf-8 encoding, but SQL Server wants it as utf-16.  This will replace the encoding in the xml header so that
             // the database will happily store it.
             xml = new StringBuilder(xml).Replace("utf-8", "utf-16").ToString();
 

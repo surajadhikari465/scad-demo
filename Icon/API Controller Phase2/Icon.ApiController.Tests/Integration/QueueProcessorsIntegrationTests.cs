@@ -9,16 +9,13 @@ using Icon.ApiController.DataAccess.Queries;
 using Icon.RenewableContext;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
-using Icon.Esb.Producer;
 using Icon.Framework;
-using Icon.Framework.RenewableContext;
 using Icon.Logging;
 using Icon.Testing.Builders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using Contracts = Icon.Esb.Schemas.Wfm.Contracts;
 using System.Transactions;
@@ -33,7 +30,6 @@ namespace Icon.ApiController.Tests.Integration
         private IconContext context;
         private TransactionScope transaction;
         private IconDbContextFactory iconContextFactory;
-        private Mock<IEsbProducer> mockProducer;
         private Mock<IActiveMQProducer> mockActiveMqProducer;
 
         [TestInitialize]
@@ -44,7 +40,6 @@ namespace Icon.ApiController.Tests.Integration
             context = new IconContext();
             iconContextFactory = new IconDbContextFactory();
 
-            mockProducer = new Mock<IEsbProducer>();
             mockActiveMqProducer = new Mock<IActiveMQProducer>();
             settings = new ApiControllerSettings();
         }
@@ -91,7 +86,6 @@ namespace Icon.ApiController.Tests.Integration
             var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
             var mockUomMapper = new Mock<IUomMapper>();
 
-            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockActiveMqProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockGetMessageQueueQuery.Setup(q => q.Search(It.IsAny<GetMessageQueueParameters<MessageQueueProduct>>())).Returns(fakeMessageQueue.Dequeue);
 
@@ -122,7 +116,6 @@ namespace Icon.ApiController.Tests.Integration
                 updateMessageHistoryCommandHandler,
                 updateMessageQueueStatusCommandHandler,
                 mockMarkMessagesAsInProcessCommand.Object,
-                mockProducer.Object,
                 mockMonitor.Object,
                 mockActiveMqProducer.Object);
 
@@ -187,7 +180,6 @@ namespace Icon.ApiController.Tests.Integration
             var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
             var mockUomMapper = new Mock<IUomMapper>();
 
-            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockActiveMqProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockGetMessageQueueQuery.Setup(q => q.Search(It.IsAny<GetMessageQueueParameters<MessageQueueProduct>>())).Returns(fakeMessageQueue.Dequeue);
 
@@ -218,7 +210,6 @@ namespace Icon.ApiController.Tests.Integration
                 updateMessageHistoryCommandHandler,
                 updateMessageQueueStatusCommandHandler,
                 mockMarkMessagesAsInProcessCommand.Object,
-                mockProducer.Object,
                 mockMonitor.Object,
                 mockActiveMqProducer.Object);
 
@@ -294,7 +285,6 @@ namespace Icon.ApiController.Tests.Integration
             var mockProductSelectionGroupsMapper = new Mock<IProductSelectionGroupsMapper>();
             var mockGetNextAvailableBusinessUnitQueryHandler = new Mock<IQueryHandler<GetNextAvailableBusinessUnitParameters, int?>>();
 
-            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockGetMessageQueueQuery.Setup(q => q.Search(It.IsAny<GetMessageQueueParameters<MessageQueueItemLocale>>())).Returns(fakeMessageQueue.Dequeue);
             mockGetNextAvailableBusinessUnitQueryHandler.Setup(q => q.Search(It.IsAny<GetNextAvailableBusinessUnitParameters>())).Returns(fakeNextBusinessUnits.Dequeue);
@@ -330,7 +320,6 @@ namespace Icon.ApiController.Tests.Integration
                 clearBusinessUnitInProcessCommandHandler,
                 mockGetNextAvailableBusinessUnitQueryHandler.Object,
                 mockMarkQueuedEntriesCommandHandler.Object,
-                mockProducer.Object,
                 mockMonitor.Object,
                 mockActiveMqProducer.Object);
 
@@ -409,7 +398,6 @@ namespace Icon.ApiController.Tests.Integration
             var mockGetNextAvailableBusinessUnitQueryHandler = new Mock<IQueryHandler<GetNextAvailableBusinessUnitParameters, int?>>();
             var mockMonitor = new Mock<IMessageProcessorMonitor>();
 
-            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockGetMessageQueueQuery.Setup(q => q.Search(It.IsAny<GetMessageQueueParameters<MessageQueueItemLocale>>())).Returns(fakeMessageQueue.Dequeue);
             mockGetItemByScanCodeQuery.Setup(q => q.Search(It.IsAny<GetItemByScanCodeParameters>())).Throws(new Exception());
@@ -445,7 +433,6 @@ namespace Icon.ApiController.Tests.Integration
                 clearBusinessUnitInProcessCommandHandler,
                 mockGetNextAvailableBusinessUnitQueryHandler.Object,
                 mockMarkQueuedEntriesCommandHandler.Object,
-                mockProducer.Object,
                 mockMonitor.Object,
                 mockActiveMqProducer.Object);
 
@@ -507,7 +494,6 @@ namespace Icon.ApiController.Tests.Integration
             var mockGetNextAvailableBusinessUnitQueryHandler = new Mock<IQueryHandler<GetNextAvailableBusinessUnitParameters, int?>>();
             mockGetNextAvailableBusinessUnitQueryHandler.Setup(q => q.Search(It.IsAny<GetNextAvailableBusinessUnitParameters>())).Returns(fakeNextBusinessUnits.Dequeue);
 
-            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockGetMessageQueueQuery.Setup(q => q.Search(It.IsAny<GetMessageQueueParameters<MessageQueuePrice>>())).Returns(fakeMessageQueue.Dequeue);
 
             var serializer = new Serializer<Contracts.items>(mockSerializerLogger.Object, mockEmailClient.Object);
@@ -539,7 +525,6 @@ namespace Icon.ApiController.Tests.Integration
                 clearBusinessUnitInProcessCommandHandler,
                 mockGetNextAvailableBusinessUnitQueryHandler.Object,
                 mockMarkMessagesAsInProcessCommand.Object,
-                mockProducer.Object,
                 mockMonitor.Object);
 
             // When.
@@ -611,7 +596,6 @@ namespace Icon.ApiController.Tests.Integration
                 }
             };
 
-            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockGetMessageQueueQuery.Setup(q => q.Search(It.IsAny<GetMessageQueueParameters<MessageQueueLocale>>())).Returns(fakeMessageQueue.Dequeue);
             mockGetLocaleLineageQuery.Setup(q => q.Search(It.IsAny<GetLocaleLineageParameters>())).Returns(new LocaleLineageModel { DescendantLocales = localeLineage });
 
@@ -641,7 +625,6 @@ namespace Icon.ApiController.Tests.Integration
                 updateMessageHistoryCommandHandler,
                 updateMessageQueueStatusCommandHandler,
                 new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueLocale>(mockMarkQueuedEntriesAsInProcessLogger.Object, iconContextFactory),
-                mockProducer.Object,
                 mockMonitor.Object,
                 mockActiveMqProducer.Object);
 
@@ -705,7 +688,6 @@ namespace Icon.ApiController.Tests.Integration
             var mockUpdateMessageHistoryStatusLogger = new Mock<ILogger<UpdateMessageHistoryStatusCommandHandler>>();
             var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueHierarchy>, List<MessageQueueHierarchy>>>();
 
-            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
 
             mockGetMessageQueueQuery.Setup(q => q.Search(It.IsAny<GetMessageQueueParameters<MessageQueueHierarchy>>())).Returns(fakeMessageQueue.Dequeue);
@@ -740,7 +722,6 @@ namespace Icon.ApiController.Tests.Integration
                 mockUpdateStagedProductStatusCommandHandler.Object,
                 mockUpdateSentToEsbHierarchyTraitCommandHandler.Object,
                 new MarkQueuedEntriesAsInProcessCommandHandler<MessageQueueHierarchy>(mockMarkQueuedEntriesAsInProcess.Object, iconContextFactory),
-                mockProducer.Object,
                 mockMonitor.Object,
                 mockActiveMqProducer.Object);
 
@@ -805,7 +786,6 @@ namespace Icon.ApiController.Tests.Integration
             var mockGetMessageQueueQuery = new Mock<IQueryHandler<GetMessageQueueParameters<MessageQueueProductSelectionGroup>, List<MessageQueueProductSelectionGroup>>>();
             var mockMarkMessagesAsInProcessCommand = new Mock<ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueueProductSelectionGroup>>>();
 
-            mockProducer.Setup(p => p.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockGetMessageQueueQuery.Setup(q => q.Search(It.IsAny<GetMessageQueueParameters<MessageQueueProductSelectionGroup>>())).Returns(fakeMessageQueue.Dequeue);
 
             var serializer = new Serializer<Contracts.SelectionGroupsType>(mockSerializerLogger.Object, mockEmailClient.Object);
@@ -831,7 +811,6 @@ namespace Icon.ApiController.Tests.Integration
                 updateMessageHistoryCommandHandler,
                 updateMessageQueueStatusCommandHandler,
                 mockMarkMessagesAsInProcessCommand.Object,
-                mockProducer.Object,
                 mockMonitor.Object,
                 mockActiveMqProducer.Object);
 
