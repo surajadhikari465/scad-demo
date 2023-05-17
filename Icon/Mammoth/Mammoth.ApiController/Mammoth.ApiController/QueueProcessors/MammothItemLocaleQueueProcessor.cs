@@ -1,20 +1,14 @@
 ﻿using Icon.ApiController.Common;
-using Icon.ApiController.Controller.QueueProcessors;
 using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
-using Icon.Common.Context;
 using Icon.Common.DataAccess;
 using Icon.ActiveMQ.Producer;
-using Icon.Esb.Producer;
 using Icon.Logging;
 using Mammoth.Common.DataAccess;
 using Mammoth.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Contracts = Icon.Esb.Schemas.Wfm.PreGpm.Contracts;
 
 namespace Mammoth.ApiController.QueueProcessors
@@ -30,7 +24,6 @@ namespace Mammoth.ApiController.QueueProcessors
             ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>> updateMessageHistoryCommandHandler,
             ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueueItemLocale>> updateMessageQueueStatusCommandHandler,
             ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueueItemLocale>> markQueuedEntriesAsInProcessCommandHandler,
-            IEsbProducer esbProducer,
             IActiveMQProducer activeMqProducer,
             ApiControllerSettings settings)
             : base(logger, 
@@ -42,7 +35,6 @@ namespace Mammoth.ApiController.QueueProcessors
                   updateMessageHistoryCommandHandler,
                   updateMessageQueueStatusCommandHandler,
                   markQueuedEntriesAsInProcessCommandHandler,
-                  esbProducer,
                   activeMqProducer,
                   settings)
         {

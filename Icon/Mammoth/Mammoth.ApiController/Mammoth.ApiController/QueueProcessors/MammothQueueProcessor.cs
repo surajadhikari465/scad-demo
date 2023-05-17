@@ -4,7 +4,6 @@ using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.Common.DataAccess;
 using Icon.ActiveMQ.Producer;
-using Icon.Esb.Producer;
 using Icon.Logging;
 using Mammoth.Common.DataAccess;
 using Mammoth.Framework;
@@ -27,7 +26,6 @@ namespace Mammoth.ApiController.QueueProcessors
             ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>> updateMessageHistoryCommandHandler,
             ICommandHandler<UpdateMessageQueueStatusCommand<TMessageQueue>> updateMessageQueueStatusCommandHandler,
             ICommandHandler<MarkQueuedEntriesAsInProcessCommand<TMessageQueue>> markQueuedEntriesAsInProcessCommandHandler,
-            IEsbProducer esbProducer,
             IActiveMQProducer activeMqProducer,
             ApiControllerSettings settings)
             : base(logger, 
@@ -39,7 +37,6 @@ namespace Mammoth.ApiController.QueueProcessors
                   updateMessageHistoryCommandHandler,
                   updateMessageQueueStatusCommandHandler,
                   markQueuedEntriesAsInProcessCommandHandler,
-                  esbProducer,
                   activeMqProducer)
         {
             this.settings = settings;   
@@ -47,7 +44,7 @@ namespace Mammoth.ApiController.QueueProcessors
 
         protected override MessageHistory BuildXmlMessage(string xml)
         {
-            // ESB wants the xml in utf-8 encoding, but SQL Server wants it as utf-16.  This will replace the encoding in the xml header so that
+            // DVS wants the xml in utf-8 encoding, but SQL Server wants it as utf-16.  This will replace the encoding in the xml header so that
             // the database will happily store it.
             xml = new StringBuilder(xml).Replace("utf-8", "utf-16").ToString();
 
@@ -67,57 +64,21 @@ namespace Mammoth.ApiController.QueueProcessors
             return messageHistory.MessageHistoryId.ToString();
         }
 
-        protected override int PublishMessage(MessageHistory messageHistory)
+        protected override bool PublishMessage(MessageHistory messageHistory)
         {
-            int messageStatus;
-            bool sentToEsb = true, sentToActiveMq = true;
-
             logger.Info(string.Format("Preparing to send message {0}.", messageHistory.MessageHistoryId));
             esbMessageProperties["IconMessageID"] = messageHistory.MessageHistoryId.ToString();
 
-            // Converting utf-16 encoding back to utf-8 before sending to ESB or ActiveMQ
+            // Converting utf-16 encoding back to utf-8 before sending to ActiveMQ
             string xmlMessage = messageHistory.Message.Replace("utf-16", "utf-8");
-
-            if(messageHistory.MessageStatusId != MessageStatusTypes.SentToEsb)
-                sentToEsb = PublishMessageToEsb(xmlMessage);
-            if(messageHistory.MessageStatusId != MessageStatusTypes.SentToActiveMq)
-                sentToActiveMq = PublishMessageToActiveMq(xmlMessage);
-
-            if (sentToEsb && sentToActiveMq)
-                messageStatus = messageSentStatusId;
-            else if (sentToEsb && !sentToActiveMq)
-                messageStatus = messageSentToEsbStatusId;
-            else if (!sentToEsb && sentToActiveMq)
-                messageStatus = messageSentToActiveMqStatusId;
-            else
-                messageStatus = messageFailedStatusId;
-            return messageStatus;
-        }
-
-        private bool PublishMessageToEsb(string xmlMessage)
-        {
-            try
-            {
-                esbProducer.Send(xmlMessage, esbMessageProperties);
-                return true;
-            }
-            catch(Exception ex)
-            {
-                logger.Error(string.Format("Failed to send message {0} to ESB. Error Details: {1}", esbMessageProperties["IconMessageID"], ex.ToString()));
-                return false;
-            }
-        }
-
-        private bool PublishMessageToActiveMq(String xmlMessage)
-        {
             try
             {
                 activeMqProducer.Send(xmlMessage, esbMessageProperties);
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                logger.Error(String.Format("Failed to send message {0} to ActiveMQ. Error Details: {1}", esbMessageProperties["IconMessageID"], ex.ToString()));
+                logger.Error(String.Format("Failed to send message {0} to ActiveMQ (DVS). Error Details: {1}", esbMessageProperties["IconMessageID"], ex.ToString()));
                 return false;
             }
         }
@@ -127,8 +88,6 @@ namespace Mammoth.ApiController.QueueProcessors
             messageFailedStatusId = MessageStatusTypes.Failed;
             messageReadyStatusId = MessageStatusTypes.Ready;
             messageSentStatusId = MessageStatusTypes.Sent;
-            messageSentToEsbStatusId = MessageStatusTypes.SentToEsb;
-            messageSentToActiveMqStatusId = MessageStatusTypes.SentToActiveMq;
         }
     }
 }

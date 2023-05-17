@@ -9,8 +9,6 @@ using Icon.ApiController.DataAccess.Queries;
 using Icon.Common.DataAccess;
 using Icon.Common.Email;
 using Icon.DbContextFactory;
-using Icon.Esb;
-using Icon.Esb.Producer;
 using Icon.ActiveMQ;
 using Icon.ActiveMQ.Producer;
 using Icon.Logging;
@@ -35,7 +33,6 @@ namespace Mammoth.ApiController
             container.Register<ILogger<Serializer<Contracts.items>>, NLogLogger<Serializer<Contracts.items>>>();
             container.RegisterSingleton<IDbContextFactory<MammothContext>, MammothContextFactory>();
             container.RegisterSingleton(() => ApiControllerSettings.CreateFromConfig("Mammoth", instance));
-            container.Register<IEsbProducer>(() => new EsbProducer(EsbConnectionSettings.CreateSettingsFromConfig("ItemQueueName")), Lifestyle.Singleton);
             RegisterActiveMqProducer(container, controllerType, instance);
             container.Register<IQueueReader<MessageQueuePrice, Contracts.items>, MammothPriceQueueReader>();
             container.Register<IQueueReader<MessageQueueItemLocale, Contracts.items>, MammothItemLocaleQueueReader>();

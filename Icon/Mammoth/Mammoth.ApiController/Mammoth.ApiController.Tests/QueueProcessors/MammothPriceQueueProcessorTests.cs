@@ -3,7 +3,6 @@ using Icon.ApiController.Controller.QueueReaders;
 using Icon.ApiController.Controller.Serializers;
 using Icon.ApiController.DataAccess.Commands;
 using Icon.Common.DataAccess;
-using Icon.Esb.Producer;
 using Icon.ActiveMQ.Producer;
 using Icon.Logging;
 using Mammoth.ApiController.QueueProcessors;
@@ -30,7 +29,6 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
         private Mock<ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>>> mockUpdateMessageHistoryCommandHandler;
         private Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueuePrice>>> mockUpdateMessageQueueStatusCommandHandler;
         private Mock<ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueuePrice>>> mockMarkQueuedEntriesAsInProcessCommandHandler;
-        private Mock<IEsbProducer> mockEsbProducer;
         private Mock<IActiveMQProducer> mockActiveMqProducer;
         private ApiControllerSettings settings;
 
@@ -46,7 +44,6 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
             mockUpdateMessageQueueStatusCommandHandler = new Mock<ICommandHandler<UpdateMessageQueueStatusCommand<MessageQueuePrice>>>();
             mockUpdateMessageHistoryCommandHandler = new Mock<ICommandHandler<UpdateMessageHistoryStatusCommand<MessageHistory>>>();
             mockMarkQueuedEntriesAsInProcessCommandHandler = new Mock<ICommandHandler<MarkQueuedEntriesAsInProcessCommand<MessageQueuePrice>>>();
-            mockEsbProducer = new Mock<IEsbProducer>();
             mockActiveMqProducer = new Mock<IActiveMQProducer>();
             settings = new ApiControllerSettings { Instance = 1 };
 
@@ -59,7 +56,6 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
                 mockUpdateMessageHistoryCommandHandler.Object,
                 mockUpdateMessageQueueStatusCommandHandler.Object,
                 mockMarkQueuedEntriesAsInProcessCommandHandler.Object,
-                mockEsbProducer.Object,
                 mockActiveMqProducer.Object,
                 settings);
         }
@@ -77,7 +73,6 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
                 .Returns(new Contracts.items { item = new Contracts.ItemType[] { new Contracts.ItemType { id = 1 } } });
             mockSerializer.Setup(m => m.Serialize(It.IsAny<Contracts.items>(), It.IsAny<TextWriter>()))
                 .Returns("test message");
-            mockEsbProducer.Setup(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
 
             //When
@@ -93,7 +88,6 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
             mockAssociateMessageToQueueCommandHandler.Verify(m => m.Execute(It.IsAny<AssociateMessageToQueueCommand<MessageQueuePrice, MessageHistory>>()), Times.Once);
             mockUpdateMessageHistoryCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>()), Times.Once);
             mockSetProcessedDataCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateMessageQueueProcessedDateCommand<MessageQueuePrice>>()), Times.Once);
-            mockEsbProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
             mockActiveMqProducer.Verify(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
 
@@ -110,7 +104,6 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
                 .Returns(new Contracts.items { item = new Contracts.ItemType[] { new Contracts.ItemType { id = 1 } } });
             mockSerializer.Setup(m => m.Serialize(It.IsAny<Contracts.items>(), It.IsAny<TextWriter>()))
                 .Returns("test message");
-            mockEsbProducer.Setup(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
 
             //When
@@ -126,7 +119,6 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
             mockAssociateMessageToQueueCommandHandler.Verify(m => m.Execute(It.IsAny<AssociateMessageToQueueCommand<MessageQueuePrice, MessageHistory>>()), Times.Once);
             mockUpdateMessageHistoryCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateMessageHistoryStatusCommand<MessageHistory>>()), Times.Once);
             mockSetProcessedDataCommandHandler.Verify(m => m.Execute(It.IsAny<UpdateMessageQueueProcessedDateCommand<MessageQueuePrice>>()), Times.Once);
-            mockEsbProducer.Verify(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
             mockActiveMqProducer.Verify(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
 
             mockSaveToMessageHistoryCommandHandler.Verify(m => 
@@ -149,7 +141,6 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
                 .Returns(new Contracts.items { item = new Contracts.ItemType[] { new Contracts.ItemType { id = 1 } } });
             mockSerializer.Setup(m => m.Serialize(It.IsAny<Contracts.items>(), It.IsAny<TextWriter>()))
                 .Returns("test message");
-            mockEsbProducer.Setup(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
             mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
 
             //When
@@ -163,66 +154,6 @@ namespace Mammoth.ApiController.Tests.QueueProcessors
                     data.Message.MessageTypeId == MessageTypes.Price)
                     ),
                 Times.Once);
-        }
-
-        [TestMethod]
-        public void ProcessMessageQueuePrice_WhenEsbFails_MessageStatusShouldBe_SentToActiveMq()
-        {
-            // Given
-            mockQueueReader.SetupSequence(m => m.GetQueuedMessages())
-                .Returns(new List<MessageQueuePrice> { new MessageQueuePrice() })
-                .Returns(new List<MessageQueuePrice>());
-            mockQueueReader.Setup(m => m.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueuePrice>>()))
-                .Returns(new List<MessageQueuePrice> { new MessageQueuePrice { ItemId = 1 } });
-            mockQueueReader.Setup(m => m.BuildMiniBulk(It.IsAny<List<MessageQueuePrice>>()))
-                .Returns(new Contracts.items { item = new Contracts.ItemType[] { new Contracts.ItemType { id = 1 } } });
-            mockSerializer.Setup(m => m.Serialize(It.IsAny<Contracts.items>(), It.IsAny<TextWriter>()))
-                .Returns("test message");
-            mockEsbProducer.Setup(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new System.Exception("Test Exception"));
-            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
-
-            // When
-            queueProcessor.ProcessMessageQueue();
-
-            // Then
-            mockUpdateMessageHistoryCommandHandler.Verify(m =>
-                m.Execute(
-                    It.Is<UpdateMessageHistoryStatusCommand<MessageHistory>>(data =>
-                    data.MessageStatusId == MessageStatusTypes.SentToActiveMq &&
-                    data.Message.MessageTypeId == MessageTypes.Price)
-                    ),
-                Times.Once);
-            mockActiveMqProducer.Verify(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
-        }
-
-        [TestMethod]
-        public void ProcessMessageQueuePrice_WhenActiveMQFails_MessageStatusShouldBe_SentToEsb()
-        {
-            // Given
-            mockQueueReader.SetupSequence(m => m.GetQueuedMessages())
-                .Returns(new List<MessageQueuePrice> { new MessageQueuePrice() })
-                .Returns(new List<MessageQueuePrice>());
-            mockQueueReader.Setup(m => m.GroupMessagesForMiniBulk(It.IsAny<List<MessageQueuePrice>>()))
-                .Returns(new List<MessageQueuePrice> { new MessageQueuePrice { ItemId = 1 } });
-            mockQueueReader.Setup(m => m.BuildMiniBulk(It.IsAny<List<MessageQueuePrice>>()))
-                .Returns(new Contracts.items { item = new Contracts.ItemType[] { new Contracts.ItemType { id = 1 } } });
-            mockSerializer.Setup(m => m.Serialize(It.IsAny<Contracts.items>(), It.IsAny<TextWriter>()))
-                .Returns("test message");
-            mockEsbProducer.Setup(m => m.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()));
-            mockActiveMqProducer.Setup(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Throws(new System.Exception("Test Exception"));
-
-            // When
-            queueProcessor.ProcessMessageQueue();
-
-            // Then
-            mockUpdateMessageHistoryCommandHandler.Verify(m =>
-                m.Execute(
-                    It.Is<UpdateMessageHistoryStatusCommand<MessageHistory>>(data =>
-                    data.MessageStatusId == MessageStatusTypes.SentToEsb &&
-                    data.Message.MessageTypeId == MessageTypes.Price)
-                    ),
-                Times.Once);
-            mockEsbProducer.Verify(ap => ap.Send(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
         }
     }
 }
