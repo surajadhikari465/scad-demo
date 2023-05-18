@@ -11,6 +11,7 @@ namespace IrmaPriceListenerService
         public string AwsRegion { get; set; }
         public string SqsQueueUrl { get => GetSqsQueueUrl(); }
         public int PollInterval { get; set; } = 30;
+        public int SqlCommandTimeoutInSeconds { get; set; }
 
         private string GetSqsQueueUrl()
         {
@@ -38,7 +39,8 @@ namespace IrmaPriceListenerService
             {
                 AwsAccountId = AppSettingsAccessor.GetStringSetting("AwsAccountId"),
                 AwsRegion = AppSettingsAccessor.GetStringSetting("AwsRegion"),
-                IrmaRegionCode = AppSettingsAccessor.GetStringSetting("IrmaRegionCode")
+                IrmaRegionCode = AppSettingsAccessor.GetStringSetting("IrmaRegionCode"),
+                SqlCommandTimeoutInSeconds = AppSettingsAccessor.GetIntSetting("SqlCommandTimeoutInSeconds", 60)
             };
         }
     }

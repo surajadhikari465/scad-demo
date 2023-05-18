@@ -12,7 +12,6 @@ namespace IrmaPriceListenerService.DataAccess
     {
         private readonly IDbContextFactory<IrmaContext> irmaDbContextFactory;
         private readonly IrmaPriceListenerServiceSettings serviceSettings;
-        private const int DB_TIMEOUT_IN_SECONDS = 15;
 
         public IrmaPriceDAL(IDbContextFactory<IrmaContext> irmaDbContextFactory, IrmaPriceListenerServiceSettings serviceSettings)
         {
@@ -30,6 +29,7 @@ namespace IrmaPriceListenerService.DataAccess
 
             using (var irmaContext = irmaDbContextFactory.CreateContext($"Irma_{serviceSettings.IrmaRegionCode}"))
             {
+                irmaContext.Database.CommandTimeout = serviceSettings.SqlCommandTimeoutInSeconds;
                 irmaContext.Database.ExecuteSqlCommand(
                     deleteStagedRecordsQuery,
                     new SqlParameter("@mammothTransactionId", transactionId),
@@ -101,7 +101,7 @@ namespace IrmaPriceListenerService.DataAccess
             stagingQuery = stagingQuery.Remove(stagingQuery.Length - 2);
             using (var irmaContext = irmaDbContextFactory.CreateContext($"Irma_{serviceSettings.IrmaRegionCode}"))
             {
-                irmaContext.Database.CommandTimeout = DB_TIMEOUT_IN_SECONDS;
+                irmaContext.Database.CommandTimeout = serviceSettings.SqlCommandTimeoutInSeconds;
                 irmaContext.Database.ExecuteSqlCommand(stagingQuery, batchInsertSqlParameters.ToArray());
             }
         }
@@ -135,7 +135,7 @@ namespace IrmaPriceListenerService.DataAccess
             DateTime? endDate = ProcessEndDate(mammothPrice);
             using (var irmaContext = irmaDbContextFactory.CreateContext($"Irma_{serviceSettings.IrmaRegionCode}"))
             {
-                irmaContext.Database.CommandTimeout = DB_TIMEOUT_IN_SECONDS;
+                irmaContext.Database.CommandTimeout = serviceSettings.SqlCommandTimeoutInSeconds;
                 irmaContext.Database.ExecuteSqlCommand(
                 StagingQuery,
                 new SqlParameter("@BusinessUnitId", mammothPrice.BusinessUnit),
@@ -179,6 +179,7 @@ namespace IrmaPriceListenerService.DataAccess
 
             using (var irmaContext = irmaDbContextFactory.CreateContext($"Irma_{serviceSettings.IrmaRegionCode}"))
             {
+                irmaContext.Database.CommandTimeout = serviceSettings.SqlCommandTimeoutInSeconds;
                 irmaContext.Database.ExecuteSqlCommand(
                     updateIrmaPriceStoredProcedure,
                     new SqlParameter("@transactionId", transactionId)
