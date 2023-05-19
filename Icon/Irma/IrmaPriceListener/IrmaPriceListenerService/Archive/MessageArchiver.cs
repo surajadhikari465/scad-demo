@@ -68,11 +68,8 @@ namespace IrmaPriceListenerService.Archive
 
         private void ArchivePricesWithErrorToDb(IList<MammothPriceWithErrorType> mammothPricesWithError, SQSExtendedClientReceiveModel message)
         {
-            using (var mammothContext = mammothDbContextFactory.CreateContext())
-            {
-                mammothContext.Database.CommandTimeout = DB_TIMEOUT_SECONDS;
 
-                string archivePriceWithErrorQuery = @"
+            string archivePriceWithErrorQuery = @"
                     INSERT INTO esb.PriceMessageArchiveDetail(
 	                    MessageAction,
 	                    Region,
@@ -83,38 +80,51 @@ namespace IrmaPriceListenerService.Archive
 	                    JsonObject,
                         ErrorCode,
                         ErrorDetails)
-                    VALUES(@MessageAction, @Region, @GpmId, @ItemId, @BusinessUnitId, @MessageId, @MessageJson, @ErrorCode, @ErrorDetails)";
-
-                using (var transaction = mammothContext.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        foreach (var mammothPriceWithError in mammothPricesWithError)
-                        {
-                            var mammothPrice = mammothPriceWithError.MammothPrice;
-                            string mammothPriceJson = JsonConvert.SerializeObject(mammothPrice);
-
-                            mammothContext.Database.ExecuteSqlCommand(
-                                archivePriceWithErrorQuery,
-                                new SqlParameter("@MessageAction", mammothPrice.Action),
-                                new SqlParameter("@Region", mammothPrice.Region),
-                                new SqlParameter("@GpmId", mammothPrice.GpmId),
-                                new SqlParameter("@ItemId", mammothPrice.ItemId),
-                                new SqlParameter("@BusinessUnitId", mammothPrice.BusinessUnit),
-                                new SqlParameter("@MessageId", message.MessageAttributes[Constants.MessageAttribute.TransactionId]),
-                                new SqlParameter("@MessageJson", mammothPriceJson),
-                                new SqlParameter("@ErrorCode", (object)mammothPriceWithError.ErrorCode ?? DBNull.Value),
-                                new SqlParameter("@ErrorDetails", (object)mammothPriceWithError.ErrorDetails ?? DBNull.Value)
-                            );
-                        }
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        throw ex;
-                    }
-                }
+                    VALUES 
+";
+            List<SqlParameter> batchInsertSqlParameters = new List<SqlParameter>();
+            int elementIndex = 0;
+            foreach (var mammothPriceWithError in mammothPricesWithError)
+            {
+                var mammothPrice = mammothPriceWithError.MammothPrice;
+                string mammothPriceJson = JsonConvert.SerializeObject(mammothPrice);
+                SqlParameter messageActionParam = new SqlParameter($"@MessageAction{elementIndex}", mammothPrice.Action);
+                SqlParameter regionParam = new SqlParameter($"@Region{elementIndex}", mammothPrice.Region);
+                SqlParameter gpmIdParam = new SqlParameter($"@GpmId{elementIndex}", mammothPrice.GpmId);
+                SqlParameter itemIdParam = new SqlParameter($"@ItemId{elementIndex}", mammothPrice.ItemId);
+                SqlParameter businessUnitIdParam = new SqlParameter($"@BusinessUnitId{elementIndex}", mammothPrice.BusinessUnit);
+                SqlParameter messageIdParam = new SqlParameter($"@MessageId{elementIndex}", message.MessageAttributes[Constants.MessageAttribute.TransactionId]);
+                SqlParameter messageJsonParam = new SqlParameter($"@MessageJson{elementIndex}", mammothPriceJson);
+                SqlParameter errorCodeParam = new SqlParameter($"@ErrorCode{elementIndex}", (object)mammothPriceWithError.ErrorCode ?? DBNull.Value);
+                SqlParameter errorDetailsParam = new SqlParameter($"@ErrorDetails{elementIndex}", (object)mammothPriceWithError.ErrorDetails ?? DBNull.Value);
+                batchInsertSqlParameters.Add(messageActionParam);
+                batchInsertSqlParameters.Add(regionParam);
+                batchInsertSqlParameters.Add(gpmIdParam);
+                batchInsertSqlParameters.Add(itemIdParam);
+                batchInsertSqlParameters.Add(businessUnitIdParam);
+                batchInsertSqlParameters.Add(messageIdParam);
+                batchInsertSqlParameters.Add(messageJsonParam);
+                batchInsertSqlParameters.Add(errorCodeParam);
+                batchInsertSqlParameters.Add(errorDetailsParam);
+                elementIndex++;
+                archivePriceWithErrorQuery += $@"(
+{messageActionParam.ParameterName}, 
+{regionParam.ParameterName}, 
+{gpmIdParam.ParameterName}, 
+{itemIdParam.ParameterName}, 
+{businessUnitIdParam.ParameterName}, 
+{messageIdParam.ParameterName},
+{messageJsonParam.ParameterName}, 
+{errorCodeParam.ParameterName}, 
+{errorDetailsParam.ParameterName}
+), ";
+            }
+            // remove trailing comma and space from SQL command
+            archivePriceWithErrorQuery = archivePriceWithErrorQuery.Remove(archivePriceWithErrorQuery.Length - 2);
+            using (var mammothContext = mammothDbContextFactory.CreateContext())
+            {
+                mammothContext.Database.CommandTimeout = DB_TIMEOUT_SECONDS;
+                mammothContext.Database.ExecuteSqlCommand(archivePriceWithErrorQuery, batchInsertSqlParameters.ToArray());
             }
         }
 

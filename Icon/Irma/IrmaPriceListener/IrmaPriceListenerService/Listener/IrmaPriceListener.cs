@@ -25,7 +25,7 @@ namespace IrmaPriceListenerService.Listener
         private readonly IMessageParser<MammothPricesType> messageParser;
         private readonly RetryPolicy retryPolicy;
 
-        private const int DB_TIMEOUT_RETRY_COUNT = 10;
+        private const int DB_TIMEOUT_RETRY_COUNT = 3;
         private const int RETRY_INTERVAL_MILLISECONDS = 5000;
 
         public IrmaPriceListener(
@@ -75,10 +75,26 @@ namespace IrmaPriceListenerService.Listener
 
                 if (mammothPricesWithoutRwd.Count > 0)
                 {
+                    long groupStartTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     var orderedPrices = OrderAndGroupMammothPrices(mammothPricesWithoutRwd);
+                    logger.Info($@"TransactionID: {message.MessageAttributes[Constants.MessageAttribute.TransactionId]}, 
+Grouping Time: {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - groupStartTime} ms");
+
+                    long irmaLoadStartTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     mammothPricesWithErrors = LoadMammothPricesToIrma(orderedPrices, guid);
+                    logger.Info($@"TransactionID: {message.MessageAttributes[Constants.MessageAttribute.TransactionId]}, 
+Irma Load Time: {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - irmaLoadStartTime} ms");
+
+                    long irmaUpdateStartTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     UpdateIrmaPrice(guid);
+                    logger.Info($@"TransactionID: {message.MessageAttributes[Constants.MessageAttribute.TransactionId]}, 
+Irma Update Time: {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - irmaUpdateStartTime} ms");
+
+                    long deleteStagedStartTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     DeleteStagedMammothPrice(guid);
+                    logger.Info($@"TransactionID: {message.MessageAttributes[Constants.MessageAttribute.TransactionId]}, 
+Irma Delete Time: {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - deleteStagedStartTime} ms");
+
                     logger.Info(
                         $@"{{""TransactionID"": ""{message.MessageAttributes[Constants.MessageAttribute.TransactionId]}"",
                     ""Message"": ""Successfully processed IRMA Price update.""}}"
@@ -101,7 +117,11 @@ namespace IrmaPriceListenerService.Listener
             finally
             {
                 Acknowledge(message);
+
+                long archiveStartTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 messageArchiver.ArchivePriceMessage(message, mammothPrices, mammothPricesWithErrors);
+                logger.Info($@"TransactionID: {message.MessageAttributes[Constants.MessageAttribute.TransactionId]}, 
+Archive Time: {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - archiveStartTime} ms");
             }
         }
 
