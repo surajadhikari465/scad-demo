@@ -311,7 +311,7 @@ namespace AmazonLoad.IconLocale
                         timezone = new Contracts.TimezoneType
                         {
                             // ESB is expecting the Time Zone standard name to be in the timezoneCode element.
-                            code = model.Timezone.Contains("(UTC) Dublin, Edinburgh, Lisbon, London") ? timeZoneDictionary["(UTC+00:00) Dublin, Edinburgh, Lisbon, London"] : timeZoneDictionary[model.Timezone],
+                            code = model.Timezone.Contains("(UTC) Dublin, Edinburgh, Lisbon, London") ? timeZoneDictionary["(UTC) Dublin, Edinburgh, Lisbon, London"] : timeZoneDictionary[model.Timezone],
                             name = GetTimezoneName(model.Timezone)
                         }
                     }
