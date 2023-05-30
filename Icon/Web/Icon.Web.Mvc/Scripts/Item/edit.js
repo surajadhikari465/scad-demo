@@ -10,6 +10,13 @@ $(document).ready(function () {
     $('form').submit(function () {
         let isValid = true;
 
+        if ($('[name="ItemViewModel.ItemAttributes[IMPSynchronized]"]').val() == 'Yes') {
+            $('#impSyncedAlert').show();
+            return false;
+        } else {
+            $('#impSyncedAlert').hide();
+        }
+
         if ($(':focus') != null) {
             $(':focus').blur(); //Remove focuse to force saving changes
         }

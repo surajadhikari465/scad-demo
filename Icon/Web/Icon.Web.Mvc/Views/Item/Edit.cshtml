@@ -24,6 +24,10 @@
     <div class="alert alert-success @(Model.Success ? "" : "d-none")" role="alert">
         Item updated successfully
     </div>
+    <div class="alert alert-danger alert-dismissable @(Model.ItemViewModel.ItemAttributes.ContainsKey("IMPSynchronized")
+        && Model.ItemViewModel.ItemAttributes["IMPSynchronized"].Equals("Yes") ? "" : "d-none")" role="alert">
+        <h4>This item is IMP Synchronized and can not be edited.</h4>
+    </div>
     <div class="alert alert-danger alert-dismissible @(Model.Errors.Count > 0 ? "" : "d-none")" role="alert">
         <ul>
             @foreach (var error in Model.Errors)
@@ -348,6 +352,10 @@
             }
         }
     }
+    <div class="alert alert-danger" id="impSyncedAlert"  role="alert" style="display: none;">
+        <h5>This item is IMP Synchronized and can not be edited.</h5>
+    </div>
+
     <input type="submit" class="form-control btn-success" value="Save" id="btnSubmit" disabled="disabled" />
 }
 
