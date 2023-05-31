@@ -116,6 +116,8 @@
     <Compile Include="Managers\UpdateItemManager.cs" />
     <Compile Include="Managers\UpdateItemManagerHandler.cs" />
     <Compile Include="MoreLinq\MoreEnumerable.Batch.cs" />
+    <Compile Include="Queries\GetIMPSyncValueParameters.cs" />
+    <Compile Include="Queries\GetIMPSyncValueQueryHandler.cs" />
     <Compile Include="Queries\DoesScanCodeExistParameters.cs" />
     <Compile Include="Queries\DoesScanCodeExistQueryHandler.cs" />
     <Compile Include="Queries\GetBarcodeTypesQueryHandler.cs" />

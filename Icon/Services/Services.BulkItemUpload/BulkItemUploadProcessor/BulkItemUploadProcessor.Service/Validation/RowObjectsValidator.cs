@@ -21,19 +21,22 @@ namespace BulkItemUploadProcessor.Service.Validation
         private readonly ScanCodeValidator scanCodeValidator;
         private readonly IQueryHandler<EmptyQueryParameters<List<BarcodeTypeModel>>, List<BarcodeTypeModel>> getBarcodeTypesQueryHandler;
         private readonly IQueryHandler<GetScanCodesThatExistParameters, HashSet<string>> getScanCodesThatExistQueryHandler;
+        private readonly IQueryHandler<GetIMPSyncValueParameters, string> getIMPSyncValueQueryHandler;
 
         public RowObjectsValidator(
             IItemAttributesValidatorFactory itemAttributesValidatorFactory,
             IHierarchyValidator hierarchyValidator,
             ScanCodeValidator scanCodeValidator,
             IQueryHandler<EmptyQueryParameters<List<BarcodeTypeModel>>, List<BarcodeTypeModel>> getBarcodeTypesQueryHandler,
-            IQueryHandler<GetScanCodesThatExistParameters, HashSet<string>> getScanCodesThatExistQueryHandler)
+            IQueryHandler<GetScanCodesThatExistParameters, HashSet<string>> getScanCodesThatExistQueryHandler,
+            IQueryHandler<GetIMPSyncValueParameters, string> getIMPSyncValueQueryHandler)
         {
             this.itemAttributesValidatorFactory = itemAttributesValidatorFactory;
             this.hierarchyValidator = hierarchyValidator;
             this.scanCodeValidator = scanCodeValidator;
             this.getBarcodeTypesQueryHandler = getBarcodeTypesQueryHandler;
             this.getScanCodesThatExistQueryHandler = getScanCodesThatExistQueryHandler;
+            this.getIMPSyncValueQueryHandler = getIMPSyncValueQueryHandler;
         }
 
         public RowObjectValidatorResponse Validate(FileModeTypeEnum fileModeType, List<RowObject> rowObjects, List<ColumnHeader> columnHeaders, List<AttributeModel> attributeModels)
@@ -302,6 +305,10 @@ namespace BulkItemUploadProcessor.Service.Validation
 
                 if (!existingScanCodes.Contains(scanCode))
                     errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"'{ScanCodeColumnHeader}' has invalid value. '{scanCode}' does not exist." });
+
+                var impSynchronizedValue = getIMPSyncValueQueryHandler.Search(new GetIMPSyncValueParameters { ScanCode = scanCode });
+                if("Yes".Equals(impSynchronizedValue))
+                    errors.Add(new InvalidRowError { RowId = rowObjectDictionary.Row, Error = $"Item with scancode '{scanCode}' is IMP Synchronized and can not be updated."});
 
                 foreach (var attributeColumn in attributeColumns)
                 {

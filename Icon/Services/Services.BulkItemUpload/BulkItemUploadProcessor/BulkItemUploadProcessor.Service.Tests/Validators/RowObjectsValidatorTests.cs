@@ -26,6 +26,7 @@ namespace BulkItemUploadProcessor.Service.Tests.Validators
         private Mock<ScanCodeValidator> mockScanCodeValidator;
         private Mock<IQueryHandler<EmptyQueryParameters<List<BarcodeTypeModel>>, List<BarcodeTypeModel>>> mockGetBarcodeTypesQueryHandler;
         private Mock<IQueryHandler<GetScanCodesThatExistParameters, HashSet<string>>> mockGetScanCodesThatExistQueryHandler;
+        private Mock<IQueryHandler<GetIMPSyncValueParameters, string>> mockGetIMPSyncValueQueryHandler;
         private List<RowObject> rowObjects;
         private ExcelRowParser excelRowParser;
         private ExcelPackage excelPackage;
@@ -88,12 +89,14 @@ namespace BulkItemUploadProcessor.Service.Tests.Validators
             mockGetBarcodeTypesQueryHandler = new Mock<IQueryHandler<EmptyQueryParameters<List<BarcodeTypeModel>>, List<BarcodeTypeModel>>>();
             mockGetScanCodesThatExistQueryHandler = new Mock<IQueryHandler<GetScanCodesThatExistParameters, HashSet<string>>>();
             mockItemAttributesValidatorFactory = new Mock<IItemAttributesValidatorFactory>();
+            mockGetIMPSyncValueQueryHandler = new Mock<IQueryHandler<GetIMPSyncValueParameters, string>>();
             validator = new RowObjectsValidator
                                 (mockItemAttributesValidatorFactory.Object,
                                  mockHierarchyValidator.Object,
                                  mockScanCodeValidator.Object,
                                  mockGetBarcodeTypesQueryHandler.Object,
-                                 mockGetScanCodesThatExistQueryHandler.Object
+                                 mockGetScanCodesThatExistQueryHandler.Object,
+                                 mockGetIMPSyncValueQueryHandler.Object
                                  );
 
             excelPackage = new ExcelPackage(new FileInfo(@".\TestData\ExcelRowParserTest_SingleRow - ScalePlu.xlsx"));

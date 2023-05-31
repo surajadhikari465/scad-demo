@@ -17,6 +17,7 @@ namespace BulkItemUploadProcessor.Common
             public const string FoodStampEligible = "FoodStampEligible";
             public const string Inactive = "Inactive";
             public const string ProhibitDiscount = "ProhibitDiscount";
+            public const string IMPSynchronized = "IMPSynchronized";
         }
 
         public const string ScanCodeColumnHeader = "Scan Code";
