@@ -30,8 +30,11 @@ namespace InventoryProducer.Producer.Model.DBModel
         public DateTime? ApproveDateTime { get; set; }
         public DateTime? CloseDateTime { get; set; }
         public string PurchaseOrderComments { get; set; }
+        public string PurchaseOrderNotes { get; set; }
         public int? PurchaseOrderDetailNumber { get; set; }
         public int? SourceItemKey { get; set; }
+        public string ItemName { get; set; }
+        public string ItemBrand { get; set; }
         public string DefaultScanCode { get; set; }
         public int? HostSubTeamNumber { get; set; }
         public string HostSubTeamName { get; set; }
@@ -42,6 +45,7 @@ namespace InventoryProducer.Producer.Model.DBModel
         public int? PackSize2 { get; set; }
         public string RetailUnit { get; set; }
         public bool CostedByWeight { get; set; }
+        public bool CatchweightRequired { get; set; }
         public decimal? ItemCost { get; set; }
         public DateTime? EarliestArrivalDate { get; set; }
         public DateTime? ExpectedArrivalDate { get; set; }

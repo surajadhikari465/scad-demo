@@ -136,6 +136,7 @@ namespace InventoryProducer.Producer.Mapper
                 approveDateTime = purchaseOrder.ApproveDateTime.GetValueOrDefault().ToString(DATETIME_FORMAT),
                 closeDateTime = FormatDateWithMS(purchaseOrder.CloseDateTime.GetValueOrDefault()),
                 purchaseOrderComments = purchaseOrder.PurchaseOrderComments,
+                purchaseOrderNotes = purchaseOrder.PurchaseOrderNotes,
             };
 
             if (purchaseOrder.ExternalOrderId.HasValue)
@@ -196,6 +197,8 @@ namespace InventoryProducer.Producer.Mapper
                 {
                     PurchaseOrderDetailNumber = purchaseOrder.PurchaseOrderDetailNumber.GetValueOrDefault(),
                     sourceItemKey = Convert.ToString(purchaseOrder.SourceItemKey),
+                    itemName = purchaseOrder.ItemName,
+                    itemBrand = purchaseOrder.ItemBrand,
                     locationId = Convert.ToString(purchaseOrder.LocationNumber),
                     SubTeam = new SubTeamType()
                     {
@@ -207,6 +210,7 @@ namespace InventoryProducer.Producer.Mapper
                     defaultScanCode = purchaseOrder.DefaultScanCode,
                     vendorItemNumber = purchaseOrder.VendorItemNumber,
                     costedByWeight = purchaseOrder.CostedByWeight,
+                    catchweightRequired = purchaseOrder.CatchweightRequired,
                     quantities = new QuantityType[]
                     {
                         new QuantityType(){
@@ -256,6 +260,7 @@ namespace InventoryProducer.Producer.Mapper
                     },
                     packSize1 = purchaseOrder.PackSize1.GetValueOrDefault(),
                     packSize2 = purchaseOrder.PackSize2.GetValueOrDefault(),
+                    uomConvRetailUom = purchaseOrder.RetailUnit,
                     itemCost = Helper.ConvertToG29String(purchaseOrder.ItemCost),
                     earliestArrivalDate = FormatDateWithMS(purchaseOrder.EarliestArrivalDate.GetValueOrDefault()),
                     expectedArrivalDate = purchaseOrder.ExpectedArrivalDate.GetValueOrDefault().ToString(DATETIME_FORMAT),

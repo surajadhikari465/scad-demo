@@ -75,8 +75,11 @@ namespace InventoryProducer.Producer.DataAccess
                         oh.ApprovedDate as ApproveDateTime,
                         oh.OriginalCloseDate as CloseDateTime,
                         oh.AdminNotes as PurchaseOrderComments,
+                        oh.OrderHeaderDesc as PurchaseOrderNotes,
                         oi.OrderItem_ID as PurchaseOrderDetailNumber,
                         oi.Item_Key as SourceItemKey,
+                        i.Sign_Description as ItemName,
+                        ib.Brand_Name as ItemBrand,
                         ii.Identifier as DefaultScanCode,
                         isb.SubDept_No as HostSubTeamNumber,
                         isb.SubTeam_Name as HostSubTeamName,
@@ -91,6 +94,7 @@ namespace InventoryProducer.Producer.DataAccess
                         CAST(oi.Package_Desc2 as int) as PackSize2,
                         iui.Unit_Name as RetailUnit,
                         i.CostedByWeight as CostedByWeight,
+                        i.CatchweightRequired as CatchweightRequired,
                         oi.UnitCost as ItemCost,
                         oi.DateReceived as EarliestArrivalDate,
                         oh.Expected_Date as ExpectedArrivalDate,
@@ -116,6 +120,7 @@ namespace InventoryProducer.Producer.DataAccess
                     LEFT JOIN OrderExternalSource oes on oh.OrderExternalSourceID = oes.ID
                     JOIN OrderItem oi (NOLOCK) on oh.OrderHeader_ID = oi.OrderHeader_ID 
                     JOIN Item i (NOLOCK) on i.Item_Key = oi.Item_Key
+                    JOIN ItemBrand ib (NOLOCK) on i.Brand_ID = ib.Brand_ID
                     JOIN ItemIdentifier ii (NOLOCK) on oi.Item_Key = ii.Item_key and ii.Default_Identifier = 1
                     JOIN SubTeam isb (NOLOCK) on isb.SubTeam_No = i.SubTeam_No
                     JOIN ItemUnit iuo (NOLOCK) on iuo.Unit_ID = oi.QuantityUnit
