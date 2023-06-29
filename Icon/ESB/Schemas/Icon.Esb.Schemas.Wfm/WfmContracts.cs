@@ -14860,7 +14860,9 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         private string freightTermsCodeField;
         
         private string purchaseOrderCommentsField;
-        
+
+        private string purchaseOrderNotesField;
+
         private PurchaseOrdersPurchaseOrderPurchaseOrderDetail[] purchaseOrderDetailField;
         
         /// <remarks/>
@@ -15177,6 +15179,19 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
             }
         }
 
+        /// <remarks/>
+        public string purchaseOrderNotes
+        {
+            get
+            {
+                return this.purchaseOrderNotesField;
+            }
+            set
+            {
+                this.purchaseOrderNotesField = value;
+            }
+        }
+
         [System.Xml.Serialization.XmlArrayItemAttribute("externalPurchaseOrderReference", Namespace = "http://schemas.wfm.com/Enterprise/InventoryMgmt/CommonRefTypes/V1", IsNullable = true)]
         public ExternalPurchaseOrderReference[] externalPurchaseOrderReferences { get; set; }
 
@@ -15279,6 +15294,10 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         
         private string sourceItemKeyField;
 
+        private string itemNameField;
+
+        private string itemBrandField;
+
         private string vendorItemNumberField;
 
         private string locationIdField;
@@ -15304,7 +15323,9 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
         private string uomConvRetailUomField;
 
         private bool costedByWeightField;
-        
+
+        private bool catchweightRequiredField;
+
         private string itemCostField;
         
         private string costTypeField;
@@ -15352,6 +15373,32 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
             set
             {
                 this.sourceItemKeyField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string itemName
+        {
+            get
+            {
+                return this.itemNameField;
+            }
+            set
+            {
+                this.itemNameField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string itemBrand
+        {
+            get
+            {
+                return this.itemBrandField;
+            }
+            set
+            {
+                this.itemBrandField = value;
             }
         }
 
@@ -15524,6 +15571,19 @@ namespace Icon.Esb.Schemas.Wfm.Contracts
             set
             {
                 this.costedByWeightField = value;
+            }
+        }
+
+        /// <remarks/>
+        public bool catchweightRequired
+        {
+            get
+            {
+                return this.catchweightRequiredField;
+            }
+            set
+            {
+                this.catchweightRequiredField = value;
             }
         }
 
