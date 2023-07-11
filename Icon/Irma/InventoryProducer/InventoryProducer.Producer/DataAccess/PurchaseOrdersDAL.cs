@@ -92,7 +92,7 @@ namespace InventoryProducer.Producer.DataAccess
                         iuo.Unit_Name as OrderedUnit,
                         CAST(oi.Package_Desc1 as int) as PackSize1,
                         CAST(oi.Package_Desc2 as int) as PackSize2,
-                        iui.Unit_Name as RetailUnit,
+                        iui.Unit_Abbreviation as RetailUnit,
                         i.CostedByWeight as CostedByWeight,
                         i.CatchweightRequired as CatchweightRequired,
                         oi.UnitCost as ItemCost,
