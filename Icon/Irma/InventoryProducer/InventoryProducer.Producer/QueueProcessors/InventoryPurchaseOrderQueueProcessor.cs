@@ -36,14 +36,20 @@ namespace InventoryProducer.Producer.QueueProcessors
             {
                 foreach (InstockDequeueResult dequeuedMessage in dequeuedMessages)
                 {
+                    List<InstockDequeueModel> instockDequeueModelList = new List<InstockDequeueModel>();
+                    InstockDequeueModel instockDequeueModelToValidate = new InstockDequeueModel();
                     try
                     {
                         this.retrypolicy.Execute(
                             () =>
                             {
-                                this.ProcessInstockDequeueEvent(dequeuedMessage);
-                            }
-                        );
+                                instockDequeueModelToValidate = this.ProcessInstockDequeueEvent(dequeuedMessage);
+                                if (instockDequeueModelToValidate != null)
+                                {
+                                    instockDequeueModelList.Add(instockDequeueModelToValidate);
+                                }
+                            });
+                        dataAccessLayer.Insert(instockDequeueModelList);
                     }
                     catch (Exception ex)
                     {
@@ -57,7 +63,7 @@ namespace InventoryProducer.Producer.QueueProcessors
             inventoryLogger.LogInfo($"Ending {settings.TransactionType} producer.");
         }
 
-        private void ProcessInstockDequeueEvent(InstockDequeueResult dequeuedMessage)
+        private InstockDequeueModel ProcessInstockDequeueEvent(InstockDequeueResult dequeuedMessage)
         {
             try
             {
@@ -73,6 +79,19 @@ namespace InventoryProducer.Producer.QueueProcessors
 
                 if (purchaseOrdersList != null && purchaseOrdersList.Count > 0)
                 {
+
+                    if ((DateTime.UtcNow - instockDequeueEvent.MessageTimestampUtc).TotalMinutes < settings.PurchaseOrdersProcessingBufferTimeInMinutes)
+                    {
+                        foreach (PurchaseOrdersModel purchaseOrder in purchaseOrdersList)
+                        {
+                            if (purchaseOrder.EInvoiceQuantity == null)
+                            {
+                                inventoryLogger.LogInfo($"Re-inserted purchase order: {purchaseOrder.OrderHeaderId} into the queue.");
+                                return instockDequeueEvent;
+                            }
+                        }
+                    }
+
                     inventoryLogger.LogInfo("Transforming DB model to XML model");
                     PurchaseOrders purchaseOrderCanonicalList =
                         this.canonicalMapper.TransformToXmlCanonical(
@@ -109,6 +128,7 @@ namespace InventoryProducer.Producer.QueueProcessors
                 {
                     inventoryLogger.LogInfo($"Skipping transformation and publish, couldn't find purchase orders.");
                 }
+                return null;
             }
             catch (Exception ex)
             {

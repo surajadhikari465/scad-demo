@@ -21,6 +21,8 @@ namespace InventoryProducer.Common
         public int DbErrorRetryCount { get; set; }
         public int DbRetryDelayInMilliseconds { get; set; }
         public int BatchSize { get; set; }
+        public int PurchaseOrdersProcessingBufferTimeInMinutes { get; set; }
+        public int SqlCommandTimeoutInSeconds { get; set; }
         public int ServiceMaxRetryCount { get; set; }
         public int ServiceMaxRetryDelayInMilliseconds { get; set; }
 
@@ -44,6 +46,8 @@ namespace InventoryProducer.Common
                 DbErrorRetryCount = AppSettingsAccessor.GetIntSetting("DbErrorRetryCount"),
                 DbRetryDelayInMilliseconds = AppSettingsAccessor.GetIntSetting("DbRetryDelayInMilliseconds"),
                 BatchSize = AppSettingsAccessor.GetIntSetting("BatchSize"),
+                PurchaseOrdersProcessingBufferTimeInMinutes = AppSettingsAccessor.GetIntSetting("PurchaseOrdersProcessingBufferTimeInMinutes"),
+                SqlCommandTimeoutInSeconds = AppSettingsAccessor.GetIntSetting("SqlCommandTimeoutInSeconds"),
                 ServiceMaxRetryCount = AppSettingsAccessor.GetIntSetting("ServiceMaxRetryCount"),
                 ServiceMaxRetryDelayInMilliseconds = AppSettingsAccessor.GetIntSetting("ServiceMaxRetryDelayInMilliseconds")
             };

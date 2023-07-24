@@ -1,5 +1,6 @@
 ﻿using Icon.DbContextFactory;
 using InventoryProducer.Common;
+using InventoryProducer.Common.InstockDequeue.Model.DBModel;
 using InventoryProducer.Producer.Model.DBModel;
 using Irma.Framework;
 using System;
@@ -8,6 +9,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace InventoryProducer.Producer.DataAccess
 {
@@ -214,6 +216,54 @@ namespace InventoryProducer.Producer.DataAccess
                    new SqlParameter("@KeyId", keyId),
                     new SqlParameter("@SecondaryKeyId", secondaryKeyId)
                    ).ToList();
+            }
+        }
+
+        public void Insert(List<InstockDequeueModel> instockDequeueModelList)
+        {
+            string insertPurchaseOrderEventStagingQuery =
+            @"INSERT INTO [amz].[OrderQueue](
+			[EventTypeCode],
+            [MessageType],
+			[KeyID],
+			[SecondaryKeyID],
+			[InsertDate],
+			[MessageTimestampUtc]
+			)
+            VALUES ";
+
+            List<SqlParameter> batchInsertSqlParameters = new List<SqlParameter>();
+            int elementIndex = 0;
+
+            foreach(InstockDequeueModel instockDequeueModel in  instockDequeueModelList)
+            {
+                SqlParameter eventTypeCodeParam = new SqlParameter($"@EventTypeCode{elementIndex}", instockDequeueModel.EventTypeCode);
+                SqlParameter messageTypeParam = new SqlParameter($"@MessageType{elementIndex}", instockDequeueModel.EventTypeCode);
+                SqlParameter keyIDParam = new SqlParameter($"@KeyID{elementIndex}", instockDequeueModel.EventTypeCode);
+                SqlParameter secondaryKeyIDParam = new SqlParameter($"@SecondaryKeyID{elementIndex}", instockDequeueModel.EventTypeCode);
+                SqlParameter insertDateParam = new SqlParameter($"@InsertDate{elementIndex}", instockDequeueModel.EventTypeCode);
+                SqlParameter messageTimestampUtcParam = new SqlParameter($"@MessageTimestampUtc{elementIndex}", instockDequeueModel.EventTypeCode);
+                batchInsertSqlParameters.Add(eventTypeCodeParam);
+                batchInsertSqlParameters.Add(messageTypeParam);
+                batchInsertSqlParameters.Add(keyIDParam);
+                batchInsertSqlParameters.Add(secondaryKeyIDParam);
+                batchInsertSqlParameters.Add(insertDateParam);
+                batchInsertSqlParameters.Add(messageTimestampUtcParam);
+                elementIndex++;
+                insertPurchaseOrderEventStagingQuery += $@"(
+                {eventTypeCodeParam.ParameterName},
+                {messageTypeParam.ParameterName},
+                {keyIDParam.ParameterName},
+                {secondaryKeyIDParam.ParameterName},
+                {insertDateParam.ParameterName},
+                {messageTimestampUtcParam.ParameterName}), ";
+            }
+            // remove trailing comma and space from SQL command
+            insertPurchaseOrderEventStagingQuery = insertPurchaseOrderEventStagingQuery.Remove(insertPurchaseOrderEventStagingQuery.Length - 2);
+            using (var irmaContext = irmaContextFactory.CreateContext($"Irma_{inventoryProducerSettings.RegionCode}"))
+            {
+                irmaContext.Database.CommandTimeout = inventoryProducerSettings.SqlCommandTimeoutInSeconds;
+                irmaContext.Database.ExecuteSqlCommand(insertPurchaseOrderEventStagingQuery, batchInsertSqlParameters.ToArray());
             }
         }
     }

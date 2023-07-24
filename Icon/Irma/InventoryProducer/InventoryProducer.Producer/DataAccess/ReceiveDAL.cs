@@ -7,7 +7,7 @@ using Irma.Framework;
 using InventoryProducer.Producer.Model.DBModel;
 using System.Data.SqlClient;
 using Apache.NMS;
-
+using InventoryProducer.Common.InstockDequeue.Model.DBModel;
 
 namespace InventoryProducer.Producer.DataAccess
 {
@@ -92,6 +92,12 @@ namespace InventoryProducer.Producer.DataAccess
                     new SqlParameter("@KeyId", keyId)
                     ).ToList();
             }
+        }
+
+        public void Insert(List<InstockDequeueModel> instockDequeueModelList)
+        {
+			// Not implemented because this method is not used in any Receive DAL calls. It is solely to comply with the IDAL change for insert.
+            throw new NotImplementedException();
         }
     }
 }
