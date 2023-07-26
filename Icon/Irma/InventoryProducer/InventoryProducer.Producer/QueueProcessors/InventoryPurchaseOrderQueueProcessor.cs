@@ -49,7 +49,10 @@ namespace InventoryProducer.Producer.QueueProcessors
                                     instockDequeueModelList.Add(instockDequeueModelToValidate);
                                 }
                             });
-                        dataAccessLayer.Insert(instockDequeueModelList);
+                        if (instockDequeueModelList.Count > 0)
+                        {
+                            dataAccessLayer.Insert(instockDequeueModelList);
+                        }
                     }
                     catch (Exception ex)
                     {
