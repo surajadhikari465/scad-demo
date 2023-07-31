@@ -438,12 +438,15 @@ namespace Icon.Web.Controllers
             manager.ManufacturerHierarchyClassId = (int)(itemSyncModel.ManufacturerHierarchyClassId != null && itemSyncModel.ManufacturerHierarchyClassId != 0 ? itemSyncModel.ManufacturerHierarchyClassId : existingItem.ManufacturerHierarchyClassId.GetValueOrDefault());
             manager.ItemAttributes = existingItem.ItemAttributes;
 
-            if (itemSyncModel.ItemAttributes != null)
-            {
-                foreach (KeyValuePair<string, string> entry in itemSyncModel.ItemAttributes)
-                {
+            if (itemSyncModel.ItemAttributes != null) {
+                foreach (KeyValuePair<string, string> entry in itemSyncModel.ItemAttributes) {
                     if (!string.IsNullOrWhiteSpace(entry.Value)) {
-                        manager.ItemAttributes[entry.Key] = entry.Value;
+                        if (entry.Value.Equals("DELETED_FROM_IMP")) {
+                            manager.ItemAttributes.Remove(entry.Key);
+                        }
+                        else {
+                            manager.ItemAttributes[entry.Key] = entry.Value;
+                        }
                     }
                 }
             }
