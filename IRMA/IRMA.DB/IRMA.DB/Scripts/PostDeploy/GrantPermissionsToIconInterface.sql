@@ -25,6 +25,8 @@ GRANT SELECT on dbo.DeletedOrder To IconInterface;
 GRANT INSERT,Update,SELECT ON amz.MessageArchive  TO IconInterface;
 GRANT SELECT,UPDATE ON amz.ReceiptQueue TO IconInterface;
 GRANT SELECT,UPDATE ON amz.OrderQueue TO IconInterface;
+-- 7/28/23 - For "IRMA Inventory Producer" app:
+GRANT INSERT ON amz.OrderQueue TO IconInterface;
 GRANT SELECT,UPDATE ON amz.InventoryQueue TO IconInterface;
 GRANT INSERT ON [amz].[MessageArchiveEvent] TO IconInterface AS [dbo];
 GRANT EXECUTE
