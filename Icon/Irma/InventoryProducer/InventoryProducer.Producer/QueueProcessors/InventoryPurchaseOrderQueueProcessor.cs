@@ -49,10 +49,14 @@ namespace InventoryProducer.Producer.QueueProcessors
                                     instockDequeueModelList.Add(instockDequeueModelToValidate);
                                 }
                             });
-                        if (instockDequeueModelList.Count > 0)
-                        {
-                            dataAccessLayer.Insert(instockDequeueModelList);
-                        }
+                        this.retrypolicy.Execute(
+                            () =>
+                            {
+                                if (instockDequeueModelList.Count > 0)
+                                {
+                                    dataAccessLayer.Insert(instockDequeueModelList);
+                                }
+                            });
                     }
                     catch (Exception ex)
                     {
@@ -83,7 +87,8 @@ namespace InventoryProducer.Producer.QueueProcessors
                 if (purchaseOrdersList != null && purchaseOrdersList.Count > 0)
                 {
 
-                    if ((DateTime.UtcNow - instockDequeueEvent.MessageTimestampUtc).TotalMinutes < settings.PurchaseOrdersProcessingBufferTimeInMinutes)
+                    if (((DateTime.UtcNow - instockDequeueEvent.MessageTimestampUtc).TotalMinutes < settings.PurchaseOrdersProcessingBufferTimeInMinutes) 
+                        && instockDequeueEvent.EventTypeCode.Equals(Constants.EventType.PO_MOD))
                     {
                         foreach (PurchaseOrdersModel purchaseOrder in purchaseOrdersList)
                         {

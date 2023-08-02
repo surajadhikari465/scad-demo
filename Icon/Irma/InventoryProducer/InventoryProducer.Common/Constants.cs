@@ -17,6 +17,7 @@ namespace InventoryProducer.Common
         {
             public const string TSF_DEL = "TSF_DEL";
             public const string PO_DEL = "PO_DEL";
+            public const string PO_MOD = "PO_MOD";
             public static string TSF_LINE_DEL = "TSF_LINE_DEL";
             public const string PO_LINE_DEL = "PO_LINE_DEL";
             public const string DEL = "DEL";

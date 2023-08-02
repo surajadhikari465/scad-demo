@@ -238,11 +238,11 @@ namespace InventoryProducer.Producer.DataAccess
             foreach(InstockDequeueModel instockDequeueModel in  instockDequeueModelList)
             {
                 SqlParameter eventTypeCodeParam = new SqlParameter($"@EventTypeCode{elementIndex}", instockDequeueModel.EventTypeCode);
-                SqlParameter messageTypeParam = new SqlParameter($"@MessageType{elementIndex}", instockDequeueModel.EventTypeCode);
-                SqlParameter keyIDParam = new SqlParameter($"@KeyID{elementIndex}", instockDequeueModel.EventTypeCode);
-                SqlParameter secondaryKeyIDParam = new SqlParameter($"@SecondaryKeyID{elementIndex}", instockDequeueModel.EventTypeCode);
-                SqlParameter insertDateParam = new SqlParameter($"@InsertDate{elementIndex}", instockDequeueModel.EventTypeCode);
-                SqlParameter messageTimestampUtcParam = new SqlParameter($"@MessageTimestampUtc{elementIndex}", instockDequeueModel.EventTypeCode);
+                SqlParameter messageTypeParam = new SqlParameter($"@MessageType{elementIndex}", instockDequeueModel.MessageType);
+                SqlParameter keyIDParam = new SqlParameter($"@KeyID{elementIndex}", instockDequeueModel.KeyID);
+                SqlParameter secondaryKeyIDParam = new SqlParameter($"@SecondaryKeyID{elementIndex}", instockDequeueModel.SecondaryKeyID);
+                SqlParameter insertDateParam = new SqlParameter($"@InsertDate{elementIndex}", instockDequeueModel.InsertDate);
+                SqlParameter messageTimestampUtcParam = new SqlParameter($"@MessageTimestampUtc{elementIndex}", instockDequeueModel.MessageTimestampUtc);
                 batchInsertSqlParameters.Add(eventTypeCodeParam);
                 batchInsertSqlParameters.Add(messageTypeParam);
                 batchInsertSqlParameters.Add(keyIDParam);
