@@ -275,8 +275,14 @@ namespace Mammoth.Common.DataAccess
 		public const int CanadaSugarPercentage = 263;
 		public const int CanadaServingSizeDesc = 264;
 		public const int LockedForSale = 265;
-		
-		public class Descriptions
+        public const int QuantityRequired = 266;
+        public const int PriceRequired = 267;
+        public const int QuantityProhibit = 268;
+        public const int CostedByWeight = 269;
+        public const int CatchweightRequired = 270;
+        public const int CatchWtReq = 271;
+
+        public class Descriptions
 		{
 			public const string AgeRestrict = "Age Restrict";
 			public const string AuthorizedForSale = "Authorized For Sale";
@@ -541,8 +547,14 @@ namespace Mammoth.Common.DataAccess
 			public const string CanadaSugarPercentage = "Canada Sugar Percentage";
 			public const string CanadaServingSizeDesc = "Canada Serving Size";
 			public const string LockedForSale = "Locked For Sale";
-		
-			private static Dictionary<string, string> codeToDescriptionsDictionary = new Dictionary<string, string>
+            public const string QuantityRequired = "Quantity Required";
+            public const string PriceRequired = "Price Required";
+            public const string QuantityProhibit = "Quantity Prohibit";
+            public const string CostedByWeight = "Costed By Weight";
+            public const string CatchweightRequired = "Catch Weight Required";
+            public const string CatchWtReq = "Catch Wt Req";
+
+            private static Dictionary<string, string> codeToDescriptionsDictionary = new Dictionary<string, string>
 			{
 				{ "AGE", "Age Restrict" },
 				{ "NA", "Authorized For Sale" },
@@ -806,8 +818,14 @@ namespace Mammoth.Common.DataAccess
 				{ "CDA", "Canada Allergens" },
 				{ "CDI", "Canada Ingredients" },
 				{ "CDS", "Canada Sugar Percentage" },
-				{ "RS", "Locked For Sale" }
-			};
+				{ "RS", "Locked For Sale" },
+				{ "QTY", "Quantity Required"},
+                { "PRQ", "Price Required"},
+                { "QPR", "Quantity Prohibit"},
+                { "CBW", "Costed By Weight"},
+                { "CWR", "Catch Weight Required"},
+                { "CW", "Catch Wt Req"}
+        };
 			public static Dictionary<string, string> ByCode { get { return codeToDescriptionsDictionary; } }
 		}
 
