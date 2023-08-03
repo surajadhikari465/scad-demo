@@ -139,6 +139,14 @@ SELECT q.QueueID AS QueueId
 		                    THEN 1 
 		                    ELSE 0 
 	                    END as LockedForSale
+    ,i.Quantity_Required as QuantityRequired
+    ,i.Price_Required as PriceRequired
+    ,i.CostedByWeight as CostedByWeight
+    ,i.QtyProhibit as QtyProhibit
+    ,i.CatchweightRequired as CatchweightRequired
+    ,i.CatchWtReq as CatchWtReq
+
+
 FROM [mammoth].[ItemLocaleChangeQueue] q
 INNER JOIN mammoth.ItemChangeEventType t ON q.EventTypeID = t.EventTypeID
 INNER JOIN Item i ON q.Item_Key = i.Item_Key
@@ -300,6 +308,13 @@ SELECT q.QueueID AS QueueId
 		                    THEN 1 
 		                    ELSE 0 
 	                    END as LockedForSale
+    ,i.Quantity_Required as QuantityRequired
+    ,i.Price_Required as PriceRequired
+    ,i.CostedByWeight as CostedByWeight
+    ,i.QtyProhibit as QtyProhibit
+    ,i.CatchweightRequired as CatchweightRequired
+    ,i.CatchWtReq as CatchWtReq
+
 FROM [mammoth].[ItemLocaleChangeQueue] q
 INNER JOIN mammoth.ItemChangeEventType t ON q.EventTypeID = t.EventTypeID
 INNER JOIN Item i ON q.Item_Key = i.Item_Key
