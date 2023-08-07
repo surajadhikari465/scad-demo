@@ -129,5 +129,11 @@ namespace Mammoth.Framework
         public virtual MessageType MessageType { get; set; }
 
         public bool? LockedForSale { get; set; }
+        public bool QuantityRequired { get; set; }
+        public bool PriceRequired { get; set; }
+        public bool? QtyProhibit { get; set; }
+        public bool CostedByWeight { get; set; }
+        public bool CatchweightRequired { get; set; }
+        public bool CatchWtReq { get; set; }
     }
 }
