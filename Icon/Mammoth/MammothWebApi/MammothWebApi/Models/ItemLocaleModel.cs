@@ -77,7 +77,14 @@ namespace MammothWebApi.Models
         public string LinkedItem { get; set; }
         public string ScaleExtraText { get; set; }
 
+        // 'Extended' Attributes added by Quintessence
         public int? PosScaleTare { get; set; }
         public bool? LockedForSale { get; set; }
+        public bool QuantityRequired { get; set; }
+        public bool PriceRequired { get; set; }
+        public bool? QtyProhibit { get; set; }
+        public bool CostedByWeight { get; set; }
+        public bool CatchweightRequired { get; set; }
+        public bool CatchWtReq { get; set; }
     }
 }

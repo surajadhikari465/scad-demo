@@ -282,7 +282,67 @@ namespace MammothWebApi.Service.Extensions
 				};
 				itemLocalesExtended.Add(model);
 
-			}
+                model = new StagingItemLocaleExtendedModel
+                {
+                    AttributeId = Attributes.QuantityRequired,
+                    AttributeValue = itemLocale.QuantityRequired.ToString(),
+                    Region = itemLocale.Region,
+                    BusinessUnitId = itemLocale.BusinessUnitId,
+                    ScanCode = itemLocale.ScanCode
+                };
+                itemLocalesExtended.Add(model);
+
+                model = new StagingItemLocaleExtendedModel
+                {
+                    AttributeId = Attributes.PriceRequired,
+                    AttributeValue = itemLocale.PriceRequired.ToString(),
+                    Region = itemLocale.Region,
+                    BusinessUnitId = itemLocale.BusinessUnitId,
+                    ScanCode = itemLocale.ScanCode
+                };
+                itemLocalesExtended.Add(model);
+
+                model = new StagingItemLocaleExtendedModel
+                {
+                    AttributeId = Attributes.QtyProhibit,
+                    AttributeValue = itemLocale.QtyProhibit.HasValue ? itemLocale.QtyProhibit.ToString() : null,
+                    Region = itemLocale.Region,
+                    BusinessUnitId = itemLocale.BusinessUnitId,
+                    ScanCode = itemLocale.ScanCode
+                };
+                itemLocalesExtended.Add(model);
+
+                model = new StagingItemLocaleExtendedModel
+                {
+                    AttributeId = Attributes.CostedByWeight,
+                    AttributeValue = itemLocale.CostedByWeight.ToString() ,
+                    Region = itemLocale.Region,
+                    BusinessUnitId = itemLocale.BusinessUnitId,
+                    ScanCode = itemLocale.ScanCode
+                };
+                itemLocalesExtended.Add(model);
+
+                model = new StagingItemLocaleExtendedModel
+                {
+                    AttributeId = Attributes.CatchweightRequired,
+                    AttributeValue = itemLocale.CatchweightRequired.ToString(),
+                    Region = itemLocale.Region,
+                    BusinessUnitId = itemLocale.BusinessUnitId,
+                    ScanCode = itemLocale.ScanCode
+                };
+                itemLocalesExtended.Add(model);
+
+                model = new StagingItemLocaleExtendedModel
+                {
+                    AttributeId = Attributes.CatchWtReq,
+                    AttributeValue = itemLocale.CatchWtReq.ToString(),
+                    Region = itemLocale.Region,
+                    BusinessUnitId = itemLocale.BusinessUnitId,
+                    ScanCode = itemLocale.ScanCode
+                };
+                itemLocalesExtended.Add(model);
+
+            }
 
 			// Set timestamp and transactionId for all rows
 			itemLocalesExtended.ForEach(il =>

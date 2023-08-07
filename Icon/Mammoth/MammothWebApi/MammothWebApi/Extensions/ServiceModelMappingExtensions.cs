@@ -59,7 +59,13 @@ namespace MammothWebApi.Extensions
                     ShelfLife = itemLocale.ShelfLife,
                     IrmaItemKey = itemLocale.IrmaItemKey,
                     PosScaleTare = itemLocale.PosScaleTare,
-                    LockedForSale = itemLocale.LockedForSale
+                    LockedForSale = itemLocale.LockedForSale,
+                    QuantityRequired = itemLocale.QuantityRequired,
+                    PriceRequired = itemLocale.PriceRequired,
+                    QtyProhibit = itemLocale.QtyProhibit,
+                    CostedByWeight = itemLocale.CostedByWeight,
+                    CatchweightRequired = itemLocale.CatchweightRequired,
+                    CatchWtReq = itemLocale.CatchWtReq
                 };
                 itemLocaleServiceModels.Add(serviceModel);
             }

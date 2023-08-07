@@ -8,6 +8,6 @@ namespace MammothWebApi.Tests.Helpers
 {
     internal class ItemLocaleTestData
     {
-        public const int NumberOfExtendedAttributesPerItemLocale = 18;
+        public const int NumberOfExtendedAttributesPerItemLocale = 24;
     }
 }

@@ -83,8 +83,13 @@ namespace MammothWebApi.DataAccess.Commands
                                   [WrappedTareWeight] = wta.AttributeValue,
                                   [UnwrappedTareWeight] = uta.AttributeValue,
                                   [PosScaleTare] = sct.AttributeValue,
-                                  [LockedForSale] = lfs.AttributeValue
-
+                                  [LockedForSale] = lfs.AttributeValue,
+                                  [QuantityRequired] = qty.AttributeValue,
+                                  [PriceRequired] = prq.AttributeValue,
+                                  [QtyProhibit] = qpr.AttributeValue,
+                                  [CostedByWeight] = cbw.AttributeValue,
+                                  [CatchweightRequired] = cwr.AttributeValue,
+                                  [CatchWtReq] = cw.AttributeValue
                                 from
 	                                stage.ItemLocale s
 	                                join dbo.Items i on s.ScanCode = i.ScanCode
@@ -174,6 +179,37 @@ namespace MammothWebApi.DataAccess.Commands
 												                                AND l.BusinessUnitID = lfs.BusinessUnitId
 												                                AND lfs.AttributeID = @LockedForSale
                                                                                 AND lfs.TransactionId = @TransactionId
+
+                                  left join stage.ItemLocaleExtended qty  on  i.ScanCode = qty.ScanCode
+												                                AND l.BusinessUnitID = qty.BusinessUnitId
+												                                AND qty.AttributeID = @QuantityRequired
+                                                                                AND qty.TransactionId = @TransactionId
+
+                                  left join stage.ItemLocaleExtended prq  on  i.ScanCode = prq.ScanCode
+												                                AND l.BusinessUnitID = prq.BusinessUnitId
+												                                AND prq.AttributeID = @PriceRequired
+                                                                                AND prq.TransactionId = @TransactionId
+
+                                  left join sftage.ItemLocaleExtended qpr  on  i.ScanCode = qpr.ScanCode
+												                                AND l.BusinessUnitID = qpr.BusinessUnitId
+												                                AND qpr.AttributeID = @QtyProhibit
+                                                                                AND qpr.TransactionId = @TransactionId
+
+                                  left join stage.ItemLocaleExtended cbw  on  i.ScanCode = cbw.ScanCode
+												                                AND l.BusinessUnitID = cbw.BusinessUnitId
+												                                AND cbw.AttributeID = @CostedByWeight
+                                                                                AND cbw.TransactionId = @TransactionId
+
+                                  left join stage.ItemLocaleExtended cwr  on  i.ScanCode = cwr.ScanCode
+												                                AND l.BusinessUnitID = cwr.BusinessUnitId
+												                                AND cwr.AttributeID = @CatchweightRequired
+                                                                                AND cwr.TransactionId = @TransactionId
+
+                                  left join stage.ItemLocaleExtended cw  on  i.ScanCode = cw.ScanCode
+												                                AND l.BusinessUnitID = cw.BusinessUnitId
+												                                AND cw.AttributeID = @CatchWtReq
+                                                                                AND cw.TransactionId = @TransactionId
+                                
                                 where
 	                                s.Region = @RegionCode and
 	                                s.TransactionId = @TransactionId";
@@ -203,8 +239,14 @@ namespace MammothWebApi.DataAccess.Commands
                 WrappedTareWeightId = Attributes.WrappedTareWeight,
                 UnwrappedTareWeightId = Attributes.UnwrappedTareWeight,
                 PosScaleTare = Attributes.PosScaleTare,
-                LockedForSale = Attributes.LockedForSale
-            };
+                LockedForSale = Attributes.LockedForSale,
+                QuantityRequired = Attributes.QuantityRequired,
+                PriceRequired = Attributes.PriceRequired,
+                QtyProhibit = Attributes.QtyProhibit,
+                CostedByWeight = Attributes.CostedByWeight,
+                CatchweightRequired = Attributes.CatchweightRequired,
+                CatchWtReq = Attributes.CatchWtReq
+    };
 
             int affectedRows = db.Connection.Execute(sql, parameters, transaction: db.Transaction);
 
