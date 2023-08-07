@@ -1094,6 +1094,12 @@ namespace Mammoth.Common.DataAccess
 			public const string CanadaSugarPercentage = "CDS";
 			public const string CanadaServingSizeDesc = "CDR";
 			public const string LockedForSale = "RS";
-		}
+            public const string QuantityRequired = "QTY";
+            public const string PriceRequired = "PRQ";
+            public const string QtyProhibit = "QPR";
+            public const string CostedByWeight = "CBW";
+            public const string CatchweightRequired = "CWR";
+            public const string CatchWtReq = "CW";
+        }
 	}
 }
