@@ -277,7 +277,7 @@ namespace Mammoth.Common.DataAccess
 		public const int LockedForSale = 265;
         public const int QuantityRequired = 266;
         public const int PriceRequired = 267;
-        public const int QuantityProhibit = 268;
+        public const int QtyProhibit = 268;
         public const int CostedByWeight = 269;
         public const int CatchweightRequired = 270;
         public const int CatchWtReq = 271;
@@ -549,7 +549,7 @@ namespace Mammoth.Common.DataAccess
 			public const string LockedForSale = "Locked For Sale";
             public const string QuantityRequired = "Quantity Required";
             public const string PriceRequired = "Price Required";
-            public const string QuantityProhibit = "Quantity Prohibit";
+            public const string QtyProhibit = "Quantity Prohibit";
             public const string CostedByWeight = "Costed By Weight";
             public const string CatchweightRequired = "Catch Weight Required";
             public const string CatchWtReq = "Catch Wt Req";
