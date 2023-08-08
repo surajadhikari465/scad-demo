@@ -15,6 +15,7 @@ Post-Deployment Script Template
 -- :r .\SCM4-1906-AddTraitCodesForCanadaNutrition.sql --2021-07-23
 -- :r .\50985_EsbDeprecation_MessageStatus.sql --2022-04-26
 -- :r .\51243-AddingLockedForSaleAttribute.sql --2022-06-29
+:r .\51294-AddingInterposCostRequirementsAttributes.sql --2023-08-07
 
 -- Run every time (add your script above; keep this at bottom, as last post-deploy script).
 :r ..\..\Security\SecurityGrants.sql

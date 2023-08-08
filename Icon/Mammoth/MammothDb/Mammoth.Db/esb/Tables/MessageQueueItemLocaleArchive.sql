@@ -56,5 +56,11 @@
 	[UnwrappedTareWeight]		 NVARCHAR(MAX)  NULL,
 	[PosScaleTare]				 INT			NULL,
 	[LockedForSale]				 BIT			NULL,
+	[QuantityRequired]			 BIT            NULL,
+	[PriceRequired]				 BIT            NULL,
+	[QtyProhibit]		         BIT            NULL,
+	[CostedByWeight]		     BIT            NULL,
+	[CatchweightRequired]        BIT            NULL,
+	[CatchWtReq]				 BIT            NULL,
 );
 go
