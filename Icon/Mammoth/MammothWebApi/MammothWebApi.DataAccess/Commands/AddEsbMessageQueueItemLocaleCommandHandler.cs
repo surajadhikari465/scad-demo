@@ -190,7 +190,7 @@ namespace MammothWebApi.DataAccess.Commands
 												                                AND prq.AttributeID = @PriceRequired
                                                                                 AND prq.TransactionId = @TransactionId
 
-                                  left join sftage.ItemLocaleExtended qpr  on  i.ScanCode = qpr.ScanCode
+                                  left join stage.ItemLocaleExtended qpr  on  i.ScanCode = qpr.ScanCode
 												                                AND l.BusinessUnitID = qpr.BusinessUnitId
 												                                AND qpr.AttributeID = @QtyProhibit
                                                                                 AND qpr.TransactionId = @TransactionId
